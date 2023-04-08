@@ -1,4 +1,4 @@
 export interface IButton {
-	children: React.ReactNode;
-	className?: string;
+  children: React.ReactNode;
+  className?: string;
 }

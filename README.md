@@ -1,3 +1,6 @@
+# seeds-web-circle
+Front End Web Circle Repository
+
 ## Getting Started
 
 First, run the development server:

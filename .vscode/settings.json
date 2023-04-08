@@ -8,7 +8,7 @@
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true
   },
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "off",
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true,

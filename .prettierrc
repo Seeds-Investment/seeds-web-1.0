@@ -9,5 +9,6 @@
 	"bracketSpacing": true,
 	"jsxBracketSameLine": false,
 	"semi": true,
-	"editorconfig": true
+	"editorconfig": true,
+	"endOfLine": "lf"
 }

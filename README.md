@@ -2,16 +2,25 @@
 
 Front End Web Circle Repository
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## UI Library Documentations
 
 ui kit : https://www.material-tailwind.com/docs/react/installation
+
+## Getting Started
+
+First, Install packages:
+
+```bash
+yarn install
+# or just
+yarn
+```
+
+Then ignore git to auto crlf (in windows based system) git config core.autocrlf
+false
+
+run the development server:
+
+```bash
+yarn dev
+```

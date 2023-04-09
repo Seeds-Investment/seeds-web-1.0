@@ -3,7 +3,7 @@ import { Card, Input, Typography } from '@material-tailwind/react';
 import useLocalStorage from '@/hooks/useLocalStorage';
 
 const StoragePage = (): JSX.Element => {
-  const [data, setData] = useLocalStorage('testing', '');
+  const [data, setData] = useLocalStorage('accessToken', '');
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-blue-200">

@@ -1,6 +1,7 @@
 import earth from '@/assets/landing-page/s2-earth.png';
 import line from '@/assets/landing-page/s2-line-2.png';
 import shape from '@/assets/landing-page/s2-shape.png';
+import { latestNews } from '@/utils/_static/dummy';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import BgSection2 from './BgSection2';
@@ -12,9 +13,9 @@ export default function Section2(): React.ReactElement {
       <BgSection2>
         <div className="w-full flex items-center justify-center">
           <div className="grid grid-cols-3 gap-3 p-10 absolute -bottom-[10px] z-10">
-            <Section2Card />
-            <Section2Card />
-            <Section2Card />
+            {latestNews.map(data => (
+              <Section2Card data={data} />
+            ))}
           </div>
           <Image
             alt="img"

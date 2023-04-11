@@ -13,8 +13,8 @@ export default function Section2(): React.ReactElement {
       <BgSection2>
         <div className="w-full flex items-center justify-center">
           <div className="grid grid-cols-3 gap-3 p-10 absolute -bottom-[10px] z-10">
-            {latestNews.map(data => (
-              <Section2Card data={data} />
+            {latestNews.map((data, idx) => (
+              <Section2Card key={idx} data={data} />
             ))}
           </div>
           <Image

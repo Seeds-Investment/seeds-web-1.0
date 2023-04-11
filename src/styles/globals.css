@@ -23,9 +23,3 @@
 .slick-arrow {
   display: none !important;
 }
-
-.strokeme {
-  color: white;
-  background-color: white;
-  text-shadow: -1px -1px 0 blue, 1px -1px 0 blue, -1px 1px 0 blue, 1px 1px 0 blue
-}

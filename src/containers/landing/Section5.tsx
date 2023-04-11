@@ -35,7 +35,7 @@ export default function Section5(): React.ReactElement {
             src={thropy}
           />
           <div className="relative w-full flex justify-center">
-            <div className=" text-[1.1rem] text-gray-200 tracking-wider absolute w-[650px] z-30 top-[170px] text-center font-light">
+            <div className=" text-[1.1rem]  text-gray-200 tracking-wider absolute w-[650px] z-30 top-[170px] text-center font-light">
               Lorem ipsum dolor sit amet consectetur. Tristique vel sed libero
               proin neque. Egestas fermentum pulvinar metus cum accumsan
               bibendum mauris.

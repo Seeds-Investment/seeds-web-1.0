@@ -5,7 +5,7 @@ export default function BgSection2({
 }): React.ReactElement {
   const circleSize = { height: '350px', width: '350px' };
   return (
-    <div className="relative min-h-screen min-w-full">
+    <div className="relative min-h-screen min-w-full overflow-hidden">
       <div className="flex min-w-full min-h-screen flex-col justify-between overflow-hidden absolute">
         <div className="w-full h-full justify-center flex opacity-70 ml-[-450px]">
           <div

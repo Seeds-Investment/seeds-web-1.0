@@ -1,73 +1,88 @@
-import medal from '@/assets/landing-page/medal.png';
-import rectangleLine1 from '@/assets/landing-page/rectangle-line-1.png';
-import rectangleLine2 from '@/assets/landing-page/rectangle-line-2.png';
-import rectangle from '@/assets/landing-page/rectangle.png';
-import s1Line2 from '@/assets/landing-page/s1-line-2.png';
-import s1phone from '@/assets/landing-page/s1-phone.png';
-import vector from '@/assets/landing-page/vector.png';
+import card4 from '@/assets/landing-page/s3-check.png';
+import card1 from '@/assets/landing-page/s3-frame-1.png';
+import card2 from '@/assets/landing-page/s3-frame-2.png';
+import card3 from '@/assets/landing-page/s3-frame-3.png';
+import line2 from '@/assets/landing-page/s3-line-2.png';
+import line1 from '@/assets/landing-page/s3-line1.png';
+import shape from '@/assets/landing-page/s3-shape.png';
+import user2 from '@/assets/landing-page/user-sample-2.png';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import BgSection3 from './BgSection3';
-import Header from './Header';
 
 export default function Section3(): React.ReactElement {
   return (
     <div className=" min-w-full min-h-screen">
       <BgSection3>
         <div className="cursor-default">
-          <Header />
-          <div className=" text-[4rem] text-white absolute font-semibold z-30 top-[250px] left-[50px]">
-            Lorem Ipsum
+          <div className="text-[5rem] tracking-widest top-[250px] left-[50px] absolute w-[890px]">
+            <span className=" mr-3 text-seeds-purple  font-semibold z-30">
+              Lorem
+            </span>
+            <span className=" text-black  font-semibold z-30">
+              Ipsum Lorem Lorem Ipsum
+            </span>
           </div>
-          <div className=" text-[4rem] text-seeds-purple absolute font-semibold z-30 top-[350px] left-[50px]">
-            Lorem Ipsum
-          </div>
-          <div className=" text-[2rem] text-gray-200 tracking-wide absolute font-semibold z-30 top-[450px] left-[50px]">
-            Lorem Ipsum Dolor
-          </div>
-          <div className=" text-[1.1rem] text-gray-200 tracking-wider absolute w-[650px] z-30 top-[510px] font-light left-[50px]">
+          <div className=" text-[1.1rem] text-gray-700 tracking-wider absolute w-[650px] z-30 top-[520px] font-light left-[50px]">
             Lorem ipsum dolor sit amet consectetur. Tristique vel sed libero
             proin neque. Egestas fermentum pulvinar metus cum accumsan bibendum
             mauris.
           </div>
-          <Button className="absolute z-30 top-[610px] left-[50px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
+          <Button className="absolute z-30 top-[650px] left-[50px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
             Join Now
           </Button>
+          <Image
+            alt="img"
+            className="absolute right-[230px] rotate-[1deg] w-[240px] top-[450px] z-10  "
+            src={card1}
+          />
+          <Image
+            alt="img"
+            className="absolute right-[320px] rotate-[1deg] w-[220px] top-[285px] z-10 "
+            src={card2}
+          />
+          <Image
+            alt="img"
+            className="absolute right-[0px] w-[280px] top-[165px] z-10 "
+            src={card3}
+          />
+          <Image
+            alt="img"
+            className="absolute right-[-100px] w-[220px] top-[455px] z-10 "
+            src={card3}
+          />
+          <Image
+            alt="img"
+            className="absolute right-[560px] top-[155px] w-[100px] z-10 "
+            src={card4}
+          />
 
           <Image
             alt="img"
-            className="h-[230px] w-[170px] top-[40px] z-30 absolute"
-            src={medal}
+            className="absolute right-[440px] w-[25px] h-[25px] top-[625px] z-10 border-seeds-green border-2 rounded-full"
+            src={user2}
           />
           <Image
             alt="img"
-            className="absolute min-w-[1020px] top-[110px] h-[730px]"
-            src={rectangleLine2}
+            className="absolute right-[340px] w-[25px] h-[25px] top-[165px] z-10"
+            src={user2}
+          />
+
+          <Image
+            className="absolute right-[0px] top-[80px] w-[461px] h-[634px]"
+            alt="img"
+            src={shape}
+          />
+          <Image alt="img" className="absolute right-0 top-0" src={line2} />
+          <Image
+            alt="img"
+            className="absolute right-0 top-[30px] w-[550px] h-[710px]"
+            src={line1}
           />
           <Image
             alt="img"
-            className="absolute min-w-[1050px] top-[130px] -left-[50px] h-[680px]"
-            src={rectangleLine1}
-          />
-          <Image
-            alt="img"
-            className="w-[950px] h-[640px] absolute z-10 top-[130px] "
-            src={rectangle}
-          />
-          <Image
-            alt="img"
-            src={s1Line2}
-            className="absolute z-20 top-[250px] w-[750px] left-[0px]"
-          />
-          <Image
-            className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
-            alt="img"
-            src={s1phone}
-          />
-          <Image
-            alt="img"
-            className="absolute z-10 right-4 bottom-0 top-0 overflow-hidden"
-            src={vector}
+            className="absolute right-[-10px] top-[40px] -rotate-[-5eg] w-[550px] h-[710px] "
+            src={line1}
           />
         </div>
       </BgSection3>

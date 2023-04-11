@@ -7,7 +7,7 @@ export default function Section2Card({
   data: ILastNews;
 }): React.ReactElement {
   return (
-    <div className="border rounded-2xl border-gray-300 px-3 h-[150px] flex items-center bg-white ">
+    <div className="border rounded-2xl border-gray-300 px-3 h-[150px] flex items-center bg-white cursor-pointer hover:shadow-lg transition-all ">
       <div className="flex flex-col justify-between h-[100px] w-full">
         <div className="bg-seeds-purple mb-2 w-fit px-4 py-1 rounded-full text-white text-xs tracking-widest">
           {data.topic}

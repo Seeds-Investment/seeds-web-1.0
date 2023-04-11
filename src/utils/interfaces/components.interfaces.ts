@@ -15,3 +15,15 @@ export interface ILastNews {
   };
   createdAt: string;
 }
+
+export interface ICompetitionItem {
+  photo: StaticImageData;
+  gift: number;
+  title: string;
+  participant: {
+    total: number;
+    max: number;
+  };
+  deadline: Date;
+  status: string;
+}

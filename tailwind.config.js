@@ -16,13 +16,15 @@ module.exports = withMT({
     extend: {
       textShadow: {
         purple:
-          '-1px -1px 0 #7555DA, 1px -1px 0 #7555DA, -1px 1px 0 #7555DA, 1px 1px 0 #7555DA'
+          '-1px -1px 0 #7555DA, 1px -1px 0 #7555DA, -1px 1px 0 #7555DA, 1px 1px 0 #7555DA',
+        white:
+          '-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white'
       },
       colors: {
         'seeds-purple': '#7555DA',
         'seeds-green': '#4FE6AF',
         'seeds-button-green': '#3AC4A0',
-        'seeds-buton-green': '#3AC4A0'
+        'seeds-green-2': '#DCFCE4'
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",

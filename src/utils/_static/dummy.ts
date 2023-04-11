@@ -1,9 +1,13 @@
 import card1 from '@/assets/landing-page/s2-card-1.png';
 import card2 from '@/assets/landing-page/s2-card-2.png';
 import card3 from '@/assets/landing-page/s2-card-3.png';
+import s5photo from '@/assets/landing-page/s5-card-image.png';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
-import { ILastNews } from '../interfaces/components.interfaces';
+import {
+  ICompetitionItem,
+  ILastNews
+} from '../interfaces/components.interfaces';
 
 export const latestNews: Array<ILastNews> = [
   {
@@ -35,5 +39,52 @@ export const latestNews: Array<ILastNews> = [
       name: 'Margaretha'
     },
     createdAt: '5.00'
+  }
+];
+
+export const competitionCardList: Array<ICompetitionItem> = [
+  {
+    photo: s5photo,
+    gift: 10000000,
+    title: 'Anti Rungkad',
+    participant: {
+      total: 5,
+      max: 10
+    },
+    deadline: new Date(),
+    status: 'paid'
+  },
+  {
+    photo: s5photo,
+    gift: 10000000,
+    title: 'Anti Rungkad',
+    participant: {
+      total: 5,
+      max: 10
+    },
+    deadline: new Date(),
+    status: 'paid'
+  },
+  {
+    photo: s5photo,
+    gift: 10000000,
+    title: 'Anti Rungkad',
+    participant: {
+      total: 5,
+      max: 10
+    },
+    deadline: new Date(),
+    status: 'paid'
+  },
+  {
+    photo: s5photo,
+    gift: 10000000,
+    title: 'Anti Rungkad',
+    participant: {
+      total: 5,
+      max: 10
+    },
+    deadline: new Date(),
+    status: 'paid'
   }
 ];

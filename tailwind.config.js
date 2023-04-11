@@ -14,6 +14,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {
+      textShadow: {
+        purple:
+          '-1.5px -1.5px 0 #7555DA, 1.5px -1.5px 0 #7555DA, -1.5px 1.5px 0 #7555DA, 1.5px 1.5px 0 #7555DA'
+      },
       colors: {
         'seeds-purple': '#7555DA',
         'seeds-green': '#4FE6AF',
@@ -44,7 +48,7 @@ module.exports = withMT({
       }
     }
   },
-  plugins: []
+  plugins: [require('tailwindcss-textshadow')]
 });
 
 ///////

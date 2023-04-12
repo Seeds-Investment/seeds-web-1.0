@@ -1,4 +1,4 @@
-import BaseAxios from '@/utils/commons/axios';
+import BaseAxios from '@/utils/common/axios';
 
 const service = BaseAxios('https://jsonplaceholder.typicode.com/', false);
 

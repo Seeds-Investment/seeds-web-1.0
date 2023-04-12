@@ -1,4 +1,4 @@
-import { getLocalStorage } from '@/utils/commons/localStorage';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import type { AxiosInstance } from 'axios';
 import axios, { AxiosHeaders } from 'axios';
 

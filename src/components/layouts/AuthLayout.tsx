@@ -4,15 +4,11 @@ import Image from 'next/image';
 
 export interface IAuthLayout {
   children: React.ReactNode;
-  className?: string;
 }
 
-const AuthLayout = ({
-  children,
-  className
-}: IAuthLayout): React.ReactElement => {
+const AuthLayout = ({ children }: IAuthLayout): React.ReactElement => {
   return (
-    <div className={className}>
+    <div>
       <div className="relative">
         <div className="bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] h-screen w-full lg:w-1/2 lg:flex justify-center items-center bg-gray-500">
           <Image

@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from '@/utils/common/localStorage';
+import { getLocalStorage, setLocalStorage } from '@/utils/commons/localStorage';
 import { useEffect, useState } from 'react';
 
 const isSSR = typeof window === 'undefined';

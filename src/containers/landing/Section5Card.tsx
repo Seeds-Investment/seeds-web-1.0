@@ -1,10 +1,10 @@
+import currency from '@/assets/landing-page/currency.png';
+import time from '@/assets/landing-page/time.png';
+import users from '@/assets/landing-page/users.png';
 import { formatCurrency } from '@/utils/common/currency';
 import { ICompetitionItem } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';
 import moment from 'moment';
-import users from '@/assets/landing-page/users.png';
-import time from '@/assets/landing-page/time.png';
-import currency from '@/assets/landing-page/currency.png';
 import Image from 'next/image';
 
 export default function Section5Card({
@@ -27,7 +27,7 @@ export default function Section5Card({
           <td className="w-[40px]">
             <Image src={users} alt="user" className="w-[20px] h-[20px] mr-2" />
           </td>
-          <td className=" tracking-widest my-2 font-thin text-sm flex items-center">
+          <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
             {`${data.participant.total}/${data.participant.total} Participants`}
           </td>
         </tr>
@@ -36,16 +36,20 @@ export default function Section5Card({
           <td className=" w-[40px]">
             <Image src={time} alt="user" className="w-[20px] h-[20px] mr-2" />
           </td>
-          <td className="tracking-widest my-2 font-thin text-sm flex items-center">
+          <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
             {moment(data.deadline).format('DD MMMM YYYY')}
           </td>
         </tr>
 
         <tr>
-          <td className="w-[40px] flex items-center ml-1">
-            <Image src={currency} alt="user" className="w-[12px] h-[20px]" />
+          <td className="w-[40px]">
+            <Image
+              src={currency}
+              alt="user"
+              className="w-[12px] h-[20px] ml-1"
+            />
           </td>
-          <td className="tracking-widest my-2 font-thin text-sm capitalize">
+          <td className="h-[30px] tracking-widest my-2 font-thin text-sm capitalize ">
             {data.status}
           </td>
         </tr>

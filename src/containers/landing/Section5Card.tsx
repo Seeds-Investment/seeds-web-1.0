@@ -23,36 +23,42 @@ export default function Section5Card({
       <div className="text-lg font-semibold mt-2">{data.title}</div>
 
       <table>
-        <tr>
-          <td className="w-[40px]">
-            <Image src={users} alt="user" className="w-[20px] h-[20px] mr-2" />
-          </td>
-          <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
-            {`${data.participant.total}/${data.participant.total} Participants`}
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td className="w-[40px]">
+              <Image
+                src={users}
+                alt="user"
+                className="w-[20px] h-[20px] mr-2"
+              />
+            </td>
+            <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
+              {`${data.participant.total}/${data.participant.total} Participants`}
+            </td>
+          </tr>
 
-        <tr>
-          <td className=" w-[40px]">
-            <Image src={time} alt="user" className="w-[20px] h-[20px] mr-2" />
-          </td>
-          <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
-            {moment(data.deadline).format('DD MMMM YYYY')}
-          </td>
-        </tr>
+          <tr>
+            <td className=" w-[40px]">
+              <Image src={time} alt="user" className="w-[20px] h-[20px] mr-2" />
+            </td>
+            <td className="h-[30px] tracking-widest my-2 font-thin text-sm">
+              {moment(data.deadline).format('DD MMMM YYYY')}
+            </td>
+          </tr>
 
-        <tr>
-          <td className="w-[40px]">
-            <Image
-              src={currency}
-              alt="user"
-              className="w-[12px] h-[20px] ml-1"
-            />
-          </td>
-          <td className="h-[30px] tracking-widest my-2 font-thin text-sm capitalize ">
-            {data.status}
-          </td>
-        </tr>
+          <tr>
+            <td className="w-[40px]">
+              <Image
+                src={currency}
+                alt="user"
+                className="w-[12px] h-[20px] ml-1"
+              />
+            </td>
+            <td className="h-[30px] tracking-widest my-2 font-thin text-sm capitalize ">
+              {data.status}
+            </td>
+          </tr>
+        </tbody>
       </table>
       <Button className="w-full bg-seeds-button-green mt-3 capitalize">
         Get A Ticket

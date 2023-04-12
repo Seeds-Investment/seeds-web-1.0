@@ -2,10 +2,8 @@ import Section1 from '@/containers/landing/Section1';
 import Section2 from '@/containers/landing/Section2';
 import Section3 from '@/containers/landing/Section3';
 import Section5 from '@/containers/landing/Section5';
-import aa from '@/assets/landing-page/5340.png';
+import Section6 from '@/containers/landing/Section6';
 import { useRef } from 'react';
-import Slider from '@ant-design/react-slick';
-import Image from 'next/image';
 
 export default function Home(): React.ReactElement {
   const sliderRef = useRef(null);
@@ -29,6 +27,7 @@ export default function Home(): React.ReactElement {
       <Section2 />
       <Section3 />
       <Section5 />
+      <Section6 />
     </>
   );
 }

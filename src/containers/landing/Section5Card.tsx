@@ -10,7 +10,7 @@ export default function Section5Card({
   data: ICompetitionItem;
 }): React.ReactElement {
   return (
-    <div className="border rounded-2xl border-gray-300 w-[300px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative p-4 bg-opacity-30">
+    <div className="border rounded-2xl border-gray-300 w-[300px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative p-4 bg-opacity-70">
       <Image alt={data.title} src={data.photo} className="w-full" />
       <div className="absolute w-full flex justify-end p-3">
         <div className="flex justify-end px-2 py-1 bg-seeds-green-2 w-fit text-sm text-seeds-button-green rounded-md mr-8">

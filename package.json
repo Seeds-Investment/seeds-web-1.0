@@ -15,6 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@ant-design/react-slick": "^1.0.0",
     "@material-tailwind/react": "^1.4.2",
     "@mdi/font": "^7.2.96",
     "@types/node": "18.15.11",
@@ -31,7 +32,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^12.2.0",
-    "react-slick": "^0.29.0",
     "react-table": "^7.8.0",
     "slick-carousel": "^1.8.1",
     "yup": "^1.0.2"

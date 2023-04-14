@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* body{
+  font-family: 'Poppins', sans-serif;
+font-family: 'Secular One', sans-serif;
+} */
+
 .dc {
   height: 0.75rem;
   width: 0.75rem;

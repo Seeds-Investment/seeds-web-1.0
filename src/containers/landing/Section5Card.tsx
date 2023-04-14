@@ -20,7 +20,7 @@ export default function Section5Card({
           {`IDR ${formatCurrency(data.gift)}`}
         </div>
       </div>
-      <div className="text-lg font-semibold mt-2">{data.title}</div>
+      <div className="text-lg font-medium mt-2">{data.title}</div>
 
       <table>
         <tbody>

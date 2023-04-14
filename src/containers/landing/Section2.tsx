@@ -48,11 +48,11 @@ export default function Section2(): React.ReactElement {
           <div className="absolute top-[235px] opacity-70 text-[3.7rem] font-semibold tracking-wider text-seeds-purple">
             Trending Today
           </div>
-          <div className="absolute top-[320px] opacity-70 text-[2.5rem] font-semibold tracking-wider text-seeds-purple">
+          <div className="absolute top-[320px] opacity-70 text-[2.5rem] font-medium tracking-wide text-seeds-purple">
             Whats's Trending Today?
           </div>
 
-          <div className="absolute top-[390px] opacity-70 text-[1.5rem] font-light w-[800px] text-center tracking-widest text-seeds-purple">
+          <div className="absolute top-[390px] opacity-70 text-[1.1rem] font-light w-[600px] text-center tracking-widest text-seeds-purple">
             Lorem ipsum dolor sit amet consectetur. Tristique vel sed libero
             proin neque. Egestas fermentum pulvinar metus cum accumsan bibendum
             mauris.

@@ -16,13 +16,13 @@ export default function Section1(): React.ReactElement {
       <BgSection1>
         <div className="cursor-default">
           <Header />
-          <div className=" text-[4rem] text-white absolute font-semibold z-30 top-[250px] left-[50px]">
+          <div className=" text-[4rem] text-white absolute font-semibold tracking-wide z-30 top-[250px] left-[50px]">
             Lorem Ipsum
           </div>
-          <div className=" text-[4rem] text-seeds-purple absolute font-semibold z-30 top-[350px] left-[50px]">
+          <div className=" text-[4rem] text-seeds-purple absolute font-semibold tracking-wide z-30 top-[350px] left-[50px]">
             Lorem Ipsum
           </div>
-          <div className=" text-[2rem] text-gray-200 tracking-wide absolute font-semibold z-30 top-[450px] left-[50px]">
+          <div className=" text-[2rem] text-gray-200 tracking-wide absolute font-medium z-30 top-[450px] left-[50px]">
             Lorem Ipsum Dolor
           </div>
           <div className=" text-[1.1rem] text-gray-200 tracking-wider absolute w-[650px] z-30 top-[510px] font-light left-[50px]">

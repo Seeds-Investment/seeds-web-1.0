@@ -3,7 +3,6 @@ export default function BgSection6({
 }: {
   children: React.ReactElement;
 }): React.ReactElement {
-  const circleSize = { height: '350px', width: '350px' };
   return (
     <div className="relative min-h-[450px] min-w-full bg-gradient-to-tr from-seeds-green to-seeds-purple">
       <div className="flex min-w-full h-1/4 flex-col justify-between overflow-hidden absolute"></div>

@@ -7,7 +7,9 @@ import { useState } from 'react';
 export default function Header(): React.ReactElement {
   const [active, setActive] = useState<string>('id');
   const isId = active === 'id';
-  const languageHandler = (e: React.MouseEvent<HTMLElement>) => {
+  const idClass = isId ? 'border border-seeds-purple text-seeds-purple' : '';
+  const enClass = isId ? '' : 'border border-seeds-purple text-seeds-purple';
+  const languageHandler = (e: React.MouseEvent<HTMLElement>): void => {
     const { id } = e.target as HTMLButtonElement;
     setActive(id);
   };
@@ -19,9 +21,7 @@ export default function Header(): React.ReactElement {
           <div
             onClick={languageHandler}
             id="id"
-            className={`${
-              isId && 'border border-seeds-purple text-seeds-purple'
-            } flex w-[80px] text-xs font-medium items-center bg-gray-300 rounded-full p-2 justify-center cursor-pointer hover:shadow-lg transition-all z-30`}
+            className={`${idClass} flex w-[80px] text-xs font-medium items-center bg-gray-300 rounded-full p-2 justify-center cursor-pointer hover:shadow-lg transition-all z-30`}
           >
             ID
             <Image
@@ -37,9 +37,7 @@ export default function Header(): React.ReactElement {
           <div
             onClick={languageHandler}
             id="en"
-            className={`${
-              !isId && 'border border-seeds-purple text-seeds-purple'
-            } flex w-[80px] text-xs font-medium items-center bg-gray-300 rounded-full p-2 justify-center ml-2 cursor-pointer hover:shadow-lg transition-all z-30`}
+            className={`${enClass} flex w-[80px] text-xs font-medium items-center bg-gray-300 rounded-full p-2 justify-center ml-2 cursor-pointer hover:shadow-lg transition-all z-30`}
           >
             EN
             <Image id="en" className="ml-1 w-[20px]" src={flagUs} alt="en" />

@@ -1,4 +1,4 @@
-import { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
+import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,8 +24,12 @@ export default function Section6(): React.ReactElement {
           </div>
           <br />
           <div className="flex">
-            {socialMedia.map(item => (
-              <Link href={item.url} className="mr-3 last:mr-0 cursor-pointer">
+            {socialMedia.map((item, key) => (
+              <Link
+                key={key}
+                href={item.url}
+                className="mr-3 last:mr-0 cursor-pointer"
+              >
                 <Image alt="" src={item.icon} />
               </Link>
             ))}
@@ -33,19 +37,28 @@ export default function Section6(): React.ReactElement {
         </div>
         <div className="grid grid-cols-2 pl-16 ml-10">
           {Object.entries(seedsInformation).map(([key, value]) => (
-            <div className="w-full text-white tracking-widest">
+            <div key={key} className="w-full text-white tracking-widest">
               <div className="mb-3 last:mb-0">{key}</div>
               {value.map(
-                (data: ISeedsInformationItem): React.ReactElement => (
-                  <Link href={data.url}>
-                    <div className="font-thin opacity-80 text-xs mb-3 flex items-center">
-                      {data?.icon && (
-                        <Image alt="" src={data.icon} className="mr-3" />
-                      )}
-                      {data.name}
-                    </div>
-                  </Link>
-                )
+                (
+                  data: ISeedsInformationItem,
+                  key: number
+                ): React.ReactElement => {
+                  const dataIcon =
+                    data?.icon != null ? (
+                      <Image alt="" src={data.icon} className="mr-3" />
+                    ) : (
+                      ''
+                    );
+                  return (
+                    <Link key={key} href={data.url}>
+                      <div className="font-thin opacity-80 text-xs mb-3 flex items-center">
+                        {dataIcon}
+                        {data.name}
+                      </div>
+                    </Link>
+                  );
+                }
               )}
             </div>
           ))}
@@ -56,8 +69,8 @@ export default function Section6(): React.ReactElement {
           <div className="grid grid-cols-2 gap-5 w-fit">
             {downloadOurApp
               .filter((data, i) => i <= 1)
-              .map(data => (
-                <Link href={data.url}>
+              .map((data, key) => (
+                <Link key={key} href={data.url}>
                   <Image alt="" src={data.icon} />
                 </Link>
               ))}
@@ -66,8 +79,8 @@ export default function Section6(): React.ReactElement {
           <div className="flex">
             {downloadOurApp
               .filter((data, i) => i > 1)
-              .map(data => (
-                <Link href={data.url}>
+              .map((data, key) => (
+                <Link key={key} href={data.url}>
                   <Image className="mr-5" alt="" src={data.icon} />
                 </Link>
               ))}

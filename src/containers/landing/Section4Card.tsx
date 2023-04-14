@@ -1,5 +1,5 @@
 import icon from '@/assets/landing-page/s4-card-icon.png';
-import { ICompetitionItem } from '@/utils/interfaces/components.interfaces';
+import type { ICompetitionItem } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 
 export default function Section4Card({

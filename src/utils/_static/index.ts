@@ -11,7 +11,7 @@ import tiktok from '@/assets/landing-page/tiktok.svg';
 import twitter from '@/assets/landing-page/twitter.svg';
 import whatsapp from '@/assets/landing-page/whatsapp.svg';
 import youtube from '@/assets/landing-page/youtube.svg';
-import { ISeedsInformationList } from '../interfaces/data.interfaces';
+import type { ISeedsInformationList } from '../interfaces/data.interfaces';
 
 export const socialMedia = [
   {
@@ -91,7 +91,7 @@ export const seedsInformation: ISeedsInformationList = {
       url: ''
     }
   ],
-  ['Contact Us']: [
+  'Contact Us': [
     {
       icon: email,
       name: 'info@seeds.finance',

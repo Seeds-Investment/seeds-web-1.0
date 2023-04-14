@@ -1,4 +1,4 @@
-import { ILastNews } from '@/utils/interfaces/components.interfaces';
+import type { ILastNews } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 
 export default function Section2Card({

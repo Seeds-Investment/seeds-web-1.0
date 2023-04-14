@@ -49,7 +49,7 @@ export default function Section2(): React.ReactElement {
             Trending Today
           </div>
           <div className="absolute top-[320px] opacity-70 text-[2.5rem] font-medium tracking-wide text-seeds-purple">
-            Whats's Trending Today?
+            Whats&apos;s Trending Today?
           </div>
 
           <div className="absolute top-[390px] opacity-70 text-[1.1rem] font-light w-[600px] text-center tracking-widest text-seeds-purple">

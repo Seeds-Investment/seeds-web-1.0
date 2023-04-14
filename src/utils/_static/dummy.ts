@@ -4,12 +4,12 @@ import card3 from '@/assets/landing-page/s2-card-3.png';
 import s5photo from '@/assets/landing-page/s5-card-image.png';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
-import {
+import type {
   ICompetitionItem,
   ILastNews
 } from '../interfaces/components.interfaces';
 
-export const latestNews: Array<ILastNews> = [
+export const latestNews: ILastNews[] = [
   {
     topic: 'Trends',
     title: ' Apple : New fitur from Iphone 13 pro',
@@ -42,7 +42,7 @@ export const latestNews: Array<ILastNews> = [
   }
 ];
 
-export const competitionCardList: Array<ICompetitionItem> = [
+export const competitionCardList: ICompetitionItem[] = [
   {
     photo: s5photo,
     gift: 10000000,

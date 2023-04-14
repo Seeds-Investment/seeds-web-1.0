@@ -2,7 +2,7 @@ import currency from '@/assets/landing-page/currency.png';
 import time from '@/assets/landing-page/time.png';
 import users from '@/assets/landing-page/users.png';
 import { formatCurrency } from '@/utils/common/currency';
-import { ICompetitionItem } from '@/utils/interfaces/components.interfaces';
+import type { ICompetitionItem } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';

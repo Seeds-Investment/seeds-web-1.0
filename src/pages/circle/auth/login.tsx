@@ -7,11 +7,50 @@ import Line from '@/assets/vector/line.png';
 import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import FormCard from '@/containers/auth/FormCard';
+import PhoneInput from '@/containers/auth/PhoneInput';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
+
+interface FormData {
+  phoneNumber: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
+  const [formData, setFormData] = React.useState<FormData>({
+    phoneNumber: '',
+    password: ''
+  });
+
+  const [phoneCountry, setPhoneCountry] = React.useState<string>(
+    '/assets/images/indo.png'
+  );
+  const [phoneCode, setPhoneCode] = React.useState<string>('+62');
+  const [displayPhoneCountry, setDisplayPhoneCountry] =
+    React.useState<boolean>(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData: FormData) => {
+      return {
+        ...prevFormData,
+        [name]: value
+      };
+    });
+  };
+
+  const changePhoneNumber = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
+    const value: string = e.currentTarget.getAttribute('data-value') ?? '';
+    const img: string = e.currentTarget.getAttribute('data-img') ?? '';
+    setPhoneCode(value);
+    setPhoneCountry(img);
+    setDisplayPhoneCountry((prev: boolean) => !prev);
+  };
+
   const thirdParty = [
     {
       name: 'Apple',
@@ -75,14 +114,24 @@ const Login: React.FC = () => {
               <FormCard className=" md:shrink-0  lg:w-[35rem] z-20 ">
                 <div className="flex flex-col lg:p-8 px-5 lg:px-10 mt-5">
                   <p className="font-bold text-xl">Phone Number</p>
-                  <Input
-                    variant="static"
-                    className="w-3/5"
-                    type="tel"
-                    pattern=""
+                  <PhoneInput
+                    handleChange={handleChange}
+                    formData={formData}
+                    displayPhoneCountry={displayPhoneCountry}
+                    setDisplayPhoneCountry={setDisplayPhoneCountry}
+                    changePhoneNumber={changePhoneNumber}
+                    phoneCountry={phoneCountry}
+                    setPhoneCountry={setPhoneCountry}
+                    phoneCode={phoneCode}
                   />
                   <p className="font-bold text-xl mt-5">Password</p>
-                  <Input variant="static" className="w-3/5" type="password" />
+                  <Input
+                    className="w-3/5 text-xl"
+                    type="password"
+                    variant="standard"
+                    color="gray"
+                    icon={''}
+                  />
                   <div className="flex flex-row justify-between gap-5 items-center mt-2">
                     <Checkbox
                       label={

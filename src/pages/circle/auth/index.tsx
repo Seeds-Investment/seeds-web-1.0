@@ -72,7 +72,7 @@ const AuthIndex: React.FC = () => {
                   </Link>
                 </small>
                 <div className="flex justify-around py-5 gap-5 px-5">
-                  <CButton className="border bg-transparent w-1/2 text-[#3AC4A0] hover:bg-[#3AC4A0] hover:text-black border-[#3AC4A0] rounded-full">
+                  <CButton className="border bg-transparent w-1/2 text-[#3AC4A0] hover:bg-[#3AC4A0] hover:text-white border-[#3AC4A0] rounded-full">
                     Login
                   </CButton>
                   <CButton className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0] w-1/2">

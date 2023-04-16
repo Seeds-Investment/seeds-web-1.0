@@ -1,13 +1,71 @@
+import Hello from '@/assets/images/Hello.png';
+import Apple from '@/assets/images/apple.png';
+import Facebook from '@/assets/images/facebook.png';
+import Google from '@/assets/images/google.png';
+import ArrowLeft from '@/assets/vector/arrow-left.svg';
+import Line from '@/assets/vector/line.png';
 import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import FormCard from '@/containers/auth/FormCard';
+import PhoneInput from '@/containers/auth/PhoneInput';
+import { Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import CongratsOnBoarding from '../../../assets/images/Congrat-Onboarding.png';
-import Hello from '../../../assets/images/Hello.png';
-import Line from '../../../assets/vector/line.png';
+import React from 'react';
+
+interface FormData {
+  phoneNumber: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
+  const [formData, setFormData] = React.useState<FormData>({
+    phoneNumber: '',
+    password: ''
+  });
+
+  const [phoneCountry, setPhoneCountry] = React.useState<string>(
+    '/assets/images/indo.png'
+  );
+  const [phoneCode, setPhoneCode] = React.useState<string>('+62');
+  const [displayPhoneCountry, setDisplayPhoneCountry] =
+    React.useState<boolean>(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setFormData((prevFormData: FormData) => {
+      return {
+        ...prevFormData,
+        [name]: value
+      };
+    });
+  };
+
+  const changePhoneNumber = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
+    const value: string = e.currentTarget.getAttribute('data-value') ?? '';
+    const img: string = e.currentTarget.getAttribute('data-img') ?? '';
+    setPhoneCode(value);
+    setPhoneCountry(img);
+    setDisplayPhoneCountry((prev: boolean) => !prev);
+  };
+
+  const thirdParty = [
+    {
+      name: 'Apple',
+      img: Apple
+    },
+    {
+      name: 'Google',
+      img: Google
+    },
+    {
+      name: 'Facebook',
+      img: Facebook
+    }
+  ];
+
   return (
     <>
       <div className="relative">
@@ -47,31 +105,77 @@ const Login: React.FC = () => {
               height={480}
             />
           </CCard>
-          <div>
-            <FormCard className="h-[600px] lg:w-[30rem] m-5 z-20 ">
-              <div className="flex flex-col justify-center md:shrink-0">
-                <Image
-                  alt="congrats-onboarding"
-                  className="md:shrink-0 w-45 h-45 mx-auto mb-5"
-                  src={CongratsOnBoarding}
-                />
-                <p className="text-center font-bold text-2xl text-black rounded-lg">
-                  Welcome to Seeds
-                </p>
-                <p className="text-xl md:shrink-0 text-[#7C7C7C] p-5 text-center">
-                  Start and expand your investment journey with friends!
-                </p>
-                <CButton className="bg-[#7555DA] mx-auto rounded-full w-[25rem] p-5">
-                  Enter as a guest
-                </CButton>
-                <small className="text-center">
-                  By clicking Register, you agree with Seeds{' '}
-                  <Link href={''} className="font-bold text-[#44FFBB]">
-                    Terms & Conditions
-                  </Link>
-                </small>
-              </div>
-            </FormCard>
+          <div className="flex flex-col min-w-20">
+            <div className="z-20 lg:hidden flex">
+              <Image src={ArrowLeft} alt="arrow-left" className=" mb-5 " />{' '}
+              <p className="font-bold text-white text-2xl mx-auto">Login</p>
+            </div>
+            <div>
+              <FormCard className=" md:shrink-0  lg:w-[35rem] z-20 ">
+                <div className="flex flex-col lg:p-8 px-5 lg:px-10 mt-5">
+                  <p className="font-bold text-xl">Phone Number</p>
+                  <PhoneInput
+                    handleChange={handleChange}
+                    formData={formData}
+                    displayPhoneCountry={displayPhoneCountry}
+                    setDisplayPhoneCountry={setDisplayPhoneCountry}
+                    changePhoneNumber={changePhoneNumber}
+                    phoneCountry={phoneCountry}
+                    setPhoneCountry={setPhoneCountry}
+                    phoneCode={phoneCode}
+                  />
+                  <p className="font-bold text-xl mt-5">Password</p>
+                  <Input
+                    className="w-3/5 text-xl"
+                    type="password"
+                    variant="standard"
+                    color="gray"
+                    icon={''}
+                  />
+                  <div className="flex flex-row justify-between gap-5 items-center mt-2">
+                    <Checkbox
+                      label={
+                        <Typography
+                          variant="small"
+                          className=" text-black lg:font-small"
+                        >
+                          Keep me logged in
+                        </Typography>
+                      }
+                      color="green"
+                    />
+                    <Link
+                      href={''}
+                      className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
+                    >
+                      Forgot Password?
+                    </Link>
+                  </div>
+                  <CButton className="mx-auto w-full rounded-full bg-[#3AC4A0] mt-5">
+                    Login
+                  </CButton>
+                  <small className="mx-auto mt-5 text-opacity-50">Or</small>
+                  <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly mb-5 lg:mt-4">
+                    {thirdParty.map((el, i) => {
+                      return (
+                        <CButton
+                          key={i}
+                          className="bg-white rounded-full flex items-center"
+                        >
+                          <Image src={el.img} alt="third-party" />
+                          <Typography
+                            variant="small"
+                            className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                          >
+                            Login with {el.name}
+                          </Typography>
+                        </CButton>
+                      );
+                    })}
+                  </div>
+                </div>
+              </FormCard>
+            </div>
           </div>
         </div>
       </div>

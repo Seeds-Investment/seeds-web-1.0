@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@material-tailwind/react": "^1.4.2",
-    "@mdi/font": "^7.2.96",
     "@types/node": "18.15.11",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",

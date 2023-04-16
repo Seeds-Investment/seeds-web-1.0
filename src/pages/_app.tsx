@@ -1,35 +1,25 @@
 import '@/styles/globals.css';
-import type { LayoutKeys } from '@/utils/constants/layouts';
-import { Layouts } from '@/utils/constants/layouts';
 import { ThemeProvider } from '@material-tailwind/react';
-import type { NextComponentType, NextPage, NextPageContext } from 'next';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import type { ReactNode } from 'react';
 
 // Documentation of Next Layouts see:
 // https://nextjs.org/docs/basic-features/layouts#with-typescript
-// Improved Using
-// https://reacthustle.com/blog/next-js-multiple-layouts-typescript
 
 export type Page<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & {
-  Layout?: LayoutKeys;
+  getLayout?: (page: JSX.Element) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextComponentType<NextPageContext, any, any> & {
-    Layout: LayoutKeys;
-  };
+  Component: Page;
 };
 
-function App({ Component, pageProps }: AppPropsWithLayout): React.ReactElement {
-  const selectedLayout: LayoutKeys = Component.Layout ?? 'DEFAULT';
-  const Layout = Layouts[selectedLayout];
+function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+  const getLayout = Component.getLayout ?? (page => page);
 
   return (
-    <ThemeProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
   );
 }
 

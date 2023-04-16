@@ -1,7 +1,3 @@
-import Hello from '@/assets/images/Hello.png';
-import Line from '@/assets/vector/line.png';
-import Image from 'next/image';
-
 export interface IAuthLayout {
   children: React.ReactNode;
 }
@@ -10,13 +6,7 @@ const AuthLayout = ({ children }: IAuthLayout): React.ReactElement => {
   return (
     <div>
       <div className="relative">
-        <div className="bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] h-screen w-full lg:w-1/2 lg:flex justify-center items-center bg-gray-500">
-          <Image
-            src={Line}
-            alt="line"
-            className="absolute bottom-0 ml-10 md:shrink-0 hidden lg:flex"
-          />
-        </div>
+        <div className="bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] h-screen w-full lg:w-1/2 lg:flex justify-center items-center bg-gray-500"></div>
         <div className="absolute top-0 left-0 z-0 h-full w-full">
           <div className="flex justify-center lg:justify-around">
             <div className="bg-[#7856E1] rounded-full h-72 w-72 blur-2xl hidden lg:flex"></div>
@@ -39,12 +29,6 @@ const AuthLayout = ({ children }: IAuthLayout): React.ReactElement => {
                 Start and expand your investment journey with friends!
               </p>
             </div>
-            <Image
-              src={Hello}
-              className="object-cover absolute  bottom-0 right-0"
-              alt="hello"
-              height={480}
-            />
           </div>
           <div>{children}</div>
         </div>

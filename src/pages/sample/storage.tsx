@@ -14,7 +14,7 @@ const StoragePage = (): JSX.Element => {
           size="lg"
           value={data}
           onChange={e => setData(e.target.value)}
-          icon={<i className="mdi mdi-cube" />}
+          icon={<span>☁</span>}
         />
       </div>
       <Typography color="gray" className="mt-4 text-center font-normal">
@@ -24,7 +24,7 @@ const StoragePage = (): JSX.Element => {
   );
 };
 
-StoragePage.getLayout = function getLayout(page: React.ReactElement) {
+StoragePage.getLayout = function getLayout(page: JSX.Element) {
   return <SampleLayout>{page}</SampleLayout>;
 };
 

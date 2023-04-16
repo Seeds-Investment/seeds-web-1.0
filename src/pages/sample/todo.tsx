@@ -35,7 +35,7 @@ const TodoPage = (): JSX.Element => {
           onChange={e => {
             setNumber(e.target.value);
           }}
-          icon={<i className="mdi mdi-cube" />}
+          icon={<span>☁</span>}
         />
       </div>
       <Typography color="gray" className="mt-4 text-center font-normal">
@@ -45,7 +45,7 @@ const TodoPage = (): JSX.Element => {
   );
 };
 
-TodoPage.getLayout = function getLayout(page: React.ReactElement) {
+TodoPage.getLayout = function getLayout(page: JSX.Element) {
   return <SampleLayout>{page}</SampleLayout>;
 };
 

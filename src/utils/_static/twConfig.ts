@@ -1,6 +1,5 @@
 import type { Config } from 'tailwindcss';
-
-const twConfig: Config = {
+export const twConfig: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './pages/**/*.{js,ts,jsx,tsx}',
@@ -47,5 +46,3 @@ const twConfig: Config = {
   },
   plugins: [require('tailwindcss-textshadow')]
 };
-
-export default twConfig;

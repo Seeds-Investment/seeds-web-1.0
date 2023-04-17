@@ -1,4 +1,10 @@
+# dependencies
 node_modules;
-build;
 dist;
+
+# next.js
 .next;
+out;
+
+# production
+build;

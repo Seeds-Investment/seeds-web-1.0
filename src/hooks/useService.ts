@@ -5,7 +5,7 @@ import useDebounce from '@/hooks/useDebaunce';
 
 // reference: https://blog.openreplay.com/integrating-axios-with-react-hooks/
 
-const useAxios = (
+const useService = (
   callback: (payload: any) => Promise<any>,
   payload: any,
   debounceTimeout: number = 0
@@ -37,4 +37,4 @@ const useAxios = (
   return { data, error, loaded };
 };
 
-export default useAxios;
+export default useService;

@@ -3,3 +3,96 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  min-height: 100vh !important;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.dc {
+  height: 0.75rem;
+  width: 0.75rem;
+  background-color: #e9e9e9;
+  border-radius: 100%;
+}
+.slick-dots .slick-active {
+  width: 1.7rem;
+}
+
+.slick-dots .slick-active .dc {
+  background-color: #3ac4a0;
+  width: 1.7rem;
+  border-radius: 500px;
+}
+
+.slick-arrow {
+  display: none !important;
+}
+
+.fade-in {
+  animation: fadeIn 1s forwards;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Start Elastic carousel */
+.container {
+  margin: 10rem 0;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  /* width: 80%; */
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.container h1 {
+  font-size: 35px;
+  color: rgb(120, 117, 117);
+  text-align: center;
+}
+.seperator {
+  width: 100%;
+}
+
+.carousWrapper {
+  width: 100%;
+}
+
+.carousWrapper {
+  width: 100%;
+}
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%;
+  margin: 15px;
+}
+.title {
+  background-color: rgba(4, 4, 4, 0.228);
+  border-radius: 15px;
+}
+.title h3 {
+  padding: 2rem;
+  color: #fff;
+}
+/* End Elastic carousel */

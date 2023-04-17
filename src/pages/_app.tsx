@@ -25,7 +25,6 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     lng: 'en',
     fallbackLng: 'en',
     debug: true,
-
     resources: {
       en: {
         translation: en
@@ -39,6 +38,7 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
       escapeValue: false
     }
   });
+
   return (
     <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
   );

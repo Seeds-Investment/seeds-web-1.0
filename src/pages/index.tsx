@@ -1,19 +1,14 @@
-import Section1 from '@/containers/landing/Section1';
-import Section2 from '@/containers/landing/Section2';
-import Section3 from '@/containers/landing/Section3';
-import Section4 from '@/containers/landing/Section4';
-import Section5 from '@/containers/landing/Section5';
-import Section6 from '@/containers/landing/Section6';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 export default function Home(): React.ReactElement {
+  const { t } = useTranslation();
   return (
     <>
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Section4 />
-      <Section5 />
-      <Section6 />
+      <LanguageSwitcher />
+      {t('greeting', { name: 'Seeds!' })}
     </>
   );
 }

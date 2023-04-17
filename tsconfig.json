@@ -20,6 +20,13 @@
     },
     "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "tests/**/*.ts"],
+
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "i18n.js",
+    "tests/**/*.ts"
+  ],
   "exclude": ["node_modules", ".vscode"]
 }

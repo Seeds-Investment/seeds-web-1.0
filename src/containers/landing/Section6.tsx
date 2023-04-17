@@ -9,7 +9,7 @@ export default function Section6(): React.ReactElement {
     <>
       <div className=" bg-gradient-to-tr from-seeds-green to-seeds-purple grid grid-cols-3 p-20 tracking-wide cursor-default">
         <div>
-          <div className="text-[5rem] font-semibold text-seeds-green -mt-7">
+          <div className="text-[4.5rem] font-semibold text-seeds-green -mt-7">
             Seeds
           </div>
           <div className="text-[2rem] font-semibold text-white tracking-widest">

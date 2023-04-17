@@ -15,7 +15,7 @@ export default function Section3(): React.ReactElement {
     <div className=" min-w-full min-h-screen">
       <BgSection3>
         <div className="cursor-default">
-          <div className="text-[5rem] tracking-widest top-[250px] left-[50px] absolute w-[890px]">
+          <div className="text-[4.5rem] tracking-widest top-[250px] left-[50px] absolute w-[890px]">
             <span className=" mr-3 text-seeds-purple  font-semibold z-30">
               Lorem
             </span>

@@ -25,9 +25,9 @@ type AppPropsWithLayout = AppProps & {
 function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);
   void i18n.use(initReactI18next).init({
-    lng: 'en',
-    fallbackLng: 'en',
-    debug: true,
+    lng: 'id',
+    fallbackLng: 'id',
+    debug: false,
 
     resources: {
       en: {

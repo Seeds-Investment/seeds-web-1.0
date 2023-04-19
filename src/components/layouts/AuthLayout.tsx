@@ -1,16 +1,17 @@
 import bgLine from '@/assets/story-boarding/bg-line.png';
 import hello from '@/assets/story-boarding/hello.png';
 import logo from '@/assets/story-boarding/logo-seeds.png';
-import common from '@/utils/common';
 import Image from 'next/image';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import Dropdown from '../Dropdown';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 export default function AuthLayout({
-  children
+  children,
+  className = ''
 }: {
   children: React.ReactNode;
+  className?: string;
 }): React.ReactElement {
   return (
     <div className="flex min-w-full min-h-screen">
@@ -27,10 +28,12 @@ export default function AuthLayout({
       <div className="w-full h-screen relative">
         <div className="absolute h-full w-full z-20">
           <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
-            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base">
+            <div
+              className={`bg-white ${className} min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base`}
+            >
               <div className="w-full flex justify-between items-center lg:pr-0">
                 <Image src={logo} alt="" />
-                <Dropdown options={common.langOptions} onClick={undefined} />
+                <LanguageSwitcher />
               </div>
               <div className="opacity-0 fade-in">{children}</div>
             </div>

@@ -1,9 +1,8 @@
-import { Input, Typography } from '@material-tailwind/react';
-import { useMemo, useState } from 'react';
-
 import SampleLayout from '@/components/layouts/SampleLayout';
 import useService from '@/hooks/useFetch';
 import { getPosts } from '@/repository/post';
+import { Input, Typography } from '@material-tailwind/react';
+import { useMemo, useState } from 'react';
 
 const TodoPage = (): JSX.Element => {
   const [number, setNumber] = useState('1');
@@ -47,11 +46,7 @@ const TodoPage = (): JSX.Element => {
 };
 
 TodoPage.getLayout = function getLayout(page: JSX.Element) {
-  return (
-    <SampleLayout title="Get Post" subtitle="Enter Post ID">
-      {page}
-    </SampleLayout>
-  );
+  return <SampleLayout>{page}</SampleLayout>;
 };
 
 export default TodoPage;

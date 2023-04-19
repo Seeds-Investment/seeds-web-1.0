@@ -11,12 +11,15 @@ import { initReactI18next } from 'react-i18next';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
-export type Page<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
   getLayout?: (page: JSX.Element) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-  Component: Page;
+  Component: NextPageWithLayout;
 };
 
 function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {

@@ -1,40 +1,58 @@
-export interface IAuthLayout {
+import bgLine from '@/assets/story-boarding/bg-line.png';
+import hello from '@/assets/story-boarding/hello.png';
+import logo from '@/assets/story-boarding/logo-seeds.png';
+import common from '@/utils/common';
+import Image from 'next/image';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import Dropdown from '../Dropdown';
+
+export default function AuthLayout({
+  children
+}: {
   children: React.ReactNode;
-}
-
-const AuthLayout = ({ children }: IAuthLayout): React.ReactElement => {
+}): React.ReactElement {
   return (
-    <div>
-      <div className="relative">
-        <div className="bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] h-screen w-full lg:w-1/2 lg:flex justify-center items-center bg-gray-500"></div>
-        <div className="absolute top-0 left-0 z-0 h-full w-full">
-          <div className="flex justify-center lg:justify-around">
-            <div className="bg-[#7856E1] rounded-full h-72 w-72 blur-2xl hidden lg:flex"></div>
-            <div className="bg-[#44FFBB] rounded-full h-72 w-72 blur-3xl object-cover"></div>
-          </div>
-
-          <div className="flex justify-between items-end">
-            <div className="bg-[#7856E1] rounded-full h- w-48 rounded-r-none blur-xl hidden lg:flex"></div>
-            <div className="bg-[#44FFBB] rounded-full h-80 w-48 lg:ml-40 rounded-l-none blur-3xl"></div>
-            <div className="bg-[#7856E1] rounded-full h-80 w-48 rounded-r-none blur-3xl"></div>
-          </div>
+    <div className="flex min-w-full min-h-screen">
+      <div className="w-full h-screen hidden lg:block">
+        <div className="min-h-screen flex items-center justify-center min-w-full transition-all duration-300  bg-gradient-to-tr from-seeds-green  to-seeds-purple px-[8%] py-[3%]">
+          <Image
+            className="fixed bottom-0 w-1/2 left-0 z-0"
+            src={bgLine}
+            alt=""
+          />
+          <Image className="left-0 w-[30vw]" src={hello} alt="" />
         </div>
-        <div className="flex justify-evenly lg:justify-around gap-8 items-center h-screen">
-          <div className=" w-[26rem] ml-10 hidden lg:block z-20 border-x-white-500 h-[40rem]  border-2 border-x-transparent p-4  bg-blue-100 rounded-md backdrop-filter backdrop-blur-2xl bg-opacity-20 rounded-[60px]">
-            <div className="flex py-5  flex-col justify-center items-center">
-              <p className="text-4xl font-bold text-white mt-20 mr-5">
-                Welcome to Seeds
-              </p>
-              <p className="mt-5 mx-5 text-xl text-white">
-                Start and expand your investment journey with friends!
-              </p>
+      </div>
+      <div className="w-full h-screen relative">
+        <div className="absolute h-full w-full z-20">
+          <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
+            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base">
+              <div className="w-full flex justify-between items-center lg:pr-0">
+                <Image src={logo} alt="" />
+                <Dropdown options={common.langOptions} onClick={undefined} />
+              </div>
+              <div className="opacity-0 fade-in">{children}</div>
             </div>
           </div>
-          <div>{children}</div>
+        </div>
+        <div className="w-full h-1/2 flex justify-center">
+          <div
+            className="rounded-full bg-seeds-green blur-[100px]"
+            style={{ height: '700px', width: '700px' }}
+          />
+        </div>
+        <div className="w-full h-1/2 justify-between flex">
+          <div
+            className="rounded-full bg-seeds-green blur-[100px] "
+            style={{ height: '350px', width: '350px' }}
+          />
+          <div
+            className="rounded-full bg-seeds-purple blur-[100px]  right-0"
+            style={{ height: '350px', width: '350px' }}
+          />
         </div>
       </div>
     </div>
   );
-};
-
-export default AuthLayout;
+}

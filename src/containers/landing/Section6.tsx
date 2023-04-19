@@ -26,6 +26,7 @@ export default function Section6(): React.ReactElement {
           <div className="flex">
             {socialMedia.map((item, key) => (
               <Link
+                target="_blank"
                 key={key}
                 href={item.url}
                 className="mr-3 last:mr-0 cursor-pointer"

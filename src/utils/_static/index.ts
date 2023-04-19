@@ -20,7 +20,7 @@ export const socialMedia = [
   },
   {
     icon: linkedin,
-    url: ''
+    url: 'https://www.linkedin.com/company/finance-seeds/'
   },
   {
     icon: telegram,
@@ -28,23 +28,23 @@ export const socialMedia = [
   },
   {
     icon: whatsapp,
-    url: ''
+    url: 'https://wa.me/08118883519'
   },
   {
     icon: instagram,
-    url: ''
+    url: 'https://instagram.com/seeds.finance?igshid=YmMyMTA2M2Y='
   },
   {
     icon: twitter,
-    url: ''
+    url: 'https://twitter.com/seeds_finance?s=11&t=wB3YqPRfv6ZKmcPuo5gTtQ'
   },
   {
     icon: tiktok,
-    url: ''
+    url: 'https://www.tiktok.com/@seeds_finance?_t=8bS5fpZtixm&_r=1'
   },
   {
     icon: youtube,
-    url: ''
+    url: 'https://youtube.com/@seeds1234'
   }
 ];
 

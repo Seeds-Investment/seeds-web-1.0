@@ -2,21 +2,22 @@ import { Input, Typography } from '@material-tailwind/react';
 import { useMemo, useState } from 'react';
 
 import SampleLayout from '@/components/layouts/SampleLayout';
-import useService from '@/hooks/useService';
-import { getTodos } from '@/repository/todo';
+import useService from '@/hooks/useFetch';
+import { getPosts } from '@/repository/post';
 
 const TodoPage = (): JSX.Element => {
   const [number, setNumber] = useState('1');
-  const { data, error, loaded } = useService(getTodos, number, 500);
+  const { data, error, loading } = useService(getPosts, number, 500);
 
   const stringifiedData = useMemo(() => {
-    if (typeof data === 'undefined' || data === null || data === '')
+    if (typeof data === 'undefined' || data === null || data === '') {
       return '{}';
+    }
     return JSON.stringify(data);
   }, [data]);
 
-  const renderData = (): JSX.Element => {
-    if (!loaded) return <span>Loading ...</span>;
+  const RenderedData = (): JSX.Element => {
+    if (loading) return <span>Loading ...</span>;
     if (error !== null && error !== '') return <span>Error</span>;
     return <span>{stringifiedData}</span>;
   };
@@ -29,8 +30,8 @@ const TodoPage = (): JSX.Element => {
           size="lg"
           type="number"
           min={1}
-          readOnly={!loaded}
-          disabled={!loaded}
+          readOnly={loading}
+          disabled={loading}
           value={number}
           onChange={e => {
             setNumber(e.target.value);
@@ -39,14 +40,18 @@ const TodoPage = (): JSX.Element => {
         />
       </div>
       <Typography color="gray" className="mt-4 text-center font-normal">
-        {renderData()}
+        <RenderedData />
       </Typography>
     </form>
   );
 };
 
 TodoPage.getLayout = function getLayout(page: JSX.Element) {
-  return <SampleLayout>{page}</SampleLayout>;
+  return (
+    <SampleLayout title="Get Post" subtitle="Enter Post ID">
+      {page}
+    </SampleLayout>
+  );
 };
 
 export default TodoPage;

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 import { Hello } from '@/assets/images';
 import { LineChart } from '@/assets/vector';
@@ -9,6 +10,8 @@ export interface IAuthLayout {
 }
 
 const AuthLayout = ({ children }: IAuthLayout): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <div className="relative">
       <div className="bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] h-screen w-full lg:w-1/2 lg:flex justify-center items-center bg-gray-500">
@@ -31,19 +34,18 @@ const AuthLayout = ({ children }: IAuthLayout): JSX.Element => {
         </div>
       </div>
       <div className="flex justify-evenly lg:justify-around gap-8 items-center h-screen">
-        <CCard className=" w-[26rem] ml-10 hidden lg:block z-20 border-x-white-500 h-[40rem]  border-2 border-x-transparent p-4  bg-blue-100 rounded-md backdrop-filter backdrop-blur-2xl bg-opacity-20 rounded-[60px]">
+        <CCard className=" w-[26rem] ml-10 hidden lg:block z-20 border-y-white h-[40rem]  border-2 border-x-teal-200 p-4  bg-blue-100 backdrop-filter backdrop-blur-2xl bg-opacity-25 rounded-[60px]">
           <div className="flex py-5  flex-col justify-center items-center">
-            <p className="text-4xl font-bold text-white mt-20 mr-5">
-              Welcome to Seeds
+            <p className="text-4xl font-bold text-white mt-20 ml-5">
+              {t('authPage.welcoming')}
             </p>
             <p className="mt-5 mx-5 text-xl text-white">
-              {' '}
-              Start and expand your investment journey with friends!
+              {t('authPage.description')}
             </p>
           </div>
           <Image
             src={Hello}
-            className="object-cover absolute  bottom-0 right-0"
+            className="object-cover absolute bottom-0 right-0"
             height={480}
             alt="hello"
           />

@@ -4,8 +4,16 @@ export default {
     phoneNumber:
       'Mohon ketikkan nomor telepon anda. Kami akan kirimkan pesan melalui Whatsapp',
     email: 'Mohon ketikkan email anda. Kami akan kirimkan pesan melalui email',
-    methodTextEmail: 'Lupa sandi via email',
-    methodTextPhoneNumber: 'Lupa via nomor telepon'
+    method: {
+      email: 'Lupa sandi via email',
+      phoneNumber: 'Lupa sandi via nomor telepon'
+    },
+    otp: {
+      sms: 'Your OTP code has been sent on your SMS. Please check your SMS.',
+      whatsapp: 'Please enter the OTP Code that we sent to your WhatsApp.'
+    },
+    successMessage: 'Selamat! Kata sandi baru anda telah dibuat.',
+    successTitle: 'Sukses!'
   },
   input: {
     placeholder: {

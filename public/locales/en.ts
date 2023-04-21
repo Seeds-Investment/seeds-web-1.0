@@ -4,13 +4,25 @@ export default {
     phoneNumber:
       'Please enter your phone number. We will send you a message via WhatsApp',
     email: 'Please enter your email. We will send you a message via Email',
-    methodTextEmail: 'Forgot password via email',
-    methodTextPhoneNumber: 'Forgot password via phone number'
+    method: {
+      email: 'Forgot password via email',
+      phoneNumber: 'Forgot password via phone number',
+      whatsapp: 'Another way? Send via Whatsapp',
+      sms: 'Another way? Send via SMS'
+    },
+    otp: {
+      sms: 'Your OTP code has been sent on your SMS. Please check your SMS.',
+      whatsapp: 'Please enter the OTP Code that we sent to your WhatsApp.',
+      resend: 'Resend OTP'
+    }
   },
   input: {
     placeholder: {
       email: 'Please enter your email',
-      phoneNumber: 'Please enter your phone number'
+      phoneNumber: 'Please enter your phone number',
+      successMessage:
+        'Congratulations! The new password has been successfully created.',
+      successTitle: 'Success!'
     },
     type: {
       email: 'Email',

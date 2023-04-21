@@ -1,9 +1,7 @@
 import * as Yup from 'yup';
-import type { IForgotPassword } from '../interfaces/form.interfaces';
+import type { IFormMethod, IOTPMethod } from '../interfaces/form.interfaces';
 
-export const forgotPasswordSchema: any = Yup.object<
-  Shape<IForgotPassword>
->().shape({
+export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),
   email: Yup.string().when('method', {
     is: 'email',
@@ -16,6 +14,19 @@ export const forgotPasswordSchema: any = Yup.object<
       .typeError('Phone number only accept 1-9')
       .required('Phone is required'),
     otherwise: Yup.number()
+  })
+});
+export const formOtpSchema: any = Yup.object<Shape<IOTPMethod>>().shape({
+  method: Yup.string().required(),
+  sms: Yup.string().when('method', {
+    is: 'whatsapp',
+    then: Yup.string().min(4).max(4).required('Email is required'),
+    otherwise: Yup.string()
+  }),
+  whatsapp: Yup.string().when('method', {
+    is: 'whatsapp',
+    then: Yup.string().min(4).max(4).required('Phone is required'),
+    otherwise: Yup.string()
   })
 });
 

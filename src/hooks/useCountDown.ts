@@ -1,0 +1,47 @@
+import type { ICountDown } from '@/utils/interfaces/hooks.interfaces';
+import { useEffect, useState } from 'react';
+
+export const useCountDown = (seconds: number = 0): ICountDown => {
+  const [countdown, setCountdown] = useState<number>(seconds);
+  const [blockByCountdown, setBlockByCountdown] = useState<boolean>(false);
+
+  const resetCountdown = (): void => {
+    setCountdown(seconds);
+    blockHandler();
+  };
+
+  const blockHandler = (): void => {
+    setBlockByCountdown(true);
+  };
+  const stopHandler = (): void => {
+    setBlockByCountdown(false);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      blockByCountdown &&
+        countdown > 1 &&
+        setCountdown(countdown => countdown - 1);
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [blockByCountdown]);
+
+  useEffect(() => {
+    if (countdown === 0) stopHandler();
+  }, [countdown]);
+
+  const countdownText = ` ${countdown.toString() ?? '0'} ${
+    countdown > 1 ? 'seconds' : 'second'
+  }`;
+
+  return {
+    countdown,
+    resetCountdown,
+    blockHandler,
+    stopHandler,
+    countdownText,
+    blockByCountdown
+  };
+};

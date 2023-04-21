@@ -1,115 +1,39 @@
-import forgot from '@/assets/forgot.png';
 import AuthLayout from '@/components/layouts/AuthLayout';
-import SliderCard from '@/components/SlideCard';
-import type { ISlider } from '@/utils/interfaces/components.interfaces';
-import type { IForgotPassword } from '@/utils/interfaces/form.interfaces';
-import { forgotPasswordSchema } from '@/utils/validations/forgotPassword.schema';
-import { Button, Input } from '@material-tailwind/react';
-import { useFormik } from 'formik';
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import MethodCard from '@/containers/auth/MethodCard';
+import OTPCard from '@/containers/auth/OTPCard';
+import SuccessCard from '@/containers/auth/SuccessCard';
+import { useSlick } from '@/hooks/useSlick';
+import type { IFormMethod } from '@/utils/interfaces/form.interfaces';
+import type { IUseSlick } from '@/utils/interfaces/slick.interface';
+import React from 'react';
+import Slider from 'react-slick';
 
 export default function ForgotPassword(): React.ReactElement {
-  const { t } = useTranslation();
+  const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
-  const [payload, setPayload] = useState<IForgotPassword>({
-    email: '',
-    phoneNumber: '',
-    method: 'phoneNumber'
-  });
-
-  const methodHandler = useCallback((): void => {
-    const updatePayload: IForgotPassword = { ...payload };
-
-    delete updatePayload.email;
-    delete updatePayload.phoneNumber;
-
-    if (payload.method === 'phoneNumber') {
-      updatePayload.method = 'email';
-    }
-    if (payload.method === 'email') {
-      updatePayload.method = 'phoneNumber';
-    }
-    setPayload(updatePayload);
-  }, [payload, t]);
-
-  const onChangeHandler = (e: React.FormEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target as HTMLInputElement;
-
-    setPayload(c => ({ ...c, [name]: value }));
+  const methodHandler = (value: IFormMethod): void => {
+    changeStep(1);
   };
 
-  const sliderData: ISlider = {
-    image: forgot,
-    text: t(`forgot.${payload.method}`),
-    title: ''
-  };
+  // const otpHandler = (value: IOTPMethod): void => {
+  //   changeStep(2);
+  // };
 
-  const inputProperties = useMemo(() => {
-    if (payload.method === 'email')
-      return {
-        type: 'email',
-        methodText: t('forgot.methodTextPhoneNumber'),
-        inputPlaceholder: t('input.placeholder.email'),
-        inputLabel: t('input.type.email')
-      };
-    return {
-      type: 'number',
-      methodText: t('forgot.methodTextEmail'),
-      inputPlaceholder: t('input.placeholder.phoneNumber'),
-      inputLabel: t('input.type.phoneNumber')
-    };
-  }, [payload, t]);
-
-  const formik = useFormik({
-    initialValues: payload,
-    enableReinitialize: true,
-    validateOnBlur: true,
-    onSubmit: values => {},
-    validationSchema: forgotPasswordSchema
-  });
-
-  const errorMessage = formik.errors[payload.method];
-  const error = typeof errorMessage === 'string';
+  // const successHandler = (value: IOTPMethod): void => {
+  //   changeStep(2);
+  // };
 
   return (
     <div className="w-full flex justify-center">
-      <form
-        onSubmit={formik.handleSubmit}
-        className="w-3/4 flex flex-col items-center justify-center"
+      <Slider
+        ref={slickRef}
+        className="w-3/4 flex justify-center"
+        {...settings}
       >
-        <SliderCard slide={sliderData} />
-        <br />
-        <br />
-        <br />
-        <br />
-        <Input
-          error={error}
-          onChange={onChangeHandler}
-          name={payload.method}
-          // type={inputProperties.type}
-          color="green"
-          variant="static"
-          label={errorMessage ?? inputProperties.inputLabel}
-          placeholder={inputProperties.inputPlaceholder ?? ''}
-        />
-        <div
-          onClick={methodHandler}
-          className="text-sm text-seeds-button-green cursor-pointer w-full text-left mt-2"
-        >
-          {inputProperties.methodText}
-        </div>
-
-        <br />
-        <br />
-        <Button
-          type="submit"
-          color="green"
-          className="bg-seeds-button-green w-full rounded-full"
-        >
-          {t('button.next')}
-        </Button>
-      </form>
+        <MethodCard onSubmit={methodHandler} />
+        <OTPCard onSubmit={methodHandler} />
+        <SuccessCard onSubmit={methodHandler} />
+      </Slider>
     </div>
   );
 }

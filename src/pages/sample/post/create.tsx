@@ -3,9 +3,11 @@ import useService from '@/hooks/useService';
 import { createPost } from '@/repository/post';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Button, Input, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 const TodoPage = (): JSX.Element => {
+  const router = useRouter();
   const { data, error, loading, execute } = useService(createPost);
 
   const [form, setForm] = useState({
@@ -43,42 +45,61 @@ const TodoPage = (): JSX.Element => {
   };
 
   const submit = (): void => {
-    execute(form);
+    void (async () => {
+      await execute(form);
+    })();
   };
 
   return (
-    <form className="mt-8 mb-2">
-      <div className="mb-4 flex flex-col gap-6">
-        <Input
-          label="Title"
-          size="lg"
-          type="text"
-          readOnly={loading}
-          disabled={loading}
-          value={form.title}
-          onChange={e => {
-            handleChangeFormData('title', e.target.value);
-          }}
-        />
-        <Input
-          label="Subtitle"
-          size="lg"
-          type="text"
-          readOnly={loading}
-          disabled={loading}
-          value={form.subtitle}
-          onChange={e => {
-            handleChangeFormData('subtitle', e.target.value);
-          }}
-        />
-        <Button disabled={loading} onClick={submit}>
-          submit
-        </Button>
-      </div>
-      <Typography color="gray" className="mt-4 text-center font-normal">
-        <RenderedData />
-      </Typography>
-    </form>
+    <>
+      <form className="mt-8 mb-2">
+        <div className="mb-4 flex flex-col gap-6">
+          <Input
+            label="Title"
+            size="lg"
+            type="text"
+            readOnly={loading}
+            disabled={loading}
+            value={form.title}
+            onChange={e => {
+              handleChangeFormData('title', e.target.value);
+            }}
+          />
+          <Input
+            label="Subtitle"
+            size="lg"
+            type="text"
+            readOnly={loading}
+            disabled={loading}
+            value={form.subtitle}
+            onChange={e => {
+              handleChangeFormData('subtitle', e.target.value);
+            }}
+          />
+          <Button
+            disabled={loading}
+            onClick={() => {
+              submit();
+            }}
+          >
+            submit
+          </Button>
+        </div>
+        <Typography color="gray" className="mt-4 text-center font-normal">
+          <RenderedData />
+        </Typography>
+      </form>
+
+      <Button
+        fullWidth
+        color="green"
+        onClick={() => {
+          void router.push('/sample/post');
+        }}
+      >
+        back to post
+      </Button>
+    </>
   );
 };
 

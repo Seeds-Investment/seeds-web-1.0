@@ -1,4 +1,5 @@
 import AuthLayout from '@/components/layouts/AuthLayout';
+import CreateNewPassword from '@/containers/auth/CreateNewPassword';
 import MethodCard from '@/containers/auth/MethodCard';
 import OTPCard from '@/containers/auth/OTPCard';
 import SuccessCard from '@/containers/auth/SuccessCard';
@@ -41,6 +42,7 @@ export default function ForgotPassword(): React.ReactElement {
       >
         <MethodCard onSubmit={methodHandler} />
         <OTPCard onSubmit={otpHandler} phoneNumber={phoneNumber} />
+        <CreateNewPassword />
         <SuccessCard onSubmit={methodHandler} />
       </Slider>
     </div>

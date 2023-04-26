@@ -49,7 +49,7 @@ export default function Section4(): React.ReactElement {
             <div className="text-[1.8rem] font-medium tracking-wider top-[210px] left-[120px] absolute w-[890px] z-40">
               {t('landing.section4.text2')}
             </div>
-            <Button className="absolute z-30 top-[300px] left-[120px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
+            <Button className="absolute z-30 top-[300px] left-[120px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
               {t('button.joinNow')}
             </Button>
             <div className="text-[1.1rem] font-medium tracking-wide top-[405px] left-[120px] absolute w-[890px] z-40">

@@ -8,15 +8,15 @@ export default {
     },
     section2: {
       text1: 'Temukan',
-      text2: 'apa yang trending hari ini?'
+      text2: 'Temukan apa yang trending hari ini?'
     },
     section3: {
       text1: 'Belajar',
-      text2: 'terkait investasi dan keuangan dari Pro'
+      text2: 'Belajar terkait investasi dan keuangan dari Pro'
     },
     section4: {
       text1: 'Bertemu',
-      text2: 'dan berbicara dengan orang-orang yang berpikiran sama',
+      text2: 'Bertemu dan berbicara dengan orang-orang yang berpikiran sama',
       text3: 'Rekomendasi sirkel kami'
     },
     section5: {

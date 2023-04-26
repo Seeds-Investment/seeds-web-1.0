@@ -9,10 +9,9 @@ const InputPassword = (props?: any): React.ReactElement => {
   const [value, setValue] = useState('');
 
   const onChangeHandler = (e: any): any => {
-    Boolean(props?.onChange) && props?.onChange(e);
+    Boolean(props?.onChange !== undefined) && props?.onChange?.(e);
     setValue(e.target.value);
   };
-
   return (
     <Input
       {...props}
@@ -28,7 +27,7 @@ const InputPassword = (props?: any): React.ReactElement => {
       }`}
       color="green"
       shrink={true}
-      placeholder={isFocused ? '' : 'Please enter your password'}
+      placeholder={isFocused ? '' : props?.placeholder}
       variant="standard"
       type={password ? 'password' : 'text'}
       icon={
@@ -36,7 +35,7 @@ const InputPassword = (props?: any): React.ReactElement => {
           onClick={() => {
             setpassword(c => !c);
           }}
-          icon={password ? faEye : faEyeSlash}
+          icon={password ? faEyeSlash : faEye}
         />
       }
     />

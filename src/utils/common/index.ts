@@ -5,8 +5,8 @@ import id from '@/assets/story-boarding/id.png';
 import welcome2 from '@/assets/story-boarding/slide2.png';
 import welcome3 from '@/assets/story-boarding/slide3.png';
 import welcome4 from '@/assets/story-boarding/slide4.png';
-import { type Settings } from '@ant-design/react-slick';
-import { type ISlider } from '../interfaces/components.interfaces';
+import type { Settings } from '@ant-design/react-slick';
+import type { ISlider } from '../interfaces/components.interfaces';
 import dictionary from './dictionary';
 
 const onboardingSlideAssets: ISlider[] = [
@@ -137,6 +137,13 @@ const sliderSample: any = {
     }
   ]
 };
+
+export const passwordRequirements: string[] = [
+  'Special characters',
+  'Uppercase and lowercase',
+  'Numbers',
+  'Minimum length of 8 characters'
+];
 
 const legal: any = {
   termsConditions: [

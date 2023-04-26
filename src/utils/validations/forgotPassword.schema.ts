@@ -5,7 +5,9 @@ export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),
   email: Yup.string().when('method', {
     is: 'email',
-    then: Yup.string().email('Invalid email').required('Email is required'),
+    then: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
     otherwise: Yup.string().email('Invalid email')
   }),
   phoneNumber: Yup.number().when('method', {

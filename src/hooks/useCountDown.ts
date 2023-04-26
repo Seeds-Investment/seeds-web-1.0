@@ -6,6 +6,7 @@ export const useCountDown = (seconds: number = 0): ICountDown => {
   const [blockByCountdown, setBlockByCountdown] = useState<boolean>(false);
 
   const resetCountdown = (): void => {
+    if (blockByCountdown) return;
     setCountdown(seconds);
     blockHandler();
   };

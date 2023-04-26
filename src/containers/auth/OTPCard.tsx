@@ -2,18 +2,21 @@ import otpSms from '@/assets/otpSms.png';
 import otpWhatsapp from '@/assets/otpWhatsapp.png';
 import SliderCard from '@/components/SlideCard';
 import { useCountDown } from '@/hooks/useCountDown';
+import { getOtp } from '@/repository/auth.repository';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import type { IOTPMethod } from '@/utils/interfaces/form.interfaces';
 import { formOtpSchema } from '@/utils/validations/forgotPassword.schema';
 import { Button, Input } from '@material-tailwind/react';
 import { useFormik } from 'formik';
-import { createRef, useCallback, useMemo, useState } from 'react';
+import { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const OTPCard = ({
-  onSubmit
+  onSubmit,
+  phoneNumber
 }: {
   onSubmit: (props: any) => void;
+  phoneNumber: string;
 }): React.ReactElement => {
   const { t } = useTranslation();
 
@@ -62,8 +65,14 @@ const OTPCard = ({
     initialValues: payload,
     enableReinitialize: true,
     validateOnBlur: true,
-    onSubmit: values => {
-      onSubmit(values);
+    onSubmit: async values => {
+      const isMatch = payload[payload.method] === otp;
+      // const res = await verifyOtp({
+      //   method: payload.method,
+      //   msisdn: phoneNumber,
+      //   otp: payload[payload.method] ?? ''
+      // });
+      onSubmit(isMatch);
     },
     validationSchema: formOtpSchema
   });
@@ -93,17 +102,32 @@ const OTPCard = ({
     if (newCode.length === 0 && idx > 0) refs[idx - 1].current.focus();
   };
 
-  const { countdownText, blockHandler, resetCountdown } = useCountDown(30);
-
-  const resendHandler = (): void => {
-    resetCountdown();
+  const { countdownText, resetCountdown, countdown } = useCountDown(30);
+  const fetchOtp = async (): Promise<void> => {
+    try {
+      if (phoneNumber?.length === 0) return;
+      const res = await getOtp({ phoneNumber, method: payload.method });
+      setOtp(res.otp);
+    } catch (error) {
+      alert('error');
+    }
   };
+  const resendHandler = async (): Promise<void> => {
+    if (countdown > 0) return;
+    resetCountdown();
+    await fetchOtp();
+  };
+
+  const [otp, setOtp] = useState('');
+
+  useEffect(() => {
+    void fetchOtp();
+  }, [phoneNumber, payload.method]);
   return (
     <form
       onSubmit={formik.handleSubmit}
       className=" flex flex-col items-center justify-center"
     >
-      <button onClick={blockHandler}>asda</button>
       <SliderCard slide={otpScreen} />
       <br />
       <br />
@@ -134,6 +158,7 @@ const OTPCard = ({
       <div className="w-full flex justify-between items-center">
         <div>{countdownText}</div>
         <div
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onClick={resendHandler}
           className="text-seeds-button-green cursor-pointer underline capitalize"
         >

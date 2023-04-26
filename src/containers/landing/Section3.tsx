@@ -27,7 +27,7 @@ export default function Section3(): React.ReactElement {
               </span>
             </div>
             <br />
-            <Button className=" z-30 top-[520px] left-[50px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
+            <Button className=" z-30 top-[520px] left-[50px] capitalize text-md bg-seeds-purple rounded-full max-w-[250px] w-fit px-14 whitespace-nowrap h-[50px]">
               {t('button.joinNow')}
             </Button>
           </div>

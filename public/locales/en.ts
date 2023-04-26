@@ -24,7 +24,8 @@ export default {
       text2: 'Play the tournaments and win cash rewards'
     },
     section6: {
-      text1: '',
+      text1:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
       text2: ''
     }
   },

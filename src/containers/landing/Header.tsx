@@ -3,16 +3,28 @@ import flagUs from '@/assets/flag-us.png';
 import seeds from '@/assets/logo-seeds.png';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 export default function Header(): React.ReactElement {
-  const [active, setActive] = useState<string>('id');
+  const { i18n } = useTranslation();
+  const [active, setActive] = useState<string>(i18n.language);
   const isId = active === 'id';
   const idClass = isId ? 'border border-seeds-purple text-seeds-purple' : '';
   const enClass = isId ? '' : 'border border-seeds-purple text-seeds-purple';
+
   const languageHandler = (e: React.MouseEvent<HTMLElement>): void => {
     const { id } = e.target as HTMLButtonElement;
     setActive(id);
+    void i18n.changeLanguage(id);
+    localStorage.setItem('lng', id);
   };
+
+  useEffect(() => {
+    const lng = localStorage.getItem('lng') ?? '';
+    setActive(lng);
+    void i18n.changeLanguage(active);
+  }, [active]);
+
   return (
     <div className="absolute top-[20px] flex items-center w-full justify-between px-20 z-20">
       <Image alt="img" className="" src={seeds} />

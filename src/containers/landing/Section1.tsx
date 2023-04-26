@@ -25,7 +25,7 @@ export default function Section1(): React.ReactElement {
           <div className=" text-[2rem] text-gray-200 tracking-wide absolute font-medium z-30 top-[400px] left-[50px] w-[600px]">
             {t('landing.section1.text2')}
           </div>
-          <Button className="absolute z-30 top-[550px] left-[50px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
+          <Button className="absolute z-30 top-[550px] left-[50px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
             {t('button.joinNow')}
           </Button>
 

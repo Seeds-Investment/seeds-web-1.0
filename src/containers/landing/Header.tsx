@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 export default function Header(): React.ReactElement {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [active, setActive] = useState<string>(i18n.language);
   const isId = active === 'id';
   const idClass = isId ? 'border border-seeds-purple text-seeds-purple' : '';
@@ -55,8 +55,11 @@ export default function Header(): React.ReactElement {
             <Image id="en" className="ml-1 w-[20px]" src={flagUs} alt="en" />
           </div>
         </div>
-        <Button className="capitalize text-md font-normal bg-seeds-button-green rounded-full w-[110px]">
-          Join Us
+        <Button
+          size="sm"
+          className="capitalize text-md font-normal bg-seeds-button-green ml-3 rounded-full px-8 whitespace-nowrap"
+        >
+          {t('button.joinNow')}
         </Button>
       </div>
     </div>

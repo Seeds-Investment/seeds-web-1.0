@@ -3,8 +3,10 @@ import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Section6(): React.ReactElement {
+  const { t } = useTranslation();
   return (
     <>
       <div className=" bg-gradient-to-tr from-seeds-green to-seeds-purple grid grid-cols-3 p-20 tracking-wide cursor-default">
@@ -17,10 +19,7 @@ export default function Section6(): React.ReactElement {
           </div>
           <br />
           <div className=" text-[1.1rem] text-gray-200 tracking-widest text-base font-thin">
-            Nothing on this site is a recommendation to invest. Seeds does not
-            offer financial advice. If you are unsure about investing we
-            encourage you to speak to a financial advisor. Your capital is at
-            risk.
+            {t('landing.section6.text1')}
           </div>
           <br />
           <div className="flex">

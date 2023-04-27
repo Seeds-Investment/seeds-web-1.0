@@ -33,7 +33,7 @@ export default function Container({
       <div className="w-full h-screen relative">
         <div className="absolute h-full w-full z-20">
           <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
-            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base flex flex-col justify-between">
+            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base">
               <div className="w-full flex justify-between items-center lg:pr-0">
                 <Image src={logo} alt="" />
                 <Dropdown

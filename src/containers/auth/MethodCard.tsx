@@ -52,7 +52,7 @@ const MethodCard = ({
         type: 'email',
         methodText: t('forgot.method.phoneNumber'),
         inputPlaceholder: t('input.placeholder.email'),
-        inputLabel: t('input.type.email')
+        inputLabel: 'input.type.email'
       };
     return {
       type: 'number',
@@ -71,8 +71,8 @@ const MethodCard = ({
     validationSchema: formMethodSchema
   });
 
-  const errorMessage = formik.errors[payload.method];
-  const error = typeof errorMessage === 'string';
+  const errorMessage = t(formik.errors?.[payload.method] ?? '');
+  const error = errorMessage?.length > 0;
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -90,7 +90,7 @@ const MethodCard = ({
         // type={inputProperties.type}
         color="green"
         variant="static"
-        label={errorMessage ?? inputProperties.inputLabel}
+        label={error ? errorMessage : inputProperties.inputLabel}
         placeholder={inputProperties.inputPlaceholder ?? ''}
       />
       <div

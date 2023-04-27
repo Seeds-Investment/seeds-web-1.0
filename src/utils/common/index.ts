@@ -139,10 +139,10 @@ const sliderSample: any = {
 };
 
 export const passwordRequirements: string[] = [
-  'Special characters',
-  'Uppercase and lowercase',
-  'Numbers',
-  'Minimum length of 8 characters'
+  'forgot.createNewPassword.8',
+  'forgot.createNewPassword.9',
+  'forgot.createNewPassword.10',
+  'forgot.createNewPassword.11'
 ];
 
 const legal: any = {

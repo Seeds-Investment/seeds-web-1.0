@@ -1,4 +1,5 @@
 import type { ICountDown } from '@/utils/interfaces/hooks.interfaces';
+import { t } from 'i18next';
 import { useEffect, useState } from 'react';
 
 export const useCountDown = (seconds: number = 0): ICountDown => {
@@ -34,7 +35,7 @@ export const useCountDown = (seconds: number = 0): ICountDown => {
   }, [countdown]);
 
   const countdownText = ` ${countdown.toString() ?? '0'} ${
-    countdown > 1 ? 'seconds' : 'second'
+    countdown > 1 ? t('seconds') : t('second')
   }`;
 
   return {

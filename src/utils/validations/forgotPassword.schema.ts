@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import * as Yup from 'yup';
 import type {
   ICreateNewPassword,
@@ -6,14 +5,14 @@ import type {
   IOTPMethod
 } from '../interfaces/form.interfaces';
 
-const invalidEmail = i18n.t('errorMessage.invalidEmail') ?? '';
-const requiredEmail = i18n.t('errorMessage.requiredEmail') ?? '';
-const invalidPhoneNumber = i18n.t('errorMessage.invalidPhoneNumber') ?? '';
-const requiredPhoneNumber = i18n.t('errorMessage.requiredPhoneNumber') ?? '';
-const requiredPassword = i18n.t('errorMessage.requiredPassword') ?? '';
-const requiredRePassword = i18n.t('errorMessage.requiredRePassword') ?? '';
-const invalidPassword = i18n.t('errorMessage.invalidPassword') ?? '';
-const unmatchPassword = i18n.t('errorMessage.unmatchPassword') ?? '';
+const invalidEmail = 'errorMessage.invalidEmail';
+const requiredEmail = 'errorMessage.requiredEmail';
+const invalidPhoneNumber = 'errorMessage.invalidPhoneNumber';
+const requiredPhoneNumber = 'errorMessage.requiredPhoneNumber';
+const requiredPassword = 'errorMessage.requiredPassword';
+const requiredRePassword = 'errorMessage.requiredRePassword';
+const invalidPassword = 'errorMessage.invalidPassword';
+const unmatchPassword = 'errorMessage.unmatchPassword';
 
 export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),

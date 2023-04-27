@@ -1,11 +1,7 @@
 import success from '@/assets/success.png';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
-import type { IFormMethod } from '@/utils/interfaces/form.interfaces';
-import { formMethodSchema } from '@/utils/validations/forgotPassword.schema';
-import { Button, Input } from '@material-tailwind/react';
-import { useFormik } from 'formik';
-import { useCallback, useMemo, useState } from 'react';
+import { Button } from '@material-tailwind/react';
 import { useTranslation } from 'react-i18next';
 
 const SuccessCard = ({
@@ -15,90 +11,25 @@ const SuccessCard = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
 
-  const [payload, setPayload] = useState<IFormMethod>({
-    email: '',
-    phoneNumber: '',
-    method: 'phoneNumber'
-  });
-
-  const methodHandler = useCallback((): void => {
-    const updatePayload: IFormMethod = { ...payload };
-
-    delete updatePayload.email;
-    delete updatePayload.phoneNumber;
-
-    if (payload.method === 'phoneNumber') {
-      updatePayload.method = 'email';
-    }
-    if (payload.method === 'email') {
-      updatePayload.method = 'phoneNumber';
-    }
-    setPayload(updatePayload);
-  }, [payload, t]);
-
-  const onChangeHandler = (e: React.FormEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target as HTMLInputElement;
-
-    setPayload(c => ({ ...c, [name]: value }));
-  };
   const successScreen: ISlider = {
     image: success,
-    text: t(`forgot.successMessage`),
-    title: t(`forgot.successTitle`)
+    text: t(`forgot.success.text`),
+    title: t(`forgot.success.title`)
   };
-  const inputProperties = useMemo(() => {
-    if (payload.method === 'email')
-      return {
-        type: 'email',
-        methodText: t('forgot.methodTextPhoneNumber'),
-        inputPlaceholder: t('input.placeholder.email'),
-        inputLabel: t('input.type.email')
-      };
-    return {
-      type: 'number',
-      methodText: t('forgot.methodTextEmail'),
-      inputPlaceholder: t('input.placeholder.phoneNumber'),
-      inputLabel: t('input.type.phoneNumber')
-    };
-  }, [payload, t]);
-  const formik = useFormik({
-    initialValues: payload,
-    enableReinitialize: true,
-    validateOnBlur: true,
-    onSubmit: values => {
-      onSubmit(values);
-    },
-    validationSchema: formMethodSchema
-  });
 
-  const errorMessage = formik.errors[payload.method];
-  const error = typeof errorMessage === 'string';
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className=" flex flex-col items-center justify-center"
-    >
+    <div className=" flex flex-col items-center justify-center">
       <SliderCard slide={successScreen} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Input
-        error={error}
-        onChange={onChangeHandler}
-        name={payload.method}
-        // type={inputProperties.type}
-        color="green"
-        variant="static"
-        label={errorMessage ?? inputProperties.inputLabel}
-        placeholder={inputProperties.inputPlaceholder ?? ''}
-      />
-      <div
-        onClick={methodHandler}
-        className="text-sm text-seeds-button-green cursor-pointer w-full text-left mt-2"
-      >
-        {inputProperties.methodText}
-      </div>
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
+      <br className="lg:hidden" />
 
       <br />
       <br />
@@ -109,7 +40,7 @@ const SuccessCard = ({
       >
         {t('button.next')}
       </Button>
-    </form>
+    </div>
   );
 };
 

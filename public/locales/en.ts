@@ -1,4 +1,6 @@
 export default {
+  second: 'second',
+  seconds: 'seconds',
   greeting: 'Hello, {{name}}',
   errorMessage: {
     invalidEmail: 'Invalid email format',
@@ -24,6 +26,23 @@ export default {
       sms: 'Your OTP code has been sent on your SMS. Please check your SMS.',
       whatsapp: 'Please enter the OTP Code that we sent to your WhatsApp.',
       resend: 'Resend OTP'
+    },
+    createNewPassword: {
+      1: 'Create New Password',
+      2: 'Please create a secure password including the following criteria below',
+      3: 'Enter Password',
+      4: 'Please enter your password',
+      5: 'Confirm Password',
+      6: 'Please confirm your password',
+      7: 'Password Must Contain:',
+      8: 'Special characters',
+      9: 'Uppercase and lowecase',
+      10: 'Numbers',
+      11: 'Minimum length of 8 characters'
+    },
+    success: {
+      title: 'Success!',
+      text: 'Congratulations! The new password has been successfully created.'
     }
   },
   input: {

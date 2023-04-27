@@ -5,6 +5,7 @@ import { formCreateNewPasswordSchema } from '@/utils/validations/forgotPassword.
 import { Button } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 const CreateNewPassword = ({
   onSubmit
 }: {
@@ -14,6 +15,8 @@ const CreateNewPassword = ({
     password: '',
     rePassword: ''
   });
+
+  const { t } = useTranslation();
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>): void => {
     const { name, value } = e.target as HTMLInputElement;
@@ -31,57 +34,64 @@ const CreateNewPassword = ({
     validationSchema: formCreateNewPasswordSchema
   });
 
-  const passErrorMessage = formik.errors?.password;
-  const passError = typeof passErrorMessage === 'string';
-  const rePassErrorMessage = formik.errors?.password;
-  const rePassError = typeof rePassErrorMessage === 'string';
+  const passErrorMessage = t(formik.errors?.password ?? '');
+  const passError = passErrorMessage?.length > 0;
+  const rePassErrorMessage = t(formik.errors?.password ?? '');
+  const rePassError = rePassErrorMessage?.length > 0;
 
   const isMatch = payload.password === payload.rePassword;
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="w-full py-8">
         <div className="font-bold tracking-wide text-3xl">
-          Create New Password
+          {t('forgot.createNewPassword.1')}
         </div>
         <br />
         <div className="font-extralight tracking-wide">
-          Please create a secure password including the following criteria below
+          {t('forgot.createNewPassword.2')}
         </div>
         <br />
         <br />
         <InputPassword
-          errorMessage={passErrorMessage}
-          label="Enter Password"
+          errorMessage={passError ? passErrorMessage : undefined}
+          label={t('forgot.createNewPassword.3')}
           error={passError}
           name="password"
           onChange={onChangeHandler}
-          placeholder="Please enter your password"
+          placeholder={t('forgot.createNewPassword.4')}
         />
         <br />
         <InputPassword
-          errorMessage={rePassErrorMessage}
-          label="Confirm Password"
+          errorMessage={rePassError ? rePassErrorMessage : undefined}
+          label={t('forgot.createNewPassword.5')}
           error={rePassError}
           name="rePassword"
           onChange={onChangeHandler}
-          placeholder="Please confirm your password"
+          placeholder={t('forgot.createNewPassword.6')}
         />
         <br />
-        <div className="font-semibold mb-1">Password Must Contain:</div>
+        <div className="font-semibold mb-1">
+          {t('forgot.createNewPassword.7')}
+        </div>
         {passwordRequirements.map((text, idx) => (
           <div
             key={idx}
             className="flex items-center font-light tracking-wider"
           >
             <div className="h-[8px] w-[8px] bg-[#3C49D6] rounded-full mr-3" />
-            <div>{text}</div>
+            <div>{t(text)}</div>
           </div>
         ))}
         <br />
         <br />
         <Button
           type="submit"
-          disabled={!isMatch}
+          disabled={
+            !isMatch ||
+            (payload.password.length === 0 &&
+              payload.rePassword?.length === 0) ||
+            payload.password !== payload.rePassword
+          }
           className="bg-seeds-button-green rounded-full w-full disabled:bg-[#BDBDBD]"
         >
           Continue

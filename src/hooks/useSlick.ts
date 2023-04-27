@@ -10,8 +10,7 @@ export const useSlick = (): IUseSlick => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
-    swipe: false,
-    initialSlide: 2
+    swipe: false
   };
 
   const slickRef = useRef<any>(null);

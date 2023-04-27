@@ -1,3 +1,4 @@
+import i18n from 'i18next';
 import * as Yup from 'yup';
 import type {
   ICreateNewPassword,
@@ -5,20 +6,27 @@ import type {
   IOTPMethod
 } from '../interfaces/form.interfaces';
 
+const invalidEmail = i18n.t('errorMessage.invalidEmail') ?? '';
+const requiredEmail = i18n.t('errorMessage.requiredEmail') ?? '';
+const invalidPhoneNumber = i18n.t('errorMessage.invalidPhoneNumber') ?? '';
+const requiredPhoneNumber = i18n.t('errorMessage.requiredPhoneNumber') ?? '';
+const requiredPassword = i18n.t('errorMessage.requiredPassword') ?? '';
+const requiredRePassword = i18n.t('errorMessage.requiredRePassword') ?? '';
+const invalidPassword = i18n.t('errorMessage.invalidPassword') ?? '';
+const unmatchPassword = i18n.t('errorMessage.unmatchPassword') ?? '';
+
 export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),
   email: Yup.string().when('method', {
     is: 'email',
-    then: Yup.string()
-      .email('Invalid email format')
-      .required('Email is required'),
-    otherwise: Yup.string().email('Invalid email')
+    then: Yup.string().email(invalidEmail).required(requiredEmail),
+    otherwise: Yup.string().email(invalidEmail)
   }),
   phoneNumber: Yup.number().when('method', {
     is: 'phoneNumber',
     then: Yup.number()
-      .typeError('Phone number only accept 1-9')
-      .required('Phone is required'),
+      .typeError(invalidPhoneNumber)
+      .required(requiredPhoneNumber),
     otherwise: Yup.number()
   })
 });
@@ -26,12 +34,12 @@ export const formOtpSchema: any = Yup.object<Shape<IOTPMethod>>().shape({
   method: Yup.string().required(),
   sms: Yup.string().when('method', {
     is: 'whatsapp',
-    then: Yup.string().min(4).max(4).required('Email is required'),
+    then: Yup.string().min(4).max(4).required(requiredEmail),
     otherwise: Yup.string()
   }),
   whatsapp: Yup.string().when('method', {
     is: 'whatsapp',
-    then: Yup.string().min(4).max(4).required('Phone is required'),
+    then: Yup.string().min(4).max(4).required(requiredPhoneNumber),
     otherwise: Yup.string()
   })
 });
@@ -43,12 +51,12 @@ export const formCreateNewPasswordSchema: any = Yup.object<
   Shape<ICreateNewPassword>
 >().shape({
   password: Yup.string()
-    .required('Password cannot be empty')
-    .matches(passwordPattern, 'Please read the password requirement below'),
+    .required(requiredPassword)
+    .matches(passwordPattern, invalidPassword),
   rePassword: Yup.string()
-    .required('Confirm Password cannot be empty')
-    .matches(passwordPattern, 'Please read the password requirement below')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required(requiredRePassword)
+    .matches(passwordPattern, invalidPassword)
+    .oneOf([Yup.ref('password'), null], unmatchPassword)
 });
 
 export type ConditionalSchema<T> = T extends string

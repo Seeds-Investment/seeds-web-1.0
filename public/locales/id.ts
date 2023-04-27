@@ -1,5 +1,15 @@
 export default {
   greeting: 'Haii, {{name}}',
+  errorMessage: {
+    invalidEmail: 'Format email salah',
+    requiredEmail: 'Email tidak boleh kosong',
+    invalidPhoneNumber: 'Nomor Hp. Hanya menerima angka 1-9',
+    requiredPhoneNumber: 'Nomor Hp. tidak boleh kosong',
+    requiredPassword: 'Kata Sandi tidak boleh kosong',
+    requiredRePassword: 'Konfirmasi Kata Sandi tidak boleh kosong',
+    invalidPassword: 'Mohon baca ketentuan Kata Sandi dibawah',
+    unmatchPassword: 'Kata Sandi harus sesuai'
+  },
   forgot: {
     phoneNumber:
       'Mohon ketikkan nomor telepon anda. Kami akan kirimkan pesan melalui Whatsapp',

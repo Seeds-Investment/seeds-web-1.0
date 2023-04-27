@@ -13,12 +13,14 @@ const InputPassword = (props?: any): React.ReactElement => {
     setValue(e.target.value);
   };
 
+  const { errorMessage = null, ...rest } = { ...props };
+
   const labelClass =
-    typeof props?.errorMessage !== 'string' ? '!text-black' : '!text-red-500';
-  const labelText = props?.errorMessage ?? props?.label;
+    typeof errorMessage !== 'string' ? '!text-black' : '!text-red-500';
+  const labelText = errorMessage ?? props?.label;
   return (
     <Input
-      {...props}
+      {...rest}
       label={labelText}
       labelProps={{
         className: `!text-[1rem] !font-semibold ${labelClass}`

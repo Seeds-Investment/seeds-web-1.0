@@ -6,10 +6,11 @@ import React from 'react';
 export default function CButton({
   children,
   className,
-  onClick
+  onClick,
+  disabled
 }: IButton): React.ReactElement {
   return (
-    <Button onClick={onClick} className={className}>
+    <Button onClick={onClick} disabled={disabled} className={className}>
       {children}
     </Button>
   );

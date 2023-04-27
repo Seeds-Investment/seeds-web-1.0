@@ -8,16 +8,36 @@ import ListCountryFlag from '@/constants/countryFlag';
 interface PhoneInputProps {
   onChangeRegion?: (value: { flag: string; code: string }) => void;
   onChangePhoneNumber?: (value: string) => void;
+  error: boolean;
+  phoneValue: string;
+  selectedFlag: string;
+  setSelectedFlag: (value: string) => void;
+  selectedCode: string;
+  setSelectedCode: (value: string) => void;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
   onChangeRegion,
-  onChangePhoneNumber
+  onChangePhoneNumber,
+  error,
+  selectedFlag,
+  setSelectedFlag,
+  selectedCode,
+  setSelectedCode,
+  phoneValue
 }) => {
   const [dropdownVisibility, setDropdowVisibility] = useState(false);
-  const [selectedFlag, setSelectedFlag] = useState('ID');
-  const [selectedCode, setSelectedCode] = useState('+62');
-  const [phoneNumber, setPhoneNumber] = useState('');
+
+  function displayedPhoneNumber(phoneNumber: string): string {
+    const numericPhoneNumber = phoneValue.replace(/\D/g, '');
+
+    const spacedPhoneNumber = numericPhoneNumber.replace(
+      /(\d{3})(\d{4})(\d{4})/,
+      '$1 $2 $3'
+    );
+
+    return spacedPhoneNumber;
+  }
 
   return (
     <div className="flex flex-col">
@@ -31,7 +51,6 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
             className="grid grid-cols-2 gap-2 items-center"
           >
             <Image
-              className="w-full w-auto"
               src={Flags[selectedFlag] ?? Flags.ID}
               alt="selected-flag"
               width={20}
@@ -63,11 +82,11 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
               variant="standard"
               name="phoneNumber"
               onChange={e => {
-                setPhoneNumber(e.target.value);
                 if (onChangePhoneNumber !== undefined)
                   onChangePhoneNumber(e.target.value);
               }}
-              value={phoneNumber}
+              value={displayedPhoneNumber(phoneValue)}
+              error={error}
             />
           </div>
         </div>
@@ -94,7 +113,6 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
                 key={idx}
               >
                 <Image
-                  className="w-full w-auto"
                   src={Flags[country.img] ?? Flags.ID}
                   alt={`flag-${country.img}`}
                   width={20}

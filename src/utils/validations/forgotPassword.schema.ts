@@ -1,5 +1,9 @@
 import * as Yup from 'yup';
-import type { IFormMethod, IOTPMethod } from '../interfaces/form.interfaces';
+import type {
+  ICreateNewPassword,
+  IFormMethod,
+  IOTPMethod
+} from '../interfaces/form.interfaces';
 
 export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),
@@ -30,6 +34,21 @@ export const formOtpSchema: any = Yup.object<Shape<IOTPMethod>>().shape({
     then: Yup.string().min(4).max(4).required('Phone is required'),
     otherwise: Yup.string()
   })
+});
+
+const passwordPattern =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+export const formCreateNewPasswordSchema: any = Yup.object<
+  Shape<ICreateNewPassword>
+>().shape({
+  password: Yup.string()
+    .required('Password cannot be empty')
+    .matches(passwordPattern, 'Please read the password requirement below'),
+  rePassword: Yup.string()
+    .required('Confirm Password cannot be empty')
+    .matches(passwordPattern, 'Please read the password requirement below')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
 export type ConditionalSchema<T> = T extends string

@@ -29,6 +29,8 @@ export default function ForgotPassword(): React.ReactElement {
     // changeStep(2);
   };
 
+  const createNewPasswordHandler = (): void => {};
+
   // const successHandler = (value: IOTPMethod): void => {
   //   changeStep(2);
   // };
@@ -42,7 +44,7 @@ export default function ForgotPassword(): React.ReactElement {
       >
         <MethodCard onSubmit={methodHandler} />
         <OTPCard onSubmit={otpHandler} phoneNumber={phoneNumber} />
-        <CreateNewPassword />
+        <CreateNewPassword onSubmit={createNewPasswordHandler} />
         <SuccessCard onSubmit={methodHandler} />
       </Slider>
     </div>

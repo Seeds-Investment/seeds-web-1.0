@@ -9,3 +9,8 @@ export interface IOTPMethod {
   sms?: string;
   method: 'whatsapp' | 'sms';
 }
+
+export interface ICreateNewPassword {
+  password: string;
+  rePassword: string;
+}

@@ -12,9 +12,17 @@ const InputPassword = (props?: any): React.ReactElement => {
     Boolean(props?.onChange !== undefined) && props?.onChange?.(e);
     setValue(e.target.value);
   };
+
+  const labelClass =
+    typeof props?.errorMessage !== 'string' ? '!text-black' : '!text-red-500';
+  const labelText = props?.errorMessage ?? props?.label;
   return (
     <Input
       {...props}
+      label={labelText}
+      labelProps={{
+        className: `!text-[1rem] !font-semibold ${labelClass}`
+      }}
       onChange={onChangeHandler}
       onFocus={() => {
         setIsFocused(true);
@@ -23,7 +31,9 @@ const InputPassword = (props?: any): React.ReactElement => {
         setIsFocused(false);
       }}
       className={`placeholder:text-gray-600 transition-none placeholder:tracking-wider placeholder:text-base text-black ${
-        password && Boolean(value?.length > 0) ? 'text-[4rem]' : 'text-[1.2rem]'
+        password && Boolean(value?.length > 0)
+          ? '!text-[3rem]'
+          : '!text-[1.2rem]'
       }`}
       color="green"
       shrink={true}
@@ -32,6 +42,7 @@ const InputPassword = (props?: any): React.ReactElement => {
       type={password ? 'password' : 'text'}
       icon={
         <FontAwesomeIcon
+          className="cursor-pointer"
           onClick={() => {
             setpassword(c => !c);
           }}

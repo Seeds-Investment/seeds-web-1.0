@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import CongratsOnBoarding from '@/assets/images/Congrat-Onboarding.png';
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
-import FormCard from '@/containers/auth/FormCard';
+import { OnBoardingType1 } from '@/constants/assets/images';
+import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
@@ -13,20 +13,23 @@ const AuthIndex = (): JSX.Element => {
   const router = useRouter();
 
   return (
-    <FormCard className="h-[625px] lg:w-[30rem] xl:w-[35rem] m-5 z-20 ">
-      <div className="flex flex-col lg:w-[30rem] mx-auto justify-center md:shrink-0">
+    <div className="px-8 pb-8 mt-4">
+      <div className="flex flex-col justify-center">
         <Image
-          alt="congrats-onboarding"
-          className="md:shrink-10 lg:w-45 mx-auto mb-5"
-          src={CongratsOnBoarding}
+          className="md:shrink-10 mx-auto mb-5 w-auto h-auto object-contain object-[center_center]"
+          quality={50}
+          width={400}
+          height={400}
+          src={OnBoardingType1.src}
+          alt={OnBoardingType1.alt}
         />
-        <p className="text-center font-bold text-xl lg:text-2xl text-black rounded-lg">
+        <Typography variant="h4" color="black" className="text-center">
           {t('authPage.welcoming')}
-        </p>
-        <p className="lg:text-xl text-l text-[#7C7C7C] p-5 text-center">
+        </Typography>
+        <Typography variant="paragraph" className="text-center p-5">
           {t('authPage.description')}
-        </p>
-        <CButton className="bg-[#7555DA] mx-auto rounded-full lg:w-[20rem]  p-5">
+        </Typography>
+        <CButton fullWidth className="bg-[#7555DA] rounded-full p-4">
           {t('authPage.guest')}
         </CButton>
         <small className="text-center lg:mt-5 mt-2 text-black">
@@ -35,7 +38,7 @@ const AuthIndex = (): JSX.Element => {
             {t('authPage.tnC')}
           </Link>
         </small>
-        <div className="flex justify-around py-5 gap-5 px-5">
+        <div className="flex justify-around gap-5 mt-5">
           <CButton
             onClick={() => {
               router.push('/circle/auth/login').catch(error => {
@@ -58,7 +61,7 @@ const AuthIndex = (): JSX.Element => {
           </CButton>
         </div>
       </div>
-    </FormCard>
+    </div>
   );
 };
 

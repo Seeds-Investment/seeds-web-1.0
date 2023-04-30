@@ -5,7 +5,7 @@ import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import type { ReactNode } from 'react';
 
-import '@/pages/i18n';
+import '@/utils/common/i18n';
 
 export type Page<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: JSX.Element) => ReactNode;

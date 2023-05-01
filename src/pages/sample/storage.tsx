@@ -25,7 +25,11 @@ const StoragePage = (): JSX.Element => {
 };
 
 StoragePage.getLayout = function getLayout(page: JSX.Element) {
-  return <SampleLayout>{page}</SampleLayout>;
+  return (
+    <SampleLayout title="Local Storage" subtitle="Enter Any Value">
+      {page}
+    </SampleLayout>
+  );
 };
 
 export default StoragePage;

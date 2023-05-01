@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import { ThemeProvider } from '@material-tailwind/react';
 import i18n from 'i18next';
 import type { NextPage } from 'next';
+import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import en from 'public/locales/en';
@@ -38,7 +39,9 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     }
   });
   return (
-    <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+    <SessionProvider session={pageProps.session}>
+      <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+    </SessionProvider>
   );
 }
 

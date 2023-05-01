@@ -15,3 +15,16 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
     return error.response;
   }
 };
+
+export const loginProvider = async (
+  identifier: string,
+  provider: string
+): Promise<any> => {
+  try {
+    let response = await authService.post(`/login/${provider}`, { identifier });
+
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

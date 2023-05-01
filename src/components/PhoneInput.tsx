@@ -6,30 +6,24 @@ import Flags from '@/assets/images/flags';
 import ListCountryFlag from '@/constants/countryFlag';
 
 interface PhoneInputProps {
-  onChangeRegion?: (value: { flag: string; code: string }) => void;
-  onChangePhoneNumber?: (value: string) => void;
+  onChangePhoneNumber: (value: string) => void;
   error: boolean;
   phoneValue: string;
-  selectedFlag: string;
-  setSelectedFlag: (value: string) => void;
   selectedCode: string;
   setSelectedCode: (value: string) => void;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
-  onChangeRegion,
   onChangePhoneNumber,
   error,
-  selectedFlag,
-  setSelectedFlag,
   selectedCode,
   setSelectedCode,
   phoneValue
 }) => {
   const [dropdownVisibility, setDropdowVisibility] = useState(false);
-
+  const [selectedFlag, setSelectedFlag] = useState('ID');
   function displayedPhoneNumber(phoneNumber: string): string {
-    const numericPhoneNumber = phoneValue.replace(/\D/g, '');
+    const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
 
     const spacedPhoneNumber = numericPhoneNumber.replace(
       /(\d{3})(\d{4})(\d{4})/,
@@ -82,8 +76,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
               variant="standard"
               name="phoneNumber"
               onChange={e => {
-                if (onChangePhoneNumber !== undefined)
-                  onChangePhoneNumber(e.target.value);
+                onChangePhoneNumber(e.target.value);
               }}
               value={displayedPhoneNumber(phoneValue)}
               error={error}
@@ -91,7 +84,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
           </div>
         </div>
       </div>
-      {/* list of country */}
+      ;{/* list of country */}
       {dropdownVisibility ? (
         <div className="relative z-20">
           <div className="w-full absolute top-0 h-44 overflow-auto">
@@ -101,11 +94,6 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
                   setDropdowVisibility(false);
                   setSelectedFlag(country.img);
                   setSelectedCode(country.code);
-                  if (onChangeRegion !== undefined)
-                    onChangeRegion({
-                      flag: country.img,
-                      code: country.code
-                    });
                 }}
                 className="px-4 py-2 flex gap-4 items-center  bg-white top-0 w-full  hover:bg-slate-50"
                 data-value={country.code}

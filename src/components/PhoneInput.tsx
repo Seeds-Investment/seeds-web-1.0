@@ -1,8 +1,9 @@
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import Flags from '@/assets/images/flags';
+import type { AssetsInterface } from '@/constants/assets';
+import Flags from '@/constants/assets/flags';
 import ListCountryFlag from '@/constants/countryFlag';
 
 interface PhoneInputProps {
@@ -22,33 +23,38 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
 }) => {
   const [dropdownVisibility, setDropdowVisibility] = useState(false);
   const [selectedFlag, setSelectedFlag] = useState('ID');
-  function displayedPhoneNumber(phoneNumber: string): string {
-    const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
 
+  const displayedPhoneNumber = useMemo(() => {
+    const numericPhoneNumber = phoneValue.replace(/\D/g, '');
     const spacedPhoneNumber = numericPhoneNumber.replace(
       /(\d{3})(\d{4})(\d{4})/,
       '$1 $2 $3'
     );
-
     return spacedPhoneNumber;
-  }
+  }, [phoneValue]);
+
+  const renderSafeFlag = (countryCode: string): AssetsInterface => {
+    const defaultCountryCode = 'ID';
+    return Flags[countryCode] ?? Flags[defaultCountryCode];
+  };
 
   return (
     <div className="flex flex-col">
       <div className="relative ">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-baseline">
           {/* Country and arrow image */}
           <div
             onClick={() => {
               setDropdowVisibility(!dropdownVisibility);
             }}
-            className="grid grid-cols-2 gap-2 items-center"
+            className="grid grid-cols-2 gap-2 items-baseline"
           >
             <Image
-              src={Flags[selectedFlag] ?? Flags.ID}
-              alt="selected-flag"
+              src={renderSafeFlag(selectedFlag).src}
+              alt={renderSafeFlag(selectedFlag).alt}
               width={20}
               height={20}
+              className="h-auto w-auto object-contain object-[center_center]"
             />
             <div className="w-3">
               <svg
@@ -67,24 +73,24 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
           </div>
           <span className="text-md flex-1">{selectedCode}</span>
           {/* Input field */}
-          <div className="w-full mb-2">
+          <div className="w-full">
             <Input
-              className="w-full text-xl"
+              className="w-full text-lg"
               type="tel"
-              size="lg"
+              size="md"
               color="gray"
               variant="standard"
               name="phoneNumber"
               onChange={e => {
                 onChangePhoneNumber(e.target.value);
               }}
-              value={displayedPhoneNumber(phoneValue)}
+              value={displayedPhoneNumber}
               error={error}
             />
           </div>
         </div>
       </div>
-      ;{/* list of country */}
+      {/* list of country */}
       {dropdownVisibility ? (
         <div className="relative z-20">
           <div className="w-full absolute top-0 h-44 overflow-auto">
@@ -95,16 +101,17 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
                   setSelectedFlag(country.img);
                   setSelectedCode(country.code);
                 }}
-                className="px-4 py-2 flex gap-4 items-center  bg-white top-0 w-full  hover:bg-slate-50"
+                className="px-4 py-2 flex gap-4 items-center bg-white top-0 w-full hover:bg-slate-50"
                 data-value={country.code}
                 data-img={`/assets/images/${country.img}.png`}
                 key={idx}
               >
                 <Image
-                  src={Flags[country.img] ?? Flags.ID}
-                  alt={`flag-${country.img}`}
+                  src={renderSafeFlag(country.img).src}
+                  alt={renderSafeFlag(country.img).alt}
                   width={20}
                   height={20}
+                  className="h-auto w-auto object-contain object-[center_center]"
                 />
                 <p>{`${country.name} (${country.code})`}</p>
               </div>

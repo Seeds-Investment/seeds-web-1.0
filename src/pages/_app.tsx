@@ -9,6 +9,8 @@ import id from 'public/locales/id';
 import type { ReactNode } from 'react';
 import { initReactI18next } from 'react-i18next';
 
+import '@/utils/common/i18n';
+
 export type Page<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: JSX.Element) => ReactNode;
 };

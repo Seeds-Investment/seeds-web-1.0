@@ -1,5 +1,7 @@
-// import SliderCard from '@/components/SlideCard';
+import SliderCard from '@/components/SlideCard';
+import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';
+import success from 'public/assets/success.png';
 import { useTranslation } from 'react-i18next';
 
 const SuccessCard = ({
@@ -9,15 +11,15 @@ const SuccessCard = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
 
-  // const successScreen: ISlider = {
-  //   image: success,
-  //   text: t(`forgot.success.text`),
-  //   title: t(`forgot.success.title`)
-  // };
+  const successScreen: ISlider = {
+    image: success,
+    text: t(`forgot.success.text`),
+    title: t(`forgot.success.title`)
+  };
 
   return (
     <div className=" flex flex-col items-center justify-center">
-      {/* <SliderCard slide={successScreen} /> */}
+      <SliderCard slide={successScreen} />
       <br className="lg:hidden" />
       <br className="lg:hidden" />
       <br className="lg:hidden" />

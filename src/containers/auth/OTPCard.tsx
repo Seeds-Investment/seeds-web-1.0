@@ -1,6 +1,6 @@
 import SliderCard from '@/components/SlideCard';
 import { useCountDown } from '@/hooks/useCountDown';
-import { getOtp } from '@/repository/auth.repository';
+import { getOtp, verifyOtp } from '@/repository/auth.repository';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import type { IOTPMethod } from '@/utils/interfaces/form.interfaces';
 import { formOtpSchema } from '@/utils/validations/forgotPassword.schema';
@@ -66,13 +66,18 @@ const OTPCard = ({
     enableReinitialize: true,
     validateOnBlur: true,
     onSubmit: async values => {
-      const isMatch = payload[payload.method] === otp;
-      // const res = await verifyOtp({
-      //   method: payload.method,
-      //   msisdn: phoneNumber,
-      //   otp: payload[payload.method] ?? ''
-      // });
-      onSubmit(isMatch);
+      try {
+        const isMatch = payload[payload.method] === otp;
+        await verifyOtp({
+          method: payload.method,
+          msisdn: phoneNumber,
+          otp: payload[payload.method] ?? ''
+        });
+        onSubmit(isMatch);
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
     validationSchema: formOtpSchema
   });

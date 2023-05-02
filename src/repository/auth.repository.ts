@@ -54,6 +54,6 @@ export const verifyOtp = async (payload: IVerifyOtp): Promise<any> => {
       ...payload
     });
   } catch (error) {
-    console.log(error);
+    return await Promise.reject(error);
   }
 };

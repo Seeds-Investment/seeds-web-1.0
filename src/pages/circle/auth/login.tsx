@@ -1,15 +1,14 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
-
-import { AppleBrand, FacebookBrand, GoogleBrand } from '@/assets/images';
-import { ArrowLeft, Eye, EyeSlash, Loader } from '@/assets/vector';
 import CButton from '@/components/CButton';
-import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
+import PhoneInput from '@/components/PhoneInput';
 import FormCard from '@/containers/auth/FormCard';
 // import { loginPhoneNumber } from '@/repository/auth.repository';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { AppleBrand, FacebookBrand, GoogleBrand } from 'public/assets/images';
+import { ArrowLeft, Eye, EyeSlash, Loader } from 'public/assets/vector';
+import { useState } from 'react';
 // import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 

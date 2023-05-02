@@ -1,9 +1,8 @@
-import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
-
-import { Hello } from '@/assets/images';
-import { LineChart } from '@/assets/vector';
 import CCard from '@/components/CCard';
+import Image from 'next/image';
+import { Hello } from 'public/assets/images';
+import { LineChart } from 'public/assets/vector';
+import { useTranslation } from 'react-i18next';
 
 export interface IAuthLayout {
   children: JSX.Element;

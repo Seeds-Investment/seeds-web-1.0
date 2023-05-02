@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
-import { Flags } from '@/assets/images';
 import CButton from '@/components/CButton';
 import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import SeedsLogo from '../../assets/images/SeedsTypo.png';
+import { Flags } from 'public/assets/images';
+import SeedsLogo from 'public/assets/images/SeedsTypo.png';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 interface Props {
   children: React.ReactNode;
   className: string;

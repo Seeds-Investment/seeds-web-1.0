@@ -1,11 +1,11 @@
-import welcome from '@/assets/story-boarding/bg-welcome-seeds.png';
-import iconDoc from '@/assets/story-boarding/doc.svg';
-import en from '@/assets/story-boarding/en.png';
-import id from '@/assets/story-boarding/id.png';
-import welcome2 from '@/assets/story-boarding/slide2.png';
-import welcome3 from '@/assets/story-boarding/slide3.png';
-import welcome4 from '@/assets/story-boarding/slide4.png';
-import { type Settings } from '@ant-design/react-slick';
+import type { Settings } from '@ant-design/react-slick';
+import welcome from 'public/assets/story-boarding/bg-welcome-seeds.png';
+import iconDoc from 'public/assets/story-boarding/doc.svg';
+import en from 'public/assets/story-boarding/en.png';
+import id from 'public/assets/story-boarding/id.png';
+import welcome2 from 'public/assets/story-boarding/slide2.png';
+import welcome3 from 'public/assets/story-boarding/slide3.png';
+import welcome4 from 'public/assets/story-boarding/slide4.png';
 
 const onboardingSlideAssets = (t: any): any => {
   return [

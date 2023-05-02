@@ -1,8 +1,8 @@
-import bgLine from '@/assets/story-boarding/bg-line.png';
-import hello from '@/assets/story-boarding/hello.png';
-import logo from '@/assets/story-boarding/logo-seeds.png';
 import common from '@/utils/common';
 import Image from 'next/image';
+import bgLine from 'public/assets/story-boarding/bg-line.png';
+import hello from 'public/assets/story-boarding/hello.png';
+import logo from 'public/assets/story-boarding/logo-seeds.png';
 import { useTranslation } from 'react-i18next';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';

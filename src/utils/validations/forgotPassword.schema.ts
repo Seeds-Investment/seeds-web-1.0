@@ -18,28 +18,25 @@ export const formMethodSchema: any = Yup.object<Shape<IFormMethod>>().shape({
   method: Yup.string().required(),
   email: Yup.string().when('method', {
     is: 'email',
-    then: Yup.string().email(invalidEmail).required(requiredEmail),
-    otherwise: Yup.string().email(invalidEmail)
+    then: schema => schema.email(invalidEmail).required(requiredEmail),
+    otherwise: schema => schema.email(invalidEmail)
   }),
   phoneNumber: Yup.number().when('method', {
     is: 'phoneNumber',
-    then: Yup.number()
-      .typeError(invalidPhoneNumber)
-      .required(requiredPhoneNumber),
-    otherwise: Yup.number()
+    then: schema =>
+      schema.typeError(invalidPhoneNumber).required(requiredPhoneNumber),
+    otherwise: schema => schema.typeError(invalidPhoneNumber)
   })
 });
 export const formOtpSchema: any = Yup.object<Shape<IOTPMethod>>().shape({
   method: Yup.string().required(),
   sms: Yup.string().when('method', {
     is: 'whatsapp',
-    then: Yup.string().min(4).max(4).required(requiredEmail),
-    otherwise: Yup.string()
+    then: schema => schema.min(4).max(4).required(requiredEmail)
   }),
   whatsapp: Yup.string().when('method', {
     is: 'whatsapp',
-    then: Yup.string().min(4).max(4).required(requiredPhoneNumber),
-    otherwise: Yup.string()
+    then: schema => schema.min(4).max(4).required(requiredPhoneNumber)
   })
 });
 
@@ -55,7 +52,7 @@ export const formCreateNewPasswordSchema: any = Yup.object<
   rePassword: Yup.string()
     .required(requiredRePassword)
     .matches(passwordPattern, invalidPassword)
-    .oneOf([Yup.ref('password'), null], unmatchPassword)
+    .oneOf([Yup.ref('password')], unmatchPassword)
 });
 
 export type ConditionalSchema<T> = T extends string

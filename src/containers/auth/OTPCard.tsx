@@ -1,5 +1,3 @@
-import otpSms from '@/assets/otpSms.png';
-import otpWhatsapp from '@/assets/otpWhatsapp.png';
 import SliderCard from '@/components/SlideCard';
 import { useCountDown } from '@/hooks/useCountDown';
 import { getOtp } from '@/repository/auth.repository';
@@ -8,6 +6,8 @@ import type { IOTPMethod } from '@/utils/interfaces/form.interfaces';
 import { formOtpSchema } from '@/utils/validations/forgotPassword.schema';
 import { Button, Input } from '@material-tailwind/react';
 import { useFormik } from 'formik';
+import otpSms from 'public/assets/otpSms.png';
+import otpWhatsapp from 'public/assets/otpWhatsapp.png';
 import { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

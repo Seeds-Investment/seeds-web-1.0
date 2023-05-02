@@ -1,10 +1,10 @@
-import forgot from '@/assets/forgot.png';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import type { IFormMethod } from '@/utils/interfaces/form.interfaces';
 import { formMethodSchema } from '@/utils/validations/forgotPassword.schema';
 import { Button, Input } from '@material-tailwind/react';
 import { useFormik } from 'formik';
+import forgot from 'public/assets/forgot.png';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

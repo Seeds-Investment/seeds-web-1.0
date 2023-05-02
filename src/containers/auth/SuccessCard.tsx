@@ -1,7 +1,7 @@
-import success from '@/assets/success.png';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';
+import success from 'public/assets/success.png';
 import { useTranslation } from 'react-i18next';
 
 const SuccessCard = ({

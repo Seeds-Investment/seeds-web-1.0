@@ -1,6 +1,7 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input } from '@material-tailwind/react';
+import Image from 'next/image';
+import faEyeSlash from 'public/assets/vector/eye-slash.svg';
+import faEye from 'public/assets/vector/eye.svg';
 import React, { useState } from 'react';
 
 const InputPassword = (props?: any): React.ReactElement => {
@@ -43,12 +44,13 @@ const InputPassword = (props?: any): React.ReactElement => {
       variant="standard"
       type={password ? 'password' : 'text'}
       icon={
-        <FontAwesomeIcon
+        <Image
+          alt="img"
           className="cursor-pointer"
           onClick={() => {
             setpassword(c => !c);
           }}
-          icon={password ? faEyeSlash : faEye}
+          src={password ? faEyeSlash : faEye}
         />
       }
     />

@@ -6,6 +6,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import LanguageSwitcher from '../LanguageSwitcher';
 
+export interface IAuthLayout {
+  children: JSX.Element;
+}
+
 export default function AuthLayout({
   children,
   className = ''

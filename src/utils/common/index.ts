@@ -6,31 +6,31 @@ import id from 'public/assets/story-boarding/id.png';
 import welcome2 from 'public/assets/story-boarding/slide2.png';
 import welcome3 from 'public/assets/story-boarding/slide3.png';
 import welcome4 from 'public/assets/story-boarding/slide4.png';
-import type { ISlider } from '../interfaces/components.interfaces';
-import dictionary from './dictionary';
 
-const onboardingSlideAssets: ISlider[] = [
-  {
-    image: welcome,
-    title: dictionary.register.slide.title[1].id,
-    text: dictionary.register.slide.text[1].id
-  },
-  {
-    image: welcome2,
-    title: dictionary.register.slide.title[2].id,
-    text: dictionary.register.slide.text[2].id
-  },
-  {
-    image: welcome3,
-    title: dictionary.register.slide.title[3].id,
-    text: dictionary.register.slide.text[3].id
-  },
-  {
-    image: welcome4,
-    title: dictionary.register.slide.title[4].id,
-    text: dictionary.register.slide.text[4].id
-  }
-];
+const onboardingSlideAssets = (t: any): any => {
+  return [
+    {
+      image: welcome,
+      title: t('register.slide.title.1'),
+      text: t('register.slide.text.1')
+    },
+    {
+      image: welcome2,
+      title: t('register.slide.title.2'),
+      text: t('register.slide.text.2')
+    },
+    {
+      image: welcome3,
+      title: t('register.slide.title.3'),
+      text: t('register.slide.text.3')
+    },
+    {
+      image: welcome4,
+      title: t('register.slide.title.4'),
+      text: t('register.slide.text.4')
+    }
+  ];
+};
 
 const slideSettings: Settings = {
   dots: true,

@@ -1,8 +1,9 @@
-import bgLine from '@/assets/story-boarding/bg-line.png';
-import hello from '@/assets/story-boarding/hello.png';
-import logo from '@/assets/story-boarding/logo-seeds.png';
 import common from '@/utils/common';
 import Image from 'next/image';
+import bgLine from 'public/assets/story-boarding/bg-line.png';
+import hello from 'public/assets/story-boarding/hello.png';
+import logo from 'public/assets/story-boarding/logo-seeds.png';
+import { useTranslation } from 'react-i18next';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import Dropdown from './Dropdown';
@@ -12,6 +13,11 @@ export default function Container({
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: string): void => {
+    void i18n.changeLanguage(lng);
+  };
   return (
     <div className="opacity-0 flex min-w-full min-h-screen fade-in">
       <div className="w-full h-screen hidden lg:block">
@@ -27,10 +33,15 @@ export default function Container({
       <div className="w-full h-screen relative">
         <div className="absolute h-full w-full z-20">
           <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
-            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base flex flex-col justify-between">
+            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base">
               <div className="w-full flex justify-between items-center lg:pr-0">
                 <Image src={logo} alt="" />
-                <Dropdown options={common.langOptions} onClick={undefined} />
+                <Dropdown
+                  options={common.langOptions}
+                  onClick={(v: any) => {
+                    changeLanguage(v.id);
+                  }}
+                />
               </div>
               {children}
             </div>

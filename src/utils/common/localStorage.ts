@@ -14,7 +14,7 @@ export const getLocalStorage = <T>(key: string, defaultValue: T): T => {
   if (isSSR) return defaultValue;
 
   try {
-    const item = window.localStorage.getItem(key);
+    const item = window?.localStorage.getItem(key);
     if (typeof item === 'undefined' || item === null) return defaultValue;
     return JSON.parse(item);
   } catch (error) {

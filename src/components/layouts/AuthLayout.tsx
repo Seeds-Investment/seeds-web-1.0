@@ -3,11 +3,11 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
 
-import { ArrowLeft } from '@/assets/vector';
 import { HelloHero, LineChart } from '@/constants/assets/images';
 import { SeedsLogo } from '@/constants/assets/logo';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Card, Typography } from '@material-tailwind/react';
+import { ArrowLeft } from 'public/assets/vector';
 
 export interface IAuthLayout {
   children: JSX.Element;

@@ -1,22 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { Eye, EyeSlash, Loader } from '@/assets/vector';
 import CButton from '@/components/CButton';
-import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import {
   AppleBrand,
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
-import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
+import { loginPhoneNumber } from '@/repository/auth.repository';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 
-import { signIn, useSession } from 'next-auth/react';
+// import { signIn, useSession } from 'next-auth/react';
 
+import PhoneInput from '@/components/PhoneInput';
+import { Eye, EyeSlash, Loader } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -27,7 +27,7 @@ interface FormData {
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { data: session }: any = useSession();
+  // const { data: session }: any = useSession();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,33 +95,33 @@ const LoginPage = (): JSX.Element => {
   };
 
   const handleLoginProvider = (provider: string): void => {
-    signIn(provider)
-      .then(result => {
-        if (result?.error != null) {
-          console.log(result.error);
-        } else if (provider !== '') {
-          localStorage.setItem('provider', provider);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    // signIn(provider)
+    //   .then(result => {
+    //     if (result?.error != null) {
+    //       console.log(result.error);
+    //     } else if (provider !== '') {
+    //       localStorage.setItem('provider', provider);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
   };
 
-  useEffect(() => {
-    const fetchAccessToken = async (): Promise<void> => {
-      const provider = localStorage.getItem('provider');
-      if (session?.access_token != null && provider != null) {
-        const response = await loginProvider(session.access_token, provider);
-        // setAccessToken(response);
-        console.log(response);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchAccessToken = async (): Promise<void> => {
+  //     const provider = localStorage.getItem('provider');
+  //     if (session?.access_token != null && provider != null) {
+  //       const response = await loginProvider(session.access_token, provider);
+  //       // setAccessToken(response);
+  //       console.log(response);
+  //     }
+  //   };
 
-    fetchAccessToken().catch(error => {
-      console.error(error);
-    });
-  }, [session?.access_token]);
+  //   fetchAccessToken().catch(error => {
+  //     console.error(error);
+  //   });
+  // }, [session?.access_token]);
 
   const thirdParty = [
     {

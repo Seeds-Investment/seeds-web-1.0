@@ -86,7 +86,7 @@ export default function Section6(): React.ReactElement {
               ))}
           </div>
           <br />
-          <div className="text-[1.1rem] text-gray-200 tracking-widest text-sm font-thin opacity-80 cursor-pointer">
+          <div className="text-[1.1rem] text-white tracking-widest text-sm font-extralight cursor-pointer">
             PT. Benih Investasi Teknologi
           </div>
         </div>

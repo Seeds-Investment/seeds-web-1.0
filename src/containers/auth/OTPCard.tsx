@@ -77,6 +77,11 @@ const OTPCard = ({
           status: isMatch,
           otp: payload[payload.method]
         });
+        setPayload({
+          sms: '0000',
+          whatsapp: '0000',
+          method: 'whatsapp'
+        });
       } catch (error) {
         console.log(error);
         return false;
@@ -191,6 +196,8 @@ const OTPCard = ({
       >
         {t('button.next')}
       </Button>
+      <br />
+      <br />
     </form>
   );
 };

@@ -4,6 +4,7 @@ import MethodCard from '@/containers/auth/MethodCard';
 import OTPCard from '@/containers/auth/OTPCard';
 import SuccessCard from '@/containers/auth/SuccessCard';
 import { useSlick } from '@/hooks/useSlick';
+import { postForgotPasswordByEmail } from '@/repository/email.repository';
 import { patchChangePassword } from '@/repository/user.repository';
 import type {
   ICreateNewPassword,
@@ -20,9 +21,14 @@ export default function ForgotPassword(): React.ReactElement {
   const [phoneNumber, setPhoneNumber] = useState<any>('');
   const [email, setEmail] = useState<any>('');
 
-  const methodHandler = (payload: IFormMethod): void => {
+  const methodHandler = async (payload: IFormMethod): Promise<void> => {
+    if (payload.method === 'email') {
+      setEmail(payload.email);
+      await postForgotPasswordByEmail(payload.email);
+      return;
+    }
+
     setPhoneNumber(payload.phoneNumber);
-    setEmail(payload.email);
     changeStep(1);
   };
 
@@ -55,7 +61,11 @@ export default function ForgotPassword(): React.ReactElement {
         <MethodCard onSubmit={methodHandler} />
         <OTPCard onSubmit={otpHandler} phoneNumber={phoneNumber} />
         <CreateNewPassword onSubmit={createNewPasswordHandler} />
-        <SuccessCard onSubmit={methodHandler} />
+        <SuccessCard
+          onSubmit={() => {
+            alert('berhasil');
+          }}
+        />
       </Slider>
     </div>
   );

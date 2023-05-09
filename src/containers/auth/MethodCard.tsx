@@ -1,3 +1,4 @@
+import PhoneInput from '@/components/PhoneInput';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import type { IFormMethod } from '@/utils/interfaces/form.interfaces';
@@ -11,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 const MethodCard = ({
   onSubmit
 }: {
-  onSubmit: (props: any) => void;
+  onSubmit: (props: any) => Promise<void>;
 }): React.ReactElement => {
   const { t } = useTranslation();
 
@@ -20,6 +21,12 @@ const MethodCard = ({
     phoneNumber: '',
     method: 'phoneNumber'
   });
+  const [selectedCode, setSelectedCode] = useState<string>('+62');
+
+  const handleChangePhoneNumber = (value: string): void => {
+    const onlyNumber = value.replace(/[^0-9]/g, '');
+    setPayload(c => ({ ...c, phoneNumber: onlyNumber }));
+  };
 
   const methodHandler = useCallback((): void => {
     const updatePayload: IFormMethod = { ...payload };
@@ -52,7 +59,7 @@ const MethodCard = ({
         type: 'email',
         methodText: t('forgot.method.phoneNumber'),
         inputPlaceholder: t('input.placeholder.email'),
-        inputLabel: 'input.type.email'
+        inputLabel: t('input.type.email')
       };
     return {
       type: 'number',
@@ -65,8 +72,8 @@ const MethodCard = ({
     initialValues: payload,
     enableReinitialize: true,
     validateOnBlur: true,
-    onSubmit: values => {
-      onSubmit(values);
+    onSubmit: async values => {
+      await onSubmit(values);
     },
     validationSchema: formMethodSchema
   });
@@ -83,16 +90,31 @@ const MethodCard = ({
       <br />
       <br />
       <br />
-      <Input
-        error={error}
-        onChange={onChangeHandler}
-        name={payload.method}
-        // type={inputProperties.type}
-        color="green"
-        variant="static"
-        label={error ? errorMessage : inputProperties.inputLabel}
-        placeholder={inputProperties.inputPlaceholder ?? ''}
-      />
+      {payload.method === 'email' ? (
+        <Input
+          error={error}
+          onChange={onChangeHandler}
+          name={payload.method}
+          // type={inputProperties.type}
+          color="green"
+          variant="static"
+          label={error ? errorMessage : inputProperties.inputLabel}
+          placeholder={inputProperties.inputPlaceholder ?? ''}
+        />
+      ) : (
+        <>
+          <PhoneInput
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+            onChangePhoneNumber={handleChangePhoneNumber}
+            phoneValue={payload[payload.method] ?? ''}
+            error={error}
+          />
+          {typeof error === 'string' && (
+            <small className="text-[#ff515d] font-bold">{error}</small>
+          )}
+        </>
+      )}
       <div
         onClick={methodHandler}
         className="text-sm text-seeds-button-green cursor-pointer w-full text-left mt-2"

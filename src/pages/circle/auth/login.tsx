@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-import { AppleBrand, FacebookBrand, GoogleBrand } from '@/assets/images';
-import { ArrowLeft, Eye, EyeSlash, Loader } from '@/assets/vector';
 import CButton from '@/components/CButton';
-import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
+import PhoneInput from '@/components/PhoneInput';
 import FormCard from '@/containers/auth/FormCard';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { AppleBrand, FacebookBrand, GoogleBrand } from 'public/assets/images';
+import { ArrowLeft, Eye, EyeSlash, Loader } from 'public/assets/vector';
+import { useEffect, useState } from 'react';
+// import { useRouter } from 'next/router';
 import { useRouter } from 'next/router';
 
 import { signIn, useSession } from 'next-auth/react';
@@ -91,7 +91,8 @@ const LoginPage = (): JSX.Element => {
     setLoading(false);
   };
 
-  const handleLoginProvider = (provider: string): void => {
+  const handleLoginProvider = (e: any, provider: string): void => {
+    e.preventDefault();
     signIn(provider)
       .then(result => {
         if (result?.error != null) {
@@ -119,6 +120,8 @@ const LoginPage = (): JSX.Element => {
       console.error(error);
     });
   }, [session?.access_token]);
+
+  console.log(session);
 
   const thirdParty = [
     {
@@ -244,8 +247,8 @@ const LoginPage = (): JSX.Element => {
                 {thirdParty.map((el, i) => {
                   return (
                     <CButton
-                      onClick={() => {
-                        handleLoginProvider(el.name.toLowerCase());
+                      onClick={e => {
+                        handleLoginProvider(e, el.name.toLowerCase());
                       }}
                       key={i}
                       className="bg-white rounded-full flex items-center"

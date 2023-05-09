@@ -1,11 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
-
-import CongratsOnBoarding from '@/assets/images/Congrat-Onboarding.png';
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import FormCard from '@/containers/auth/FormCard';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import CongratsOnBoarding from 'public/assets/images/Congrat-Onboarding.png';
 import { useTranslation } from 'react-i18next';
 
 const AuthIndex = (): JSX.Element => {

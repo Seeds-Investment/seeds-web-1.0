@@ -1,13 +1,12 @@
+import ListCountryFlag from '@/constants/countryFlag';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
+import Flags from 'public/assets/images/flags';
 import { useState } from 'react';
-
-import Flags from '@/assets/images/flags';
-import ListCountryFlag from '@/constants/countryFlag';
 
 interface PhoneInputProps {
   onChangePhoneNumber: (value: string) => void;
-  error: boolean;
+  error: boolean | undefined;
   phoneValue: string;
   selectedCode: string;
   setSelectedCode: (value: string) => void;

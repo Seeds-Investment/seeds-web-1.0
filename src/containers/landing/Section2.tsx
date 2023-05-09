@@ -54,7 +54,7 @@ export default function Section2(): React.ReactElement {
             {t('landing.section2.text2')}
           </div>
 
-          <Button className="absolute z-50 top-[450px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
+          <Button className="absolute z-50 top-[450px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
             {t('button.joinNow')}
           </Button>
         </div>

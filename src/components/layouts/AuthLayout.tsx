@@ -1,65 +1,120 @@
+import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
+import { HelloHero, LineChart } from '@/constants/assets/images';
+import { SeedsLogo } from '@/constants/assets/logo';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import bgLine from 'public/assets/story-boarding/bg-line.png';
-import hello from 'public/assets/story-boarding/hello.png';
-import logo from 'public/assets/story-boarding/logo-seeds.png';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
-import LanguageSwitcher from '../LanguageSwitcher';
+import { ArrowLeft } from 'public/assets/vector';
+import { Trans, useTranslation } from 'react-i18next';
 
 export interface IAuthLayout {
   children: JSX.Element;
+  title?: string;
+  titleKey?: string;
 }
 
-export default function AuthLayout({
+const AuthLayout = ({
   children,
-  className = ''
-}: {
-  children: React.ReactNode;
-  className?: string;
-}): React.ReactElement {
+  title,
+  titleKey
+}: IAuthLayout): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
-    <div className="flex min-w-full min-h-screen">
-      <div className="w-full h-screen hidden lg:block">
-        <div className="min-h-screen flex items-center justify-center min-w-full transition-all duration-300  bg-gradient-to-tr from-seeds-green  to-seeds-purple px-[8%] py-[3%]">
+    <div className="relative">
+      <div className="h-screen w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
+        <div className="relative h-[30rem] top-[100%] translate-y-[-100%]">
           <Image
-            className="fixed bottom-0 w-1/2 left-0 z-0"
-            src={bgLine}
-            alt=""
+            src={LineChart.src}
+            className="object-cover object-[bottom_center]"
+            quality={100}
+            alt={LineChart.alt}
+            fill
+            sizes="100vw, 100vw"
+            placeholder="blur"
+            blurDataURL={LineChart.src}
           />
-          <Image className="left-0 w-[30vw]" src={hello} alt="" />
         </div>
       </div>
-      <div className="w-full h-screen relative">
-        <div className="absolute h-full w-full z-20">
-          <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
-            <div
-              className={`bg-white ${className} min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base`}
-            >
-              <div className="w-full flex justify-between items-center lg:pr-0">
-                <Image src={logo} alt="" />
-                <LanguageSwitcher />
+      <div className="absolute top-0 left-0 z-0 h-full w-full">
+        <div className="flex justify-center lg:justify-around">
+          <div className="bg-[#7856E1] rounded-full h-72 w-72 blur-2xl hidden lg:flex"></div>
+          <div className="bg-[#44FFBB] rounded-full h-72 w-72 blur-3xl object-cover"></div>
+        </div>
+        <div className="flex justify-between items-end">
+          <div className="bg-[#7856E1] rounded-full h- w-48 rounded-r-none blur-xl hidden lg:flex"></div>
+          <div className="bg-[#44FFBB] rounded-full h-80 w-48 lg:ml-40 rounded-l-none blur-3xl"></div>
+          <div className="bg-[#7856E1] rounded-full h-80 w-48 rounded-r-none blur-3xl"></div>
+        </div>
+      </div>
+      <div className="h-screen w-full grid grid-cols-1 lg:grid-cols-2 items-center">
+        <div className="hidden lg:flex lg:justify-center lg:z-20">
+          <div className="p-4 w-[30rem] h-[40rem]">
+            <Card className="w-full h-full justify-between border-y-white border-2 border-x-teal-200 bg-blue-100 backdrop-filter backdrop-blur-2xl bg-opacity-25 rounded-[60px]">
+              <div className="px-8 mt-16">
+                <Typography variant="h2" color="white">
+                  {t('authPage.welcoming')}
+                </Typography>
+                <Typography variant="paragraph" color="white" className="mt-4">
+                  {t('authPage.description')}
+                </Typography>
               </div>
-              <div className="opacity-0 fade-in">{children}</div>
-            </div>
+              <div className="flex justify-center ">
+                <Image
+                  src={HelloHero.src}
+                  className="w-auto h-auto object-cover object-[bottom_center] self-end"
+                  quality={50}
+                  alt={HelloHero.alt}
+                  width={350}
+                  height={350}
+                  placeholder="blur"
+                  blurDataURL={HelloHero.src}
+                />
+              </div>
+            </Card>
           </div>
         </div>
-        <div className="w-full h-1/2 flex justify-center">
-          <div
-            className="rounded-full bg-seeds-green blur-[100px]"
-            style={{ height: '700px', width: '700px' }}
-          />
-        </div>
-        <div className="w-full h-1/2 justify-between flex">
-          <div
-            className="rounded-full bg-seeds-green blur-[100px] "
-            style={{ height: '350px', width: '350px' }}
-          />
-          <div
-            className="rounded-full bg-seeds-purple blur-[100px]  right-0"
-            style={{ height: '350px', width: '350px' }}
-          />
+        <div className="flex justify-center z-20">
+          <div className="p-4 w-[30rem] min-h-[50rem] lg:min-h-[40rem]">
+            <div className="z-20 lg:hidden flex items-center mb-4">
+              <div className="w-[1.8rem]">
+                <Image
+                  src={ArrowLeft}
+                  width={30}
+                  height={30}
+                  alt="arrow-left"
+                  className="w-auto h-auto object-contain object-[center_center]"
+                />
+              </div>
+              <Typography variant="h4" color="white" className="mx-auto">
+                {isUndefindOrNull(title) || isEmptyString(title) ? (
+                  <Trans i18nKey={titleKey} />
+                ) : (
+                  title
+                )}
+              </Typography>
+            </div>
+            <Card className="w-full h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
+              <div className="flex justify-between p-8">
+                <Image
+                  src={SeedsLogo.src}
+                  alt={SeedsLogo.alt}
+                  quality={50}
+                  className="w-auto h-auto object-contain object-[center_center]"
+                  width={60}
+                  height={30}
+                  placeholder="blur"
+                  blurDataURL={SeedsLogo.src}
+                />
+                <LanguageSwitcher />
+              </div>
+              {children}
+            </Card>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default AuthLayout;

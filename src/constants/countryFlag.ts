@@ -35,11 +35,11 @@ const ListCountryFlag: CountryFlagInterface[] = [
     code: '+1',
     name: 'United States'
   },
-  {
-    img: 'BR',
-    code: '+55',
-    name: 'Brazil'
-  },
+  // {
+  //   img: 'BR',
+  //   code: '+55',
+  //   name: 'Brazil'
+  // },
   {
     img: 'RU',
     code: '+7',

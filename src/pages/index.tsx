@@ -8,8 +8,10 @@ export default function Home(): React.ReactElement {
   const { t } = useTranslation();
   return (
     <AuthLayout>
-      <LanguageSwitcher />
-      {t('greeting', { name: 'Seeds!' })}
+      <>
+        <LanguageSwitcher />
+        {t('greeting', { name: 'Seeds!' })}
+      </>
     </AuthLayout>
   );
 }

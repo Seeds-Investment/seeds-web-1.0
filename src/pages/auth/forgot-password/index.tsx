@@ -61,6 +61,4 @@ export default function ForgotPassword(): React.ReactElement {
   );
 }
 
-ForgotPassword.getLayout = (page: any) => (
-  <AuthLayout className="bg-opacity-70">{page}</AuthLayout>
-);
+ForgotPassword.getLayout = (page: any) => <AuthLayout>{page}</AuthLayout>;

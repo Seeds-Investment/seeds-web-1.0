@@ -46,6 +46,9 @@ export default {
     }
   },
   input: {
+    phone: 'Phone Number',
+    email: 'Email',
+    birthDate: 'Birth Date',
     placeholder: {
       email: 'Please enter your email',
       phoneNumber: 'Please enter your phone number',
@@ -334,5 +337,10 @@ export default {
     passwordEmpty: 'The password is required, please enter your password!',
     wrongPassword: 'The password is incorrect'
   },
-  or: 'or'
+  or: 'or',
+  registerPage: {
+    title: 'Register',
+    description: "Let's get to know you",
+    nextButton: 'Continue'
+  }
 };

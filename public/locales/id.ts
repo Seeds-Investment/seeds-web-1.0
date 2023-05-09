@@ -46,6 +46,9 @@ export default {
     }
   },
   input: {
+    phone: 'Nomor Handphone',
+    email: 'Email',
+    birthDate: 'Tanggal Lahir',
     placeholder: {
       email: 'Mohon ketikkan email anda',
       phoneNumber: 'Mohon ketikkan nomor telepon anda'
@@ -333,5 +336,10 @@ export default {
     passwordEmpty: 'Kata sandi diperlukan, silakan masukkan kata sandi Anda!',
     wrongPassword: 'Kata sandi salah'
   },
-  or: 'atau'
+  or: 'atau',
+  registerPage: {
+    title: 'Daftar',
+    description: 'Mari berkenalan dengan Anda',
+    nextButton: 'Lanjut'
+  }
 };

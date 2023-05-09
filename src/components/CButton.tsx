@@ -7,10 +7,18 @@ export default function CButton({
   children,
   className,
   onClick,
-  disabled
+  disabled,
+  color,
+  fullWidth
 }: IButton): React.ReactElement {
   return (
-    <Button onClick={onClick} disabled={disabled} className={className}>
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+      color={color}
+      fullWidth={fullWidth}
+    >
       {children}
     </Button>
   );

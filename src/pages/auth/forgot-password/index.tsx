@@ -4,9 +4,11 @@ import MethodCard from '@/containers/auth/MethodCard';
 import OTPCard from '@/containers/auth/OTPCard';
 import SuccessCard from '@/containers/auth/SuccessCard';
 import { useSlick } from '@/hooks/useSlick';
+import { patchChangePassword } from '@/repository/user.repository';
 import type {
+  ICreateNewPassword,
   IFormMethod,
-  IOTPMethod
+  IOTPHandler
 } from '@/utils/interfaces/form.interfaces';
 import type { IUseSlick } from '@/utils/interfaces/slick.interface';
 import React, { useState } from 'react';
@@ -16,20 +18,28 @@ export default function ForgotPassword(): React.ReactElement {
   const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
   const [phoneNumber, setPhoneNumber] = useState<any>('');
+  const [email, setEmail] = useState<any>('');
 
   const methodHandler = (payload: IFormMethod): void => {
     setPhoneNumber(payload.phoneNumber);
-
+    setEmail(payload.email);
     changeStep(1);
   };
 
-  const otpHandler = (value: IOTPMethod): void => {
-    console.log(value);
-
-    // changeStep(2);
+  const otpHandler = (value: IOTPHandler): void => {
+    if (value?.status === false) return;
+    changeStep(2);
   };
 
-  const createNewPasswordHandler = (): void => {};
+  const createNewPasswordHandler = async (
+    payload: ICreateNewPassword
+  ): Promise<void> => {
+    await patchChangePassword({
+      password: payload.password,
+      phoneNumber,
+      email
+    });
+  };
 
   // const successHandler = (value: IOTPMethod): void => {
   //   changeStep(2);

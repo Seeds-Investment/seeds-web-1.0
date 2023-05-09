@@ -8,3 +8,9 @@ export interface IVerifyOtp {
   msisdn: string;
   method: string;
 }
+
+export interface IChangePasswordPayload {
+  email?: string;
+  phoneNumber?: string;
+  password: string;
+}

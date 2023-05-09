@@ -10,6 +10,11 @@ export interface IOTPMethod {
   method: 'whatsapp' | 'sms';
 }
 
+export interface IOTPHandler {
+  status?: boolean;
+  otp?: string;
+}
+
 export interface ICreateNewPassword {
   password: string;
   rePassword: string;

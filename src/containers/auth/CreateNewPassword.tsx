@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const CreateNewPassword = ({
   onSubmit
 }: {
-  onSubmit: (value: ICreateNewPassword) => void;
+  onSubmit: (value: ICreateNewPassword) => Promise<void>;
 }): React.ReactElement => {
   const [payload, setPayload] = useState({
     password: '',
@@ -28,8 +28,8 @@ const CreateNewPassword = ({
     initialValues: payload,
     enableReinitialize: true,
     validateOnBlur: true,
-    onSubmit: values => {
-      onSubmit(values);
+    onSubmit: async values => {
+      await onSubmit(values);
     },
     validationSchema: formCreateNewPasswordSchema
   });

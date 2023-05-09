@@ -73,7 +73,10 @@ const OTPCard = ({
           msisdn: phoneNumber,
           otp: payload[payload.method] ?? ''
         });
-        onSubmit(isMatch);
+        onSubmit({
+          status: isMatch,
+          otp: payload[payload.method]
+        });
       } catch (error) {
         console.log(error);
         return false;

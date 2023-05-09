@@ -18,7 +18,7 @@ export default function Section6(): React.ReactElement {
             Investing, together
           </div>
           <br />
-          <div className=" text-[1.1rem] text-gray-200 tracking-widest text-base font-thin">
+          <div className=" text-[1.1rem] text-white tracking-widest text-base font-extralight">
             {t('landing.section6.text1')}
           </div>
           <br />
@@ -52,7 +52,7 @@ export default function Section6(): React.ReactElement {
                     );
                   return (
                     <Link key={key} href={data.url}>
-                      <div className="font-thin opacity-80 text-xs mb-3 flex items-center">
+                      <div className="font-extralight text-xs mb-3 flex items-center">
                         {dataIcon}
                         {data.name}
                       </div>

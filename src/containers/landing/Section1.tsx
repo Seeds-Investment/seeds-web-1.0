@@ -13,13 +13,13 @@ import { useTranslation } from 'react-i18next';
 import BgSection1 from './BgSection1';
 import Header from './Header';
 
+const fetch = async (): Promise<void> => {
+  const res = await getTrendingAssets();
+  console.log(res);
+};
+
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
-
-  const fetch = async (): Promise<void> => {
-    const res = await getTrendingAssets();
-    console.log(res);
-  };
 
   useEffect(() => {
     void fetch();

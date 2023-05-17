@@ -12,3 +12,17 @@ export interface ISeedsInformationList {
   Support: ISeedsInformationItem[];
   ['Contact Us']: ISeedsInformationItem[];
 }
+
+export interface INewsExternal {
+  author: string | null;
+  content: string;
+  description: string;
+  publishedAt: Date;
+  source: {
+    id: string;
+    name: string;
+  };
+  title: string;
+  url: string;
+  urlToImage: string;
+}

@@ -1,23 +1,39 @@
 import earth from '@/assets/landing-page/s2-earth.png';
 import line from '@/assets/landing-page/s2-line-2.png';
 import shape from '@/assets/landing-page/s2-shape.png';
-import { latestNews } from '@/utils/_static/dummy';
+import { getExternalNews } from '@/repository/news.repository';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import type { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import BgSection2 from './BgSection2';
 import Section2Card from './Section2Card';
 
+const fetch = async (
+  setNews: Dispatch<SetStateAction<never[]>>
+): Promise<void> => {
+  const res = await getExternalNews();
+  const data: never[] = res?.articles;
+  setNews(data);
+};
+
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
+  const [news, setNews] = useState([]);
+  useEffect(() => {
+    void fetch(setNews);
+  }, []);
   return (
     <div className=" min-w-full min-h-screen cursor-default">
       <BgSection2>
         <div className="w-full flex items-center justify-center">
           <div className="grid grid-cols-3 gap-3 p-10 absolute -bottom-[10px] z-10">
-            {latestNews.map((data, idx) => (
-              <Section2Card key={idx} data={data} />
-            ))}
+            {news
+              ?.filter((a, i) => i > 0)
+              .map((data, idx) => (
+                <Section2Card key={idx} data={data} />
+              ))}
           </div>
           <Image
             alt="img"

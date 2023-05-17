@@ -3,14 +3,32 @@ import line2 from '@/assets/landing-page/s4-line-2.png';
 import line from '@/assets/landing-page/s4-line.png';
 import shape from '@/assets/landing-page/s4-shape.png';
 import peoples from '@/assets/landing-page/s4-young.png';
+import { getTrendingCircle } from '@/repository/circle.repository';
+import { competitionCardList } from '@/utils/_static/dummy';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import type { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import BgSection4 from './BgSection4';
 import Section4Slider from './Section4Slider';
 
+const fetch = async (
+  setNews: Dispatch<SetStateAction<never[]>>
+): Promise<void> => {
+  const res = await getTrendingCircle();
+  const data: never[] = res?.articles;
+  setNews(data);
+};
+
 export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    void fetch(setList);
+  }, []);
+  console.log(list);
+
   return (
     <div className="relative">
       <BgSection4>
@@ -57,7 +75,7 @@ export default function Section4(): React.ReactElement {
             </div>
             <div className=" text-[1.1rem] tracking-wide  absolute w-[150px] h-[180px] z-40 top-[440px] bg-gradient-to-l from-white to-transparent font-light left-[425px]"></div>
             <div className=" text-[1.1rem] tracking-wide  absolute w-[450px] z-30 top-[440px] font-light left-[120px]">
-              <Section4Slider />
+              <Section4Slider list={competitionCardList} />
             </div>
           </div>
           <Image

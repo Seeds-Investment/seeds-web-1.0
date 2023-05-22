@@ -24,9 +24,10 @@ const options = {
     async jwt({ token, user, account, profile, isNewUser }: any) {
       // Persist the OAuth access_token to the token right after signin
       if (typeof account?.access_token === 'string') {
-        token.access_token = account.access_token;
-      } else if (typeof account?.accessToken === 'string') {
-        token.access_token = account.accessToken;
+        token.access_token =
+          account.provider === 'apple'
+            ? account.id_token
+            : account.access_token;
       }
       return token;
     },

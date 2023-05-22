@@ -1,19 +1,25 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
+
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
-import PhoneInput from '@/components/PhoneInput';
-import FormCard from '@/containers/auth/FormCard';
+import {
+  AppleBrand,
+  FacebookBrand,
+  GoogleBrand
+} from '@/constants/assets/logo';
+
+import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
+
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AppleBrand, FacebookBrand, GoogleBrand } from 'public/assets/images';
-import { ArrowLeft, Eye, EyeSlash, Loader } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/router';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
+import PhoneInput from '@/components/PhoneInput';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -91,8 +97,7 @@ const LoginPage = (): JSX.Element => {
     setLoading(false);
   };
 
-  const handleLoginProvider = (e: any, provider: string): void => {
-    e.preventDefault();
+  const handleLoginProvider = (provider: string): void => {
     signIn(provider)
       .then(result => {
         if (result?.error != null) {
@@ -109,19 +114,26 @@ const LoginPage = (): JSX.Element => {
   useEffect(() => {
     const fetchAccessToken = async (): Promise<void> => {
       const provider = localStorage.getItem('provider');
-      if (session?.access_token != null && provider != null) {
+      if (provider != null && session.access_token !== undefined) {
         const response = await loginProvider(session.access_token, provider);
-        // setAccessToken(response);
-        console.log(response);
+        if (response.status === 404) {
+          router.push('/circle/auth/register').catch(error => {
+            console.log(error);
+          });
+          signOut().catch(error => {
+            console.log(error);
+          });
+        } else if (response.status === 200) {
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+        }
       }
     };
-
     fetchAccessToken().catch(error => {
       console.error(error);
     });
-  }, [session?.access_token]);
-
-  console.log(session);
+  }, [session?.access_token, router]);
 
   const thirdParty = [
     {
@@ -139,149 +151,129 @@ const LoginPage = (): JSX.Element => {
   ];
 
   return (
-    <div className="flex flex-col min-w-20">
-      <div className="z-20 lg:hidden flex">
-        <Image src={ArrowLeft} alt="arrow-left" className=" mb-5 " />{' '}
-        <p className="font-bold text-white text-2xl mx-auto">
-          {t('authPage.login')}
-        </p>
-      </div>
-      <div>
-        <FormCard className=" md:shrink-0  lg:w-[30rem] xl:w-[35rem] z-20 ">
-          <div className="flex flex-col lg:p-8 px-5 lg:px-10 mt-5">
-            <form>
-              <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
-              <PhoneInput
-                onChangePhoneNumber={handleChangePhoneNumber}
-                phoneValue={formData.phoneNumber}
-                selectedCode={selectedCode}
-                setSelectedCode={setSelectedCode}
-                error={errorPhone === ''}
-              />
-              {errorPhone !== '' && (
-                <small className="text-[#ff515d] font-bold">{errorPhone}</small>
-              )}
-              <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
-              <Input
-                className="text-xl"
-                type={showPassword ? 'text' : 'password'}
-                variant="standard"
-                color="gray"
-                onChange={e => {
-                  setFormData({ ...formData, password: e.target.value });
-                }}
-                icon={
-                  <Image
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                    src={showPassword ? Eye : EyeSlash}
-                    alt=""
-                  />
-                }
-                value={formData.password}
-                error={errorPassword}
-              />
-              {errorPassword !== '' && (
-                <small className="text-[#ff515d] font-bold">
-                  {errorPassword}
-                </small>
-              )}
-              {errorResponse !== '' && (
-                <small className="text-[#ff515d] font-bold">
-                  {errorResponse}
-                </small>
-              )}
-              <div className="flex flex-row justify-between gap-5 items-center mt-2">
-                <Checkbox
-                  checked={formData.keepMeLoggedIn}
-                  onChange={e => {
-                    setFormData({
-                      ...formData,
-                      keepMeLoggedIn: e.target.checked
-                    });
-                  }}
-                  label={
-                    <Typography
-                      variant="small"
-                      className=" text-black lg:font-small"
-                    >
-                      {t('authPage.keepMeLoggedIn')}
-                    </Typography>
-                  }
-                  color="green"
-                />
-                <Link
-                  href={''}
-                  className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
-                >
-                  {t('authPage.forgotPassword')}?
-                </Link>
-              </div>
+    <div className="px-8 pb-8 mt-4">
+      <form>
+        <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
+        <PhoneInput
+          selectedCode={selectedCode}
+          setSelectedCode={setSelectedCode}
+          onChangePhoneNumber={handleChangePhoneNumber}
+          phoneValue={formData.phoneNumber}
+          error={errorPhone === ''}
+        />
+        {errorPhone !== '' && (
+          <small className="text-[#ff515d] font-bold">{errorPhone}</small>
+        )}
+        <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
+        <Input
+          className="text-xl"
+          type={showPassword ? 'text' : 'password'}
+          variant="standard"
+          color="gray"
+          onChange={e => {
+            setFormData({ ...formData, password: e.target.value });
+          }}
+          icon={
+            <Image
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+              src={showPassword ? Eye.src : EyeSlash.src}
+              alt={showPassword ? Eye.alt : EyeSlash.alt}
+              width={24}
+              height={24}
+            />
+          }
+          value={formData.password}
+          error={errorPassword}
+        />
+        {errorPassword !== '' && (
+          <small className="text-[#ff515d] font-bold">{errorPassword}</small>
+        )}
+        {errorResponse !== '' && (
+          <small className="text-[#ff515d] font-bold">{errorResponse}</small>
+        )}
+        <div className="flex flex-row justify-between gap-5 items-center mt-2">
+          <Checkbox
+            checked={formData.keepMeLoggedIn}
+            onChange={e => {
+              setFormData({
+                ...formData,
+                keepMeLoggedIn: e.target.checked
+              });
+            }}
+            label={
+              <Typography variant="small" className=" text-black lg:font-small">
+                {t('authPage.keepMeLoggedIn')}
+              </Typography>
+            }
+            color="green"
+          />
+          <Link
+            href={''}
+            className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
+          >
+            {t('authPage.forgotPassword')}?
+          </Link>
+        </div>
+        <CButton
+          onClick={() => submitData}
+          disabled={loading}
+          className={`mx-auto w-full rounded-full ${
+            formData.password === '' || formData.phoneNumber === '' || loading
+              ? 'bg-[#BDBDBD]'
+              : 'bg-[#3AC4A0]'
+          } mt-5`}
+        >
+          {loading ? (
+            <Image
+              src={Loader.src}
+              alt={Loader.alt}
+              className="mx-auto animate-spin object-contain object-[center_center]"
+              width={25}
+              height={25}
+            />
+          ) : (
+            t('authPage.login')
+          )}
+        </CButton>
+        <small className="flex justify-center mt-5 text-opacity-50">
+          {t('or')}
+        </small>
+        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
+          {thirdParty.map((el, i) => {
+            return (
               <CButton
-                onClick={() => submitData}
-                disabled={loading}
-                className={`mx-auto w-full rounded-full ${
-                  formData.password === '' ||
-                  formData.phoneNumber === '' ||
-                  loading
-                    ? 'bg-[#BDBDBD]'
-                    : 'bg-[#3AC4A0]'
-                } mt-5`}
-              >
-                {loading ? (
-                  <Image
-                    src={Loader}
-                    alt="loader"
-                    className="mx-auto animate-spin"
-                    width={25}
-                  />
-                ) : (
-                  t('authPage.login')
-                )}
-              </CButton>
-              <small className="flex  justify-center mt-5 text-opacity-50">
-                {t('or')}
-              </small>
-              <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly mb-5 lg:mt-4">
-                {thirdParty.map((el, i) => {
-                  return (
-                    <CButton
-                      onClick={e => {
-                        handleLoginProvider(e, el.name.toLowerCase());
-                      }}
-                      key={i}
-                      className="bg-white rounded-full flex items-center"
-                    >
-                      <Image src={el.img} alt="third-party" />
-                      <Typography
-                        variant="small"
-                        className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
-                      >
-                        Login with {el.name}
-                      </Typography>
-                    </CButton>
-                  );
-                })}
-              </div>
-              {/* <CButton
                 onClick={() => {
-                  signOut();
+                  handleLoginProvider(el.name.toLowerCase());
                 }}
-                className="w-full"
+                key={i}
+                className="bg-white rounded-full flex items-center"
               >
-                Sign Out
-              </CButton> */}
-            </form>
-          </div>
-        </FormCard>
-      </div>
+                <Image
+                  width={45}
+                  height={45}
+                  src={el.img.src}
+                  alt={el.img.alt}
+                  className="w-auto h-auto object-contain object-[center_center]"
+                />
+                <Typography
+                  variant="small"
+                  className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                >
+                  Login with {el.name}
+                </Typography>
+              </CButton>
+            );
+          })}
+        </div>
+      </form>
     </div>
   );
 };
 
 LoginPage.getLayout = function getLayout(page: JSX.Element) {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <AuthLayout title="Login">{page}</AuthLayout>;
 };
 
 export default LoginPage;

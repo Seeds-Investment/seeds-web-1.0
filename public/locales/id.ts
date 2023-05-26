@@ -306,5 +306,15 @@ export default {
     passwordEmpty: 'Kata sandi diperlukan, silakan masukkan kata sandi Anda!',
     wrongPassword: 'Kata sandi salah'
   },
-  or: 'atau'
+  or: 'atau',
+  input: {
+    phone: 'Nomor Handphone',
+    email: 'Email',
+    birthDate: 'Tanggal Lahir'
+  },
+  registerPage: {
+    title: 'Daftar',
+    description: 'Mari berkenalan dengan Anda',
+    nextButton: 'Lanjut'
+  }
 };

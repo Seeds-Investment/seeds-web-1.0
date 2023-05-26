@@ -304,5 +304,15 @@ export default {
     passwordEmpty: 'The password is required, please enter your password!',
     wrongPassword: 'The password is incorrect'
   },
-  or: 'or'
+  or: 'or',
+  input: {
+    phone: 'Phone Number',
+    email: 'Email',
+    birthDate: 'Birth Date'
+  },
+  registerPage: {
+    title: 'Register',
+    description: "Let's get to know you",
+    nextButton: 'Continue'
+  }
 };

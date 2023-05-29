@@ -3,7 +3,8 @@ import {
   AccordionBody,
   AccordionHeader
 } from '@material-tailwind/react';
-import React, { useState, type ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import React, { useState } from 'react';
 
 function Icon({ open }: { open: boolean }): React.ReactElement {
   return (
@@ -35,7 +36,14 @@ const CAccordion = ({
           setOpen(c => !c);
         }}
       >
-        {title}
+        <span
+          className={`${
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            open && 'text-seeds-button-green transition-all'
+          } text-left`}
+        >
+          {title}
+        </span>
       </AccordionHeader>
       <AccordionBody>{description}</AccordionBody>
     </Accordion>

@@ -26,9 +26,9 @@ export default function Header(): React.ReactElement {
   }, [active]);
 
   return (
-    <div className="absolute top-[20px] flex items-center w-full justify-between px-20 z-20">
+    <div className="absolute top-[20px] flex items-center w-full justify-between px-5 lg:px-20 z-20">
       <Image alt="img" className="" src={seeds} />
-      <div className="flex justify-between w-[350px]">
+      <div className="flex justify-between items-center lg:w-[350px]">
         <div className="flex items-center w-[200px] justify-between">
           <div
             onClick={languageHandler}

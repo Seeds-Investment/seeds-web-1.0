@@ -18,7 +18,7 @@ export default function FAQ(): React.ReactElement {
       </div>
       <div className="px-5 lg:px-[100px] py-10 min-h-[calc(100vh-100px)] flex justify-between bg-opacity-80 bg-white">
         <div className="w-full rounded-2xl flex justify-center bg-white p-5 bg-opacity-50">
-          <div className="lg:w-1/2 bg-white rounded-2xl p-10">
+          <div className=" w-full lg:w-1/2 bg-white rounded-2xl p-10">
             <br />
             <p className="font-semibold text-xl text-center">Settings</p>
             <br />

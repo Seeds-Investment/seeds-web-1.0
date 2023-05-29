@@ -53,7 +53,7 @@ export default function FAQ(): React.ReactElement {
             </div>
             <br />
             <div className="w-full flex justify-center">
-              <Button className="bg-seeds-button-green">
+              <Button className="bg-seeds-button-green rounded-full">
                 {t('faq.button')}
               </Button>
             </div>

@@ -5,19 +5,19 @@ export const Eye: AssetsInterface = {
   alt: 'eye-icon'
 };
 
-export const EyePurple: AssetsInterface = {
-  src: '/assets/vector/eye-purple.svg',
-  alt: 'eye-purple'
-};
-
 export const EyeSlash: AssetsInterface = {
   src: '/assets/vector/eye-slash.svg',
   alt: 'eye-slash-icon'
 };
 
 export const Loader: AssetsInterface = {
-  src: '/assets/vector/loader.svg',
+  src: 'assets/vector/loader.svg',
   alt: 'loader-icon'
+};
+
+export const EyePurple: AssetsInterface = {
+  src: '/assets/vector/eye-purple.svg',
+  alt: 'eye-purple'
 };
 
 export const ArrowLeft: AssetsInterface = {

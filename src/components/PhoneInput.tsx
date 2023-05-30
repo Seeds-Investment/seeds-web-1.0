@@ -8,7 +8,7 @@ import Flags from '@/constants/assets/flags';
 
 interface PhoneInputProps {
   onChangePhoneNumber: (value: string) => void;
-  error: boolean;
+  error: boolean | undefined;
   phoneValue: string;
   selectedCode: string;
   setSelectedCode: (value: string) => void;

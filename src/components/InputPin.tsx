@@ -24,13 +24,20 @@ const defaultClasses =
 interface InputPinProps {
   onCancel: () => void;
   onContinue: (pin: string) => void;
+  title?: string;
+  subtitle?: string;
   className?: string;
   style?: object;
 }
 
-const InputPin: React.FC<InputPinProps> = props => {
-  const { onCancel, onContinue } = props;
-
+const InputPin: React.FC<InputPinProps> = ({
+  onCancel,
+  onContinue,
+  title = 'Enter Your PIN',
+  subtitle = 'Please enter your PIN number correctly',
+  className,
+  style
+}) => {
   const [pin, setPin] = useState<string[]>([]);
 
   const enterPinHandler = (value: string) => () => {
@@ -57,8 +64,8 @@ const InputPin: React.FC<InputPinProps> = props => {
   return (
     <CardGradient
       defaultGradient
-      className={props.className ?? defaultClasses}
-      style={props.style}
+      className={className ?? defaultClasses}
+      style={style}
     >
       <div className="max-w-max mx-auto mt-6 mb-36">
         {/* -----Nav & Logo----- */}
@@ -77,10 +84,10 @@ const InputPin: React.FC<InputPinProps> = props => {
         {/* -----Title----- */}
         <>
           <h2 className="mb-2 lg:text-3xl text-2xl font-semibold text-center text-[#262626]">
-            Enter Your PIN
+            {title}
           </h2>
           <p className="sm:mb-10 mb-12 text-base text-center text-[#7C7C7C]">
-            Please enter your PIN number correctly
+            {subtitle}
           </p>
         </>
 

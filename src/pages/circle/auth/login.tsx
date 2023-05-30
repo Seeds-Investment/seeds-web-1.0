@@ -1,6 +1,4 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
+// eslint-disable-next-line react-hooks/exhaustive-deps
 
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
@@ -9,14 +7,19 @@ import {
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
-import { loginPhoneNumber } from '@/repository/auth.repository';
-import { Checkbox, Input, Typography } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
 
-// import { signIn, useSession } from 'next-auth/react';
+import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
+
+import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
+import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 import PhoneInput from '@/components/PhoneInput';
-import { Eye, EyeSlash, Loader } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -27,7 +30,7 @@ interface FormData {
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  // const { data: session }: any = useSession();
+  const { data: session }: any = useSession();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,33 +98,42 @@ const LoginPage = (): JSX.Element => {
   };
 
   const handleLoginProvider = (provider: string): void => {
-    // signIn(provider)
-    //   .then(result => {
-    //     if (result?.error != null) {
-    //       console.log(result.error);
-    //     } else if (provider !== '') {
-    //       localStorage.setItem('provider', provider);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+    signIn(provider)
+      .then(result => {
+        if (result?.error != null) {
+          console.log(result.error);
+        } else if (provider !== '') {
+          localStorage.setItem('provider', provider);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
-  // useEffect(() => {
-  //   const fetchAccessToken = async (): Promise<void> => {
-  //     const provider = localStorage.getItem('provider');
-  //     if (session?.access_token != null && provider != null) {
-  //       const response = await loginProvider(session.access_token, provider);
-  //       // setAccessToken(response);
-  //       console.log(response);
-  //     }
-  //   };
-
-  //   fetchAccessToken().catch(error => {
-  //     console.error(error);
-  //   });
-  // }, [session?.access_token]);
+  useEffect(() => {
+    const fetchAccessToken = async (): Promise<void> => {
+      const provider = localStorage.getItem('provider');
+      if (provider != null && session.access_token !== undefined) {
+        const response = await loginProvider(session.access_token, provider);
+        if (response.status === 404) {
+          router.push('/circle/auth/register').catch(error => {
+            console.log(error);
+          });
+          signOut().catch(error => {
+            console.log(error);
+          });
+        } else if (response.status === 200) {
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+        }
+      }
+    };
+    fetchAccessToken().catch(error => {
+      console.error(error);
+    });
+  }, [session?.access_token, router]);
 
   const thirdParty = [
     {
@@ -166,8 +178,10 @@ const LoginPage = (): JSX.Element => {
               onClick={() => {
                 setShowPassword(!showPassword);
               }}
-              src={showPassword ? Eye : EyeSlash}
-              alt=""
+              src={showPassword ? Eye.src : EyeSlash.src}
+              alt={showPassword ? Eye.alt : EyeSlash.alt}
+              width={24}
+              height={24}
             />
           }
           value={formData.password}
@@ -213,8 +227,8 @@ const LoginPage = (): JSX.Element => {
         >
           {loading ? (
             <Image
-              src={Loader}
-              alt="loader"
+              src={Loader.src}
+              alt={Loader.alt}
               className="mx-auto animate-spin object-contain object-[center_center]"
               width={25}
               height={25}
@@ -226,7 +240,7 @@ const LoginPage = (): JSX.Element => {
         <small className="flex justify-center mt-5 text-opacity-50">
           {t('or')}
         </small>
-        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-4">
+        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
           {thirdParty.map((el, i) => {
             return (
               <CButton
@@ -237,8 +251,8 @@ const LoginPage = (): JSX.Element => {
                 className="bg-white rounded-full flex items-center"
               >
                 <Image
-                  width={30}
-                  height={30}
+                  width={45}
+                  height={45}
                   src={el.img.src}
                   alt={el.img.alt}
                   className="w-auto h-auto object-contain object-[center_center]"

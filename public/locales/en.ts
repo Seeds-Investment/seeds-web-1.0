@@ -284,5 +284,8 @@ export default {
     title: 'Register',
     description: "Let's get to know you",
     nextButton: 'Continue'
+  },
+  ProfilePage: {
+    title: 'My Profile'
   }
 };

@@ -286,5 +286,8 @@ export default {
     title: 'Daftar',
     description: 'Mari berkenalan dengan Anda',
     nextButton: 'Lanjut'
+  },
+  ProfilePage: {
+    title: 'Profil Saya'
   }
 };

@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react';
+
 interface PageGradientProps {
-  children: JSX.Element;
+  children: ReactNode;
   className?: string;
   style?: object;
   defaultGradient: boolean;

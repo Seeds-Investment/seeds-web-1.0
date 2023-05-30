@@ -47,6 +47,21 @@ module.exports = withMT({
       },
       boxShadow: {
         center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)'
+      },
+      animation: {
+        'slide-down': 'slide-down 300ms ease-out forwards'
+      },
+      keyframes: {
+        'slide-down': {
+          from: {
+            opacity: 0,
+            transform: 'translateY(-3rem)'
+          },
+          to: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }
+        }
       }
     }
   },

@@ -7,6 +7,10 @@ interface LoginForm {
   password: string;
 }
 
+interface AvatarListReq {
+  gender?: string;
+}
+
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('/login/phone-number', formData);
@@ -22,6 +26,18 @@ export const loginProvider = async (
 ): Promise<any> => {
   try {
     let response = await authService.post(`/login/${provider}`, { identifier });
+
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const avatarList = async ({
+  gender = 'male'
+}: AvatarListReq): Promise<any> => {
+  try {
+    let response = await authService.get(`/avatars?gender=${gender}`);
 
     return (response = { ...response, status: 200 });
   } catch (error: any) {

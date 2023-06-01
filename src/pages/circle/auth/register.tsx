@@ -1,85 +1,108 @@
-import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
-import { Button, Input, Typography } from '@material-tailwind/react';
+import ChooseAvatarPage from '@/containers/register/ChooseAvatarPage';
+import CreatePasswordPage from '@/containers/register/CreatePasswordPage';
+import PersonalInfoPage from '@/containers/register/PersonalInfoPage';
+import ReferralCodePage from '@/containers/register/ReferralCodePage';
+import SuccessRegisterPage from '@/containers/register/SuccessRegisterPage';
+import ValidateOTPPage from '@/containers/register/ValidateOTPPage';
+import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
-const AuthIndex = (): JSX.Element => {
-  const { t } = useTranslation();
+export interface IRegisterPaging {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  formdata: IRegisterFormdata;
+  setFormdata: Dispatch<SetStateAction<IRegisterFormdata>>;
+}
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedCode, setSelectedCode] = useState('+62');
+export interface IRegisterFormdata {
+  phoneNumber: string;
+  email: string;
+  birthdate: string;
+  name: string;
+  seedsTag: string;
+  referralCode: string;
+}
+
+const RegisterPage = (): JSX.Element => {
+  // const { t } = useTranslation();
+
+  const [page, setPage] = useState<number>(2);
+  const [formdata, setFormdata] = useState<IRegisterFormdata>({
+    phoneNumber: '',
+    email: '',
+    birthdate: '',
+    name: '',
+    seedsTag: '',
+    referralCode: ''
+  });
 
   return (
     <div className="px-8 mt-4">
-      <div>
-        <Typography variant="h3" color="black">
-          {t('registerPage.title')}
-        </Typography>
-        <Typography variant="small" color="black">
-          {t('registerPage.description')}
-        </Typography>
-      </div>
-      <div className="mt-10">
-        <Typography variant="h5" color="black">
-          {t('input.phone')}
-        </Typography>
-        <PhoneInput
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          onChangePhoneNumber={e => {
-            setPhoneNumber(e);
-          }}
-          phoneValue={phoneNumber}
-          error={false}
-        />
-      </div>
-      <div className="mt-5">
-        <Typography variant="h5" color="black">
-          {t('input.email')}
-        </Typography>
-        <Input
-          className="text-lg"
-          type="email"
-          size="md"
-          variant="standard"
-          color="gray"
-          placeholder="example@mail.com"
-          onChange={e => {
-            console.log(e.target.value);
-          }}
-        />
-      </div>
-      <div className="mt-5">
-        <Typography variant="h5" color="black">
-          {t('input.birthDate')}
-        </Typography>
-        <Input
-          className="text-lg"
-          type="date"
-          size="md"
-          variant="standard"
-          color="gray"
-          placeholder="DD/MM/YYYY"
-          onChange={e => {
-            console.log(e.target.value);
-          }}
-        />
-      </div>
-      <div className="mt-8">
-        <Button
-          fullWidth
-          className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"
-        >
-          {t('registerPage.nextButton')}
-        </Button>
-      </div>
+      {(() => {
+        switch (page) {
+          case 0:
+            return (
+              <PersonalInfoPage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+          case 1:
+            return (
+              <ReferralCodePage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+          case 2:
+            return (
+              <ValidateOTPPage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+          case 3:
+            return (
+              <CreatePasswordPage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+          case 4:
+            return (
+              <ChooseAvatarPage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+          case 5:
+            return (
+              <SuccessRegisterPage
+                page={page}
+                setPage={setPage}
+                formdata={formdata}
+                setFormdata={setFormdata}
+              />
+            );
+        }
+      })()}
     </div>
   );
 };
 
-AuthIndex.getLayout = function getLayout(page: JSX.Element) {
+RegisterPage.getLayout = function getLayout(page: JSX.Element) {
   return <AuthLayout titleKey="registerPage.title">{page}</AuthLayout>;
 };
 
-export default AuthIndex;
+export default RegisterPage;

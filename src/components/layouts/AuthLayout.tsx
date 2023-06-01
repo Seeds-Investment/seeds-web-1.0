@@ -1,14 +1,12 @@
-import Image from 'next/image';
-import { Trans, useTranslation } from 'react-i18next';
-
 import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
-
 import { HelloHero, LineChart } from '@/constants/assets/images';
 import { SeedsLogo } from '@/constants/assets/logo';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowLeft } from 'public/assets/vector';
+import { Trans, useTranslation } from 'react-i18next';
 
 export interface IAuthLayout {
   children: JSX.Element;

@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@/utils/common/i18n';
 import { ThemeProvider } from '@material-tailwind/react';
 import type { NextPage } from 'next';
 // import { SessionProvider } from 'next-auth/react';
@@ -8,14 +9,15 @@ import type { ReactNode } from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
-import '@/utils/common/i18n';
-
-export type Page<P = Record<string, unknown>, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
   getLayout?: (page: JSX.Element) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-  Component: Page;
+  Component: NextPageWithLayout;
 };
 
 function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {

@@ -1,34 +1,40 @@
+import OTPCard from '@/containers/auth/OTPCard';
 import type { IRegisterPaging } from '@/pages/circle/auth/register';
-import { Button, Typography } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { Typography } from '@material-tailwind/react';
 
 const ValidateOTPPage = ({
-  page,
   setPage,
   formdata,
   setFormdata
 }: IRegisterPaging): JSX.Element => {
-  const { t } = useTranslation();
-
   return (
-    <>
-      <div className="mt-5">
+    <div>
+      <div>
         <Typography variant="h5" color="black">
           Enter OTP Code
         </Typography>
       </div>
-      <div className="mt-8">
-        <Button
-          fullWidth
-          className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"
-          onClick={() => {
-            setPage(3);
+      <div>
+        <OTPCard
+          onSubmit={data => {
+            if (
+              !isUndefindOrNull(data.status) &&
+              data?.status === true &&
+              !isUndefindOrNull(data.otp) &&
+              !isEmptyString(data.otp)
+            ) {
+              setFormdata(prevState => ({
+                ...prevState,
+                otp: data.otp
+              }));
+              setPage(3);
+            }
           }}
-        >
-          {t('registerPage.nextButton')}
-        </Button>
+          phoneNumber={`${formdata.countryCode}${formdata.phoneNumber}`}
+        />
       </div>
-    </>
+    </div>
   );
 };
 

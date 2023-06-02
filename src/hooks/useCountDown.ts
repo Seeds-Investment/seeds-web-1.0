@@ -28,7 +28,7 @@ export const useCountDown = (seconds: number = 0): ICountDown => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [blockByCountdown]);
+  }, [blockByCountdown, countdown]);
 
   useEffect(() => {
     if (countdown === 0) stopHandler();

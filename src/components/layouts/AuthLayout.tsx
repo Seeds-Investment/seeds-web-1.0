@@ -63,14 +63,15 @@ const AuthLayout = ({
                   {t('authPage.description')}
                 </Typography>
               </div>
-              <div className="flex justify-center ">
+              <div className="flex justify-center">
                 <Image
                   src={HelloHero.src}
-                  className="w-auto h-auto object-cover object-[bottom_center] self-end"
-                  quality={50}
+                  className="object-cover object-[bottom_center] w-[18rem]"
                   alt={HelloHero.alt}
-                  width={350}
-                  height={350}
+                  quality={60}
+                  width="0"
+                  height="0"
+                  sizes="100vw"
                   placeholder="blur"
                   blurDataURL={HelloHero.src}
                 />

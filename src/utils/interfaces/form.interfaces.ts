@@ -19,3 +19,17 @@ export interface ICreateNewPassword {
   password: string;
   rePassword: string;
 }
+
+export interface IRegisterFormdata {
+  countryCode: string;
+  phoneNumber: string;
+  email: string;
+  birthdate: string;
+  name: string;
+  seedsTag: string;
+  referralCode: string;
+  otp: string;
+  password: string;
+  rePassword: string;
+  avatar: string;
+}

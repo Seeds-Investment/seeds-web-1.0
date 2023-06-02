@@ -55,12 +55,19 @@ export default {
       phoneNumber: 'Please enter your phone number',
       successMessage:
         'Congratulations! The new password has been successfully created.',
-      successTitle: 'Success!'
+      successTitle: 'Success!',
+      name: 'Your Name',
+      seedsTag: '@seedstag',
+      referralCode: 'Referral Code'
     },
     type: {
       email: 'Email',
-      password: 'Password',
-      phoneNumber: 'Phone Number'
+      password: 'Input Password',
+      rePassword: 'Confirm Password',
+      phoneNumber: 'Phone Number',
+      name: 'Name',
+      seedsTag: 'Seeds Tag',
+      referralCode: 'Referral Code'
     }
   },
   button: {
@@ -340,8 +347,22 @@ export default {
   },
   or: 'or',
   registerPage: {
-    title: 'Register',
-    description: "Let's get to know you",
+    title: {
+      personalInfo: 'Register',
+      seedsuser: 'Register',
+      createPass: 'Create Your Password',
+      chooseAvatar: 'Choose Your Avatar',
+      success: 'Success!'
+    },
+    description: {
+      personalInfo: "Let's get to know you",
+      seedsuser:
+        'Please enter the name and Seeds Tag that will be used on your account',
+      createPass:
+        'Please create a secure password that include the following criteria below',
+      chooseAvatar: 'Create an avatar that describes yourself!',
+      success: 'Congratulations, your account has been successfully created'
+    },
     nextButton: 'Continue'
   }
 };

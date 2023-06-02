@@ -1,10 +1,11 @@
 import AuthLayout from '@/components/layouts/AuthLayout';
 import ChooseAvatarPage from '@/containers/register/ChooseAvatarPage';
+import ConfigureSeedsUserPage from '@/containers/register/ConfigureSeedsUserPage';
 import CreatePasswordPage from '@/containers/register/CreatePasswordPage';
 import PersonalInfoPage from '@/containers/register/PersonalInfoPage';
-import ReferralCodePage from '@/containers/register/ReferralCodePage';
 import SuccessRegisterPage from '@/containers/register/SuccessRegisterPage';
 import ValidateOTPPage from '@/containers/register/ValidateOTPPage';
+import type { IRegisterFormdata } from '@/utils/interfaces/form.interfaces';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 
@@ -15,26 +16,20 @@ export interface IRegisterPaging {
   setFormdata: Dispatch<SetStateAction<IRegisterFormdata>>;
 }
 
-export interface IRegisterFormdata {
-  phoneNumber: string;
-  email: string;
-  birthdate: string;
-  name: string;
-  seedsTag: string;
-  referralCode: string;
-}
-
 const RegisterPage = (): JSX.Element => {
-  // const { t } = useTranslation();
-
-  const [page, setPage] = useState<number>(2);
+  const [page, setPage] = useState<number>(0);
   const [formdata, setFormdata] = useState<IRegisterFormdata>({
+    countryCode: '+62',
     phoneNumber: '',
     email: '',
     birthdate: '',
     name: '',
     seedsTag: '',
-    referralCode: ''
+    referralCode: '',
+    otp: '',
+    password: '',
+    rePassword: '',
+    avatar: ''
   });
 
   return (
@@ -52,7 +47,7 @@ const RegisterPage = (): JSX.Element => {
             );
           case 1:
             return (
-              <ReferralCodePage
+              <ConfigureSeedsUserPage
                 page={page}
                 setPage={setPage}
                 formdata={formdata}

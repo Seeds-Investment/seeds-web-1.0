@@ -9,17 +9,22 @@ import Flags from '@/constants/assets/flags';
 interface PhoneInputProps {
   onChangePhoneNumber: (value: string) => void;
   error: boolean;
+  errorMessage?: string;
+  label?: string;
   phoneValue: string;
   selectedCode: string;
   setSelectedCode: (value: string) => void;
+  name?: string;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
   onChangePhoneNumber,
   error,
+  label,
   selectedCode,
   setSelectedCode,
-  phoneValue
+  phoneValue,
+  name
 }) => {
   const [dropdownVisibility, setDropdowVisibility] = useState(false);
   const [selectedFlag, setSelectedFlag] = useState('ID');
@@ -80,12 +85,13 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
               size="md"
               color="gray"
               variant="standard"
-              name="phoneNumber"
+              name={name ?? 'phoneNumber'}
               onChange={e => {
                 onChangePhoneNumber(e.target.value);
               }}
               value={displayedPhoneNumber}
               error={error}
+              label={label}
             />
           </div>
         </div>

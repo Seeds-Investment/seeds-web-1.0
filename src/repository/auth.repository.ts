@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import type {
   IGetOtp,
   IVerifyOtp
@@ -9,10 +10,6 @@ const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1`);
 interface LoginForm {
   phoneNumber: string;
   password: string;
-}
-
-interface AvatarListReq {
-  gender?: string;
 }
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
@@ -75,14 +72,27 @@ export const loginProvider = async (
   }
 };
 
-export const avatarList = async ({
-  gender = 'male'
-}: AvatarListReq): Promise<any> => {
-  try {
-    let response = await authService.get(`/avatars?gender=${gender}`);
+export const avatarList = async (gender: string = 'male'): Promise<any> => {
+  if (isUndefindOrNull(gender) || isEmptyString(gender)) {
+    return await Promise.resolve(null);
+  }
 
-    return (response = { ...response, status: 200 });
-  } catch (error: any) {
-    return error.response;
+  return await authService.get(`/avatars?gender=${gender}`);
+};
+
+export const registerNewUser = async (formData: {
+  phoneNumber: string;
+  email: string;
+  birthDate: string;
+  name: string;
+  seedsTag: string;
+  refCode: string;
+  password: string;
+  avatar: string;
+}): Promise<any> => {
+  try {
+    return await authService.post(`/create`, formData);
+  } catch (_) {
+    return await Promise.resolve(null);
   }
 };

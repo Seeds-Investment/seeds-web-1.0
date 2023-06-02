@@ -38,7 +38,7 @@ const OTPCard = ({
       updatePayload.method = 'whatsapp';
     }
     setPayload(updatePayload);
-  }, [payload, t]);
+  }, [payload]);
 
   const otpScreen: ISlider = {
     image: payload.method === 'whatsapp' ? otpWhatsapp : otpSms,
@@ -116,7 +116,8 @@ const OTPCard = ({
   };
 
   const { countdownText, resetCountdown, countdown } = useCountDown(30);
-  const fetchOtp = async (): Promise<void> => {
+
+  const fetchOtp = useCallback(async (): Promise<void> => {
     try {
       if (phoneNumber?.length === 0) return;
       const res = await getOtp({ phoneNumber, method: payload.method });
@@ -124,7 +125,8 @@ const OTPCard = ({
     } catch (error) {
       alert('error');
     }
-  };
+  }, [phoneNumber, payload.method]);
+
   const resendHandler = async (): Promise<void> => {
     if (countdown > 0) return;
     resetCountdown();
@@ -135,7 +137,7 @@ const OTPCard = ({
 
   useEffect(() => {
     void fetchOtp();
-  }, [phoneNumber, payload.method]);
+  }, [fetchOtp]);
   return (
     <form
       onSubmit={formik.handleSubmit}

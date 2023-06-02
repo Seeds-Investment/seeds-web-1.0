@@ -52,12 +52,19 @@ export default {
     birthDate: 'Tanggal Lahir',
     placeholder: {
       email: 'Mohon ketikkan email anda',
-      phoneNumber: 'Mohon ketikkan nomor telepon anda'
+      phoneNumber: 'Mohon ketikkan nomor telepon anda',
+      name: 'Nama kamu',
+      seedsTag: '@seedstag',
+      referralCode: 'Kode Referal'
     },
     type: {
       email: 'Email',
       password: 'Kata Sandi',
-      phoneNumber: 'Nomor Telepon'
+      rePassword: '',
+      phoneNumber: 'Nomor Telepon',
+      name: 'Nama',
+      seedsTag: 'Tag Seeds',
+      referralCode: 'Kode Referal'
     }
   },
   button: {
@@ -339,8 +346,22 @@ export default {
   },
   or: 'atau',
   registerPage: {
-    title: 'Daftar',
-    description: 'Mari berkenalan dengan Anda',
+    title: {
+      personalInfo: 'Daftar',
+      seedsuser: 'Daftar',
+      createPass: 'Daftar',
+      chooseAvatar: 'Pilih Avatarmu',
+      success: 'Berhasil!'
+    },
+    description: {
+      personalInfo: 'Mari berkenalan dengan Anda',
+      seedsuser:
+        'Silahkan masukkan nama dan Seeds Tag yang akan digunakan pada akun kamu',
+      createPass:
+        'Harap buat kata sandi yang menyertakan kriteria berikut di bawah ini',
+      chooseAvatar: 'Buat avatar yang menggambarkan diri kamu!',
+      success: 'Selamat, akun kamu telah berhasil dibuat'
+    },
     nextButton: 'Lanjut'
   }
 };

@@ -1,3 +1,5 @@
+import { passwordPattern } from '@/utils/common/pattern';
+import type { Shape } from '@/utils/validations/common.schema';
 import * as Yup from 'yup';
 import type {
   ICreateNewPassword,
@@ -40,9 +42,6 @@ export const formOtpSchema: any = Yup.object<Shape<IOTPMethod>>().shape({
   })
 });
 
-const passwordPattern =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
 export const formCreateNewPasswordSchema: any = Yup.object<
   Shape<ICreateNewPassword>
 >().shape({
@@ -54,19 +53,3 @@ export const formCreateNewPasswordSchema: any = Yup.object<
     .matches(passwordPattern, invalidPassword)
     .oneOf([Yup.ref('password')], unmatchPassword)
 });
-
-export type ConditionalSchema<T> = T extends string
-  ? Yup.StringSchema
-  : T extends number
-  ? Yup.NumberSchema
-  : T extends boolean
-  ? Yup.BooleanSchema
-  : T extends Record<any, any>
-  ? Yup.AnyObjectSchema
-  : T extends any[]
-  ? Yup.ArraySchema<any, any>
-  : Yup.AnySchema;
-
-export type Shape<Fields> = {
-  [Key in keyof Fields]: ConditionalSchema<Fields[Key]>;
-};

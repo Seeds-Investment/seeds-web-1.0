@@ -16,6 +16,7 @@ export interface ICInputPassword {
   size?: size;
   variant?: variant;
   color?: color;
+  error?: boolean;
 }
 
 const CInputPassword = ({
@@ -24,7 +25,8 @@ const CInputPassword = ({
   placeholder,
   size = 'md',
   variant = 'standard',
-  color = 'gray'
+  color = 'gray',
+  error = false
 }: ICInputPassword): React.ReactElement => {
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -51,6 +53,7 @@ const CInputPassword = ({
         />
       }
       value={password}
+      error={error}
     />
   );
 };

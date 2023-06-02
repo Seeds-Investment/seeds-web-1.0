@@ -41,7 +41,7 @@ const MethodCard = ({
       updatePayload.method = 'phoneNumber';
     }
     setPayload(updatePayload);
-  }, [payload, t]);
+  }, [payload]);
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>): void => {
     const { name, value } = e.target as HTMLInputElement;

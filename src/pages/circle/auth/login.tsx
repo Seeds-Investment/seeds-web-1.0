@@ -56,45 +56,50 @@ const LoginPage = (): JSX.Element => {
     });
   };
   const submitData = async (): Promise<void> => {
-    setLoading(true);
-    if (formData.phoneNumber === '') {
-      setErrorPhone(t('validation.phoneNumberEmpty'));
-    } else {
-      setErrorPhone('');
-    }
-    if (formData.password === '') {
-      setErrorPassword(t('validation.passwordEmpty'));
-    } else {
-      setErrorPassword('');
-    }
-
-    if (formData.phoneNumber !== '' && formData.password !== '') {
-      const formattedPhone = selectedCode.concat(formData.phoneNumber);
-
-      const response = await loginPhoneNumber({
-        phoneNumber: formattedPhone,
-        password: formData.password
-      });
-
-      if (response.status === 200) {
-        window.localStorage.setItem('accessToken', response.accessToken);
-        window.localStorage.setItem('refreshToken', response.refreshToken);
-        window.localStorage.setItem('expiresAt', response.expiresAt);
-        window.localStorage.setItem(
-          'keepMeLoggedIn',
-          String(formData.keepMeLoggedIn)
-        );
-        setFormData({
-          phoneNumber: '',
-          password: '',
-          keepMeLoggedIn: false
-        });
-        await router.push('/').then().catch();
+    try {
+      setLoading(true);
+      if (formData.phoneNumber === '') {
+        setErrorPhone(t('validation.phoneNumberEmpty'));
       } else {
-        setErrorResponse('Invalid Phone Number or Password');
+        setErrorPhone('');
       }
+      if (formData.password === '') {
+        setErrorPassword(t('validation.passwordEmpty'));
+      } else {
+        setErrorPassword('');
+      }
+
+      if (formData.phoneNumber !== '' && formData.password !== '') {
+        const formattedPhone = selectedCode.concat(formData.phoneNumber);
+
+        const response = await loginPhoneNumber({
+          phoneNumber: formattedPhone,
+          password: formData.password
+        });
+
+        if (response.status === 200) {
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+          window.localStorage.setItem(
+            'keepMeLoggedIn',
+            String(formData.keepMeLoggedIn)
+          );
+          setFormData({
+            phoneNumber: '',
+            password: '',
+            keepMeLoggedIn: false
+          });
+          await router.push('/');
+        } else {
+          setErrorResponse('Invalid Phone Number or Password');
+        }
+      }
+    } catch (error: any) {
+      // Handle the error appropriately
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleLoginProvider = (provider: string): void => {
@@ -151,7 +156,7 @@ const LoginPage = (): JSX.Element => {
   ];
 
   return (
-    <div className="px-8 pb-8 mt-4">
+    <div className="px-4">
       <form>
         <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
         <PhoneInput
@@ -185,7 +190,7 @@ const LoginPage = (): JSX.Element => {
             />
           }
           value={formData.password}
-          error={errorPassword}
+          error={errorPassword !== ''}
         />
         {errorPassword !== '' && (
           <small className="text-[#ff515d] font-bold">{errorPassword}</small>
@@ -217,7 +222,7 @@ const LoginPage = (): JSX.Element => {
           </Link>
         </div>
         <CButton
-          onClick={() => submitData}
+          onSubmit={submitData}
           disabled={loading}
           className={`mx-auto w-full rounded-full ${
             formData.password === '' || formData.phoneNumber === '' || loading
@@ -237,7 +242,7 @@ const LoginPage = (): JSX.Element => {
             t('authPage.login')
           )}
         </CButton>
-        <small className="flex justify-center mt-5 text-opacity-50">
+        <small className="flex justify-center md:mt-5 text-opacity-50">
           {t('or')}
         </small>
         <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
@@ -251,15 +256,15 @@ const LoginPage = (): JSX.Element => {
                 className="bg-white rounded-full flex items-center"
               >
                 <Image
-                  width={45}
-                  height={45}
+                  width={20}
+                  height={20}
                   src={el.img.src}
                   alt={el.img.alt}
-                  className="w-auto h-auto object-contain object-[center_center]"
+                  className="md:w-8 w-4 h-4 md:h-8 object-contain object-[center_center]"
                 />
                 <Typography
                   variant="small"
-                  className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                  className="text-black mx-auto text-xs  lg:hidden font-bold flex justify-center items-center"
                 >
                   Login with {el.name}
                 </Typography>

@@ -103,19 +103,19 @@ const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
             ></div>
             <div className="w-full rounded-full absolute bg-gray-400 left-0 right-0  h-2"></div>
             <div
-              className={`w-[${
+              className={`${
                 data.currentExp >= 1000
-                  ? '100%'
+                  ? 'w-[100%]'
                   : data.currentExp >= 500
-                  ? '75%'
+                  ? 'w-[75%]'
                   : data.currentExp >= 300
-                  ? '50%'
+                  ? 'w-[50%]'
                   : data.currentExp >= 200
-                  ? '25%'
+                  ? 'w-[25%]'
                   : ''
-              }] ${
+              } ${
                 data.currentExp >= 0 && data.currentExp < 200 ? 'hidden' : ''
-              } absolute rounded-full bg-[#3AC4A0] animate-pulse  left-0 right-0 h-2`}
+              } absolute rounded-full bg-[#3AC4A0] left-0 right-0 h-2`}
             ></div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';
 import UnderLineTab from '@/components/UnderlineTab';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
   ArrowLeftBlack,
   Setting,
@@ -9,56 +10,46 @@ import {
   Verified
 } from '@/constants/assets/icons';
 import { BronzeMedal, GoldMedal, SilverMedal } from '@/constants/assets/images';
-// import { getUserProfile } from '@/repository/profile.repository';
+import { getExpData } from '@/repository/exp.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 const ProfilePage = (): JSX.Element => {
   const { t } = useTranslation();
 
-  const data = {
-    id: 'b441446d-d83f-469b-b45d-420d5feebd8f',
-    phoneNumber: '628973224020',
-    email: 'vinvinparapat1234@gmail.com',
-    birthDate: '2000-05-22T00:00:00Z',
-    name: 'First Hunter',
-    seedsTag: 'bug001',
-    refCode: 'd2jXNC',
-    avatar:
-      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/avatar/3D/Compressed/PNG/male/Avatar-07.png',
-    preferredLanguage: 'en',
-    bio: '',
-    pin: false,
-    followers: 0,
-    following: 0,
-    posts: 0,
-    region: '',
-    verified: false,
-    badge: 'gold',
-    claims: {
-      sub: 'b441446d-d83f-469b-b45d-420d5feebd8f',
-      phoneNumber: '628973224020',
-      email: 'vinvinparapat1234@gmail.com',
-      birthDate: '2000-05-22T00:00:00Z',
-      name: 'First Hunter',
-      seedsTag: 'bug001',
-      refCode: 'd2jXNC',
-      avatar:
-        'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/avatar/3D/Compressed/PNG/male/Avatar-07.png',
-      role: 'user',
-      preferredLanguage: 'en',
-      iss: 'seeds-dev.seeds.finance',
-      aud: ['seeds.finance'],
-      exp: 1685341803,
-      nbf: 1685341503,
-      iat: 1685341503
-    }
-  };
-  // useEffect(() => {
-  //   getUserProfile('')
-  //     .then(response => console.log(response))
-  //     .catch(error => console.log(error));
-  // }, []);
+  const [userData, setUserData] = useState<Record<string, any>>();
+  const [, setExpData] = useState<any>();
+
+  useEffect(() => {
+    const fetchUserProfile = async (): Promise<void> => {
+      try {
+        const userInfo = await getUserInfo();
+        setUserData(userInfo);
+      } catch (error: any) {
+        console.error('Error fetching user profile:', error.message);
+      }
+    };
+
+    const fetchExpData = async (): Promise<void> => {
+      try {
+        const expData = await getExpData();
+        setExpData(expData);
+      } catch (error: any) {
+        console.error('Error fetching exp data', error.message);
+      }
+    };
+
+    const fetchData = async (): Promise<void> => {
+      await Promise.all([fetchUserProfile(), fetchExpData()]);
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
   const xpData = {
     currentExp: 300,
     nextExp: 90,
@@ -122,7 +113,7 @@ const ProfilePage = (): JSX.Element => {
   };
 
   return (
-    <div className="bg-gray-800 h-screen">
+    <PageGradient defaultGradient className="w-full">
       <div className="flex justify-center">
         <CCard className="flex justify-center w-full rounded-none md:rounded-lg md:mx-12 md:mt-5">
           <div className="flex justify-between mx-2 md:mx-8 items-center py-5">
@@ -140,7 +131,7 @@ const ProfilePage = (): JSX.Element => {
           <div className="flex flex-col justify-start md:hidden">
             <div className="flex justify-evenly mb-3">
               <Image
-                src={data.avatar}
+                src={userData?.avatar}
                 alt="AVATAR"
                 width={100}
                 height={100}
@@ -150,19 +141,19 @@ const ProfilePage = (): JSX.Element => {
                 <div className="flex justify-center gap-4">
                   <div>
                     <p className="flex justify-center text-black font-extrabold">
-                      {data.posts}
+                      {userData?.posts}
                     </p>
                     Post
                   </div>
                   <div>
                     <p className="flex justify-center text-black font-extrabold">
-                      {data.followers}
+                      {userData?.followers}
                     </p>
                     Followers
                   </div>{' '}
                   <div>
                     <p className="flex justify-center text-black font-extrabold">
-                      {data.following}
+                      {userData?.following}
                     </p>
                     Following
                   </div>
@@ -171,16 +162,16 @@ const ProfilePage = (): JSX.Element => {
                   <Image
                     className="bg-[#F2FDF9] rounded-full"
                     src={
-                      data.badge === 'gold'
+                      userData?.badge === 'gold'
                         ? GoldMedal.src
-                        : data.badge === 'silver'
+                        : userData?.badge === 'silver'
                         ? SilverMedal.src
                         : BronzeMedal.src
                     }
                     alt={
-                      data.badge === 'gold'
+                      userData?.badge === 'gold'
                         ? GoldMedal.alt
-                        : data.badge === 'silver'
+                        : userData?.badge === 'silver'
                         ? SilverMedal.alt
                         : BronzeMedal.alt
                     }
@@ -189,7 +180,7 @@ const ProfilePage = (): JSX.Element => {
                   />
                   <div className="bg-[#BAFBD0] flex gap-1 items-center rounded-full px-3">
                     <Typography className="text-[#3AC4A0] text-sm font-bold">
-                      {data.claims.refCode}
+                      {userData?.claims.refCode}
                     </Typography>
                     <Image
                       src={Share.src}
@@ -210,29 +201,29 @@ const ProfilePage = (): JSX.Element => {
             <div className="flex flex-col gap-2 p-5">
               <div className="flex gap-2">
                 <Typography className="text-lg text-black font-bold">
-                  @{data.seedsTag}
+                  @{userData?.seedsTag ?? ''}
                 </Typography>
-                {data.verified && (
+                {userData?.verified === true && (
                   <Image
-                    src={Verified.src}
-                    alt={Verified.alt}
+                    src={Verified?.src}
+                    alt={Verified?.alt}
                     height={15}
                     width={15}
                   />
                 )}
               </div>
               <Typography className=" text-black font-bold">
-                {data.name}
+                {userData?.name}
               </Typography>
               <Typography className="text-sm font-bold w-4/5">
-                {data.bio}
+                {userData?.bio}
               </Typography>
             </div>
           </div>
           <div className="justify-between mx-10 hidden md:flex">
             <div className="flex items-center gap-10 px-5 pb-5">
               <Image
-                src={data.avatar}
+                src={userData?.avatar}
                 alt="AVATAR"
                 width={120}
                 height={120}
@@ -241,9 +232,9 @@ const ProfilePage = (): JSX.Element => {
               <div>
                 <div className="flex gap-2 items-center mb-2">
                   <Typography className="font-bold text-2xl text-black ">
-                    @{data.seedsTag}
+                    @{userData?.seedsTag ?? ''}
                   </Typography>
-                  {data.verified && (
+                  {userData?.verified === true && (
                     <Image
                       src={Verified.src}
                       alt={Verified.alt}
@@ -253,27 +244,29 @@ const ProfilePage = (): JSX.Element => {
                   )}
                 </div>
                 <Typography className="font-semibold mb-5">
-                  {data.name}
+                  {userData?.name}
                 </Typography>
                 <div className="flex gap-4">
                   <div className=" flex gap-1 text-lg">
-                    <p className="text-black font-extrabold">{data.posts}</p>
+                    <p className="text-black font-extrabold">
+                      {userData?.posts}
+                    </p>
                     Post
                   </div>
                   <div className=" flex gap-1 text-lg">
                     <p className="text-black font-extrabold">
-                      {data.followers}
+                      {userData?.followers}
                     </p>
                     Followers
                   </div>
                   <div className=" flex gap-1 text-lg">
                     <p className="text-black font-extrabold">
-                      {data.following}
+                      {userData?.following}
                     </p>
                     Following
                   </div>
                 </div>
-                <div className="mt-1">{data.bio}</div>
+                <div className="mt-1">{userData?.bio}</div>
               </div>
             </div>
             <div className="flex flex-col gap-5">
@@ -281,16 +274,16 @@ const ProfilePage = (): JSX.Element => {
                 <Image
                   className="bg-[#F2FDF9] rounded-full"
                   src={
-                    data.badge === 'gold'
+                    userData?.badge === 'gold'
                       ? GoldMedal.src
-                      : data.badge === 'silver'
+                      : userData?.badge === 'silver'
                       ? SilverMedal.src
                       : BronzeMedal.src
                   }
                   alt={
-                    data.badge === 'gold'
+                    userData?.badge === 'gold'
                       ? GoldMedal.alt
-                      : data.badge === 'silver'
+                      : userData?.badge === 'silver'
                       ? SilverMedal.alt
                       : BronzeMedal.alt
                   }
@@ -299,7 +292,7 @@ const ProfilePage = (): JSX.Element => {
                 />
                 <div className="bg-[#BAFBD0] flex gap-3 items-center rounded-full py-2 px-5">
                   <Typography className="text-[#3AC4A0] font-bold">
-                    {data.refCode}
+                    {userData?.refCode}
                   </Typography>
                   <Image
                     src={Share.src}
@@ -323,11 +316,11 @@ const ProfilePage = (): JSX.Element => {
         </CCard>
       </div>
       <div>
-        <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+        <CCard className="p-5 md:mt-5  md:rounded-lg  border-none rounded-none mb-5 md:mx-7 lg:mx-12">
           <UnderLineTab />
         </CCard>
       </div>
-    </div>
+    </PageGradient>
   );
 };
 

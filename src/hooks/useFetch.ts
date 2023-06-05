@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 
-import useDebounce from '@/hooks/useDebaunce';
+import useDebounce from '@/hooks/useDebounce';
 
 // reference: https://blog.openreplay.com/integrating-axios-with-react-hooks/
 

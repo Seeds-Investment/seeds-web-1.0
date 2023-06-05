@@ -4,8 +4,9 @@ interface CardProps {
   children: ReactNode;
   className?: string;
   style?: object;
-  defaultGradient: boolean;
+  defaultGradient?: boolean;
   customGradient?: JSX.Element;
+  padding?: string;
 }
 
 const defaultStyle = {
@@ -14,17 +15,20 @@ const defaultStyle = {
   border: '1px solid #FFFFFF'
 };
 
-const defaultClasses =
-  'relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] bg-white';
+const CardGradient: React.FC<CardProps> = ({
+  children,
+  className,
+  style,
+  defaultGradient = false,
+  customGradient,
+  padding = ''
+}) => {
+  const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] ${padding} bg-white`;
 
-const CardGradient: React.FC<CardProps> = props => {
   return (
-    <div
-      className={props.className ?? defaultClasses}
-      style={props.style ?? defaultStyle}
-    >
+    <div className={className ?? defaultClasses} style={style ?? defaultStyle}>
       {/* -----Default Gradient----- */}
-      {props.defaultGradient && props.customGradient === undefined && (
+      {defaultGradient && customGradient === undefined && (
         <>
           <span className="z-0 absolute -top-10 -left-10 lg:w-32 lg:h-32 md:w-24 md:h-24 md:bg-[#9A76FE] bg-transparent blur-[80px] rotate-45" />
           <span className="z-0 absolute sm:-bottom-24 sm:-left-24 -bottom-4 -left-4 lg:w-48 lg:h-48 w-32 h-32 bg-[#4FE6AF] lg:blur-[150px] blur-[90px] rotate-45 rounded-full" />
@@ -35,12 +39,10 @@ const CardGradient: React.FC<CardProps> = props => {
       )}
 
       {/* -----Custom Gradient----- */}
-      {!props.defaultGradient && props.customGradient !== undefined
-        ? props.customGradient
-        : null}
+      {!defaultGradient && customGradient !== undefined ? customGradient : null}
 
       {/* -----Card Content----- */}
-      {props.children}
+      {children}
     </div>
   );
 };

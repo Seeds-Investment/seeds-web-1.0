@@ -1,7 +1,8 @@
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
-import { Email } from 'public/assets/images';
+import { Email, XIcon } from 'public/assets/vector';
 
+import Button from '../Button';
 import Modal from '../ui/modal/Modal';
 
 interface PopupProps {
@@ -12,11 +13,16 @@ interface PopupProps {
   imageClasses?: string;
   titleClasses?: string;
   subtitleClasses?: string;
-  buttonClasses?: string;
   title?: string;
   subtitle?: string;
   label?: string;
 }
+
+const imageDefaultClasses = 'mx-auto mb-6';
+
+const titleDefaultClasses = 'mb-1.5 font-semibold text-neutral-500';
+
+const subtitleDefaultClasses = 'mb-6 text-sm text-neutral-400';
 
 const Popup: React.FC<PopupProps> = ({
   onClose,
@@ -26,22 +32,19 @@ const Popup: React.FC<PopupProps> = ({
   imageClasses,
   titleClasses,
   subtitleClasses,
-  buttonClasses,
   title = 'Your Email : mar**i@gmail.com',
   subtitle = "We'll give you some information through email.",
   label = 'Change Email'
 }) => {
-  const imageDefaultClasses = 'mx-auto mb-6';
-
-  const titleDefaultClasses = 'mb-1.5 font-semibold text-neutral-500';
-
-  const subtitleDefaultClasses = 'mb-6 text-sm text-neutral-400';
-
-  const buttonDefaultClasses =
-    'w-full h-10 text-white bg-[#3AC4A0] hover:bg-[#3AC4A0]/[0.8] active:bg-[#3AC4A0] rounded-full';
-
   return (
     <Modal onClose={onClose}>
+      <button
+        className="absolute top-2 right-2 flex items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-gray-300 active:bg-gray-400"
+        data-ripple-dark="true"
+        onClick={onClose}
+      >
+        <Image src={XIcon} alt="close" />
+      </button>
       <Image
         src={src ?? Email}
         alt={alt ?? 'email'}
@@ -49,12 +52,7 @@ const Popup: React.FC<PopupProps> = ({
       />
       <p className={titleClasses ?? titleDefaultClasses}>{title}</p>
       <p className={subtitleClasses ?? subtitleDefaultClasses}>{subtitle}</p>
-      <button
-        className={buttonClasses ?? buttonDefaultClasses}
-        onClick={onClick}
-      >
-        {label}
-      </button>
+      <Button label={label} width="w-full" color="dark" props={{ onClick }} />
     </Modal>
   );
 };

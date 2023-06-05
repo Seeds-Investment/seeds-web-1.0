@@ -50,7 +50,7 @@ const InputPin: React.FC<InputPinProps> = ({
 
   const isDisabled = pin.length === 6;
 
-  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 rounded-full text-3xl font-semibold hover:bg-gray-200 ${
+  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full text-3xl font-semibold hover:bg-gray-200 ${
     !isDisabled ? 'active:bg-gray-300' : ''
   } ${isDisabled ? 'cursor-not-allowed' : ''}`;
 
@@ -72,7 +72,7 @@ const InputPin: React.FC<InputPinProps> = ({
         <div className="relative flex items-center sm:mb-8 mb-10">
           <button
             onClick={onCancel}
-            className="absolute left-0 w-10 rounded-md hover:bg-gray-200 active:bg-gray-300"
+            className="absolute left-0 w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300"
           >
             <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
           </button>

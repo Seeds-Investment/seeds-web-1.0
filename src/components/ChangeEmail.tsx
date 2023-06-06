@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { InputUserEmail } from 'public/assets/vector';
 
-import Button from './Button';
+import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
 import Input from './ui/input/Input';
 
@@ -30,7 +30,10 @@ const ChangeEmail: React.FC = () => {
       : 'Please enter your email address in format yourname@example.com';
 
   return (
-    <CardGradient defaultGradient={width >= 640} padding="p-6">
+    <CardGradient
+      defaultGradient={width >= 640}
+      extraClasses="w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] bg-white p-6"
+    >
       <div className="z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto p-4 bg-white">
         <div>
           <h6 className="mb-0.5 text-center font-semibold text-base">

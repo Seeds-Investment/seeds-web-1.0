@@ -20,7 +20,7 @@ const ProfilePage = (): JSX.Element => {
   const { t } = useTranslation();
 
   const [userData, setUserData] = useState<Record<string, any>>();
-  const [, setExpData] = useState<any>();
+  const [expData, setExpData] = useState<any>();
 
   useEffect(() => {
     const fetchUserProfile = async (): Promise<void> => {
@@ -37,80 +37,85 @@ const ProfilePage = (): JSX.Element => {
         const expData = await getExpData();
         setExpData(expData);
       } catch (error: any) {
-        console.error('Error fetching exp data', error.message);
+        console.error('Error fetching exp data:', error.message);
       }
     };
 
     const fetchData = async (): Promise<void> => {
-      await Promise.all([fetchUserProfile(), fetchExpData()]);
+      try {
+        await Promise.all([fetchUserProfile(), fetchExpData()]);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
     };
 
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+  console.log(expData);
 
-  const xpData = {
-    currentExp: 300,
-    nextExp: 90,
-    expExpiration: '2024-01-01 23:59:59',
-    tierList: [
-      {
-        image: 'seeds.png',
-        name: 'Seeds',
-        rewards: [],
-        exp: 0
-      },
-      {
-        image: 'sprout.png',
-        name: 'Sprout',
-        rewards: [
-          {
-            name: 'Create 1 Circle',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-          }
-        ],
-        exp: 200
-      },
-      {
-        image: 'seedling.png',
-        name: 'Seedling',
-        rewards: [
-          {
-            name: 'Create 2 Circle',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-          }
-        ],
-        exp: 300
-      },
-      {
-        image: 'sapling.png',
-        name: 'Sapling',
-        rewards: [
-          {
-            name: 'Create 3 Circle',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-          }
-        ],
-        exp: 500
-      },
-      {
-        image: 'tree.png',
-        name: 'Tree',
-        rewards: [
-          {
-            name: 'Create a Play Arena',
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-          }
-        ],
-        exp: 1000
-      }
-    ]
-  };
+  // const xpData = {
+  //   currentExp: 300,
+  //   nextExp: 90,
+  //   expExpiration: '2024-01-01 23:59:59',
+  //   tierList: [
+  //     {
+  //       image: 'seeds.png',
+  //       name: 'Seeds',
+  //       rewards: [],
+  //       exp: 0
+  //     },
+  //     {
+  //       image: 'sprout.png',
+  //       name: 'Sprout',
+  //       rewards: [
+  //         {
+  //           name: 'Create 1 Circle',
+  //           description:
+  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+  //         }
+  //       ],
+  //       exp: 200
+  //     },
+  //     {
+  //       image: 'seedling.png',
+  //       name: 'Seedling',
+  //       rewards: [
+  //         {
+  //           name: 'Create 2 Circle',
+  //           description:
+  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+  //         }
+  //       ],
+  //       exp: 300
+  //     },
+  //     {
+  //       image: 'sapling.png',
+  //       name: 'Sapling',
+  //       rewards: [
+  //         {
+  //           name: 'Create 3 Circle',
+  //           description:
+  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+  //         }
+  //       ],
+  //       exp: 500
+  //     },
+  //     {
+  //       image: 'tree.png',
+  //       name: 'Tree',
+  //       rewards: [
+  //         {
+  //           name: 'Create a Play Arena',
+  //           description:
+  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+  //         }
+  //       ],
+  //       exp: 1000
+  //     }
+  //   ]
+  // };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -312,7 +317,7 @@ const ProfilePage = (): JSX.Element => {
       </div>
       <div>
         <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
-          <ExpInfo data={xpData} />
+          <ExpInfo data={expData} />
         </CCard>
       </div>
       <div>

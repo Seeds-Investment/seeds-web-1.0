@@ -1,7 +1,6 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 
 import CButton from '@/components/CButton';
-import AuthLayout from '@/components/layouts/AuthLayout';
 import {
   AppleBrand,
   FacebookBrand,
@@ -10,8 +9,12 @@ import {
 
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 
-import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
-import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import {
+  getRefreshToken,
+  loginPhoneNumber,
+  loginProvider
+} from '@/repository/auth.repository';
+import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -35,7 +38,6 @@ const LoginPage = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorPhone, setErrorPhone] = useState<any>('');
-  // const [accessToken,setAccessToken] = useState('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [errorResponse, setErrorResponse] = useState<string>('');
   const [errorPassword, setErrorPassword] = useState<any>('');
@@ -55,6 +57,7 @@ const LoginPage = (): JSX.Element => {
       };
     });
   };
+
   const submitData = async (): Promise<void> => {
     try {
       setLoading(true);
@@ -78,19 +81,42 @@ const LoginPage = (): JSX.Element => {
         });
 
         if (response.status === 200) {
-          window.localStorage.setItem('accessToken', response.accessToken);
-          window.localStorage.setItem('refreshToken', response.refreshToken);
-          window.localStorage.setItem('expiresAt', response.expiresAt);
-          window.localStorage.setItem(
-            'keepMeLoggedIn',
-            String(formData.keepMeLoggedIn)
-          );
+          if (!formData.keepMeLoggedIn) {
+            window.localStorage.setItem('accessToken', response.accessToken);
+            window.localStorage.setItem('refreshToken', response.refreshToken);
+            window.localStorage.setItem('expiresAt', response.expiresAt);
+            window.localStorage.setItem(
+              'keepMeLoggedIn',
+              String(formData.keepMeLoggedIn)
+            );
+          } else {
+            const keepMeLoggedInResponse = await getRefreshToken(
+              response.refreshToken
+            );
+            window.localStorage.setItem(
+              'accessToken',
+              keepMeLoggedInResponse.accessToken
+            );
+            window.localStorage.setItem(
+              'refreshToken',
+              keepMeLoggedInResponse.refreshToken
+            );
+            window.localStorage.setItem(
+              'expiresAt',
+              keepMeLoggedInResponse.expiresAt
+            );
+            window.localStorage.setItem(
+              'keepMeLoggedIn',
+              String(formData.keepMeLoggedIn)
+            );
+          }
+
           setFormData({
             phoneNumber: '',
             password: '',
             keepMeLoggedIn: false
           });
-          await router.push('/');
+          await router.push('/'); // Added await keyword here
         } else {
           setErrorResponse('Invalid Phone Number or Password');
         }
@@ -102,11 +128,15 @@ const LoginPage = (): JSX.Element => {
     }
   };
 
+  const handleSubmit = (): void => {
+    submitData().catch(() => {});
+  };
+
   const handleLoginProvider = (provider: string): void => {
     signIn(provider)
       .then(result => {
         if (result?.error != null) {
-          console.log(result.error);
+          console.error(result.error);
         } else if (provider !== '') {
           localStorage.setItem('provider', provider);
         }
@@ -221,8 +251,8 @@ const LoginPage = (): JSX.Element => {
             {t('authPage.forgotPassword')}?
           </Link>
         </div>
-        <CButton
-          onSubmit={submitData}
+        <Button
+          onClick={handleSubmit}
           disabled={loading}
           className={`mx-auto w-full rounded-full ${
             formData.password === '' || formData.phoneNumber === '' || loading
@@ -241,7 +271,7 @@ const LoginPage = (): JSX.Element => {
           ) : (
             t('authPage.login')
           )}
-        </CButton>
+        </Button>
         <small className="flex justify-center md:mt-5 text-opacity-50">
           {t('or')}
         </small>
@@ -275,10 +305,6 @@ const LoginPage = (): JSX.Element => {
       </form>
     </div>
   );
-};
-
-LoginPage.getLayout = function getLayout(page: JSX.Element) {
-  return <AuthLayout title="Login">{page}</AuthLayout>;
 };
 
 export default LoginPage;

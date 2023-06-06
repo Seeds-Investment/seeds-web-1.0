@@ -1,6 +1,6 @@
 import baseAxios from '@/utils/common/axios';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1`);
+const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1/`);
 
 interface LoginForm {
   phoneNumber: string;
@@ -9,11 +9,17 @@ interface LoginForm {
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
-    let response = await authService.post('/login/phone-number', formData);
+    let response = await authService.post('login/phone-number', formData);
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
   }
+};
+
+export const getRefreshToken = async (refreshToken: string): Promise<any> => {
+  return await authService.post('refresh', {
+    refreshToken
+  });
 };
 
 export const loginProvider = async (
@@ -21,7 +27,7 @@ export const loginProvider = async (
   provider: string
 ): Promise<any> => {
   try {
-    let response = await authService.post(`/login/${provider}`, { identifier });
+    let response = await authService.post(`login/${provider}`, { identifier });
 
     return (response = { ...response, status: 200 });
   } catch (error: any) {

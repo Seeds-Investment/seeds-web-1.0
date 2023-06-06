@@ -8,7 +8,6 @@ import {
 } from '@/constants/assets/logo';
 
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
-
 import {
   getRefreshToken,
   loginPhoneNumber,
@@ -23,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 import PhoneInput from '@/components/PhoneInput';
+import AuthLayout from '@/components/layouts/AuthLayout';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -30,7 +30,7 @@ interface FormData {
   keepMeLoggedIn: boolean;
 }
 
-const LoginPage = (): JSX.Element => {
+const AuthIndex = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const { data: session }: any = useSession();
@@ -81,7 +81,7 @@ const LoginPage = (): JSX.Element => {
         });
 
         if (response.status === 200) {
-          if (!formData.keepMeLoggedIn) {
+          if (formData.keepMeLoggedIn) {
             window.localStorage.setItem('accessToken', response.accessToken);
             window.localStorage.setItem('refreshToken', response.refreshToken);
             window.localStorage.setItem('expiresAt', response.expiresAt);
@@ -307,4 +307,8 @@ const LoginPage = (): JSX.Element => {
   );
 };
 
-export default LoginPage;
+AuthIndex.getLayout = function getLayout(page: JSX.Element) {
+  return <AuthLayout title="LoginPage.title">{page}</AuthLayout>;
+};
+
+export default AuthIndex;

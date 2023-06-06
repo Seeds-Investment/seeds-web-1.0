@@ -1,3 +1,4 @@
+import RemoveLinkedAccountPopUp from '@/components/popup/RemoveAccount';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
@@ -7,12 +8,28 @@ import {
 } from '@/constants/assets/logo';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const LinkedAccount: React.FC = () => {
+  const [removeGoogleModalShown, setRemoveGoogleModalShown] =
+    useState<boolean>(false);
+
+  const handleShow = (): void => {
+    setRemoveGoogleModalShown(true);
+  };
+  const handleClose = (): void => {
+    setRemoveGoogleModalShown(false);
+  };
+
+  console.log(removeGoogleModalShown);
+
   return (
     <PageGradient defaultGradient className="w-full">
       <div className="flex justify-center items-center">
-        <CardGradient defaultGradient>
+        <CardGradient
+          defaultGradient
+          className="relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] bg-white mt-20"
+        >
           <div className="flex flex-col justify-center items-center">
             <Typography className="text-xl font-bold text-black mt-5">
               Linked Account
@@ -20,7 +37,7 @@ const LinkedAccount: React.FC = () => {
             <div className="md:w-1/2 px-4 md:px-0 flex flex-col gap-5 mt-10">
               <Typography>Accounts</Typography>
               <div className="flex flex-col gap-5">
-                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl  outline hover:shadow-xl transition ease-in-out hover:scale-105 bg-white z-20 p-2">
+                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl  outline hover:shadow-xl transition ease-in-out hover:scale-105 bg-white z-10 p-2">
                   <div className="flex gap-2">
                     <Image
                       src={GoogleBrand.src}
@@ -41,13 +58,20 @@ const LinkedAccount: React.FC = () => {
                   <div className="flex items-center ">
                     <Typography
                       variant="medium"
-                      className="font-bold hover:text-lg cursor-pointer text-[#3AC4A0]"
+                      className="font-bold hover:text-lg cursor-pointer text-red-600"
+                      onClick={handleShow}
                     >
-                      Add
+                      Remove
                     </Typography>
+                    {removeGoogleModalShown && (
+                      <RemoveLinkedAccountPopUp
+                        onClose={handleClose}
+                        provider={'Google'}
+                      />
+                    )}
                   </div>
                 </div>
-                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl hover:shadow-xl transition ease-in-out hover:scale-105 outline bg-white z-20 p-2">
+                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl hover:shadow-xl transition ease-in-out hover:scale-105 outline bg-white z-10 p-2">
                   <div className="flex gap-2">
                     <Image
                       src={AppleBrand.src}
@@ -74,7 +98,7 @@ const LinkedAccount: React.FC = () => {
                     </Typography>
                   </div>
                 </div>
-                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl hover:shadow-xl transition ease-in-out hover:scale-105 outline bg-white z-20 p-2">
+                <div className="flex gap-2 justify-between outline-gray-300 rounded-xl hover:shadow-xl transition ease-in-out hover:scale-105 outline bg-white z-10 p-2">
                   <div className="flex gap-2">
                     <Image
                       src={FacebookBrand.src}

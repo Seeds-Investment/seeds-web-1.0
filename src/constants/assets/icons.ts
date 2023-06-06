@@ -115,11 +115,17 @@ export const ChatBubble: AssetsInterface = {
   alt: 'chat-bubble'
 };
 
+export const Ellipse: AssetsInterface = {
+  src: '/assets/vector/ellipse.svg',
+  alt: 'ellipse'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
   EyeSlash,
   Loader,
+  Ellipse,
   Ethereum,
   Dogecoin,
   ArrowUp,

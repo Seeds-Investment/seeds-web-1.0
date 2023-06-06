@@ -1,6 +1,7 @@
 import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';
+import SeedsCoin from '@/components/SeedsCoinCard';
 import UnderLineTab from '@/components/UnderlineTab';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
@@ -14,10 +15,13 @@ import { getExpData } from '@/repository/exp.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 const ProfilePage = (): JSX.Element => {
   const { t } = useTranslation();
+
+  const router = useRouter();
 
   const [userData, setUserData] = useState<Record<string, any>>();
   const [expData, setExpData] = useState<any>();
@@ -53,9 +57,7 @@ const ProfilePage = (): JSX.Element => {
       .then()
       .catch(() => {});
   }, []);
-  console.log(expData);
 
-  // const xpData = {
   //   currentExp: 300,
   //   nextExp: 90,
   //   expExpiration: '2024-01-01 23:59:59',
@@ -131,7 +133,20 @@ const ProfilePage = (): JSX.Element => {
             <Typography className="text-black font-bold text-xl">
               {t('ProfilePage.title')}
             </Typography>
-            <Image src={Setting.src} alt={Setting.alt} width={30} height={30} />
+
+            <Image
+              src={Setting.src}
+              alt={Setting.alt}
+              width={30}
+              className="transition hover:scale-150"
+              height={30}
+              onClick={() => {
+                router
+                  .replace('user-setting')
+                  .then()
+                  .catch(() => {});
+              }}
+            />
           </div>
           <div className="flex flex-col justify-start md:hidden">
             <div className="flex justify-evenly mb-3">
@@ -319,6 +334,9 @@ const ProfilePage = (): JSX.Element => {
         <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
           <ExpInfo data={expData} />
         </CCard>
+      </div>
+      <div className="p-5 md:mt-5 md:rounded-lg  rounded-none lg:mx-8">
+        <SeedsCoin />
       </div>
       <div>
         <CCard className="p-5 md:mt-5  md:rounded-lg  border-none rounded-none mb-5 md:mx-7 lg:mx-12">

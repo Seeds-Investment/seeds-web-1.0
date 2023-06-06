@@ -13,6 +13,7 @@ export { default as Copy } from 'public/assets/vector/copy.svg';
 export { default as DeleteIcon } from 'public/assets/vector/delete.svg';
 export { default as Dogecoin } from 'public/assets/vector/doggo.svg';
 export { default as Dot } from 'public/assets/vector/dot.svg';
+export { default as Ellipse } from 'public/assets/vector/ellipse.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
 export { default as Ethereum } from 'public/assets/vector/ethereum.svg';
 export { default as EyePurple } from 'public/assets/vector/eye-purple.svg';

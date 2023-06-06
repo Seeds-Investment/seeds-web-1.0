@@ -1,17 +1,25 @@
 import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
 
 import { HelloHero, LineChart } from '@/constants/assets/images';
 import { SeedsLogo } from '@/constants/assets/logo';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Card, Typography } from '@material-tailwind/react';
+import { ArrowLeft } from 'public/assets/vector';
 
 export interface IAuthLayout {
   children: JSX.Element;
+  title?: string;
+  titleKey?: string;
 }
 
-const AuthLayout = ({ children }: IAuthLayout): JSX.Element => {
+const AuthLayout = ({
+  children,
+  title,
+  titleKey
+}: IAuthLayout): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -69,12 +77,25 @@ const AuthLayout = ({ children }: IAuthLayout): JSX.Element => {
           </div>
         </div>
         <div className="flex justify-center z-20">
-          {/* <div className="z-20 lg:hidden flex">
-            <p className="font-bold text-white text-2xl mx-auto">
-              {t('authPage.login')}
-            </p>
-          </div> */}
-          <div className="p-4 w-[30rem] min-h-[40rem]">
+          <div className="p-4 w-[30rem] min-h-[50rem] lg:min-h-[40rem]">
+            <div className="z-20 lg:hidden flex items-center mb-4">
+              <div className="w-[1.8rem]">
+                <Image
+                  src={ArrowLeft}
+                  width={30}
+                  height={30}
+                  alt="arrow-left"
+                  className="w-auto h-auto object-contain object-[center_center]"
+                />
+              </div>
+              <Typography variant="h4" color="white" className="mx-auto">
+                {isUndefindOrNull(title) || isEmptyString(title) ? (
+                  <Trans i18nKey={titleKey} />
+                ) : (
+                  title
+                )}
+              </Typography>
+            </div>
             <Card className="w-full h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
               <div className="flex justify-between p-8">
                 <Image

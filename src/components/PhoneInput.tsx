@@ -1,33 +1,28 @@
+import ListCountryFlag from '@/constants/countryFlag';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 
 import type { AssetsInterface } from '@/constants/assets';
 import Flags from '@/constants/assets/flags';
-import ListCountryFlag from '@/constants/countryFlag';
 
 interface PhoneInputProps {
-  onChangeRegion?: (value: { flag: string; code: string }) => void;
-  onChangePhoneNumber?: (value: string) => void;
-  error: boolean;
+  onChangePhoneNumber: (value: string) => void;
+  error: boolean | undefined;
   phoneValue: string;
-  selectedFlag: string;
-  setSelectedFlag: (value: string) => void;
   selectedCode: string;
   setSelectedCode: (value: string) => void;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
-  onChangeRegion,
   onChangePhoneNumber,
   error,
-  selectedFlag,
-  setSelectedFlag,
   selectedCode,
   setSelectedCode,
   phoneValue
 }) => {
   const [dropdownVisibility, setDropdowVisibility] = useState(false);
+  const [selectedFlag, setSelectedFlag] = useState('ID');
 
   const displayedPhoneNumber = useMemo(() => {
     const numericPhoneNumber = phoneValue.replace(/\D/g, '');
@@ -87,8 +82,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
               variant="standard"
               name="phoneNumber"
               onChange={e => {
-                if (onChangePhoneNumber !== undefined)
-                  onChangePhoneNumber(e.target.value);
+                onChangePhoneNumber(e.target.value);
               }}
               value={displayedPhoneNumber}
               error={error}
@@ -106,11 +100,6 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
                   setDropdowVisibility(false);
                   setSelectedFlag(country.img);
                   setSelectedCode(country.code);
-                  if (onChangeRegion !== undefined)
-                    onChangeRegion({
-                      flag: country.img,
-                      code: country.code
-                    });
                 }}
                 className="px-4 py-2 flex gap-4 items-center bg-white top-0 w-full hover:bg-slate-50"
                 data-value={country.code}

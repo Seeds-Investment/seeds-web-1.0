@@ -8,7 +8,6 @@ const AuthIndex = (): JSX.Element => {
   const { t } = useTranslation();
 
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [selectedFlag, setSelectedFlag] = useState('ID');
   const [selectedCode, setSelectedCode] = useState('+62');
 
   return (
@@ -28,9 +27,7 @@ const AuthIndex = (): JSX.Element => {
         <PhoneInput
           selectedCode={selectedCode}
           setSelectedCode={setSelectedCode}
-          selectedFlag={selectedFlag}
-          setSelectedFlag={setSelectedFlag}
-          onChangePhoneNumber={e => {
+          onChangePhoneNumber={(e: any) => {
             setPhoneNumber(e);
           }}
           phoneValue={phoneNumber}
@@ -82,7 +79,7 @@ const AuthIndex = (): JSX.Element => {
 };
 
 AuthIndex.getLayout = function getLayout(page: JSX.Element) {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <AuthLayout titleKey="registerPage.title">{page}</AuthLayout>;
 };
 
 export default AuthIndex;

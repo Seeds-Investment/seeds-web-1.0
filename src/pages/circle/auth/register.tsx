@@ -27,7 +27,7 @@ const AuthIndex = (): JSX.Element => {
         <PhoneInput
           selectedCode={selectedCode}
           setSelectedCode={setSelectedCode}
-          onChangePhoneNumber={e => {
+          onChangePhoneNumber={(e: any) => {
             setPhoneNumber(e);
           }}
           phoneValue={phoneNumber}

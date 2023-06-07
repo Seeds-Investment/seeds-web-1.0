@@ -1,7 +1,7 @@
 import type { AssetsInterface } from '.';
 
 export const SeedsLogo: AssetsInterface = {
-  src: '/assets/images/seeds-logo.png',
+  src: '/assets/images/SeedsTypo.png',
   alt: 'seeds-logo-typograph'
 };
 

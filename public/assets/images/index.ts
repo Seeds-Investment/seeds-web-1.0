@@ -6,3 +6,4 @@ export { default as DummyAvatar } from 'public/assets/images/dummy-avatar.png';
 export { default as FacebookBrand } from 'public/assets/images/facebook.png';
 export { default as Flags } from 'public/assets/images/flags';
 export { default as GoogleBrand } from 'public/assets/images/google.png';
+export { default as SuccessRegister } from 'public/assets/images/success-register.png';

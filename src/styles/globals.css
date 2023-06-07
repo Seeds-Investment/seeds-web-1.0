@@ -17,6 +17,27 @@ code {
     monospace;
 }
 
+/* Start Scrollbar */
+/* Firefox */
+* {
+  scrollbar-width: 10px;
+  scrollbar-color: #7555da #ffffff;
+}
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #7555da;
+  border-radius: 999px;
+}
+/* End Scrollbar */
+
 .dc {
   height: 0.75rem;
   width: 0.75rem;

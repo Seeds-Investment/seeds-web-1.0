@@ -1,4 +1,4 @@
-import ChangeEmail from '@/components/ChangeEmail';
+import ChangeTelephone from '@/components/ChangeTelephone';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
 const customGradient = (
@@ -11,15 +11,15 @@ const customGradient = (
   </>
 );
 
-const ChangeEmailPage: React.FC = () => {
+const ChangeTelephonePage: React.FC = () => {
   return (
     <PageGradient
       customGradient={customGradient}
       extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:pb-20"
     >
-      <ChangeEmail />
+      <ChangeTelephone />
     </PageGradient>
   );
 };
 
-export default ChangeEmailPage;
+export default ChangeTelephonePage;

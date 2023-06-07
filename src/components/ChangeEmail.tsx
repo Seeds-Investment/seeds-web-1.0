@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { InputUserEmail } from 'public/assets/vector';
+import { ChangeEmailIcon } from 'public/assets/vector';
 
 import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
@@ -45,7 +45,7 @@ const ChangeEmail: React.FC = () => {
             new address.
           </p>
           <Image
-            src={InputUserEmail}
+            src={ChangeEmailIcon}
             alt="input user email"
             className="z-10 mx-auto mb-14"
           />

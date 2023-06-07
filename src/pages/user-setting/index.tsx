@@ -69,7 +69,7 @@ const UserSetting: React.FC = () => {
   return (
     <PageGradient
       defaultGradient
-      extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:p-6"
+      extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:pb-20"
     >
       <CardGradient
         defaultGradient

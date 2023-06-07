@@ -5,7 +5,7 @@ import useService from '@/hooks/useService';
 import type { IRegisterPaging } from '@/pages/circle/auth/register';
 import { avatarList, registerNewUser } from '@/repository/auth.repository';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
-import { Button, Spinner, Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -61,7 +61,7 @@ const ChooseAvatarPage = ({
         <div className="rounded-full bg-[#DCFCE4] w-[7rem] h-[7rem] relative">
           {!isUndefindOrNull(loading) && loading ? (
             <div className="w-full h-full flex items-center justify-center">
-              <Spinner className="h-10 w-10" />
+              {/* <Spinner className="h-10 w-10" /> */}
             </div>
           ) : (
             <></>
@@ -142,7 +142,7 @@ const ChooseAvatarPage = ({
         >
           {post.loading ? (
             <div className="w-full flex justify-center">
-              <Spinner className="h-6 w-6" />
+              {/* <Spinner className="h-6 w-6" /> */}
             </div>
           ) : (
             t('registerPage.nextButton')

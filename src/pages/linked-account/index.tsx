@@ -1,3 +1,5 @@
+import DeleteAccountPopUp from '@/components/popup/DeleteAccount';
+import DeleteAccountReasonPopUp from '@/components/popup/DeleteAccountReason';
 import RemoveLinkedAccountPopUp from '@/components/popup/RemoveAccount';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -13,15 +15,9 @@ import { useState } from 'react';
 const LinkedAccount: React.FC = () => {
   const [removeGoogleModalShown, setRemoveGoogleModalShown] =
     useState<boolean>(false);
-
-  const handleShow = (): void => {
-    setRemoveGoogleModalShown(true);
-  };
-  const handleClose = (): void => {
-    setRemoveGoogleModalShown(false);
-  };
-
-  console.log(removeGoogleModalShown);
+  const [deleteModalShown, setDeleteModalShown] = useState<boolean>(false);
+  const [deleteReasonModalShown, setDeleteReasonModalShown] =
+    useState<boolean>(false);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -59,14 +55,32 @@ const LinkedAccount: React.FC = () => {
                     <Typography
                       variant="medium"
                       className="font-bold hover:text-lg cursor-pointer text-red-600"
-                      onClick={handleShow}
+                      onClick={() => {
+                        setRemoveGoogleModalShown(prev => !prev);
+                      }}
                     >
                       Remove
                     </Typography>
                     {removeGoogleModalShown && (
                       <RemoveLinkedAccountPopUp
-                        onClose={handleClose}
+                        onClose={() => {
+                          setRemoveGoogleModalShown(prev => !prev);
+                        }}
                         provider={'Google'}
+                      />
+                    )}
+                    {deleteModalShown && (
+                      <DeleteAccountPopUp
+                        onClose={() => {
+                          setDeleteModalShown(prev => !prev);
+                        }}
+                      />
+                    )}
+                    {deleteReasonModalShown && (
+                      <DeleteAccountReasonPopUp
+                        onClose={() => {
+                          setDeleteReasonModalShown(prev => !prev);
+                        }}
                       />
                     )}
                   </div>
@@ -93,6 +107,9 @@ const LinkedAccount: React.FC = () => {
                     <Typography
                       variant="medium"
                       className="font-bold cursor-pointer text-[#3AC4A0]"
+                      onClick={() => {
+                        setDeleteModalShown(prev => !prev);
+                      }}
                     >
                       Add
                     </Typography>
@@ -120,6 +137,9 @@ const LinkedAccount: React.FC = () => {
                     <Typography
                       variant="medium"
                       className="font-bold cursor-pointer text-[#3AC4A0]"
+                      onClick={() => {
+                        setDeleteReasonModalShown(prev => !prev);
+                      }}
                     >
                       Add
                     </Typography>

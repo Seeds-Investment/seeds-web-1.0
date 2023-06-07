@@ -57,12 +57,18 @@ export const Maintenance: AssetsInterface = {
   alt: 'maintenance'
 };
 
+export const Trash: AssetsInterface = {
+  src: '/assets/images/trash.svg',
+  alt: 'trash'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
   Seeds,
   Sapling,
   Maintenance,
+  Trash,
   Sadling,
   Tree,
   LineChart,

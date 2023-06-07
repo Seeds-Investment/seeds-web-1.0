@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
 interface BackdropProps {
@@ -20,13 +20,12 @@ interface ModalProps {
   backdropClasses?: string;
   modalStyle?: object;
   backdropStyle?: object;
+  withRating?: boolean;
+  withTextArea?: boolean;
 }
 
 const backdropDefaultClasses =
   'z-20 fixed top-0 left-0 w-full h-screen bg-black/75';
-
-const modalDefaultClasses =
-  'z-30 animate-slide-down fixed sm:left-[50%] top-[50%] left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white';
 
 const Backdrop: React.FC<BackdropProps> = ({ className, style, onClose }) => {
   return <div className={className} style={style} onClick={onClose} />;
@@ -45,6 +44,8 @@ const ModalOverlay: React.FC<ModalOverlayProps> = ({
 };
 
 const Modal: React.FC<ModalProps> = ({
+  withRating = false,
+  withTextArea = false,
   modalClasses,
   backdropClasses,
   modalStyle,
@@ -52,13 +53,23 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   children
 }) => {
-  const ref = useRef<Element | null>(null);
+  const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    ref.current = document.querySelector<HTMLElement>('#portal');
+    setPortalElement(document?.querySelector<HTMLElement>('#portal'));
   }, []);
 
-  return ref.current !== null ? (
+  let top = 'top-[50%]';
+
+  if (!withRating && withTextArea) {
+    top = 'top-[45%]';
+  } else if (withRating && withTextArea) {
+    top = 'top-[40%]';
+  }
+
+  const modalDefaultClasses = `z-30 animate-slide-down fixed sm:left-[50%] ${top} left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white`;
+
+  return portalElement !== null ? (
     <>
       {ReactDOM.createPortal(
         <Backdrop
@@ -66,7 +77,7 @@ const Modal: React.FC<ModalProps> = ({
           className={backdropClasses ?? backdropDefaultClasses}
           style={backdropStyle}
         />,
-        ref.current
+        portalElement
       )}
       {ReactDOM.createPortal(
         <ModalOverlay
@@ -75,7 +86,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           {children}
         </ModalOverlay>,
-        ref.current
+        portalElement
       )}
     </>
   ) : null;

@@ -15,6 +15,7 @@ export { default as LineChart } from 'public/assets/vector/line.png';
 export { default as Loader } from 'public/assets/vector/loader.svg';
 export { default as LogOutIcon } from 'public/assets/vector/log-out.svg';
 export { default as Logo } from 'public/assets/vector/logo.svg';
+export { default as RateUs } from 'public/assets/vector/rate-us.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';
 export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';

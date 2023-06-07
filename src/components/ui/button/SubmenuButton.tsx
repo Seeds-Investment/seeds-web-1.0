@@ -4,12 +4,10 @@ import Image from 'next/image';
 interface SubmenuButtonProps {
   startAdornment: StaticImageData;
   endAdornment: StaticImageData;
-  alt?: string;
-  label: string;
-  width?: string;
-  height?: string;
-  padding?: string;
-  margin?: string;
+  altStartAdornment?: string;
+  altEndAdornment?: string;
+  label?: string;
+  extraClasses?: string;
   className?: string;
   style?: object;
   onClick: () => void;
@@ -21,27 +19,29 @@ const animationClasses =
 const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   startAdornment,
   endAdornment,
-  alt = '',
-  label,
-  width = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full',
-  height = 'h-12',
-  padding = 'py-4 px-6',
-  margin = '',
+  altStartAdornment = '',
+  altEndAdornment = '',
+  label = 'Submenu',
+  extraClasses = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 py-4 px-6',
   className,
   style,
   onClick
 }) => {
-  const buttonDefaultClasses = `z-10 group flex items-center ${width} ${height} ${padding} ${margin} text-sm text-neutral-500 hover:bg-gray-200 active:bg-gray-300 bg-white`;
+  const defaultButtonClasses = `z-10 group flex items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 bg-white ${extraClasses}`;
 
   return (
     <button
-      className={className ?? buttonDefaultClasses}
+      className={className ?? defaultButtonClasses}
       style={style}
       onClick={onClick}
     >
-      <Image src={startAdornment} alt={alt} className="mr-4" />
+      <Image src={startAdornment} alt={altStartAdornment} className="mr-4" />
       {label}
-      <Image src={endAdornment} alt={alt} className={animationClasses} />
+      <Image
+        src={endAdornment}
+        alt={altEndAdornment}
+        className={animationClasses}
+      />
     </button>
   );
 };

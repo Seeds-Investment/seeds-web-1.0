@@ -1,43 +1,84 @@
+import { useState } from 'react';
+
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import { Email, XIcon } from 'public/assets/vector';
 
-import Button from '../Button';
+import Button from '../ui/button/Button';
+import TextArea from '../ui/input/TextArea';
 import Modal from '../ui/modal/Modal';
+import Rating from '../ui/rating/Rating';
 
 interface PopupProps {
   onClose: () => void;
-  onClick: () => void;
+  onContinue: (payload?: object) => void;
+  title?: string;
+  subtitle?: string;
+  label?: string;
   src?: StaticImageData;
   alt?: string;
   imageClasses?: string;
   titleClasses?: string;
   subtitleClasses?: string;
-  title?: string;
-  subtitle?: string;
-  label?: string;
+  withRating?: boolean;
+  withTextArea?: boolean;
 }
 
-const imageDefaultClasses = 'mx-auto mb-6';
+const imageDefaultClasses = 'mx-auto mb-6 mt-10';
 
-const titleDefaultClasses = 'mb-1.5 font-semibold text-neutral-500';
-
-const subtitleDefaultClasses = 'mb-6 text-sm text-neutral-400';
+const titleDefaultClasses = 'mb-1.5 font-semibold text-neutral-medium';
 
 const Popup: React.FC<PopupProps> = ({
   onClose,
-  onClick,
+  onContinue,
+  title = 'Your Email : mar**i@gmail.com',
+  subtitle = "We'll give you some information through email.",
+  label = 'Change Email',
   src,
   alt,
   imageClasses,
   titleClasses,
   subtitleClasses,
-  title = 'Your Email : mar**i@gmail.com',
-  subtitle = "We'll give you some information through email.",
-  label = 'Change Email'
+  withRating = false,
+  withTextArea = false
 }) => {
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+
+  const rateHandler = (rating: number): void => {
+    setRating(rating);
+  };
+
+  const commentHandler = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ): void => {
+    setComment(event.target.value);
+  };
+
+  const submitHandler = (): void => {
+    const payload: { rating?: number; comment?: string } = {};
+
+    if (withRating) payload.rating = rating;
+    if (withTextArea) payload.comment = comment;
+
+    if (Object.keys(payload).length === 0) {
+      onContinue();
+    } else {
+      onContinue(payload);
+    }
+  };
+
+  const subtitleDefaultClasses = `${
+    withRating ? 'mb-6' : ''
+  } text-sm text-neutral-soft`;
+
   return (
-    <Modal onClose={onClose}>
+    <Modal
+      onClose={onClose}
+      withRating={withRating}
+      withTextArea={withTextArea}
+    >
+      {/* -----Close Button----- */}
       <button
         className="absolute top-2 right-2 flex items-center justify-center rounded-full p-2 transition-colors duration-300 hover:bg-gray-300 active:bg-gray-400"
         data-ripple-dark="true"
@@ -45,6 +86,8 @@ const Popup: React.FC<PopupProps> = ({
       >
         <Image src={XIcon} alt="close" />
       </button>
+
+      {/* -----Main Block----- */}
       <Image
         src={src ?? Email}
         alt={alt ?? 'email'}
@@ -52,7 +95,26 @@ const Popup: React.FC<PopupProps> = ({
       />
       <p className={titleClasses ?? titleDefaultClasses}>{title}</p>
       <p className={subtitleClasses ?? subtitleDefaultClasses}>{subtitle}</p>
-      <Button label={label} width="w-full" color="dark" props={{ onClick }} />
+
+      {/* -----Rating Block----- */}
+      {withRating && <Rating rating={rating} onRate={rateHandler} />}
+
+      {/* -----Text Area----- */}
+      {withTextArea && (
+        <TextArea
+          placeholder="Cool!"
+          className={`relative w-[92%] mx-auto ${withRating ? 'mt-5' : 'mt-8'}`}
+          props={{ rows: 4, value: comment, onChange: commentHandler }}
+        />
+      )}
+
+      <Button
+        label={label}
+        width="w-full"
+        margin="mt-6"
+        color="dark"
+        props={{ onClick: submitHandler }}
+      />
     </Modal>
   );
 };

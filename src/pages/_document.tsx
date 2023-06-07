@@ -5,6 +5,7 @@ export default function Document(): React.ReactElement {
     <Html lang="en">
       <Head />
       <body>
+        <div id="portal" />
         <Main />
         <NextScript />
       </body>

@@ -1,22 +1,24 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { useState } from 'react';
+// eslint-disable-next-line react-hooks/exhaustive-deps
 
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
+import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
-import { loginPhoneNumber } from '@/repository/auth.repository';
+// import { loginPhoneNumber } from '@/repository/auth.repository';
 import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-// import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 import PhoneInput from '@/components/PhoneInput';
-import { Eye, EyeSlash, Loader } from 'public/assets/vector';
+import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -27,7 +29,7 @@ interface FormData {
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  // const { data: session }: any = useSession();
+  const { data: session }: any = useSession();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -95,33 +97,42 @@ const LoginPage = (): JSX.Element => {
   };
 
   const handleLoginProvider = (provider: string): void => {
-    // signIn(provider)
-    //   .then(result => {
-    //     if (result?.error != null) {
-    //       console.log(result.error);
-    //     } else if (provider !== '') {
-    //       localStorage.setItem('provider', provider);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+    signIn(provider)
+      .then(result => {
+        if (result?.error != null) {
+          console.log(result.error);
+        } else if (provider !== '') {
+          localStorage.setItem('provider', provider);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
-  // useEffect(() => {
-  //   const fetchAccessToken = async (): Promise<void> => {
-  //     const provider = localStorage.getItem('provider');
-  //     if (session?.access_token != null && provider != null) {
-  //       const response = await loginProvider(session.access_token, provider);
-  //       // setAccessToken(response);
-  //       console.log(response);
-  //     }
-  //   };
-
-  //   fetchAccessToken().catch(error => {
-  //     console.error(error);
-  //   });
-  // }, [session?.access_token]);
+  useEffect(() => {
+    const fetchAccessToken = async (): Promise<void> => {
+      const provider = localStorage.getItem('provider');
+      if (provider != null && session.access_token !== undefined) {
+        const response = await loginProvider(session.access_token, provider);
+        if (response.status === 404) {
+          router.push('/circle/auth/register').catch(error => {
+            console.log(error);
+          });
+          signOut().catch(error => {
+            console.log(error);
+          });
+        } else if (response.status === 200) {
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+        }
+      }
+    };
+    fetchAccessToken().catch(error => {
+      console.error(error);
+    });
+  }, [session?.access_token, router]);
 
   const thirdParty = [
     {
@@ -139,122 +150,245 @@ const LoginPage = (): JSX.Element => {
   ];
 
   return (
-    <div className="px-8 pb-8 mt-4">
-      <form>
-        <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
-        <PhoneInput
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          onChangePhoneNumber={handleChangePhoneNumber}
-          phoneValue={formData.phoneNumber}
-          error={errorPhone === ''}
-        />
-        {errorPhone !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorPhone}</small>
-        )}
-        <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
-        <Input
-          className="text-xl"
-          type={showPassword ? 'text' : 'password'}
-          variant="standard"
-          color="gray"
-          onChange={e => {
-            setFormData({ ...formData, password: e.target.value });
-          }}
-          icon={
-            <Image
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              src={showPassword ? Eye : EyeSlash}
-              alt=""
-            />
-          }
-          value={formData.password}
-          error={errorPassword}
-        />
-        {errorPassword !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorPassword}</small>
-        )}
-        {errorResponse !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorResponse}</small>
-        )}
-        <div className="flex flex-row justify-between gap-5 items-center mt-2">
-          <Checkbox
-            checked={formData.keepMeLoggedIn}
-            onChange={e => {
-              setFormData({
-                ...formData,
-                keepMeLoggedIn: e.target.checked
-              });
-            }}
-            label={
-              <Typography variant="small" className=" text-black lg:font-small">
-                {t('authPage.keepMeLoggedIn')}
-              </Typography>
-            }
-            color="green"
+    <>
+      <div className="px-8 pb-8 mt-4">
+        <form>
+          <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
+          <PhoneInput
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+            onChangePhoneNumber={handleChangePhoneNumber}
+            phoneValue={formData.phoneNumber}
+            error={errorPhone === ''}
           />
-          <Link
-            href={''}
-            className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
-          >
-            {t('authPage.forgotPassword')}?
-          </Link>
-        </div>
-        <CButton
-          onClick={() => submitData}
-          disabled={loading}
-          className={`mx-auto w-full rounded-full ${
-            formData.password === '' || formData.phoneNumber === '' || loading
-              ? 'bg-[#BDBDBD]'
-              : 'bg-[#3AC4A0]'
-          } mt-5`}
-        >
-          {loading ? (
-            <Image
-              src={Loader}
-              alt="loader"
-              className="mx-auto animate-spin object-contain object-[center_center]"
-              width={25}
-              height={25}
-            />
-          ) : (
-            t('authPage.login')
+          {errorPhone !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPhone}</small>
           )}
-        </CButton>
-        <small className="flex justify-center mt-5 text-opacity-50">
-          {t('or')}
-        </small>
-        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-4">
-          {thirdParty.map((el, i) => {
-            return (
-              <CButton
+          <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
+          <Input
+            className="text-xl"
+            type={showPassword ? 'text' : 'password'}
+            variant="standard"
+            color="gray"
+            onChange={e => {
+              setFormData({ ...formData, password: e.target.value });
+            }}
+            icon={
+              <Image
                 onClick={() => {
-                  handleLoginProvider(el.name.toLowerCase());
+                  setShowPassword(!showPassword);
                 }}
-                key={i}
-                className="bg-white rounded-full flex items-center"
-              >
-                <Image
-                  width={30}
-                  height={30}
-                  src={el.img.src}
-                  alt={el.img.alt}
-                  className="w-auto h-auto object-contain object-[center_center]"
-                />
+                src={showPassword ? Eye.src : EyeSlash.src}
+                alt={showPassword ? Eye.alt : EyeSlash.alt}
+                width={24}
+                height={24}
+              />
+            }
+            value={formData.password}
+            error={errorPassword}
+          />
+          {errorPassword !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPassword}</small>
+          )}
+          {errorResponse !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorResponse}</small>
+          )}
+          <div className="flex flex-row justify-between gap-5 items-center mt-2">
+            <Checkbox
+              checked={formData.keepMeLoggedIn}
+              onChange={e => {
+                setFormData({
+                  ...formData,
+                  keepMeLoggedIn: e.target.checked
+                });
+              }}
+              label={
                 <Typography
                   variant="small"
-                  className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                  className=" text-black lg:font-small"
                 >
-                  Login with {el.name}
+                  {t('authPage.keepMeLoggedIn')}
                 </Typography>
-              </CButton>
-            );
-          })}
-        </div>
-      </form>
-    </div>
+              }
+              color="green"
+            />
+            <Link
+              href={''}
+              className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
+            >
+              {t('authPage.forgotPassword')}?
+            </Link>
+          </div>
+          <CButton
+            onClick={() => submitData}
+            disabled={loading}
+            className={`mx-auto w-full rounded-full ${
+              formData.password === '' || formData.phoneNumber === '' || loading
+                ? 'bg-[#BDBDBD]'
+                : 'bg-[#3AC4A0]'
+            } mt-5`}
+          >
+            {loading ? (
+              <Image
+                src={Loader.src}
+                alt={Loader.alt}
+                className="mx-auto animate-spin object-contain object-[center_center]"
+                width={25}
+                height={25}
+              />
+            ) : (
+              t('authPage.login')
+            )}
+          </CButton>
+          <small className="flex justify-center mt-5 text-opacity-50">
+            {t('or')}
+          </small>
+          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
+            {thirdParty.map((el, i) => {
+              return (
+                <CButton
+                  onClick={() => {
+                    handleLoginProvider(el.name.toLowerCase());
+                  }}
+                  key={i}
+                  className="bg-white rounded-full flex items-center"
+                >
+                  <Image
+                    width={45}
+                    height={45}
+                    src={el.img.src}
+                    alt={el.img.alt}
+                    className="w-auto h-auto object-contain object-[center_center]"
+                  />
+                  <Typography
+                    variant="small"
+                    className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                  >
+                    Login with {el.name}
+                  </Typography>
+                </CButton>
+              );
+            })}
+          </div>
+        </form>
+      </div>
+      <div className="px-8 pb-8 mt-4">
+        <form>
+          <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
+          <PhoneInput
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+            onChangePhoneNumber={handleChangePhoneNumber}
+            phoneValue={formData.phoneNumber}
+            error={errorPhone === ''}
+          />
+          {errorPhone !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPhone}</small>
+          )}
+          <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
+          <Input
+            className="text-xl"
+            type={showPassword ? 'text' : 'password'}
+            variant="standard"
+            color="gray"
+            onChange={e => {
+              setFormData({ ...formData, password: e.target.value });
+            }}
+            icon={
+              <Image
+                onClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+                src={showPassword ? Eye.src : EyeSlash.src}
+                alt=""
+              />
+            }
+            value={formData.password}
+            error={errorPassword}
+          />
+          {errorPassword !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPassword}</small>
+          )}
+          {errorResponse !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorResponse}</small>
+          )}
+          <div className="flex flex-row justify-between gap-5 items-center mt-2">
+            <Checkbox
+              checked={formData.keepMeLoggedIn}
+              onChange={e => {
+                setFormData({
+                  ...formData,
+                  keepMeLoggedIn: e.target.checked
+                });
+              }}
+              label={
+                <Typography
+                  variant="small"
+                  className=" text-black lg:font-small"
+                >
+                  {t('authPage.keepMeLoggedIn')}
+                </Typography>
+              }
+              color="green"
+            />
+            <Link
+              href={''}
+              className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
+            >
+              {t('authPage.forgotPassword')}?
+            </Link>
+          </div>
+          <CButton
+            // onClick={() => submitData}
+            disabled={loading}
+            className={`mx-auto w-full rounded-full ${
+              formData.password === '' || formData.phoneNumber === '' || loading
+                ? 'bg-[#BDBDBD]'
+                : 'bg-[#3AC4A0]'
+            } mt-5`}
+          >
+            {loading ? (
+              <Image
+                src={Loader.src}
+                alt="loader"
+                className="mx-auto animate-spin object-contain object-[center_center]"
+                width={25}
+                height={25}
+              />
+            ) : (
+              t('authPage.login')
+            )}
+          </CButton>
+          <small className="flex justify-center mt-5 text-opacity-50">
+            {t('or')}
+          </small>
+          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-4">
+            {thirdParty.map((el, i) => {
+              return (
+                <CButton
+                  key={i}
+                  className="bg-white rounded-full flex items-center"
+                >
+                  <Image
+                    width={30}
+                    height={30}
+                    src={el.img.src}
+                    alt={el.img.alt}
+                    className="w-auto h-auto object-contain object-[center_center]"
+                  />
+                  <Typography
+                    variant="small"
+                    className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
+                  >
+                    Login with {el.name}
+                  </Typography>
+                </CButton>
+              );
+            })}
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

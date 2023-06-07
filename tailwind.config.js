@@ -24,7 +24,11 @@ module.exports = withMT({
         'seeds-purple': '#7555DA',
         'seeds-green': '#4FE6AF',
         'seeds-button-green': '#3AC4A0',
-        'seeds-green-2': '#DCFCE4'
+        'seeds-green-2': '#DCFCE4',
+        'neutral-medium': '#262626',
+        'neutral-soft': '#7C7C7C',
+        'neutral-ultrasoft': '#CCCCCC',
+        'warning-hard': '#DD2525'
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",
@@ -47,6 +51,21 @@ module.exports = withMT({
       },
       boxShadow: {
         center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)'
+      },
+      animation: {
+        'slide-down': 'slide-down 300ms ease-out forwards'
+      },
+      keyframes: {
+        'slide-down': {
+          from: {
+            opacity: 0,
+            transform: 'translateY(-3rem)'
+          },
+          to: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }
+        }
       }
     }
   },

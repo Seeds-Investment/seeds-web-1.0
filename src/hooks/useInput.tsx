@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const useInput = (
-  validate?: (value: string) => boolean,
+  validate?: null | ((value: string) => boolean),
   format?: (value: string) => string
 ): {
   value: string;
@@ -17,7 +17,7 @@ const useInput = (
   let isValid;
   let isError;
 
-  if (validate !== undefined) {
+  if (validate !== undefined && validate !== null) {
     isValid = validate(enteredValue);
     isError = !isValid && isTouched;
   }

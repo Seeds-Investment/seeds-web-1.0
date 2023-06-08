@@ -2,7 +2,8 @@ import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 
 const SliderCard = ({ slide }: { slide: ISlider }): React.ReactElement => (
-  <div className="w-full lg:w-3/4 justify-center flex flex-col items-center mt-3">
+  <div className="w-full lg:w-full justify-center flex flex-col items-center mt-3">
+    {/* <div className="w-full lg:w-3/4 justify-center flex flex-col items-center mt-3"> */}
     <div className="w-full flex flex-col items-center mt-3">
       <Image src={slide.image} alt="" />
     </div>

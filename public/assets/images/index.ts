@@ -1,4 +1,4 @@
-export { default as WelcomeOnboarding } from 'public/assets/images/Congrat-Onboarding.png';
+export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';
 export { default as AppleBrand } from 'public/assets/images/apple.svg';
@@ -14,6 +14,7 @@ export { default as Seeds } from 'public/assets/images/seeds.svg';
 export { default as Share } from 'public/assets/images/share.png';
 export { default as SilverMedal } from 'public/assets/images/silver-medal-1.png';
 export { default as Sprout } from 'public/assets/images/sprout.svg';
+export { default as SuccessRegister } from 'public/assets/images/success-register.png';
 export { default as Trash } from 'public/assets/images/trash.svg';
 export { default as Tree } from 'public/assets/images/tree.svg';
 export { default as Email } from 'public/assets/vector/email.svg';

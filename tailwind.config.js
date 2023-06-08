@@ -22,6 +22,7 @@ module.exports = withMT({
       },
       colors: {
         'seeds-purple': '#7555DA',
+        'seeds-purple-2': '#9A76FE',
         'seeds-green': '#4FE6AF',
         'seeds-button-green': '#3AC4A0',
         'seeds-green-2': '#DCFCE4',
@@ -53,7 +54,8 @@ module.exports = withMT({
         center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)'
       },
       animation: {
-        'slide-down': 'slide-down 300ms ease-out forwards'
+        'slide-down': 'slide-down 300ms ease-out forwards',
+        'slide-up': 'slide-up 300ms ease-out forwards'
       },
       keyframes: {
         'slide-down': {
@@ -64,6 +66,16 @@ module.exports = withMT({
           to: {
             opacity: 1,
             transform: 'translateY(0)'
+          }
+        },
+        'slide-up': {
+          from: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          },
+          to: {
+            opacity: 0,
+            transform: 'translateY(-3rem)'
           }
         }
       }

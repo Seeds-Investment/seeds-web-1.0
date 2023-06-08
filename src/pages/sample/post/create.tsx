@@ -1,11 +1,10 @@
-import { Button, Input, Typography } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-
 import SampleLayout from '@/components/layouts/SampleLayout';
 import useService from '@/hooks/useService';
 import { createPost } from '@/repository/post';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { Button, Input, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
 
 const TodoPage = (): JSX.Element => {
   const router = useRouter();
@@ -105,11 +104,7 @@ const TodoPage = (): JSX.Element => {
 };
 
 TodoPage.getLayout = function getLayout(page: JSX.Element) {
-  return (
-    <SampleLayout title="Create Post" subtitle="Enter Post Data Values">
-      {page}
-    </SampleLayout>
-  );
+  return <SampleLayout>{page}</SampleLayout>;
 };
 
 export default TodoPage;

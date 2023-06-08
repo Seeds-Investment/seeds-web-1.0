@@ -16,7 +16,7 @@ const dotClasses =
   'absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-[#CCDCDC] border-4';
 
 const animationClasses =
-  'absolute animate-ping w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-[#262626]';
+  'absolute animate-ping w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-neutral-medium';
 
 const defaultClasses =
   'relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] sm:mb-8 bg-white';
@@ -83,10 +83,10 @@ const InputPin: React.FC<InputPinProps> = ({
 
         {/* -----Title----- */}
         <>
-          <h2 className="mb-2 lg:text-3xl text-2xl font-semibold text-center text-[#262626]">
+          <h2 className="mb-2 lg:text-3xl text-2xl font-semibold text-center text-neutral-medium">
             {title}
           </h2>
-          <p className="sm:mb-10 mb-12 text-base text-center text-[#7C7C7C]">
+          <p className="sm:mb-10 mb-12 text-base text-center text-neutral-soft">
             {subtitle}
           </p>
         </>
@@ -101,7 +101,7 @@ const InputPin: React.FC<InputPinProps> = ({
               <span
                 className={
                   pin.length >= index + 1
-                    ? `${dotClasses} bg-[#262626]`
+                    ? `${dotClasses} bg-neutral-medium`
                     : dotClasses
                 }
               ></span>

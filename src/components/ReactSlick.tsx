@@ -1,8 +1,8 @@
 import common from '@/utils/common';
-import { type ISlider } from '@/utils/interfaces/components.interfaces';
-import Image from 'next/image';
+import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import React, { useRef } from 'react';
 import Slider from 'react-slick';
+import SliderCard from './SlideCard';
 import SliderDot from './SliderDot';
 
 export default function ReactSlick({
@@ -28,17 +28,3 @@ export default function ReactSlick({
     </Slider>
   );
 }
-
-const SliderCard = ({ slide }: { slide: ISlider }): React.ReactElement => (
-  <div className="w-full flex flex-col items-center mt-3">
-    <div className="w-full flex flex-col items-center mt-3">
-      <Image src={slide.image} alt="" />
-    </div>
-    <div className="text-lg tracking-wide font-semibold mt-3">
-      {slide.title}
-    </div>
-    <div className="text-md tracking-tight text-center font-normal mt-2 text-[#7C7C7C]">
-      {slide.text}
-    </div>
-  </div>
-);

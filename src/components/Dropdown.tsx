@@ -1,4 +1,4 @@
-import { type ILanguage } from '@/utils/interfaces/components.interfaces';
+import type { ILanguage } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -34,7 +34,7 @@ export default function Dropdown({
       <Image src={selectedOption?.icon} width={25} height={25} alt="asds" />
       <p className="ml-3 font-semibold">{selectedOption?.label}</p>
       {showOption && (
-        <div className="border lg:w-36 mt-2 rounded-lg absolute bg-white">
+        <div className="border lg:w-36 mt-2 rounded-lg absolute bg-white z-50">
           {options?.map((item, i) => (
             <div
               key={i}

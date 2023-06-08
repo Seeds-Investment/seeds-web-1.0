@@ -8,6 +8,8 @@ export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg'
 export { default as Bookmark } from 'public/assets/vector/bookmark.svg';
 export { default as BronzeMedalIcon } from 'public/assets/vector/bronze-medal-1.svg';
 export { default as Bitcoin } from 'public/assets/vector/btc.svg';
+export { default as ChangeEmailIcon } from 'public/assets/vector/change-email.svg';
+export { default as ChangeTelephoneIcon } from 'public/assets/vector/change-telephone.svg';
 export { default as ChatBubble } from 'public/assets/vector/chat-bubble.svg';
 export { default as CloseCircleIcon } from 'public/assets/vector/close-circle.svg';
 export { default as Copy } from 'public/assets/vector/copy.svg';
@@ -30,6 +32,7 @@ export { default as Loader } from 'public/assets/vector/loader.svg';
 export { default as LogOutIcon } from 'public/assets/vector/log-out.svg';
 export { default as Logo } from 'public/assets/vector/logo.svg';
 export { default as Pin } from 'public/assets/vector/pin.svg';
+export { default as RateUs } from 'public/assets/vector/rate-us.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';
 export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';
 export { default as SeedlingIcon } from 'public/assets/vector/seedling-icon.svg';

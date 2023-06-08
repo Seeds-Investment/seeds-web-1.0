@@ -1,4 +1,4 @@
-export { default as WelcomeOnboarding } from 'public/assets/images/Congrat-Onboarding.png';
+export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';
 export { default as AppleBrand } from 'public/assets/images/apple.png';

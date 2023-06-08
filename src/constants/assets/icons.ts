@@ -11,7 +11,7 @@ export const EyeSlash: AssetsInterface = {
 };
 
 export const Loader: AssetsInterface = {
-  src: 'assets/vector/loader.svg',
+  src: '/assets/vector/loader.svg',
   alt: 'loader-icon'
 };
 

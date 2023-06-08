@@ -9,7 +9,7 @@ import {
   GoogleBrand
 } from '@/constants/assets/logo';
 // import { loginPhoneNumber } from '@/repository/auth.repository';
-import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -151,7 +151,7 @@ const LoginPage = (): JSX.Element => {
 
   return (
     <>
-      <div className="px-8 pb-8 mt-4">
+      <div className="px-4">
         <form>
           <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
           <PhoneInput
@@ -219,7 +219,7 @@ const LoginPage = (): JSX.Element => {
               {t('authPage.forgotPassword')}?
             </Link>
           </div>
-          <CButton
+          <Button
             onClick={() => submitData}
             disabled={loading}
             className={`mx-auto w-full rounded-full ${
@@ -239,7 +239,7 @@ const LoginPage = (): JSX.Element => {
             ) : (
               t('authPage.login')
             )}
-          </CButton>
+          </Button>
           <small className="flex justify-center mt-5 text-opacity-50">
             {t('or')}
           </small>
@@ -256,122 +256,6 @@ const LoginPage = (): JSX.Element => {
                   <Image
                     width={45}
                     height={45}
-                    src={el.img.src}
-                    alt={el.img.alt}
-                    className="w-auto h-auto object-contain object-[center_center]"
-                  />
-                  <Typography
-                    variant="small"
-                    className="text-black mx-auto lg:hidden font-bold flex justify-center items-center"
-                  >
-                    Login with {el.name}
-                  </Typography>
-                </CButton>
-              );
-            })}
-          </div>
-        </form>
-      </div>
-      <div className="px-8 pb-8 mt-4">
-        <form>
-          <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
-          <PhoneInput
-            selectedCode={selectedCode}
-            setSelectedCode={setSelectedCode}
-            onChangePhoneNumber={handleChangePhoneNumber}
-            phoneValue={formData.phoneNumber}
-            error={errorPhone === ''}
-          />
-          {errorPhone !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorPhone}</small>
-          )}
-          <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
-          <Input
-            className="text-xl"
-            type={showPassword ? 'text' : 'password'}
-            variant="standard"
-            color="gray"
-            onChange={e => {
-              setFormData({ ...formData, password: e.target.value });
-            }}
-            icon={
-              <Image
-                onClick={() => {
-                  setShowPassword(!showPassword);
-                }}
-                src={showPassword ? Eye.src : EyeSlash.src}
-                alt=""
-              />
-            }
-            value={formData.password}
-            error={errorPassword}
-          />
-          {errorPassword !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorPassword}</small>
-          )}
-          {errorResponse !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorResponse}</small>
-          )}
-          <div className="flex flex-row justify-between gap-5 items-center mt-2">
-            <Checkbox
-              checked={formData.keepMeLoggedIn}
-              onChange={e => {
-                setFormData({
-                  ...formData,
-                  keepMeLoggedIn: e.target.checked
-                });
-              }}
-              label={
-                <Typography
-                  variant="small"
-                  className=" text-black lg:font-small"
-                >
-                  {t('authPage.keepMeLoggedIn')}
-                </Typography>
-              }
-              color="green"
-            />
-            <Link
-              href={''}
-              className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
-            >
-              {t('authPage.forgotPassword')}?
-            </Link>
-          </div>
-          <CButton
-            // onClick={() => submitData}
-            disabled={loading}
-            className={`mx-auto w-full rounded-full ${
-              formData.password === '' || formData.phoneNumber === '' || loading
-                ? 'bg-[#BDBDBD]'
-                : 'bg-[#3AC4A0]'
-            } mt-5`}
-          >
-            {loading ? (
-              <Image
-                src={Loader.src}
-                alt="loader"
-                className="mx-auto animate-spin object-contain object-[center_center]"
-                width={25}
-                height={25}
-              />
-            ) : (
-              t('authPage.login')
-            )}
-          </CButton>
-          <small className="flex justify-center mt-5 text-opacity-50">
-            {t('or')}
-          </small>
-          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-4">
-            {thirdParty.map((el, i) => {
-              return (
-                <CButton
-                  key={i}
-                  className="bg-white rounded-full flex items-center"
-                >
-                  <Image
-                    width={30}
-                    height={30}
                     src={el.img.src}
                     alt={el.img.alt}
                     className="w-auto h-auto object-contain object-[center_center]"

@@ -1,4 +1,4 @@
-name:  Deploy to DEV - Seeds web 1.0
+name: Deploy to DEV - Seeds web 1.0
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 env:
   GITHUB_REGISTRY: ghcr.io
   GITHUB_REGISTRY_IMAGE_NAME: dev-web
-  AWS_ECR : 940544028848.dkr.ecr.ap-southeast-3.amazonaws.com
+  AWS_ECR: 940544028848.dkr.ecr.ap-southeast-3.amazonaws.com
 
 jobs:
   build:
@@ -40,8 +40,10 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.AWS_ECR }}/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
-#            ${{ env.GITHUB_REGISTRY }}/seeds-investment/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
+          tags:
+            ${{ env.AWS_ECR }}/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{
+            env.GITHUB_SHA_SHORT }}
+      #            ${{ env.GITHUB_REGISTRY }}/seeds-investment/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
 
       - name: Setup ssh key
         run: |
@@ -50,7 +52,7 @@ jobs:
           chmod 600 $HOME/.ssh/id_rsa
 
       - name: Download docker image
-        run:  |
+        run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} '${{ secrets.AWS_ECR_LOGIN }}'
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} 'docker pull ${{ env.AWS_ECR }}/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}'
 
@@ -59,7 +61,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} 'versi="$(cat /home/ubuntu/app_deploy/dev-web/docker-compose.yaml | grep image | cut -d ":" -f 3)" && sed -i "s#image: ${{ env.AWS_ECR }}/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${versi}#image: ${{ env.AWS_ECR }}/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}#g" /home/ubuntu/app_deploy/dev-web/docker-compose.yaml'
 
       - name: Running container
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_IP }} 'docker-compose -f /home/ubuntu/app_deploy/dev-web/docker-compose.yaml up -d'
+        run:
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{
+          secrets.SSH_IP }} 'docker-compose -f
+          /home/ubuntu/app_deploy/dev-web/docker-compose.yaml up -d'
 
       - name: Clean up ssh key
         run: rm -rf $HOME/.ssh/*

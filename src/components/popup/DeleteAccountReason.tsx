@@ -1,4 +1,4 @@
-import { Typography } from '@material-tailwind/react';
+import { Textarea, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useState } from 'react';
@@ -15,10 +15,13 @@ const DeleteAccountReasonPopUp: React.FC<Props> = ({ onClose }) => {
   const [, setSelectedValue] = useState<string>('');
 
   const [textAreaShown, setTextAreaShown] = useState<boolean>(false);
+  const [otherValue, setOtherValue] = useState<string>('');
 
   const handleRadioChange = (event: any): void => {
     setSelectedValue(event.target.value);
   };
+
+  console.log(otherValue);
 
   return (
     <Modal
@@ -37,9 +40,18 @@ const DeleteAccountReasonPopUp: React.FC<Props> = ({ onClose }) => {
       </div>
       {textAreaShown ? (
         <div className="flex flex-col animate-slide-down">
-          <Typography className="text-lg">
+          <Typography className="text-lg font-bold text-left">
             {t('DeleteReasonAccountPopUp.title2')}
           </Typography>
+          <Textarea
+            value={otherValue}
+            onChange={e => {
+              setOtherValue(e.target.value);
+            }}
+            variant="outlined"
+            color="gray"
+            label="Please write and elaborate your problem"
+          />
         </div>
       ) : (
         <>

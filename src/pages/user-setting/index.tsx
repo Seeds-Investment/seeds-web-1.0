@@ -5,20 +5,28 @@ import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
+import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
 import { DummyAvatar } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
+  BronzeMedalIcon,
   CloseCircleIcon,
   FileTextIcon,
   GlobalIcon,
   GoldMedalIcon,
   HelpCircleIcon,
   LogOutIcon,
+  SilverMedalIcon,
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
+import { useState } from 'react';
 
 const UserSetting: React.FC = () => {
+  const [chooseBadgeModalShown, setChooseBadgeModalShown] =
+    useState<boolean>(false);
+
+  const [selectedMedal, setSelectedMedal] = useState<string>('gold');
   const menus = [
     {
       label: 'Edit Profile',
@@ -93,7 +101,33 @@ const UserSetting: React.FC = () => {
                 <h6 className="text-lg font-semibold text-neutral-500">
                   Prabu Firgantoro
                 </h6>
-                <Image src={GoldMedalIcon} alt="gold medal icon" />
+                <Image
+                  src={
+                    selectedMedal === 'gold'
+                      ? GoldMedalIcon
+                      : selectedMedal === 'silver'
+                      ? SilverMedalIcon
+                      : BronzeMedalIcon
+                  }
+                  alt="medal-icon"
+                  width={20}
+                  onClick={() => {
+                    setChooseBadgeModalShown(prev => !prev);
+                  }}
+                  height={20}
+                  className="hover:bg-gray-200 cursor-pointer hover:scale-150 transition ease-in-out rounded-full"
+                />
+                {chooseBadgeModalShown && (
+                  <ChooseBadgePopUp
+                    onChangeMedalHandle={medal => {
+                      setSelectedMedal(medal);
+                    }}
+                    onClose={() => {
+                      setChooseBadgeModalShown(prev => !prev);
+                    }}
+                    selectedMedal={selectedMedal}
+                  />
+                )}
               </div>
               <span className="mb-1 text-xs text-neutral-500">
                 @prabufirgan

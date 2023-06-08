@@ -2,6 +2,7 @@ import { Trash } from '@/constants/assets/images';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
+import { useTranslation } from 'react-i18next';
 import Modal from '../ui/modal/Modal';
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const DeleteAccountPopUp: React.FC<Props> = ({ onClose }) => {
+  const { t } = useTranslation();
+
   return (
     <Modal
       onClose={onClose}
@@ -33,16 +36,16 @@ const DeleteAccountPopUp: React.FC<Props> = ({ onClose }) => {
           className="w-auto h-auto aspect-auto"
         />
         <Typography className="font-bold text-lg text-black">
-          Are you sure to delete this account?
+          {t('DeleteAccount.title')}
         </Typography>
         <Typography className="text-lg text-gray-500">
-          If you click yes, your account data will be deleted in 30 days
+          {t('DeleteAccount.description')}
         </Typography>
       </div>
       <div className="flex flex-col gap-4">
         <div className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out">
           <Typography className="text-white text-lg font-bold text-center p-2">
-            Yes
+            {t('DeleteAccount.confirmButton')}
           </Typography>
         </div>
 
@@ -50,7 +53,7 @@ const DeleteAccountPopUp: React.FC<Props> = ({ onClose }) => {
           onClick={onClose}
           className="text-center cursor-pointer hover:scale-105 transition ease-out text-[#7555DA] text-lg font-bold"
         >
-          No
+          {t('DeleteAccount.cancelButton')}
         </Typography>
       </div>
     </Modal>

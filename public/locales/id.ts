@@ -296,5 +296,22 @@ export default {
     option2: 'Terlalu banyak bug',
     option3: 'Lainnya,Beri Spesifikasi',
     title2: 'Bantu kami memahami masalahnya'
+  },
+  ChooseBadge: {
+    title: 'Pilih Lencana',
+    description: 'Silahkan pilih lencanamu'
+  },
+  RemoveLinkedAccount: {
+    title: 'Hapus akun {{provider}} anda dari Seeds?',
+    description: 'Akun anda akan terputus dari Seed',
+    removeButton: 'Hapus',
+    cancelButton: 'Batal'
+  },
+  DeleteAccount: {
+    title: 'Apakah kamu yakin ingin menghapus akun ini?',
+    description:
+      'Jika Anda mengklik ya, data akun Anda akan dihapus dalam 30 hari',
+    confirmButton: 'Ya',
+    cancelButton: 'Tidak'
   }
 };

@@ -18,7 +18,7 @@ import Slider from 'react-slick';
 export default function ForgotPassword(): React.ReactElement {
   const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
-  const [phoneNumber, setPhoneNumber] = useState<any>('');
+  const [phoneNumber, setPhoneNumber] = useState<any>('+6287720428662');
   const [email, setEmail] = useState<any>('');
 
   const methodHandler = async (payload: IFormMethod): Promise<void> => {

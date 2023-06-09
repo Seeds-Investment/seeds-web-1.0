@@ -25,8 +25,8 @@ const AuthLayout = ({
   const router = useRouter();
 
   return (
-    <div className="relative">
-      <div className="h-screen w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
+    <div className="h-full">
+      <div className="h-full w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
         <div className="relative h-[30rem] top-[100%] translate-y-[-100%]">
           <Image
             src={LineChart.src}
@@ -79,7 +79,7 @@ const AuthLayout = ({
             </Card>
           </div>
         </div>
-        <div className="flex justify-center z-20">
+        <div className="flex justify-center  z-20">
           <div className="p-4 w-[30rem] min-h-[50rem] lg:min-h-[40rem]">
             <div className="z-20 lg:hidden flex items-center mb-4">
               {(!isUndefindOrNull(title) && !isEmptyString(title)) ||
@@ -93,7 +93,7 @@ const AuthLayout = ({
                     ) {
                       onBack();
                     } else {
-                      router.push('/circle/auth').catch(error => {
+                      router.push('/story-boarding').catch(error => {
                         console.log(error);
                       });
                     }
@@ -116,7 +116,7 @@ const AuthLayout = ({
                 )}
               </Typography>
             </div>
-            <Card className="w-full h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
+            <Card className="w-full md:h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
               <div className="flex justify-between p-8">
                 <Image
                   src={SeedsLogo.src}

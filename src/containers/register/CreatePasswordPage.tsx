@@ -63,7 +63,7 @@ const CreatePasswordPage = ({
       </div>
       <div className="mt-10">
         <Typography variant="h5" color="black">
-          {t('input.type.password')}
+          {t('input.type.password')} <span className="text-red-900">*</span>
         </Typography>
         <CInputPassword
           onChange={v => {
@@ -79,7 +79,7 @@ const CreatePasswordPage = ({
       </div>
       <div className="mt-5">
         <Typography variant="h5" color="black">
-          {t('input.type.rePassword')}
+          {t('input.type.rePassword')} <span className="text-red-900">*</span>
         </Typography>
         <CInputPassword
           onChange={v => {

@@ -1,9 +1,9 @@
 export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';
-export { default as AppleBrand } from 'public/assets/images/apple.png';
+export { default as AppleBrand } from 'public/assets/images/apple.svg';
 export { default as DummyAvatar } from 'public/assets/images/dummy-avatar.png';
-export { default as FacebookBrand } from 'public/assets/images/facebook.png';
+export { default as FacebookBrand } from 'public/assets/images/facebook.svg';
 export { default as Flags } from 'public/assets/images/flags';
-export { default as GoogleBrand } from 'public/assets/images/google.png';
+export { default as GoogleBrand } from 'public/assets/images/google.svg';
 export { default as SuccessRegister } from 'public/assets/images/success-register.png';

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import NextAuth, { type Session, type TokenSet } from 'next-auth';
+import NextAuth from 'next-auth';
 import AppleProvider from 'next-auth/providers/apple';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GoogleProvider from 'next-auth/providers/google';
@@ -29,9 +29,13 @@ const options = {
             ? account.id_token
             : account.access_token;
       }
+      console.log(user);
+      console.log(account);
+      console.log(profile);
+      console.log(token, '<<<<<<<');
       return token;
     },
-    async session({ session, token }: { session: Session; token: TokenSet }) {
+    async session({ session, token }: any) {
       // Send properties to the client, like an access_token from a provider.
       return { ...session, access_token: token.access_token };
     }

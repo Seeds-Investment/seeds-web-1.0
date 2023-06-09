@@ -19,6 +19,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 import PhoneInput from '@/components/PhoneInput';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
+import { type DefaultTFuncReturn } from 'i18next';
 import { useTranslation } from 'react-i18next';
 interface FormData {
   phoneNumber: string;
@@ -33,7 +34,7 @@ const LoginPage = (): JSX.Element => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [errorPhone, setErrorPhone] = useState<any>('');
+  const [errorPhone, setErrorPhone] = useState<string | DefaultTFuncReturn>('');
   // const [accessToken,setAccessToken] = useState('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [errorResponse, setErrorResponse] = useState<string>('');
@@ -96,6 +97,12 @@ const LoginPage = (): JSX.Element => {
     setLoading(false);
   };
 
+  const handleSubmit = (): void => {
+    submitData()
+      .then()
+      .catch(() => {});
+  };
+
   const handleLoginProvider = (provider: string): void => {
     signIn(provider)
       .then(result => {
@@ -114,15 +121,12 @@ const LoginPage = (): JSX.Element => {
     const fetchAccessToken = async (): Promise<void> => {
       const provider = localStorage.getItem('provider');
       if (provider != null && session.access_token !== undefined) {
-        const response = await loginProvider(session.access_token, provider);
+        const response = await loginProvider(session?.access_token, provider);
         if (response.status === 404) {
-          router.push('/circle/auth/register').catch(error => {
-            console.log(error);
-          });
-          signOut().catch(error => {
-            console.log(error);
-          });
+          await router.push('/circle/auth/register');
+          await signOut();
         } else if (response.status === 200) {
+          window.localStorage.setItem('keepMeLogin', 'true');
           window.localStorage.setItem('accessToken', response.accessToken);
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
@@ -151,7 +155,7 @@ const LoginPage = (): JSX.Element => {
 
   return (
     <>
-      <div className="px-4">
+      <div className="px-4 my-auto">
         <form>
           <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
           <PhoneInput
@@ -159,10 +163,10 @@ const LoginPage = (): JSX.Element => {
             setSelectedCode={setSelectedCode}
             onChangePhoneNumber={handleChangePhoneNumber}
             phoneValue={formData.phoneNumber}
-            error={errorPhone === ''}
+            error={errorPhone !== ''}
           />
           {errorPhone !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorPhone}</small>
+            <small className="text-[#ff515d]">{errorPhone}</small>
           )}
           <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
           <Input
@@ -188,10 +192,10 @@ const LoginPage = (): JSX.Element => {
             error={errorPassword}
           />
           {errorPassword !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorPassword}</small>
+            <small className="text-[#ff515d]">{errorPassword}</small>
           )}
           {errorResponse !== '' && (
-            <small className="text-[#ff515d] font-bold">{errorResponse}</small>
+            <small className="text-[#ff515d]">{errorResponse}</small>
           )}
           <div className="flex flex-row justify-between gap-5 items-center mt-2">
             <Checkbox
@@ -213,14 +217,14 @@ const LoginPage = (): JSX.Element => {
               color="green"
             />
             <Link
-              href={''}
+              href={'/auth/forgot-password'}
               className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
             >
               {t('authPage.forgotPassword')}?
             </Link>
           </div>
           <Button
-            onClick={() => submitData}
+            onClick={handleSubmit}
             disabled={loading}
             className={`mx-auto w-full rounded-full ${
               formData.password === '' || formData.phoneNumber === '' || loading
@@ -240,10 +244,10 @@ const LoginPage = (): JSX.Element => {
               t('authPage.login')
             )}
           </Button>
-          <small className="flex justify-center mt-5 text-opacity-50">
+          <small className="flex justify-center my-8 text-opacity-50">
             {t('or')}
           </small>
-          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
+          <div className="flex lg:flex-row flex-col gap-2 py-5 lg:justify-evenly">
             {thirdParty.map((el, i) => {
               return (
                 <CButton
@@ -258,7 +262,7 @@ const LoginPage = (): JSX.Element => {
                     height={45}
                     src={el.img.src}
                     alt={el.img.alt}
-                    className="w-auto h-auto object-contain object-[center_center]"
+                    className="w-auto h-auto md:w-5 md:h-5 object-contain object-[center_center]"
                   />
                   <Typography
                     variant="small"

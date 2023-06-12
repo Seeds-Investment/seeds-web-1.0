@@ -97,7 +97,9 @@ const RegisterPage = (): JSX.Element => {
 };
 
 RegisterPage.getLayout = function getLayout(page: JSX.Element) {
-  return <AuthLayout titleKey="registerPage.title">{page}</AuthLayout>;
+  return (
+    <AuthLayout titleKey="registerPage.title.personalInfo">{page}</AuthLayout>
+  );
 };
 
 export default RegisterPage;

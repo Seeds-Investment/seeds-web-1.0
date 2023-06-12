@@ -364,5 +364,32 @@ export default {
       success: 'Congratulations, your account has been successfully created'
     },
     nextButton: 'Continue'
+  },
+  ProfilePage: {
+    title: 'My Profile'
+  },
+  DeleteAccount: {
+    title: 'Are you sure to delete this account?',
+    description:
+      'If you click yes, your account data will be deleted in 30 days',
+    confirmButton: 'Yes',
+    cancelButton: 'No'
+  },
+  DeleteReasonAccountPopUp: {
+    title: "What's the reason for deleting your account?",
+    option1: "I don't like the app",
+    option2: "There's too many bugs",
+    option3: 'Other, Specify',
+    title2: 'Help us to understand the problem'
+  },
+  ChooseBadge: {
+    title: 'Choose Badges',
+    description: 'Please choose your badges'
+  },
+  RemoveLinkedAccount: {
+    title: 'Remove your {{provider}} Account from Seeds?',
+    description: 'Your account will be disconnected from the Seed',
+    removeButton: 'Remove',
+    cancelButton: 'Cancel'
   }
 };

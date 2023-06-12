@@ -5,6 +5,10 @@ export interface IButton {
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   disabled?: boolean;
+  type?: 'button' | 'reset' | 'submit' | undefined;
+  onSubmit?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => Promise<void>;
   color?: color | undefined;
   fullWidth?: boolean;
 }

@@ -26,7 +26,8 @@ interface PopupProps {
 
 const imageDefaultClasses = 'mx-auto mb-6 mt-10';
 
-const titleDefaultClasses = 'mb-1.5 font-semibold text-neutral-medium';
+const titleDefaultClasses =
+  'mb-1.5 font-semibold font-poppins text-neutral-medium';
 
 const Popup: React.FC<PopupProps> = ({
   onClose,
@@ -70,7 +71,7 @@ const Popup: React.FC<PopupProps> = ({
 
   const subtitleDefaultClasses = `${
     withRating ? 'mb-6' : ''
-  } text-sm text-neutral-soft`;
+  } font-poppins text-sm text-neutral-soft`;
 
   return (
     <Modal
@@ -103,7 +104,9 @@ const Popup: React.FC<PopupProps> = ({
       {withTextArea && (
         <TextArea
           placeholder="Cool!"
-          className={`relative w-[92%] mx-auto ${withRating ? 'mt-5' : 'mt-8'}`}
+          className={`relative w-[92%] mx-auto font-poppins ${
+            withRating ? 'mt-5' : 'mt-8'
+          }`}
           props={{ rows: 4, value: comment, onChange: commentHandler }}
         />
       )}

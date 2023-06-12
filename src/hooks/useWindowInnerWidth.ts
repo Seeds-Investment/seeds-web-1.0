@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 
-const useWindowInnerWidth = (): number => {
-  const [width, setWidth] = useState(640);
+const useWindowInnerWidth = (): number | undefined => {
+  const [width, setWidth] = useState<number | undefined>();
 
   useEffect(() => {
+    if (width === undefined) {
+      setWidth(window.innerWidth);
+    }
+
     const handleResize = (): void => {
       setWidth(window.innerWidth);
     };
@@ -13,7 +17,7 @@ const useWindowInnerWidth = (): number => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [width]);
 
   return width;
 };

@@ -1,23 +1,30 @@
 import { useState, type SetStateAction } from 'react';
 
 import Image from 'next/image';
+import { Flags } from 'public/assets/images';
 import ID from 'public/assets/images/flags/ID.png';
+
 import ArrowCollapseIcon from '../vector/ArrowCollapseIcon';
 
-import classes from './Input.module.css';
+import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 
+import classes from './Input.module.css';
 interface InputProps {
   type?: 'text' | 'isSelectPhoneNumber' | 'isSelect';
   label?: string;
   placeholder?: string;
-  width?: string;
-  margin?: string;
+  extraClasses?: string;
+  disabled?: boolean;
   isError?: boolean;
   errorMessage?: string;
   errorClasses?: string;
+  selectedCountryFlag?: string;
   selectValue?: string | number;
   selectOptions?: any[];
-  onSelect?: (event: SetStateAction<any>) => void;
+  onSelect?: (
+    event: SetStateAction<any>,
+    countryFlag?: SetStateAction<any>
+  ) => void;
   className?: string;
   style?: object;
   props?: object;
@@ -25,13 +32,16 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   type = 'text',
-  label = 'Your New Email',
-  placeholder = 'example@mail.com',
-  width = '',
-  margin = '',
+  label = type === 'isSelectPhoneNumber'
+    ? 'Your New Telephone Number'
+    : 'Your New Email',
+  placeholder = type === 'isSelectPhoneNumber' ? '' : 'example@mail.com',
+  extraClasses = '',
+  disabled = false,
   isError,
   errorMessage,
   errorClasses,
+  selectedCountryFlag,
   selectValue,
   selectOptions,
   onSelect = () => {},
@@ -39,16 +49,19 @@ const Input: React.FC<InputProps> = ({
   style,
   ...props
 }) => {
+  const height = useWindowInnerHeight();
+
   const [isExpand, setIsExpand] = useState(false);
 
-  const handleExpand = (value?: number | string) => () => {
-    if (value !== undefined) {
-      setIsExpand(prevExpand => !prevExpand);
-    }
+  const expandHandler = (): void => {
     setIsExpand(prevExpand => !prevExpand);
   };
 
-  const defaultInputClasses = `relative h-11 ${width} ${margin}`;
+  const defaultInputClasses = `relative ${
+    type === 'isSelect' || type === 'isSelectPhoneNumber'
+      ? 'flex items-baseline gap-2.5 pb-2 border-b border-neutral-ultrasoft'
+      : ''
+  } ${extraClasses}`;
 
   return (
     <div className={className ?? defaultInputClasses} style={style}>
@@ -56,14 +69,30 @@ const Input: React.FC<InputProps> = ({
         <>
           <input
             {...props.props}
+            disabled={disabled}
             placeholder={placeholder}
-            className="peer h-full w-full border-b border-neutral-ultrasoft bg-transparent py-1.5 font-sans text-base text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed"
+            className={`peer h-full w-full border-b border-neutral-ultrasoft bg-transparent py-1.5 font-poppins ${
+              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+            } text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed`}
           />
-          <label className="after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none text-base font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-seeds-button-green/80 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:text-seeds-button-green/80 peer-focus:after:scale-x-100 peer-focus:after:border-seeds-button-green/80 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium">
+          <label
+            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none ${
+              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+            } font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-seeds-button-green/80 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:text-seeds-button-green/80 peer-focus:after:scale-x-100 peer-focus:after:border-seeds-button-green/80 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium`}
+          >
             {label}
           </label>
           {isError === true && (
-            <p className={errorClasses ?? 'mt-1 text-xs text-warning-hard'}>
+            <p
+              className={
+                errorClasses ??
+                `absolute sm:-bottom-[1.125rem] font-poppins text-xs text-warning-hard ${
+                  height !== undefined && height >= 915
+                    ? '-bottom-[1.125rem]'
+                    : '-bottom-[2.125rem]'
+                }`
+              }
+            >
               {errorMessage}
             </p>
           )}
@@ -72,19 +101,27 @@ const Input: React.FC<InputProps> = ({
 
       {(type === 'isSelect' || type === 'isSelectPhoneNumber') && (
         <>
-          <input
-            {...props.props}
-            placeholder={placeholder}
-            className="peer h-full w-full border-b border-neutral-ultrasoft bg-transparent pl-[3.125rem] py-1.5 font-sans text-base text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed"
-          />
-          <label className="after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none text-base font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-seeds-button-green/80 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:text-seeds-button-green/80 peer-focus:after:scale-x-100 peer-focus:after:border-seeds-button-green/80 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium">
-            {label}
-          </label>
           <button
-            onClick={handleExpand()}
-            className="absolute left-0 bottom-2.5 flex justify-between items-center w-10 h-6"
+            disabled={disabled}
+            onClick={expandHandler}
+            className={`flex justify-between items-center gap-4 px-1 min-w-fit h-6 outline-2 focus:outline-seeds-button-green focus:outline-offset-4 disabled:cursor-not-allowed`}
           >
-            <Image src={ID} alt="flag" />
+            {type === 'isSelectPhoneNumber' ? (
+              <Image
+                src={
+                  selectedCountryFlag !== undefined
+                    ? Flags[selectedCountryFlag]
+                    : ID
+                }
+                alt={`${
+                  selectedCountryFlag !== undefined ? selectedCountryFlag : 'ID'
+                }-flag`}
+              />
+            ) : (
+              <span className="font-poppins text-base text-neutral-soft">
+                Choose one
+              </span>
+            )}
             <ArrowCollapseIcon
               stroke="#535353"
               strokeWidth="1.75"
@@ -94,22 +131,58 @@ const Input: React.FC<InputProps> = ({
               collapseAngle="rotate-90"
             />
             {isExpand && (
-              <div className="animate-slide-down absolute top-10 min-w-max max-h-32 rounded-md bg-white shadow-[0px_0px_1.34767px_rgba(48,49,51,0.05),0px_2.69534px_5.39068px_rgba(48,49,51,0.1)]">
+              <div className="z-10 animate-slide-down absolute top-10 max-h-32 rounded-md bg-white shadow-[0px_0px_1.34767px_rgba(48,49,51,0.05),0px_2.69534px_5.39068px_rgba(48,49,51,0.1)]">
                 <div
                   className={`flex flex-col w-full max-h-32 overflow-auto ${classes['custom-scrollbar']}`}
                 >
-                  {selectOptions?.map(item => (
+                  {selectOptions?.map(option => (
                     <div
-                      key={item.id}
-                      className="flex justify-between items-center gap-4 px-3 py-1 hover:bg-gray-200 active:bg-gray-300 focus:outline-0 active:outline-0 focus:bg-gray-200 transition-all duration-300"
+                      key={
+                        type === 'isSelect'
+                          ? option.id
+                          : `${option.code as string}-${option.id as string}`
+                      }
+                      className={`flex items-center gap-4 px-3 py-1 ${
+                        selectValue === option.id || selectValue === option.code
+                          ? 'bg-seeds-button-green/20 focus:bg-seeds-button-green/30 hover:bg-seeds-button-green/30'
+                          : 'hover:bg-gray-200 active:bg-gray-300 focus:bg-gray-200'
+                      } focus:outline-0 transition-all duration-300`}
                       tabIndex={0}
                       onClick={() => {
-                        onSelect(item.id);
+                        if (type === 'isSelect') {
+                          onSelect(option.id);
+                        } else {
+                          onSelect(option.code, option.id);
+                        }
+                      }}
+                      onKeyDown={(
+                        event: React.KeyboardEvent<HTMLDivElement>
+                      ): void => {
+                        if (event.code === 'Enter' || event.code === 'Space') {
+                          onSelect(
+                            type === 'isSelect' ? option.id : option.code
+                          );
+                        }
                       }}
                     >
-                      <Image src={ID} alt="flag" />
-                      <span className="text-sm text-neutral-soft">
-                        {type === 'isSelect' ? item.name : item.countryCode}
+                      {type === 'isSelectPhoneNumber' && (
+                        <Image
+                          src={Flags[option.img]}
+                          alt={`${option.img as string}-flag`}
+                        />
+                      )}
+                      <span
+                        className={`font-poppins text-neutral-medium ${
+                          height !== undefined && height < 760
+                            ? 'text-sm'
+                            : 'text-base'
+                        }`}
+                      >
+                        {type === 'isSelect'
+                          ? option.name
+                          : `${option.name as string} (${
+                              option.code as string
+                            })`}
                       </span>
                     </div>
                   ))}
@@ -117,8 +190,43 @@ const Input: React.FC<InputProps> = ({
               </div>
             )}
           </button>
+          {type === 'isSelectPhoneNumber' && (
+            <span
+              className={`block font-poppins text-neutral-soft ${
+                height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+              }`}
+            >
+              {selectValue}
+            </span>
+          )}
+          <input
+            {...props.props}
+            disabled={disabled}
+            placeholder={placeholder}
+            className={`peer pb-px h-full w-full border-neutral-ultrasoft font-poppins ${
+              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+            } text-neutral-soft outline outline-0 transition-all bg-transparent placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed`}
+          />
+          <label
+            className={`after:content[' '] pointer-events-none absolute left-0 -top-8 flex h-full w-full select-none ${
+              height !== undefined && height < 760
+                ? 'text-sm peer-focus:text-sm'
+                : 'text-base peer-focus:text-base'
+            } font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-[2.125rem] after:block after:w-full after:scale-x-0 after:border-b-2 after:border-seeds-button-green/80 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:leading-6 peer-focus:text-seeds-button-green/80 peer-focus:after:scale-x-100 peer-focus:after:border-seeds-button-green/80 peer-disabled:peer-placeholder-shown:text-neutral-medium`}
+          >
+            {label}
+          </label>
           {isError === true && (
-            <p className={errorClasses ?? 'mt-1 text-xs text-warning-hard'}>
+            <p
+              className={
+                errorClasses ??
+                `absolute sm:-bottom-[1.125rem] font-poppins text-xs text-warning-hard ${
+                  height !== undefined && height >= 915
+                    ? '-bottom-[1.125rem]'
+                    : '-bottom-[2.125rem]'
+                }`
+              }
+            >
               {errorMessage}
             </p>
           )}

@@ -7,7 +7,6 @@ export default function CButton({
   children,
   className,
   onClick,
-  onSubmit,
   disabled,
   color,
   fullWidth
@@ -16,7 +15,6 @@ export default function CButton({
     <Button
       onClick={onClick}
       disabled={disabled}
-      onSubmit={onSubmit}
       className={className}
       color={color}
       fullWidth={fullWidth}

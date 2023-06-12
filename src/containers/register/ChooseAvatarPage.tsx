@@ -28,7 +28,7 @@ const ChooseAvatarPage = ({
   const submit = (): void => {
     void (async () => {
       await post.execute({
-        phoneNumber: formdata.phoneNumber,
+        phoneNumber: formdata.phoneNumber.substring(1),
         email: formdata.email,
         birthDate: new Date(formdata.birthdate).toISOString(),
         name: formdata.name,

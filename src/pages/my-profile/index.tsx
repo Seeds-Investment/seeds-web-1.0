@@ -11,10 +11,12 @@ import {
   Verified
 } from '@/constants/assets/icons';
 import { BronzeMedal, GoldMedal, SilverMedal } from '@/constants/assets/images';
+import withAuth from '@/helpers/withAuth';
 import { getExpData } from '@/repository/exp.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -124,12 +126,15 @@ const ProfilePage = (): JSX.Element => {
       <div className="flex justify-center">
         <CCard className="flex justify-center w-full rounded-none md:rounded-lg md:mx-12 md:mt-5">
           <div className="flex justify-between mx-2 md:mx-8 items-center py-5">
-            <Image
-              src={ArrowLeftBlack.src}
-              alt={ArrowLeftBlack.alt}
-              width={30}
-              height={30}
-            />
+            <Link href={'/'}>
+              <Image
+                src={ArrowLeftBlack.src}
+                alt={ArrowLeftBlack.alt}
+                width={30}
+                height={30}
+                className="transition cursor-pointer ease-in-out hover:scale-150"
+              />
+            </Link>
             <Typography className="text-black font-bold text-xl">
               {t('ProfilePage.title')}
             </Typography>
@@ -138,7 +143,7 @@ const ProfilePage = (): JSX.Element => {
               src={Setting.src}
               alt={Setting.alt}
               width={30}
-              className="transition hover:scale-150"
+              className="transition hover:scale-150 cursor-pointer"
               height={30}
               onClick={() => {
                 router
@@ -200,7 +205,7 @@ const ProfilePage = (): JSX.Element => {
                   />
                   <div className="bg-[#BAFBD0] flex gap-1 items-center rounded-full px-3">
                     <Typography className="text-[#3AC4A0] text-sm font-bold">
-                      {userData?.claims.refCode}
+                      {userData?.claims?.refCode}
                     </Typography>
                     <Image
                       src={Share.src}
@@ -347,4 +352,4 @@ const ProfilePage = (): JSX.Element => {
   );
 };
 
-export default ProfilePage;
+export default withAuth(ProfilePage);

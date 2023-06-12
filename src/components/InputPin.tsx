@@ -28,6 +28,7 @@ interface InputPinProps {
   subtitle?: string;
   className?: string;
   style?: object;
+  withPageGradient: boolean;
 }
 
 const InputPin: React.FC<InputPinProps> = ({
@@ -36,6 +37,7 @@ const InputPin: React.FC<InputPinProps> = ({
   title = 'Enter Your PIN',
   subtitle = 'Please enter your PIN number correctly',
   className,
+  withPageGradient,
   style
 }) => {
   const [pin, setPin] = useState<string[]>([]);
@@ -61,7 +63,7 @@ const InputPin: React.FC<InputPinProps> = ({
     }
   }, [pin, onContinue]);
 
-  return (
+  return withPageGradient ? (
     <CardGradient
       defaultGradient
       className={className ?? defaultClasses}
@@ -161,6 +163,100 @@ const InputPin: React.FC<InputPinProps> = ({
         </div>
       </div>
     </CardGradient>
+  ) : (
+    <div className="max-w-max mx-auto mt-6 mb-36">
+      {/* -----Nav & Logo----- */}
+      <div className="relative flex items-center sm:mb-8 mb-10">
+        <button
+          onClick={onCancel}
+          className="absolute left-0 w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300"
+        >
+          <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+        </button>
+        <span className="mx-auto">
+          <Image src={Logo} alt="logo" />
+        </span>
+      </div>
+
+      {/* -----Title----- */}
+      <>
+        <h2 className="mb-2 lg:text-3xl text-2xl font-semibold text-center text-neutral-medium">
+          {title}
+        </h2>
+        <p className="sm:mb-10 mb-12 text-base text-center text-neutral-soft">
+          {subtitle}
+        </p>
+      </>
+
+      {/* -----Dots----- */}
+      <div className="flex justify-center items-center gap-14 lg:gap-20 h-10 px-5 sm:mb-10 mb-16">
+        {dotsRow.map((_, index) => (
+          <span key={index} className={dotContainerClasses}>
+            <span
+              className={pin.length === index + 1 ? animationClasses : ''}
+            ></span>
+            <span
+              className={
+                pin.length >= index + 1
+                  ? `${dotClasses} bg-neutral-medium`
+                  : dotClasses
+              }
+            ></span>
+          </span>
+        ))}
+      </div>
+
+      {/* -----Inputs----- */}
+      <div className="flex justify-evenly lg:justify-between [&>*]:flex [&>*]:flex-col [&>*]:gap-4">
+        <div>
+          {numbersColumn1.map(number => (
+            <button
+              key={number}
+              tabIndex={0}
+              className={buttonClasses}
+              onClick={enterPinHandler(number)}
+              disabled={isDisabled}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+        <div className="mx-8 lg:mx-0">
+          {numbersColumn2.map(number => (
+            <button
+              key={number}
+              tabIndex={0}
+              className={buttonClasses}
+              onClick={enterPinHandler(number)}
+              disabled={isDisabled}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+        <div>
+          {numbersColumn3.map(number => (
+            <button
+              key={number}
+              tabIndex={0}
+              className={`${buttonClasses} ${
+                number === '' ? 'cursor-pointer active:bg-gray-300' : ''
+              }`}
+              onClick={
+                number === '' ? deletePinHandler : enterPinHandler(number)
+              }
+              disabled={number === '' ? false : isDisabled}
+            >
+              {number === '' ? (
+                <Image src={DeleteIcon} alt="delete-icon" />
+              ) : (
+                number
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

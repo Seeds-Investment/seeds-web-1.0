@@ -8,11 +8,7 @@ import {
 } from '@/constants/assets/logo';
 
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
-import {
-  getRefreshToken,
-  loginPhoneNumber,
-  loginProvider
-} from '@/repository/auth.repository';
+import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -73,7 +69,9 @@ const LoginPage = (): JSX.Element => {
       }
 
       if (formData.phoneNumber !== '' && formData.password !== '') {
-        const formattedPhone = selectedCode.concat(formData.phoneNumber);
+        const formattedPhone = selectedCode
+          .substring(1)
+          .concat(formData.phoneNumber);
 
         const response = await loginPhoneNumber({
           phoneNumber: formattedPhone,
@@ -81,35 +79,13 @@ const LoginPage = (): JSX.Element => {
         });
 
         if (response.status === 200) {
-          if (formData.keepMeLoggedIn) {
-            window.localStorage.setItem('accessToken', response.accessToken);
-            window.localStorage.setItem('refreshToken', response.refreshToken);
-            window.localStorage.setItem('expiresAt', response.expiresAt);
-            window.localStorage.setItem(
-              'keepMeLoggedIn',
-              String(formData.keepMeLoggedIn)
-            );
-          } else {
-            const keepMeLoggedInResponse = await getRefreshToken(
-              response.refreshToken
-            );
-            window.localStorage.setItem(
-              'accessToken',
-              keepMeLoggedInResponse.accessToken
-            );
-            window.localStorage.setItem(
-              'refreshToken',
-              keepMeLoggedInResponse.refreshToken
-            );
-            window.localStorage.setItem(
-              'expiresAt',
-              keepMeLoggedInResponse.expiresAt
-            );
-            window.localStorage.setItem(
-              'keepMeLoggedIn',
-              String(formData.keepMeLoggedIn)
-            );
-          }
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+          window.localStorage.setItem(
+            'keepMeLoggedIn',
+            String(formData.keepMeLoggedIn)
+          );
 
           setFormData({
             phoneNumber: '',
@@ -160,6 +136,7 @@ const LoginPage = (): JSX.Element => {
           });
         } else if (response.status === 200) {
           window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('keepMeLogin', 'true');
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
         }
@@ -194,7 +171,7 @@ const LoginPage = (): JSX.Element => {
           setSelectedCode={setSelectedCode}
           onChangePhoneNumber={handleChangePhoneNumber}
           phoneValue={formData.phoneNumber}
-          error={errorPhone === ''}
+          error={errorPhone}
         />
         {errorPhone !== '' && (
           <small className="text-[#ff515d] font-bold">{errorPhone}</small>

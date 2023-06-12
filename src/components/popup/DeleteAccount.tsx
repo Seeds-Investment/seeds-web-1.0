@@ -13,10 +13,7 @@ const DeleteAccountPopUp: React.FC<Props> = ({ onClose }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal
-      onClose={onClose}
-      backdropClasses="z-20 fixed top-0 left-0 w-full h-screen bg-black/75 blur-xl"
-    >
+    <Modal onClose={onClose}>
       <div className="flex justify-end">
         <Image
           src={XIcon}

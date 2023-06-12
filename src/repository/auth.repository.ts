@@ -21,7 +21,20 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   }
 };
 
-export const getRefreshToken = async (refreshToken: string): Promise<any> => {
+export const getRefreshToken = async (): Promise<any> => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const keepMeLoggedIn = localStorage.getItem('keepMeLoggedIn');
+
+  if (
+    refreshToken === null ||
+    refreshToken === '' ||
+    refreshToken === 'undefined'
+  ) {
+    return await Promise.resolve('Refresh token not found');
+  } else if (keepMeLoggedIn === null || keepMeLoggedIn === 'false') {
+    return await Promise.resolve('Please Login again');
+  }
+
   return await authService.post('refresh', {
     refreshToken
   });
@@ -97,7 +110,7 @@ export const registerNewUser = async (formData: {
   avatar: string;
 }): Promise<any> => {
   try {
-    return await authService.post(`/create`, formData);
+    return await authService.post(`/create`, { formData });
   } catch (_) {
     return await Promise.resolve(null);
   }

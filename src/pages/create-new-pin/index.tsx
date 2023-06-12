@@ -14,6 +14,7 @@ const CreateNewPinPage: React.FC = () => {
         onCancel={cancelHandler}
         onContinue={continueHandler}
         title="Create New PIN"
+        withPageGradient
       />
     </PageGradient>
   );

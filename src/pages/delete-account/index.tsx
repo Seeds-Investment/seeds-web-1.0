@@ -10,7 +10,11 @@ const DeleteAccountPage: React.FC = () => {
 
   return (
     <PageGradient defaultGradient>
-      <InputPin onCancel={cancelHandler} onContinue={continueHandler} />
+      <InputPin
+        onCancel={cancelHandler}
+        onContinue={continueHandler}
+        withPageGradient
+      />
     </PageGradient>
   );
 };

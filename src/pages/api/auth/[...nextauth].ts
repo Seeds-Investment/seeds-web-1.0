@@ -28,12 +28,17 @@ const options = {
           account.provider === 'apple'
             ? account.id_token
             : account.access_token;
+        token.provider = account.provider;
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: TokenSet }) {
       // Send properties to the client, like an access_token from a provider.
-      return { ...session, access_token: token.access_token };
+      return {
+        ...session,
+        access_token: token.access_token,
+        provider: token.provider
+      };
     }
   },
   cookies: {

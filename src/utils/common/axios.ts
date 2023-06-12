@@ -17,7 +17,7 @@ const axiosInterceptor = (
       'Accept-Language': 'es',
       'Content-Type': 'application/json',
       ...(isAuthenticated
-        ? { Authorization: `Bearer ${getLocalStorage('accessToken', '')}` }
+        ? { Authorization: `SeeDS ${getLocalStorage('accessToken', '')}` }
         : null),
       ...customHeader
     }

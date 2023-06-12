@@ -5,7 +5,7 @@ import type {
   IVerifyOtp
 } from '@/utils/interfaces/payload.interfaces';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1/`);
+const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1`);
 
 interface LoginForm {
   phoneNumber: string;
@@ -14,30 +14,11 @@ interface LoginForm {
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
-    let response = await authService.post('login/phone-number', formData);
+    let response = await authService.post('/login/phone-number', formData);
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
   }
-};
-
-export const getRefreshToken = async (): Promise<any> => {
-  const refreshToken = localStorage.getItem('refreshToken');
-  const keepMeLoggedIn = localStorage.getItem('keepMeLoggedIn');
-
-  if (
-    refreshToken === null ||
-    refreshToken === '' ||
-    refreshToken === 'undefined'
-  ) {
-    return await Promise.resolve('Refresh token not found');
-  } else if (keepMeLoggedIn === null || keepMeLoggedIn === 'false') {
-    return await Promise.resolve('Please Login again');
-  }
-
-  return await authService.post('refresh', {
-    refreshToken
-  });
 };
 
 export const postResetPassword = async (email: string): Promise<any> => {
@@ -83,7 +64,7 @@ export const loginProvider = async (
   provider: string
 ): Promise<any> => {
   try {
-    let response = await authService.post(`login/${provider}`, { identifier });
+    let response = await authService.post(`/login/${provider}`, { identifier });
 
     return (response = { ...response, status: 200 });
   } catch (error: any) {
@@ -110,7 +91,7 @@ export const registerNewUser = async (formData: {
   avatar: string;
 }): Promise<any> => {
   try {
-    return await authService.post(`/create`, { formData });
+    return await authService.post(`/create`, formData);
   } catch (_) {
     return await Promise.resolve(null);
   }

@@ -1,7 +1,6 @@
 import type { IRegisterPaging } from '@/pages/circle/auth/register';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { SuccessRegister } from 'public/assets/images';
 import { useTranslation } from 'react-i18next';
 
@@ -36,14 +35,12 @@ const SuccessRegisterPage = ({
         </div>
       </div>
       <div className="my-8">
-        <Link href={'/'}>
-          <Button
-            fullWidth
-            className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"
-          >
-            {t('registerPage.nextButton')}
-          </Button>
-        </Link>
+        <Button
+          fullWidth
+          className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"
+        >
+          {t('registerPage.nextButton')}
+        </Button>
       </div>
     </>
   );

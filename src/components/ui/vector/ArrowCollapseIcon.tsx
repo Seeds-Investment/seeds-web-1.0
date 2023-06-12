@@ -40,9 +40,9 @@ const ArrowCollapseIcon: React.FC<ArrowCollapseIconProps> = ({
       <path
         d="M1.5 10.9995L6.5 5.99951L1.5 0.999512"
         stroke={stroke}
-        stroke-width={strokeWidth}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

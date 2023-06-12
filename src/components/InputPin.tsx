@@ -5,6 +5,8 @@ import { ArrowBackwardIcon, DeleteIcon, Logo } from 'public/assets/vector';
 
 import CardGradient from './ui/card/CardGradient';
 
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+
 const numbersColumn1 = ['1', '4', '7'];
 const numbersColumn2 = ['2', '5', '8', '0'];
 const numbersColumn3 = ['3', '6', '9', ''];
@@ -17,9 +19,6 @@ const dotClasses =
 
 const animationClasses =
   'absolute animate-ping w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-neutral-medium';
-
-const defaultClasses =
-  'relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] sm:mb-8 bg-white';
 
 interface InputPinProps {
   onCancel: () => void;
@@ -40,7 +39,19 @@ const InputPin: React.FC<InputPinProps> = ({
   withPageGradient,
   style
 }) => {
+  const width = useWindowInnerWidth();
+
   const [pin, setPin] = useState<string[]>([]);
+
+  const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] ${
+    width !== undefined && width < 370
+      ? 'h-[38rem]'
+      : width !== undefined && width < 400
+      ? 'h-[43rem]'
+      : width !== undefined && width < 415
+      ? 'h-[46rem]'
+      : ''
+  } sm:h-[36rem] sm:mb-8 bg-white`;
 
   const enterPinHandler = (value: string) => () => {
     setPin(prevData => prevData.concat(value));
@@ -52,7 +63,7 @@ const InputPin: React.FC<InputPinProps> = ({
 
   const isDisabled = pin.length === 6;
 
-  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full text-3xl font-semibold hover:bg-gray-200 ${
+  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
     !isDisabled ? 'active:bg-gray-300' : ''
   } ${isDisabled ? 'cursor-not-allowed' : ''}`;
 
@@ -85,10 +96,10 @@ const InputPin: React.FC<InputPinProps> = ({
 
         {/* -----Title----- */}
         <>
-          <h2 className="mb-2 lg:text-3xl text-2xl font-semibold text-center text-neutral-medium">
+          <h2 className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
             {title}
           </h2>
-          <p className="sm:mb-10 mb-12 text-base text-center text-neutral-soft">
+          <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
             {subtitle}
           </p>
         </>

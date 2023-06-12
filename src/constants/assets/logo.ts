@@ -6,17 +6,17 @@ export const SeedsLogo: AssetsInterface = {
 };
 
 export const FacebookBrand: AssetsInterface = {
-  src: '/assets/images/facebook-logo.png',
+  src: '/assets/images/facebook.svg',
   alt: 'facebook-logo'
 };
 
 export const GoogleBrand: AssetsInterface = {
-  src: '/assets/images/google-logo.png',
+  src: '/assets/images/google.svg',
   alt: 'google-logo'
 };
 
 export const AppleBrand: AssetsInterface = {
-  src: '/assets/images/apple-logo.png',
+  src: '/assets/images/apple.svg',
   alt: 'apple-logo'
 };
 

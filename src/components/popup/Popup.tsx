@@ -113,8 +113,7 @@ const Popup: React.FC<PopupProps> = ({
 
       <Button
         label={label}
-        width="w-full"
-        margin="mt-6"
+        extraClasses="w-full mt-6"
         color="dark"
         props={{ onClick: submitHandler }}
       />

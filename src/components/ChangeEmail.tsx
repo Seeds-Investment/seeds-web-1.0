@@ -86,6 +86,7 @@ const ChangeEmail: React.FC = () => {
           />
         </div>
         <Button
+          color="dark"
           label="Change"
           props={{
             onClick: submitHandler

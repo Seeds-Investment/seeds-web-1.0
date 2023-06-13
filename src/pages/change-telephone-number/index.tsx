@@ -20,7 +20,7 @@ const ChangeTelephonePage: React.FC = () => {
   return (
     <PageGradient
       customGradient={customGradient}
-      extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:pb-20 pb-8"
+      className="z-0 relative overflow-hidden flex flex-col items-center"
     >
       <button
         onClick={cancelHandler}

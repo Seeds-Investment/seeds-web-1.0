@@ -22,7 +22,7 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   altStartAdornment = '',
   altEndAdornment = '',
   label = 'Submenu',
-  extraClasses = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 py-4 px-6',
+  extraClasses = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6',
   className,
   style,
   onClick
@@ -36,7 +36,7 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
       onClick={onClick}
     >
       <Image src={startAdornment} alt={altStartAdornment} className="mr-4" />
-      {label}
+      <span className="font-poppins">{label}</span>
       <Image
         src={endAdornment}
         alt={altEndAdornment}

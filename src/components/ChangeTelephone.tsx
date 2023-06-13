@@ -101,6 +101,7 @@ const ChangeTelephone: React.FC = () => {
           />
         </div>
         <Button
+          color="dark"
           label="Change"
           props={{
             onClick: submitHandler

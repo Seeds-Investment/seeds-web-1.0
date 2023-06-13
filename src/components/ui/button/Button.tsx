@@ -4,8 +4,7 @@ interface ButtonProps {
   label?: string;
   containerClasses?: string;
   typographyClasses?: string;
-  width?: string;
-  margin?: string;
+  extraClasses?: string;
   color?: 'light' | 'dark';
   className?: string;
   style?: object;
@@ -16,8 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   label = 'Save',
   containerClasses = 'rounded-full py-3 px-6',
   typographyClasses = 'font-poppins font-semibold leading-4 text-white',
-  width = '',
-  margin = '',
+  extraClasses = '',
   color = 'light',
   className,
   style,
@@ -25,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const height = useWindowInnerHeight();
 
-  const defaultButtonClasses = `${containerClasses} ${typographyClasses} ${width} ${margin} bg-seeds-${
+  const defaultButtonClasses = `${containerClasses} ${typographyClasses} ${extraClasses} bg-seeds-${
     color === 'light' ? 'green' : 'button-green'
   } ${
     height !== undefined && height < 760 ? 'text-xs' : 'text-sm'

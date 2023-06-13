@@ -45,11 +45,11 @@ const InputPin: React.FC<InputPinProps> = ({
     width !== undefined && width < 370
       ? 'h-[38rem]'
       : width !== undefined && width < 400
-      ? 'h-[43rem]'
+      ? 'h-[45rem]'
       : width !== undefined && width < 415
-      ? 'h-[46rem]'
+      ? 'h-[48rem]'
       : ''
-  } sm:h-[36rem] sm:mb-8 bg-white`;
+  } sm:h-[36rem] bg-white`;
 
   const enterPinHandler = (value: string) => () => {
     setPin(prevData => prevData.concat(value));

@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import { useState } from 'react';
 
+import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
 import LevelButton from '@/components/ui/button/LevelButton';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
-import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
 import { DummyAvatar } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
@@ -20,11 +21,18 @@ import {
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-import { useState } from 'react';
+
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
 const UserSetting: React.FC = () => {
+  const width = useWindowInnerWidth();
+
   const [chooseBadgeModalShown, setChooseBadgeModalShown] =
     useState<boolean>(false);
+
+  const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
+    width !== undefined && width < 370 ? 'h-9' : ''
+  } px-6`;
 
   const [selectedMedal, setSelectedMedal] = useState<string>('gold');
   const menus = [
@@ -33,64 +41,91 @@ const UserSetting: React.FC = () => {
       altStartAdornment: 'edit profile',
       startAdornment: UserIcon,
       onClick: () => {},
-      extraClasses: 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 py-4 px-6 mb-4'
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+        width !== undefined && width < 370 ? 'h-9' : ''
+      }`
     },
     {
       label: 'Language',
       altStartAdornment: 'language',
       startAdornment: GlobalIcon,
       onClick: () => {},
-      extraClasses: 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 py-4 px-6 mb-4'
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+        width !== undefined && width < 370 ? 'h-9' : ''
+      }`
     },
     {
       label: 'Block List',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
-      onClick: () => {}
+      onClick: () => {},
+      extraClasses: submenuClasses
     },
     {
       label: 'Legal',
       altStartAdornment: 'legal',
       startAdornment: FileTextIcon,
-      onClick: () => {}
+      onClick: () => {},
+      extraClasses: submenuClasses
     },
     {
       label: 'FAQ & Help',
       altStartAdornment: 'faq & help',
       startAdornment: HelpCircleIcon,
-      onClick: () => {}
+      onClick: () => {},
+      extraClasses: submenuClasses
     },
     {
       label: 'Rate Apps',
       altStartAdornment: 'rate apps',
       startAdornment: StarIcon,
-      onClick: () => {}
+      onClick: () => {},
+      extraClasses: submenuClasses
     },
     {
       label: 'Log Out',
       altStartAdornment: 'log out',
       startAdornment: LogOutIcon,
-      onClick: () => {}
+      onClick: () => {},
+      extraClasses: submenuClasses
     }
   ];
 
   return (
     <PageGradient
       defaultGradient
-      extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:pb-20"
+      className="z-0 sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
     >
       <CardGradient
         defaultGradient
-        className="relative overflow-hidden flex flex-col items-center pt-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] h-[44rem] bg-white"
+        className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+          width !== undefined && width < 370
+            ? 'h-[38rem]'
+            : width !== undefined && width < 400
+            ? 'h-[45rem]'
+            : width !== undefined && width < 415
+            ? 'h-[48rem]'
+            : ''
+        } bg-white`}
       >
         {/* -----Title----- */}
-        <h6 className="mb-4 text-center text-lg font-semibold">Settings</h6>
+        <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
+          Settings
+        </h6>
 
         {/* -----Header----- */}
         <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">
-          <div className="flex flex-col justify-center items-center w-full h-full bg-white">
+          <div
+            className={`flex flex-col justify-center items-center ${
+              width !== undefined && width < 370 ? 'py-4' : ''
+            } w-full h-full bg-white`}
+          >
             {/* -----Image Container----- */}
-            <div className="overflow-hidden h-16 w-16 mb-3 rounded-full">
+            <div
+              className={`overflow-hidden mb-3 rounded-full ${
+                width !== undefined && width < 370 ? 'h-12 w-12' : 'h-16 w-16'
+              }`}
+            >
               <Image
                 alt="avatar"
                 src={DummyAvatar}
@@ -100,7 +135,7 @@ const UserSetting: React.FC = () => {
 
             {/* -----User Data----- */}
             <div className="flex items-center gap-2">
-              <h6 className="text-lg font-semibold text-neutral-500">
+              <h6 className="text-lg font-montserrat font-semibold text-neutral-500">
                 Prabu Firgantoro
               </h6>
               <Image
@@ -131,8 +166,12 @@ const UserSetting: React.FC = () => {
                 />
               )}
             </div>
-            <span className="mb-1 text-xs text-neutral-500">@prabufirgan</span>
-            <span className="mb-2 text-xs text-neutral-500">+62815489799</span>
+            <span className="mb-1 font-poppins text-xs text-neutral-500">
+              @prabufirgan
+            </span>
+            <span className="mb-2 font-poppins text-xs text-neutral-500">
+              +62815489799
+            </span>
             <LevelButton type="Sprout" />
           </div>
         </div>

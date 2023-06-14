@@ -2,7 +2,7 @@ import CSwitchSelect from '@/components/CSwitchSelect';
 import CSwitchSelectItem from '@/components/CSwitchSelectItem';
 import useFetch from '@/hooks/useFetch';
 import useService from '@/hooks/useService';
-import type { IRegisterPaging } from '@/pages/circle/auth/register';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { avatarList, registerNewUser } from '@/repository/auth.repository';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Button, Spinner, Typography } from '@material-tailwind/react';

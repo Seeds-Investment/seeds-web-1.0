@@ -1,5 +1,5 @@
 import PhoneInput from '@/components/PhoneInput';
-import type { IRegisterPaging } from '@/pages/circle/auth/register';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { useEffect, useMemo } from 'react';

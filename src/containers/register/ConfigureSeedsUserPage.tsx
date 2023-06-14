@@ -1,5 +1,5 @@
 import CErrorMessage from '@/components/CErrorMessage';
-import type { IRegisterPaging } from '@/pages/circle/auth/register';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';
 import { formConfigureSeedsUserSchema } from '@/utils/validations/register.schema';
 import { Button, Input, Typography } from '@material-tailwind/react';

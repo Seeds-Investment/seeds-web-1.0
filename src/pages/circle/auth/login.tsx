@@ -249,10 +249,10 @@ const LoginPage = (): JSX.Element => {
             t('authPage.login')
           )}
         </Button>
-        <small className="flex justify-center md:mt-5 text-opacity-50">
+        <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
           {t('or')}
         </small>
-        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly lg:mt-10">
+        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly md:mb-0 mb-5 lg:mt-10">
           {thirdParty.map((el, i) => {
             return (
               <CButton

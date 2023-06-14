@@ -17,7 +17,7 @@ const withAuth = (
         try {
           const response = await getUserInfo();
           if (response === 'Access token not found') {
-            router
+            await router
               .push('/circle/auth/login')
               .then()
               .catch(() => {});
@@ -70,8 +70,9 @@ const withAuth = (
           </div>
         </Modal>
       );
+    } else {
+      return <WrappedComponent {...props} />;
     }
-    return <WrappedComponent {...props} />;
   };
   return WrapperComponent;
 };

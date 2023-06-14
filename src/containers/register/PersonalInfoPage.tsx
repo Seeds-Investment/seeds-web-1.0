@@ -210,7 +210,7 @@ const PersonalInfoPage = ({
         />
         <CErrorMessage>{formik.errors?.birthdate}</CErrorMessage>
       </div>
-      <div className="my-4">
+      <div className="mt-4">
         <Button
           type="submit"
           disabled={!isValid}
@@ -220,7 +220,7 @@ const PersonalInfoPage = ({
           {t('registerPage.nextButton')}
         </Button>
       </div>
-      <div className="flex lg:flex-row flex-col pb-5 gap-2 lg:justify-evenly lg:mt-5">
+      <div className="flex lg:flex-row flex-col mt-5 mb-5 md:mb-0 md:pb-5 gap-2 lg:justify-evenly lg:mt-5">
         {thirdParty.map((el, i) => {
           return (
             <Button
@@ -228,14 +228,14 @@ const PersonalInfoPage = ({
                 handleLoginProvider(el.name.toLowerCase());
               }}
               key={i}
-              className="bg-white rounded-full  flex items-center"
+              className="bg-white rounded-full flex items-center"
             >
               <Image
                 width={45}
                 height={45}
                 src={el.img.src}
                 alt={el.img.alt}
-                className="md:w-6 md:h-6 w-auto h-auto object-contain object-[center_center]"
+                className="md:w-6 md:h-6 w-4 h-4 object-contain object-[center_center]"
               />
               <Typography
                 variant="small"

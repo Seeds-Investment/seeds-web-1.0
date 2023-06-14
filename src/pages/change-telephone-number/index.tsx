@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import { ArrowBackwardIcon } from 'public/assets/vector';
+
 import ChangeTelephone from '@/components/ChangeTelephone';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
@@ -12,11 +15,19 @@ const customGradient = (
 );
 
 const ChangeTelephonePage: React.FC = () => {
+  const cancelHandler = (): void => {};
+
   return (
     <PageGradient
       customGradient={customGradient}
-      extraClasses="flex flex-col justify-end items-center bg-[#F9F9F9] sm:pb-20"
+      className="z-0 relative overflow-hidden flex flex-col items-center"
     >
+      <button
+        onClick={cancelHandler}
+        className="sm:hidden mr-auto ml-6 mb-2 pr-4 rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-0 focus:bg-gray-200 transition-colors duration-300"
+      >
+        <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+      </button>
       <ChangeTelephone />
     </PageGradient>
   );

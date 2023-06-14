@@ -9,12 +9,6 @@ interface CardProps {
   extraClasses?: string;
 }
 
-const defaultStyle = {
-  background:
-    'linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), linear-gradient(146.22deg, #FFFFFF 16.21%, rgba(255, 255, 255, 0) 97%)',
-  border: '1px solid #FFFFFF'
-};
-
 const CardGradient: React.FC<CardProps> = ({
   children,
   className,
@@ -24,6 +18,13 @@ const CardGradient: React.FC<CardProps> = ({
   extraClasses = 'w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] h-[44rem] bg-white'
 }) => {
   const defaultClasses = `relative overflow-hidden ${extraClasses}`;
+
+  const defaultStyle = {
+    background: defaultGradient
+      ? 'linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), linear-gradient(146.22deg, #FFFFFF 16.21%, rgba(255, 255, 255, 0) 97%)'
+      : undefined,
+    border: '1px solid #FFFFFF'
+  };
 
   return (
     <div className={className ?? defaultClasses} style={style ?? defaultStyle}>

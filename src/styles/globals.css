@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
+  position: relative;
   min-height: 100vh !important;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,6 +13,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+  .document-header {
+    @apply flex justify-between items-center lg:pr-20 sm:w-[90%] sm:h-[75px] sm:rounded-[12px] pl-4 pr-4 mx-auto mb-6 w-full h-[60px] bg-white;
+  }
 }
 
 code {

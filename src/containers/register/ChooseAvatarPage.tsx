@@ -5,7 +5,7 @@ import useService from '@/hooks/useService';
 import type { IRegisterPaging } from '@/pages/circle/auth/register';
 import { avatarList, registerNewUser } from '@/repository/auth.repository';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Spinner, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ const ChooseAvatarPage = ({
   const submit = (): void => {
     void (async () => {
       await post.execute({
-        phoneNumber: formdata.phoneNumber,
+        phoneNumber: formdata.phoneNumber.substring(1),
         email: formdata.email,
         birthDate: new Date(formdata.birthdate).toISOString(),
         name: formdata.name,
@@ -61,7 +61,7 @@ const ChooseAvatarPage = ({
         <div className="rounded-full bg-[#DCFCE4] w-[7rem] h-[7rem] relative">
           {!isUndefindOrNull(loading) && loading ? (
             <div className="w-full h-full flex items-center justify-center">
-              {/* <Spinner className="h-10 w-10" /> */}
+              <Spinner className="h-10 w-10" />
             </div>
           ) : (
             <></>
@@ -97,7 +97,7 @@ const ChooseAvatarPage = ({
             );
           })}
         </CSwitchSelect>
-        <div className="grid grid-cols-4 gap-2 px-1 w-3/4 h-[8.5rem] overflow-y-auto bg-white rounded-xl px-1 py-2">
+        <div className="grid grid-cols-4 gap-2  w-3/4 h-[8.5rem] overflow-y-auto bg-white rounded-xl px-1 py-2">
           {!isUndefindOrNull(data) && isEmptyString(error) ? (
             data?.avatars?.map((avatar: string, index: number) => {
               return (

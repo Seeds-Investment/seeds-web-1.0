@@ -9,7 +9,10 @@ const CreateNewPinPage: React.FC = () => {
   };
 
   return (
-    <PageGradient defaultGradient>
+    <PageGradient
+      defaultGradient
+      className="z-0 sm:relative absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+    >
       <InputPin
         onCancel={cancelHandler}
         onContinue={continueHandler}

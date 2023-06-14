@@ -128,14 +128,14 @@ const LinkedAccount: React.FC = () => {
                         Google Account
                       </Typography>
                       <Typography className="text-gray-500">
-                        {userProviders.find(el => el === 'google') !== null
+                        {userProviders?.find(el => el === 'google') !== null
                           ? 'Linked'
                           : "You haven't linked this account"}
                       </Typography>
                     </div>
                   </div>
                   <div className="flex items-center ">
-                    {userProviders.find(el => el === 'google') !== null ? (
+                    {userProviders?.find(el => el === 'google') !== null ? (
                       <>
                         <Typography
                           variant="medium"
@@ -184,14 +184,14 @@ const LinkedAccount: React.FC = () => {
                         Apple Account
                       </Typography>
                       <Typography className="text-gray-500">
-                        {userProviders.find(el => el === 'apple') !== null
+                        {userProviders?.find(el => el === 'apple') !== null
                           ? 'Linked'
                           : "You haven't linked this account"}
                       </Typography>
                     </div>
                   </div>
                   <div className="flex items-center ">
-                    {userProviders.find(el => el === 'apple') !== null ? (
+                    {userProviders?.find(el => el === 'apple') !== null ? (
                       <>
                         <Typography
                           variant="medium"
@@ -238,14 +238,14 @@ const LinkedAccount: React.FC = () => {
                         Facebook Account
                       </Typography>
                       <Typography className="text-gray-500">
-                        {userProviders.find(el => el === 'facebook') !== null
+                        {userProviders?.find(el => el === 'facebook') !== null
                           ? 'Linked'
                           : "You haven't linked this account"}
                       </Typography>
                     </div>
                   </div>
                   <div className="flex items-center ">
-                    {userProviders.find(el => el === 'facebook') !== null ? (
+                    {userProviders?.find(el => el === 'facebook') !== null ? (
                       <>
                         <Typography
                           variant="medium"

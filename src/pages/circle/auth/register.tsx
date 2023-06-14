@@ -33,7 +33,7 @@ const RegisterPage = (): JSX.Element => {
   });
 
   return (
-    <div className="px-8 mt-4">
+    <div className="md:px-8 px-4 mt-2 md:mt-4">
       {(() => {
         switch (page) {
           case 0:

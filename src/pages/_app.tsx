@@ -26,13 +26,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const pathsWithoutHeader = [
-  'circle',
-  'linked-account',
-  'my-profile',
-  'story-boarding',
-  'term-condition'
-];
+const pathsWithoutHeader = ['circle', 'story-boarding', 'term-condition'];
 
 function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);

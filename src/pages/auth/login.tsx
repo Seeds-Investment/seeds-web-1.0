@@ -147,6 +147,8 @@ const LoginPage = (): JSX.Element => {
     });
   }, [session?.access_token, router]);
 
+  console.log(session);
+
   const thirdParty = [
     {
       name: 'Apple',

@@ -1,5 +1,5 @@
 import CInputPassword from '@/components/CInputPassword';
-import type { IRegisterPaging } from '@/pages/circle/auth/register';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';
 import { formCreatePasswordSchema } from '@/utils/validations/register.schema';
 import { Button, Typography } from '@material-tailwind/react';

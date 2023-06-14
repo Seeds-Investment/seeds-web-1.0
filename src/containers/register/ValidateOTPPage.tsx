@@ -1,5 +1,5 @@
 import OTPCard from '@/containers/auth/OTPCard';
-import type { IRegisterPaging } from '@/pages/circle/auth/register';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Typography } from '@material-tailwind/react';
 

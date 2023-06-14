@@ -4,6 +4,8 @@ import { fieldValidity } from '@/utils/common/utils';
 import { formConfigureSeedsUserSchema } from '@/utils/validations/register.schema';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
+import Image from 'next/image';
+import { InfoBlue } from 'public/assets/vector';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -58,7 +60,7 @@ const ReferralCodePage = ({
       </div>
       <div className="mt-10">
         <Typography variant="h5" color="black">
-          {t('input.type.name')}
+          {t('input.type.name')} <span className="text-red-500">*</span>
         </Typography>
         <Input
           className="text-lg"
@@ -80,7 +82,7 @@ const ReferralCodePage = ({
       </div>
       <div className="mt-5">
         <Typography variant="h5" color="black">
-          {t('input.type.seedsTag')}
+          {t('input.type.seedsTag')} <span className="text-red-500">*</span>
         </Typography>
         <Input
           className="text-lg"
@@ -102,10 +104,17 @@ const ReferralCodePage = ({
       </div>
       <div className="mt-5">
         <div className="flex gap-2">
+          <Image
+            src={InfoBlue}
+            alt="info"
+            width={20}
+            height={20}
+            className="w-auto h-auto"
+          />
           <Typography variant="h5" color="black">
             {t('input.type.referralCode')}
           </Typography>
-          <Typography>(optional)</Typography>
+          <Typography className="text-sm text-gray-500">(optional)</Typography>
         </div>
         <Input
           className="text-lg"

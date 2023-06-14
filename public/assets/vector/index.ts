@@ -26,6 +26,7 @@ export { default as FileTextIcon } from 'public/assets/vector/file-text.svg';
 export { default as GlobalIcon } from 'public/assets/vector/global.svg';
 export { default as GoldMedalIcon } from 'public/assets/vector/gold-medal-1.svg';
 export { default as HelpCircleIcon } from 'public/assets/vector/help-circle.svg';
+export { default as InfoBlue } from 'public/assets/vector/info.svg';
 export { default as InputUserEmail } from 'public/assets/vector/input-user-email-2.svg';
 export { default as LineChart } from 'public/assets/vector/line.png';
 export { default as Loader } from 'public/assets/vector/loader.svg';

@@ -7,17 +7,17 @@ export const SeedsLogo: AssetsInterface = {
 
 export const FacebookBrand: AssetsInterface = {
   src: '/assets/images/facebook.svg',
-  alt: 'facebook-logo'
+  alt: 'facebook'
 };
 
 export const GoogleBrand: AssetsInterface = {
   src: '/assets/images/google.svg',
-  alt: 'google-logo'
+  alt: 'google'
 };
 
 export const AppleBrand: AssetsInterface = {
   src: '/assets/images/apple.svg',
-  alt: 'apple-logo'
+  alt: 'apple'
 };
 
 const Logo: Record<string, AssetsInterface> = {

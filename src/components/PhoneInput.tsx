@@ -10,7 +10,7 @@ interface PhoneInputProps {
   onChangePhoneNumber: (value: string) => void;
   errorMessage?: string;
   label?: string;
-  error: boolean | undefined;
+  error: boolean;
   phoneValue: string;
   selectedCode: string;
   setSelectedCode: (value: string) => void;

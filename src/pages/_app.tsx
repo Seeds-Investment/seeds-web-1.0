@@ -32,7 +32,8 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);
 
   const path = useRouter().pathname.split('/')[1];
-  const renderHeader = !pathsWithoutHeader.includes(path);
+  const renderHeader =
+    !pathsWithoutHeader.includes(path) && !path.includes('_error');
 
   return (
     <SessionProvider session={pageProps.session}>

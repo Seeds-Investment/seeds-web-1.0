@@ -59,7 +59,9 @@ module.exports = withMT({
       },
       animation: {
         'slide-down': 'slide-down 300ms ease-out forwards',
-        'slide-up': 'slide-up 300ms ease-out forwards'
+        'slide-up': 'slide-up 300ms ease-out forwards',
+        'fade-in': 'fade-in 300ms ease-out forwards',
+        spinner: 'spinner 800ms ease-in-out infinite'
       },
       keyframes: {
         'slide-down': {
@@ -80,6 +82,22 @@ module.exports = withMT({
           to: {
             opacity: 0,
             transform: 'translateY(-3rem)'
+          }
+        },
+        'fade-in': {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        },
+        spinner: {
+          '0%': {
+            transform: 'rotate(0deg)'
+          },
+          '100%': {
+            transform: 'rotate(360deg)'
           }
         }
       }

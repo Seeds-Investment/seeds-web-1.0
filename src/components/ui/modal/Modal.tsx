@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 
 interface BackdropProps {
-  onClose: () => void;
+  onClose?: () => void;
   className?: string;
   style?: object;
 }
@@ -14,7 +14,7 @@ interface ModalOverlayProps {
 }
 
 interface ModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   children: ReactNode;
   modalClasses?: string;
   backdropClasses?: string;

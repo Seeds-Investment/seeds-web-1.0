@@ -4,6 +4,8 @@ import { ArrowBackwardIcon } from 'public/assets/vector';
 import ChangeTelephone from '@/components/ChangeTelephone';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
+import PhoneProvider from '@/store/phone/PhoneProvider';
+
 const customGradient = (
   <>
     <span className="z-0 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
@@ -18,18 +20,20 @@ const ChangeTelephonePage: React.FC = () => {
   const cancelHandler = (): void => {};
 
   return (
-    <PageGradient
-      customGradient={customGradient}
-      className="z-0 relative overflow-hidden flex flex-col items-center"
-    >
-      <button
-        onClick={cancelHandler}
-        className="sm:hidden mr-auto ml-6 mb-2 pr-4 rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-0 focus:bg-gray-200 transition-colors duration-300"
+    <PhoneProvider>
+      <PageGradient
+        customGradient={customGradient}
+        className="z-0 relative overflow-hidden flex flex-col items-center"
       >
-        <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
-      </button>
-      <ChangeTelephone />
-    </PageGradient>
+        <button
+          onClick={cancelHandler}
+          className="sm:hidden mr-auto ml-6 mb-2 pr-4 rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-0 focus:bg-gray-200 transition-colors duration-300"
+        >
+          <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+        </button>
+        <ChangeTelephone />
+      </PageGradient>
+    </PhoneProvider>
   );
 };
 

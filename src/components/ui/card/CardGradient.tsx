@@ -22,8 +22,7 @@ const CardGradient: React.FC<CardProps> = ({
   const defaultStyle = {
     background: defaultGradient
       ? 'linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), linear-gradient(146.22deg, #FFFFFF 16.21%, rgba(255, 255, 255, 0) 97%)'
-      : undefined,
-    border: '1px solid #FFFFFF'
+      : undefined
   };
 
   return (

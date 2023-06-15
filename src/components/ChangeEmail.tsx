@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { ChangeEmailIcon } from 'public/assets/vector';
+import { useContext } from 'react';
 
+import Loading from './popup/Loading';
 import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
 import Input from './ui/input/Input';
@@ -11,19 +13,24 @@ import useInput from '@/hooks/useInput';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
+import EmailContext from '@/store/email/email-context';
+
 const ChangeEmail: React.FC = () => {
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
 
+  const emailCtx = useContext(EmailContext);
+
   const {
     value: enteredEmail,
+    isValid: emailIsValid,
     isError: emailIsError,
     valueChangeHandler: emailChangeHandler,
     inputBlurHandler: emailBlurHandler
   } = useInput(emailValidationHandler);
 
   const submitHandler = (): void => {
-    // ...API
+    emailCtx.validateEmail(enteredEmail);
   };
 
   const errorMessage =
@@ -39,61 +46,65 @@ const ChangeEmail: React.FC = () => {
       : 'text-xs -bottom-[2.125rem]';
 
   return (
-    <CardGradient
-      defaultGradient={width !== undefined && width > 640}
-      extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
-        height !== undefined && height >= 860
-          ? 'h-[44rem]'
-          : height !== undefined && height < 750
-          ? 'h-[35rem]'
-          : 'h-[40rem]'
-      } bg-white sm:p-6 py-6`}
-    >
-      <div
-        className={`z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto sm:p-4 px-4 bg-white`}
+    <>
+      {emailCtx.isLoading && <Loading />}
+      <CardGradient
+        defaultGradient={width !== undefined && width > 640}
+        extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
+          height !== undefined && height >= 860
+            ? 'h-[44rem]'
+            : height !== undefined && height < 750
+            ? 'h-[35rem]'
+            : 'h-[40rem]'
+        } bg-white sm:p-6 py-6`}
       >
-        <div>
-          <h6
-            className={`mb-2 text-center font-poppins font-semibold ${
-              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
-            }`}
-          >
-            Change Telephone Number
-          </h6>
-          <p
-            className={`mb-8 text-center font-poppins ${
-              height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
-            } text-neutral-soft`}
-          >
-            All information from Seeds is transferred to your
-            <br />
-            new address.
-          </p>
-          <Image
-            src={ChangeEmailIcon}
-            alt="input user email"
-            className="z-10 mx-auto mb-14"
-          />
-          <Input
-            isError={emailIsError}
-            errorMessage={errorMessage}
-            errorClasses={`absolute sm:-bottom-[1.125rem] font-poppins text-warning-hard ${errorClasses}`}
+        <div
+          className={`z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto sm:p-4 px-4 bg-white`}
+        >
+          <div>
+            <h6
+              className={`mb-2 text-center font-poppins font-semibold ${
+                height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+              }`}
+            >
+              Change Telephone Number
+            </h6>
+            <p
+              className={`mb-8 text-center font-poppins ${
+                height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
+              } text-neutral-soft`}
+            >
+              All information from Seeds is transferred to your
+              <br />
+              new address.
+            </p>
+            <Image
+              src={ChangeEmailIcon}
+              alt="input user email"
+              className="z-10 mx-auto mb-14"
+            />
+            <Input
+              isError={emailIsError}
+              errorMessage={errorMessage}
+              errorClasses={`absolute sm:-bottom-[1.125rem] font-poppins text-warning-hard ${errorClasses}`}
+              props={{
+                value: enteredEmail,
+                onChange: emailChangeHandler,
+                onBlur: emailBlurHandler
+              }}
+            />
+          </div>
+          <Button
+            color="dark"
+            label="Change"
             props={{
-              value: enteredEmail,
-              onChange: emailChangeHandler,
-              onBlur: emailBlurHandler
+              onClick: submitHandler,
+              disabled: emailIsValid === false
             }}
           />
         </div>
-        <Button
-          color="dark"
-          label="Change"
-          props={{
-            onClick: submitHandler
-          }}
-        />
-      </div>
-    </CardGradient>
+      </CardGradient>
+    </>
   );
 };
 

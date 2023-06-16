@@ -30,7 +30,7 @@ export const formConfigureSeedsUserSchema: any = Yup.object<
   name: Yup.string().required(),
   seedsTag: Yup.string()
     .required()
-    .matches(seedsTag, "Seeds Tag must start with '@'")
+    .matches(seedsTag, "Don't need to add '@'")
     .min(2, 'Seeds Tag must contain text')
     .max(20, 'Seeds Tag must have at most 20 characters length'),
   referralCode: Yup.string()

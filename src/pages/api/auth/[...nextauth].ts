@@ -23,7 +23,6 @@ const options = {
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }: any) {
       // Persist the OAuth access_token to the token right after signin
-      console.log(token, user, account);
       if (typeof account?.access_token === 'string') {
         token.access_token =
           account.provider === 'apple'
@@ -31,10 +30,6 @@ const options = {
             : account.access_token;
         token.provider = account.provider;
       }
-      console.log(user);
-      console.log(account);
-      console.log(profile);
-      console.log(token, '<<<<<<<');
       return token;
     },
     async session({ session, token }: any) {

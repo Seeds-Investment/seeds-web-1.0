@@ -128,7 +128,7 @@ const LoginPage = (): JSX.Element => {
       if (provider != null && session.access_token !== undefined) {
         const response = await loginProvider(session.access_token, provider);
         if (response.status === 404) {
-          router.push('/circle/auth/register').catch(error => {
+          router.push('/auth/register').catch(error => {
             console.log(error);
           });
           signOut().catch(error => {
@@ -136,7 +136,7 @@ const LoginPage = (): JSX.Element => {
           });
         } else if (response.status === 200) {
           window.localStorage.setItem('accessToken', response.accessToken);
-          window.localStorage.setItem('keepMeLogin', 'true');
+          window.localStorage.setItem('keepMeLoggedIn', 'true');
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
         }
@@ -146,8 +146,6 @@ const LoginPage = (): JSX.Element => {
       console.error(error);
     });
   }, [session?.access_token, router]);
-
-  console.log(session);
 
   const thirdParty = [
     {

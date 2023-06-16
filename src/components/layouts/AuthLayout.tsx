@@ -25,7 +25,7 @@ const AuthLayout = ({
   const router = useRouter();
 
   return (
-    <div className="h-full">
+    <div className="relative">
       <div className="h-full w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
         <div className="relative h-[30rem] top-[100%] translate-y-[-100%]">
           <Image

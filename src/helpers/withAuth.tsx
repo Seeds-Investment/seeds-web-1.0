@@ -18,7 +18,7 @@ const withAuth = (
           const response = await getUserInfo();
           if (response === 'Access token not found') {
             await router
-              .push('/circle/auth/login')
+              .push('/auth/login')
               .then()
               .catch(() => {});
           }
@@ -45,7 +45,7 @@ const withAuth = (
             }
           } else {
             router
-              .push('/circle/auth/login')
+              .push('/auth/login')
               .then()
               .catch(() => []);
           }

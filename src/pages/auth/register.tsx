@@ -29,7 +29,11 @@ const RegisterPage = (): JSX.Element => {
     otp: '',
     password: '',
     rePassword: '',
-    avatar: ''
+    avatar: '',
+    providers: {
+      provider: '',
+      identifier: ''
+    }
   });
 
   return (

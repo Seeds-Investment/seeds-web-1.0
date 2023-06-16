@@ -25,26 +25,36 @@ const ChooseAvatarPage = ({
 
   const post = useService(registerNewUser);
 
-  const submit = (): void => {
-    void (async () => {
-      await post.execute({
-        phoneNumber: formdata.phoneNumber.substring(1),
-        email: formdata.email,
-        birthDate: new Date(formdata.birthdate).toISOString(),
-        name: formdata.name,
-        seedsTag: formdata.seedsTag,
-        refCode: formdata.referralCode,
-        password: formdata.password,
-        avatar: formdata.avatar
-      });
-
-      if (
-        !isUndefindOrNull(post.data) &&
-        !isUndefindOrNull(post.data.accessToken)
-      ) {
-        setPage(5);
+  const submit = async (): Promise<void> => {
+    await post.execute({
+      phoneNumber:
+        formdata.countryCode.replace('+', '') +
+        formdata.phoneNumber.replace(/\s/g, ''),
+      email: formdata.email,
+      birthDate: new Date(formdata.birthdate).toISOString(),
+      name: formdata.name,
+      seedsTag: formdata.seedsTag,
+      refCode: formdata.referralCode,
+      password: formdata.password,
+      avatar: formdata.avatar,
+      provider: {
+        provider: formdata.providers.provider ?? '',
+        identifier: formdata.providers.identifier ?? ''
       }
-    })();
+    });
+
+    if (
+      !isUndefindOrNull(post.data) &&
+      !isUndefindOrNull(post.data.accessToken)
+    ) {
+      window.localStorage.setItem('accessToken', post.data.accessToken);
+      window.localStorage.setItem('refreshToken', post.data.refreshToken);
+      window.localStorage.setItem(
+        'keepMeLoggedin',
+        formdata.providers.provider === '' ? 'false' : 'true'
+      );
+      setPage(5);
+    }
   };
 
   return (
@@ -137,12 +147,14 @@ const ChooseAvatarPage = ({
           fullWidth
           className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"
           onClick={() => {
-            submit();
+            submit()
+              .then()
+              .catch(() => {});
           }}
         >
           {post.loading ? (
             <div className="w-full flex justify-center">
-              {/* <Spinner className="h-6 w-6" /> */}
+              <Spinner className="h-6 w-6" />
             </div>
           ) : (
             t('registerPage.nextButton')

@@ -108,10 +108,15 @@ export const registerNewUser = async (formData: {
   refCode: string;
   password: string;
   avatar: string;
+  provider: {
+    provider: string;
+    identifer: string;
+  };
 }): Promise<any> => {
   try {
-    return await authService.post(`/create`, { formData });
-  } catch (_) {
+    return await authService.post(`/create`, formData);
+  } catch (error) {
+    console.log(error);
     return await Promise.resolve(null);
   }
 };

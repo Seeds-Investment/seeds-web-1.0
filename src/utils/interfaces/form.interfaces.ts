@@ -20,6 +20,11 @@ export interface ICreateNewPassword {
   rePassword: string;
 }
 
+export interface Provider {
+  provider: string;
+  identifier: string;
+}
+
 export interface IRegisterFormdata {
   countryCode: string;
   phoneNumber: string;
@@ -32,4 +37,5 @@ export interface IRegisterFormdata {
   password: string;
   rePassword: string;
   avatar: string;
+  providers: Provider;
 }

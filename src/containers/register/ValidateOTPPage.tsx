@@ -31,7 +31,10 @@ const ValidateOTPPage = ({
               setPage(3);
             }
           }}
-          phoneNumber={`${formdata.countryCode}${formdata.phoneNumber}`}
+          phoneNumber={`${formdata.countryCode.replace(
+            '+',
+            ''
+          )}${formdata.phoneNumber.replace(/\s/g, '')}`}
         />
       </div>
     </div>

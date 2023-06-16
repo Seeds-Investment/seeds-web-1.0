@@ -2,7 +2,7 @@ import PhoneInput from '@/components/PhoneInput';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';
 import { Button, Input, Typography } from '@material-tailwind/react';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import CErrorMessage from '@/components/CErrorMessage';
@@ -11,12 +11,10 @@ import {
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
-import { loginProvider } from '@/repository/auth.repository';
 import { formRegisterPersonalInfoSchema } from '@/utils/validations/register.schema';
 import { useFormik } from 'formik';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 const PersonalInfoPage = ({
   setPage,
@@ -24,7 +22,7 @@ const PersonalInfoPage = ({
   setFormdata
 }: IRegisterPaging): JSX.Element => {
   const { t } = useTranslation();
-  const router = useRouter();
+
   const { data: session }: any = useSession();
 
   const thirdParty = [
@@ -105,29 +103,30 @@ const PersonalInfoPage = ({
       });
   };
 
+  const setFormdataCallback = useCallback(
+    (newFormdata: any) => {
+      setFormdata(newFormdata);
+    },
+    [setFormdata]
+  );
+
   useEffect(() => {
-    const fetchAccessToken = async (): Promise<void> => {
-      const provider = localStorage.getItem('provider');
-      if (provider != null && session.access_token !== undefined) {
-        const response = await loginProvider(session.access_token, provider);
-        if (response.status === 404) {
-          router.push('/circle/auth/register').catch(error => {
-            console.log(error);
-          });
-          signOut().catch(error => {
-            console.log(error);
-          });
-        } else if (response.status === 200) {
-          window.localStorage.setItem('accessToken', response.accessToken);
-          window.localStorage.setItem('refreshToken', response.refreshToken);
-          window.localStorage.setItem('expiresAt', response.expiresAt);
-        }
-      }
-    };
-    fetchAccessToken().catch(error => {
-      console.error(error);
-    });
-  }, [session?.access_token, router]);
+    if (session?.access_token !== undefined) {
+      setFormdataCallback((prevFormdata: any) => ({
+        ...prevFormdata,
+        providers: {
+          provider: session?.provider,
+          identifier: session?.access_token
+        },
+        email: session?.user?.email
+      }));
+    }
+  }, [
+    session?.access_token,
+    session?.provider,
+    session?.user?.email,
+    setFormdataCallback
+  ]);
 
   return (
     <form onSubmit={formik.handleSubmit}>

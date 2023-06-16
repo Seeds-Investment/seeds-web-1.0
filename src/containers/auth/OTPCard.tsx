@@ -123,7 +123,7 @@ const OTPCard = ({
       const res = await getOtp({ phoneNumber, method: payload.method });
       setOtp(res.otp);
     } catch (error) {
-      alert('error');
+      console.log(error);
     }
   }, [phoneNumber, payload.method]);
 

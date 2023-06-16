@@ -30,7 +30,7 @@ const withAuth = (
               fetchNewAccessToken === 'Refresh token not found'
             ) {
               router
-                .push('/circle/auth/login')
+                .push('/auth/login')
                 .then()
                 .catch(() => []);
             } else {

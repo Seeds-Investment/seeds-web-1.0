@@ -16,6 +16,7 @@ const withAuth = (
       const checkAuth = async (): Promise<void> => {
         try {
           const response = await getUserInfo();
+          console.log(response);
           if (response === 'Access token not found') {
             await router
               .push('/auth/login')
@@ -24,13 +25,14 @@ const withAuth = (
           }
         } catch (error: any) {
           if (error.response.status === 401) {
+            console.log(error.response);
             const fetchNewAccessToken = await getRefreshToken();
             if (
               fetchNewAccessToken === 'Please Login again' ||
               fetchNewAccessToken === 'Refresh token not found'
             ) {
               router
-                .push('/circle/auth/login')
+                .push('/auth/login')
                 .then()
                 .catch(() => []);
             } else {

@@ -37,6 +37,7 @@ export { default as RateUs } from 'public/assets/vector/rate-us.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';
 export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';
 export { default as SeedlingIcon } from 'public/assets/vector/seedling-icon.svg';
+export { default as SendOTPImage } from 'public/assets/vector/send-otp.svg';
 export { default as Settings } from 'public/assets/vector/settings.svg';
 export { default as Share } from 'public/assets/vector/share-black.svg';
 export { default as SilverMedalIcon } from 'public/assets/vector/silver-medal-1.svg';

@@ -14,6 +14,7 @@ interface InputProps {
   label?: string;
   placeholder?: string;
   extraClasses?: string;
+  extraInputClasses?: string;
   disabled?: boolean;
   isError?: boolean;
   errorMessage?: string;
@@ -37,6 +38,7 @@ const Input: React.FC<InputProps> = ({
     : 'Your New Email',
   placeholder = type === 'isSelectPhoneNumber' ? '' : 'example@mail.com',
   extraClasses = '',
+  extraInputClasses = '',
   disabled = false,
   isError,
   errorMessage,
@@ -73,7 +75,7 @@ const Input: React.FC<InputProps> = ({
             placeholder={placeholder}
             className={`peer h-full w-full border-b border-neutral-ultrasoft bg-transparent py-1.5 font-poppins ${
               height !== undefined && height < 760 ? 'text-sm' : 'text-base'
-            } text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed`}
+            } text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft focus:border-seeds-button-green/80 focus:outline-0 disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed ${extraInputClasses}`}
           />
           <label
             className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none ${

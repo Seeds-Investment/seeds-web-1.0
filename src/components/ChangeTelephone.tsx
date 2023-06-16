@@ -1,4 +1,4 @@
-import { useState, type SetStateAction } from 'react';
+import { useContext, useState, type SetStateAction } from 'react';
 
 import Image from 'next/image';
 import { ChangeTelephoneIcon } from 'public/assets/vector';
@@ -15,6 +15,9 @@ import { formatNumericHandler } from '@/helpers/formatNumericHandler';
 
 import ListCountryFlag from '@/constants/countryFlag';
 
+import PhoneContext from '@/store/phone/phone-context';
+import Loading from './popup/Loading';
+
 const errorMessage =
   'Phone number is required, please enter your phone number!';
 
@@ -26,11 +29,14 @@ const ChangeTelephone: React.FC = () => {
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
 
+  const phoneCtx = useContext(PhoneContext);
+
   const [enteredCountryCode, setEnteredCountryCode] = useState('+62');
   const [selectedCountryFlag, setSelectedCountryFlag] = useState('ID');
 
   const {
     value: enteredPhoneNumber,
+    isValid: phoneNumberIsValid,
     isError: phoneNumberIsError,
     valueChangeHandler: phoneNumberChangeHandler,
     inputBlurHandler: phoneNumberBlurHandler
@@ -45,70 +51,78 @@ const ChangeTelephone: React.FC = () => {
   };
 
   const submitHandler = (): void => {
-    // ...API
+    const payload = enteredCountryCode
+      .concat(enteredPhoneNumber)
+      .replace('+', '');
+
+    phoneCtx.validatePhone(payload);
   };
 
   return (
-    <CardGradient
-      defaultGradient={width !== undefined && width > 640}
-      extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
-        height !== undefined && height >= 860
-          ? 'h-[44rem]'
-          : height !== undefined && height < 750
-          ? 'h-[35rem]'
-          : 'h-[40rem]'
-      } bg-white sm:p-6 py-6`}
-    >
-      <div
-        className={`z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto sm:p-4 px-4 bg-white`}
+    <>
+      {phoneCtx.isLoading && <Loading />}
+      <CardGradient
+        defaultGradient={width !== undefined && width > 640}
+        extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
+          height !== undefined && height >= 860
+            ? 'h-[44rem]'
+            : height !== undefined && height < 750
+            ? 'h-[35rem]'
+            : 'h-[40rem]'
+        } bg-white sm:p-6 py-6`}
       >
-        <div>
-          <h6
-            className={`mb-2 text-center font-poppins font-semibold ${
-              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
-            }`}
-          >
-            Change Telephone Number
-          </h6>
-          <p
-            className={`mb-8 text-center font-poppins ${
-              height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
-            } text-neutral-soft`}
-          >
-            All information from Seeds is transferred to your
-            <br />
-            new address.
-          </p>
-          <Image
-            src={ChangeTelephoneIcon}
-            alt="input user email"
-            className="z-10 mx-auto mb-14"
-          />
-          <Input
-            type="isSelectPhoneNumber"
-            isError={phoneNumberIsError}
-            errorMessage={errorMessage}
-            selectedCountryFlag={selectedCountryFlag}
-            selectValue={enteredCountryCode}
-            selectOptions={ListCountryFlag}
-            onSelect={countryCodeHandler}
+        <div
+          className={`z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto sm:p-4 px-4 bg-white`}
+        >
+          <div>
+            <h6
+              className={`mb-2 text-center font-poppins font-semibold ${
+                height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+              }`}
+            >
+              Change Telephone Number
+            </h6>
+            <p
+              className={`mb-8 text-center font-poppins ${
+                height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
+              } text-neutral-soft`}
+            >
+              All information from Seeds is transferred to your
+              <br />
+              new address.
+            </p>
+            <Image
+              src={ChangeTelephoneIcon}
+              alt="input user email"
+              className="z-10 mx-auto mb-14"
+            />
+            <Input
+              type="isSelectPhoneNumber"
+              isError={phoneNumberIsError}
+              errorMessage={errorMessage}
+              selectedCountryFlag={selectedCountryFlag}
+              selectValue={enteredCountryCode}
+              selectOptions={ListCountryFlag}
+              onSelect={countryCodeHandler}
+              props={{
+                maxLength: 13,
+                value: enteredPhoneNumber,
+                onChange: phoneNumberChangeHandler,
+                onBlur: phoneNumberBlurHandler
+              }}
+            />
+          </div>
+          <Button
+            color="dark"
+            label="Change"
             props={{
-              maxLength: 10,
-              value: enteredPhoneNumber,
-              onChange: phoneNumberChangeHandler,
-              onBlur: phoneNumberBlurHandler
+              onClick: submitHandler,
+              disabled: phoneNumberIsValid === false
             }}
           />
         </div>
-        <Button
-          color="dark"
-          label="Change"
-          props={{
-            onClick: submitHandler
-          }}
-        />
-      </div>
-    </CardGradient>
+      </CardGradient>
+    </>
   );
 };
 

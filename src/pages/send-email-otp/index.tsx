@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
-import ChangeEmail from '@/components/ChangeEmail';
+import SendOTP from '@/components/SendOTP';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
 import EmailProvider from '@/store/email/EmailProvider';
@@ -16,7 +16,7 @@ const customGradient = (
   </>
 );
 
-const ChangeEmailPage: React.FC = () => {
+const SendEmailOTPPage: React.FC = () => {
   const cancelHandler = (): void => {};
 
   return (
@@ -31,10 +31,10 @@ const ChangeEmailPage: React.FC = () => {
         >
           <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
         </button>
-        <ChangeEmail />
+        <SendOTP />
       </PageGradient>
     </EmailProvider>
   );
 };
 
-export default ChangeEmailPage;
+export default SendEmailOTPPage;

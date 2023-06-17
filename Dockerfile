@@ -5,7 +5,7 @@ COPY package.json /app/
 RUN npm install
 COPY . .
 
-COPY .env .env.development /app/
+COPY .env.development .env 
 
 RUN npm run build
 

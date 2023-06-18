@@ -1,7 +1,9 @@
+import type { DefaultTFuncReturn } from 'i18next';
+
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 
 interface ButtonProps {
-  label?: string;
+  label?: string | DefaultTFuncReturn;
   containerClasses?: string;
   typographyClasses?: string;
   extraClasses?: string;

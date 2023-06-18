@@ -1,11 +1,13 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { ArrowBackwardIcon, DeleteIcon, Logo } from 'public/assets/vector';
 
 import CardGradient from './ui/card/CardGradient';
 
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+
+import LanguageContext from '@/store/language/language-context';
 
 const numbersColumn1 = ['1', '4', '7'];
 const numbersColumn2 = ['2', '5', '8', '0'];
@@ -32,11 +34,13 @@ interface InputPinProps {
 const InputPin: React.FC<InputPinProps> = ({
   onCancel,
   onContinue,
-  title = 'Enter Your PIN',
-  subtitle = 'Please enter your PIN number correctly',
+  title,
+  subtitle,
   className,
   style
 }) => {
+  const languageCtx = useContext(LanguageContext);
+
   const width = useWindowInnerWidth();
 
   const [pin, setPin] = useState<string[]>([]);
@@ -95,11 +99,25 @@ const InputPin: React.FC<InputPinProps> = ({
         {/* -----Title----- */}
         <>
           <h2 className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
-            {title}
+            {title !== undefined
+              ? title
+              : languageCtx.language === 'EN'
+              ? 'Enter Your PIN'
+              : 'Masukan PIN Kamu'}
           </h2>
-          <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
-            {subtitle}
-          </p>
+          {subtitle !== undefined ? (
+            subtitle
+          ) : languageCtx.language === 'EN' ? (
+            <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
+              Please enter your PIN number correctly
+            </p>
+          ) : (
+            <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
+              Silakan masukkan nomor PIN Anda
+              {width !== undefined && width >= 640 ? ' ' : <br />}
+              dengan benar
+            </p>
+          )}
         </>
 
         {/* -----Dots----- */}

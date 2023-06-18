@@ -15,21 +15,19 @@ import { formatNumericHandler } from '@/helpers/formatNumericHandler';
 
 import ListCountryFlag from '@/constants/countryFlag';
 
+import LanguageContext from '@/store/language/language-context';
 import PhoneContext from '@/store/phone/phone-context';
-import Loading from './popup/Loading';
-
-const errorMessage =
-  'Phone number is required, please enter your phone number!';
 
 const validatePhoneNumber = (value: string): boolean => {
   return value.length !== 0;
 };
 
 const ChangeTelephone: React.FC = () => {
+  const phoneCtx = useContext(PhoneContext);
+  const languageCtx = useContext(LanguageContext);
+
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
-
-  const phoneCtx = useContext(PhoneContext);
 
   const [enteredCountryCode, setEnteredCountryCode] = useState('+62');
   const [selectedCountryFlag, setSelectedCountryFlag] = useState('ID');
@@ -58,9 +56,13 @@ const ChangeTelephone: React.FC = () => {
     phoneCtx.validatePhone(payload);
   };
 
+  const errorMessage =
+    languageCtx.language === 'EN'
+      ? 'Phone number is required, please enter your phone number!'
+      : 'Nomor telepon dibutuhkan, tolong isi dengan nomor telepon Anda!';
+
   return (
     <>
-      {phoneCtx.isLoading && <Loading />}
       <CardGradient
         defaultGradient={width !== undefined && width > 640}
         extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
@@ -80,16 +82,20 @@ const ChangeTelephone: React.FC = () => {
                 height !== undefined && height < 760 ? 'text-sm' : 'text-base'
               }`}
             >
-              Change Telephone Number
+              {languageCtx.language === 'EN'
+                ? 'Change Telephone Number'
+                : 'Ubah Nomor Telepon'}
             </h6>
             <p
               className={`mb-8 text-center font-poppins ${
                 height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
               } text-neutral-soft`}
             >
-              All information from Seeds is transferred to your
-              <br />
-              new address.
+              {languageCtx.language === 'EN'
+                ? 'All information from Seeds is transferred to your'
+                : 'Semua informasi dari Seeds ditransfer ke alamat'}
+              {width !== undefined && width >= 640 ? <br /> : ' '}
+              {languageCtx.language === 'EN' ? 'new address.' : 'baru Anda.'}
             </p>
             <Image
               src={ChangeTelephoneIcon}
@@ -98,6 +104,12 @@ const ChangeTelephone: React.FC = () => {
             />
             <Input
               type="isSelectPhoneNumber"
+              label={
+                languageCtx.language === 'EN'
+                  ? 'Your New Telephone Number'
+                  : 'Nomor Telepon Baru Kamu'
+              }
+              placeholder=""
               isError={phoneNumberIsError}
               errorMessage={errorMessage}
               selectedCountryFlag={selectedCountryFlag}
@@ -114,7 +126,7 @@ const ChangeTelephone: React.FC = () => {
           </div>
           <Button
             color="dark"
-            label="Change"
+            label={languageCtx.language === 'EN' ? 'Change' : 'Ubah'}
             props={{
               onClick: submitHandler,
               disabled: phoneNumberIsValid === false

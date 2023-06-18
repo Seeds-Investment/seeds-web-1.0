@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { ChangeEmailIcon } from 'public/assets/vector';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import Loading from './popup/Loading';
 import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
 import Input from './ui/input/Input';
@@ -14,12 +14,15 @@ import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
 import EmailContext from '@/store/email/email-context';
+import LanguageContext from '@/store/language/language-context';
 
 const ChangeEmail: React.FC = () => {
+  const { t } = useTranslation();
+  const emailCtx = useContext(EmailContext);
+  const languageCtx = useContext(LanguageContext);
+
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
-
-  const emailCtx = useContext(EmailContext);
 
   const {
     value: enteredEmail,
@@ -35,8 +38,12 @@ const ChangeEmail: React.FC = () => {
 
   const errorMessage =
     enteredEmail.trim().length === 0
-      ? 'Email is required, please enter your email!'
-      : 'Please enter your email address in format yourname@example.com';
+      ? languageCtx.language === 'EN'
+        ? 'Email is required, please enter your email!'
+        : 'Email dibutuhkan, tolong isi dengan email Anda!'
+      : languageCtx.language === 'EN'
+      ? 'Please enter your email address in format yourname@example.com'
+      : 'Tolong isi alamat email dengan format namaanda@contoh.com';
 
   const errorClasses =
     height !== undefined && height <= 915
@@ -47,7 +54,6 @@ const ChangeEmail: React.FC = () => {
 
   return (
     <>
-      {emailCtx.isLoading && <Loading />}
       <CardGradient
         defaultGradient={width !== undefined && width > 640}
         extraClasses={`w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
@@ -67,16 +73,20 @@ const ChangeEmail: React.FC = () => {
                 height !== undefined && height < 760 ? 'text-sm' : 'text-base'
               }`}
             >
-              Change Telephone Number
+              {languageCtx.language === 'EN'
+                ? t('changeEmail.messageEn')
+                : t('changeEmail.messageId')}
             </h6>
             <p
               className={`mb-8 text-center font-poppins ${
                 height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
               } text-neutral-soft`}
             >
-              All information from Seeds is transferred to your
-              <br />
-              new address.
+              {languageCtx.language === 'EN'
+                ? 'All information from Seeds is transferred to your'
+                : 'Semua informasi dari Seeds ditransfer ke alamat'}
+              {width !== undefined && width >= 640 ? <br /> : ' '}
+              {languageCtx.language === 'EN' ? 'new address.' : 'baru Anda.'}
             </p>
             <Image
               src={ChangeEmailIcon}
@@ -84,6 +94,16 @@ const ChangeEmail: React.FC = () => {
               className="z-10 mx-auto mb-14"
             />
             <Input
+              label={
+                languageCtx.language === 'EN'
+                  ? t('input.label.emailEn')
+                  : t('input.label.emailId')
+              }
+              placeholder={
+                languageCtx.language === 'EN'
+                  ? 'example@mail.com'
+                  : 'contoh@mail.com'
+              }
               isError={emailIsError}
               errorMessage={errorMessage}
               errorClasses={`absolute sm:-bottom-[1.125rem] font-poppins text-warning-hard ${errorClasses}`}
@@ -96,7 +116,7 @@ const ChangeEmail: React.FC = () => {
           </div>
           <Button
             color="dark"
-            label="Change"
+            label={languageCtx.language === 'EN' ? 'Change' : 'Ubah'}
             props={{
               onClick: submitHandler,
               disabled: emailIsValid === false

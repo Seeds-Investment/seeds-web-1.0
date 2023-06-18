@@ -1,3 +1,4 @@
+import type { DefaultTFuncReturn } from 'i18next';
 import { useState, type SetStateAction } from 'react';
 
 import Image from 'next/image';
@@ -11,7 +12,7 @@ import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import classes from './Input.module.css';
 interface InputProps {
   type?: 'text' | 'isSelectPhoneNumber' | 'isSelect';
-  label?: string;
+  label?: string | DefaultTFuncReturn;
   placeholder?: string;
   extraClasses?: string;
   extraInputClasses?: string;
@@ -33,10 +34,8 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   type = 'text',
-  label = type === 'isSelectPhoneNumber'
-    ? 'Your New Telephone Number'
-    : 'Your New Email',
-  placeholder = type === 'isSelectPhoneNumber' ? '' : 'example@mail.com',
+  label = 'Label',
+  placeholder = 'placeholder',
   extraClasses = '',
   extraInputClasses = '',
   disabled = false,

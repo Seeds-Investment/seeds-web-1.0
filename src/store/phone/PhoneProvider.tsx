@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
-import { useState, type ReactNode } from 'react';
+import { useContext, useState, type ReactNode } from 'react';
+
+import ErrorBEContext from '../error-be/error-be-context';
+import LoadingContext from '../loading/loading-context';
 import PhoneContext from './phone-context';
 
 interface PhoneProviderProps {
@@ -8,9 +11,10 @@ interface PhoneProviderProps {
 
 const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
   const router = useRouter();
+  const errorBECtx = useContext(ErrorBEContext);
+  const loadingCtx = useContext(LoadingContext);
 
   const [isAlreadyExist, setIsAlreadyExist] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const resetHandler = (): void => {
@@ -18,14 +22,14 @@ const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
   };
 
   const validatePhoneHandler = async (value: string): Promise<void> => {
-    setIsLoading(true);
+    loadingCtx.loadingHandler(true);
     try {
       const response = await fetch(
         `https://seeds-dev.seeds.finance/auth/v1/validate/phone?phone=${value}`
       );
 
       setTimeout(() => {
-        setIsLoading(false);
+        loadingCtx.loadingHandler(false);
       }, 800);
 
       if (!response.ok) {
@@ -39,13 +43,12 @@ const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
 
       await router.push('/send-email-otp');
     } catch (error) {
-      console.log('ini error', error);
+      errorBECtx.onOpen(error as string);
     }
   };
 
   const phoneContext = {
     phoneNumber,
-    isLoading,
     isAlreadyExist,
     validatePhone: validatePhoneHandler,
     resetIsAlreadyExist: resetHandler

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 
 import Image from 'next/image';
 import ID from 'public/assets/images/flags/ID.png';
@@ -9,10 +9,12 @@ import Logo from '../ui/vector/Logo';
 
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
-const Header: React.FC = () => {
-  const width = useWindowInnerWidth();
+import LanguageContext from '@/store/language/language-context';
 
-  const [language, setLanguage] = useState('EN');
+const Header: React.FC = () => {
+  const languageCtx = useContext(LanguageContext);
+
+  const width = useWindowInnerWidth();
 
   return (
     <header className="sm:pt-6 pt-12">
@@ -24,15 +26,15 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-4">
           <button
             className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100 ${
-              language === 'ID' ? 'border border-seeds-purple' : ''
+              languageCtx.language === 'ID' ? 'border border-seeds-purple' : ''
             }`}
             onClick={() => {
-              setLanguage('ID');
+              languageCtx.languageHandler('ID');
             }}
           >
             <span
               className={`font-poppins sm:text-lg text-sm ${
-                language === 'ID'
+                languageCtx.language === 'ID'
                   ? 'sm:font-semibold text-seeds-purple'
                   : 'text-black'
               }`}
@@ -46,15 +48,15 @@ const Header: React.FC = () => {
           <div className="w-px sm:h-6 h-3.5 border border-black" />
           <button
             className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100 ${
-              language === 'EN' ? 'border border-seeds-purple' : ''
+              languageCtx.language === 'EN' ? 'border border-seeds-purple' : ''
             }`}
             onClick={() => {
-              setLanguage('EN');
+              languageCtx.languageHandler('EN');
             }}
           >
             <span
               className={`font-poppins sm:text-lg text-sm ${
-                language === 'EN'
+                languageCtx.language === 'EN'
                   ? 'sm:font-semibold text-seeds-purple'
                   : 'text-black'
               }`}

@@ -46,12 +46,17 @@ export default {
       text: 'Congratulations! The new password has been successfully created.'
     }
   },
+  changeEmail: {
+    messageEn: 'Change Email Address',
+    messageId: 'Ubah Alamat Email'
+  },
   input: {
-    phone: 'Phone Number',
-    email: 'Email',
-    birthDate: 'Birth Date',
+    label: {
+      emailEn: 'Your New Email',
+      emailId: 'Email Baru Anda'
+    },
     placeholder: {
-      email: 'Please enter your email',
+      email: 'example@mail.com',
       phoneNumber: 'Please enter your phone number',
       successMessage:
         'Congratulations! The new password has been successfully created.',
@@ -60,6 +65,17 @@ export default {
       seedsTag: '@seedstag',
       referralCode: 'Referral Code'
     },
+    error: {
+      required: {
+        email: 'Email is required, please enter your email!'
+      },
+      format: {
+        email: 'Please enter your email address in format yourname@example.com'
+      }
+    },
+    phone: 'Phone Number',
+    email: 'Email',
+    birthDate: 'Birth Date',
     type: {
       email: 'Email',
       password: 'Input Password',
@@ -71,6 +87,7 @@ export default {
     }
   },
   button: {
+    change: 'Change',
     BTN_REGISTER: 'Register',
     BTN_LOGIN: 'Login',
     BTN_GUEST: 'Enter As Guest',

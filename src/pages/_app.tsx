@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { ThemeProvider } from '@material-tailwind/react';
 import type { NextPage } from 'next';
@@ -8,6 +8,9 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 
 import Header from '@/components/layouts/Header';
+import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
+import LanguageProvider from '@/store/language/LanguageProvider';
+import LoadingProvider from '@/store/loading/LoadingProvider';
 
 import '@/utils/common/i18n';
 
@@ -36,10 +39,18 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     !pathsWithoutHeader.includes(path) && !path.includes('_error');
 
   return (
-    <SessionProvider session={pageProps.session}>
-      {renderHeader && <Header />}
-      <ThemeProvider>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
-    </SessionProvider>
+    <LanguageProvider>
+      <LoadingProvider>
+        <ErrorBEProvider>
+          <SessionProvider session={pageProps.session}>
+            {renderHeader && <Header />}
+            <ThemeProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </ThemeProvider>
+          </SessionProvider>
+        </ErrorBEProvider>
+      </LoadingProvider>
+    </LanguageProvider>
   );
 }
 

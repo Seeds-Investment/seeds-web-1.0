@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
-import { useState, type ReactNode } from 'react';
+import { useContext, useState, type ReactNode } from 'react';
+
+import ErrorBEContext from '../error-be/error-be-context';
+import LoadingContext from '../loading/loading-context';
 import EmailContext from './email-context';
 
 interface EmailProviderProps {
@@ -8,9 +11,10 @@ interface EmailProviderProps {
 
 const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
   const router = useRouter();
+  const errorBECtx = useContext(ErrorBEContext);
+  const loadingCtx = useContext(LoadingContext);
 
   const [isAlreadyExist, setIsAlreadyExist] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
 
   const resetHandler = (): void => {
@@ -18,14 +22,14 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
   };
 
   const validateEmailHandler = async (value: string): Promise<void> => {
-    setIsLoading(true);
+    loadingCtx.loadingHandler(true);
     try {
       const response = await fetch(
         `https://seeds-dev.seeds.finance/auth/v1/validate/email?email=${value}`
       );
 
       setTimeout(() => {
-        setIsLoading(false);
+        loadingCtx.loadingHandler(false);
       }, 800);
 
       if (!response.ok) {
@@ -39,13 +43,12 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
 
       await router.push('/send-email-otp');
     } catch (error) {
-      console.log('ini error', error);
+      errorBECtx.onOpen(error as string);
     }
   };
 
   const emailContext = {
     email,
-    isLoading,
     isAlreadyExist,
     validateEmail: validateEmailHandler,
     resetIsAlreadyExist: resetHandler

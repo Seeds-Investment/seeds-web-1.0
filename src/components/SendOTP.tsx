@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   useState,
   type ChangeEvent,
@@ -5,17 +6,13 @@ import {
   type ReactNode
 } from 'react';
 
-import Image from 'next/image';
 import { SendOTPImage } from 'public/assets/vector';
-import { useContext } from 'react';
 
-import Loading from './popup/Loading';
 import CardGradient from './ui/card/CardGradient';
 
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
-import EmailContext from '@/store/email/email-context';
 import Input from './ui/input/Input';
 
 interface SendOTPProps {
@@ -35,8 +32,6 @@ const SendOTP: React.FC<SendOTPProps> = ({
 }) => {
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
-
-  const emailCtx = useContext(EmailContext);
 
   const [first, setFirst] = useState('');
   const [second, setSecond] = useState('');
@@ -63,7 +58,6 @@ const SendOTP: React.FC<SendOTPProps> = ({
 
   return (
     <>
-      {emailCtx.isLoading && <Loading />}
       <CardGradient
         defaultGradient={width !== undefined && width > 640}
         extraClasses={`flex flex-col gap-4 w-[90%] sm:rounded-[18px] sm:h-[36rem] ${

@@ -1,8 +1,13 @@
 import { createContext } from 'react';
 
+interface ErrorType {
+  message: string;
+  type: 'inline' | 'popup';
+}
+
 const ErrorBEContext = createContext({
-  message: '',
-  onOpen: (message: string): void => {},
+  error: { message: '', type: 'popup' },
+  onOpen: (payload: ErrorType): void => {},
   onClose: (): void => {}
 });
 

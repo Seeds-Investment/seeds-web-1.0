@@ -41,9 +41,12 @@ const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
 
       setPhoneNumber(value);
 
-      await router.push('/send-email-otp');
+      await router.push({
+        pathname: '/send-otp-code',
+        query: { target: 'whatsapp' }
+      });
     } catch (error) {
-      errorBECtx.onOpen(error as string);
+      errorBECtx.onOpen({ message: error as string, type: 'popup' });
     }
   };
 

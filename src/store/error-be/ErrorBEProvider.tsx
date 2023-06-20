@@ -7,13 +7,20 @@ interface ErrorBEProps {
   children: ReactNode;
 }
 
+interface ErrorType {
+  message: string;
+  type: 'inline' | 'popup';
+}
+
 const ErrorBEProvider: React.FC<ErrorBEProps> = ({ children }) => {
   const loadingCtx = useContext(LoadingContext);
 
   const [message, setMessage] = useState('');
+  const [type, setType] = useState('popup');
 
-  const openHandler = (message: string): void => {
-    setMessage(message);
+  const openHandler = (payload: ErrorType): void => {
+    setMessage(payload.message);
+    setType(payload.type);
   };
 
   const closeHandler = (): void => {
@@ -21,14 +28,14 @@ const ErrorBEProvider: React.FC<ErrorBEProps> = ({ children }) => {
   };
 
   const errorBEContext = {
-    message,
+    error: { message, type },
     onOpen: openHandler,
     onClose: closeHandler
   };
 
   return (
     <ErrorBEContext.Provider value={errorBEContext}>
-      {!loadingCtx.isLoading && (
+      {!loadingCtx.isLoading && type === 'popup' && (
         <h1 className="font-poppins font-bold text-3xl">{message}</h1>
       )}
       {children}

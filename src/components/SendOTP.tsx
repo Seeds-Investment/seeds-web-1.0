@@ -1,35 +1,42 @@
 import Image from 'next/image';
 import {
+  useContext,
+  useEffect,
   useState,
   type ChangeEvent,
   type KeyboardEvent,
   type ReactNode
 } from 'react';
 
-import { SendOTPImage } from 'public/assets/vector';
+import {
+  SendOTPEmail,
+  SendOTPSms,
+  SendOTPWhatsApp
+} from 'public/assets/vector';
 
+import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
+import Input from './ui/input/Input';
 
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
-import Input from './ui/input/Input';
-
+import ErrorBEContext from '@/store/error-be/error-be-context';
+import LanguageContext from '@/store/language/language-context';
+import OTPContext from '@/store/otp/otp-context';
 interface SendOTPProps {
   message?: string;
-  submessage?: ReactNode | string;
+  submessage?: ReactNode;
+  target?: string;
 }
 
-const SendOTP: React.FC<SendOTPProps> = ({
-  message = 'Enter the OTP code',
-  submessage = (
-    <span className="font-poppins text-sm text-neutral-soft">
-      Please check your email to get the OTP
-      <br />
-      code
-    </span>
-  )
-}) => {
+const inputs = [1, 2, 3, 4];
+
+const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
+  const languageCtx = useContext(LanguageContext);
+  const errorBECtx = useContext(ErrorBEContext);
+  const otpCtx = useContext(OTPContext);
+
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
 
@@ -37,6 +44,20 @@ const SendOTP: React.FC<SendOTPProps> = ({
   const [second, setSecond] = useState('');
   const [third, setThird] = useState('');
   const [fourth, setFourth] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [hasResent, setHasResent] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+
+  const continueHandler = (): void => {
+    // todo: const payload = `${first}${second}${third}${fourth}`;
+    if (target === 'sms') {
+      // API...
+    } else if (target === 'whatsapp') {
+      // API...
+    } else {
+      // API...
+    }
+  };
 
   function clickEventHandler(
     event: KeyboardEvent<HTMLInputElement>,
@@ -56,127 +77,340 @@ const SendOTP: React.FC<SendOTPProps> = ({
     }
   }
 
+  const resendOTPHandler = (): void => {
+    if (target === 'email') {
+      // API...
+    } else if (target === 'whatsapp') {
+      // API...
+    } else {
+      // API...
+    }
+
+    setHasResent(true);
+    setIsResending(true);
+    setCountdown(30);
+  };
+
+  const changeSendOTPTargetHandler = (): void => {
+    setFirst('');
+    setSecond('');
+    setThird('');
+    setFourth('');
+    setHasResent(false);
+    setCountdown(0);
+
+    if (target === 'whatsapp') {
+      otpCtx.changeOtpTarget('sms');
+    } else {
+      otpCtx.changeOtpTarget('whatsapp');
+    }
+  };
+
+  useEffect(() => {
+    if (
+      target === 'email' &&
+      first !== '' &&
+      second !== '' &&
+      third !== '' &&
+      fourth !== ''
+    ) {
+      // todo: nanti handle reset di context cuma kalau berhasil!
+      setTimeout(() => {
+        setFirst('');
+        setSecond('');
+        setThird('');
+        setFourth('');
+      }, 800);
+
+      // API...
+    } else if (
+      target === 'whatsapp' &&
+      first !== '' &&
+      second !== '' &&
+      third !== '' &&
+      fourth !== ''
+    ) {
+      setTimeout(() => {
+        setFirst('');
+        setSecond('');
+        setThird('');
+        setFourth('');
+      }, 800);
+
+      // API...
+    } else if (
+      target === 'sms' &&
+      first !== '' &&
+      second !== '' &&
+      third !== '' &&
+      fourth !== ''
+    ) {
+      setTimeout(() => {
+        setFirst('');
+        setSecond('');
+        setThird('');
+        setFourth('');
+      }, 800);
+
+      // API...
+    }
+  }, [target, first, second, third, fourth]);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      setIsResending(false);
+    } else if (countdown > 0 && isResending) {
+      setTimeout(() => {
+        setCountdown(prevCount => prevCount - 1);
+      }, 1000);
+    }
+  }, [countdown, isResending]);
+
+  const submessageClasses = `font-poppins text-neutral-soft ${
+    height !== undefined && height < 750 ? 'text-xs' : 'text-sm mb-3'
+  }`;
+
+  const cardExtraClasses = `flex flex-col gap-4 sm:min-h-[36rem] sm:rounded-[18px] sm:p-6 md:bg-white bg-transparent p-0 w-[90%] ${
+    height !== undefined && height >= 860
+      ? 'h-[44rem]'
+      : height !== undefined && height < 750
+      ? 'h-[35rem]'
+      : 'h-[40rem]'
+  }`;
+
+  const buttonClasses = `focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins text-seeds-button-green hover:border-b border-seeds-button-green disabled:cursor-not-allowed ${
+    height !== undefined && height < 750 ? 'text-sm' : ''
+  }`;
+
+  let defaultMessage = '';
+  let defaultSubmessage: ReactNode = '';
+  let resendOTPText = '';
+
+  if (target !== 'email') {
+    if (languageCtx.language === 'EN') {
+      defaultMessage = 'Register';
+      defaultSubmessage = (
+        <span className={submessageClasses}>
+          Your OTP code has been sent on your{' '}
+          {target === 'sms' ? 'SMS.' : 'WhatsApp.'}
+          <br />
+          Please check your {target === 'sms' ? 'SMS.' : 'WhatsApp.'}
+        </span>
+      );
+      resendOTPText = 'Resend OTP';
+    } else {
+      defaultMessage = 'Daftar';
+      defaultSubmessage = (
+        <span className={submessageClasses}>
+          Kode OTP Anda telah dikirim ke {target === 'sms' ? 'SMS' : 'WhatsApp'}{' '}
+          Anda.
+          <br />
+          Silakan periksa {target === 'sms' ? 'SMS' : 'WhatsApp'} Anda.
+        </span>
+      );
+      resendOTPText = 'Kirim Ulang';
+    }
+  } else {
+    if (languageCtx.language === 'EN') {
+      defaultMessage = 'Enter the OTP code';
+      defaultSubmessage = (
+        <span className={submessageClasses}>
+          Please check your email to get the OTP
+          <br />
+          code
+        </span>
+      );
+      resendOTPText = hasResent ? 'Resend OTP' : 'Resending';
+    } else {
+      defaultMessage = 'Masukkan Kode OTP';
+      defaultSubmessage = (
+        <span className={submessageClasses}>
+          Silakan periksa email Anda untuk
+          <br />
+          mendapatkan kode OTP
+        </span>
+      );
+      resendOTPText = 'Kirim Ulang';
+    }
+  }
+
   return (
     <>
       <CardGradient
         defaultGradient={width !== undefined && width > 640}
-        extraClasses={`flex flex-col gap-4 w-[90%] sm:rounded-[18px] sm:h-[36rem] ${
-          height !== undefined && height >= 860
-            ? 'h-[44rem]'
-            : height !== undefined && height < 750
-            ? 'h-[35rem]'
-            : 'h-[40rem]'
-        } md:bg-white bg-transparent sm:p-6 p-0`}
+        extraClasses={cardExtraClasses}
       >
         <div
-          className={`z-10 flex flex-col sm:justify-between justify-evenly lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-1/2 mx-auto p-4 bg-white`}
+          className={`z-10 flex flex-col lg:w-1/2 md:w-2/3 sm:w-[80%] w-full mx-auto p-4 bg-white ${
+            target === 'email' ? 'h-full' : 'sm:h-full'
+          }`}
         >
           <div className="text-center">
-            <h3 className="mb-2 font-poppins font-semibold text-2xl text-neutral-medium">
-              {message}
+            <h3
+              className={`font-poppins font-semibold text-neutral-medium ${
+                height !== undefined && height < 750
+                  ? 'text-lg'
+                  : 'mb-2 text-2xl'
+              }`}
+            >
+              {message !== undefined ? message : defaultMessage}
             </h3>
-            {typeof submessage === 'object' ? <p>{submessage}</p> : submessage}
+            {submessage !== undefined ? (
+              typeof submessage === 'object' ? (
+                <p className={submessageClasses}>{submessage}</p>
+              ) : (
+                submessage
+              )
+            ) : (
+              defaultSubmessage
+            )}
           </div>
           <Image
-            src={SendOTPImage}
-            alt="send otp"
-            className="z-10 sm:mb-0 mx-auto"
+            priority
+            src={
+              target === 'sms'
+                ? SendOTPSms
+                : target === 'whatsapp'
+                ? SendOTPWhatsApp
+                : SendOTPEmail
+            }
+            alt="send otp code"
+            className={`z-10 mx-auto ${
+              height !== undefined && height < 750 ? 'mb-2' : 'mb-8'
+            }`}
           />
-        </div>
-        <div
-          className={`z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-1/2 mx-auto py-6 px-4 bg-white`}
-        >
-          <h6 className="mb-8 font-poppins font-semibold text-center text-neutral-medium">
-            OTP Code
+          <h6 className="mb-6 font-poppins font-semibold text-center text-neutral-medium">
+            {languageCtx.language === 'EN' ? 'OTP Code' : 'Kode OTP'}
           </h6>
           <div className="mb-8 flex gap-8">
-            <Input
-              placeholder=""
-              label=""
-              props={{
-                id: 1,
-                value: first,
-                onChange: (event: ChangeEvent<HTMLInputElement>) => {
-                  setFirst(event.target.value.replace(/\D/g, ''));
-                },
-                onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
-                  clickEventHandler(event, 1);
-                },
-                maxLength: 1,
-                style: {
-                  fontWeight: 600,
-                  textAlign: 'center',
-                  color: '#262626'
-                }
-              }}
-            />
-            <Input
-              placeholder=""
-              label=""
-              props={{
-                id: 2,
-                value: second,
-                onChange: (event: ChangeEvent<HTMLInputElement>) => {
-                  setSecond(event.target.value.replace(/\D/g, ''));
-                },
-                onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
-                  clickEventHandler(event, 2);
-                },
-                maxLength: 1,
-                style: {
-                  fontWeight: 600,
-                  textAlign: 'center',
-                  color: '#262626'
-                }
-              }}
-            />
-            <Input
-              placeholder=""
-              label=""
-              props={{
-                id: 3,
-                value: third,
-                onChange: (event: ChangeEvent<HTMLInputElement>) => {
-                  setThird(event.target.value.replace(/\D/g, ''));
-                },
-                onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
-                  clickEventHandler(event, 3);
-                },
-                maxLength: 1,
-                style: {
-                  fontWeight: 600,
-                  textAlign: 'center',
-                  color: '#262626'
-                }
-              }}
-            />
-            <Input
-              placeholder=""
-              label=""
-              props={{
-                id: 4,
-                value: fourth,
-                onChange: (event: ChangeEvent<HTMLInputElement>) => {
-                  setFourth(event.target.value.replace(/\D/g, ''));
-                },
-                onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
-                  clickEventHandler(event, 4);
-                },
-                maxLength: 1,
-                style: {
-                  fontWeight: 600,
-                  textAlign: 'center',
-                  color: '#262626'
-                }
-              }}
-            />
+            {inputs.map(number => (
+              <Input
+                key={number}
+                placeholder=""
+                label=""
+                extraInputClasses={`${
+                  errorBECtx.error.message !== '' ? 'border-warning-hard' : ''
+                }`}
+                props={{
+                  id: number,
+                  value:
+                    number === 1
+                      ? first
+                      : number === 2
+                      ? second
+                      : number === 3
+                      ? third
+                      : fourth,
+                  onChange: (event: ChangeEvent<HTMLInputElement>) => {
+                    errorBECtx.onClose();
+                    number === 1
+                      ? setFirst(event.target.value.replace(/\D/g, ''))
+                      : number === 2
+                      ? setSecond(event.target.value.replace(/\D/g, ''))
+                      : number === 3
+                      ? setThird(event.target.value.replace(/\D/g, ''))
+                      : setFourth(event.target.value.replace(/\D/g, ''));
+                  },
+                  onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
+                    clickEventHandler(event, number);
+                  },
+                  maxLength: 1,
+                  style: {
+                    fontWeight: 600,
+                    textAlign: 'center',
+                    color: '#262626'
+                  }
+                }}
+              />
+            ))}
           </div>
-          <h6 className="text-center font-poppins font-light">
-            didn&apos;t get email?{' '}
-            <span className="font-poppins text-seeds-button-green hover:border-b border-seeds-button-green">
-              <button>Resending</button>
-            </span>
-          </h6>
+
+          {/* -----INLINE ERROR BLOCK----- */}
+          {errorBECtx.error.message !== '' && (
+            <p className="mb-4 font-poppins font-light text-center text-sm text-warning-hard">
+              {errorBECtx.error.message}
+            </p>
+          )}
+
+          {/* -----RESEND OTP EMAIL BLOCK----- */}
+          {target === 'email' ? (
+            <div
+              className={`flex items-center gap-1.5 ${
+                hasResent ? 'justify-between' : 'justify-center'
+              }`}
+            >
+              {hasResent ? (
+                <span
+                  className={`font-poppins font-light text-xs text-neutral-soft ${
+                    !isResending ? 'invisible' : ''
+                  }`}
+                >
+                  {countdown}{' '}
+                  {languageCtx.language === 'EN' ? 'seconds' : 'detik'}
+                </span>
+              ) : (
+                <h6 className="font-poppins font-light text-neutral-medium">
+                  {languageCtx.language === 'EN'
+                    ? "didn't get email? "
+                    : 'tidak mendapat email? '}
+                </h6>
+              )}
+              <button
+                className={buttonClasses}
+                disabled={isResending}
+                onClick={resendOTPHandler}
+              >
+                {resendOTPText}
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* -----RESEND OTP WHATSAPP/SMS BLOCK----- */}
+              <div className="flex justify-between items-center gap-1.5">
+                <span
+                  className={`font-poppins font-light text-xs text-neutral-soft ${
+                    !isResending ? 'invisible' : ''
+                  }`}
+                >
+                  {countdown}{' '}
+                  {languageCtx.language === 'EN' ? 'seconds' : 'detik'}
+                </span>
+                <button
+                  className={buttonClasses}
+                  disabled={isResending}
+                  onClick={resendOTPHandler}
+                >
+                  {resendOTPText}
+                </button>
+              </div>
+
+              {/* -----SEND OTP VIA WHATSAPP/SMS BLOCK----- */}
+              <button
+                className={`sm:mt-4 mx-auto max-w-fit focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold text-seeds-button-green hover:border-b border-seeds-button-green ${
+                  height !== undefined && height < 750
+                    ? 'mt-4 text-sm'
+                    : height !== undefined && height < 896
+                    ? 'mt-10'
+                    : 'mt-20'
+                }`}
+                onClick={changeSendOTPTargetHandler}
+              >
+                {languageCtx.language === 'EN'
+                  ? `Another way? Send via ${
+                      target === 'sms' ? 'WhatsApp' : 'SMS'
+                    }`
+                  : `Cara lain? Kirim melalui ${
+                      target === 'sms' ? 'WhatsApp' : 'SMS'
+                    }`}
+              </button>
+              <Button
+                color="dark"
+                label={languageCtx.language === 'EN' ? 'Confirm' : 'Konfirmasi'}
+                extraClasses="sm:mt-auto mt-8"
+                props={{ onClick: continueHandler }}
+              />
+            </>
+          )}
         </div>
       </CardGradient>
     </>

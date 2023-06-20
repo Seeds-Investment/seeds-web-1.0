@@ -7,6 +7,7 @@ import CardGradient from './ui/card/CardGradient';
 
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
+import ErrorBEContext from '@/store/error-be/error-be-context';
 import LanguageContext from '@/store/language/language-context';
 
 const numbersColumn1 = ['1', '4', '7'];
@@ -16,15 +17,12 @@ const dotsRow = ['', '', '', '', '', ''];
 
 const dotContainerClasses = 'relative flex justify-center items-center';
 
-const dotClasses =
-  'absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-[#CCDCDC] border-4';
-
 const animationClasses =
   'absolute animate-ping w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-neutral-medium';
 
 interface InputPinProps {
   onCancel: () => void;
-  onContinue: (pin: string) => void;
+  action: string;
   title?: string;
   subtitle?: string;
   className?: string;
@@ -33,17 +31,54 @@ interface InputPinProps {
 
 const InputPin: React.FC<InputPinProps> = ({
   onCancel,
-  onContinue,
+  action,
   title,
   subtitle,
   className,
   style
 }) => {
   const languageCtx = useContext(LanguageContext);
+  const errorBECtx = useContext(ErrorBEContext);
 
   const width = useWindowInnerWidth();
 
   const [pin, setPin] = useState<string[]>([]);
+
+  const enterPinHandler = (value: string) => () => {
+    errorBECtx.onClose();
+    setPin(prevData => prevData.concat(value));
+  };
+
+  const deletePinHandler = (): void => {
+    setPin(prevData => prevData.slice(0, prevData.length - 1));
+  };
+
+  useEffect(() => {
+    if (pin.length === 6) {
+      // todo: nanti handle reset di context cuma kalau berhasil!
+      setTimeout(() => {
+        setPin([]);
+      }, 800);
+
+      // todo: const payload = pin.join('');
+
+      if (action === 'delete-account') {
+        // API...
+      } else if (action === 'change-email-address') {
+        // API...
+      } else if (action === 'create-new-pin') {
+        // API...
+      } else if (action === 'confirm-new-pin') {
+        // API...
+      }
+    }
+  }, [pin, action]);
+
+  const isDisabled = pin.length === 6;
+
+  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
+    !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
+  }`;
 
   const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] ${
     width !== undefined && width < 370
@@ -55,26 +90,25 @@ const InputPin: React.FC<InputPinProps> = ({
       : ''
   } sm:h-[36rem] bg-white`;
 
-  const enterPinHandler = (value: string) => () => {
-    setPin(prevData => prevData.concat(value));
-  };
+  const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
+    errorBECtx.error.message !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'
+  }`;
 
-  const deletePinHandler = (): void => {
-    setPin(prevData => prevData.slice(0, prevData.length - 1));
-  };
+  const defaultTitle =
+    languageCtx.language === 'EN' ? 'Enter Your PIN' : 'Masukan PIN Kamu';
 
-  const isDisabled = pin.length === 6;
-
-  const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
-    !isDisabled ? 'active:bg-gray-300' : ''
-  } ${isDisabled ? 'cursor-not-allowed' : ''}`;
-
-  useEffect(() => {
-    if (pin.length === 6) {
-      const payload = pin.join('');
-      onContinue(payload);
-    }
-  }, [pin, onContinue]);
+  const defaultSubtitle =
+    languageCtx.language === 'EN' ? (
+      <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
+        Please enter your PIN number correctly
+      </p>
+    ) : (
+      <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
+        Silakan masukkan nomor PIN Anda
+        {width !== undefined && width >= 640 ? ' ' : <br />}
+        dengan benar
+      </p>
+    );
 
   return (
     <CardGradient
@@ -99,29 +133,17 @@ const InputPin: React.FC<InputPinProps> = ({
         {/* -----Title----- */}
         <>
           <h2 className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
-            {title !== undefined
-              ? title
-              : languageCtx.language === 'EN'
-              ? 'Enter Your PIN'
-              : 'Masukan PIN Kamu'}
+            {title !== undefined ? title : defaultTitle}
           </h2>
-          {subtitle !== undefined ? (
-            subtitle
-          ) : languageCtx.language === 'EN' ? (
-            <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
-              Please enter your PIN number correctly
-            </p>
-          ) : (
-            <p className="sm:mb-10 mb-12 text-base text-center font-poppins text-neutral-soft">
-              Silakan masukkan nomor PIN Anda
-              {width !== undefined && width >= 640 ? ' ' : <br />}
-              dengan benar
-            </p>
-          )}
+          {subtitle !== undefined ? subtitle : defaultSubtitle}
         </>
 
         {/* -----Dots----- */}
-        <div className="flex justify-center items-center gap-14 lg:gap-20 h-10 px-5 sm:mb-10 mb-16">
+        <div
+          className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5 ${
+            errorBECtx.error.message !== '' ? '' : 'sm:mb-10 mb-16'
+          }`}
+        >
           {dotsRow.map((_, index) => (
             <span key={index} className={dotContainerClasses}>
               <span
@@ -137,6 +159,15 @@ const InputPin: React.FC<InputPinProps> = ({
             </span>
           ))}
         </div>
+        {errorBECtx.error.message !== '' && (
+          <p
+            className={`animate-fade-in mt-4 text-center font-light font-poppins text-sm text-warning-hard ${
+              errorBECtx.error.message !== '' ? 'sm:mb-10 mb-16' : ''
+            }`}
+          >
+            {errorBECtx.error.message}
+          </p>
+        )}
 
         {/* -----Inputs----- */}
         <div className="flex justify-evenly lg:justify-between [&>*]:flex [&>*]:flex-col [&>*]:gap-4">

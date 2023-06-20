@@ -1,3 +1,4 @@
+import { withRouter, type NextRouter } from 'next/router';
 import { useContext } from 'react';
 
 import InputPin from '@/components/InputPin';
@@ -5,13 +6,15 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
 import LanguageContext from '@/store/language/language-context';
 
-const CreateNewPinPage: React.FC = () => {
+interface CreateNewPinProps {
+  router: NextRouter;
+}
+
+const CreateNewPinPage: React.FC<CreateNewPinProps> = ({ router }) => {
   const languageCtx = useContext(LanguageContext);
 
-  const cancelHandler = (): void => {};
-
-  const continueHandler = (pin: string): void => {
-    // API...
+  const cancelHandler = (): void => {
+    router.back();
   };
 
   return (
@@ -21,7 +24,7 @@ const CreateNewPinPage: React.FC = () => {
     >
       <InputPin
         onCancel={cancelHandler}
-        onContinue={continueHandler}
+        action={router.query.action as string}
         title={
           languageCtx.language === 'EN' ? 'Create New PIN' : 'Buat PIN Baru'
         }
@@ -30,4 +33,4 @@ const CreateNewPinPage: React.FC = () => {
   );
 };
 
-export default CreateNewPinPage;
+export default withRouter(CreateNewPinPage);

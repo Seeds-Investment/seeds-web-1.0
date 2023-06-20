@@ -1,22 +1,18 @@
 import { withRouter, type NextRouter } from 'next/router';
-import { useContext } from 'react';
 
 import InputPin from '@/components/InputPin';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
-import LanguageContext from '@/store/language/language-context';
-
-interface ConfirmNewPinProps {
+interface InputSeedsPinProps {
   router: NextRouter;
 }
 
-const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
-  const languageCtx = useContext(LanguageContext);
-
+const InputSeedsPinPage: React.FC<InputSeedsPinProps> = ({ router }) => {
   const cancelHandler = (): void => {
     router.back();
   };
 
+  // todo: jangan lupa wrap PageGradient dengan context yang menyimpan API onContinue.
   return (
     <PageGradient
       defaultGradient
@@ -25,14 +21,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
       <InputPin
         onCancel={cancelHandler}
         action={router.query.action as string}
-        title={
-          languageCtx.language === 'EN'
-            ? 'Confirmation New PIN'
-            : 'Konfirmasi PIN Baru'
-        }
       />
     </PageGradient>
   );
 };
 
-export default withRouter(ConfirmNewPinPage);
+export default withRouter(InputSeedsPinPage);

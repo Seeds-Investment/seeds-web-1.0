@@ -36,6 +36,12 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         setIsAlreadyExist(true);
 
         const { message } = await response.json();
+        errorBECtx.onOpen({
+          code: response.status,
+          message,
+          type: 'popup',
+          redirectUrl: '/'
+        });
         throw message;
       }
 
@@ -46,7 +52,7 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         query: { target: 'email' }
       });
     } catch (error) {
-      errorBECtx.onOpen({ message: error as string, type: 'popup' });
+      console.error('Error:', error);
     }
   };
 

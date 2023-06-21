@@ -113,6 +113,9 @@ const PersonalInfoPage = ({
           console.log(result.error);
         } else if (provider !== '') {
           localStorage.setItem('provider', provider);
+          if (provider === 'apple') {
+            localStorage.setItem('isRegistering', 'true');
+          }
         }
       })
       .catch(error => {

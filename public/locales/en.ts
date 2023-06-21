@@ -3,6 +3,15 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  generalError: {
+    title: { general: 'Failed!' },
+    subtitle: {
+      general:
+        'Oops, your email failed to change. Please try again after a while!',
+      conflict: 'Already exist!',
+      conflictEmail: 'Requested email already exist!'
+    }
+  },
   errorMessage: {
     invalidEmail:
       'Please enter your email address in format yourname@example.com',
@@ -110,7 +119,8 @@ export default {
     next: 'Continue',
     label: {
       change: 'Change',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      tryAgain: 'Try Again'
     }
   },
   termAndCondition: {

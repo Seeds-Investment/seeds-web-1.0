@@ -29,12 +29,13 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const pathsWithoutHeader = ['auth', 'story-boarding', 'term-condition'];
+const pathsWithoutHeader = ['', 'auth', 'story-boarding', 'term-condition'];
 
 function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);
 
   const path = useRouter().pathname.split('/')[1];
+
   const renderHeader =
     !pathsWithoutHeader.includes(path) && !path.includes('_error');
 

@@ -95,6 +95,7 @@ const ChangeTelephone: React.FC = () => {
               {languageCtx.language === 'EN' ? 'new address.' : 'baru Anda.'}
             </p>
             <Image
+              priority
               src={ChangeTelephoneIcon}
               alt="input user email"
               className="z-10 mx-auto mb-14"

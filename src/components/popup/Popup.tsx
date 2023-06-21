@@ -1,8 +1,8 @@
-import { useState } from 'react';
-
+import type { DefaultTFuncReturn } from 'i18next';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import { Email, XIcon } from 'public/assets/vector';
+import { useState } from 'react';
 
 import Button from '../ui/button/Button';
 import TextArea from '../ui/input/TextArea';
@@ -12,9 +12,9 @@ import Rating from '../ui/rating/Rating';
 interface PopupProps {
   onClose: () => void;
   onContinue: (payload?: object) => void;
-  title?: string;
-  subtitle?: string;
-  label?: string;
+  title?: string | DefaultTFuncReturn;
+  subtitle?: string | DefaultTFuncReturn;
+  label?: string | DefaultTFuncReturn;
   src?: StaticImageData;
   alt?: string;
   imageClasses?: string;
@@ -90,6 +90,7 @@ const Popup: React.FC<PopupProps> = ({
 
       {/* -----Main Block----- */}
       <Image
+        priority
         src={src ?? Email}
         alt={alt ?? 'email'}
         className={imageClasses ?? imageDefaultClasses}

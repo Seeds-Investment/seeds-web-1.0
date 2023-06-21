@@ -23,6 +23,8 @@ export { default as EyePurple } from 'public/assets/vector/eye-purple.svg';
 export { default as EyeSlash } from 'public/assets/vector/eye-slash.svg';
 export { default as Eye } from 'public/assets/vector/eye.svg';
 export { default as FileTextIcon } from 'public/assets/vector/file-text.svg';
+export { default as GeneralErrorImage } from 'public/assets/vector/general-error.svg';
+export { default as GeneralSuccessImage } from 'public/assets/vector/general-success.svg';
 export { default as GlobalIcon } from 'public/assets/vector/global.svg';
 export { default as GoldMedalIcon } from 'public/assets/vector/gold-medal-1.svg';
 export { default as HelpCircleIcon } from 'public/assets/vector/help-circle.svg';

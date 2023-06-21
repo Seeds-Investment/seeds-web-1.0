@@ -3,6 +3,15 @@ export default {
   second: 'detik',
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
+  generalError: {
+    title: { general: 'Gagal!' },
+    subtitle: {
+      general:
+        'Ups, email Anda gagal diubah. Silakan coba lagi setelah beberapa saat!',
+      conflict: 'Telah diambil!',
+      conflictEmail: 'Email yang diajukan telah diambil!'
+    }
+  },
   errorMessage: {
     invalidEmail: 'Tolong isi alamat email dengan format namaanda@contoh.com',
     requiredEmail: 'Email dibutuhkan, tolong isi dengan email Anda!',
@@ -97,7 +106,8 @@ export default {
     next: 'Lanjutkan',
     label: {
       change: 'Ubah',
-      confirm: 'Konfirmasi'
+      confirm: 'Konfirmasi',
+      tryAgain: 'Coba Lagi'
     }
   },
   termAndCondition: {

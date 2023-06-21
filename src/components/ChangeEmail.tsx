@@ -84,6 +84,7 @@ const ChangeEmail: React.FC = () => {
               {languageCtx.language === 'EN' ? 'new address.' : 'baru Anda.'}
             </p>
             <Image
+              priority
               src={ChangeEmailIcon}
               alt="input user email"
               className="z-10 mx-auto mb-14"

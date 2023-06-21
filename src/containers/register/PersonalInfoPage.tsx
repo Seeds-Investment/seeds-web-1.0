@@ -11,6 +11,7 @@ import {
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
+import { checkEmail, checkPhoneNumber } from '@/repository/auth.repository';
 import { formRegisterPersonalInfoSchema } from '@/utils/validations/register.schema';
 import { useFormik } from 'formik';
 import { signIn, useSession } from 'next-auth/react';
@@ -44,8 +45,24 @@ const PersonalInfoPage = ({
     initialValues: formdata,
     enableReinitialize: true,
     validateOnBlur: true,
-    onSubmit: () => {
-      setPage(1);
+    onSubmit: async () => {
+      const { email, phoneNumber } = formdata;
+      try {
+        await checkEmail(email);
+        await checkPhoneNumber(phoneNumber);
+        setPage(1);
+      } catch (error: any) {
+        const { message } = error.response.data;
+        if (message === 'requested phone number already exists') {
+          formik.setFieldError(
+            'phoneNumber',
+            'Phone number already registered'
+          );
+        }
+        if (message === 'requested email already exists') {
+          formik.setFieldError('email', 'Email already registered');
+        }
+      }
     },
     validationSchema: formRegisterPersonalInfoSchema
   });

@@ -9,32 +9,32 @@ env:
   GITHUB_REGISTRY_IMAGE_NAME: dev-web
   AWS_ECR: 940544028848.dkr.ecr.ap-southeast-3.amazonaws.com
 
-#permissions:
-#  id-token: write
-#  contents: read
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-#        with:
+        with:
         # Disabling shallow clone is recommended for improving relevancy of reporting
-#          fetch-depth: 0
+          fetch-depth: 0
 
-#      - id: auth
-#        name: Authenticate with Google Cloud
-#        uses: google-github-actions/auth@v0
-#        with:
-#          workload_identity_provider: projects/414526331056/locations/global/workloadIdentityPools/pool-github-action/providers/github-action-provider
-#          service_account: github-action@lithe-window-387706.iam.gserviceaccount.com
-#          create_credentials_file: true
-#
-#      - name: Set up Cloud SDK
-#        uses: google-github-actions/setup-gcloud@v0.3.0
-#
-#      - name: Configure docker credential helper artifact registry
-#        run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+      - id: auth
+        name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: projects/414526331056/locations/global/workloadIdentityPools/pool-github-action/providers/github-action-provider
+          service_account: github-action@lithe-window-387706.iam.gserviceaccount.com
+          create_credentials_file: true
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.3.0
+
+      - name: Configure docker credential helper artifact registry
+        run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
 
       - name: Get version
         run: echo "GITHUB_SHA_SHORT=$(echo ${GITHUB_SHA::7})" >> $GITHUB_ENV

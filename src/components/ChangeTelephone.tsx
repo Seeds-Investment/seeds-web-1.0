@@ -1,6 +1,7 @@
-import { useContext, useState, type SetStateAction } from 'react';
-
 import Image from 'next/image';
+import { useContext, useState, type SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { ChangeTelephoneIcon } from 'public/assets/vector';
 
 import Button from './ui/button/Button';
@@ -23,6 +24,7 @@ const validatePhoneNumber = (value: string): boolean => {
 };
 
 const ChangeTelephone: React.FC = () => {
+  const { t } = useTranslation();
   const phoneCtx = useContext(PhoneContext);
   const languageCtx = useContext(LanguageContext);
 
@@ -56,10 +58,7 @@ const ChangeTelephone: React.FC = () => {
     phoneCtx.validatePhone(payload);
   };
 
-  const errorMessage =
-    languageCtx.language === 'EN'
-      ? 'Phone number is required, please enter your phone number!'
-      : 'Nomor telepon dibutuhkan, tolong isi dengan nomor telepon Anda!';
+  const errorMessage = t('errorMessage.requiredPhoneNumber');
 
   return (
     <>
@@ -82,9 +81,7 @@ const ChangeTelephone: React.FC = () => {
                 height !== undefined && height < 760 ? 'text-sm' : 'text-base'
               }`}
             >
-              {languageCtx.language === 'EN'
-                ? 'Change Telephone Number'
-                : 'Ubah Nomor Telepon'}
+              {t('changeTelephoneNumber.title')}
             </h6>
             <p
               className={`mb-8 text-center font-poppins ${
@@ -104,11 +101,7 @@ const ChangeTelephone: React.FC = () => {
             />
             <Input
               type="isSelectPhoneNumber"
-              label={
-                languageCtx.language === 'EN'
-                  ? 'Your New Telephone Number'
-                  : 'Nomor Telepon Baru Kamu'
-              }
+              label={t('input.label.phone')}
               placeholder=""
               isError={phoneNumberIsError}
               errorMessage={errorMessage}
@@ -126,7 +119,7 @@ const ChangeTelephone: React.FC = () => {
           </div>
           <Button
             color="dark"
-            label={languageCtx.language === 'EN' ? 'Change' : 'Ubah'}
+            label={t('button.label.change')}
             props={{
               onClick: submitHandler,
               disabled: phoneNumberIsValid === false

@@ -4,10 +4,11 @@ export default {
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
   errorMessage: {
-    invalidEmail: 'Format email salah',
-    requiredEmail: 'Email tidak boleh kosong',
+    invalidEmail: 'Tolong isi alamat email dengan format namaanda@contoh.com',
+    requiredEmail: 'Email dibutuhkan, tolong isi dengan email Anda!',
     invalidPhoneNumber: 'Nomor Hp. Hanya menerima angka 1-9',
-    requiredPhoneNumber: 'Nomor Hp. tidak boleh kosong',
+    requiredPhoneNumber:
+      'Nomor telepon dibutuhkan, tolong isi dengan nomor telepon Anda!',
     requiredPassword: 'Kata Sandi tidak boleh kosong',
     requiredRePassword: 'Konfirmasi Kata Sandi tidak boleh kosong',
     invalidPassword: 'Mohon baca ketentuan Kata Sandi dibawah',
@@ -46,17 +47,39 @@ export default {
       text: 'Selamat! Kata sandi baru telah berhasil dibuat.'
     }
   },
+  changeEmailAddress: {
+    title: 'Ubah Alamat Email'
+  },
+  changeTelephoneNumber: {
+    title: 'Ubah Nomor Telepon'
+  },
+  inputPin: {
+    title: {
+      enterPin: 'Masukan PIN Kamu',
+      createNewPin: 'Buat PIN Baru',
+      confirmNewPin: 'Konfirmasi PIN Baru'
+    }
+  },
+  sendOTP: {
+    title: 'Kode OTP',
+    countdown: 'detik',
+    resendEmail: 'tidak mendapat email? '
+  },
   input: {
-    phone: 'Nomor Handphone',
-    email: 'Email',
-    birthDate: 'Tanggal Lahir',
+    label: {
+      email: 'Email Baru Anda',
+      phone: 'Nomor Telepon Baru Kamu'
+    },
     placeholder: {
-      email: 'Mohon ketikkan email anda',
+      email: 'contoh@mail.com',
       phoneNumber: 'Mohon ketikkan nomor telepon anda',
       name: 'Nama kamu',
       seedsTag: '@seedstag',
       referralCode: 'Kode Referal'
     },
+    phone: 'Nomor Handphone',
+    email: 'Email',
+    birthDate: 'Tanggal Lahir',
     type: {
       email: 'Email',
       password: 'Kata Sandi',
@@ -71,7 +94,11 @@ export default {
     BTN_REGISTER: 'Daftar',
     BTN_LOGIN: 'Masuk',
     BTN_GUEST: 'Masuk Sebagai Tamu',
-    next: 'Lanjutkan'
+    next: 'Lanjutkan',
+    label: {
+      change: 'Ubah',
+      confirm: 'Konfirmasi'
+    }
   },
   termAndCondition: {
     text1: 'Jika kamu mendaftar, kamu menyetujui',

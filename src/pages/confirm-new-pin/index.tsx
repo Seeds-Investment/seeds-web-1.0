@@ -1,17 +1,15 @@
 import { withRouter, type NextRouter } from 'next/router';
-import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import InputPin from '@/components/InputPin';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-
-import LanguageContext from '@/store/language/language-context';
 
 interface ConfirmNewPinProps {
   router: NextRouter;
 }
 
 const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
-  const languageCtx = useContext(LanguageContext);
+  const { t } = useTranslation();
 
   const cancelHandler = (): void => {
     router.back();
@@ -25,11 +23,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
       <InputPin
         onCancel={cancelHandler}
         action={router.query.action as string}
-        title={
-          languageCtx.language === 'EN'
-            ? 'Confirmation New PIN'
-            : 'Konfirmasi PIN Baru'
-        }
+        title={t('inputPin.title.confirmNewPin')}
       />
     </PageGradient>
   );

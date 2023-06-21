@@ -20,13 +20,14 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
     return error.response;
   }
 };
-
 export const checkEmail = async (email: string): Promise<any> => {
-  return await authService.get(`validate/email?email=${email}`);
+  const response = await authService.get(`validate/email?email=${email}`);
+  return response.data;
 };
 
 export const checkPhoneNumber = async (phoneNumber: string): Promise<any> => {
-  return await authService.get(`validate/phone?phone=${phoneNumber}`);
+  const response = await authService.get(`validate/phone?phone=${phoneNumber}`);
+  return response.data;
 };
 export const getRefreshToken = async (): Promise<any> => {
   const refreshToken = localStorage.getItem('refreshToken');

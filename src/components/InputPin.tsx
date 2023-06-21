@@ -1,5 +1,7 @@
+import type { DefaultTFuncReturn } from 'i18next';
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ArrowBackwardIcon, DeleteIcon, Logo } from 'public/assets/vector';
 
@@ -23,8 +25,8 @@ const animationClasses =
 interface InputPinProps {
   onCancel: () => void;
   action: string;
-  title?: string;
-  subtitle?: string;
+  title?: string | DefaultTFuncReturn;
+  subtitle?: string | DefaultTFuncReturn;
   className?: string;
   style?: object;
 }
@@ -37,6 +39,7 @@ const InputPin: React.FC<InputPinProps> = ({
   className,
   style
 }) => {
+  const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const errorBECtx = useContext(ErrorBEContext);
 
@@ -94,8 +97,7 @@ const InputPin: React.FC<InputPinProps> = ({
     errorBECtx.error.message !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'
   }`;
 
-  const defaultTitle =
-    languageCtx.language === 'EN' ? 'Enter Your PIN' : 'Masukan PIN Kamu';
+  const defaultTitle = t('inputPin.title.enterPin');
 
   const defaultSubtitle =
     languageCtx.language === 'EN' ? (

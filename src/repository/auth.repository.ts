@@ -21,6 +21,13 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   }
 };
 
+export const checkEmail = async (email: string): Promise<any> => {
+  return await authService.get(`validate/email?email=${email}`);
+};
+
+export const checkPhoneNumber = async (phoneNumber: string): Promise<any> => {
+  return await authService.get(`validate/phone?phone=${phoneNumber}`);
+};
 export const getRefreshToken = async (): Promise<any> => {
   const refreshToken = localStorage.getItem('refreshToken');
   const keepMeLoggedIn = localStorage.getItem('keepMeLoggedIn');

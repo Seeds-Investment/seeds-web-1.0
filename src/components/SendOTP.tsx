@@ -1,3 +1,4 @@
+import type { DefaultTFuncReturn } from 'i18next';
 import Image from 'next/image';
 import {
   useContext,
@@ -7,6 +8,7 @@ import {
   type KeyboardEvent,
   type ReactNode
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   SendOTPEmail,
@@ -25,14 +27,15 @@ import ErrorBEContext from '@/store/error-be/error-be-context';
 import LanguageContext from '@/store/language/language-context';
 import OTPContext from '@/store/otp/otp-context';
 interface SendOTPProps {
-  message?: string;
-  submessage?: ReactNode;
+  message?: string | DefaultTFuncReturn;
+  submessage?: ReactNode | DefaultTFuncReturn;
   target?: string;
 }
 
 const inputs = [1, 2, 3, 4];
 
 const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
+  const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const errorBECtx = useContext(ErrorBEContext);
   const otpCtx = useContext(OTPContext);
@@ -280,7 +283,7 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
             }`}
           />
           <h6 className="mb-6 font-poppins font-semibold text-center text-neutral-medium">
-            {languageCtx.language === 'EN' ? 'OTP Code' : 'Kode OTP'}
+            {t('sendOTP.title')}
           </h6>
           <div className="mb-8 flex gap-8">
             {inputs.map(number => (
@@ -345,14 +348,11 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
                     !isResending ? 'invisible' : ''
                   }`}
                 >
-                  {countdown}{' '}
-                  {languageCtx.language === 'EN' ? 'seconds' : 'detik'}
+                  {countdown} {t('sendOTP.countdown')}
                 </span>
               ) : (
                 <h6 className="font-poppins font-light text-neutral-medium">
-                  {languageCtx.language === 'EN'
-                    ? "didn't get email? "
-                    : 'tidak mendapat email? '}
+                  {t('sendOTP.resendEmail')}
                 </h6>
               )}
               <button
@@ -372,8 +372,7 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
                     !isResending ? 'invisible' : ''
                   }`}
                 >
-                  {countdown}{' '}
-                  {languageCtx.language === 'EN' ? 'seconds' : 'detik'}
+                  {countdown} {t('sendOTP.countdown')}
                 </span>
                 <button
                   className={buttonClasses}
@@ -405,7 +404,7 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
               </button>
               <Button
                 color="dark"
-                label={languageCtx.language === 'EN' ? 'Confirm' : 'Konfirmasi'}
+                label={t('button.confirm')}
                 extraClasses="sm:mt-auto mt-8"
                 props={{ onClick: continueHandler }}
               />

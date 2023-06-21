@@ -47,21 +47,41 @@ const PersonalInfoPage = ({
     validateOnBlur: true,
     onSubmit: async () => {
       const { email, phoneNumber } = formdata;
+      let hasErrors = false; // Flag to track errors
+
       try {
-        await checkEmail(email);
-        await checkPhoneNumber(phoneNumber);
-        setPage(1);
-      } catch (error: any) {
-        const { message } = error.response.data;
-        if (message === 'requested phone number already exists') {
-          formik.setFieldError(
-            'phoneNumber',
-            'Phone number already registered'
-          );
+        const emailPromise = checkEmail(email);
+        const phonePromise = checkPhoneNumber(phoneNumber);
+
+        const [emailResult, phoneResult] = await Promise.allSettled([
+          emailPromise,
+          phonePromise
+        ]);
+
+        if (emailResult.status === 'rejected') {
+          const { message } = emailResult.reason.response.data;
+          if (message === 'requested email already exists') {
+            formik.setFieldError('email', 'Email already registered');
+            hasErrors = true; // Set flag to true if there is an error
+          }
         }
-        if (message === 'requested email already exists') {
-          formik.setFieldError('email', 'Email already registered');
+
+        if (phoneResult.status === 'rejected') {
+          const { message } = phoneResult.reason.response.data;
+          if (message === 'requested phone number already exists') {
+            formik.setFieldError(
+              'phoneNumber',
+              'Phone number already registered'
+            );
+            hasErrors = true; // Set flag to true if there is an error
+          }
         }
+
+        if (!hasErrors) {
+          setPage(1); // Only set the page if there are no errors
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
       }
     },
     validationSchema: formRegisterPersonalInfoSchema

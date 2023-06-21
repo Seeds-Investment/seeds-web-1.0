@@ -4,10 +4,12 @@ export default {
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
   errorMessage: {
-    invalidEmail: 'Invalid email format',
-    requiredEmail: 'Email is required',
+    invalidEmail:
+      'Please enter your email address in format yourname@example.com',
+    requiredEmail: 'Email is required, please enter your email!',
     invalidPhoneNumber: 'Phone number only accept 1-9',
-    requiredPhoneNumber: 'Phone is required',
+    requiredPhoneNumber:
+      'Phone number is required, please enter your phone number!',
     requiredPassword: 'Password cannot be empty',
     requiredRePassword: 'Confirm Password cannot be empty',
     invalidPassword: 'Please read the password requirement below',
@@ -46,14 +48,28 @@ export default {
       text: 'Congratulations! The new password has been successfully created.'
     }
   },
-  changeEmail: {
-    messageEn: 'Change Email Address',
-    messageId: 'Ubah Alamat Email'
+  changeEmailAddress: {
+    title: 'Change Email Address'
+  },
+  changeTelephoneNumber: {
+    title: 'Change Telephone Number'
+  },
+  inputPin: {
+    title: {
+      enterPin: 'Enter Your PIN',
+      createNewPin: 'Create New PIN',
+      confirmNewPin: 'Confirm New PIN'
+    }
+  },
+  sendOTP: {
+    title: 'OTP Code',
+    countdown: 'seconds',
+    resendEmail: "didn't get email? "
   },
   input: {
     label: {
-      emailEn: 'Your New Email',
-      emailId: 'Email Baru Anda'
+      email: 'Your New Email',
+      phone: 'Your New Telephone Number'
     },
     placeholder: {
       email: 'example@mail.com',
@@ -91,7 +107,11 @@ export default {
     BTN_REGISTER: 'Register',
     BTN_LOGIN: 'Login',
     BTN_GUEST: 'Enter As Guest',
-    next: 'Continue'
+    next: 'Continue',
+    label: {
+      change: 'Change',
+      confirm: 'Confirm'
+    }
   },
   termAndCondition: {
     text1: 'If you register, you agree',

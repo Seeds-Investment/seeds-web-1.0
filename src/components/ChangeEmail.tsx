@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { ChangeEmailIcon } from 'public/assets/vector';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { ChangeEmailIcon } from 'public/assets/vector';
 
 import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
@@ -38,12 +39,8 @@ const ChangeEmail: React.FC = () => {
 
   const errorMessage =
     enteredEmail.trim().length === 0
-      ? languageCtx.language === 'EN'
-        ? 'Email is required, please enter your email!'
-        : 'Email dibutuhkan, tolong isi dengan email Anda!'
-      : languageCtx.language === 'EN'
-      ? 'Please enter your email address in format yourname@example.com'
-      : 'Tolong isi alamat email dengan format namaanda@contoh.com';
+      ? t('errorMessage.requiredEmail')
+      : t('errorMessage.invalidEmail');
 
   const errorClasses =
     height !== undefined && height <= 915
@@ -73,9 +70,7 @@ const ChangeEmail: React.FC = () => {
                 height !== undefined && height < 760 ? 'text-sm' : 'text-base'
               }`}
             >
-              {languageCtx.language === 'EN'
-                ? t('changeEmail.messageEn')
-                : t('changeEmail.messageId')}
+              {t('changeEmailAddress.title')}
             </h6>
             <p
               className={`mb-8 text-center font-poppins ${
@@ -94,11 +89,7 @@ const ChangeEmail: React.FC = () => {
               className="z-10 mx-auto mb-14"
             />
             <Input
-              label={
-                languageCtx.language === 'EN'
-                  ? t('input.label.emailEn')
-                  : t('input.label.emailId')
-              }
+              label={t('input.label.email')}
               placeholder={
                 languageCtx.language === 'EN'
                   ? 'example@mail.com'
@@ -116,7 +107,7 @@ const ChangeEmail: React.FC = () => {
           </div>
           <Button
             color="dark"
-            label={languageCtx.language === 'EN' ? 'Change' : 'Ubah'}
+            label={t('button.label.change')}
             props={{
               onClick: submitHandler,
               disabled: emailIsValid === false

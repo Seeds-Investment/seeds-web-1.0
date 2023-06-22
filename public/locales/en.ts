@@ -3,6 +3,18 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  successPopup: {
+    title: {
+      general: 'Success!'
+    },
+    subtitle: {
+      general: 'Congratulations!',
+      email: 'Congratulations, you have successfully changed your email.',
+      whatsapp:
+        'Congratulations, you have successfully changed your telephone number.',
+      sms: 'Congratulations, you have successfully changed your telephone number.'
+    }
+  },
   generalError: {
     title: { general: 'Failed!' },
     subtitle: {
@@ -120,7 +132,8 @@ export default {
     label: {
       change: 'Change',
       confirm: 'Confirm',
-      tryAgain: 'Try Again'
+      tryAgain: 'Try Again',
+      next: 'Next'
     }
   },
   termAndCondition: {

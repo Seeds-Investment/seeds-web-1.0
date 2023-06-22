@@ -39,8 +39,7 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         errorBECtx.onOpen({
           code: response.status,
           message,
-          type: 'popup',
-          redirectUrl: '/'
+          type: 'popup'
         });
         throw message;
       }

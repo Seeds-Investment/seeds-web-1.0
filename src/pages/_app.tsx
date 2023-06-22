@@ -11,6 +11,7 @@ import Header from '@/components/layouts/Header';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
+import SuccessProvider from '@/store/success/SuccessProvider';
 
 import '@/utils/common/i18n';
 
@@ -43,12 +44,14 @@ function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
     <LanguageProvider>
       <LoadingProvider>
         <ErrorBEProvider>
-          <SessionProvider session={pageProps.session}>
-            {renderHeader && <Header />}
-            <ThemeProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </ThemeProvider>
-          </SessionProvider>
+          <SuccessProvider>
+            <SessionProvider session={pageProps.session}>
+              {renderHeader && <Header />}
+              <ThemeProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </ThemeProvider>
+            </SessionProvider>
+          </SuccessProvider>
         </ErrorBEProvider>
       </LoadingProvider>
     </LanguageProvider>

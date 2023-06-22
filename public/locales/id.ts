@@ -3,6 +3,17 @@ export default {
   second: 'detik',
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
+  successPopup: {
+    title: {
+      general: 'Berhasil!'
+    },
+    subtitle: {
+      general: 'Selamat!',
+      email: 'Selamat, Anda telah berhasil mengubah email Anda.',
+      whatsapp: 'Selamat, Anda telah berhasil mengubah nomor telepon Anda.',
+      sms: 'Selamat, Anda telah berhasil mengubah nomor telepon Anda.'
+    }
+  },
   generalError: {
     title: { general: 'Gagal!' },
     subtitle: {
@@ -107,7 +118,8 @@ export default {
     label: {
       change: 'Ubah',
       confirm: 'Konfirmasi',
-      tryAgain: 'Coba Lagi'
+      tryAgain: 'Coba Lagi',
+      next: 'Lanjut'
     }
   },
   termAndCondition: {

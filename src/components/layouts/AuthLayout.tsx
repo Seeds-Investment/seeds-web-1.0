@@ -79,7 +79,7 @@ const AuthLayout = ({
             </Card>
           </div>
         </div>
-        <div className="flex justify-center  z-20">
+        <div className="flex justify-center z-20">
           <div className="p-4 w-[30rem] min-h-[50rem] lg:min-h-[40rem]">
             <div className="z-20 lg:hidden flex items-center mb-4">
               {(!isUndefindOrNull(title) && !isEmptyString(title)) ||

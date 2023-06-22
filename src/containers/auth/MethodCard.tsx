@@ -68,6 +68,7 @@ const MethodCard = ({
       inputLabel: t('input.type.phoneNumber')
     };
   }, [payload, t]);
+
   const formik = useFormik({
     initialValues: payload,
     enableReinitialize: true,
@@ -83,7 +84,7 @@ const MethodCard = ({
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className=" flex flex-col items-center justify-center"
+      className="flex flex-col items-center justify-center"
     >
       <SliderCard slide={forgotScreen} />
       <br />
@@ -91,18 +92,22 @@ const MethodCard = ({
       <br />
       <br />
       {payload.method === 'email' ? (
-        <Input
-          error={error}
-          onChange={onChangeHandler}
-          name={payload.method}
-          // type={inputProperties.type}
-          color="green"
-          variant="static"
-          label={error ? errorMessage : inputProperties.inputLabel}
-          placeholder={inputProperties.inputPlaceholder ?? ''}
-        />
+        <div className="w-full">
+          <Input
+            error={error}
+            onChange={onChangeHandler}
+            name={payload.method}
+            // type={inputProperties.type}
+            color="green"
+            variant="static"
+            placeholder={inputProperties.inputPlaceholder ?? ''}
+          />
+          {error ? (
+            <p className="!text-red-500 text-sm">{errorMessage}</p>
+          ) : null}
+        </div>
       ) : (
-        <>
+        <div className="w-full">
           <PhoneInput
             selectedCode={selectedCode}
             setSelectedCode={setSelectedCode}
@@ -113,7 +118,7 @@ const MethodCard = ({
           {typeof error === 'string' && (
             <small className="text-[#ff515d] font-bold">{error}</small>
           )}
-        </>
+        </div>
       )}
       <div
         onClick={methodHandler}
@@ -121,7 +126,6 @@ const MethodCard = ({
       >
         {inputProperties.methodText}
       </div>
-
       <br />
       <br />
       <Button

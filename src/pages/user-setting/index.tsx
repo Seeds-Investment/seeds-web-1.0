@@ -1,12 +1,11 @@
-import Image from 'next/image';
-import { useState } from 'react';
-
 import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
 import LevelButton from '@/components/ui/button/LevelButton';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import Image from 'next/image';
+import router from 'next/router';
 import { DummyAvatar } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
@@ -21,8 +20,7 @@ import {
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { useState } from 'react';
 
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();
@@ -72,7 +70,14 @@ const UserSetting: React.FC = () => {
       label: 'FAQ & Help',
       altStartAdornment: 'faq & help',
       startAdornment: HelpCircleIcon,
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await router.push('/faq');
+        } catch (error) {
+          // Handle the error if needed
+          console.error('Error navigating to FAQ:', error);
+        }
+      },
       extraClasses: submenuClasses
     },
     {

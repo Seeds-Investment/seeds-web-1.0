@@ -115,12 +115,36 @@ export default {
     BTN_LOGIN: 'Masuk',
     BTN_GUEST: 'Masuk Sebagai Tamu',
     next: 'Lanjutkan',
+    joinNow: 'Gabung Sekarang',
     label: {
       change: 'Ubah',
       confirm: 'Konfirmasi',
       tryAgain: 'Coba Lagi',
       next: 'Lanjut'
     }
+  },
+  faq: {
+    title: 'Pertanyaan yang Sering Diajukan',
+    subTitle: 'Temukan jawaban atas pertanyaan kamu tentang seeds',
+    faq: {
+      title: {
+        1: 'Apa itu Seeds?',
+        2: 'Produk investasi apa saja yang tersedia di Seeds?',
+        3: 'Bagaimana saya bisa mengakses Seeds?',
+        4: 'Seberapa amankah berinvestasi di Seeds?',
+        5: 'I want to ask more about Seeds products and services'
+      },
+      desc: {
+        1: 'Seeds adalah platform investasi sosial pertama di Indonesia yang memberi pengguna akses ke saham dan mata uang kripto AS (masih banyak lagi yang akan datang!).',
+        2: 'Kamu dapat berinvestasi di berbagai saham dan mata uang kripto AS (masih banyak lagi yang akan datang!)',
+        3: 'Aplikasi Seeds dapat di download melalui Google Playstore bagi kamu pengguna Android dan Apple Appstore bagi pengguna iOS. Selain itu, fitur Seeds juga bisa kamu jelajahi melalui website Seed.finance',
+        4: 'Seeds telah resmi beroperasi di Indonesia dengan nama PT. Bibit Investasi Teknologi dan telah terdaftar di Kementerian Komunikasi dan Informatika (KOMINFO).',
+        5: 'Kamu dapat menghubungi tim kami melalui kontak email: info@seeds.finance'
+      }
+    },
+    footerText: 'Belum menemukan jawabannya?',
+    button: 'Hubungi kami',
+    settings: 'Pengaturan'
   },
   termAndCondition: {
     text1: 'Jika kamu mendaftar, kamu menyetujui',

@@ -25,7 +25,9 @@ const Header: React.FC = () => {
         />
         <div className="flex items-center gap-4">
           <button
-            className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100 ${
+            className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100  ${
+              width !== undefined && width <= 375 ? 'space-x-1' : ''
+            } ${
               languageCtx.language === 'ID' ? 'border border-seeds-purple' : ''
             }`}
             onClick={() => {
@@ -41,13 +43,18 @@ const Header: React.FC = () => {
             >
               ID
             </span>
-            {width !== undefined && width > 640 && (
+
+            {width !== undefined && width <= 375 ? (
+              <Image src={ID} width={16} alt="ID-flag" />
+            ) : (
               <Image src={ID} alt="ID-flag" />
             )}
           </button>
           <div className="w-px sm:h-6 h-3.5 border border-black" />
           <button
-            className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100 ${
+            className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100  ${
+              width !== undefined && width <= 375 ? 'space-x-1' : ''
+            } ${
               languageCtx.language === 'EN' ? 'border border-seeds-purple' : ''
             }`}
             onClick={() => {
@@ -63,7 +70,9 @@ const Header: React.FC = () => {
             >
               EN
             </span>
-            {width !== undefined && width > 640 && (
+            {width !== undefined && width <= 375 ? (
+              <Image src={US} width={16} alt="US-flag" />
+            ) : (
               <Image src={US} alt="US-flag" />
             )}
           </button>

@@ -2,8 +2,8 @@ import { createContext } from 'react';
 
 interface ErrorType {
   code: number;
-  redirectUrl?: string;
   message: string;
+  redirectUrl?: string;
   type: 'inline' | 'popup';
 }
 

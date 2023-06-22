@@ -15,8 +15,8 @@ interface ErrorBEProps {
 
 interface ErrorType {
   code: number | null;
-  redirectUrl?: string;
   message: string;
+  redirectUrl?: string;
   type: 'inline' | 'popup';
 }
 
@@ -27,8 +27,8 @@ const ErrorBEProvider: React.FC<ErrorBEProps> = ({ children }) => {
 
   const [code, setCode] = useState<number>(200);
   const [message, setMessage] = useState('');
-  const [type, setType] = useState('popup');
   const [url, setUrl] = useState('');
+  const [type, setType] = useState<'inline' | 'popup'>('popup');
 
   const redirect = async (): Promise<void> => {
     await router.push(url);
@@ -41,6 +41,7 @@ const ErrorBEProvider: React.FC<ErrorBEProps> = ({ children }) => {
     if (payload.redirectUrl !== undefined) {
       setUrl(payload.redirectUrl);
     }
+
     setMessage(payload.message);
     setType(payload.type);
   };
@@ -53,7 +54,7 @@ const ErrorBEProvider: React.FC<ErrorBEProps> = ({ children }) => {
     if (url !== '') {
       redirect()
         .catch(error => {
-          console.error(error);
+          console.error('Error:', error);
         })
         .finally(() => {
           setUrl('');

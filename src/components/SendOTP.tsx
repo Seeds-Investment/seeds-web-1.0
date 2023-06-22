@@ -26,6 +26,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import ErrorBEContext from '@/store/error-be/error-be-context';
 import LanguageContext from '@/store/language/language-context';
 import OTPContext from '@/store/otp/otp-context';
+
 interface SendOTPProps {
   message?: string | DefaultTFuncReturn;
   submessage?: ReactNode | DefaultTFuncReturn;
@@ -52,13 +53,24 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
   const [countdown, setCountdown] = useState(0);
 
   const continueHandler = (): void => {
-    // todo: const payload = `${first}${second}${third}${fourth}`;
+    const payload = `${first}${second}${third}${fourth}`;
+
     if (target === 'sms') {
-      // API...
+      otpCtx.onContinue(
+        { otp: payload, action: target },
+        setFirst,
+        setSecond,
+        setThird,
+        setFourth
+      );
     } else if (target === 'whatsapp') {
-      // API...
-    } else {
-      // API...
+      otpCtx.onContinue(
+        { otp: payload, action: target },
+        setFirst,
+        setSecond,
+        setThird,
+        setFourth
+      );
     }
   };
 
@@ -117,47 +129,16 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
       third !== '' &&
       fourth !== ''
     ) {
-      // todo: nanti handle reset di context cuma kalau berhasil!
-      setTimeout(() => {
-        setFirst('');
-        setSecond('');
-        setThird('');
-        setFourth('');
-      }, 800);
-
-      // API...
-    } else if (
-      target === 'whatsapp' &&
-      first !== '' &&
-      second !== '' &&
-      third !== '' &&
-      fourth !== ''
-    ) {
-      setTimeout(() => {
-        setFirst('');
-        setSecond('');
-        setThird('');
-        setFourth('');
-      }, 800);
-
-      // API...
-    } else if (
-      target === 'sms' &&
-      first !== '' &&
-      second !== '' &&
-      third !== '' &&
-      fourth !== ''
-    ) {
-      setTimeout(() => {
-        setFirst('');
-        setSecond('');
-        setThird('');
-        setFourth('');
-      }, 800);
-
-      // API...
+      const payload = `${first}${second}${third}${fourth}`;
+      otpCtx.onContinue(
+        { otp: payload, action: target },
+        setFirst,
+        setSecond,
+        setThird,
+        setFourth
+      );
     }
-  }, [target, first, second, third, fourth]);
+  }, [otpCtx, target, first, second, third, fourth]);
 
   useEffect(() => {
     if (countdown === 0) {
@@ -404,9 +385,16 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
               </button>
               <Button
                 color="dark"
-                label={t('button.confirm')}
+                label={t('button.label.confirm')}
                 extraClasses="sm:mt-auto mt-8"
-                props={{ onClick: continueHandler }}
+                props={{
+                  onClick: continueHandler,
+                  disabled:
+                    first === '' ||
+                    second === '' ||
+                    third === '' ||
+                    fourth === ''
+                }}
               />
             </>
           )}

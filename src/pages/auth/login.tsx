@@ -222,7 +222,7 @@ const LoginPage = (): JSX.Element => {
             color="green"
           />
           <Link
-            href={''}
+            href={'/auth/forgot-password'}
             className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
           >
             {t('authPage.forgotPassword')}?

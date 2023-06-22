@@ -2,7 +2,7 @@ import InputPassword from '@/components/InputPassword';
 import { passwordRequirements } from '@/utils/common';
 import type { ICreateNewPassword } from '@/utils/interfaces/form.interfaces';
 import { formCreateNewPasswordSchema } from '@/utils/validations/forgotPassword.schema';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -46,24 +46,35 @@ const CreateNewPassword = ({
         <div className="font-bold tracking-wide text-3xl">
           {t('forgot.createNewPassword.1')}
         </div>
+
         <br />
         <div className="font-extralight tracking-wide">
-          {t('forgot.createNewPassword.2')}
+          {t('forgot.createNewPassword.2')}{' '}
         </div>
         <br />
         <br />
+        <div className="flex gap-2">
+          <Typography className="font-bold text-lg">
+            {t('forgot.createNewPassword.3')}
+          </Typography>
+          <span className="text-red-900 text-lg font-bold">*</span>
+        </div>
         <InputPassword
           errorMessage={passError ? passErrorMessage : undefined}
-          label={t('forgot.createNewPassword.3')}
           error={passError}
           name="password"
           onChange={onChangeHandler}
           placeholder={t('forgot.createNewPassword.4')}
         />
         <br />
+        <div className="flex gap-2">
+          <Typography className="font-bold text-lg">
+            {t('forgot.createNewPassword.5')}
+          </Typography>
+          <span className="text-red-900 text-lg font-bold">*</span>
+        </div>
         <InputPassword
           errorMessage={rePassError ? rePassErrorMessage : undefined}
-          label={t('forgot.createNewPassword.5')}
           error={rePassError}
           name="rePassword"
           onChange={onChangeHandler}

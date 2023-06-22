@@ -12,13 +12,15 @@ import type {
   IOTPHandler
 } from '@/utils/interfaces/form.interfaces';
 import type { IUseSlick } from '@/utils/interfaces/slick.interface';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 
 export default function ForgotPassword(): React.ReactElement {
+  const router = useRouter();
   const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
-  const [phoneNumber, setPhoneNumber] = useState<any>('+6287720428662');
+  const [phoneNumber, setPhoneNumber] = useState<any>('');
   const [email, setEmail] = useState<any>('');
 
   const methodHandler = async (payload: IFormMethod): Promise<void> => {
@@ -53,7 +55,7 @@ export default function ForgotPassword(): React.ReactElement {
   // };
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="flex justify-center">
       <Slider
         ref={slickRef}
         className="w-3/4 flex justify-center"
@@ -62,10 +64,19 @@ export default function ForgotPassword(): React.ReactElement {
         <MethodCard onSubmit={methodHandler} />
         <OTPCard onSubmit={otpHandler} phoneNumber={phoneNumber} />
         <CreateNewPassword onSubmit={createNewPasswordHandler} />
-        <SuccessCard onSubmit={() => {}} />
+        <SuccessCard
+          onSubmit={() => {
+            router
+              .push('/auth/login')
+              .then()
+              .catch(() => {});
+          }}
+        />
       </Slider>
     </div>
   );
 }
 
-ForgotPassword.getLayout = (page: any) => <AuthLayout>{page}</AuthLayout>;
+ForgotPassword.getLayout = function getLayout(page: JSX.Element) {
+  return <AuthLayout title="Forgot Password">{page}</AuthLayout>;
+};

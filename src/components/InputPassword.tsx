@@ -16,44 +16,42 @@ const InputPassword = (props?: any): React.ReactElement => {
 
   const { errorMessage = null, ...rest } = { ...props };
 
-  const labelClass =
-    typeof errorMessage !== 'string' ? '!text-black' : '!text-red-500';
-  const labelText = errorMessage ?? props?.label;
   return (
-    <Input
-      {...rest}
-      label={labelText}
-      labelProps={{
-        className: `!text-[1rem] !font-semibold ${labelClass}`
-      }}
-      onChange={onChangeHandler}
-      onFocus={() => {
-        setIsFocused(true);
-      }}
-      onBlur={() => {
-        setIsFocused(false);
-      }}
-      className={`placeholder:text-gray-600 transition-none placeholder:tracking-wider placeholder:text-base text-black ${
-        password && Boolean(value?.length > 0)
-          ? '!text-[3rem]'
-          : '!text-[1.2rem]'
-      }`}
-      color="green"
-      shrink={true}
-      placeholder={isFocused ? '' : props?.placeholder}
-      variant="standard"
-      type={password ? 'password' : 'text'}
-      icon={
-        <Image
-          alt="img"
-          className="cursor-pointer"
-          onClick={() => {
-            setpassword(c => !c);
-          }}
-          src={password ? faEyeSlash : faEye}
-        />
-      }
-    />
+    <>
+      <Input
+        {...rest}
+        onChange={onChangeHandler}
+        onFocus={() => {
+          setIsFocused(true);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
+        className={`placeholder:text-gray-600 transition-none placeholder:tracking-wider placeholder:text-base text-black ${
+          password && Boolean(value?.length > 0)
+            ? '!text-[3rem]'
+            : '!text-[1.2rem]'
+        }`}
+        color="green"
+        shrink={true}
+        placeholder={isFocused ? '' : props?.placeholder}
+        variant="standard"
+        type={password ? 'password' : 'text'}
+        icon={
+          <Image
+            alt="img"
+            className="cursor-pointer"
+            onClick={() => {
+              setpassword(c => !c);
+            }}
+            src={password ? faEyeSlash : faEye}
+          />
+        }
+      />
+      {typeof errorMessage === 'string' ? (
+        <p className="text-red-900">{errorMessage}</p>
+      ) : null}
+    </>
   );
 };
 

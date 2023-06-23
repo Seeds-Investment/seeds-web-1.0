@@ -10,9 +10,13 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const MethodCard = ({
-  onSubmit
+  onSubmit,
+  selectedCode,
+  setSelectedCode
 }: {
   onSubmit: (props: any) => Promise<void>;
+  selectedCode: string;
+  setSelectedCode: any;
 }): React.ReactElement => {
   const { t } = useTranslation();
 
@@ -21,7 +25,6 @@ const MethodCard = ({
     phoneNumber: '',
     method: 'phoneNumber'
   });
-  const [selectedCode, setSelectedCode] = useState<string>('+62');
 
   const handleChangePhoneNumber = (value: string): void => {
     const onlyNumber = value.replace(/[^0-9]/g, '');

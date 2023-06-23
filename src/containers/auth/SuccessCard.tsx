@@ -1,6 +1,7 @@
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import success from 'public/assets/success.png';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +11,7 @@ const SuccessCard = ({
   onSubmit: (props: any) => void;
 }): React.ReactElement => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const successScreen: ISlider = {
     image: success,
@@ -34,6 +36,12 @@ const SuccessCard = ({
       <br />
       <br />
       <Button
+        onClick={() => {
+          router
+            .push('/auth/login')
+            .then()
+            .catch(() => {});
+        }}
         type="submit"
         color="green"
         className="bg-seeds-button-green w-full rounded-full"

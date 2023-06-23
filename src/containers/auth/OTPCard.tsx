@@ -120,7 +120,10 @@ const OTPCard = ({
   const fetchOtp = useCallback(async (): Promise<void> => {
     try {
       if (phoneNumber?.length === 0) return;
-      const res = await getOtp({ phoneNumber, method: payload.method });
+      const res = await getOtp({
+        phoneNumber,
+        method: payload.method
+      });
       setOtp(res.otp);
     } catch (error) {
       console.log(error);

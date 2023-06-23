@@ -20,7 +20,8 @@ export default function ForgotPassword(): React.ReactElement {
   const router = useRouter();
   const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
-  const [phoneNumber, setPhoneNumber] = useState<any>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [email, setEmail] = useState<any>('');
 
   const methodHandler = async (payload: IFormMethod): Promise<void> => {
@@ -30,7 +31,7 @@ export default function ForgotPassword(): React.ReactElement {
       return;
     }
 
-    setPhoneNumber(payload.phoneNumber);
+    setPhoneNumber(payload.phoneNumber ?? '');
     changeStep(1);
   };
 
@@ -44,7 +45,9 @@ export default function ForgotPassword(): React.ReactElement {
   ): Promise<void> => {
     await patchChangePassword({
       password: payload.password,
-      phoneNumber,
+      phoneNumber: `${String(selectedCode).replace('+', '')}${String(
+        phoneNumber
+      )}`,
       email
     });
     changeStep(3);
@@ -61,8 +64,18 @@ export default function ForgotPassword(): React.ReactElement {
         className="w-3/4 flex justify-center"
         {...settings}
       >
-        <MethodCard onSubmit={methodHandler} />
-        <OTPCard onSubmit={otpHandler} phoneNumber={phoneNumber} />
+        <MethodCard
+          onSubmit={methodHandler}
+          selectedCode={selectedCode}
+          setSelectedCode={setSelectedCode}
+        />
+        <OTPCard
+          onSubmit={otpHandler}
+          phoneNumber={`${selectedCode.replace('+', '')}${phoneNumber.replace(
+            /\s/g,
+            ''
+          )}`}
+        />
         <CreateNewPassword onSubmit={createNewPasswordHandler} />
         <SuccessCard
           onSubmit={() => {

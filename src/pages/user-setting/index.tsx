@@ -63,7 +63,14 @@ const UserSetting: React.FC = () => {
       label: 'Legal',
       altStartAdornment: 'legal',
       startAdornment: FileTextIcon,
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await router.push('/legal');
+        } catch (error) {
+          // Handle the error if needed
+          console.error('Error navigating to FAQ:', error);
+        }
+      },
       extraClasses: submenuClasses
     },
     {

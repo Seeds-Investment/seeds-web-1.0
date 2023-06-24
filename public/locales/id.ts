@@ -147,101 +147,34 @@ export default {
     settings: 'Pengaturan'
   },
   termAndCondition: {
-    text1: 'Jika kamu mendaftar, kamu menyetujui',
-    text2: 'Syarat & Ketentuan',
+    title: 'Syarat & Ketentuan',
+    announcement:
+      'Perhatian : Pengguna diwajibkan untuk membaca syarat dan ketentuan “S&K Seeds” sebelum menggunakan Seeds. Syarat dan ketentuan dapat diubah tanpa pemberitahuan terlebih dahulu. Untuk mendaftar dan menggunakan aplikasi Seeds, berarti pengguna telah membaca secara menyeluruh dan menyetujui syarat & ketentuan ini yang akan dilakukan sebagai perjanjian pengguna. Benih berhak untuk menghentikan atau membatasi akses pengguna tanpa pemberitahuan sebelumnya. Pengguna disarankan untuk mengunjungi aplikasi Seeds secara teratur untuk mendapatkan perubahan terbaru dalam syarat dan ketentuan.',
+    lastupdate: 'Terakhir Perbarui: ',
+    updatedate: '26 April 2022',
     tnc: {
-      title: 'Syarat & Ketentuan',
+      title: {
+        1: 'Umum',
+        2: 'Ketentuan Penggunaan Aplikasi',
+        3: 'Kewajiban Seeds',
+        4: 'Ganti Rugi',
+        5: 'Lisensi',
+        6: 'Meninggalnya Pengguna',
+        7: 'Hal Terkait Kekayaan Intelektual',
+        8: 'Penghentian',
+        9: 'Aneka Ragam'
+      },
       desc: {
-        header: 'SYARAT DAN KETENTUAN',
-        p1: 'SEEDS adalah Platform loka pasar jasa keuangan yang dimiliki oleh PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (‘SEEDS’). Syarat dan Ketentuan ini akan berlaku dan mengikat bagi anda untuk setiap penggunaan Platform SEEDS dan berlaku efektif setelah anda mengeklik tombol “Terima Syarat dan Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini',
-        definition: 'DEFINISI',
-        definition_sub: 'Dalam Syarat dan Ketentuan in',
-        definition_1:
-          '“Aplikasi” adalah fasilitas yang disediakan oleh PT Benih Investasi Teknologi melalui software terbuka dengan tujuan untuk menyediakan Produk dan Layanan bagi Pengguna.',
-        definition_2:
-          '“Platform” berarti layanan berbasis teknologi dalam bentuk situs, Aplikasi web dan/atau Aplikasi mobile ',
-        definition_3:
-          '“Platform SEEDS” Platform dengan merek dagang SEEDS yang dimiliki oleh PT Benih Investasi Teknologi.',
-        definition_4:
-          '“Penyedia Pihak Ketiga” berarti Platform atau layanan berbasis teknologi milik Pihak Ketiga yang terintegrasi dengan Platform SEEDS.',
-        statement: 'PERNYATAAN PENGGUNA',
-        statement_desc:
-          'Dengan ini anda menyatakan bahwa dalam hal anda bertindak sebagai perorangan maka Anda sudah berusia minimal 18 tahun dan tidak dibawah pengampuan dan apabila Anda bertindak untuk mewakili badan usaha maka Anda adalah mewakili badan usaha dimaksud sesuai dengan kewenangan dalam anggaran dasar dan badan usaha dimaksud telah secara sah didirikan berdasarkan peraturan perundang-undangan yang berlaku.',
-        service: 'RUANG LINGKUP LAYANAN',
-        service_1:
-          'SEEDS menyediakan Platform perdagangan elektronik (marketplace) di mana Pengguna/anda dapat memasarkan dan/atau melakukan transaksi jual-beli aset digital dan variasinya ( “Produk”), dengan menggunakan berbagai fitur serta layanan yang telah tersedia ( “Fitur”) yang dipasarkan di dalam teritori Negara Republik Indonesia.',
-        service_2:
-          'Sebagai penunjang bisnis dan penyedia Platform perdagangan elektronik, SEEDS menjamin keamanan dan kenyamanan bagi para Pengguna dan menyediakan layanan dengan fitur-fitur sebagai berikut (‘Service’)',
-        service_sub_1: 'Transaksi jual beli Produk;',
-        service_sub_2: 'Pencatatan transaksi jual beli melalui Aplikasi;',
-        service_sub_3: 'Pencatatan Pelanggan; dan',
-        service_sub_4:
-          'Fitur lain yang dapat SEEDS tambahkan dari waktu ke waktu (“Layanan”).',
-        guideline: 'PETUNJUK PENGGUNAAN',
-        guideline_1:
-          'Anda hanya dapat menggunakan Aplikasi setelah Anda melakukan pendaftaran. SEEDS akan memberikan anda suatu akun pribadi yang dapat diakses dengan OTP (one-time password) yang akan diterima oleh nomor handphone yang telah anda daftarkan sebelumnya yang berfungsi sebagai kode akses untuk masuk pada akun Anda. Anda bertanggungjawab secara mandiri atas kerahasiaan OTP yang anda terima dalam rangka penggunaan Aplikasi. Tanggung jawab anda disini juga termasuk namun tidak terbatas pada tanggung jawab hukum dari Pengguna kepada SEEDS dan/atau pihak lain yang terkait dengan layanan disediakan oleh SEEDS di dalam Aplikasi.',
-        guideline_2:
-          'Anda bertanggung jawab atas penggunaan akun yang anda miliki dan anda berjanji untuk tidak memberikan wewenang kepada orang lain untuk menggunakan identitas Anda atau menggunakan akun anda. Anda dilarang untuk menyerahkan atau mengalihkan akun Anda kepada pihak lain. Anda harus menjaga keamanan dan kerahasiaan kata sandi akun Anda dan setiap identifikasi yang SEEDS berikan kepada anda. Dalam hal terjadi pengungkapan atas kata sandi anda, dengan cara apapun, yang mengakibatkan setiap penggunaan yang tidak sah atas akun atau identitas Anda, serta menimbulkan kerugian pada diri anda, maka SEEDS tidak bertanggung jawab atas ketidaksabsahan transaksi yang ditimbulkan olehnya.',
-        guideline_3:
-          'Anda hanya dapat memiliki 1 (satu) akun SEEDS resmi. SEEDS berhak memblokir secara permanen pada akun kedua dan seterusnya apabila 1 (satu) orang dengan identitas yang sama didapati memiliki lebih dari 1 (satu) akun dan SEEDS tidak bertanggung jawab atas segala bentuk kerugian yang timbul sebagai akibat dari pelanggaran tersebut.',
-        guideline_4:
-          'Anda menjamin bahwa Anda akan menggunakan Aplikasi hanya untuk tujuan yang dimaksud untuk mendapatkan Layanan. Anda tidak diperbolehkan untuk menggunakan Aplikasi untuk tujuan penipuan, atau menyebabkan ketidaknyamanan baik kepada SEEDS maupun Pengguna lainnya.',
-        guideline_5:
-          'Anda tidak diperkenankan untuk membahayakan, mengubah atau memodifikasi Aplikasi atau Platform atau mencoba untuk membahayakan, mengubah atau memodifikasi Aplikasi atau Platform dengan cara apapun. SEEDS tidak bertanggungjawab atas kerugian yang timbul akibat penggunaan perangkat yang tidak sesuai atau penggunaan versi Aplikasi yang tidak sesuai dengan perangkat yang anda miliki. SEEDS berhak untuk melarang anda untuk menggunakan Aplikasi lebih lanjut jika Anda menggunakan Aplikasi dengan perangkat yang tidak kompatibel. Anda berjanji bahwa Anda hanya akan menggunakan suatu jalur akses yang diperbolehkan untuk Anda gunakan.',
-        personal_data: 'PENGGUNAAN DATA PRIBADI',
-        personal_data_1:
-          'Data pribadi berarti setiap informasi mengenai perorangan yang diidentifikasi atau dapat diidentifikasi yang terekam dalam bentuk apapun.',
-        personal_data_2:
-          'SEEDS dapat meminta anda untuk memberikan data pribadi yang diperlukan sebagaimana diperlukan oleh sifat fungsional layanan dan untuk memproses serta memanfaatkan data pribadi anda  dalam ruang lingkup tujuan tertentu tersebut. Ketentuan mengenai Data Pribadi sebagaimana dimaksud lebih lanjut diatur dalam',
-        personal_data_blue: 'Kebijakan Privasi',
-        personal_data_3:
-          'Anda wajib memberikan informasi yang akurat dan lengkap terkait data pribadi, termasuk  memberikan kepada SEEDS bukti identitas apapun yang secara wajar dapat SEEDS mintakan sewaktu-waktu.',
-        personal_data_4:
-          'Apabila terdapat perubahan atas data pribadi anda (misalnya jika Anda mengubah alamat surel, nomor telepon, atau jika Anda ingin membatalkan atau menghapus akun anda), mohon untuk memperbaharui rincian informasi anda melalui Aplikasi atau dengan mengirimkan permintaan anda kepada SEEDS melalui help center yang disediakan. SEEDS akan, sepanjang dapat dilakukan oleh SEEDS, memberlakukan perubahan yang diminta tersebut dalam waktu 14 (empat belas) hari kerja sejak diterimanya pemberitahuan perubahan.',
-        personal_data_5:
-          'Apabila disyaratkan oleh hukum dan peraturan perundang-undangan yang berlaku, SEEDS dapat membagikan data pribadi anda kepada lembaga-lembaga yang berwenang untuk kepentingan pemenuhan kepatuhan',
-        personal_data_6:
-          'Dengan persetujuan anda, SEEDS berhak meneruskan data pribadi anda kepada afiliasinya, Penyedia Pihak Ketiga dan penyedia layanan pembayaran, untuk tujuan',
-        personal_data_sub_1:
-          'Untuk Mengelola Pendaftaran Akun Pengguna. Apabila Anda hendak menggunakan produk atau layanan Penyedia Pihak Ketiga melalui Platform SEEDS, maka SEEDS akan memproses data pribadi Anda untuk dapat diteruskan ke Penyedia Pihak Ketiga yang anda pilih untuk kepentingan pendaftaran dan pelaksanaan layanan.',
-        personal_data_sub_2:
-          'Untuk Mengelola Pembayaran. SEEDS akan menerima dan memverifikasi data pribadi anda dan meneruskan informasi tersebut ke Penyedia Pihak Ketiga dalam rangka pelaksanaan suatu transaksi atau pembayaran yang telah anda setujui atau instruksikan sebelumnya.',
-        personal_data_sub_3:
-          'Untuk Menghubungi Anda. SEEDS dapat menggunakan data pribadi yang anda berikan untuk menghubungi anda dengan tujuan untuk menginformasikan dan/atau memasarkan produk dan layanan SEEDS.',
-        personal_data_7:
-          'Apabila terjadi pelanggaran hukum oleh anda, SEEDS dapat menggunakan atau membagi data pribadi anda, sepanjang diperbolehkan oleh hukum, untuk mengajukan atau merespon somasi, surat panggilan pengadilan, atau proses hukum lainnya, ataupun tindakan lainnya yang dianggap diperlukan oleh SEEDS untuk manjalankan hak hukumnya, termasuk untuk melakukan pembelaan terhadap klaim hukum yang telah atau mungkin diajukan kepada SEEDS.',
-        personal_data_8:
-          'SEEDS akan mengambil langkah-langkah yang wajar untuk melindungi data pribadi dari penggunaan yang tidak sah atau pengungkapan yang tidak sah dan kerugian yang tidak disengaja, kehancuran atau kerusakan.',
-        liability: 'BATASAN TANGGUNG JAWAB',
-        liability_1:
-          'SEEDS tidak bertanggung jawab atas keamanan Data Pribadi dan/atau informasi lain yang Anda berikan ke Platform milik Pihak Ketiga. Penerimaan dan penggunaan Anda atas Platform, produk dan/atau jasa dari Penyedia Pihak Ketiga tunduk pada persyaratan dan ketentuan yang Anda setujui secara terpisah dengan  Penyedia Pihak Ketiga dan atas resiko Anda sendiri.',
-        liability_2:
-          'SEEDS tidak akan bertanggung jawab atas segala kerugian yang mungkin terjadi karena ketidaklengkapan, ketidakakuratan, atau ketidakjelasan data pribadi yang anda berikan.',
-        subject_policy: 'PENUNDUKAN TERHADAP KEBIJAKAN PENGGUNA',
-        subject_policy_desc: 'Anda tunduk pada',
-        subject_policy_blue: 'Kebijakan Pengguna',
-        subject_policy_2: 'yang berlaku',
-        intellectual: 'HAK KEKAYAAN INTELEKTUAL',
-        intellectual_desc:
-          'SEEDS memiliki dan akan mempertahankan semua hak, kepemilikan, dan kepentingan terkait Platform, Aplikasi, Layanan dan pengembangannya, bersama dengan alat, materi, pedoman, dan instruksi apa pun yang disediakan oleh SEEDS kepada anda , serta semua hak kekayaan intelektual, termasuk namun tidak terbatas pada semua hak cipta, merek dagang, paten, hak dalam basis data, dan hak moral.',
-        temporary: 'PENANGGUHAN SEMENTARA',
-        temporary_desc:
-          'SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan penggunaan yang salah, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
-        termination: 'PENGHENTIAN LAYANAN',
-        termination_desc:
-          'SEEDS berhak untuk, secara seketika mengakhiri Layanan apabila anda gagal untuk memenuhi kewajiban anda sebagaimana diatur dalam Syarat dan Ketentuan ini.',
-        disclaimer: 'PENAFIAN',
-        disclaimer_desc:
-          'SEEDS menggunakan cara-cara teknis dan keamanan yang tepat dan wajar untuk menjaga Aplikasi aman dan terbebas dari virus dan kesalahan. Namun demikian, SEEDS tidak menjamin bahwa system keamanan yang dimilikinya akan aman sepenuhnya dan tidak dapat ditembus. Oleh karena itu SEEDS tidak dapat menjamin keamanan database SEEDS dan SEEDS juga tidak dapat menjamin bahwa informasi yang Anda berikan tidak akan ditahan/terganggu saat pengirimannya. Aplikasi ini dapat mengalami keterbatasan, penundaan, gangguan dan masalah-masalah lain yang terdapat dalam penggunaan internet dan komunikasi elektronik, termasuk namun tidak terbatas pada perangkat yang digunakan oleh Anda rusak, tidak terhubung, berada di luar jangkauan, dimatikan atau tidak berfungsi. SEEDS tidak bertanggung jawab atas kegagalan penyimpanan data, kerusakan atau kerugian yang diakibatkan oleh masalah-masalah tersebut.',
-        governing_law: 'HUKUM YANG MENGATUR',
-        governing_law_desc:
-          'Seluruh sengketa atau klaim yang timbul dari atau sehubungan dengan Syarat dan Ketentuan ini, akan diatur berdasarkan, dan ditafsirkan sesuai dengan ketentuan hukum Negara Republik Indonesia.',
-        variance: 'VARIASI',
-        variance_desc:
-          'SEEDS, sewaktu-waktu, berhak untuk merubah, mengamandemen atau memodifikasi klausula-klausula sebagaimana diatur dalam Syarat dan Ketentuan ini. Dengan tetap mengakses dan menggunakan Platform SEEDS, Anda dianggap telah menerima dan menyetujui perubahan pada Syarat dan Ketentuan tersebut.',
-        dispute_settlement: 'PENYELESAIAN SENGKETA',
-        dispute_settlement_desc:
-          'sengketa  yang timbul dari atau sehubungan dengan Ketentuan ini, termasuk setiap pertanyaan mengenai keberlakuan, keabsahan atau pengakhirannya akan diselesaikan dihadapan dan akan secara final diputuskan melalui arbitrase oleh Badan Arbitrase Nasional Indonesia (BANI) di Jakarta sesuai dengan Peraturan Badan Arbitrase Nasional Indonesia yang berlaku.'
+        1: 'Untuk dapat mengakses dan memanfaatkan Aplikasi Seeds, pengguna harus memiliki akun yang terdaftar di aplikasi Seeds. Seeds hanya bertindak sebagai pengelola dan pemilik situs/aplikasi Seeds. Benih dalam hal ini adalah penyedia sarana distribusi produk investasi yang ditampilkan dalam situs/aplikasi Benih, dimana produk tersebut dikelola oleh pihak yang telah bekerjasama dengan Benih dan telah memiliki izin untuk melakukan kegiatan usaha dari pihak pemerintah terkait. Seeds tidak memberikan jaminan apapun atas keuntungan yang akan diperoleh pengguna dari hasil setiap transaksi investasi atas produk yang tersedia dan dilakukan di situs/aplikasi Seeds. Dengan melakukan transaksi investasi melalui situs/aplikasi Seeds sebagai penyedia sarana distribusi produk investasi, pengguna secara sadar bersedia bertanggung jawab penuh atas segala tindakan yang dilakukan, dan seed gratis, termasuk anak perusahaan, afiliasi, pemegang saham, direktur, pejabat, karyawan sepenuhnya dari segala tuntutan, kerugian, pembayaran atau biaya apapun yang dikeluarkan oleh Bibit atau yang diajukan kepada Bibit baik secara langsung maupun tidak langsung, termasuk antara lain sehubungan dengan dilaksanakannya atau tidak dilaksanakannya instruksi transaksi dari pengguna.\n Rekomendasi produk adalah ilustrasi produk investasi yang didistribusikan melalui situs/aplikasi Seeds, Pengguna secara sadar dan bertanggung jawab penuh atas segala tindakan yang dilakukan, termasuk namun tidak terbatas pada pemilihan produk investasi, jangka waktu, atau tingkat risiko investasi. Pengguna bersedia membebaskan Bibit, termasuk anak perusahaan, afiliasi, pemegang saham, direktur, komisaris, staf dari segala tuntutan, klaim atau perselisihan, kerugian, transaksi atau segala jenis biaya yang dikenakan kepada pengguna atau Benih baik secara langsung maupun tidak langsung, termasuk tetapi tidak terbatas pada biaya penasihat hukum dan biaya perkara, yang terkait dengan dilaksanakan atau tidak dilaksanakannya instruksi transaksi dari pengguna.\n  Seeds beserta pengelola produk investasi di situs/aplikasi Seeds bertanggung jawab atas kelancaran proses transaksi pengguna termasuk proses pendaftaran, jual beli agar dapat dilakukan dan terkirim dengan baik. Pengguna telah mengetahui semua pilihan produk investasi yang ditawarkan melalui situs/aplikasi Seeds, oleh karena itu Seeds tidak bertanggung jawab atas setiap produk investasi tersebut. \n  Setiap informasi dan data yang diterima oleh Seeds melalui situs/aplikasi Seeds akan diteruskan ke masing-masing pengelola produk investasi yang dipilih oleh pengguna. Dan dengan cara ini, pengguna memberikan persetujuannya kepada Seeds untuk meneruskan data yang terkumpul melalui situs/aplikasi Seeds kepada pihak yang mengelola produk investasi sesuai dengan pilihan pengguna. \n Dengan demikian Benih berhak untuk mengumpulkan, menyimpan dan/atau meneruskan informasi dan data tersebut. Selama tidak bertentangan dengan S&K Seeds, setiap syarat dan ketentuan umum yang berlaku dan tercantum di situs/aplikasi Seeds (termasuk pengaturan terkait besaran biaya/biaya layanan) dinyatakan lengkap, dan pengguna dengan ini tunduk terhadap syarat dan ketentuan ini. \n\n Kami berhak, dari waktu ke waktu, melakukan perubahan, penambahan dan/atau modifikasi pada seluruh atau sebagian isi S&K Seeds. Jika Anda menggunakan Seeds secara terus menerus setelah perubahan, penambahan dan/atau modifikasi terhadap seluruh atau sebagian isi S&K Seeds, maka hal tersebut dianggap sebagai bentuk persetujuan Anda terhadap perubahan, penambahan dan/atau modifikasi tersebut. Jika Anda tidak menyetujui perubahan, penambahan dan/atau modifikasi, Anda diminta untuk berhenti mengakses dan menggunakan situs/aplikasi Seeds. Pengguna dapat mengakses dan memanfaatkan situs/aplikasi Seeds setelah melengkapi seluruh dokumen identitas pengguna sesuai ketentuan yang berlaku. \n Pengguna menyatakan bahwa mereka telah membaca, mengetahui, memahami, dan sepenuhnya menyetujui S&K Seeds. Dengan menyetujui S&K ini, Pengguna tunduk dan terikat pada Syarat dan Ketentuan, Kebijakan Privasi, Ketentuan Transaksi, Tata Cara Transaksi, dan ketentuan lain yang ditetapkan oleh pengelola produk investasi di situs/aplikasi Seeds, beserta perubahan atau ketentuan tambahan jika apapun, untuk tujuan implementasi. \n Seed berhak menolak permintaan pembuatan akun jika: dokumen pendukung identitas pengguna tidak lengkap atau tidak benar; dan pengguna melakukan tindakan yang tidak sesuai dengan cara yang diperlukan dalam pembuatan akun berdasarkan S&K Seeds. Seeds berhak untuk membatasi dan menghentikan akses pengguna dalam menggunakan situs/aplikasi Seeds untuk transaksi investasi atas produk investasi yang ditampilkan di situs/aplikasi Seeds sewaktu-waktu dengan atau tanpa pemberitahuan terlebih dahulu, dengan alasan antara lain sebagai akibat dari proses pemeliharaan dan perbaikan sistem, pengguna melanggar ketentuan yang tercantum dalam Syarat & Ketentuan ini atau perjanjian lain antara seed dan pengguna, dan penyimpangan lain yang terkait dengan penggunaan akun investasi atau transaksi investasi. Pengguna setuju bahwa kesalahan atau a',
+
+        2: 'Content Ketentuan pengguna aplikasi, add \n to each paragraph so the logic is reusable from the page',
+        3: 'Content Kewajiban Seeds',
+        4: 'Content Ganti Rugi',
+        5: 'Content Lisensi',
+        6: 'Content Meninggalnya Pengguna',
+        7: 'Content Hal terkait kekayaan intelektual',
+        8: 'Content Penghentian',
+        9: 'Content aneka ragam'
       }
     },
     privacyPolicy: {

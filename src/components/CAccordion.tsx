@@ -26,14 +26,17 @@ const CAccordion = ({
 }: {
   title: string;
   description: ReactElement<any, any>;
+  titleColor?: string;
 }): React.ReactElement => {
   const [open, setOpen] = useState(false);
+  const titleColor = open ? '#3AC4A0' : '#000000';
   return (
     <Accordion icon={<Icon open={open} />} open={open}>
       <AccordionHeader
         onClick={() => {
           setOpen(c => !c);
         }}
+        style={{ color: titleColor }}
       >
         {title}
       </AccordionHeader>

@@ -129,12 +129,36 @@ export default {
     BTN_LOGIN: 'Login',
     BTN_GUEST: 'Enter As Guest',
     next: 'Continue',
+    joinNow: 'Join Now',
     label: {
       change: 'Change',
       confirm: 'Confirm',
       tryAgain: 'Try Again',
       next: 'Next'
     }
+  },
+  faq: {
+    title: 'Frequently Asked Questions',
+    subTitle: 'Find answers to your questions about Seeds',
+    faq: {
+      title: {
+        1: 'What is Seed?',
+        2: 'What investment products are available at Seeds?',
+        3: 'How can I access seeds?',
+        4: 'How safe is it to invest in Seeds?',
+        5: 'I want to ask more about Seeds products and services'
+      },
+      desc: {
+        1: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
+        2: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
+        3: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
+        4: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
+        5: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).'
+      }
+    },
+    footerText: 'Haven’t found the answer yet?',
+    button: 'Contact Us',
+    settings: 'Settings'
   },
   termAndCondition: {
     text1: 'If you register, you agree',

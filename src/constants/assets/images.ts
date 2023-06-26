@@ -62,6 +62,16 @@ export const Trash: AssetsInterface = {
   alt: 'trash'
 };
 
+export const Logout: AssetsInterface = {
+  src: '/assets/story-boarding/logout.svg',
+  alt: 'logout'
+};
+
+export const EarnXP: AssetsInterface = {
+  src: '/assets/story-boarding/earnXp.svg',
+  alt: 'earn'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -74,7 +84,9 @@ const Images: Record<string, AssetsInterface> = {
   LineChart,
   BronzeMedal,
   SilverMedal,
-  GoldMedal
+  GoldMedal,
+  Logout,
+  EarnXP
 };
 
 export default Images;

@@ -1,4 +1,5 @@
 import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
+import ModalLogout from '@/components/popup/ModalLogout';
 import LevelButton from '@/components/ui/button/LevelButton';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
@@ -27,6 +28,8 @@ const UserSetting: React.FC = () => {
 
   const [chooseBadgeModalShown, setChooseBadgeModalShown] =
     useState<boolean>(false);
+
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
@@ -98,7 +101,9 @@ const UserSetting: React.FC = () => {
       label: 'Log Out',
       altStartAdornment: 'log out',
       startAdornment: LogOutIcon,
-      onClick: () => {},
+      onClick: () => {
+        setIsLogoutModal(true);
+      },
       extraClasses: submenuClasses
     }
   ];
@@ -201,6 +206,14 @@ const UserSetting: React.FC = () => {
               extraClasses={menu.extraClasses}
             />
           ))}
+
+          {isLogoutModal && (
+            <ModalLogout
+              onClose={() => {
+                setIsLogoutModal(prev => !prev);
+              }}
+            />
+          )}
         </div>
       </CardGradient>
     </PageGradient>

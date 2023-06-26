@@ -408,5 +408,19 @@ export default {
     description: 'Your account will be disconnected from the Seed',
     removeButton: 'Remove',
     cancelButton: 'Cancel'
+  },
+  LogoutAccount: {
+    title: 'Come Back Soon!',
+    description: 'Are you sure want to logout',
+    confirmButton: 'Log Out',
+    cancelButton: 'Cancel'
+  },
+  ReferalCode: {
+    title: 'Refer your friends',
+    subtitle: 'Earn more XP',
+    referal: 'How Referral Works',
+    option1: 'Invite your friend to install the app with the link',
+    option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
+    option3: 'Get more XP when your friend registered to Seeds'
   }
 };

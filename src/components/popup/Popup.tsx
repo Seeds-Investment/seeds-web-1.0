@@ -104,18 +104,19 @@ const Popup: React.FC<PopupProps> = ({
       {/* -----Text Area----- */}
       {withTextArea && (
         <TextArea
+          value={comment}
           placeholder="Cool!"
           className={`relative w-[92%] mx-auto font-poppins ${
             withRating ? 'mt-5' : 'mt-8'
           }`}
-          props={{ rows: 4, value: comment, onChange: commentHandler }}
+          props={{ rows: 4, onChange: commentHandler }}
         />
       )}
 
       <Button
         label={label}
         extraClasses="w-full mt-6"
-        color="dark"
+        variant="dark"
         props={{ onClick: submitHandler }}
       />
     </Modal>

@@ -8,9 +8,6 @@ import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
 import Input from './ui/input/Input';
 
-import { emailValidationHandler } from '@/helpers/emailValidationHandler';
-
-import useInput from '@/hooks/useInput';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
@@ -25,26 +22,19 @@ const ChangeEmail: React.FC = () => {
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
 
-  const {
-    value: enteredEmail,
-    isValid: emailIsValid,
-    isError: emailIsError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler
-  } = useInput(emailValidationHandler);
-
   const submitHandler = (): void => {
+    const enteredEmail = emailCtx.email;
     emailCtx.validateEmail(enteredEmail);
   };
 
   const errorMessage =
-    enteredEmail.trim().length === 0
+    emailCtx.email.trim().length === 0
       ? t('errorMessage.requiredEmail')
       : t('errorMessage.invalidEmail');
 
   const errorClasses =
     height !== undefined && height <= 915
-      ? enteredEmail.trim().length === 0
+      ? emailCtx.email.trim().length === 0
         ? 'text-xs -bottom-[1.125rem]'
         : 'text-xs -bottom-[2.125rem]'
       : 'text-xs -bottom-[2.125rem]';
@@ -96,22 +86,22 @@ const ChangeEmail: React.FC = () => {
                   ? 'example@mail.com'
                   : 'contoh@mail.com'
               }
-              isError={emailIsError}
+              isError={emailCtx.isError}
               errorMessage={errorMessage}
               errorClasses={`absolute sm:-bottom-[1.125rem] font-poppins text-warning-hard ${errorClasses}`}
               props={{
-                value: enteredEmail,
-                onChange: emailChangeHandler,
-                onBlur: emailBlurHandler
+                value: emailCtx.email,
+                onChange: emailCtx.onChange,
+                onBlur: emailCtx.onBlur
               }}
             />
           </div>
           <Button
-            color="dark"
+            variant="dark"
             label={t('button.label.change')}
             props={{
               onClick: submitHandler,
-              disabled: emailIsValid === false
+              disabled: emailCtx.isValid === false
             }}
           />
         </div>

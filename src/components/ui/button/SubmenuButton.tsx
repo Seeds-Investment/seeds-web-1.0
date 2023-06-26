@@ -14,7 +14,7 @@ interface SubmenuButtonProps {
 }
 
 const animationClasses =
-  'group-hover:translate-x-1 group-hover:transition group-hover:ease-in-out group-hover:duration-500 transition-all ml-auto';
+  'group-hover:translate-x-1 group-hover:ease-in-out group-hover:duration-500 transition-all ml-auto';
 
 const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   startAdornment,

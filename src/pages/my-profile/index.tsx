@@ -121,10 +121,6 @@ const ProfilePage = (): JSX.Element => {
   //   ]
   // };
 
-  // const _handleReferalCode = async (): Object<void> => {
-  //   await router.push('/my-profile/referalCode');
-  // };
-
   const _handleReferalCode = (): any => {
     return router.push('/my-profile/referalCode');
   };

@@ -1,5 +1,14 @@
 import { useRouter } from 'next/router';
-import { useContext, useState, type ReactNode } from 'react';
+import {
+  useContext,
+  useState,
+  type ReactNode,
+  type SetStateAction
+} from 'react';
+
+import useInput from '@/hooks/useInput';
+
+import { formatNumericHandler } from '@/helpers/useInputFormats';
 
 import ErrorBEContext from '../error-be/error-be-context';
 import LoadingContext from '../loading/loading-context';
@@ -9,16 +18,32 @@ interface PhoneProviderProps {
   children: ReactNode;
 }
 
+const validatePhoneNumber = (value: string): boolean => {
+  return value.length !== 0;
+};
+
 const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
   const router = useRouter();
   const errorBECtx = useContext(ErrorBEContext);
   const loadingCtx = useContext(LoadingContext);
 
+  const { value, isValid, isError, valueChangeHandler, inputBlurHandler } =
+    useInput(validatePhoneNumber, formatNumericHandler);
+
   const [isAlreadyExist, setIsAlreadyExist] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [enteredCountryCode, setEnteredCountryCode] = useState('+62');
+  const [selectedCountryFlag, setSelectedCountryFlag] = useState('ID');
 
   const resetHandler = (): void => {
     setIsAlreadyExist(false);
+  };
+
+  const countryCodeHandler = (
+    countryCode: SetStateAction<string>,
+    countryFlag: SetStateAction<string>
+  ): void => {
+    setEnteredCountryCode(countryCode);
+    setSelectedCountryFlag(countryFlag);
   };
 
   const validatePhoneHandler = async (value: string): Promise<void> => {
@@ -45,8 +70,6 @@ const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
         throw message;
       }
 
-      setPhoneNumber(value);
-
       await router.push({
         pathname: '/send-otp-code',
         query: { target: 'whatsapp' }
@@ -57,10 +80,17 @@ const PhoneProvider: React.FC<PhoneProviderProps> = ({ children }) => {
   };
 
   const phoneContext = {
-    phoneNumber,
+    phoneNumber: value,
+    countryCode: enteredCountryCode,
+    countryFlag: selectedCountryFlag,
+    isValid,
+    isError,
     isAlreadyExist,
+    onChange: valueChangeHandler,
+    onBlur: inputBlurHandler,
+    onCountryCodeChange: countryCodeHandler,
     validatePhone: validatePhoneHandler,
-    resetIsAlreadyExist: resetHandler
+    onReset: resetHandler
   };
 
   return (

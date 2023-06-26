@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useContext, useState, type SetStateAction } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ChangeTelephoneIcon } from 'public/assets/vector';
@@ -8,20 +8,13 @@ import Button from './ui/button/Button';
 import CardGradient from './ui/card/CardGradient';
 import Input from './ui/input/Input';
 
-import useInput from '@/hooks/useInput';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-
-import { formatNumericHandler } from '@/helpers/formatNumericHandler';
 
 import ListCountryFlag from '@/constants/countryFlag';
 
 import LanguageContext from '@/store/language/language-context';
 import PhoneContext from '@/store/phone/phone-context';
-
-const validatePhoneNumber = (value: string): boolean => {
-  return value.length !== 0;
-};
 
 const ChangeTelephone: React.FC = () => {
   const { t } = useTranslation();
@@ -31,27 +24,9 @@ const ChangeTelephone: React.FC = () => {
   const width = useWindowInnerWidth();
   const height = useWindowInnerHeight();
 
-  const [enteredCountryCode, setEnteredCountryCode] = useState('+62');
-  const [selectedCountryFlag, setSelectedCountryFlag] = useState('ID');
-
-  const {
-    value: enteredPhoneNumber,
-    isValid: phoneNumberIsValid,
-    isError: phoneNumberIsError,
-    valueChangeHandler: phoneNumberChangeHandler,
-    inputBlurHandler: phoneNumberBlurHandler
-  } = useInput(validatePhoneNumber, formatNumericHandler);
-
-  const countryCodeHandler = (
-    countryCode: SetStateAction<string>,
-    countryFlag: SetStateAction<string>
-  ): void => {
-    setEnteredCountryCode(countryCode);
-    setSelectedCountryFlag(countryFlag);
-  };
-
   const submitHandler = (): void => {
-    const payload = enteredCountryCode
+    const enteredPhoneNumber = phoneCtx.phoneNumber;
+    const payload = phoneCtx.countryCode
       .concat(enteredPhoneNumber)
       .replace('+', '');
 
@@ -104,26 +79,26 @@ const ChangeTelephone: React.FC = () => {
               type="isSelectPhoneNumber"
               label={t('input.label.phone')}
               placeholder=""
-              isError={phoneNumberIsError}
+              isError={phoneCtx.isError}
               errorMessage={errorMessage}
-              selectedCountryFlag={selectedCountryFlag}
-              selectValue={enteredCountryCode}
+              selectedCountryFlag={phoneCtx.countryFlag}
+              selectValue={phoneCtx.countryCode}
               selectOptions={ListCountryFlag}
-              onSelect={countryCodeHandler}
+              onSelect={phoneCtx.onCountryCodeChange}
               props={{
                 maxLength: 13,
-                value: enteredPhoneNumber,
-                onChange: phoneNumberChangeHandler,
-                onBlur: phoneNumberBlurHandler
+                value: phoneCtx.phoneNumber,
+                onChange: phoneCtx.onChange,
+                onBlur: phoneCtx.onBlur
               }}
             />
           </div>
           <Button
-            color="dark"
+            variant="dark"
             label={t('button.label.change')}
             props={{
               onClick: submitHandler,
-              disabled: phoneNumberIsValid === false
+              disabled: phoneCtx.isValid === false
             }}
           />
         </div>

@@ -16,7 +16,7 @@ const InputSeedsPinPage: React.FC<InputSeedsPinProps> = ({ router }) => {
   return (
     <PageGradient
       defaultGradient
-      className="z-0 sm:relative absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+      className="sm:relative absolute overflow-hidden flex flex-col items-center w-full bottom-0"
     >
       <InputPin
         onCancel={cancelHandler}

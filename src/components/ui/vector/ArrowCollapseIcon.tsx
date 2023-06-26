@@ -1,7 +1,7 @@
 interface ArrowCollapseIconProps {
   isExpand?: boolean;
-  expandAngle: string;
-  collapseAngle: string;
+  expandAngle?: string;
+  collapseAngle?: string;
   extraClasses?: string;
   props?: object;
   width?: string;
@@ -13,8 +13,8 @@ interface ArrowCollapseIconProps {
 
 const ArrowCollapseIcon: React.FC<ArrowCollapseIconProps> = ({
   isExpand = false,
-  expandAngle,
-  collapseAngle,
+  expandAngle = '',
+  collapseAngle = '',
   extraClasses = '',
   width = '8',
   height = '12',

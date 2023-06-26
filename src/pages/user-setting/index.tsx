@@ -111,7 +111,7 @@ const UserSetting: React.FC = () => {
   return (
     <PageGradient
       defaultGradient
-      className="z-0 sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+      className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
     >
       <CardGradient
         defaultGradient

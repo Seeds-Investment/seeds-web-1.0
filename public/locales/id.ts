@@ -24,11 +24,13 @@ export default {
     }
   },
   errorMessage: {
+    requiredSeedsTag: 'Seeds Tag dibutuhkan, mohon masukan Seeds Tag Anda!',
+    requiredName: 'Nama dibutuhkan, mohon masukan nama Anda!',
     invalidEmail: 'Tolong isi alamat email dengan format namaanda@contoh.com',
-    requiredEmail: 'Email dibutuhkan, tolong isi dengan email Anda!',
+    requiredEmail: 'Email dibutuhkan, mohon masukan email Anda!',
     invalidPhoneNumber: 'Nomor Hp. Hanya menerima angka 1-9',
     requiredPhoneNumber:
-      'Nomor telepon dibutuhkan, tolong isi dengan nomor telepon Anda!',
+      'Nomor telepon dibutuhkan, mohon masukan nomor telepon Anda!',
     requiredPassword: 'Kata Sandi tidak boleh kosong',
     requiredRePassword: 'Konfirmasi Kata Sandi tidak boleh kosong',
     invalidPassword: 'Mohon baca ketentuan Kata Sandi dibawah',
@@ -85,15 +87,25 @@ export default {
     countdown: 'detik',
     resendEmail: 'tidak mendapat email? '
   },
+  editProfile: {
+    title: 'Ubah Profile',
+    editImage: 'Ubah Foto',
+    linkedAccount: 'Akun Tertaut',
+    changePin: 'Ganti PIN',
+    telephoneNumber: 'Nomor Telepon'
+  },
   input: {
     label: {
+      name: 'Nama',
+      dateOfBirth: 'Tanggal Lahir',
       email: 'Email Baru Anda',
       phone: 'Nomor Telepon Baru Kamu'
     },
     placeholder: {
+      name: 'Masukan Nama Anda',
+      dateOfBirth: 'Masukan Tanggal Lahir Anda',
       email: 'contoh@mail.com',
       phoneNumber: 'Mohon ketikkan nomor telepon anda',
-      name: 'Nama kamu',
       seedsTag: '@seedstag',
       referralCode: 'Kode Referal'
     },
@@ -120,7 +132,9 @@ export default {
       change: 'Ubah',
       confirm: 'Konfirmasi',
       tryAgain: 'Coba Lagi',
-      next: 'Lanjut'
+      next: 'Lanjut',
+      done: 'Selesai',
+      deleteAccount: 'Hapus Akun'
     }
   },
   faq: {

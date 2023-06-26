@@ -77,7 +77,7 @@ const Header: React.FC = () => {
             )}
           </button>
           <Button
-            color="dark"
+            variant="dark"
             label="Join Us"
             containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
           />

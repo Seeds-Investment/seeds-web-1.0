@@ -25,6 +25,8 @@ export default {
     }
   },
   errorMessage: {
+    requiredSeedsTag: 'Seeds Tag is required, please enter your Seeds Tag!',
+    requiredName: 'Name is required, please enter your name!',
     invalidEmail:
       'Please enter your email address in format yourname@example.com',
     requiredEmail: 'Email is required, please enter your email!',
@@ -87,18 +89,28 @@ export default {
     countdown: 'seconds',
     resendEmail: "didn't get email? "
   },
+  editProfile: {
+    title: 'Edit Profile',
+    editImage: 'Edit Image',
+    linkedAccount: 'Linked Account',
+    changePin: 'Change PIN',
+    telephoneNumber: 'Telephone Number'
+  },
   input: {
     label: {
+      name: 'Name',
+      dateOfBirth: 'Date of Birth',
       email: 'Your New Email',
       phone: 'Your New Telephone Number'
     },
     placeholder: {
+      name: 'Enter Your Name',
+      dateOfBirth: 'Enter Your Birth Date',
       email: 'example@mail.com',
       phoneNumber: 'Please enter your phone number',
       successMessage:
         'Congratulations! The new password has been successfully created.',
       successTitle: 'Success!',
-      name: 'Your Name',
       seedsTag: '@seedstag',
       referralCode: 'Referral Code'
     },
@@ -134,7 +146,9 @@ export default {
       change: 'Change',
       confirm: 'Confirm',
       tryAgain: 'Try Again',
-      next: 'Next'
+      next: 'Next',
+      done: 'Done',
+      deleteAccount: 'Delete Account'
     }
   },
   faq: {

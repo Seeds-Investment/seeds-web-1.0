@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
 import ChangeTelephone from '@/components/ChangeTelephone';
@@ -17,7 +19,11 @@ const customGradient = (
 );
 
 const ChangeTelephonePage: React.FC = () => {
-  const cancelHandler = (): void => {};
+  const router = useRouter();
+
+  const cancelHandler = (): void => {
+    router.back();
+  };
 
   return (
     <PhoneProvider>

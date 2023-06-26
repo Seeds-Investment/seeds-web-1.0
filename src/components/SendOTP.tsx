@@ -384,7 +384,7 @@ const SendOTP: React.FC<SendOTPProps> = ({ message, submessage, target }) => {
                     }`}
               </button>
               <Button
-                color="dark"
+                variant="dark"
                 label={t('button.label.confirm')}
                 extraClasses="sm:mt-auto mt-8"
                 props={{

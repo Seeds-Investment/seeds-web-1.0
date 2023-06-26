@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router';
 import { useContext, useState, type ReactNode } from 'react';
 
+import useInput from '@/hooks/useInput';
+
+import { emailValidationHandler } from '@/helpers/emailValidationHandler';
+
 import ErrorBEContext from '../error-be/error-be-context';
 import LoadingContext from '../loading/loading-context';
 import EmailContext from './email-context';
@@ -14,8 +18,10 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
   const errorBECtx = useContext(ErrorBEContext);
   const loadingCtx = useContext(LoadingContext);
 
+  const { value, isValid, isError, valueChangeHandler, inputBlurHandler } =
+    useInput(emailValidationHandler);
+
   const [isAlreadyExist, setIsAlreadyExist] = useState(false);
-  const [email, setEmail] = useState('');
 
   const resetHandler = (): void => {
     setIsAlreadyExist(false);
@@ -44,8 +50,6 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
         throw message;
       }
 
-      setEmail(value);
-
       await router.push({
         pathname: '/send-otp-code',
         query: { target: 'email' }
@@ -56,10 +60,14 @@ const EmailProvider: React.FC<EmailProviderProps> = ({ children }) => {
   };
 
   const emailContext = {
-    email,
+    email: value,
+    isValid,
+    isError,
     isAlreadyExist,
+    onChange: valueChangeHandler,
+    onBlur: inputBlurHandler,
     validateEmail: validateEmailHandler,
-    resetIsAlreadyExist: resetHandler
+    onReset: resetHandler
   };
 
   return (

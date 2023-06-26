@@ -83,7 +83,7 @@ const InputPin: React.FC<InputPinProps> = ({
     !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
   }`;
 
-  const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] ${
+  const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] bg-white ${
     width !== undefined && width < 370
       ? 'h-[38rem]'
       : width !== undefined && width < 400
@@ -91,7 +91,7 @@ const InputPin: React.FC<InputPinProps> = ({
       : width !== undefined && width < 415
       ? 'h-[48rem]'
       : ''
-  } sm:h-[36rem] bg-white`;
+  }`;
 
   const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
     errorBECtx.error.message !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'

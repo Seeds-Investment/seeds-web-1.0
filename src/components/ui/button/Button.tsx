@@ -7,7 +7,7 @@ interface ButtonProps {
   containerClasses?: string;
   typographyClasses?: string;
   extraClasses?: string;
-  color?: 'light' | 'dark';
+  variant?: 'light' | 'dark' | 'outlined';
   className?: string;
   style?: object;
   props?: object;
@@ -16,20 +16,24 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   label = 'Save',
   containerClasses = 'rounded-full py-3 px-6',
-  typographyClasses = 'font-poppins font-semibold leading-4 text-white',
+  typographyClasses = 'font-poppins font-semibold leading-4',
   extraClasses = '',
-  color = 'light',
+  variant = 'light',
   className,
   style,
   ...props
 }) => {
   const height = useWindowInnerHeight();
 
-  const defaultButtonClasses = `${containerClasses} ${typographyClasses} ${extraClasses} bg-seeds-${
-    color === 'light' ? 'green' : 'button-green'
+  const defaultButtonClasses = `${containerClasses} ${typographyClasses} ${extraClasses} ${
+    variant === 'light'
+      ? 'bg-seeds-green text-white shadow-seeds-green/20 hover:shadow-seeds-green/40 focus:outline-seeds-button-green shadow-md hover:shadow-lg'
+      : variant === 'dark'
+      ? 'bg-seeds-button-green text-white shadow-seeds-green/20 hover:shadow-seeds-green/40 focus:outline-seeds-button-green shadow-md hover:shadow-lg'
+      : 'bg-transparent text-warning-hard shadow-warning-hard/20 hover:shadow-warning-hard/40 focus:outline-warning-hard border border-warning-hard shadow-sm hover:shadow-md'
   } ${
     height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
-  } shadow-md shadow-seeds-green/20 transition-all duration-300 hover:shadow-lg hover:shadow-seeds-green/40 focus:outline-seeds-button-green active:opacity-80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`;
+  } transition-all duration-300 active:opacity-80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`;
 
   return (
     <button

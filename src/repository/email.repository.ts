@@ -1,6 +1,10 @@
 import baseAxios from '@/utils/common/axios';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/email/v1`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/email/v1`
+);
 
 export const postForgotPasswordByEmail = async (
   email?: string

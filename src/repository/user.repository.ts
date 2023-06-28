@@ -1,7 +1,11 @@
 import baseAxios from '@/utils/common/axios';
 import type { IChangePasswordPayload } from '@/utils/interfaces/payload.interfaces';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/user/v1`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/user/v1`
+);
 
 export const patchChangePassword = async (
   payload: IChangePasswordPayload

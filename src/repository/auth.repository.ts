@@ -5,7 +5,11 @@ import type {
   IVerifyOtp
 } from '@/utils/interfaces/payload.interfaces';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1/`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/auth/v1/`
+);
 
 interface LoginForm {
   phoneNumber: string;

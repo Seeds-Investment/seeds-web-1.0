@@ -1,6 +1,10 @@
 import baseAxios from '@/utils/common/axios';
 
-const profileService = baseAxios(`https://seeds-dev.seeds.finance/user/v1/`);
+const profileService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/user/v1/`
+);
 
 export const getUserInfo = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');

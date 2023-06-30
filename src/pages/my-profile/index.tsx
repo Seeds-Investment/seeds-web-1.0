@@ -319,7 +319,10 @@ const ProfilePage = (): JSX.Element => {
                   width={30}
                   height={30}
                 />
-                <div className="bg-[#BAFBD0] flex gap-3 items-center rounded-full py-2 px-5">
+                <div
+                  className="bg-[#BAFBD0] flex gap-3 items-center rounded-full py-2 px-5"
+                  onClick={() => _handleReferalCode()}
+                >
                   <Typography className="text-[#3AC4A0] font-bold">
                     {userData?.refCode}
                   </Typography>

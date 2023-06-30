@@ -17,13 +17,15 @@ import { getAvatars } from '@/repository/avatar.repository';
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
-  const [selectedGender, setSelected] = useState<number>(2);
-  const [selectedAvatar, setAvatar] = useState<number>(0);
+  const [selectedGender, setSelectedGender] = useState<number>(2);
+  const [selectedAvatar, setSelectedAvatar] = useState<number>(0);
   const [maleAvatars, setMaleAvatars] = useState<string[]>();
   const [femaleAvatars, setFemaleAvatars] = useState<string[]>();
-  let avatars: string[];
-  if (selectedGender === 1) avatars = maleAvatars ?? [];
-  else avatars = femaleAvatars ?? [];
+  const [selectedUpload, setSelectedUpload] = useState<string | null>();
+
+  const avatars =
+    selectedGender === 1 ? maleAvatars ?? [] : femaleAvatars ?? [];
+  const selectedImage = selectedUpload ?? avatars[selectedAvatar];
 
   const selected: string =
     'text-base font-poppins font-semibold text-[#FFFFFF] bg-[#3AC4A0] py-1 px-3 rounded-2xl shadow-none capitalize';
@@ -31,9 +33,11 @@ const UserSetting: React.FC = () => {
     'text-base font-poppins font-semibold text-[#7C7C7C] bg-[#FFFFFF] py-1 px-3 rounded-2xl shadow-none capitalize';
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const files = event.target.files;
-    // Handle selected files
-    console.log(files);
+    const file = event.target.files?.[0];
+    if (file != null) {
+      const imageURL = URL.createObjectURL(file);
+      setSelectedUpload(imageURL);
+    }
   };
 
   useEffect(() => {
@@ -107,7 +111,8 @@ const UserSetting: React.FC = () => {
         >
           <Image
             fill={true}
-            src={avatars[selectedAvatar]}
+            sizes="(max-width: 24px) 100vw, (max-width: 24px) 50vw, 33vw"
+            src={selectedImage}
             alt=""
             className="absolute h-full"
           />
@@ -135,7 +140,7 @@ const UserSetting: React.FC = () => {
               <Button
                 className={selectedGender === 1 ? selected : unselected}
                 onClick={() => {
-                  setSelected(1);
+                  setSelectedGender(1);
                 }}
               >
                 {t('setting.changeAvatar.content.male')}
@@ -143,7 +148,7 @@ const UserSetting: React.FC = () => {
               <Button
                 className={selectedGender === 2 ? selected : unselected}
                 onClick={() => {
-                  setSelected(2);
+                  setSelectedGender(2);
                 }}
               >
                 {t('setting.changeAvatar.content.female')}
@@ -158,7 +163,7 @@ const UserSetting: React.FC = () => {
                   return (
                     <div
                       key={index}
-                      className={`relative w-14 h-14 rounded-[1.75rem] overflow-hidden bg-[#DCFCE4]`}
+                      className={`relative w-14 h-14 rounded-[1.75rem] overflow-hidden bg-[#DCFCE4] hover:opacity-80 hover:cursor-pointer`}
                     >
                       <Image
                         src={value}
@@ -170,7 +175,8 @@ const UserSetting: React.FC = () => {
                       <div
                         className={`absolute w-14 h-14 rounded-[1.75rem] ${border}`}
                         onClick={() => {
-                          setAvatar(index);
+                          setSelectedAvatar(index);
+                          setSelectedUpload(null);
                         }}
                       />
                     </div>
@@ -185,11 +191,15 @@ const UserSetting: React.FC = () => {
               type="file"
               className="hidden"
               id="fileInput"
+              accept=".jpg, .jpeg, .png, .heic, .heif"
               onChange={handleFileChange}
             />
-            <Button className="min-w-[21.4375rem] mt-5 mb-4 text-base font-poppins font-semibold text-[#FFFFFF] bg-[#3AC4A0] rounded-2xl shadow-none capitalize">
+            <label
+              htmlFor="fileInput"
+              className="min-w-[21.4375rem] py-3 mt-5 mb-4 text-base font-poppins font-semibold text-[#FFFFFF] bg-[#3AC4A0] rounded-2xl text-center hover:opacity-80 hover:cursor-pointer"
+            >
               {t('setting.changeAvatar.content.upload')}
-            </Button>
+            </label>
           </div>
         </Card>
       </CardGradient>

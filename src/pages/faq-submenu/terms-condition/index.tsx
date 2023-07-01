@@ -5,7 +5,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import id from 'public/locales/id';
 import { useTranslation } from 'react-i18next';
 
-export default function Legal(): React.ReactElement {
+const TersmCondition: React.FC = () => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
 
@@ -29,8 +29,31 @@ export default function Legal(): React.ReactElement {
         <p className="font-semibold text-lg font-poppins font-18 text-neutral-600 text-center">
           {t('termAndCondition.title')}
         </p>
-        <div className=" lg:px-[10px] min-h-[calc(100vh-100px)] justify-center text-justify bg-opacity-100 bg-neutral-100 border-white py-4 border-4 w-[600px]">
-          <p className=" mb-5 font-semibold font-poppins font-14 font-600 leading-5 ">
+        <div
+          className={` lg:px-[10px] min-h-[calc(100vh-100px)] justify-center text-justify bg-opacity-100 bg-neutral-100 border-white py-4 border-4 ${
+            width !== undefined && width > 600 ? 'w-[600px]' : 'w-full'
+          } 
+          ${
+            width !== undefined && width < 370
+              ? 'h-[38rem]'
+              : width !== undefined && width < 400
+              ? 'h-[45rem]'
+              : width !== undefined && width < 415
+              ? 'h-[48rem]'
+              : ''
+          } bg-white`}
+        >
+          <p
+            className={`mb-5 font-semibold font-poppins font-14 font-600 leading-5 ${
+              width !== undefined && width < 370
+                ? 'h-[38rem]'
+                : width !== undefined && width < 400
+                ? 'h-[45rem]'
+                : width !== undefined && width < 415
+                ? 'h-[48rem]'
+                : ''
+            } bg-white`}
+          >
             {t('termAndCondition.lastupdate')}{' '}
             <span className="text-purple-600">
               {t('termAndCondition.updatedate')}
@@ -60,4 +83,6 @@ export default function Legal(): React.ReactElement {
       </CardGradient>
     </PageGradient>
   );
-}
+};
+
+export default TersmCondition;

@@ -65,9 +65,8 @@ const UserSetting: React.FC = () => {
       startAdornment: FileTextIcon,
       onClick: async () => {
         try {
-          await router.push('/legal');
+          await router.push('/faq-submenu');
         } catch (error) {
-          // Handle the error if needed
           console.error('Error navigating to FAQ:', error);
         }
       },
@@ -81,7 +80,6 @@ const UserSetting: React.FC = () => {
         try {
           await router.push('/faq');
         } catch (error) {
-          // Handle the error if needed
           console.error('Error navigating to FAQ:', error);
         }
       },

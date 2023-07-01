@@ -24,9 +24,6 @@ const FaqSubmenu: React.FC = () => {
 
   const menus = [
     {
-      onClick: () => {}
-    },
-    {
       label: 'Term & Condition',
       altStartAdornment: 'term & condition',
       startAdornment: FileTextIcon,

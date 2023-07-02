@@ -15,22 +15,62 @@ export default function FAQ(): React.ReactElement {
   return (
     <PageGradient
       defaultGradient
-      className="z-0 sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+      className={`z-0 sm:relative sm:pb-20  overflow-hidden flex flex-col items-center w-full bottom-0  ${
+        width !== undefined && width < 370
+          ? 'w-[90%]'
+          : width !== undefined && width < 500
+          ? 'w-[90%]'
+          : width !== undefined && width < 400
+          ? 'w-[40%]'
+          : width !== undefined && width > 600
+          ? 'w-[600px]'
+          : ''
+      } ${
+        width !== undefined && width < 370
+          ? 'h-[50rem]'
+          : width !== undefined && width < 400
+          ? 'h-[50rem]'
+          : width !== undefined && width < 415
+          ? 'h-[48rem]'
+          : ''
+      } bg-white`}
     >
       <CardGradient
         defaultGradient
-        className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
-          width !== undefined && width < 370
-            ? 'h-[38rem]'
+        className={`z-1 relative flex flex-col justify-center items-center py-3  sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+          width !== undefined && width < 600
+            ? 'w-[99%] overflow-x-auto'
+            : width !== undefined && width < 500
+            ? 'w-[99%] overflow-x-visible'
             : width !== undefined && width < 400
-            ? 'h-[45rem]'
-            : width !== undefined && width < 415
-            ? 'h-[48rem]'
+            ? 'w-[99%] overflow-x-visible'
+            : width !== undefined && width > 600
+            ? 'w-[600px] overflow-x-visible'
             : ''
-        } bg-white`}
+        }bg-white`}
       >
-        <div className="w-full bg-white rounded-2xl flex justify-center p-5  ">
-          <div className=" w-[600px] lg:w-1/2  border-neutral-50 border-0 p-10">
+        <div className="w-full bg-white rounded-2xl flex justify-center ">
+          <div
+            className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-hidden p-2 relative justify-center text-justify bg-opacity-100 border-white border-4 ${
+              width !== undefined && width < 600
+                ? 'w-full overflow-x-auto'
+                : width !== undefined && width < 500
+                ? 'w-[99%] overflow-x-visible'
+                : width !== undefined && width < 400
+                ? 'w-[99%] overflow-x-visible'
+                : width !== undefined && width > 600
+                ? 'w-[600px] overflow-x-visible'
+                : ''
+            }   ${
+              width !== undefined && width < 370
+                ? 'h-full'
+                : width !== undefined && width < 400
+                ? 'h-[50rem]'
+                : width !== undefined && width < 415
+                ? 'h-[48rem]'
+                : 'h-full'
+            } bg-white`}
+          >
             <br />
             <p className="font-semibold text-lg font-poppins font-18 text-neutral-600 text-center">
               {t('faq.settings')}

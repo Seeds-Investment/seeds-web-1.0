@@ -190,84 +190,6 @@ export default {
           'We have applied technology and policies consistent with the prevailing rules of Indonesia with the objective of protecting your privacy from unauthorized access and improper use and we will update these steps as new technology develops as necessary.'
         ]
       }
-    },
-    circleMembership: {
-      title: 'Circle Membership',
-      lastUpdated: 'Terakhir Diperbarui: ',
-      date: '26 April 2022',
-      overview:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      content: {
-        title: {
-          1: 'Owner',
-          2: 'User'
-        },
-        desc: {
-          1: 'test desc'
-        }
-      }
-    },
-    socialMediaGuide: {
-      title: 'Social Media Guidelines',
-      lastUpdated: 'Terakhir Diperbarui: ',
-      date: '26 April 2022',
-      overview:
-        'Seeds are built to bring people to meet each other and talk around investing, sharing ideas and investing together. Our social & community guidelines are meant to explain what is and isn’t allowed on Seeds, and ensure that everyone has a good experience. If you come across a message that appears to break these rules, please report it to us. We may take a number of steps, including issuing a warning, removing the content, or removing the accounts and/or servers responsible. \n In order to meet the goals of this community, it’s important for members to feel like they are in a safe place that is populated by people with shared interests. As such, we request that you read and adhere to the guidelines that follow.',
-      content: {
-        rules: {
-          1: {
-            title: 'Guidelines',
-            items: {
-              1: 'Treat others online as you would treat them in real life',
-              2: 'Be tolerant towards other’s viewpoints; respectfully disagree when opinions do not align',
-              3: 'Respect the privacy and personal information of other alumni. Communicate with courtesy and respect'
-            }
-          },
-          2: {
-            title: 'Please do not',
-            items: {
-              1: 'Make personal attacks on other community members',
-              2: 'Use defamatory remarks or make false statements against others',
-              3: 'Post prejudiced comments or profanity\n',
-              4: 'Bully or make inflammatory remarks to other community members',
-              5: 'Organize, participate in, or encourage harassment of others. Disagreements happen and are normal, but continuous, repetitive, or severe negative comments may cross the line into harassment and are not tolerated at Seeds.',
-              6: 'Organize, promote, or coordinate servers around hate speech. It’s unacceptable to attack a person or a community based on attributes such as their race, ethnicity, national origin, sex, gender, sexual orientation, religious affiliation, or disabilities.',
-              7: 'Make threats of violence or threaten to harm others. This includes indirect threats, as well as sharing or threatening to share someone’s private personal information.',
-              8: 'Sexualize minors in any way. This includes sharing content or links which depict minors in a pornographic, sexually suggestive, or violent manner, and includes illustrated or digitally altered pornography that depicts minors (such as lolicon, station, or cub). We will report illegal content to the relevant authority.',
-              9: 'Share sexually explicit content of yourselves or other people, or share or promote sharing of intimate imagery (also known as revenge porn) in an attempt to shame or degrade someone.',
-              10: 'Share content that glorifies or promotes suicide or self-harm, including any encouragement to others to cut themselves, or embrace eating disorders such as anorexia or bulimia.',
-              11: 'Share images of sadistic gore or animal cruelty.',
-              12: 'Use Seeds for the organization, promotion, or support of violent extremism.',
-              13: 'Evade user blocks or server bans. - send unwanted, repeated friend requests or messages, especially after they’ve made it clear they don’t want to talk to you anymore. - try to hide your identity in an attempt to contact someone who has blocked you, or otherwise circumvent the tools we have which enable users to protect themselves.',
-              14: 'Deceive and impersonate: - misrepresent yourself by using the Seeds logo or any brands within your avatar and posts.',
-              15: 'Solicit: - post, share or display any video content on our platform that includes third-party advertising without our prior consent.'
-            }
-          },
-          3: {
-            title: 'Here are some rules for our trading platform',
-            items: {
-              1: 'Never post false information: Never post misleading information about your account and/or your trading skills.',
-              2: 'Never post Investment advice: Never offer any direct investment advice, or anything that may be interpreted as investment advice. - call for direct action (such as “invest in”).',
-              3: 'Do not engage in Market manipulation: - make false promises or entice others to trade/invest or attempt to create volatile market situations.',
-              4: 'Do not attempt to manipulate other users: - provide instructions on specific trades or on how to trade.',
-              5: 'Do not spread fake news: - share/spread misinformation, unverifiable information and rumors.',
-              6: 'Do not engage in spamming: - use collusive and manipulation practices and avoid transferring misinformation in order to distort the financial markets, or posting the same information multiple times on various posts.'
-            }
-          },
-          4: {
-            title: 'Consequences',
-            items: {
-              1: 'We will take action when we see someone violating these guidelines. Sometimes that just means giving someone a warning; other times it means revoking certain privileges or accounts entirely. We request that all community members report behavior that violates our guidelines to info@seeds.finance.'
-            }
-          },
-          5: {
-            title: 'Agreement',
-            items: {
-              1: 'By logging onto the community and activating your profile, you are considered to be in agreement with the terms and conditions listed above.'
-            }
-          }
-        }
-      }
     }
   },
   termAndCondition: {
@@ -278,27 +200,53 @@ export default {
     updatedate: '26 April 2022',
     tnc: {
       title: {
-        1: 'Umum',
-        2: 'Ketentuan Penggunaan Aplikasi',
-        3: 'Kewajiban Seeds',
-        4: 'Ganti Rugi',
-        5: 'Lisensi',
-        6: 'Meninggalnya Pengguna',
-        7: 'Hal Terkait Kekayaan Intelektual',
-        8: 'Penghentian',
-        9: 'Aneka Ragam'
+        1: 'Definisi',
+        2: 'Pernyataan Pengguna',
+        3: 'Ruang Lingkup Layanan',
+        4: 'Petunjuk Penggunaan',
+        5: 'Penggunaan Data Pribadi',
+        6: 'Batasan Tanggung Jawab',
+        7: 'Penundukan Terhadap Kebijakan Pengguna',
+        8: 'Hak Kekayaan Intelektual',
+        9: 'Penangguhan sementara',
+        10: 'Penghentian Layanan',
+        11: 'Penafian',
+        12: 'Hukum Yang Mengatur',
+        13: 'Variasi',
+        14: 'Penyelesaian Sengketa'
       },
       desc: {
-        1: 'Untuk dapat mengakses dan memanfaatkan Aplikasi Seeds, pengguna harus memiliki akun yang terdaftar di aplikasi Seeds. Seeds hanya bertindak sebagai pengelola dan pemilik situs/aplikasi Seeds. Benih dalam hal ini adalah penyedia sarana distribusi produk investasi yang ditampilkan dalam situs/aplikasi Benih, dimana produk tersebut dikelola oleh pihak yang telah bekerjasama dengan Benih dan telah memiliki izin untuk melakukan kegiatan usaha dari pihak pemerintah terkait. Seeds tidak memberikan jaminan apapun atas keuntungan yang akan diperoleh pengguna dari hasil setiap transaksi investasi atas produk yang tersedia dan dilakukan di situs/aplikasi Seeds. Dengan melakukan transaksi investasi melalui situs/aplikasi Seeds sebagai penyedia sarana distribusi produk investasi, pengguna secara sadar bersedia bertanggung jawab penuh atas segala tindakan yang dilakukan, dan seed gratis, termasuk anak perusahaan, afiliasi, pemegang saham, direktur, pejabat, karyawan sepenuhnya dari segala tuntutan, kerugian, pembayaran atau biaya apapun yang dikeluarkan oleh Bibit atau yang diajukan kepada Bibit baik secara langsung maupun tidak langsung, termasuk antara lain sehubungan dengan dilaksanakannya atau tidak dilaksanakannya instruksi transaksi dari pengguna.\n Rekomendasi produk adalah ilustrasi produk investasi yang didistribusikan melalui situs/aplikasi Seeds, Pengguna secara sadar dan bertanggung jawab penuh atas segala tindakan yang dilakukan, termasuk namun tidak terbatas pada pemilihan produk investasi, jangka waktu, atau tingkat risiko investasi. Pengguna bersedia membebaskan Bibit, termasuk anak perusahaan, afiliasi, pemegang saham, direktur, komisaris, staf dari segala tuntutan, klaim atau perselisihan, kerugian, transaksi atau segala jenis biaya yang dikenakan kepada pengguna atau Benih baik secara langsung maupun tidak langsung, termasuk tetapi tidak terbatas pada biaya penasihat hukum dan biaya perkara, yang terkait dengan dilaksanakan atau tidak dilaksanakannya instruksi transaksi dari pengguna.\n  Seeds beserta pengelola produk investasi di situs/aplikasi Seeds bertanggung jawab atas kelancaran proses transaksi pengguna termasuk proses pendaftaran, jual beli agar dapat dilakukan dan terkirim dengan baik. Pengguna telah mengetahui semua pilihan produk investasi yang ditawarkan melalui situs/aplikasi Seeds, oleh karena itu Seeds tidak bertanggung jawab atas setiap produk investasi tersebut. \n  Setiap informasi dan data yang diterima oleh Seeds melalui situs/aplikasi Seeds akan diteruskan ke masing-masing pengelola produk investasi yang dipilih oleh pengguna. Dan dengan cara ini, pengguna memberikan persetujuannya kepada Seeds untuk meneruskan data yang terkumpul melalui situs/aplikasi Seeds kepada pihak yang mengelola produk investasi sesuai dengan pilihan pengguna. \n Dengan demikian Benih berhak untuk mengumpulkan, menyimpan dan/atau meneruskan informasi dan data tersebut. Selama tidak bertentangan dengan S&K Seeds, setiap syarat dan ketentuan umum yang berlaku dan tercantum di situs/aplikasi Seeds (termasuk pengaturan terkait besaran biaya/biaya layanan) dinyatakan lengkap, dan pengguna dengan ini tunduk terhadap syarat dan ketentuan ini. \n\n Kami berhak, dari waktu ke waktu, melakukan perubahan, penambahan dan/atau modifikasi pada seluruh atau sebagian isi S&K Seeds. Jika Anda menggunakan Seeds secara terus menerus setelah perubahan, penambahan dan/atau modifikasi terhadap seluruh atau sebagian isi S&K Seeds, maka hal tersebut dianggap sebagai bentuk persetujuan Anda terhadap perubahan, penambahan dan/atau modifikasi tersebut. Jika Anda tidak menyetujui perubahan, penambahan dan/atau modifikasi, Anda diminta untuk berhenti mengakses dan menggunakan situs/aplikasi Seeds. Pengguna dapat mengakses dan memanfaatkan situs/aplikasi Seeds setelah melengkapi seluruh dokumen identitas pengguna sesuai ketentuan yang berlaku. \n Pengguna menyatakan bahwa mereka telah membaca, mengetahui, memahami, dan sepenuhnya menyetujui S&K Seeds. Dengan menyetujui S&K ini, Pengguna tunduk dan terikat pada Syarat dan Ketentuan, Kebijakan Privasi, Ketentuan Transaksi, Tata Cara Transaksi, dan ketentuan lain yang ditetapkan oleh pengelola produk investasi di situs/aplikasi Seeds, beserta perubahan atau ketentuan tambahan jika apapun, untuk tujuan implementasi. \n Seed berhak menolak permintaan pembuatan akun jika: dokumen pendukung identitas pengguna tidak lengkap atau tidak benar; dan pengguna melakukan tindakan yang tidak sesuai dengan cara yang diperlukan dalam pembuatan akun berdasarkan S&K Seeds. Seeds berhak untuk membatasi dan menghentikan akses pengguna dalam menggunakan situs/aplikasi Seeds untuk transaksi investasi atas produk investasi yang ditampilkan di situs/aplikasi Seeds sewaktu-waktu dengan atau tanpa pemberitahuan terlebih dahulu, dengan alasan antara lain sebagai akibat dari proses pemeliharaan dan perbaikan sistem, pengguna melanggar ketentuan yang tercantum dalam Syarat & Ketentuan ini atau perjanjian lain antara seed dan pengguna, dan penyimpangan lain yang terkait dengan penggunaan akun investasi atau transaksi investasi. Pengguna setuju bahwa kesalahan atau a',
+        1: 'Dalam Syarat dan Ketentuan ini: \n “Aplikasi” adalah fasilitas yang disediakan oleh PT Benih Investasi Teknologi melalui software terbuka dengan tujuan untuk menyediakan Produk dan Layanan bagi Pengguna. \n “Platform” berarti layanan berbasis teknologi dalam bentuk situs, Aplikasi web dan/atau Aplikasi mobile “Platform SEEDS” Platform dengan merek dagang SEEDS yang dimiliki oleh PT Benih Investasi Teknologi. \n “Penyedia Pihak Ketiga” berarti Platform atau layanan berbasis teknologi milik Pihak Ketiga yang terintegrasi dengan Platform SEEDS.',
 
-        2: 'Content Ketentuan pengguna aplikasi, add \n to each paragraph so the logic is reusable from the page',
-        3: 'Content Kewajiban Seeds',
-        4: 'Content Ganti Rugi',
-        5: 'Content Lisensi',
-        6: 'Content Meninggalnya Pengguna',
-        7: 'Content Hal terkait kekayaan intelektual',
-        8: 'Content Penghentian',
-        9: 'Content aneka ragam'
+        2: 'Dengan ini anda menyatakan bahwa dalam hal anda bertindak sebagai perorangan maka Anda sudah berusia minimal 18 tahun dan tidak dibawah pengampuan dan apabila Anda bertindak untuk mewakili badan usaha maka Anda adalah mewakili badan usaha dimaksud sesuai dengan kewenangan dalam anggaran dasar dan badan usaha dimaksud telah secara sah didirikan berdasarkan peraturan perundang-undangan yang berlaku.',
+        3: 'SEEDS menyediakan Platform perdagangan elektronik (marketplace) di mana Pengguna/anda dapat memasarkan dan/atau melakukan transaksi jual-beli aset digital dan variasinya ( “Produk”), dengan menggunakan berbagai fitur serta layanan yang telah tersedia ( “Fitur”) yang dipasarkan di dalam teritori Negara Republik Indonesia. \n Sebagai penunjang bisnis dan penyedia Platform perdagangan elektronik, SEEDS menjamin keamanan dan kenyamanan bagi para Pengguna dan menyediakan layanan dengan fitur-fitur sebagai berikut (‘Service’): ',
+        4: 'Anda hanya dapat menggunakan Aplikasi setelah Anda melakukan pendaftaran. SEEDS akan memberikan anda suatu akun pribadi yang dapat diakses dengan OTP (one-time password) yang akan diterima oleh nomor handphone yang telah anda daftarkan sebelumnya yang berfungsi sebagai kode akses untuk masuk pada akun Anda. Anda bertanggungjawab secara mandiri atas kerahasiaan OTP yang anda terima dalam rangka penggunaan Aplikasi. Tanggung jawab anda disini juga termasuk namun tidak terbatas pada tanggung jawab hukum dari Pengguna kepada SEEDS dan/atau pihak lain yang terkait dengan layanan disediakan oleh SEEDS di dalam Aplikasi. \n  Anda bertanggung jawab atas penggunaan akun yang anda miliki dan anda berjanji untuk tidak memberikan wewenang kepada orang lain untuk menggunakan identitas Anda atau menggunakan akun anda. Anda dilarang untuk menyerahkan atau mengalihkan akun Anda kepada pihak lain. Anda harus menjaga keamanan dan kerahasiaan kata sandi akun Anda dan setiap identifikasi yang SEEDS berikan kepada anda. Dalam hal terjadi pengungkapan atas kata sandi anda, dengan cara apapun, yang mengakibatkan setiap penggunaan yang tidak sah atas akun atau identitas Anda, serta menimbulkan kerugian pada diri anda, maka SEEDS tidak bertanggung jawab atas ketidak absahan transaksi yang ditimbulkan olehnya.\n  Anda hanya dapat memiliki 1 (satu) akun SEEDS resmi. SEEDS berhak memblokir secara permanen pada akun kedua dan seterusnya apabila 1 (satu) orang dengan identitas yang sama didapati memiliki lebih dari 1 (satu) akun dan SEEDS tidak bertanggung jawab atas segala bentuk kerugian yang timbul sebagai akibat dari pelanggaran tersebut. \n Anda menjamin bahwa Anda akan menggunakan Aplikasi hanya untuk tujuan yang dimaksud untuk mendapatkan Layanan. Anda tidak diperbolehkan untuk menggunakan Aplikasi untuk tujuan penipuan, atau menyebabkan ketidaknyamanan baik kepada SEEDS maupun Pengguna lainnya. \n Anda tidak diperkenankan untuk membahayakan, mengubah atau memodifikasi Aplikasi atau Platform atau mencoba untuk membahayakan, mengubah atau memodifikasi Aplikasi atau Platform dengan cara apapun. SEEDS tidak bertanggungjawab atas kerugian yang timbul akibat penggunaan perangkat yang tidak sesuai atau penggunaan versi Aplikasi yang tidak sesuai dengan perangkat yang anda miliki. SEEDS berhak untuk melarang anda untuk menggunakan Aplikasi lebih lanjut jika Anda menggunakan Aplikasi dengan perangkat yang tidak kompatibel. Anda berjanji bahwa Anda hanya akan menggunakan suatu jalur akses yang diperbolehkan untuk Anda gunakan.',
+        5: 'Data pribadi berarti setiap informasi mengenai perorangan yang diidentifikasi atau dapat diidentifikasi yang terekam dalam bentuk apapun.\n SEEDS dapat meminta anda untuk memberikan data pribadi yang diperlukan sebagaimana diperlukan oleh sifat fungsional layanan dan untuk memproses serta memanfaatkan data pribadi anda  dalam ruang lingkup tujuan tertentu tersebut. Ketentuan mengenai Data Pribadi sebagaimana dimaksud lebih lanjut diatur dalam Kebijakan Privasi. \n  Anda wajib memberikan informasi yang akurat dan lengkap terkait data pribadi, termasuk  memberikan kepada SEEDS bukti identitas apapun yang secara wajar dapat SEEDS mintakan sewaktu-waktu. \n Apabila terdapat perubahan atas data pribadi anda (misalnya jika Anda mengubah alamat surel, nomor telepon, atau jika Anda ingin membatalkan atau menghapus akun anda), mohon untuk memperbaharui rincian informasi anda melalui Aplikasi atau dengan mengirimkan permintaan anda kepada SEEDS melalui help center yang disediakan. SEEDS akan, sepanjang dapat dilakukan oleh SEEDS, memberlakukan perubahan yang diminta tersebut dalam waktu 14 (empat belas) hari kerja sejak diterimanya pemberitahuan perubahan. \n Apabila disyaratkan oleh hukum dan peraturan perundang-undangan yang berlaku, SEEDS dapat membagikan data pribadi anda kepada lembaga-lembaga yang berwenang untuk kepentingan pemenuhan kepatuhan \n Dengan persetujuan anda, SEEDS berhak meneruskan data pribadi anda kepada afiliasinya, Penyedia Pihak Ketiga dan penyedia layanan pembayaran, untuk tujuan:',
+        6: 'SEEDS tidak bertanggung jawab atas keamanan Data Pribadi dan/atau informasi lain yang Anda berikan ke Platform milik Pihak Ketiga. Penerimaan dan penggunaan Anda atas Platform, produk dan/atau jasa dari Penyedia Pihak Ketiga tunduk pada persyaratan dan ketentuan yang Anda setujui secara terpisah dengan  Penyedia Pihak Ketiga dan atas resiko Anda sendiri. \n SEEDS tidak akan bertanggung jawab atas segala kerugian yang mungkin terjadi karena ketidaklengkapan, ketidakakuratan, atau ketidakjelasan data pribadi yang anda berikan.',
+        7: 'Anda tunduk pada Kebijakan Pengguna yang berlaku.',
+        8: 'SEEDS memiliki dan akan mempertahankan semua hak, kepemilikan, dan kepentingan terkait Platform, Aplikasi, Layanan dan pengembangannya, bersama dengan alat, materi, pedoman, dan instruksi apa pun yang disediakan oleh SEEDS kepada anda , serta semua hak kekayaan intelektual, termasuk namun tidak terbatas pada semua hak cipta, merek dagang, paten, hak dalam basis data, dan hak moral.',
+        9: 'SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan penggunaan yang salah, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
+        10: 'SEEDS berhak untuk, secara seketika mengakhiri Layanan apabila anda gagal untuk memenuhi kewajiban anda sebagaimana diatur dalam Syarat dan Ketentuan ini. ',
+        11: 'SEEDS menggunakan cara-cara teknis dan keamanan yang tepat dan wajar untuk menjaga Aplikasi aman dan terbebas dari virus dan kesalahan. Namun demikian, SEEDS tidak menjamin bahwa system keamanan yang dimilikinya akan aman sepenuhnya dan tidak dapat ditembus. Oleh karena itu SEEDS tidak dapat menjamin keamanan database SEEDS dan SEEDS juga tidak dapat menjamin bahwa informasi yang Anda berikan tidak akan ditahan/terganggu saat pengirimannya.\n Aplikasi ini dapat mengalami keterbatasan, penundaan, gangguan dan masalah-masalah lain yang terdapat dalam penggunaan internet dan komunikasi elektronik, termasuk namun tidak terbatas pada perangkat yang digunakan oleh Anda rusak, tidak terhubung, berada di luar jangkauan, dimatikan atau tidak berfungsi. SEEDS tidak bertanggung jawab atas kegagalan penyimpanan data, kerusakan atau kerugian yang diakibatkan oleh masalah-masalah tersebut.',
+        12: 'Seluruh sengketa atau klaim yang timbul dari atau sehubungan dengan Syarat dan Ketentuan ini, akan diatur berdasarkan, dan ditafsirkan sesuai dengan ketentuan hukum Negara Republik Indonesia.',
+        13: 'Sewaktu-waktu, berhak untuk merubah, mengamandemen atau memodifikasi klausula-klausula sebagaimana diatur dalam Syarat dan Ketentuan ini. Dengan tetap mengakses dan menggunakan Platform SEEDS, Anda dianggap telah menerima dan menyetujui perubahan pada Syarat dan Ketentuan tersebut.',
+        14: 'Sengketa  yang timbul dari atau sehubungan dengan Ketentuan ini, termasuk setiap pertanyaan mengenai keberlakuan, keabsahan atau pengakhirannya akan diselesaikan dihadapan dan akan secara final diputuskan melalui arbitrase oleh Badan Arbitrase Nasional Indonesia (BANI) di Jakarta sesuai dengan Peraturan Badan Arbitrase Nasional Indonesia yang berlaku.',
+        15: 'Setiap sengketa  yang timbul dari atau sehubungan dengan Ketentuan ini, termasuk setiap pertanyaan mengenai keberlakuan, keabsahan atau pengakhirannya akan diselesaikan dihadapan dan akan secara final diputuskan melalui arbitrase oleh Badan Arbitrase Nasional Indonesia (BANI) di Jakarta sesuai dengan Peraturan Badan Arbitrase Nasional Indonesia yang berlaku.'
+      },
+      list: {
+        3: [
+          'Transaksi jual beli Produk;',
+          'Pencatatan transaksi jual beli melalui Aplikasi;',
+          'Pencatatan Pelanggan; dan',
+          'Fitur lain yang dapat SEEDS tambahkan dari waktu ke waktu (“Layanan”).'
+        ],
+        5: [
+          `Untuk Mengelola Pendaftaran Akun Pengguna. Apabila Anda hendak menggunakan produk atau layanan Penyedia Pihak Ketiga melalui Platform SEEDS, maka SEEDS akan memproses data pribadi Anda untuk dapat diteruskan ke Penyedia Pihak Ketiga yang anda pilih untuk kepentingan pendaftaran dan pelaksanaan layanan.`,
+
+          `Untuk Mengelola Pembayaran. SEEDS akan menerima dan memverifikasi data pribadi anda dan meneruskan informasi tersebut ke Penyedia Pihak Ketiga dalam rangka pelaksanaan suatu transaksi atau pembayaran yang telah anda setujui atau instruksikan sebelumnya.`,
+
+          `Untuk Menghubungi Anda. SEEDS dapat menggunakan data pribadi yang anda berikan untuk menghubungi anda dengan tujuan untuk menginformasikan dan/atau memasarkan produk dan layanan SEEDS.`
+        ]
       }
     },
     privacyPolicy: {
@@ -365,74 +313,99 @@ export default {
       }
     },
     circleMembership: {
-      title: 'Circle Membership',
-      desc: {
-        header_1: 'KETENTUAN PEMILIK CIRCLE',
-        header_2: 'PEMILIK CIRCLE',
-        bold_1: 'Ketentuan',
-        bold_2: 'Tanggal Efektif',
-        bold_3: 'Pemilik Circle',
-        p1: 'Syarat dan Ketentuan ini ("',
-        p2: '") berlaku pada tanggal dimana anda mengeklik tombol “Terima Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini ("',
-        p3: '") antara PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 ("',
-        p4: '") and entity yang menyetujui ketentuan-ketentuan ini ("',
-        p5: '")',
-        service: 'LAYANAN',
-        service_1:
-          'SEEDS menyediakan layanan teknologi berupa forum komunitas digital kepada Pengguna (“Circle” atau “Layanan”) yang mana atas layanan tersebut SEEDS dapat membebankan biaya berlangganan (“Biaya Berlangganan “) kepada Para Penggunanya.',
-        service_2:
-          'Pengguna pertama  yang membuat suatu Circle (“Pemilik Circle”) akan bertindak sebagai pengawas dan administrator atas Circle dan memiliki hak untuk dapat menerima, mengajak dan memilih Pengguna lain untuk dapat bergabung dalam Circle-nya dan menjadi anggota Circle (‘”Anggota Circle”).',
-        blue_1: 'Kebijakan Pengguna',
-        service_3:
-          'Pemilik Circle dan para Anggota Circle dapat saling membagikan konten keuangan dan wajib menaati',
-        service_4:
-          'serta Syarat & Ketentuan lainnya yang ditentukan oleh SEEDS.',
-        service_5:
-          'Hak-hak Pemilik Circle sebagaimana diatur dalam Ketentuan ini bersifat non-eksklusif, bersifat pribadi dan tidak dapat dipindahkan atau dialihkan. Otorisasi Pemilik Circle  untuk menggunakan layanan bergantung pada kepatuhan Pemilik Circle  yang berkelanjutan terhadap Ketentuan ini.',
-        service_6:
-          'SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan Pemilik Circle an yang melanggar, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
-        responsibility: 'TANGGUNG JAWAB PEMILIK CIRCLE',
-        responsibility_1:
-          'Pemilik Circle dilarang untuk; (i) mengirim atau menyimpan materi apa pun yang bersifat melanggar, cabul, mengancam, memfitnah,  melanggar hukum atau bersifat sadistik, (ii) mengirim materi apa pun yang mengandung virus perangkat lunak, worm, trojan horse atau program berbahaya lainnya; (iii) mengganggu atau mengganggu integritas atau kinerja platform, aplikasi, sistem atau data di dalamnya; (iv) mendapatkan akses tidak sah ke platform, aplikasi, atau sistem atau jaringan terkait.',
-        responsibility_2:
-          'Circle  dilarang untuk melakukan, menulis, mengunggah, memposting atau mengatakan hal apapun yang dapat merusak atau yang bisa diperkirakan mungkin merusak kepentingan atau reputasi SEEDS dan afiliasinya.',
-        commision_title: 'BIAYA DAN KOMIS',
-        commision_1:
-          'Pemilik Circle dapat memilih fitur-fitur layanan yang akan disediakan untuk Circle-nya dan atas ketersediaan fitur-fitur tersebut, Pemilik Circle beserta Anggota Circle dapat dibebankan biaya berlangganan (“Biaya Berlangganan”) dengan nilai, prosedur dan metode pembayaran sebagaimana yang diatur dalam Aplikasi SEEDS. SEEDS dapat merubah besarnya Biaya Berlangganan dari waktu ke waktu.',
-        commision_2:
-          'Atas jasanya dalam mengola Circle, SEEDS akan memberikan komisi kepada Pemilik Circle  (“Komisi”) sebesar 20% dari nilai Biaya Berlangganan Anggota Circle. SEEDS dapat merubah besarnya biasa Komisi dari waktu ke waktu.',
-        commision_3:
-          'Tata cara pembayaran Komisi akan diatur lebih lanjut dalam Aplikasi SEEDS.',
-        commision_4:
-          'SEEDS berhak memotong Pajak Penghasilan Pemilik Circle dari pembayaran Komisi.',
-        commision_5:
-          'SEEDS dapat merubah tata cara pembayaran Komisi dari waktu ke waktu.',
-        protection_title: 'PENGGUNAAN DAN PERLINDUNGAN DATA PRIBADI ',
-        protection_1:
-          'pribadi berarti setiap informasi mengenai perorangan yang diidentifikasi atau dapat diidentifikasi yang terekam dalam bentuk apapun.',
-        protection_2:
-          'SEEDS dapat meminta Pemilik Circle  untuk memberikan data pribadi yang diperlukan sebagaimana diperlukan oleh sifat fungsional layanan dan untuk memproses serta memanfaatkan data pribadi Pemilik Circle  dalam ruang lingkup tujuan tertentu tersebut. ',
-        protection_3:
-          'SEEDS akan mengambil langkah-langkah yang wajar untuk melindungi data pribadi dari penggunaan yang tidak sah atau pengungkapan yang tidak sah dan kerugian yang tidak disengaja, kehancuran atau kerusakan.',
-        protection_4:
-          'Pemilik Circle  harus memastikan keakuratan dan kelengkapan entri data pribadi. SEEDS tidak akan bertanggung jawab atas segala kerugian yang mungkin terjadi karena ketidaklengkapan, ketidakakuratan, atau ketidakjelasan data pribadi dari Pemilik Circle ',
-        intellectual: 'HAK KEKAYAAN INTELEKTUAL',
-        intellectual_desc:
-          'SEEDS memiliki dan akan mempertahankan semua hak, kepemilikan, dan kepentingan terkait Platform, Aplikasi, Layanan dan pengembangannya, bersama dengan alat, materi, pedoman, dan instruksi apa pun yang disediakan oleh SEEDS kepada Pemilik Circle , serta semua hak kekayaan intelektual, termasuk namun tidak terbatas pada semua hak cipta, merek dagang, paten, hak dalam basis data, dan hak moral.',
-        limitation: 'BATASAN TANGGUNG JAWAB',
-        limitation_desc:
-          'SEEDS tidak akan bertanggung jawab kepada Pemilik Circle , Anggota Circle, dan Pihak Ketiga lainnya atas hilangnya pendapatan atau kerugian tidak langsung, khusus, insidental, konsekuensial atau hukuman, yang timbul sebagai sehubungan dengan isi konten yang diunggah oleh Pemilik Circle  dan/atau Anggota Circle, atau akibat kegagalan Pemilik Circle  dalam memenuhi kewajibannya sebagaimana diatur dalam Ketentuan ini.',
-        termination: 'PENGAKHIRAN SEKETIKA',
-        termination_1:
-          'SEEDS berhak untuk, secara seketika mengakhiri Layanan yang diberikan kepada Pemilik Circle apabila Pemilik Circle gagal untuk memenuhi kewajibannya sebagaimana diatur dalam Ketentuan ini. ',
-        termitation_2:
-          'Pengakhiran Layanan, bagaimanapun timbulnya, tidak akan mempengaruhi atau merugikan hak-hak yang diperoleh oleh Pemilik Circle pada saat pengakhiran atau kelanjutan dari tiap ketentuan yang secara tegas dinyatakan tetap berlaku atau secara implisit tetap berlaku walaupun terjadi pengakhiran.',
-        governing_law: 'HUKUM YANG MENGATUR',
-        governing_law_desc:
-          'Ketentuan ini dan seluruh sengketa atau klaim yang timbul dari atau sehubungan dengan hal tersebut, akan diatur berdasarkan, dan ditafsirkan sesuai dengan ketentuan hukum Negara Republik Indonesia.',
-        dispute_settlemet: 'PENYELESAIAN SENGKETA',
-        dispute_settlemet_desc:
-          'sengketa  yang timbul dari atau sehubungan dengan Ketentuan ini, termasuk setiap pertanyaan mengenai keberlakuan, keabsahan atau pengakhirannya akan diselesaikan dihadapan dan akan secara final diputuskan melalui arbitrase oleh Badan Arbitrase Nasional Indonesia (BANI) di Jakarta sesuai dengan Peraturan Badan Arbitrase Nasional Indonesia yang berlaku.'
+      title: 'KETENTUAN PEMILIK CIRCLE ',
+      announcement:
+        'Syarat dan Ketentuan ini (“Ketentuan”) berlaku pada tanggal dimana anda mengeklik tombol “Terima Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini (“Tanggal Efektif”) antara PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and entity yang menyetujui ketentuan-ketentuan ini (“Pemilik Circle ”).',
+      lastupdate: 'Terakhir Diperbarui: ',
+      updatedate: '26 April 2022',
+      content: {
+        title: {
+          1: 'LAYANAN',
+          2: 'TANGGUNG JAWAB PEMILIK CIRCLE ',
+          3: 'BIAYA DAN KOMISI',
+          4: 'PENGGUNAAN DAN PERLINDUNGAN DATA PRIBADI ',
+          5: 'HAK KEKAYAAN INTELEKTUAL',
+          6: 'BATASAN TANGGUNG JAWAB',
+          7: 'PENGAKHIRAN SEKETIKA',
+          8: 'HUKUM YANG MENGATUR',
+          9: 'PENYELESAIAN SENGKETA'
+        },
+        desc: {
+          1: 'SEEDS provides technology services in form of digital community forums to Users ("Circle" or “Service”) which SEEDS may charge a subscription fee ("Subscription Fee") to its Users. \n  The first user who creates a Circle (“Circle Owner”) will act as supervisor and administrator of the Circle and has the right to be able to accept, invite and select other Users to join his/her Circle and become Circle Member (\'”Circle Member”) . \n Circle Owners and Circle Members may share financial content among them and must comply with the User Policy and other Terms & Conditions as determined by SEEDS. \n The rights of Circle Owner as stipulated in this Terms is non-exclusive, personal and shall not assignable or transferable. Circle Owner authorization to use the services is contingent on Circle Owner’s continued compliance with these Terms. \n  SEEDS menyediakan layanan teknologi berupa forum komunitas digital kepada Pengguna (“Circle” atau “Layanan”) yang mana atas layanan tersebut SEEDS dapat membebankan biaya berlangganan (“Biaya Berlangganan “) kepada Para Penggunanya. \n Pengguna pertama  yang membuat suatu Circle (“Pemilik Circle”) akan bertindak sebagai pengawas dan administrator atas Circle dan memiliki hak untuk dapat menerima, mengajak dan memilih Pengguna lain untuk dapat bergabung dalam Circle-nya dan menjadi anggota Circle (‘”Anggota Circle”). \n Pemilik Circle dan para Anggota Circle dapat saling membagikan konten keuangan dan wajib menaati Kebijakan Pengguna serta Syarat & Ketentuan lainnya yang ditentukan oleh SEEDS. \n Hak-hak Pemilik Circle sebagaimana diatur dalam Ketentuan ini bersifat non-eksklusif, bersifat pribadi dan tidak dapat dipindahkan atau dialihkan. Otorisasi Pemilik Circle  untuk menggunakan layanan bergantung pada kepatuhan Pemilik Circle  yang berkelanjutan terhadap Ketentuan ini.\n SEEDS may from time to time improve or modify the Services or new features to the Services. SEEDS shall entitle to suspend the Services if deemed necessary for an emergency situation to prevent any potential loss or damage related to the systems. Any such suspension will be to the minimum extent and for the shortest duration required to: (i) prevent or terminate the offending use, (ii) prevent or resolve the emergency situation, or (iii) comply with applicable law. \n SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan Pemilik Circle an yang melanggar, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
+          2: 'Circle Owner shall be prohibited to; (i) send or store any material that is infringing, obscene, threatening, libelous, or otherwise unlawful or sadistic in nature, (ii) send any material that contains software viruses, worms, trojan horses or other oharmful program; (iii) interfere with or interfere with the integrity or performance of the platform, application, system or the data in it; (iv) gain unauthorized access to the platform, application or related systems or networks. \n Pemilik Circle dilarang untuk; (i) mengirim atau menyimpan materi apa pun yang bersifat melanggar, cabul, mengancam, memfitnah,  melanggar hukum atau bersifat sadistik, (ii) mengirim materi apa pun yang mengandung virus perangkat lunak, worm, trojan horse atau program berbahaya lainnya; (iii) mengganggu atau mengganggu integritas atau kinerja platform, aplikasi, sistem atau data di dalamnya; (iv) mendapatkan akses tidak sah ke platform, aplikasi, atau sistem atau jaringan terkait. \n Circle Owner shall not at any time do, write, upload, post or say anything which damages or which could reasonably be expected to damage the interests or reputation of SEEDS and its affiliation. \n  Pemilik Circle  dilarang untuk melakukan, menulis, mengunggah, memposting atau mengatakan hal apapun yang dapat merusak atau yang bisa diperkirakan mungkin merusak kepentingan atau reputasi SEEDS dan afiliasinya.',
+          3: 'Circle Owner may choose the service features to be provided in his/her Circle and upon the availability of these features, the Circle Owner Circle Members may be charge with subscription fee (“Subscription Fee”) with the amount, procedure and method of payment as stipulated in SEEDS Application. SEEDS may change the amount of Subscription Fee from time to time. \n For ihis/her services in managing the Circle, SEEDS will give commission to the Circle Owner ("Commission") of 20% of the value of the Circle Member Subscription Fee. SEEDS may change the amount of the commission fee from time to time. \n Terms of Payment of the Commission fee is further regulated in SEEDS Application. \n SEEDS shall entitle to deduct Circle Owner’s Income Tax from Commission payment. \n SEEDS may change the terms of payment of  Commission Fee from time to time.',
+          4: 'Personal data shall means any information about an identified or identifiable living individual recorded in any form. \n   SEEDS may request Circle Owner to provide the necessary personal data as required by the functional nature of the service and to process and utilize Circle Owner personal data within the scope of that particular purpose. \n    SEEDS shall take reasonable measures to protect the personal data from unauthorized use or disclosure and from accidental loss, destruction or damage.\n    Circle Owner shall ensure the accuracy and completeness to the personal data entry. SEEDS will hold no responsibility to any damage that may occur due to incompleteness, inaccuracy, or unclearness of personal data from Circle Owner.',
+          5: 'SEEDS shall own and retains all rights, titles, and interests related to the Platform, Application, Services and improvements thereto, together with any tools, materials, guidelines, and instructions provided by SEEDS to Circle Owner, as well as all intellectual property rights, including but not limited to all copyrights, trademarks, patents, rights in databases, and moral rights.',
+          6: 'SEEDS shall not be liable to Circle Owners, Circle Members and other Third Parties for loss of income or indirect, special, incidental, consequential or punitive damages, that arise in connection with the content uploaded by Circle Owners and/or Circle Member, or as a result of Circle Owner failure to fulfill his/her obligations as stipulated in these Terms.',
+          7: 'SEEDS shall be entitled to immediate terminate the Services given to Circle Owner if Circle Owner fail to perform its obligation as stipulated in this Terms. \n  Termination of Service, however it arises, shall not affect or prejudice the accrued rights of Circle Owner as at termination or the continuation of any provision expressly stated to survive, or implicitly surviving, termination.',
+          8: 'This Terms and any dispute or claim arising out of or in connection with it or its subject matter, shall be governed by, and construed in accordance with, the laws of Republic of Indonesia.',
+          9: 'Any dispute arising out of or in connection with this Terms, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration in Jakarta in accordance with the Arbitration Rules of Badan Arbitrase Nasional Indonesia (BANI) for the time being in force.'
+        },
+        list: {}
+      }
+    },
+    socialMediaGuide: {
+      title: 'Social Media Guidelines',
+      lastUpdated: 'Terakhir Diperbarui: ',
+      date: '26 April 2022',
+      overview:
+        'Seeds dibangun dengan dasar semangat berkomunitas, bertemu satu sama lain, berbicara tentang investasi, berbagi ide, dan berinvestasi bersama. Pedoman sosial & komunitas kami dimaksudkan untuk menjelaskan apa yang boleh dan tidak diizinkan di Seeds, dan memastikan bahwa setiap orang memiliki pengalaman yang baik. Jika Anda menemukan pesan yang tampaknya melanggar aturan ini, harap laporkan kepada kami. Kami dapat mengambil sejumlah langkah, termasuk mengeluarkan peringatan, menghapus konten, atau menghapus akun dan/atau server yang bertanggung jawab. Untuk memenuhi tujuan komunitas ini, penting bagi anggota untuk merasa seperti mereka berada di tempat yang aman yang dihuni oleh orang-orang dengan minat yang sama. Karena itu, kami meminta Anda untuk membaca dan mematuhi pedoman berikut.',
+      content: {
+        rules: {
+          1: {
+            title: 'Pedoman',
+            items: {
+              1: 'Perlakukan orang lain secara online seperti Anda memperlakukan mereka di kehidupan nyata',
+              2: 'Bersikap toleran terhadap sudut pandang orang lain; dengan hormat tidak setuju ketika pendapat tidak sejalan',
+              3: 'Hormati privasi dan informasi pribadi alumni lain',
+              4: 'Berkomunikasi dengan sopan dan hormat.'
+            }
+          },
+          2: {
+            title: 'Jangan',
+            items: {
+              1: 'Melakukan serangan pribadi terhadap anggota komunitas lainnya',
+              2: 'Menggunakan komentar yang memfitnah atau membuat pernyataan palsu terhadap orang lain',
+              3: 'Posting komentar berprasangka atau tidak senonoh',
+              4: 'Mengganggu atau membuat komentar yang menghasut kepada anggota komunitas lainnya',
+              5: 'Mengatur, berpartisipasi dalam, atau mendorong pelecehan terhadap orang lain. Ketidaksepakatan terjadi dan normal, tetapi komentar negatif yang terus menerus, berulang, atau parah dapat melewati batas menjadi pelecehan dan tidak ditoleransi di Seeds.',
+              6: 'Mengatur, mempromosikan, atau mengoordinasikan server seputar ujaran kebencian. Menyerang seseorang atau komunitas berdasarkan atribut seperti ras, etnis, asal negara, jenis kelamin, jenis kelamin, orientasi seksual, afiliasi agama, atau disabilitas mereka tidak dapat diterima.',
+              7: 'Membuat ancaman kekerasan atau mengancam untuk menyakiti orang lain. Ini termasuk ancaman tidak langsung, serta berbagi atau mengancam untuk membagikan informasi pribadi pribadi seseorang.',
+              8: 'Melakukan seksualisasi anak di bawah umur dengan cara apapun. Ini termasuk berbagi konten atau tautan yang menggambarkan anak di bawah umur dengan cara pornografi, menjurus ke arah seksual, atau kekerasan, dan termasuk pornografi bergambar atau diubah secara digital yang menggambarkan anak di bawah umur (seperti lolicon, shotacon, atau cub). Kami akan melaporkan konten ilegal ke otoritas terkait.',
+              9: 'Berbagi konten seksual eksplisit diri Anda atau orang lain, atau berbagi atau mempromosikan berbagi citra intim (juga dikenal sebagai balas dendam porno) dalam upaya untuk mempermalukan atau merendahkan seseorang',
+              10: 'Bagikan konten yang mengagungkan atau mempromosikan bunuh diri atau melukai diri sendiri, termasuk dorongan apa pun kepada orang lain untuk memotong diri sendiri, atau merangkul gangguan makan seperti anoreksia atau bulimia.',
+              11: 'Bagikan gambar darah sadis atau kekejaman terhadap hewan.',
+              12: 'Gunakan Seeds untuk organisasi, promosi, atau dukungan ekstremisme kekerasan.',
+              13: 'Hindari blok pengguna atau larangan server. - mengirim permintaan atau pesan pertemanan yang berulang dan tidak diinginkan, terutama setelah mereka menjelaskan bahwa mereka tidak ingin berbicara dengan Anda lagi. - mencoba menyembunyikan identitas Anda dalam upaya untuk menghubungi seseorang yang telah memblokir Anda, atau menghindari alat yang kami miliki yang memungkinkan pengguna untuk melindungi diri mereka sendiri.',
+              14: 'Menipu dan menyamar: - salah menggambarkan diri Anda dengan menggunakan logo Seeds atau merek apa pun dalam avatar dan postingan Anda.',
+              15: 'Meminta: - memposting, membagikan, atau menampilkan konten video apa pun di platform kami yang menyertakan iklan pihak ketiga tanpa persetujuan kami sebelumnya.'
+            }
+          },
+          3: {
+            title:
+              'Berikut adalah beberapa aturan untuk platform perdagangan kami:',
+            items: {
+              1: 'Jangan pernah memposting informasi palsu: Jangan pernah memposting informasi yang menyesatkan tentang akun Anda dan/atau keterampilan trading Anda.',
+              2: 'Jangan pernah memposting saran Investasi: Jangan pernah menawarkan saran investasi langsung, atau apa pun yang dapat ditafsirkan sebagai saran investasi. - menyerukan tindakan langsung (seperti "berinvestasi").',
+              3: 'Jangan terlibat dalam manipulasi Pasar: - membuat janji palsu atau membujuk orang lain untuk berdagang/berinvestasi atau berusaha menciptakan situasi pasar yang bergejolak.',
+              4: 'Jangan mencoba memanipulasi pengguna lain: - berikan instruksi tentang perdagangan tertentu atau tentang cara berdagang.',
+              5: 'Jangan menyebarkan berita palsu: - membagikan/menyebarkan informasi yang salah, informasi yang tidak dapat diverifikasi, dan rumor.',
+              6: 'Jangan terlibat dalam spamming: - gunakan praktik kolusi dan manipulasi dan hindari mentransfer informasi yang salah untuk mendistorsi pasar keuangan, atau memposting informasi yang sama beberapa kali di berbagai postingan.'
+            }
+          },
+          4: {
+            title: 'Konsekuensi',
+            items: {
+              1: 'Kami akan mengambil tindakan ketika kami melihat seseorang melanggar pedoman ini. Terkadang itu hanya berarti memberi seseorang peringatan; di lain waktu itu berarti mencabut hak istimewa atau akun tertentu seluruhnya. Kami meminta semua anggota komunitas melaporkan perilaku yang melanggar pedoman kami ke info@seeds.finance.'
+            }
+          },
+          5: {
+            title: 'Persetujuan',
+            items: {
+              1: 'Dengan masuk ke komunitas dan mengaktifkan profil Anda, Anda dianggap setuju dengan syarat dan ketentuan yang tercantum di atas.'
+            }
+          }
+        }
       }
     }
   },

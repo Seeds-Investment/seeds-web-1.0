@@ -1,3 +1,4 @@
+export { default as LegalSubmenu } from 'public/assets/faq-submenu/LegalMenu.png';
 export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';

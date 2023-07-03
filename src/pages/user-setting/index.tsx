@@ -68,9 +68,8 @@ const UserSetting: React.FC = () => {
       startAdornment: FileTextIcon,
       onClick: async () => {
         try {
-          await router.push('/legal');
+          await router.push('/faq-submenu');
         } catch (error) {
-          // Handle the error if needed
           console.error('Error navigating to FAQ:', error);
         }
       },
@@ -84,7 +83,6 @@ const UserSetting: React.FC = () => {
         try {
           await router.push('/faq');
         } catch (error) {
-          // Handle the error if needed
           console.error('Error navigating to FAQ:', error);
         }
       },
@@ -111,13 +109,31 @@ const UserSetting: React.FC = () => {
   return (
     <PageGradient
       defaultGradient
-      className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+      className={`z-0 sm:relative sm:pb-20 overflow-hidden flex flex-col items-center w-full bottom-0  ${
+        width !== undefined && width < 370
+          ? 'w-full'
+          : width !== undefined && width < 500
+          ? 'w-[90%]'
+          : width !== undefined && width < 400
+          ? 'w-[40%]'
+          : width !== undefined && width > 600
+          ? 'w-[600px]'
+          : ''
+      } ${
+        width !== undefined && width < 370
+          ? 'h-[50rem]'
+          : width !== undefined && width < 400
+          ? 'h-[50rem]'
+          : width !== undefined && width < 415
+          ? 'h-[48rem]'
+          : ''
+      } bg-white`}
     >
       <CardGradient
         defaultGradient
-        className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+        className={`relative flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
           width !== undefined && width < 370
-            ? 'h-[38rem]'
+            ? 'h-full'
             : width !== undefined && width < 400
             ? 'h-[45rem]'
             : width !== undefined && width < 415
@@ -133,7 +149,7 @@ const UserSetting: React.FC = () => {
         {/* -----Header----- */}
         <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">
           <div
-            className={`flex flex-col justify-center items-center ${
+            className={`flex flex-col  justify-center items-center ${
               width !== undefined && width < 370 ? 'py-4' : ''
             } w-full h-full bg-white`}
           >

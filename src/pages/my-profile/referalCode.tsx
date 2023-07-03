@@ -109,14 +109,14 @@ const ReferalCode = (): JSX.Element => {
         </div>
 
         <div className="relative">
-          <CCard className="p-4 mt-3 rounded-lg w-full absolute -top-8 md:static sm:w-1/3 sm:h-[90px] sm:ml-2 z-[2]">
+          <CCard className="p-4 mt-3 rounded-lg w-full absolute -top-8 lg:static lg:w-1/3 lg:h-[90px] lg:ml-2 z-[2]">
             <div className="flex items-center justify-between">
               <CCard className="p-3 mr-2 rounded-xl w-full bg-[#3AC4A0] sm:mx-2 md:mt-1 md:h-full">
                 <div className="flex items-center justify-between">
                   <Typography className="mr-2 text-sm text-white md:text-xl">
                     {userData?.refCode}
                   </Typography>
-                  <div className="flex items-center">
+                  <div className="flex items-center md:w-full md:h-full lg:items-end lg:justify-end">
                     <Image
                       src={Copy.src}
                       alt={Copy.alt}

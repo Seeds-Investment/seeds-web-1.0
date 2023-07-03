@@ -507,5 +507,19 @@ export default {
       'Jika Anda mengklik ya, data akun Anda akan dihapus dalam 30 hari',
     confirmButton: 'Ya',
     cancelButton: 'Tidak'
+  },
+  LogoutAccount: {
+    title: 'Segera Kembali!',
+    description: 'Apakah anda yakin ingin keluar',
+    confirmButton: 'Keluar',
+    cancelButton: 'Batal'
+  },
+  ReferalCode: {
+    title: 'Referensikan teman anda',
+    subtitle: 'Dapatkan lebih banyak XP',
+    referal: 'Bagaimana Link Bekerja',
+    option1: 'Undang teman anda untuk menginstal aplikasi dengan tautannya',
+    option2: 'Pakai referal kode yang telah diberikan',
+    option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
   }
 };

@@ -120,6 +120,26 @@ export const Ellipse: AssetsInterface = {
   alt: 'ellipse'
 };
 
+export const ReferalOption1: AssetsInterface = {
+  src: '/assets/vector/referalOption1.svg',
+  alt: 'referalOption1'
+};
+
+export const ReferalOption2: AssetsInterface = {
+  src: '/assets/vector/referalOption1.svg',
+  alt: 'referalOption2'
+};
+
+export const ReferalOption3: AssetsInterface = {
+  src: '/assets/vector/referalOption3.svg',
+  alt: 'referalOption3'
+};
+
+export const ShareSquare: AssetsInterface = {
+  src: '/assets/vector/shareSquare.svg',
+  alt: 'share'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,

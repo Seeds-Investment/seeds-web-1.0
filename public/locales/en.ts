@@ -580,5 +580,19 @@ export default {
         hint: '*Image max size is 5MB only supported: JPG, JPEG, PNG, HEIC, HEIF'
       }
     }
+  },
+  LogoutAccount: {
+    title: 'Come Back Soon!',
+    description: 'Are you sure want to logout',
+    confirmButton: 'Log Out',
+    cancelButton: 'Cancel'
+  },
+  ReferalCode: {
+    title: 'Refer your friends',
+    subtitle: 'Earn more XP',
+    referal: 'How Referral Works',
+    option1: 'Invite your friend to install the app with the link',
+    option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
+    option3: 'Get more XP when your friend registered to Seeds'
   }
 };

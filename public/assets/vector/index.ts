@@ -2,6 +2,8 @@ export { default as ArrowBackwardIcon } from 'public/assets/vector/arrow-backwar
 export { default as ArrowLeftBlack } from 'public/assets/vector/arrow-left-black.svg';
 export { default as ArrowLeft } from 'public/assets/vector/arrow-left.svg';
 export { default as ArrowRightCollapseIcon } from 'public/assets/vector/arrow-right-collapse.svg';
+export { default as ArrowRight } from 'public/assets/vector/arrow-right.svg';
+export { default as ArrowDownCollapse } from 'public/assets/vector/arrow-down-collapse.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';

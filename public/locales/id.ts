@@ -487,6 +487,20 @@ export default {
     removeButton: 'Hapus',
     cancelButton: 'Batal'
   },
+  setting: {
+    changeAvatar: {
+      title: 'Galeri',
+      content: {
+        title: 'Pilih Avatar kamu',
+        subTitle: 'Buat avatar yang kamu banget!',
+        male: 'Laki-laki',
+        female: 'Perempuan',
+        or: 'Atau upload dari lokal',
+        upload: 'Upload Gambar',
+        hint: '*Maximum besar gambar 5MB dan hanya mendukung: JPG, JPEG, PNG, HEIC, HEIF'
+      }
+    }
+  },
   DeleteAccount: {
     title: 'Apakah kamu yakin ingin menghapus akun ini?',
     description:

@@ -566,5 +566,19 @@ export default {
     description: 'Your account will be disconnected from the Seed',
     removeButton: 'Remove',
     cancelButton: 'Cancel'
+  },
+  setting: {
+    changeAvatar: {
+      title: 'Gallery',
+      content: {
+        title: 'Choose your Avatar',
+        subTitle: 'Create an avatar that describes yourself!',
+        male: 'Male',
+        female: 'Female',
+        or: 'Or upload from local',
+        upload: 'Upload Image',
+        hint: '*Image max size is 5MB only supported: JPG, JPEG, PNG, HEIC, HEIF'
+      }
+    }
   }
 };

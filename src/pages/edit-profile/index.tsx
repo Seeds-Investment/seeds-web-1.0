@@ -1,12 +1,15 @@
 import Image from 'next/image';
 import { withRouter, type NextRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
+import Button from '@/components/ui/button/Button';
 import CardGradient from '@/components/ui/card/CardGradient';
 import Input from '@/components/ui/input/Input';
 import TextArea from '@/components/ui/input/TextArea';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import ArrowCollapseIcon from '@/components/ui/vector/ArrowCollapseIcon';
 
 import { DummyAvatar } from 'public/assets/images';
 import { ArrowBackwardIcon, Dot } from 'public/assets/vector';
@@ -19,20 +22,24 @@ import {
   formatSeedsTagHandler
 } from '@/helpers/useInputFormats';
 
-import Button from '@/components/ui/button/Button';
-import ArrowCollapseIcon from '@/components/ui/vector/ArrowCollapseIcon';
 import LanguageContext from '@/store/language/language-context';
+import { userActions } from '@/store/redux/features/user-data/user-slice';
 
+import type { RootState } from '@/store/redux/store';
 interface ConfirmNewPinProps {
   router: NextRouter;
 }
 
 const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const languageCtx = useContext(LanguageContext);
 
   const width = useWindowInnerWidth();
 
+  const userData = useSelector((state: RootState) => state.user);
+  console.log('ini userData', userData);
   const {
     value: enteredName,
     // isValid: nameIsValid,
@@ -60,6 +67,11 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
 
   const { value: enteredBio, valueChangeHandler: bioChangeHandler } =
     useInput();
+
+  useEffect(() => {
+    const accessToken = window.localStorage.getItem('accessToken');
+    dispatch(userActions.setAccessToken(accessToken));
+  }, [dispatch]);
 
   const cancelHandler = (): void => {
     router.back();

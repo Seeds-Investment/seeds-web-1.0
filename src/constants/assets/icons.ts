@@ -121,17 +121,17 @@ export const Ellipse: AssetsInterface = {
 };
 
 export const ReferalOption1: AssetsInterface = {
-  src: '/assets/vector/referalOption1.svg',
+  src: '/assets/vector/referaloption1.svg',
   alt: 'referalOption1'
 };
 
 export const ReferalOption2: AssetsInterface = {
-  src: '/assets/vector/referalOption1.svg',
+  src: '/assets/vector/referaloption1.svg',
   alt: 'referalOption2'
 };
 
 export const ReferalOption3: AssetsInterface = {
-  src: '/assets/vector/referalOption3.svg',
+  src: '/assets/vector/referaloption3.svg',
   alt: 'referalOption3'
 };
 

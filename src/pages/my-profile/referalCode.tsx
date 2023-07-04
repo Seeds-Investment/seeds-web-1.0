@@ -4,7 +4,6 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
   Copy,
   ReferalOption1,
-  ReferalOption2,
   ReferalOption3,
   ShareSquare
 } from '@/constants/assets/icons';
@@ -165,19 +164,6 @@ const ReferalCode = (): JSX.Element => {
 
             <Typography className="text-black text-sm col-span-5 flex items-center md:text-lg">
               {t('ReferalCode.option1')}
-            </Typography>
-          </div>
-          <div className="flex items-center">
-            <Image
-              src={ReferalOption2.src}
-              alt={'plant'}
-              width={60}
-              height={60}
-              className="w-auto h-auto aspect-auto mr-4"
-            />
-
-            <Typography className="text-black text-sm col-span-5 flex items-center md:text-lg">
-              {t('ReferalCode.option2')}
             </Typography>
           </div>
           <div className="flex items-center">

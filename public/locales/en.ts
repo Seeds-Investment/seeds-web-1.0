@@ -189,6 +189,7 @@ export default {
           'Collection and Use of Personal Data',
           'Retention of Personal Information',
           'Personal Data may be collected by Seeds',
+          'How Seeds Uses Your Personal Data',
           'Personal data protection',
           'Personal Data Storage and Access',
           'Cookies',
@@ -197,7 +198,8 @@ export default {
         desc: [
           'Personal data is information that is directly or indirectly connected to you, identified or identifiable from that information, or from other information and information. For transactions and deals with Seeds, you may be required to provide your personal data from time to time. Seeds and third-party service providers may share Personal data with one another and use personal data consistent with this Privacy Policy. They may also combine it with other information to provide and improve the products and services of Seeds.',
           'Your Personal Information will only be held for as long as it is necessary to fulfill the purpose for which it was collected, or for as long as such retention is required or authorized by Applicable Law. We shall cease to retain Personal Information, or remove the means by which the Personal Information can be associated with you as an individual, as soon as it is reasonable to assume that the purpose for which that Personal Information was collected is no longer being served by retention of Personal Information and retention is no longer necessary for legal or business purposes.Please note that there is still the possibility that some of your Personal Information might be retained by the other party or the User in some manner (such as, by means of screen capture). Information relayed through communications between Users and Third Party, made other than through the use of the Application (such as by telephone, mobile messaging or other modes of communication) may also be retained by some means. We do not authorize the retention of Personal Information by such means and we have no responsibility to you for the same. To the fullest extent permitted by Applicable Law, we shall not be liable for any such retention of your Personal Information. You agree to indemnify, defend and release us, our officers, directors, employees, agents, suppliers, contractors and Affiliates from and against any and all claims, losses, liabilities, expenses, damages and costs (including but not limited to legal costs and expenses on a full indemnity basis) resulting directly or indirectly from any unauthorized retention of your Personal Information.',
-          '',
+          "When you sign up for the Seeds app, we may collect a variety of personal data that includes the following: \n Your name No Identity (KTP / SIM / Passport) \n Gender Home address \n Phone number \n Your email address \n Your Phone's Contact List \n Your Savings Account Number \n Your social media account (Facebook)",
+          'Our goal in collecting your data is to better provide the services and information you need and to use our personal information to: \n 1. Answering your questions and/or requests \n 2. Manage or perform our obligations in relation to any Agreement between you and Seeds app. \n 3 .Anticipate and solve problems related to the products we offer. \n 4. Monitor your transactions with us or with other products. \n 5. Record all information from your computer/application and your brochure, including the IP address of the cookie information, software and hardware attributes and the page you requested, use your information to make adjustments to the ads and content that Seeds will display and conduct research to improve our service.',
           'Seeds take necessary precautions administratively and technically, to protect your personal information against loss, theft, misuse and unauthorized access, disclosure, use, alteration, or destruction.',
           'Seeds will do its best to help you ensure that the information you receive is accurate, complete, and updated. We will retain your personal data for the periods necessary to meet the different purposes set forth in this Privacy Policy unless retention time is longer permitted or required by law. You can help ensure that your contact and reference information is accurate, complete and kept up-to-date by logging in on the Seeds app. For other personal information, we make a good faith effort to grant access to you so that you may ask us to repair the data if Seeds app does not have to be kept by law or for legitimate business purposes. We may refuse to process irrational requests made repeatedly, requiring excessive technical effort, threatening the privacy of others, it is completely impractical or if access is not otherwise required by it by local law. Requests for access, correction or deletion can be made through the Seeds application.',
           'To help Seeds improve our services and products provide a special experience for users on their site using “cookies”. Cookies are small text files stored on your computer/smartphone that give us information about your site usage online to help us customize your user experience and make our site more user-friendly.',
@@ -398,8 +400,8 @@ export default {
         title: {
           1: 'SERVICES',
           2: 'CIRCLE OWNER’S RESPONSIBILITIES',
-          3: 'UTILIZATION  AND PROTECTION OF PERSONAL DATA',
-          4: 'Utilization and Protection of Personal Data',
+          3: 'FEE AND COMMISSION',
+          4: 'UTILIZATION  AND PROTECTION OF PERSONAL DATA',
           5: 'INTELLECTUAL PROPERTY',
           6: 'LIMITATION OF LIABILITY',
           7: 'IMMEDIATE TERMINATION',

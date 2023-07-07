@@ -1,11 +1,15 @@
 import type { color } from '@material-tailwind/react/types/components/button';
-import type { StaticImageData } from 'next/image';
+import { type StaticImageData } from 'next/image';
 
 export interface IButton {
   children: React.ReactNode;
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   disabled?: boolean;
+  type?: 'button' | 'reset' | 'submit' | undefined;
+  onSubmit?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => Promise<void>;
   color?: color | undefined;
   fullWidth?: boolean;
 }

@@ -12,6 +12,7 @@ export default function Document(): React.ReactElement {
         ></link>
       </Head>
       <body>
+        <div id="portal" />
         <Main />
         <NextScript />
       </body>

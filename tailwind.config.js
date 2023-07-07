@@ -9,6 +9,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif']
+      },
       textShadow: {
         purple:
           '-1px -1px 0 #7555DA, 1px -1px 0 #7555DA, -1px 1px 0 #7555DA, 1px 1px 0 #7555DA',
@@ -17,9 +21,14 @@ module.exports = withMT({
       },
       colors: {
         'seeds-purple': '#7555DA',
+        'seeds-purple-2': '#9A76FE',
         'seeds-green': '#4FE6AF',
         'seeds-button-green': '#3AC4A0',
-        'seeds-green-2': '#DCFCE4'
+        'seeds-green-2': '#DCFCE4',
+        'neutral-medium': '#262626',
+        'neutral-soft': '#7C7C7C',
+        'neutral-ultrasoft': '#CCCCCC',
+        'warning-hard': '#DD2525'
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",
@@ -42,6 +51,50 @@ module.exports = withMT({
       },
       boxShadow: {
         center: '0 0px 1px 1px rgba(0, 0, 0, 0.05)'
+      },
+      animation: {
+        'slide-down': 'slide-down 300ms ease-out forwards',
+        'slide-up': 'slide-up 300ms ease-out forwards',
+        'fade-in': 'fade-in 300ms ease-out forwards',
+        spinner: 'spinner 800ms ease-in-out infinite'
+      },
+      keyframes: {
+        'slide-down': {
+          from: {
+            opacity: 0,
+            transform: 'translateY(-3rem)'
+          },
+          to: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }
+        },
+        'slide-up': {
+          from: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          },
+          to: {
+            opacity: 0,
+            transform: 'translateY(-3rem)'
+          }
+        },
+        'fade-in': {
+          '0%': {
+            opacity: 0
+          },
+          '100%': {
+            opacity: 1
+          }
+        },
+        spinner: {
+          '0%': {
+            transform: 'rotate(0deg)'
+          },
+          '100%': {
+            transform: 'rotate(360deg)'
+          }
+        }
       }
     }
   },

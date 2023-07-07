@@ -1,23 +1,23 @@
 import type { AssetsInterface } from '.';
 
 export const SeedsLogo: AssetsInterface = {
-  src: '/assets/images/seeds-logo.png',
+  src: '/assets/images/SeedsTypo.png',
   alt: 'seeds-logo-typograph'
 };
 
 export const FacebookBrand: AssetsInterface = {
-  src: '/assets/images/facebook-logo.png',
-  alt: 'facebook-logo'
+  src: '/assets/images/facebook.svg',
+  alt: 'facebook'
 };
 
 export const GoogleBrand: AssetsInterface = {
-  src: '/assets/images/google-logo.png',
-  alt: 'google-logo'
+  src: '/assets/images/google.svg',
+  alt: 'google'
 };
 
 export const AppleBrand: AssetsInterface = {
-  src: '/assets/images/apple-logo.png',
-  alt: 'apple-logo'
+  src: '/assets/images/apple.svg',
+  alt: 'apple'
 };
 
 const Logo: Record<string, AssetsInterface> = {

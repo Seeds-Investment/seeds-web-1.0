@@ -1,30 +1,32 @@
-import Image from 'next/image';
-import { Trans, useTranslation } from 'react-i18next';
-
 import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
-
 import { HelloHero, LineChart } from '@/constants/assets/images';
 import { SeedsLogo } from '@/constants/assets/logo';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { ArrowLeft } from 'public/assets/vector';
+import { Trans, useTranslation } from 'react-i18next';
 
 export interface IAuthLayout {
   children: JSX.Element;
   title?: string;
   titleKey?: string;
+  onBack?: () => void;
 }
 
 const AuthLayout = ({
   children,
   title,
-  titleKey
+  titleKey,
+  onBack
 }: IAuthLayout): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <div className="relative">
-      <div className="h-screen w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
+      <div className="h-full w-full lg:w-1/2 bg-gradient-to-bl from-[#7856E1] absolute top-0 left-0 z-10 to-[#44FFBB] bg-gray-500">
         <div className="relative h-[30rem] top-[100%] translate-y-[-100%]">
           <Image
             src={LineChart.src}
@@ -61,14 +63,15 @@ const AuthLayout = ({
                   {t('authPage.description')}
                 </Typography>
               </div>
-              <div className="flex justify-center ">
+              <div className="flex justify-center">
                 <Image
                   src={HelloHero.src}
-                  className="w-auto h-auto object-cover object-[bottom_center] self-end"
-                  quality={50}
+                  className="object-cover object-[bottom_center] w-[18rem]"
                   alt={HelloHero.alt}
-                  width={350}
-                  height={350}
+                  quality={60}
+                  width="0"
+                  height="0"
+                  sizes="100vw"
                   placeholder="blur"
                   blurDataURL={HelloHero.src}
                 />
@@ -79,15 +82,32 @@ const AuthLayout = ({
         <div className="flex justify-center z-20">
           <div className="p-4 w-[30rem] min-h-[50rem] lg:min-h-[40rem]">
             <div className="z-20 lg:hidden flex items-center mb-4">
-              <div className="w-[1.8rem]">
-                <Image
-                  src={ArrowLeft}
-                  width={30}
-                  height={30}
-                  alt="arrow-left"
-                  className="w-auto h-auto object-contain object-[center_center]"
-                />
-              </div>
+              {(!isUndefindOrNull(title) && !isEmptyString(title)) ||
+              (!isUndefindOrNull(titleKey) && !isEmptyString(titleKey)) ? (
+                <div
+                  className="w-[2rem] h-[2rem] hover:bg-white/25 p-1 rounded-lg cursor-pointer flex justify-center items-center"
+                  onClick={() => {
+                    if (
+                      !isUndefindOrNull(onBack) &&
+                      typeof onBack === 'function'
+                    ) {
+                      onBack();
+                    } else {
+                      router.push('/story-boarding').catch(error => {
+                        console.log(error);
+                      });
+                    }
+                  }}
+                >
+                  <Image
+                    src={ArrowLeft}
+                    width={30}
+                    height={30}
+                    alt="arrow-left"
+                    className="w-auto h-auto object-contain object-[center_center]"
+                  />
+                </div>
+              ) : null}
               <Typography variant="h4" color="white" className="mx-auto">
                 {isUndefindOrNull(title) || isEmptyString(title) ? (
                   <Trans i18nKey={titleKey} />
@@ -96,7 +116,7 @@ const AuthLayout = ({
                 )}
               </Typography>
             </div>
-            <Card className="w-full h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
+            <Card className="w-full md:h-full bg-gradient-to-br from-white bg-opacity-10 flex-col border rounded-3xl border-white">
               <div className="flex justify-between p-8">
                 <Image
                   src={SeedsLogo.src}

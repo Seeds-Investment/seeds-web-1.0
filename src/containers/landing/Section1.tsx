@@ -6,12 +6,9 @@ import s1Line2 from '@/assets/landing-page/s1-line-2.png';
 import s1phone from '@/assets/landing-page/s1-phone.png';
 import vector from '@/assets/landing-page/vector.png';
 import { getTrendingAssets } from '@/repository/asset.repository';
-import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import BgSection1 from './BgSection1';
-import Header from './Header';
 
 const fetch = async (): Promise<void> => {
   const res = await getTrendingAssets();
@@ -19,7 +16,7 @@ const fetch = async (): Promise<void> => {
 };
 
 export default function Section1(): React.ReactElement {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   useEffect(() => {
     void fetch();
@@ -29,7 +26,7 @@ export default function Section1(): React.ReactElement {
     <div className=" min-w-full min-h-screen">
       <BgSection1>
         <div className="cursor-default">
-          <Header />
+          {/* <Header />
           <div className=" text-[4rem] text-white absolute font-semibold tracking-wide z-30 top-[250px] left-[50px]">
             {t('landing.section1.text1')}
           </div>
@@ -38,7 +35,7 @@ export default function Section1(): React.ReactElement {
           </div>
           <Button className="absolute z-30 top-[550px] left-[50px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
             {t('button.joinNow')}
-          </Button>
+          </Button> */}
 
           <Image
             alt="img"

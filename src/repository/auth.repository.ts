@@ -1,6 +1,15 @@
 import baseAxios from '@/utils/common/axios';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import type {
+  IGetOtp,
+  IVerifyOtp
+} from '@/utils/interfaces/payload.interfaces';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/auth/v1`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/auth/v1/`
+);
 
 interface LoginForm {
   phoneNumber: string;
@@ -9,10 +18,75 @@ interface LoginForm {
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
-    let response = await authService.post('/login/phone-number', formData);
+    let response = await authService.post('login/phone-number', formData);
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
+  }
+};
+export const checkEmail = async (email: string): Promise<any> => {
+  const response = await authService.get(`validate/email?email=${email}`);
+  return response.data;
+};
+
+export const checkPhoneNumber = async (phoneNumber: string): Promise<any> => {
+  const response = await authService.get(`validate/phone?phone=${phoneNumber}`);
+  return response.data;
+};
+export const getRefreshToken = async (): Promise<any> => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const keepMeLoggedIn = localStorage.getItem('keepMeLoggedIn');
+
+  if (
+    refreshToken === null ||
+    refreshToken === '' ||
+    refreshToken === 'undefined'
+  ) {
+    return await Promise.resolve('Refresh token not found');
+  } else if (keepMeLoggedIn === null || keepMeLoggedIn === 'false') {
+    return await Promise.resolve('Please Login again');
+  }
+
+  return await authService.post('refresh', {
+    refreshToken
+  });
+};
+
+export const postResetPassword = async (email: string): Promise<any> => {
+  if (typeof email !== 'string') {
+    return await Promise.resolve(null);
+  }
+  return await authService.post(`email/v1/forgot-password`, { email });
+};
+
+export const getOtp = async (payload: IGetOtp): Promise<any> => {
+  try {
+    if (
+      typeof payload.method !== 'string' ||
+      typeof payload.phoneNumber !== 'string'
+    ) {
+      return await Promise.resolve(null);
+    }
+    return await authService.put(`/otp`, { ...payload });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyOtp = async (payload: IVerifyOtp): Promise<any> => {
+  try {
+    if (
+      payload?.method?.length === 0 ||
+      payload?.msisdn?.length === 0 ||
+      payload?.otp?.length === 0
+    ) {
+      return await Promise.resolve(null);
+    }
+    return await authService.post(`/otp/verify/${payload.method}`, {
+      ...payload
+    });
+  } catch (error) {
+    return await Promise.reject(error);
   }
 };
 
@@ -21,10 +95,40 @@ export const loginProvider = async (
   provider: string
 ): Promise<any> => {
   try {
-    let response = await authService.post(`/login/${provider}`, { identifier });
+    let response = await authService.post(`login/${provider}`, { identifier });
 
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
+  }
+};
+
+export const avatarList = async (gender: string = 'male'): Promise<any> => {
+  if (isUndefindOrNull(gender) || isEmptyString(gender)) {
+    return await Promise.resolve(null);
+  }
+
+  return await authService.get(`/avatars?gender=${gender}`);
+};
+
+export const registerNewUser = async (formData: {
+  phoneNumber: string;
+  email: string;
+  birthDate: string;
+  name: string;
+  seedsTag: string;
+  refCode: string;
+  password: string;
+  avatar: string;
+  provider: {
+    provider: string;
+    identifer: string;
+  };
+}): Promise<any> => {
+  try {
+    return await authService.post(`/create`, formData);
+  } catch (error) {
+    console.log(error);
+    return await Promise.resolve(null);
   }
 };

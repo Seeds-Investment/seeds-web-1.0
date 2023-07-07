@@ -41,7 +41,13 @@ const UserSetting: React.FC = () => {
       label: 'Edit Profile',
       altStartAdornment: 'edit profile',
       startAdornment: UserIcon,
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await router.push('/edit-profile');
+        } catch (error) {
+          console.error('Error navigating to Edit Profile:', error);
+        }
+      },
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
         width !== undefined && width < 370 ? 'h-9' : ''
       }`

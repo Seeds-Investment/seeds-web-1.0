@@ -169,6 +169,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
           />
           <Input
             required
+            type="date"
             isRedirectButton
             label={t('input.label.dateOfBirth')}
             placeholder={
@@ -180,7 +181,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
             extraInputClasses="md:text-base text-sm"
             extraLabelClasses="md:text-base text-sm md:peer-focus:text-base peer-focus:text-sm"
             props={{
-              readOnly: true,
+              readOnly: false,
               value: birthDate,
               onChange: birthDateChangeHandler
             }}

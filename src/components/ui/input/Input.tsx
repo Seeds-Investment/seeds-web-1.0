@@ -15,7 +15,7 @@ interface InputProps {
   redirectUrl?: string;
   isRedirectButton?: boolean;
   required?: boolean;
-  type?: 'text' | 'isSelectPhoneNumber' | 'isSelect' | 'seedsTag';
+  type?: 'text' | 'isSelectPhoneNumber' | 'isSelect' | 'seedsTag' | 'date';
   label?: string | DefaultTFuncReturn;
   placeholder?: string;
   extraClasses?: string;
@@ -329,6 +329,57 @@ const Input: React.FC<InputProps> = ({
             </p>
           )}
         </div>
+      )}
+
+      {type === 'date' && (
+        <>
+          <input
+            {...props.props}
+            required={required}
+            type="text"
+            onFocus={e => (e.target.type = 'date')}
+            onBlur={e => (e.target.type = 'text')}
+            disabled={disabled}
+            placeholder={placeholder}
+            className={`peer h-full w-full border-b border-neutral-ultrasoft bg-transparent py-1.5 font-poppins text-neutral-soft outline outline-0 transition-all placeholder-shown:border-neutral-ultrasoft disabled:border-0 disabled:bg-neutral-ultrasoft/10 disabled:cursor-not-allowed ${
+              height !== undefined && height < 760 ? 'text-sm' : 'text-base'
+            } ${
+              isRedirectButton
+                ? 'cursor-pointer'
+                : 'focus:border-seeds-button-green/80 focus:outline-0'
+            } ${extraInputClasses}`}
+          />
+          <label
+            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:after:scale-x-100 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium ${
+              isRedirectButton
+                ? ''
+                : 'after:border-seeds-button-green/80 peer-focus:text-seeds-button-green/80 peer-focus:after:border-seeds-button-green/80'
+            } ${
+              height !== undefined && height < 760
+                ? 'text-sm peer-focus:text-sm'
+                : 'text-base peer-focus:text-base'
+            } ${extraLabelClasses}`}
+          >
+            {label}
+            {required && (
+              <span className="font-poppins text-warning-hard">*</span>
+            )}
+          </label>
+          {isError === true && (
+            <p
+              className={
+                errorClasses ??
+                `absolute sm:-bottom-[1.125rem] font-poppins text-xs text-warning-hard ${
+                  height !== undefined && height >= 915
+                    ? '-bottom-[1.125rem]'
+                    : '-bottom-[2.125rem]'
+                }`
+              }
+            >
+              {errorMessage}
+            </p>
+          )}
+        </>
       )}
     </div>
   );

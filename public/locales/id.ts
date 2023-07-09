@@ -4,15 +4,20 @@ export default {
   landing: {
     section1: {
       text1: 'Seeds',
-      text2: 'Start and expand your investing journey with us!'
+      text2: 'Mulai dan perluas perjalanan investasi kamu bersama kami!'
     },
     section2: {
-      text1: 'Temukan',
-      text2: 'Temukan apa yang trending hari ini?'
+      text1: 'Discover',
+      text2: 'Sedang Trending Hari Ini',
+      text3: 'Apa yang Sedang Tren Saat Ini?',
+      text4:
+        'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.'
     },
     section3: {
       text1: 'Belajar',
-      text2: 'Belajar terkait investasi dan keuangan dari Pro'
+      text2: ' lebih tentang Investasi dan Keuangan dari Pro',
+      text3:
+        'Kami menyatukan para profesional untuk belajar tentang investasi dan keuangan.'
     },
     section4: {
       text1: 'Bertemu',

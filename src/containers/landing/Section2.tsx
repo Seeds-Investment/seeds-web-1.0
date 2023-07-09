@@ -64,10 +64,13 @@ export default function Section2(): React.ReactElement {
             src={shape}
           />
           <div className="absolute top-[235px] opacity-70 text-[3.7rem] font-semibold tracking-wider text-seeds-purple">
-            {t('landing.section2.text1')}
+            {t('landing.section2.text2')}
           </div>
           <div className="absolute top-[320px] opacity-70 text-[2.5rem] font-medium tracking-wide text-seeds-purple">
-            {t('landing.section2.text2')}
+            {t('landing.section2.text3')}
+          </div>
+          <div className="absolute top-[390px] opacity-70 text-2xl font-medium tracking-wide text-neutral-soft">
+            {t('landing.section2.text4')}
           </div>
 
           <Button className="absolute z-50 top-[450px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">

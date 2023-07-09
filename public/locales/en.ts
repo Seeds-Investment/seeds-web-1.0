@@ -10,11 +10,16 @@ export default {
     },
     section2: {
       text1: 'Discover',
-      text2: "what's trending today?"
+      text2: 'Trending Today',
+      text3: "what's trending today?",
+      text4:
+        'Get the latest trending news and knowledge about investing and finance.'
     },
     section3: {
       text1: 'Learn',
-      text2: ' more about investing and finance from the Pro'
+      text2: ' more about Investing and Finance from the Pro',
+      text3:
+        'We bring together professionals to learn about investing and finance.'
     },
     section4: {
       text1: 'Meet',

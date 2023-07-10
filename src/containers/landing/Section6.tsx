@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 export default function Section6(): React.ReactElement {
   const { t } = useTranslation();
   return (
-    <div className="absolute w-full bg-gradient-to-tr from-seeds-green to-seeds-purple p-5 cursor-default">
+    <div className="w-full bg-gradient-to-tr from-seeds-green to-seeds-purple p-5 cursor-default">
       <div className="flex flex-col lg:flex-row h-full lg:p-5">
         <div className="w-full lg:w-1/3">
           <div className="mr-28 mb-10 lg:mr-14">

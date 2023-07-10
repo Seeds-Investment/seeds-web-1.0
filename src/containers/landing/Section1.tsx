@@ -5,7 +5,6 @@ import rectangle from '@/assets/landing-page/rectangle.png';
 import s1Line2 from '@/assets/landing-page/s1-line-2.png';
 import s1phone from '@/assets/landing-page/s1-phone.png';
 import vector from '@/assets/landing-page/vector.png';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -25,29 +24,36 @@ export default function Section1(): React.ReactElement {
   }, []);
 
   return (
-    <div className=" min-w-full min-h-screen">
-      <PageGradient defaultGradient className="overflow-hidden w-full">
-        <div className="cursor-default">
-          <div>
-            <div className=" text-[4rem] text-white absolute font-semibold tracking-wide z-30 top-[250px] left-[50px]">
+    <div className=" min-w-full min-h-screen cursor-default">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full">
+          <div className="absolute z-2 top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
+            <div className="text-xl text-[#7555DA] font-bold mb-3 md:text-[64px] md:mb-8">
               {t('landing.section1.text1')}
             </div>
-            <div className=" text-[2rem] text-gray-200 tracking-wide absolute font-medium z-30 top-[400px] left-[50px] w-[600px]">
+            <div className="text-xs text-white font-normal mb-3 md:text-2xl md:mb-7">
               {t('landing.section1.text2')}
             </div>
-            <Button className="absolute z-30 top-[550px] left-[50px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
+            <Button className="text-xs font-semibold capitalize text-md bg-seeds-purple rounded-full">
               {t('button.joinNow')}
             </Button>
           </div>
+
           <Image
-            className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
             alt="img"
-            src={s1phone}
+            className="w-full -z-10 mt-5 md:absolute md:w-[550px] md:h-[350px] md:top-[10px] lg:w-[700px] lg:h-[470px] xl:w-[1000px] xl:h-[670px]"
+            src={rectangle}
           />
 
           <Image
             alt="img"
-            className="h-[230px] w-[170px] top-[40px] z-30 absolute"
+            className="absolute w-full top-[30px] -z-20 md:w-[560px] md:h-[360px] md:top-[40px] lg:w-[720px] lg:h-[490px] xl:w-[1030px] xl:h-[690px]"
+            src={rectangleLine1}
+          />
+
+          <Image
+            alt="img"
+            className="absolute w-[71px] -top-5 lg:w-[100px]"
             src={medal}
           />
           <Image
@@ -55,29 +61,29 @@ export default function Section1(): React.ReactElement {
             className="absolute min-w-[1020px] top-[110px] h-[730px]"
             src={rectangleLine2}
           />
-          <Image
-            alt="img"
-            className="absolute min-w-[1050px] top-[130px] -left-[50px] h-[680px]"
-            src={rectangleLine1}
-          />
-          <Image
-            alt="img"
-            className="w-[950px] h-[640px] absolute z-10 top-[130px] "
-            src={rectangle}
-          />
-          <Image
-            alt="img"
-            src={s1Line2}
-            className="absolute z-20 top-[250px] w-[750px] left-[0px]"
-          />
+        </div>
 
+        <div className="w-full">
           <Image
+            // className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
+            className="w-full z-10 h-full"
             alt="img"
-            className="absolute z-10 right-4 bottom-0 top-0 overflow-hidden"
-            src={vector}
+            src={s1phone}
           />
         </div>
-      </PageGradient>
+
+        <Image
+          alt="img"
+          src={s1Line2}
+          className="absolute z-20 top-[250px] w-[750px] left-[0px]"
+        />
+
+        <Image
+          alt="img"
+          className="absolute -z-10 right-4 bottom-0 top-0 overflow-hidden"
+          src={vector}
+        />
+      </div>
     </div>
   );
 }

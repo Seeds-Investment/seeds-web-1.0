@@ -5,6 +5,7 @@ import TopIcon from '../../components/svgs/topIcon';
 import GoldRank from '../../components/svgs/rank1';
 import SilverRank from '../../components/svgs/rank2';
 import BronzeRank from '../../components/svgs/rank3';
+import PlayerAchievement from '@/components/popup/PlayerAchievement';
 
 interface LeaderboardData {
   user_id: string;
@@ -49,6 +50,8 @@ const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
 const Player = (): React.ReactElement => {
   const [leader, setLeader] = useState<LeaderboardData[]>([]);
   const [playList, setPlayList] = useState<playList[]>([]);
+  const [showAchievementModal, setShowAchievementModal] = useState<boolean>(false);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string>();
 
   useEffect(() => {
     fetchLeaderboardData();
@@ -350,9 +353,25 @@ const Player = (): React.ReactElement => {
           </button>
         </div>
         <div>
+          {showAchievementModal &&
+            <PlayerAchievement
+              onClose={() => {
+                setShowAchievementModal(false);
+                setSelectedPlayerId(undefined)
+              }}
+              playerId={selectedPlayerId}
+            />
+          }
           <ul>
             {filteredLeader.map((player, i) => (
-              <div className="flex mx-7 my-10" key={player.user_id}>
+              <div
+                className="flex mx-7 my-10 hover:cursor-pointer"
+                key={player.user_id}
+                onClick={() => {
+                  setSelectedPlayerId(player.user_id)
+                  setShowAchievementModal(true)}
+                }
+                >
                 <div>
                   <div className="text-2xl mx-2">{i + 1}</div>
                   <div className="ms-3 mt-2">

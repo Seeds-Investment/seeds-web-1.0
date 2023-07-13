@@ -11,6 +11,7 @@ import Button from '../ui/button/Button';
 import Modal from '../ui/modal/Modal';
 
 interface Props {
+  playerId: string;
   onClose: () => void;
 }
 
@@ -21,9 +22,9 @@ interface AchievementCardProps {
   alt: string;
 }
 
-const PlayerAchievement: React.FC<Props> = ({ onClose }) => {
+const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
   const name = 'Katharina Delitha Putri';
-  const seedsTag = '@delithaput';
+  const seedsTag = playerId;
   const avatar =
     'https://seeds-bucket-new.s3.ap-southeast-3.amazonaws.com/avatar/3D/Compressed/PNG/male/Avatar-12.png';
 

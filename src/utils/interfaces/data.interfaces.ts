@@ -17,7 +17,8 @@ export interface INewsExternal {
   author: string | null;
   content: string;
   description: string;
-  publishedAt: Date;
+  // publishedAt: Date;
+  publishedAt: string;
   source: {
     id: string;
     name: string;

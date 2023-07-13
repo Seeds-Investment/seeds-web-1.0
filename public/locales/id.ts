@@ -11,7 +11,9 @@ export default {
       text2: 'Sedang Trending Hari Ini',
       text3: 'Apa yang Sedang Tren Saat Ini?',
       text4:
-        'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.'
+        'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
+      text5: 'Sorotan Acata',
+      text6: 'Ikuti terus kegiatan seru kami!'
     },
     section3: {
       text1: 'Belajar',
@@ -21,12 +23,16 @@ export default {
     },
     section4: {
       text1: 'Bertemu',
-      text2: 'Bertemu dan berbicara dengan orang-orang yang berpikiran sama',
-      text3: 'Rekomendasi sirkel kami'
+      text2: 'dan',
+      text3: 'mengobrol',
+      text4: 'dengan orang-orang yang berpikiran sama',
+      text5: 'Rekomendasi sirkel kami',
+      text6: 'Bagikan pengetahuan kamu dengan mudah ke teman-temanmu'
     },
     section5: {
-      text1: 'Kompetisi',
-      text2: 'Mainkan turnamen dan menangkan hadiah uang tunai'
+      text1: 'Tournaments',
+      text2:
+        'Ingin ikut turnamen sambil berinvestasi? Seeds menyediakan berbagai kompetisi mengenai investasi dan keuangan yang tentunya terdapat berbagai hadiah menarik.'
     },
     section6: {
       text1:

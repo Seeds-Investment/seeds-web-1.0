@@ -1,16 +1,15 @@
 import chat from '@/assets/landing-page/s4-chat-1.png';
-import line2 from '@/assets/landing-page/s4-line-2.png';
 import line from '@/assets/landing-page/s4-line.png';
 import shape from '@/assets/landing-page/s4-shape.png';
 import peoples from '@/assets/landing-page/s4-young.png';
+import CCard from '@/components/CCard';
 import { getTrendingCircle } from '@/repository/circle.repository';
 import { competitionCardList } from '@/utils/_static/dummy';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import BgSection4 from './BgSection4';
 import Section4Slider from './Section4Slider';
 
 const fetch = async (
@@ -27,128 +26,83 @@ export default function Section4(): React.ReactElement {
   useEffect(() => {
     void fetch(setList);
   }, []);
-  console.log(list);
+  console.log('list : ', list);
 
   return (
-    <div className="relative">
-      <BgSection4>
-        <>
-          <div className="px-20">
-            <div className="relative min-h-screen w-full flex items-center justify-center">
-              <div className="h-[550px] w-full border absolute z-10 bg-gradient-to-r from-green-50  to-seeds-purple p-[1px] rounded-xl">
-                <div className="h-[546px] w-full bg-white rounded-xl"></div>
-              </div>
-              <Image
-                alt="peoples"
-                className=" w-[490px] absolute top-[7.3rem] right-0 z-30"
-                src={peoples}
-              />
-              <Image
-                alt="peoples"
-                className=" w-[700px] h-[550px] absolute right-0 rounded-r-xl z-20"
-                src={shape}
-              />
-              <Image
-                alt="peoples"
-                className="  absolute top-[210px] right-[430px] z-40"
-                src={chat}
-              />
-              <Image
-                alt="peoples"
-                className=" w-[700px] absolute top-[250px] right-0 z-20"
-                src={line}
-              />
-            </div>
-            <div className="text-[3.5rem] tracking-wider top-[85px] absolute w-[890px] z-30">
-              <span className=" text-black  font-semibold z-30">
+    <div className="mb-10 p-3 min-w-full cursor-default md:p-8">
+      <Typography className="text-xl font-semibold mb-2 lg:text-5xl text-[#222222]">
+        Connect
+      </Typography>
+      <CCard className="bg-white overflow-hidden shadow-lg p-2 rounded-xl lg:p-5">
+        <div className="flex flex-row">
+          <div className="w-1/2">
+            <div className="text-xs font-semibold tracking-wider mb-3 md:text-2xl lg:text-3xl z-30">
+              <span className="mr-1 text-[#3AC4A0]">
                 {t('landing.section4.text1')}
               </span>
+              <span className="mr-1 text-black">
+                {t('landing.section4.text2')}
+              </span>
+              <span className="mr-1 text-[#3AC4A0]">
+                {t('landing.section4.text3')}
+              </span>
+              <span className="mr-1 text-black">
+                {t('landing.section4.text4')}
+              </span>
             </div>
-            <div className="text-[1.8rem] font-medium tracking-wider top-[210px] left-[120px] absolute w-[890px] z-40">
-              {t('landing.section4.text2')}
-            </div>
-            <Button className="absolute z-30 top-[300px] left-[120px] capitalize text-md bg-seeds-purple rounded-full px-14 h-[50px]">
+            <Typography className="text-xs text-[#7C7C7C] font-light lg:font-normal lg:text-xl tracking-wider mb-4">
+              {t('landing.section4.text6')}
+            </Typography>
+            <Button className="z-30 capitalize text-xs font-semibold lg:text-lg bg-seeds-purple rounded-full mb-3">
               {t('button.joinNow')}
             </Button>
-            <div className="text-[1.1rem] font-medium tracking-wide top-[405px] left-[120px] absolute w-[890px] z-40">
-              {t('landing.section4.text3')}
-            </div>
-            <div className=" text-[1.1rem] tracking-wide  absolute w-[150px] h-[180px] z-40 top-[440px] bg-gradient-to-l from-white to-transparent font-light left-[425px]"></div>
-            <div className=" text-[1.1rem] tracking-wide  absolute w-[450px] z-30 top-[440px] font-light left-[120px]">
-              <Section4Slider list={competitionCardList} />
+
+            <div>
+              <Typography className="text-[8px] mb-2 font-semibold tracking-wide z-40 md:text-xs lg:text-lg">
+                {t('landing.section4.text5')}
+              </Typography>
+              <div className=" text-xs tracking-wide z-40">
+                <Section4Slider list={competitionCardList} />
+              </div>
             </div>
           </div>
-          <Image
-            alt="peoples"
-            className="  absolute  h-screen top-0  right-[0px] z-10"
-            src={line2}
-          />
-          <div className="w-1/3 right-0 h-[18.8vh] bg-white absolute bottom-0 z-30"></div>
-        </>
-      </BgSection4>
+
+          <div className="w-1/2"></div>
+        </div>
+      </CCard>
+
+      <Image
+        alt="peoples"
+        className="absolute h-[378px] right-10 w-[200px] translate-x-[1.8rem] -translate-y-[23.5rem] rotate-[1deg] z-10
+            md:w-[400px] md:translate-x-[1rem]
+            lg:w-[550px] lg:translate-x-[0.5rem]
+            xl:w-[750px]"
+        src={shape}
+      />
+
+      <Image
+        alt="peoples"
+        className="absolute right-5 h-[200px] w-[180px] translate-x-[1rem] -translate-y-[13rem] rotate-[1deg] z-20
+            md:h-[350px] md:w-[280px] md:-translate-y-[22rem]
+            lg:h-[400px] lg:w-[330px] lg:-translate-y-[25rem]
+            xl:-translate-x-[6rem]"
+        src={peoples}
+      />
+
+      <Image
+        alt="peoples"
+        className="absolute right-20 w-[20%] -translate-x-[1rem] -translate-y-[20rem] rotate-[1deg] z-20
+        md:-translate-x-[14rem] md:w-[10%]
+        lg:-translate-x-[19rem] lg:w-[12%]
+        xl:-translate-x-[27rem]"
+        src={chat}
+      />
+
+      <Image
+        alt="peoples"
+        className="absolute w-[20%] translate-x-[13rem] -translate-y-[20rem] rotate-[1deg] z-10"
+        src={line}
+      />
     </div>
   );
-  // return (
-  //   <div className="relative">
-  //     <BgSection4>
-  //       <>
-  //         <div className="px-20">
-  //           <div className="relative min-h-screen w-full flex items-center justify-center">
-  //             <div className="h-[550px] w-full border absolute z-10 bg-gradient-to-r from-green-50  to-seeds-purple p-[1px] rounded-xl">
-  //               <div className="h-[546px] w-full bg-white rounded-xl"></div>
-  //             </div>
-  //             <Image
-  //               alt="peoples"
-  //               className=" w-[490px] absolute top-[7.3rem] right-0 z-30"
-  //               src={peoples}
-  //             />
-  //             <Image
-  //               alt="peoples"
-  //               className=" w-[700px] h-[550px] absolute right-0 rounded-r-xl z-20"
-  //               src={shape}
-  //             />
-  //             <Image
-  //               alt="peoples"
-  //               className="  absolute top-[210px] right-[430px] z-40"
-  //               src={chat}
-  //             />
-  //             <Image
-  //               alt="peoples"
-  //               className=" w-[700px] absolute top-[250px] right-0 z-20"
-  //               src={line}
-  //             />
-  //           </div>
-  //           <div className="text-[3.5rem] tracking-wider top-[85px] absolute w-[890px] z-30">
-  //             <span className=" text-black  font-semibold z-30">
-  //               Lorem Ipsum
-  //             </span>
-  //           </div>
-  //           <div className="text-[1.8rem] font-medium tracking-wider top-[210px] left-[120px] absolute w-[890px] z-40">
-  //             Lorem Ipsum Dolor
-  //           </div>
-  //           <div className=" text-[1.1rem] tracking-wide  absolute w-[600px] z-30 top-[260px] font-light left-[120px]">
-  //             Lorem ipsum dolor sit amet consectetur. Tristique vel sed libero
-  //             proin neque.
-  //           </div>
-  //           <Button className="absolute z-30 top-[325px] left-[120px] capitalize text-md bg-seeds-purple rounded-full w-[180px] h-[50px]">
-  //             Join Now
-  //           </Button>
-  //           <div className="text-[1.1rem] font-medium tracking-wide top-[405px] left-[120px] absolute w-[890px] z-40">
-  //             Our Recommendation Circle
-  //           </div>
-  //           <div className=" text-[1.1rem] tracking-wide  absolute w-[150px] h-[180px] z-40 top-[440px] bg-gradient-to-l from-white to-transparent font-light left-[425px]"></div>
-  //           <div className=" text-[1.1rem] tracking-wide  absolute w-[450px] z-30 top-[440px] font-light left-[120px]">
-  //             <Section4Slider />
-  //           </div>
-  //         </div>
-  //         <Image
-  //           alt="peoples"
-  //           className="  absolute  h-screen top-0  right-[0px] z-10"
-  //           src={line2}
-  //         />
-  //         <div className="w-1/3 right-0 h-[18.8vh] bg-white absolute bottom-0 z-30"></div>
-  //       </>
-  //     </BgSection4>
-  //   </div>
-  // );
 }

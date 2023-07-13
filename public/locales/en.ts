@@ -13,7 +13,9 @@ export default {
       text2: 'Trending Today',
       text3: "what's trending today?",
       text4:
-        'Get the latest trending news and knowledge about investing and finance.'
+        'Get the latest trending news and knowledge about investing and finance.',
+      text5: 'Event Highlight',
+      text6: 'Keep up with your exciting activities!'
     },
     section3: {
       text1: 'Learn',
@@ -23,12 +25,16 @@ export default {
     },
     section4: {
       text1: 'Meet',
-      text2: 'Meet and chat with like-minded people',
-      text3: 'Our Recommendation Circle'
+      text2: 'and',
+      text3: 'Chat',
+      text4: 'with like-minded people',
+      text5: 'Our Recommendation Circle',
+      text6: 'Share your knowledge easily with your friends'
     },
     section5: {
-      text1: 'Competitions',
-      text2: 'Play the tournaments and win cash rewards'
+      text1: 'Tournaments',
+      text2:
+        'Want to join a tournament while investing? Seeds provides various competitions regarding investment and finance, which of course there are various attractive prizes.'
     },
     section6: {
       text1:

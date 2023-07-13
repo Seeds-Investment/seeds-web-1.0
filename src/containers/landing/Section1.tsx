@@ -58,7 +58,7 @@ export default function Section1(): React.ReactElement {
           />
           <Image
             alt="img"
-            className="absolute min-w-[1020px] top-[110px] h-[730px]"
+            className="absolute w-full top-[30px] -z-20 md:w-[560px] md:h-[380px] md:top-[40px] lg:w-[740px] lg:h-[515px] xl:top-[110px] xl:h-[670px] xl:w-[1030px]"
             src={rectangleLine2}
           />
         </div>

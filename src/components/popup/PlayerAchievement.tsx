@@ -5,7 +5,8 @@ import {
   BronzeMedalIcon,
   GoldMedalIcon,
   SilverMedalIcon,
-  XIcon
+  XIcon,
+  Gain
 } from 'public/assets/vector';
 import Button from '../ui/button/Button';
 import Modal from '../ui/modal/Modal';
@@ -78,32 +79,60 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
 
   const renderContent = ():JSX.Element => (
     <>
-      <div className="flex justify-evenly">
-        <Image
-          src={avatar}
-          alt="AVATAR"
-          width={100}
-          height={100}
-          className="outline outline-seeds-green-2 rounded-2xl"
+      <div className="p-3">
+        <div className="flex justify-evenly">
+          <Image
+            src={avatar}
+            alt="AVATAR"
+            width={100}
+            height={100}
+            className="outline outline-seeds-green-2 rounded-2xl"
+            />
+        </div>
+
+        <div className="flex flex-col justify-center  px-8 pt-2 items-center text-center">
+          <Typography className="font-bold text-lg text-neutral-500">
+            {name}
+          </Typography>
+
+          <Typography className="text-sm text-neutral-soft">
+            {seedsTag}
+          </Typography>
+        </div>
+
+        <div className='flex justify-between items-center m-2'>
+          <div className="flex flex-col items-center">
+            <Typography className="font-bold text-lg text-seeds-button-green flex">
+              <Image
+                src={Gain}
+                alt="gain"
+                width={24}
+                height={24}
+                className="mr-1"
+              />(80%)
+            </Typography>
+            <Typography className="text-sm text-neutral-soft">
+              Winning Accuracy
+            </Typography>
+          </div>
+          <hr className='w-0 h-7 border border-r border-[#BDBDBD]'/>
+          <div>
+            <Typography className="font-bold text-lg text-seeds-button-green">
+             #2
+            </Typography>
+            <Typography className="text-sm text-neutral-soft">
+              Peringkat
+            </Typography>
+          </div>
+        </div>
+
+        <Button
+          label={'Follow'}
+          extraClasses="gap-5 mt-2 w-40"
+          variant="dark"
+          props={{ onClick: () => {} }}
         />
       </div>
-
-      <div className="flex flex-col justify-center  px-8 pt-2 items-center text-center">
-        <Typography className="font-bold text-lg text-neutral-500">
-          {name}
-        </Typography>
-
-        <Typography className="text-sm text-neutral-soft">
-          {seedsTag}
-        </Typography>
-      </div>
-
-      <Button
-        label={'Follow'}
-        extraClasses="gap-5 mt-2 w-40"
-        variant="dark"
-        props={{ onClick: () => {} }}
-      />
 
       <div className="mt-2">
         <Typography className="font-bold text-xs text-left text-seeds-button-green">

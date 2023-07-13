@@ -27,6 +27,7 @@ export { default as EyePurple } from 'public/assets/vector/eye-purple.svg';
 export { default as EyeSlash } from 'public/assets/vector/eye-slash.svg';
 export { default as Eye } from 'public/assets/vector/eye.svg';
 export { default as FileTextIcon } from 'public/assets/vector/file-text.svg';
+export { default as Gain } from 'public/assets/vector/gain.svg';
 export { default as GeneralErrorImage } from 'public/assets/vector/general-error.svg';
 export { default as GeneralSuccessImage } from 'public/assets/vector/general-success.svg';
 export { default as GlobalIcon } from 'public/assets/vector/global.svg';

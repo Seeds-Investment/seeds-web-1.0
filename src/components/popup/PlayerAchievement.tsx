@@ -70,19 +70,14 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
     </div>
   );
 
-  return (
-    <Modal onClose={onClose} modalStyle={{ maxHeight: '80%' }}>
-      <div className="flex justify-end">
-        <Image
-          src={XIcon}
-          alt="X"
-          width={30}
-          height={30}
-          onClick={onClose}
-          className="hover:scale-110 transition ease-out cursor-pointer"
-        />
-      </div>
+  const renderLoading = ():JSX.Element => (
+    <div className='h-72'>
+      <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+    </div>
+  )
 
+  const renderContent = ():JSX.Element => (
+    <>
       <div className="flex justify-evenly">
         <Image
           src={avatar}
@@ -116,6 +111,22 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
         </Typography>
         <div className="p-1">{achievementList.map(renderAchievementCard)}</div>
       </div>
+    </>
+  );
+
+  return (
+    <Modal onClose={onClose} modalStyle={{ maxHeight: '80%' }}>
+       <div className="flex justify-end">
+        <Image
+          src={XIcon}
+          alt="X"
+          width={30}
+          height={30}
+          onClick={onClose}
+          className="hover:scale-110 transition ease-out cursor-pointer"
+        />
+      </div>
+      {renderContent()}
     </Modal>
   );
 };

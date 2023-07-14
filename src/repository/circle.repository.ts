@@ -1,6 +1,6 @@
 import baseAxios from '@/utils/common/axios';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/circle/v1`);
+const authService = baseAxios(`https://seeds-dev-gcp.seeds.finance/circle/v1`);
 
 export const getTrendingCircle = async (): Promise<any> => {
   try {

@@ -5,7 +5,9 @@ import s5photo from '@/assets/landing-page/s5-card-image.png';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
 import type {
+  ICircleLandingPage,
   ICompetitionItem,
+  IEventHighlightLandingPage,
   ILastNews
 } from '../interfaces/components.interfaces';
 
@@ -86,5 +88,97 @@ export const competitionCardList: ICompetitionItem[] = [
     },
     deadline: new Date(),
     status: 'paid'
+  }
+];
+
+export const circleTrendingLandingPage: ICircleLandingPage[] = [
+  {
+    id: '1',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    banner:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950752GURUCUAN-banner.jpeg',
+    name: 'Circle Name 1',
+    totalMember: 20,
+    totalRating: 10
+  },
+  {
+    id: '2',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    banner:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950752GURUCUAN-banner.jpeg',
+    name: 'Circle Name 2',
+    totalMember: 20,
+    totalRating: 10
+  },
+  {
+    id: '3',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    banner:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950752GURUCUAN-banner.jpeg',
+    name: 'Circle Name 3',
+    totalMember: 20,
+    totalRating: 10
+  }
+];
+
+export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
+  {
+    id: '1',
+    name: 'Tournament 1',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '2',
+    name: 'Tournament 3',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '3',
+    name: 'Tournament 3',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '4',
+    name: 'Tournament 4',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '5',
+    name: 'Tournament 5',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '6',
+    name: 'Tournament 6',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
+  },
+  {
+    id: '7',
+    name: 'Tournament 7',
+    image:
+      'https://seeds-bucket.s3.ap-southeast-1.amazonaws.com/seeds1667480950532GURUCUAN.jpeg',
+    date: '1 June - 20 June',
+    status: 'Paid'
   }
 ];

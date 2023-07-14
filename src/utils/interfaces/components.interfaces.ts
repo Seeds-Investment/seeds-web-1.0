@@ -53,3 +53,20 @@ export interface ICompetitionItem {
   deadline: Date;
   status: string;
 }
+
+export interface ICircleLandingPage {
+  id: string;
+  image: string;
+  banner: string;
+  name: string;
+  totalMember: number;
+  totalRating: number;
+}
+
+export interface IEventHighlightLandingPage {
+  id: string;
+  name: string;
+  image: string;
+  date: string;
+  status: string;
+}

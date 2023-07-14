@@ -97,7 +97,7 @@ export default function Section5(): React.ReactElement {
       </div>
 
       <div className="px-10 w-full h-full mb-16 mt-10">
-        <div className="text-seeds-purple text-[32px] font-bold mb-4">
+        <div className="text-seeds-purple text-[32px] font-bold mb-4 lg:ml-10">
           {t('landing.section5.text1')}
         </div>
 

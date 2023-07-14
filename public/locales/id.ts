@@ -1,5 +1,45 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  // greeting: 'Hello, {{name}}',
+  landing: {
+    section1: {
+      text1: 'Seeds',
+      text2: 'Mulai dan perluas perjalanan investasi kamu bersama kami!'
+    },
+    section2: {
+      text1: 'Discover',
+      text2: 'Sedang Trending Hari Ini',
+      text3: 'Apa yang Sedang Tren Saat Ini?',
+      text4:
+        'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
+      text5: 'Sorotan Acata',
+      text6: 'Ikuti terus kegiatan seru kami!'
+    },
+    section3: {
+      text1: 'Belajar',
+      text2: ' lebih tentang Investasi dan Keuangan dari Pro',
+      text3:
+        'Kami menyatukan para profesional untuk belajar tentang investasi dan keuangan.'
+    },
+    section4: {
+      text1: 'Bertemu',
+      text2: 'dan',
+      text3: 'mengobrol',
+      text4: 'dengan orang-orang yang berpikiran sama',
+      text5: 'Rekomendasi sirkel kami',
+      text6: 'Bagikan pengetahuan kamu dengan mudah ke teman-temanmu'
+    },
+    section5: {
+      text1: 'Tournaments',
+      text2:
+        'Ingin ikut turnamen sambil berinvestasi? Seeds menyediakan berbagai kompetisi mengenai investasi dan keuangan yang tentunya terdapat berbagai hadiah menarik.'
+    },
+    section6: {
+      text1:
+        'Tidak ada rekomendasi investasi dalam situs ini. Seeds tidak menawarkan nasihat keuangan. Jika Anda tidak yakin tentang investasi, kami mendorong Anda untuk berbicara dengan penasihat keuangan Anda.',
+      text2: ''
+    }
+  },
   second: 'detik',
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
@@ -126,8 +166,8 @@ export default {
     BTN_REGISTER: 'Daftar',
     BTN_LOGIN: 'Masuk',
     BTN_GUEST: 'Masuk Sebagai Tamu',
-    next: 'Lanjutkan',
     joinNow: 'Gabung Sekarang',
+    next: 'Lanjutkan',
     label: {
       change: 'Ubah',
       confirm: 'Konfirmasi',

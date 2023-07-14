@@ -1,13 +1,15 @@
 import earth from '@/assets/landing-page/s2-earth.png';
 import shape from '@/assets/landing-page/s2-shape.png';
-import s5photo from '@/assets/landing-page/s5-card-image.png';
-import CCard from '@/components/CCard';
 import { getExternalNews } from '@/repository/news.repository';
+import { eventHighlightLandingPage } from '@/utils/_static/dummy';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { Settings } from 'react-slick';
+import Slider from 'react-slick';
+import Section2Card from './Section2Card';
 
 const fetch = async (
   setNews: Dispatch<SetStateAction<never[]>>
@@ -22,32 +24,36 @@ export default function Section2(): React.ReactElement {
   const [news, setNews] = useState([]);
   console.log(news);
 
-  const dummyEvent = [
-    {
-      author: 'Admin Test',
-      content: 'hehehehee',
-      description: 'hehehehehe',
-      publishedAt: '12/4/2022',
-      source: {
-        id: '1',
-        name: 'google'
+  const settings: Settings = {
+    centerMode: true,
+    slidesToShow: 4,
+    speed: 500,
+    slidesToScroll: 1,
+    dots: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          dots: true,
+          slidesToShow: 3
+        }
       },
-      title: 'Judul oke banget',
-      url: 'google.com'
-    },
-    {
-      author: 'Admin Test',
-      content: 'hehehehee',
-      description: 'hehehehehe',
-      publishedAt: '12/4/2022',
-      source: {
-        id: '1',
-        name: 'google'
+      {
+        breakpoint: 768,
+        settings: {
+          dots: true,
+          slidesToShow: 2
+        }
       },
-      title: 'Judul oke banget',
-      url: 'google.com'
-    }
-  ];
+      {
+        breakpoint: 480,
+        settings: {
+          dots: true,
+          slidesToShow: 1
+        }
+      }
+    ]
+  };
 
   useEffect(() => {
     void fetch(setNews);
@@ -107,29 +113,11 @@ export default function Section2(): React.ReactElement {
           {t('landing.section2.text6')}
         </div>
 
-        <div className="flex flex-row gap-4">
-          {dummyEvent
-            ?.filter((a, i) => i > 0)
-            .map((data, idx) => (
-              // <Section2Card key={idx} data={data} />
-              <div
-                key={idx}
-                className="max-w-sm rounded overflow-hidden shadow-lg"
-              >
-                <Image
-                  className="w-full"
-                  src={s5photo}
-                  alt="Sunset in the mountains"
-                />
-                <div className="">
-                  <CCard className="bg-transparent">
-                    <Typography>Judul</Typography>
-                    <Typography>Tanggal</Typography>
-                  </CCard>
-                </div>
-              </div>
-            ))}
-        </div>
+        <Slider {...settings}>
+          {eventHighlightLandingPage.map((data, key) => (
+            <Section2Card key={key} data={data} />
+          ))}
+        </Slider>
 
         {/* <Image
             alt="img"

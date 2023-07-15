@@ -27,42 +27,49 @@ export default function Section1(): React.ReactElement {
 
   console.log(list);
 
-  return (
-    <div className="mb-10 p-3 min-w-full cursor-default md:p-8" >
-      <CCard className="bg-clip overflow-hidden md:h-[410px] lg:h-[480px] shadow-lg rounded-xl lg:p-5 outline">
-        <div className="flex flex-col p-6 bg-ellipse-purple">
-          <div className="mb-4">
-            <Typography className="text-[24px] text-[#262626] font-bold lg:text-[64px] tracking-wider">
+  const Stars = ():JSX.Element => {
+    const classes = "h-auto w-[12px] md:w-[16px] md:w-[20px]";
+    return(
+      <div className='flex'>
+        <Image alt="" src={star} className={classes}/>
+        <Image alt="" src={star} className={classes}/>
+        <Image alt="" src={star} className={classes}/>
+        <Image alt="" src={star} className={classes}/>
+        <Image alt="" src={star} className={classes}/>
+      </div>
+  );
+    };
+
+  const renderCard = ():JSX.Element => (
+      <CCard className="bg-clip overflow-hidden h-[670px] md:h-auto lg:h-auto shadow-lg rounded-xl border border-seeds-soft bg-white bg-opacity-30">
+        <div
+          className="flex flex-col p-6 bg-no-repeat bg-right-bottom bg-[length:412px] h-full w-full md:bg-[length:340px] md:p-16 lg:bg-[length:420px]"
+          style={ { backgroundImage: "url('/assets//temporary/play-ipon.png')" } }
+        >
+          <div>
+            <Typography className="text-center text-[24px] text-[#262626] font-bold md:text-left md:text-[32px] lg:text-[64px] leading-none">
               {t('temporary.welcome.1')}
             </Typography>
-            <Typography className="text-[24px] text-[#262626] font-bold tracking-wider">
+            <Typography className="text-center text-[24px] text-[#262626] font-bold md:text-left md:text-[32px] lg:text-[64px] leading-none">
               {t('temporary.welcome.2')}
             </Typography>
-            <Typography className="text-l text-[#262626] font-normal tracking-wider mt-3">
+            <Typography className="text-center text-l text-[#262626] font-normal my-3 md:my-6 lg:my-9 md:text-left md:w-[50%] lg:text-[18px] lg:w-[60%] lg:text-[24px]">
               {t('temporary.description')}
             </Typography>
           </div>
-          <div className="flex justify-around mb-3">
-            {downloadOurApp
-              .filter((data, i) => i <= 1)
-              .map((data, key) => (
-                <div key={key} className='flex flex-col items-center'>
+          <div className="flex justify-around md:justify-start">
+            {downloadOurApp.filter((data, i) => i <= 1).map((data, key) => (
+                <div key={key} className='flex flex-col items-center md:mr-5'>
                   <Link key={key} href={data.url}>
                     <Image alt="" src={data.icon} />
                   </Link>
-                  <div className="flex mt-3">
-                    <Typography className="mr-2 text-xl text-[#262626] font-semibold tracking-wider">
+                  <div className="flex mt-7">
+                    <Typography className="mr-2 text-xl text-[#262626] font-semibold md:text-[24px] lg:text-[48px]">
                       {data.rate}
                     </Typography>
                     <div>
-                      <div className='flex'>
-                        <Image alt="" src={star} />
-                        <Image alt="" src={star} />
-                        <Image alt="" src={star} />
-                        <Image alt="" src={star} />
-                        <Image alt="" src={star} />
-                      </div>
-                      <Typography className="text-xs text-[#262626] font-normal tracking-wider">
+                      <Stars />
+                      <Typography className="text-xs text-[#262626] font-normal lg:text-sm">
                       {t('temporary.review', {review: data.reviews})}
                     </Typography>
                     </div>
@@ -72,6 +79,14 @@ export default function Section1(): React.ReactElement {
           </div>
         </div>
       </CCard>
+  )
+
+  return (
+    <div
+      className="bg-no-repeat bg-left-bottom p-3 min-w-full cursor-default md:px-16 lg:p-24 lg:pt-4 w-full h-full"
+       style={{backgroundImage: "url('/assets//temporary/first-place-medal.png')"}}
+    >
+      {renderCard()}
     </div>
   );
 }

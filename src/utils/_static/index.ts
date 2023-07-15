@@ -108,11 +108,15 @@ export const seedsInformation: ISeedsInformationList = {
 export const downloadOurApp = [
   {
     url: '',
-    icon: appstore
+    icon: appstore,
+    rate: '4.9',
+    reviews: '250+'
   },
   {
     url: '',
-    icon: playstore
+    icon: playstore,
+    rate: '5.0',
+    reviews: '250+'
   },
   {
     url: '',

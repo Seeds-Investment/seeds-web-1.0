@@ -635,5 +635,13 @@ export default {
     option1: 'Invite your friend to install the app with the link',
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     option3: 'Get more XP when your friend registered to Seeds'
+  },
+  temporary: {
+    welcome: {
+      1: 'Welcome to Seeds!',
+      2: 'Start your Investing journey'
+    },
+    description: "Expand your connection, manage your assets and grow your portfolio together with Seeds. Download Now!",
+    review: '{{review}} reviews'
   }
 };

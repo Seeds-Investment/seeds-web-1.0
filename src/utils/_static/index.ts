@@ -113,7 +113,7 @@ export const downloadOurApp = [
     reviews: '250+'
   },
   {
-    url: '',
+    url: 'https://play.google.com/store/apps/details?id=com.seeds.investment',
     icon: playstore,
     rate: '5.0',
     reviews: '250+'

@@ -83,8 +83,8 @@ export default function Section1(): React.ReactElement {
 
   return (
     <div
-      className="bg-no-repeat bg-left-bottom p-3 min-w-full cursor-default md:px-16 lg:p-24 lg:pt-4 w-full h-full"
-       style={{backgroundImage: "url('/assets//temporary/first-place-medal.png')"}}
+      className="p-3 min-w-full cursor-default md:px-16 lg:p-24 lg:pt-4 w-full h-full"
+       style={{background: "url('/assets/temporary/first-place-medal.png') left bottom no-repeat, url('/assets/temporary/purple-ellipse.png') bottom no-repeat, url('/assets/temporary/green-ellipse.png') right bottom no-repeat"}}
     >
       {renderCard()}
     </div>

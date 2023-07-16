@@ -170,7 +170,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
           <Input
             required
             type="date"
-            isRedirectButton
             label={t('input.label.dateOfBirth')}
             placeholder={
               languageCtx.language === 'EN'

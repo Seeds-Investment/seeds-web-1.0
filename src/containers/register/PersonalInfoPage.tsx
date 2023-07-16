@@ -46,12 +46,12 @@ const PersonalInfoPage = ({
     enableReinitialize: true,
     validateOnBlur: true,
     onSubmit: async () => {
-      const { email, phoneNumber } = formdata;
+      const { email, phoneNumber, countryCode } = formdata;
       let hasErrors = false; // Flag to track errors
 
       try {
         const emailPromise = checkEmail(email);
-        const phonePromise = checkPhoneNumber(phoneNumber);
+        const phonePromise = checkPhoneNumber(countryCode + phoneNumber);
 
         const [emailResult, phoneResult] = await Promise.allSettled([
           emailPromise,

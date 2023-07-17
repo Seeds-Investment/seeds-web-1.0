@@ -1,5 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 import {
   BronzeMedalIcon,
@@ -10,62 +11,77 @@ import {
 } from 'public/assets/vector';
 import Button from '../ui/button/Button';
 import Modal from '../ui/modal/Modal';
+import { getLeaderboardDetail } from '@/repository/play.repository';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   playerId: string;
+  rank: number;
   onClose: () => void;
 }
 
-interface AchievementCardProps {
-  title: string;
-  subtitle: string;
-  icon: string;
-  alt: string;
+interface Achievement {
+  medal?: string;
+  count?: number; 
 }
 
-const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
-  const name = 'Katharina Delitha Putri';
-  const seedsTag = playerId;
-  const avatar =
-    'https://seeds-bucket-new.s3.ap-southeast-3.amazonaws.com/avatar/3D/Compressed/PNG/male/Avatar-12.png';
+interface LeaderboardDetail {
+  avatar_url?: string;
+  name?: string;
+  seeds_tag?: string;
+  user_achievement?: Achievement[];
+  win_accuracy?: number;
+}
 
-  const achievementList = [
-    {
-      icon: GoldMedalIcon,
-      alt: 'gold-medal',
-      title: 'Dapat 3 Gold',
-      subtitle: 'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.'
-    },
-    {
-      icon: SilverMedalIcon,
-      alt: 'silver-medal',
-      title: 'Dapat 2 Sliver',
-      subtitle: 'Kumpulkan Silver lencana sebanyak mungkin.'
-    },
-    {
-      icon: BronzeMedalIcon,
-      alt: 'bronze-medal',
-      title: 'Dapat 2 Bronze',
-      subtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
+const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
+  const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<LeaderboardDetail>({});
+
+  const fetchPlayerAchievement = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const leaderboardDetail = await getLeaderboardDetail(playerId);
+      
+      setData(leaderboardDetail)
+    } catch (error: any) {
+      console.error('Error fetching user profile:', error.message);
+    } finally {
+      setIsLoading(false)
     }
-  ];
+  };
 
-  const renderAchievementCard: React.FC<AchievementCardProps> = ({
-    title,
-    subtitle,
-    icon,
-    alt
+  useEffect(() => {
+    void fetchPlayerAchievement();
+  }, []);
+
+  const getMedalIcon = (medal: string): string => {
+    if (medal === 'GOLD') {
+      return GoldMedalIcon
+    }
+    if (medal === 'SILVER') {
+      return SilverMedalIcon
+    }
+    if (medal === 'BRONZE') {
+      return BronzeMedalIcon
+    }
+    return ''
+  }
+
+  const renderAchievementCard: React.FC<Achievement> = ({
+    medal = '',
+    count = 0
   }) => (
     <div className="mt-3 bg-[#F9F9F9] p-3 flex rounded-xl outline outline-[#E9E9E9] shadow-md">
       <div className="flex items-center mr-2">
-        <Image src={icon} alt={alt} width={45} height={45} />
+        <Image src={getMedalIcon(medal)} alt={medal} width={45} height={45} />
       </div>
       <div className="flex flex-col justify-center">
         <Typography className="font-bold text-xs text-left text-neutral-medium">
-          {title}
+          {t(`playerAchievementPopup.achievement${medal}Title`, { count })}
         </Typography>
         <Typography className="text-left text-[12px] text-neutral-soft">
-          {subtitle}
+           {t(`playerAchievementPopup.achievement${medal}Subtitle`)}
         </Typography>
       </div>
     </div>
@@ -82,7 +98,7 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
       <div className="p-3">
         <div className="flex justify-evenly">
           <Image
-            src={avatar}
+            src={data?.avatar_url ?? ''}
             alt="AVATAR"
             width={100}
             height={100}
@@ -92,11 +108,11 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
 
         <div className="flex flex-col justify-center  px-8 pt-2 items-center text-center">
           <Typography className="font-bold text-lg text-neutral-500">
-            {name}
+            {data?.name}
           </Typography>
 
           <Typography className="text-sm text-neutral-soft">
-            {seedsTag}
+             {t('playerAchievementPopup.seedsTag', { seedsTag: data?.seeds_tag })}
           </Typography>
         </div>
 
@@ -109,19 +125,19 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
                 width={24}
                 height={24}
                 className="mr-1"
-              />(80%)
+              />{t('playerAchievementPopup.winningAccuracy', { accuracy: (data?.win_accuracy != null) ? Math.round(data?.win_accuracy) : 0 })}
             </Typography>
             <Typography className="text-sm text-neutral-soft">
-              Winning Accuracy
+              {t('playerAchievementPopup.winningAccuracyLabel')}
             </Typography>
           </div>
           <hr className='w-0 h-7 border border-r border-[#BDBDBD]'/>
           <div>
             <Typography className="font-bold text-lg text-seeds-button-green">
-             #2
+              {t('playerAchievementPopup.rank', { rank })}
             </Typography>
             <Typography className="text-sm text-neutral-soft">
-              Peringkat
+              {t('playerAchievementPopup.rankLabel')}
             </Typography>
           </div>
         </div>
@@ -136,9 +152,9 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
 
       <div className="mt-2">
         <Typography className="font-bold text-xs text-left text-seeds-button-green">
-          Prestasi
+          {t('playerAchievementPopup.achievementLabel')}
         </Typography>
-        <div className="p-1">{achievementList.map(renderAchievementCard)}</div>
+        <div className="p-1">{data?.user_achievement?.sort().map(renderAchievementCard)}</div>
       </div>
     </>
   );
@@ -155,7 +171,7 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, onClose }) => {
           className="hover:scale-110 transition ease-out cursor-pointer"
         />
       </div>
-      {renderContent()}
+      {isLoading ? renderLoading() : renderContent()}
     </Modal>
   );
 };

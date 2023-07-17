@@ -45,13 +45,18 @@ interface playList {
   };
 }
 
+interface PlayerData {
+  id?: string;
+  rank?: number;
+}
+
 const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
 
 const Player = (): React.ReactElement => {
   const [leader, setLeader] = useState<LeaderboardData[]>([]);
   const [playList, setPlayList] = useState<playList[]>([]);
   const [showAchievementModal, setShowAchievementModal] = useState<boolean>(false);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string>();
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
 
   useEffect(() => {
     fetchLeaderboardData();
@@ -357,9 +362,10 @@ const Player = (): React.ReactElement => {
             <PlayerAchievement
               onClose={() => {
                 setShowAchievementModal(false);
-                setSelectedPlayerId(undefined)
+                setSelectedPlayer({})
               }}
-              playerId={selectedPlayerId}
+              rank={selectedPlayer.rank ?? 0}
+              playerId={selectedPlayer.id ?? ''}
             />
           }
           <ul>
@@ -368,7 +374,10 @@ const Player = (): React.ReactElement => {
                 className="flex mx-7 my-10 hover:cursor-pointer"
                 key={player.user_id}
                 onClick={() => {
-                  setSelectedPlayerId(player.user_id)
+                  setSelectedPlayer({
+                    id: player.user_id,
+                    rank: player.current_rank
+                  })
                   setShowAchievementModal(true)}
                 }
                 >

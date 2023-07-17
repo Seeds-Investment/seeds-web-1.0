@@ -1,40 +1,41 @@
 import type { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
-
-import useDebounce from '@/hooks/useDebaunce';
+import { useState } from 'react';
 
 // reference: https://blog.openreplay.com/integrating-axios-with-react-hooks/
 
-const useAxios = (
-  callback: (payload: any) => Promise<any>,
-  payload: any,
-  debounceTimeout: number = 0
-): { data: any; error: string; loaded: boolean } => {
+const useService = (
+  axiosInstance: (...args: any) => Promise<any>
+): {
+  data: any;
+  error: string;
+  loading: boolean;
+  execute: (...payload: any) => Promise<void>;
+} => {
   // states
   const [data, setData] = useState<AxiosResponse | null>(null);
   const [error, setError] = useState<string>('');
-  const [loaded, setLoaded] = useState<boolean>(false);
-  // debouncer
-  const debouncerPayload = useDebounce(payload, debounceTimeout);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLoaded(false);
-    setError('');
-    setData(null);
+  const execute = async (...payload: any): Promise<void> => {
+    setLoading(true);
 
-    callback(debouncerPayload)
-      .then((res: AxiosResponse) => {
-        setData(res);
-      })
-      .catch((error: AxiosError) => {
-        setError(error.message);
-      })
-      .finally(() => {
-        setLoaded(true);
-      });
-  }, [debouncerPayload, callback]);
+    await new Promise<void>((resolve, reject) => {
+      axiosInstance(...payload)
+        .then((res: AxiosResponse) => {
+          setData(res);
+          resolve();
+        })
+        .catch((error: AxiosError) => {
+          setError(error.message);
+          reject(error.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
+  };
 
-  return { data, error, loaded };
+  return { data, error, loading, execute };
 };
 
-export default useAxios;
+export default useService;

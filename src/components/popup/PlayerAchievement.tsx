@@ -170,7 +170,9 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
   );
 
   return (
-    <Modal onClose={onClose} modalStyle={{ maxHeight: '80%' }}>
+    <Modal
+      onClose={onClose}
+      modalClasses="z-30 animate-slide-down fixed sm:left-[50%] top-[35%] left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white">
       <div className="flex justify-end">
         <Image
           src={XIcon}

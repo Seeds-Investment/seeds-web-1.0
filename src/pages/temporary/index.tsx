@@ -5,9 +5,7 @@ import Footer from '@/containers/landing/Section6';
 export default function Home(): React.ReactElement {
   return (
     <>
-      <PageGradient
-        className="absolute overflow-hidden w-full"
-      >
+      <PageGradient className="absolute overflow-hidden w-full">
         <Section1 />
         <Footer />
       </PageGradient>

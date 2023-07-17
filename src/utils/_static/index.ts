@@ -107,7 +107,7 @@ export const seedsInformation: ISeedsInformationList = {
 
 export const downloadOurApp = [
   {
-    url: '',
+    url: 'https://apps.apple.com/id/app/seeds-investing-together/id6443659980',
     icon: appstore,
     rate: '4.9',
     reviews: '250+'

@@ -58,7 +58,7 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
   }, []);
 
   const achievementOrder = ['GOLD', 'SILVER', 'BRONZE'];
-  const sortAchievement = (a: Achievement, b: Achievement): number => achievementOrder.indexOf(a.medal) - achievementOrder.indexOf(b?.medal)
+  const sortAchievement = (a: Achievement, b: Achievement): number => achievementOrder.indexOf(a.medal) - achievementOrder.indexOf(b.medal)
 
   const getMedalIcon = (medal: string): string => {
     if (medal === 'GOLD') {

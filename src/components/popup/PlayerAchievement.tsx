@@ -22,7 +22,7 @@ interface Props {
 
 interface Achievement {
   medal?: string;
-  count?: number; 
+  count?: number;
 }
 
 interface LeaderboardDetail {
@@ -42,12 +42,12 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
     try {
       setIsLoading(true);
       const leaderboardDetail = await getLeaderboardDetail(playerId);
-      
-      setData(leaderboardDetail)
+
+      setData(leaderboardDetail);
     } catch (error: any) {
       console.error('Error fetching user profile:', error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -57,16 +57,16 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
 
   const getMedalIcon = (medal: string): string => {
     if (medal === 'GOLD') {
-      return GoldMedalIcon
+      return GoldMedalIcon;
     }
     if (medal === 'SILVER') {
-      return SilverMedalIcon
+      return SilverMedalIcon;
     }
     if (medal === 'BRONZE') {
-      return BronzeMedalIcon
+      return BronzeMedalIcon;
     }
-    return ''
-  }
+    return '';
+  };
 
   const renderAchievementCard: React.FC<Achievement> = ({
     medal = '',
@@ -81,19 +81,19 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
           {t(`playerAchievementPopup.achievement${medal}Title`, { count })}
         </Typography>
         <Typography className="text-left text-[12px] text-neutral-soft">
-           {t(`playerAchievementPopup.achievement${medal}Subtitle`)}
+          {t(`playerAchievementPopup.achievement${medal}Subtitle`)}
         </Typography>
       </div>
     </div>
   );
 
-  const renderLoading = ():JSX.Element => (
-    <div className='h-72'>
+  const renderLoading = (): JSX.Element => (
+    <div className="h-72">
       <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
     </div>
-  )
+  );
 
-  const renderContent = ():JSX.Element => (
+  const renderContent = (): JSX.Element => (
     <>
       <div className="p-3">
         <div className="flex justify-evenly">
@@ -103,7 +103,7 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
             width={100}
             height={100}
             className="outline outline-seeds-green-2 rounded-2xl"
-            />
+          />
         </div>
 
         <div className="flex flex-col justify-center  px-8 pt-2 items-center text-center">
@@ -112,11 +112,13 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
           </Typography>
 
           <Typography className="text-sm text-neutral-soft">
-             {t('playerAchievementPopup.seedsTag', { seedsTag: data?.seeds_tag })}
+            {t('playerAchievementPopup.seedsTag', {
+              seedsTag: data?.seeds_tag
+            })}
           </Typography>
         </div>
 
-        <div className='flex justify-between items-center m-2'>
+        <div className="flex justify-between items-center m-2">
           <div className="flex flex-col items-center">
             <Typography className="font-bold text-lg text-seeds-button-green flex">
               <Image
@@ -125,13 +127,19 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
                 width={24}
                 height={24}
                 className="mr-1"
-              />{t('playerAchievementPopup.winningAccuracy', { accuracy: (data?.win_accuracy != null) ? Math.round(data?.win_accuracy) : 0 })}
+              />
+              {t('playerAchievementPopup.winningAccuracy', {
+                accuracy:
+                  data?.win_accuracy != null
+                    ? Math.round(data?.win_accuracy)
+                    : 0
+              })}
             </Typography>
             <Typography className="text-sm text-neutral-soft">
               {t('playerAchievementPopup.winningAccuracyLabel')}
             </Typography>
           </div>
-          <hr className='w-0 h-7 border border-r border-[#BDBDBD]'/>
+          <hr className="w-0 h-7 border border-r border-[#BDBDBD]" />
           <div>
             <Typography className="font-bold text-lg text-seeds-button-green">
               {t('playerAchievementPopup.rank', { rank })}
@@ -154,14 +162,16 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
         <Typography className="font-bold text-xs text-left text-seeds-button-green">
           {t('playerAchievementPopup.achievementLabel')}
         </Typography>
-        <div className="p-1">{data?.user_achievement?.sort().map(renderAchievementCard)}</div>
+        <div className="p-1">
+          {data?.user_achievement?.sort().map(renderAchievementCard)}
+        </div>
       </div>
     </>
   );
 
   return (
     <Modal onClose={onClose} modalStyle={{ maxHeight: '80%' }}>
-       <div className="flex justify-end">
+      <div className="flex justify-end">
         <Image
           src={XIcon}
           alt="X"

@@ -1,11 +1,12 @@
+import PlayerAchievement from '@/components/popup/PlayerAchievement';
 import axios from 'axios';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import FilterIcon from '../../components/svgs/filterIcon';
-import TopIcon from '../../components/svgs/topIcon';
 import GoldRank from '../../components/svgs/rank1';
 import SilverRank from '../../components/svgs/rank2';
 import BronzeRank from '../../components/svgs/rank3';
-import PlayerAchievement from '@/components/popup/PlayerAchievement';
+import TopIcon from '../../components/svgs/topIcon';
 
 interface LeaderboardData {
   user_id: string;
@@ -55,12 +56,17 @@ const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
 const Player = (): React.ReactElement => {
   const [leader, setLeader] = useState<LeaderboardData[]>([]);
   const [playList, setPlayList] = useState<playList[]>([]);
-  const [showAchievementModal, setShowAchievementModal] = useState<boolean>(false);
+  const [showAchievementModal, setShowAchievementModal] =
+    useState<boolean>(false);
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
 
   useEffect(() => {
-    fetchLeaderboardData();
-    fetchPlayList();
+    fetchLeaderboardData()
+      .then()
+      .catch(() => {});
+    fetchPlayList()
+      .then()
+      .catch(() => {});
   }, []);
 
   const fetchPlayList = async (): Promise<void> => {
@@ -110,7 +116,7 @@ const Player = (): React.ReactElement => {
   const filteredLeader = leader.filter(player => player.current_rank < 4);
   const filteredAllCompetition = playList.filter((competition, i) => i < 3);
   const filteredStatusCompetition = playList.filter(
-    (competition, i) => competition.status == 'ACTIVE' && i < 3
+    (competition, i) => competition.status === 'ACTIVE' && i < 3
   );
   // const filteredAllCompetition = playList.filter((competition, i) => i < 4);
 
@@ -176,10 +182,12 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between my-3 font-bold">
                 <div>{play.name}</div>
                 <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <img
-                    className="me-3"
+                  <Image
+                    className="me-3 w-auto h-auto"
                     src="/assets/vector/suprise.svg"
                     alt="img"
+                    height={0}
+                    width={0}
                   />
                   Rp {play.prize_fix_amount}
                 </div>
@@ -187,21 +195,45 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between">
                 <div>
                   <div className="flex">
-                    <img src="/assets/vector/userPlay.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/userPlay.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.min_participant} peserta</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/clock.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/clock.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">
                       {getFormattedDate(play.play_time)}
                     </div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/dolar.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/dolar.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">Rp {play.admission_fee}</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/warning.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/warning.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.type}</div>
                   </div>
                   <div>
@@ -214,7 +246,12 @@ const Player = (): React.ReactElement => {
                   </div>
                 </div>
                 <div>
-                  <img src="/assets/images/listimage.png" alt="img" />
+                  <Image
+                    src="/assets/images/listimage.png"
+                    alt="img"
+                    height={120}
+                    width={120}
+                  />
                 </div>
               </div>
             </div>
@@ -235,10 +272,12 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between my-3 font-bold">
                 <div>{play.name}</div>
                 <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <img
-                    className="me-3"
+                  <Image
+                    className="me-3 w-auto h-auto"
                     src="/assets/vector/suprise.svg"
                     alt="img"
+                    height={0}
+                    width={0}
                   />
                   Rp {play.prize_fix_amount}
                 </div>
@@ -246,21 +285,45 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between">
                 <div>
                   <div className="flex">
-                    <img src="/assets/vector/userPlay.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/userPlay.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.min_participant} peserta</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/clock.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/clock.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">
                       {getFormattedDate(play.play_time)}
                     </div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/dolar.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/dolar.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">Rp {play.admission_fee}</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/warning.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/warning.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.type}</div>
                   </div>
                   <div>
@@ -273,7 +336,12 @@ const Player = (): React.ReactElement => {
                   </div>
                 </div>
                 <div>
-                  <img src="/assets/images/listimage.png" alt="img" />
+                  <Image
+                    src="/assets/images/listimage.png"
+                    alt="img"
+                    height={120}
+                    width={120}
+                  />
                 </div>
               </div>
             </div>
@@ -294,10 +362,12 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between my-3 font-bold">
                 <div>{play.name}</div>
                 <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <img
-                    className="me-3"
+                  <Image
+                    className="me-3 w-auto h-auto"
                     src="/assets/vector/suprise.svg"
                     alt="img"
+                    height={0}
+                    width={0}
                   />
                   Rp {play.prize_fix_amount}
                 </div>
@@ -305,21 +375,45 @@ const Player = (): React.ReactElement => {
               <div className="flex justify-between">
                 <div>
                   <div className="flex">
-                    <img src="/assets/vector/userPlay.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/userPlay.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.min_participant} peserta</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/clock.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/clock.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">
                       {getFormattedDate(play.play_time)}
                     </div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/dolar.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/dolar.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">Rp {play.admission_fee}</div>
                   </div>
                   <div className="flex">
-                    <img src="/assets/vector/warning.svg" alt="img" />
+                    <Image
+                      src="/assets/vector/warning.svg"
+                      alt="img"
+                      height={0}
+                      width={0}
+                      className="w-auto h-auto"
+                    />
                     <div className="mx-3">{play.type}</div>
                   </div>
                   <div>
@@ -332,7 +426,12 @@ const Player = (): React.ReactElement => {
                   </div>
                 </div>
                 <div>
-                  <img src="/assets/images/listimage.png" alt="img" />
+                  <Image
+                    src="/assets/images/listimage.png"
+                    alt="img"
+                    height={120}
+                    width={120}
+                  />
                 </div>
               </div>
             </div>
@@ -358,16 +457,16 @@ const Player = (): React.ReactElement => {
           </button>
         </div>
         <div>
-          {showAchievementModal &&
+          {showAchievementModal && (
             <PlayerAchievement
               onClose={() => {
                 setShowAchievementModal(false);
-                setSelectedPlayer({})
+                setSelectedPlayer({});
               }}
               rank={selectedPlayer.rank ?? 0}
               playerId={selectedPlayer.id ?? ''}
             />
-          }
+          )}
           <ul>
             {filteredLeader.map((player, i) => (
               <div
@@ -377,10 +476,10 @@ const Player = (): React.ReactElement => {
                   setSelectedPlayer({
                     id: player.user_id,
                     rank: player.current_rank
-                  })
-                  setShowAchievementModal(true)}
-                }
-                >
+                  });
+                  setShowAchievementModal(true);
+                }}
+              >
                 <div>
                   <div className="text-2xl mx-2">{i + 1}</div>
                   <div className="ms-3 mt-2">
@@ -390,10 +489,12 @@ const Player = (): React.ReactElement => {
                 <div className="flex justify-between w-full">
                   <div className="flex">
                     <div>
-                      <img
-                        className="h-12 w-12 rounded-full mx-2"
+                      <Image
+                        className="h-[3rem] w-[3rem] rounded-full mx-2"
                         src={player.avatar_url}
                         alt="img"
+                        height={20}
+                        width={20}
                       />
                     </div>
                     <div>

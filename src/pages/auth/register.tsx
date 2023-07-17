@@ -19,7 +19,7 @@ export interface IRegisterPaging {
 const RegisterPage = (): JSX.Element => {
   const [page, setPage] = useState<number>(0);
   const [formdata, setFormdata] = useState<IRegisterFormdata>({
-    countryCode: '+62',
+    countryCode: '62',
     phoneNumber: '',
     email: '',
     birthdate: '',

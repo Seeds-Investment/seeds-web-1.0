@@ -3,6 +3,45 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  landing: {
+    section1: {
+      text1: 'Seeds',
+      text2: 'Start and expand your investing journey with us!'
+    },
+    section2: {
+      text1: 'Discover',
+      text2: 'Trending Today',
+      text3: "what's trending today?",
+      text4:
+        'Get the latest trending news and knowledge about investing and finance.',
+      text5: 'Event Highlight',
+      text6: 'Keep up with your exciting activities!'
+    },
+    section3: {
+      text1: 'Learn',
+      text2: ' more about Investing and Finance from the Pro',
+      text3:
+        'We bring together professionals to learn about investing and finance.'
+    },
+    section4: {
+      text1: 'Meet',
+      text2: 'and',
+      text3: 'Chat',
+      text4: 'with like-minded people',
+      text5: 'Our Recommendation Circle',
+      text6: 'Share your knowledge easily with your friends'
+    },
+    section5: {
+      text1: 'Tournaments',
+      text2:
+        'Want to join a tournament while investing? Seeds provides various competitions regarding investment and finance, which of course there are various attractive prizes.'
+    },
+    section6: {
+      text1:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text2: ''
+    }
+  },
   successPopup: {
     title: {
       general: 'Success!'
@@ -140,8 +179,8 @@ export default {
     BTN_REGISTER: 'Register',
     BTN_LOGIN: 'Login',
     BTN_GUEST: 'Enter As Guest',
-    next: 'Continue',
     joinNow: 'Join Now',
+    next: 'Continue',
     label: {
       change: 'Change',
       confirm: 'Confirm',
@@ -159,11 +198,12 @@ export default {
     rankLabel: 'Peringkat',
     achievementLabel: 'Prestasi',
     achievementGOLDTitle: 'Dapat {{count}} Gold',
-    achievementGOLDSubtitle: 'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.',
+    achievementGOLDSubtitle:
+      'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.',
     achievementSILVERTitle: 'Dapat {{count}} Silver',
     achievementSILVERSubtitle: 'Kumpulkan Silver lencana sebanyak mungkin.',
     achievementBRONZETitle: 'Dapat {{count}} Bronze',
-    achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.',
+    achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
     title: 'Frequently Asked Questions',

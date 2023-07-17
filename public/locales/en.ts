@@ -42,6 +42,11 @@ export default {
       text2: ''
     }
   },
+  followButton: {
+    follow: 'Follow',
+    unFollow: 'Unfollow',
+    following: 'Following'
+  },
   successPopup: {
     title: {
       general: 'Success!'

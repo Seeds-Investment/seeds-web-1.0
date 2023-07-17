@@ -9,8 +9,8 @@ import {
   XIcon,
   Gain
 } from 'public/assets/vector';
-import Button from '../ui/button/Button';
 import Modal from '../ui/modal/Modal';
+import FollowButton from '../FollowButton';
 import { getLeaderboardDetail } from '@/repository/play.repository';
 import { useTranslation } from 'react-i18next';
 
@@ -26,11 +26,13 @@ interface Achievement {
 }
 
 interface LeaderboardDetail {
+  user_id?: string;
   avatar_url?: string;
   name?: string;
   seeds_tag?: string;
   user_achievement?: Achievement[];
   win_accuracy?: number;
+  is_followed?: boolean;
 }
 
 const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
@@ -150,11 +152,9 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
           </div>
         </div>
 
-        <Button
-          label={'Follow'}
-          extraClasses="gap-5 mt-2 w-40"
-          variant="dark"
-          props={{ onClick: () => {} }}
+        <FollowButton
+          userId={data?.user_id ?? ''}
+          isFollowed={data?.is_followed ?? false}
         />
       </div>
 

@@ -43,6 +43,11 @@ export default {
   second: 'detik',
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
+  followButton: {
+    follow: 'Follow',
+    unFollow: 'Unfollow',
+    following: 'Following'
+  },
   successPopup: {
     title: {
       general: 'Berhasil!'

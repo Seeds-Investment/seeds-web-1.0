@@ -51,7 +51,9 @@ const PersonalInfoPage = ({
 
       try {
         const emailPromise = checkEmail(email);
-        const phonePromise = checkPhoneNumber(countryCode + phoneNumber);
+        const phonePromise = checkPhoneNumber(
+          countryCode + phoneNumber.split(' ').join('')
+        );
 
         const [emailResult, phoneResult] = await Promise.allSettled([
           emailPromise,

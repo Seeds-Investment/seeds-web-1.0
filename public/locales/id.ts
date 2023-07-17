@@ -563,5 +563,14 @@ export default {
     option1: 'Undang teman anda untuk menginstal aplikasi dengan tautannya',
     option2: 'Pakai referal kode yang telah diberikan',
     option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
+  },
+  temporary: {
+    welcome: {
+      1: 'Selamat Datang!',
+      2: 'Mulai Invest bersama Seeds'
+    },
+    description:
+      'Jelajahi dunia investing dan pelajari manajemen aset bersama Seeds. Download Sekarang!',
+    review: '{{review}} reviews'
   }
 };

@@ -70,5 +70,5 @@ jobs:
 
       - name: Update secret 
         run: 
-#          kubectl delete secret web-secret -n production
+          kubectl delete secret web-secret -n production
           kubectl create secret generic web-secret --from-file=environment/.env -n production

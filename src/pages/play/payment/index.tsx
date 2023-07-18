@@ -99,6 +99,7 @@ const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.
       value={option.id}
       name="paymentOption"
       className="rounded-xl border"
+      color='teal'
       checked={option.id === currentValue}
       onChange={onChange}
     />

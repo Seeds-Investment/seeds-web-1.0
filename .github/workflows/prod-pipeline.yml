@@ -69,6 +69,6 @@ jobs:
           kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n production
 
       - name: Update secret 
-        run: 
+        run: |
           kubectl delete secret web-secret -n production
           kubectl create secret generic web-secret --from-file=environment/.env -n production

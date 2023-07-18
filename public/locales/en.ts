@@ -639,7 +639,8 @@ export default {
   PlayPayment: {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
-    eWalletLabel: 'E-Wallet'
+    eWalletLabel: 'E-Wallet',
+    button: 'Pay'
   },
   temporary: {
     welcome: {

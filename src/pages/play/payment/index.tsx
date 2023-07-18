@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Typography, Radio } from '@material-tailwind/react';
 import { getPaymentList } from '@/repository/payment.repository'; 
 import Image from 'next/image';
+import CButton from '@/components/CButton';
 
 const PlayPayment = (): JSX.Element => {
   const { t } = useTranslation();
@@ -58,6 +59,9 @@ const PlayPayment = (): JSX.Element => {
           onChange={onSelectOption}
           currentValue={option}
         />
+        <CButton disabled fullWidth className="rounded-3xl bg-[#BDBDBD] text-[#7C7C7C] normal-case">
+          {t('PlayPayment.button')}
+        </CButton>
       </div>
     </div>
   )

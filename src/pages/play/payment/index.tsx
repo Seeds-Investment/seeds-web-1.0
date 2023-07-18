@@ -40,13 +40,13 @@ const PlayPayment = (): JSX.Element => {
 
   const renderContent = (): JSX.Element => (
     <div
-      className='h-[5000px] relative bg-[white] bg-opacity-30 bg-no-repeat bg-left-top w-full h-full flex flex-col items-center p-8 rounded-xl'
+      className='relative bg-[white] bg-opacity-30 bg-no-repeat bg-left-top w-full h-full flex flex-col items-center pt-8 md:p-8 rounded-xl'
       style={{ backgroundImage: "url('/assets/vector/purple-ellipse.svg')" }}
     >
-      <Typography className="text-neutral-500 text-lg font-semibold mb-3">
+      <Typography className="w-full max-w-[600px] text-left px-8 md:text-center text-neutral-500 text-lg font-semibold mb-3">
         {t('PlayPayment.title')}
       </Typography>
-      <div className='bg-[white] w-[600px] h-full flex flex-col items-center p-8 rounded-xl'>
+      <div className='bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl'>
         <PaymentOptions
           label={t('PlayPayment.virtualAccountLabel')}
           options={virtualAccountList}
@@ -64,7 +64,7 @@ const PlayPayment = (): JSX.Element => {
   )
 
   return (
-    <PageGradient defaultGradient className="w-full px-20">
+    <PageGradient defaultGradient className="w-full md:px-20">
       {loading ? renderLoading() : renderContent()}  
     </PageGradient>
   );

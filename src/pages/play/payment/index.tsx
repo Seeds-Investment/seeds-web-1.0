@@ -4,6 +4,7 @@ import withAuth from '@/helpers/withAuth';
 import { useTranslation } from 'react-i18next';
 import { Typography, Radio } from '@material-tailwind/react';
 import { getPaymentList } from '@/repository/payment.repository'; 
+import Image from 'next/image';
 
 const PlayPayment = (): JSX.Element => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ const PlayPayment = (): JSX.Element => {
       <Typography className="text-neutral-500 text-lg font-semibold mb-3">
         {t('PlayPayment.title')}
       </Typography>
-      <div className='bg-[yellow] w-[600px] h-full flex flex-col items-center p-8 rounded-xl'>
+      <div className='bg-[white] w-[600px] h-full flex flex-col items-center p-8 rounded-xl'>
         <PaymentOptions
           label={t('PlayPayment.virtualAccountLabel')}
           options={virtualAccountList}
@@ -72,6 +73,7 @@ const PlayPayment = (): JSX.Element => {
 interface Payment {
   id: string;
   payment_method: string;
+  logo_url: string;
 }
 
 interface IPaymentOption {
@@ -81,14 +83,23 @@ interface IPaymentOption {
 }
 
 const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.Element => (
+  <div className="flex justify-between rounded-xl border items-center pl-4">
+    <Image
+      src={option.logo_url}
+      width={200}
+      height={200}
+      className="w-auto h-[20px] object-contain object-[center_center]"
+      alt={option.payment_method}
+    />
     <Radio
       id={option.id}
       value={option.id}
       name="paymentOption"
-      label={option.payment_method}
+      className="rounded-xl border"
       checked={option.id === currentValue}
       onChange={onChange}
     />
+  </div>
 );
 
 interface IPaymentOptions {
@@ -99,11 +110,11 @@ interface IPaymentOptions {
 }
 
 const PaymentOptions = ({ currentValue, label, options, onChange }: IPaymentOptions): JSX.Element => (
-  <div className='w-full'>
-    <Typography className="text-neutral-400 text-sm font-normal text-left">
+  <div className='w-full mb-6'>
+    <Typography className="text-[#7C7C7C] text-sm font-semibold text-left mb-4">
       {label}
     </Typography>
-    <div>
+    <div className='flex flex-col gap-4'>
       {options.map((option) => (
         <PaymentOption
           key={option.id}

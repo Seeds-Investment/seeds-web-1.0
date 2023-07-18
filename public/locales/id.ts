@@ -564,6 +564,11 @@ export default {
     option2: 'Pakai referal kode yang telah diberikan',
     option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
   },
+  PlayPayment: {
+    title: 'Payment Method',
+    virtualAccountLabel: 'Virtual Account',
+    eWalletLabel: 'E-Wallet'
+  },
   temporary: {
     welcome: {
       1: 'Selamat Datang!',

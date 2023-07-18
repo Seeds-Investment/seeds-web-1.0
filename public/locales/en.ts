@@ -636,6 +636,11 @@ export default {
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     option3: 'Get more XP when your friend registered to Seeds'
   },
+  PlayPayment: {
+    title: 'Payment Method',
+    virtualAccountLabel: 'Virtual Account',
+    eWalletLabel: 'E-Wallet'
+  },
   temporary: {
     welcome: {
       1: 'Welcome to Seeds!',

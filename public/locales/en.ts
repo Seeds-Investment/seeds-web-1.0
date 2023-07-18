@@ -10,8 +10,8 @@ export default {
     },
     section2: {
       text1: 'Discover',
-      text2: 'Trending Today',
-      text3: "what's trending today?",
+      text2: 'Explore Investing World',
+      text3: 'Learn everything and Grow together with Seeds',
       text4:
         'Get the latest trending news and knowledge about investing and finance.',
       text5: 'Event Highlight',

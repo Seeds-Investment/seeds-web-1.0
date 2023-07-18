@@ -56,7 +56,7 @@ export interface ICompetitionItem {
 
 export interface ICircleLandingPage {
   id: string;
-  image: string;
+  image: any;
   banner: string;
   name: string;
   totalMember: number;
@@ -66,7 +66,7 @@ export interface ICircleLandingPage {
 export interface IEventHighlightLandingPage {
   id: string;
   name: string;
-  image: string;
+  image: any;
   date: string;
   status: string;
 }

@@ -107,12 +107,16 @@ export const seedsInformation: ISeedsInformationList = {
 
 export const downloadOurApp = [
   {
-    url: '',
-    icon: appstore
+    url: 'https://apps.apple.com/id/app/seeds-investing-together/id6443659980',
+    icon: appstore,
+    rate: '4.9',
+    reviews: '250+'
   },
   {
-    url: '',
-    icon: playstore
+    url: 'https://play.google.com/store/apps/details?id=com.seeds.investment',
+    icon: playstore,
+    rate: '5.0',
+    reviews: '250+'
   },
   {
     url: '',

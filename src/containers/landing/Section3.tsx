@@ -27,7 +27,7 @@ export default function Section3(): React.ReactElement {
               {t('landing.section3.text3')}
             </Typography>
 
-            <Button className="mt-4 z-30 top-[520px] left-[50px] capitalize text-md bg-seeds-purple rounded-full max-w-[250px] w-fit px-14 whitespace-nowrap h-[50px] lg:font-bold lg:text-base">
+            <Button className="mt-4 z-30 capitalize text-md bg-seeds-purple rounded-full max-w-[250px] w-fit px-14 lg:font-bold lg:text-base">
               {t('button.joinNow')}
             </Button>
           </div>

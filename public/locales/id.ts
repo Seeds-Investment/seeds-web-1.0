@@ -8,8 +8,8 @@ export default {
     },
     section2: {
       text1: 'Discover',
-      text2: 'Sedang Trending Hari Ini',
-      text3: 'Apa yang Sedang Tren Saat Ini?',
+      text2: 'Jelajahi Dunia Investasi',
+      text3: ' Belajar dan Tumbuh bersama Seeds',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
       text5: 'Sorotan Acata',

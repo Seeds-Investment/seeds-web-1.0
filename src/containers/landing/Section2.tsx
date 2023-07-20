@@ -4,6 +4,7 @@ import { getExternalNews } from '@/repository/news.repository';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,7 @@ const fetch = async (
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
   const [news, setNews] = useState([]);
+  const router = useRouter();
   console.log(news);
 
   const settings: Settings = {
@@ -91,7 +93,12 @@ export default function Section2(): React.ReactElement {
           <Typography className="opacity-70 text-xs text-center font-light text-neutral-soft mx-[7rem] mb-2 md:text-lg md:w-1/2 lg:text-2xl lg:mb-5">
             {t('landing.section2.text4')}
           </Typography>
-          <Button className="z-50 capitalize font-semibold text-xs bg-seeds-purple rounded-full px-14 h-[50px]">
+          <Button
+            className="z-50 capitalize font-semibold text-xs bg-seeds-purple rounded-full px-14 h-[50px]"
+            onClick={() => {
+              void router.push('/auth/register');
+            }}
+          >
             {t('button.joinNow')}
           </Button>
 

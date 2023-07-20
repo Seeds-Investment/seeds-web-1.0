@@ -8,6 +8,7 @@ import vector from '@/assets/landing-page/vector.png';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +19,7 @@ const fetch = async (): Promise<void> => {
 
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     void fetch();
@@ -27,14 +29,19 @@ export default function Section1(): React.ReactElement {
     <div className=" min-w-full min-h-screen cursor-default">
       <div className="flex flex-col md:flex-row">
         <div className="w-full">
-          <div className="absolute z-2 top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
+          <div className="absolute z-40 top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
             <div className="text-xl text-[#7555DA] font-bold mb-3 md:text-[64px] md:mb-8">
               {t('landing.section1.text1')}
             </div>
             <div className="text-xs text-white font-normal mb-3 md:text-2xl md:mb-7">
               {t('landing.section1.text2')}
             </div>
-            <Button className="text-xs font-semibold capitalize text-md bg-seeds-purple rounded-full">
+            <Button
+              className="text-xs font-semibold capitalize text-md bg-seeds-purple rounded-full"
+              onClick={() => {
+                void router.push('/auth/register');
+              }}
+            >
               {t('button.joinNow')}
             </Button>
           </div>

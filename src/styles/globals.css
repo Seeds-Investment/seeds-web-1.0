@@ -140,4 +140,18 @@ code {
   border-radius: 50%;
   box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
 }
+
+.mainContainer {
+  border-radius: 23px;
+  border: 1px solid var(--neutral-200, #e9e9e9);
+  background: var(
+    --linear-background,
+    linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.3) 100%
+    ),
+    linear-gradient(137deg, #fff 0%, rgba(255, 255, 255, 0) 100%)
+  );
+}
 /* End Elastic carousel */

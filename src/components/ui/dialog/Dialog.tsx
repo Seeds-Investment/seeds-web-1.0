@@ -19,17 +19,18 @@ const Dialog: React.FC<Props> = ({ title, handleClose, isOpen, children, bottomS
   const minWidth='400px';
   const maxWidth='420px';
 
-  const bottomSheetOnSmallClass = `max-h-[90vh] self-end mb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-[${minWidth}] sm:max-w-[${maxWidth}] md:min-w-[${minWidth}] md:max-w-[${maxWidth}] lg:min-w-[${minWidth}] lg:max-w-[${maxWidth}] xl:min-w-[${minWidth}] xl:max-w-[${maxWidth}] 2xl:min-w-[${minWidth}] 2xl:max-w-[${maxWidth}]`
+  const bottomSheetOnSmallClass = `backdrop-blur-sm max-h-[90vh] self-end mb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-[${minWidth}] sm:max-w-[${maxWidth}] md:min-w-[${minWidth}] md:max-w-[${maxWidth}] lg:min-w-[${minWidth}] lg:max-w-[${maxWidth}] xl:min-w-[${minWidth}] xl:max-w-[${maxWidth}] 2xl:min-w-[${minWidth}] 2xl:max-w-[${maxWidth}]`
 
   return (
     <TailwindDialog
-    size="md"
-    className={bottomSheetOnSmall ? bottomSheetOnSmallClass : ''}
-    open={isOpen}
-    handler={handleClose}>
+      size="md"
+      className={bottomSheetOnSmall ? bottomSheetOnSmallClass : undefined}
+      open={isOpen}
+      handler={handleClose}
+    >
       <DialogHeader className="justify-between w-full">
-        <Typography variant="h5" color="blue-gray">
-            {title}
+        <Typography className="text-[#262626] text-md font-semibold">
+          {title}
         </Typography>
         <IconButton
           color="blue-gray"

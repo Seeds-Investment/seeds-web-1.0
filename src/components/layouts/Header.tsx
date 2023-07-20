@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import ID from 'public/assets/images/flags/ID.png';
 import US from 'public/assets/images/flags/US.png';
@@ -10,20 +11,43 @@ import Logo from '../ui/vector/Logo';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
 import LanguageContext from '@/store/language/language-context';
-import { useRouter } from 'next/router';
+
+interface UserData {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+}
 
 const Header: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
-  const router = useRouter();
 
   const width = useWindowInnerWidth();
+  const accessToken =
+    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
-  const _handleRedirectJoinUs = (): any => {
-    return router.push('/auth/register');
-  };
+  useEffect(() => {
+    // Definisikan fungsi untuk mengambil data pengguna
+    const fetchData = async () => {
+      try {
+        const response = await getUserInfo();
+        setUserInfo(response); // Memperbarui state dengan data pengguna
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData(); // Panggil fungsi untuk mengambil data
+  }, []);
 
   return (
-    <header className="sm:pt-6 pt-12">
+    <div className="sm:pt-6 pt-12">
       <div className="document-header">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
@@ -82,17 +106,23 @@ const Header: React.FC = () => {
               <Image src={US} alt="US-flag" />
             )}
           </button>
-          <Button
-            variant="dark"
-            label="Join Us"
-            containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
-            props={{
-              onClick: _handleRedirectJoinUs
-            }}
-          />
+          {accessToken && userInfo ? (
+            <div className="flex">
+              <div className="mt-2 mx-2 font-bold hidden lg:block">
+                Hi, {userInfo.name}
+              </div>
+              <img className="rounded-full w-10" src={userInfo.avatar} />
+            </div>
+          ) : (
+            <Button
+              variant="dark"
+              label="Join Us"
+              containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
+            />
+          )}
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 

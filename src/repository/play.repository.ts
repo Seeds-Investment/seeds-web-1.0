@@ -1,0 +1,22 @@
+import baseAxios from '@/utils/common/axios';
+
+const playService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/play/v1`
+);
+
+export const getLeaderboardDetail = async (userId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await playService.get(`/leaderboard/${userId}/detail`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

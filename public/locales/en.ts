@@ -10,8 +10,8 @@ export default {
     },
     section2: {
       text1: 'Discover',
-      text2: 'Trending Today',
-      text3: "what's trending today?",
+      text2: 'Explore Investing World',
+      text3: 'Learn everything and Grow together with Seeds',
       text4:
         'Get the latest trending news and knowledge about investing and finance.',
       text5: 'Event Highlight',
@@ -41,6 +41,11 @@ export default {
         'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
       text2: ''
     }
+  },
+  followButton: {
+    follow: 'Follow',
+    unFollow: 'Unfollow',
+    following: 'Following'
   },
   successPopup: {
     title: {
@@ -189,6 +194,21 @@ export default {
       done: 'Done',
       deleteAccount: 'Delete Account'
     }
+  },
+  playerAchievementPopup: {
+    seedsTag: '@{{seedsTag}}',
+    winningAccuracy: '({{accuracy}}%)',
+    winningAccuracyLabel: 'Winning Accuracy',
+    rank: '#{{rank}}',
+    rankLabel: 'Peringkat',
+    achievementLabel: 'Prestasi',
+    achievementGOLDTitle: 'Dapat {{count}} Gold',
+    achievementGOLDSubtitle:
+      'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.',
+    achievementSILVERTitle: 'Dapat {{count}} Silver',
+    achievementSILVERSubtitle: 'Kumpulkan Silver lencana sebanyak mungkin.',
+    achievementBRONZETitle: 'Dapat {{count}} Bronze',
+    achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
     title: 'Frequently Asked Questions',

@@ -4,6 +4,7 @@ import { getExternalNews } from '@/repository/news.repository';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,7 @@ const fetch = async (
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
   const [news, setNews] = useState([]);
+  const router = useRouter();
   console.log(news);
 
   const settings: Settings = {
@@ -82,49 +84,56 @@ export default function Section2(): React.ReactElement {
         </div>
 
         <div className="w-full flex flex-col items-center justify-center">
-          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-seeds-purple md:font-bold md:text-3xl lg:text-[64px] lg:mb-5">
+          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-[#7555DA] md:font-bold md:text-3xl lg:text-4xl lg:mb-5">
             {t('landing.section2.text2')}
           </div>
-          <Typography className="opacity-70 text-xs font-semibold tracking-wide mb-2 text-[#AC75FF] md:text-xl lg:text-[32px] lg:mb-5">
+          <Typography className="opacity-70 text-xs font-semibold tracking-wide mb-2 text-[#AC75FF] md:text-xl lg:text-3xl lg:mb-5">
             {t('landing.section2.text3')}
           </Typography>
-          <Typography className="opacity-70 text-xs font-light text-neutral-soft mx-[7rem] mb-2 md:text-lg md:w-1/2 lg:text-2xl lg:mb-5">
+          <Typography className="opacity-70 text-xs text-center font-light text-neutral-soft mx-[7rem] mb-2 md:text-lg md:w-1/2 lg:text-2xl lg:mb-5">
             {t('landing.section2.text4')}
           </Typography>
-          <Button className="z-50 capitalize font-semibold text-xs bg-seeds-purple rounded-full px-14 h-[50px]">
+          <Button
+            className="z-50 capitalize font-semibold text-xs bg-seeds-purple rounded-full px-14 h-[50px]"
+            onClick={() => {
+              void router.push('/auth/register');
+            }}
+          >
             {t('button.joinNow')}
           </Button>
 
           <Image
             alt="img"
-            className="absolute h-[200px] w-[100%] translate-y-[0rem]
-                md:h-[220px] md:w-[90%] md:translate-y-[0rem] lg:h-[280px]
+            className="absolute h-[200px] w-[100%] translate-y-[0rem] -z-30
+                md:h-[220px] md:w-[90%] md:translate-y-[0rem] lg:h-[330px] lg:w-full
                 xl:w-[70%]"
             src={shape}
           />
         </div>
       </div>
 
-      <div className="mt-10 mx-5 md:translate-x-[4rem] xl:translate-x-[14rem]">
+      <div className="mt-10 mx-5 md:mx-20 lg:mx-20">
         <div className="opacity-70 text-sm font-semibold tracking-wide mb-2 text-seeds-purple md:text-3xl lg:text-[32px]">
           {t('landing.section2.text5')}
         </div>
         <div className="opacity-70 text-xs font-light tracking-wide mb-2 text-neutral-400 md:text-lg md:mb-7 lg:text-[24px]">
           {t('landing.section2.text6')}
         </div>
+      </div>
 
+      <div className="w-full h-full mb-16 mt-10 mx-3 md:mx-20 lg:mx-6">
         <Slider {...settings}>
           {eventHighlightLandingPage.map((data, key) => (
             <Section2Card key={key} data={data} />
           ))}
         </Slider>
+      </div>
 
-        {/* <Image
+      {/* <Image
             alt="img"
             className="absolute top-[-120px] left-[190px] -z-10"
             src={line}
           /> */}
-      </div>
     </div>
   );
 }

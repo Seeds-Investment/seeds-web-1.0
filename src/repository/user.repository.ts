@@ -28,6 +28,23 @@ export const getUserProviders = async (): Promise<any> => {
   });
 };
 
+export const follow = async (userId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  
+  return await authService.post('/following', 
+  { following_id: userId },
+  {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const linkAccount = async (identifier: string): Promise<string> => {
   const pin = localStorage.getItem('pin');
 

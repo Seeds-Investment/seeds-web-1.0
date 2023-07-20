@@ -42,6 +42,11 @@ export default {
       text2: ''
     }
   },
+  followButton: {
+    follow: 'Follow',
+    unFollow: 'Unfollow',
+    following: 'Following'
+  },
   successPopup: {
     title: {
       general: 'Success!'
@@ -189,6 +194,21 @@ export default {
       done: 'Done',
       deleteAccount: 'Delete Account'
     }
+  },
+  playerAchievementPopup: {
+    seedsTag: '@{{seedsTag}}',
+    winningAccuracy: '({{accuracy}}%)',
+    winningAccuracyLabel: 'Winning Accuracy',
+    rank: '#{{rank}}',
+    rankLabel: 'Peringkat',
+    achievementLabel: 'Prestasi',
+    achievementGOLDTitle: 'Dapat {{count}} Gold',
+    achievementGOLDSubtitle:
+      'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.',
+    achievementSILVERTitle: 'Dapat {{count}} Silver',
+    achievementSILVERSubtitle: 'Kumpulkan Silver lencana sebanyak mungkin.',
+    achievementBRONZETitle: 'Dapat {{count}} Bronze',
+    achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
     title: 'Frequently Asked Questions',

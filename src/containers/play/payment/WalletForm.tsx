@@ -25,7 +25,7 @@ const WalletForm = (): JSX.Element => {
         IDR 100.000
       </Typography>
       <hr />
-      <SubmitButton>
+      <SubmitButton disabled className='my-4'>
         Pay
       </SubmitButton>
     </div>

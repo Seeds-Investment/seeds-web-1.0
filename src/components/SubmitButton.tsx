@@ -12,12 +12,16 @@ export default function CButton({
   color,
   fullWidth
 }: IButton): React.ReactElement {
+  const defaultClass = 'p-2 items-center rounded-3xl font-semibold text-lg normal-case';
+  const activeClass = 'bg-[#3AC4A0] text-[white]';
+  const disabledClass = 'bg-[#BDBDBD] text-[white]';
+
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
       onSubmit={onSubmit}
-      className={`p-2 items-center rounded-3xl bg-[#3AC4A0] text-[white] font-semibold text-lg normal-case ${className ?? ''}`}
+      className={`${defaultClass} ${disabled===true ? disabledClass : activeClass} ${className ?? ''}`}
       color={color}
       fullWidth={true}
     >

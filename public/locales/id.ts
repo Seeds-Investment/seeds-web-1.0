@@ -568,7 +568,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
-    button: 'Pay'
+    button: 'Pay',
+    dialogWalletTitle: 'Enter {{wallet}} Number'
   },
   temporary: {
     welcome: {

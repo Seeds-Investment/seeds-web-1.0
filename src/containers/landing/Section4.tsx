@@ -7,6 +7,7 @@ import { getTrendingCircle } from '@/repository/circle.repository';
 import { circleTrendingLandingPage } from '@/utils/_static/dummy';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ const fetch = async (
 export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
+  const router = useRouter();
   useEffect(() => {
     void fetch(setList);
   }, []);
@@ -55,7 +57,12 @@ export default function Section4(): React.ReactElement {
             <Typography className="text-xs text-[#7C7C7C] font-light lg:font-normal lg:text-xl tracking-wider mb-4">
               {t('landing.section4.text6')}
             </Typography>
-            <Button className="z-30 capitalize text-xs font-semibold lg:text-lg bg-seeds-purple rounded-full mb-3">
+            <Button
+              className="z-30 capitalize text-xs font-semibold lg:text-lg bg-seeds-purple rounded-full mb-3"
+              onClick={() => {
+                void router.push('/auth/register');
+              }}
+            >
               {t('button.joinNow')}
             </Button>
 

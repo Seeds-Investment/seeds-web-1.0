@@ -6,10 +6,12 @@ import line1 from '@/assets/landing-page/s3-line1.png';
 import shape from '@/assets/landing-page/s3-shape.png';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 export default function Section3(): React.ReactElement {
   const { t } = useTranslation();
+  const router = useRouter();
   return (
     <div className="mb-10 min-w-full cursor-default">
       <div className="flex flex-col md:flex-row">
@@ -27,7 +29,12 @@ export default function Section3(): React.ReactElement {
               {t('landing.section3.text3')}
             </Typography>
 
-            <Button className="mt-4 z-30 top-[520px] left-[50px] capitalize text-md bg-seeds-purple rounded-full max-w-[250px] w-fit px-14 whitespace-nowrap h-[50px] lg:font-bold lg:text-base">
+            <Button
+              className="mt-4 z-30 capitalize text-md bg-seeds-purple rounded-full max-w-[250px] w-fit px-14 lg:font-bold lg:text-base"
+              onClick={() => {
+                void router.push('/auth/register');
+              }}
+            >
               {t('button.joinNow')}
             </Button>
           </div>

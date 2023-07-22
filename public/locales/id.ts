@@ -8,8 +8,8 @@ export default {
     },
     section2: {
       text1: 'Discover',
-      text2: 'Sedang Trending Hari Ini',
-      text3: 'Apa yang Sedang Tren Saat Ini?',
+      text2: 'Jelajahi Dunia Investasi',
+      text3: ' Belajar dan Tumbuh bersama Seeds',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
       text5: 'Sorotan Acata',
@@ -43,6 +43,11 @@ export default {
   second: 'detik',
   seconds: 'detik',
   greeting: 'Haii, {{name}}',
+  followButton: {
+    follow: 'Follow',
+    unFollow: 'Unfollow',
+    following: 'Following'
+  },
   successPopup: {
     title: {
       general: 'Berhasil!'
@@ -176,6 +181,21 @@ export default {
       done: 'Selesai',
       deleteAccount: 'Hapus Akun'
     }
+  },
+  playerAchievementPopup: {
+    seedsTag: '@{{seedsTag}}',
+    winningAccuracy: '({{accuracy}}%)',
+    winningAccuracyLabel: 'Winning Accuracy',
+    rank: '#{{rank}}',
+    rankLabel: 'Peringkat',
+    achievementLabel: 'Prestasi',
+    achievementGOLDTitle: 'Dapat {{count}} Gold',
+    achievementGOLDSubtitle:
+      'Wow, sedikit lagi dan Anda akan mendapatkan lencana eksklusif.',
+    achievementSILVERTitle: 'Dapat {{count}} Silver',
+    achievementSILVERSubtitle: 'Kumpulkan Silver lencana sebanyak mungkin.',
+    achievementBRONZETitle: 'Dapat {{count}} Bronze',
+    achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
     title: 'Pertanyaan yang Sering Diajukan',

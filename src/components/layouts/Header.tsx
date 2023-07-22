@@ -10,11 +10,17 @@ import Logo from '../ui/vector/Logo';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
 import LanguageContext from '@/store/language/language-context';
+import { useRouter } from 'next/router';
 
 const Header: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
+  const router = useRouter();
 
   const width = useWindowInnerWidth();
+
+  const _handleRedirectJoinUs = (): any => {
+    return router.push('/auth/register');
+  };
 
   return (
     <header className="sm:pt-6 pt-12">
@@ -80,6 +86,9 @@ const Header: React.FC = () => {
             variant="dark"
             label="Join Us"
             containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
+            props={{
+              onClick: _handleRedirectJoinUs
+            }}
           />
         </div>
       </div>

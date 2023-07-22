@@ -16,19 +16,16 @@ interface Props {
 }
 
 const Dialog: React.FC<Props> = ({ title, handleClose, isOpen, children, bottomSheetOnSmall=false }) => {
-  const minWidth='400px';
-  const maxWidth='420px';
-
-  const bottomSheetOnSmallClass = `backdrop-blur-sm max-h-[90vh] self-end mb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-[${minWidth}] sm:max-w-[${maxWidth}] md:min-w-[${minWidth}] md:max-w-[${maxWidth}] lg:min-w-[${minWidth}] lg:max-w-[${maxWidth}] xl:min-w-[${minWidth}] xl:max-w-[${maxWidth}] 2xl:min-w-[${minWidth}] 2xl:max-w-[${maxWidth}]`
+  const bottomSheetOnSmallClass = `max-h-[90vh] self-end mb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-sm sm:max-w-sm sm:w-sm md:min-w-sm md:max-w-sm lg:min-w-sm lg:max-w-sm xl:min-w-sm xl:max-w-sm 2xl:min-w-sm 2xl:max-w-sm`
 
   return (
     <TailwindDialog
-      size="md"
+      size="sm"
       className={bottomSheetOnSmall ? bottomSheetOnSmallClass : undefined}
       open={isOpen}
       handler={handleClose}
     >
-      <DialogHeader className="justify-between w-full">
+      <DialogHeader className="justify-between w-full p-6 pb-0">
         <Typography className="text-[#262626] text-md font-semibold">
           {title}
         </Typography>
@@ -41,7 +38,7 @@ const Dialog: React.FC<Props> = ({ title, handleClose, isOpen, children, bottomS
           <XMarkIcon strokeWidth={2} className="h-5 w-5" />
         </IconButton>
       </DialogHeader>
-      <DialogBody className="overflow-y-scroll pr-2">
+      <DialogBody className="overflow-y-scroll px-6">
         {children}
       </DialogBody>
     </TailwindDialog>

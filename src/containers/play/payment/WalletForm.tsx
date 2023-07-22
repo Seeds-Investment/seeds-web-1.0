@@ -1,9 +1,40 @@
-import { Typography } from '@material-tailwind/react';
+import { Typography, Input } from '@material-tailwind/react';
 import SubmitButton from '@/components/SubmitButton';
 
 const WalletForm = (): JSX.Element => {
+  const renderPhoneInput = (): JSX.Element => (
+    <div className="mb-2">
+      <Typography className="mb-2 text-[#B9B7B7] font-semibold">
+        GoPay Number
+      </Typography>
+      <div className='flex mb-2 border-[#E0E0E0] border rounded-xl'>
+        <Typography
+          className="font-normal text-[#B9B7B7] flex h-10 items-center pr-0 pl-3"
+          >
+          +62
+        </Typography>
+        <Input
+          type="tel"
+          placeholder="Mobile Number"
+          className="!border-0 font-normal"
+          labelProps={{
+            className: "before:content-none after:content-none",
+          }}
+          containerProps={{
+            className: "min-w-0",
+          }}
+          />
+      </div>
+      <Typography className="text-[#3C49D6] font-normal">
+        Pay before 25 October 2022 10;08pm
+      </Typography>
+    </div>
+  );
+
+
   return (
-     <div>
+     <div className=''>
+      {renderPhoneInput()}
       <div className="flex justify-between mb-2">
         <Typography className="text-[#201B1C] font-normal">
           Circle Membership
@@ -12,7 +43,7 @@ const WalletForm = (): JSX.Element => {
           IDR 100.000
         </Typography>
       </div>
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between mb-4">
         <Typography className="text-[#201B1C] font-normal">
           Circle MembershipAdmin
         </Typography>

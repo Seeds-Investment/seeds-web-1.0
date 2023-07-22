@@ -32,7 +32,7 @@ const PrivacyPolicy: React.FC = () => {
     >
       <CardGradient
         defaultGradient
-        className={`z-1 relative overflow-hidden flex flex-col justify-center items-center py-4  sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+        className={`z-1 relative overflow-hidden flex flex-col justify-center shadow-2xl items-center lg:w-[65%] sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
           width !== undefined && width < 600
             ? 'w-full'
             : width !== undefined && width < 500
@@ -46,7 +46,7 @@ const PrivacyPolicy: React.FC = () => {
       >
         {/* Closure section */}
         <div
-          className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
+          className={`z-3 min-h-[calc(100vh-100px)] lg:w-[100%] relative justify-center text-justify bg-opacity-100 border-white border-4 ${
             width !== undefined && width < 600
               ? 'w-[90%] overflow-x-auto'
               : width !== undefined && width < 500
@@ -63,12 +63,14 @@ const PrivacyPolicy: React.FC = () => {
           </div>
 
           <br />
-          <p className="font-bold font-14 leading-5 font-poppins">
+          <p className="lg:mx-[20%] font-bold font-14 leading-5 font-poppins">
             {t('faq.privacy.lastUpdated')}
             <span className="text-purple-700">{t('faq.disclosure.date')}</span>
           </p>
           <br />
-          <p className="font-bold font-18 font-poppins">Overview:</p>
+          <p className="font-bold lg:mx-[20%] font-18 font-poppins">
+            Overview:
+          </p>
           <br />
           <div>
             {Object(
@@ -78,8 +80,8 @@ const PrivacyPolicy: React.FC = () => {
 
               return (
                 <div key={index}>
-                  <p className="font-bold">{title}</p>
-                  <div className="text-justify">
+                  <p className="font-bold lg:mx-[20%]">{title}</p>
+                  <div className="text-justify lg:mx-[20%]">
                     {description.split('\n').map((paragraph, index) => (
                       <>
                         <p key={index}>{paragraph}</p>

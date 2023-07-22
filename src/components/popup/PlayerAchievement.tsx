@@ -58,7 +58,8 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
   }, []);
 
   const achievementOrder = ['GOLD', 'SILVER', 'BRONZE'];
-  const sortAchievement = (a: Achievement, b: Achievement): number => achievementOrder.indexOf(a.medal) - achievementOrder.indexOf(b.medal)
+  const sortAchievement = (a: Achievement, b: Achievement): number =>
+    achievementOrder.indexOf(a.medal) - achievementOrder.indexOf(b.medal);
 
   const getMedalIcon = (medal: string): string => {
     if (medal === 'GOLD') {
@@ -166,7 +167,9 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
           {t('playerAchievementPopup.achievementLabel')}
         </Typography>
         <div className="p-1">
-          {data?.user_achievement?.sort(sortAchievement).map(renderAchievementCard)}
+          {data?.user_achievement
+            ?.sort(sortAchievement)
+            .map(renderAchievementCard)}
         </div>
       </div>
     </>
@@ -175,7 +178,8 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
   return (
     <Modal
       onClose={onClose}
-      modalClasses="z-30 animate-slide-down fixed sm:left-[50%] top-[35%] left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white">
+      modalClasses="z-30 animate-slide-down fixed sm:left-[50%] top-[35%] left-[5%] sm:ml-[-13.125rem] mt-[-12.35rem] sm:w-[26.25rem] w-[90%] h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+    >
       <div className="flex justify-end">
         <Image
           src={XIcon}

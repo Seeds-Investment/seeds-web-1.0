@@ -34,15 +34,17 @@ export const follow = async (userId: string): Promise<any> => {
   if (accessToken === null || accessToken === '') {
     return await Promise.resolve('Access token not found');
   }
-  
-  return await authService.post('/following', 
-  { following_id: userId },
-  {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+
+  return await authService.post(
+    '/following',
+    { following_id: userId },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
     }
-  });
+  );
 };
 
 export const linkAccount = async (identifier: string): Promise<string> => {

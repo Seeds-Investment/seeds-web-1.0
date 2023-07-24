@@ -1,4 +1,3 @@
-import icon from '@/assets/landing-page/s4-card-icon.png';
 import type { ICircleLandingPage } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 
@@ -16,13 +15,13 @@ export default function Section4Card({
         width={500}
         height={500}
       />
-      <div className="p-2">
+      {/* <div className="p-2">
         <div className="text-sm my-2 font-medium">{data.name}</div>
         <div className="flex items-center text-sm text-gray-400">
           <Image src={icon} alt="user" className="w-[15px] h-[15px] mr-2" />
           {data.totalMember}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import PlayerAchievement from '@/components/popup/PlayerAchievement';
 import axios from 'axios';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -45,11 +46,19 @@ interface playList {
   };
 }
 
+interface PlayerData {
+  id?: string;
+  rank?: number;
+}
+
 const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
 
 const Player = (): React.ReactElement => {
   const [leader, setLeader] = useState<LeaderboardData[]>([]);
   const [playList, setPlayList] = useState<playList[]>([]);
+  const [showAchievementModal, setShowAchievementModal] =
+    useState<boolean>(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
 
   useEffect(() => {
     fetchLeaderboardData()
@@ -448,9 +457,29 @@ const Player = (): React.ReactElement => {
           </button>
         </div>
         <div>
+          {showAchievementModal && (
+            <PlayerAchievement
+              onClose={() => {
+                setShowAchievementModal(false);
+                setSelectedPlayer({});
+              }}
+              rank={selectedPlayer.rank ?? 0}
+              playerId={selectedPlayer.id ?? ''}
+            />
+          )}
           <ul>
             {filteredLeader.map((player, i) => (
-              <div className="flex mx-7 my-10" key={player.user_id}>
+              <div
+                className="flex mx-7 my-10 hover:cursor-pointer"
+                key={player.user_id}
+                onClick={() => {
+                  setSelectedPlayer({
+                    id: player.user_id,
+                    rank: player.current_rank
+                  });
+                  setShowAchievementModal(true);
+                }}
+              >
                 <div>
                   <div className="text-2xl mx-2">{i + 1}</div>
                   <div className="ms-3 mt-2">

@@ -1,7 +1,4 @@
-import s5photo from '@/assets/landing-page/s5-card-image.png';
-import CCard from '@/components/CCard';
 import type { IEventHighlightLandingPage } from '@/utils/interfaces/components.interfaces';
-import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 
 export default function Section2Card({
@@ -13,12 +10,12 @@ export default function Section2Card({
     <div className="max-w-sm rounded overflow-hidden mr-5">
       <Image
         alt={data.name}
-        src={s5photo}
+        src={data.image}
         width={500}
         height={500}
         className="w-full"
       />
-      <div
+      {/* <div
         className="px-5 py-1 text-xs font-semibold right-2 translate-x-[9rem] -translate-y-[8.5rem] bg-white w-fit text-seeds-button-green rounded-2xl
                     md:translate-x-[13rem] md:-translate-y-[11.5rem]
                     lg:translate-x-[8rem] lg:-translate-y-[8rem]
@@ -34,7 +31,7 @@ export default function Section2Card({
             <Typography className="font-normal">{data.date}</Typography>
           </div>
         </CCard>
-      </div>
+      </div> */}
     </div>
   );
 }

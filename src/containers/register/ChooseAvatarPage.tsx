@@ -42,20 +42,19 @@ const ChooseAvatarPage = ({
         identifier: formdata.providers.identifier ?? ''
       }
     });
-
-    if (
-      !isUndefindOrNull(post.data) &&
-      !isUndefindOrNull(post.data.accessToken)
-    ) {
-      window.localStorage.setItem('accessToken', post.data.accessToken);
-      window.localStorage.setItem('refreshToken', post.data.refreshToken);
-      window.localStorage.setItem(
-        'keepMeLoggedin',
-        formdata.providers.provider === '' ? 'false' : 'true'
-      );
-      setPage(5);
-    }
   };
+  if (
+    !isUndefindOrNull(post.data) &&
+    !isUndefindOrNull(post.data.accessToken)
+  ) {
+    window.localStorage.setItem('accessToken', post.data.accessToken);
+    window.localStorage.setItem('refreshToken', post.data.refreshToken);
+    window.localStorage.setItem(
+      'keepMeLoggedin',
+      formdata.providers.provider === '' ? 'false' : 'true'
+    );
+    setPage(5);
+  }
 
   return (
     <>

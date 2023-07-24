@@ -74,7 +74,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'Privacy Policy',
-      url: ''
+      url: '/privacy-policy'
     },
     {
       name: 'Social Guidelines',

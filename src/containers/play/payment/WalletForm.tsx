@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { Typography, Input } from '@material-tailwind/react';
+
 import SubmitButton from '@/components/SubmitButton';
 
 const WalletForm = (): JSX.Element => {
+  const [phone, setPhone] = useState('')
+
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">
@@ -23,7 +27,12 @@ const WalletForm = (): JSX.Element => {
           containerProps={{
             className: "min-w-0",
           }}
-          />
+          value={phone}
+          onChange={(e) => {
+
+            setPhone(e.target.value);
+          }}
+        />
       </div>
       <Typography className="text-[#3C49D6] font-normal">
         Pay before 25 October 2022 10;08pm
@@ -45,7 +54,7 @@ const WalletForm = (): JSX.Element => {
       </div>
       <div className="flex justify-between mb-4">
         <Typography className="text-[#201B1C] font-normal">
-          Circle MembershipAdmin
+          Admin
         </Typography>
         <Typography className="text-[#201B1C] font-normal">
           IDR 100.000
@@ -56,7 +65,7 @@ const WalletForm = (): JSX.Element => {
         IDR 100.000
       </Typography>
       <hr />
-      <SubmitButton disabled className='my-4'>
+      <SubmitButton className='my-4' disabled={phone.length < 1}>
         Pay
       </SubmitButton>
     </div>

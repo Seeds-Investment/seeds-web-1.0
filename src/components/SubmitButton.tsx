@@ -24,6 +24,7 @@ export default function CButton({
       className={`${defaultClass} ${disabled===true ? disabledClass : activeClass} ${className ?? ''}`}
       color={color}
       fullWidth={true}
+      type='submit'
     >
       {children}
     </Button>

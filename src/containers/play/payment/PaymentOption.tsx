@@ -9,8 +9,8 @@ interface Payment {
 
 interface IPaymentOption {
   option: Payment,
-  onChange: (event: React.FocusEvent<HTMLInputElement>) => void;
-  currentValue: string;
+  onChange: (paymentOption: Payment) => void;
+  currentValue: any;
 }
 
 const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.Element => (
@@ -28,8 +28,8 @@ const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.
       name="paymentOption"
       className="rounded-xl border"
       color='teal'
-      checked={option.id === currentValue}
-      onChange={onChange}
+      checked={option.id === currentValue.id}
+      onChange={() => { onChange(option); }}
     />
   </div>
 );

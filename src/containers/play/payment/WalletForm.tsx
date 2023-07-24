@@ -1,15 +1,27 @@
 import { useState } from 'react';
 import { Typography, Input } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 import SubmitButton from '@/components/SubmitButton';
+import InlineText from './components/InlineText';
 
-const WalletForm = (): JSX.Element => {
+interface WalletFormProps {
+  payment: any
+}
+
+const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
+  const translationId = 'PlayPayment.WalletForm';
+  const { t } = useTranslation();
   const [phone, setPhone] = useState('')
+  const deadline = '5 October 2022 10;08pm';
+  const admissionFee = 100000;
+  const adminFee = 0
+  const totalFee = admissionFee + adminFee;
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">
-        GoPay Number
+        {t(`${translationId}.phoneLabel`, { wallet: payment?.payment_method })}
       </Typography>
       <div className='flex mb-2 border-[#E0E0E0] border rounded-xl'>
         <Typography
@@ -19,7 +31,7 @@ const WalletForm = (): JSX.Element => {
         </Typography>
         <Input
           type="tel"
-          placeholder="Mobile Number"
+          placeholder={t(`${translationId}.phonePlaceholder`) ?? ''}
           className="!border-0 font-normal"
           labelProps={{
             className: "before:content-none after:content-none",
@@ -29,13 +41,12 @@ const WalletForm = (): JSX.Element => {
           }}
           value={phone}
           onChange={(e) => {
-
             setPhone(e.target.value);
           }}
         />
       </div>
       <Typography className="text-[#3C49D6] font-normal">
-        Pay before 25 October 2022 10;08pm
+        {t(`${translationId}.paymentDeadline`, { date: deadline })}
       </Typography>
     </div>
   );
@@ -44,29 +55,23 @@ const WalletForm = (): JSX.Element => {
   return (
      <div className=''>
       {renderPhoneInput()}
-      <div className="flex justify-between mb-2">
-        <Typography className="text-[#201B1C] font-normal">
-          Circle Membership
-        </Typography>
-        <Typography className="text-[#201B1C] font-normal">
-          IDR 100.000
-        </Typography>
-      </div>
-      <div className="flex justify-between mb-4">
-        <Typography className="text-[#201B1C] font-normal">
-          Admin
-        </Typography>
-        <Typography className="text-[#201B1C] font-normal">
-          IDR 100.000
-        </Typography>
-      </div>
+      <InlineText
+        label={t(`${translationId}.admissionFeeLabel`)}
+        value={`IDR ${admissionFee}`}
+        className='mb-2'
+      />
+      <InlineText
+        label={t(`${translationId}.adminFeeLabel`)}
+         value={`IDR ${adminFee}`}
+        className='mb-4'
+      />
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-5">
-        IDR 100.000
+        {`IDR ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton className='my-4' disabled={phone.length < 1}>
-        Pay
+        {t(`${translationId}.button`)}
       </SubmitButton>
     </div>
   );

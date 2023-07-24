@@ -8,10 +8,10 @@ interface Payment {
 }
 
 interface IPaymentOptions {
-  currentValue: string;
+  currentValue: any;
   label: string;
   options: Payment[];
-  onChange: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onChange: (paymentOption: Payment) => void;
 }
 
 const PaymentOptions = ({ currentValue, label, options, onChange }: IPaymentOptions): JSX.Element => (

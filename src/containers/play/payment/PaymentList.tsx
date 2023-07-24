@@ -5,14 +5,22 @@ import { Typography } from '@material-tailwind/react';
 import { getPaymentList } from '@/repository/payment.repository'; 
 import PaymentOptions from './PaymentOptions';
 import WalletForm from './WalletForm';
+import VirtualAccountGuide from './VirtualAccountGuide';
 import SubmitButton from '@/components/SubmitButton';
 import Dialog from '@/components/ui/dialog/Dialog';
+
+interface Payment {
+  id?: string;
+  payment_method?: string;
+  logo_url?: string;
+  payment_type?: string;
+}
 
 const PaymentList = (): JSX.Element => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [option, setOption] = useState('');
+  const [option, setOption] = useState<Payment>({});
   const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
 
@@ -33,10 +41,6 @@ const PaymentList = (): JSX.Element => {
     void fetchPaymentList()
   }, []);
 
-  const onSelectOption = (event: React.FocusEvent<HTMLInputElement>): void => {
-    setOption(event.target.value)
-  };
-
   const renderLoading = (): JSX.Element => (
     <span> Loading ... </span>
   );
@@ -52,17 +56,17 @@ const PaymentList = (): JSX.Element => {
         <PaymentOptions
           label={t('PlayPayment.virtualAccountLabel')}
           options={virtualAccountList}
-          onChange={onSelectOption}
+          onChange={setOption}
           currentValue={option}
         />
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
-          onChange={onSelectOption}
+          onChange={setOption}
           currentValue={option}
         />
         <SubmitButton
-          disabled={option === ""}
+          disabled={option.id == null}
           fullWidth
           onClick={() => { setOpenDialog(true); }}
         >
@@ -76,12 +80,17 @@ const PaymentList = (): JSX.Element => {
     <PageGradient defaultGradient className="w-full md:px-20">
       {loading ? renderLoading() : renderContent()}
       <Dialog
-        title={t('PlayPayment.dialogWalletTitle', { wallet: 'GoPay' })}
+        title={option.payment_type === 'ewallet'
+          ? t('PlayPayment.WalletForm.title', { wallet: option.payment_method })
+          : t('PlayPayment.VirtualAccountGuide.title', { bank: option.payment_method?.split('_')[0] })
+        }
         isOpen={openDialog}
         bottomSheetOnSmall
         handleClose={() => { setOpenDialog(false); }}
       >
-        <WalletForm />
+        {option.payment_type === 'ewallet'
+          ? <WalletForm payment={option} />
+          : <VirtualAccountGuide payment={option} />}
       </Dialog>
     </PageGradient>
   );

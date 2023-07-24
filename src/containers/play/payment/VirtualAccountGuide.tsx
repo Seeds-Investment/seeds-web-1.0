@@ -1,70 +1,113 @@
-import { useState } from 'react';
-import { Typography, Input } from '@material-tailwind/react';
+import { Typography, Button } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 
 import SubmitButton from '@/components/SubmitButton';
 import InlineText from './components/InlineText';
+import Divider from './components/Divider';
 
-const WalletForm = (): JSX.Element => {
-  const [phone, setPhone] = useState('')
+interface VirtualAccountGuideProps {
+  payment: any
+}
 
-  const renderPhoneInput = (): JSX.Element => (
-    <div className="mb-2">
-      <Typography className="mb-2 text-[#B9B7B7] font-semibold">
-        GoPay Number
-      </Typography>
-      <div className='flex mb-2 border-[#E0E0E0] border rounded-xl'>
-        <Typography
-          className="font-normal text-[#B9B7B7] flex h-10 items-center pr-0 pl-3"
-          >
-          +62
-        </Typography>
-        <Input
-          type="tel"
-          placeholder="Mobile Number"
-          className="!border-0 font-normal"
-          labelProps={{
-            className: "before:content-none after:content-none",
-          }}
-          containerProps={{
-            className: "min-w-0",
-          }}
-          value={phone}
-          onChange={(e) => {
-
-            setPhone(e.target.value);
-          }}
-        />
-      </div>
-      <Typography className="text-[#3C49D6] font-normal">
-        Pay before 25 October 2022 10;08pm
-      </Typography>
-    </div>
-  );
-
+const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element => {
+  const { t } = useTranslation();
+  const accountNumber = '123 0865 9878 9000';
+  const accountName = 'Margaretha Intan Pratiwi';
+  const userName = 'Jeri';
+  const admissionFee = 10000;
+  const adminFee = 0;
+  const totalFee = admissionFee + adminFee;
+  const translationsId = 'PlayPayment.VirtualAccountGuide';
+  const bankName = payment?.payment_method?.split('_')[0];
 
   return (
-     <div className=''>
-      {renderPhoneInput()}
+     <div className='max-h-[70vh]'>
+      <div className="flex items-center">
+        <Image
+          src={payment?.logo_url}
+          width={200}
+          height={200}
+          className="h-[20px] w-auto mr-2 object-contain"
+          alt={payment?.payment_method}
+        />
+        <Typography className="text-[#201B1C] font-normal text-md">
+          {t(`${translationsId}.bankName`, { bank: bankName })}
+        </Typography>
+      </div>
+      <Divider/>
+      <Typography className="text-[#201B1C] font-normal">
+        {t(`${translationsId}.accountNumberLabel`)}
+      </Typography>
+      <div className="flex justify-between mb-4">
+        <Typography className="text-[#7555DA] font-normal">
+          {accountNumber}
+        </Typography>
+        <Button variant="text" onClick={() => {}} className='text-[#3AC4A0] text-md font-normal p-0 normal-case '>
+          {t(`${translationsId}.copy`)}
+        </Button>
+      </div>
+      <Typography className="text-[#201B1C] font-normal">
+        {t(`${translationsId}.accountNameLabel`)}
+      </Typography>
+      <Typography className="text-[#7555DA] font-normal">
+        {accountName}
+      </Typography>
+      <Divider/>
       <InlineText
-        key='Circle Membership'
-        value='IDR 100.000'
+        label={t(`${translationsId}.admissionFeeLabel`)}
+        value={`IDR ${admissionFee}`}
         className='mb-2'
       />
       <InlineText
-        key='Admin'
-        value='IDR 0'
-        className='mb-4'
+        label={t(`${translationsId}.adminFeeLabel`)}
+        value={`IDR ${adminFee}`}
       />
-      <hr />
-      <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-5">
-        IDR 100.000
+      <Divider />
+      <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right">
+        {`IDR ${totalFee}`}
       </Typography>
-      <hr />
-      <SubmitButton className='my-4' disabled={phone.length < 1}>
+      <Divider />
+      <Typography className="text-[#DD2525] font-normal text-sm mb-6">
+        {t(`${translationsId}.note`)}
+      </Typography>
+      <Typography className="text-[#262626] font-normal">
+        {t(`${translationsId}.instructionLabel`)}
+      </Typography>
+      <Divider />
+      <Typography className="text-[#262626] font-normal mb-4">
+        1.
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step1.1`)} </a>
+        {t(`${translationsId}.step1.2`, { provider: 'BCA' })}
+      </Typography>
+      <Typography className="text-[#262626] font-normal mb-4">
+        2.
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.1`)} </a>
+        {t(`${translationsId}.step2.2`)}
+        <a className="text-[#7555DA]"> {accountNumber}</a>
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step2.3`)} </a>
+        {t(`${translationsId}.step2.4`)}
+      </Typography>
+      <Typography className="text-[#262626] font-normal mb-4">
+        3.
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.1`)} </a>
+        {t(`${translationsId}.step3.2`)}
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.3`)} </a>
+        {userName}.
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step3.4`)} </a>
+        {t(`${translationsId}.step3.5`)}
+      </Typography>
+      <Typography className="text-[#262626] font-normal mb-4">
+        4.
+        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step4.1`, { provider: bankName })} </a>
+        {t(`${translationsId}.step4.2`)}
+      </Typography>
+      <SubmitButton>
         Pay
       </SubmitButton>
+      <Divider />
     </div>
   );
 };
 
-export default WalletForm;
+export default VirtualAccountGuide;

@@ -5,7 +5,7 @@ import { Typography } from '@material-tailwind/react';
 import { getPaymentList } from '@/repository/payment.repository'; 
 import PaymentOptions from './PaymentOptions';
 import WalletForm from './WalletForm';
-import CButton from '@/components/CButton';
+import SubmitButton from '@/components/SubmitButton';
 import Dialog from '@/components/ui/dialog/Dialog';
 
 const PaymentList = (): JSX.Element => {
@@ -61,14 +61,13 @@ const PaymentList = (): JSX.Element => {
           onChange={onSelectOption}
           currentValue={option}
         />
-        <CButton
+        <SubmitButton
           disabled={option === ""}
           fullWidth
           onClick={() => { setOpenDialog(true); }}
-          className="rounded-3xl bg-[#BDBDBD] text-[#7C7C7C] normal-case"
         >
           {t('PlayPayment.button')}
-        </CButton>
+        </SubmitButton>
       </div>
     </div>
   )

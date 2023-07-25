@@ -47,7 +47,7 @@ const Header: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  });
 
   return (
     <header className="sm:pt-6 pt-12">

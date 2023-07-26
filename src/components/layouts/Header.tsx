@@ -38,7 +38,7 @@ const Header: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         const response = await getUserInfo();
         setUserInfo(response);
@@ -46,8 +46,9 @@ const Header: React.FC = () => {
         console.log(error);
       }
     };
-    fetchData();
-  });
+
+    void fetchData();
+  }, []);
 
   return (
     <header className="sm:pt-6 pt-12">
@@ -109,12 +110,16 @@ const Header: React.FC = () => {
               <Image src={US} alt="US-flag" />
             )}
           </button>
-          {accessToken && userInfo != null ? (
+          {accessToken !== null && userInfo !== null ? (
             <div className="flex">
               <div className="mt-2 mx-2 font-bold hidden lg:block">
                 Hi, {userInfo.name}
               </div>
-              <img className="rounded-full w-10" src={userInfo.avatar} />
+              <Image
+                alt="image"
+                className="rounded-full w-10"
+                src={userInfo.avatar}
+              />
             </div>
           ) : (
             <Button

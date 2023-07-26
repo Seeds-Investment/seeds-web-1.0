@@ -656,6 +656,53 @@ export default {
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     option3: 'Get more XP when your friend registered to Seeds'
   },
+  PlayPayment: {
+    title: 'Payment Method',
+    virtualAccountLabel: 'Virtual Account',
+    eWalletLabel: 'E-Wallet',
+    button: 'Pay',
+    WalletForm: {
+      title: 'Enter {{wallet}} Number',
+      phoneLabel: '{{wallet}} Number',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Pay before {{date}}',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      button: 'Pay'
+    },
+    VirtualAccountGuide: {
+      title: '{{bank}} Virtual Account',
+      bankName: 'Bank {{bank}}',
+      accountNumberLabel: 'No. rekening',
+      copy: 'Copy',
+      accountNameLabel: 'Virtual Account Name',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
+      instructionLabel: 'mBanking Transfer Instructions',
+      step1: {
+        1: 'Choose',
+        2: 'm-Transfer > {{provider}} Virtual Account.'
+      },
+      step2: {
+        1: 'Enter',
+        2: 'nomor Virtual Account',
+        3: 'and choose',
+        4: 'Send'
+      },
+      step3: {
+        1: 'Check the information shown on the screen. Make sure the Merchant is',
+        2: 'Seeds, Total bill',
+        3: 'is correct and your username',
+        4: 'If true, Select',
+        5: 'Ya'
+      },
+      step4: {
+        1: 'Enter your m-{{provider}} PIN and select',
+        2: 'OK'
+      }
+    }
+  },
   temporary: {
     welcome: {
       1: 'Welcome to Seeds!',

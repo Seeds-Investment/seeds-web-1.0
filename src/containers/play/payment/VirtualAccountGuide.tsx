@@ -1,16 +1,18 @@
-import { Typography, Button } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
-import Image from 'next/image';
-
+'use client';
 import SubmitButton from '@/components/SubmitButton';
-import InlineText from './components/InlineText';
+import { Button, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 import Divider from './components/Divider';
+import InlineText from './components/InlineText';
 
 interface VirtualAccountGuideProps {
-  payment: any
+  payment: any;
 }
 
-const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element => {
+const VirtualAccountGuide = ({
+  payment
+}: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
@@ -22,7 +24,7 @@ const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element
   const bankName = payment?.payment_method?.split('_')[0];
 
   return (
-     <div className='max-h-[70vh]'>
+    <div className="max-h-[70vh]">
       <div className="flex items-center">
         <Image
           src={payment?.logo_url}
@@ -35,7 +37,7 @@ const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element
           {t(`${translationsId}.bankName`, { bank: bankName })}
         </Typography>
       </div>
-      <Divider/>
+      <Divider />
       <Typography className="text-[#201B1C] font-normal">
         {t(`${translationsId}.accountNumberLabel`)}
       </Typography>
@@ -43,7 +45,11 @@ const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element
         <Typography className="text-[#7555DA] font-normal">
           {accountNumber}
         </Typography>
-        <Button variant="text" onClick={() => {}} className='text-[#3AC4A0] text-md font-normal p-0 normal-case '>
+        <Button
+          variant="text"
+          onClick={() => {}}
+          className="text-[#3AC4A0] text-md font-normal p-0 normal-case "
+        >
           {t(`${translationsId}.copy`)}
         </Button>
       </div>
@@ -53,11 +59,11 @@ const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element
       <Typography className="text-[#7555DA] font-normal">
         {accountName}
       </Typography>
-      <Divider/>
+      <Divider />
       <InlineText
         label={t(`${translationsId}.admissionFeeLabel`)}
         value={`IDR ${admissionFee}`}
-        className='mb-2'
+        className="mb-2"
       />
       <InlineText
         label={t(`${translationsId}.adminFeeLabel`)}
@@ -99,12 +105,13 @@ const VirtualAccountGuide = ({ payment }: VirtualAccountGuideProps): JSX.Element
       </Typography>
       <Typography className="text-[#262626] font-normal mb-4">
         4.
-        <a className="text-[#7C7C7C]"> {t(`${translationsId}.step4.1`, { provider: bankName })} </a>
+        <a className="text-[#7C7C7C]">
+          {' '}
+          {t(`${translationsId}.step4.1`, { provider: bankName })}{' '}
+        </a>
         {t(`${translationsId}.step4.2`)}
       </Typography>
-      <SubmitButton>
-        Pay
-      </SubmitButton>
+      <SubmitButton>Pay</SubmitButton>
       <Divider />
     </div>
   );

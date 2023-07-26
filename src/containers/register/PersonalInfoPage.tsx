@@ -1,21 +1,21 @@
-import PhoneInput from '@/components/PhoneInput';
-import type { IRegisterPaging } from '@/pages/auth/register';
-import { fieldValidity } from '@/utils/common/utils';
-import { Button, Input, Typography } from '@material-tailwind/react';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-
+'use client';
 import CErrorMessage from '@/components/CErrorMessage';
+import PhoneInput from '@/components/PhoneInput';
 import {
   AppleBrand,
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
+import type { IRegisterPaging } from '@/pages/auth/register';
 import { checkEmail, checkPhoneNumber } from '@/repository/auth.repository';
+import { fieldValidity } from '@/utils/common/utils';
 import { formRegisterPersonalInfoSchema } from '@/utils/validations/register.schema';
+import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const PersonalInfoPage = ({
   setPage,

@@ -1,3 +1,4 @@
+'use client';
 import ConfirmPinPopUp from '@/components/popup/ConfirmPinPopUp';
 import DeleteAccountPopUp from '@/components/popup/DeleteAccount';
 import DeleteAccountReasonPopUp from '@/components/popup/DeleteAccountReason';

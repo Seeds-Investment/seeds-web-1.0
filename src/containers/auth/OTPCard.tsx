@@ -1,3 +1,4 @@
+'use client';
 import SliderCard from '@/components/SlideCard';
 import { useCountDown } from '@/hooks/useCountDown';
 import { getOtp, verifyOtp } from '@/repository/auth.repository';

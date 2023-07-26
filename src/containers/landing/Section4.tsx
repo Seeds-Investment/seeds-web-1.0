@@ -1,3 +1,4 @@
+'use client';
 import chat from '@/assets/landing-page/s4-chat-1.png';
 import line from '@/assets/landing-page/s4-line.png';
 import shape from '@/assets/landing-page/s4-shape.png';

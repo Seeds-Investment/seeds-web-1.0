@@ -1,3 +1,4 @@
+'use client';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';

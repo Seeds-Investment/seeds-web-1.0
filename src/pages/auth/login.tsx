@@ -1,25 +1,23 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
-
+'use client';
 import CButton from '@/components/CButton';
+import AuthLayout from '@/components/layouts/AuthLayout';
+import PhoneInput from '@/components/PhoneInput';
+import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
   FacebookBrand,
   GoogleBrand
 } from '@/constants/assets/logo';
-
-import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-import { signIn, signOut, useSession } from 'next-auth/react';
-
-import PhoneInput from '@/components/PhoneInput';
-import AuthLayout from '@/components/layouts/AuthLayout';
 import { useTranslation } from 'react-i18next';
+
 interface FormData {
   phoneNumber: string;
   password: string;

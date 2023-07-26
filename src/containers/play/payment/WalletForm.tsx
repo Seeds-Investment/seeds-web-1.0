@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { Typography, Input } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
-
+'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { Input, Typography } from '@material-tailwind/react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
-  payment: any
+  payment: any;
 }
 
 const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState('');
   const deadline = '5 October 2022 10;08pm';
   const admissionFee = 100000;
-  const adminFee = 0
+  const adminFee = 0;
   const totalFee = admissionFee + adminFee;
 
   const renderPhoneInput = (): JSX.Element => (
@@ -23,10 +23,8 @@ const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">
         {t(`${translationId}.phoneLabel`, { wallet: payment?.payment_method })}
       </Typography>
-      <div className='flex mb-2 border-[#E0E0E0] border rounded-xl'>
-        <Typography
-          className="font-normal text-[#B9B7B7] flex h-10 items-center pr-0 pl-3"
-          >
+      <div className="flex mb-2 border-[#E0E0E0] border rounded-xl">
+        <Typography className="font-normal text-[#B9B7B7] flex h-10 items-center pr-0 pl-3">
           +62
         </Typography>
         <Input
@@ -34,13 +32,13 @@ const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
           placeholder={t(`${translationId}.phonePlaceholder`) ?? ''}
           className="!border-0 font-normal"
           labelProps={{
-            className: "before:content-none after:content-none",
+            className: 'before:content-none after:content-none'
           }}
           containerProps={{
-            className: "min-w-0",
+            className: 'min-w-0'
           }}
           value={phone}
-          onChange={(e) => {
+          onChange={e => {
             setPhone(e.target.value);
           }}
         />
@@ -51,26 +49,25 @@ const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
     </div>
   );
 
-
   return (
-     <div className=''>
+    <div className="">
       {renderPhoneInput()}
       <InlineText
         label={t(`${translationId}.admissionFeeLabel`)}
         value={`IDR ${admissionFee}`}
-        className='mb-2'
+        className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-         value={`IDR ${adminFee}`}
-        className='mb-4'
+        value={`IDR ${adminFee}`}
+        className="mb-4"
       />
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-5">
         {`IDR ${totalFee}`}
       </Typography>
       <hr />
-      <SubmitButton className='my-4' disabled={phone.length < 1}>
+      <SubmitButton className="my-4" disabled={phone.length < 1}>
         {t(`${translationId}.button`)}
       </SubmitButton>
     </div>

@@ -1,3 +1,4 @@
+'use client';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
 import faEyeSlash from 'public/assets/vector/eye-slash.svg';

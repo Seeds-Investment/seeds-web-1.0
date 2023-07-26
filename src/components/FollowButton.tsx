@@ -1,8 +1,8 @@
+'use client';
+import { follow } from '@/repository/user.repository';
+import { Button } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@material-tailwind/react';
-
-import { follow } from '@/repository/user.repository';
 
 interface Props {
   isFollowed: boolean;

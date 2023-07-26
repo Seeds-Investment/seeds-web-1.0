@@ -1,3 +1,4 @@
+'use client';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';
 import { Button } from '@material-tailwind/react';

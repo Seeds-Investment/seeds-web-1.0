@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
+'use client';
 import CButton from '@/components/CButton';
 import supportedLanguages from '@/constants/supportedLanguages';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const DropdownLanguageSwitcher = (): JSX.Element => {
   const { i18n } = useTranslation();

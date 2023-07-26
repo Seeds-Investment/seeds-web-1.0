@@ -1,3 +1,4 @@
+'use client';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';

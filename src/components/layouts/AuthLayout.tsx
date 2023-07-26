@@ -1,3 +1,4 @@
+'use client';
 import LanguageSwitcher from '@/components/DropdownLanguageSwitcher';
 import { HelloHero, LineChart } from '@/constants/assets/images';
 import { SeedsLogo } from '@/constants/assets/logo';

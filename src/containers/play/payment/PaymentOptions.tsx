@@ -1,3 +1,4 @@
+'use client';
 import { Typography } from '@material-tailwind/react';
 import PaymentOption from './PaymentOption';
 
@@ -14,13 +15,18 @@ interface IPaymentOptions {
   onChange: (paymentOption: Payment) => void;
 }
 
-const PaymentOptions = ({ currentValue, label, options, onChange }: IPaymentOptions): JSX.Element => (
-  <div className='w-full mb-6'>
+const PaymentOptions = ({
+  currentValue,
+  label,
+  options,
+  onChange
+}: IPaymentOptions): JSX.Element => (
+  <div className="w-full mb-6">
     <Typography className="text-[#7C7C7C] text-sm font-semibold text-left mb-4">
       {label}
     </Typography>
-    <div className='flex flex-col gap-4'>
-      {options.map((option) => (
+    <div className="flex flex-col gap-4">
+      {options.map(option => (
         <PaymentOption
           key={option.id}
           option={option}

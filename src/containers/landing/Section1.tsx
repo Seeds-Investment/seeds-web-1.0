@@ -1,3 +1,4 @@
+'use client';
 import medal from '@/assets/landing-page/medal.png';
 import rectangleLine1 from '@/assets/landing-page/rectangle-line-1.png';
 import rectangleLine2 from '@/assets/landing-page/rectangle-line-2.png';

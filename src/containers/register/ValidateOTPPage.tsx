@@ -1,3 +1,4 @@
+'use client';
 import OTPCard from '@/containers/auth/OTPCard';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';

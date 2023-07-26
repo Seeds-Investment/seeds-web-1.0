@@ -1,3 +1,4 @@
+'use client';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';

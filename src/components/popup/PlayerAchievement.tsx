@@ -1,8 +1,7 @@
+'use client';
+import { getLeaderboardDetail } from '@/repository/play.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-
-import { getLeaderboardDetail } from '@/repository/play.repository';
 import {
   BronzeMedalIcon,
   Gain,
@@ -10,6 +9,7 @@ import {
   SilverMedalIcon,
   XIcon
 } from 'public/assets/vector';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FollowButton from '../FollowButton';
 import Modal from '../ui/modal/Modal';
@@ -55,6 +55,7 @@ const PlayerAchievement: React.FC<Props> = ({ playerId, rank, onClose }) => {
 
   useEffect(() => {
     void fetchPlayerAchievement();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const achievementOrder = ['GOLD', 'SILVER', 'BRONZE'];

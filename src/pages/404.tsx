@@ -1,3 +1,4 @@
+'use client';
 import error from '@/assets/error-page/error.svg';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Button, Typography } from '@material-tailwind/react';

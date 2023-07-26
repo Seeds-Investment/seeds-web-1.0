@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
-
+'use client';
 import CButton from '@/components/CButton';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { OnBoardingType1 } from '@/constants/assets/images';
 import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 

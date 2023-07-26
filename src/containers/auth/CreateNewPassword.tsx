@@ -1,3 +1,4 @@
+'use client';
 import InputPassword from '@/components/InputPassword';
 import { passwordRequirements } from '@/utils/common';
 import type { ICreateNewPassword } from '@/utils/interfaces/form.interfaces';

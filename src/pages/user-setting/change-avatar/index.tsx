@@ -1,18 +1,17 @@
+'use client';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { Button, Card, Typography } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
-import { type ChangeEvent, useEffect, useState } from 'react';
-
-import Image from 'next/image';
-import {
-  XIcon,
-  ArrowRight,
-  ArrowDownCollapse
-} from '../../../../public/assets/vector';
 import { getAvatars } from '@/repository/avatar.repository';
+import { Button, Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  ArrowDownCollapse,
+  ArrowRight,
+  XIcon
+} from '../../../../public/assets/vector';
 
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();

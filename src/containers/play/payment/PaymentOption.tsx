@@ -1,3 +1,4 @@
+'use client';
 import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
 
@@ -8,12 +9,16 @@ interface Payment {
 }
 
 interface IPaymentOption {
-  option: Payment,
+  option: Payment;
   onChange: (paymentOption: Payment) => void;
   currentValue: any;
 }
 
-const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.Element => (
+const PaymentOption = ({
+  option,
+  onChange,
+  currentValue
+}: IPaymentOption): JSX.Element => (
   <div className="flex justify-between rounded-xl border items-center pl-4">
     <Image
       src={option.logo_url}
@@ -27,9 +32,11 @@ const PaymentOption = ({ option, onChange, currentValue }: IPaymentOption): JSX.
       value={option.id}
       name="paymentOption"
       className="rounded-xl border"
-      color='teal'
+      color="teal"
       checked={option.id === currentValue.id}
-      onChange={() => { onChange(option); }}
+      onChange={() => {
+        onChange(option);
+      }}
     />
   </div>
 );

@@ -1,3 +1,4 @@
+'use client';
 import PhoneInput from '@/components/PhoneInput';
 import { Loader } from '@/constants/assets/icons';
 import { Button, Input, Textarea, Typography } from '@material-tailwind/react';

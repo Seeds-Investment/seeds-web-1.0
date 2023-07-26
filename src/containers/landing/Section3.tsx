@@ -1,3 +1,4 @@
+'use client';
 import card4 from '@/assets/landing-page/s3-check.png';
 import card1 from '@/assets/landing-page/s3-frame-1.png';
 import card2 from '@/assets/landing-page/s3-frame-2.png';

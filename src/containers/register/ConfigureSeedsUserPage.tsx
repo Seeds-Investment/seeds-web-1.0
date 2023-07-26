@@ -1,3 +1,4 @@
+'use client';
 import CErrorMessage from '@/components/CErrorMessage';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';

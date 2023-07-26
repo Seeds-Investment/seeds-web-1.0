@@ -1,10 +1,10 @@
+'use client';
+import type { AssetsInterface } from '@/constants/assets';
+import Flags from '@/constants/assets/flags';
 import ListCountryFlag from '@/constants/countryFlag';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-
-import type { AssetsInterface } from '@/constants/assets';
-import Flags from '@/constants/assets/flags';
 
 interface PhoneInputProps {
   onChangePhoneNumber: (value: string) => void;

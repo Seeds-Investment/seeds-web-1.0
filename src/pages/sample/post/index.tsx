@@ -1,3 +1,4 @@
+'use client';
 import SampleLayout from '@/components/layouts/SampleLayout';
 import useService from '@/hooks/useFetch';
 import { getPosts } from '@/repository/post';

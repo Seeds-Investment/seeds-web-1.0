@@ -1,3 +1,4 @@
+'use client';
 import CInputPassword from '@/components/CInputPassword';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { fieldValidity } from '@/utils/common/utils';

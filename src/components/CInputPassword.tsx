@@ -1,13 +1,13 @@
-import Image from 'next/image';
-import { useState } from 'react';
-
+'use client';
 import { Input } from '@material-tailwind/react';
 import type {
   color,
   size,
   variant
 } from '@material-tailwind/react/types/components/input';
+import Image from 'next/image';
 import { Eye, EyeSlash } from 'public/assets/vector';
+import { useState } from 'react';
 
 export interface ICInputPassword {
   className?: string;

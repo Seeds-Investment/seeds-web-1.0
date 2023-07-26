@@ -1,3 +1,4 @@
+'use client';
 import {
   Bitcoin,
   Copy,

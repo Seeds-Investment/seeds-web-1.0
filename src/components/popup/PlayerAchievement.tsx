@@ -1,18 +1,18 @@
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { getLeaderboardDetail } from '@/repository/play.repository';
 import {
   BronzeMedalIcon,
+  Gain,
   GoldMedalIcon,
   SilverMedalIcon,
-  XIcon,
-  Gain
+  XIcon
 } from 'public/assets/vector';
-import Modal from '../ui/modal/Modal';
-import FollowButton from '../FollowButton';
-import { getLeaderboardDetail } from '@/repository/play.repository';
 import { useTranslation } from 'react-i18next';
+import FollowButton from '../FollowButton';
+import Modal from '../ui/modal/Modal';
 
 interface Props {
   playerId: string;

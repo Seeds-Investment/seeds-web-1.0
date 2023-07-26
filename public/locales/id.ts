@@ -584,6 +584,53 @@ export default {
     option2: 'Pakai referal kode yang telah diberikan',
     option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
   },
+  PlayPayment: {
+    title: 'Payment Method',
+    virtualAccountLabel: 'Virtual Account',
+    eWalletLabel: 'E-Wallet',
+    button: 'Pay',
+    WalletForm: {
+      title: 'Masukkan nomor {{wallet}}',
+      phoneLabel: 'Nomor {{wallet}}',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Bayar sebelum {{date}}',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      button: 'Pay'
+    },
+    VirtualAccountGuide: {
+      title: '{{bank}} Virtual Account',
+      bankName: 'Bank {{bank}}',
+      accountNumberLabel: 'No. rekening',
+      copy: 'Copy',
+      accountNameLabel: 'Virtual Account Name',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
+      instructionLabel: 'mBanking Transfer Instructions',
+      step1: {
+        1: 'Pilih',
+        2: 'm-Transfer > {{provider}} Virtual Account.'
+      },
+      step2: {
+        1: 'Masukan',
+        2: 'nomor Virtual Account',
+        3: 'dan pilih',
+        4: 'Send'
+      },
+      step3: {
+        1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
+        2: 'Seeds, Total bill',
+        3: 'dan username',
+        4: 'Jika benar, Pilih',
+        5: 'Ya'
+      },
+      step4: {
+        1: 'Masukan m-{{provider}} PIN kamu dan pilih',
+        2: 'OK'
+      }
+    }
+  },
   temporary: {
     welcome: {
       1: 'Selamat Datang!',

@@ -1,13 +1,12 @@
 import PlayerAchievement from '@/components/popup/PlayerAchievement';
 import axios from 'axios';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import FilterIcon from '../../components/svgs/filterIcon';
-import GoldRank from '../../components/svgs/rank1';
-import SilverRank from '../../components/svgs/rank2';
-import BronzeRank from '../../components/svgs/rank3';
-import TopIcon from '../../components/svgs/topIcon';
+import FilterIcon from '../../../components/svgs/filterIcon';
+import GoldRank from '../../../components/svgs/rank1';
+import SilverRank from '../../../components/svgs/rank2';
+import BronzeRank from '../../../components/svgs/rank3';
+import TopIcon from '../../../components/svgs/topIcon';
 
 interface LeaderboardData {
   user_id: string;
@@ -150,22 +149,21 @@ const Player = (): React.ReactElement => {
                 </button>
               </div>
               <div className="mb-2">
-                <Link
-                  href={'/play/active'}
+                <button
                   type="button"
                   className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
                 >
                   Kompetisi Sedang Aktif
-                </Link>
+                </button>
               </div>
               <div className="mb-2">
-                <Link
-                  href={'/play/past'}
+                <button
                   type="button"
-                  className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
+                  disabled
+                  className="border flex shadow-lg border-gray-200 bg-[#3AC4A0] text-[#FFFFFF] rounded-md px-4 py-2  transition duration-500 ease select-none focus:outline-none focus:shadow-outline"
                 >
                   Kompetisi sebelumnya
-                </Link>
+                </button>
               </div>
             </div>
           </div>

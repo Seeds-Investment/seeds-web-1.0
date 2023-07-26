@@ -61,3 +61,4 @@ export const linkAccount = async (identifier: string): Promise<string> => {
     });
   }
 };
+

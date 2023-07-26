@@ -117,6 +117,8 @@ const Header: React.FC = () => {
               </div>
               <Image
                 alt="image"
+                width={17}
+                height={17}
                 className="rounded-full w-10"
                 src={userInfo.avatar}
               />

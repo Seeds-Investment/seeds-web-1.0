@@ -62,5 +62,5 @@ jobs:
         run: |
           export IMAGE_TAG=asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
           export DEPLOYMENT_NAME=web
-          export CONTAINER_NAME=web
+          export CONTAINER_NAME=dev-web-1
           kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n dev

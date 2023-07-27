@@ -49,7 +49,7 @@ export default function Section5(): React.ReactElement {
   };
 
   return (
-    <div className="min-w-full min-h-screen cursor-default mt-7 md:mt-4 lg:mb-10">
+    <div className="min-w-full h-auto cursor-default mt-7 md:mt-4 lg:mb-10">
       <div className="flex flex-col items-center justify-center">
         <CCard
           className="h-[150px] w-[300px] rounded-b-[50px] border bg-gradient-to-tr from-deep-purple-300  to-seeds-green p-[1px]

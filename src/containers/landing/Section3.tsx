@@ -18,11 +18,11 @@ export default function Section3(): React.ReactElement {
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 md:mt-20">
           <div className="w-2/3 justify-center p-5 lg:w-full md:ml-10">
-            <div className="text-xl font-semibold tracking-wider mb-3 md:text-2xl lg:text-6xl">
-              <span className="mr-1 text-seeds-purple font-semibold z-30">
+            <div className="text-xl font-bold tracking-wider mb-3 md:text-3xl lg:text-6xl">
+              <span className="mr-1 text-seeds-purple font-bold z-30">
                 {t('landing.section3.text1')}
               </span>
-              <span className="text-black font-semibold z-30">
+              <span className="text-black font-bold z-30">
                 {t('landing.section3.text2')}
               </span>
             </div>

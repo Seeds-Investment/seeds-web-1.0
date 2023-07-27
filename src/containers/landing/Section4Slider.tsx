@@ -34,8 +34,8 @@ export default function Section4Slider({
         breakpoint: 480,
         settings: {
           dots: true,
-          slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToShow: 2,
+          slidesToScroll: 2
         }
       }
     ]

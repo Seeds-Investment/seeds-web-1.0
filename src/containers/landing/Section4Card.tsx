@@ -7,7 +7,7 @@ export default function Section4Card({
   data: ICircleLandingPage;
 }): React.ReactElement {
   return (
-    <div className="border rounded-xl border-gray-100 w-[200px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70">
+    <div className="border rounded-xl border-gray-100 sm:w-[200px] lg:w-[200px] sm:me-3 lg:me-1 flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70">
       <Image
         alt={data.name}
         src={data.image}

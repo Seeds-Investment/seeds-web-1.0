@@ -6,7 +6,7 @@ import kemenkumham from '@/assets/landing-page/kemenkumham.svg';
 import kominfo from '@/assets/landing-page/kominfo.svg';
 import linkedin from '@/assets/landing-page/linkedin.svg';
 import playstore from '@/assets/landing-page/playstore.svg';
-import telegram from '@/assets/landing-page/telegram.png';
+// import telegram from '@/assets/landing-page/telegram.png';
 import tiktok from '@/assets/landing-page/tiktok.svg';
 import twitter from '@/assets/landing-page/twitter.svg';
 import whatsapp from '@/assets/landing-page/whatsapp.svg';
@@ -22,10 +22,10 @@ export const socialMedia = [
     icon: linkedin,
     url: 'https://www.linkedin.com/company/finance-seeds/'
   },
-  {
-    icon: telegram,
-    url: ''
-  },
+  // {
+  //   icon: telegram,
+  //   url: ''
+  // },
   {
     icon: whatsapp,
     url: 'https://wa.me/08118883519'
@@ -53,19 +53,19 @@ export const seedsInformation: ISeedsInformationList = {
     {
       name: 'About Us',
       url: ''
-    },
-    {
-      name: 'Refferal Program',
-      url: ''
-    },
-    {
-      name: 'Circle Program',
-      url: ''
-    },
-    {
-      name: 'Competition Program',
-      url: ''
     }
+    // {
+    //   name: 'Refferal Program',
+    //   url: ''
+    // },
+    // {
+    //   name: 'Circle Program',
+    //   url: ''
+    // },
+    // {
+    //   name: 'Competition Program',
+    //   url: ''
+    // }
   ],
   Legal: [
     {
@@ -78,7 +78,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'Social Guidelines',
-      url: ''
+      url: '/faq-submenu/social-media-guide'
     }
   ],
   Support: [
@@ -88,7 +88,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'FAQs',
-      url: ''
+      url: '/faq-submenu'
     }
   ],
   'Contact Us': [

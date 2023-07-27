@@ -1,3 +1,4 @@
+'use client';
 import { Trash } from '@/constants/assets/images';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';

@@ -1,17 +1,17 @@
+'use client';
 import medal from '@/assets/landing-page/medal.png';
 import rectangleLine1 from '@/assets/landing-page/rectangle-line-1.png';
 import rectangleLine2 from '@/assets/landing-page/rectangle-line-2.png';
 import rectangle from '@/assets/landing-page/rectangle.png';
 import s1Line2 from '@/assets/landing-page/s1-line-2.png';
-import s1phone from '@/assets/landing-page/s1-phone.png';
 import vector from '@/assets/landing-page/vector.png';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import phone from 'public/assets/rectangle1.png';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 const fetch = async (): Promise<void> => {
   const res = await getTrendingAssets();
   console.log(res);
@@ -75,7 +75,7 @@ export default function Section1(): React.ReactElement {
             // className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
             className="w-full z-10 h-full"
             alt="img"
-            src={s1phone}
+            src={phone}
           />
         </div>
 

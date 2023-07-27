@@ -1,3 +1,4 @@
+'use client';
 import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';

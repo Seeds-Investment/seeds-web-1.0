@@ -1,7 +1,7 @@
-import { Input, Typography } from '@material-tailwind/react';
-
+'use client';
 import SampleLayout from '@/components/layouts/SampleLayout';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { Input, Typography } from '@material-tailwind/react';
 
 const StoragePage = (): JSX.Element => {
   const [data, setData] = useLocalStorage('accessToken', '');

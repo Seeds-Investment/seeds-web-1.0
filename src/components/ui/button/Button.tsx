@@ -11,6 +11,7 @@ interface ButtonProps {
   className?: string;
   style?: object;
   props?: object;
+  onClick?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'light',
   className,
   style,
+  onClick,
   ...props
 }) => {
   const height = useWindowInnerHeight();
@@ -38,6 +40,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       {...props.props}
+      onClick={onClick}
       className={className ?? defaultButtonClasses}
       style={style}
       data-ripple-light="true"

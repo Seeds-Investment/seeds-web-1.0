@@ -1,13 +1,14 @@
+'use client';
 import star from '@/assets/temporary-page/star.svg';
 import CCard from '@/components/CCard';
 import { getTrendingCircle } from '@/repository/circle.repository';
-import { Typography } from '@material-tailwind/react';
 import { downloadOurApp } from '@/utils/_static';
+import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import Link from 'next/link';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Link from 'next/link';
-import Image from 'next/image';
 
 const fetch = async (
   setNews: Dispatch<SetStateAction<never[]>>

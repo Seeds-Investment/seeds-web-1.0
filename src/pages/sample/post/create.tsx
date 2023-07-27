@@ -1,3 +1,4 @@
+'use client';
 import SampleLayout from '@/components/layouts/SampleLayout';
 import useService from '@/hooks/useService';
 import { createPost } from '@/repository/post';

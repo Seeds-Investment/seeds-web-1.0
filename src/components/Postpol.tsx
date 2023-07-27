@@ -1,3 +1,4 @@
+'use client';
 import { Progress, Typography } from '@material-tailwind/react';
 import CCard from './CCard';
 

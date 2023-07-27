@@ -1,4 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+'use client';
 import type { ICard } from '@/utils/interfaces/components.interfaces';
 import { Card } from '@material-tailwind/react';
 

@@ -1,3 +1,4 @@
+'use client';
 import flagId from '@/assets/flag-id.png';
 import flagUs from '@/assets/flag-us.png';
 import seeds from '@/assets/logo-seeds.png';
@@ -23,6 +24,7 @@ export default function Header(): React.ReactElement {
     const lng = localStorage.getItem('lng') ?? '';
     setActive(lng);
     void i18n.changeLanguage(active);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   return (

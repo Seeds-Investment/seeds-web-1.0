@@ -1,3 +1,4 @@
+'use client';
 import CAccordion from '@/components/CAccordion';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';

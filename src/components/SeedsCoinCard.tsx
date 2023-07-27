@@ -1,3 +1,4 @@
+'use client';
 import { Arrow, Ellipse } from '@/constants/assets/icons';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';

@@ -1,3 +1,4 @@
+'use client';
 import { Textarea, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';

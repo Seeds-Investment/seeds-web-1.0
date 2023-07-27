@@ -32,15 +32,15 @@ export const socialMedia = [
   },
   {
     icon: instagram,
-    url: 'https://instagram.com/seeds.finance?igshid=YmMyMTA2M2Y='
+    url: 'https://instagram.com/seeds_finance'
   },
   {
     icon: twitter,
-    url: 'https://twitter.com/seeds_finance?s=11&t=wB3YqPRfv6ZKmcPuo5gTtQ'
+    url: 'https://twitter.com/seeds_finance'
   },
   {
     icon: tiktok,
-    url: 'https://www.tiktok.com/@seeds_finance?_t=8bS5fpZtixm&_r=1'
+    url: 'https://www.tiktok.com/@seeds_finance'
   },
   {
     icon: youtube,
@@ -70,11 +70,11 @@ export const seedsInformation: ISeedsInformationList = {
   Legal: [
     {
       name: 'Terms & Conditions',
-      url: ''
+      url: '/faq-submenu/terms-condition'
     },
     {
       name: 'Privacy Policy',
-      url: ''
+      url: '/faq-submenu/privacy-policy'
     },
     {
       name: 'Social Guidelines',

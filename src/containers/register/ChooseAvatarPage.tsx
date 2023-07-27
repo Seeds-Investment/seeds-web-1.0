@@ -1,3 +1,4 @@
+'use client';
 import CSwitchSelect from '@/components/CSwitchSelect';
 import CSwitchSelectItem from '@/components/CSwitchSelectItem';
 import useFetch from '@/hooks/useFetch';
@@ -5,7 +6,7 @@ import useService from '@/hooks/useService';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { avatarList, registerNewUser } from '@/repository/auth.repository';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
-import { Button, Spinner, Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -42,20 +43,19 @@ const ChooseAvatarPage = ({
         identifier: formdata.providers.identifier ?? ''
       }
     });
-
-    if (
-      !isUndefindOrNull(post.data) &&
-      !isUndefindOrNull(post.data.accessToken)
-    ) {
-      window.localStorage.setItem('accessToken', post.data.accessToken);
-      window.localStorage.setItem('refreshToken', post.data.refreshToken);
-      window.localStorage.setItem(
-        'keepMeLoggedin',
-        formdata.providers.provider === '' ? 'false' : 'true'
-      );
-      setPage(5);
-    }
   };
+  if (
+    !isUndefindOrNull(post.data) &&
+    !isUndefindOrNull(post.data.accessToken)
+  ) {
+    window.localStorage.setItem('accessToken', post.data.accessToken);
+    window.localStorage.setItem('refreshToken', post.data.refreshToken);
+    window.localStorage.setItem(
+      'keepMeLoggedin',
+      formdata.providers.provider === '' ? 'false' : 'true'
+    );
+    setPage(5);
+  }
 
   return (
     <>
@@ -71,7 +71,17 @@ const ChooseAvatarPage = ({
         <div className="rounded-full bg-[#DCFCE4] w-[7rem] h-[7rem] relative">
           {!isUndefindOrNull(loading) && loading ? (
             <div className="w-full h-full flex items-center justify-center">
-              <Spinner className="h-10 w-10" />
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+                  className="spinner_P7sC"
+                />
+              </svg>
             </div>
           ) : (
             <></>
@@ -154,7 +164,17 @@ const ChooseAvatarPage = ({
         >
           {post.loading ? (
             <div className="w-full flex justify-center">
-              <Spinner className="h-6 w-6" />
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+                  className="spinner_P7sC"
+                />
+              </svg>
             </div>
           ) : (
             t('registerPage.nextButton')

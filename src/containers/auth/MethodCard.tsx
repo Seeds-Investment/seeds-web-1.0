@@ -1,3 +1,4 @@
+'use client';
 import PhoneInput from '@/components/PhoneInput';
 import SliderCard from '@/components/SlideCard';
 import type { ISlider } from '@/utils/interfaces/components.interfaces';

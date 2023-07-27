@@ -1,3 +1,4 @@
+'use client';
 import currency from '@/assets/landing-page/currency.png';
 import gift from '@/assets/landing-page/gift.png';
 import time from '@/assets/landing-page/time.png';

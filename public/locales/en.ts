@@ -656,6 +656,53 @@ export default {
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
     option3: 'Get more XP when your friend registered to Seeds'
   },
+  PlayPayment: {
+    title: 'Payment Method',
+    virtualAccountLabel: 'Virtual Account',
+    eWalletLabel: 'E-Wallet',
+    button: 'Pay',
+    WalletForm: {
+      title: 'Enter {{wallet}} Number',
+      phoneLabel: '{{wallet}} Number',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Pay before {{date}}',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      button: 'Pay'
+    },
+    VirtualAccountGuide: {
+      title: '{{bank}} Virtual Account',
+      bankName: 'Bank {{bank}}',
+      accountNumberLabel: 'No. rekening',
+      copy: 'Copy',
+      accountNameLabel: 'Virtual Account Name',
+      admissionFeeLabel: 'Play Membership',
+      adminFeeLabel: 'Admin',
+      note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
+      instructionLabel: 'mBanking Transfer Instructions',
+      step1: {
+        1: 'Choose',
+        2: 'm-Transfer > {{provider}} Virtual Account.'
+      },
+      step2: {
+        1: 'Enter',
+        2: 'nomor Virtual Account',
+        3: 'and choose',
+        4: 'Send'
+      },
+      step3: {
+        1: 'Check the information shown on the screen. Make sure the Merchant is',
+        2: 'Seeds, Total bill',
+        3: 'is correct and your username',
+        4: 'If true, Select',
+        5: 'Ya'
+      },
+      step4: {
+        1: 'Enter your m-{{provider}} PIN and select',
+        2: 'OK'
+      }
+    }
+  },
   temporary: {
     welcome: {
       1: 'Welcome to Seeds!',
@@ -664,5 +711,32 @@ export default {
     description:
       'Expand your connection, manage your assets and grow your portfolio together with Seeds. Download Now!',
     review: '{{review}} reviews'
+  },
+  errorPage: {
+    text1: 'Oh No! Error 404',
+    text2:
+      'Sorry, your request cannot be processed at this time. Please try again later. If this problem reappears, please contact Seeds Finance customer support.',
+    button1: 'Back to Homepage',
+    button2: 'Contact our Support'
+  },
+  Deactive: {
+    text1: 'How can we help you with your account?',
+    text2: 'Please select one of the options',
+    text3: '(required)',
+    text4: 'I need to temporarily deactive to my seeds account',
+    text5: "I'd like to delete my seeds account",
+    email1: 'Your email address! ',
+    email2: 'Please enter an email address we can use to contact you',
+    phone1: 'Your Phone Number! ',
+    phone2: 'Please enter a phone number we can use to contact you',
+    tellUs1: 'Please Tell Us More! ',
+    tellUs2: 'Why you want to deactive seeds account',
+    tellUs3: 'Why you want to delete seeds account',
+    ok: 'OK',
+    success1: 'Succesfully',
+    success2: 'Your account has been successfully deactive',
+    success3: 'Your account has been successfully delete',
+    error1: 'Oops Sorry!',
+    error2: "We couldn't process your request right now. Try again later."
   }
 };

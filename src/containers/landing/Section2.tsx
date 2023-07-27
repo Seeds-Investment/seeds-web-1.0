@@ -1,4 +1,3 @@
-'use client';
 import earth from '@/assets/landing-page/s2-earth.png';
 import shape from '@/assets/landing-page/s2-shape.png';
 import { getExternalNews } from '@/repository/news.repository';

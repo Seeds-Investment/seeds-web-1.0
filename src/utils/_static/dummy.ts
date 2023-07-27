@@ -1,8 +1,6 @@
 import connectCircle from '@/assets/landing-page/connectCircle.png';
-import event1 from '@/assets/landing-page/event1.png';
-import event2 from '@/assets/landing-page/event2.png';
-import event3 from '@/assets/landing-page/event3.png';
-import event4 from '@/assets/landing-page/event4.png';
+import event1 from '@/assets/landing-page/event11.svg';
+import event2 from '@/assets/landing-page/event12.svg';
 import card1 from '@/assets/landing-page/s2-card-1.png';
 import card2 from '@/assets/landing-page/s2-card-2.png';
 import card3 from '@/assets/landing-page/s2-card-3.png';
@@ -145,14 +143,14 @@ export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
   {
     id: '3',
     name: 'Tournament 3',
-    image: event3,
+    image: event1,
     date: '1 June - 20 June',
     status: 'Paid'
   },
   {
     id: '4',
     name: 'Tournament 4',
-    image: event4,
+    image: event2,
     date: '1 June - 20 June',
     status: 'Paid'
   }

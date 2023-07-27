@@ -37,5 +37,3 @@ next-env.d.ts
 
 package-lock.json
 yarn.lock
-
-/.github/workflows/dev-pipeline.yml

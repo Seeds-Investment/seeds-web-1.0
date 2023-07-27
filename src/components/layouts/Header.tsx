@@ -128,9 +128,7 @@ const Header: React.FC = () => {
               variant="dark"
               label="Join Us"
               containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
-              props={{
-                onClick: _handleRedirectJoinUs
-              }}
+              onClick={() => _handleRedirectJoinUs()}
             />
           )}
         </div>

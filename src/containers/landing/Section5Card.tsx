@@ -17,7 +17,7 @@ export default function Section5Card({
     <div className="max-w-md sm:w-md rounded overflow-hidden shadow-lg mr-5 relative">
       <Image alt={data.title} src={data.photo} className="w-full" />
       <div
-        className="absolute top-2 right-2 bg-seeds-green-2 w-30 p-1 text-xs font-semibold text-seeds-button-green rounded-md
+        className="absolute top-2 right-2 bg-seeds-green-2 w-30 py-1 lg:px-3  text-xs font-semibold text-seeds-button-green rounded-md
                     md:text-sm
                      lg:text-base
                     xl:text-lg"
@@ -29,8 +29,8 @@ export default function Section5Card({
           <span className="lg:ml-2">{`IDR 10.000.000`}</span>
         </div>
       </div>
-      <div className="lg:px-6 lg:py-4 sm:px-1 sm:pt-4 sm:pb-1">
-        <Typography className="font-bold text-base md:text-lg lg:text-xl lg:mb-2">
+      <div className="lg:px-6 lg:py-4 sm:px-1 ml-3 sm:pt-4 sm:pb-1h">
+        <Typography className="font-bold text-base md:text-lg lg:text-xl my-2 lg:mb-2">
           {data.title}
         </Typography>
 

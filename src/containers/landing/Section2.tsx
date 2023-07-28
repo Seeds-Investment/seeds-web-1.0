@@ -78,6 +78,7 @@ export default function Section2(): React.ReactElement {
           <Image
             alt="img"
             className="absolute w-[30%] -translate-y-[3rem] translate-x-[8rem]
+                lg:w-[15%] lg:-translate-y-[4rem] lg:translate-x-[30rem]
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
                 sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
             src={earth}

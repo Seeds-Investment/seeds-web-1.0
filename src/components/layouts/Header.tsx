@@ -69,7 +69,7 @@ const Header: React.FC = () => {
             }}
           >
             <span
-              className={`font-poppins sm:text-lg mr-2 text-sm ${
+              className={`font-poppins sm:text-lg mr-2 lg:mr-0 text-sm ${
                 languageCtx.language === 'ID'
                   ? 'sm:font-semibold text-seeds-purple'
                   : 'text-black'
@@ -86,7 +86,7 @@ const Header: React.FC = () => {
           </button>
           <div className="w-px sm:h-6 h-3.5 border border-black" />
           <button
-            className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[6.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100  ${
+            className={`transition-all duration-300 flex sm:justify-evenly pl-2.5 items-center sm:w-[6.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100  ${
               width !== undefined && width <= 375 ? 'space-x-1' : ''
             } ${
               languageCtx.language === 'EN' ? 'border border-seeds-purple' : ''
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
             }}
           >
             <span
-              className={`font-poppins mr-1 sm:text-lg text-sm ${
+              className={`font-poppins lg:mr-1 mr-1 sm:text-lg text-sm ${
                 languageCtx.language === 'EN'
                   ? 'sm:font-semibold text-seeds-purple'
                   : 'text-black'

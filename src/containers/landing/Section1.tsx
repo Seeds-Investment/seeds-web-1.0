@@ -26,7 +26,7 @@ export default function Section1(): React.ReactElement {
   }, []);
 
   return (
-    <div className=" min-w-full min-h-screen cursor-default">
+    <div className="min-w-full h-auto cursor-default">
       <div className="flex flex-col md:flex-row">
         <div className="w-full">
           <div className="absolute z-40 top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
@@ -87,7 +87,7 @@ export default function Section1(): React.ReactElement {
 
         <Image
           alt="img"
-          className="absolute -z-10 right-4 bottom-0 top-0 overflow-hidden"
+          className="absolute -z-10 right-0 bottom-0 top-0 overflow-hidden md:w-[33%] lg:w-[33%] xl:w-[33%] w-[0%]"
           src={vector}
         />
       </div>

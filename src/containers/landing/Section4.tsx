@@ -34,14 +34,14 @@ export default function Section4(): React.ReactElement {
   console.log(list);
 
   return (
-    <div className="mb-10 p-3 min-w-full cursor-default md:p-8">
-      <Typography className="text-xl font-semibold mb-2 lg:text-5xl text-[#222222]">
+    <div className="lg:mt-10 mb-10 p-3 min-w-full cursor-default md:p-8">
+      <Typography className="text-2xl font-bold mb-2 lg:text-5xl text-[#222222]">
         Connect
       </Typography>
       <CCard className="bg-white overflow-hidden h-[380px] md:h-[410px] lg:h-[480px] shadow-lg p-2 rounded-xl lg:p-5">
         <div className="flex flex-row">
           <div className="w-1/2">
-            <div className="text-xs font-semibold tracking-wider mb-3 md:text-2xl lg:text-3xl z-30">
+            <div className="text-sm font-bold  mb-3 md:text-2xl lg:text-3xl z-30">
               <span className="mr-1 text-[#3AC4A0]">
                 {t('landing.section4.text1')}
               </span>
@@ -68,10 +68,10 @@ export default function Section4(): React.ReactElement {
             </Button>
 
             <div>
-              <Typography className="text-[8px] mb-2 font-semibold tracking-wide z-40 md:text-xs lg:text-lg">
+              <Typography className="text-[10px] mb-2 font-bold z-40 md:text-[12px] lg:text-lg">
                 {t('landing.section4.text5')}
               </Typography>
-              <div className=" text-xs tracking-wide z-40">
+              <div className="md:w-[130%] lg:w-[70%] text-xs tracking-wide z-40">
                 <Section4Slider list={circleTrendingLandingPage} />
               </div>
             </div>

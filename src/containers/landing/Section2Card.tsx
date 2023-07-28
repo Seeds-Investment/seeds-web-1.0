@@ -3,6 +3,7 @@ import type { IEventHighlightLandingPage } from '@/utils/interfaces/components.i
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+
 export default function Section2Card({
   data
 }: {
@@ -11,7 +12,7 @@ export default function Section2Card({
   console.log(data, '>>>');
 
   return (
-    <div className="max-w-sm rounded overflow-hidden mr-5">
+    <div className="relative max-w-sm rounded overflow-hidden mr-5">
       <Link href={'/temporary'}>
         <Image
           alt={data.name}
@@ -21,16 +22,11 @@ export default function Section2Card({
           height={500}
         />
       </Link>
-      <div
-        className="px-5 py-1 text-xs font-semibold right-2 translate-x-[9rem] -translate-y-[8.5rem] bg-white w-fit text-seeds-button-green rounded-2xl
-                    md:translate-x-[13rem] md:-translate-y-[11.5rem]
-                    lg:translate-x-[8rem] lg:-translate-y-[8rem]
-                    xl:translate-x-[13rem] xl:-translate-y-[12rem] xl:text-lg"
-      >
+      <div className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold bg-white text-seeds-button-green rounded-full">
         {data.status}
       </div>
 
-      <div className="">
+      <div className="mt-8">
         <CCard className="-translate-y-[5rem] bg-transparent rounded-xl py-2 backdrop-blur-lg">
           <div className="items-center w-full text-white ml-5">
             <Typography className="font-semibold">{data.name}</Typography>

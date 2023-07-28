@@ -62,9 +62,9 @@ export default function Section2(): React.ReactElement {
   }, []);
 
   return (
-    <div className="min-w-full min-h-screen cursor-default mt-16 md:mt-8">
+    <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">
-        <div className="flex flex-row w-full items-center justify-center mb-5 md:mb-8 lg:mb-11">
+        <div className="flex flex-row w-full items-center justify-center mb-10 md:mb-8 lg:mb-20 sm:mb-20">
           <span className="text-2xl font-bold text-white text-shadow-purple opacity-90 mr-2 md:text-5xl lg:text-7xl">
             {t('landing.section2.text1')}
           </span>
@@ -78,13 +78,15 @@ export default function Section2(): React.ReactElement {
           <Image
             alt="img"
             className="absolute w-[30%] -translate-y-[3rem] translate-x-[8rem]
-                md:w-[20%] md:-translate-y-[6rem] md:translate-x-[20rem]"
+                lg:w-[15%] lg:-translate-y-[4rem] lg:translate-x-[30rem]
+                md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
+                sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
             src={earth}
           />
         </div>
 
         <div className="w-full flex flex-col items-center justify-center">
-          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-[#7555DA] md:font-bold md:text-3xl lg:text-4xl lg:mb-5">
+          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-[#7555DA] md:font-bold md:text-3xl lg:text-6xl lg:mb-5">
             {t('landing.section2.text2')}
           </div>
           <Typography className="opacity-70 text-xs font-semibold tracking-wide mb-2 text-[#AC75FF] md:text-xl lg:text-3xl lg:mb-5">
@@ -104,9 +106,9 @@ export default function Section2(): React.ReactElement {
 
           <Image
             alt="img"
-            className="absolute h-[200px] w-[100%] translate-y-[0rem] -z-30
-                md:h-[220px] md:w-[90%] md:translate-y-[0rem] lg:h-[330px] lg:w-full
-                xl:w-[70%]"
+            className="absolute h-[200px] w-[90%] translate-y-[0rem] -z-30
+                md:h-[220px] md:w-[90%] md:translate-y-[0rem] lg:h-[330px] lg:w-[90%]
+                xl:w-[90%]"
             src={shape}
           />
         </div>

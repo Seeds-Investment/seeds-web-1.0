@@ -33,6 +33,8 @@ const ProfilePage = (): JSX.Element => {
     const fetchUserProfile = async (): Promise<void> => {
       try {
         const userInfo = await getUserInfo();
+        console.log(userInfo, 'ASFSAF');
+
         setUserData(userInfo);
       } catch (error: any) {
         console.error('Error fetching user profile:', error.message);
@@ -42,6 +44,8 @@ const ProfilePage = (): JSX.Element => {
     const fetchExpData = async (): Promise<void> => {
       try {
         const expData = await getExpData();
+        console.log(expData, 'HASLAS');
+
         setExpData(expData);
       } catch (error: any) {
         console.error('Error fetching exp data:', error.message);
@@ -354,7 +358,7 @@ const ProfilePage = (): JSX.Element => {
       </div>
       <div>
         <CCard className="p-5 md:mt-5  md:rounded-lg  border-none rounded-none mb-5 md:mx-7 lg:mx-12">
-          <UnderLineTab />
+          <UnderLineTab userData={userData} />
         </CCard>
       </div>
     </PageGradient>

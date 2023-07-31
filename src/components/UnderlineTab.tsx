@@ -29,20 +29,24 @@ interface DataItem {
   content: React.ReactNode;
 }
 
-const UnderLineTab = (): JSX.Element => {
+interface Params {
+  userData: any;
+}
+
+const UnderLineTab = ({ userData }: Params): JSX.Element => {
   const [activeTab, setActiveTab] = useState<string>('post');
 
   const data: DataItem[] = [
     {
       label: 'Post',
       value: 'post',
-      content: (
+      content: userData.posts > 0 && (
         <div className="w-full">
           <div className="flex gap-4 md:gap-8">
             <div className="hidden md:flex">
               <div>
                 <Image
-                  src={''}
+                  src={userData.avatar}
                   alt="AVATAR"
                   width={60}
                   height={60}
@@ -56,7 +60,7 @@ const UnderLineTab = (): JSX.Element => {
                   <div className="md:hidden flex">
                     <div>
                       <Image
-                        src={''}
+                        src={userData.avatar}
                         alt="AVATAR"
                         width={60}
                         height={60}

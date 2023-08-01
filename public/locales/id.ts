@@ -631,6 +631,15 @@ export default {
       }
     }
   },
+  PlayPaymentStatus: {
+    successTitle: 'Sukses',
+    successSubtitle: 'Transaksi berhasil diproses',
+    paymentMethod: 'Payment Method',
+    adminFeeLabel: 'Admin',
+    totalLabel: 'Total Amount',
+    transactionIdLabel: 'Transaction ID',
+    button: 'Close'
+  },
   temporary: {
     welcome: {
       1: 'Selamat Datang!',

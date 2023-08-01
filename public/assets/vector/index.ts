@@ -53,6 +53,7 @@ export { default as SilverMedalIcon } from 'public/assets/vector/silver-medal-1.
 export { default as SosmedGuide } from 'public/assets/vector/sosmedguide.png';
 export { default as SproutIcon } from 'public/assets/vector/sprout-icon.svg';
 export { default as StarIcon } from 'public/assets/vector/star.svg';
+export { default as Success } from 'public/assets/vector/success.svg';
 export { default as TreeIcon } from 'public/assets/vector/tree-icon.svg';
 export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';

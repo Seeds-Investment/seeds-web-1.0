@@ -703,6 +703,16 @@ export default {
       }
     }
   },
+  PlayPaymentStatus: {
+    successTitle: 'Successful',
+    successSubtitle: 'You have successfully purchased a ticket. Enjoy playing!',
+    paymentMethod: 'Payment Method',
+    admissionFeeLabel: 'Play Membership',
+    adminFeeLabel: 'Admin',
+    totalLabel: 'Total Amount',
+    transactionIdLabel: 'Transaction ID',
+    button: 'Close'
+  },
   temporary: {
     welcome: {
       1: 'Welcome to Seeds!',

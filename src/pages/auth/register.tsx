@@ -1,3 +1,4 @@
+import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import ChooseAvatarPage from '@/containers/register/ChooseAvatarPage';
 import ConfigureSeedsUserPage from '@/containers/register/ConfigureSeedsUserPage';
@@ -37,66 +38,69 @@ const RegisterPage = (): JSX.Element => {
   });
 
   return (
-    <div className="md:px-8 px-4 mt-2 md:mt-4">
-      {(() => {
-        switch (page) {
-          case 0:
-            return (
-              <PersonalInfoPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-          case 1:
-            return (
-              <ConfigureSeedsUserPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-          case 2:
-            return (
-              <ValidateOTPPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-          case 3:
-            return (
-              <CreatePasswordPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-          case 4:
-            return (
-              <ChooseAvatarPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-          case 5:
-            return (
-              <SuccessRegisterPage
-                page={page}
-                setPage={setPage}
-                formdata={formdata}
-                setFormdata={setFormdata}
-              />
-            );
-        }
-      })()}
-    </div>
+    <>
+      <GoogleAnalyticsScript />
+      <div className="md:px-8 px-4 mt-2 md:mt-4">
+        {(() => {
+          switch (page) {
+            case 0:
+              return (
+                <PersonalInfoPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+            case 1:
+              return (
+                <ConfigureSeedsUserPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+            case 2:
+              return (
+                <ValidateOTPPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+            case 3:
+              return (
+                <CreatePasswordPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+            case 4:
+              return (
+                <ChooseAvatarPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+            case 5:
+              return (
+                <SuccessRegisterPage
+                  page={page}
+                  setPage={setPage}
+                  formdata={formdata}
+                  setFormdata={setFormdata}
+                />
+              );
+          }
+        })()}
+      </div>
+    </>
   );
 };
 

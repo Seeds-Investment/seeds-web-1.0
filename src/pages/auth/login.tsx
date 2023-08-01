@@ -1,8 +1,9 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 'use client';
 import CButton from '@/components/CButton';
-import AuthLayout from '@/components/layouts/AuthLayout';
+import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
+import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
@@ -161,6 +162,8 @@ const LoginPage = (): JSX.Element => {
   ];
 
   return (
+    <>
+    <GoogleAnalyticsScript/>
     <div className="px-4">
       <form>
         <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
@@ -279,6 +282,7 @@ const LoginPage = (): JSX.Element => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

@@ -30,10 +30,30 @@ const PaymentStatus = (): JSX.Element => {
     </div>
   );
 
+  const renderDetails = (): JSX.Element => (
+    <div className='flex justify-between'>
+      <Typography className="text-left text-xs font-normal text-neutral-soft text-[#BDBDBD]">
+        12 Okt 2022
+      </Typography>
+      <Typography className="text-left text-xs font-normal text-neutral-soft text-[#BDBDBD]">
+        •
+      </Typography>
+      <Typography className="text-left text-xs font-normal text-neutral-soft text-[#BDBDBD]">
+        14:07:00 WIB
+      </Typography>
+      <Typography className="text-left text-xs font-normal text-neutral-soft text-[#BDBDBD]">
+        •
+      </Typography>
+      <Typography className="text-left text-xs font-normal text-neutral-soft text-[#BDBDBD]">
+        No.Ref 702223456789
+      </Typography>
+    </div>
+  );
+
   const renderContent = (): JSX.Element => (
-    <div className="relative md:bg-[url('/assets/vector/purple-ellipse.svg')] bg-[white] bg-opacity-30 bg-no-repeat bg-left-top w-full h-full flex flex-col items-center pt-8 md:p-8 rounded-xl">
-      <div className="bg-[url('/assets/payment-status/banner.svg')] bg-no-repeat w-full max-w-[600px] rounded-xl items-center justify-center flex-column p-4">
-        <div className='relative flex justify-center items-center'>
+    <div className="relative md:bg-[url('/assets/vector/purple-ellipse.svg')] bg-[white] bg-opacity-30 bg-no-repeat bg-left-top w-full h-full flex flex-col items-center md:p-8 rounded-xl">
+      <div className="bg-[url('/assets/payment-status/banner.svg')] bg-no-repeat w-full max-w-[600px] rounded-xl items-center justify-center flex-column p-8">
+        <div className='relative flex justify-center items-center mb-2'>
           {renderStatusIcon()}
         </div>
         <Typography className="w-full max-w-[600px] text-left text-center text-white text-xl font-semibold mb-2">
@@ -43,45 +63,50 @@ const PaymentStatus = (): JSX.Element => {
           {t('PlayPaymentStatus.successSubtitle')}
         </Typography>
         <div className='relative flex justify-center items-center'>
-          <div className='flex-col justify-center items-center w-full max-w-[343px]'>
-            <div className='relative bg-white mt-8 p-4 rounded-t-xl w-full items-center justify-center flex-column bg-[white] border mb-4'>
-              <Typography className="w-full max-w-[600px] text-left text-center text-xs font-semibold mb-2 text-neutral-soft">
+          <div className='flex-col justify-center items-center w-full max-w-[370px]'>
+            <div className='relative bg-white mt-8 px-4 pt-8 rounded-t-xl w-full items-center justify-center flex-column bg-[white] border mb-4'>
+              <Typography className="w-full max-w-[600px] text-left text-center text-xs font-semibold text-neutral-soft">
                 {t('PlayPaymentStatus.paymentMethod')}
+              </Typography>
+              <Typography className="w-full max-w-[600px] text-left text-center text-xs font-semibold text=[#262626]">
+                Johannes Gavin (1234XXX)
               </Typography>
               <Image
                 src={paymentLogo}
                 width={200}
                 height={200}
-                className="h-[20px] w-full object-contain"
+                className="h-[20px] w-full object-contain mt-2"
                 alt={'logo'}
               />
               <div className="border-b border-dashed border-b-2 my-5 pt-5">
                 <div className="absolute rounded-full w-5 h-5 bg-[#3AC4A0] -mt-2 -left-2"></div>
-                <div className="absolute rounded-full w-5 h-5 bg-[#3AC4A0] -mt-2 -right-2"></div>
+                <div className="absolute rounded-full w-5 h-5 bg-[#38BE9B] -mt-2 -right-2"></div>
               </div>
               <div className="px-3">
                 <InlineText
                     label={t(`PlayPaymentStatus.admissionFeeLabel`)}
                     value={`IDR ${admissionFee}`}
-                    className="mb-2"
+                    className="mb-4"
                   />
                   <InlineText
                     label={t(`PlayPaymentStatus.adminFeeLabel`)}
                     value={`IDR ${adminFee}`}
-                    className="mb-2"
+                    className="mb-4"
                   />
                   <hr className="h-px my-4 bg-[#BDBDBD] border-0 dark:bg-gray-700"></hr>
                   <InlineText
                     label={t(`PlayPaymentStatus.totalLabel`)}
                     value={`IDR ${admissionFee + adminFee}`}
-                    className="mb-2"
+                    className="mb-4"
                   />
                   <InlineText
                     label={t(`PlayPaymentStatus.transactionIdLabel`)}
                     value={transactionId}
                     className="mb-2"
                   />
+                  {renderDetails()}
                 </div>
+                <div className="border-b border-dashed border-b-2 my-2"/>
             </div>
             <SubmitButton
               fullWidth

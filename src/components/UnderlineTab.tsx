@@ -40,7 +40,7 @@ const UnderLineTab = ({ userData }: Params): JSX.Element => {
     {
       label: 'Post',
       value: 'post',
-      content: userData.posts > 0 && (
+      content: userData?.posts > 0 && (
         <div className="w-full">
           <div className="flex gap-4 md:gap-8">
             <div className="hidden md:flex">

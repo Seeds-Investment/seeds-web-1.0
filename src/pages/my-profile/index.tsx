@@ -130,6 +130,10 @@ const ProfilePage = (): JSX.Element => {
     return router.push('/my-profile/referalCode');
   };
 
+  const _handleEditProfile = (): any => {
+    return router.push('/edit-profile');
+  };
+
   return (
     <PageGradient defaultGradient className="w-full">
       <div className="flex justify-center">
@@ -341,7 +345,10 @@ const ProfilePage = (): JSX.Element => {
                   />
                 </div>
               </div>
-              <CButton className="bg-white outline outline-black text-black rounded-full text-xs">
+              <CButton
+                onClick={_handleEditProfile}
+                className="bg-white outline outline-black text-black rounded-full text-xs"
+              >
                 Edit Profile
               </CButton>
             </div>

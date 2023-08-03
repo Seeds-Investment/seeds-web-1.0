@@ -20,3 +20,34 @@ export const getUserInfo = async (): Promise<any> => {
     }
   });
 };
+
+interface EditForm {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+}
+
+export const editUserInfo = async (formData: EditForm): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    let response = await profileService.patch('', formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

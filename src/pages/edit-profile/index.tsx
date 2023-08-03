@@ -37,7 +37,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
 
   const width = useWindowInnerWidth();
 
-  // const [userData, setUserData] = useState<Record<string, any>>();
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -54,7 +53,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     const fetchUserProfile = async (): Promise<void> => {
       try {
         const userInfo = await getUserInfo();
-        // setUserData(userInfo);
         setForm({
           name: userInfo.name,
           seedsTag: userInfo.seedsTag,

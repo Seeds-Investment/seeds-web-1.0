@@ -33,7 +33,6 @@ const ProfilePage = (): JSX.Element => {
     const fetchUserProfile = async (): Promise<void> => {
       try {
         const userInfo = await getUserInfo();
-        console.log(userInfo, 'ASFSAF');
 
         setUserData(userInfo);
       } catch (error: any) {
@@ -44,7 +43,6 @@ const ProfilePage = (): JSX.Element => {
     const fetchExpData = async (): Promise<void> => {
       try {
         const expData = await getExpData();
-        console.log(expData, 'HASLAS');
 
         setExpData(expData);
       } catch (error: any) {

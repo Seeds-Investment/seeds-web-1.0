@@ -33,6 +33,7 @@ const ProfilePage = (): JSX.Element => {
     const fetchUserProfile = async (): Promise<void> => {
       try {
         const userInfo = await getUserInfo();
+
         setUserData(userInfo);
       } catch (error: any) {
         console.error('Error fetching user profile:', error.message);
@@ -42,6 +43,7 @@ const ProfilePage = (): JSX.Element => {
     const fetchExpData = async (): Promise<void> => {
       try {
         const expData = await getExpData();
+
         setExpData(expData);
       } catch (error: any) {
         console.error('Error fetching exp data:', error.message);
@@ -124,6 +126,10 @@ const ProfilePage = (): JSX.Element => {
 
   const _handleReferalCode = (): any => {
     return router.push('/my-profile/referalCode');
+  };
+
+  const _handleEditProfile = (): any => {
+    return router.push('/edit-profile');
   };
 
   return (
@@ -337,7 +343,10 @@ const ProfilePage = (): JSX.Element => {
                   />
                 </div>
               </div>
-              <CButton className="bg-white outline outline-black text-black rounded-full text-xs">
+              <CButton
+                onClick={_handleEditProfile}
+                className="bg-white outline outline-black text-black rounded-full text-xs"
+              >
                 Edit Profile
               </CButton>
             </div>
@@ -354,7 +363,7 @@ const ProfilePage = (): JSX.Element => {
       </div>
       <div>
         <CCard className="p-5 md:mt-5  md:rounded-lg  border-none rounded-none mb-5 md:mx-7 lg:mx-12">
-          <UnderLineTab />
+          <UnderLineTab userData={userData} />
         </CCard>
       </div>
     </PageGradient>

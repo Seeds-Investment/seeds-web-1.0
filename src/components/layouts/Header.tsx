@@ -116,9 +116,6 @@ const Header: React.FC = () => {
                 Hi, {userInfo.name}
               </div>
               <Image
-                onClick={() => {
-                  router.push('/my-profile');
-                }}
                 alt="image"
                 width={17}
                 height={17}

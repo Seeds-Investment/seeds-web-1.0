@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { withRouter, type NextRouter } from 'next/router';
-import { FormEventHandler, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -87,22 +87,26 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     }));
   };
 
-  const submitForm: FormEventHandler<HTMLFormElement> = async e => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>): void => {
     try {
       e.preventDefault();
 
-      await editUserInfo(form);
-
-      setForm({
-        name: '',
-        seedsTag: '',
-        email: '',
-        avatar: '',
-        bio: '',
-        birthDate: '',
-        phone: ''
-      });
-      router.back();
+      editUserInfo(form)
+        .then(() => {
+          setForm({
+            name: '',
+            seedsTag: '',
+            email: '',
+            avatar: '',
+            bio: '',
+            birthDate: '',
+            phone: ''
+          });
+          router.back();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -112,21 +116,19 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     // isValid: nameIsValid,
     isError: nameIsError,
     inputBlurHandler: nameBlurHandler
-  } = useInput(
-    (payload: string) => payload.trim().length !== 0,
-    formatAlphabeticWithSpaceHandler
-  );
+  } = useInput((payload: string) => {
+    return payload.trim().length !== 0;
+  }, formatAlphabeticWithSpaceHandler);
 
   const {
     // isValid: tagIsValid,
     isError: tagIsError,
     inputBlurHandler: tagBlurHandler
-  } = useInput(
-    (payload: string) => payload.trim().length !== 0,
-    formatSeedsTagHandler
-  );
+  } = useInput((payload: string) => {
+    return payload.trim().length !== 0;
+  }, formatSeedsTagHandler);
 
-  function formatDate(inputDateString: any) {
+  function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
     const day = date.getUTCDate().toString().padStart(2, '0');
     const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
@@ -218,7 +220,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               errorMessage={t('errorMessage.requiredName')}
               props={{
                 value: form?.name,
-                onChange: (e: any) => handleOnChange('name', e.target.value),
+                onChange: (e: any) => {
+                  handleOnChange('name', e.target.value);
+                },
                 onBlur: nameBlurHandler,
                 maxLength: 255
               }}
@@ -238,8 +242,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               errorMessage={t('errorMessage.requiredSeedsTag')}
               props={{
                 value: form?.seedsTag,
-                onChange: (e: any) =>
-                  handleOnChange('seedsTag', e.target.value),
+                onChange: (e: any) => {
+                  handleOnChange('seedsTag', e.target.value);
+                },
                 onBlur: tagBlurHandler,
                 maxLength: 16
               }}
@@ -259,8 +264,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               props={{
                 readOnly: false,
                 value: formatDate(form?.birthDate),
-                onChange: (e: any) =>
-                  handleOnChange('birthDate', e.target.value)
+                onChange: (e: any) => {
+                  handleOnChange('birthDate', e.target.value);
+                }
               }}
             />
             <TextArea
@@ -280,7 +286,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               maxLength={50}
               props={{
                 rows: 1,
-                onChange: (e: any) => handleOnChange('bio', e.target.value)
+                onChange: (e: any) => {
+                  handleOnChange('bio', e.target.value);
+                }
               }}
             />
             <Input

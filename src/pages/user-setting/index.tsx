@@ -33,7 +33,7 @@ const UserSetting: React.FC = () => {
 
   const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
-  } px-6`;
+  } px-6 bg-white`;
   const [userData, setUserData] = useState<Record<string, any>>();
 
   useEffect(() => {

@@ -27,7 +27,7 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   style,
   onClick
 }) => {
-  const defaultButtonClasses = `z-10 group flex items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 bg-white ${extraClasses}`;
+  const defaultButtonClasses = `z-10 group flex items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 rounded-md ${extraClasses}`;
 
   return (
     <button

@@ -62,7 +62,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+        hostname: 'dev-assets.seeds.finance',
         port: '',
         pathname: '/**'
       },

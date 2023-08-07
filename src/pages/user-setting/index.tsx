@@ -5,9 +5,9 @@ import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import router from 'next/router';
-import { DummyAvatar } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
   BronzeMedalIcon,
@@ -21,7 +21,7 @@ import {
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();
@@ -33,7 +33,25 @@ const UserSetting: React.FC = () => {
 
   const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
-  } px-6`;
+  } px-6 bg-white`;
+  const [userData, setUserData] = useState<Record<string, any>>();
+
+  useEffect(() => {
+    const fetchUserProfile = async (): Promise<void> => {
+      try {
+        const userInfo = await getUserInfo();
+        console.log(userInfo, 'ASFSAF');
+
+        setUserData(userInfo);
+      } catch (error: any) {
+        console.error('Error fetching user profile:', error.message);
+      }
+    };
+
+    Promise.all([fetchUserProfile()])
+      .then()
+      .catch(() => {});
+  }, []);
 
   const [selectedMedal, setSelectedMedal] = useState<string>('gold');
   const menus = [
@@ -167,7 +185,9 @@ const UserSetting: React.FC = () => {
             >
               <Image
                 alt="avatar"
-                src={DummyAvatar}
+                src={userData?.avatar}
+                width={100}
+                height={100}
                 className="w-full h-full object-center object-cover"
               />
             </div>
@@ -175,7 +195,7 @@ const UserSetting: React.FC = () => {
             {/* -----User Data----- */}
             <div className="flex items-center gap-2">
               <h6 className="text-lg font-montserrat font-semibold text-neutral-500">
-                Prabu Firgantoro
+                {userData?.name}
               </h6>
               <Image
                 src={
@@ -206,10 +226,10 @@ const UserSetting: React.FC = () => {
               )}
             </div>
             <span className="mb-1 font-poppins text-xs text-neutral-500">
-              @prabufirgan
+              @{userData?.seedsTag}
             </span>
             <span className="mb-2 font-poppins text-xs text-neutral-500">
-              +62815489799
+              +{userData?.phoneNumber}
             </span>
             <LevelButton type="Sprout" />
           </div>

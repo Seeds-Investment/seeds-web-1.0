@@ -1,72 +1,55 @@
-import CardGradient from '@/components/ui/card/CardGradient';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import Image from 'next/image';
+import router from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
+import FaqSubmenu from '..';
 
 const Disclosure: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
+  const cancelHandler = async (): Promise<void> => {
+    try {
+      await router.push('/faq-submenu');
+    } catch (error) {
+      console.error('Error navigating to FAQ submenu:', error);
+    }
+  };
   return (
-    <PageGradient
-      defaultGradient
-      className={`z-0 sm:relative sm:pb-20  overflow-hidden flex flex-col items-center w-full bottom-0  ${
-        width !== undefined && width < 370
-          ? 'w-[90%]'
-          : width !== undefined && width < 500
-          ? 'w-[90%]'
-          : width !== undefined && width < 400
-          ? 'w-[40%]'
-          : width !== undefined && width > 600
-          ? 'w-[600px]'
-          : ''
-      } ${
-        width !== undefined && width < 370
-          ? 'h-[50rem]'
-          : width !== undefined && width < 400
-          ? 'h-[50rem]'
-          : width !== undefined && width < 415
-          ? 'h-[48rem]'
-          : ''
-      } bg-white`}
-    >
-      <CardGradient
-        defaultGradient
-        className={`z-1 relative overflow-hidden flex flex-col justify-center items-center py-4  sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
-          width !== undefined && width < 600
-            ? 'w-full'
-            : width !== undefined && width < 500
-            ? 'w-[90%]'
-            : width !== undefined && width < 400
-            ? 'w-[40%]'
-            : width !== undefined && width > 600
-            ? 'w-[600px]'
-            : ''
-        } bg-white`}
-      >
-        {/* Closure section */}
+    <FaqSubmenu>
+      {/* Closure section */}
+      <div className="w-full bg-white rounded-2xl flex justify-center  ">
         <div
-          className={`z-2 lg:px-[10px] min-h-[calc(100vh-100px)] relative justify-center text-justify bg-opacity-100  border-white py-4 border-4 ${
+          className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-hidden p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
             width !== undefined && width < 600
-              ? 'w-[95%]'
+              ? 'w-full overflow-x-auto'
               : width !== undefined && width < 500
-              ? 'w-[90%]'
+              ? 'w-[99%] overflow-x-visible'
               : width !== undefined && width < 400
-              ? 'w-[40%]'
-              : width !== undefined && width > 600
-              ? 'w-[600px]'
+              ? 'w-[99%] overflow-x-visible'
               : ''
-          } ${
+          }   ${
             width !== undefined && width < 370
-              ? 'h-[50rem]'
+              ? 'h-full'
               : width !== undefined && width < 400
               ? 'h-[50rem]'
               : width !== undefined && width < 415
               ? 'h-[48rem]'
-              : ''
+              : 'h-full'
           } bg-white`}
         >
-          <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">
-            {t('faq.disclosure.title')}
+          <div className="w-full bg-white rounded-2xl flex flex-col justify-center items-center">
+            <button
+              onClick={cancelHandler}
+              className={`w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:bg-gray-200 absolute left-4 top-4 ${
+                width !== undefined && width > 640 ? 'hidden' : ''
+              }`}
+            >
+              <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+            </button>
+            <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">
+              {t('faq.disclosure.title')}
+            </div>
           </div>
 
           <br />
@@ -79,8 +62,8 @@ const Disclosure: React.FC = () => {
             {t('faq.disclosure.overview')}
           </p>
         </div>
-      </CardGradient>
-    </PageGradient>
+      </div>
+    </FaqSubmenu>
   );
 };
 

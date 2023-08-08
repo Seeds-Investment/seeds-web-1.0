@@ -118,6 +118,16 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         isMenuActive(menu.altStartAdornment)
       );
       setActiveMenu(currentMenu?.altStartAdornment ?? null);
+
+      if (
+        currentRoute === '/faq-submenu' &&
+        width !== undefined &&
+        width >= 640
+      ) {
+        router.push('/faq-submenu/terms-condition').catch(error => {
+          console.error('Error navigating:', error);
+        });
+      }
     };
 
     handleRouteChange(); // Initial check
@@ -128,7 +138,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [isMenuActive, menus]);
+  }, [isMenuActive, menus, currentRoute, width]);
 
   return (
     <PageGradient defaultGradient className="flex flex-col sm:flex-row">

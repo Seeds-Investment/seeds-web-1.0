@@ -88,7 +88,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'FAQs',
-      url: '/faq-submenu'
+      url: '/faq'
     }
   ],
   'Contact Us': [

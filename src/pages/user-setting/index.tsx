@@ -6,6 +6,7 @@ import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
+import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import router from 'next/router';
 import {
@@ -21,10 +22,11 @@ import {
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();
+  const languageCtx = useContext(LanguageContext);
 
   const [chooseBadgeModalShown, setChooseBadgeModalShown] =
     useState<boolean>(false);
@@ -66,28 +68,28 @@ const UserSetting: React.FC = () => {
           console.error('Error navigating to Edit Profile:', error);
         }
       },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
         width !== undefined && width < 370 ? 'h-9' : ''
-      }`
+      } bg-white`
     },
     {
-      label: 'Language',
+      label: languageCtx.language === 'EN' ? 'Language' : 'Bahasa',
       altStartAdornment: 'language',
       startAdornment: GlobalIcon,
       onClick: () => {},
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
         width !== undefined && width < 370 ? 'h-9' : ''
-      }`
+      } bg-white`
     },
     {
-      label: 'Block List',
+      label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
       onClick: () => {},
       extraClasses: submenuClasses
     },
     {
-      label: 'Legal',
+      label: languageCtx.language === 'EN' ? 'Legal' : 'Hukum',
       altStartAdornment: 'legal',
       startAdornment: FileTextIcon,
       onClick: async () => {
@@ -100,7 +102,7 @@ const UserSetting: React.FC = () => {
       extraClasses: submenuClasses
     },
     {
-      label: 'FAQ & Help',
+      label: languageCtx.language === 'EN' ? 'FAQ & Help' : 'FAQ & Bantuan',
       altStartAdornment: 'faq & help',
       startAdornment: HelpCircleIcon,
       onClick: async () => {
@@ -113,14 +115,14 @@ const UserSetting: React.FC = () => {
       extraClasses: submenuClasses
     },
     {
-      label: 'Rate Apps',
+      label: languageCtx.language === 'EN' ? 'Rate Apps' : 'Nilai Aplikasi',
       altStartAdornment: 'rate apps',
       startAdornment: StarIcon,
       onClick: () => {},
       extraClasses: submenuClasses
     },
     {
-      label: 'Log Out',
+      label: languageCtx.language === 'EN' ? 'Log Out' : 'Keluar',
       altStartAdornment: 'log out',
       startAdornment: LogOutIcon,
       onClick: () => {
@@ -167,7 +169,7 @@ const UserSetting: React.FC = () => {
       >
         {/* -----Title----- */}
         <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-          Settings
+          {languageCtx.language === 'EN' ? 'Settings' : 'Pengaturan'}
         </h6>
 
         {/* -----Header----- */}

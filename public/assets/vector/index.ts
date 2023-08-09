@@ -1,9 +1,9 @@
 export { default as ArrowBackwardIcon } from 'public/assets/vector/arrow-backward.svg';
+export { default as ArrowDownCollapse } from 'public/assets/vector/arrow-down-collapse.svg';
 export { default as ArrowLeftBlack } from 'public/assets/vector/arrow-left-black.svg';
 export { default as ArrowLeft } from 'public/assets/vector/arrow-left.svg';
 export { default as ArrowRightCollapseIcon } from 'public/assets/vector/arrow-right-collapse.svg';
 export { default as ArrowRight } from 'public/assets/vector/arrow-right.svg';
-export { default as ArrowDownCollapse } from 'public/assets/vector/arrow-down-collapse.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
@@ -42,6 +42,7 @@ export { default as Pin } from 'public/assets/vector/pin.svg';
 export { default as PrivacyPolicy } from 'public/assets/vector/privacy.png';
 export { default as RateUs } from 'public/assets/vector/rate-us.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';
+export { default as Search } from 'public/assets/vector/search.svg';
 export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';
 export { default as SeedlingIcon } from 'public/assets/vector/seedling-icon.svg';
 export { default as SendOTPEmail } from 'public/assets/vector/send-otp-email.svg';

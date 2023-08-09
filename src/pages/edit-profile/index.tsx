@@ -46,7 +46,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     bio: '',
     birthDate: '',
     phone: '',
-    _pin: ''
+    _pin: '',
+    nameIsEdited: false,
+    tagIsEdited: false
   });
 
   useEffect(() => {
@@ -83,7 +85,8 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
   const handleOnChange = (fieldName: string, value: string): void => {
     setForm((prevForm: any) => ({
       ...prevForm,
-      [fieldName]: value
+      [fieldName]: value,
+      [`${fieldName}IsEdited`]: true
     }));
   };
 
@@ -100,7 +103,9 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
             avatar: '',
             bio: '',
             birthDate: '',
-            phone: ''
+            phone: '',
+            nameIsEdited: false,
+            tagIsEdited: false
           });
           router.back();
         })
@@ -112,21 +117,19 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     }
   };
 
-  const {
-    // isValid: nameIsValid,
-    isError: nameIsError,
-    inputBlurHandler: nameBlurHandler
-  } = useInput((payload: string) => {
-    return payload.trim().length !== 0;
-  }, formatAlphabeticWithSpaceHandler);
+  const { isError: nameIsError, inputBlurHandler: nameBlurHandler } = useInput(
+    (payload: string) => {
+      return form.nameIsEdited === true && payload.trim().length !== 0;
+    },
+    formatAlphabeticWithSpaceHandler
+  );
 
-  const {
-    // isValid: tagIsValid,
-    isError: tagIsError,
-    inputBlurHandler: tagBlurHandler
-  } = useInput((payload: string) => {
-    return payload.trim().length !== 0;
-  }, formatSeedsTagHandler);
+  const { isError: tagIsError, inputBlurHandler: tagBlurHandler } = useInput(
+    (payload: string) => {
+      return form.tagIsEdited === true && payload.trim().length !== 0;
+    },
+    formatSeedsTagHandler
+  );
 
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
@@ -216,7 +219,10 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               extraInputClasses="md:text-base text-sm"
               extraLabelClasses="md:text-base text-sm md:peer-focus:text-base peer-focus:text-sm"
               errorClasses="absolute sm:-bottom-[1.125rem] -bottom-4 font-poppins text-xs text-warning-hard"
-              isError={nameIsError}
+              isError={
+                ((nameIsError ?? false) && (form.name ?? '').trim() === '') ||
+                false
+              }
               errorMessage={t('errorMessage.requiredName')}
               props={{
                 value: form?.name,
@@ -238,7 +244,11 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               extraInputClasses="md:text-base text-sm"
               extraLabelClasses="md:text-base text-sm md:peer-focus:text-base peer-focus:text-sm"
               errorClasses="absolute sm:-bottom-[1.125rem] -bottom-4 font-poppins text-xs text-warning-hard"
-              isError={tagIsError}
+              isError={
+                ((tagIsError ?? false) &&
+                  (form.seedsTag ?? '').trim() === '') ||
+                false
+              }
               errorMessage={t('errorMessage.requiredSeedsTag')}
               props={{
                 value: form?.seedsTag,

@@ -58,11 +58,17 @@ const nextConfig = {
     locales: ['en', 'es']
   },
   images: {
-    domains: ['dev-assets.seeds.finance'],
+    domains: ['dev-assets.seeds.finance', 'assets.seeds.finance'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'dev-assets.seeds.finance',
+        port: '',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.seeds.finance',
         port: '',
         pathname: '/**'
       }

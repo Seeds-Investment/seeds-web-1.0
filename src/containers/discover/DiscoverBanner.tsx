@@ -20,26 +20,26 @@ export default function DiscoverBanner(): React.ReactElement {
           : ''
       }!bg-white`}
     >
-      <div className="md:bg-white flex items-center sm:rounded-[18px] p-5 space-y-5">
-        <div className="min-w-[350px]">
+      <div className="md:bg-white flex lg:items-center lg:flex-row flex-col sm:rounded-[18px] p-5 space-y-5">
+        <div className="lg:min-w-[350px]">
           <h4 className="md:text-2xl text-lg font-bold">Discover</h4>
           <p className="text-[#7C7C7C]">Explore everything and stay updated!</p>
         </div>
-        <div className="grid grid-cols-3 gap-5 overflow-auto">
+        <div className="lg:grid lg:grid-cols-3 flex gap-3 overflow-auto">
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full lg:w-full min-w-full object-cover"
           />
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full lg:w-full min-w-full object-cover"
           />
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full lg:w-full min-w-full object-cover"
           />
         </div>
       </div>

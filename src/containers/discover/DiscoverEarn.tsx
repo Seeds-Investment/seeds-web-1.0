@@ -69,7 +69,7 @@ export default function DiscoverEarn(): React.ReactElement {
           </p>
         </div>
         <div className="flex items-center md:gap-10 gap-0">
-          <div className="p-7 text-center font-bold text-lg space-y-3">
+          <div className="md:p-7 px-4 text-center font-bold text-lg space-y-1">
             <Image src={plants} alt="plants" width={70} />
             <p>Sprout</p>
           </div>

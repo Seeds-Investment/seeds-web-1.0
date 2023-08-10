@@ -27,21 +27,21 @@ export default function DiscoverMerchant(): React.ReactElement {
             Enjoy a variety of special promotions just for you!
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-8 ">
+        <div className="grid md:grid-cols-3 grid-cols-2 gap-3 md:grid-rows-1 grid-rows-2 md:grid-flow-row grid-flow-col ">
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full rounded-lg md:row-span-1 row-span-2 w-full object-cover"
           />
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full rounded-lg w-full object-cover"
           />
           <Image
             src={img}
             alt="image 1"
-            className="h-full w-full object-cover"
+            className="h-full rounded-lg w-full object-cover"
           />
         </div>
       </div>

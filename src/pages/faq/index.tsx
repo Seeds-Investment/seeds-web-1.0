@@ -26,14 +26,6 @@ export default function FAQ(): React.ReactElement {
           : width !== undefined && width > 600
           ? 'w-[600px]'
           : ''
-      } ${
-        width !== undefined && width < 370
-          ? 'h-[50rem]'
-          : width !== undefined && width < 400
-          ? 'h-[50rem]'
-          : width !== undefined && width < 415
-          ? 'h-[48rem]'
-          : ''
       } bg-white`}
     >
       <CardGradient

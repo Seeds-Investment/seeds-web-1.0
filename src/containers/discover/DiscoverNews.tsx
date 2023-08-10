@@ -17,7 +17,7 @@ export default function DiscoverNews(): React.ReactElement {
           : ''
       }!bg-white`}
     >
-      <div className="bg-white sm:rounded-[18px] p-5 space-y-5">
+      <div className="md:bg-white sm:rounded-[18px] p-5 space-y-5">
         <div className="flex justify-between items-center">
           <h4 className="md:text-2xl text-lg font-bold">Berita Terkini</h4>
           <p className="text-seeds-green">See More</p>

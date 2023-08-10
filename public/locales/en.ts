@@ -738,5 +738,27 @@ export default {
     success3: 'Your account has been successfully delete',
     error1: 'Oops Sorry!',
     error2: "We couldn't process your request right now. Try again later."
+  },
+  aboutUs: {
+    title1: 'About Us',
+    text1:
+      'Our dream is to help [people/millennials and Gen Z] by creating an investment experience with an active community and access to multiple [instruments/assets] on one platform. Investments are made easier with opportunities for learning, discussion, and full transparency between users.',
+    text2:
+      'Because seeds believe that everyone has the same opportunity to invest regardless of background.',
+    text3: 'Seeds, Investing, Together',
+    title2: 'People',
+    text4:
+      'We Identify opportunities you uniquely own by analysing your business, your market, and cultural shifts in the world.',
+    title3: 'Our Value',
+    text5:
+      'For us, our values are more then just worlds. They are ways of living, creating, and doing.',
+    title4: 'Seeds Value',
+    title5: 'Trust',
+    text6:
+      'Lorem ipsum dolor sit amet consectetur. Consectectur enim sed scelerisque sed vitae pellentesque feugiat pulfinar. A sodales non.',
+    title6: 'What Makes Us Different',
+    text7: 'More about investing and finance from the pro',
+    text8: 'And chat with like-minded people',
+    text9: 'The tournaments and win cash rewards'
   }
 };

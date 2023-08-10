@@ -12,7 +12,7 @@ export default {
       text3: ' Belajar dan Tumbuh bersama Seeds',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
-      text5: 'Sorotan Acata',
+      text5: 'Sorotan Acara',
       text6: 'Ikuti terus kegiatan seru kami!'
     },
     section3: {
@@ -669,5 +669,27 @@ export default {
     error1: 'Ups Maaf!',
     error2:
       'Kami tidak dapat memproses permintaan Anda saat ini. Coba lagi nanti.'
+  },
+  aboutUs: {
+    title1: 'Tentang Kami',
+    text1:
+      'Impian kami adalah membantu [masyarakat/generasi millenials dan Gen Z] dengan membuat pengalaman investasi dengan aktif berkomunitas dan akses ke multi [instrument/aset] dalam satu platform. Investasi pun jadi lebih mudah dengan kesempatan belajar, diskusi, dan penuh transparansi antar pengguna.',
+    text2:
+      'Karena seeds percaya bahwa setiap orang punya kesempatan sama untuk berinvestasi terlepas dari latar belakangnya.',
+    text3: 'Seeds, Berinvestasi, Bersama',
+    title2: 'People',
+    teks4:
+      'Kami Mengidentifikasi peluang yang Anda miliki secara unik dengan menganalisis bisnis Anda, pasar Anda, dan perubahan budaya di dunia.',
+    title3: 'Nilai Kami',
+    text5:
+      'Bagi kami, nilai-nilai kami lebih dari sekadar dunia. Mereka adalah cara hidup, mencipta, dan melakukan.',
+    title4: 'Nilai Seeds',
+    title5: 'Kepercayaan',
+    teks6:
+      'Lorem ipsum dolor sit amet conectetur. Consectur enim sed scelerisque sed vitae pelentesque feugiat pulfinar. A sodales non.',
+    title6: 'Yang Membuat Kami Berbeda',
+    text7: 'Selengkapnya tentang investasi dan keuangan dari para profesional',
+    text8: 'Dan mengobrollah dengan orang-orang yang berpikiran sama',
+    text9: 'Turnamen dan menangkan hadiah uang tunai'
   }
 };

@@ -1,8 +1,9 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 'use client';
 import CButton from '@/components/CButton';
-import AuthLayout from '@/components/layouts/AuthLayout';
+import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
+import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
@@ -161,124 +162,130 @@ const LoginPage = (): JSX.Element => {
   ];
 
   return (
-    <div className="px-4">
-      <form>
-        <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
-        <PhoneInput
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          onChangePhoneNumber={handleChangePhoneNumber}
-          phoneValue={formData.phoneNumber}
-          error={errorPhone}
-        />
-        {errorPhone !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorPhone}</small>
-        )}
-        <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
-        <Input
-          className="text-xl"
-          type={showPassword ? 'text' : 'password'}
-          variant="standard"
-          color="gray"
-          onChange={e => {
-            setFormData({ ...formData, password: e.target.value });
-          }}
-          icon={
-            <Image
-              onClick={() => {
-                setShowPassword(!showPassword);
-              }}
-              src={showPassword ? Eye.src : EyeSlash.src}
-              alt={showPassword ? Eye.alt : EyeSlash.alt}
-              width={24}
-              height={24}
-            />
-          }
-          value={formData.password}
-          error={errorPassword !== ''}
-        />
-        {errorPassword !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorPassword}</small>
-        )}
-        {errorResponse !== '' && (
-          <small className="text-[#ff515d] font-bold">{errorResponse}</small>
-        )}
-        <div className="flex flex-row justify-between gap-5 items-center mt-2">
-          <Checkbox
-            checked={formData.keepMeLoggedIn}
-            onChange={e => {
-              setFormData({
-                ...formData,
-                keepMeLoggedIn: e.target.checked
-              });
-            }}
-            label={
-              <Typography variant="small" className=" text-black lg:font-small">
-                {t('authPage.keepMeLoggedIn')}
-              </Typography>
-            }
-            color="green"
+    <>
+      <GoogleAnalyticsScript />
+      <div className="px-4">
+        <form>
+          <p className="font-bold text-xl">{t('authPage.phoneNumber')}</p>
+          <PhoneInput
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+            onChangePhoneNumber={handleChangePhoneNumber}
+            phoneValue={formData.phoneNumber}
+            error={errorPhone}
           />
-          <Link
-            href={'/auth/forgot-password'}
-            className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
-          >
-            {t('authPage.forgotPassword')}?
-          </Link>
-        </div>
-        <Button
-          onClick={handleSubmit}
-          disabled={loading}
-          className={`mx-auto w-full rounded-full ${
-            formData.password === '' || formData.phoneNumber === '' || loading
-              ? 'bg-[#BDBDBD]'
-              : 'bg-[#3AC4A0]'
-          } mt-5`}
-        >
-          {loading ? (
-            <Image
-              src={Loader.src}
-              alt={Loader.alt}
-              className="mx-auto animate-spin object-contain object-[center_center]"
-              width={25}
-              height={25}
-            />
-          ) : (
-            t('authPage.login')
+          {errorPhone !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPhone}</small>
           )}
-        </Button>
-        <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
-          {t('or')}
-        </small>
-        <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly md:mb-0 mb-5 lg:mt-10">
-          {thirdParty.map((el, i) => {
-            return (
-              <CButton
+          <p className="font-bold text-xl mt-5">{t('authPage.password')}</p>
+          <Input
+            className="text-xl"
+            type={showPassword ? 'text' : 'password'}
+            variant="standard"
+            color="gray"
+            onChange={e => {
+              setFormData({ ...formData, password: e.target.value });
+            }}
+            icon={
+              <Image
                 onClick={() => {
-                  handleLoginProvider(el.name.toLowerCase());
+                  setShowPassword(!showPassword);
                 }}
-                key={i}
-                className="bg-white rounded-full flex items-center"
-              >
-                <Image
-                  width={20}
-                  height={20}
-                  src={el.img.src}
-                  alt={el.img.alt}
-                  className="md:w-8 w-4 h-4 md:h-8 object-contain object-[center_center]"
-                />
+                src={showPassword ? Eye.src : EyeSlash.src}
+                alt={showPassword ? Eye.alt : EyeSlash.alt}
+                width={24}
+                height={24}
+              />
+            }
+            value={formData.password}
+            error={errorPassword !== ''}
+          />
+          {errorPassword !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorPassword}</small>
+          )}
+          {errorResponse !== '' && (
+            <small className="text-[#ff515d] font-bold">{errorResponse}</small>
+          )}
+          <div className="flex flex-row justify-between gap-5 items-center mt-2">
+            <Checkbox
+              checked={formData.keepMeLoggedIn}
+              onChange={e => {
+                setFormData({
+                  ...formData,
+                  keepMeLoggedIn: e.target.checked
+                });
+              }}
+              label={
                 <Typography
                   variant="small"
-                  className="text-black mx-auto text-xs  lg:hidden font-bold flex justify-center items-center"
+                  className=" text-black lg:font-small"
                 >
-                  Login with {el.name}
+                  {t('authPage.keepMeLoggedIn')}
                 </Typography>
-              </CButton>
-            );
-          })}
-        </div>
-      </form>
-    </div>
+              }
+              color="green"
+            />
+            <Link
+              href={'/auth/forgot-password'}
+              className="mt-2 hover:underline text-sm text-[#3AC4A0] font-bold"
+            >
+              {t('authPage.forgotPassword')}?
+            </Link>
+          </div>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`mx-auto w-full rounded-full ${
+              formData.password === '' || formData.phoneNumber === '' || loading
+                ? 'bg-[#BDBDBD]'
+                : 'bg-[#3AC4A0]'
+            } mt-5`}
+          >
+            {loading ? (
+              <Image
+                src={Loader.src}
+                alt={Loader.alt}
+                className="mx-auto animate-spin object-contain object-[center_center]"
+                width={25}
+                height={25}
+              />
+            ) : (
+              t('authPage.login')
+            )}
+          </Button>
+          <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
+            {t('or')}
+          </small>
+          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly md:mb-0 mb-5 lg:mt-10">
+            {thirdParty.map((el, i) => {
+              return (
+                <CButton
+                  onClick={() => {
+                    handleLoginProvider(el.name.toLowerCase());
+                  }}
+                  key={i}
+                  className="bg-white rounded-full flex items-center"
+                >
+                  <Image
+                    width={20}
+                    height={20}
+                    src={el.img.src}
+                    alt={el.img.alt}
+                    className="md:w-8 w-4 h-4 md:h-8 object-contain object-[center_center]"
+                  />
+                  <Typography
+                    variant="small"
+                    className="text-black mx-auto text-xs  lg:hidden font-bold flex justify-center items-center"
+                  >
+                    Login with {el.name}
+                  </Typography>
+                </CButton>
+              );
+            })}
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

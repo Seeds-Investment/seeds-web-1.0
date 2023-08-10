@@ -1,10 +1,10 @@
+import LegalSubmenu from '@/assets/legal.png';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import router from 'next/router';
-import { LegalSubmenu } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
   CircleMembership,
@@ -13,144 +13,252 @@ import {
   PrivacyPolicy,
   SosmedGuide
 } from 'public/assets/vector';
-import React from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-const FaqSubmenu: React.FC = () => {
+interface FaqSubmenuProps {
+  children: ReactNode;
+}
+
+const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const width = useWindowInnerWidth();
 
-  const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
+  const submenuClasses = `lg:w-4/5 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
   } px-6`;
 
-  const menus = [
-    {
-      label: 'Term & Condition',
-      altStartAdornment: 'term & condition',
-      startAdornment: FileTextIcon,
-      onClick: async (): Promise<void> => {
-        try {
-          await router.push('/faq-submenu/terms-condition');
-        } catch (err) {
-          console.error(err);
-        }
+  const menus = useMemo(
+    () => [
+      {
+        label: 'Term & Condition',
+        altStartAdornment: 'terms-condition',
+        startAdornment: FileTextIcon,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/terms-condition');
+          } catch (err) {
+            console.error(err);
+          }
+        },
+        extraClasses: submenuClasses
       },
-      extraClasses: submenuClasses
+      {
+        label: 'Disclosure',
+        altStartAdornment: 'disclosure',
+        startAdornment: Disclosure,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/disclosure');
+          } catch (error) {
+            console.error('Error navigating to FAQ:', error);
+          }
+        },
+        extraClasses: submenuClasses
+      },
+      {
+        label: 'Privacy & Policy',
+        altStartAdornment: 'privacy-policy',
+        startAdornment: PrivacyPolicy,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/privacy-policy');
+          } catch (error) {
+            console.error('Error navigating to FAQ:', error);
+          }
+        },
+        extraClasses: submenuClasses
+      },
+      {
+        label: 'Social Media Guidelines',
+        altStartAdornment: 'social-media-guide',
+        startAdornment: SosmedGuide,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/social-media-guide');
+          } catch (error) {
+            console.error('Error navigating to FAQ:', error);
+          }
+        },
+        extraClasses: submenuClasses
+      },
+      {
+        label: 'Circle Membership',
+        altStartAdornment: 'circle-membership',
+        startAdornment: CircleMembership,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/circle-membership');
+          } catch (error) {
+            console.error('Error navigating to FAQ:', error);
+          }
+        },
+        extraClasses: submenuClasses
+      }
+    ],
+    [submenuClasses]
+  );
+
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const currentRoute =
+    typeof window !== 'undefined' ? window.location.pathname : '';
+
+  // Function to check if the menu is active
+  const isMenuActive = useCallback(
+    (label: string): boolean => {
+      const menuRoute = `/faq-submenu/${label.toLowerCase().replace(' ', '-')}`;
+      return currentRoute === menuRoute;
     },
-    {
-      label: 'Disclosure',
-      altStartAdornment: 'disclosure',
-      startAdornment: Disclosure,
-      onClick: async (): Promise<void> => {
-        try {
-          await router.push('/faq-submenu/disclosure');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
-    },
-    {
-      label: 'Privacy & Policy',
-      altStartAdornment: 'privacy & policy',
-      startAdornment: PrivacyPolicy,
-      onClick: async (): Promise<void> => {
-        try {
-          await router.push('/faq-submenu/privacy-policy');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
-    },
-    {
-      label: 'Social Media Guidelines',
-      altStartAdornment: 'social media guidelines',
-      startAdornment: SosmedGuide,
-      onClick: async (): Promise<void> => {
-        try {
-          await router.push('/faq-submenu/social-media-guide');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
-    },
-    {
-      label: 'Circle Membership',
-      altStartAdornment: 'circle membership',
-      startAdornment: CircleMembership,
-      onClick: async (): Promise<void> => {
-        try {
-          await router.push('/faq-submenu/circle-membership');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
-    }
-  ];
+    [currentRoute]
+  );
+
+  useEffect(() => {
+    // Update the active menu after component is mounted
+    const handleRouteChange = (): void => {
+      const currentMenu = menus.find(menu =>
+        isMenuActive(menu.altStartAdornment)
+      );
+      setActiveMenu(currentMenu?.altStartAdornment ?? null);
+
+      if (
+        currentRoute === '/faq-submenu' &&
+        width !== undefined &&
+        width >= 640
+      ) {
+        router.push('/faq-submenu/terms-condition').catch(error => {
+          console.error('Error navigating:', error);
+        });
+      }
+    };
+
+    handleRouteChange(); // Initial check
+    // Add event listener for future route changes
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    // Remove event listener on cleanup
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [isMenuActive, menus, currentRoute, width]);
 
   return (
-    <PageGradient
-      defaultGradient
-      className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
-    >
-      <CardGradient
-        defaultGradient
-        className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
-          width !== undefined && width < 370
-            ? 'h-[38rem]'
-            : width !== undefined && width < 400
-            ? 'h-[45rem]'
-            : width !== undefined && width < 415
-            ? 'h-[48rem]'
+    <PageGradient defaultGradient className="flex flex-col sm:flex-row">
+      <div
+        className={`flex w-full sm:w-2/5
+        ${
+          currentRoute === '/faq-submenu'
+            ? ''
+            : width !== undefined && width < 640
+            ? 'hidden'
             : ''
-        } bg-white`}
+        }
+        `}
       >
-        {/* -----Title----- */}
-        <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-          Legal
-        </h6>
-
-        {/* -----Header----- */}
-        <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">
-          <div
-            className={`flex flex-col justify-center items-center ${
-              width !== undefined && width < 370 ? 'py-4' : ''
-            } w-full h-full bg-white`}
+        <PageGradient
+          defaultGradient
+          className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+        >
+          <CardGradient
+            defaultGradient
+            className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+              width !== undefined && width < 370
+                ? 'w-[38rem]'
+                : width !== undefined && width < 400
+                ? 'w-[45rem]'
+                : width !== undefined && width < 415
+                ? 'w-[48rem]'
+                : ''
+            } bg-white`}
           >
-            {/* -----Image Container----- */}
-            <div
-              className={`overflow-hidden mb-3 rounded-full ${
-                width !== undefined && width <= 370
-                  ? 'h-100 w-100'
-                  : 'h-205 w-205'
-              }`}
-            >
-              <Image
-                alt="avatar"
-                src={LegalSubmenu}
-                className="w-full h-full object-center object-cover"
-              />
+            {/* -----Title----- */}
+            <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
+              Legal
+            </h6>
+
+            {/* -----Header----- */}
+            <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">
+              <div
+                className={`flex flex-col justify-center items-center overflow-hidden  rounded-full ${
+                  width !== undefined && width < 370 ? 'py-4' : ''
+                } w-full h-full`}
+              >
+                {/* -----Image Container----- */}
+                <div
+                  className={`overflow-hidden mb-3 rounded-full ${
+                    width !== undefined && width <= 370
+                      ? 'h-100 w-100'
+                      : 'h-205 w-205'
+                  }`}
+                >
+                  <Image
+                    alt="avatar"
+                    src={LegalSubmenu}
+                    className="w-full h-full object-center object-cover"
+                  />
+                </div>
+              </div>
             </div>
+
+            {/* -----Submenus----- */}
+            <div className="z-10 flex flex-col items-center w-full sm:px-0 px-6">
+              {menus.map(menu => (
+                <SubmenuButton
+                  key={menu.label}
+                  onClick={menu.onClick}
+                  startAdornment={menu.startAdornment}
+                  endAdornment={ArrowRightCollapseIcon}
+                  label={menu.label}
+                  altStartAdornment={menu.altStartAdornment}
+                  extraClasses={`${menu.extraClasses}`}
+                  style={{
+                    color:
+                      activeMenu === menu.altStartAdornment ? '#3AC4A0' : ''
+                  }}
+                />
+              ))}
+            </div>
+          </CardGradient>
+        </PageGradient>
+      </div>
+      <div className="flex w-full sm:w-3/5">
+        <div
+          className={`z-0 sm:relative sm:pb-20  overflow-hidden flex flex-col items-center w-full bottom-0  ${
+            width !== undefined && width < 370
+              ? 'w-[90%]'
+              : width !== undefined && width < 500
+              ? 'w-[90%]'
+              : width !== undefined && width < 400
+              ? 'w-[40%]'
+              : width !== undefined && width > 600
+              ? 'w-[600px]'
+              : ''
+          } ${
+            width !== undefined && width < 370
+              ? 'h-[50rem]'
+              : width !== undefined && width < 400
+              ? 'h-[50rem]'
+              : width !== undefined && width < 415
+              ? 'h-[48rem]'
+              : ''
+          }`}
+        >
+          <div
+            className={`z-1 relative overflow-hidden flex flex-col justify-center items-center py-4  sm:w-[90%] sm:rounded-md sm:min-h-[36rem] ${
+              width !== undefined && width < 600
+                ? 'w-full'
+                : width !== undefined && width < 500
+                ? 'w-[90%]'
+                : width !== undefined && width < 400
+                ? 'w-[40%]'
+                : width !== undefined && width > 600
+                ? 'w-[600px]'
+                : ''
+            }`}
+          >
+            {/* -----Page Content----- */}
+            {children}
           </div>
         </div>
-
-        {/* -----Submenus----- */}
-        <div className="z-10 flex flex-col items-center w-full sm:px-0 px-6">
-          {menus.map(menu => (
-            <SubmenuButton
-              key={menu.label}
-              onClick={menu.onClick}
-              startAdornment={menu.startAdornment}
-              endAdornment={ArrowRightCollapseIcon}
-              label={menu.label}
-              altStartAdornment={menu.altStartAdornment}
-              extraClasses={menu.extraClasses}
-            />
-          ))}
-        </div>
-      </CardGradient>
+      </div>
     </PageGradient>
   );
 };

@@ -1,76 +1,79 @@
 import CAccordion from '@/components/CAccordion';
-import CardGradient from '@/components/ui/card/CardGradient';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import Image from 'next/image';
+import router from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
+import FaqSubmenu from '..';
 
 const CircleMembership: React.FC = () => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
+  const cancelHandler = async (): Promise<void> => {
+    try {
+      await router.push('/faq-submenu');
+    } catch (error) {
+      console.error('Error navigating to FAQ submenu:', error);
+    }
+  };
 
   return (
-    <PageGradient
-      defaultGradient
-      className={`z-0 sm:relative sm:pb-20  overflow-hidden flex flex-col items-center w-full bottom-0  ${
-        width !== undefined && width < 370
-          ? 'w-[90%]'
-          : width !== undefined && width < 500
-          ? 'w-[90%]'
-          : width !== undefined && width < 400
-          ? 'w-[40%]'
-          : width !== undefined && width > 600
-          ? 'w-[600px]'
-          : ''
-      } ${
-        width !== undefined && width < 370
-          ? 'h-[50rem]'
-          : width !== undefined && width < 400
-          ? 'h-[50rem]'
-          : width !== undefined && width < 415
-          ? 'h-[48rem]'
-          : ''
-      } bg-white`}
-    >
-      <CardGradient
-        defaultGradient
-        className={`z-1 relative flex flex-col justify-center items-center py-2  sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
-          width !== undefined && width < 600
-            ? 'w-[99%] overflow-x-auto'
-            : width !== undefined && width < 500
-            ? 'w-[99%] overflow-x-visible'
-            : width !== undefined && width < 400
-            ? 'w-[99%] overflow-x-visible'
-            : width !== undefined && width > 600
-            ? 'w-[600px] overflow-x-visible'
-            : ''
-        }bg-white`}
-      >
-        <div className="w-full bg-white rounded-2xl flex justify-center  ">
+    <FaqSubmenu>
+      <div className="w-full bg-white rounded-2xl flex justify-center  ">
+        <div
+          className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-hidden p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
+            width !== undefined && width < 600
+              ? 'w-full overflow-x-auto'
+              : width !== undefined && width < 500
+              ? 'w-[99%] overflow-x-visible'
+              : width !== undefined && width < 400
+              ? 'w-[99%] overflow-x-visible'
+              : width !== undefined && width > 600
+              ? 'w-[600px] overflow-x-visible'
+              : ''
+          }   ${
+            width !== undefined && width < 370
+              ? 'h-full'
+              : width !== undefined && width < 400
+              ? 'h-[50rem]'
+              : width !== undefined && width < 415
+              ? 'h-[48rem]'
+              : 'h-full'
+          } bg-white`}
+        >
+          <div className="w-full bg-white rounded-2xl flex flex-col justify-center items-center">
+            <button
+              onClick={cancelHandler}
+              className={`w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:bg-gray-200 absolute left-4 top-4 ${
+                width !== undefined && width > 640 ? 'hidden' : ''
+              }`}
+            >
+              <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+            </button>
+            <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">
+              {t('termAndCondition.circleMembership.title')}
+            </div>
+          </div>
+          <br />
           <div
-            className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] overflow-hidden p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
+            className={`z-3 lg:px-[10px] min-h-[calc(100vh-100px)] p-4 relative justify-center text-justify bg-opacity-100 border-white py-4 border-4 ${
               width !== undefined && width < 600
-                ? 'w-full overflow-x-auto'
+                ? 'w-[99%] overflow-x-auto'
                 : width !== undefined && width < 500
                 ? 'w-[99%] overflow-x-visible'
                 : width !== undefined && width < 400
                 ? 'w-[99%] overflow-x-visible'
-                : width !== undefined && width > 600
-                ? 'w-[600px] overflow-x-visible'
                 : ''
-            }   ${
+            }  ${
               width !== undefined && width < 370
-                ? 'h-full'
+                ? 'h-[50rem]'
                 : width !== undefined && width < 400
                 ? 'h-[50rem]'
                 : width !== undefined && width < 415
                 ? 'h-[48rem]'
-                : 'h-full'
+                : ''
             } bg-white`}
           >
-            <p className="font-semibold text-lg font-poppins leading-7 text-[18px]  text-stone-900 text-center">
-              {t('termAndCondition.circleMembership.title')}
-            </p>
-            <br />
             <p className="font-bold font-14 leading-5 font-poppins">
               {t('termAndCondition.circleMembership.lastupdate')}
               <span className="text-purple-700">
@@ -247,8 +250,8 @@ const CircleMembership: React.FC = () => {
             </div>
           </div>
         </div>
-      </CardGradient>
-    </PageGradient>
+      </div>
+    </FaqSubmenu>
   );
 };
 

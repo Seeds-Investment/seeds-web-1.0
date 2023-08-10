@@ -58,11 +58,17 @@ const nextConfig = {
     locales: ['en', 'es']
   },
   images: {
-    domains: ['seeds-bucket.s3.ap-southeast-1.amazonaws.com'],
+    domains: ['dev-assets.seeds.finance', 'assets.seeds.finance'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com',
+        hostname: 'dev-assets.seeds.finance',
+        port: '',
+        pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.seeds.finance',
         port: '',
         pathname: '/**'
       }

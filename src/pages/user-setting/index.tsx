@@ -5,9 +5,10 @@ import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getUserInfo } from '@/repository/profile.repository';
+import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import router from 'next/router';
-import { DummyAvatar } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
   BronzeMedalIcon,
@@ -21,10 +22,11 @@ import {
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const UserSetting: React.FC = () => {
   const width = useWindowInnerWidth();
+  const languageCtx = useContext(LanguageContext);
 
   const [chooseBadgeModalShown, setChooseBadgeModalShown] =
     useState<boolean>(false);
@@ -33,7 +35,25 @@ const UserSetting: React.FC = () => {
 
   const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
-  } px-6`;
+  } px-6 bg-white`;
+  const [userData, setUserData] = useState<Record<string, any>>();
+
+  useEffect(() => {
+    const fetchUserProfile = async (): Promise<void> => {
+      try {
+        const userInfo = await getUserInfo();
+        console.log(userInfo, 'ASFSAF');
+
+        setUserData(userInfo);
+      } catch (error: any) {
+        console.error('Error fetching user profile:', error.message);
+      }
+    };
+
+    Promise.all([fetchUserProfile()])
+      .then()
+      .catch(() => {});
+  }, []);
 
   const [selectedMedal, setSelectedMedal] = useState<string>('gold');
   const menus = [
@@ -48,28 +68,28 @@ const UserSetting: React.FC = () => {
           console.error('Error navigating to Edit Profile:', error);
         }
       },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
         width !== undefined && width < 370 ? 'h-9' : ''
-      }`
+      } bg-white`
     },
     {
-      label: 'Language',
+      label: languageCtx.language === 'EN' ? 'Language' : 'Bahasa',
       altStartAdornment: 'language',
       startAdornment: GlobalIcon,
       onClick: () => {},
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
         width !== undefined && width < 370 ? 'h-9' : ''
-      }`
+      } bg-white`
     },
     {
-      label: 'Block List',
+      label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
       onClick: () => {},
       extraClasses: submenuClasses
     },
     {
-      label: 'Legal',
+      label: languageCtx.language === 'EN' ? 'Legal' : 'Hukum',
       altStartAdornment: 'legal',
       startAdornment: FileTextIcon,
       onClick: async () => {
@@ -82,7 +102,7 @@ const UserSetting: React.FC = () => {
       extraClasses: submenuClasses
     },
     {
-      label: 'FAQ & Help',
+      label: languageCtx.language === 'EN' ? 'FAQ & Help' : 'FAQ & Bantuan',
       altStartAdornment: 'faq & help',
       startAdornment: HelpCircleIcon,
       onClick: async () => {
@@ -95,14 +115,14 @@ const UserSetting: React.FC = () => {
       extraClasses: submenuClasses
     },
     {
-      label: 'Rate Apps',
+      label: languageCtx.language === 'EN' ? 'Rate Apps' : 'Nilai Aplikasi',
       altStartAdornment: 'rate apps',
       startAdornment: StarIcon,
       onClick: () => {},
       extraClasses: submenuClasses
     },
     {
-      label: 'Log Out',
+      label: languageCtx.language === 'EN' ? 'Log Out' : 'Keluar',
       altStartAdornment: 'log out',
       startAdornment: LogOutIcon,
       onClick: () => {
@@ -149,7 +169,7 @@ const UserSetting: React.FC = () => {
       >
         {/* -----Title----- */}
         <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-          Settings
+          {languageCtx.language === 'EN' ? 'Settings' : 'Pengaturan'}
         </h6>
 
         {/* -----Header----- */}
@@ -167,7 +187,9 @@ const UserSetting: React.FC = () => {
             >
               <Image
                 alt="avatar"
-                src={DummyAvatar}
+                src={userData?.avatar}
+                width={100}
+                height={100}
                 className="w-full h-full object-center object-cover"
               />
             </div>
@@ -175,7 +197,7 @@ const UserSetting: React.FC = () => {
             {/* -----User Data----- */}
             <div className="flex items-center gap-2">
               <h6 className="text-lg font-montserrat font-semibold text-neutral-500">
-                Prabu Firgantoro
+                {userData?.name}
               </h6>
               <Image
                 src={
@@ -206,10 +228,10 @@ const UserSetting: React.FC = () => {
               )}
             </div>
             <span className="mb-1 font-poppins text-xs text-neutral-500">
-              @prabufirgan
+              @{userData?.seedsTag}
             </span>
             <span className="mb-2 font-poppins text-xs text-neutral-500">
-              +62815489799
+              +{userData?.phoneNumber}
             </span>
             <LevelButton type="Sprout" />
           </div>

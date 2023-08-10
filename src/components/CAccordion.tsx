@@ -37,7 +37,7 @@ const CAccordion = ({
         onClick={() => {
           setOpen(c => !c);
         }}
-        style={{ color: titleColor }}
+        style={{ color: titleColor, textAlign: 'left' }}
       >
         {title}
       </AccordionHeader>

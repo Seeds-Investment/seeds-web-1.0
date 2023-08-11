@@ -1,5 +1,6 @@
 import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
+import Link from 'next/link';
 import ID from 'public/assets/images/flags/ID.png';
 import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
@@ -53,10 +54,12 @@ const Header: React.FC = () => {
   return (
     <header className="sm:pt-6 pt-12">
       <div className="document-header">
-        <Logo
-          width={width !== undefined && width <= 640 ? '62.22' : undefined}
-          height={width !== undefined && width <= 640 ? '23.58' : undefined}
-        />
+        <Link href="https://seeds.finance">
+          <Logo
+            width={width !== undefined && width <= 640 ? '62.22' : undefined}
+            height={width !== undefined && width <= 640 ? '23.58' : undefined}
+          />
+        </Link>
         <div className="flex items-center gap-4">
           <button
             className={`transition-all duration-300 flex sm:justify-evenly sm:pl-0 pl-2.5 items-center sm:w-[5.5rem] w-[3.375rem] h-7 sm:h-11 rounded-full bg-gray-100  ${

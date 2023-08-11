@@ -183,7 +183,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
               >
                 {/* -----Image Container----- */}
                 <div
-                  className={`overflow-hidden mb-3 rounded-full ${
+                  className={`overflow-hidden mb-3 ${
                     width !== undefined && width <= 370
                       ? 'h-100 w-100'
                       : 'h-205 w-205'
@@ -192,7 +192,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
                   <Image
                     alt="avatar"
                     src={LegalSubmenu}
-                    className="w-full h-full object-center object-cover"
+                    className="w-30 h-30 object-center object-cover"
                   />
                 </div>
               </div>

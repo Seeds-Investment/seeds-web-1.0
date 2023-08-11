@@ -37,7 +37,7 @@ const SuccessRegisterPage = ({
         </div>
       </div>
       <div className="my-8">
-        <Link href={'/'}>
+        <Link href={'/auth/login'}>
           <Button
             fullWidth
             className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"

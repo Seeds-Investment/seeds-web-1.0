@@ -52,7 +52,7 @@ export const seedsInformation: ISeedsInformationList = {
   Company: [
     {
       name: 'About Us',
-      url: ''
+      url: '/about-us'
     }
     // {
     //   name: 'Refferal Program',
@@ -88,7 +88,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'FAQs',
-      url: '/faq-submenu'
+      url: '/faq'
     }
   ],
   'Contact Us': [

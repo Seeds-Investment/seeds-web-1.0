@@ -132,14 +132,18 @@ const OTPCard = ({
   }, [phoneNumber, payload.method]);
 
   const resendHandler = async (): Promise<void> => {
-    if (countdown > 0) return;
-    resetCountdown();
-    await fetchOtp();
+    console.log(countdown);
+
+    if (countdown > 0) {
+      resetCountdown();
+      await fetchOtp();
+    }
   };
 
   const [otp, setOtp] = useState('');
 
   useEffect(() => {
+    resetCountdown();
     void fetchOtp();
   }, [fetchOtp]);
   return (
@@ -163,7 +167,7 @@ const OTPCard = ({
                 onChange={e => {
                   codeHandler(e.target.value, idx);
                 }}
-                className="max-w-[70px] text-center"
+                className="max-w-[70px] text-center text-black text-bold"
                 error={error}
                 name={payload.method}
                 color="green"

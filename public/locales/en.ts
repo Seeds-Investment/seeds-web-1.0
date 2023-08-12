@@ -70,6 +70,8 @@ export default {
   },
   errorMessage: {
     requiredSeedsTag: 'Seeds Tag is required, please enter your Seeds Tag!',
+    spaceInSeedsTag:
+      'SeedsTag cannot contain spaces, please delete your spaces!',
     requiredName: 'Name is required, please enter your name!',
     invalidEmail:
       'Please enter your email address in format yourname@example.com',

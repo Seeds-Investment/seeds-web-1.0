@@ -70,6 +70,8 @@ export default {
   },
   errorMessage: {
     requiredSeedsTag: 'Seeds Tag dibutuhkan, mohon masukan Seeds Tag Anda!',
+    spaceInSeedsTag:
+      'Seeds Tag tidak boleh mengandung spasi, mohon hapus spasi Anda!',
     requiredName: 'Nama dibutuhkan, mohon masukan nama Anda!',
     invalidEmail: 'Tolong isi alamat email dengan format namaanda@contoh.com',
     requiredEmail: 'Email dibutuhkan, mohon masukan email Anda!',

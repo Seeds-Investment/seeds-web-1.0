@@ -247,9 +247,14 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               isError={
                 ((tagIsError ?? false) &&
                   (form.seedsTag ?? '').trim() === '') ||
-                false
+                /\s/.test(form.seedsTag)
               }
-              errorMessage={t('errorMessage.requiredSeedsTag')}
+              errorMessage={
+                // Use conditional error messages based on the error type
+                /\s/.test(form.seedsTag)
+                  ? t('errorMessage.spaceInSeedsTag')
+                  : t('errorMessage.requiredSeedsTag')
+              }
               props={{
                 value: form?.seedsTag,
                 onChange: (e: any) => {
@@ -338,7 +343,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
                 value: form?.email
               }}
             />
-
             {/* -----Linked Account----- */}
             <div className="group relative mb-8 pb-3 border-b border-neutral-ultrasoft cursor-pointer">
               <h6 className="font-poppins font-semibold leading-6 text-neutral-medium md:text-base text-sm">
@@ -349,7 +353,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
                 <ArrowCollapseIcon stroke="#262626" strokeWidth="2" />
               </span>
             </div>
-
             {/* -----Change Pin----- */}
             <div className="group relative pb-3 border-b border-neutral-ultrasoft cursor-pointer">
               <h6 className="font-poppins font-semibold leading-6 text-neutral-medium md:text-base text-sm">

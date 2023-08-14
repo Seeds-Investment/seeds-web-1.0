@@ -1,6 +1,10 @@
 import baseAxios from '@/utils/common/axios';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const authService = baseAxios(`https://seeds-dev-gcp.seeds.finance/circle/v1`);
+const circleService = baseAxios(
+  `https://seeds-dev-gcp.seeds.finance/circle/v2`
+);
 
 export const getTrendingCircle = async (): Promise<any> => {
   try {
@@ -9,4 +13,39 @@ export const getTrendingCircle = async (): Promise<any> => {
   } catch (error: any) {
     return error.response;
   }
+};
+
+export const getCircleLeaderBoard = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await circleService.get(`/list/leaderboard`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getCircle = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.get(`/list`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

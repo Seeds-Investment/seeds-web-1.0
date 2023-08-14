@@ -1,6 +1,7 @@
 import CCard from '@/components/CCard';
 import { SearchCircle } from '@/components/forms/searchCircle';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircle,
@@ -357,4 +358,4 @@ const Circle = (): React.ReactElement => {
   );
 };
 
-export default Circle;
+export default withAuth(Circle);

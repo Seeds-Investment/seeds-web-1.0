@@ -762,5 +762,17 @@ export default {
     text7: 'More about investing and finance from the pro',
     text8: 'And chat with like-minded people',
     text9: 'The tournaments and win cash rewards'
+  },
+  circle: {
+    leaderBoard: {
+      title: 'Circle Leaderboard',
+      description:
+        'Find or create a Circle that matches your interests in Seeds.'
+    },
+    list: {
+      title: 'Circle List',
+      description:
+        'Explore our list of communities, find the ones that match with your interest, or create one.'
+    }
   }
 };

@@ -693,5 +693,17 @@ export default {
     text7: 'Selengkapnya tentang investasi dan keuangan dari para profesional',
     text8: 'Dan mengobrollah dengan orang-orang yang berpikiran sama',
     text9: 'Turnamen dan menangkan hadiah uang tunai'
+  },
+  circle: {
+    leaderBoard: {
+      title: 'Circle Leaderboard',
+      description:
+        'Find or create a Circle that matches your interests in Seeds.'
+    },
+    list: {
+      title: 'Circle List',
+      description:
+        'Explore our list of communities, find the ones that match with your interest, or create one.'
+    }
   }
 };

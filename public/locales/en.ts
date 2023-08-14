@@ -225,10 +225,10 @@ export default {
       },
       desc: {
         1: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        2: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        3: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        4: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        5: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).'
+        2: 'You can invest in various US stocks and cryptocurrencies (many more to come!)',
+        3: 'You can download the Seeds application via the Google Playstore for those of you who are Android users and the Apple Appstore for iOS users. Apart from that, you can also explore the Seeds feature through the seeds.finance website',
+        4: 'Seeds has been formally operating in Indonesia under the name PT. Technological Investment Seed and has been registered with the Ministry of Communication and Information Technology (KOMINFO).',
+        5: 'You can contact our team via email contact: info@seeds.finance'
       }
     },
     footerText: 'Haven’t found the answer yet?',

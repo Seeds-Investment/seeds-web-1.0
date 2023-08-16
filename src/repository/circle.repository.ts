@@ -3,7 +3,9 @@ import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const authService = baseAxios(`https://seeds-dev-gcp.seeds.finance/circle/v1`);
 const circleService = baseAxios(
-  `https://seeds-dev-gcp.seeds.finance/circle/v2`
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/circle/v2/`
 );
 
 export const getTrendingCircle = async (): Promise<any> => {

@@ -6,8 +6,9 @@ import { formConfigureSeedsUserSchema } from '@/utils/validations/register.schem
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { InfoBlue } from 'public/assets/vector';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ReferralCodePage = ({
@@ -16,6 +17,14 @@ const ReferralCodePage = ({
   setFormdata
 }: IRegisterPaging): JSX.Element => {
   const { t } = useTranslation();
+  const { refcode } = useRouter().query;
+
+  useEffect(() => {
+    setFormdata(prevState => ({
+      ...prevState,
+      referralCode: refcode !== undefined ? refcode.toString() : ''
+    }));
+  }, [setFormdata, refcode]);
 
   const formik = useFormik({
     initialValues: formdata,

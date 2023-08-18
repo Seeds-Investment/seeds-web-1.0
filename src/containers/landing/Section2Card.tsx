@@ -9,15 +9,13 @@ export default function Section2Card({
 }: {
   data: IEventHighlightLandingPage;
 }): React.ReactElement {
-  console.log(data, '>>>');
-
   return (
-    <div className="relative max-w-sm rounded overflow-hidden mr-5">
+    <div className="relative max-w-s overflow-hidden mr-5">
       <Link href={'/temporary'}>
         <Image
           alt={data.name}
           src={data.image}
-          className="w-full "
+          className="w-full rounded-3xl"
           width={500}
           height={500}
         />

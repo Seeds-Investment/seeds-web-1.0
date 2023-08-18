@@ -94,7 +94,7 @@ const AuthLayout = ({
                     ) {
                       onBack();
                     } else {
-                      router.push('/story-boarding').catch(error => {
+                      router.push('/').catch(error => {
                         console.log(error);
                       });
                     }

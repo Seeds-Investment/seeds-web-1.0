@@ -687,8 +687,14 @@ export default {
       'Bagi kami, nilai-nilai kami lebih dari sekadar dunia. Mereka adalah cara hidup, mencipta, dan melakukan.',
     title4: 'Nilai Seeds',
     title5: 'Kepercayaan',
-    teks6:
-      'Lorem ipsum dolor sit amet conectetur. Consectur enim sed scelerisque sed vitae pelentesque feugiat pulfinar. A sodales non.',
+    text6:
+      'Memberdayakan individu, terutama generasi milenial dan Gen Z, dengan pengetahuan, keterampilan, dan keyakinan untuk membuat keputusan keuangan yang terinformasi dan bertanggung jawab.',
+    text10:
+      'Memberikan akses konten pendidikan dan yang berkualitas tinggi, mudah diakses, dan menarik untuk memudahkan konsep keuangan yang kompleks.',
+    text11:
+      'Mendorong rasa komunitas di antara pengguna, di mana mereka dapat belajar dari pengalaman satu sama lain, berbagi wawasan, dan mendukung pertumbuhan satu sama lain.',
+    text12:
+      'Terus berinovasi pada platform untuk memiliki dampak yang berarti pada kehidupan pengguna dengan membekali mereka dengan keterampilan investasi praktis dan membantu mereka menghindari jebakan keuangan.',
     title6: 'Yang Membuat Kami Berbeda',
     text7: 'Selengkapnya tentang investasi dan keuangan dari para profesional',
     text8: 'Dan mengobrollah dengan orang-orang yang berpikiran sama',

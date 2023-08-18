@@ -753,11 +753,17 @@ export default {
       'We Identify opportunities you uniquely own by analysing your business, your market, and cultural shifts in the world.',
     title3: 'Our Value',
     text5:
-      'For us, our values are more then just worlds. They are ways of living, creating, and doing.',
+      'For us, our values are more than just worlds. They are ways of living, creating, and doing.',
     title4: 'Seeds Value',
     title5: 'Trust',
     text6:
-      'Lorem ipsum dolor sit amet consectetur. Consectectur enim sed scelerisque sed vitae pellentesque feugiat pulfinar. A sodales non.',
+      'Empowering individuals, especially millenials and Gen Z, with the knowledge, skills, and confidence to make an informed and responsible financial decision.',
+    text10:
+      'Providing high-quality, accessible, and engaging educational content and tools that simplify complex financial concepts.',
+    text11:
+      "Fostering a sense of community among users, where they can learn from each other's experiences share insights, and support one another's growth",
+    text12:
+      "Continuously innovating your platform to have a meaningful impact on users' lives by equipping them with practical investment skills and helping them avoid financial pitfalls.",
     title6: 'What Makes Us Different',
     text7: 'More about investing and finance from the pro',
     text8: 'And chat with like-minded people',

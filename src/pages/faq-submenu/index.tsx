@@ -4,7 +4,6 @@ import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
-import Link from 'next/link';
 import router from 'next/router';
 import {
   ArrowLeftBlack,
@@ -174,7 +173,11 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
             <div className="flex justify-start mx-2 md:mx-8 items-center mb-5 w-full">
               {/* -----Arrow Left----- */}
               <div className="ml-2 z-10">
-                <Link href={'/user-setting'}>
+                <button
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
                   <Image
                     src={ArrowLeftBlack.src}
                     alt={ArrowLeftBlack.alt}
@@ -182,7 +185,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
                     height={30}
                     className="transition cursor-pointer ease-in-out hover:scale-150"
                   />
-                </Link>
+                </button>
               </div>
               {/* -----Title Centered----- */}
               <div className="flex-grow text-center mr-10">

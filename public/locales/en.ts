@@ -70,6 +70,8 @@ export default {
   },
   errorMessage: {
     requiredSeedsTag: 'Seeds Tag is required, please enter your Seeds Tag!',
+    spaceInSeedsTag:
+      'SeedsTag cannot contain spaces, please delete your spaces!',
     requiredName: 'Name is required, please enter your name!',
     invalidEmail:
       'Please enter your email address in format yourname@example.com',
@@ -223,10 +225,10 @@ export default {
       },
       desc: {
         1: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        2: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        3: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        4: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).',
-        5: 'Seeds is the first social investing platform in Indonesia that gives users access to US stocks and cryptocurrencies (many more to come!).'
+        2: 'You can invest in various US stocks and cryptocurrencies (many more to come!)',
+        3: 'You can download the Seeds application via the Google Playstore for those of you who are Android users and the Apple Appstore for iOS users. Apart from that, you can also explore the Seeds feature through the seeds.finance website',
+        4: 'Seeds has been formally operating in Indonesia under the name PT. Technological Investment Seed and has been registered with the Ministry of Communication and Information Technology (KOMINFO).',
+        5: 'You can contact our team via email contact: info@seeds.finance'
       }
     },
     footerText: 'Haven’t found the answer yet?',
@@ -751,14 +753,32 @@ export default {
       'We Identify opportunities you uniquely own by analysing your business, your market, and cultural shifts in the world.',
     title3: 'Our Value',
     text5:
-      'For us, our values are more then just worlds. They are ways of living, creating, and doing.',
+      'For us, our values are more than just worlds. They are ways of living, creating, and doing.',
     title4: 'Seeds Value',
     title5: 'Trust',
     text6:
-      'Lorem ipsum dolor sit amet consectetur. Consectectur enim sed scelerisque sed vitae pellentesque feugiat pulfinar. A sodales non.',
+      'Empowering individuals, especially millenials and Gen Z, with the knowledge, skills, and confidence to make an informed and responsible financial decision.',
+    text10:
+      'Providing high-quality, accessible, and engaging educational content and tools that simplify complex financial concepts.',
+    text11:
+      "Fostering a sense of community among users, where they can learn from each other's experiences share insights, and support one another's growth",
+    text12:
+      "Continuously innovating your platform to have a meaningful impact on users' lives by equipping them with practical investment skills and helping them avoid financial pitfalls.",
     title6: 'What Makes Us Different',
     text7: 'More about investing and finance from the pro',
     text8: 'And chat with like-minded people',
     text9: 'The tournaments and win cash rewards'
+  },
+  circle: {
+    leaderBoard: {
+      title: 'Circle Leaderboard',
+      description:
+        'Find or create a Circle that matches your interests in Seeds.'
+    },
+    list: {
+      title: 'Circle List',
+      description:
+        'Explore our list of communities, find the ones that match with your interest, or create one.'
+    }
   }
 };

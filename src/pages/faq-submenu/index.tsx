@@ -6,6 +6,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import router from 'next/router';
 import {
+  ArrowLeftBlack,
   ArrowRightCollapseIcon,
   CircleMembership,
   Disclosure,
@@ -169,10 +170,28 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
                 : ''
             } bg-white`}
           >
-            {/* -----Title----- */}
-            <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-              Legal
-            </h6>
+            <div className="flex justify-start mx-2 md:mx-8 items-center mb-5 w-full">
+              {/* -----Arrow Left----- */}
+              <div className="ml-2 z-10">
+                <button
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  <Image
+                    src={ArrowLeftBlack.src}
+                    alt={ArrowLeftBlack.alt}
+                    width={30}
+                    height={30}
+                    className="transition cursor-pointer ease-in-out hover:scale-150"
+                  />
+                </button>
+              </div>
+              {/* -----Title Centered----- */}
+              <div className="flex-grow text-center mr-10">
+                <h6 className="text-lg font-poppins font-semibold">Legal</h6>
+              </div>
+            </div>
 
             {/* -----Header----- */}
             <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">

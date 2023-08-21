@@ -8,7 +8,7 @@ import meet from '@/assets/about-us/meet.svg';
 import play from '@/assets/about-us/play.svg';
 import Section6 from '@/containers/landing/Section6';
 import Section1 from '@/containers/temporary/Section1';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 
 import Image from 'next/image';
@@ -28,8 +28,8 @@ export default function AboutUsPage(): React.ReactElement {
               alt="img"
               src={aboutUs1}
             />
-            <div className="top-[100px] ml-5 w-4/5 lg:ml-10 lg:mt-10 xl:ml-20">
-              <div className="text-2xl text-white font-bold mb-3 lg:text-[32px] lg:mb-8">
+            <div className="ml-5 w-4/6 lg:ml-10 lg:mt-10 xl:ml-20">
+              <div className="text-2xl text-white font-bold mb-3 lg:text-[48px] lg:mb-12">
                 {t('aboutUs.title1')}
               </div>
               <div className="text-sm text-white font-normal mb-3 lg:text-2xl lg:mb-7">
@@ -43,8 +43,12 @@ export default function AboutUsPage(): React.ReactElement {
               </div>
             </div>
           </div>
-          <div className="hidden lg:w-1/3 lg:block mt-5 lg:mt-0">
-            <Image className="w-full z-10 h-full" alt="img" src={aboutUs1} />
+          <div className="hidden lg:w-1/3 lg:block mt-5 lg:mt-12">
+            <Image
+              className="w-[400px] z-10 h-full lg:me-[20rem]"
+              alt="img"
+              src={aboutUs1}
+            />
           </div>
         </div>
         <div className="w-full">
@@ -60,7 +64,8 @@ export default function AboutUsPage(): React.ReactElement {
               {t('aboutUs.title2')}
             </div>
             <Image
-              className="w-full z-10 h-full lg:mt-4 hidden lg:block"
+              className="w-full z-10 h-full lg:mt-4 hidden lg:block 
+                lg:w-[125%] lg:-translate-y-[-3rem] lg:translate-x-[0rem]"
               alt="img"
               src={image1}
             />
@@ -72,7 +77,7 @@ export default function AboutUsPage(): React.ReactElement {
           </div>
           <div className="w-full mt-10">
             <div className="text-6xl text-right lg:text-left text-white font-bold mb-3 lg:text-6xl lg:mb-7 lg:mt-[20%] ml-12">
-              120+
+              +120
             </div>
             <Image
               className="w-full h-auto mt-3 mx-auto block lg:hidden"
@@ -85,23 +90,23 @@ export default function AboutUsPage(): React.ReactElement {
       <div className="w-full bg-gradient-to-tr p-5 cursor-default">
         <div className="flex flex-col lg:flex-row">
           <div className=" w-[450px]  lg:mt-10 lg:ml-20">
-            <div className="text-4xl text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
+            <div className="text-4xl text-seeds-purple font-bold mb-3 lg:text-[32px]  lg:mb-0">
               {t('aboutUs.title3')}
             </div>
           </div>
           <div className="mt-5 lg:mt-10">
-            <div className="text-lg text-seeds-purple font-normal me-5 lg:px-12 mb-7 lg:text-4xl lg:mb-7">
+            <div className="text-lg text-seeds-purple font-normal me-5 lg:px-12 mb-7 lg:me-12 lg:text-6xl lg:mb-0">
               {t('aboutUs.text5')}
             </div>
             <div className="flex flex-col lg:flex-row">
               <div className="flex flex-col lg:flex-row gap-5 ">
-                <div className="w-full">
+                <div className="lg:mb-0 lg:pb-0 w-full">
                   <Image
-                    className="w-full z-40 h-full mb-7 "
+                    className="w-full z-40 h-full mb-7 lg:mb-0 "
                     alt="img"
                     src={line2}
                   />
-                  <div className="text-lg text-black font-bold mb-1 lg:mb-3 lg:text-xl">
+                  <div className="text-lg text-black font-bold mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
                     {t('aboutUs.title4')}
                   </div>
                   <div className="text-lg text-black font-bold mb-4 lg:text-xl lg:mb-7">
@@ -110,17 +115,17 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-2xl text-seeds-purple font-bold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title5')}
                   </div>
-                  <div className="text-lg text-black font-semibold  mb-4 lg:text-xl">
+                  <Typography className="text-lg mb-4 lg:text-xl">
                     {t('aboutUs.text6')}
-                  </div>
+                  </Typography>
                 </div>
                 <div className="w-full">
                   <Image
-                    className="w-full z-40 h-full mb-7 "
+                    className="w-full z-40 h-full mb-7 lg:mb-0 "
                     alt="img"
                     src={line2}
                   />
-                  <div className="text-lg text-black font-bold mb-1 lg:mb-3 lg:text-xl">
+                  <div className="text-lg text-black font-bold mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
                     {t('aboutUs.title4')}
                   </div>
                   <div className="text-lg text-black font-bold mb-4 lg:text-xl lg:mb-7">
@@ -129,9 +134,9 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-2xl text-seeds-purple font-bold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title5')}
                   </div>
-                  <div className="text-lg text-black font-semibold  mb-4 lg:text-xl">
-                    {t('aboutUs.text6')}
-                  </div>
+                  <Typography className="text-lg mb-4 lg:text-xl">
+                    {t('aboutUs.text10')}
+                  </Typography>
                 </div>
               </div>
             </div>
@@ -145,11 +150,11 @@ export default function AboutUsPage(): React.ReactElement {
               <div className="flex flex-col lg:flex-row gap-5 ">
                 <div className="w-full">
                   <Image
-                    className="w-full z-40 h-full mb-7 "
+                    className="w-full z-40 h-full mb-7 lg:mb-0 "
                     alt="img"
                     src={line2}
                   />
-                  <div className="text-lg text-black font-bold mb-1 lg:mb-3 lg:text-xl">
+                  <div className="text-lg text-black font-bold mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
                     {t('aboutUs.title4')}
                   </div>
                   <div className="text-lg text-black font-bold mb-4 lg:text-xl lg:mb-7">
@@ -158,17 +163,17 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-2xl text-seeds-purple font-bold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title5')}
                   </div>
-                  <div className="text-lg text-black font-semibold  mb-4 lg:text-xl">
-                    {t('aboutUs.text6')}
-                  </div>
+                  <Typography className="text-lg  mb-4 lg:text-xl">
+                    {t('aboutUs.text11')}
+                  </Typography>
                 </div>
                 <div className="w-full">
                   <Image
-                    className="w-full z-40 h-full mb-7 "
+                    className="w-full z-40 h-full mb-7 lg:mb-0 "
                     alt="img"
                     src={line2}
                   />
-                  <div className="text-lg text-black font-bold mb-1 lg:mb-3 lg:text-xl">
+                  <div className="text-lg text-black font-bold mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
                     {t('aboutUs.title4')}
                   </div>
                   <div className="text-lg text-black font-bold mb-4 lg:text-xl lg:mb-7">
@@ -177,9 +182,9 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-2xl text-seeds-purple font-bold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title5')}
                   </div>
-                  <div className="text-lg text-black font-semibold  mb-4 lg:text-xl">
-                    {t('aboutUs.text6')}
-                  </div>
+                  <Typography className="text-lg mb-4 lg:text-xl">
+                    {t('aboutUs.text12')}
+                  </Typography>
                 </div>
               </div>
             </div>
@@ -189,21 +194,21 @@ export default function AboutUsPage(): React.ReactElement {
       <div className="w-full lg:p-5 cursor-default lg:mt-[15rem] ">
         <div className="flex flex-col lg:flex-row">
           <div className=" w-full  lg:ml-10 lg:mt-10 xl:mx-20">
-            <div className="text-xl ml-5 lg:mt-25 text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
+            <div className="text-xl ml-5 lg:mt-25 text-seeds-purple font-bold mb-3 lg:text-[32px] lg:mb-8">
               {t('aboutUs.title3')}
             </div>
-            <div className="text-xl ml-5 lg:mt-25 lg:text-center text-seeds-purple font-bold mb-3 lg:text-[32px] lg:mb-8">
+            <div className="text-xl ml-5 lg:mt-25 lg:text-center text-seeds-purple font-bold mb-3 lg:text-[32px] lg:mb-0">
               {t('aboutUs.title6')}
             </div>
             <div className="flex flex-col lg:flex-row">
-              <div className="flex flex-col lg:flex-row mx-5 lg:gap-40 lg:justify-between lg:mt-12">
+              <div className="flex flex-col lg:flex-row mx-5 lg:gap-40 lg:justify-between lg:mt-0">
                 <div className="w-full">
                   <Image
                     className="w-full z-10 h-full lg:me-25 "
                     alt="img"
                     src={learn}
                   />
-                  <div className="text-xl text-center text-seeds-purple mt-5 font-bold mb-3 lg:text-[22px] lg:mb-8">
+                  <div className="text-xl text-center text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
                     Learn
                   </div>
                   <div className="text-xl text-center text-black font-normal mb-12 lg:text-[18px] lg:mb-8">
@@ -216,7 +221,7 @@ export default function AboutUsPage(): React.ReactElement {
                     alt="img"
                     src={meet}
                   />
-                  <div className="text-xl text-center mt-5 text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
+                  <div className="text-xl text-center text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
                     Meet
                   </div>
                   <div className="text-xl text-center text-black font-normal mb-12 lg:text-[18px] lg:mb-8">
@@ -229,7 +234,7 @@ export default function AboutUsPage(): React.ReactElement {
                     alt="img"
                     src={play}
                   />
-                  <div className="text-xl text-center mt-5 text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
+                  <div className="text-xl text-center text-seeds-purple font-bold mb-3 lg:text-[22px] lg:mb-8">
                     Play
                   </div>
                   <div className="text-xl text-center text-black font-normal mb-3 lg:text-[18px] lg:mb-8">

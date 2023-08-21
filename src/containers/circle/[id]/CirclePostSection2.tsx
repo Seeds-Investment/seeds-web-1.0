@@ -4,7 +4,7 @@ import dot from '@/assets/circle-page/onedot.svg';
 import plants from '@/assets/plants.png';
 import Image from 'next/image';
 interface props {
-  CIRCLE_ID: string;
+  circleId: string;
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
@@ -12,7 +12,7 @@ interface props {
 
 const CirclePostSection2: React.FC<props> = ({
   dataCircle,
-  CIRCLE_ID,
+  circleId,
   isLoading,
   renderLoading
 }) => {

@@ -3,7 +3,7 @@ import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Image from 'next/image';
 interface props {
-  CIRCLE_ID: string;
+  circleId: string;
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
@@ -11,7 +11,7 @@ interface props {
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
-  CIRCLE_ID,
+  circleId,
   isLoading,
   renderLoading
 }) => {

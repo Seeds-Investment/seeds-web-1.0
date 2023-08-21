@@ -1,15 +1,15 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import CirclePostSection1 from '@/containers/circle/post/CirclePostSection1';
-import CirclePostSection2 from '@/containers/circle/post/CirclePostSection2';
+import CirclePostSection1 from '@/containers/circle/[id]/CirclePostSection1';
+import CirclePostSection2 from '@/containers/circle/[id]/CirclePostSection2';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
 import { useEffect, useState } from 'react';
 
 interface props {
   children: React.ReactNode;
-  CIRCLE_ID: any;
+  circleId: any;
 }
 
-const MainPostLayout: React.FC<props> = ({ children, CIRCLE_ID }) => {
+const MainPostLayout: React.FC<props> = ({ children, circleId }) => {
   const [dataCircle, setData]: any = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const renderLoading = (): JSX.Element => (
@@ -22,7 +22,7 @@ const MainPostLayout: React.FC<props> = ({ children, CIRCLE_ID }) => {
     try {
       setIsLoading(true);
 
-      const { data } = await getDetailCircle({ CIRCLE_ID });
+      const { data } = await getDetailCircle({ circleId });
 
       setData(data);
     } catch (error: any) {
@@ -35,9 +35,7 @@ const MainPostLayout: React.FC<props> = ({ children, CIRCLE_ID }) => {
   useEffect(() => {
     void fetchDetailCircle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [CIRCLE_ID]);
-
-  console.log(dataCircle);
+  }, [circleId]);
 
   const customGradient = (
     <>
@@ -61,14 +59,14 @@ const MainPostLayout: React.FC<props> = ({ children, CIRCLE_ID }) => {
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
-                CIRCLE_ID={CIRCLE_ID}
+                circleId={circleId}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
               />
               {children}
               <CirclePostSection2
                 dataCircle={dataCircle}
-                CIRCLE_ID={CIRCLE_ID}
+                circleId={circleId}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
               />

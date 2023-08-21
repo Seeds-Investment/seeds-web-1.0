@@ -1,5 +1,8 @@
 import back_nav from '@/assets/circle-page/back_nav.svg';
-import { getGifFromGhipy } from '@/repository/circleDetail.repository';
+import {
+  getGifFromGhipy,
+  searchGifFromGhipy
+} from '@/repository/circleDetail.repository';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -15,6 +18,9 @@ interface props {
 
 const GifPost: React.FC<props> = ({ setPages, form }) => {
   const [dataGif, setData]: any = useState();
+  const [search, setSearch] = useState({
+    searchGif: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const cancelHandler = (): void => {
     setPages('text');
@@ -24,7 +30,6 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
     try {
       setIsLoading(true);
       const { data } = await getGifFromGhipy();
-
       setData(data);
     } catch (error: any) {
       console.error('Error fetching Gif from ghipy', error);
@@ -32,6 +37,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
       setIsLoading(false);
     }
   };
+
   const renderLoading = (): JSX.Element => (
     <div className="h-72 flex justify-center">
       <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
@@ -42,9 +48,30 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
     void fetchGif();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const handlePostGif = (url: any): any => {
     form.media_urls.push(url);
     setPages('text');
+  };
+
+  const handleFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): any => {
+    const { name, value } = event.target;
+    setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
+  };
+
+  const searchGhipy = async (event: any): Promise<void> => {
+    event.preventDefault();
+    try {
+      setIsLoading(true);
+      const { data } = await searchGifFromGhipy(search.searchGif);
+      setData(data);
+    } catch (error: any) {
+      console.error('Error Search Gif from ghipy', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -63,11 +90,16 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
         <div className="flex justify-center flex-col relative left-10">
           <Image alt="Search" src={Search} className="h-6 w-6 object-cover" />
         </div>
-        <input
-          type="text"
-          className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
-          placeholder="Memes Stock"
-        />
+        <form onSubmit={searchGhipy}>
+          <input
+            type="text"
+            name="searchGif"
+            value={search.searchGif}
+            onChange={handleFormChange}
+            className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
+            placeholder="Memes Stock"
+          />
+        </form>
       </div>
       {isLoading ? (
         renderLoading()

@@ -21,19 +21,10 @@ export default function AboutUsPage(): React.ReactElement {
   const router = useRouter();
   const width = useWindowInnerWidth();
 
-  const customGradient = (
-    <>
-      <span className="z-0 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-purple blur-[90px] rotate-45" />
-      <span className="z-0 fixed bottom-0 left-0 w-24 h-24 bg-seeds-purple blur-[90px]" />
-      <span className="z-0 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="z-0 fixed top-24 -right-4 w-60 h-48 bg-seeds-purple blur-[90px] rotate-45 rounded-full" />
-      <span className="z-0 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
-    </>
-  );
 
   return (
     <PageGradient
-      customGradient={customGradient}
+      // customGradient={customGradient}
       className={`z-0  sm:gap-12 gap-5 sm:relative  overflow-hidden flex flex-col items-center w-full bottom-0  ${
         width !== undefined && width < 370
           ? 'w-[90%]'
@@ -114,7 +105,9 @@ export default function AboutUsPage(): React.ReactElement {
             </div>
           </div>
         </div>
-        <div className="w-full bg-gradient-to-tr p-5 cursor-default bg-[#FFFFFF]">
+
+        <div className="z-0 top-24 lg:ml-[50%] -right-4 w-60 h-48 hidden lg:block lg:mt[-3rem]  bg-seeds-purple blur-[90px] rounded-full"></div>
+        <div className="w-full bg-gradient-to-tr p-5 lg:mt-[-10rem] cursor-default bg-[#FFFFFF] ">
           <div className="flex flex-col lg:flex-row">
             <div className=" w-[450px]  lg:mt-10 lg:ml-20">
               <div className="text-3xl text-[#745AD9] font-semibold mb-3 lg:text-3xl  lg:mb-0">
@@ -185,7 +178,7 @@ export default function AboutUsPage(): React.ReactElement {
                       {t('aboutUs.title4')}
                     </div>
                     <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (01)
+                      (03)
                     </div>
                     <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
                       {t('aboutUs.title16')}
@@ -204,7 +197,7 @@ export default function AboutUsPage(): React.ReactElement {
                       {t('aboutUs.title4')}
                     </div>
                     <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (02)
+                      (04)
                     </div>
                     <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
                       {t('aboutUs.title17')}
@@ -218,7 +211,9 @@ export default function AboutUsPage(): React.ReactElement {
             </div>
           </div>
         </div>
-        <div className="w-full lg:p-5 cursor-default lg:mt-[15rem] ">
+        <div className="z-0 top-24 lg:ml-[90%] lg:mt-12 -right-4 w-120 h-48 hidden lg:block bg-seeds-green blur-[90px] rounded-full"></div>
+
+        <div className="w-full lg:p-5 cursor-default lg:mt-[-2rem] ">
           <div className="flex flex-col lg:flex-row">
             <div className=" w-full  lg:ml-10 lg:mt-10 xl:mx-20">
               <div className="text-3xl ml-5 lg:mt-25 text-[#745AD9] font-semibold mb-3 lg:text-3xl lg:mb-8">

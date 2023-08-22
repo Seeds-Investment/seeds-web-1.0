@@ -140,6 +140,21 @@ export const ShareSquare: AssetsInterface = {
   alt: 'share'
 };
 
+export const freeCircle: AssetsInterface = {
+  src: '/assets/circle/FreeCircle.png',
+  alt: 'freeCircle'
+};
+
+export const premiumCircle: AssetsInterface = {
+  src: '/assets/circle/PremiumCircle.png',
+  alt: 'premiumCircle'
+};
+
+export const successCircle: AssetsInterface = {
+  src: '/assets/circle/SuccessCircle.svg',
+  alt: 'successCircle'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -164,7 +179,10 @@ const Icons: Record<string, AssetsInterface> = {
   ArrowLeftBlack,
   Share,
   Dot,
-  Setting
+  Setting,
+  freeCircle,
+  premiumCircle,
+  successCircle
 };
 
 export default Icons;

@@ -94,7 +94,7 @@ const UserSetting: React.FC = () => {
       startAdornment: FileTextIcon,
       onClick: async () => {
         try {
-          await router.push('/faq-submenu');
+          await router.push('/faq-submenu/terms-condition');
         } catch (error) {
           console.error('Error navigating to FAQ:', error);
         }

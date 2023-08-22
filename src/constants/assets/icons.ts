@@ -155,6 +155,11 @@ export const successCircle: AssetsInterface = {
   alt: 'successCircle'
 };
 
+export const addImageCircle: AssetsInterface = {
+  src: '/assets/circle/AddImageCircle.png',
+  alt: 'addImageCircle'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -182,7 +187,8 @@ const Icons: Record<string, AssetsInterface> = {
   Setting,
   freeCircle,
   premiumCircle,
-  successCircle
+  successCircle,
+  addImageCircle
 };
 
 export default Icons;

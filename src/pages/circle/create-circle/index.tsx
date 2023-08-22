@@ -113,13 +113,6 @@ const CreateCircle = (): React.ReactElement => {
 
   const handleChangeStep = (value: string): void => {
     if (value === 'membership' || value === 'premium_choice') {
-      if (formRequest.name === '') {
-        setError(prevError => ({
-          ...prevError,
-          name: 'Field is empty'
-        }));
-      }
-
       if (formRequest.description === '') {
         setError(prevError => ({
           ...prevError,
@@ -140,6 +133,13 @@ const CreateCircle = (): React.ReactElement => {
           membership_type: 'Field is empty'
         }));
         return;
+      }
+
+      if (formRequest.name === '') {
+        setError(prevError => ({
+          ...prevError,
+          name: 'Field is empty'
+        }));
       }
     }
 

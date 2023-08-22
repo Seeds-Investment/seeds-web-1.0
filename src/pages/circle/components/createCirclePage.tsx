@@ -30,6 +30,31 @@ interface OptionType {
   label: string;
 }
 
+const customStyles = {
+  multiValue: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: '#3AC4A0',
+    color: 'white',
+    borderRadius: '4px'
+  }),
+  multiValueLabel: (base: any, state: any) => ({
+    ...base,
+    color: 'white'
+  }),
+  input: (base: any, state: any) => ({
+    ...base,
+    border: 'none'
+  }),
+  placeholder: (base: any, state: any) => ({
+    ...base,
+    marginLeft: '4px'
+  })
+};
+
+const formatOptionLabel = ({ label }: { label: string }): any => {
+  return <div style={{ display: 'flex', alignItems: 'center' }}># {label}</div>;
+};
+
 const CreateCirclePage = ({
   formRequest,
   changeStep,
@@ -158,18 +183,13 @@ const CreateCirclePage = ({
                     Hashtag
                   </label>
                   <CreatableSelect
-                    isClearable
                     isMulti
                     onChange={changeHashtag}
                     options={hashtags}
                     // value={formRequest.hashtags}
+                    styles={customStyles}
+                    formatOptionLabel={formatOptionLabel}
                     placeholder="#"
-                    styles={{
-                      control: (baseStyles, state) => ({
-                        ...baseStyles,
-                        borderColor: 'white'
-                      })
-                    }}
                   />
                   {error.hashtags !== null ? (
                     <Typography color="red" className="text-xs mt-2">

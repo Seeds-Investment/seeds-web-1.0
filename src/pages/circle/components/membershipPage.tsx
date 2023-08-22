@@ -127,7 +127,7 @@ const MembershipPage = ({
           </div>
           <div className="flex flex-row mb-5">
             {formRequest.memberships.length !== 0
-              ? formRequest.memberships.foreach((data: any, idx: number) => {
+              ? formRequest.memberships.map((data: any, idx: number) => {
                   const member = handleFindMemberInState(data);
                   return (
                     <div

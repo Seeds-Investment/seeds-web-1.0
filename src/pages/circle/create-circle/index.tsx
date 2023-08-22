@@ -140,6 +140,7 @@ const CreateCircle = (): React.ReactElement => {
           ...prevError,
           name: 'Field is empty'
         }));
+        return;
       }
     }
 

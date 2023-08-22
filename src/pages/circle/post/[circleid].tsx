@@ -8,7 +8,9 @@ import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
-  createPostCircleDetail
+  createPostCircleDetail,
+  getCirclePost,
+  getCircleRecomend
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
@@ -68,8 +70,7 @@ interface form {
 
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
-  const circleId = router.query.circleid;
-  console.log(router);
+  const circleId: string | any = router.query.circleid;
 
   const [isLoading, setIsLoading] = useState(false);
   const [media, setMedia] = useState<any>();
@@ -95,6 +96,43 @@ const CirclePost = (): JSX.Element => {
     void fetchData();
   }, []);
 
+  const [dataPost, setDataPost]: any = useState([]);
+  const [dataRecommend, setDataRecommend]: any = useState([]);
+
+  const fetchCirclePost = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getCirclePost({ circleId });
+
+      setDataPost(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Post:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCircleRecommended = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getCircleRecomend({ circleId });
+
+      setDataRecommend(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Recommend:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void fetchCirclePost();
+    void fetchCircleRecommended();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [circleId]);
+
   const [form, setForm] = useState<form>({
     content_text: '',
     privacy: dropVal.type.toLowerCase(),
@@ -106,14 +144,26 @@ const CirclePost = (): JSX.Element => {
       <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
     </div>
   );
+  const [hashtags, setHashtags] = useState<string[]>([]);
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): any => {
     const { name, value } = event.target;
     setForm(prevForm => ({ ...prevForm, [name]: value }));
-  };
+    if (value.endsWith(' ')) {
+      const words = value.split(' ');
+      const currentWord = words[words.length - 2];
 
+      if (currentWord?.startsWith('#')) {
+        hashtags.push(currentWord);
+        words.pop();
+        words.pop();
+        const newVal = words.join(' ') + ' ';
+        setForm(prevForm => ({ ...prevForm, [name]: newVal }));
+      }
+    }
+  };
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -163,7 +213,7 @@ const CirclePost = (): JSX.Element => {
         await postMedia();
       }
 
-      const response = await createPostCircleDetail({
+      await createPostCircleDetail({
         content_text: form.content_text,
         media_urls: form.media_urls,
         privacy: form.privacy,
@@ -178,7 +228,9 @@ const CirclePost = (): JSX.Element => {
         media_urls: []
       });
       setMedia(undefined);
-      console.log(response);
+      setHashtags([]);
+      await fetchCirclePost();
+      await fetchCircleRecommended();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -196,7 +248,11 @@ const CirclePost = (): JSX.Element => {
   };
 
   return (
-    <MainPostLayout circleId={circleId}>
+    <MainPostLayout
+      circleId={circleId}
+      dataPost={dataPost}
+      dataRecommend={dataRecommend}
+    >
       {/* posting section */}
       <div className="hidden md:block bg-white mt-8 w-full rounded-xl">
         {isLoading ? renderLoading() : <></>}

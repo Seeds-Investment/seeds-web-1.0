@@ -1,29 +1,45 @@
-import avatar from '@/assets/bg-hello.png';
-import dot_menu from '@/assets/circle-page/3dot.svg';
-import dot from '@/assets/circle-page/onedot.svg';
-import plants from '@/assets/plants.png';
-import Image from 'next/image';
+'use client';
+import { useState } from 'react';
+import PostSection from './PostSection';
 interface props {
   circleId: string;
   isLoading: boolean;
   renderLoading: any;
-  dataCircle: any;
+  setIsLoading: any;
+  dataPost: any;
+  dataRecommend: any;
 }
 
 const CirclePostSection2: React.FC<props> = ({
-  dataCircle,
+  setIsLoading,
   circleId,
   isLoading,
-  renderLoading
+  renderLoading,
+  dataPost,
+  dataRecommend
 }) => {
-  // function formatDate(inputDateString: any): string {
-  //   const date = new Date(inputDateString);
-  //   const day = date.getUTCDate().toString().padStart(2, '0');
-  //   const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-  //   const year = date.getUTCFullYear().toString();
+  const [tabs, setTabs] = useState<string>('post');
 
-  //   return `${day}/${month}/${year}`;
-  // }
+  const handlePages = (): any => {
+    if (tabs === 'post') {
+      return (
+        <>
+          {dataPost?.map((el: any) => {
+            return <PostSection dataPost={el} key={el.id} />;
+          })}
+        </>
+      );
+    } else if (tabs === 'recommended') {
+      return (
+        <>
+          {dataRecommend?.map((el: any) => {
+            return <PostSection dataPost={el} key={el.id} />;
+          })}
+        </>
+      );
+    }
+  };
+
   const active: string =
     'text-seeds-green font-poppins font-semibold text-xs md:text-base pb-2 border-b border-seeds-green';
   const inActive: string =
@@ -37,82 +53,40 @@ const CirclePostSection2: React.FC<props> = ({
           <div className="h-fit w-full py-8 px-14 md:ml-0">
             {/* navigation */}
             <div className="flex justify-start border-b border-neutral-soft w-fit gap-8 mb-8 ml-5 md:ml-0">
-              <button className={inActive}>Post</button>
-              <button className={active}>Recommended</button>
-              <button className={inActive}>Members</button>
-              <button className={inActive}>About</button>
+              <button
+                onClick={(): any => {
+                  setTabs('post');
+                }}
+                className={tabs === 'post' ? active : inActive}
+              >
+                Post
+              </button>
+              <button
+                onClick={(): any => {
+                  setTabs('recommended');
+                }}
+                className={tabs === 'recommended' ? active : inActive}
+              >
+                Recommended
+              </button>
+              <button
+                onClick={(): any => {
+                  setTabs('members');
+                }}
+                className={tabs === 'members' ? active : inActive}
+              >
+                Members
+              </button>
+              <button
+                onClick={(): any => {
+                  setTabs('about');
+                }}
+                className={tabs === 'about' ? active : inActive}
+              >
+                About
+              </button>
             </div>
-            {/* post section */}
-            <div className="flex justify-between">
-              {/* profile section */}
-              <div className="flex justify-start gap-3">
-                <Image
-                  alt="bg-avatar-sm"
-                  src={avatar}
-                  className="h-[48px] w-[48px] rounded-full object-cover"
-                />
-                <div className="flex flex-col">
-                  <div className="flex h-fit gap-2">
-                    <h1 className="text-[#262626] font-semibold font-poppins text-base">
-                      @aguswarewolf
-                    </h1>
-                    <Image
-                      alt="bg-plants"
-                      src={plants}
-                      className="h-[16px] w-[16px] mt-1 object-fit"
-                    />
-                    <div className=" bg-[#DCFCE4] rounded-full px-2 flex justify-center flex-col">
-                      <h1 className="text-[#3AC4A0] font-normal font-poppins text-xs">
-                        Admin
-                      </h1>
-                    </div>
-                  </div>
-                  {/* timelaps section */}
-                  <div className="flex">
-                    <h1 className="text-[#7C7C7C] font-normal font-poppins text-sm">
-                      09/03/2022
-                    </h1>
-                    <Image
-                      alt="dot"
-                      src={dot}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                    <h1 className="text-[#7C7C7C] font-normal font-poppins text-sm">
-                      12.39 PM
-                    </h1>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <button type="button">
-                  <Image
-                    alt="menu_dot"
-                    src={dot_menu}
-                    className="h-[24px] w-[24px] object-cover"
-                  />
-                </button>
-              </div>
-            </div>
-            {/* detail section */}
-            <div className="flex justify-start pl-5 pt-5">
-              <div className="flex flex-col">
-                <div className="flex gap-1">
-                  <h1 className="font-montserrat text-seeds-purple text-xs">
-                    #NFT3d
-                  </h1>
-                  <h1 className="font-montserrat text-seeds-purple text-xs">
-                    #NFTPostedArt
-                  </h1>
-                </div>
-                <h1 className="font-montserrat text-[#262626] text-xs">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-                  quasi enim obcaecati eligendi repellat deserunt. Sit corporis
-                  illo necessitatibus voluptatem itaque eligendi, similique sint
-                  dolores assumenda asperiores iusto! Quas, provident!
-                </h1>
-              </div>
-            </div>
-            {/* finish */}
+            {handlePages()}
           </div>
         </div>
       )}

@@ -7,9 +7,16 @@ import { useEffect, useState } from 'react';
 interface props {
   children: React.ReactNode;
   circleId: any;
+  dataPost: any;
+  dataRecommend: any;
 }
 
-const MainPostLayout: React.FC<props> = ({ children, circleId }) => {
+const MainPostLayout: React.FC<props> = ({
+  children,
+  circleId,
+  dataPost,
+  dataRecommend
+}) => {
   const [dataCircle, setData]: any = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const renderLoading = (): JSX.Element => (
@@ -65,8 +72,10 @@ const MainPostLayout: React.FC<props> = ({ children, circleId }) => {
               />
               {children}
               <CirclePostSection2
-                dataCircle={dataCircle}
+                setIsLoading={setIsLoading}
                 circleId={circleId}
+                dataPost={dataPost}
+                dataRecommend={dataRecommend}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
               />

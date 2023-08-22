@@ -28,6 +28,54 @@ export const getDetailCircle = async ({
   }
 };
 
+export const getCirclePost = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/post/v2/list?circle_id=${circleId}&page=1&limit=10`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getCircleRecomend = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/post/v2/list/recommended?circle_id=${circleId}&page=1&limit=10`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const getGifFromGhipy = async (): Promise<any> => {
   try {
     const response = await fetch(
@@ -83,15 +131,16 @@ export const createPostCircleDetail = async (formData: {
       privacy: formData.privacy,
       is_pinned: formData.is_pinned,
       user_id: formData.user_id,
-      circleId: formData.circleId
+      circle_id: formData.circleId
     });
 
-    return await baseUrl.post('/post/v2/create', body, {
+    const response = await baseUrl.post('/post/v2/create', body, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    return response;
   } catch (error) {
     return error;
   }

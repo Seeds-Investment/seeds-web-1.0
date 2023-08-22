@@ -753,7 +753,10 @@ export default {
     text5:
       'For us, our values are more than just worlds. They are ways of living, creating, and doing.',
     title4: 'Seeds Value',
-    title5: 'Trust',
+    title5: 'Financial Empowerment',
+    title15: 'Educational Excellence',
+    title16: 'Community Collaboration',
+    title17: 'Innovation for Impact',
     text6:
       'Empowering individuals, especially millenials and Gen Z, with the knowledge, skills, and confidence to make an informed and responsible financial decision.',
     text10:

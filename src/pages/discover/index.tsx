@@ -1,10 +1,10 @@
 'use client';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import DiscoverBanner from '@/containers/discover/DiscoverBanner';
-import DiscoverEarn from '@/containers/discover/DiscoverEarn';
-import DiscoverMerchant from '@/containers/discover/DiscoverMerchant';
+// import DiscoverBanner from '@/containers/discover/DiscoverBanner';
+// import DiscoverEarn from '@/containers/discover/DiscoverEarn';
+// import DiscoverMerchant from '@/containers/discover/DiscoverMerchant';
 import DiscoverNews from '@/containers/discover/DiscoverNews';
-import DiscoverSearch from '@/containers/discover/DiscoverSearch';
+// import DiscoverSearch from '@/containers/discover/DiscoverSearch';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 
 export default function Discover(): React.ReactElement {
@@ -25,10 +25,10 @@ export default function Discover(): React.ReactElement {
           : ''
       } bg-white`}
     >
-      <DiscoverSearch />
+      {/* <DiscoverSearch />
       <DiscoverBanner />
       <DiscoverEarn />
-      <DiscoverMerchant />
+      <DiscoverMerchant /> */}
       <DiscoverNews />
     </PageGradient>
   );

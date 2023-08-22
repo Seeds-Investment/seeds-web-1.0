@@ -81,7 +81,7 @@ const CircleMembership: React.FC = () => {
               </span>
             </p>
             <br />
-            <p className="font-poppins font-14 leading-5 text-justify">
+            <p className="flex flex-col self-stretch text-sm font-poppins text-14 leading-20 text-[#262626]">
               {t(`termAndCondition.circleMembership.announcement`)}
             </p>
             <br />

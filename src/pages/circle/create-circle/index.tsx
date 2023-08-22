@@ -43,6 +43,13 @@ const CreateCircle = (): React.ReactElement => {
     useState<FormRequestInterface>(initialFormRequest);
   const [step, setStep] = useState('');
   const [isLoadingSubmit, setIsloadingSubmit] = useState(false);
+  const [error, setError] = useState({
+    name: '',
+    hashtags: '',
+    description: '',
+    description_rules: '',
+    membership_type: ''
+  });
   const width = useWindowInnerWidth();
 
   const handleUploadImage = (event: any): void => {
@@ -86,6 +93,10 @@ const CreateCircle = (): React.ReactElement => {
         [name]: value
       }));
     }
+    setError(prevError => ({
+      ...prevError,
+      [name]: ''
+    }));
   };
 
   const handleChangeValueHashtag = (value: any[]): void => {
@@ -101,6 +112,37 @@ const CreateCircle = (): React.ReactElement => {
   };
 
   const handleChangeStep = (value: string): void => {
+    if (value === 'membership' || value === 'premium_choice') {
+      if (formRequest.name === '') {
+        setError(prevError => ({
+          ...prevError,
+          name: 'Field is empty'
+        }));
+      }
+
+      if (formRequest.description === '') {
+        setError(prevError => ({
+          ...prevError,
+          description: 'Field is empty'
+        }));
+      }
+
+      if (formRequest.description_rules === '') {
+        setError(prevError => ({
+          ...prevError,
+          description_rules: 'Field is empty'
+        }));
+      }
+
+      if (formRequest.membership_type === '') {
+        setError(prevError => ({
+          ...prevError,
+          membership_type: 'Field is empty'
+        }));
+        return;
+      }
+    }
+
     setStep(value);
   };
 
@@ -182,6 +224,7 @@ const CreateCircle = (): React.ReactElement => {
             change={handleChangeValue}
             uploadImage={handleUploadImage}
             changeHashtag={handleChangeValueHashtag}
+            error={error}
           />
         )}
       </CardGradient>

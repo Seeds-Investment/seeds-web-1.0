@@ -35,7 +35,8 @@ const CreateCirclePage = ({
   changeStep,
   change,
   uploadImage,
-  changeHashtag
+  changeHashtag,
+  error
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [openModalMembership, setOpenModalMembership] = useState(false);
@@ -94,12 +95,13 @@ const CreateCirclePage = ({
               </h6>
             </div>
             <div className="flex items-center justify-center rounded-xl">
-              <label className="relative w-full h-24">
+              <label className="relative w-full h-44">
                 <Image
                   height={0}
                   width={0}
                   src={formRequest?.cover}
                   alt="Preview"
+                  sizes="100vw"
                   className="object-cover w-full h-full bg-[#DCFCE4]"
                 />
                 <input
@@ -111,26 +113,27 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
+            <div className="absolute z-10 flex items-center justify-center top-52 left-[43%]">
+              <label className="relative rounded-full w-24 h-24 overflow-hidden">
+                <Image
+                  height={0}
+                  width={0}
+                  sizes="100vw"
+                  src={formRequest?.avatar}
+                  alt="Preview"
+                  className="object-cover w-full h-full bg-[#DCFCE4]"
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="avatar"
+                  onChange={uploadImage}
+                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </label>
+            </div>
             <CCard className="p-9 border-none shadow-none bg-white">
               <div className="mb-10 pt-10 bg-white">
-                <div className="flex items-center justify-center">
-                  <label className="relative rounded-full w-24 h-24 overflow-hidden">
-                    <Image
-                      height={0}
-                      width={0}
-                      src={formRequest?.avatar}
-                      alt="Preview"
-                      className="object-cover w-full h-full bg-[#DCFCE4]"
-                    />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      name="avatar"
-                      onChange={uploadImage}
-                      className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                  </label>
-                </div>
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
                     Circle Name
@@ -143,6 +146,11 @@ const CreateCirclePage = ({
                     value={formRequest?.name}
                     placeholder="Type circle name"
                   />
+                  {error.name !== null ? (
+                    <Typography color="red" className="text-xs mt-2">
+                      {error.name}
+                    </Typography>
+                  ) : null}
                 </div>
 
                 <div className="mb-8">
@@ -163,6 +171,11 @@ const CreateCirclePage = ({
                       })
                     }}
                   />
+                  {error.hashtags !== null ? (
+                    <Typography color="red" className="text-xs mt-2">
+                      {error.hashtags}
+                    </Typography>
+                  ) : null}
                 </div>
 
                 <div className="mb-8">
@@ -178,6 +191,11 @@ const CreateCirclePage = ({
                     value={formRequest.description}
                     placeholder="Type Description"
                   />
+                  {error.description !== null ? (
+                    <Typography color="red" className="text-xs mt-2">
+                      {error.description}
+                    </Typography>
+                  ) : null}
                 </div>
 
                 <div className="mb-8">
@@ -192,6 +210,11 @@ const CreateCirclePage = ({
                     value={formRequest.description_rules}
                     placeholder="Type rules"
                   />
+                  {error.description_rules !== null ? (
+                    <Typography color="red" className="text-xs mt-2">
+                      {error.description_rules}
+                    </Typography>
+                  ) : null}
                 </div>
 
                 <Card color="white" shadow={false} className="w-full border-2">
@@ -256,6 +279,11 @@ const CreateCirclePage = ({
                     </div>
                   </CardBody>
                 </Card>
+                {error.membership_type !== null ? (
+                  <Typography color="red" className="text-xs mt-2">
+                    {error.membership_type}
+                  </Typography>
+                ) : null}
               </div>
               <div className="text-center mx-8 pb-2">
                 <input

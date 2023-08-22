@@ -166,7 +166,8 @@ export default {
       phoneNumber: 'Nomor Telepon',
       name: 'Nama',
       seedsTag: 'Tag Seeds',
-      referralCode: 'Kode Referal'
+      referralCode: 'Kode Referal',
+      optional: '(tidak wajib)'
     }
   },
   button: {
@@ -680,7 +681,7 @@ export default {
       'Karena seeds percaya bahwa setiap orang punya kesempatan sama untuk berinvestasi terlepas dari latar belakangnya.',
     text3: 'Seeds, Berinvestasi, Bersama',
     title2: 'People',
-    tekt4:
+    text4:
       'Kami Mengidentifikasi peluang yang Anda miliki secara unik dengan menganalisis bisnis Anda, pasar Anda, dan perubahan budaya di dunia.',
     title3: 'Nilai Kami',
     text5:

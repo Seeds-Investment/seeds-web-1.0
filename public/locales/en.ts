@@ -178,7 +178,8 @@ export default {
       phoneNumber: 'Phone Number',
       name: 'Name',
       seedsTag: 'Seeds Tag',
-      referralCode: 'Referral Code'
+      referralCode: 'Referral Code',
+      optional: '(optional)'
     }
   },
   button: {
@@ -217,7 +218,7 @@ export default {
     subTitle: 'Find answers to your questions about Seeds',
     faq: {
       title: {
-        1: 'What is Seed?',
+        1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
         3: 'How can I access seeds?',
         4: 'How safe is it to invest in Seeds?',

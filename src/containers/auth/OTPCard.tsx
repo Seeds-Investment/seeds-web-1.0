@@ -167,7 +167,8 @@ const OTPCard = ({
                 onChange={e => {
                   codeHandler(e.target.value, idx);
                 }}
-                className="max-w-[70px] text-center text-black text-bold"
+                className="max-w-[70px] text-center text-black font-extrabold"
+                style={{ fontWeight: '700' }}
                 error={error}
                 name={payload.method}
                 color="green"

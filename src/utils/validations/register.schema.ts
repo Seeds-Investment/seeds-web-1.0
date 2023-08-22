@@ -21,7 +21,18 @@ export const formRegisterPersonalInfoSchema: any = Yup.object<
     .min(10, 'Email must have at least 10 characters length')
     .max(20, 'Email must have at most 20 characters length'),
   email: Yup.string().required().matches(email, 'Invalid Email'),
-  birthdate: Yup.string().required()
+  birthdate: Yup.string()
+    .required()
+    .test(
+      'is-before-today',
+      'Birthdate must be before today',
+      function (value) {
+        if (value.length === 0) return false;
+        const today = new Date();
+        const selectedDate = new Date(value);
+        return selectedDate <= today;
+      }
+    )
 });
 
 export const formConfigureSeedsUserSchema: any = Yup.object<
@@ -30,6 +41,16 @@ export const formConfigureSeedsUserSchema: any = Yup.object<
   name: Yup.string().required(),
   seedsTag: Yup.string()
     .required()
+    .test(
+      'no-spaces',
+      'SeedsTag cannot contain spaces, please delete your spaces!',
+      value => {
+        if (typeof value === 'string') {
+          return !/\s/.test(value);
+        }
+        return false;
+      }
+    )
     .matches(seedsTag, "Don't need to add '@'")
     .min(2, 'Seeds Tag must contain text')
     .max(20, 'Seeds Tag must have at most 20 characters length'),

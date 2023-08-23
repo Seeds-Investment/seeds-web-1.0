@@ -156,7 +156,9 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
       >
         <PageGradient
           defaultGradient
-          className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+          className={`sm:relative sm:pb-20 overflow-hidden flex flex-col items-center w-full bottom-0   ${
+            width !== undefined && width < 640 ? '' : 'absolute'
+          }`}
         >
           <CardGradient
             defaultGradient
@@ -175,7 +177,12 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
               <div className="ml-2 z-10">
                 <button
                   onClick={() => {
-                    router.back();
+                    if (width !== undefined && width < 640) {
+                      router.back();
+                      router.back();
+                    } else {
+                      router.back();
+                    }
                   }}
                 >
                   <Image

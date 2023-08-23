@@ -36,7 +36,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
   const languageCtx = useContext(LanguageContext);
 
   const width = useWindowInnerWidth();
-
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -110,10 +110,10 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
           router.back();
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -131,13 +131,28 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     formatSeedsTagHandler
   );
 
-  function formatDate(inputDateString: any): string {
-    const date = new Date(inputDateString);
-    const day = date.getUTCDate().toString().padStart(2, '0');
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const year = date.getUTCFullYear().toString();
+  function formatDateForDisplay(dateString: string): string {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
 
-    return `${day}/${month}/${year}`;
+    const date = new Date(dateString);
+    const day = date.getUTCDate();
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+
+    return `${day} ${month} ${year}`;
   }
 
   useEffect(() => {
@@ -181,9 +196,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
             <button
               type="submit"
               className="focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold md:text-base text-sm text-seeds-button-green hover:border-b border-seeds-button-green disabled:cursor-not-allowed"
-              onClick={() => {
-                console.log(form);
-              }}
             >
               {t('button.label.done')}
             </button>
@@ -277,10 +289,20 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               extraInputClasses="md:text-base text-sm"
               extraLabelClasses="md:text-base text-sm md:peer-focus:text-base peer-focus:text-sm"
               props={{
-                readOnly: false,
-                value: formatDate(form?.birthDate),
-                onChange: (e: any) => {
-                  handleOnChange('birthDate', e.target.value);
+                value:
+                  (form?.birthDate as string) !== ''
+                    ? isEditing
+                      ? new Date(form.birthDate).toISOString().substr(0, 10)
+                      : formatDateForDisplay(form.birthDate)
+                    : null,
+                onClick: () => {
+                  setIsEditing(true);
+                },
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  const selectedDate = e.target.value;
+                  const formattedDate = new Date(selectedDate).toISOString();
+
+                  handleOnChange('birthDate', formattedDate);
                 }
               }}
             />

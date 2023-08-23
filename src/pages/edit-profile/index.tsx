@@ -24,6 +24,7 @@ import {
 import LanguageContext from '@/store/language/language-context';
 import { userActions } from '@/store/redux/features/user-data/user-slice';
 
+import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
 interface ConfirmNewPinProps {
   router: NextRouter;
@@ -37,6 +38,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
 
   const width = useWindowInnerWidth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [formImage, setformImage] = useState<any>();
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -90,28 +92,34 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     }));
   };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>): void => {
+  const submitForm = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
     try {
-      e.preventDefault();
+      let updatedForm: any = { ...form };
 
-      editUserInfo(form)
-        .then(() => {
-          setForm({
-            name: '',
-            seedsTag: '',
-            email: '',
-            avatar: '',
-            bio: '',
-            birthDate: '',
-            phone: '',
-            nameIsEdited: false,
-            tagIsEdited: false
-          });
-          router.back();
-        })
-        .catch(error => {
-          console.error(error);
+      if (formImage !== undefined && formImage !== null) {
+        const { path: cloudResponse } = await postCloud({
+          file: formImage,
+          type: 'OTHER_URL'
         });
+        updatedForm = { ...form, avatar: cloudResponse };
+      }
+
+      await editUserInfo(updatedForm);
+      setForm({
+        name: '',
+        seedsTag: '',
+        email: '',
+        avatar: '',
+        bio: '',
+        birthDate: '',
+        phone: '',
+        nameIsEdited: false,
+        tagIsEdited: false
+      });
+      router.back();
     } catch (error) {
       console.error(error);
     }
@@ -200,21 +208,40 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               {t('button.label.done')}
             </button>
           </div>
-
           {/* ----- Image Container ----- */}
           <div className="z-10 overflow-hidden rounded-full mb-1 mx-auto md:w-28 md:h-28 w-20 h-20">
-            <Image
-              alt="avatar"
-              src={form?.avatar}
-              width={100}
-              height={100}
-              className="w-full h-full object-center object-cover"
-            />
+            {formImage !== undefined && formImage !== null ? (
+              <img
+                alt="avatar"
+                src={URL.createObjectURL(formImage)}
+                className="w-full h-full object-center object-cover"
+              />
+            ) : (
+              <Image
+                alt="avatar"
+                src={form?.avatar}
+                width={100}
+                height={100}
+                className="w-full h-full object-center object-cover"
+              />
+            )}
           </div>
           <div className="mb-8 text-center">
-            <button className="z-20 focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold text-xs text-seeds-button-green hover:border-b border-seeds-button-green disabled:cursor-not-allowed">
+            <label
+              htmlFor="imageInput"
+              className="z-20 focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold text-xs text-seeds-button-green hover:border-b border-seeds-button-green cursor-pointer"
+            >
               {t('editProfile.editImage')}
-            </button>
+            </label>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(e: any) => {
+                setformImage(e.target.files[0]);
+              }}
+            />
           </div>
 
           {/* -----Inner Card----- */}

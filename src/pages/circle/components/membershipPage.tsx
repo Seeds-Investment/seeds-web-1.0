@@ -1,6 +1,6 @@
 import { SearchCircle } from '@/components/forms/searchCircle';
 import { getUserFriends } from '@/repository/user.repository';
-import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import {
   Avatar,
   Button,
@@ -98,6 +98,13 @@ const MembershipPage = ({
       .catch(() => {});
   }, []);
 
+  const handleFound = (id: string): string => {
+    const data = formRequest.memberships.find(function (member: any) {
+      return member === id;
+    });
+
+    return data;
+  };
   return (
     <div>
       {formRequest !== undefined && (
@@ -134,17 +141,21 @@ const MembershipPage = ({
                       className="flex items-center justify-center mr-5"
                       key={idx}
                     >
-                      <div className="relative">
+                      <div className="relative flex flex-col items-center justify-center">
                         <Avatar
                           size="md"
                           variant="circular"
                           src={member.avatar}
                           alt="Avatar"
+                          className="mb-2"
                         />
                         <XCircleIcon
-                          className="w-6 h-6 absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2"
+                          className="w-6 h-6 z-10 absolute transform top-5 text-[#3AC4A0] border-white translate-x-1/2 translate-y-1/2"
                           onClick={() => removeMember(idx)}
                         />
+                        <Typography className="font-normal text-sm text-[#7C7C7C]">
+                          {member.name}
+                        </Typography>
                       </div>
                     </div>
                   );
@@ -192,15 +203,25 @@ const MembershipPage = ({
                         </Typography>
                       </div>
                       <div className="items-end">
-                        <Button
-                          className="bg-[#DCFCE4] text-[#3AC4A0] rounded-full shadow-none"
-                          name="memberships"
-                          value={data.id}
-                          onClick={change}
-                        >
-                          {/* {handleButtonMemberAdd(data.id) ? "Member" : "Add"} */}
-                          Add
-                        </Button>
+                        {handleFound(data.id) !== undefined ? (
+                          <Button
+                            className="bg-[#DCFCE4] text-[#3AC4A0] rounded-full shadow-none"
+                            name="memberships"
+                            value={data.id}
+                            disabled={false}
+                          >
+                            Member
+                          </Button>
+                        ) : (
+                          <Button
+                            className="bg-[#DCFCE4] text-[#3AC4A0] rounded-full shadow-none"
+                            name="memberships"
+                            value={data.id}
+                            onClick={change}
+                          >
+                            Add
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </CardBody>

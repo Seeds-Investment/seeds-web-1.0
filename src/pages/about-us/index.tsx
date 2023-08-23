@@ -21,19 +21,10 @@ export default function AboutUsPage(): React.ReactElement {
   const router = useRouter();
   const width = useWindowInnerWidth();
 
-  const customGradient = (
-    <>
-      <span className="z-0 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-purple blur-[90px] rotate-45" />
-      <span className="z-0 fixed bottom-0 left-0 w-24 h-24 bg-seeds-purple blur-[90px]" />
-      <span className="z-0 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="z-0 fixed top-24 -right-4 w-60 h-48 bg-seeds-purple blur-[90px] rotate-45 rounded-full" />
-      <span className="z-0 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
-    </>
-  );
 
   return (
     <PageGradient
-      customGradient={customGradient}
+      // customGradient={customGradient}
       className={`z-0  sm:gap-12 gap-5 sm:relative  overflow-hidden flex flex-col items-center w-full bottom-0  ${
         width !== undefined && width < 370
           ? 'w-[90%]'
@@ -46,8 +37,8 @@ export default function AboutUsPage(): React.ReactElement {
           : ''
       } bg-white`}
     >
-      <div className=" h-auto cursor-default font-poppins ">
-        <div className="w-full bg-gradient-to-tr from-seeds-green to-seeds-purple py-5 cursor-default">
+      <div className="w-full h-auto cursor-default font-poppins ">
+        <div className="w-full bg-gradient-to-tr z-20 from-seeds-green to-seeds-purple py-5 cursor-default">
           <div className="flex flex-col lg:flex-row mx-5 lg:mx-20">
             <div className="w-full lg:w-2/3 lg:ml-5">
               <Image
@@ -98,23 +89,25 @@ export default function AboutUsPage(): React.ReactElement {
               />
             </div>
             <div className="w-full lg:w-[200%] lg:mt-10">
-              <div className="text-base text-white font-normal ml-5 mb-3 lg:text-2xl">
+              <div className="text-base z-30 relative text-white font-normal ml-5 mb-3 lg:text-2xl">
                 {t('aboutUs.text4')}
               </div>
             </div>
             <div className="w-full mx-5 mt-10">
-              <div className="text-8xl text-left ml-[60%] lg:text-left font-montserrat text-white font-bold mb-3 lg:text-8xl lg:mb-7 lg:mt-[20%]  lg:ml-[20%]">
+              <div className="z-30 relative text-8xl text-left ml-[30%] lg:text-left font-montserrat text-white font-bold mb-3 lg:text-8xl lg:mb-7 lg:mt-[20%]  lg:ml-[20%]">
                 +120
               </div>
               <Image
-                className="w-full h-auto mt-3 mx-auto block lg:hidden"
+                className="w-full h-auto mt-3 mx-5 block lg:hidden"
                 alt="img"
                 src={image1}
               />
             </div>
           </div>
         </div>
-        <div className="w-full bg-gradient-to-tr p-5 cursor-default bg-[#FFFFFF]">
+
+        <div className="z-20 hidden lg:block relative top-[42px] left-[55px] lg:ml-[30%] opacity-[50%] w-[699px] h-[698px] lg:mt-[-30rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
+        <div className="w-full z-10 relative mx-5 mt-5 lg:mt-[-10rem] bg-[#FFFFFF]">
           <div className="flex flex-col lg:flex-row">
             <div className=" w-[450px]  lg:mt-10 lg:ml-20">
               <div className="text-3xl text-[#745AD9] font-semibold mb-3 lg:text-3xl  lg:mb-0">
@@ -125,103 +118,99 @@ export default function AboutUsPage(): React.ReactElement {
               <div className="text-xl text-[#745AD9] font-normal me-5 mb-7 lg:me-12 lg:text-5xl lg:mb-0">
                 {t('aboutUs.text5')}
               </div>
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex flex-col lg:flex-row gap-5 ">
-                  <div className="lg:mb-0 lg:pb-0 w-full">
-                    <Image
-                      className="w-full z-40 h-full mb-7 lg:mb-0 "
-                      alt="img"
-                      src={line2}
-                    />
-                    <div className="text-xl text-black font-normal mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
-                      {t('aboutUs.title4')}
-                    </div>
-                    <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (01)
-                    </div>
-                    <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
-                      {t('aboutUs.title5')}
-                    </div>
-                    <Typography className="text-lg mb-4 lg:text-xl">
-                      {t('aboutUs.text6')}
-                    </Typography>
+
+              <div className="w-full flex flex-col lg:flex-row gap-5 lg:gap-10 ">
+                <div className="lg:mb-0 lg:pb-0 w-full h-full lg:mt-12 lg:w-[40%] ">
+                  <Image
+                    className="lg:w-full z-40 h-full mb-7 lg:mt-12 lg:mb-0 "
+                    alt="img"
+                    src={line2}
+                  />
+                  <div className="text-xl text-black font-normal lg:mt-5 mb-1 lg:mb-3 lg:text-xl">
+                    {t('aboutUs.title4')}
                   </div>
-                  <div className="w-full">
-                    <Image
-                      className="w-full z-40 h-full mb-7 lg:mb-0 "
-                      alt="img"
-                      src={line2}
-                    />
-                    <div className="text-xl text-black font-normal mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
-                      {t('aboutUs.title4')}
-                    </div>
-                    <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (02)
-                    </div>
-                    <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
-                      {t('aboutUs.title15')}
-                    </div>
-                    <Typography className="text-lg mb-4 lg:text-xl">
-                      {t('aboutUs.text10')}
-                    </Typography>
+                  <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
+                    (01)
                   </div>
+                  <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                    {t('aboutUs.title5')}
+                  </div>
+                  <Typography className="text-lg mb-4 me-5 lg:text-xl">
+                    {t('aboutUs.text6')}
+                  </Typography>
+                </div>
+                <div className="lg:mb-0 lg:pb-0 w-full h-full lg:mt-12 lg:w-[40%]">
+                  <Image
+                    className="lg:w-full z-40 h-full mb-7 lg:mt-12 lg:mb-0 "
+                    alt="img"
+                    src={line2}
+                  />
+                  <div className="text-xl text-black font-normal mb-1 lg:mt-5 lg:mb-3 lg:text-xl">
+                    {t('aboutUs.title4')}
+                  </div>
+                  <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
+                    (02)
+                  </div>
+                  <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                    {t('aboutUs.title15')}
+                  </div>
+                  <Typography className="text-lg me-5 mb-4 lg:text-xl">
+                    {t('aboutUs.text10')}
+                  </Typography>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="w-full bg-gradient-to-tr p-5 cursor-default lg:mt-20">
-          <div className="flex flex-col lg:flex-row">
-            <div className=" lg:ml-10 lg:mt-10 xl:mx-20">
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex flex-col lg:flex-row gap-5 ">
-                  <div className="w-full">
-                    <Image
-                      className="w-full z-40 h-full mb-7 lg:mb-0 "
-                      alt="img"
-                      src={line2}
-                    />
-                    <div className="text-xl text-black font-normal mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
-                      {t('aboutUs.title4')}
-                    </div>
-                    <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (01)
-                    </div>
-                    <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
-                      {t('aboutUs.title16')}
-                    </div>
-                    <Typography className="text-lg  mb-4 lg:text-xl">
-                      {t('aboutUs.text11')}
-                    </Typography>
-                  </div>
-                  <div className="w-full">
-                    <Image
-                      className="w-full z-40 h-full mb-7 lg:mb-0 "
-                      alt="img"
-                      src={line2}
-                    />
-                    <div className="text-xl text-black font-normal mb-1 lg:mt-[-4rem] lg:mb-3 lg:text-xl">
-                      {t('aboutUs.title4')}
-                    </div>
-                    <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
-                      (02)
-                    </div>
-                    <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
-                      {t('aboutUs.title17')}
-                    </div>
-                    <Typography className="text-lg mb-4 lg:text-xl">
-                      {t('aboutUs.text12')}
-                    </Typography>
-                  </div>
-                </div>
+        <div className="lg:ml-20 relative w-full bg-[#FFFFFF] lg:block z-20 p-5 cursor-default">
+          <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 ">
+            <div className="lg:mb-0 lg:pb-0 w-full h-full lg:mt-12 lg:w-[40%]">
+              <Image
+                className="lg:w-full z-40 h-full mb-7 lg:mt-12 lg:mb-0 "
+                alt="img"
+                src={line2}
+              />
+              <div className="text-xl text-black font-normal mb-1 lg:mt-5 lg:mb-3 lg:text-xl">
+                {t('aboutUs.title4')}
               </div>
+              <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
+                (03)
+              </div>
+              <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                {t('aboutUs.title16')}
+              </div>
+              <Typography className="text-lg me-5 mb-4 lg:text-xl">
+                {t('aboutUs.text11')}
+              </Typography>
+            </div>
+
+            <div className="lg:mb-0 lg:pb-0 w-full h-full lg:mt-12 lg:w-[40%]">
+              <Image
+                className="lg:w-full z-40 h-full mb-7 lg:mt-12 lg:mb-0 "
+                alt="img"
+                src={line2}
+              />
+              <div className="text-xl text-black font-normal mb-1 lg:mt-5 lg:mb-3 lg:text-xl">
+                {t('aboutUs.title4')}
+              </div>
+              <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
+                (04)
+              </div>
+              <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                {t('aboutUs.title17')}
+              </div>
+              <Typography className="text-lg me-5 mb-4 lg:text-xl">
+                {t('aboutUs.text12')}
+              </Typography>
             </div>
           </div>
         </div>
-        <div className="w-full lg:p-5 cursor-default lg:mt-[15rem] ">
-          <div className="flex flex-col lg:flex-row">
-            <div className=" w-full  lg:ml-10 lg:mt-10 xl:mx-20">
-              <div className="text-3xl ml-5 lg:mt-25 text-[#745AD9] font-semibold mb-3 lg:text-3xl lg:mb-8">
+        <div className="z-0 top-24 lg:ml-[90%] lg:mt-[-6rem] -right-4 w-120 h-48 hidden lg:block bg-seeds-green blur-[90px] rounded-full"></div>
+        <div className="z-0 hidden lg:block lg:top-[626px] lg:left-[325px] lg:ml-[30%] opacity-[50%] lg:w-[699px] lg:h-[698px] lg:mt-[-50rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
+        <div className="w-full lg:mt-[-2rem] ">
+          <div className="w-full flex flex-col lg:flex-row">
+            <div className=" w-full xl:mx-20  lg:mt-10 ">
+              <div className="text-3xl ml-5 lg:mt-12 text-[#745AD9] font-semibold mb-3 lg:text-3xl lg:mb-8">
                 {t('aboutUs.title3')}
               </div>
               <div className="text-xl ml-5 lg:mt-25 lg:text-center text-[#745AD9] font-normal mb-3 lg:text-5xl lg:mb-0">

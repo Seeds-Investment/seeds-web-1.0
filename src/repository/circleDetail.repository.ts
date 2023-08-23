@@ -107,6 +107,7 @@ export const createPostCircleDetail = async (formData: {
   is_pinned: boolean;
   user_id: string | any;
   circleId: string | any;
+  hashtags: string[] | any;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -120,6 +121,7 @@ export const createPostCircleDetail = async (formData: {
       isUndefindOrNull(formData.privacy) ||
       isUndefindOrNull(formData.is_pinned) ||
       isUndefindOrNull(formData.user_id) ||
+      isUndefindOrNull(formData.hashtags) ||
       isUndefindOrNull(formData.circleId)
     ) {
       return await Promise.resolve(null);
@@ -131,7 +133,8 @@ export const createPostCircleDetail = async (formData: {
       privacy: formData.privacy,
       is_pinned: formData.is_pinned,
       user_id: formData.user_id,
-      circle_id: formData.circleId
+      circle_id: formData.circleId,
+      hashtags: formData.hashtags
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {

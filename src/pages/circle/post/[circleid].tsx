@@ -156,13 +156,23 @@ const CirclePost = (): JSX.Element => {
       const currentWord = words[words.length - 2];
 
       if (currentWord?.startsWith('#')) {
-        hashtags.push(currentWord);
-        words.pop();
-        words.pop();
-        const newVal = words.join(' ') + ' ';
-        setForm(prevForm => ({ ...prevForm, [name]: newVal }));
+        if (!hashtags.includes(currentWord)) {
+          hashtags.push(currentWord);
+          words.pop();
+
+          const newVal = words.join(' ') + ' ';
+          setForm(prevForm => ({ ...prevForm, [name]: newVal }));
+        }
       }
     }
+
+    hashtags.map(el => {
+      if (!value.includes(el)) {
+        const index = hashtags.indexOf(el);
+        hashtags.splice(index, 1);
+      }
+      return null;
+    });
   };
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -219,7 +229,8 @@ const CirclePost = (): JSX.Element => {
         privacy: form.privacy,
         is_pinned: false,
         user_id: userInfo?.id,
-        circleId: circleId
+        circleId: circleId,
+        hashtags: hashtags
       });
 
       setForm({

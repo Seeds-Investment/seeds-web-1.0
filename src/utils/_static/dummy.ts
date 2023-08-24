@@ -62,7 +62,8 @@ export const competitionCardList: ICompetitionItem[] = [
       total: 5,
       max: 10
     },
-    deadline: new Date('2023-08-24'),
+    start: new Date('2023-08-25'),
+    end: new Date('2023-08-28'),
     status: 'paid'
   },
   {
@@ -73,7 +74,8 @@ export const competitionCardList: ICompetitionItem[] = [
       total: 5,
       max: 10
     },
-    deadline: new Date('2023-08-28'),
+    start: new Date('2023-08-16'),
+    end: new Date('2023-08-28'),
     status: 'paid'
   },
   {
@@ -84,7 +86,8 @@ export const competitionCardList: ICompetitionItem[] = [
       total: 5,
       max: 10
     },
-    deadline: new Date('2023-08-30'),
+    start: new Date('2023-08-17'),
+    end: new Date('2023-08-17'),
     status: 'paid'
   },
   {
@@ -95,7 +98,8 @@ export const competitionCardList: ICompetitionItem[] = [
       total: 5,
       max: 10
     },
-    deadline: new Date('2023-09-04'),
+    start: new Date('2023-08-22'),
+    end: new Date('2023-09-04'),
     status: 'paid'
   }
 ];
@@ -135,28 +139,28 @@ export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
     id: '1',
     name: 'Peningkatan Literasi Mahasiswa',
     image: forkoma,
-    date: '1 June - 20 June',
+    date: '3 Agustus 2023',
     status: 'Paid'
   },
   {
     id: '2',
     name: 'Kolaborasi SEEDS HIMA MBTI TELKOM',
     image: mbti,
-    date: '1 June - 20 June',
+    date: '16 Agustus 2023',
     status: 'Paid'
   },
   {
     id: '3',
     name: 'Revolution Bring Back the Euphoria',
     image: stie,
-    date: '1 June - 20 June',
+    date: '21 Juli 2023',
     status: 'Paid'
   },
   {
     id: '4',
     name: 'Peningkatan Literasi Financial',
     image: tarumanegara,
-    date: '1 June - 20 June',
+    date: '18 Juli 2023',
     status: 'Paid'
   }
 ];

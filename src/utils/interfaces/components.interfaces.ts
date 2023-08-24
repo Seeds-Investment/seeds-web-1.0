@@ -51,7 +51,8 @@ export interface ICompetitionItem {
     total: number;
     max: number;
   };
-  deadline: Date;
+  start: Date;
+  end: Date;
   status: string;
 }
 

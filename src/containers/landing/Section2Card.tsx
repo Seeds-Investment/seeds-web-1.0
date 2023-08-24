@@ -20,9 +20,9 @@ export default function Section2Card({
           height={500}
         />
       </Link>
-      <div className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold bg-white text-seeds-button-green rounded-full">
+      {/* <div className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold bg-white text-seeds-button-green rounded-full">
         {data.status}
-      </div>
+      </div> */}
 
       <div className="mt-8">
         <CCard className="-translate-y-[5rem] bg-transparent rounded-xl py-2 backdrop-blur-lg">

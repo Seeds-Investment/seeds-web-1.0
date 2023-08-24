@@ -26,7 +26,9 @@ export default function Section5Card({
           <span className="">
             <Image src={gift} alt="user" className="w-[17px] h-[17px]" />
           </span>
-          <span className="lg:ml-2">{`IDR 10.000.000`}</span>
+          <span className="lg:ml-2">
+            {data.gift.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+          </span>
         </div>
       </div>
       <div className="lg:px-6 lg:py-4 sm:px-1 ml-3 sm:pt-4 sm:pb-1h">

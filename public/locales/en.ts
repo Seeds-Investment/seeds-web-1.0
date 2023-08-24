@@ -784,5 +784,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     }
+  },
+  articleList: {
+    text1: 'News List',
+    text2: 'Find more news you might like.',
+    text3: 'Sort by',
+    text4: 'Search'
   }
 };

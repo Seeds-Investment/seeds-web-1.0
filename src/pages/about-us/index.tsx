@@ -132,7 +132,7 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
                     (01)
                   </div>
-                  <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                  <div className="text-3xl text-[#745AD9] me-12 font-semibold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title5')}
                   </div>
                   <Typography className="text-lg mb-4 me-5 lg:text-xl">
@@ -151,7 +151,7 @@ export default function AboutUsPage(): React.ReactElement {
                   <div className="text-xl text-black font-normal mb-4 lg:text-xl lg:mb-7">
                     (02)
                   </div>
-                  <div className="text-3xl text-[#745AD9] font-semibold  mb-4 lg:text-2xl ">
+                  <div className="text-3xl text-[#745AD9] lg:me-0 me-12 font-semibold  mb-4 lg:text-2xl ">
                     {t('aboutUs.title15')}
                   </div>
                   <Typography className="text-lg me-5 mb-4 lg:text-xl">

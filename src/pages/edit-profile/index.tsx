@@ -156,7 +156,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     ];
 
     const date = new Date(dateString);
-    const day = date.getUTCDate();
+    const day = String(date.getUTCDate()).padStart(2, '0');
     const month = months[date.getUTCMonth()];
     const year = date.getUTCFullYear();
 

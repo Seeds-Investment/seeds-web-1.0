@@ -95,12 +95,12 @@ export const seedsInformation: ISeedsInformationList = {
     {
       icon: email,
       name: 'info@seeds.finance',
-      url: ''
+      url: 'mailto:info@seeds.finance'
     },
     {
       icon: whatsapp,
       name: '08118883519',
-      url: ''
+      url: 'https://api.whatsapp.com/send?phone=628118883519'
     }
   ]
 };

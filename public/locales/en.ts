@@ -178,7 +178,8 @@ export default {
       phoneNumber: 'Phone Number',
       name: 'Name',
       seedsTag: 'Seeds Tag',
-      referralCode: 'Referral Code'
+      referralCode: 'Referral Code',
+      optional: '(optional)'
     }
   },
   button: {
@@ -217,7 +218,7 @@ export default {
     subTitle: 'Find answers to your questions about Seeds',
     faq: {
       title: {
-        1: 'What is Seed?',
+        1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
         3: 'How can I access seeds?',
         4: 'How safe is it to invest in Seeds?',
@@ -755,7 +756,10 @@ export default {
     text5:
       'For us, our values are more than just worlds. They are ways of living, creating, and doing.',
     title4: 'Seeds Value',
-    title5: 'Trust',
+    title5: 'Financial Empowerment',
+    title15: 'Educational Excellence',
+    title16: 'Community Collaboration',
+    title17: 'Innovation for Impact',
     text6:
       'Empowering individuals, especially millenials and Gen Z, with the knowledge, skills, and confidence to make an informed and responsible financial decision.',
     text10:
@@ -780,5 +784,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     }
+  },
+  articleList: {
+    text1: 'News List',
+    text2: 'Find more news you might like.',
+    text3: 'Sort by',
+    text4: 'Search'
   }
 };

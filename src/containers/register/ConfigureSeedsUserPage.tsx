@@ -115,7 +115,9 @@ const ReferralCodePage = ({
           <Typography variant="h5" color="black">
             {t('input.type.referralCode')}
           </Typography>
-          <Typography className="text-sm text-gray-500">(optional)</Typography>
+          <Typography className="text-sm text-gray-500">
+            {t('input.type.optional')}
+          </Typography>
         </div>
         <Input
           className="text-lg"

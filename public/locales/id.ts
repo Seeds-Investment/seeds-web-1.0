@@ -166,7 +166,8 @@ export default {
       phoneNumber: 'Nomor Telepon',
       name: 'Nama',
       seedsTag: 'Tag Seeds',
-      referralCode: 'Kode Referal'
+      referralCode: 'Kode Referal',
+      optional: '(tidak wajib)'
     }
   },
   button: {
@@ -226,7 +227,7 @@ export default {
       lastUpdated: 'Terakhir Diperbarui : ',
       date: '26 April 2022',
       overview:
-        'Attention : Users are required to read terms and conditions “Seeds T&C”  before using Seeds. Terms and conditions can be changed without prior notice.To register and use Seeds app, it means the user has read thoroughly and agreed to these terms & conditions which will be conducted as the user agreement. Seeds reserve the right to stop or restrict user access without prior notice. Users are suggested to visit Seeds app regularly to have the most updated change within the terms and conditions.'
+        'Perhatian : Pengguna wajib membaca syarat dan ketentuan “Syarat dan Ketentuan Seeds” sebelum menggunakan Seeds. Syarat dan ketentuan dapat berubah tanpa pemberitahuan terlebih dahulu. Untuk mendaftar dan menggunakan aplikasi Seeds, berarti pengguna telah membaca secara menyeluruh dan menyetujui syarat & ketentuan ini yang akan dijadikan sebagai perjanjian pengguna. Seeds berhak menghentikan atau membatasi akses pengguna tanpa pemberitahuan sebelumnya. Pengguna disarankan untuk mengunjungi aplikasi Seeds secara teratur untuk mendapatkan perubahan terkini dalam syarat dan ketentuan.'
     },
     privacy: {
       title: 'Privacy Policy',
@@ -680,13 +681,16 @@ export default {
       'Karena seeds percaya bahwa setiap orang punya kesempatan sama untuk berinvestasi terlepas dari latar belakangnya.',
     text3: 'Seeds, Berinvestasi, Bersama',
     title2: 'People',
-    teks4:
+    text4:
       'Kami Mengidentifikasi peluang yang Anda miliki secara unik dengan menganalisis bisnis Anda, pasar Anda, dan perubahan budaya di dunia.',
     title3: 'Nilai Kami',
     text5:
       'Bagi kami, nilai-nilai kami lebih dari sekadar dunia. Mereka adalah cara hidup, mencipta, dan melakukan.',
     title4: 'Nilai Seeds',
-    title5: 'Kepercayaan',
+    title5: 'Financial Empowerment',
+    title15: 'Educational Excellence',
+    title16: 'Community Collaboration',
+    title17: 'Innovation for Impact',
     text6:
       'Memberdayakan individu, terutama generasi milenial dan Gen Z, dengan pengetahuan, keterampilan, dan keyakinan untuk membuat keputusan keuangan yang terinformasi dan bertanggung jawab.',
     text10:

@@ -9,7 +9,7 @@ const CircleMembershipFeePage = ({
   change
 }: any): JSX.Element => {
   return (
-    <div>
+    <div className="md:mx-8 lg:mx-[10rem] xl:mx-[22rem]">
       {formRequest !== undefined && (
         <>
           <div className="flex flex-row mb-4">

@@ -106,7 +106,7 @@ const MembershipPage = ({
     return data;
   };
   return (
-    <div>
+    <div className="mx-3 md:mx-8 lg:mx-[10rem] xl:mx-[18rem]">
       {formRequest !== undefined && (
         <>
           <div className="mb-4">

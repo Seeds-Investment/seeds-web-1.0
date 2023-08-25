@@ -15,7 +15,7 @@ const CirclePremiumChoicePage = ({
   changeStep
 }: any): JSX.Element => {
   return (
-    <div>
+    <div className="md:mx-8 lg:mx-[10rem] xl:mx-[22rem]">
       {formRequest !== undefined && (
         <>
           <div className="flex flex-row mb-4">
@@ -55,7 +55,7 @@ const CirclePremiumChoicePage = ({
                     </Typography>
                   </div>
                   <div className="items-end">
-                    {formRequest.membership_type === 'lifetime' ? (
+                    {formRequest.type === 'lifetime' ? (
                       <Radio
                         name="type"
                         value="lifetime"
@@ -88,7 +88,7 @@ const CirclePremiumChoicePage = ({
                     </Typography>
                   </div>
                   <div className="items-end">
-                    {formRequest.membership_type === 'subscription' ? (
+                    {formRequest.type === 'subscription' ? (
                       <Radio
                         name="type"
                         value="subscription"

@@ -21,7 +21,6 @@ export default function AboutUsPage(): React.ReactElement {
   const router = useRouter();
   const width = useWindowInnerWidth();
 
-
   return (
     <PageGradient
       // customGradient={customGradient}

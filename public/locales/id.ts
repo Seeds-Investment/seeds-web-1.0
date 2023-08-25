@@ -702,6 +702,40 @@ export default {
       title: 'Circle List',
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
+    },
+    create: {
+      title: 'Buat Cirlce',
+      cover: 'Tambah Cover',
+      image: 'Tambah Gambar',
+      name: {
+        label: 'Nama Circle',
+        placeholder: 'Ketik nama Cirlce',
+        error: 'Masukan Nama Circle'
+      },
+      hashtag: {
+        label: 'Hashtag',
+        placeholder: '#',
+        error: 'Masukan Hashtag'
+      },
+      description: {
+        label: 'Deskripsi',
+        placeholder: 'Tuliskan Deskripsi',
+        error: 'Masukan Deskripsi'
+      },
+      rules: {
+        label: 'Peraturan',
+        placeholder: 'Tuliskan Peraturan',
+        error: 'Masukan Peraturan'
+      },
+      type: {
+        label: 'Jenis Keanggotaan',
+        placeholder: 'Pilih Jenis Keanggotaan',
+        error: 'Pilih Jenis Keanggotaan'
+      },
+      tnc: {
+        label: 'Saya setuju dengan Syarat dan Ketentuan*',
+        error: 'Pastikan kamu setuju dengan Syarat dan Ketentuan'
+      }
     }
   }
 };

@@ -1,6 +1,7 @@
 import CCard from '@/components/CCard';
 import { freeCircle, premiumCircle } from '@/constants/assets/icons';
 import { getHashtag } from '@/repository/hashtag';
+import LanguageContext from '@/store/language/language-context';
 import {
   Avatar,
   Button,
@@ -10,7 +11,8 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CreatableSelect from 'react-select/creatable';
 import ModalMembershipType from './modalMembershipType';
 
@@ -66,6 +68,8 @@ const CreateCirclePage = ({
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
+  const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
 
   const handleOpenModalMembership = (): void => {
     setOpenModalMembership(!openModalMembership);
@@ -116,7 +120,7 @@ const CreateCirclePage = ({
           <form>
             <div className="mb-4">
               <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-                Create Circle
+                {t('circle.create.title')}
               </h6>
             </div>
             <div className="flex items-center justify-center rounded-xl">
@@ -161,7 +165,7 @@ const CreateCirclePage = ({
               <div className="mb-10 pt-10 bg-white">
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
-                    Circle Name
+                    {t('circle.create.name.label')}
                   </label>
                   <Input
                     variant="static"
@@ -169,7 +173,11 @@ const CreateCirclePage = ({
                     name="name"
                     onChange={change}
                     value={formRequest?.name}
-                    placeholder="Type circle name"
+                    placeholder={
+                      languageCtx.language === 'EN'
+                        ? 'Circle Name'
+                        : 'Nama Circle'
+                    }
                   />
                   {error.name !== null ? (
                     <Typography color="red" className="text-xs mt-2">
@@ -180,7 +188,7 @@ const CreateCirclePage = ({
 
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
-                    Hashtag
+                    {t('circle.create.hashtag.label')}
                   </label>
                   <CreatableSelect
                     isMulti
@@ -200,7 +208,7 @@ const CreateCirclePage = ({
 
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
-                    Description
+                    {t('circle.create.description.label')}
                   </label>
                   <Input
                     variant="static"
@@ -209,7 +217,11 @@ const CreateCirclePage = ({
                     className="w-full"
                     onChange={change}
                     value={formRequest.description}
-                    placeholder="Type Description"
+                    placeholder={
+                      languageCtx.language === 'EN'
+                        ? 'Type Description'
+                        : 'Tuliskan Deskripsi'
+                    }
                   />
                   {error.description !== null ? (
                     <Typography color="red" className="text-xs mt-2">
@@ -220,7 +232,7 @@ const CreateCirclePage = ({
 
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
-                    Rules
+                    {t('circle.create.rules.label')}
                   </label>
                   <Input
                     variant="static"
@@ -228,7 +240,11 @@ const CreateCirclePage = ({
                     name="description_rules"
                     onChange={change}
                     value={formRequest.description_rules}
-                    placeholder="Type rules"
+                    placeholder={
+                      languageCtx.language === 'EN'
+                        ? 'Type rules'
+                        : 'Tuliskan Peraturan'
+                    }
                   />
                   {error.description_rules !== null ? (
                     <Typography color="red" className="text-xs mt-2">
@@ -280,10 +296,10 @@ const CreateCirclePage = ({
                         <>
                           <div className="flex w-full ml-5 flex-col gap-0.5">
                             <Typography className="font-semibold text-base text-[#262626]">
-                              Membership Types
+                              {t('circle.create.type.label')}
                             </Typography>
                             <Typography className="font-normal text-sm text-[#7C7C7C]">
-                              Set your membership type
+                              {t('circle.create.type.placeholder')}
                             </Typography>
                           </div>
                         </>

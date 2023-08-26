@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import { freeCircle, premiumCircle } from '@/constants/assets/icons';
 import { getHashtag } from '@/repository/hashtag';
 import LanguageContext from '@/store/language/language-context';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import {
   Avatar,
   Button,
@@ -129,10 +130,17 @@ const CreateCirclePage = ({
                   height={0}
                   width={0}
                   src={formRequest?.cover}
-                  alt="Preview"
+                  alt="Add Cover"
                   sizes="100vw"
-                  className="object-cover w-full h-full bg-[#DCFCE4]"
+                  className="object-cover w-full h-full"
                 />
+
+                {formRequest.cover === '' ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-[10px] text-[#3AC4A0] bg-[#DCFCE4]">
+                    <PlusCircleIcon className="w-5 h-5" />
+                    Add Cover
+                  </div>
+                ) : null}
                 <input
                   type="file"
                   accept="image/*"
@@ -147,11 +155,17 @@ const CreateCirclePage = ({
                 <Image
                   height={0}
                   width={0}
-                  sizes="100vw"
                   src={formRequest?.avatar}
-                  alt="Preview"
-                  className="object-cover w-full h-full bg-[#DCFCE4]"
+                  alt="Add Cover"
+                  sizes="100vw"
+                  className="object-cover w-full h-full"
                 />
+                {formRequest.avatar === '' ? (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-[10px] text-[#3AC4A0] bg-[#DCFCE4]">
+                    <PlusCircleIcon className="w-5 h-5" />
+                    Add Image
+                  </div>
+                ) : null}
                 <input
                   type="file"
                   accept="image/*"
@@ -161,7 +175,7 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
-            <CCard className="p-9 border-none shadow-none bg-white md:mx-8 lg:mx-20 xl:mx-[13rem]">
+            <CCard className="p-9 border-none rounded-none shadow-none bg-white md:mx-8 lg:mx-20 xl:mx-[13rem]">
               <div className="mb-10 pt-10 bg-white">
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
@@ -343,18 +357,28 @@ const CreateCirclePage = ({
                 >
                   Terms and Conditions
                 </a>
-                <Button
-                  className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
-                  onClick={() =>
-                    changeStep(
-                      formRequest.membership_type === 'free'
-                        ? 'membership'
-                        : 'premium_choice'
-                    )
-                  }
-                >
-                  Continue
-                </Button>
+
+                {isAgree === true ? (
+                  <Button
+                    className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
+                    onClick={() =>
+                      changeStep(
+                        formRequest.membership_type === 'free'
+                          ? 'membership'
+                          : 'premium_choice'
+                      )
+                    }
+                  >
+                    Continue
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
+                    disabled={true}
+                  >
+                    Continue
+                  </Button>
+                )}
               </div>
             </CCard>
           </form>

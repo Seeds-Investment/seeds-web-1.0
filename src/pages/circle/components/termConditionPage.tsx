@@ -1,5 +1,4 @@
 import CAccordion from '@/components/CAccordion';
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
@@ -10,7 +9,6 @@ import TermAndConditionTnC from './termAndConditionTnC';
 
 const TermConditionPage = ({ changeStep }: any): JSX.Element => {
   const { t } = useTranslation();
-  const width = useWindowInnerWidth();
 
   return (
     <>
@@ -23,17 +21,7 @@ const TermConditionPage = ({ changeStep }: any): JSX.Element => {
         </button>
       </div>
       <div
-        className={`min-h-[calc(100vh-100px)] lg:w-[100%] relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 ${
-          width !== undefined && width < 600
-            ? 'w-[90%] overflow-x-auto'
-            : width !== undefined && width < 500
-            ? 'w-[90%] overflow-x-visible'
-            : width !== undefined && width < 400
-            ? 'w-[40%] overflow-x-visible'
-            : width !== undefined && width > 600
-            ? 'w-[600px] overflow-x-visible'
-            : ''
-        }  bg-white`}
+        className={`relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 md:mx-3 lg:mx-[8rem] xl:mx-[22rem] bg-white`}
       >
         <div className="font-poppins font-normal leading-7 text-base text-neutral-500 flex flex-col items-center">
           {t('termAndCondition.title')}

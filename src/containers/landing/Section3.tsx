@@ -16,7 +16,11 @@ export default function Section3(): React.ReactElement {
   return (
     <div className="mb-10 min-w-full cursor-default">
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 md:mt-20 2xl:mt-[25rem]">
+        <div
+          className={`w-full md:w-1/2 md:mt-20 2xl:mt-[25rem] ${
+            width !== undefined && width >= 1690 ? '2xl:mr-[10rem]' : ''
+          }`}
+        >
           <div className="w-2/3 justify-center p-5 lg:w-full md:ml-10">
             <div className="text-xl font-bold tracking-wider mb-3 md:text-3xl 2xl:text-6xl ">
               <span className="mr-1 text-seeds-purple font-bold z-30">

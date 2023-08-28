@@ -1,6 +1,6 @@
 'use client';
-import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
+import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -55,7 +55,11 @@ export default function Section6(): React.ReactElement {
                   ): React.ReactElement => {
                     const dataIcon =
                       data?.icon != null ? (
-                        <Image alt="" src={data.icon} className="mr-3" />
+                        <Image
+                          alt=""
+                          src={data.icon}
+                          className="mr-3 h-7 w-7"
+                        />
                       ) : (
                         ''
                       );

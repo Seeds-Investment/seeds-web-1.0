@@ -1,3 +1,4 @@
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import type { ICircleLandingPage } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 
@@ -6,8 +7,15 @@ export default function Section4Card({
 }: {
   data: ICircleLandingPage;
 }): React.ReactElement {
+  const width = useWindowInnerWidth();
+
   return (
-    <div className="border rounded-xl border-gray-100 sm:w-[200px] lg:w-[200px] sm:me-3 lg:me-1 flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70">
+    <div
+      className={`border rounded-xl border-gray-100 sm:w-[200px] lg:w-[200px] sm:me-3 lg:me-1 flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70
+                  xl:w-[17rem] ${
+                    width !== undefined && width >= 1690 ? '2xl:w-[20rem]' : ''
+                  }`}
+    >
       <Image
         alt={data.name}
         src={data.image}

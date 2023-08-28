@@ -6,127 +6,152 @@ const CircleMembership = () => {
   return (
     <div className="max-h-96 overflow-auto pr-4">
       <p className="text-center font-bold">
-        {t(`termAndCondition.circleMembership.desc.header_1`)}
+        {t('termAndCondition.circleMembership.title')}
       </p>
-      <p className="text-center font-bold">
-        {t(`termAndCondition.circleMembership.desc.header_2`)}
-      </p>
-      <p className="text-justify mt-10">
-        {t(`termAndCondition.circleMembership.desc.p1`)}
-        <span className="font-bold">
-          {t(`termAndCondition.circleMembership.desc.bold_1`)}
+      <p className="text-justify mt-10 font-semibold font-poppins font-14 font-600 leading-5">
+        {t('termAndCondition.circleMembership.lastupdate')}
+        <span className="text-purple-700">
+          {t('termAndCondition.circleMembership.updatedate')}
         </span>
-        {t(`termAndCondition.circleMembership.desc.p2`)}
-        <span className="font-bold">
-          {t(`termAndCondition.circleMembership.desc.bold_2`)}
-        </span>
-        {t(`termAndCondition.circleMembership.desc.p3`)}
-        <span className="font-bold">
-          {t(`termAndCondition.circleMembership.desc.bold_3`)}
-        </span>
-        {t(`termAndCondition.circleMembership.desc.p4`)}
-        <span className="font-bold">
-          {t(`termAndCondition.circleMembership.desc.bold_3`)}
-        </span>
-        {t(`termAndCondition.circleMembership.desc.p5`)}
-      </p>
-      <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.service`)}
       </p>
       <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.service_1`)}
+        {t(`termAndCondition.circleMembership.announcement`)}
       </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.service_2`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.service_3`)}{' '}
-        <span className="text-blue-400">
-          {t(`termAndCondition.circleMembership.desc.blue_1`)}
-        </span>{' '}
-        {t(`termAndCondition.circleMembership.desc.service_4`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.service_5`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.service_6`)}
-      </p>
+
+      {/* Services */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.responsibility`)}
+        {t(`termAndCondition.circleMembership.content.title.1`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.responsibility_1`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.responsibility_2`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.1`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Circle Owners Responsibilities */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.commision_title`)}
+        {t(`termAndCondition.circleMembership.content.title.2`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.commision_1`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.commision_2`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.commision_3`)}
-      </p>
-      <p className="mt-2 text-justify">
-        <mark>{t(`termAndCondition.circleMembership.desc.commision_4`)}</mark>
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.commision_5`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.2`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Fee and Commission */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.protection_title`)}
+        {t(`termAndCondition.circleMembership.content.title.3`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.protection_1`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.protection_2`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.protection_3`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.protection_4`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.3`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Utilization and Protection of Personal Data */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.intellectual`)}
+        {t(`termAndCondition.circleMembership.content.title.4`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.intellectual_desc`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.4`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Intellectual Property */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.limitation`)}
+        {t(`termAndCondition.circleMembership.content.title.5`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.limitation_desc`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.5`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Limitation Of Liability */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.termination`)}
+        {t(`termAndCondition.circleMembership.content.title.6`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.termination_1`)}
-      </p>
-      <p className="mt-2 text-justify">
-        {t(`termAndCondition.circleMembership.desc.termination_1`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.6`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Immediate Termination */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.governing_law`)}
+        {t(`termAndCondition.circleMembership.content.title.7`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.governing_law_desc`)}
-      </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.7`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Governing Law */}
       <p className="font-bold mt-8">
-        {t(`termAndCondition.circleMembership.desc.dispute_settlemet`)}
+        {t(`termAndCondition.circleMembership.content.title.8`)}
       </p>
-      <p className="text-justify">
-        {t(`termAndCondition.circleMembership.desc.dispute_settlemet_desc`)}
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.8`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
+
+      {/* Dispute Settlement */}
+      <p className="font-bold mt-8">
+        {t(`termAndCondition.circleMembership.content.title.9`)}
       </p>
+      <div className="text-justify">
+        {t(`termAndCondition.circleMembership.content.desc.9`)
+          .split('\n')
+          .map((paragraph, index) => (
+            <>
+              <p key={index}>{paragraph}</p>
+              <br />
+            </>
+          ))}
+      </div>
     </div>
   );
 };

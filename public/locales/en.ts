@@ -783,6 +783,46 @@ export default {
       title: 'Circle List',
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
+    },
+    create: {
+      title: 'Create Cirlce',
+      cover: 'Add Cover',
+      image: 'Add Image',
+      name: {
+        label: 'Circle Name',
+        placeholder: 'type circle name',
+        error: 'Input Circle Name'
+      },
+      hashtag: {
+        label: 'Hashtag',
+        placeholder: '#',
+        error: 'Input Hashtag'
+      },
+      description: {
+        label: 'Description',
+        placeholder: 'Type Description',
+        error: 'Input Description'
+      },
+      rules: {
+        label: 'Rules',
+        placeholder: 'type rules',
+        error: 'Input rules'
+      },
+      type: {
+        label: 'Membership Types',
+        placeholder: 'Set Your Membership type',
+        error: 'Set Your Membership type'
+      },
+      tnc: {
+        label: 'I agree with the Terms and Conditions*',
+        error: 'Make sure you agree with the terms and condition'
+      }
     }
+  },
+  articleList: {
+    text1: 'News List',
+    text2: 'Find more news you might like.',
+    text3: 'Sort by',
+    text4: 'Search'
   }
 };

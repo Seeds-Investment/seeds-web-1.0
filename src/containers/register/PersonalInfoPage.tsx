@@ -14,6 +14,7 @@ import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,6 +24,7 @@ const PersonalInfoPage = ({
   setFormdata
 }: IRegisterPaging): JSX.Element => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const { data: session }: any = useSession();
 
@@ -260,7 +262,22 @@ const PersonalInfoPage = ({
         >
           {t('registerPage.nextButton')}
         </Button>
+        <Button
+          onClick={async () => {
+            try {
+              await router.push('/auth/login');
+            } catch (error) {
+              console.error('An error occurred during navigation:', error);
+            }
+          }}
+          className={`mx-auto w-full rounded-full border border-[#3AC4A0] mt-5 text-[#3AC4A0] bg-transparent hover:bg-[#3AC4A0] hover:text-white transition-colors`}
+        >
+          {t('authPage.login')}
+        </Button>
       </div>
+      <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
+        {t('or')}
+      </small>
       <div className="flex lg:flex-row flex-col mt-5 mb-5 md:mb-0 md:pb-5 gap-2 lg:justify-evenly lg:mt-5">
         {thirdParty.map((el, i) => {
           return (

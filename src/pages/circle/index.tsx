@@ -17,6 +17,7 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
@@ -109,6 +110,7 @@ const Circle = (): React.ReactElement => {
   const [activeTab, setActiveTab] = useState<string>('my_circle');
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
+  const router = useRouter();
   const dataTab = [
     {
       label: 'MyCircle',
@@ -286,7 +288,12 @@ const Circle = (): React.ReactElement => {
                   </Tab>
                 ))}
               </div>
-              <Button className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full md:w-1/2">
+              <Button
+                className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full md:w-1/2"
+                onClick={() => {
+                  void router.push('/circle/create-circle');
+                }}
+              >
                 Create Circle +
               </Button>
             </TabsHeader>

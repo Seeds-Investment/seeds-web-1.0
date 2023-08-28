@@ -1,18 +1,9 @@
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import router from 'next/router';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const SocialMediaGuide: React.FC = () => {
   const { t } = useTranslation();
-  const width = useWindowInnerWidth();
-  const cancelHandler = async (): Promise<void> => {
-    try {
-      await router.push('/faq-submenu');
-    } catch (error) {
-      console.error('Error navigating to FAQ submenu:', error);
-    }
-  };
+
   return (
     <div className="max-h-96 overflow-auto pr-4">
       <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">

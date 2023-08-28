@@ -1,7 +1,6 @@
 import CAccordion from '@/components/CAccordion';
 import Container from '@/components/Container';
 import { Disclosure, FileTextIcon, SosmedGuide } from 'public/assets/vector';
-import { useTranslation } from 'react-i18next';
 import CircleMembership from './CircleMembership';
 import DisclosureComp from './DisclosureComp';
 import PrivacyPolicy from './PrivacyPolicy';
@@ -9,7 +8,6 @@ import SocialMediaGuide from './SocialMediaGuide';
 import TermsConditions from './TermsConditions';
 
 export default function Login(): React.ReactElement {
-  const { t } = useTranslation();
   const menus = [
     {
       label: 'Term & Condition',

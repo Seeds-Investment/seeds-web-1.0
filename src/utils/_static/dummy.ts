@@ -144,7 +144,7 @@ export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
   },
   {
     id: '2',
-    name: 'Kolaborasi SEEDS HIMA MBTI TELKOM',
+    name: 'Kolaborasi SEEDS X HIMA MBTI TELKOM',
     image: mbti,
     date: '16 Agustus 2023',
     status: 'Paid'

@@ -1,35 +1,65 @@
 import CAccordion from '@/components/CAccordion';
 import Container from '@/components/Container';
-import { useTranslation } from 'react-i18next';
-import id from '../../../public/locales/id';
+import { Disclosure, FileTextIcon, SosmedGuide } from 'public/assets/vector';
 import CircleMembership from './CircleMembership';
+import DisclosureComp from './DisclosureComp';
 import PrivacyPolicy from './PrivacyPolicy';
+import SocialMediaGuide from './SocialMediaGuide';
 import TermsConditions from './TermsConditions';
 
 export default function Login(): React.ReactElement {
-  const { t } = useTranslation();
+  const menus = [
+    {
+      label: 'Term & Condition',
+      altStartAdornment: 'terms-condition',
+      startAdornment: FileTextIcon
+    },
+    {
+      label: 'Disclosure',
+      altStartAdornment: 'disclosure',
+      startAdornment: Disclosure
+    },
+    {
+      label: 'Privacy & Policy',
+      altStartAdornment: 'privacy-policy',
+      startAdornment: PrivacyPolicy
+    },
+    {
+      label: 'Social Media Guidelines',
+      altStartAdornment: 'social-media-guide',
+      startAdornment: SosmedGuide
+    },
+    {
+      label: 'Circle Membership',
+      altStartAdornment: 'circle-membership',
+      startAdornment: CircleMembership
+    }
+  ];
+
   return (
     <div>
       <Container>
         <p className="font-bold text-2xl mt-8">Legal</p>
         <div className="mt-4">
-          {Object.keys(id.termAndCondition)
-            ?.filter((k, i) => i > 1)
-            .map((key, idx) => (
-              <CAccordion
-                key={key}
-                title={t(`termAndCondition.${key}.title`)}
-                description={
-                  key === 'tnc' ? (
-                    <TermsConditions />
-                  ) : key === 'privacyPolicy' ? (
-                    <PrivacyPolicy />
-                  ) : (
-                    <CircleMembership />
-                  )
-                }
-              />
-            ))}
+          {menus.map(item => (
+            <CAccordion
+              key={item.altStartAdornment}
+              title={item.label}
+              description={
+                item.altStartAdornment === 'terms-condition' ? (
+                  <TermsConditions />
+                ) : item.altStartAdornment === 'privacy-policy' ? (
+                  <PrivacyPolicy />
+                ) : item.altStartAdornment === 'disclosure' ? (
+                  <DisclosureComp />
+                ) : item.altStartAdornment === 'social-media-guide' ? (
+                  <SocialMediaGuide />
+                ) : (
+                  <CircleMembership />
+                )
+              }
+            />
+          ))}
         </div>
       </Container>
     </div>

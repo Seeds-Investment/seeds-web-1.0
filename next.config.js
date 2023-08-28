@@ -12,7 +12,8 @@ const nextConfig = {
       'cdn.vox-cdn.com',
       'a.fsdn.com',
       'i.insider.com',
-      'res.cloudinary.com'
+      'res.cloudinary.com',
+      'pict.sindonews.net'
     ],
     remotePatterns: [
       {

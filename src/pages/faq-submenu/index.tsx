@@ -16,6 +16,7 @@ import {
 } from 'public/assets/vector';
 import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FaqSubmenuProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ interface FaqSubmenuProps {
 
 const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const width = useWindowInnerWidth();
+  const { t } = useTranslation();
 
   const submenuClasses = `lg:w-4/5 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
@@ -31,7 +33,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const menus = useMemo(
     () => [
       {
-        label: 'Term & Condition',
+        label: t('landing.section6.term'),
         altStartAdornment: 'terms-condition',
         startAdornment: FileTextIcon,
         onClick: async (): Promise<void> => {
@@ -44,7 +46,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Disclosure',
+        label: t('landing.section6.disclosure'),
         altStartAdornment: 'disclosure',
         startAdornment: Disclosure,
         onClick: async (): Promise<void> => {
@@ -57,7 +59,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Privacy & Policy',
+        label: t('landing.section6.privacy'),
         altStartAdornment: 'privacy-policy',
         startAdornment: PrivacyPolicy,
         onClick: async (): Promise<void> => {
@@ -70,7 +72,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Social Media Guidelines',
+        label: t('landing.section6.social'),
         altStartAdornment: 'social-media-guide',
         startAdornment: SosmedGuide,
         onClick: async (): Promise<void> => {
@@ -83,7 +85,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Circle Membership',
+        label: t('landing.section6.circle'),
         altStartAdornment: 'circle-membership',
         startAdornment: CircleMembership,
         onClick: async (): Promise<void> => {

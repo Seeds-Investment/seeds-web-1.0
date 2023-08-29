@@ -39,7 +39,13 @@ export default {
     section6: {
       text1:
         'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
-      text2: ''
+      text2: 'Investing, together',
+      text3: 'Download Our App',
+      term: 'Term & Condition',
+      disclosure: 'Disclosure',
+      privacy: 'Privacy & Policy',
+      social: 'Social Media Guidelines',
+      circle: 'Circle Membership'
     }
   },
   followButton: {
@@ -824,5 +830,20 @@ export default {
     text2: 'Find more news you might like.',
     text3: 'Sort by',
     text4: 'Search'
+  },
+
+  validationErrors: {
+    required: 'This field is required',
+    invalidCountryCode: 'Invalid Country Code',
+    invalidPhoneNumber: 'Invalid Phone Number',
+    invalidEmail: 'Invalid Email',
+    birthdateBeforeToday: 'Birthdate must be before today',
+    noSpacesInSeedsTag:
+      'SeedsTag cannot contain spaces, please delete your spaces!',
+    seedsTagNoAt: "Don't need to add '@'",
+    seedsTagMinLength: 'Seeds Tag must contain at least 2 characters',
+    seedsTagMaxLength: 'Seeds Tag must have at most 20 characters',
+    invalidPassword: 'Invalid Input Password',
+    invalidConfirmPassword: 'Invalid Confirm Password'
   }
 };

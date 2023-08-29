@@ -25,7 +25,7 @@ export default function Section2Card({
       </div> */}
 
       <div className="mt-8">
-        <CCard className="-translate-y-[5rem] bg-transparent rounded-xl py-2 backdrop-blur-lg">
+        <CCard className="-translate-y-[5rem] h-[6.5rem] bg-transparent rounded-xl py-2 backdrop-blur-lg">
           <div className="items-center w-full text-white ml-5">
             <Typography className="font-semibold">{data.name}</Typography>
             <Typography className="font-normal">{data.date}</Typography>

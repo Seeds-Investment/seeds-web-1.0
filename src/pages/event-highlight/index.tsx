@@ -1,3 +1,4 @@
+import forkoma from '@/assets/event-highlight/image-20230828-074549.png';
 import Section2Card from '@/containers/landing/Section2Card';
 import Section6 from '@/containers/landing/Section6';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
@@ -40,36 +41,36 @@ export default function EventHighlight(): React.ReactElement {
     ]
   };
 
-  const carouselSettings: Settings = {
-    centerMode: true,
-    slidesToShow: 2,
-    speed: 500,
-    slidesToScroll: 1,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: true,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      }
-    ]
-  };
+  // const carouselSettings: Settings = {
+  //   centerMode: true,
+  //   slidesToShow: 2,
+  //   speed: 500,
+  //   slidesToScroll: 1,
+  //   dots: true,
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         dots: true,
+  //         slidesToShow: 2
+  //       }
+  //     },
+  //     {
+  //       breakpoint: 768,
+  //       settings: {
+  //         dots: true,
+  //         slidesToShow: 1
+  //       }
+  //     },
+  //     {
+  //       breakpoint: 480,
+  //       settings: {
+  //         dots: true,
+  //         slidesToShow: 1
+  //       }
+  //     }
+  //   ]
+  // };
 
   return (
     <div
@@ -83,10 +84,10 @@ export default function EventHighlight(): React.ReactElement {
         {/* Title */}
         <div className="mx-5 md:mx-20 lg:mx-20 text-center mb-4">
           <div className="text-3xl lg:text-4xl font-bold tracking-wide mb-2 text-purple-600">
-            Seeds Tournament Event
+            Peningkatan Literasi Mahasiswa
           </div>
           <div className="text-base lg:text-lg text-gray-500">
-            Lorem ipsum dolor sit amet consectetur.
+            SEEDS X FORKOMA UI
           </div>
         </div>
         {/* Carousel */}
@@ -97,26 +98,18 @@ export default function EventHighlight(): React.ReactElement {
             backgroundSize: 'cover'
           }}
         >
-          <Slider {...carouselSettings}>
+          <Image alt="FORKOMA UI" src={forkoma} />
+          {/* <Slider {...carouselSettings}>
             {eventHighlightLandingPage.map((data, key) => (
-              <div key={key} className="flex justify-center items-center mx-2">
-                <Image
-                  alt={data.name}
-                  src={data.image}
-                  className="w-full "
-                  width={500}
-                  height={500}
-                />
-              </div>
             ))}
-          </Slider>
+          </Slider> */}
         </div>
       </div>
 
       {/* Content */}
       <div className="m-5 md:mx-20 lg:mx-20">
         <div className="opacity-70 text-sm font-semibold tracking-wide mb-2 text-purple-600 md:text-3xl lg:text-[32px] text-left">
-          Seeds Tournament Event
+          Peningkatan Literasi Mahasiswa
         </div>
 
         <div className="mt-4 space-y-2">
@@ -135,7 +128,7 @@ export default function EventHighlight(): React.ReactElement {
               />
             </svg>
             <span className="font-bold ml-2">Event date:</span>
-            <span className="ml-1">19 Juni 2023</span>
+            <span className="ml-1">3 Agustus 2023</span>
           </div>
           <div className="flex items-center">
             <svg
@@ -156,18 +149,23 @@ export default function EventHighlight(): React.ReactElement {
         </div>
 
         <div className="text-base text-gray-500 mt-2">
-          Lorem ipsum dolor sit amet consectetur. Vitae arcu aliquet egestas ut
-          aliquam morbi ac sit. Ut magna phasellus hendrerit lectus nibh sit sed
-          quis imperdiet. Faucibus rutrum porta eros mi quam purus viverra. A
-          nibh pellentesque interdum congue tincidunt risus. Felis nisl sed
-          pulvinar diam vitae quisque euismod ut. Diam libero eros sed habitant
-          massa. Non ornare quam tristique
+          Melalui kolaborasi ini, Seeds Finance akan menyelenggarakan berbagai
+          konten yang mengedukasi dan memanfaatkan sosial media agar semakin
+          mudah diakses oleh para mahasiswa Universitas Indonesia dimanapun
+          mereka berada. Para mahasiswa Universitas Indonesia akan bisa terus
+          mendapatkan wawasan tentang pengelolaan anggaran yang efektif,
+          mengelola utang, memahami opsi investasi, dan membangun pondasi
+          keuangan yang kuat.
         </div>
 
         <div className="text-base text-gray-500 mt-2">
-          Lorem ipsum dolor sit amet consectetur. Vitae arcu aliquet egestas ut
-          aliquam morbi ac sit. Ut magna phasellus hendrerit lectus nibh sit sed
-          quis imperdiet. Faucibus rutrum porta eros mi quam purus.
+          Seeds Finance dan FORKOMA Universitas Indonesia berkomitmen untuk
+          menanamkan nilai perencanaan keuangan jangka panjang dan mendorong
+          kebiasaan keuangan yang bertanggung jawab di kalangan generasi muda.
+          Dengan menggabungkan keahlian antara Seeds Finance dan FORKOMA
+          Universitas Indonesia, kolaborasi ini bertujuan untuk mencerdaskan
+          generasi muda kalangan milenial dan Gen Z dalam membuat keputusan
+          keuangan yang terinformasi dan semakin matang.
         </div>
       </div>
       {/* Text */}

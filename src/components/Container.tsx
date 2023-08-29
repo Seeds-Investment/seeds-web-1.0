@@ -20,9 +20,9 @@ export default function Container({
   };
   return (
     <div className="opacity-0 flex min-w-full min-h-full fade-in">
-      <div className="w-full h-full lg:w-1/2 relative">
+      <div className="w-full h-full lg:w-1/2 relative bg-gradient-to-tr from-seeds-green  to-seeds-purple">
         <div className="w-full h-full hidden lg:block">
-          <div className="min-h-full flex items-center justify-center min-w-full transition-all duration-300  bg-gradient-to-tr from-seeds-green  to-seeds-purple px-[8%] py-[3%]">
+          <div className="min-h-full flex items-center justify-center min-w-full transition-all duration-300   px-[8%] py-[3%]">
             <Image
               className="fixed bottom-0 w-1/2 left-0 z-0"
               src={bgLine}
@@ -32,8 +32,8 @@ export default function Container({
           </div>
         </div>
       </div>
-      <div className="w-full h-screen lg:w-1/2 relative">
-        <div className="absolute h-full w-full z-20">
+      <div className="w-full h-screen lg:w-1/2 relative bg-gradient-to-tr from-seeds-green to-seeds-purple lg:bg-none">
+        <div className={`absolute h-full w-full z-20`}>
           <div className="w-full flex items-center justify-center lg:py-16 h-full p-8 ">
             <div className="bg-white bg-opacity-50 min-w-full min-h-full p-4 lg:px-8 relative rounded-2xl shadow-center text-sm lg:text-base">
               <div className="w-full flex justify-between items-center lg:pr-0">

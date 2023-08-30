@@ -845,5 +845,15 @@ export default {
     seedsTagMaxLength: 'Seeds Tag must have at most 20 characters',
     invalidPassword: 'Invalid Input Password',
     invalidConfirmPassword: 'Invalid Confirm Password'
+  },
+  landingPageV2: {
+    product: {
+      section1: {
+        title1: 'Share & Influence ',
+        title2: 'Others to Start Their Financial Journey',
+        subtitle:
+          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+      }
+    }
   }
 };

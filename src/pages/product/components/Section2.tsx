@@ -76,7 +76,7 @@ export default function Section2(): React.ReactElement {
   return (
     <PageGradient
       customGradient={customGradient}
-      className="overflow-hidden p-8 w-full"
+      className="overflow-hidden p-2 md:p-8 w-full"
     >
       <Typography className="text-3xl font-semibold mb-5 text-[#222222]">
         Explore

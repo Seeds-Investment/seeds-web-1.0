@@ -1,11 +1,12 @@
 import Section1 from './components/Section1';
+import Section2 from './components/Section2';
 
 const Product = (): React.ReactElement => {
   return (
-    // <PageGradient defaultGradient
-    //             className="absolute overflow-hidden w-full">
-    <Section1 />
-    // </PageGradient>
+    <div>
+      <Section1 />
+      <Section2 />
+    </div>
   );
 };
 

@@ -2,14 +2,22 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
-import Gif_Post from '@/containers/circle/post/GifPost';
-import CirclePostInputText from '@/containers/circle/post/PostText';
-import UniqueInputButton from '@/containers/circle/post/UniqueInputButton';
-import { UseUploadMedia } from '@/repository/circleDetail.repository';
+import Gif_Post from '@/containers/circle/[id]/GifPost';
+import CirclePostInputText from '@/containers/circle/[id]/PostText';
+import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
+import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
+import withAuth from '@/helpers/withAuth';
+import {
+  UseUploadMedia,
+  createPostCircleDetail,
+  getCirclePost,
+  getCircleRecomend
+} from '@/repository/circleDetail.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
-import ProfilePost from '../../../containers/circle/post/ProfilePost';
+import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
 
 const dataSelection: typeOfSelection[] = [
   {
@@ -43,8 +51,17 @@ interface typeOfSelection {
   svg: any;
   message: string;
 }
-interface props {
-  CIRCLE_ID: string;
+interface UserData {
+  id: string;
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
 }
 interface form {
   content_text: string;
@@ -52,10 +69,11 @@ interface form {
   media_urls: string[];
 }
 
-const CirclePost: React.FC<props> = () => {
+const CirclePost = (): JSX.Element => {
   const router = useRouter();
-  const CIRCLE_ID = router.query.CIRCLE_ID;
-  const [isLoading, setIsLoading] = useState(true);
+  const circleId: string | any = router.query.circleid;
+  const [audio, setAudio] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
@@ -63,7 +81,58 @@ const CirclePost: React.FC<props> = () => {
     type: 'Public',
     svg: globe
   });
-  console.log(media, 'media');
+
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await getUserInfo();
+        setUserInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    void fetchData();
+  }, []);
+
+  const [dataPost, setDataPost]: any = useState([]);
+  const [dataRecommend, setDataRecommend]: any = useState([]);
+
+  const fetchCirclePost = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getCirclePost({ circleId });
+
+      setDataPost(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Post:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCircleRecommended = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getCircleRecomend({ circleId });
+
+      setDataRecommend(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Recommend:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void fetchCirclePost();
+    void fetchCircleRecommended();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [circleId]);
 
   const [form, setForm] = useState<form>({
     content_text: '',
@@ -71,13 +140,41 @@ const CirclePost: React.FC<props> = () => {
     media_urls: []
   });
 
+  const renderLoading = (): JSX.Element => (
+    <div className="h-72 absolute left-1/2">
+      <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+    </div>
+  );
+  const [hashtags, setHashtags] = useState<string[]>([]);
+
   const handleFormChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): any => {
     const { name, value } = event.target;
     setForm(prevForm => ({ ...prevForm, [name]: value }));
-  };
+    if (value.endsWith(' ')) {
+      const words = value.split(' ');
+      const currentWord = words[words.length - 2];
 
+      if (currentWord?.startsWith('#')) {
+        if (!hashtags.includes(currentWord)) {
+          hashtags.push(currentWord);
+          words.pop();
+
+          const newVal = words.join(' ') + ' ';
+          setForm(prevForm => ({ ...prevForm, [name]: newVal }));
+        }
+      }
+    }
+
+    hashtags.map(el => {
+      if (!value.includes(el)) {
+        const index = hashtags.indexOf(el);
+        hashtags.splice(index, 1);
+      }
+      return null;
+    });
+  };
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -109,15 +206,11 @@ const CirclePost: React.FC<props> = () => {
       setDrop(false);
     }
   };
-  const [postedUrl, setUrl] = useState<string>('');
 
-  const postMedia = async (): Promise<void> => {
+  const postMedia = async (mediaFile: any): Promise<void> => {
     try {
-      const url = await UseUploadMedia({ media });
-      console.log(url, 'didalem');
-      setUrl(url);
-      console.log(isLoading);
-      console.log(postedUrl);
+      const { data } = await UseUploadMedia(mediaFile);
+      form.media_urls.push(data.path);
     } catch (error: any) {
       console.error('Error Post Media:', error.message);
     }
@@ -128,16 +221,20 @@ const CirclePost: React.FC<props> = () => {
     try {
       setIsLoading(true);
       if (media !== undefined && media !== null) {
-        await postMedia();
+        await postMedia(media);
       }
-      // const response = await createPostCircleDetail({
-      //   content_text: form.content_text,
-      //   media_urls: form.media_urls,
-      //   privacy: form.privacy,
-      //   is_pinned: false,
-      //   user_id: userInfo?.id,
-      //   CIRCLE_ID: CIRCLE_ID
-      // });
+      if (audio !== undefined && audio !== null) {
+        await postMedia(audio);
+      }
+      await createPostCircleDetail({
+        content_text: form.content_text,
+        media_urls: form.media_urls,
+        privacy: form.privacy,
+        is_pinned: false,
+        user_id: userInfo?.id,
+        circleId: circleId,
+        hashtags: hashtags
+      });
 
       setForm({
         content_text: '',
@@ -145,6 +242,9 @@ const CirclePost: React.FC<props> = () => {
         media_urls: []
       });
       setMedia(undefined);
+      setHashtags([]);
+      await fetchCirclePost();
+      await fetchCircleRecommended();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -158,13 +258,26 @@ const CirclePost: React.FC<props> = () => {
       );
     } else if (pages === 'gif') {
       return <Gif_Post setPages={setPages} form={form} />;
+    } else if (pages === 'talk') {
+      return (
+        <VoiceRecorder
+          setAudio={setAudio}
+          setLoading={setIsLoading}
+          audio={audio}
+        />
+      );
     }
   };
 
   return (
-    <MainPostLayout CIRCLE_ID={CIRCLE_ID}>
+    <MainPostLayout
+      circleId={circleId}
+      dataPost={dataPost}
+      dataRecommend={dataRecommend}
+    >
       {/* posting section */}
       <div className="hidden md:block bg-white mt-8 w-full rounded-xl">
+        {isLoading ? renderLoading() : <></>}
         <div className="flex flex-col px-14 pt-8">
           <ProfilePost
             handleDropDown={handleDropDown}
@@ -175,7 +288,7 @@ const CirclePost: React.FC<props> = () => {
           />
           {/* form text section */}
           <form onSubmit={handlePostCircle}>
-            {media !== undefined ? (
+            {media !== undefined && pages !== 'gif' ? (
               <div className="flex justify-center pb-2">
                 <img
                   src={URL?.createObjectURL(media)}
@@ -186,7 +299,7 @@ const CirclePost: React.FC<props> = () => {
             ) : (
               <></>
             )}
-            {form.media_urls.length > 0 ? (
+            {form.media_urls.length > 0 && pages !== 'gif' ? (
               form.media_urls.map((el: any, i: number) => {
                 return (
                   <div
@@ -196,7 +309,7 @@ const CirclePost: React.FC<props> = () => {
                     <img
                       src={el}
                       alt="gif"
-                      className="h-full w-full object-cover"
+                      className="h-[230px] w-[230px] object-cover"
                     />
                   </div>
                 );
@@ -217,4 +330,4 @@ const CirclePost: React.FC<props> = () => {
   );
 };
 
-export default CirclePost;
+export default withAuth(CirclePost);

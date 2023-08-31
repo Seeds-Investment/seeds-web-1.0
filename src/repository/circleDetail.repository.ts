@@ -1,27 +1,75 @@
 import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
+import axios from 'axios';
 
 const baseUrl = baseAxios(`https://seeds-dev-gcp.seeds.finance/`);
-
 interface getDataCircleType {
-  CIRCLE_ID: string;
+  circleId: string;
 }
 
 export const getDetailCircle = async ({
-  CIRCLE_ID
+  circleId
 }: getDataCircleType): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-    if (isUndefindOrNull(CIRCLE_ID)) {
+    if (isUndefindOrNull(circleId)) {
       return await Promise.resolve(null);
     }
 
-    const response = await baseUrl.get(`/circle/v2/find/${CIRCLE_ID}`, {
+    const response = await baseUrl.get(`/circle/v2/find/${circleId}`, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getCirclePost = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/post/v2/list?circle_id=${circleId}&page=1&limit=10`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getCircleRecomend = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/post/v2/list/recommended?circle_id=${circleId}&page=1&limit=10`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
@@ -40,13 +88,26 @@ export const getGifFromGhipy = async (): Promise<any> => {
   }
 };
 
+export const searchGifFromGhipy = async (query: string): Promise<any> => {
+  try {
+    const response = await fetch(
+      `https://api.giphy.com/v1/gifs/search?api_key=STZwTE2z0evd6Ew1nReSwJnXfi01XSRp&q=${query}&limit=10`
+    );
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];
   privacy: string;
   is_pinned: boolean;
   user_id: string | any;
-  CIRCLE_ID: string | any;
+  circleId: string | any;
+  hashtags: string[] | any;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -60,7 +121,8 @@ export const createPostCircleDetail = async (formData: {
       isUndefindOrNull(formData.privacy) ||
       isUndefindOrNull(formData.is_pinned) ||
       isUndefindOrNull(formData.user_id) ||
-      isUndefindOrNull(formData.CIRCLE_ID)
+      isUndefindOrNull(formData.hashtags) ||
+      isUndefindOrNull(formData.circleId)
     ) {
       return await Promise.resolve(null);
     }
@@ -71,44 +133,49 @@ export const createPostCircleDetail = async (formData: {
       privacy: formData.privacy,
       is_pinned: formData.is_pinned,
       user_id: formData.user_id,
-      CIRCLE_ID: formData.CIRCLE_ID
+      circle_id: formData.circleId,
+      hashtags: formData.hashtags
     });
 
-    return await baseUrl.post('/post/v2/create', body, {
+    const response = await baseUrl.post('/post/v2/create', body, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    return response;
   } catch (error) {
     return error;
   }
 };
 
-export const UseUploadMedia = async ({ media }: any): Promise<any> => {
-  try {
-    const accessToken = localStorage.getItem('accessToken');
-    if (isUndefindOrNull(media)) {
-      return await Promise.resolve(null);
-    }
+const post = async (url: string, payload: any, headers = {}): Promise<any> => {
+  return await axios({
+    method: 'POST',
+    url: url,
+    data: payload,
+    headers: headers
+  });
+};
 
-    const body = {
-      file: media,
-      type: 'OTHER_URL'
-    };
+export const UseUploadMedia = async (media: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
 
-    console.log(body, 'ini body');
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  const formData = new FormData();
+  formData.append('file', media);
+  formData.append('type', 'OTHER_URL');
 
-    const response = await baseUrl.post(`/v1/storage/cloud`, body, {
+  return await post(
+    `https://seeds-dev-gcp.seeds.finance/v1/storage/cloud`,
+    formData,
+    {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
-    });
-    console.log(response, 'response di functions');
-
-    return response;
-  } catch (error: any) {
-    return error;
-  }
+    }
+  );
 };

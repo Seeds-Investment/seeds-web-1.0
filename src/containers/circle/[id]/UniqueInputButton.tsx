@@ -109,7 +109,13 @@ const UniqueInputButton: React.FC<props> = ({ setPages, setMedia }) => {
         </div>
         {/* Voice */}
         <div className="flex flex-col">
-          <button type="button" className="p-2">
+          <button
+            type="button"
+            onClick={() => {
+              handlePages('talk');
+            }}
+            className="p-2"
+          >
             <Image
               alt="unique_post"
               src={talk}

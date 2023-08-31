@@ -31,11 +31,11 @@ export default function CardAsset({
           <Typography className="w-1/3 text-lg font-normal text-center">
             {data.price}
           </Typography>
-          <td className=" w-1/3 text-end whitespace-nowrap text-sm">
+          <div className=" w-1/3 text-end whitespace-nowrap text-sm">
             <span className="bg-[#27A590] text-white p-3 rounded-lg text-base font-semibold">
               {data.change}
             </span>
-          </td>
+          </div>
         </>
       )}
     </Card>

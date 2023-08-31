@@ -1,6 +1,5 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
-  Card,
   Tab,
   TabPanel,
   Tabs,
@@ -107,26 +106,7 @@ export default function Section2(): React.ReactElement {
           {data.map(({ value, desc }) => (
             <TabPanel key={value} value={value}>
               {value === 'asset' ? (
-                <>
-                  <Card className="flex flex-row rounded-lg p-4 bg-transparent text-[#262626] mb-5 h-[60px]">
-                    <Typography className="w-1/3 text-base font-semibold text-start">
-                      Asset Name
-                    </Typography>
-                    <Typography className="w-1/3 text-base font-semibold text-center">
-                      Last Price
-                    </Typography>
-                    <Typography className="w-1/3 text-base font-semibold text-end">
-                      24h Change
-                    </Typography>
-                  </Card>
-                  {dummyData?.length !== 0 ? (
-                    dummyData?.map((data, idx) => (
-                      <CardAsset data={data} key={idx} />
-                    ))
-                  ) : (
-                    <p>not found</p>
-                  )}
-                </>
+                <CardAsset datas={dummyData} />
               ) : (
                 <p>{desc}</p>
               )}

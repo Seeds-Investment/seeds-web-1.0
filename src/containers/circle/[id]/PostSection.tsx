@@ -125,17 +125,17 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             {categorizeURL(dataPost.media_urls)}
             <div className="flex">
               {words.map((el: string, i: number) => {
+                el += '\xa0';
+                console.log(el);
                 return el.startsWith('#') ? (
                   <>
-                    <Typography key={i} className="mr-1">
+                    <Typography key={i}>
                       <h1 className="text-[#5E44FF]">{el}</h1>
                     </Typography>
                   </>
                 ) : (
                   <>
-                    <Typography className="mr-1" key={i}>
-                      {el}{' '}
-                    </Typography>
+                    <Typography key={i}>{el}</Typography>
                   </>
                 );
               })}

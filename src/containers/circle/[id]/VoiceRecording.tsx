@@ -99,12 +99,12 @@ export const VoiceRecorder: React.FC<props> = ({
 
   return (
     <>
-      {/* {audioUrl && (
+      {audioUrl !== null && audioUrl !== undefined && audioUrl !== '' && (
         <audio controls>
           <source src={audioUrl} type="audio/wav" className="w-full" />
           Your browser does not support the audio element.
         </audio>
-      )} */}
+      )}
       <div className="flex items-center flex-col">
         <div
           className={`mb-4 rounded-full ${

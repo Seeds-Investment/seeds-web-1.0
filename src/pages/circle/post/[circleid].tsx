@@ -5,6 +5,7 @@ import star from '@/assets/circle-page/star.svg';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
+import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
@@ -71,7 +72,7 @@ interface form {
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
-
+  const [audio, setAudio] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
@@ -206,9 +207,9 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
-  const postMedia = async (): Promise<void> => {
+  const postMedia = async (mediaFile: any): Promise<void> => {
     try {
-      const { data } = await UseUploadMedia(media);
+      const { data } = await UseUploadMedia(mediaFile);
       form.media_urls.push(data.path);
     } catch (error: any) {
       console.error('Error Post Media:', error.message);
@@ -220,9 +221,11 @@ const CirclePost = (): JSX.Element => {
     try {
       setIsLoading(true);
       if (media !== undefined && media !== null) {
-        await postMedia();
+        await postMedia(media);
       }
-
+      if (audio !== undefined && audio !== null) {
+        await postMedia(audio);
+      }
       await createPostCircleDetail({
         content_text: form.content_text,
         media_urls: form.media_urls,
@@ -255,6 +258,14 @@ const CirclePost = (): JSX.Element => {
       );
     } else if (pages === 'gif') {
       return <Gif_Post setPages={setPages} form={form} />;
+    } else if (pages === 'talk') {
+      return (
+        <VoiceRecorder
+          setAudio={setAudio}
+          setLoading={setIsLoading}
+          audio={audio}
+        />
+      );
     }
   };
 

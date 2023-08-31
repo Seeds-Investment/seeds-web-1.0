@@ -26,7 +26,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
 
     return `${day}/${month}/${year}`;
   }
-
+  const words = dataPost.content_text.split(' ');
   function categorizeURL(url: string[]): any {
     // const imageExtensions = [
     //   'jpg',
@@ -123,11 +123,23 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             </div>
 
             {categorizeURL(dataPost.media_urls)}
-            <div className="flex gap-1 text-[#5E44FF] mt-5">
-              <Typography>#NFT3d</Typography>
-              <Typography>#NFTPostedArt</Typography>
+            <div className="flex">
+              {words.map((el: string, i: number) => {
+                return el.startsWith('#') ? (
+                  <>
+                    <Typography key={i} className="mr-1">
+                      <h1 className="text-[#5E44FF]">{el}</h1>
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Typography className="mr-1" key={i}>
+                      {el}{' '}
+                    </Typography>
+                  </>
+                );
+              })}
             </div>
-            <Typography>{dataPost.content_text}</Typography>
           </div>
           <PieCirclePost data={dataPost} />
           <div className="flex justify-between items-center mt-4">

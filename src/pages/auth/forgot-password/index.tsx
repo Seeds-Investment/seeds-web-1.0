@@ -23,11 +23,15 @@ export default function ForgotPassword(): React.ReactElement {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [email, setEmail] = useState<any>('');
+  const [errorResponse, setErrorResponse] = useState<string>('');
 
   const methodHandler = async (payload: IFormMethod): Promise<void> => {
     if (payload.method === 'email') {
       setEmail(payload.email);
-      await postForgotPasswordByEmail(payload.email);
+      const response = await postForgotPasswordByEmail(payload.email);
+      if (response.status !== 200) {
+        setErrorResponse(response.data.message);
+      }
       return;
     }
 
@@ -68,6 +72,7 @@ export default function ForgotPassword(): React.ReactElement {
           onSubmit={methodHandler}
           selectedCode={selectedCode}
           setSelectedCode={setSelectedCode}
+          errorResponse={errorResponse}
         />
         <OTPCard
           onSubmit={otpHandler}

@@ -141,3 +141,18 @@ code {
   box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.6);
 }
 /* End Elastic carousel */
+@keyframes fadeBackgroundColor {
+  0% {
+    background-color: #4fe6af0c;
+  }
+  50% {
+    background-color: #4fe6af2f;
+  }
+  100% {
+    background-color: #4fe6af0c;
+  }
+}
+
+.fade-background-color {
+  animation: fadeBackgroundColor 2.5s infinite;
+}

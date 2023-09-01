@@ -13,11 +13,13 @@ import { useTranslation } from 'react-i18next';
 const MethodCard = ({
   onSubmit,
   selectedCode,
-  setSelectedCode
+  setSelectedCode,
+  errorResponse
 }: {
   onSubmit: (props: any) => Promise<void>;
   selectedCode: string;
   setSelectedCode: any;
+  errorResponse: string;
 }): React.ReactElement => {
   const { t } = useTranslation();
 
@@ -108,6 +110,9 @@ const MethodCard = ({
           />
           {error ? (
             <p className="!text-red-500 text-sm">{errorMessage}</p>
+          ) : null}
+          {errorResponse !== undefined ? (
+            <p className="!text-red-500 text-sm">{errorResponse}</p>
           ) : null}
         </div>
       ) : (

@@ -121,6 +121,10 @@ export default {
     success: {
       title: 'Success!',
       text: 'Congratulations! The new password has been successfully created.'
+    },
+    successSendEmail: {
+      title: 'Hoorayy!',
+      text: 'We have sent you an email to verify you are the owner'
     }
   },
   changeEmailAddress: {

@@ -44,7 +44,9 @@ export default function ForgotPassword(): React.ReactElement {
       const response = await postForgotPasswordByEmail(payload.email);
       if (response.status !== 200) {
         setErrorResponse(response.data.message);
+        return;
       }
+      changeStep(4);
       return;
     }
 
@@ -104,6 +106,15 @@ export default function ForgotPassword(): React.ReactElement {
         />
         <CreateNewPassword onSubmit={createNewPasswordHandler} />
         <SuccessCard
+          onSubmit={() => {
+            router
+              .push('/auth/login')
+              .then()
+              .catch(() => {});
+          }}
+        />
+        <SuccessCard
+          isSuccessSendEmail
           onSubmit={() => {
             router
               .push('/auth/login')

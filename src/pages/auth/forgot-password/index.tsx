@@ -4,7 +4,10 @@ import MethodCard from '@/containers/auth/MethodCard';
 import OTPCard from '@/containers/auth/OTPCard';
 import SuccessCard from '@/containers/auth/SuccessCard';
 import { useSlick } from '@/hooks/useSlick';
-import { postForgotPasswordByEmail } from '@/repository/email.repository';
+import {
+  postForgotPasswordByEmail,
+  verifyForgotPasswordByEmail
+} from '@/repository/email.repository';
 import { patchChangePassword } from '@/repository/user.repository';
 import type {
   ICreateNewPassword,
@@ -13,11 +16,15 @@ import type {
 } from '@/utils/interfaces/form.interfaces';
 import type { IUseSlick } from '@/utils/interfaces/slick.interface';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import { useSearchParams } from 'next/navigation';
 
 export default function ForgotPassword(): React.ReactElement {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailParam = searchParams.get('email');
+  const emailCode = searchParams.get('code');
   const { changeStep, settings, slickRef }: IUseSlick = useSlick();
 
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -25,13 +32,21 @@ export default function ForgotPassword(): React.ReactElement {
   const [email, setEmail] = useState<any>('');
   const [errorResponse, setErrorResponse] = useState<string>('');
 
+  useEffect(() => {
+    if (!(emailParam == null) && !(emailCode == null)) {
+      changeStep(2);
+    }
+  }, [emailParam, emailCode])
+
   const methodHandler = async (payload: IFormMethod): Promise<void> => {
     if (payload.method === 'email') {
       setEmail(payload.email);
       const response = await postForgotPasswordByEmail(payload.email);
       if (response.status !== 200) {
         setErrorResponse(response.data.message);
+        return;
       }
+      changeStep(4);
       return;
     }
 
@@ -47,13 +62,21 @@ export default function ForgotPassword(): React.ReactElement {
   const createNewPasswordHandler = async (
     payload: ICreateNewPassword
   ): Promise<void> => {
-    await patchChangePassword({
-      password: payload.password,
-      phoneNumber: `${String(selectedCode).replace('+', '')}${String(
-        phoneNumber
-      )}`,
-      email
-    });
+    if (!(emailParam == null) && !(emailCode == null)) {
+      await verifyForgotPasswordByEmail({
+        email: emailParam,
+        code: emailCode,
+        password: payload.password
+      });
+    } else {
+      await patchChangePassword({
+        password: payload.password,
+        phoneNumber: `${String(selectedCode).replace('+', '')}${String(
+          phoneNumber
+        )}`,
+        email
+      });
+    }
     changeStep(3);
   };
 
@@ -83,6 +106,15 @@ export default function ForgotPassword(): React.ReactElement {
         />
         <CreateNewPassword onSubmit={createNewPasswordHandler} />
         <SuccessCard
+          onSubmit={() => {
+            router
+              .push('/auth/login')
+              .then()
+              .catch(() => {});
+          }}
+        />
+        <SuccessCard
+          isSuccessSendEmail
           onSubmit={() => {
             router
               .push('/auth/login')

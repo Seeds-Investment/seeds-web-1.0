@@ -120,6 +120,10 @@ export default {
     success: {
       title: 'Berhasil!',
       text: 'Selamat! Kata sandi baru telah berhasil dibuat.'
+    },
+    successSendEmail: {
+      title: 'Hoorayy!',
+      text: 'Kami telah mengirimkan email verifikasi kepada Kamu'
     }
   },
   changeEmailAddress: {

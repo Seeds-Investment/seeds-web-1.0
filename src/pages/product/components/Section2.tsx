@@ -20,39 +20,6 @@ const customGradient = (
   </>
 );
 
-const dummyData = [
-  {
-    icon: 'https://picsum.photos/200/300',
-    name: 'ETH',
-    price: '0.00001115',
-    change: '+51.35%'
-  },
-  {
-    icon: 'https://picsum.photos/200/300',
-    name: 'BTC',
-    price: '0.2899',
-    change: '+51.35%'
-  },
-  {
-    icon: 'https://picsum.photos/200/300',
-    name: 'SHB',
-    price: '0.00002412',
-    change: '+51.35%'
-  },
-  {
-    icon: 'https://picsum.photos/200/300',
-    name: 'BNB',
-    price: '0.19061',
-    change: '+51.35%'
-  },
-  {
-    icon: 'https://picsum.photos/200/300',
-    name: 'BNB',
-    price: '0.19061',
-    change: '+51.35%'
-  }
-];
-
 export default function Section2(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('circle');
   const data = [
@@ -105,11 +72,7 @@ export default function Section2(): React.ReactElement {
         <TabsBody>
           {data.map(({ value, desc }) => (
             <TabPanel key={value} value={value}>
-              {value === 'asset' ? (
-                <CardAsset datas={dummyData} />
-              ) : (
-                <p>{desc}</p>
-              )}
+              {value === 'asset' ? <CardAsset /> : <p>{desc}</p>}
             </TabPanel>
           ))}
         </TabsBody>

@@ -1,41 +1,151 @@
+import { assetTop } from '@/repository/asset.repository';
 import { Avatar, Card, Typography } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
 
 interface dataInterface {
-  icon: string;
+  id: string;
+  quote: string;
+  currency: string;
+  image: string;
   name: string;
-  price: string;
-  change: string;
+  price: number;
+  regularPercentage: number;
 }
 
-export default function CardAsset({
-  datas
-}: {
-  datas: dataInterface[];
-}): React.ReactElement {
+const initialFilterAsset = {
+  limit: 5,
+  page: 1,
+  sortBy: 'crypto'
+};
+
+export default function CardAsset(): React.ReactElement {
+  const [asset, setAsset] = useState<dataInterface[]>();
+  const [isLoadingAsset, setIsLoadingAsset] = useState(false);
+  const [filterAsset, setFilterAsset] = useState(initialFilterAsset);
+
+  const handleSortBy = (event: any): void => {
+    setFilterAsset(prevState => ({
+      ...prevState,
+      sortBy: event.target.value
+    }));
+
+    fetchTopAsset()
+      .then()
+      .catch(() => {});
+  };
+
+  const fetchTopAsset = async (): Promise<void> => {
+    try {
+      setIsLoadingAsset(true);
+      assetTop(filterAsset)
+        .then(res => {
+          setAsset(res.result);
+          setIsLoadingAsset(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingAsset(false);
+        });
+    } catch (error: any) {
+      setIsLoadingAsset(false);
+      console.error('Error fetching asset data:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopAsset()
+      .then()
+      .catch(() => {});
+  }, []);
+
   return (
     <>
-      {datas !== undefined && (
+      {asset !== undefined && (
         <>
           <div className="flex flex-row items-center justify-center my-10">
-            <div className="whitespace-nowrap text-sm mr-2 md:mr-4 shadow-lg">
-              <span className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]">
-                Crypto
-              </span>
+            <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
+              {filterAsset.sortBy === 'crypto' ? (
+                <button
+                  className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="crypto"
+                >
+                  Crypto
+                </button>
+              ) : (
+                <button
+                  className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="crypto"
+                >
+                  Crypto
+                </button>
+              )}
             </div>
-            <div className="whitespace-nowrap text-sm mr-2 md:mr-4 shadow-lg">
-              <span className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]">
-                ID Stocks
-              </span>
+            <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
+              {filterAsset.sortBy === 'idStock' ? (
+                <button
+                  className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="idStock"
+                >
+                  ID Stocks
+                </button>
+              ) : (
+                <button
+                  className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="idStock"
+                >
+                  ID Stocks
+                </button>
+              )}
             </div>
-            <div className="whitespace-nowrap text-sm mr-2 md:mr-4 shadow-lg">
-              <span className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]">
-                US Stocks
-              </span>
+            <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
+              {filterAsset.sortBy === 'usStock' ? (
+                <button
+                  className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="usStock"
+                >
+                  US Stocks
+                </button>
+              ) : (
+                <button
+                  className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="usStock"
+                >
+                  US Stocks
+                </button>
+              )}
             </div>
-            <div className="whitespace-nowrap text-sm mr-2 md:mr-4 shadow-lg">
-              <span className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]">
-                Commodities
-              </span>
+            <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
+              {filterAsset.sortBy === 'commodities' ? (
+                <button
+                  className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="commodities"
+                >
+                  Commodities
+                </button>
+              ) : (
+                <button
+                  className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
+                  onClick={handleSortBy}
+                  name="sortBy"
+                  value="commodities"
+                >
+                  Commodities
+                </button>
+              )}
             </div>
           </div>
           <Card className="flex flex-row rounded-lg p-4 bg-transparent text-[#262626] mb-5 h-[60px]">
@@ -49,8 +159,12 @@ export default function CardAsset({
               24h Change
             </Typography>
           </Card>
-          {datas?.length !== 0 ? (
-            datas?.map((data, idx) => (
+          {isLoadingAsset ? (
+            <Typography className="w-full text-base font-semibold text-center">
+              Loading....
+            </Typography>
+          ) : asset.length !== 0 ? (
+            asset.map((data, idx) => (
               <Card
                 className="flex flex-row shadow-md rounded-xl mb-7 p-4 bg-transparent h-[80px] items-center"
                 key={idx}
@@ -59,7 +173,7 @@ export default function CardAsset({
                   <Avatar
                     size="md"
                     variant="circular"
-                    src={data.icon}
+                    src={data.image}
                     className="mr-4"
                     alt="ngehe"
                   />
@@ -72,7 +186,7 @@ export default function CardAsset({
                 </Typography>
                 <div className=" w-1/3 text-end whitespace-nowrap text-sm">
                   <span className="bg-[#27A590] text-xs text-white p-3 rounded-lg font-normal md:text-base md:font-semibold">
-                    {data.change}
+                    {data.regularPercentage}
                   </span>
                 </div>
               </Card>

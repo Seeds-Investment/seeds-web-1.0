@@ -773,5 +773,15 @@ export default {
     seedsTagMaxLength: 'Seeds Tag harus memiliki panjang maksimal 20 karakter',
     invalidPassword: 'Password tidak valid',
     invalidConfirmPassword: 'Konfirmasi Password tidak valid'
+  },
+  landingPageV2: {
+    product: {
+      section1: {
+        title1: 'Share & Influence ',
+        title2: 'Others to Start Their Financial Journey',
+        subtitle:
+          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+      }
+    }
   }
 };

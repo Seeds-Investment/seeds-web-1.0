@@ -66,3 +66,23 @@ export const createCircle = async (formRequest: any): Promise<any> => {
     }
   });
 };
+
+export const getCircleCategories = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.get(`/categories`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

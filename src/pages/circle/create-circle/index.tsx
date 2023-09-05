@@ -23,6 +23,7 @@ interface FormRequestInterface {
   memberships: any[];
   hashtags: any[];
   membership_type: string;
+  category: string;
 }
 
 const initialFormRequest = {
@@ -35,7 +36,8 @@ const initialFormRequest = {
   premium_fee: 0,
   memberships: [],
   hashtags: [],
-  membership_type: ''
+  membership_type: '',
+  category: ''
 };
 
 const CreateCircle = (): React.ReactElement => {
@@ -48,7 +50,8 @@ const CreateCircle = (): React.ReactElement => {
     hashtags: '',
     description: '',
     description_rules: '',
-    membership_type: ''
+    membership_type: '',
+    category: ''
   });
   const width = useWindowInnerWidth();
 
@@ -111,6 +114,13 @@ const CreateCircle = (): React.ReactElement => {
     }));
   };
 
+  const handleChangeValueCategory = (value: string): void => {
+    setFormRequest(prevState => ({
+      ...prevState,
+      category: value
+    }));
+  };
+
   const handleChangeStep = (value: string): void => {
     if (value === 'membership' || value === 'premium_choice') {
       if (formRequest.description === '') {
@@ -139,6 +149,14 @@ const CreateCircle = (): React.ReactElement => {
         setError(prevError => ({
           ...prevError,
           name: 'Field is empty'
+        }));
+        return;
+      }
+
+      if (formRequest.category === '') {
+        setError(prevError => ({
+          ...prevError,
+          category: 'Field is empty'
         }));
         return;
       }
@@ -225,6 +243,7 @@ const CreateCircle = (): React.ReactElement => {
             change={handleChangeValue}
             uploadImage={handleUploadImage}
             changeHashtag={handleChangeValueHashtag}
+            changeCategory={handleChangeValueCategory}
             error={error}
           />
         )}

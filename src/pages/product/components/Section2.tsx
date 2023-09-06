@@ -59,7 +59,7 @@ const dummyData = [
 export default function Section2(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('circle');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [circleTrending, setCorcleTrending] = useState<any>();
+  const [circleTrending, setCircleTrending] = useState<any>();
   console.log(isLoading);
 
   const fetchCircleTrending = async (): Promise<any> => {
@@ -68,7 +68,7 @@ export default function Section2(): React.ReactElement {
 
       const { result } = await getTrendingCircle(8);
 
-      setCorcleTrending(result);
+      setCircleTrending(result);
     } catch (error: any) {
       console.error('Error fetching Circle Recommend:', error.message);
     } finally {

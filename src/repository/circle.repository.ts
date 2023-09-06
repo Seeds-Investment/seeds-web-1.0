@@ -8,9 +8,10 @@ const circleService = baseAxios(
   }/circle/v2/`
 );
 
-export const getTrendingCircle = async (): Promise<any> => {
+export const getTrendingCircle = async (limit: number = 10): Promise<any> => {
   try {
-    let response = await authService.get('/trending');
+    let response = await authService.get(`/trending?limit=${limit}`);
+
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;

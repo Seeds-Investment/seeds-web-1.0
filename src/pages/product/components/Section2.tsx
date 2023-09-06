@@ -1,4 +1,5 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getTrendingCircle } from '@/repository/circle.repository';
 import {
   Card,
   Tab,
@@ -8,8 +9,9 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardAsset from './CardAsset';
+import CardCircleProduct from './CardCircle';
 
 const customGradient = (
   <>
@@ -56,6 +58,26 @@ const dummyData = [
 
 export default function Section2(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('circle');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [circleTrending, setCorcleTrending] = useState<any>();
+  console.log(isLoading);
+
+  const fetchCircleTrending = async (): Promise<any> => {
+    try {
+      setIsLoading(true);
+
+      const { result } = await getTrendingCircle(8);
+
+      setCorcleTrending(result);
+    } catch (error: any) {
+      console.error('Error fetching Circle Recommend:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    void fetchCircleTrending();
+  }, []);
   const data = [
     {
       label: 'Top Circle',
@@ -73,7 +95,6 @@ export default function Section2(): React.ReactElement {
       desc: 'hehehe'
     }
   ];
-
   return (
     <PageGradient
       customGradient={customGradient}
@@ -106,7 +127,34 @@ export default function Section2(): React.ReactElement {
         <TabsBody>
           {data.map(({ value, desc }) => (
             <TabPanel key={value} value={value}>
-              {value === 'asset' ? (
+              {value === 'circle' ? (
+                <div className="grid grid-cols-1 2xl:grid-cols-4 gap-6">
+                  {circleTrending?.map((el: any, i: number) => {
+                    return <CardCircleProduct data={el} key={el.id} />;
+                  })}
+                </div>
+              ) : value === 'asset' ? (
+                <>
+                  <Card className="flex flex-row rounded-lg p-4 bg-transparent text-[#262626] mb-5 h-[60px]">
+                    <Typography className="w-1/3 text-base font-semibold text-start">
+                      Asset Name
+                    </Typography>
+                    <Typography className="w-1/3 text-base font-semibold text-center">
+                      Last Price
+                    </Typography>
+                    <Typography className="w-1/3 text-base font-semibold text-end">
+                      24h Change
+                    </Typography>
+                  </Card>
+                  {dummyData?.length !== 0 ? (
+                    dummyData?.map((data, idx) => (
+                      <CardAsset data={data} key={idx} />
+                    ))
+                  ) : (
+                    <p>not found</p>
+                  )}
+                </>
+              ) : value === 'tournament' ? (
                 <>
                   <Card className="flex flex-row rounded-lg p-4 bg-transparent text-[#262626] mb-5 h-[60px]">
                     <Typography className="w-1/3 text-base font-semibold text-start">

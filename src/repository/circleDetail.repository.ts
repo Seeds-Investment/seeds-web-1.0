@@ -100,6 +100,11 @@ export const searchGifFromGhipy = async (query: string): Promise<any> => {
   }
 };
 
+interface Polling {
+  content_text: string;
+  media_url: string;
+}
+
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];
@@ -108,6 +113,9 @@ export const createPostCircleDetail = async (formData: {
   user_id: string | any;
   circleId: string | any;
   hashtags: string[] | any;
+  pollings?: Polling[] | any;
+  polling_multiple?: boolean;
+  polling_new_option?: boolean;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -134,7 +142,10 @@ export const createPostCircleDetail = async (formData: {
       is_pinned: formData.is_pinned,
       user_id: formData.user_id,
       circle_id: formData.circleId,
-      hashtags: formData.hashtags
+      hashtags: formData.hashtags,
+      pollings: formData.pollings,
+      polling_multiple: formData.polling_multiple,
+      polling_new_option: formData.polling_new_option,
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {

@@ -7,9 +7,12 @@ import {
 } from '@material-tailwind/react';
 
 
-interface props {}
+interface props {
+  setPages: any;
+  form: any;
+}
 
-export const PollInput: React.FC<props> = () => {
+export const PollInput: React.FC<props> = ({ setPages, form }) => {
   const [options, setOptions] = useState<string[]>([]);
   const [isMultiVote, setIsMultiVote] = useState(false);
   const [shouldAllowNewOption, setShouldAllowNewOption] = useState(false);
@@ -18,7 +21,19 @@ export const PollInput: React.FC<props> = () => {
   const deletePolling = (index: number): void => {
     setOptions([...options.filter((_, i) => i !== index)]);
   };
-  
+
+  const onDone = (): void => {
+    form.polling = {
+      options: options.map(option => ({ content_text: option, media_url: '' })),
+      isMultiVote,
+      canAddNewOption: shouldAllowNewOption
+    };
+    setPages('text');
+  };
+
+  const onCancel = (): void => {
+    setPages('text');
+  };
 
   return (
     <div className="rounded-lg border border-[#BDBDBD] w-fit my-4 p-4">
@@ -75,12 +90,14 @@ export const PollInput: React.FC<props> = () => {
       </div>
       <div className="flex">
         <button
+          onClick={onCancel}
           type="button"
           className="flex w-40 mx-2 justify-center py-2 items-center rounded-full px-6 text-[#7555DA] border border-[#7555DA] font-semibold font-poppins h-fit"
         >
           Cancel
         </button>
         <button
+          onClick={onDone}
           disabled={options.length < 1}
           type="button"
           className={`flex w-40 mx-2 justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${

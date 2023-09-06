@@ -64,10 +64,21 @@ interface UserData {
   phone: string;
   _pin: string;
 }
+
+interface Polling {
+  content_text: string;
+  media_url: string;
+}
+
 interface form {
   content_text: string;
   privacy: string;
   media_urls: string[];
+  polling: {
+    options: Polling[];
+    isMultiVote: boolean;
+    canAddNewOption: boolean;
+  };
 }
 
 const CirclePost = (): JSX.Element => {
@@ -138,7 +149,12 @@ const CirclePost = (): JSX.Element => {
   const [form, setForm] = useState<form>({
     content_text: '',
     privacy: dropVal.type.toLowerCase(),
-    media_urls: []
+    media_urls: [],
+    polling: {
+      options: [],
+      isMultiVote: false,
+      canAddNewOption: false
+    }
   });
 
   const renderLoading = (): JSX.Element => (
@@ -227,7 +243,7 @@ const CirclePost = (): JSX.Element => {
       if (audio !== undefined && audio !== null) {
         await postMedia(audio);
       }
-      await createPostCircleDetail({
+      const payload = {
         content_text: form.content_text,
         media_urls: form.media_urls,
         privacy: form.privacy,
@@ -235,12 +251,23 @@ const CirclePost = (): JSX.Element => {
         user_id: userInfo?.id,
         circleId,
         hashtags
-      });
+      };
+      if (form.polling.options.length > 0) {
+        payload.pollings = form.polling.options;
+        payload.polling_multiple = form.polling.isMultiVote;
+        payload.polling_new_option = form.polling.canAddNewOption;
+      }
+      await createPostCircleDetail(payload);
 
       setForm({
         content_text: '',
         privacy: dropVal.type.toLowerCase(),
-        media_urls: []
+        media_urls: [],
+        polling: {
+          options: [],
+          isMultiVote: false,
+          canAddNewOption: false
+        }
       });
       setMedia(undefined);
       setHashtags([]);
@@ -269,7 +296,7 @@ const CirclePost = (): JSX.Element => {
       );
     } else if (pages === 'poll') {
       return (
-        <PollInput />
+        <PollInput setPages={setPages} form={form} />
       );
     }
   };
@@ -323,6 +350,20 @@ const CirclePost = (): JSX.Element => {
               <></>
             )}
             {handlePages()}
+            {form.polling?.options.length > 0 && pages === 'text' ? (
+              form.polling?.options.map((el: any, i: number) => {
+                return (
+                  <div
+                    className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                    key={`${i} + 'Polling'`}
+                  >
+                    {el.content_text}
+                  </div>
+                );
+              })
+            ) : (
+              <></>
+            )}
             {pages !== 'gif' ? (
               <UniqueInputButton setPages={setPages} setMedia={setMedia} />
             ) : (

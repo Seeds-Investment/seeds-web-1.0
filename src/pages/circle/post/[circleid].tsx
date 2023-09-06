@@ -6,6 +6,7 @@ import Gif_Post from '@/containers/circle/[id]/GifPost';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
 import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
+import { PollInput } from '@/containers/circle/[id]/PollInput';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
@@ -232,8 +233,8 @@ const CirclePost = (): JSX.Element => {
         privacy: form.privacy,
         is_pinned: false,
         user_id: userInfo?.id,
-        circleId: circleId,
-        hashtags: hashtags
+        circleId,
+        hashtags
       });
 
       setForm({
@@ -265,6 +266,10 @@ const CirclePost = (): JSX.Element => {
           setLoading={setIsLoading}
           audio={audio}
         />
+      );
+    } else if (pages === 'poll') {
+      return (
+        <PollInput />
       );
     }
   };

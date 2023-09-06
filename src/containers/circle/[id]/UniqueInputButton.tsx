@@ -83,7 +83,13 @@ const UniqueInputButton: React.FC<props> = ({ setPages, setMedia }) => {
         </div>
         {/* Poll */}
         <div className="flex flex-col">
-          <button type="button" className="p-2">
+          <button
+            type="button"
+            className="p-2"
+            onClick={() => {
+              handlePages('poll');
+            }}
+          >
             <Image
               alt="unique_post"
               src={poll}

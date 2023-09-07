@@ -6,6 +6,9 @@ import {
   IconButton
 } from '@material-tailwind/react';
 import { useTranslation } from 'react-i18next';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface props {
   setPages: any;
@@ -17,7 +20,7 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
   const [options, setOptions] = useState<string[]>([]);
   const [isMultiVote, setIsMultiVote] = useState(false);
   const [hasEndDate, setHasEndDate] = useState(false);
-  const [endDate, setEndDAte] = useState('');
+  const [endDate, setEndDate] = useState<Date>();
   const [shouldAllowNewOption, setShouldAllowNewOption] = useState(false);
 
   const deletePolling = (index: number): void => {
@@ -29,7 +32,7 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
       options: options.map(option => ({ content_text: option, media_url: '' })),
       isMultiVote,
       canAddNewOption: shouldAllowNewOption,
-      endDate
+      endDate: hasEndDate && endDate
     };
     setPages('text');
   };
@@ -80,25 +83,13 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
       <div className="flex flex-col">
         <CheckBox
           checked={hasEndDate}
+          date={endDate}
+          setDate={setEndDate}
           onChange={() => {
             setHasEndDate(!hasEndDate);
           }}
           label={t('input.poll.endDateLabel')}
         />
-        {hasEndDate && (
-          <Input
-            className="text-lg"
-            type="date"
-            size="md"
-            variant="standard"
-            color="gray"
-            placeholder="DD/MM/YYYY"
-            value={endDate}
-            onChange={e => {
-              setEndDAte(e.target.value);
-            }}
-          />
-        )}
         <CheckBox
           checked={isMultiVote}
           onChange={() => {
@@ -142,23 +133,53 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
 interface CheckBoxProps {
   onChange: () => void;
   label: string;
-  checked: boolean;
+  checked?: boolean;
+  date?: Date;
+  setDate?: any;
 }
+const CheckBox: React.FC<CheckBoxProps> = ({ onChange, label, checked, date, setDate }) => {
+  const renderLabel = (): any => {
+    if ((setDate != null) && (checked ?? false)) {
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
 
-const CheckBox: React.FC<CheckBoxProps> = ({ onChange, label, checked }) => {
+      return (
+        <div>
+          <Typography variant="small" className="text-black lg:font-small">
+            {label}
+          </Typography>
+          <DatePicker
+            minDate={tomorrow}
+            selected={date}
+            onChange={setDate}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="DD/MM/YYYY"
+            className="text-sm text-black"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Typography variant="small" className="text-black lg:font-small">
+        {label}
+      </Typography>
+    );
+  }
+
+
   return (
-    <MTCheckbox
-      id={label}
-      className="p-0 m-0"
-      checked={checked}
-      onChange={onChange}
-      label={
-        <Typography variant="small" className="text-black lg:font-small">
-          {label}
-        </Typography>
-      }
-      color="green"
-    />
+    <div className='flex items-center'>
+      <MTCheckbox
+        id={label}
+        className="p-0 m-0"
+        checked={checked}
+        onChange={onChange}
+        color="green"
+        />
+      {renderLabel()}
+    </div>
   );
 };
 

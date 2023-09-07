@@ -6,7 +6,7 @@ import Gif_Post from '@/containers/circle/[id]/GifPost';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
 import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
-import { PollInput } from '@/containers/circle/[id]/PollInput';
+import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,

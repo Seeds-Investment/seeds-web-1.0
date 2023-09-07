@@ -5,7 +5,7 @@ import {
   Input,
   IconButton
 } from '@material-tailwind/react';
-
+import { useTranslation } from 'react-i18next';
 
 interface props {
   setPages: any;
@@ -13,12 +13,12 @@ interface props {
 }
 
 export const PollInput: React.FC<props> = ({ setPages, form }) => {
+  const { t } = useTranslation();
   const [options, setOptions] = useState<string[]>([]);
   const [isMultiVote, setIsMultiVote] = useState(false);
   const [hasEndDate, setHasEndDate] = useState(false);
   const [endDate, setEndDAte] = useState('');
   const [shouldAllowNewOption, setShouldAllowNewOption] = useState(false);
-  console.log('====', options);
 
   const deletePolling = (index: number): void => {
     setOptions([...options.filter((_, i) => i !== index)]);
@@ -68,7 +68,9 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
         {options.length < 6 && (
           <OptionInput
             key="new"
-            label={`${options.length + 1}. Enter an option`}
+            label={t('input.poll.optionPlaceholder', {
+              index: options.length + 1
+            })}
             onButtonClick={newOption => {
               setOptions([...options, newOption]);
             }}
@@ -81,7 +83,7 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
           onChange={() => {
             setHasEndDate(!hasEndDate);
           }}
-          label="Set ending date"
+          label={t('input.poll.endDateLabel')}
         />
         {hasEndDate && (
           <Input
@@ -102,14 +104,14 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
           onChange={() => {
             setIsMultiVote(!isMultiVote);
           }}
-          label="Multivote"
+          label={t('input.poll.endDateLabel')}
         />
         <CheckBox
           checked={shouldAllowNewOption}
           onChange={() => {
             setShouldAllowNewOption(!shouldAllowNewOption);
           }}
-          label="Allow new options"
+          label={t('input.poll.allowNewOptionLabel')}
         />
       </div>
       <div className="flex">

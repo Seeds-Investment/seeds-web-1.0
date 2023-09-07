@@ -78,6 +78,7 @@ interface form {
     options: Polling[];
     isMultiVote: boolean;
     canAddNewOption: boolean;
+    endDate: string;
   };
 }
 
@@ -153,7 +154,8 @@ const CirclePost = (): JSX.Element => {
     polling: {
       options: [],
       isMultiVote: false,
-      canAddNewOption: false
+      canAddNewOption: false,
+      endDate: ''
     }
   });
 
@@ -256,6 +258,7 @@ const CirclePost = (): JSX.Element => {
         payload.pollings = form.polling.options;
         payload.polling_multiple = form.polling.isMultiVote;
         payload.polling_new_option = form.polling.canAddNewOption;
+        payload.polling_date = form.polling.endDate.length > 0 ? new Date(form.polling.endDate) : undefined;
       }
       await createPostCircleDetail(payload);
 
@@ -266,7 +269,8 @@ const CirclePost = (): JSX.Element => {
         polling: {
           options: [],
           isMultiVote: false,
-          canAddNewOption: false
+          canAddNewOption: false,
+          endDate: ''
         }
       });
       setMedia(undefined);

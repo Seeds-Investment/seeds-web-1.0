@@ -15,6 +15,8 @@ interface props {
 export const PollInput: React.FC<props> = ({ setPages, form }) => {
   const [options, setOptions] = useState<string[]>([]);
   const [isMultiVote, setIsMultiVote] = useState(false);
+  const [hasEndDate, setHasEndDate] = useState(false);
+  const [endDate, setEndDAte] = useState('');
   const [shouldAllowNewOption, setShouldAllowNewOption] = useState(false);
   console.log('====', options);
 
@@ -26,7 +28,8 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
     form.polling = {
       options: options.map(option => ({ content_text: option, media_url: '' })),
       isMultiVote,
-      canAddNewOption: shouldAllowNewOption
+      canAddNewOption: shouldAllowNewOption,
+      endDate
     };
     setPages('text');
   };
@@ -73,6 +76,27 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
         )}
       </div>
       <div className="flex flex-col">
+        <CheckBox
+          checked={hasEndDate}
+          onChange={() => {
+            setHasEndDate(!hasEndDate);
+          }}
+          label="Set ending date"
+        />
+        {hasEndDate && (
+          <Input
+            className="text-lg"
+            type="date"
+            size="md"
+            variant="standard"
+            color="gray"
+            placeholder="DD/MM/YYYY"
+            value={endDate}
+            onChange={e => {
+              setEndDAte(e.target.value);
+            }}
+          />
+        )}
         <CheckBox
           checked={isMultiVote}
           onChange={() => {

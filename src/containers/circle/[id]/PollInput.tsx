@@ -104,7 +104,7 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
           onChange={() => {
             setIsMultiVote(!isMultiVote);
           }}
-          label={t('input.poll.endDateLabel')}
+          label={t('input.poll.multivoteLabel')}
         />
         <CheckBox
           checked={shouldAllowNewOption}
@@ -148,6 +148,7 @@ interface CheckBoxProps {
 const CheckBox: React.FC<CheckBoxProps> = ({ onChange, label, checked }) => {
   return (
     <MTCheckbox
+      id={label}
       className="p-0 m-0"
       checked={checked}
       onChange={onChange}

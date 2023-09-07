@@ -93,7 +93,7 @@ export default function Section1(): React.ReactElement {
                             lg:translate-x-[20rem] lg:-translate-y-[13rem]
                             xl:w-[18%] xl:translate-x-[25rem] xl:-translate-y-[20rem] ${
                               width !== undefined && width >= 1690
-                                ? '2xl:w-[18%] 2xl:-translate-y-[20rem] 2xl:translate-x-[33rem]'
+                                ? '2xl:w-[14%] 2xl:-translate-y-[20rem] 2xl:translate-x-[35rem]'
                                 : ''
                             }`}
             src={card3}
@@ -108,7 +108,7 @@ export default function Section1(): React.ReactElement {
                             lg:translate-x-[15rem] lg:-translate-y-[33rem]
                             xl:w-[23%] xl:translate-x-[19rem] xl:-translate-y-[48rem] ${
                               width !== undefined && width >= 1690
-                                ? '2xl:w-[21%] 2xl:translate-x-[28rem] 2xl:-translate-y-[47rem]'
+                                ? '2xl:w-[18%] 2xl:translate-x-[28rem] 2xl:-translate-y-[47rem]'
                                 : ''
                             }`}
             src={card3}
@@ -138,7 +138,7 @@ export default function Section1(): React.ReactElement {
                             lg:translate-x-[1rem] lg:-translate-y-[16rem]
                             xl:w-[25%] xl:-translate-x-[3rem] xl:-translate-y-[26rem] ${
                               width !== undefined && width >= 1690
-                                ? '2xl:w-[22%] 2xl:translate-x-[10rem] 2xl:-translate-y-[22rem]'
+                                ? '2xl:w-[18%] 2xl:translate-x-[10rem] 2xl:-translate-y-[22rem]'
                                 : ''
                             }`}
             src={card1}

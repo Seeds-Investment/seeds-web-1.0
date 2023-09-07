@@ -179,7 +179,10 @@ const Option: React.FC<OptionProps> = ({
         variant="static"
         className="h-8"
         value={value}
-        onChange={e => {onChange(e.target.value)}}
+        onChange={e => {
+          onChange(e.target.value);
+        }}
+        maxLength={255}
       />
       <IconButton
         size="sm"
@@ -223,6 +226,7 @@ const OptionInput: React.FC<OptionInputProps> = ({
         className="h-8"
         value={value}
         onChange={e => {setValue(e.target.value);}}
+        maxLength={255}
       />
       <IconButton
         size="sm"

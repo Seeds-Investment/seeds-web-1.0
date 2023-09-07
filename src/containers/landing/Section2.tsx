@@ -1,10 +1,10 @@
 import earth from '@/assets/landing-page/s2-earth.png';
 import shape from '@/assets/landing-page/s2-shape.png';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getExternalNews } from '@/repository/news.repository';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ const fetch = async (
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
   const [news, setNews] = useState([]);
-  const router = useRouter();
+  const width = useWindowInnerWidth();
   console.log(news);
 
   const settings: Settings = {
@@ -64,7 +64,7 @@ export default function Section2(): React.ReactElement {
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">
-        <div className="flex flex-row w-full items-center justify-center mb-10 md:mb-8 lg:mb-20 sm:mb-20">
+        <div className="flex flex-row w-full items-center justify-center mb-6 md:mb-12 lg:mb-20 xl:mb-24 sm:mb-20">
           <span className="text-2xl font-bold text-white text-shadow-purple opacity-90 mr-2 md:text-5xl lg:text-7xl">
             {t('landing.section2.text1')}
           </span>
@@ -86,36 +86,38 @@ export default function Section2(): React.ReactElement {
           />
         </div>
 
-        <div className="w-full flex flex-col items-center justify-center">
-          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-[#7555DA] md:font-bold md:text-3xl lg:text-6xl lg:mb-5">
+        <div
+          className={`w-full flex flex-col items-center justify-center ${
+            width !== undefined && width >= 1690 ? '2xl:mt-11' : ''
+          }`}
+        >
+          <div className="opacity-70 text-xl font-semibold tracking-wider mb-1 text-[#7555DA] md:font-bold md:text-3xl lg:text-6xl lg:mb-5 xl:text-7xl">
             {t('landing.section2.text2')}
           </div>
-          <Typography className="opacity-70 text-xs font-semibold tracking-wide mb-2 text-[#AC75FF] md:text-xl lg:text-3xl lg:mb-5">
+          <Typography className="opacity-70 text-xs font-semibold tracking-wide mb-2 text-[#AC75FF] md:text-xl lg:text-3xl lg:mb-5 xl:text-4xl">
             {t('landing.section2.text3')}
           </Typography>
-          <Typography className="opacity-70 text-xs text-center font-light text-neutral-soft mx-[7rem] mb-2 md:text-lg md:w-1/2 lg:text-2xl lg:mb-5">
+          <Typography className="opacity-70 text-xs text-center font-light text-neutral-soft mx-[7rem] mb-2 md:text-lg md:w-1/2 lg:text-2xl lg:mb-5 xl:text-3xl">
             {t('landing.section2.text4')}
           </Typography>
-          <Button
-            className="z-50 capitalize font-semibold text-xs bg-seeds-purple rounded-full px-14 h-[50px]"
-            onClick={() => {
-              void router.push('/auth/register');
-            }}
-          >
-            {t('button.joinNow')}
-          </Button>
 
           <Image
             alt="img"
-            className="absolute h-[200px] w-[90%] translate-y-[0rem] -z-30
-                md:h-[220px] md:w-[90%] md:translate-y-[0rem] lg:h-[330px] lg:w-[90%]
-                xl:w-[90%]"
+            className={`absolute h-[8rem] w-[90%] translate-y-[0rem] -z-30
+                md:h-[220px] md:w-[90%] md:translate-y-[0rem] 
+                lg:h-[20rem] lg:w-[62rem]
+                xl:w-[90%] xl:h-[400px] ${
+                  width !== undefined && width >= 1690
+                    ? '2xl:h-[500px] 2xl:w-[85%] 2xl:translate-y-[1rem]'
+                    : ''
+                }`}
+            // 2xl:h-[500px] 2xl:translate-y-[4rem]"
             src={shape}
           />
         </div>
       </div>
 
-      <div className="mt-10 mx-5 md:mx-20 lg:mx-20">
+      <div className="mt-10 mx-5 md:mx-20 lg:mx-20 2xl:mt-[15rem]">
         <div className="opacity-70 text-sm font-semibold tracking-wide mb-2 text-seeds-purple md:text-3xl lg:text-[32px]">
           {t('landing.section2.text5')}
         </div>

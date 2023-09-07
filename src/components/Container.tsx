@@ -19,21 +19,23 @@ export default function Container({
     void i18n.changeLanguage(lng);
   };
   return (
-    <div className="opacity-0 flex min-w-full min-h-screen fade-in">
-      <div className="w-full h-screen hidden lg:block">
-        <div className="min-h-screen flex items-center justify-center min-w-full transition-all duration-300  bg-gradient-to-tr from-seeds-green  to-seeds-purple px-[8%] py-[3%]">
-          <Image
-            className="fixed bottom-0 w-1/2 left-0 z-0"
-            src={bgLine}
-            alt=""
-          />
-          <Image className="left-0 w-[30vw]" src={hello} alt="" />
+    <div className="opacity-0 flex min-w-full min-h-full fade-in">
+      <div className="w-full h-full lg:w-1/2 relative bg-gradient-to-tr from-seeds-green  to-seeds-purple">
+        <div className="w-full h-full hidden lg:block">
+          <div className="min-h-full flex items-center justify-center min-w-full transition-all duration-300   px-[8%] py-[3%]">
+            <Image
+              className="fixed bottom-0 w-1/2 left-0 z-0"
+              src={bgLine}
+              alt=""
+            />
+            <Image className="left-0 w-[30vw]" src={hello} alt="" />
+          </div>
         </div>
       </div>
-      <div className="w-full h-screen relative">
-        <div className="absolute h-full w-full z-20">
-          <div className="w-full flex items-center justify-center lg:px-20 lg:py-14 h-full p-8 ">
-            <div className="bg-white bg-opacity-50 min-w-full min-h-full py-12 px-8 lg:px-16 relative rounded-2xl shadow-center text-sm lg:text-base">
+      <div className="w-full h-screen lg:w-1/2 relative bg-gradient-to-tr from-seeds-green to-seeds-purple lg:bg-none">
+        <div className={`absolute h-full w-full z-20`}>
+          <div className="w-full flex items-center justify-center lg:py-16 h-full p-8 ">
+            <div className="bg-white bg-opacity-50 min-w-full min-h-full p-4 lg:px-8 relative rounded-2xl shadow-center text-sm lg:text-base">
               <div className="w-full flex justify-between items-center lg:pr-0">
                 <Image src={logo} alt="" />
                 <Dropdown

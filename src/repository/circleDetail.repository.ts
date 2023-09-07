@@ -162,6 +162,31 @@ export const createPostCircleDetail = async (formData: {
   }
 };
 
+export const selectPostPolling = async (
+  postPollingId: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  const res = await baseUrl.post(
+    '/post/v2/polling/vote',
+    {
+      post_polling_id: postPollingId
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+
+  return res;
+};
+
 const post = async (url: string, payload: any, headers = {}): Promise<any> => {
   return await axios({
     method: 'POST',

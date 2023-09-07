@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
 
+import { selectPostPolling } from '@/repository/circleDetail.repository';
+
 interface Polling {
+  id: string;
   content_text: string;
   percentage: number;
   total_vote: number;
@@ -15,7 +18,9 @@ interface props {
   totalVote: number;
 }
 
-const PollingView: React.FC<props> = ({ data, pollingDate, totalVote }) => {
+const PollingView: React.FC<props> = ({ data: pollings, pollingDate, totalVote: initialTotalVote }) => {
+  const [totalVote, setTotalVote] = useState(initialTotalVote);
+  const [data, setData] = useState(pollings);
   const hadSelectedPoll = useMemo(
     () => (data ?? []).some(e => e.status_vote),
     [data]
@@ -29,6 +34,15 @@ const PollingView: React.FC<props> = ({ data, pollingDate, totalVote }) => {
 
     return expiredDate.isSameOrBefore(moment(new Date()));
   }, [pollingDate]);
+  const handleSelectPoll = async (postPollingId: string): Promise<any> => {
+    try {
+      const res = await selectPostPolling(postPollingId);
+      setData(res.data);
+      setTotalVote(res.total);
+    } catch (e) {
+      console.log('err: ', e);
+    }
+  };
 
   return (
     <div>
@@ -39,11 +53,14 @@ const PollingView: React.FC<props> = ({ data, pollingDate, totalVote }) => {
             polling={item}
             hadSelectedPoll={hadSelectedPoll}
             pollHasExpired={pollHasExpired}
+            onVote={handleSelectPoll}
           />
         ))}
       </div>
       {(hadSelectedPoll || pollHasExpired) && (
-        <Typography className="text-[#7C7C7C] text-sm">{totalVote} votes</Typography>
+        <Typography className="text-[#7C7C7C] text-sm">
+          {totalVote} votes
+        </Typography>
       )}
     </div>
   );
@@ -53,12 +70,14 @@ interface PollingItemProps {
   polling: Polling;
   hadSelectedPoll: boolean;
   pollHasExpired: boolean;
+  onVote: (id: string) => void;
 }
 
 const PollingItem: React.FC<PollingItemProps> = ({
   polling,
   hadSelectedPoll,
-  pollHasExpired
+  pollHasExpired,
+  onVote
 }) => {
   const percentage = polling.percentage ?? 0;
   const borderColor = (hadSelectedPoll || pollHasExpired) ? 'border-[#4FE6AF]' : '';
@@ -68,8 +87,10 @@ const PollingItem: React.FC<PollingItemProps> = ({
       : 'text-[#7C7C7C]';
 
   return (
-    <div
+    <button
       className={`flex relative justify-between overflow-hidden border rounded-lg ${borderColor}`}
+      disabled={pollHasExpired}
+      onClick={() => {onVote(polling.id)}}
     >
       {(hadSelectedPoll || pollHasExpired) && (
         <div className={`absolute w-[${percentage}%] h-full bg-[#DCFCE4]`} />
@@ -87,7 +108,7 @@ const PollingItem: React.FC<PollingItemProps> = ({
           </Typography>
         )}
       </div>
-    </div>
+    </button>
   );
 };
 

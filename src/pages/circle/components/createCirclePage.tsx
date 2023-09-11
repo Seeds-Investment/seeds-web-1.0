@@ -1,5 +1,6 @@
 import CCard from '@/components/CCard';
 import { freeCircle, premiumCircle } from '@/constants/assets/icons';
+import { getCircleCategories } from '@/repository/circle.repository';
 import { getHashtag } from '@/repository/hashtag';
 import LanguageContext from '@/store/language/language-context';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
@@ -9,6 +10,8 @@ import {
   Card,
   CardBody,
   Input,
+  Option,
+  Select,
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -64,9 +67,12 @@ const CreateCirclePage = ({
   change,
   uploadImage,
   changeHashtag,
-  error
+  error,
+  changeCategory
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
+  const [categories, setCategories] = useState<any[]>();
+  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
   const { t } = useTranslation();
@@ -102,8 +108,30 @@ const CreateCirclePage = ({
     }
   };
 
+  const fetchCircleCategory = async (): Promise<void> => {
+    try {
+      setIsLoadingCategory(true);
+      getCircleCategories(initialFilterHashtags)
+        .then(res => {
+          setIsLoadingCategory(false);
+          setCategories(res.data);
+        })
+        .catch(err => {
+          setIsLoadingCategory(false);
+          console.log(err);
+        });
+    } catch (error: any) {
+      setIsLoadingCategory(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
   useEffect(() => {
     fetchHashtags()
+      .then()
+      .catch(() => {});
+
+    fetchCircleCategory()
       .then()
       .catch(() => {});
   }, []);
@@ -216,6 +244,32 @@ const CreateCirclePage = ({
                   {error.hashtags !== null ? (
                     <Typography color="red" className="text-xs mt-2">
                       {error.hashtags}
+                    </Typography>
+                  ) : null}
+                </div>
+
+                <div className="mb-8">
+                  <label className="font-semibold text-base text-[#262626]">
+                    Category
+                  </label>
+                  <Select
+                    className="mt-2"
+                    name="category"
+                    onChange={changeCategory}
+                  >
+                    {!isLoadingCategory ? (
+                      categories?.map((data, idx) => (
+                        <Option key={idx} value={data.category}>
+                          {data.category}
+                        </Option>
+                      ))
+                    ) : (
+                      <Option>loading...</Option>
+                    )}
+                  </Select>
+                  {error.category !== null ? (
+                    <Typography color="red" className="text-xs mt-2">
+                      {error.category}
                     </Typography>
                   ) : null}
                 </div>

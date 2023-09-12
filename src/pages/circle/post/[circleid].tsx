@@ -3,10 +3,10 @@ import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
 import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
-import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
+import PieModal from '../components/modalPie';
 
 const dataSelection: typeOfSelection[] = [
   {
@@ -90,10 +91,19 @@ const CirclePost = (): JSX.Element => {
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
+  const [isPieModalOpen, setIsPieModalOpen] = useState(false);
+  // const [pieData, setPieData] = useState({/* data untuk modal pie */});
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
     svg: globe
   });
+  const openPieModal: any = () => {
+    setIsPieModalOpen(true);
+  };
+
+  const closePieModal: any = () => {
+    setIsPieModalOpen(false);
+  };
 
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
@@ -245,7 +255,7 @@ const CirclePost = (): JSX.Element => {
       if (audio !== undefined && audio !== null) {
         await postMedia(audio);
       }
-      const payload = {
+      const payload: any = {
         content_text: form.content_text,
         media_urls: form.media_urls,
         privacy: form.privacy,
@@ -258,7 +268,10 @@ const CirclePost = (): JSX.Element => {
         payload.pollings = form.polling.options;
         payload.polling_multiple = form.polling.isMultiVote;
         payload.polling_new_option = form.polling.canAddNewOption;
-        payload.polling_date = form.polling.endDate.length > 0 ? new Date(form.polling.endDate) : undefined;
+        payload.polling_date =
+          form.polling.endDate.length > 0
+            ? new Date(form.polling.endDate)
+            : undefined;
       }
       await createPostCircleDetail(payload);
 
@@ -283,6 +296,7 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(false);
     }
   };
+
   const handlePages = (): any => {
     if (pages === 'text') {
       return (
@@ -298,10 +312,10 @@ const CirclePost = (): JSX.Element => {
           audio={audio}
         />
       );
+    } else if (pages === 'pie' && isPieModalOpen) {
+      return <PieModal closePieModal={closePieModal} />;
     } else if (pages === 'poll') {
-      return (
-        <PollInput setPages={setPages} form={form} />
-      );
+      return <PollInput setPages={setPages} form={form} />;
     }
   };
 
@@ -369,7 +383,11 @@ const CirclePost = (): JSX.Element => {
               <></>
             )}
             {pages !== 'gif' ? (
-              <UniqueInputButton setPages={setPages} setMedia={setMedia} />
+              <UniqueInputButton
+                setPages={setPages}
+                setMedia={setMedia}
+                openPieModal={openPieModal}
+              />
             ) : (
               <></>
             )}

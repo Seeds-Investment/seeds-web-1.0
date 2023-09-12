@@ -178,6 +178,12 @@ export default {
       seedsTag: 'Tag Seeds',
       referralCode: 'Kode Referal',
       optional: '(tidak wajib)'
+    },
+    poll: {
+      optionPlaceholder: '{{index}}. Enter an option',
+      endDateLabel: 'Set ending date',
+      multivoteLabel: 'Multivote',
+      allowNewOptionLabel: 'Allow new options'
     }
   },
   button: {

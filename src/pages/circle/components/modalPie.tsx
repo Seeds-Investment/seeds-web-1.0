@@ -225,6 +225,7 @@ const PieModal = ({ closePieModal }: any): any => {
                   className="w-full h-4 rounded-full appearance-none"
                   min="0"
                   max="100"
+                  value={sliderValue}
                   style={{
                     background: `linear-gradient(to right, #3AC4A0 0%, #3AC4A0 ${sliderValue}%, #ccc ${sliderValue}%, #ccc 100%)`
                   }}

@@ -3,6 +3,7 @@ import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
 import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
@@ -64,10 +65,22 @@ interface UserData {
   phone: string;
   _pin: string;
 }
+
+interface Polling {
+  content_text: string;
+  media_url: string;
+}
+
 interface form {
   content_text: string;
   privacy: string;
   media_urls: string[];
+  polling: {
+    options: Polling[];
+    isMultiVote: boolean;
+    canAddNewOption: boolean;
+    endDate: string;
+  };
 }
 
 const CirclePost = (): JSX.Element => {
@@ -147,7 +160,13 @@ const CirclePost = (): JSX.Element => {
   const [form, setForm] = useState<form>({
     content_text: '',
     privacy: dropVal.type.toLowerCase(),
-    media_urls: []
+    media_urls: [],
+    polling: {
+      options: [],
+      isMultiVote: false,
+      canAddNewOption: false,
+      endDate: ''
+    }
   });
 
   const renderLoading = (): JSX.Element => (
@@ -236,20 +255,36 @@ const CirclePost = (): JSX.Element => {
       if (audio !== undefined && audio !== null) {
         await postMedia(audio);
       }
-      await createPostCircleDetail({
+      const payload: any = {
         content_text: form.content_text,
         media_urls: form.media_urls,
         privacy: form.privacy,
         is_pinned: false,
         user_id: userInfo?.id,
-        circleId: circleId,
-        hashtags: hashtags
-      });
+        circleId,
+        hashtags
+      };
+      if (form.polling.options.length > 0) {
+        payload.pollings = form.polling.options;
+        payload.polling_multiple = form.polling.isMultiVote;
+        payload.polling_new_option = form.polling.canAddNewOption;
+        payload.polling_date =
+          form.polling.endDate.length > 0
+            ? new Date(form.polling.endDate)
+            : undefined;
+      }
+      await createPostCircleDetail(payload);
 
       setForm({
         content_text: '',
         privacy: dropVal.type.toLowerCase(),
-        media_urls: []
+        media_urls: [],
+        polling: {
+          options: [],
+          isMultiVote: false,
+          canAddNewOption: false,
+          endDate: ''
+        }
       });
       setMedia(undefined);
       setHashtags([]);
@@ -279,6 +314,8 @@ const CirclePost = (): JSX.Element => {
       );
     } else if (pages === 'pie' && isPieModalOpen) {
       return <PieModal closePieModal={closePieModal} />;
+    } else if (pages === 'poll') {
+      return <PollInput setPages={setPages} form={form} />;
     }
   };
 
@@ -331,6 +368,20 @@ const CirclePost = (): JSX.Element => {
               <></>
             )}
             {handlePages()}
+            {form.polling?.options.length > 0 && pages === 'text' ? (
+              form.polling?.options.map((el: any, i: number) => {
+                return (
+                  <div
+                    className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                    key={`${i} + 'Polling'`}
+                  >
+                    {el.content_text}
+                  </div>
+                );
+              })
+            ) : (
+              <></>
+            )}
             {pages !== 'gif' ? (
               <UniqueInputButton
                 setPages={setPages}

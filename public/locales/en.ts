@@ -190,6 +190,12 @@ export default {
       seedsTag: 'Seeds Tag',
       referralCode: 'Referral Code',
       optional: '(optional)'
+    },
+    poll: {
+      optionPlaceholder: '{{index}}. Enter an option',
+      endDateLabel: 'Set ending date',
+      multivoteLabel: 'Multivote',
+      allowNewOptionLabel: 'Allow new options'
     }
   },
   button: {

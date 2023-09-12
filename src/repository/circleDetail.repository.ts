@@ -100,6 +100,11 @@ export const searchGifFromGhipy = async (query: string): Promise<any> => {
   }
 };
 
+interface Polling {
+  content_text: string;
+  media_url: string;
+}
+
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];
@@ -108,6 +113,10 @@ export const createPostCircleDetail = async (formData: {
   user_id: string | any;
   circleId: string | any;
   hashtags: string[] | any;
+  pollings?: Polling[] | any;
+  polling_multiple?: boolean;
+  polling_new_option?: boolean;
+  polling_date?: string;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -134,7 +143,11 @@ export const createPostCircleDetail = async (formData: {
       is_pinned: formData.is_pinned,
       user_id: formData.user_id,
       circle_id: formData.circleId,
-      hashtags: formData.hashtags
+      hashtags: formData.hashtags,
+      pollings: formData.pollings,
+      polling_multiple: formData.polling_multiple,
+      polling_new_option: formData.polling_new_option,
+      polling_date: formData.polling_date
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {
@@ -147,6 +160,31 @@ export const createPostCircleDetail = async (formData: {
   } catch (error) {
     return error;
   }
+};
+
+export const selectPostPolling = async (
+  postPollingId: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  const res = await baseUrl.post(
+    '/post/v2/polling/vote',
+    {
+      post_polling_id: postPollingId
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+
+  return res;
 };
 
 const post = async (url: string, payload: any, headers = {}): Promise<any> => {

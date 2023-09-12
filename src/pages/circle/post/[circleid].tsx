@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
+import PieModal from '../components/modalPie';
 
 const dataSelection: typeOfSelection[] = [
   {
@@ -77,10 +78,19 @@ const CirclePost = (): JSX.Element => {
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
+  const [isPieModalOpen, setIsPieModalOpen] = useState(false);
+  // const [pieData, setPieData] = useState({/* data untuk modal pie */});
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
     svg: globe
   });
+  const openPieModal: any = () => {
+    setIsPieModalOpen(true);
+  };
+
+  const closePieModal: any = () => {
+    setIsPieModalOpen(false);
+  };
 
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
@@ -251,6 +261,7 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(false);
     }
   };
+
   const handlePages = (): any => {
     if (pages === 'text') {
       return (
@@ -266,6 +277,8 @@ const CirclePost = (): JSX.Element => {
           audio={audio}
         />
       );
+    } else if (pages === 'pie' && isPieModalOpen) {
+      return <PieModal closePieModal={closePieModal} />;
     }
   };
 
@@ -319,7 +332,11 @@ const CirclePost = (): JSX.Element => {
             )}
             {handlePages()}
             {pages !== 'gif' ? (
-              <UniqueInputButton setPages={setPages} setMedia={setMedia} />
+              <UniqueInputButton
+                setPages={setPages}
+                setMedia={setMedia}
+                openPieModal={openPieModal}
+              />
             ) : (
               <></>
             )}

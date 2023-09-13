@@ -17,7 +17,11 @@ export const postForgotPasswordByEmail = async (
   }
 };
 
-export const verifyForgotPasswordByEmail = async (payload: { email: string, code: string, password: string }): Promise<any> => {
+export const verifyForgotPasswordByEmail = async (payload: {
+  email: string;
+  code: string;
+  password: string;
+}): Promise<any> => {
   try {
     let response = await authService.post('/verify-forgot-password', payload);
     return (response = { ...response, status: 200 });

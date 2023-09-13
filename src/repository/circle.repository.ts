@@ -86,3 +86,41 @@ export const getCircleCategories = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const deleteCircle = async (circleId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(circleId) || isEmptyString(circleId)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.delete(`/delete/${circleId}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const leaveCircle = async (circleId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(circleId) || isEmptyString(circleId)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.delete(`/user/leave/?circle_id=${circleId}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

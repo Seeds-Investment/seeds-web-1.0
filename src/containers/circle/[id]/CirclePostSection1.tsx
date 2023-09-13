@@ -1,7 +1,23 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import {
+  ArrowPathIcon,
+  ExclamationCircleIcon,
+  PencilSquareIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
+import {
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList
+} from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
+import ModalDeleteCircle from './ModalDeleteCircle';
+import ModalLeaveCircle from './ModalLeaveCircle';
+import ModalReportCircle from './ModalReportLeave';
 interface props {
   circleId: string;
   isLoading: boolean;
@@ -15,6 +31,22 @@ const CirclePostSection1: React.FC<props> = ({
   isLoading,
   renderLoading
 }) => {
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalLeave, setOpenModalLeave] = useState(false);
+  const [openModalReport, setOpenMOdalReport] = useState(false);
+
+  const handleOpenModalDelete = (): void => {
+    setOpenModalDelete(!openModalDelete);
+  };
+
+  const handleOpenModalLeave = (): void => {
+    setOpenModalLeave(!openModalLeave);
+  };
+
+  const handleOpenModalReport = (): void => {
+    setOpenMOdalReport(!openModalReport);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -52,13 +84,46 @@ const CirclePostSection1: React.FC<props> = ({
                     src={notification}
                     className="h-[24px] w-[24px] object-cover"
                   />
-                  <button type="button">
-                    <Image
-                      alt="menu_dot"
-                      src={dot_menu}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                  </button>
+                  <Menu placement="left">
+                    <MenuHandler>
+                      <button type="button">
+                        <Image
+                          alt="menu_dot"
+                          src={dot_menu}
+                          className="h-[24px] w-[24px] object-cover"
+                        />
+                      </button>
+                    </MenuHandler>
+                    <MenuList>
+                      <MenuItem>
+                        <div className="flex flex-row">
+                          <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                          Edit Cirlce
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={handleOpenModalDelete}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                          Delete Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={handleOpenModalReport}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Report Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={handleOpenModalLeave}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Leave Circle
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
             </div>
@@ -104,18 +169,68 @@ const CirclePostSection1: React.FC<props> = ({
                       src={notification}
                       className="h-[24px] w-[24px] object-cover"
                     />
-                    <button type="button">
-                      <Image
-                        alt="menu_dot"
-                        src={dot_menu}
-                        className="h-[24px] w-[24px] object-cover"
-                      />
-                    </button>
+                    <Menu placement="left">
+                      <MenuHandler>
+                        <button type="button">
+                          <Image
+                            alt="menu_dot"
+                            src={dot_menu}
+                            className="h-[24px] w-[24px] object-cover"
+                          />
+                        </button>
+                      </MenuHandler>
+                      <MenuList>
+                        <MenuItem>
+                          <div className="flex flex-row">
+                            <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                            Edit Cirlce
+                          </div>
+                        </MenuItem>
+                        <hr />
+                        <MenuItem onClick={handleOpenModalDelete}>
+                          <div className="flex flex-row text-[#DD2525]">
+                            <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                            Delete Circle
+                          </div>
+                        </MenuItem>
+                        <hr />
+                        <MenuItem onClick={handleOpenModalReport}>
+                          <div className="flex flex-row text-[#DD2525]">
+                            <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                            Report Circle
+                          </div>
+                        </MenuItem>
+                        <hr />
+                        <MenuItem onClick={handleOpenModalLeave}>
+                          <div className="flex flex-row text-[#DD2525]">
+                            <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                            Leave Circle
+                          </div>
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
                   </div>
                 </div>
               </div>
             </div>
+            <ModalDeleteCircle
+              open={openModalDelete}
+              handleOpen={handleOpenModalDelete}
+              circleId={circleId}
+            />
           </div>
+
+          <ModalLeaveCircle
+            open={openModalLeave}
+            handleOpen={handleOpenModalLeave}
+            circleId={circleId}
+          />
+
+          <ModalReportCircle
+            open={openModalReport}
+            handleOpen={handleOpenModalReport}
+            circleId={circleId}
+          />
         </div>
       )}
     </>

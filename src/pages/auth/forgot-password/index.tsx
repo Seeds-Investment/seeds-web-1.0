@@ -36,7 +36,7 @@ export default function ForgotPassword(): React.ReactElement {
     if (!(emailParam == null) && !(emailCode == null)) {
       changeStep(2);
     }
-  }, [emailParam, emailCode])
+  }, [emailParam, emailCode]);
 
   const methodHandler = async (payload: IFormMethod): Promise<void> => {
     if (payload.method === 'email') {

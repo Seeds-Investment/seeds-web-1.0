@@ -9,13 +9,17 @@ interface props {
   circleId: any;
   dataPost: any;
   dataRecommend: any;
+  isJoined: boolean;
+  setIsJoined: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
   children,
   circleId,
   dataPost,
-  dataRecommend
+  dataRecommend,
+  isJoined,
+  setIsJoined
 }) => {
   const [dataCircle, setData]: any = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -66,9 +70,10 @@ const MainPostLayout: React.FC<props> = ({
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
-                circleId={circleId}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
+                isJoined={isJoined}
+                setIsJoined={setIsJoined}
               />
               {children}
               <CirclePostSection2

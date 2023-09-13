@@ -1,26 +1,58 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import { joinCirclePost } from '@/repository/circleDetail.repository';
 import Image from 'next/image';
+import { useState } from 'react';
 interface props {
-  circleId: string;
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
+  isJoined: boolean;
+  setIsJoined: any;
 }
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
-  circleId,
   isLoading,
-  renderLoading
+  renderLoading,
+  isJoined,
+  setIsJoined
 }) => {
+  const [isLoadingJoin, setIsLoadingJoin] = useState<boolean>(false);
+  // const [payment, setPayment] = useState<any>({});
+  const handleJoin = async (): Promise<void> => {
+    setIsLoadingJoin(true);
+    try {
+      if (dataCircle.type === 'free') {
+        const { success }: any | boolean = await joinCirclePost({
+          circle_id: dataCircle.id,
+          duration: 1,
+          payment_request: {}
+        });
+        if (success === true) {
+          setIsJoined(true);
+        }
+      }
+    } catch (error: any) {
+      console.error('Error Join Circle:', error.message);
+    } finally {
+      setIsLoadingJoin(false);
+    }
+  };
   return (
     <>
       {isLoading ? (
         renderLoading()
       ) : (
         <div className="flex flex-col bg-white rounded-xl">
+          {isLoadingJoin ? (
+            <div className="h-72">
+              <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="flex flex-col rounded-b-3xl px-14 py-8">
             <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
               <Image
@@ -42,9 +74,18 @@ const CirclePostSection1: React.FC<props> = ({
               />
             </div>
             <div className="md:hidden flex justify-end h-fit gap-4 relative bottom-20">
-              <button className="bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                Joined
-              </button>
+              {isJoined ? (
+                <button className="cursor-default bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
+                  Joined
+                </button>
+              ) : (
+                <button
+                  onClick={handleJoin}
+                  className="bg-seeds-button-green w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
+                >
+                  Join
+                </button>
+              )}
               <div className="flex flex-col justify-center">
                 <div className="flex">
                   <Image
@@ -94,23 +135,68 @@ const CirclePostSection1: React.FC<props> = ({
               </div>
               {/* notification button */}
               <div className="md:flex hidden h-fit gap-4">
-                <button className="bg-neutral-ultrasoft w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                  Joined
-                </button>
-                <div className="flex flex-col justify-center">
-                  <div className="flex">
-                    <Image
-                      alt="notification"
-                      src={notification}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                    <button type="button">
-                      <Image
-                        alt="menu_dot"
-                        src={dot_menu}
-                        className="h-[24px] w-[24px] object-cover"
-                      />
-                    </button>
+                <div
+                  className={`relative ${
+                    dataCircle.type === 'free' ? '' : 'bottom-7'
+                  } `}
+                >
+                  {dataCircle.type === 'free' ? (
+                    <></>
+                  ) : (
+                    <div className="flex justify-start mb-2">
+                      <div className="flex justify-between w-full lg:px-8">
+                        <div className="flex place-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="17"
+                            height="10"
+                            viewBox="0 0 17 10"
+                            fill="none"
+                          >
+                            <path
+                              d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                              fill="#FDBA22"
+                            />
+                          </svg>
+                          <h1 className="font-poppins text-seeds-purple pl-2">
+                            Premium
+                          </h1>
+                        </div>
+                        <h1 className="font-poppins text-seeds-purple">
+                          IDR {dataCircle.premium_fee}
+                        </h1>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    {isJoined ? (
+                      <button className="bg-neutral-ultrasoft cursor-default w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
+                        Joined
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleJoin}
+                        className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
+                      >
+                        Join
+                      </button>
+                    )}
+                    <div className="flex flex-col justify-center">
+                      <div className="flex">
+                        <Image
+                          alt="notification"
+                          src={notification}
+                          className="h-[24px] w-[24px] object-cover"
+                        />
+                        <button type="button">
+                          <Image
+                            alt="menu_dot"
+                            src={dot_menu}
+                            className="h-[24px] w-[24px] object-cover"
+                          />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

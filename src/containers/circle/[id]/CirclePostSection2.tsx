@@ -24,17 +24,29 @@ const CirclePostSection2: React.FC<props> = ({
     if (tabs === 'post') {
       return (
         <>
-          {dataPost?.map((el: any) => {
-            return <PostSection dataPost={el} key={el.id} />;
-          })}
+          {dataPost !== undefined &&
+          dataPost !== null &&
+          dataPost.length > 0 ? (
+            dataPost?.map((el: any) => {
+              return <PostSection dataPost={el} key={el.id} />;
+            })
+          ) : (
+            <></>
+          )}
         </>
       );
     } else if (tabs === 'recommended') {
       return (
         <>
-          {dataRecommend?.map((el: any) => {
-            return <PostSection dataPost={el} key={el.id} />;
-          })}
+          {dataRecommend !== undefined &&
+          dataRecommend !== null &&
+          dataRecommend.length > 0 ? (
+            dataRecommend?.map((el: any) => {
+              return <PostSection dataPost={el} key={el.id} />;
+            })
+          ) : (
+            <></>
+          )}
         </>
       );
     }

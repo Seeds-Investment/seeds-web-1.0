@@ -52,6 +52,30 @@ export const getCirclePost = async ({
   }
 };
 
+export const getStatusCircle = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/circle/v2/user/status?circle_id=${circleId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const getCircleRecomend = async ({
   circleId
 }: getDataCircleType): Promise<any> => {
@@ -100,6 +124,31 @@ export const searchGifFromGhipy = async (query: string): Promise<any> => {
   }
 };
 
+interface JoinCircleType {
+  circle_id: string;
+  duration: number;
+  payment_request: any;
+}
+export const joinCirclePost = async (data: JoinCircleType): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  const body = JSON.stringify({
+    circle_id: data.circle_id,
+    duration: data.duration,
+    payment_request: data.payment_request
+  });
+
+  const response = await baseUrl.put('/circle/v2/join', body, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+  return response;
+};
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];

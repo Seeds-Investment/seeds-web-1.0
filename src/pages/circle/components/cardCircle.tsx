@@ -40,6 +40,7 @@ export default function CardCircle({
               console.log(error);
             });
           }}
+          className="cursor-pointer"
         >
           <div
             style={{

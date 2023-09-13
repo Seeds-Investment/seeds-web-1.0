@@ -126,7 +126,6 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             <div className="flex">
               {words.map((el: string, i: number) => {
                 el += '\xa0';
-                console.log(el);
                 return el.startsWith('#') ? (
                   <>
                     <Typography key={i}>

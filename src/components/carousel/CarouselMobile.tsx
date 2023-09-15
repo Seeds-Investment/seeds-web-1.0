@@ -18,7 +18,9 @@ const CarouselMobile: React.FC = () => {
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                 activeIndex === i ? 'w-8 bg-white' : 'w-4 bg-white/50'
               }`}
-              onClick={() => setActiveIndex(i)}
+              onClick={(): void => {
+                setActiveIndex(i);
+              }}
             />
           ))}
         </div>
@@ -72,9 +74,10 @@ const CarouselMobile: React.FC = () => {
         </IconButton>
       )}
     >
-      {numberMobile.map(num => (
+      {numberMobile.map((num, i) => (
         <img
           src={`/assets/mobile/carousel-${num}.png`}
+          key={i}
           alt="image 1"
           className="h-full w-full object-cover"
         />

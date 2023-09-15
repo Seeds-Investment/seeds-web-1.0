@@ -15,10 +15,12 @@ export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
   const [open, setOpen] = useState(1);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselData, setCarouselData] = useState<any[]>([]);
 
-  const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
+  const handleOpen = (value: number): void => {
+    setOpen(open === value ? 0 : value);
+  };
 
   // Define your carousel content (images and text) here
   const carouselContent = [
@@ -36,16 +38,23 @@ export default function Section5(): React.ReactElement {
     }
     // Add more images and text as needed
   ];
-
+  const fetchHotNews = async (): Promise<void> => {
+    try {
+      const response = await fetch(
+        'https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=3'
+      );
+      const data: any = response.json();
+      setCarouselData(data.news);
+    } catch (error: any) {
+      console.error('Error fetching data:', error);
+    }
+  };
   useEffect(() => {
     // Replace 'your-api-url' with the actual API endpoint
-    fetch('https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=3')
-      .then(response => response.json())
-      .then(data => setCarouselData(data.news))
-      .catch(error => console.error('Error fetching data:', error));
+    void fetchHotNews();
   }, []);
 
-  const handleItemClick = (link: string) => {
+  const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
 
@@ -85,7 +94,7 @@ export default function Section5(): React.ReactElement {
       }
     ]
   };
-
+  console.log(carouselContent, carouselData, settings, handleItemClick);
   return (
     <div>
       <div className="min-w-full h-auto cursor-default mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
@@ -157,7 +166,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(1)}
+                onClick={(): void => {
+                  handleOpen(1);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 1 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -173,7 +184,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(2)}
+                onClick={(): void => {
+                  handleOpen(2);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 2 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -192,7 +205,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(3)}
+                onClick={(): void => {
+                  handleOpen(3);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 3 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -211,7 +226,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(4)}
+                onClick={(): void => {
+                  handleOpen(4);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 4 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -228,7 +245,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(5)}
+                onClick={(): void => {
+                  handleOpen(5);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 5 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -247,7 +266,9 @@ export default function Section5(): React.ReactElement {
               className="rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(6)}
+                onClick={(): void => {
+                  handleOpen(6);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 6 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}

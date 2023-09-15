@@ -31,10 +31,9 @@ const Header: React.FC = () => {
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
-    window.addEventListener(
-      'resize',
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
+    window.addEventListener('resize', (): void => {
+      window.innerWidth >= 960 && setOpenNav(false);
+    });
   }, []);
 
   const _handleRedirectJoinUs = (): any => {
@@ -45,7 +44,7 @@ const Header: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
 
-  const handleLanguageChange = (language: 'EN' | 'ID') => {
+  const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
   };
@@ -138,7 +137,9 @@ const Header: React.FC = () => {
           <select
             className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
             value={selectedLanguage}
-            onChange={e => handleLanguageChange(e.target.value as 'EN' | 'ID')}
+            onChange={(e): void => {
+              handleLanguageChange(e.target.value as 'EN' | 'ID');
+            }}
           >
             <option value="EN">EN</option>
             <option value="ID">ID</option>
@@ -188,7 +189,9 @@ const Header: React.FC = () => {
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
               ripple={false}
-              onClick={() => setOpenNav(!openNav)}
+              onClick={(): void => {
+                setOpenNav(!openNav);
+              }}
             >
               {openNav ? (
                 <svg
@@ -313,9 +316,9 @@ const Header: React.FC = () => {
             <select
               className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
               value={selectedLanguage}
-              onChange={e =>
-                handleLanguageChange(e.target.value as 'EN' | 'ID')
-              }
+              onChange={(e): void => {
+                handleLanguageChange(e.target.value as 'EN' | 'ID');
+              }}
             >
               <option value="EN">EN</option>
               <option value="ID">ID</option>

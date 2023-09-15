@@ -18,6 +18,8 @@ export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
   const router = useRouter();
+  console.log(router);
+
   useEffect(() => {
     void fetch(setList);
   }, []);

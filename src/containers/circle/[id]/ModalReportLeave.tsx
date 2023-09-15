@@ -127,7 +127,7 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
               {options.map((data, idx) => (
                 <div className="flex justify-between" key={idx}>
                   <Typography
-                    htmlFor="radioButton01"
+                    aria-label="radioButton01"
                     className="text-sm font-normal text-black"
                   >
                     {data}

@@ -5,15 +5,23 @@ import { useEffect, useState } from 'react';
 const CarouselNewsDesktop: React.FC = () => {
   const [carouselData, setCarouselData] = useState<any[]>([]);
 
+  const fetchHotNews = async (): Promise<void> => {
+    try {
+      const response = await fetch(
+        'https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=5'
+      );
+      const data: any = response.json();
+      setCarouselData(data.news);
+    } catch (error: any) {
+      console.error('Error fetching data:', error);
+    }
+  };
   useEffect(() => {
     // Replace 'your-api-url' with the actual API endpoint
-    fetch('https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=5')
-      .then(response => response.json())
-      .then(data => setCarouselData(data.news))
-      .catch(error => console.error('Error fetching data:', error));
+    void fetchHotNews();
   }, []);
 
-  const handleItemClick = (link: string) => {
+  const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
   return (
@@ -72,7 +80,10 @@ const CarouselNewsDesktop: React.FC = () => {
       )}
     >
       {carouselData.map((item, index) => (
-        <div className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end">
+        <div
+          className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end"
+          key={index}
+        >
           <img
             key={index}
             src={item.imageUrl}

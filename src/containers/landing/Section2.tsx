@@ -62,6 +62,7 @@ export default function Section2(): React.ReactElement {
   }, []);
 
   const number = ['1', '2', '3', '4', '5', '6', '7'];
+  console.log(settings, number);
 
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">

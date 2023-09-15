@@ -8,6 +8,7 @@ const GoogleAnalyticsScript: React.FC = () => (
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-K9NMC6ZTY9"
       ></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <script
         dangerouslySetInnerHTML={{
           __html: `

@@ -1,18 +1,16 @@
-import forkoma from '@/assets/landing-page/EVENT-WEB-FORKOMA-UI.png';
-import mbti from '@/assets/landing-page/EVENT-WEB-HIMA-MBTI.png';
-import stie from '@/assets/landing-page/EVENT-WEB-STIE-TRISAKTI.png';
-import tarumanegara from '@/assets/landing-page/EVENT-WEB-TARUMANAGARA.png';
+import connectCircle from '@/assets/landing-page/connectCircle.png';
 import aisec from '@/assets/landing-page/PLAY-WEB-AIESEC-USU-WEEK-2.png';
 import telkom from '@/assets/landing-page/PLAY-WEB-HIMA-MBTI-TELKOM.png';
 import johnny from '@/assets/landing-page/PLAY-WEB-JOHNNY-WIDODO.png';
 import firda from '@/assets/landing-page/PLAY-WEB-MAIN-BARENG-FIRDA.png';
-import connectCircle from '@/assets/landing-page/connectCircle.png';
 import card1 from '@/assets/landing-page/s2-card-1.png';
 import card2 from '@/assets/landing-page/s2-card-2.png';
 import card3 from '@/assets/landing-page/s2-card-3.png';
+import testi1 from '@/assets/landing-page/testi1.jpg';
+import testi2 from '@/assets/landing-page/testi2.jpg';
+import testi3 from '@/assets/landing-page/testi3.jpg';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
-
 import type {
   ICircleLandingPage,
   ICompetitionItem,
@@ -137,30 +135,26 @@ export const circleTrendingLandingPage: ICircleLandingPage[] = [
 export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
   {
     id: '1',
-    name: 'Peningkatan Literasi Mahasiswa',
-    image: forkoma,
-    date: '3 Agustus 2023',
-    status: 'Paid'
+    name: 'Andhika Septigraha',
+    title: 'Edupreneur Telkom',
+    image: testi1,
+    comment:
+      'Halo nama saya Andhika Septigraha, saya panitia Edupreneur 2023 dan mau mengucapkan terima kasih kepada aplikasi Seeds. Dan alhamdulliah dari aplikasi tersebut saya mendapatkan juara 1, sekali lagi saya ingin mengucapkan terima kasih. Bagi teman-teman yang belum download aplikasi Seeds, silahkan download dan tinggal dimainkan saja, karena itu mudah sekali'
   },
   {
     id: '2',
-    name: 'Kolaborasi SEEDS X HIMA MBTI TELKOM',
-    image: mbti,
-    date: '16 Agustus 2023',
-    status: 'Paid'
+    name: 'Amiyeri',
+    title: 'Edupreneur Telkom',
+    image: testi2,
+    comment:
+      'Halo kenalin namaku Amiyel, disini aku mau berterima kasih kepada aplikasi Seeds karena sudah memberikan aku kesempatan untuk belajar trading sekaligus mempraktekan secara langsung….. Dan juga terima kasih karena sudah memberikan aku kesempatan untuk menang. Aku tahu aplikasi Seeds ini karena ada teman aku yang kasih tahu, lalu dari situ aku mulai cari tahu tuh gimana sih sistemnya karena kan di aplikasi Seeds ini tuh ada banyak fitur-fitur tenang belajar trading yang pastinya bisa banget dipelajarin. Oh iya di aplikasi Seeds ini tuh ga cuman belajar trading dan mempraktikannya secara langsung lho…. Masih banyak lagi keuntungan yang bisa didapat, salah satunya dapat uang tunai kalau kalian berkesempatan menang di Play Arena nanti. Jadi tunggu apalagi, langsung aja kunjungi situs web aplikasi Seeds dan daftar sekarang juga! Terima kasih!'
   },
   {
     id: '3',
-    name: 'Revolution Bring Back the Euphoria',
-    image: stie,
-    date: '21 Juli 2023',
-    status: 'Paid'
-  },
-  {
-    id: '4',
-    name: 'Peningkatan Literasi Financial',
-    image: tarumanegara,
-    date: '18 Juli 2023',
-    status: 'Paid'
+    name: 'Ariandra Akbar',
+    title: 'Edupreneur Telkom',
+    image: testi3,
+    comment:
+      'Mau berterima kasih kepada aplikasi Seeds….. Aplikasinya keren banget dan alhamdulliahnya kemarin aku juara 3…. Sekali lagi terima kasih, buat yang belum download, silahkan download dan langsung mainin aja ya'
   }
 ];

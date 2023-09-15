@@ -7,43 +7,49 @@ export default {
       text2: 'Mulai dan perluas perjalanan investasi kamu bersama kami!'
     },
     section2: {
-      text1: 'Discover',
-      text2: 'Jelajahi Dunia Investasi',
-      text3: ' Belajar dan Tumbuh bersama Seeds',
+      text1a: 'Together',
+      text1b: 'With',
+      text1c: 'Seeds',
+      text2: 'Learn everything about Finance with friends',
+      text3a: 'Play',
+      text3b:
+        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+      text3c: 'Learn',
+      text3d:
+        'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
       text5: 'Sorotan Acara',
       text6: 'Ikuti terus kegiatan seru kami!'
     },
     section3: {
-      text1: 'Belajar',
-      text2: ' lebih tentang Investasi dan Keuangan dari Pro',
+      text1: 'About Seeds',
+      text2:
+        'A community-driven platform designed for to-be investors in Southeast Asia, Seeds offers a hands-on competitive gamified experience to learn the ropes of investing before committing real funds.',
       text3:
-        'Kami menyatukan para profesional untuk belajar tentang investasi dan keuangan.'
+        'In Southeast Asia, despite digital brokerage booms, retail investments remain limited by perceived risk, complexity and macroeconomic factors. Seeds introduces risk-free "Play-to-earn" investing and community-driven "Learn-to-earn" exchanges, turning investing into a competitive, real-time social game.',
+      text4: 'What They Say About Seeds?',
+      text5:
+        'With Seeds, everything about finance and the trading world becomes easier to learn and can be approached by everyone. Let’s hear how Seeds help them!'
     },
     section4: {
-      text1: 'Bertemu',
-      text2: 'dan',
+      text1: 'Over 1000+ people trust us',
+      text2: 'Professionals, universities, many more do!',
       text3: 'mengobrol',
       text4: 'dengan orang-orang yang berpikiran sama',
       text5: 'Rekomendasi sirkel kami',
       text6: 'Bagikan pengetahuan kamu dengan mudah ke teman-temanmu'
     },
     section5: {
-      text1: 'Tournaments',
+      text1: 'Discover',
       text2:
-        'Ingin ikut turnamen sambil berinvestasi? Seeds menyediakan berbagai kompetisi mengenai investasi dan keuangan yang tentunya terdapat berbagai hadiah menarik.'
+        'Explore trending news and gain insights about Finance and Investing.'
     },
     section6: {
-      text1:
-        'Tidak ada rekomendasi investasi dalam situs ini. Seeds tidak menawarkan nasihat keuangan. Jika Anda tidak yakin tentang investasi, kami mendorong Anda untuk berbicara dengan penasihat keuangan Anda.',
-      text2: 'Berinvestasi, Bersama',
-      text3: 'Unduh Aplikasi Kami',
-      term: 'Syarat & Ketentuan',
-      disclosure: 'Penyingkapan',
-      privacy: 'Kebijakan pribadi',
-      social: 'Pedoman Media Sosial',
-      circle: 'Keanggotaan Circle'
+      text1: 'Our',
+      text2: 'Communities',
+      text3:
+        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia."
     }
   },
   second: 'detik',
@@ -777,10 +783,34 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Share & Influence ',
-        title2: 'Others to Start Their Financial Journey',
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
         subtitle:
-          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+      },
+      section2: {
+        title1: 'Leaderboard',
+        title2: 'Tiga pemain bintang yang mendominasi Play.'
+      },
+      section3: {
+        title1: 'Explore'
+      },
+      section4: {
+        title1: 'Featured Profile',
+        title2:
+          'A list of our featured finance pro to help your financial journey'
+      },
+      section5: {
+        title1: 'Bagaimana Cara Bermain',
+        title2: 'Turnamen',
+        title3:
+          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+      },
+      section6: {
+        title1: 'Unggah Sekarang!',
+        title2: 'Mulai perjalanan investasimu sekarang.',
+        title3:
+          'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
     }
   }

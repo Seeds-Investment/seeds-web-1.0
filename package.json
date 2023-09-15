@@ -17,7 +17,7 @@
   "dependencies": {
     "@ant-design/react-slick": "^1.0.0",
     "@heroicons/react": "^2.0.18",
-    "@material-tailwind/react": "^1.4.2",
+    "@material-tailwind/react": "^2.1.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/chart.js": "^2.9.37",
     "@types/next-auth": "^3.15.0",

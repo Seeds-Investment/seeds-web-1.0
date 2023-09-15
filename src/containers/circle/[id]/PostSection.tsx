@@ -128,7 +128,6 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             <div className="flex">
               {words.map((el: string, i: number) => {
                 el += '\xa0';
-                console.log(el);
                 return el.startsWith('#') ? (
                   <>
                     <Typography key={i}>
@@ -150,7 +149,6 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                 pollingDate={dataPost.polling_date}
               />
             )}
-
           </div>
           <PieCirclePost data={dataPost} />
           <div className="flex justify-between items-center mt-4">

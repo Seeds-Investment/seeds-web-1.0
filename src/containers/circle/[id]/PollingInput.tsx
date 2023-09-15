@@ -137,9 +137,15 @@ interface CheckBoxProps {
   date?: Date;
   setDate?: any;
 }
-const CheckBox: React.FC<CheckBoxProps> = ({ onChange, label, checked, date, setDate }) => {
+const CheckBox: React.FC<CheckBoxProps> = ({
+  onChange,
+  label,
+  checked,
+  date,
+  setDate
+}) => {
   const renderLabel = (): any => {
-    if ((setDate != null) && (checked ?? false)) {
+    if (setDate != null && (checked ?? false)) {
       const today = new Date();
       const tomorrow = new Date();
       tomorrow.setDate(today.getDate() + 1);
@@ -166,18 +172,17 @@ const CheckBox: React.FC<CheckBoxProps> = ({ onChange, label, checked, date, set
         {label}
       </Typography>
     );
-  }
-
+  };
 
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <MTCheckbox
         id={label}
         className="p-0 m-0"
         checked={checked}
         onChange={onChange}
         color="green"
-        />
+      />
       {renderLabel()}
     </div>
   );
@@ -189,12 +194,7 @@ interface OptionProps {
   onButtonClick: () => void;
 }
 
-const Option: React.FC<OptionProps> = ({
-  onChange,
-  onButtonClick,
-  value,
-}) => {
-
+const Option: React.FC<OptionProps> = ({ onChange, onButtonClick, value }) => {
   return (
     <div className="relative flex w-full max-w-[24rem] h-8 h-fit">
       <Input
@@ -234,10 +234,7 @@ interface OptionInputProps {
   label: string;
 }
 
-const OptionInput: React.FC<OptionInputProps> = ({
-  onButtonClick,
-  label,
-}) => {
+const OptionInput: React.FC<OptionInputProps> = ({ onButtonClick, label }) => {
   const [value, setValue] = useState('');
 
   return (
@@ -247,17 +244,19 @@ const OptionInput: React.FC<OptionInputProps> = ({
         placeholder={label}
         className="h-8"
         value={value}
-        onChange={e => {setValue(e.target.value);}}
+        onChange={e => {
+          setValue(e.target.value);
+        }}
         maxLength={255}
       />
       <IconButton
         size="sm"
         color={'gray'}
-        disabled={value.length<1}
+        disabled={value.length < 1}
         className="!absolute right-1 top-3 rounded-full w-6 h-6 text-xl pb-4 bg-[#DCFCE4] rotate-45"
         onClick={() => {
           onButtonClick(value);
-          setValue('')
+          setValue('');
         }}
       >
         <svg

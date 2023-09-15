@@ -9,13 +9,27 @@ interface props {
   circleId: any;
   dataPost: any;
   dataRecommend: any;
+  openModalDelete: any;
+  openModalLeave: any;
+  openModalReport: any;
+  handleEdit: any;
+  isEdit: boolean;
+  isJoined: boolean;
+  setIsJoined: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
   children,
   circleId,
   dataPost,
-  dataRecommend
+  dataRecommend,
+  openModalDelete,
+  openModalLeave,
+  openModalReport,
+  handleEdit,
+  isEdit,
+  isJoined,
+  setIsJoined
 }) => {
   const [dataCircle, setData]: any = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -66,19 +80,28 @@ const MainPostLayout: React.FC<props> = ({
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
-                circleId={circleId}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
+                openModalDelete={openModalDelete}
+                openModalLeave={openModalLeave}
+                openModalReport={openModalReport}
+                handleEdit={handleEdit}
+                isJoined={isJoined}
+                setIsJoined={setIsJoined}
               />
               {children}
-              <CirclePostSection2
-                setIsLoading={setIsLoading}
-                circleId={circleId}
-                dataPost={dataPost}
-                dataRecommend={dataRecommend}
-                isLoading={isLoading}
-                renderLoading={renderLoading}
-              />
+              {isEdit ? (
+                <></>
+              ) : (
+                <CirclePostSection2
+                  setIsLoading={setIsLoading}
+                  circleId={circleId}
+                  dataPost={dataPost}
+                  dataRecommend={dataRecommend}
+                  isLoading={isLoading}
+                  renderLoading={renderLoading}
+                />
+              )}
             </div>
           </div>
         </div>

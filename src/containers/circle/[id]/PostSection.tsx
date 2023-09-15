@@ -150,7 +150,6 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                 pollingDate={dataPost.polling_date}
               />
             )}
-
           </div>
           <PieCirclePost data={dataPost} />
           <div className="flex justify-between items-center mt-4">

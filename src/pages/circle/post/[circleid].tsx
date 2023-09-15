@@ -2,7 +2,11 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
+import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
+import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
+import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
 import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
@@ -12,7 +16,8 @@ import {
   UseUploadMedia,
   createPostCircleDetail,
   getCirclePost,
-  getCircleRecomend
+  getCircleRecomend,
+  getDetailCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
@@ -92,6 +97,11 @@ const CirclePost = (): JSX.Element => {
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
   const [isPieModalOpen, setIsPieModalOpen] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalLeave, setOpenModalLeave] = useState(false);
+  const [openModalReport, setOpenMOdalReport] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [dataCircle, setData]: any = useState({});
   // const [pieData, setPieData] = useState({/* data untuk modal pie */});
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
@@ -319,81 +329,144 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
+  const handleOpenModalDelete = (): void => {
+    setOpenModalDelete(!openModalDelete);
+  };
+
+  const handleOpenModalLeave = (): void => {
+    setOpenModalLeave(!openModalLeave);
+  };
+
+  const handleOpenModalReport = (): void => {
+    setOpenMOdalReport(!openModalReport);
+  };
+
+  const handleEditCircle = (): void => {
+    setIsEdit(!isEdit);
+  };
+
+  const fetchDetailCircle = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getDetailCircle({ circleId });
+
+      setData(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void fetchDetailCircle();
+  }, []);
+
   return (
     <MainPostLayout
       circleId={circleId}
       dataPost={dataPost}
       dataRecommend={dataRecommend}
+      openModalDelete={handleOpenModalDelete}
+      openModalLeave={handleOpenModalLeave}
+      openModalReport={handleOpenModalReport}
+      handleEdit={handleEditCircle}
+      isEdit={isEdit}
     >
       {/* posting section */}
       <div className="hidden md:block bg-white mt-8 w-full rounded-xl">
         {isLoading ? renderLoading() : <></>}
         <div className="flex flex-col px-14 pt-8">
-          <ProfilePost
-            handleDropDown={handleDropDown}
-            dropVal={dropVal}
-            drop={drop}
-            dataSelection={dataSelection}
-            handleInputChange={handleInputChange}
-          />
-          {/* form text section */}
-          <form onSubmit={handlePostCircle}>
-            {media !== undefined && pages !== 'gif' ? (
-              <div className="flex justify-center pb-2">
-                <img
-                  src={URL?.createObjectURL(media)}
-                  alt="Preview Image"
-                  className="object-cover max-h-[30vh] w-fit"
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-            {form.media_urls.length > 0 && pages !== 'gif' ? (
-              form.media_urls.map((el: any, i: number) => {
-                return (
-                  <div
-                    className="max-h-[230px] max-w-[230px] pl-16 mb-5"
-                    key={`${i} + 'MEDIA_URL'`}
-                  >
+          {isEdit ? (
+            <EditCircle dataCircle={dataCircle} circleId={circleId} />
+          ) : (
+            <>
+              <ProfilePost
+                handleDropDown={handleDropDown}
+                dropVal={dropVal}
+                drop={drop}
+                dataSelection={dataSelection}
+                handleInputChange={handleInputChange}
+              />
+              {/* form text section */}
+              <form onSubmit={handlePostCircle}>
+                {media !== undefined && pages !== 'gif' ? (
+                  <div className="flex justify-center pb-2">
                     <img
-                      src={el}
-                      alt="gif"
-                      className="h-[230px] w-[230px] object-cover"
+                      src={URL?.createObjectURL(media)}
+                      alt="Preview Image"
+                      className="object-cover max-h-[30vh] w-fit"
                     />
                   </div>
-                );
-              })
-            ) : (
-              <></>
-            )}
-            {handlePages()}
-            {form.polling?.options.length > 0 && pages === 'text' ? (
-              form.polling?.options.map((el: any, i: number) => {
-                return (
-                  <div
-                    className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
-                    key={`${i} + 'Polling'`}
-                  >
-                    {el.content_text}
-                  </div>
-                );
-              })
-            ) : (
-              <></>
-            )}
-            {pages !== 'gif' ? (
-              <UniqueInputButton
-                setPages={setPages}
-                setMedia={setMedia}
-                openPieModal={openPieModal}
-              />
-            ) : (
-              <></>
-            )}
-          </form>
+                ) : (
+                  <></>
+                )}
+                {form.media_urls.length > 0 && pages !== 'gif' ? (
+                  form.media_urls.map((el: any, i: number) => {
+                    return (
+                      <div
+                        className="max-h-[230px] max-w-[230px] pl-16 mb-5"
+                        key={`${i} + 'MEDIA_URL'`}
+                      >
+                        <img
+                          src={el}
+                          alt="gif"
+                          className="h-[230px] w-[230px] object-cover"
+                        />
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+                {handlePages()}
+                {form.polling?.options.length > 0 && pages === 'text' ? (
+                  form.polling?.options.map((el: any, i: number) => {
+                    return (
+                      <div
+                        className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                        key={`${i} + 'Polling'`}
+                      >
+                        {el.content_text}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+                {pages !== 'gif' ? (
+                  <UniqueInputButton
+                    setPages={setPages}
+                    setMedia={setMedia}
+                    openPieModal={openPieModal}
+                  />
+                ) : (
+                  <></>
+                )}
+              </form>
+            </>
+          )}
         </div>
       </div>
+
+      <ModalDeleteCircle
+        open={openModalDelete}
+        handleOpen={handleOpenModalDelete}
+        circleId={circleId}
+      />
+
+      <ModalLeaveCircle
+        open={openModalLeave}
+        handleOpen={handleOpenModalLeave}
+        circleId={circleId}
+      />
+
+      <ModalReportCircle
+        open={openModalReport}
+        handleOpen={handleOpenModalReport}
+        circleId={circleId}
+      />
     </MainPostLayout>
   );
 };

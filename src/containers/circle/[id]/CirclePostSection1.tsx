@@ -14,38 +14,42 @@ import {
   MenuList
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useState } from 'react';
-import ModalDeleteCircle from './ModalDeleteCircle';
-import ModalLeaveCircle from './ModalLeaveCircle';
-import ModalReportCircle from './ModalReportLeave';
 interface props {
   circleId: string;
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
+  openModalDelete: any;
+  openModalLeave: any;
+  openModalReport: any;
+  handleEdit: any;
 }
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
   circleId,
   isLoading,
-  renderLoading
+  renderLoading,
+  openModalDelete,
+  openModalLeave,
+  openModalReport,
+  handleEdit
 }) => {
-  const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [openModalLeave, setOpenModalLeave] = useState(false);
-  const [openModalReport, setOpenMOdalReport] = useState(false);
+  // const [openModalDelete, setOpenModalDelete] = useState(false);
+  // const [openModalLeave, setOpenModalLeave] = useState(false);
+  // const [openModalReport, setOpenMOdalReport] = useState(false);
 
-  const handleOpenModalDelete = (): void => {
-    setOpenModalDelete(!openModalDelete);
-  };
+  // const handleOpenModalDelete = (): void => {
+  //   setOpenModalDelete(!openModalDelete);
+  // };
 
-  const handleOpenModalLeave = (): void => {
-    setOpenModalLeave(!openModalLeave);
-  };
+  // const handleOpenModalLeave = (): void => {
+  //   setOpenModalLeave(!openModalLeave);
+  // };
 
-  const handleOpenModalReport = (): void => {
-    setOpenMOdalReport(!openModalReport);
-  };
+  // const handleOpenModalReport = (): void => {
+  //   setOpenMOdalReport(!openModalReport);
+  // };
 
   return (
     <>
@@ -95,28 +99,28 @@ const CirclePostSection1: React.FC<props> = ({
                       </button>
                     </MenuHandler>
                     <MenuList>
-                      <MenuItem>
+                      <MenuItem onClick={handleEdit}>
                         <div className="flex flex-row">
                           <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
                           Edit Cirlce
                         </div>
                       </MenuItem>
                       <hr />
-                      <MenuItem onClick={handleOpenModalDelete}>
+                      <MenuItem onClick={openModalDelete}>
                         <div className="flex flex-row text-[#DD2525]">
                           <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
                           Delete Circle
                         </div>
                       </MenuItem>
                       <hr />
-                      <MenuItem onClick={handleOpenModalReport}>
+                      <MenuItem onClick={openModalReport}>
                         <div className="flex flex-row text-[#DD2525]">
                           <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                           Report Circle
                         </div>
                       </MenuItem>
                       <hr />
-                      <MenuItem onClick={handleOpenModalLeave}>
+                      <MenuItem onClick={openModalLeave}>
                         <div className="flex flex-row text-[#DD2525]">
                           <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                           Leave Circle
@@ -180,28 +184,28 @@ const CirclePostSection1: React.FC<props> = ({
                         </button>
                       </MenuHandler>
                       <MenuList>
-                        <MenuItem>
+                        <MenuItem onClick={handleEdit}>
                           <div className="flex flex-row">
                             <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
                             Edit Cirlce
                           </div>
                         </MenuItem>
                         <hr />
-                        <MenuItem onClick={handleOpenModalDelete}>
+                        <MenuItem onClick={openModalDelete}>
                           <div className="flex flex-row text-[#DD2525]">
                             <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
                             Delete Circle
                           </div>
                         </MenuItem>
                         <hr />
-                        <MenuItem onClick={handleOpenModalReport}>
+                        <MenuItem onClick={openModalReport}>
                           <div className="flex flex-row text-[#DD2525]">
                             <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                             Report Circle
                           </div>
                         </MenuItem>
                         <hr />
-                        <MenuItem onClick={handleOpenModalLeave}>
+                        <MenuItem onClick={openModalLeave}>
                           <div className="flex flex-row text-[#DD2525]">
                             <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                             Leave Circle
@@ -213,24 +217,7 @@ const CirclePostSection1: React.FC<props> = ({
                 </div>
               </div>
             </div>
-            <ModalDeleteCircle
-              open={openModalDelete}
-              handleOpen={handleOpenModalDelete}
-              circleId={circleId}
-            />
           </div>
-
-          <ModalLeaveCircle
-            open={openModalLeave}
-            handleOpen={handleOpenModalLeave}
-            circleId={circleId}
-          />
-
-          <ModalReportCircle
-            open={openModalReport}
-            handleOpen={handleOpenModalReport}
-            circleId={circleId}
-          />
         </div>
       )}
     </>

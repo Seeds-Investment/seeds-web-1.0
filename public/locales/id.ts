@@ -3,41 +3,54 @@ export default {
   // greeting: 'Hello, {{name}}',
   landing: {
     section1: {
-      text1: 'Seeds',
-      text2: 'Mulai dan perluas perjalanan investasi kamu bersama kami!'
+      text1: '#MainbarengSeeds',
+      text2: 'Platform permainan sosial bertemu finansial dan investasi.'
     },
     section2: {
-      text1: 'Discover',
-      text2: 'Jelajahi Dunia Investasi',
-      text3: ' Belajar dan Tumbuh bersama Seeds',
+      text1a: 'Bersama',
+      text1b: '',
+      text1c: 'Seeds',
+      text2:
+        'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
+      text3a: 'Play',
+      text3b:
+        'Tanding jual beli saham bersama temanmu. Belajar apapun tentang jual beli saham, kripto, dan komoditas tanpa takut resiko! ',
+      text3c: 'Learn',
+      text3d:
+        'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
       text5: 'Sorotan Acara',
       text6: 'Ikuti terus kegiatan seru kami!'
     },
     section3: {
-      text1: 'Belajar',
-      text2: ' lebih tentang Investasi dan Keuangan dari Pro',
+      text1: 'About Seeds',
+      text2:
+        'Seeds adalah platform yang didukung oleh komunitas, dirancang khusus untuk calon investor di Asia Tenggara, yang menawarkan permainan kompetitif dan pengalaman belajar langsung tentang dasar-dasar investasi sebelum menggunakan uang sungguhan.',
       text3:
-        'Kami menyatukan para profesional untuk belajar tentang investasi dan keuangan.'
+        'Meskipun ada pertumbuhan yang cepat dalam perusahaan pialang digital di Asia Tenggara, investasi ritel masih terbatas karena persepsi risiko, kompleksitas, dan faktor-faktor ekonomi. Seeds memperkenalkan gagasan investasi yang aman dan interaktif dengan konsep "Play-to-Earn" dan "Learn-to-Earn" yang diperkuat oleh komunitas.  Seeds mengubah investasi menjadi pengalaman sosial yang kompetitif dan real-time.',
+      text4: 'Apa kata mereka tentang Seeds?',
+      text5:
+        'Bersama Seeds, apa pun tentang finansial dan dunia jual beli saham menjadi lebih mudah dipelajari oleh semua orang. Yuk, lihat bagaimana Seeds membantu mereka!'
     },
     section4: {
-      text1: 'Bertemu',
-      text2: 'dan',
+      text1: 'Lebih dari 1000+ orang mempercayai kita.',
+      text2: 'Mulai dari profesional, universitas, dan lainnya!',
       text3: 'mengobrol',
       text4: 'dengan orang-orang yang berpikiran sama',
       text5: 'Rekomendasi sirkel kami',
       text6: 'Bagikan pengetahuan kamu dengan mudah ke teman-temanmu'
     },
     section5: {
-      text1: 'Tournaments',
+      text1: 'Eksplorasi',
       text2:
-        'Ingin ikut turnamen sambil berinvestasi? Seeds menyediakan berbagai kompetisi mengenai investasi dan keuangan yang tentunya terdapat berbagai hadiah menarik.'
+        'Temukan berita yang sedang tren dan dapatkan ilmu tentang finansial dan investasi terbaru.'
     },
     section6: {
-      text1:
-        'Tidak ada rekomendasi investasi dalam situs ini. Seeds tidak menawarkan nasihat keuangan. Jika Anda tidak yakin tentang investasi, kami mendorong Anda untuk berbicara dengan penasihat keuangan Anda.',
-      text2: ''
+      text1: 'Komunitas',
+      text2: 'Kita',
+      text3:
+        'Kami berkomitmen untuk meningkatkan literasi finansial para Gen-Z dan millennials di Asia Tenggara.'
     }
   },
   second: 'detik',
@@ -114,6 +127,10 @@ export default {
     success: {
       title: 'Berhasil!',
       text: 'Selamat! Kata sandi baru telah berhasil dibuat.'
+    },
+    successSendEmail: {
+      title: 'Hoorayy!',
+      text: 'Kami telah mengirimkan email verifikasi kepada Kamu'
     }
   },
   changeEmailAddress: {
@@ -168,6 +185,12 @@ export default {
       seedsTag: 'Tag Seeds',
       referralCode: 'Kode Referal',
       optional: '(tidak wajib)'
+    },
+    poll: {
+      optionPlaceholder: '{{index}}. Enter an option',
+      endDateLabel: 'Set ending date',
+      multivoteLabel: 'Multivote',
+      allowNewOptionLabel: 'Allow new options'
     }
   },
   button: {
@@ -209,7 +232,7 @@ export default {
         2: 'Produk investasi apa saja yang tersedia di Seeds?',
         3: 'Bagaimana saya bisa mengakses Seeds?',
         4: 'Seberapa amankah berinvestasi di Seeds?',
-        5: 'I want to ask more about Seeds products and services'
+        5: 'Saya ingin bertanya lebih lanjut mengenai produk dan layanan Seeds'
       },
       desc: {
         1: 'Seeds adalah platform investasi sosial pertama di Indonesia yang memberi pengguna akses ke saham dan mata uang kripto AS (masih banyak lagi yang akan datang!).',
@@ -396,15 +419,15 @@ export default {
           9: 'PENYELESAIAN SENGKETA'
         },
         desc: {
-          1: 'SEEDS provides technology services in form of digital community forums to Users ("Circle" or “Service”) which SEEDS may charge a subscription fee ("Subscription Fee") to its Users. \n  The first user who creates a Circle (“Circle Owner”) will act as supervisor and administrator of the Circle and has the right to be able to accept, invite and select other Users to join his/her Circle and become Circle Member (\'”Circle Member”) . \n Circle Owners and Circle Members may share financial content among them and must comply with the User Policy and other Terms & Conditions as determined by SEEDS. \n The rights of Circle Owner as stipulated in this Terms is non-exclusive, personal and shall not assignable or transferable. Circle Owner authorization to use the services is contingent on Circle Owner’s continued compliance with these Terms. \n  SEEDS menyediakan layanan teknologi berupa forum komunitas digital kepada Pengguna (“Circle” atau “Layanan”) yang mana atas layanan tersebut SEEDS dapat membebankan biaya berlangganan (“Biaya Berlangganan “) kepada Para Penggunanya. \n Pengguna pertama  yang membuat suatu Circle (“Pemilik Circle”) akan bertindak sebagai pengawas dan administrator atas Circle dan memiliki hak untuk dapat menerima, mengajak dan memilih Pengguna lain untuk dapat bergabung dalam Circle-nya dan menjadi anggota Circle (‘”Anggota Circle”). \n Pemilik Circle dan para Anggota Circle dapat saling membagikan konten keuangan dan wajib menaati Kebijakan Pengguna serta Syarat & Ketentuan lainnya yang ditentukan oleh SEEDS. \n Hak-hak Pemilik Circle sebagaimana diatur dalam Ketentuan ini bersifat non-eksklusif, bersifat pribadi dan tidak dapat dipindahkan atau dialihkan. Otorisasi Pemilik Circle  untuk menggunakan layanan bergantung pada kepatuhan Pemilik Circle  yang berkelanjutan terhadap Ketentuan ini.\n SEEDS may from time to time improve or modify the Services or new features to the Services. SEEDS shall entitle to suspend the Services if deemed necessary for an emergency situation to prevent any potential loss or damage related to the systems. Any such suspension will be to the minimum extent and for the shortest duration required to: (i) prevent or terminate the offending use, (ii) prevent or resolve the emergency situation, or (iii) comply with applicable law. \n SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan Pemilik Circle an yang melanggar, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
-          2: 'Circle Owner shall be prohibited to; (i) send or store any material that is infringing, obscene, threatening, libelous, or otherwise unlawful or sadistic in nature, (ii) send any material that contains software viruses, worms, trojan horses or other oharmful program; (iii) interfere with or interfere with the integrity or performance of the platform, application, system or the data in it; (iv) gain unauthorized access to the platform, application or related systems or networks. \n Pemilik Circle dilarang untuk; (i) mengirim atau menyimpan materi apa pun yang bersifat melanggar, cabul, mengancam, memfitnah,  melanggar hukum atau bersifat sadistik, (ii) mengirim materi apa pun yang mengandung virus perangkat lunak, worm, trojan horse atau program berbahaya lainnya; (iii) mengganggu atau mengganggu integritas atau kinerja platform, aplikasi, sistem atau data di dalamnya; (iv) mendapatkan akses tidak sah ke platform, aplikasi, atau sistem atau jaringan terkait. \n Circle Owner shall not at any time do, write, upload, post or say anything which damages or which could reasonably be expected to damage the interests or reputation of SEEDS and its affiliation. \n  Pemilik Circle  dilarang untuk melakukan, menulis, mengunggah, memposting atau mengatakan hal apapun yang dapat merusak atau yang bisa diperkirakan mungkin merusak kepentingan atau reputasi SEEDS dan afiliasinya.',
-          3: 'Circle Owner may choose the service features to be provided in his/her Circle and upon the availability of these features, the Circle Owner Circle Members may be charge with subscription fee (“Subscription Fee”) with the amount, procedure and method of payment as stipulated in SEEDS Application. SEEDS may change the amount of Subscription Fee from time to time. \n For ihis/her services in managing the Circle, SEEDS will give commission to the Circle Owner ("Commission") of 20% of the value of the Circle Member Subscription Fee. SEEDS may change the amount of the commission fee from time to time. \n Terms of Payment of the Commission fee is further regulated in SEEDS Application. \n SEEDS shall entitle to deduct Circle Owner’s Income Tax from Commission payment. \n SEEDS may change the terms of payment of  Commission Fee from time to time.',
-          4: 'Personal data shall means any information about an identified or identifiable living individual recorded in any form. \n   SEEDS may request Circle Owner to provide the necessary personal data as required by the functional nature of the service and to process and utilize Circle Owner personal data within the scope of that particular purpose. \n    SEEDS shall take reasonable measures to protect the personal data from unauthorized use or disclosure and from accidental loss, destruction or damage.\n    Circle Owner shall ensure the accuracy and completeness to the personal data entry. SEEDS will hold no responsibility to any damage that may occur due to incompleteness, inaccuracy, or unclearness of personal data from Circle Owner.',
-          5: 'SEEDS shall own and retains all rights, titles, and interests related to the Platform, Application, Services and improvements thereto, together with any tools, materials, guidelines, and instructions provided by SEEDS to Circle Owner, as well as all intellectual property rights, including but not limited to all copyrights, trademarks, patents, rights in databases, and moral rights.',
-          6: 'SEEDS shall not be liable to Circle Owners, Circle Members and other Third Parties for loss of income or indirect, special, incidental, consequential or punitive damages, that arise in connection with the content uploaded by Circle Owners and/or Circle Member, or as a result of Circle Owner failure to fulfill his/her obligations as stipulated in these Terms.',
-          7: 'SEEDS shall be entitled to immediate terminate the Services given to Circle Owner if Circle Owner fail to perform its obligation as stipulated in this Terms. \n  Termination of Service, however it arises, shall not affect or prejudice the accrued rights of Circle Owner as at termination or the continuation of any provision expressly stated to survive, or implicitly surviving, termination.',
-          8: 'This Terms and any dispute or claim arising out of or in connection with it or its subject matter, shall be governed by, and construed in accordance with, the laws of Republic of Indonesia.',
-          9: 'Any dispute arising out of or in connection with this Terms, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration in Jakarta in accordance with the Arbitration Rules of Badan Arbitrase Nasional Indonesia (BANI) for the time being in force.'
+          1: 'SEEDS menyediakan layanan teknologi dalam bentuk forum komunitas digital kepada Pengguna ("Circle" atau "Layanan") dimana SEEDS dapat membebankan biaya berlangganan ("Biaya Berlangganan") kepada Penggunanya. \n Pengguna pertama yang membuat Circle (“Pemilik Circle”) akan bertindak sebagai pengawas dan administrator Circle dan berhak untuk dapat menerima, mengundang, dan memilih Pengguna lain untuk bergabung dengan Circlenya dan menjadi Anggota Circle ( \'”Anggota Circle”) . \n Pemilik Circle dan Anggota Circle dapat berbagi konten keuangan di antara mereka dan harus mematuhi Kebijakan Pengguna serta Syarat & Ketentuan lainnya sebagaimana ditentukan oleh SEEDS. \n Hak Pemilik Circle sebagaimana diatur dalam Ketentuan ini bersifat non-eksklusif, bersifat pribadi dan tidak dapat dialihkan atau dipindahtangankan. Otorisasi Pemilik Circle untuk menggunakan layanan bergantung pada kepatuhan Pemilik Circle terhadap Ketentuan ini. \n  SEEDS menyediakan layanan teknologi berupa forum komunitas digital kepada Pengguna (“Circle” atau “Layanan”) yang mana atas layanan tersebut SEEDS dapat membebankan biaya berlangganan (“Biaya Berlangganan “) kepada Para Penggunanya. \n Pengguna pertama  yang membuat suatu Circle (“Pemilik Circle”) akan bertindak sebagai pengawas dan administrator atas Circle dan memiliki hak untuk dapat menerima, mengajak dan memilih Pengguna lain untuk dapat bergabung dalam Circle-nya dan menjadi anggota Circle (‘”Anggota Circle”). \n Pemilik Circle dan para Anggota Circle dapat saling membagikan konten keuangan dan wajib menaati Kebijakan Pengguna serta Syarat & Ketentuan lainnya yang ditentukan oleh SEEDS. \n Hak-hak Pemilik Circle sebagaimana diatur dalam Ketentuan ini bersifat non-eksklusif, bersifat pribadi dan tidak dapat dipindahkan atau dialihkan. Otorisasi Pemilik Circle  untuk menggunakan layanan bergantung pada kepatuhan Pemilik Circle  yang berkelanjutan terhadap Ketentuan ini.\n SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu dalam situasi darurat untuk mencegah potensi kerugian atau kerusakan terkait sistem. Penangguhan tersebut akan dilakukan sebatas minimum dan dalam jangka waktu terpendek yang diperlukan untuk: (i) mencegah atau menghentikan penggunaan yang melanggar, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku. \n SEEDS dari waktu ke waktu dapat meningkatkan atau memodifikasi Layanan atau fitur baru pada Layanan. SEEDS berhak untuk menangguhkan Layanan jika dianggap perlu untuk situasi darurat untuk mencegah potensi kerugian atau kerusakan yang terkait dengan sistem. Setiap penangguhan tersebut akan dilakukan seminimal mungkin dengan durasi terpendek yang diperlukan untuk: (i) mencegah atau menghentikan Pemilik Circle an yang melanggar, (ii) mencegah atau menyelesaikan situasi darurat, atau (iii) mematuhi hukum yang berlaku.',
+          2: 'Pemilik Circle dilarang; (i) mengirimkan atau menyimpan materi apa pun yang bersifat melanggar, cabul, mengancam, memfitnah, atau melanggar hukum atau sadis, (ii) mengirimkan materi apa pun yang mengandung virus perangkat lunak, worm, trojan horse, atau program berbahaya lainnya; (iii) mengganggu atau mengganggu integritas atau kinerja platform, aplikasi, sistem atau data di dalamnya; (iv) mendapatkan akses tidak sah ke platform, aplikasi, atau sistem atau jaringan terkait. \n Pemilik Circle dilarang untuk; (i) mengirim atau menyimpan materi apa pun yang bersifat melanggar, cabul, mengancam, memfitnah,  melanggar hukum atau bersifat sadistik, (ii) mengirim materi apa pun yang mengandung virus perangkat lunak, worm, trojan horse atau program berbahaya lainnya; (iii) mengganggu atau mengganggu integritas atau kinerja platform, aplikasi, sistem atau data di dalamnya; (iv) mendapatkan akses tidak sah ke platform, aplikasi, atau sistem atau jaringan terkait. \nPemilik Circle tidak boleh melakukan, menulis, mengunggah, memposting atau mengatakan apa pun yang merugikan atau diperkirakan dapat merugikan kepentingan atau reputasi SEEDS dan afiliasinya. \n  Pemilik Circle  dilarang untuk melakukan, menulis, mengunggah, memposting atau mengatakan hal apapun yang dapat merusak atau yang bisa diperkirakan mungkin merusak kepentingan atau reputasi SEEDS dan afiliasinya.',
+          3: 'Pemilik Circle dapat memilih fitur-fitur layanan yang akan disediakan dalam Circlenya dan atas ketersediaan fitur-fitur ini, Anggota Circle Pemilik Circle dapat dikenakan biaya berlangganan (“Biaya Berlangganan”) dengan jumlah, prosedur dan metode pembayaran sebagaimana diatur dalam Aplikasi SEEDS. SEEDS dapat mengubah besaran Biaya Berlangganan dari waktu ke waktu. \n Atas jasanya dalam mengelola Circle, SEEDS akan memberikan komisi kepada Pemilik Circle ("Komisi") sebesar 20% dari nilai Biaya Berlangganan Anggota Circle. SEEDS dapat mengubah besaran biaya komisi dari waktu ke waktu. \n Ketentuan Pembayaran biaya Komisi diatur lebih lanjut dalam Aplikasi SEEDS. \n SEEDS berhak memotong Pajak Penghasilan Pemilik Circle dari pembayaran Komisi. \n SEEDS dapat mengubah ketentuan pembayaran Biaya Komisi dari waktu ke waktu.',
+          4: 'Data pribadi berarti informasi apa pun tentang individu hidup yang teridentifikasi atau dapat diidentifikasi yang dicatat dalam bentuk apa pun. \n SEEDS dapat meminta Pemilik Circle untuk memberikan data pribadi yang diperlukan sebagaimana diwajibkan oleh sifat fungsional layanan dan untuk memproses serta menggunakan data pribadi Pemilik Circle dalam lingkup tujuan tertentu tersebut. \n SEEDS akan mengambil tindakan yang wajar untuk melindungi data pribadi dari penggunaan atau pengungkapan yang tidak sah dan dari kehilangan, kehancuran, atau kerusakan yang tidak disengaja.\n Pemilik Circle harus memastikan keakuratan dan kelengkapan entri data pribadi. SEEDS tidak bertanggung jawab atas segala kerusakan yang mungkin terjadi karena ketidaklengkapan, ketidakakuratan, atau ketidakjelasan data pribadi dari Pemilik Circle.',
+          5: 'SEEDS akan memiliki dan mempertahankan semua hak, kepemilikan, dan kepentingan terkait dengan Platform, Aplikasi, Layanan, dan peningkatannya, bersama dengan segala alat, materi, pedoman, dan instruksi yang diberikan oleh SEEDS kepada Pemilik Circle, serta semua intelektual hak milik, termasuk namun tidak terbatas pada semua hak cipta, merek dagang, paten, hak dalam basis data, dan hak moral.',
+          6: 'SEEDS tidak bertanggung jawab kepada Pemilik Circle, Anggota Circle, dan Pihak Ketiga lainnya atas hilangnya pendapatan atau kerugian tidak langsung, khusus, insidental, konsekuensial, atau hukuman, yang timbul sehubungan dengan konten yang diunggah oleh Pemilik Circle dan/atau Anggota Circle , atau akibat kegagalan Pemilik Circle dalam memenuhi kewajibannya sebagaimana diatur dalam Ketentuan ini.',
+          7: 'SEEDS berhak untuk segera menghentikan Layanan yang diberikan kepada Pemilik Circle jika Pemilik Circle gagal melakukan kewajibannya sebagaimana diatur dalam Ketentuan ini. \n Penghentian Layanan, bagaimanapun hal itu timbul, tidak akan mempengaruhi atau mengurangi hak-hak yang masih harus dibayar Pemilik Circle pada saat pengakhiran atau kelanjutan dari ketentuan apa pun yang secara tegas dinyatakan tetap berlaku, atau secara implisit tetap berlaku, pengakhiran.',
+          8: 'Ketentuan ini dan setiap perselisihan atau klaim yang timbul dari atau sehubungan dengan hal ini atau pokok bahasannya, akan diatur oleh, dan ditafsirkan sesuai dengan, hukum Republik Indonesia.',
+          9: 'Setiap perselisihan yang timbul dari atau sehubungan dengan Ketentuan ini, termasuk pertanyaan mengenai keberadaan, keabsahan atau penghentiannya, akan dirujuk dan akhirnya diselesaikan melalui arbitrase di Jakarta sesuai dengan Peraturan Arbitrase Badan Arbitrase Nasional Indonesia (BANI). ) untuk saat ini berlaku.'
         },
         list: {}
       }
@@ -714,6 +737,88 @@ export default {
       title: 'Circle List',
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
+    },
+    create: {
+      title: 'Buat Cirlce',
+      cover: 'Tambah Cover',
+      image: 'Tambah Gambar',
+      name: {
+        label: 'Nama Circle',
+        placeholder: 'Ketik nama Cirlce',
+        error: 'Masukan Nama Circle'
+      },
+      hashtag: {
+        label: 'Hashtag',
+        placeholder: '#',
+        error: 'Masukan Hashtag'
+      },
+      description: {
+        label: 'Deskripsi',
+        placeholder: 'Tuliskan Deskripsi',
+        error: 'Masukan Deskripsi'
+      },
+      rules: {
+        label: 'Peraturan',
+        placeholder: 'Tuliskan Peraturan',
+        error: 'Masukan Peraturan'
+      },
+      type: {
+        label: 'Jenis Keanggotaan',
+        placeholder: 'Pilih Jenis Keanggotaan',
+        error: 'Pilih Jenis Keanggotaan'
+      },
+      tnc: {
+        label: 'Saya setuju dengan Syarat dan Ketentuan*',
+        error: 'Pastikan kamu setuju dengan Syarat dan Ketentuan'
+      }
+    }
+  },
+  validationErrors: {
+    required: 'Bidang ini wajib diisi',
+    invalidCountryCode: 'Kode Negara tidak valid',
+    invalidPhoneNumber: 'Nomor Telepon tidak valid',
+    invalidEmail: 'Email tidak valid',
+    birthdateBeforeToday: 'Tanggal lahir harus sebelum hari ini',
+    noSpacesInSeedsTag:
+      'SeedsTag tidak boleh mengandung spasi, harap hapus spasi Anda!',
+    seedsTagNoAt: "Tidak perlu menambahkan '@'",
+    seedsTagMinLength: 'Seeds Tag harus mengandung minimal 2 karakter',
+    seedsTagMaxLength: 'Seeds Tag harus memiliki panjang maksimal 20 karakter',
+    invalidPassword: 'Password tidak valid',
+    invalidConfirmPassword: 'Konfirmasi Password tidak valid'
+  },
+  landingPageV2: {
+    product: {
+      section1: {
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        subtitle:
+          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+      },
+      section2: {
+        title1: 'Leaderboard',
+        title2: 'Tiga pemain bintang yang mendominasi Play.'
+      },
+      section3: {
+        title1: 'Explore'
+      },
+      section4: {
+        title1: 'Featured Profile',
+        title2:
+          'A list of our featured finance pro to help your financial journey'
+      },
+      section5: {
+        title1: 'Bagaimana Cara Bermain',
+        title2: 'Turnamen',
+        title3:
+          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+      },
+      section6: {
+        title1: 'Unggah Sekarang!',
+        title2: 'Mulai perjalanan investasimu sekarang.',
+        title3:
+          'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
+      }
     }
   }
 };

@@ -61,3 +61,19 @@ export const linkAccount = async (identifier: string): Promise<string> => {
     });
   }
 };
+
+export const getUserFriends = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await authService.get(`/friends`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

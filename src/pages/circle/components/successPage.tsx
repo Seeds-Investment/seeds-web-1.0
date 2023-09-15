@@ -1,0 +1,42 @@
+import { successCircle } from '@/constants/assets/icons';
+import { Button, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+const SuccessPage = (): JSX.Element => {
+  const router = useRouter();
+
+  return (
+    <div
+      className="flex flex-col text-center items-center justify-center
+                            md:mx-32 lg:mx-40 xl:mx-56"
+    >
+      <Image
+        alt=""
+        src={successCircle.src}
+        height={0}
+        width={0}
+        className="mt-10 h-1/2 w-1/2"
+      />
+
+      <Typography className="text-[16px] font-semibold mb-1 mt-5 md:text-5xl lg:text-[72px] text-black">
+        Success!
+      </Typography>
+      <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-xl lg:text-[20px] text-[#7C7C7C]">
+        Congratulations! The new Circle has been successfully created. Share
+        your Circle Now!
+      </Typography>
+
+      <Button
+        className="text-xs font-semibold w-full bg-[#3AC4A0] rounded-full lg:text-base"
+        onClick={() => {
+          void router.push('/circle');
+        }}
+      >
+        Continue
+      </Button>
+    </div>
+  );
+};
+
+export default SuccessPage;

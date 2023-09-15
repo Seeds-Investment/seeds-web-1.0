@@ -211,7 +211,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
           {/* ----- Image Container ----- */}
           <div className="z-10 overflow-hidden rounded-full mb-1 mx-auto md:w-28 md:h-28 w-20 h-20">
             {formImage !== undefined && formImage !== null ? (
-              <img
+              <Image
                 alt="avatar"
                 src={URL.createObjectURL(formImage)}
                 className="w-full h-full object-center object-cover"

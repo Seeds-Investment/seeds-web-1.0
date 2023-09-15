@@ -1,18 +1,8 @@
 'use client';
-import chat from '@/assets/landing-page/s4-chat-1.png';
-import line from '@/assets/landing-page/s4-line.png';
-import shape from '@/assets/landing-page/s4-shape.png';
-import peoples from '@/assets/landing-page/s4-young.png';
-import CCard from '@/components/CCard';
 import { getTrendingCircle } from '@/repository/circle.repository';
-import { circleTrendingLandingPage } from '@/utils/_static/dummy';
-import { Button, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Section4Slider from './Section4Slider';
 
 const fetch = async (
   setNews: Dispatch<SetStateAction<never[]>>
@@ -26,7 +16,6 @@ const fetch = async (
 export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
-  const router = useRouter();
   useEffect(() => {
     void fetch(setList);
   }, []);
@@ -34,85 +23,62 @@ export default function Section4(): React.ReactElement {
   console.log(list);
 
   return (
-    <div className="lg:mt-10 mb-10 p-3 min-w-full cursor-default md:p-8">
-      <Typography className="text-2xl font-bold mb-2 lg:text-5xl text-[#222222]">
-        Connect
-      </Typography>
-      <CCard className="bg-white overflow-hidden h-[380px] md:h-[410px] lg:h-[480px] shadow-lg p-2 rounded-xl lg:p-5">
-        <div className="flex flex-row">
-          <div className="w-1/2">
-            <div className="text-sm font-bold  mb-3 md:text-2xl lg:text-3xl z-30">
-              <span className="mr-1 text-[#3AC4A0]">
-                {t('landing.section4.text1')}
-              </span>
-              <span className="mr-1 text-black">
-                {t('landing.section4.text2')}
-              </span>
-              <span className="mr-1 text-[#3AC4A0]">
-                {t('landing.section4.text3')}
-              </span>
-              <span className="mr-1 text-black">
-                {t('landing.section4.text4')}
-              </span>
-            </div>
-            <Typography className="text-xs text-[#7C7C7C] font-light lg:font-normal lg:text-xl tracking-wider mb-4">
-              {t('landing.section4.text6')}
-            </Typography>
-            <Button
-              className="z-30 capitalize text-xs font-semibold lg:text-lg bg-seeds-purple rounded-full mb-3"
-              onClick={() => {
-                void router.push('/auth/register');
-              }}
-            >
-              {t('button.joinNow')}
-            </Button>
-
-            <div>
-              <Typography className="text-[10px] mb-2 font-bold z-40 md:text-[12px] lg:text-lg">
-                {t('landing.section4.text5')}
-              </Typography>
-              <div className="md:w-[130%] lg:w-[70%] text-xs tracking-wide z-40">
-                <Section4Slider list={circleTrendingLandingPage} />
-              </div>
+    <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col w-full items-center px-10 justify-center mb-6 md:mb-8 lg:mb-6 xl:mb-4 sm:mb-20 font-poppins">
+          <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
+            {t('landing.section4.text1')}
+          </span>
+          <p className="text-2xl font-normal text-[#262626] mt-5">
+            {t('landing.section4.text2')}
+          </p>
+        </div>
+        <div
+          className={`w-full h-[400px] xl:h-[864px] pt-[90px] font-poppins relative pb-20`}
+        >
+          <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[38vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
+          <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[143px] xl:w-[345px] h-[205px] xl:h-[494px] absolute z-10 xl:left-[40vw] left-[32vw] xl:top-auto top-10">
+            <img
+              src="/assets/video/testimoni-1.png"
+              alt=""
+              className="xl:rounded-[32px] rounded-[4px] h-full w-full"
+            />
+            <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
+              <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
+                Alnia
+              </h1>
             </div>
           </div>
-
-          <div className="w-1/2"></div>
+          <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 xl:left-[10vw] left-[5vw]">
+            <img
+              src="/assets/video/testimoni-2.png"
+              alt=""
+              className="xl:rounded-[32px] rounded-[4px] h-full w-full"
+            />
+            <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
+              <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
+                Adika Satya Graha
+              </h1>
+            </div>
+          </div>
+          <div className="rounded-[32px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 left-[75vw] xl:left-[70vw]">
+            <img
+              src="/assets/video/testimoni-3.png"
+              alt=""
+              className="xl:rounded-[32px] rounded-[4px] h-full w-full relative"
+            />
+            <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
+              <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
+                Arian Akbar
+              </h1>
+            </div>
+          </div>
+          <div className="w-full h-[217px] bg-gradient-to-bl from-[rgba(79,230,175,1)] to-[rgba(154,118,254,1)] bottom-[200px] inset-x-[0] absolute z-0 mx-auto xl:block hidden" />
+          <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[8vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
+          <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] backdrop-blur-[24px] left-[68vw] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
+          <div className="gap-[53px] absolute inline-flex items-start text-left text-white"></div>
         </div>
-      </CCard>
-
-      <Image
-        alt="peoples"
-        className="absolute h-[378px] right-10 w-[200px] translate-x-[1.8rem] -translate-y-[23.5rem] rotate-[1deg] z-10
-            md:w-[400px] md:translate-x-[1rem] md:-translate-y-[25.4rem] md:h-[410px] lg:h-[480px]
-            lg:w-[550px] lg:translate-x-[0.5rem] lg:-translate-y-[29.5rem]
-            xl:w-[750px]"
-        src={shape}
-      />
-
-      <Image
-        alt="peoples"
-        className="absolute right-5 h-[200px] w-[180px] translate-x-[1rem] -translate-y-[13rem] rotate-[1deg] z-20
-            md:h-[350px] md:w-[280px] md:-translate-y-[22rem]
-            lg:h-[400px] lg:w-[330px] lg:-translate-y-[25rem]
-            xl:-translate-x-[6rem]"
-        src={peoples}
-      />
-
-      <Image
-        alt="peoples"
-        className="absolute right-20 w-[20%] -translate-x-[1rem] -translate-y-[20rem] rotate-[1deg] z-20
-        md:-translate-x-[14rem] md:w-[10%]
-        lg:-translate-x-[19rem] lg:w-[12%]
-        xl:-translate-x-[27rem]"
-        src={chat}
-      />
-
-      <Image
-        alt="peoples"
-        className="absolute w-[20%] translate-x-[13rem] -translate-y-[20rem] rotate-[1deg] z-10"
-        src={line}
-      />
+      </div>
     </div>
   );
 }

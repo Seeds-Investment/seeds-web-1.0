@@ -5,41 +5,57 @@ export default {
   greeting: 'Hello, {{name}}',
   landing: {
     section1: {
-      text1: 'Seeds',
-      text2: 'Start and expand your investing journey with us!'
+      text1: '#PlaywithSeeds',
+      text2: 'Social gaming meets finance and investing.'
     },
     section2: {
-      text1: 'Discover',
-      text2: 'Explore Investing World',
-      text3: 'Learn everything and Grow together with Seeds',
+      text1a: 'Together',
+      text1b: 'With',
+      text1c: 'Seeds',
+      text2: 'Learn everything about Finance with friends',
+      text3a: 'Play',
+      text3b:
+        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+      text3c: 'Learn',
+      text3d:
+        'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
       text4:
         'Get the latest trending news and knowledge about investing and finance.',
       text5: 'Event Highlight',
       text6: 'Keep up with your exciting activities!'
     },
     section3: {
-      text1: 'Learn',
-      text2: ' more about Investing and Finance from the Pro',
+      text1: 'About Seeds',
+      text2:
+        'A community-driven platform designed for to-be investors in Southeast Asia, Seeds offers a hands-on competitive gamified experience to learn the ropes of investing before committing real funds.',
       text3:
-        'We bring together professionals to learn about investing and finance.'
+        'In Southeast Asia, despite digital brokerage booms, retail investments remain limited by perceived risk, complexity and macroeconomic factors. Seeds introduces risk-free "Play-to-earn" investing and community-driven "Learn-to-earn" exchanges, turning investing into a competitive, real-time social game.',
+      text4: 'What They Say About Seeds?',
+      text5:
+        'With Seeds, everything about finance and the trading world becomes easier to learn and can be approached by everyone. Let’s hear how Seeds help them!'
     },
     section4: {
-      text1: 'Meet',
-      text2: 'and',
+      text1: 'Over 1000+ people trust us',
+      text2: 'Professionals, universities, many more do!',
       text3: 'Chat',
       text4: 'with like-minded people',
       text5: 'Our Recommendation Circle',
       text6: 'Share your knowledge easily with your friends'
     },
     section5: {
-      text1: 'Tournaments',
+      text1: 'Discover',
       text2:
-        'Want to join a tournament while investing? Seeds provides various competitions regarding investment and finance, which of course there are various attractive prizes.'
+        'Explore trending news and gain insights about Finance and Investing.'
     },
     section6: {
-      text1:
-        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
-      text2: ''
+      text1: 'Our',
+      text2: 'Communities',
+      text3:
+        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia."
+    },
+    section7: {
+      text1: 'Frequently Asked Questions',
+      text2: 'Find answers to your questions about seeds'
     }
   },
   followButton: {
@@ -115,6 +131,10 @@ export default {
     success: {
       title: 'Success!',
       text: 'Congratulations! The new password has been successfully created.'
+    },
+    successSendEmail: {
+      title: 'Hoorayy!',
+      text: 'We have sent you an email to verify you are the owner'
     }
   },
   changeEmailAddress: {
@@ -180,6 +200,12 @@ export default {
       seedsTag: 'Seeds Tag',
       referralCode: 'Referral Code',
       optional: '(optional)'
+    },
+    poll: {
+      optionPlaceholder: '{{index}}. Enter an option',
+      endDateLabel: 'Set ending date',
+      multivoteLabel: 'Multivote',
+      allowNewOptionLabel: 'Allow new options'
     }
   },
   button: {
@@ -187,7 +213,7 @@ export default {
     BTN_REGISTER: 'Register',
     BTN_LOGIN: 'Login',
     BTN_GUEST: 'Enter As Guest',
-    joinNow: 'Join Now',
+    joinNow: 'Play Now!',
     next: 'Continue',
     label: {
       change: 'Change',
@@ -783,6 +809,40 @@ export default {
       title: 'Circle List',
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
+    },
+    create: {
+      title: 'Create Cirlce',
+      cover: 'Add Cover',
+      image: 'Add Image',
+      name: {
+        label: 'Circle Name',
+        placeholder: 'type circle name',
+        error: 'Input Circle Name'
+      },
+      hashtag: {
+        label: 'Hashtag',
+        placeholder: '#',
+        error: 'Input Hashtag'
+      },
+      description: {
+        label: 'Description',
+        placeholder: 'Type Description',
+        error: 'Input Description'
+      },
+      rules: {
+        label: 'Rules',
+        placeholder: 'type rules',
+        error: 'Input rules'
+      },
+      type: {
+        label: 'Membership Types',
+        placeholder: 'Set Your Membership type',
+        error: 'Set Your Membership type'
+      },
+      tnc: {
+        label: 'I agree with the Terms and Conditions*',
+        error: 'Make sure you agree with the terms and condition'
+      }
     }
   },
   articleList: {
@@ -790,5 +850,54 @@ export default {
     text2: 'Find more news you might like.',
     text3: 'Sort by',
     text4: 'Search'
+  },
+
+  validationErrors: {
+    required: 'This field is required',
+    invalidCountryCode: 'Invalid Country Code',
+    invalidPhoneNumber: 'Invalid Phone Number',
+    invalidEmail: 'Invalid Email',
+    birthdateBeforeToday: 'Birthdate must be before today',
+    noSpacesInSeedsTag:
+      'SeedsTag cannot contain spaces, please delete your spaces!',
+    seedsTagNoAt: "Don't need to add '@'",
+    seedsTagMinLength: 'Seeds Tag must contain at least 2 characters',
+    seedsTagMaxLength: 'Seeds Tag must have at most 20 characters',
+    invalidPassword: 'Invalid Input Password',
+    invalidConfirmPassword: 'Invalid Confirm Password'
+  },
+  landingPageV2: {
+    product: {
+      section1: {
+        title1: 'Share & Influence ',
+        title2: 'Others to Start Their Financial Journey',
+        subtitle:
+          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+      },
+      section2: {
+        title1: 'Leaderboard',
+        title2: 'The top three star players who have dominated in Play.'
+      },
+      section3: {
+        title1: 'Explore'
+      },
+      section4: {
+        title1: 'Featured Profile',
+        title2:
+          'A list of our featured finance pro to help your financial journey'
+      },
+      section5: {
+        title1: 'How to Play',
+        title2: 'Tournament',
+        title3:
+          'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
+      },
+      section6: {
+        title1: 'Download Now!',
+        title2: 'Start Your Investing Journey',
+        title3:
+          'Expand your connection, learn about finance and grow your portfolio together with Seeds.'
+      }
+    }
   }
 };

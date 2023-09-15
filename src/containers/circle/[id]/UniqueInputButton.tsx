@@ -9,8 +9,13 @@ import Image from 'next/image';
 interface props {
   setPages: any;
   setMedia: any;
+  openPieModal: any;
 }
-const UniqueInputButton: React.FC<props> = ({ setPages, setMedia }) => {
+const UniqueInputButton: React.FC<props> = ({
+  setPages,
+  setMedia,
+  openPieModal
+}) => {
   const handlePages = (page: string): any => {
     return setPages(page);
   };
@@ -83,7 +88,13 @@ const UniqueInputButton: React.FC<props> = ({ setPages, setMedia }) => {
         </div>
         {/* Poll */}
         <div className="flex flex-col">
-          <button type="button" className="p-2">
+          <button
+            type="button"
+            className="p-2"
+            onClick={() => {
+              handlePages('poll');
+            }}
+          >
             <Image
               alt="unique_post"
               src={poll}
@@ -96,7 +107,14 @@ const UniqueInputButton: React.FC<props> = ({ setPages, setMedia }) => {
         </div>
         {/* Pie */}
         <div className="flex flex-col">
-          <button type="button" className="p-2">
+          <button
+            type="button"
+            className="p-2"
+            onClick={() => {
+              handlePages('pie');
+              openPieModal();
+            }}
+          >
             <Image
               alt="unique_post"
               src={pie}

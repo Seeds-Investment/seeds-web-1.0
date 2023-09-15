@@ -401,7 +401,7 @@ const CirclePost = (): JSX.Element => {
       setIsJoined={setIsJoined}
     >
       {/* posting section */}
-      <div className="hidden md:block bg-white mt-8 w-full rounded-xl">
+      <div className="block bg-white mt-8 w-full rounded-xl">
         {isLoading ? renderLoading() : <></>}
         <div className="flex flex-col px-14 pt-8">
           {isEdit ? (

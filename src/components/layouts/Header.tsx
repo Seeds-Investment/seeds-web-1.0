@@ -174,9 +174,9 @@ const Header: React.FC = () => {
 
   return (
     <header className="">
-      <div className="document-header xl:pt-0 pt-5 xl:px-[80px] xl:py-0 py-5 px-5 bg-[#9A76FE80]/50">
-        <section className="flex flex-col xl:w-auto w-full">
-          <section className="xl:hidden flex flex-row justify-between w-full">
+      <div className="document-header xl:pt-0 pt-5 xl:px-[30px] xl:py-0 py-5 px-5 bg-[#9A76FE80]/50">
+        <section className="flex flex-col xl:-ml-[300px] xl:w-auto w-full">
+          <section className="xl:hidden flex flex-row w-full">
             <Link href="https://seeds.finance">
               <Logo
                 width={

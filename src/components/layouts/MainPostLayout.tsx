@@ -14,6 +14,8 @@ interface props {
   openModalReport: any;
   handleEdit: any;
   isEdit: boolean;
+  isJoined: boolean;
+  setIsJoined: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
@@ -25,7 +27,9 @@ const MainPostLayout: React.FC<props> = ({
   openModalLeave,
   openModalReport,
   handleEdit,
-  isEdit
+  isEdit,
+  isJoined,
+  setIsJoined
 }) => {
   const [dataCircle, setData]: any = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -76,13 +80,14 @@ const MainPostLayout: React.FC<props> = ({
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
-                circleId={circleId}
                 isLoading={isLoading}
                 renderLoading={renderLoading}
                 openModalDelete={openModalDelete}
                 openModalLeave={openModalLeave}
                 openModalReport={openModalReport}
                 handleEdit={handleEdit}
+                isJoined={isJoined}
+                setIsJoined={setIsJoined}
               />
               {children}
               {isEdit ? (

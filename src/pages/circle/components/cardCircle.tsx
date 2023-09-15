@@ -1,5 +1,6 @@
 import { DocumentIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 
 interface Circle {
   id: string;
@@ -26,13 +27,21 @@ export default function CardCircle({
   data: Circle;
   cover: string;
 }): React.ReactElement {
+  const router = useRouter();
   return (
     <Card
       shadow={false}
       className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
     >
       {data?.cover !== undefined && (
-        <>
+        <div
+          onClick={() => {
+            router.push(`/circle/post/${data.id}`).catch(error => {
+              console.log(error);
+            });
+          }}
+          className="cursor-pointer"
+        >
           <div
             style={{
               backgroundImage: `url(${cover})`,
@@ -80,7 +89,7 @@ export default function CardCircle({
               </div>
             </div>
           </CardBody>
-        </>
+        </div>
       )}
     </Card>
   );

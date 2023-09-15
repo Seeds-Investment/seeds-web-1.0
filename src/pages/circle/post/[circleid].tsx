@@ -17,7 +17,8 @@ import {
   createPostCircleDetail,
   getCirclePost,
   getCircleRecomend,
-  getDetailCircle
+  getDetailCircle,
+  getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
@@ -132,6 +133,9 @@ const CirclePost = (): JSX.Element => {
 
   const [dataPost, setDataPost]: any = useState([]);
   const [dataRecommend, setDataRecommend]: any = useState([]);
+  const [dataUser, setDataUser]: any = useState();
+  const [isJoined, setIsJoined] = useState(false);
+  console.log(dataUser);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
@@ -140,6 +144,25 @@ const CirclePost = (): JSX.Element => {
       const { data } = await getCirclePost({ circleId });
 
       setDataPost(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Post:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchUserInfo = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getStatusCircle({ circleId });
+      const { status }: any = data;
+      if (status === false) {
+        setIsJoined(false);
+      } else {
+        setIsJoined(true);
+      }
+      setDataUser(data);
     } catch (error: any) {
       console.error('Error fetching Circle Post:', error.message);
     } finally {
@@ -164,6 +187,7 @@ const CirclePost = (): JSX.Element => {
   useEffect(() => {
     void fetchCirclePost();
     void fetchCircleRecommended();
+    void fetchUserInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [circleId]);
 
@@ -373,6 +397,8 @@ const CirclePost = (): JSX.Element => {
       openModalReport={handleOpenModalReport}
       handleEdit={handleEditCircle}
       isEdit={isEdit}
+      isJoined={isJoined}
+      setIsJoined={setIsJoined}
     >
       {/* posting section */}
       <div className="hidden md:block bg-white mt-8 w-full rounded-xl">

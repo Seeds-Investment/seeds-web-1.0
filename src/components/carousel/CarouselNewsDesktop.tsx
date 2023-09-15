@@ -5,13 +5,21 @@ import { useEffect, useState } from 'react';
 const CarouselNewsDesktop: React.FC = () => {
   const [carouselData, setCarouselData] = useState<any[]>([]);
 
+  const devUrl = process.env.NEXT_PUBLIC_URL;
   useEffect(() => {
-    // Replace 'your-api-url' with the actual API endpoint
-    fetch('https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=5')
-      .then(response => response.json())
-      .then(data => setCarouselData(data.news))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+    if (devUrl) {
+      fetch(`${devUrl}/news/v1/hot?limit=5`)
+        .then(response => response.json())
+        .then(data => {
+          setCarouselData(data.news);
+          return undefined;
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          return undefined;
+        });
+    }
+  }, [devUrl]);
 
   const handleItemClick = (link: string) => {
     window.open(link, '_blank');

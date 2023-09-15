@@ -7,83 +7,16 @@ import {
   Button
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Settings } from 'react-slick';
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
   const [open, setOpen] = useState(1);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [carouselData, setCarouselData] = useState<any[]>([]);
 
-  const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
-
-  // Define your carousel content (images and text) here
-  const carouselContent = [
-    {
-      image: '/assets/forgot.png', // Replace with your image path
-      text: 'Image 1 Text'
-    },
-    {
-      image: '/assets/success.png', // Replace with your image path
-      text: 'Image 2 Text'
-    },
-    {
-      image: '/assets/success.png', // Replace with your image path
-      text: 'Image 3 Text'
-    }
-    // Add more images and text as needed
-  ];
-
-  useEffect(() => {
-    // Replace 'your-api-url' with the actual API endpoint
-    fetch('https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=3')
-      .then(response => response.json())
-      .then(data => setCarouselData(data.news))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
-
-  const handleItemClick = (link: string) => {
-    window.open(link, '_blank');
-  };
-
-  const settings: Settings = {
-    // autoplay: false,
-    // slidesToShow: 3,
-    // dots: true,
-    // infinite: true,
-    // speed: 500,
-    // slidesToScroll: 1
-    centerMode: true,
-    slidesToShow: 4,
-    speed: 500,
-    slidesToScroll: 1,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: true,
-          slidesToShow: 3
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: true,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      }
-    ]
+  const handleOpen = (value: number): void => {
+    setOpen(open === value ? 0 : value);
   };
 
   return (
@@ -157,7 +90,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(1)}
+                onClick={() => {
+                  handleOpen(1);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 1 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -173,7 +108,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(2)}
+                onClick={() => {
+                  handleOpen(2);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 2 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -192,7 +129,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(3)}
+                onClick={() => {
+                  handleOpen(3);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 3 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -211,7 +150,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(4)}
+                onClick={() => {
+                  handleOpen(4);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 4 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}

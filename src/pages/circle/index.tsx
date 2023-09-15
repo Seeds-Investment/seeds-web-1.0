@@ -10,6 +10,8 @@ import {
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Button,
+  Card,
+  CardBody,
   Tab,
   TabPanel,
   Tabs,
@@ -218,6 +220,57 @@ const Circle = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/2">
+            <Card className="bg-[#8a70e0] h-full">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  Circle Balance
+                </Typography>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  100.000
+                </Typography>
+              </CardBody>
+            </Card>
+          </div>
+          <div className="w-full md:w-1/2 md:ml-5 h-full">
+            <div
+              className="flex flex-row w-full items-center"
+              onClick={() => {
+                void router.push(`/circle/withdrawal`);
+              }}
+            >
+              <Typography className="text-sm font-semibold items-start text-[#7555DA]">
+                Withdraw Profit
+              </Typography>
+              <div className="items-end">
+                <Button className="text-md font-normal bg-white text-black rounded-full shadow-none">
+                  {'>'}
+                </Button>
+              </div>
+            </div>
+            <hr />
+            <div
+              className="flex flex-row items-center"
+              onClick={() => {
+                void router.push(`/circle/transaction-history`);
+              }}
+            >
+              <Typography className="text-sm font-semibold items-start text-[#7555DA]">
+                Transaction History
+              </Typography>
+              <div className="items-end">
+                <Button className="text-md font-normal bg-white text-black rounded-full shadow-none">
+                  {'>'}
+                </Button>
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+      </CCard>
+
       <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.leaderBoard.title')}

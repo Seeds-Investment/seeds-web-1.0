@@ -18,7 +18,11 @@ interface props {
   totalVote: number;
 }
 
-const PollingView: React.FC<props> = ({ data: pollings, pollingDate, totalVote: initialTotalVote }) => {
+const PollingView: React.FC<props> = ({
+  data: pollings,
+  pollingDate,
+  totalVote: initialTotalVote
+}) => {
   const [totalVote, setTotalVote] = useState(initialTotalVote);
   const [data, setData] = useState(pollings);
   const hadSelectedPoll = useMemo(
@@ -80,7 +84,8 @@ const PollingItem: React.FC<PollingItemProps> = ({
   onVote
 }) => {
   const percentage = polling.percentage ?? 0;
-  const borderColor = (hadSelectedPoll || pollHasExpired) ? 'border-[#4FE6AF]' : '';
+  const borderColor =
+    hadSelectedPoll || pollHasExpired ? 'border-[#4FE6AF]' : '';
   const textColor =
     polling.status_vote === true
       ? 'text-[#262626] font-bold'
@@ -90,7 +95,9 @@ const PollingItem: React.FC<PollingItemProps> = ({
     <button
       className={`flex relative justify-between overflow-hidden border rounded-lg ${borderColor}`}
       disabled={pollHasExpired}
-      onClick={() => {onVote(polling.id)}}
+      onClick={() => {
+        onVote(polling.id);
+      }}
     >
       {(hadSelectedPoll || pollHasExpired) && (
         <div className={`absolute w-[${percentage}%] h-full bg-[#DCFCE4]`} />

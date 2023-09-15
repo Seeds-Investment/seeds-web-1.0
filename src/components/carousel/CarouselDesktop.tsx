@@ -1,9 +1,7 @@
 'use client';
 import { Carousel, IconButton } from '@material-tailwind/react';
 
-const number = ['1', '2', '3', '4', '5', '6', '7'];
-
-const handleItemClick = (link: string) => {
+const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
 };
 
@@ -22,7 +20,9 @@ const CarouselDesktop: React.FC = () => {
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                 activeIndex === i ? 'w-8 bg-white' : 'w-4 bg-white/50'
               }`}
-              onClick={() => setActiveIndex(i)}
+              onClick={() => {
+                setActiveIndex(i);
+              }}
             />
           ))}
         </div>
@@ -80,17 +80,19 @@ const CarouselDesktop: React.FC = () => {
         src={`/assets/carousel-1.png`}
         alt="image 1"
         className="h-full w-full object-cover cursor-pointer"
-        onClick={() =>
+        onClick={() => {
           handleItemClick(
             'https://play.google.com/store/apps/details?id=com.seeds.investment'
-          )
-        }
+          );
+        }}
       />
       <img
         src={`/assets/carousel-2.png`}
         alt="image 1"
         className="h-full w-full object-cover cursor-pointer"
-        onClick={() => handleItemClick('https://gplfantasy.app.link/SeedsB')}
+        onClick={() => {
+          handleItemClick('https://gplfantasy.app.link/SeedsB');
+        }}
       />
       <img
         src={`/assets/carousel-3.png`}

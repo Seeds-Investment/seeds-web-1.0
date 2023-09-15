@@ -2,12 +2,28 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
+import {
+  ArrowPathIcon,
+  ExclamationCircleIcon,
+  PencilSquareIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
+import {
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList
+} from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 interface props {
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
+  openModalDelete: any;
+  openModalLeave: any;
+  openModalReport: any;
+  handleEdit: any;
   isJoined: boolean;
   setIsJoined: any;
 }
@@ -16,6 +32,10 @@ const CirclePostSection1: React.FC<props> = ({
   dataCircle,
   isLoading,
   renderLoading,
+  openModalDelete,
+  openModalLeave,
+  openModalReport,
+  handleEdit,
   isJoined,
   setIsJoined
 }) => {
@@ -40,6 +60,7 @@ const CirclePostSection1: React.FC<props> = ({
       setIsLoadingJoin(false);
     }
   };
+
   return (
     <>
       {isLoading ? (
@@ -93,13 +114,46 @@ const CirclePostSection1: React.FC<props> = ({
                     src={notification}
                     className="h-[24px] w-[24px] object-cover"
                   />
-                  <button type="button">
-                    <Image
-                      alt="menu_dot"
-                      src={dot_menu}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                  </button>
+                  <Menu placement="left">
+                    <MenuHandler>
+                      <button type="button">
+                        <Image
+                          alt="menu_dot"
+                          src={dot_menu}
+                          className="h-[24px] w-[24px] object-cover"
+                        />
+                      </button>
+                    </MenuHandler>
+                    <MenuList>
+                      <MenuItem onClick={handleEdit}>
+                        <div className="flex flex-row">
+                          <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                          Edit Cirlce
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalDelete}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                          Delete Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalReport}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Report Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalLeave}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Leave Circle
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
             </div>
@@ -188,13 +242,46 @@ const CirclePostSection1: React.FC<props> = ({
                           src={notification}
                           className="h-[24px] w-[24px] object-cover"
                         />
-                        <button type="button">
-                          <Image
-                            alt="menu_dot"
-                            src={dot_menu}
-                            className="h-[24px] w-[24px] object-cover"
-                          />
-                        </button>
+                        <Menu placement="left">
+                          <MenuHandler>
+                            <button type="button">
+                              <Image
+                                alt="menu_dot"
+                                src={dot_menu}
+                                className="h-[24px] w-[24px] object-cover"
+                              />
+                            </button>
+                          </MenuHandler>
+                          <MenuList>
+                            <MenuItem onClick={handleEdit}>
+                              <div className="flex flex-row">
+                                <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                                Edit Cirlce
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalDelete}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                                Delete Circle
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalReport}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                Report Circle
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalLeave}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                Leave Circle
+                              </div>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
                       </div>
                     </div>
                   </div>

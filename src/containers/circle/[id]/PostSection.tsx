@@ -14,6 +14,8 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import ImageCarousel from './CarouselImage';
 import PieCirclePost from './PieCirclePost';
+import PollingView from './PollingView';
+
 interface props {
   dataPost: any;
 }
@@ -139,6 +141,14 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                 );
               })}
             </div>
+
+            {dataPost.pollings?.length > 0 && (
+              <PollingView
+                data={dataPost.pollings}
+                totalVote={dataPost.total_polling}
+                pollingDate={dataPost.polling_date}
+              />
+            )}
           </div>
           <PieCirclePost data={dataPost} />
           <div className="flex justify-between items-center mt-4">

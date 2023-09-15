@@ -188,9 +188,9 @@ const ProfilePage = (): JSX.Element => {
                     Followers
                   </div>{' '}
                   <div>
-                    <p className="flex justify-center text-black font-extrabold">
+                    <div className="flex justify-center text-black font-extrabold">
                       {userData?.following}
-                    </p>
+                    </div>
                     Following
                   </div>
                 </div>

@@ -1,6 +1,5 @@
 'use client';
 import { getTrendingCircle } from '@/repository/circle.repository';
-import { useRouter } from 'next/router';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +16,6 @@ const fetch = async (
 export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
-  const router = useRouter();
   useEffect(() => {
     void fetch(setList);
   }, []);

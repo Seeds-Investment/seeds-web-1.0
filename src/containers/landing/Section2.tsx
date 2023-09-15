@@ -11,7 +11,6 @@ import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Settings } from 'react-slick';
 const fetch = async (
   setNews: Dispatch<SetStateAction<never[]>>
 ): Promise<void> => {
@@ -26,43 +25,9 @@ export default function Section2(): React.ReactElement {
   const width = useWindowInnerWidth();
   console.log(news);
 
-  const settings: Settings = {
-    centerMode: true,
-    slidesToShow: 4,
-    speed: 500,
-    slidesToScroll: 1,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: true,
-          slidesToShow: 3
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: true,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      }
-    ]
-  };
-
   useEffect(() => {
     void fetch(setNews);
   }, []);
-
-  const number = ['1', '2', '3', '4', '5', '6', '7'];
-
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">

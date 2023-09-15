@@ -1,5 +1,6 @@
 'use client';
 import { Carousel, IconButton } from '@material-tailwind/react';
+import Image from 'next/image';
 
 const numberMobile = ['1', '2', '3', '4', '5', '6'];
 
@@ -75,7 +76,7 @@ const CarouselMobile: React.FC = () => {
       )}
     >
       {numberMobile.map((num, index) => (
-        <img
+        <Image
           key={num} // Use num as the key if it's unique
           src={`/assets/mobile/carousel-${num}.png`}
           alt={`image ${num}`}

@@ -169,7 +169,9 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(5)}
+                onClick={() => {
+                  handleOpen(5);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 5 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
@@ -188,7 +190,9 @@ export default function Section5(): React.ReactElement {
               className="rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => handleOpen(6)}
+                onClick={() => {
+                  handleOpen(6);
+                }}
                 className={`border-b-0 transition-colors ${
                   open === 6 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}

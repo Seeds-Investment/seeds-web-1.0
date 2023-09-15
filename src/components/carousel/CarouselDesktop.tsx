@@ -1,5 +1,6 @@
 'use client';
 import { Carousel, IconButton } from '@material-tailwind/react';
+import Image from 'next/image';
 
 const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
@@ -76,7 +77,7 @@ const CarouselDesktop: React.FC = () => {
         </IconButton>
       )}
     >
-      <img
+      <Image
         src={`/assets/carousel-1.png`}
         alt="image 1"
         className="h-full w-full object-cover cursor-pointer"
@@ -86,7 +87,7 @@ const CarouselDesktop: React.FC = () => {
           );
         }}
       />
-      <img
+      <Image
         src={`/assets/carousel-2.png`}
         alt="image 1"
         className="h-full w-full object-cover cursor-pointer"
@@ -94,27 +95,27 @@ const CarouselDesktop: React.FC = () => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
       />
-      <img
+      <Image
         src={`/assets/carousel-3.png`}
         alt="image 1"
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-4.png`}
         alt="image 1"
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-5.png`}
         alt="image 1"
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-6.png`}
         alt="image 1"
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-7.png`}
         alt="image 1"
         className="h-full w-full object-cover"

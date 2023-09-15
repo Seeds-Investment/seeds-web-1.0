@@ -80,6 +80,8 @@ const CarouselMobile: React.FC = () => {
           key={num} // Use num as the key if it's unique
           src={`/assets/mobile/carousel-${num}.png`}
           alt={`image ${num}`}
+          width={300}
+          height={500}
           className="h-full w-full object-cover"
         />
       ))}

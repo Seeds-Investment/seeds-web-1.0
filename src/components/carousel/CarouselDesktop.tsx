@@ -80,6 +80,8 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-1.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={() => {
           handleItemClick(
@@ -90,6 +92,8 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-2.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={() => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
@@ -98,26 +102,36 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-3.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
       <Image
         src={`/assets/carousel-4.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
       <Image
         src={`/assets/carousel-5.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
       <Image
         src={`/assets/carousel-6.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
       <Image
         src={`/assets/carousel-7.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
     </Carousel>

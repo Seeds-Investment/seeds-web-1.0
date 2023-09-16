@@ -1,4 +1,5 @@
 import CCard from '@/components/CCard';
+import CardCircle from '@/components/circle/CardCircle';
 import { SearchCircle } from '@/components/forms/searchCircle';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
@@ -24,7 +25,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
-import CardCircle from './components/cardCircle';
 
 interface CircleInterface {
   id: string;

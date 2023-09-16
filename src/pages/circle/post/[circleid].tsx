@@ -17,9 +17,9 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import PieModal from '../../../components/circle/modalPie';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
-import PieModal from '../components/modalPie';
 
 const dataSelection: typeOfSelection[] = [
   {

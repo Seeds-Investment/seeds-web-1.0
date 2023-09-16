@@ -69,6 +69,6 @@ export interface IEventHighlightLandingPage {
   id: string;
   name: string;
   image: any;
-  date: string;
-  status: string;
+  title: string;
+  comment: string;
 }

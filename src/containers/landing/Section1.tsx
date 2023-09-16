@@ -1,4 +1,5 @@
 'use client';
+import cartoon from '@/assets/landing-page/cartoon.png';
 import medal from '@/assets/landing-page/medal.png';
 import rectangleLine1 from '@/assets/landing-page/rectangle-line-1.png';
 import rectangleLine2 from '@/assets/landing-page/rectangle-line-2.png';
@@ -26,18 +27,18 @@ export default function Section1(): React.ReactElement {
   }, []);
 
   return (
-    <div className="min-w-full h-auto cursor-default">
+    <div className="min-w-full w-full sm:w-screen h-auto cursor-default">
       <div className="flex flex-col md:flex-row">
         <div className="w-full">
-          <div className="absolute z-40 top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
-            <div className="text-xl text-[#7555DA] font-bold mb-3 md:text-[64px] md:mb-8">
+          <div className="absolute z-40 top-[40px] xl:top-[100px] ml-5 w-1/2 lg:ml-10 lg:mt-10 xl:ml-20 xl:mt-40">
+            <div className="xl:text-[64px] text-[#F9F9F9] font-bold xl:mb-3 text-[36px] md:mb-8">
               {t('landing.section1.text1')}
             </div>
-            <div className="text-xs text-white font-normal mb-3 md:text-2xl md:mb-7">
+            <div className="xl:text-[24px] text-white font-normal mb-3 text-xl md:mb-7">
               {t('landing.section1.text2')}
             </div>
             <Button
-              className="text-xs font-semibold capitalize text-md bg-seeds-purple rounded-full"
+              className="text-xs px-10 font-semibold capitalize text-md bg-seeds-purple rounded-full"
               onClick={() => {
                 void router.push('/auth/register');
               }}
@@ -48,7 +49,7 @@ export default function Section1(): React.ReactElement {
 
           <Image
             alt="img"
-            className="w-full -z-10 mt-5 md:absolute md:w-[550px] md:h-[350px] md:top-[10px] lg:w-[700px] lg:h-[470px] xl:w-[1000px] xl:h-[670px]"
+            className="w-full -z-10 xl:mt-5 mt-0 md:absolute md:w-[550px] md:h-[350px] md:top-[10px] lg:w-[700px] lg:h-[470px] xl:w-[1000px] xl:h-[670px]"
             src={rectangle}
           />
 
@@ -60,7 +61,7 @@ export default function Section1(): React.ReactElement {
 
           <Image
             alt="img"
-            className="absolute w-[71px] -top-5 lg:w-[100px]"
+            className="absolute w-[71px] -top-10 lg:w-[180px] xl:block hidden"
             src={medal}
           />
           <Image
@@ -70,10 +71,15 @@ export default function Section1(): React.ReactElement {
           />
         </div>
 
-        <div className="w-full">
+        <div className="w-[80%] xl:mb-[20vh] mb-[8vh]">
+          <Image
+            className="absolute xl:top-[30vh] xl:right-[20vw] xl:w-[380px] w-[222px] top-[60vh] xl:left-auto sm:left-[5vw] z-20 xl:h-[380px]"
+            alt="img"
+            src={cartoon}
+          />
           <Image
             // className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
-            className="w-full z-10 h-full"
+            className="xl:w-[400px] xl:ml-[10vw] ml-[30vw] z-10 h-full"
             alt="img"
             src={phone}
           />
@@ -82,7 +88,7 @@ export default function Section1(): React.ReactElement {
         <Image
           alt="img"
           src={s1Line2}
-          className="absolute z-20 top-[250px] w-[750px] left-[0px]"
+          className="absolute -z-10 top-[250px] w-[750px] left-[0px]"
         />
 
         <Image

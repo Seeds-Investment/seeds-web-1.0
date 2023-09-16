@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
 import {
   Card,
   CardBody,
@@ -55,15 +56,15 @@ const TransactionHistory = (): JSX.Element => {
             Transaction History
           </h6>
         </div>
-        <div className="flex items-center justify-center rounded-xl md:mx-8 lg:mx-20 xl:mx-[13rem]">
-          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-20 xl:mx-[13rem]">
+        <div className="flex items-center justify-center rounded-xl">
+          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white">
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
+                <Typography color="white" className="text-base font-normal">
                   Circle Balance
                 </Typography>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
-                  100.000
+                <Typography color="white" className="text-2xl font-semibold">
+                  IDR 100.000
                 </Typography>
               </CardBody>
             </Card>
@@ -72,7 +73,7 @@ const TransactionHistory = (): JSX.Element => {
                 className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
                 indicatorProps={{
                   className:
-                    'bg-transparent border-b-2 border-gray-900 shadow-none rounded-none'
+                    'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
                 }}
               >
                 {data.map(({ label, value }) => (
@@ -82,16 +83,43 @@ const TransactionHistory = (): JSX.Element => {
                     onClick={() => {
                       setActiveTab(value);
                     }}
-                    className={activeTab === value ? 'text-gray-900' : ''}
+                    className={`${activeTab === value ? 'text-[#3AC4A0]' : ''}`}
                   >
-                    {label}
+                    <Typography className="text-base font-medium">
+                      {label}
+                    </Typography>
                   </Tab>
                 ))}
               </TabsHeader>
               <TabsBody>
                 {data.map(({ value, desc }) => (
                   <TabPanel key={value} value={value}>
-                    {desc}
+                    <Card className="flex flex-row w-full p-4 rounded-none bg-[#F9F9F9]">
+                      <div className="w-1/2 flex flex-row items-center justify-start">
+                        <div>
+                          <ArrowUpCircleIcon className="w-7 h-7 text-[#27A590] mr-2" />
+                        </div>
+                        <div>
+                          <Typography className="text-sm text-left font-semibold text-[#262626]">
+                            Pembayaran Content
+                          </Typography>
+                          <Typography className="text-xs text-left font-normal text-[#7C7C7C]">
+                            IDR 100.000
+                          </Typography>
+                          <Typography className="text-[12px] text-left italic text-[#BDBDBD]">
+                            ID:34567892
+                          </Typography>
+                        </div>
+                      </div>
+                      <div className="w-1/2 items-center justify-center">
+                        <Typography className="text-xs text-end font-semibold mb-2 text-[#4DA81C]">
+                          Success
+                        </Typography>
+                        <Typography className="text-xs text-end text-[#7C7C7C]">
+                          09/10/2019, 19:05:50 WIB
+                        </Typography>
+                      </div>
+                    </Card>
                   </TabPanel>
                 ))}
               </TabsBody>

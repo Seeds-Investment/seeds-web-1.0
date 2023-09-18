@@ -846,7 +846,7 @@ export default {
     }
   },
   articleList: {
-    text1: 'News List',
+    text1: 'Latest Article',
     text2: 'Find more news you might like.',
     text3: 'Sort by',
     text4: 'Search'

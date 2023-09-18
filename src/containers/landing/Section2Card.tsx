@@ -27,7 +27,9 @@ export default function Section2Card({
         </div>
 
         {/* Review Text */}
-        <p className="mt-4 text-gray-700">{data.comment}</p>
+        <p className="mt-4 text-gray-700">
+          {data.comment.substring(0, 200)}.....
+        </p>
 
         {/* Star Ratings */}
         <div className="flex items-center justify-between mt-4">

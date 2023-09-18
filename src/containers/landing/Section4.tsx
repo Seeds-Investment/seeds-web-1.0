@@ -38,39 +38,81 @@ export default function Section4(): React.ReactElement {
         >
           <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[38vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
           <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[143px] xl:w-[345px] h-[205px] xl:h-[494px] absolute z-10 xl:left-[40vw] left-[32vw] xl:top-auto top-10">
-            <img
-              src="/assets/video/testimoni-1.png"
-              alt=""
-              className="xl:rounded-[32px] rounded-[4px] h-full w-full"
-            />
+            <iframe
+              width="100%"
+              height="500"
+              src="https://www.youtube.com/embed/70nsXsFUr70?si=ZnDhTBL_cM-gqsxF"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto py-2 xl:block rounded-[40px] hidden"
+            ></iframe>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/70nsXsFUr70?si=ZnDhTBL_cM-gqsxF"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto rounded-xl xl:hidden block"
+            ></iframe>
             <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
               <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
                 Alnia
               </h1>
+              <span className="text-sm text-white xl:block hidden">
+                Edupreneur Telkom
+              </span>
             </div>
           </div>
           <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 xl:left-[10vw] left-[5vw]">
-            <img
-              src="/assets/video/testimoni-2.png"
-              alt=""
-              className="xl:rounded-[32px] rounded-[4px] h-full w-full"
-            />
+            <iframe
+              width="100%"
+              height="500"
+              src="https://www.youtube.com/embed/kMpVnarl424?si=PvzrUd9bsHmKHzZp"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto py-2 xl:block rounded-[40px] hidden"
+            ></iframe>
+            <iframe
+              width="100%"
+              height="120"
+              src="https://www.youtube.com/embed/kMpVnarl424?si=PvzrUd9bsHmKHzZp"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto xl:hidden block rounded-lg"
+            ></iframe>
             <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
               <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
                 Adika Satya Graha
               </h1>
+              <span className="text-sm text-white xl:block hidden">
+                Edupreneur Telkom
+              </span>
             </div>
           </div>
           <div className="rounded-[32px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 left-[75vw] xl:left-[70vw]">
-            <img
-              src="/assets/video/testimoni-3.png"
-              alt=""
-              className="xl:rounded-[32px] rounded-[4px] h-full w-full relative"
-            />
+            <iframe
+              width="100%"
+              height="500"
+              src="https://www.youtube.com/embed/B6ibCjl1XX8?si=7VRoHefcbF98P0Ls"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto py-2 xl:block rounded-[40px] hidden"
+            ></iframe>
+            <iframe
+              width="100%"
+              height="120"
+              src="https://www.youtube.com/embed/B6ibCjl1XX8?si=7VRoHefcbF98P0Ls"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-auto xl:hidden block rounded-lg"
+            ></iframe>
             <div className="absolute bottom-0 rounded-b-[32px] pl-3 xl:pl-5 h-8 xl:h-16 w-full bg-gradient-to-b from-gray-700/40 to-white/25">
               <h1 className="xl:text-2xl text-[10px] font-semibold text-[#FFFFFF]">
                 Arian Akbar
               </h1>
+              <span className="text-sm text-white xl:block hidden">
+                Edupreneur Telkom
+              </span>
             </div>
           </div>
           <div className="w-full h-[217px] bg-gradient-to-bl from-[rgba(79,230,175,1)] to-[rgba(154,118,254,1)] bottom-[200px] inset-x-[0] absolute z-0 mx-auto xl:block hidden" />

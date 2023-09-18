@@ -773,6 +773,14 @@ export default {
       }
     }
   },
+
+  articleList: {
+    text1: 'Artikel Terbaru',
+    text2: 'Find more news you might like.',
+    text3: 'Sort by',
+    text4: 'Search'
+  },
+
   validationErrors: {
     required: 'Bidang ini wajib diisi',
     invalidCountryCode: 'Kode Negara tidak valid',

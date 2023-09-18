@@ -6,6 +6,7 @@ import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircle,
+  getCircleBalance,
   getCircleLeaderBoard
 } from '@/repository/circle.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -106,7 +107,9 @@ const settings: Settings = {
 const Circle = (): React.ReactElement => {
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [isLoadingCircle, setIsLoadingCircle] = useState(false);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
+  const [balance, setBalance] = useState(0);
   const [circle, setCircle] = useState<CircleInterface[]>();
   const [filter, setFilter] = useState(initialFilter);
   const [activeTab, setActiveTab] = useState<string>('my_circle');
@@ -208,12 +211,34 @@ const Circle = (): React.ReactElement => {
     }
   };
 
+  const fetchCircleBalance = async (): Promise<void> => {
+    try {
+      setIsLoadingBalance(true);
+      getCircleBalance()
+        .then(res => {
+          setBalance(res.data.balance);
+          setIsLoadingBalance(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingBalance(false);
+        });
+    } catch (error: any) {
+      setIsLoadingBalance(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
   useEffect(() => {
     fetchCircleLeaderBoard()
       .then()
       .catch(() => {});
 
     fetchCircle()
+      .then()
+      .catch(() => {});
+
+    fetchCircleBalance()
       .then()
       .catch(() => {});
   }, [activeTab]);
@@ -225,46 +250,48 @@ const Circle = (): React.ReactElement => {
           <div className="w-full md:w-1/2">
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
+                <Typography color="white" className="text-base font-normal">
                   Circle Balance
                 </Typography>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
-                  100.000
+                <Typography color="white" className="text-2xl font-semibold">
+                  {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
                 </Typography>
               </CardBody>
             </Card>
           </div>
           <div className="w-full md:w-1/2 md:ml-5 h-full">
             <div
-              className="flex flex-row w-full items-center"
+              className="flex justify-between items-center w-full"
               onClick={() => {
                 void router.push(`/circle/withdrawal`);
               }}
             >
-              <Typography className="text-sm font-semibold items-start text-[#7555DA]">
+              <Typography className="text-sm font-semibold text-[#7555DA]">
                 Withdraw Profit
               </Typography>
-              <div className="items-end">
-                <Button className="text-md font-normal bg-white text-black rounded-full shadow-none">
-                  {'>'}
-                </Button>
-              </div>
+              <Button
+                className="text-md font-normal bg-white text-black rounded-full shadow-none"
+                disabled
+              >
+                {'>'}
+              </Button>
             </div>
             <hr />
             <div
-              className="flex flex-row items-center"
+              className="flex justify-between items-center w-full"
               onClick={() => {
                 void router.push(`/circle/transaction-history`);
               }}
             >
-              <Typography className="text-sm font-semibold items-start text-[#7555DA]">
-                Transaction History
+              <Typography className="text-sm font-semibold text-[#7555DA]">
+                Transation History
               </Typography>
-              <div className="items-end">
-                <Button className="text-md font-normal bg-white text-black rounded-full shadow-none">
-                  {'>'}
-                </Button>
-              </div>
+              <Button
+                className="text-md font-normal bg-white text-black rounded-full shadow-none"
+                disabled
+              >
+                {'>'}
+              </Button>
             </div>
             <hr />
           </div>

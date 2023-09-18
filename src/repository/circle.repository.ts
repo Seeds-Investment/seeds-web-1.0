@@ -142,3 +142,78 @@ export const leaveCircle = async (circleId: string): Promise<any> => {
     }
   });
 };
+
+export const getCircleBalance = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await circleService.get(`/balances`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getCircleIncome = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.get(`/incomes`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getCircleTransactionIn = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.get(`/transaction/in`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getCircleTransactionOut = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await circleService.get(`/transaction/out`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

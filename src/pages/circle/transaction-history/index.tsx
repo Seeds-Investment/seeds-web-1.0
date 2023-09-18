@@ -1,8 +1,13 @@
 import CCard from '@/components/CCard';
+import CardTransaction from '@/components/circle/CardTransaction';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
+import {
+  getCircleBalance,
+  getCircleTransactionIn,
+  getCircleTransactionOut
+} from '@/repository/circle.repository';
 import {
   Card,
   CardBody,
@@ -13,26 +18,117 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const initialFilterIncome = {
+  page: 1,
+  limit: 10
+};
+
+const initialFilterOutcome = {
+  page: 1,
+  limit: 10,
+  status: ''
+};
+
+interface Transaction {
+  id: string;
+  circle_id: string;
+  title: string;
+  status: string;
+  amount: number;
+  timestamp: string;
+}
+
+const dropdownValue = [
+  { label: 'Pending', value: 'PENDING' },
+  { label: 'Fail', value: 'FAIL' },
+  { label: 'Reject', value: 'REJECT' },
+  { label: 'Success', value: 'SUCCESS' }
+];
 
 const TransactionHistory = (): JSX.Element => {
   const width = useWindowInnerWidth();
   const [activeTab, setActiveTab] = useState('income');
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [isLoadingTransaction, setIsLoadingTransaction] = useState(false);
+  const [filterIncome] = useState(initialFilterIncome);
+  const [filterOutcome] = useState(initialFilterOutcome);
+  const [balance, setBalance] = useState(0);
+  const [transactionIn, setTransactionIn] = useState<Transaction[]>();
+  const [transactionOut, setTransactionOut] = useState<Transaction[]>();
   const data = [
-    {
-      label: 'Income',
-      value: 'income',
-      desc: `It really matters and then like it really doesn't matter.
-            What matters is the people who are sparked by it. And the people 
-            who are like offended by it, it doesn't matter.`
-    },
-    {
-      label: 'Outcome',
-      value: 'outcome',
-      desc: `Because it's about motivating the doers. Because I'm here
-            to follow my dreams and inspire other people to follow their dreams, too.`
-    }
+    { label: 'Income', value: 'income' },
+    { label: 'Outcome', value: 'outcome' }
   ];
+
+  const fetchCircleBalance = async (): Promise<void> => {
+    try {
+      setIsLoadingBalance(true);
+      getCircleBalance()
+        .then(res => {
+          setBalance(res.data.balance);
+          setIsLoadingBalance(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingBalance(false);
+        });
+    } catch (error: any) {
+      setIsLoadingBalance(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
+  const fetchCircleTransactionIn = async (): Promise<void> => {
+    try {
+      setIsLoadingTransaction(true);
+      getCircleTransactionIn(filterIncome)
+        .then(res => {
+          setTransactionIn(res.data);
+          setIsLoadingTransaction(false);
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response.status === 404) {
+            setTransactionIn([]);
+          }
+          setIsLoadingTransaction(false);
+        });
+    } catch (error: any) {
+      setIsLoadingTransaction(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
+  const fetchCircleTransactionOut = async (): Promise<void> => {
+    try {
+      setIsLoadingTransaction(true);
+      getCircleTransactionOut(filterOutcome)
+        .then(res => {
+          setTransactionOut(res.data);
+          setIsLoadingTransaction(false);
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response.status === 404) {
+            setTransactionOut([]);
+          }
+          setIsLoadingTransaction(false);
+        });
+    } catch (error: any) {
+      setIsLoadingTransaction(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    void fetchCircleBalance();
+    void fetchCircleTransactionIn();
+    void fetchCircleTransactionOut();
+  }, []);
+
+  console.log(transactionIn);
 
   return (
     <PageGradient
@@ -64,7 +160,7 @@ const TransactionHistory = (): JSX.Element => {
                   Circle Balance
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
-                  IDR 100.000
+                  {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
                 </Typography>
               </CardBody>
             </Card>
@@ -92,34 +188,65 @@ const TransactionHistory = (): JSX.Element => {
                 ))}
               </TabsHeader>
               <TabsBody>
-                {data.map(({ value, desc }) => (
+                {data.map(({ value }) => (
                   <TabPanel key={value} value={value}>
-                    <Card className="flex flex-row w-full p-4 rounded-none bg-[#F9F9F9]">
-                      <div className="w-1/2 flex flex-row items-center justify-start">
-                        <div>
-                          <ArrowUpCircleIcon className="w-7 h-7 text-[#27A590] mr-2" />
-                        </div>
-                        <div>
-                          <Typography className="text-sm text-left font-semibold text-[#262626]">
-                            Pembayaran Content
-                          </Typography>
-                          <Typography className="text-xs text-left font-normal text-[#7C7C7C]">
-                            IDR 100.000
-                          </Typography>
-                          <Typography className="text-[12px] text-left italic text-[#BDBDBD]">
-                            ID:34567892
-                          </Typography>
-                        </div>
-                      </div>
-                      <div className="w-1/2 items-center justify-center">
-                        <Typography className="text-xs text-end font-semibold mb-2 text-[#4DA81C]">
-                          Success
-                        </Typography>
-                        <Typography className="text-xs text-end text-[#7C7C7C]">
-                          09/10/2019, 19:05:50 WIB
-                        </Typography>
-                      </div>
-                    </Card>
+                    {value === 'income' ? (
+                      <>
+                        {!isLoadingTransaction ? (
+                          transactionIn?.length !== 0 ? (
+                            transactionIn?.map((data, idx) => (
+                              <CardTransaction data={data} key={idx} />
+                            ))
+                          ) : (
+                            <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                              <Typography className="text-sm font-semibold text-[#262626]">
+                                Data Not Found
+                              </Typography>
+                            </div>
+                          )
+                        ) : (
+                          <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                            <Typography className="text-sm font-semibold text-[#262626]">
+                              Loading...
+                            </Typography>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {!isLoadingTransaction ? (
+                          transactionOut?.length !== 0 ? (
+                            transactionOut?.map((data, idx) => (
+                              <>
+                                <div className="ml-auto mt-3 md:w-1/4">
+                                  <label htmlFor="sort_by">Sort by:</label>
+                                  <select name="sort_by" id="sort_by">
+                                    {dropdownValue?.map((data, idx) => (
+                                      <option key={idx} value={data.value}>
+                                        {data.label}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <CardTransaction data={data} key={idx} />
+                              </>
+                            ))
+                          ) : (
+                            <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                              <Typography className="text-sm font-semibold text-[#262626]">
+                                Data Not Found
+                              </Typography>
+                            </div>
+                          )
+                        ) : (
+                          <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                            <Typography className="text-sm font-semibold text-[#262626]">
+                              Loading...
+                            </Typography>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </TabPanel>
                 ))}
               </TabsBody>

@@ -1,18 +1,18 @@
+import bg from '@/assets/landing-page/bg-discover.png';
+import faq from '@/assets/landing-page/faq.png';
 import CarouselNewsDesktop from '@/components/carousel/CarouselNewsDesktop';
 import CarouselNewsMobile from '@/components/carousel/CarouselNewsMobile';
 import {
   Accordion,
   AccordionBody,
-  AccordionHeader,
-  Button
+  AccordionHeader
 } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
-  const router = useRouter();
   const [open, setOpen] = useState(1);
 
   const handleOpen = (value: number): void => {
@@ -34,6 +34,12 @@ export default function Section5(): React.ReactElement {
             <div className="bg-white bg-opacity-40 xl:p-4 relative">
               {/* Carousel container with overflow hidden */}
               <section className="xl:block hidden">
+                <Image
+                  src={bg}
+                  alt="bg"
+                  width={1200}
+                  className="absolute -top-4 left-8"
+                />
                 <CarouselNewsDesktop />
               </section>
               <section className="xl:hidden block">
@@ -54,14 +60,6 @@ export default function Section5(): React.ReactElement {
           <p className="text-2xl font-normal text-[#262626] text-center px-4 mt-5">
             {t('landing.section6.text3')}
           </p>
-          <Button
-            className="text-xs px-10 font-semibold mx-auto capitalize text-md w-[350px] bg-seeds-purple rounded-full mt-10"
-            onClick={() => {
-              void router.push('/auth/register');
-            }}
-          >
-            Partnership Program
-          </Button>
           <div>
             <img
               src="/assets/images/communities.png"
@@ -77,6 +75,11 @@ export default function Section5(): React.ReactElement {
         </div>
       </div>
       <div className="mt-20">
+        <Image
+          src={faq}
+          alt="faq"
+          className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
+        />
         <div className="flex flex-col w-full justify-center text-center">
           <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
             {t('landing.section7.text1')}

@@ -53,7 +53,7 @@ export default function Section2(): React.ReactElement {
           />
           <Image
             alt="img"
-            className="absolute w-[30%] -translate-y-[6rem] translate-x-[1rem]
+            className="absolute w-[30%] -translate-y-[6rem]  translate-x-[1rem]
                 2xl:w-[15%] 2xl:translate-y-[6rem] 2xl:translate-x-[35rem]
                 lg:w-[15%] lg:-translate-y-[4rem] lg:translate-x-[30rem]
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
@@ -67,7 +67,7 @@ export default function Section2(): React.ReactElement {
             width !== undefined && width >= 1690 ? '2xl:mt-2' : ''
           }`}
         >
-          <div className="text-md text-center font-semibold tracking-wider mb-1 text-[#262626] md:font-bold md:text-3xl lg:text-6xl lg:mb-5 xl:text-2xl xl:font-normal">
+          <div className="text-md text-center font-semibold tracking-wider mb-1 text-[#262626] md:font-bold md:text-3xl lg:text-6xl lg:mb-5 xl:text-2xl xl:font-normal xl:w-[60%]">
             {t('landing.section2.text2')}
           </div>
 

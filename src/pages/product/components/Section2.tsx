@@ -9,6 +9,7 @@ import {
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import CardAsset from './CardAsset';
+import CardCircle from './CardCircle';
 
 const customGradient = (
   <>
@@ -36,7 +37,7 @@ export default function Section2(): React.ReactElement {
     {
       label: 'Top Asset',
       value: 'asset',
-      desc: 'hehehe'
+      desc: 'Top Asset'
     }
   ];
 
@@ -48,12 +49,16 @@ export default function Section2(): React.ReactElement {
       <Typography className="text-3xl font-semibold mb-5 text-[#222222]">
         Explore
       </Typography>
+      <Typography className="text-base font-normal text-[#7C7C7C] mb-10">
+        Explore our list of communities, find the ones that match with your
+        interest, or create one.
+      </Typography>
       <Tabs value={activeTab}>
         <TabsHeader
-          className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+          className="rounded-none border-none bg-transparent p-0"
           indicatorProps={{
             className:
-              'bg-transparent border-b-2 border-gray-900 shadow-none rounded-none'
+              'bg-transparent border-b-4 border-[#3AC4A0] shadow-none rounded-none'
           }}
         >
           {data.map(({ label, value }) => (
@@ -63,7 +68,11 @@ export default function Section2(): React.ReactElement {
               onClick={() => {
                 setActiveTab(value);
               }}
-              className={activeTab === value ? 'text-xl font-normal' : ''}
+              className={
+                activeTab === value
+                  ? 'text-sm font-normal text-[#262626]'
+                  : 'text-sm font-normal text-[#BDBDBD]'
+              }
             >
               {label}
             </Tab>
@@ -71,8 +80,15 @@ export default function Section2(): React.ReactElement {
         </TabsHeader>
         <TabsBody>
           {data.map(({ value, desc }) => (
-            <TabPanel key={value} value={value}>
-              {value === 'asset' ? <CardAsset /> : <p>{desc}</p>}
+            <TabPanel
+              className={` ${
+                activeTab === 'circle' ? 'xl:grid xl:grid-cols-4 xl:gap-4' : ''
+              }`}
+              key={value}
+              value={value}
+            >
+              {value === 'asset' ? <CardAsset /> : ''}
+              {value === 'circle' ? <CardCircle /> : ''}
             </TabPanel>
           ))}
         </TabsBody>

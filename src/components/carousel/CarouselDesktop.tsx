@@ -96,6 +96,16 @@ const CarouselDesktop: React.FC = () => {
         height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={() => {
+          handleItemClick('https://gplfantasy.app.link/SeedsGB');
+        }}
+      />
+      <Image
+        src={`/assets/carousel-8.jpeg`}
+        alt="image 1"
+        width={1443}
+        height={937}
+        className="h-full w-full object-cover cursor-pointer"
+        onClick={() => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
       />

@@ -2,7 +2,7 @@
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
 
-const numberMobile = ['1', '2', '3', '4', '5', '6'];
+const numberMobile = ['1', '2', '3', '4', '5', '6', '7'];
 
 const CarouselMobile: React.FC = () => {
   return (

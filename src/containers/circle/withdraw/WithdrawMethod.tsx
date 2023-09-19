@@ -12,22 +12,58 @@ import {
   Typography
 } from '@material-tailwind/react';
 
+interface FormRequest {
+  method: string;
+  account_name: string;
+  account_number: string;
+  amount: number;
+  pin: string[];
+}
+
 interface props {
   changeStep: any;
   isLoadingBalance: boolean;
   balance: number;
+  changeValueMethod: any;
+  formRequest: FormRequest;
+  changeValueAccountName: any;
+  changeValue: any;
 }
 
 const WithdrawMethod: React.FC<props> = ({
   changeStep,
   balance,
-  isLoadingBalance
+  isLoadingBalance,
+  formRequest,
+  changeValueMethod,
+  changeValueAccountName,
+  changeValue
 }) => {
   const width = useWindowInnerWidth();
 
   const placeholderMethod = (): string => {
-    return 'Select your withdraw method';
+    if (formRequest.method === 'BANK') {
+      return 'BANK';
+    } else if (formRequest.method === 'E-WALLET') {
+      return 'E-WALLET';
+    } else {
+      return 'Select your withdraw method';
+    }
   };
+
+  const optionsEWallet = [
+    { label: 'GOPAY', value: 'GOPAY' },
+    { label: 'SHOPEEPAY', value: 'SHOPEEPAY' },
+    { label: 'OVO', value: 'OVO' },
+    { label: 'DANA', value: 'DANA' }
+  ];
+
+  const optionsBank = [
+    { label: 'BANK BRI', value: 'BANK BRI' },
+    { label: 'BANK BCA', value: 'BANK BCA' },
+    { label: 'BANK BNI', value: 'BANK BNI' },
+    { label: 'BANK MANDIRI', value: 'BANK MANDIRI' }
+  ];
 
   return (
     <PageGradient
@@ -62,12 +98,17 @@ const WithdrawMethod: React.FC<props> = ({
               <label className="font-semibold text-base text-[#262626]">
                 Withdraw Method
               </label>
-              <Select variant="standard" selected={placeholderMethod}>
-                <Option>
+              <Select
+                variant="standard"
+                selected={placeholderMethod}
+                onChange={changeValueMethod}
+                name="method"
+              >
+                <Option value="BANK">
                   <Typography>Bank Transfer</Typography>
                   <Typography>Transfer via Banks</Typography>
                 </Option>
-                <Option>
+                <Option value="E-WALLET">
                   <Typography>E-Wallet</Typography>
                   <Typography>Transfer via E-Wallets</Typography>
                 </Option>
@@ -77,15 +118,23 @@ const WithdrawMethod: React.FC<props> = ({
               <label className="font-semibold text-base text-[#262626]">
                 Bank Account
               </label>
-              <Input
-                variant="static"
-                color="green"
-                type="number"
-                name="name"
-                // onChange={change}
-                // value={formRequest?.name}
-                placeholder="IDR 0"
-              />
+              <Select
+                variant="standard"
+                onChange={changeValueAccountName}
+                name="account_name"
+              >
+                {formRequest.method === 'BANK'
+                  ? optionsBank.map((data, idx) => (
+                      <Option value={data.value} key={idx}>
+                        {data.label}
+                      </Option>
+                    ))
+                  : optionsEWallet.map((data, idx) => (
+                      <Option value={data.value} key={idx}>
+                        {data.label}
+                      </Option>
+                    ))}
+              </Select>
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
@@ -95,10 +144,10 @@ const WithdrawMethod: React.FC<props> = ({
                 variant="static"
                 color="green"
                 type="number"
-                name="name"
-                // onChange={change}
-                // value={formRequest?.name}
-                placeholder="IDR 0"
+                name="account_number"
+                onChange={changeValue}
+                value={formRequest.account_number}
+                placeholder="Input Bank Account Number"
               />
             </div>
             <div className="mb-8">
@@ -108,18 +157,18 @@ const WithdrawMethod: React.FC<props> = ({
               <Input
                 variant="static"
                 color="green"
-                type="number"
-                name="name"
+                type="text"
+                name="account_name"
                 // onChange={change}
-                // value={formRequest?.name}
-                placeholder="IDR 0"
+                // value={formRequest.account_name}
+                placeholder="Your Bank Account Name"
               />
             </div>
 
             <div className="w-full flex items-center justify-center">
               <Button
                 className="w-1/2 bg-seeds-button-green mt-5 rounded-full capitalize"
-                onClick={() => changeStep('method')}
+                onClick={() => changeStep('pin')}
               >
                 Continue
               </Button>

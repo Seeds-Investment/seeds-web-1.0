@@ -15,10 +15,20 @@ import {
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 
+interface FormRequest {
+  method: string;
+  account_name: string;
+  account_number: string;
+  amount: number;
+  pin: string[];
+}
+
 interface props {
   changeStep: any;
   isLoadingBalance: boolean;
   balance: number;
+  changeValue: any;
+  formRequest: FormRequest;
 }
 
 interface Income {
@@ -37,7 +47,9 @@ const initialFilter = {
 const WithdrawCircle: React.FC<props> = ({
   changeStep,
   balance,
-  isLoadingBalance
+  isLoadingBalance,
+  formRequest,
+  changeValue
 }) => {
   const width = useWindowInnerWidth();
   const [isLoading, setIsLoading] = useState(false);
@@ -117,9 +129,9 @@ const WithdrawCircle: React.FC<props> = ({
                 variant="static"
                 color="green"
                 type="number"
-                name="name"
-                // onChange={change}
-                // value={formRequest?.name}
+                name="amount"
+                onChange={changeValue}
+                value={formRequest.amount}
                 placeholder="IDR 0"
               />
               <hr />
@@ -142,7 +154,7 @@ const WithdrawCircle: React.FC<props> = ({
               />
             </form>
 
-            <div className="overflow-x-auto h-56">
+            <div className="overflow-x-auto h-80">
               {!isLoading ? (
                 incomes?.length !== 0 ? (
                   incomes?.map((data, idx) => (

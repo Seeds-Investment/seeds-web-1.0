@@ -217,3 +217,18 @@ export const getCircleTransactionOut = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const withdrawCircle = async (formRequest: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await circleService.post(`/withdraws`, formRequest, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

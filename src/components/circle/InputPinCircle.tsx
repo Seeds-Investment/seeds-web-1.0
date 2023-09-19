@@ -24,9 +24,16 @@ interface FormRequest {
 interface props {
   formRequest: FormRequest;
   enterPinHandler: any;
+  onCancel: any;
+  deletePinHandler: any;
 }
 
-const InputPinCircle: React.FC<props> = ({ formRequest, enterPinHandler }) => {
+const InputPinCircle: React.FC<props> = ({
+  formRequest,
+  enterPinHandler,
+  onCancel,
+  deletePinHandler
+}) => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
 
@@ -56,7 +63,7 @@ const InputPinCircle: React.FC<props> = ({ formRequest, enterPinHandler }) => {
       <div className="max-w-max mx-auto mt-6 mb-36">
         <div className="relative flex items-center sm:mb-8 mb-10">
           <button
-            // onClick={onCancel}
+            onClick={() => onCancel('method')}
             className="absolute left-0 w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300"
           >
             <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
@@ -124,7 +131,10 @@ const InputPinCircle: React.FC<props> = ({ formRequest, enterPinHandler }) => {
                 className={`${buttonClasses} ${
                   number === '' ? 'cursor-pointer active:bg-gray-300' : ''
                 }`}
-                onClick={() => enterPinHandler(number)}
+                onClick={() =>
+                  number === '' ? deletePinHandler() : enterPinHandler(number)
+                }
+                // onClick={() => enterPinHandler(number)}
                 disabled={number === '' ? false : isDisabled}
               >
                 {number === '' ? (

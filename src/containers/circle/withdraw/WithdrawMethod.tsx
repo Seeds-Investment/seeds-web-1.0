@@ -51,6 +51,14 @@ const WithdrawMethod: React.FC<props> = ({
     }
   };
 
+  const placeholderBankAccount = (): string => {
+    if (formRequest.account_name === '') {
+      return 'Select your bank account';
+    }
+
+    return formRequest.account_name;
+  };
+
   const optionsEWallet = [
     { label: 'GOPAY', value: 'GOPAY' },
     { label: 'SHOPEEPAY', value: 'SHOPEEPAY' },
@@ -120,6 +128,7 @@ const WithdrawMethod: React.FC<props> = ({
               </label>
               <Select
                 variant="standard"
+                selected={placeholderBankAccount}
                 onChange={changeValueAccountName}
                 name="account_name"
               >

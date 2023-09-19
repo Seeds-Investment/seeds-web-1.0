@@ -1,28 +1,32 @@
 import InputPinCircle from '@/components/circle/InputPinCircle';
 import WithdrawCircle from '@/containers/circle/withdraw/WithdrawCircle';
 import WithdrawMethod from '@/containers/circle/withdraw/WithdrawMethod';
-import { getCircleBalance } from '@/repository/circle.repository';
+import {
+  getCircleBalance,
+  withdrawCircle
+} from '@/repository/circle.repository';
 import { useEffect, useState } from 'react';
 
 interface FormRequest {
   method: string;
   account_name: string;
   account_number: string;
-  amount: number;
-  pin: string[];
+  amount: any;
+  pin: any;
 }
 
 const initialFormRequest = {
   method: '',
   account_name: '',
   account_number: '',
-  amount: 0,
+  amount: '',
   pin: []
 };
 
 const Withdrawal = (): JSX.Element => {
   const [step, setStep] = useState('');
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [balance, setBalance] = useState(0);
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
@@ -30,6 +34,8 @@ const Withdrawal = (): JSX.Element => {
   const handleChangeStep = (value: string): void => {
     setStep(value);
   };
+
+  console.log(isLoadingSubmit);
 
   const handleChangeValue = (event: any): void => {
     const target = event.target;
@@ -81,8 +87,41 @@ const Withdrawal = (): JSX.Element => {
     }));
   };
 
+  const handleRemovePin = (): void => {
+    setFormRequest(prevState => ({
+      ...prevState,
+      pin: prevState.pin.slice(0, formRequest.pin.length - 1)
+    }));
+  };
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      formRequest.pin = formRequest.pin.join('');
+      formRequest.amount = parseInt(formRequest.amount);
+
+      setIsLoadingSubmit(true);
+      withdrawCircle(formRequest)
+        .then(res => {
+          console.log('response post = ', res);
+          // handleChangeStep('success');
+          setIsLoadingSubmit(false);
+        })
+        .catch(err => {
+          setIsLoadingSubmit(false);
+          console.log(err);
+        });
+    } catch (error: any) {
+      setIsLoadingSubmit(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
   useEffect(() => {
     void fetchCircleBalance();
+
+    if (formRequest.pin.length === 6) {
+      void handleSubmit();
+    }
   }, []);
 
   return (
@@ -91,6 +130,8 @@ const Withdrawal = (): JSX.Element => {
         <InputPinCircle
           formRequest={formRequest}
           enterPinHandler={handleValuePin}
+          onCancel={handleChangeStep}
+          deletePinHandler={handleRemovePin}
         />
       ) : step === 'method' ? (
         <WithdrawMethod

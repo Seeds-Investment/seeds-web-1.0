@@ -11,6 +11,7 @@ export default function Document(): React.ReactElement {
           rel="stylesheet"
         ></link>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Seeds</title>
       </Head>
       <body>
         <div id="portal" />

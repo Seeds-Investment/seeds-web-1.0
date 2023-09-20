@@ -26,7 +26,7 @@ export default function Section4(): React.ReactElement {
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col items-center justify-center">
         <div className="flex flex-col w-full items-center px-10 justify-center mb-6 md:mb-8 lg:mb-6 xl:mb-4 sm:mb-20 font-poppins">
-          <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
+          <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl text-center pb-4">
             {t('landing.section4.text1')}
           </span>
           <p className="text-2xl font-normal text-[#262626] mt-5">

@@ -224,8 +224,8 @@ export default {
     achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
-    title: 'Pertanyaan yang Sering Diajukan',
-    subTitle: 'Temukan jawaban atas pertanyaan kamu tentang seeds',
+    title: 'Pertanyaan yang Sering Ditanyakan',
+    subTitle: 'Temukan jawaban atas pertanyaan kamu tentang Seeds',
     faq: {
       title: {
         1: 'Apa itu Seeds?',
@@ -237,8 +237,8 @@ export default {
       desc: {
         1: 'Seeds adalah platform investasi sosial pertama di Indonesia yang memberi pengguna akses ke saham dan mata uang kripto AS (masih banyak lagi yang akan datang!).',
         2: 'Kamu dapat berinvestasi di berbagai saham dan mata uang kripto AS (masih banyak lagi yang akan datang!)',
-        3: 'Aplikasi Seeds dapat di download melalui Google Playstore bagi kamu pengguna Android dan Apple Appstore bagi pengguna iOS. Selain itu, fitur Seeds juga bisa kamu jelajahi melalui website Seed.finance',
-        4: 'Seeds telah resmi beroperasi di Indonesia dengan nama PT. Bibit Investasi Teknologi dan telah terdaftar di Kementerian Komunikasi dan Informatika (KOMINFO).',
+        3: 'Kamu dapat mengunduh aplikasi Seeds melalui Google Playstore untuk pengguna Android dan Apple Appstore untuk pengguna iOS. Selain itu, kamu juga bisa menjelajahi fitur Seeds melalui situs web seeds.finance.',
+        4: 'Seeds telah beroperasi secara resmi di Indonesia dengan nama PT. Technological Investment Seed dan telah terdaftar di Kementerian Komunikasi dan Informatika (KOMINFO).',
         5: 'Kamu dapat menghubungi tim kami melalui kontak email: info@seeds.finance'
       }
     },

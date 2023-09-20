@@ -851,7 +851,6 @@ export default {
     text3: 'Sort by',
     text4: 'Search'
   },
-
   validationErrors: {
     required: 'This field is required',
     invalidCountryCode: 'Invalid Country Code',

@@ -5,24 +5,32 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import Divider from './components/Divider';
 import InlineText from './components/InlineText';
-
 interface VirtualAccountGuideProps {
   payment: any;
+  dataPost: any;
+  handlePay: (
+    type: string,
+    paymentGateway: string,
+    paymentMethod: string,
+    totalAmount: number,
+    phoneNumber?: string | undefined
+  ) => Promise<void>;
 }
 
 const VirtualAccountGuide = ({
-  payment
+  payment,
+  dataPost,
+  handlePay
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
   const userName = 'Jeri';
-  const admissionFee = 10000;
-  const adminFee = 0;
+  const admissionFee = dataPost?.premium_fee as number;
+  const adminFee = dataPost?.admin_fee as number;
   const totalFee = admissionFee + adminFee;
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const bankName = payment?.payment_method?.split('_')[0];
-
   return (
     <div className="max-h-[70vh]">
       <div className="flex items-center">
@@ -111,7 +119,18 @@ const VirtualAccountGuide = ({
         </a>
         {t(`${translationsId}.step4.2`)}
       </Typography>
-      <SubmitButton>Pay</SubmitButton>
+      <SubmitButton
+        onClick={async () => {
+          await handlePay(
+            payment?.payment_type,
+            payment.payment_gateway,
+            payment?.payment_method,
+            totalFee
+          );
+        }}
+      >
+        Pay
+      </SubmitButton>
       <Divider />
     </div>
   );

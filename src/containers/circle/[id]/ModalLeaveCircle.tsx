@@ -12,6 +12,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   open: any;
@@ -23,6 +24,7 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (): Promise<void> => {
     try {
@@ -60,10 +62,10 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           />
 
           <Typography className="text-base font-semibold mb-1 mt-5 md:lg lg:text-xl text-black">
-            Successfully leaving the Circle
+            {t('circleSetting.leaveCircle.popUp.title')}
           </Typography>
           <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-base lg:text-lg text-[#7C7C7C]">
-            Please join other interesting circles
+            {t('circleSetting.leaveCircle.popUp.subtitle')}
           </Typography>
 
           <Button
@@ -89,10 +91,10 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
 
           <DialogBody className="p-4">
             <Typography className="text-base font-semibold text-black text-center">
-              Leave
+              {t('circleSetting.leaveCircle.title')}
             </Typography>
             <Typography className="text-sm font-normal text-center mt-2 mx-3 lg:mx-10">
-              Are you sure want to leave this circle?
+              {t('circleSetting.leaveCircle.subtitle')}
             </Typography>
           </DialogBody>
 
@@ -103,14 +105,16 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
               variant="outlined"
               className="rounded-full text-sm font-semibold mr-3"
             >
-              Cancel
+              {t('circleSetting.leaveCircle.button1')}
             </Button>
 
             <Button
               onClick={handleSubmit}
               className="rounded-full text-sm font-semibold bg-[#DD2525]"
             >
-              {isLoading ? 'Loading...' : 'Leave Circle'}
+              {isLoading
+                ? 'Loading...'
+                : `${t('circleSetting.leaveCircle.button2')}`}
             </Button>
           </DialogFooter>
         </>

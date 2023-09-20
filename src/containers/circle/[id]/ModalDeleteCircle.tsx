@@ -12,6 +12,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   open: any;
@@ -23,6 +24,7 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (): Promise<void> => {
     try {
@@ -60,10 +62,10 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           />
 
           <Typography className="text-base font-semibold mb-1 mt-5 md:lg lg:text-xl text-black">
-            Circle has been deleted
+            {t('circleSetting.deleteCircle.popUpDeleteCircle.title')}
           </Typography>
           <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-base lg:text-lg text-[#7C7C7C]">
-            Please join other interesting circles
+            {t('circleSetting.deleteCircle.popUpDeleteCircle.subtitle')}
           </Typography>
 
           <Button
@@ -89,11 +91,13 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
 
           <DialogBody className="p-4 sm:p-8">
             <Typography className="text-base font-semibold text-black text-center">
-              Delete
+              {t('circleSetting.deleteCircle.popUpDelete.title')}
             </Typography>
             <Typography className="text-sm font-normal text-center mt-2 mx-3 lg:mx-10">
-              Are you sure you want to delete this circle? If you delete this
-              circle, you will permanently lose all data
+              {t('circleSetting.deleteCircle.popUpDelete.subtitle1')}
+            </Typography>
+            <Typography className="text-sm font-normal text-center mx-3 lg:mx-10">
+              {t('circleSetting.deleteCircle.popUpDelete.subtitle2')}
             </Typography>
           </DialogBody>
 
@@ -104,14 +108,16 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
               variant="outlined"
               className="rounded-full text-sm font-semibold mr-3"
             >
-              Cancel
+              {t('circleSetting.deleteCircle.popUpDelete.button1')}
             </Button>
 
             <Button
               onClick={handleSubmit}
               className="rounded-full text-sm font-semibold bg-[#DD2525]"
             >
-              {isLoading ? 'Loading...' : 'Delete Circle'}
+              {isLoading
+                ? 'Loading...'
+                : `${t('circleSetting.deleteCircle.popUpDelete.button2')}`}
             </Button>
           </DialogFooter>
         </>

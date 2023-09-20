@@ -12,6 +12,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   open: any;
@@ -23,19 +24,20 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
   const [formRequest, setFormRequest] = useState({
     target_circle_id: circleId,
     type_report: ''
   });
 
   const options = [
-    'Spam',
-    'Nudity or sexual Activity',
-    'Hate speech or symbols',
-    'Bullying or harassment',
-    'I do not like it',
-    'Scam or fraud',
-    'Something else'
+    `${t('circleSetting.reportCirlce.option1')}`,
+    `${t('circleSetting.reportCirlce.option2')}`,
+    `${t('circleSetting.reportCirlce.option3')}`,
+    `${t('circleSetting.reportCirlce.option4')}`,
+    `${t('circleSetting.reportCirlce.option5')}`,
+    `${t('circleSetting.reportCirlce.option6')}`,
+    `${t('circleSetting.reportCirlce.option7')}`
   ];
 
   const handleRadioChange = (event: any): void => {
@@ -83,10 +85,10 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           />
 
           <Typography className="text-base font-semibold mb-1 mt-5 md:lg lg:text-xl text-black">
-            Laporan telah diserahkan
+            {t('circleSetting.reportCirlce.popUp.title')}
           </Typography>
           <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-base lg:text-lg text-[#7C7C7C]">
-            Terima kasih telah membantu kami
+            {t('circleSetting.reportCirlce.popUp.subtitle')}
           </Typography>
 
           <Button
@@ -113,14 +115,14 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           <DialogBody>
             <div className="flex flex-col mb-5">
               <Typography className="text-base font-semibold text-center text-black">
-                Report Circle
+                {t('circleSetting.reportCirlce.title')}
               </Typography>
               <Typography className="text-sm font-normal text-center text-[#7C7C7C]">
-                This circle will be reported
+                {t('circleSetting.reportCirlce.subtitle1')}
               </Typography>
             </div>
             <Typography className="text-sm font-semibold text-black text-left">
-              Why are you reporting this circle?
+              {t('circleSetting.reportCirlce.subtitle2')}
             </Typography>
 
             <div className="flex flex-col mt-5 gap-3">

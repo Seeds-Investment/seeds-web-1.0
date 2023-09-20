@@ -133,9 +133,7 @@ const CirclePost = (): JSX.Element => {
 
   const [dataPost, setDataPost]: any = useState([]);
   const [dataRecommend, setDataRecommend]: any = useState([]);
-  const [dataUser, setDataUser]: any = useState();
   const [isJoined, setIsJoined] = useState(false);
-  console.log(dataUser);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
@@ -157,12 +155,12 @@ const CirclePost = (): JSX.Element => {
 
       const { data } = await getStatusCircle({ circleId });
       const { status }: any = data;
-      if (status === false) {
-        setIsJoined(false);
-      } else {
+
+      if (status === 'accepted') {
         setIsJoined(true);
+      } else {
+        setIsJoined(false);
       }
-      setDataUser(data);
     } catch (error: any) {
       console.error('Error fetching Circle Post:', error.message);
     } finally {

@@ -65,7 +65,11 @@ const WalletForm = ({
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label={t(`${translationId}.admissionFeeLabel`)}
+        label={
+          dataPost !== undefined
+            ? 'Circle Membership'
+            : t(`${translationId}.admissionFeeLabel`)
+        }
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />

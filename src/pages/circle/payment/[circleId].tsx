@@ -36,7 +36,7 @@ const CirclePayment: React.FC = () => {
       const { data } = await getStatusCircle({ circleId });
       const { status }: any = data;
       if (status === 'accepted') {
-        router.push(`/circle/post/${dataPost?.id as string}`).catch(error => {
+        router.push(`/circle`).catch(error => {
           console.log(error);
         });
       }

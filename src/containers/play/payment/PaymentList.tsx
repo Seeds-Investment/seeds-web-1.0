@@ -104,6 +104,7 @@ const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
           spot_type: 'Join Circle Premium'
         }
       });
+
       if (response.success === true) {
         await router.push(response.data.Response.payment_url);
       }

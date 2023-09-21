@@ -69,7 +69,11 @@ const VirtualAccountGuide = ({
       </Typography>
       <Divider />
       <InlineText
-        label={t(`${translationsId}.admissionFeeLabel`)}
+        label={
+          dataPost !== undefined
+            ? 'Circle Membership'
+            : t(`${translationsId}.admissionFeeLabel`)
+        }
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />

@@ -777,6 +777,68 @@ export default {
         error: 'Pastikan kamu setuju dengan Syarat dan Ketentuan'
       }
     },
+    typePopUp: {
+      title: 'Tipe Membership',
+      subtitle:
+        'Atur Circle kamu menjadi gratis atau premium untuk akses lebih banyak',
+      option: {
+        free: {
+          title: 'Gratis',
+          subtitle: 'Buat Circle Investasi dengan mudah dan gratis'
+        },
+        premium: {
+          title: 'Premium',
+          subtitle: 'Buat Circle Premium untuk berbagai manfaat'
+        }
+      },
+      button: 'Lanjutkan'
+    },
+    settingMember: {
+      title: 'Pengaturan Anggota',
+      add: 'Tambahkan anggota kamu',
+      subtitle:
+        'Kamu dapat menambahkan anggota dengan mencari nama atau menggunakan tautan nanti.',
+      button: 'Buat Circle'
+    },
+    success: {
+      title: 'Sukses!',
+      subtitle:
+        'Selamat! Circle baru telah berhasil dibuat. Bagikan Circle kamu sekarang!'
+    },
+    empty: {
+      title: 'Maaf',
+      subtitle: 'Data yang kamu cari tidak ada.'
+    },
+    failed: {
+      title: 'Gagal!',
+      subtitle: 'Maaf, pembuatan Circle baru gagal. Silakan coba lagi!'
+    },
+    exist: {
+      title: 'Oops!',
+      subtitle: 'Nama Circle sudah ada, silakan coba dengan nama lain.'
+    },
+    premium: {
+      mainTitle: 'Pengaturan Circle Premium',
+      title: 'Pilihan Circle Premium',
+      subtitle:
+        'Atur circle kamu menjadi membership seumur hidup atau berlangganan.',
+      option: {
+        title1: 'Membership Seumur Hidup',
+        subtitle1:
+          'Anggota hanya perlu membayar satu kali untuk mengakses circle.',
+        title2: 'Berlangganan',
+        subtitle2:
+          'Anggota perlu membayar langganan setiap bulan/3 bulan/6 bulan/12 bulan'
+      },
+      button: 'Selesai'
+    },
+    fee: {
+      title: 'Atur Biaya Membership Circle',
+      title2: 'Atur Biaya Membership',
+      placeholder: 'Biaya membership minimum IDR. 20.000',
+      line: 'atau masukkan secara manual',
+      note: 'Seeds akan langsung mengambil diskon sebesar 20% dari setiap transaksi biaya membership.'
+    },
     withdraw: {
       method: {
         title: 'Metode Penarikan',

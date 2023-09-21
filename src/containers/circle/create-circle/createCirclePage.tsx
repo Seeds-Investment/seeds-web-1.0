@@ -335,10 +335,10 @@ const CreateCirclePage = ({
 
                           <div className="flex w-full ml-5 flex-col gap-0.5">
                             <Typography className="font-semibold text-base text-[#262626]">
-                              Free
+                              {t('circle.typePopUp.option.free.title')}
                             </Typography>
                             <Typography className="font-normal text-sm text-[#7C7C7C]">
-                              Create an Investment Circle easily and for free
+                              {t('circle.typePopUp.option.free.subtitle')}
                             </Typography>
                           </div>
                         </>
@@ -353,10 +353,10 @@ const CreateCirclePage = ({
 
                           <div className="flex w-full ml-5 flex-col gap-0.5">
                             <Typography className="font-semibold text-base text-[#262626]">
-                              Premium
+                              {t('circle.typePopUp.option.premium.title')}
                             </Typography>
                             <Typography className="font-normal text-sm text-[#7C7C7C]">
-                              Create a Premium Circle for various benefits
+                              {t('circle.typePopUp.option.premium.subtitle')}
                             </Typography>
                           </div>
                         </>

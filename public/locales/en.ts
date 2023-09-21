@@ -849,6 +849,69 @@ export default {
         error: 'Make sure you agree with the terms and condition'
       }
     },
+    typePopUp: {
+      title: 'Membership Types',
+      subtitle: 'Set your circle to free or premium for more access',
+      option: {
+        free: {
+          title: 'Free',
+          subtitle: 'Create an Investment Circle easily and for free'
+        },
+        premium: {
+          title: 'Premium',
+          subtitle: 'Create a Premium Circle for various benefits'
+        }
+      },
+      button: 'Continue'
+    },
+    settingMember: {
+      title: 'Setting Member',
+      add: 'Add your members',
+      subtitle:
+        'You can add members by searching for the name or using the share link later.',
+      button: 'Create Circle'
+    },
+    success: {
+      title: 'Success!',
+      subtitle:
+        'Congratulations! The new Circle has been successfully created. Share your Circle Now!'
+    },
+    empty: {
+      title: 'Sorry',
+      subtitle: 'The data you were looking for does not exist'
+    },
+    failed: {
+      title: 'Failed!',
+      subtitle:
+        'Sorry, the new Circle creation has been failed. Please try again!'
+    },
+    exist: {
+      title: 'Oops!',
+      subtitle:
+        'The circle name is already exists, please try with another name.'
+    },
+    premium: {
+      mainTitle: 'Setting Circle Premium',
+      title: 'Premium Circle Choice',
+      subtitle:
+        'Set your circle premium to Lifetime Membership or Subscription.',
+      option: {
+        title1: 'Lifetime Membership',
+        subtitle1:
+          'Member only need to pay one time to have access to the circle.',
+        title2: 'Subscription',
+        subtitle2:
+          'Member need to pay subscription every month/3 month/6month/12 month'
+      },
+      button: 'Done'
+    },
+    fee: {
+      title: 'Set Circle Membership Fee',
+      title2: 'Set Fee Membership',
+      placeholder: 'Minimum membership fee IDR. 20,000',
+      line: 'or input manual',
+      note: 'Seeds will directly take a 20% discount from every membership fee transaction.'
+    },
     withdraw: {
       method: {
         title: 'Withdraw Method',

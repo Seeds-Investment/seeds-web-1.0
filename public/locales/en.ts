@@ -810,6 +810,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     },
+    banner: {
+      title1: 'Withdraw Profit',
+      title2: 'Transcation History',
+      title3: 'Circle Balance'
+    },
     create: {
       title: 'Create Cirlce',
       cover: 'Add Cover',
@@ -842,6 +847,60 @@ export default {
       tnc: {
         label: 'I agree with the Terms and Conditions*',
         error: 'Make sure you agree with the terms and condition'
+      }
+    },
+    withdraw: {
+      method: {
+        title: 'Withdraw Method',
+        input: 'Input Withdrawal Nominal',
+        method: {
+          label: 'Withdraw Method',
+          placeholder: 'Select your withdraw method'
+        },
+        bankRekening: {
+          label: 'Bank Account',
+          placeholder: 'Select your bank account'
+        },
+        numberRekening: {
+          label: 'Account Number',
+          placeholder: 'Input Bank account number'
+        },
+        nameRekening: {
+          label: 'Account Name',
+          placeholder: 'Your Bank account name'
+        },
+        button: 'Continue',
+        popUp: {
+          title1: 'Bank Transfer',
+          title2: 'E-Wallet',
+          subtitle1: 'Transfer via Bank',
+          subtitle2: 'Transfer via E-Wallet'
+        }
+      },
+      pin: {
+        title: 'Enter Your PIN',
+        subtitle: 'Please enter your PIN number correctly',
+        wrong: {
+          title: 'Enter Your PIN',
+          subtitle1: 'Please enter your PIN number correctly',
+          subtitle2: 'Please make sure you have the right PIN and try again.'
+        }
+      },
+      success: {
+        title: 'Successful',
+        subtitle1: 'Your request has been made!',
+        subtitle2: 'The withdrawal request would take one business day.'
+      },
+      history: {
+        title: 'Transaction History',
+        tab1: 'Income',
+        tab2: 'Outcome',
+        sortBy: {
+          option1: 'Success',
+          option2: 'Pending',
+          option3: 'Failed',
+          option4: 'On Progress'
+        }
       }
     }
   },

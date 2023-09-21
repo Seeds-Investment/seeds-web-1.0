@@ -738,6 +738,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     },
+    banner: {
+      title1: 'Tarik Keuntungan',
+      title2: 'Riwayat Transaksi',
+      title3: 'Saldo Circle'
+    },
     create: {
       title: 'Buat Cirlce',
       cover: 'Tambah Cover',
@@ -770,6 +775,60 @@ export default {
       tnc: {
         label: 'Saya setuju dengan Syarat dan Ketentuan*',
         error: 'Pastikan kamu setuju dengan Syarat dan Ketentuan'
+      }
+    },
+    withdraw: {
+      method: {
+        title: 'Metode Penarikan',
+        input: 'Masukan Nominal Penarikan',
+        method: {
+          label: 'Metode Penarikan',
+          placeholder: 'Pilih metode penarikan kamu'
+        },
+        bankRekening: {
+          label: 'Rekening Bank',
+          placeholder: 'Pilih rekening bank kamu'
+        },
+        numberRekening: {
+          label: 'Nomor Rekening',
+          placeholder: 'Masukkan nomor rekening bank kamu'
+        },
+        nameRekening: {
+          label: 'Nama Rekening',
+          placeholder: 'Nama rekening bank kamu'
+        },
+        button: 'Lanjutkan',
+        popUp: {
+          title1: 'Transfer Bank',
+          title2: 'E-Wallet',
+          subtitle1: 'Transfer melalui Bank',
+          subtitle2: 'Transfer melalui E-Wallet'
+        }
+      },
+      pin: {
+        title: 'Masukkan PIN Kamu',
+        subtitle: 'Silakan masukkan nomor PIN kamu dengan benar',
+        wrong: {
+          title: 'Masukkan PIN Kamu',
+          subtitle1: 'Silakan masukkan nomor PIN kamu dengan benar',
+          subtitle2: 'Pastikan kamu memiliki PIN yang benar dan coba lagi.'
+        }
+      },
+      success: {
+        title: 'Berhasil',
+        subtitle1: 'Permintaan kamu telah berhasil diajukan!',
+        subtitle2: 'Permintaan penarikan akan diproses dalam satu hari kerja.'
+      },
+      history: {
+        title: 'Riwayat Transaksi',
+        tab1: 'Pemasukan',
+        tab2: 'Pengeluaran',
+        sortBy: {
+          option1: 'Berhasil',
+          option2: 'Menunggu',
+          option3: 'Gagal',
+          option4: 'Dalam Proses'
+        }
       }
     }
   },

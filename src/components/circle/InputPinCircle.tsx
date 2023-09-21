@@ -1,4 +1,5 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon, DeleteIcon, Logo } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
@@ -39,11 +40,8 @@ const InputPinCircle: React.FC<props> = ({
 
   const pin = formRequest.pin;
 
-  const defaultTitle = t('inputPin.title.enterPin');
   const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4`;
-
   const isDisabled = pin.length === 6;
-
   const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
     !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
   }`;
@@ -73,9 +71,13 @@ const InputPinCircle: React.FC<props> = ({
           </span>
         </div>
 
-        <h2 className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
-          {defaultTitle}
-        </h2>
+        <Typography className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
+          {t('inputPin.title.enterPin')}
+        </Typography>
+
+        <Typography className="mb-5 text-base font-poppins font-normal text-center text-neutral-medium">
+          {t('circle.withdraw.pin.subtitle')}
+        </Typography>
 
         <div
           className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5`}

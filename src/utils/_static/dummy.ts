@@ -1,13 +1,16 @@
 import connectCircle from '@/assets/landing-page/connectCircle.png';
-import event1 from '@/assets/landing-page/event11.svg';
-import event2 from '@/assets/landing-page/event12.svg';
+import aisec from '@/assets/landing-page/PLAY-WEB-AIESEC-USU-WEEK-2.png';
+import telkom from '@/assets/landing-page/PLAY-WEB-HIMA-MBTI-TELKOM.png';
+import johnny from '@/assets/landing-page/PLAY-WEB-JOHNNY-WIDODO.png';
+import firda from '@/assets/landing-page/PLAY-WEB-MAIN-BARENG-FIRDA.png';
 import card1 from '@/assets/landing-page/s2-card-1.png';
 import card2 from '@/assets/landing-page/s2-card-2.png';
 import card3 from '@/assets/landing-page/s2-card-3.png';
-import s5photo from '@/assets/landing-page/s5-card-image.png';
+import testi1 from '@/assets/landing-page/testi1.jpg';
+import testi2 from '@/assets/landing-page/testi2.jpg';
+import testi3 from '@/assets/landing-page/testi3.jpg';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
-
 import type {
   ICircleLandingPage,
   ICompetitionItem,
@@ -50,47 +53,51 @@ export const latestNews: ILastNews[] = [
 
 export const competitionCardList: ICompetitionItem[] = [
   {
-    photo: s5photo,
-    gift: 10000000,
-    title: 'Anti Rungkad',
+    photo: johnny,
+    gift: 1750000,
+    title: 'SEEDS X JOHNNY WIDODO',
     participant: {
       total: 5,
       max: 10
     },
-    deadline: new Date(),
+    start: new Date('2023-08-25'),
+    end: new Date('2023-08-28'),
     status: 'paid'
   },
   {
-    photo: s5photo,
-    gift: 10000000,
-    title: 'Anti Rungkad',
+    photo: aisec,
+    gift: 1000000,
+    title: 'SEEDS X AIESEC USU WEEK 2',
     participant: {
       total: 5,
       max: 10
     },
-    deadline: new Date(),
+    start: new Date('2023-08-16'),
+    end: new Date('2023-08-28'),
     status: 'paid'
   },
   {
-    photo: s5photo,
-    gift: 10000000,
-    title: 'Anti Rungkad',
+    photo: telkom,
+    gift: 450000,
+    title: 'SEEDS X EDUPRENEUR TELKOM',
     participant: {
       total: 5,
       max: 10
     },
-    deadline: new Date(),
+    start: new Date('2023-08-17'),
+    end: new Date('2023-08-17'),
     status: 'paid'
   },
   {
-    photo: s5photo,
-    gift: 10000000,
-    title: 'Anti Rungkad',
+    photo: firda,
+    gift: 500000,
+    title: 'SEEDS MAIN BARENG FIRDA',
     participant: {
       total: 5,
       max: 10
     },
-    deadline: new Date(),
+    start: new Date('2023-08-22'),
+    end: new Date('2023-09-04'),
     status: 'paid'
   }
 ];
@@ -128,30 +135,26 @@ export const circleTrendingLandingPage: ICircleLandingPage[] = [
 export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
   {
     id: '1',
-    name: 'Tournament 1',
-    image: event1,
-    date: '1 June - 20 June',
-    status: 'Paid'
+    name: 'Andhika Septigraha',
+    title: 'Edupreneur Telkom',
+    image: testi1,
+    comment:
+      'Halo nama saya Andhika Septigraha, saya panitia Edupreneur 2023 dan mau mengucapkan terima kasih kepada aplikasi Seeds. Dan alhamdulliah dari aplikasi tersebut saya mendapatkan juara 1, sekali lagi saya ingin mengucapkan terima kasih. Bagi teman-teman yang belum download aplikasi Seeds, silahkan download dan tinggal dimainkan saja, karena itu mudah sekali'
   },
   {
     id: '2',
-    name: 'Tournament 3',
-    image: event2,
-    date: '1 June - 20 June',
-    status: 'Paid'
+    name: 'Amiyeri',
+    title: 'Edupreneur Telkom',
+    image: testi2,
+    comment:
+      'Halo kenalin namaku Amiyel, disini aku mau berterima kasih kepada aplikasi Seeds karena sudah memberikan aku kesempatan untuk belajar trading sekaligus mempraktekan secara langsung….. Dan juga terima kasih karena sudah memberikan aku kesempatan untuk menang. Aku tahu aplikasi Seeds ini karena ada teman aku yang kasih tahu, lalu dari situ aku mulai cari tahu tuh gimana sih sistemnya karena kan di aplikasi Seeds ini tuh ada banyak fitur-fitur tenang belajar trading yang pastinya bisa banget dipelajarin. Oh iya di aplikasi Seeds ini tuh ga cuman belajar trading dan mempraktikannya secara langsung lho…. Masih banyak lagi keuntungan yang bisa didapat, salah satunya dapat uang tunai kalau kalian berkesempatan menang di Play Arena nanti. Jadi tunggu apalagi, langsung aja kunjungi situs web aplikasi Seeds dan daftar sekarang juga! Terima kasih!'
   },
   {
     id: '3',
-    name: 'Tournament 3',
-    image: event1,
-    date: '1 June - 20 June',
-    status: 'Paid'
-  },
-  {
-    id: '4',
-    name: 'Tournament 4',
-    image: event2,
-    date: '1 June - 20 June',
-    status: 'Paid'
+    name: 'Ariandra Akbar',
+    title: 'Edupreneur Telkom',
+    image: testi3,
+    comment:
+      'Mau berterima kasih kepada aplikasi Seeds….. Aplikasinya keren banget dan alhamdulliahnya kemarin aku juara 3…. Sekali lagi terima kasih, buat yang belum download, silahkan download dan langsung mainin aja ya'
   }
 ];

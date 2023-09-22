@@ -1,6 +1,6 @@
 'use client';
-import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
+import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ export default function Section6(): React.ReactElement {
             </Typography>
 
             <Typography className="text-lg font-bold text-white tracking-widest mb-3 lg:text-3xl">
-              Investing, together
+              {t('landing.section6.text2')}
             </Typography>
 
             <Typography className=" text-xs text-white font-light mb-3 lg:text-sm lg:font-normal">
@@ -76,7 +76,7 @@ export default function Section6(): React.ReactElement {
 
         <div className="w-full lg:w-1/3">
           <Typography className="text-white text-lg font-normal mb-5 lg:font-medium lg:text-xl">
-            Download Our App
+            {t('landing.section6.text3')}
           </Typography>
 
           <div className="grid grid-cols-2 gap-5 w-fit">

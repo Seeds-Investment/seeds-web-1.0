@@ -253,6 +253,28 @@ const LoginPage = (): JSX.Element => {
               t('authPage.login')
             )}
           </Button>
+          <Button
+            onClick={async () => {
+              try {
+                await router.push('/auth/register');
+              } catch (error) {
+                console.error('An error occurred during navigation:', error);
+              }
+            }}
+            className={`mx-auto w-full rounded-full border border-[#3AC4A0] mt-5 text-[#3AC4A0] bg-transparent hover:bg-[#3AC4A0] hover:text-white transition-colors`}
+          >
+            {loading ? (
+              <Image
+                src={Loader.src}
+                alt={Loader.alt}
+                className="mx-auto animate-spin object-contain object-[center_center]"
+                width={25}
+                height={25}
+              />
+            ) : (
+              t('authPage.register')
+            )}
+          </Button>
           <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
             {t('or')}
           </small>

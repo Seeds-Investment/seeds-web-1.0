@@ -1,38 +1,45 @@
-import CCard from '@/components/CCard';
 import type { IEventHighlightLandingPage } from '@/utils/interfaces/components.interfaces';
-import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export default function Section2Card({
   data
 }: {
   data: IEventHighlightLandingPage;
 }): React.ReactElement {
-  console.log(data, '>>>');
-
   return (
-    <div className="relative max-w-sm rounded overflow-hidden mr-5">
-      <Link href={'/temporary'}>
-        <Image
-          alt={data.name}
-          src={data.image}
-          className="w-full "
-          width={500}
-          height={500}
-        />
-      </Link>
-      <div className="absolute top-2 right-2 px-3 py-1 text-xs font-semibold bg-white text-seeds-button-green rounded-full">
-        {data.status}
-      </div>
-
-      <div className="mt-8">
-        <CCard className="-translate-y-[5rem] bg-transparent rounded-xl py-2 backdrop-blur-lg">
-          <div className="items-center w-full text-white ml-5">
-            <Typography className="font-semibold">{data.name}</Typography>
-            <Typography className="font-normal">{data.date}</Typography>
+    <div className="relative max-w-s overflow-hidden mr-5">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center">
+          {/* Profile Picture */}
+          <div className="h-12 w-12 rounded-full overflow-hidden">
+            <Image
+              src={data.image}
+              alt="Profile Picture"
+              className="object-cover h-full w-full"
+            />
           </div>
-        </CCard>
+
+          {/* Name and Occupation */}
+          <div className="ml-4">
+            <p className="text-xl font-semibold">{data.name}</p>
+            <p className="text-gray-500">{data.title}</p>
+          </div>
+        </div>
+
+        {/* Review Text */}
+        <p className="mt-4 text-gray-700">{data.comment}</p>
+
+        {/* Star Ratings */}
+        <div className="flex items-center justify-between mt-4">
+          <span className="text-black">
+            {/* Display the rating like "5/5" or "4/5" */}
+            5/5
+          </span>
+
+          <div className="text-yellow-500">
+            {/* Static star ratings */}★ ★ ★ ★ ★
+          </div>
+        </div>
       </div>
     </div>
   );

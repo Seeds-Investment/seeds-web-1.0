@@ -95,12 +95,12 @@ export const seedsInformation: ISeedsInformationList = {
     {
       icon: email,
       name: 'info@seeds.finance',
-      url: ''
+      url: 'mailto:info@seeds.finance'
     },
     {
       icon: whatsapp,
       name: '08118883519',
-      url: ''
+      url: 'https://api.whatsapp.com/send?phone=628118883519'
     }
   ]
 };
@@ -116,7 +116,7 @@ export const downloadOurApp = [
     url: 'https://play.google.com/store/apps/details?id=com.seeds.investment',
     icon: playstore,
     rate: '5.0',
-    reviews: '250+'
+    reviews: '1000k+'
   },
   {
     url: '',

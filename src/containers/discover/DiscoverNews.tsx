@@ -1,4 +1,5 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import Link from 'next/link';
 import CardNews from './components/CardNews';
 
 export default function DiscoverNews(): React.ReactElement {
@@ -20,7 +21,9 @@ export default function DiscoverNews(): React.ReactElement {
       <div className="md:bg-white sm:rounded-[18px] p-5 space-y-5">
         <div className="flex justify-between items-center">
           <h4 className="md:text-2xl text-lg font-bold">Berita Terkini</h4>
-          <p className="text-seeds-green">See More</p>
+          <Link href={'/'} className="text-seeds-green">
+            See More
+          </Link>
         </div>
         <div className="flex lg:grid lg:grid-cols-4 gap-3 overflow-auto">
           <CardNews />

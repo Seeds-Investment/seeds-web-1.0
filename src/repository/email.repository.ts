@@ -16,3 +16,16 @@ export const postForgotPasswordByEmail = async (
     return error.response;
   }
 };
+
+export const verifyForgotPasswordByEmail = async (payload: {
+  email: string;
+  code: string;
+  password: string;
+}): Promise<any> => {
+  try {
+    let response = await authService.post('/verify-forgot-password', payload);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

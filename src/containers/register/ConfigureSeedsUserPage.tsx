@@ -7,7 +7,7 @@ import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { InfoBlue } from 'public/assets/vector';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ReferralCodePage = ({
@@ -16,6 +16,18 @@ const ReferralCodePage = ({
   setFormdata
 }: IRegisterPaging): JSX.Element => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCodeFromURL = urlParams.get('refcode');
+
+    if (referralCodeFromURL !== null && referralCodeFromURL !== '') {
+      setFormdata(prevState => ({
+        ...prevState,
+        referralCode: referralCodeFromURL
+      }));
+    }
+  }, []);
 
   const formik = useFormik({
     initialValues: formdata,
@@ -115,7 +127,9 @@ const ReferralCodePage = ({
           <Typography variant="h5" color="black">
             {t('input.type.referralCode')}
           </Typography>
-          <Typography className="text-sm text-gray-500">(optional)</Typography>
+          <Typography className="text-sm text-gray-500">
+            {t('input.type.optional')}
+          </Typography>
         </div>
         <Input
           className="text-lg"

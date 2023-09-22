@@ -6,6 +6,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import router from 'next/router';
 import {
+  ArrowLeftBlack,
   ArrowRightCollapseIcon,
   CircleMembership,
   Disclosure,
@@ -15,6 +16,7 @@ import {
 } from 'public/assets/vector';
 import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FaqSubmenuProps {
   children: ReactNode;
@@ -22,6 +24,7 @@ interface FaqSubmenuProps {
 
 const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const width = useWindowInnerWidth();
+  const { t } = useTranslation();
 
   const submenuClasses = `lg:w-4/5 md:w-2/3 sm:w-[80%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
@@ -30,7 +33,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const menus = useMemo(
     () => [
       {
-        label: 'Term & Condition',
+        label: t('landing.section6.term'),
         altStartAdornment: 'terms-condition',
         startAdornment: FileTextIcon,
         onClick: async (): Promise<void> => {
@@ -43,7 +46,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Disclosure',
+        label: t('landing.section6.disclosure'),
         altStartAdornment: 'disclosure',
         startAdornment: Disclosure,
         onClick: async (): Promise<void> => {
@@ -56,7 +59,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Privacy & Policy',
+        label: t('landing.section6.privacy'),
         altStartAdornment: 'privacy-policy',
         startAdornment: PrivacyPolicy,
         onClick: async (): Promise<void> => {
@@ -69,7 +72,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Social Media Guidelines',
+        label: t('landing.section6.social'),
         altStartAdornment: 'social-media-guide',
         startAdornment: SosmedGuide,
         onClick: async (): Promise<void> => {
@@ -82,7 +85,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: 'Circle Membership',
+        label: t('landing.section6.circle'),
         altStartAdornment: 'circle-membership',
         startAdornment: CircleMembership,
         onClick: async (): Promise<void> => {
@@ -155,7 +158,9 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
       >
         <PageGradient
           defaultGradient
-          className="sm:relative sm:pb-20 absolute overflow-hidden flex flex-col items-center w-full bottom-0"
+          className={`sm:relative sm:pb-20 overflow-hidden flex flex-col items-center w-full bottom-0   ${
+            width !== undefined && width < 640 ? '' : 'absolute'
+          }`}
         >
           <CardGradient
             defaultGradient
@@ -169,10 +174,33 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
                 : ''
             } bg-white`}
           >
-            {/* -----Title----- */}
-            <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-              Legal
-            </h6>
+            <div className="flex justify-start mx-2 md:mx-8 items-center mb-5 w-full">
+              {/* -----Arrow Left----- */}
+              <div className="ml-2 z-10">
+                <button
+                  onClick={() => {
+                    if (width !== undefined && width < 640) {
+                      router.back();
+                      router.back();
+                    } else {
+                      router.back();
+                    }
+                  }}
+                >
+                  <Image
+                    src={ArrowLeftBlack.src}
+                    alt={ArrowLeftBlack.alt}
+                    width={30}
+                    height={30}
+                    className="transition cursor-pointer ease-in-out hover:scale-150"
+                  />
+                </button>
+              </div>
+              {/* -----Title Centered----- */}
+              <div className="flex-grow text-center mr-10">
+                <h6 className="text-lg font-poppins font-semibold">Legal</h6>
+              </div>
+            </div>
 
             {/* -----Header----- */}
             <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">

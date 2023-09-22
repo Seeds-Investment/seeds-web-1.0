@@ -61,10 +61,10 @@ const ChooseAvatarPage = ({
     <>
       <div>
         <Typography variant="h3" color="black">
-          Choose Your Avatar
+          {t('registerPage.title.chooseAvatar')}
         </Typography>
         <Typography variant="small" color="black">
-          Create an avatar that describes yourself
+          {t('registerPage.description.chooseAvatar')}
         </Typography>
       </div>
       <div className="flex flex-col justify-center items-center mt-4 gap-4">

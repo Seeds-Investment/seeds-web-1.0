@@ -51,7 +51,8 @@ export interface ICompetitionItem {
     total: number;
     max: number;
   };
-  deadline: Date;
+  start: Date;
+  end: Date;
   status: string;
 }
 
@@ -68,6 +69,6 @@ export interface IEventHighlightLandingPage {
   id: string;
   name: string;
   image: any;
-  date: string;
-  status: string;
+  title: string;
+  comment: string;
 }

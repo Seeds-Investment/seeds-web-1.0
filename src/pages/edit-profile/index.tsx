@@ -24,6 +24,7 @@ import {
 import LanguageContext from '@/store/language/language-context';
 import { userActions } from '@/store/redux/features/user-data/user-slice';
 
+import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
 interface ConfirmNewPinProps {
   router: NextRouter;
@@ -36,7 +37,8 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
   const languageCtx = useContext(LanguageContext);
 
   const width = useWindowInnerWidth();
-
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [formImage, setformImage] = useState<any>();
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -90,30 +92,36 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     }));
   };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>): void => {
+  const submitForm = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
     try {
-      e.preventDefault();
+      let updatedForm: any = { ...form };
 
-      editUserInfo(form)
-        .then(() => {
-          setForm({
-            name: '',
-            seedsTag: '',
-            email: '',
-            avatar: '',
-            bio: '',
-            birthDate: '',
-            phone: '',
-            nameIsEdited: false,
-            tagIsEdited: false
-          });
-          router.back();
-        })
-        .catch(error => {
-          console.log(error);
+      if (formImage !== undefined && formImage !== null) {
+        const { path: cloudResponse } = await postCloud({
+          file: formImage,
+          type: 'OTHER_URL'
         });
+        updatedForm = { ...form, avatar: cloudResponse };
+      }
+
+      await editUserInfo(updatedForm);
+      setForm({
+        name: '',
+        seedsTag: '',
+        email: '',
+        avatar: '',
+        bio: '',
+        birthDate: '',
+        phone: '',
+        nameIsEdited: false,
+        tagIsEdited: false
+      });
+      router.back();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -131,13 +139,28 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
     formatSeedsTagHandler
   );
 
-  function formatDate(inputDateString: any): string {
-    const date = new Date(inputDateString);
-    const day = date.getUTCDate().toString().padStart(2, '0');
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const year = date.getUTCFullYear().toString();
+  function formatDateForDisplay(dateString: string): string {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
 
-    return `${day}/${month}/${year}`;
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+
+    return `${day} ${month} ${year}`;
   }
 
   useEffect(() => {
@@ -181,28 +204,44 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
             <button
               type="submit"
               className="focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold md:text-base text-sm text-seeds-button-green hover:border-b border-seeds-button-green disabled:cursor-not-allowed"
-              onClick={() => {
-                console.log(form);
-              }}
             >
               {t('button.label.done')}
             </button>
           </div>
-
           {/* ----- Image Container ----- */}
           <div className="z-10 overflow-hidden rounded-full mb-1 mx-auto md:w-28 md:h-28 w-20 h-20">
-            <Image
-              alt="avatar"
-              src={form?.avatar}
-              width={100}
-              height={100}
-              className="w-full h-full object-center object-cover"
-            />
+            {formImage !== undefined && formImage !== null ? (
+              <Image
+                alt="avatar"
+                src={URL.createObjectURL(formImage)}
+                className="w-full h-full object-center object-cover"
+              />
+            ) : (
+              <Image
+                alt="avatar"
+                src={form?.avatar}
+                width={100}
+                height={100}
+                className="w-full h-full object-center object-cover"
+              />
+            )}
           </div>
           <div className="mb-8 text-center">
-            <button className="z-20 focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold text-xs text-seeds-button-green hover:border-b border-seeds-button-green disabled:cursor-not-allowed">
+            <label
+              htmlFor="imageInput"
+              className="z-20 focus:outline-none focus:border-b active:scale-[0.95] transition-transform font-poppins font-semibold text-xs text-seeds-button-green hover:border-b border-seeds-button-green cursor-pointer"
+            >
               {t('editProfile.editImage')}
-            </button>
+            </label>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(e: any) => {
+                setformImage(e.target.files[0]);
+              }}
+            />
           </div>
 
           {/* -----Inner Card----- */}
@@ -247,9 +286,14 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               isError={
                 ((tagIsError ?? false) &&
                   (form.seedsTag ?? '').trim() === '') ||
-                false
+                /\s/.test(form.seedsTag)
               }
-              errorMessage={t('errorMessage.requiredSeedsTag')}
+              errorMessage={
+                // Use conditional error messages based on the error type
+                /\s/.test(form.seedsTag)
+                  ? t('errorMessage.spaceInSeedsTag')
+                  : t('errorMessage.requiredSeedsTag')
+              }
               props={{
                 value: form?.seedsTag,
                 onChange: (e: any) => {
@@ -272,10 +316,20 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               extraInputClasses="md:text-base text-sm"
               extraLabelClasses="md:text-base text-sm md:peer-focus:text-base peer-focus:text-sm"
               props={{
-                readOnly: false,
-                value: formatDate(form?.birthDate),
-                onChange: (e: any) => {
-                  handleOnChange('birthDate', e.target.value);
+                value:
+                  (form?.birthDate as string) !== ''
+                    ? isEditing
+                      ? new Date(form.birthDate).toISOString().substr(0, 10)
+                      : formatDateForDisplay(form.birthDate)
+                    : null,
+                onClick: () => {
+                  setIsEditing(true);
+                },
+                onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                  const selectedDate = e.target.value;
+                  const formattedDate = new Date(selectedDate).toISOString();
+
+                  handleOnChange('birthDate', formattedDate);
                 }
               }}
             />
@@ -338,7 +392,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
                 value: form?.email
               }}
             />
-
             {/* -----Linked Account----- */}
             <div className="group relative mb-8 pb-3 border-b border-neutral-ultrasoft cursor-pointer">
               <h6 className="font-poppins font-semibold leading-6 text-neutral-medium md:text-base text-sm">
@@ -349,7 +402,6 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
                 <ArrowCollapseIcon stroke="#262626" strokeWidth="2" />
               </span>
             </div>
-
             {/* -----Change Pin----- */}
             <div className="group relative pb-3 border-b border-neutral-ultrasoft cursor-pointer">
               <h6 className="font-poppins font-semibold leading-6 text-neutral-medium md:text-base text-sm">

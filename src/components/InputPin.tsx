@@ -112,6 +112,8 @@ const InputPin: React.FC<InputPinProps> = ({
       </p>
     );
 
+  console.log(pin);
+
   return (
     <CardGradient
       defaultGradient

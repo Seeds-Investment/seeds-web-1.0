@@ -11,7 +11,6 @@ import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Settings } from 'react-slick';
 const fetch = async (
   setNews: Dispatch<SetStateAction<never[]>>
 ): Promise<void> => {
@@ -26,44 +25,11 @@ export default function Section2(): React.ReactElement {
   const width = useWindowInnerWidth();
   console.log(news);
 
-  const settings: Settings = {
-    centerMode: true,
-    slidesToShow: 4,
-    speed: 500,
-    slidesToScroll: 1,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: true,
-          slidesToShow: 3
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: true,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      }
-    ]
-  };
-
   useEffect(() => {
     void fetch(setNews);
   }, []);
-
   const number = ['1', '2', '3', '4', '5', '6', '7'];
   console.log(settings, number);
-
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">
@@ -71,10 +37,10 @@ export default function Section2(): React.ReactElement {
           <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1a')}
           </span>
-          <span className="xl:text-[72px] text-[30px] font-bold text-[#262626] mr-2 md:text-5xl lg:text-7xl">
+          <span className="xl:text-[72px] text-[30px] font-bold text-[#262626] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1b')}
           </span>
-          <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl">
+          <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1c')}
           </span>
 
@@ -89,7 +55,7 @@ export default function Section2(): React.ReactElement {
           />
           <Image
             alt="img"
-            className="absolute w-[30%] -translate-y-[6rem] translate-x-[1rem]
+            className="absolute w-[30%] -translate-y-[6rem]  translate-x-[1rem]
                 2xl:w-[15%] 2xl:translate-y-[6rem] 2xl:translate-x-[35rem]
                 lg:w-[15%] lg:-translate-y-[4rem] lg:translate-x-[30rem]
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
@@ -103,7 +69,7 @@ export default function Section2(): React.ReactElement {
             width !== undefined && width >= 1690 ? '2xl:mt-2' : ''
           }`}
         >
-          <div className="text-md text-center font-semibold tracking-wider mb-1 text-[#262626] md:font-bold md:text-3xl lg:text-6xl lg:mb-5 xl:text-2xl xl:font-normal">
+          <div className="text-md text-center font-semibold tracking-wider mb-1 text-[#262626] md:font-bold md:text-3xl lg:text-6xl lg:mb-5 xl:text-2xl xl:font-normal xl:w-[60%]">
             {t('landing.section2.text2')}
           </div>
 

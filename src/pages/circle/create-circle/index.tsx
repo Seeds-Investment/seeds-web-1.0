@@ -1,16 +1,16 @@
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import CirclePremiumChoicePage from '@/containers/circle/create-circle/circlePremiumChoicePage';
+import CreateCirclePage from '@/containers/circle/create-circle/createCirclePage';
+import MembershipPage from '@/containers/circle/create-circle/membershipPage';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { createCircle } from '@/repository/circle.repository';
 import { uploadCloud } from '@/repository/storage';
 import { useState } from 'react';
-import CircleMembershipFeePage from '../components/circleMembershipFeePage';
-import CirclePremiumChoicePage from '../components/circlePremiumChoicePage';
-import CreateCirclePage from '../components/createCirclePage';
-import MembershipPage from '../components/membershipPage';
-import SuccessPage from '../components/successPage';
-import TermConditionPage from '../components/termConditionPage';
+import CircleMembershipFeePage from '../../../containers/circle/create-circle/circleMembershipFeePage';
+import SuccessPage from '../../../containers/circle/create-circle/successPage';
+import TermConditionPage from '../../../containers/circle/create-circle/termConditionPage';
 
 interface FormRequestInterface {
   name: string;

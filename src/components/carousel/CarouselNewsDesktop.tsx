@@ -4,22 +4,38 @@ import { useEffect, useState } from 'react';
 
 const CarouselNewsDesktop: React.FC = () => {
   const [carouselData, setCarouselData] = useState<any[]>([]);
-
-  const fetchHotNews = async (): Promise<void> => {
-    try {
-      const response = await fetch(
-        'https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=5'
-      );
-      const data: any = response.json();
-      setCarouselData(data.news);
-    } catch (error: any) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  const devUrl = process?.env?.NEXT_PUBLIC_URL ?? '';
   useEffect(() => {
-    // Replace 'your-api-url' with the actual API endpoint
-    void fetchHotNews();
-  }, []);
+    const fetchData = async (): Promise<void> => {
+      const url: string = devUrl ?? '';
+      if (url === '') {
+        console.error('devUrl is an empty string.');
+      } else {
+        try {
+          const response = await fetch(`${devUrl}/news/v1/hot?limit=5`);
+          if (response.ok) {
+            const data = await response.json();
+            setCarouselData(data.news);
+          } else {
+            console.error('Error fetching data:', response.status);
+          }
+          return undefined;
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          return undefined;
+        }
+      }
+      return undefined;
+    };
+
+    if (typeof devUrl === 'string' && devUrl !== '') {
+      fetchData().catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    } else {
+      console.error('devUrl is not a valid string or is an empty string.');
+    }
+  }, [devUrl, setCarouselData]);
 
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
@@ -81,11 +97,10 @@ const CarouselNewsDesktop: React.FC = () => {
     >
       {carouselData.map((item, index) => (
         <div
-          className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end"
           key={index}
+          className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end"
         >
           <img
-            key={index}
             src={item.imageUrl}
             alt={`image ${index + 1}`}
             className="h-full w-full object-cover mx-auto rounded-lg"

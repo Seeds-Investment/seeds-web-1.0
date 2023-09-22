@@ -126,10 +126,7 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
             <div className="flex flex-col mt-5 gap-3">
               {options.map((data, idx) => (
                 <div className="flex justify-between" key={idx}>
-                  <Typography
-                    aria-label="radioButton01"
-                    className="text-sm font-normal text-black"
-                  >
+                  <Typography className="text-sm font-normal text-black">
                     {data}
                   </Typography>
                   <input

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 const CarouselNewsDesktop: React.FC = () => {
   const [carouselData, setCarouselData] = useState<any[]>([]);
-
   const devUrl = process?.env?.NEXT_PUBLIC_URL ?? '';
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

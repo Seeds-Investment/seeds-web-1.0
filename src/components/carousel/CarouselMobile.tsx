@@ -19,7 +19,7 @@ const CarouselMobile: React.FC = () => {
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                 activeIndex === i ? 'w-8 bg-white' : 'w-4 bg-white/50'
               }`}
-              onClick={() => {
+              onClick={(): void => {
                 setActiveIndex(i);
               }}
             />

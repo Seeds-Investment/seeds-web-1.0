@@ -7,15 +7,27 @@ import InlineText from './components/InlineText';
 
 interface WalletFormProps {
   payment: any;
+  handlePay: (
+    type: string,
+    paymentGateway: string,
+    paymentMethod: string,
+    totalAmount: number,
+    phoneNumber?: string | undefined
+  ) => Promise<void>;
+  dataPost: any;
 }
 
-const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
+const WalletForm = ({
+  payment,
+  handlePay,
+  dataPost
+}: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
   const [phone, setPhone] = useState('');
   const deadline = '5 October 2022 10;08pm';
-  const admissionFee = 100000;
-  const adminFee = 0;
+  const admissionFee = dataPost?.premium_fee as number;
+  const adminFee = dataPost?.admin_fee as number;
   const totalFee = admissionFee + adminFee;
 
   const renderPhoneInput = (): JSX.Element => (
@@ -53,7 +65,11 @@ const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label={t(`${translationId}.admissionFeeLabel`)}
+        label={
+          dataPost !== undefined
+            ? 'Circle Membership'
+            : t(`${translationId}.admissionFeeLabel`)
+        }
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />
@@ -67,7 +83,19 @@ const WalletForm = ({ payment }: WalletFormProps): JSX.Element => {
         {`IDR ${totalFee}`}
       </Typography>
       <hr />
-      <SubmitButton className="my-4" disabled={phone.length < 1}>
+      <SubmitButton
+        className="my-4"
+        disabled={phone.length < 1}
+        onClick={async () => {
+          await handlePay(
+            payment?.payment_type,
+            payment?.payment_gateway,
+            payment?.payment_method,
+            totalFee,
+            phone
+          );
+        }}
+      >
         {t(`${translationId}.button`)}
       </SubmitButton>
     </div>

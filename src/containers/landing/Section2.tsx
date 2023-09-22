@@ -28,6 +28,8 @@ export default function Section2(): React.ReactElement {
   useEffect(() => {
     void fetch(setNews);
   }, []);
+  const number = ['1', '2', '3', '4', '5', '6', '7'];
+  console.log(settings, number);
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">

@@ -16,6 +16,7 @@ const fetch = async (
 export default function Section4(): React.ReactElement {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
+  const router = useRouter();
   useEffect(() => {
     void fetch(setList);
   }, []);

@@ -14,6 +14,84 @@ import { useTranslation } from 'react-i18next';
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
   const [open, setOpen] = useState(1);
+  // const [currentSlide, setCurrentSlide] = useState(0);
+  const [carouselData, setCarouselData] = useState<any[]>([]);
+
+  const handleOpen = (value: number): void => {
+    setOpen(open === value ? 0 : value);
+  };
+
+  // Define your carousel content (images and text) here
+  const carouselContent = [
+    {
+      image: '/assets/forgot.png', // Replace with your image path
+      text: 'Image 1 Text'
+    },
+    {
+      image: '/assets/success.png', // Replace with your image path
+      text: 'Image 2 Text'
+    },
+    {
+      image: '/assets/success.png', // Replace with your image path
+      text: 'Image 3 Text'
+    }
+    // Add more images and text as needed
+  ];
+  const fetchHotNews = async (): Promise<void> => {
+    try {
+      const response = await fetch(
+        'https://seeds-dev-gcp.seeds.finance/news/v1/hot?limit=3'
+      );
+      const data: any = response.json();
+      setCarouselData(data.news);
+    } catch (error: any) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    // Replace 'your-api-url' with the actual API endpoint
+    void fetchHotNews();
+  }, []);
+
+  const handleItemClick = (link: string): void => {
+    window.open(link, '_blank');
+  };
+
+  const settings: Settings = {
+    // autoplay: false,
+    // slidesToShow: 3,
+    // dots: true,
+    // infinite: true,
+    // speed: 500,
+    // slidesToScroll: 1
+    centerMode: true,
+    slidesToShow: 4,
+    speed: 500,
+    slidesToScroll: 1,
+    dots: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          dots: true,
+          slidesToShow: 3
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          dots: true,
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          dots: true,
+          slidesToShow: 1
+        }
+      }
+    ]
 
   interface iconProps {
     id: number;
@@ -44,7 +122,7 @@ export default function Section5(): React.ReactElement {
   const handleOpen = (value: number): void => {
     setOpen(open === value ? 0 : value);
   };
-
+  console.log(carouselContent, carouselData, settings, handleItemClick);
   return (
     <div>
       <div className="min-w-full h-auto cursor-default mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
@@ -120,7 +198,7 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(1);
                 }}
                 className={`border-b-0 transition-colors ${
@@ -139,7 +217,7 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(2);
                 }}
                 className={`border-b-0 transition-colors ${
@@ -158,7 +236,7 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(3);
                 }}
                 className={`border-b-0 transition-colors ${
@@ -177,7 +255,7 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(4);
                 }}
                 className={`border-b-0 transition-colors ${
@@ -196,7 +274,7 @@ export default function Section5(): React.ReactElement {
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(5);
                 }}
                 className={`border-b-0 transition-colors ${

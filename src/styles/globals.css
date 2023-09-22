@@ -104,6 +104,24 @@ code {
   width: 100%;
 }
 
+.selected {
+  @apply w-[244px] h-[244px];
+}
+
+.selected img {
+  @apply w-[200px] h-[200px];
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+
+.not-selected {
+  @apply w-[200px] h-[200px];
+}
+
+.not-selected img {
+  @apply w-[160px] h-[160px];
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+
 .carousWrapper {
   width: 100%;
 }

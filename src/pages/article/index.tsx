@@ -1,4 +1,3 @@
-import Pagination from '@/components/Pagination';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
@@ -100,8 +99,6 @@ export default function ArticleList(): React.ReactElement {
   }, []);
 
   const { t } = useTranslation();
-
-  const handlePageChange = (page: number): void => {};
 
   function formatDateToIndonesian(dateStr: string): string {
     try {
@@ -283,11 +280,40 @@ export default function ArticleList(): React.ReactElement {
 
         <div className="flex justify-center mt-8">
           <div className="mt-5 pb-10 pagination">
-            <Pagination
-              currentPage={params.page}
-              totalPages={1}
-              onPageChange={handlePageChange}
-            />
+            <div className="bg-white rounded-full cursor-pointer flex flex-row gap-3 p-2 shadow-lg">
+              <div className="p-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M12.5 15L7.5 10L12.5 5"
+                    stroke="#7C7C7C"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="rounded-full p-2 bg-gradient-to-r cursor-pointer from-[#9A76FE] to-[#4FE6AF]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M7.5 15L12.5 10L7.5 5"
+                    stroke="white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </PageGradient>

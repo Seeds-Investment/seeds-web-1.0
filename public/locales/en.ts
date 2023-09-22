@@ -239,6 +239,13 @@ export default {
     achievementBRONZETitle: 'Dapat {{count}} Bronze',
     achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
+  legal: {
+    title1: 'Terms & Conditions',
+    title2: 'Disclosure',
+    title3: 'Privacy Policy',
+    title4: 'Social Media Guidelines',
+    title5: 'Circle Membership'
+  },
   faq: {
     title: 'Frequently Asked Questions',
     subTitle: 'Find answers to your questions about Seeds',

@@ -2,9 +2,11 @@
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
 
+const number = ['1', '2', '3', '4', '5', '6', '7'];
 const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
 };
+console.log(number);
 
 const CarouselDesktop: React.FC = () => {
   return (
@@ -96,7 +98,7 @@ const CarouselDesktop: React.FC = () => {
         height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={(): void => {
-          handleItemClick('https://gplfantasy.app.link/SeedsB');
+          handleItemClick('https://gplfantasy.app.link/SeedsGB');
         }}
       />
       <Image
@@ -105,7 +107,7 @@ const CarouselDesktop: React.FC = () => {
         width={1443}
         height={937}
         className="h-full w-full object-cover cursor-pointer"
-        onClick={() => {
+        onClick={(): void => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
       />

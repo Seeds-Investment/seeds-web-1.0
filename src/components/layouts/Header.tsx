@@ -31,7 +31,7 @@ const Header: React.FC = () => {
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', (): void => {
       if (window.innerWidth >= 960) {
         setOpenNav(false);
       }

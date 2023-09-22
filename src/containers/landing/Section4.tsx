@@ -19,7 +19,6 @@ export default function Section4(): React.ReactElement {
   useEffect(() => {
     void fetch(setList);
   }, []);
-
   console.log(list);
 
   return (

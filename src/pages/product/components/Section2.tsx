@@ -8,20 +8,23 @@ import {
   Typography
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CardAsset from './CardAsset';
+import CardCircle from './CardCircle';
 
 const customGradient = (
   <>
-    <span className="z-0 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />
-    <span className="z-0 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green-2 blur-[90px]" />
-    <span className="z-0 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-    <span className="z-0 fixed top-64 -right-4 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45 rounded-full" />
-    <span className="z-0 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
+    <span className="-z-10 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />
+    <span className="-z-10 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green-2 blur-[90px]" />
+    <span className="-z-10 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
+    <span className="-z-10 fixed top-64 -right-4 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45 rounded-full" />
+    <span className="-z-10 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
   </>
 );
 
 export default function Section2(): React.ReactElement {
   const [activeTab, setActiveTab] = useState('circle');
+  const { t } = useTranslation();
   const data = [
     {
       label: 'Top Circle',
@@ -36,7 +39,7 @@ export default function Section2(): React.ReactElement {
     {
       label: 'Top Asset',
       value: 'asset',
-      desc: 'hehehe'
+      desc: 'Top Asset'
     }
   ];
 
@@ -46,14 +49,14 @@ export default function Section2(): React.ReactElement {
       className="overflow-hidden p-2 md:p-8 w-full"
     >
       <Typography className="text-3xl font-semibold mb-5 text-[#222222]">
-        Explore
+        {t('landingPageV2.product.section3.title1')}
       </Typography>
       <Tabs value={activeTab}>
         <TabsHeader
-          className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+          className="rounded-none border-none bg-transparent p-0"
           indicatorProps={{
             className:
-              'bg-transparent border-b-2 border-gray-900 shadow-none rounded-none'
+              'bg-transparent border-b-4 border-[#3AC4A0] shadow-none rounded-none'
           }}
         >
           {data.map(({ label, value }) => (
@@ -63,7 +66,11 @@ export default function Section2(): React.ReactElement {
               onClick={() => {
                 setActiveTab(value);
               }}
-              className={activeTab === value ? 'text-xl font-normal' : ''}
+              className={
+                activeTab === value
+                  ? 'text-sm font-normal text-[#262626]'
+                  : 'text-sm font-normal text-[#BDBDBD]'
+              }
             >
               {label}
             </Tab>
@@ -71,8 +78,15 @@ export default function Section2(): React.ReactElement {
         </TabsHeader>
         <TabsBody>
           {data.map(({ value, desc }) => (
-            <TabPanel key={value} value={value}>
-              {value === 'asset' ? <CardAsset /> : <p>{desc}</p>}
+            <TabPanel
+              className={` ${
+                activeTab === 'circle' ? 'xl:grid xl:grid-cols-4 xl:gap-4' : ''
+              }`}
+              key={value}
+              value={value}
+            >
+              {value === 'asset' ? <CardAsset /> : ''}
+              {value === 'circle' ? <CardCircle /> : ''}
             </TabPanel>
           ))}
         </TabsBody>

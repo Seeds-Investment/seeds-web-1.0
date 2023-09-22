@@ -3,20 +3,21 @@ export default {
   // greeting: 'Hello, {{name}}',
   landing: {
     section1: {
-      text1: 'Seeds',
-      text2: 'Mulai dan perluas perjalanan investasi kamu bersama kami!'
+      text1: '#MainbarengSeeds',
+      text2: 'Platform permainan sosial bertemu finansial dan investasi.'
     },
     section2: {
-      text1a: 'Together',
-      text1b: 'With',
+      text1a: 'Bersama',
+      text1b: '',
       text1c: 'Seeds',
-      text2: 'Learn everything about Finance with friends',
+      text2:
+        'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
       text3a: 'Play',
       text3b:
-        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+        'Tanding jual beli saham bersama temanmu. Belajar apapun tentang jual beli saham, kripto, dan komoditas tanpa takut resiko! ',
       text3c: 'Learn',
       text3d:
-        'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
+        'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
       text4:
         'Dapatkan berita dan pengetahuan terkini tentang investasi dan keuangan.',
       text5: 'Sorotan Acara',
@@ -25,31 +26,31 @@ export default {
     section3: {
       text1: 'About Seeds',
       text2:
-        'A community-driven platform designed for to-be investors in Southeast Asia, Seeds offers a hands-on competitive gamified experience to learn the ropes of investing before committing real funds.',
+        'Seeds adalah platform yang didukung oleh komunitas, dirancang khusus untuk calon investor di Asia Tenggara, yang menawarkan permainan kompetitif dan pengalaman belajar langsung tentang dasar-dasar investasi sebelum menggunakan uang sungguhan.',
       text3:
-        'In Southeast Asia, despite digital brokerage booms, retail investments remain limited by perceived risk, complexity and macroeconomic factors. Seeds introduces risk-free "Play-to-earn" investing and community-driven "Learn-to-earn" exchanges, turning investing into a competitive, real-time social game.',
-      text4: 'What They Say About Seeds?',
+        'Meskipun ada pertumbuhan yang cepat dalam perusahaan pialang digital di Asia Tenggara, investasi ritel masih terbatas karena persepsi risiko, kompleksitas, dan faktor-faktor ekonomi. Seeds memperkenalkan gagasan investasi yang aman dan interaktif dengan konsep "Play-to-Earn" dan "Learn-to-Earn" yang diperkuat oleh komunitas.  Seeds mengubah investasi menjadi pengalaman sosial yang kompetitif dan real-time.',
+      text4: 'Apa kata mereka tentang Seeds?',
       text5:
-        'With Seeds, everything about finance and the trading world becomes easier to learn and can be approached by everyone. Let’s hear how Seeds help them!'
+        'Bersama Seeds, apa pun tentang finansial dan dunia jual beli saham menjadi lebih mudah dipelajari oleh semua orang. Yuk, lihat bagaimana Seeds membantu mereka!'
     },
     section4: {
-      text1: 'Over 1000+ people trust us',
-      text2: 'Professionals, universities, many more do!',
+      text1: 'Lebih dari 1000+ orang mempercayai kita.',
+      text2: 'Mulai dari profesional, universitas, dan lainnya!',
       text3: 'mengobrol',
       text4: 'dengan orang-orang yang berpikiran sama',
       text5: 'Rekomendasi sirkel kami',
       text6: 'Bagikan pengetahuan kamu dengan mudah ke teman-temanmu'
     },
     section5: {
-      text1: 'Discover',
+      text1: 'Eksplorasi',
       text2:
-        'Explore trending news and gain insights about Finance and Investing.'
+        'Temukan berita yang sedang tren dan dapatkan ilmu tentang finansial dan investasi terbaru.'
     },
     section6: {
-      text1: 'Our',
-      text2: 'Communities',
+      text1: 'Komunitas',
+      text2: 'Kita',
       text3:
-        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia."
+        'Kami berkomitmen untuk meningkatkan literasi finansial para Gen-Z dan millennials di Asia Tenggara.'
     }
   },
   second: 'detik',
@@ -223,8 +224,8 @@ export default {
     achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
   faq: {
-    title: 'Pertanyaan yang Sering Diajukan',
-    subTitle: 'Temukan jawaban atas pertanyaan kamu tentang seeds',
+    title: 'Pertanyaan yang Sering Ditanyakan',
+    subTitle: 'Temukan jawaban atas pertanyaan kamu tentang Seeds',
     faq: {
       title: {
         1: 'Apa itu Seeds?',
@@ -236,8 +237,8 @@ export default {
       desc: {
         1: 'Seeds adalah platform investasi sosial pertama di Indonesia yang memberi pengguna akses ke saham dan mata uang kripto AS (masih banyak lagi yang akan datang!).',
         2: 'Kamu dapat berinvestasi di berbagai saham dan mata uang kripto AS (masih banyak lagi yang akan datang!)',
-        3: 'Aplikasi Seeds dapat di download melalui Google Playstore bagi kamu pengguna Android dan Apple Appstore bagi pengguna iOS. Selain itu, fitur Seeds juga bisa kamu jelajahi melalui website Seed.finance',
-        4: 'Seeds telah resmi beroperasi di Indonesia dengan nama PT. Bibit Investasi Teknologi dan telah terdaftar di Kementerian Komunikasi dan Informatika (KOMINFO).',
+        3: 'Kamu dapat mengunduh aplikasi Seeds melalui Google Playstore untuk pengguna Android dan Apple Appstore untuk pengguna iOS. Selain itu, kamu juga bisa menjelajahi fitur Seeds melalui situs web seeds.finance.',
+        4: 'Seeds telah beroperasi secara resmi di Indonesia dengan nama PT. Technological Investment Seed dan telah terdaftar di Kementerian Komunikasi dan Informatika (KOMINFO).',
         5: 'Kamu dapat menghubungi tim kami melalui kontak email: info@seeds.finance'
       }
     },
@@ -772,6 +773,14 @@ export default {
       }
     }
   },
+
+  articleList: {
+    text1: 'Artikel Terbaru',
+    text2: 'Find more news you might like.',
+    text3: 'Sort by',
+    text4: 'Search'
+  },
+
   validationErrors: {
     required: 'Bidang ini wajib diisi',
     invalidCountryCode: 'Kode Negara tidak valid',

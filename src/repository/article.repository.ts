@@ -7,10 +7,9 @@ const articleService = baseAxios(
 export const getArticle = async (params: {
   page: number;
   limit: number;
-  order_by?: string;
 }): Promise<any> => {
   try {
-    const response = await articleService.get('/discover/v1/article', {
+    const response = await articleService.get('/news/v1/all', {
       params
     });
 
@@ -21,7 +20,7 @@ export const getArticle = async (params: {
 };
 export const getArticleById = async (id: string): Promise<any> => {
   try {
-    const response = await articleService.get(`/discover/v1/article/${id}`);
+    const response = await articleService.get(`/news/v1/${id}`);
     console.log(response, '>>>>');
     return { ...response, status: 200 };
   } catch (error: any) {

@@ -1,8 +1,6 @@
 'use client';
 import { Carousel, IconButton } from '@material-tailwind/react';
-
-const number = ['1', '2', '3', '4', '5', '6', '7'];
-console.log(number);
+import Image from 'next/image';
 
 const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
@@ -79,9 +77,11 @@ const CarouselDesktop: React.FC = () => {
         </IconButton>
       )}
     >
-      <img
+      <Image
         src={`/assets/carousel-1.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={(): void => {
           handleItemClick(
@@ -89,37 +89,59 @@ const CarouselDesktop: React.FC = () => {
           );
         }}
       />
-      <img
+      <Image
         src={`/assets/carousel-2.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover cursor-pointer"
         onClick={(): void => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
       />
-      <img
+      <Image
+        src={`/assets/carousel-8.jpeg`}
+        alt="image 1"
+        width={1443}
+        height={937}
+        className="h-full w-full object-cover cursor-pointer"
+        onClick={() => {
+          handleItemClick('https://gplfantasy.app.link/SeedsB');
+        }}
+      />
+      <Image
         src={`/assets/carousel-3.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-4.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-5.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-6.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
-      <img
+      <Image
         src={`/assets/carousel-7.png`}
         alt="image 1"
+        width={1443}
+        height={937}
         className="h-full w-full object-cover"
       />
     </Carousel>

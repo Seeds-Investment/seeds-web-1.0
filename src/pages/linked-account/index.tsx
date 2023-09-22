@@ -141,7 +141,6 @@ const LinkedAccount: React.FC = () => {
                     undefined ? (
                       <>
                         <Typography
-                          variant="h2"
                           className="font-bold hover:text-lg cursor-pointer text-red-600"
                           onClick={() => {
                             setRemoveGoogleModalShown(prev => !prev);
@@ -160,7 +159,6 @@ const LinkedAccount: React.FC = () => {
                       </>
                     ) : (
                       <Typography
-                        variant="h2"
                         className="font-bold hover:text-lg cursor-pointer text-seeds-button-green"
                         onClick={() => {
                           setConfirmPinModalShown(prev => !prev);
@@ -197,7 +195,6 @@ const LinkedAccount: React.FC = () => {
                     {userProviders?.find(el => el === 'apple') !== undefined ? (
                       <>
                         <Typography
-                          variant="h2"
                           className="font-bold hover:text-lg cursor-pointer text-red-600"
                           onClick={() => {
                             setRemoveAppleModalShown(prev => !prev);
@@ -216,7 +213,6 @@ const LinkedAccount: React.FC = () => {
                       </>
                     ) : (
                       <Typography
-                        variant="h2"
                         className="font-bold hover:text-lg cursor-pointer text-seeds-button-green"
                         onClick={() => {
                           setConfirmPinModalShown(prev => !prev);
@@ -253,7 +249,6 @@ const LinkedAccount: React.FC = () => {
                     undefined ? (
                       <>
                         <Typography
-                          variant="h2"
                           className="font-bold hover:text-lg cursor-pointer text-red-600"
                           onClick={() => {
                             setRemoveFacebookModalShown(prev => !prev);
@@ -272,7 +267,6 @@ const LinkedAccount: React.FC = () => {
                       </>
                     ) : (
                       <Typography
-                        variant="h2"
                         className="font-bold hover:text-lg cursor-pointer text-seeds-button-green"
                         onClick={() => {
                           setConfirmPinModalShown(prev => !prev);
@@ -293,7 +287,6 @@ const LinkedAccount: React.FC = () => {
                   </div>
                   <div className="flex items-center ">
                     <Typography
-                      variant="h2"
                       className="font-bold cursor-pointer text-[#3AC4A0]"
                       onClick={() => {
                         setDeleteModalShown(prev => !prev);
@@ -313,7 +306,6 @@ const LinkedAccount: React.FC = () => {
                   </div>
                   <div className="flex items-center ">
                     <Typography
-                      variant="h2"
                       className="font-bold cursor-pointer text-[#3AC4A0]"
                       onClick={() => {
                         setDeleteReasonModalShown(prev => !prev);

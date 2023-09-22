@@ -1,5 +1,4 @@
 import { freeCircle, premiumCircle } from '@/constants/assets/icons';
-import ModalMembershipType from '@/pages/circle/components/modalMembershipType';
 import { updateCircle } from '@/repository/circle.repository';
 import { getHashtag } from '@/repository/hashtag';
 import LanguageContext from '@/store/language/language-context';
@@ -14,6 +13,7 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CreatableSelect from 'react-select/creatable';
+import ModalMembershipType from '../create-circle/modalMembershipType';
 
 interface HashtagInterface {
   value: string;

@@ -63,7 +63,7 @@ const DeleteAccountReasonPopUp: React.FC<Props> = ({ onClose }) => {
           </div>
           <div className="flex flex-col mt-2 gap-3">
             <div className="flex justify-between">
-              <Typography aria-label="radioButton01" className="text-lg">
+              <Typography className="text-lg">
                 {t('DeleteReasonAccountPopUp.option1')}
               </Typography>
               <input
@@ -76,7 +76,7 @@ const DeleteAccountReasonPopUp: React.FC<Props> = ({ onClose }) => {
               />
             </div>
             <div className="flex justify-between">
-              <Typography aria-label="radioButton01" className="text-lg">
+              <Typography className="text-lg">
                 {t('DeleteReasonAccountPopUp.option2')}
               </Typography>
               <input
@@ -89,7 +89,7 @@ const DeleteAccountReasonPopUp: React.FC<Props> = ({ onClose }) => {
               />
             </div>
             <div className="flex justify-between">
-              <Typography aria-label="radioButton01" className="text-lg">
+              <Typography className="text-lg">
                 {t('DeleteReasonAccountPopUp.option3')}
               </Typography>
               <input

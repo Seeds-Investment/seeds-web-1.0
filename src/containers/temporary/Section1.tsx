@@ -42,20 +42,20 @@ export default function Section1(): React.ReactElement {
   };
 
   const renderCard = (): JSX.Element => (
-    <CCard className="bg-clip overflow-hidden h-[670px] md:h-auto lg:h-auto shadow-lg rounded-xl border border-seeds-soft bg-white bg-opacity-30 mt-[100px] xl:mt-[300px]">
+    <CCard className="bg-clip overflow-hidden h-[700px] md:h-auto lg:h-auto shadow-lg rounded-xl border border-seeds-soft bg-white bg-opacity-30 mt-[100px] xl:mt-[300px]">
       <div
         className="flex flex-col p-6 bg-no-repeat bg-right-bottom bg-[length:412px] h-full w-full md:bg-[length:340px] md:p-16 lg:bg-[length:420px]"
         style={{ backgroundImage: "url('/assets//temporary/play-ipon.png')" }}
       >
         <div>
-          <Typography className="text-center text-[24px] text-[#262626] font-bold md:text-left md:text-[32px] lg:text-[64px] leading-none">
-            {t('temporary.welcome.1')}
+          <Typography className="text-center text-[30px] text-transparent bg-clip-text bg-gradient-to-l from-[#7555DA] to-[#4FE6AF] font-bold md:text-left md:text-[32px] lg:text-[64px]">
+            {t('landingPageV2.product.section6.title1')}
           </Typography>
-          <Typography className="text-center text-[24px] text-[#262626] font-bold md:text-left md:text-[32px] lg:text-[64px] leading-none">
-            {t('temporary.welcome.2')}
+          <Typography className="text-center text-[30px] text-[#262626] font-bold md:text-left md:text-[32px] lg:text-[64px] leading-8">
+            {t('landingPageV2.product.section6.title2')}
           </Typography>
-          <Typography className="text-center text-l text-[#262626] font-normal my-3 md:my-6 lg:my-9 md:text-left md:w-[50%] lg:text-[18px] lg:w-[60%] lg:text-[24px]">
-            {t('temporary.description')}
+          <Typography className="text-center text-lg text-[#262626] font-normal my-3 md:my-6 lg:my-9 md:text-left md:w-[50%] lg:text-[18px] lg:w-[60%] lg:text-[24px]">
+            {t('landingPageV2.product.section6.title3')}
           </Typography>
         </div>
         <div className="flex justify-around md:justify-start">

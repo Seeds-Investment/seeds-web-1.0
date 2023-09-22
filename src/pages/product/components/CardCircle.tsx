@@ -54,14 +54,14 @@ export default function CardCircle(): React.ReactElement {
             circle.map((data, idx) => (
               <div
                 key={idx}
-                className="border border-black/10 rounded-[26px] bg-[url] w-full h-[25vh] my-4"
+                className="relative border border-black/10 rounded-[26px] bg-[url] w-full h-[25vh] my-4"
               >
                 <img
                   src={`${data.banner}`}
                   alt=""
-                  className="w-full h-full object-fill relative rounded-[26px] brightness-50"
+                  className="absolute w-full h-full object-fill rounded-[26px] brightness-50"
                 />
-                <div className="relative z-10 pt-10 w-full h-full rounded-[26px]">
+                <div className="relative z-10 xl:pt-[30px] pt-10 w-full h-full rounded-[26px]">
                   <img
                     src={data.image}
                     className="w-[82px] h-[82px] mx-auto border-4 border-white rounded-full"

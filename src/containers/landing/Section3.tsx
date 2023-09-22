@@ -1,5 +1,6 @@
 'use client';
 import about from '@/assets/landing-page/about.png';
+import gradient from '@/assets/landing-page/gradient-testi.png';
 import shape from '@/assets/landing-page/shape.png';
 import trophy from '@/assets/landing-page/trophy.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -129,6 +130,11 @@ export default function Section3(): React.ReactElement {
         <p className="text-2xl font-normal text-[#262626] xl:mt-0 mt-5 xl:w-[90%]">
           {t('landing.section3.text5')}
         </p>
+        <Image
+          src={gradient}
+          alt="gradient"
+          className="absolute translate-y-[200px]"
+        />
       </div>
       <div className="w-full h-full mb-16 mt-10 mx-3 md:mx-20 lg:mx-6">
         <Slider {...settings}>

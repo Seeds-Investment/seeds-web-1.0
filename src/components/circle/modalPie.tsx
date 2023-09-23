@@ -1,9 +1,9 @@
 import { Ethereum } from '@/constants/assets/icons';
+import NoDataModal from '@/containers/circle/create-circle/modalNoData';
 import { Switch } from '@headlessui/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import NoDataModal from './modalNoData';
 
 const PieModal = ({ closePieModal }: any): any => {
   const [cardCount, setCardCount] = useState<number[]>([0, 0, 0, 0]);

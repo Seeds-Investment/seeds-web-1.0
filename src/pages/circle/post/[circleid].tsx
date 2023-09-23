@@ -2,7 +2,12 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
+import Modal from '@/components/ui/modal/Modal';
+import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
+import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
+import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
 import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
 import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
@@ -12,14 +17,18 @@ import {
   UseUploadMedia,
   createPostCircleDetail,
   getCirclePost,
-  getCircleRecomend
+  getCircleRecomend,
+  getDetailCircle,
+  getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { PDFViewer } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
+import PieModal from '../../../components/circle/modalPie';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
-import PieModal from '../components/modalPie';
 
 const dataSelection: typeOfSelection[] = [
   {
@@ -86,12 +95,19 @@ interface form {
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
-  const [audio, setAudio] = useState<any>();
+  const [audio, setAudio] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
   const [isPieModalOpen, setIsPieModalOpen] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalLeave, setOpenModalLeave] = useState(false);
+  const [openModalReport, setOpenMOdalReport] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [dataCircle, setData]: any = useState({});
+  const [document, setDocument]: any = useState<any>(null);
+  const [docModal, setDocModal]: any = useState<boolean>(false);
   // const [pieData, setPieData] = useState({/* data untuk modal pie */});
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
@@ -122,6 +138,7 @@ const CirclePost = (): JSX.Element => {
 
   const [dataPost, setDataPost]: any = useState([]);
   const [dataRecommend, setDataRecommend]: any = useState([]);
+  const [isJoined, setIsJoined] = useState(false);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
@@ -130,6 +147,25 @@ const CirclePost = (): JSX.Element => {
       const { data } = await getCirclePost({ circleId });
 
       setDataPost(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Post:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchUserInfo = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getStatusCircle({ circleId });
+      const { status }: any = data;
+
+      if (status === 'accepted') {
+        setIsJoined(true);
+      } else {
+        setIsJoined(false);
+      }
     } catch (error: any) {
       console.error('Error fetching Circle Post:', error.message);
     } finally {
@@ -154,6 +190,7 @@ const CirclePost = (): JSX.Element => {
   useEffect(() => {
     void fetchCirclePost();
     void fetchCircleRecommended();
+    void fetchUserInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [circleId]);
 
@@ -239,6 +276,7 @@ const CirclePost = (): JSX.Element => {
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
       const { data } = await UseUploadMedia(mediaFile);
+      console.log(data, '<><>');
       form.media_urls.push(data.path);
     } catch (error: any) {
       console.error('Error Post Media:', error.message);
@@ -254,6 +292,9 @@ const CirclePost = (): JSX.Element => {
       }
       if (audio !== undefined && audio !== null) {
         await postMedia(audio);
+      }
+      if (document !== undefined && document !== null) {
+        await postMedia(document);
       }
       const payload: any = {
         content_text: form.content_text,
@@ -286,7 +327,9 @@ const CirclePost = (): JSX.Element => {
           endDate: ''
         }
       });
+      setAudio(null);
       setMedia(undefined);
+      setDocument(null);
       setHashtags([]);
       await fetchCirclePost();
       await fetchCircleRecommended();
@@ -319,81 +362,203 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
+  const handleOpenModalDelete = (): void => {
+    setOpenModalDelete(!openModalDelete);
+  };
+
+  const handleOpenModalLeave = (): void => {
+    setOpenModalLeave(!openModalLeave);
+  };
+
+  const handleOpenModalReport = (): void => {
+    setOpenMOdalReport(!openModalReport);
+  };
+
+  const handleEditCircle = (): void => {
+    setIsEdit(!isEdit);
+  };
+
+  const fetchDetailCircle = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getDetailCircle({ circleId });
+
+      setData(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void fetchDetailCircle();
+  }, []);
+
   return (
     <MainPostLayout
       circleId={circleId}
       dataPost={dataPost}
       dataRecommend={dataRecommend}
+      openModalDelete={handleOpenModalDelete}
+      openModalLeave={handleOpenModalLeave}
+      openModalReport={handleOpenModalReport}
+      handleEdit={handleEditCircle}
+      isEdit={isEdit}
+      isJoined={isJoined}
+      setIsJoined={setIsJoined}
     >
       {/* posting section */}
-      <div className="hidden md:block bg-white mt-8 w-full rounded-xl">
+      <div className="block bg-white mt-8 w-full rounded-xl">
         {isLoading ? renderLoading() : <></>}
         <div className="flex flex-col px-14 pt-8">
-          <ProfilePost
-            handleDropDown={handleDropDown}
-            dropVal={dropVal}
-            drop={drop}
-            dataSelection={dataSelection}
-            handleInputChange={handleInputChange}
-          />
-          {/* form text section */}
-          <form onSubmit={handlePostCircle}>
-            {media !== undefined && pages !== 'gif' ? (
-              <div className="flex justify-center pb-2">
-                <img
-                  src={URL?.createObjectURL(media)}
-                  alt="Preview Image"
-                  className="object-cover max-h-[30vh] w-fit"
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-            {form.media_urls.length > 0 && pages !== 'gif' ? (
-              form.media_urls.map((el: any, i: number) => {
-                return (
-                  <div
-                    className="max-h-[230px] max-w-[230px] pl-16 mb-5"
-                    key={`${i} + 'MEDIA_URL'`}
-                  >
+          {isEdit ? (
+            <EditCircle dataCircle={dataCircle} circleId={circleId} />
+          ) : (
+            <>
+              <ProfilePost
+                handleDropDown={handleDropDown}
+                dropVal={dropVal}
+                drop={drop}
+                dataSelection={dataSelection}
+                handleInputChange={handleInputChange}
+              />
+              {/* form text section */}
+              <form onSubmit={handlePostCircle}>
+                {media !== undefined && pages !== 'gif' && (
+                  <div className="flex justify-center pb-2">
                     <img
-                      src={el}
-                      alt="gif"
-                      className="h-[230px] w-[230px] object-cover"
+                      src={URL?.createObjectURL(media)}
+                      alt="Preview Image"
+                      className="object-cover max-h-[30vh] w-fit"
                     />
                   </div>
-                );
-              })
-            ) : (
-              <></>
-            )}
-            {handlePages()}
-            {form.polling?.options.length > 0 && pages === 'text' ? (
-              form.polling?.options.map((el: any, i: number) => {
-                return (
-                  <div
-                    className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
-                    key={`${i} + 'Polling'`}
-                  >
-                    {el.content_text}
-                  </div>
-                );
-              })
-            ) : (
-              <></>
-            )}
-            {pages !== 'gif' ? (
-              <UniqueInputButton
-                setPages={setPages}
-                setMedia={setMedia}
-                openPieModal={openPieModal}
-              />
-            ) : (
-              <></>
-            )}
-          </form>
+                )}
+                {document !== undefined &&
+                  document !== null &&
+                  pages !== 'gif' && (
+                    <div className="flex justify-center pb-2">
+                      <div className="flex flex-col">
+                        <div
+                          className="flex justify-center cursor-pointer"
+                          onClick={() => {
+                            setDocModal(true);
+                          }}
+                        >
+                          <Image
+                            src={PDFViewer}
+                            alt="pdf"
+                            className="w-[100px] h-[100px]"
+                          />
+                        </div>
+                        <h1 className="text-base font-poppins font-medium">
+                          {document.name}
+                        </h1>
+                      </div>
+                      {docModal === true && (
+                        <Modal
+                          onClose={() => {
+                            setDocModal(false);
+                          }}
+                          modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+                        >
+                          <embed
+                            src={URL?.createObjectURL(document)}
+                            type="application/pdf"
+                            className="widthPDF h-screen"
+                          />
+                          <button
+                            className="z-50 fixed text-white top-3 -right-14"
+                            onClick={() => {
+                              setDocModal(false);
+                            }}
+                          >
+                            <svg
+                              className="h-8 w-8 text-white bg-black/20 rounded-full"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              {' '}
+                              <circle cx="12" cy="12" r="10" />{' '}
+                              <line x1="15" y1="9" x2="9" y2="15" />{' '}
+                              <line x1="9" y1="9" x2="15" y2="15" />
+                            </svg>
+                          </button>
+                        </Modal>
+                      )}
+                    </div>
+                  )}
+                {form.media_urls.length > 0 && pages !== 'gif' ? (
+                  form.media_urls.map((el: any, i: number) => {
+                    return (
+                      <div
+                        className="max-h-[230px] max-w-[230px] pl-16 mb-5"
+                        key={`${i} + 'MEDIA_URL'`}
+                      >
+                        <img
+                          src={el}
+                          alt="gif"
+                          className="h-[230px] w-[230px] object-cover"
+                        />
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+                {handlePages()}
+                {form.polling?.options.length > 0 && pages === 'text' ? (
+                  form.polling?.options.map((el: any, i: number) => {
+                    return (
+                      <div
+                        className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                        key={`${i} + 'Polling'`}
+                      >
+                        {el.content_text}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+                {pages !== 'gif' ? (
+                  <UniqueInputButton
+                    setPages={setPages}
+                    setMedia={setMedia}
+                    openPieModal={openPieModal}
+                    setDocument={setDocument}
+                  />
+                ) : (
+                  <></>
+                )}
+              </form>
+            </>
+          )}
         </div>
       </div>
+
+      <ModalDeleteCircle
+        open={openModalDelete}
+        handleOpen={handleOpenModalDelete}
+        circleId={circleId}
+      />
+
+      <ModalLeaveCircle
+        open={openModalLeave}
+        handleOpen={handleOpenModalLeave}
+        circleId={circleId}
+      />
+
+      <ModalReportCircle
+        open={openModalReport}
+        handleOpen={handleOpenModalReport}
+        circleId={circleId}
+      />
     </MainPostLayout>
   );
 };

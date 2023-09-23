@@ -1,26 +1,87 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import { joinCirclePost } from '@/repository/circleDetail.repository';
+import {
+  ArrowPathIcon,
+  ExclamationCircleIcon,
+  PencilSquareIcon,
+  TrashIcon
+} from '@heroicons/react/24/outline';
+import {
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList
+} from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 interface props {
-  circleId: string;
   isLoading: boolean;
   renderLoading: any;
   dataCircle: any;
+  openModalDelete: any;
+  openModalLeave: any;
+  openModalReport: any;
+  handleEdit: any;
+  isJoined: boolean;
+  setIsJoined: any;
 }
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
-  circleId,
   isLoading,
-  renderLoading
+  renderLoading,
+  openModalDelete,
+  openModalLeave,
+  openModalReport,
+  handleEdit,
+  isJoined,
+  setIsJoined
 }) => {
+  const [isLoadingJoin, setIsLoadingJoin] = useState<boolean>(false);
+  const router = useRouter();
+
+  const handleJoin = async (): Promise<void> => {
+    setIsLoadingJoin(true);
+    try {
+      if (dataCircle.type === 'free') {
+        const { success }: any | boolean = await joinCirclePost({
+          circle_id: dataCircle.id,
+          duration: 1,
+          payment_request: {}
+        });
+        if (success === true) {
+          setIsJoined(true);
+        }
+      } else {
+        router
+          .push(`/circle/payment/${dataCircle?.id as string}`)
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    } catch (error: any) {
+      console.error('Error Join Circle:', error.message);
+    } finally {
+      setIsLoadingJoin(false);
+    }
+  };
+
   return (
     <>
       {isLoading ? (
         renderLoading()
       ) : (
         <div className="flex flex-col bg-white rounded-xl">
+          {isLoadingJoin ? (
+            <div className="h-72">
+              <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+            </div>
+          ) : (
+            <></>
+          )}
           <div className="flex flex-col rounded-b-3xl px-14 py-8">
             <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
               <Image
@@ -42,9 +103,18 @@ const CirclePostSection1: React.FC<props> = ({
               />
             </div>
             <div className="md:hidden flex justify-end h-fit gap-4 relative bottom-20">
-              <button className="bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                Joined
-              </button>
+              {isJoined ? (
+                <button className="cursor-default bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
+                  Joined
+                </button>
+              ) : (
+                <button
+                  onClick={handleJoin}
+                  className="bg-seeds-button-green w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
+                >
+                  Join
+                </button>
+              )}
               <div className="flex flex-col justify-center">
                 <div className="flex">
                   <Image
@@ -52,13 +122,46 @@ const CirclePostSection1: React.FC<props> = ({
                     src={notification}
                     className="h-[24px] w-[24px] object-cover"
                   />
-                  <button type="button">
-                    <Image
-                      alt="menu_dot"
-                      src={dot_menu}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                  </button>
+                  <Menu placement="left">
+                    <MenuHandler>
+                      <button type="button">
+                        <Image
+                          alt="menu_dot"
+                          src={dot_menu}
+                          className="h-[24px] w-[24px] object-cover"
+                        />
+                      </button>
+                    </MenuHandler>
+                    <MenuList>
+                      <MenuItem onClick={handleEdit}>
+                        <div className="flex flex-row">
+                          <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                          Edit Cirlce
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalDelete}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                          Delete Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalReport}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Report Circle
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalLeave}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          Leave Circle
+                        </div>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </div>
               </div>
             </div>
@@ -94,23 +197,101 @@ const CirclePostSection1: React.FC<props> = ({
               </div>
               {/* notification button */}
               <div className="md:flex hidden h-fit gap-4">
-                <button className="bg-neutral-ultrasoft w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                  Joined
-                </button>
-                <div className="flex flex-col justify-center">
-                  <div className="flex">
-                    <Image
-                      alt="notification"
-                      src={notification}
-                      className="h-[24px] w-[24px] object-cover"
-                    />
-                    <button type="button">
-                      <Image
-                        alt="menu_dot"
-                        src={dot_menu}
-                        className="h-[24px] w-[24px] object-cover"
-                      />
-                    </button>
+                <div
+                  className={`relative ${
+                    dataCircle.type === 'free' ? '' : 'bottom-7'
+                  } `}
+                >
+                  {dataCircle.type === 'free' ? (
+                    <></>
+                  ) : (
+                    <div className="flex justify-start mb-2">
+                      <div className="flex justify-between w-full lg:px-8">
+                        <div className="flex place-items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="17"
+                            height="10"
+                            viewBox="0 0 17 10"
+                            fill="none"
+                          >
+                            <path
+                              d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                              fill="#FDBA22"
+                            />
+                          </svg>
+                          <h1 className="font-poppins text-seeds-purple pl-2">
+                            Premium
+                          </h1>
+                        </div>
+                        <h1 className="font-poppins text-seeds-purple">
+                          IDR {dataCircle.premium_fee}
+                        </h1>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    {isJoined ? (
+                      <button className="bg-neutral-ultrasoft cursor-default w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
+                        Joined
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleJoin}
+                        className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
+                      >
+                        Join
+                      </button>
+                    )}
+                    <div className="flex flex-col justify-center">
+                      <div className="flex">
+                        <Image
+                          alt="notification"
+                          src={notification}
+                          className="h-[24px] w-[24px] object-cover"
+                        />
+                        <Menu placement="left">
+                          <MenuHandler>
+                            <button type="button">
+                              <Image
+                                alt="menu_dot"
+                                src={dot_menu}
+                                className="h-[24px] w-[24px] object-cover"
+                              />
+                            </button>
+                          </MenuHandler>
+                          <MenuList>
+                            <MenuItem onClick={handleEdit}>
+                              <div className="flex flex-row">
+                                <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                                Edit Cirlce
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalDelete}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                                Delete Circle
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalReport}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                Report Circle
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalLeave}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                Leave Circle
+                              </div>
+                            </MenuItem>
+                          </MenuList>
+                        </Menu>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 'use client';
+import Modal from '@/components/ui/modal/Modal';
 import {
   ArrowDown,
   ArrowUp,
@@ -12,14 +13,17 @@ import {
 import { Sprout } from '@/constants/assets/images';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { PDFViewer } from 'public/assets/circle';
+import { useState } from 'react';
 import ImageCarousel from './CarouselImage';
-import PieCirclePost from './PieCirclePost';
 import PollingView from './PollingView';
 
 interface props {
   dataPost: any;
 }
 const PostSection: React.FC<props> = ({ dataPost }) => {
+  const [docModal, setDocModal]: any = useState<boolean>(false);
+
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
     const day = date.getUTCDate().toString().padStart(2, '0');
@@ -28,6 +32,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
 
     return `${day}/${month}/${year}`;
   }
+
   const words = dataPost.content_text.split(' ');
   function categorizeURL(url: string[]): any {
     // const imageExtensions = [
@@ -42,7 +47,9 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
     //   'heic',
     //   'heif'
     // ];
+
     const documentExtensions = ['pdf'];
+    // const voiceExtension: string[] = [];
     const media: string[] = [];
     const document: string[] = [];
 
@@ -59,7 +66,59 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
     if (media.length > 0) {
       return <ImageCarousel images={media} />;
     } else if (document.length > 0) {
-      return <></>;
+      return (
+        <div className="flex justify-start">
+          <div className="flex flex-col">
+            <div
+              className="flex justify-start cursor-pointer"
+              onClick={() => {
+                setDocModal(true);
+              }}
+            >
+              <Image
+                src={PDFViewer}
+                alt="pdf"
+                className="w-[100px] h-[100px]"
+              />
+            </div>
+          </div>
+          {docModal === true && (
+            <Modal
+              onClose={() => {
+                setDocModal(false);
+              }}
+              modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+            >
+              <embed
+                src={document[0]}
+                type="application/pdf"
+                className="widthPDF h-screen"
+              />
+              <button
+                className="z-50 fixed text-white top-3 -right-14"
+                onClick={() => {
+                  setDocModal(false);
+                }}
+              >
+                <svg
+                  className="h-8 w-8 text-white bg-black/20 rounded-full"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {' '}
+                  <circle cx="12" cy="12" r="10" />{' '}
+                  <line x1="15" y1="9" x2="9" y2="15" />{' '}
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </button>
+            </Modal>
+          )}
+        </div>
+      );
     }
   }
   return (
@@ -128,16 +187,17 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             <div className="flex">
               {words.map((el: string, i: number) => {
                 el += '\xa0';
-                console.log(el);
                 return el.startsWith('#') ? (
                   <>
-                    <Typography key={i}>
+                    <Typography key={`${i} + ${el}  + 'hashtags'`}>
                       <h1 className="text-[#5E44FF]">{el}</h1>
                     </Typography>
                   </>
                 ) : (
                   <>
-                    <Typography key={i}>{el}</Typography>
+                    <Typography key={`${i} + ${el} + 'normal text'`}>
+                      {el}
+                    </Typography>
                   </>
                 );
               })}
@@ -150,9 +210,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                 pollingDate={dataPost.polling_date}
               />
             )}
-
           </div>
-          <PieCirclePost data={dataPost} />
           <div className="flex justify-between items-center mt-4">
             <div className="flex gap-1 md:gap-5">
               <div className="flex items-center gap-1">

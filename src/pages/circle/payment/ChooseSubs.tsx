@@ -1,0 +1,158 @@
+import Button from '@/components/ui/button/Button';
+import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
+import { formatCurrency } from '@/utils/common/currency';
+
+import Image from 'next/image';
+import {
+  CircleBig,
+  CircleNormal,
+  CircleSmall,
+  circlePayment
+} from 'public/assets/circle';
+import { useState } from 'react';
+const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
+interface props {
+  dataPost: any;
+  setPages: any;
+}
+const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
+  const [monthVal, setMonthVal] = useState<string>('');
+  const height = useWindowInnerHeight();
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const { value } = event.target;
+    setMonthVal(value);
+  };
+
+  const handleSubmit = (event: any): void => {
+    event.preventDefault();
+    if (dataPost?.type !== 'lifetime' && monthVal === '') {
+      setPages('chooseSubs');
+    }
+    setPages('terms');
+  };
+
+  return (
+    <>
+      <div className="flex justify-center pt-4">
+        <h1 className="font-poppins font-semibold text-lg">Fee Membership</h1>
+      </div>
+      <div className="flex justify-center">
+        <div className="flex justify-center absolute pl-4 pt-2">
+          <Image
+            src={circlePayment}
+            alt="image"
+            className="w-[180px] h-[230px] z-50"
+          />
+        </div>
+        <div className="flex justify-center absolute pt-6">
+          <Image
+            src={CircleSmall}
+            alt="image"
+            className="w-[220px] h-[220px] z-10"
+          />
+        </div>
+        <div className="flex justify-center absolute pt-12">
+          <Image
+            src={CircleNormal}
+            alt="image"
+            className="w-[170px] h-[170px] z-20"
+          />
+        </div>
+        <div className="flex justify-center absolute pt-20">
+          <Image
+            src={CircleBig}
+            alt="image"
+            className="w-[110px] h-[110px] z-30"
+          />
+        </div>
+      </div>
+      <div className="flex justify-center pt-[250px]">
+        <h1 className="font-poppins max-w-[212px] font-semibold text-xl text-center">
+          Get Access to unlock your membership
+        </h1>
+      </div>
+      <div className="flex justify-center">
+        <h1 className="font-poppins max-w-[340px] font-light text-sm text-center">
+          Unlimited access to premium content from various experts.
+        </h1>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex justify-center pt-4">
+          <div className="grid grid-cols-2 gap-4">
+            {dataPost?.type === 'lifetime' ? (
+              <></>
+            ) : (
+              monthSubscription.map((el, i) => (
+                <label className="cursor-default" key={i}>
+                  <input
+                    type="radio"
+                    className="peer sr-only"
+                    name="type"
+                    onChange={handleInputChange}
+                    value={el}
+                  />
+                  <div
+                    className={`w-[150px] z-50 rounded-full ring-1 p-2 ${
+                      el !== monthVal
+                        ? 'text-black cursor-pointer bg-white hover:text-white ring-neutral-soft transition-all hover:shadow  hover:ring-white hover:bg-neutral-soft hover:ring-offset-1'
+                        : 'text-white cursor-not-allowed ring-white bg-seeds-green ring-offset-1'
+                    }`}
+                  >
+                    <div className="flex gap-2">
+                      <div className="flex justify-center w-full gap-5 ">
+                        <div className="flex flex-col justify-start">
+                          <p className="text-sm font-light font-poppins">
+                            {el}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+              ))
+            )}
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <div className="w-[350px] mt-2 rounded-2xl border border-seeds-purple">
+            <div className="bg-seeds-purple w-full p-2 rounded-t-xl pl-2 text-white">
+              <h1 className="font-poppins text-xs font-medium">
+                {dataPost?.type === 'lifetime'
+                  ? 'Lifetime Access'
+                  : 'Subscription'}
+              </h1>
+            </div>
+            <div className="flex justify-center">
+              <div className="flex flex-col pb-2">
+                <h1 className="pt-4 text-center font-poppins text-base font-semibold">
+                  Rp {formatCurrency(dataPost?.premium_fee)}
+                </h1>
+                <h1 className="pt-2 text-center font-poppins text-base font-light">
+                  Get full access according to your subscription time
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center mt-6">
+          <Button
+            props={{
+              type: 'submit'
+            }}
+            className={`w-[350px] rounded-full py-3 px-6 font-poppins font-semibold leading-4 ${
+              dataPost?.type !== 'lifetime' && monthVal === ''
+                ? 'bg-neutral-soft text-neutral-medium shadow-neutral-soft/20 hover:shadow-neutral-soft/40 shadow-md hover:shadow-lg'
+                : 'bg-seeds-button-green text-white shadow-seeds-green/20 hover:shadow-seeds-green/40 focus:outline-seeds-button-green shadow-md hover:shadow-lg'
+            } ${
+              height !== undefined && height < 760 ? 'text-xs' : 'text-sm'
+            }transition-all duration-300 active:opacity-80 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+            label={'Next'}
+          />
+        </div>
+      </form>
+    </>
+  );
+};
+export default ChooseSubs;

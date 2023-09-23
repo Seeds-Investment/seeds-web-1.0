@@ -12,7 +12,7 @@ const SuccessCard = ({
   isSuccessSendEmail
 }: {
   onSubmit: (props: any) => void;
-  isSuccessSendEmail?: boolean
+  isSuccessSendEmail?: boolean;
 }): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -31,7 +31,11 @@ const SuccessCard = ({
 
   return (
     <div className=" flex flex-col items-center justify-center">
-      <SliderCard slide={(isSuccessSendEmail ?? false) ? successSendEmailScreen : successScreen} />
+      <SliderCard
+        slide={
+          isSuccessSendEmail ?? false ? successSendEmailScreen : successScreen
+        }
+      />
       <br className="lg:hidden" />
       <br className="lg:hidden" />
       <br className="lg:hidden" />

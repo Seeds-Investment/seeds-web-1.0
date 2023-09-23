@@ -76,7 +76,7 @@ const DeactiveDeletePage: React.FC<Props> = ({ onClose }) => {
               name="radioGroup"
               className="appearance-none w-6 h-6 rounded-full border border-gray-500 checked:bg-seeds-green checked:border-white focus:outline-none ring-2 ring-seeds-green"
             />
-            <Typography htmlFor="radioButton01" className="mx-5 text-sm">
+            <Typography className="mx-5 text-sm">
               {t('Deactive.text4')}
             </Typography>
           </div>
@@ -91,7 +91,7 @@ const DeactiveDeletePage: React.FC<Props> = ({ onClose }) => {
                 className="appearance-none w-6 h-6 rounded-full border border-gray-500 checked:bg-seeds-green checked:border-white focus:outline-none ring-2 ring-seeds-green"
               />
             </Link>
-            <Typography htmlFor="radioButton02" className="mx-5 text-sm">
+            <Typography className="mx-5 text-sm">
               {t('Deactive.text5')}
             </Typography>
           </div>

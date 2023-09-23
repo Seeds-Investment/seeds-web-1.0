@@ -33,7 +33,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const menus = useMemo(
     () => [
       {
-        label: t('landing.section6.term'),
+        label: t('legal.title1'),
         altStartAdornment: 'terms-condition',
         startAdornment: FileTextIcon,
         onClick: async (): Promise<void> => {
@@ -46,7 +46,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: t('landing.section6.disclosure'),
+        label: t('legal.title2'),
         altStartAdornment: 'disclosure',
         startAdornment: Disclosure,
         onClick: async (): Promise<void> => {
@@ -59,7 +59,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: t('landing.section6.privacy'),
+        label: t('legal.title3'),
         altStartAdornment: 'privacy-policy',
         startAdornment: PrivacyPolicy,
         onClick: async (): Promise<void> => {
@@ -72,7 +72,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: t('landing.section6.social'),
+        label: t('legal.title4'),
         altStartAdornment: 'social-media-guide',
         startAdornment: SosmedGuide,
         onClick: async (): Promise<void> => {
@@ -85,7 +85,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: t('landing.section6.circle'),
+        label: t('legal.title5'),
         altStartAdornment: 'circle-membership',
         startAdornment: CircleMembership,
         onClick: async (): Promise<void> => {

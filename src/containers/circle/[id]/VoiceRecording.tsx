@@ -13,7 +13,6 @@ export const VoiceRecorder: React.FC<props> = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  console.log(audioUrl);
 
   // const [audioData, setAudioData] = useState<any>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -57,54 +56,17 @@ export const VoiceRecorder: React.FC<props> = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (!audio) return;
-  //   const audioCtx = new (window.AudioContext || window.AudioContext)();
-  //   const analyser = audioCtx.createAnalyser();
-  //   analyser.fftSize = 256;
-  //   const bufferLength = analyser.frequencyBinCount;
-  //   const dataArray = new Uint8Array(bufferLength);
-
-  //   audio
-  //     .arrayBuffer()
-  //     .then((arrayBuffer: ArrayBuffer) => {
-  //       return new Promise<AudioBuffer>((resolve, reject) => {
-  //         audioCtx.decodeAudioData(arrayBuffer, resolve, reject);
-  //       });
-  //     })
-  //     .then((audioBuffer: ArrayBuffer) => {
-  //       const source = audioCtx.createBufferSource();
-  //       source.buffer = audioBuffer;
-  //       source.connect(analyser);
-  //       analyser.connect(audioCtx.destination);
-  //       source.start();
-
-  //       const updateAudioData = () => {
-  //         analyser.getByteFrequencyData(dataArray);
-  //         setAudioData(dataArray);
-  //         requestAnimationFrame(updateAudioData);
-  //       };
-
-  //       updateAudioData();
-
-  //       return () => {
-  //         source.stop();
-  //         audioCtx.close();
-  //       };
-  //     })
-  //     .catch((error: any) => console.error(error));
-
-  //   return () => {};
-  // }, [audio]);
-
   return (
     <>
-      {audioUrl !== null && audioUrl !== undefined && audioUrl !== '' && (
-        <audio controls>
-          <source src={audioUrl} type="audio/wav" className="w-full" />
-          Your browser does not support the audio element.
-        </audio>
-      )}
+      {audioUrl !== null &&
+        audioUrl !== undefined &&
+        audioUrl !== '' &&
+        audio !== null && (
+          <audio controls>
+            <source src={audioUrl} type="audio/wav" className="w-full" />
+            Your browser does not support the audio element.
+          </audio>
+        )}
       <div className="flex items-center flex-col">
         <div
           className={`mb-4 rounded-full ${

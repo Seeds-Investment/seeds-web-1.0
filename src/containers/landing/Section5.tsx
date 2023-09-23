@@ -1,112 +1,215 @@
-import medal from '@/assets/landing-page/medal.png';
-import thropy from '@/assets/landing-page/s4-thropy.png';
-import line from '@/assets/landing-page/s5-line.png';
-import CCard from '@/components/CCard';
-import { competitionCardList } from '@/utils/_static/dummy';
+import bg from '@/assets/landing-page/bg-discover.png';
+import faq from '@/assets/landing-page/faq.png';
+import CarouselNewsDesktop from '@/components/carousel/CarouselNewsDesktop';
+import CarouselNewsMobile from '@/components/carousel/CarouselNewsMobile';
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader
+} from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Settings } from 'react-slick';
-import Slider from 'react-slick';
-import Section5Card from './Section5Card';
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
-  const settings: Settings = {
-    // autoplay: false,
-    // slidesToShow: 3,
-    // dots: true,
-    // infinite: true,
-    // speed: 500,
-    // slidesToScroll: 1
-    centerMode: true,
-    slidesToShow: 4,
-    speed: 500,
-    slidesToScroll: 1,
-    dots: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: true,
-          slidesToShow: 3
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: true,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: true,
-          slidesToShow: 1
-        }
-      }
-    ]
+  const [open, setOpen] = useState(1);
+
+  interface iconProps {
+    id: number;
+    open: number;
+  }
+
+  function Icon({ id, open }: iconProps): JSX.Element {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className={`${
+          id === open ? 'rotate-180' : ''
+        } h-5 w-5 transition-transform`}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+        />
+      </svg>
+    );
+  }
+
+  const handleOpen = (value: number): void => {
+    setOpen(open === value ? 0 : value);
   };
 
   return (
-    <div className="min-w-full h-auto cursor-default mt-7 md:mt-4 lg:mb-10">
-      <div className="flex flex-col items-center justify-center">
-        <CCard
-          className="h-[150px] w-[300px] rounded-b-[50px] border bg-gradient-to-tr from-deep-purple-300  to-seeds-green p-[1px]
-                        md:h-[200px] md:w-[430px] lg:h-[250px] lg:w-[580px]"
-        >
-          <div
-            className="text-center text-lg font-bold tracking-widest text-shadow-white text-seeds-purple z-20 mb-4
-                        md:text-3xl lg:text-6xl"
-          >
-            {t('landing.section5.text1')}
-          </div>
-          <div className="relative w-full flex justify-center">
-            <div
-              className="text-xs font-light text-white text-center mx-5
-                          md:text-sm lg:text-base"
-            >
-              {t('landing.section5.text2')}
+    <div>
+      <div className="min-w-full h-auto cursor-default mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
+        <span className="text-3xl font-semibold px-6  bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
+          {t('landing.section5.text1')}
+        </span>
+        <h2 className="text-2xl font-normal text-[#7C7C7C] px-6 mt-5 xl:w-[50%] mx-auto">
+          {t('landing.section5.text2')}
+        </h2>
+        <div className="h-full flex items-center justify-center mt-7">
+          {/* Parent container */}
+          <div className="xl:w-4/5 w-[90%] bg-white bg-opacity-40 border xl:border-[#4FE6AF] border-[#7555DA] rounded-lg xl:rounded-[24px] shadow-md overflow-hidden text-center xl:p-5">
+            <div className="bg-white bg-opacity-40 xl:p-4 relative">
+              {/* Carousel container with overflow hidden */}
+              <section className="xl:block hidden">
+                <Image
+                  src={bg}
+                  alt="bg"
+                  width={1200}
+                  className="absolute -top-4 left-8"
+                />
+                <CarouselNewsDesktop />
+              </section>
+              <section className="xl:hidden block">
+                <CarouselNewsMobile />
+              </section>
             </div>
           </div>
-
-          <Image
-            alt="peoples"
-            className="w-[20%] z-30 translate-x-[0rem] -translate-y-[8rem]
-              md:w-[10%] md:-translate-y-[7.5rem]
-              lg:w-[11%] lg:translate-x-[0rem] lg:-translate-y-[10rem]"
-            src={medal}
-          />
-
-          <Image
-            alt="peoples"
-            className="w-[10%] z-30 translate-x-[16rem] -translate-y-[5rem]
-            md:w-[10%] md:translate-x-[23rem] md:-translate-y-[1.5rem]
-            lg:w-[10%] lg:translate-x-[32rem] lg:-translate-y-[3.5rem]"
-            src={thropy}
-          />
-
-          <Image
-            alt="peoples"
-            className="w-[280px] translate-x-[2rem] -translate-y-[14rem] flex justify-center -z-10
-            md:w-[480px] md:h-[220px] md:translate-x-[1rem] md:-translate-y-[13rem]
-            lg:w-[580px] lg:h-[250px] lg:translate-x-[1rem] lg:-translate-y-[17.5rem]"
-            src={line}
-          />
-        </CCard>
-      </div>
-
-      <div className="px-10 w-full h-full mb-16 mt-10">
-        <div className="text-seeds-purple text-[32px] font-bold mb-4 lg:ml-10">
-          {t('landing.section5.text1')}
         </div>
-
-        <div className="">
-          <Slider {...settings}>
-            {competitionCardList.map((data, idx) => (
-              <Section5Card key={idx} data={data} />
-            ))}
-          </Slider>
+        <div className="mt-[150px] flex flex-col">
+          <div className="flex flex-row w-full justify-center">
+            <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
+              {t('landing.section6.text1')}
+            </span>
+            <span className="text-3xl font-semibold bg-clip-text text-transparent bg-[#201B1C] mr-2 md:text-5xl lg:text-7xl pb-4">
+              {t('landing.section6.text2')}
+            </span>
+          </div>
+          <p className="text-2xl font-normal text-[#262626] text-center px-4 mt-5">
+            {t('landing.section6.text3')}
+          </p>
+          <div>
+            <img
+              src="/assets/images/communities.png"
+              alt=""
+              className="mt-10 xl:block hidden w-full h-full"
+            />
+            <img
+              src="/assets/images/community.png"
+              alt=""
+              className="-mt-[200px] xl:hidden block w-full h-full"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="mt-20">
+        <Image
+          src={faq}
+          alt="faq"
+          className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
+        />
+        <div className="flex flex-col w-full justify-center text-center">
+          <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
+            {t('faq.title')}
+          </span>
+          <span className="text-2xl font-normal text-[#201B1C] xl:mt-5 px-5">
+            {t('faq.subTitle')}
+          </span>
+          <div className="xl:w-2/3 w-[90%] mx-auto xl:mt-7 mt-5 text-start font-poppins">
+            <Accordion
+              icon={<Icon id={1} open={open} />}
+              open={open === 1}
+              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+            >
+              <AccordionHeader
+                onClick={(): void => {
+                  handleOpen(1);
+                }}
+                className={`border-b-0 transition-colors ${
+                  open === 1 ? 'text-blue-500 hover:!text-blue-700' : ''
+                }`}
+              >
+                {t('faq.faq.title.1')}
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal">
+                {t('faq.faq.desc.1')}
+              </AccordionBody>
+            </Accordion>
+            <Accordion
+              icon={<Icon id={2} open={open} />}
+              open={open === 2}
+              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+            >
+              <AccordionHeader
+                onClick={(): void => {
+                  handleOpen(2);
+                }}
+                className={`border-b-0 transition-colors ${
+                  open === 2 ? 'text-blue-500 hover:!text-blue-700' : ''
+                }`}
+              >
+                {t('faq.faq.title.2')}
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal">
+                {t('faq.faq.desc.2')}
+              </AccordionBody>
+            </Accordion>
+            <Accordion
+              icon={<Icon id={3} open={open} />}
+              open={open === 3}
+              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+            >
+              <AccordionHeader
+                onClick={(): void => {
+                  handleOpen(3);
+                }}
+                className={`border-b-0 transition-colors ${
+                  open === 3 ? 'text-blue-500 hover:!text-blue-700' : ''
+                }`}
+              >
+                {t('faq.faq.title.3')}
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal">
+                {t('faq.faq.desc.3')}
+              </AccordionBody>
+            </Accordion>
+            <Accordion
+              icon={<Icon id={4} open={open} />}
+              open={open === 4}
+              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+            >
+              <AccordionHeader
+                onClick={(): void => {
+                  handleOpen(4);
+                }}
+                className={`border-b-0 transition-colors ${
+                  open === 4 ? 'text-blue-500 hover:!text-blue-700' : ''
+                }`}
+              >
+                {t('faq.faq.title.4')}
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal">
+                {t('faq.faq.desc.4')}
+              </AccordionBody>
+            </Accordion>
+            <Accordion
+              icon={<Icon id={5} open={open} />}
+              open={open === 5}
+              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+            >
+              <AccordionHeader
+                onClick={(): void => {
+                  handleOpen(5);
+                }}
+                className={`border-b-0 transition-colors ${
+                  open === 5 ? 'text-blue-500 hover:!text-blue-700' : ''
+                }`}
+              >
+                {t('faq.faq.title.5')}
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal">
+                {t('faq.faq.desc.5')}
+              </AccordionBody>
+            </Accordion>
+          </div>
         </div>
       </div>
     </div>

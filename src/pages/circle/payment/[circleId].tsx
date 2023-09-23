@@ -1,5 +1,6 @@
 import CirclePaymentLayout from '@/components/layouts/CirclePaymentLayout';
 import Loading from '@/components/popup/Loading';
+import TermConditionPage from '@/containers/circle/create-circle/termConditionPage';
 import PaymentList from '@/containers/play/payment/PaymentList';
 import {
   getDetailCircle,
@@ -11,8 +12,11 @@ import ChooseSubs from './ChooseSubs';
 
 const CirclePayment: React.FC = () => {
   const router = useRouter();
+
   const circleId: string | any = router.query.circleId;
-  const [pages, setPages] = useState('chooseSubs');
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [pages, setPages] = useState<string>('chooseSubs');
   const [dataPost, setDataPost]: any = useState();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const height = useWindowInnerHeight();
@@ -55,7 +59,26 @@ const CirclePayment: React.FC = () => {
     if (pages === 'chooseSubs') {
       return <ChooseSubs setPages={setPages} dataPost={dataPost} />;
     } else if (pages === 'terms') {
-      return <div></div>;
+      return (
+        <div className="flex justify-center ">
+          <TermConditionPage
+            isChecked={isChecked}
+            setIsChecked={setIsChecked}
+            handleRoute={() => {
+              if (isChecked) {
+                setIsError(false);
+                setPages('choosePayment');
+              }
+              setIsError(true);
+            }}
+          />
+          {isError && (
+            <h1 className="absolute bottom-[70px] font-poppins font-medium text-center text-red-400">
+              Please accept our Terms and Condition
+            </h1>
+          )}
+        </div>
+      );
     }
   };
   return (
@@ -65,7 +88,7 @@ const CirclePayment: React.FC = () => {
         <PaymentList dataPost={dataPost} />
       ) : (
         <CirclePaymentLayout>
-          <div className="bg-white w-screen sm:w-full h-fit mb-10 rounded-xl">
+          <div className=" w-screen sm:w-full h-fit mb-10 rounded-xl">
             {handlePages()}
           </div>
         </CirclePaymentLayout>

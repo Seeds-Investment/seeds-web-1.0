@@ -30,7 +30,7 @@ const ChooseSubs: React.FC<props> = ({ dataPost, setPages }) => {
     if (dataPost?.type !== 'lifetime' && monthVal === '') {
       setPages('chooseSubs');
     }
-    setPages('choosePayment');
+    setPages('terms');
   };
 
   return (

@@ -26,11 +26,7 @@ const CirclePaymentLayout: React.FC<props> = ({ children }) => {
         defaultGradient={width !== undefined && width > 640}
         extraClasses={`w-[90%] sm:rounded-[18px] h-fit bg-white sm:p-6 py-6 mb-10`}
       >
-        <div
-          className={`z-10 flex flex-col justify-between lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-full mx-auto sm:p-4 px-4 bg-white`}
-        >
-          {children}
-        </div>
+        {children}
       </CardGradient>
     </PageGradient>
   );

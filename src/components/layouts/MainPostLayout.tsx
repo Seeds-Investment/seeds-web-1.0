@@ -2,6 +2,13 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CirclePostSection1 from '@/containers/circle/[id]/CirclePostSection1';
 import CirclePostSection2 from '@/containers/circle/[id]/CirclePostSection2';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
+import Image from 'next/image';
+import {
+  CircleBig,
+  CircleNormal,
+  CircleSmall,
+  LockedCircle
+} from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 
 interface props {
@@ -89,18 +96,63 @@ const MainPostLayout: React.FC<props> = ({
                 isJoined={isJoined}
                 setIsJoined={setIsJoined}
               />
-              {children}
-              {isEdit ? (
-                <></>
+              {dataCircle.type !== 'free' && !isJoined ? (
+                <div className="h-[80vh] rounded-xl bg-white mb-10">
+                  <div className="flex justify-center relative right-2">
+                    <Image
+                      src={LockedCircle}
+                      alt="image"
+                      className="w-[190px] h-[250px] z-50"
+                    />
+                  </div>
+                  <div className="flex justify-center relative bottom-[35%]">
+                    <Image
+                      src={CircleSmall}
+                      alt="image"
+                      className="w-[220px] h-[220px] z-10"
+                    />
+                  </div>
+                  <div className="flex justify-center relative bottom-[65%]">
+                    <Image
+                      src={CircleNormal}
+                      alt="image"
+                      className="w-[170px] h-[170px] z-20"
+                    />
+                  </div>
+                  <div className="flex justify-center relative bottom-[87%]">
+                    <Image
+                      src={CircleBig}
+                      alt="image"
+                      className="w-[110px] h-[110px] z-30"
+                    />
+                  </div>
+                  <div className="flex justify-center relative bottom-[75%]">
+                    <div className="flex flex-col gap-2">
+                      <h1 className="font-poppins font-semibold text-base text-center">
+                        This circle is private
+                      </h1>
+                      <h1 className="font-poppins font-light text-base text-center">
+                        Only members are able to access circles.
+                      </h1>
+                    </div>
+                  </div>
+                </div>
               ) : (
-                <CirclePostSection2
-                  setIsLoading={setIsLoading}
-                  circleId={circleId}
-                  dataPost={dataPost}
-                  dataRecommend={dataRecommend}
-                  isLoading={isLoading}
-                  renderLoading={renderLoading}
-                />
+                <>
+                  {children}
+                  {isEdit ? (
+                    <></>
+                  ) : (
+                    <CirclePostSection2
+                      setIsLoading={setIsLoading}
+                      circleId={circleId}
+                      dataPost={dataPost}
+                      dataRecommend={dataRecommend}
+                      isLoading={isLoading}
+                      renderLoading={renderLoading}
+                    />
+                  )}
+                </>
               )}
             </div>
           </div>

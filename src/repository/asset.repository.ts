@@ -1,16 +1,33 @@
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
-const authService = baseAxios(`https://seeds-dev.seeds.finance/asset/v1`);
+const devUrl = process?.env?.NEXT_PUBLIC_URL ?? '';
+const authService = baseAxios(`${devUrl}/asset/v1`);
+const authCircle = baseAxios(`${devUrl}/circle/v1`);
 const assetService = baseAxios(
-  `${
-    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
-  }/asset/v1/`
+  `${process.env.NEXT_PUBLIC_URL ?? devUrl}/asset/v1/`
+);
+const circleService = baseAxios(
+  `${process.env.NEXT_PUBLIC_URL ?? devUrl}/circle/v1/`
 );
 
 export const getTrendingAssets = async (): Promise<any> => {
   try {
     let response = await authService.get('/trending', {
+      params: {
+        page: 1,
+        limit: 10
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getTrendingCircle = async (): Promise<any> => {
+  try {
+    let response = await authCircle.get('/trending', {
       params: {
         page: 1,
         limit: 10
@@ -29,6 +46,14 @@ export const assetTop = async (params: any): Promise<any> => {
 
   return await assetService.get(`/trending`, {
     params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const circleTop = async (): Promise<any> => {
+  return await circleService.get(`/trending`, {
     headers: {
       Accept: 'application/json'
     }

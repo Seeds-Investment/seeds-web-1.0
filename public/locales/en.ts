@@ -239,6 +239,13 @@ export default {
     achievementBRONZETitle: 'Dapat {{count}} Bronze',
     achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
+  legal: {
+    title1: 'Terms & Conditions',
+    title2: 'Disclosure',
+    title3: 'Privacy Policy',
+    title4: 'Social Media Guidelines',
+    title5: 'Circle Membership'
+  },
   faq: {
     title: 'Frequently Asked Questions',
     subTitle: 'Find answers to your questions about Seeds',
@@ -968,12 +975,11 @@ export default {
     }
   },
   articleList: {
-    text1: 'News List',
+    text1: 'Latest Article',
     text2: 'Find more news you might like.',
     text3: 'Sort by',
     text4: 'Search'
   },
-
   validationErrors: {
     required: 'This field is required',
     invalidCountryCode: 'Invalid Country Code',

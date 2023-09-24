@@ -15,6 +15,7 @@ import {
   MenuList
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 interface props {
@@ -43,6 +44,8 @@ const CirclePostSection1: React.FC<props> = ({
   const [isLoadingJoin, setIsLoadingJoin] = useState<boolean>(false);
   const { t } = useTranslation();
   // const [payment, setPayment] = useState<any>({});
+  const router = useRouter();
+
   const handleJoin = async (): Promise<void> => {
     setIsLoadingJoin(true);
     try {
@@ -55,6 +58,12 @@ const CirclePostSection1: React.FC<props> = ({
         if (success === true) {
           setIsJoined(true);
         }
+      } else {
+        router
+          .push(`/circle/payment/${dataCircle?.id as string}`)
+          .catch(error => {
+            console.log(error);
+          });
       }
     } catch (error: any) {
       console.error('Error Join Circle:', error.message);

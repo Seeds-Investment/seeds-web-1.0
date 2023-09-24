@@ -31,7 +31,7 @@ const Header: React.FC = () => {
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', (): void => {
       if (window.innerWidth >= 960) {
         setOpenNav(false);
       }
@@ -139,7 +139,7 @@ const Header: React.FC = () => {
           <select
             className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
             value={selectedLanguage}
-            onChange={e => {
+            onChange={(e): void => {
               handleLanguageChange(e.target.value as 'EN' | 'ID');
             }}
           >
@@ -156,13 +156,13 @@ const Header: React.FC = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="3"
+              strokeWidth="3"
               stroke="#FFFFFF"
               className="w-6 h-6"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M19.5 8.25l-7.5 7.5-7.5-7.5"
               />
             </svg>
@@ -191,7 +191,7 @@ const Header: React.FC = () => {
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
               ripple={false}
-              onClick={() => {
+              onClick={(): void => {
                 setOpenNav(!openNav);
               }}
             >
@@ -318,7 +318,7 @@ const Header: React.FC = () => {
             <select
               className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
               value={selectedLanguage}
-              onChange={e => {
+              onChange={(e): void => {
                 handleLanguageChange(e.target.value as 'EN' | 'ID');
               }}
             >
@@ -335,13 +335,13 @@ const Header: React.FC = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="3"
+                strokeWidth="3"
                 stroke="#FFFFFF"
                 className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                 />
               </svg>

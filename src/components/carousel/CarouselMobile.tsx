@@ -2,7 +2,7 @@
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
 
-const numberMobile = ['1', '2', '3', '4', '5', '6'];
+const numberMobile = ['1', '2', '3', '4', '5', '6', '7'];
 
 const CarouselMobile: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ const CarouselMobile: React.FC = () => {
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                 activeIndex === i ? 'w-8 bg-white' : 'w-4 bg-white/50'
               }`}
-              onClick={() => {
+              onClick={(): void => {
                 setActiveIndex(i);
               }}
             />

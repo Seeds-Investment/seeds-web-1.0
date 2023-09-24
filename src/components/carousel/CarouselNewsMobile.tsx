@@ -37,7 +37,6 @@ const CarouselNewsMobile: React.FC = () => {
       console.error('devUrl is not a valid string or is an empty string.');
     }
   }, [devUrl, setCarouselData]);
-
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };

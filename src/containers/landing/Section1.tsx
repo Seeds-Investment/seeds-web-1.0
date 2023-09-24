@@ -61,7 +61,7 @@ export default function Section1(): React.ReactElement {
 
           <Image
             alt="img"
-            className="absolute w-[71px] -top-10 lg:w-[180px] xl:block hidden"
+            className="absolute w-[71px] -top-8 lg:w-[180px] xl:block hidden"
             src={medal}
           />
           <Image

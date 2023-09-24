@@ -2,9 +2,11 @@
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
 
+const number = ['1', '2', '3', '4', '5', '6', '7'];
 const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
 };
+console.log(number);
 
 const CarouselDesktop: React.FC = () => {
   return (
@@ -21,7 +23,7 @@ const CarouselDesktop: React.FC = () => {
               className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                 activeIndex === i ? 'w-8 bg-white' : 'w-4 bg-white/50'
               }`}
-              onClick={() => {
+              onClick={(): void => {
                 setActiveIndex(i);
               }}
             />
@@ -83,7 +85,7 @@ const CarouselDesktop: React.FC = () => {
         width={1443}
         height={937}
         className="h-full w-full object-cover cursor-pointer"
-        onClick={() => {
+        onClick={(): void => {
           handleItemClick(
             'https://play.google.com/store/apps/details?id=com.seeds.investment'
           );
@@ -95,7 +97,17 @@ const CarouselDesktop: React.FC = () => {
         width={1443}
         height={937}
         className="h-full w-full object-cover cursor-pointer"
-        onClick={() => {
+        onClick={(): void => {
+          handleItemClick('https://gplfantasy.app.link/SeedsGB');
+        }}
+      />
+      <Image
+        src={`/assets/carousel-8.jpeg`}
+        alt="image 1"
+        width={1443}
+        height={937}
+        className="h-full w-full object-cover cursor-pointer"
+        onClick={(): void => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
       />

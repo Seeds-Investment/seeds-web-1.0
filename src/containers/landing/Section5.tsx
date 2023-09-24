@@ -1,19 +1,45 @@
+import bg from '@/assets/landing-page/bg-discover.png';
+import faq from '@/assets/landing-page/faq.png';
 import CarouselNewsDesktop from '@/components/carousel/CarouselNewsDesktop';
 import CarouselNewsMobile from '@/components/carousel/CarouselNewsMobile';
 import {
   Accordion,
   AccordionBody,
-  AccordionHeader,
-  Button
+  AccordionHeader
 } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Section5(): React.ReactElement {
   const { t } = useTranslation();
-  const router = useRouter();
   const [open, setOpen] = useState(1);
+
+  interface iconProps {
+    id: number;
+    open: number;
+  }
+
+  function Icon({ id, open }: iconProps): JSX.Element {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className={`${
+          id === open ? 'rotate-180' : ''
+        } h-5 w-5 transition-transform`}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+        />
+      </svg>
+    );
+  }
 
   const handleOpen = (value: number): void => {
     setOpen(open === value ? 0 : value);
@@ -34,6 +60,12 @@ export default function Section5(): React.ReactElement {
             <div className="bg-white bg-opacity-40 xl:p-4 relative">
               {/* Carousel container with overflow hidden */}
               <section className="xl:block hidden">
+                <Image
+                  src={bg}
+                  alt="bg"
+                  width={1200}
+                  className="absolute -top-4 left-8"
+                />
                 <CarouselNewsDesktop />
               </section>
               <section className="xl:hidden block">
@@ -54,14 +86,6 @@ export default function Section5(): React.ReactElement {
           <p className="text-2xl font-normal text-[#262626] text-center px-4 mt-5">
             {t('landing.section6.text3')}
           </p>
-          <Button
-            className="text-xs px-10 font-semibold mx-auto capitalize text-md w-[350px] bg-seeds-purple rounded-full mt-10"
-            onClick={() => {
-              void router.push('/auth/register');
-            }}
-          >
-            Partnership Program
-          </Button>
           <div>
             <img
               src="/assets/images/communities.png"
@@ -77,132 +101,112 @@ export default function Section5(): React.ReactElement {
         </div>
       </div>
       <div className="mt-20">
+        <Image
+          src={faq}
+          alt="faq"
+          className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
+        />
         <div className="flex flex-col w-full justify-center text-center">
           <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
-            {t('landing.section7.text1')}
+            {t('faq.title')}
           </span>
           <span className="text-2xl font-normal text-[#201B1C] xl:mt-5 px-5">
-            {t('landing.section7.text2')}
+            {t('faq.subTitle')}
           </span>
-          <div className="xl:w-2/3 w-[90%] mx-auto mt-5 text-start font-poppins">
+          <div className="xl:w-2/3 w-[90%] mx-auto xl:mt-7 mt-5 text-start font-poppins">
             <Accordion
+              icon={<Icon id={1} open={open} />}
               open={open === 1}
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(1);
                 }}
                 className={`border-b-0 transition-colors ${
                   open === 1 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
               >
-                I want to ask more about Seeds products and services
+                {t('faq.faq.title.1')}
               </AccordionHeader>
               <AccordionBody className="pt-0 text-base font-normal">
-                You can contact our team via email contact: info@seeds.finance
+                {t('faq.faq.desc.1')}
               </AccordionBody>
             </Accordion>
             <Accordion
+              icon={<Icon id={2} open={open} />}
               open={open === 2}
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(2);
                 }}
                 className={`border-b-0 transition-colors ${
                   open === 2 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
               >
-                How safe is it to invest in Seeds?
+                {t('faq.faq.title.2')}
               </AccordionHeader>
               <AccordionBody className="pt-0 text-base font-normal">
-                Seeds has been formally operating in Indonesia under the name
-                PT. Technological Investment Seed and has been registered with
-                the Ministry of Communication and Information Technology
-                (KOMINFO).
+                {t('faq.faq.desc.2')}
               </AccordionBody>
             </Accordion>
             <Accordion
+              icon={<Icon id={3} open={open} />}
               open={open === 3}
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(3);
                 }}
                 className={`border-b-0 transition-colors ${
                   open === 3 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
               >
-                How can I access Seeds?
+                {t('faq.faq.title.3')}
               </AccordionHeader>
               <AccordionBody className="pt-0 text-base font-normal">
-                You can download the Seeds application via the Google Playstore
-                for those of you who are Android users and the Apple Appstore
-                for iOS users. Apart from that, you can also explore the Seeds
-                feature through the seeds.finance website
+                {t('faq.faq.desc.3')}
               </AccordionBody>
             </Accordion>
             <Accordion
+              icon={<Icon id={4} open={open} />}
               open={open === 4}
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(4);
                 }}
                 className={`border-b-0 transition-colors ${
                   open === 4 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
               >
-                What investment products are available at Seeds?
+                {t('faq.faq.title.4')}
               </AccordionHeader>
               <AccordionBody className="pt-0 text-base font-normal">
-                You can invest in various US stocks and cryptocurrencies (many
-                more to come!)
+                {t('faq.faq.desc.4')}
               </AccordionBody>
             </Accordion>
             <Accordion
+              icon={<Icon id={5} open={open} />}
               open={open === 5}
               className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
-                onClick={() => {
+                onClick={(): void => {
                   handleOpen(5);
                 }}
                 className={`border-b-0 transition-colors ${
                   open === 5 ? 'text-blue-500 hover:!text-blue-700' : ''
                 }`}
               >
-                How can I access Seeds?
+                {t('faq.faq.title.5')}
               </AccordionHeader>
               <AccordionBody className="pt-0 text-base font-normal">
-                You can download the Seeds application via the Google Playstore
-                for those of you who are Android users and the Apple Appstore
-                for iOS users. Apart from that, you can also explore the Seeds
-                feature through the seeds.finance website
-              </AccordionBody>
-            </Accordion>
-            <Accordion
-              open={open === 6}
-              className="rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
-            >
-              <AccordionHeader
-                onClick={() => {
-                  handleOpen(6);
-                }}
-                className={`border-b-0 transition-colors ${
-                  open === 6 ? 'text-blue-500 hover:!text-blue-700' : ''
-                }`}
-              >
-                What is Seeds?
-              </AccordionHeader>
-              <AccordionBody className="pt-0 text-base font-normal">
-                Seeds is the first social investing platform in Indonesia that
-                gives users access to US stocks and cryptocurrencies (many more
-                to come!).
+                {t('faq.faq.desc.5')}
               </AccordionBody>
             </Accordion>
           </div>

@@ -374,6 +374,7 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getDetailCircle({ circleId });
+      console.log('ini data circle', data);
 
       setData(data);
     } catch (error: any) {

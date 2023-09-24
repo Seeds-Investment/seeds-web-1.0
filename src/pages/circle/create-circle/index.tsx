@@ -117,11 +117,6 @@ const CreateCircle = (): React.ReactElement => {
   };
 
   const handleChangeValueCategory = (value: any[]): void => {
-    // const mappedOptions: any[] = value.map((item: any) => ({
-    //   id: item.value,
-    //   name: item.label
-    // }));
-
     const categoriesArray: string[] = value.map(item => item.label);
 
     setFormRequest(prevState => ({

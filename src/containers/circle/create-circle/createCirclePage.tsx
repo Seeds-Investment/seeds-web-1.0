@@ -10,8 +10,6 @@ import {
   Card,
   CardBody,
   Input,
-  Option,
-  Select,
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -72,7 +70,6 @@ const CreateCirclePage = ({
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [categories, setCategories] = useState<any[]>();
-  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
   const { t } = useTranslation();
@@ -110,18 +107,19 @@ const CreateCirclePage = ({
 
   const fetchCircleCategory = async (): Promise<void> => {
     try {
-      setIsLoadingCategory(true);
       getCircleCategories(initialFilterHashtags)
         .then(res => {
-          setIsLoadingCategory(false);
-          setCategories(res.data);
+          const mappedOptions: OptionType[] = res.data.map((item: any) => ({
+            value: item.id,
+            label: item.category
+          }));
+
+          setCategories(mappedOptions);
         })
         .catch(err => {
-          setIsLoadingCategory(false);
           console.log(err);
         });
     } catch (error: any) {
-      setIsLoadingCategory(false);
       console.error('Error fetching circle data:', error.message);
     }
   };
@@ -250,24 +248,16 @@ const CreateCirclePage = ({
 
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
-                    Category
+                    Categories
                   </label>
-                  <Select
-                    className="mt-2"
-                    name="category"
+                  <CreatableSelect
+                    isMulti
                     onChange={changeCategory}
-                  >
-                    {!isLoadingCategory ? (
-                      categories?.map((data, idx) => (
-                        <Option key={idx} value={data.category}>
-                          {data.category}
-                        </Option>
-                      ))
-                    ) : (
-                      <Option>loading...</Option>
-                    )}
-                  </Select>
-                  {error.category !== null ? (
+                    // value={formRequest.categories}
+                    options={categories}
+                    placeholder="Chosose Categories"
+                  />
+                  {error.hashtags !== null ? (
                     <Typography color="red" className="text-xs mt-2">
                       {error.category}
                     </Typography>

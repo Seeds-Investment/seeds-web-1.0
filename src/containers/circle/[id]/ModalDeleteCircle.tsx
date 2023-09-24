@@ -1,4 +1,5 @@
-import { successCircle } from '@/constants/assets/icons';
+import FinalModalCircle from '@/components/circle/FinalModalCircle';
+import { errorCircle, successCircleSetting } from '@/constants/assets/icons';
 import { deleteCircle } from '@/repository/circle.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
@@ -9,8 +10,6 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -22,8 +21,7 @@ interface props {
 
 const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const router = useRouter();
+  const [responseApi, setResponseApi] = useState('');
   const { t } = useTranslation();
 
   const handleSubmit = async (): Promise<void> => {
@@ -31,12 +29,12 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
       setIsLoading(true);
       deleteCircle(circleId)
         .then(res => {
-          setIsSuccess(true);
+          setResponseApi('success');
           setIsLoading(false);
-          window.alert('An error occurred while delete the circle');
         })
         .catch(err => {
           setIsLoading(false);
+          setResponseApi('failed');
           console.log(err);
         });
     } catch (error: any) {
@@ -46,83 +44,73 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   };
 
   return (
-    <Dialog
-      open={open}
-      handler={handleOpen}
-      className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
-    >
-      {isSuccess ? (
-        <div className="flex flex-col text-center items-center justify-center md:mx-18">
-          <Image
-            alt=""
-            src={successCircle.src}
-            height={0}
-            width={0}
-            className="mt-10 h-1/2 w-1/2"
-          />
+    <>
+      {responseApi === 'success' ? (
+        <FinalModalCircle
+          button="Done"
+          title="Circle has been deleted"
+          subtitle="Please join other interesting circles"
+          imageUrl={successCircleSetting.src}
+          handleOpen={handleSubmit}
+        />
+      ) : responseApi === 'failed' ? (
+        <FinalModalCircle
+          button="Done"
+          title="Oops!"
+          subtitle="Something went wrong, please try again later."
+          imageUrl={errorCircle.src}
+          handleOpen={handleSubmit}
+        />
+      ) : null}
 
-          <Typography className="text-base font-semibold mb-1 mt-5 md:lg lg:text-xl text-black">
-            {t('circleSetting.deleteCircle.popUpDeleteCircle.title')}
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
+      >
+        <DialogHeader className="flex justify-between items-center p-2 sm:p-4">
+          <p></p>
+          <XMarkIcon
+            className="cursor-pointer"
+            onClick={handleOpen}
+            width={30}
+            height={30}
+          />
+        </DialogHeader>
+
+        <DialogBody className="p-4 sm:p-8">
+          <Typography className="text-base font-semibold text-black text-center">
+            {t('circleSetting.deleteCircle.popUpDelete.title')}
           </Typography>
-          <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-base lg:text-lg text-[#7C7C7C]">
-            {t('circleSetting.deleteCircle.popUpDeleteCircle.subtitle')}
+          <Typography className="text-sm font-normal text-center mt-2 mx-3 lg:mx-10">
+            {t('circleSetting.deleteCircle.popUpDelete.subtitle1')}
           </Typography>
+          <Typography className="text-sm font-normal text-center mx-3 lg:mx-10">
+            {t('circleSetting.deleteCircle.popUpDelete.subtitle2')}
+          </Typography>
+        </DialogBody>
+
+        <DialogFooter className="flex flex-row sm:flex-row justify-center p-4 sm:p-8">
+          <Button
+            onClick={handleOpen}
+            color="purple"
+            variant="outlined"
+            className="rounded-full text-sm font-semibold mr-3"
+          >
+            {t('circleSetting.deleteCircle.popUpDelete.button1')}
+          </Button>
 
           <Button
-            className="text-xs font-semibold w-[70%] mb-5 bg-[#3AC4A0] rounded-full lg:text-base"
-            onClick={() => {
-              void router.push('/circle');
-            }}
+            onClick={handleSubmit}
+            className="rounded-full text-sm font-semibold bg-[#DD2525]"
           >
-            Done
+            {isLoading
+              ? 'Loading...'
+              : `${t('circleSetting.deleteCircle.popUpDelete.button2')}`}
           </Button>
-        </div>
-      ) : (
-        <>
-          <DialogHeader className="flex justify-between items-center p-2 sm:p-4">
-            <p></p>
-            <XMarkIcon
-              className="cursor-pointer"
-              onClick={handleOpen}
-              width={30}
-              height={30}
-            />
-          </DialogHeader>
-
-          <DialogBody className="p-4 sm:p-8">
-            <Typography className="text-base font-semibold text-black text-center">
-              {t('circleSetting.deleteCircle.popUpDelete.title')}
-            </Typography>
-            <Typography className="text-sm font-normal text-center mt-2 mx-3 lg:mx-10">
-              {t('circleSetting.deleteCircle.popUpDelete.subtitle1')}
-            </Typography>
-            <Typography className="text-sm font-normal text-center mx-3 lg:mx-10">
-              {t('circleSetting.deleteCircle.popUpDelete.subtitle2')}
-            </Typography>
-          </DialogBody>
-
-          <DialogFooter className="flex flex-row sm:flex-row justify-center p-4 sm:p-8">
-            <Button
-              onClick={handleOpen}
-              color="purple"
-              variant="outlined"
-              className="rounded-full text-sm font-semibold mr-3"
-            >
-              {t('circleSetting.deleteCircle.popUpDelete.button1')}
-            </Button>
-
-            <Button
-              onClick={handleSubmit}
-              className="rounded-full text-sm font-semibold bg-[#DD2525]"
-            >
-              {isLoading
-                ? 'Loading...'
-                : `${t('circleSetting.deleteCircle.popUpDelete.button2')}`}
-            </Button>
-          </DialogFooter>
-        </>
-      )}
-    </Dialog>
+        </DialogFooter>
+      </Dialog>
+    </>
   );
 };
 

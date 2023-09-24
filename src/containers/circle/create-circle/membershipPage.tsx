@@ -11,6 +11,7 @@ import {
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserFriends {
   id: string;
@@ -43,6 +44,7 @@ const MembershipPage = ({
   const [filter, setFilter] = useState(initialFilter);
   const [isLoading, setIsLoading] = useState(false);
   const [userFriends, setUserFriends] = useState<UserFriends[]>();
+  const { t } = useTranslation();
 
   const handleFindMemberInState = (id: string): UserFriends => {
     let member: UserFriends = initialUserFriends;
@@ -124,12 +126,11 @@ const MembershipPage = ({
                 <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
               </button>
               <Typography className="mb-2 text-center text-base font-poppins font-semibold">
-                Add your members
+                {t('circle.settingMember.title')}
               </Typography>
             </div>
             <Typography className="mb-4 text-center text-sm font-poppins font-normal text-[#7C7C7C]">
-              You can add members by searching for the name or using the share
-              link later.
+              {t('circle.settingMember.subtitle')}
             </Typography>
           </div>
           <div className="flex flex-row mb-5">
@@ -251,7 +252,7 @@ const MembershipPage = ({
               onClick={submit}
               disabled={true}
             >
-              Create Circle
+              {t('circle.settingMember.button')}
             </Button>
           ) : (
             <Button
@@ -259,7 +260,7 @@ const MembershipPage = ({
               onClick={submit}
               disabled={false}
             >
-              Create Circle
+              {t('circle.settingMember.button')}
             </Button>
           )}
         </>

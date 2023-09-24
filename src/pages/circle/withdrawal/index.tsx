@@ -1,10 +1,14 @@
+import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import InputPinCircle from '@/components/circle/InputPinCircle';
+import { errorCircle } from '@/constants/assets/icons';
 import WithdrawCircle from '@/containers/circle/withdraw/WithdrawCircle';
 import WithdrawMethod from '@/containers/circle/withdraw/WithdrawMethod';
+import withAuth from '@/helpers/withAuth';
 import {
   getCircleBalance,
   withdrawCircle
 } from '@/repository/circle.repository';
+import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 interface FormRequest {
@@ -23,11 +27,23 @@ const initialFormRequest = {
   pin: []
 };
 
+const initialEditProfile = {
+  name: '',
+  seedsTag: '',
+  email: '',
+  pin: '',
+  avatar: '',
+  bio: '',
+  birthDate: '',
+  phone: ''
+};
+
 const Withdrawal = (): JSX.Element => {
   const [step, setStep] = useState('');
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [user, setUser] = useState(initialEditProfile);
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
 
@@ -94,21 +110,56 @@ const Withdrawal = (): JSX.Element => {
     }));
   };
 
-  const handleSubmit = async (): Promise<void> => {
+  const fetchUserInfo = async (): Promise<void> => {
+    try {
+      getUserInfo()
+        .then(res => {
+          setUser(prevState => ({
+            ...prevState,
+            avatar: res.avatar,
+            bio: res.bio,
+            birthDate: res.birthDate,
+            email: res.email,
+            name: res.name,
+            phone: res.phone,
+            seedsTag: res.seedsTag
+          }));
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async (): Promise<any> => {
     try {
       formRequest.pin = formRequest.pin.join('');
+      user.pin = formRequest.pin;
       formRequest.amount = parseInt(formRequest.amount);
 
       setIsLoadingSubmit(true);
-      withdrawCircle(formRequest)
+
+      editUserInfo(user)
         .then(res => {
-          console.log('response post = ', res);
-          // handleChangeStep('success');
-          setIsLoadingSubmit(false);
+          if (res.status === 200) {
+            withdrawCircle(formRequest)
+              .then(res => {
+                console.log('response post = ', res);
+                // handleChangeStep('success');
+                setIsLoadingSubmit(false);
+              })
+              .catch(err => {
+                setIsLoadingSubmit(false);
+                console.log(err);
+                handleChangeStep('failed');
+              });
+          }
         })
         .catch(err => {
-          setIsLoadingSubmit(false);
-          console.log(err);
+          console.error(err);
+          handleChangeStep('failed');
         });
     } catch (error: any) {
       setIsLoadingSubmit(false);
@@ -118,11 +169,12 @@ const Withdrawal = (): JSX.Element => {
 
   useEffect(() => {
     void fetchCircleBalance();
+    void fetchUserInfo();
 
     if (formRequest.pin.length === 6) {
       void handleSubmit();
     }
-  }, []);
+  }, [formRequest.pin]);
 
   return (
     <>
@@ -143,6 +195,14 @@ const Withdrawal = (): JSX.Element => {
           changeValueAccountName={handleChangeValueAccountName}
           changeValue={handleChangeValue}
         />
+      ) : step === 'failed' ? (
+        <FinalModalCircle
+          button="Continue"
+          title="Oops!"
+          subtitle="Something went wrong, please try again later."
+          imageUrl={errorCircle.src}
+          handleOpen={handleSubmit}
+        />
       ) : (
         <WithdrawCircle
           changeStep={handleChangeStep}
@@ -156,4 +216,4 @@ const Withdrawal = (): JSX.Element => {
   );
 };
 
-export default Withdrawal;
+export default withAuth(Withdrawal);

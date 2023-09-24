@@ -17,6 +17,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 interface props {
   isLoading: boolean;
   renderLoading: any;
@@ -41,6 +42,8 @@ const CirclePostSection1: React.FC<props> = ({
   setIsJoined
 }) => {
   const [isLoadingJoin, setIsLoadingJoin] = useState<boolean>(false);
+  const { t } = useTranslation();
+  // const [payment, setPayment] = useState<any>({});
   const router = useRouter();
 
   const handleJoin = async (): Promise<void> => {
@@ -136,28 +139,28 @@ const CirclePostSection1: React.FC<props> = ({
                       <MenuItem onClick={handleEdit}>
                         <div className="flex flex-row">
                           <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                          Edit Cirlce
+                          {t('circleSetting.popUpCircle.option1')}
                         </div>
                       </MenuItem>
                       <hr />
                       <MenuItem onClick={openModalDelete}>
                         <div className="flex flex-row text-[#DD2525]">
                           <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                          Delete Circle
+                          {t('circleSetting.popUpCircle.option2')}
                         </div>
                       </MenuItem>
                       <hr />
                       <MenuItem onClick={openModalReport}>
                         <div className="flex flex-row text-[#DD2525]">
                           <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                          Report Circle
+                          {t('circleSetting.popUpCircle.option3')}
                         </div>
                       </MenuItem>
                       <hr />
                       <MenuItem onClick={openModalLeave}>
                         <div className="flex flex-row text-[#DD2525]">
                           <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                          Leave Circle
+                          {t('circleSetting.popUpCircle.option4')}
                         </div>
                       </MenuItem>
                     </MenuList>
@@ -264,28 +267,28 @@ const CirclePostSection1: React.FC<props> = ({
                             <MenuItem onClick={handleEdit}>
                               <div className="flex flex-row">
                                 <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                                Edit Cirlce
+                                {t('circleSetting.popUpCircle.option1')}
                               </div>
                             </MenuItem>
                             <hr />
                             <MenuItem onClick={openModalDelete}>
                               <div className="flex flex-row text-[#DD2525]">
                                 <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                                Delete Circle
+                                {t('circleSetting.popUpCircle.option2')}
                               </div>
                             </MenuItem>
                             <hr />
                             <MenuItem onClick={openModalReport}>
                               <div className="flex flex-row text-[#DD2525]">
                                 <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                                Report Circle
+                                {t('circleSetting.popUpCircle.option3')}
                               </div>
                             </MenuItem>
                             <hr />
                             <MenuItem onClick={openModalLeave}>
                               <div className="flex flex-row text-[#DD2525]">
                                 <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                                Leave Circle
+                                {t('circleSetting.popUpCircle.option4')}
                               </div>
                             </MenuItem>
                           </MenuList>

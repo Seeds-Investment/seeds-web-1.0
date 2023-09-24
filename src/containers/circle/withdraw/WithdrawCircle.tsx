@@ -14,6 +14,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FormRequest {
   method: string;
@@ -55,6 +56,7 @@ const WithdrawCircle: React.FC<props> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [incomes, setIncomes] = useState<Income[]>();
   const [filter, setFilter] = useState(initialFilter);
+  const { t } = useTranslation();
 
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
@@ -114,7 +116,7 @@ const WithdrawCircle: React.FC<props> = ({
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">
-                  Circle Balance
+                  {t('circle.banner.title3')}
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
                   {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
@@ -123,7 +125,7 @@ const WithdrawCircle: React.FC<props> = ({
             </Card>
             <div className="my-8">
               <label className="font-semibold text-base text-[#262626]">
-                Input WithdrawCircle Nominal
+                {t('circle.withdraw.method.input')}
               </label>
               <Input
                 variant="static"

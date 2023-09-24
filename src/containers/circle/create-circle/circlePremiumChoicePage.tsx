@@ -8,12 +8,15 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
+import { useTranslation } from 'react-i18next';
 
 const CirclePremiumChoicePage = ({
   change,
   formRequest,
   changeStep
 }: any): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <div className="md:mx-8 lg:mx-[10rem] xl:mx-[22rem]">
       {formRequest !== undefined && (
@@ -27,15 +30,15 @@ const CirclePremiumChoicePage = ({
             </button>
 
             <Typography className="mb-2 text-center text-base font-poppins font-semibold">
-              Setting Circle Premium
+              {t('circle.premium.mainTitle')}
             </Typography>
           </div>
           <CCard className="mt-2 p-10 border-none shadow-none rounded-xl bg-white">
             <Typography className="mb-2 text-base font-poppins font-semibold text-[#262626]">
-              Premium Circle Choice
+              {t('circle.premium.title')}
             </Typography>
             <Typography className="mb-2 text-sm font-poppins font-normal text-[#7C7C7C]">
-              Set your circle premium to Lifetime Membership or Subscription.
+              {t('circle.premium.subtitle')}
             </Typography>
 
             <Card
@@ -47,10 +50,10 @@ const CirclePremiumChoicePage = ({
                 <div className="flex flex-row">
                   <div className="flex w-full flex-col gap-0.5">
                     <Typography className="font-semibold text-xs text-[#262626]">
-                      Lifetime Membership
+                      {t('circle.premium.option.title1')}
                     </Typography>
                     <Typography className="font-normal text-xs text-[#7C7C7C]">
-                      Member only need to pay one time to have access to the
+                      {t('circle.premium.option.subtitle1')}
                       circle
                     </Typography>
                   </div>
@@ -80,11 +83,10 @@ const CirclePremiumChoicePage = ({
                 <div className="flex flex-row">
                   <div className="flex w-full flex-col gap-0.5">
                     <Typography className="font-semibold text-xs text-[#262626]">
-                      Subscription
+                      {t('circle.premium.option.title2')}
                     </Typography>
                     <Typography className="font-normal text-xs text-[#7C7C7C]">
-                      Member need to pay subscription every month/3
-                      month/6month/12 month
+                      {t('circle.premium.option.subtitle2')}
                     </Typography>
                   </div>
                   <div className="items-end">
@@ -111,7 +113,7 @@ const CirclePremiumChoicePage = ({
               className="w-full mt-16 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
               onClick={() => changeStep('membership_fee')}
             >
-              Done
+              {t('circle.premium.button')}
             </Button>
           </CCard>
         </>

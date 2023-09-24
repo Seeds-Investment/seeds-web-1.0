@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import CardTransaction from '@/components/circle/CardTransaction';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircleBalance,
@@ -260,4 +261,4 @@ const TransactionHistory = (): JSX.Element => {
   );
 };
 
-export default TransactionHistory;
+export default withAuth(TransactionHistory);

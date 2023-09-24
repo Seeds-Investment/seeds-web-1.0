@@ -160,6 +160,21 @@ export const addImageCircle: AssetsInterface = {
   alt: 'addImageCircle'
 };
 
+export const errorCircle: AssetsInterface = {
+  src: '/assets/circle/ErrorCircle.svg',
+  alt: 'errorCircle'
+};
+
+export const failedCircle: AssetsInterface = {
+  src: '/assets/circle/FailedCircle.svg',
+  alt: 'failedCircle'
+};
+
+export const successCircleSetting: AssetsInterface = {
+  src: '/assets/circle/SuccessCircleSetting.svg',
+  alt: 'successCircle'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -188,7 +203,10 @@ const Icons: Record<string, AssetsInterface> = {
   freeCircle,
   premiumCircle,
   successCircle,
-  addImageCircle
+  addImageCircle,
+  failedCircle,
+  errorCircle,
+  successCircleSetting
 };
 
 export default Icons;

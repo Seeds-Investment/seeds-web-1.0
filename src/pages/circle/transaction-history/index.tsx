@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import CardTransaction from '@/components/circle/CardTransaction';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircleBalance,
@@ -19,6 +20,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const initialFilterIncome = {
   page: 1,
@@ -57,9 +59,10 @@ const TransactionHistory = (): JSX.Element => {
   const [balance, setBalance] = useState(0);
   const [transactionIn, setTransactionIn] = useState<Transaction[]>();
   const [transactionOut, setTransactionOut] = useState<Transaction[]>();
+  const { t } = useTranslation();
   const data = [
-    { label: 'Income', value: 'income' },
-    { label: 'Outcome', value: 'outcome' }
+    { label: `${t('circle.withdraw.history.tab1')}`, value: 'income' },
+    { label: `${t('circle.withdraw.history.tab2')}`, value: 'outcome' }
   ];
 
   const fetchCircleBalance = async (): Promise<void> => {
@@ -157,7 +160,7 @@ const TransactionHistory = (): JSX.Element => {
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">
-                  Circle Balance
+                  {t('circle.banner.title3')}
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
                   {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
@@ -258,4 +261,4 @@ const TransactionHistory = (): JSX.Element => {
   );
 };
 
-export default TransactionHistory;
+export default withAuth(TransactionHistory);

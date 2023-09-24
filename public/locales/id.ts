@@ -738,6 +738,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     },
+    banner: {
+      title1: 'Tarik Keuntungan',
+      title2: 'Riwayat Transaksi',
+      title3: 'Saldo Circle'
+    },
     create: {
       title: 'Buat Cirlce',
       cover: 'Tambah Cover',
@@ -770,6 +775,122 @@ export default {
       tnc: {
         label: 'Saya setuju dengan Syarat dan Ketentuan*',
         error: 'Pastikan kamu setuju dengan Syarat dan Ketentuan'
+      }
+    },
+    typePopUp: {
+      title: 'Tipe Membership',
+      subtitle:
+        'Atur Circle kamu menjadi gratis atau premium untuk akses lebih banyak',
+      option: {
+        free: {
+          title: 'Gratis',
+          subtitle: 'Buat Circle Investasi dengan mudah dan gratis'
+        },
+        premium: {
+          title: 'Premium',
+          subtitle: 'Buat Circle Premium untuk berbagai manfaat'
+        }
+      },
+      button: 'Lanjutkan'
+    },
+    settingMember: {
+      title: 'Pengaturan Anggota',
+      add: 'Tambahkan anggota kamu',
+      subtitle:
+        'Kamu dapat menambahkan anggota dengan mencari nama atau menggunakan tautan nanti.',
+      button: 'Buat Circle'
+    },
+    success: {
+      title: 'Sukses!',
+      subtitle:
+        'Selamat! Circle baru telah berhasil dibuat. Bagikan Circle kamu sekarang!'
+    },
+    empty: {
+      title: 'Maaf',
+      subtitle: 'Data yang kamu cari tidak ada.'
+    },
+    failed: {
+      title: 'Gagal!',
+      subtitle: 'Maaf, pembuatan Circle baru gagal. Silakan coba lagi!'
+    },
+    exist: {
+      title: 'Oops!',
+      subtitle: 'Nama Circle sudah ada, silakan coba dengan nama lain.'
+    },
+    premium: {
+      mainTitle: 'Pengaturan Circle Premium',
+      title: 'Pilihan Circle Premium',
+      subtitle:
+        'Atur circle kamu menjadi membership seumur hidup atau berlangganan.',
+      option: {
+        title1: 'Membership Seumur Hidup',
+        subtitle1:
+          'Anggota hanya perlu membayar satu kali untuk mengakses circle.',
+        title2: 'Berlangganan',
+        subtitle2:
+          'Anggota perlu membayar langganan setiap bulan/3 bulan/6 bulan/12 bulan'
+      },
+      button: 'Selesai'
+    },
+    fee: {
+      title: 'Atur Biaya Membership Circle',
+      title2: 'Atur Biaya Membership',
+      placeholder: 'Biaya membership minimum IDR. 20.000',
+      line: 'atau masukkan secara manual',
+      note: 'Seeds akan langsung mengambil diskon sebesar 20% dari setiap transaksi biaya membership.'
+    },
+    withdraw: {
+      method: {
+        title: 'Metode Penarikan',
+        input: 'Masukan Nominal Penarikan',
+        method: {
+          label: 'Metode Penarikan',
+          placeholder: 'Pilih metode penarikan kamu'
+        },
+        bankRekening: {
+          label: 'Rekening Bank',
+          placeholder: 'Pilih rekening bank kamu'
+        },
+        numberRekening: {
+          label: 'Nomor Rekening',
+          placeholder: 'Masukkan nomor rekening bank kamu'
+        },
+        nameRekening: {
+          label: 'Nama Rekening',
+          placeholder: 'Nama rekening bank kamu'
+        },
+        button: 'Lanjutkan',
+        popUp: {
+          title1: 'Transfer Bank',
+          title2: 'E-Wallet',
+          subtitle1: 'Transfer melalui Bank',
+          subtitle2: 'Transfer melalui E-Wallet'
+        }
+      },
+      pin: {
+        title: 'Masukkan PIN Kamu',
+        subtitle: 'Silakan masukkan nomor PIN kamu dengan benar',
+        wrong: {
+          title: 'Masukkan PIN Kamu',
+          subtitle1: 'Silakan masukkan nomor PIN kamu dengan benar',
+          subtitle2: 'Pastikan kamu memiliki PIN yang benar dan coba lagi.'
+        }
+      },
+      success: {
+        title: 'Berhasil',
+        subtitle1: 'Permintaan kamu telah berhasil diajukan!',
+        subtitle2: 'Permintaan penarikan akan diproses dalam satu hari kerja.'
+      },
+      history: {
+        title: 'Riwayat Transaksi',
+        tab1: 'Pemasukan',
+        tab2: 'Pengeluaran',
+        sortBy: {
+          option1: 'Berhasil',
+          option2: 'Menunggu',
+          option3: 'Gagal',
+          option4: 'Dalam Proses'
+        }
       }
     }
   },
@@ -826,6 +947,59 @@ export default {
         title2: 'Mulai perjalanan investasimu sekarang.',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
+      }
+    }
+  },
+  circleSetting: {
+    popUpCircle: {
+      option1: 'Edit Circle',
+      option2: 'Hapus Circle',
+      option3: 'Laporkan Circle',
+      option4: 'Keluar Circle'
+    },
+    popUpPost: {
+      option1: 'Edit Post',
+      option2: 'Laporkan Post',
+      option3: 'Hapus Post'
+    },
+    deleteCircle: {
+      popUpDelete: {
+        title: 'Hapus',
+        subtitle1: 'Apakah kamu yakin ingin menghapus circle?',
+        subtitle2:
+          'Jika kamu menghapus circle ini, kamu akan kehilangan semua data secara permanen.',
+        button1: 'Batal',
+        button2: 'Hapus Circle'
+      },
+      popUpDeleteCircle: {
+        title: 'Circle Telah Dihapus',
+        subtitle: 'Silakan bergabung dengan circle lain yang menarik.'
+      }
+    },
+    reportCirlce: {
+      title: 'Laporkan Cirlce',
+      subtitle1: 'Circle ini akan dilaporkan',
+      subtitle2: 'Mengapa kamu melaporkan circle ini?',
+      option1: 'Spam',
+      option2: 'Konten tidak senonoh atau aktivitas seksual',
+      option3: 'Ujaran kebencian atau simbol-simbol kebencian',
+      option4: 'Penggertakan atau pelecehan',
+      option5: 'Saya tidak suka',
+      option6: 'Penipuan atau kecurangan',
+      option7: 'Lainnya',
+      popUp: {
+        title: 'Laporan telah diserahkan',
+        subtitle: 'Terima kasih telah membantu kami'
+      }
+    },
+    leaveCircle: {
+      title: 'Keluar',
+      subtitle: 'Apakah kamu yakin ingin keluar dari circle ini?',
+      button1: 'Batal',
+      button2: 'Keluar Dari Circle',
+      popUp: {
+        title: 'Kamu telah berhasil keluar dari Circle',
+        subtitle: 'Silakan bergabung dengan circle lain yang menarik.'
       }
     }
   }

@@ -11,6 +11,7 @@ import {
   Select,
   Typography
 } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 interface FormRequest {
   method: string;
@@ -40,6 +41,7 @@ const WithdrawMethod: React.FC<props> = ({
   changeValue
 }) => {
   const width = useWindowInnerWidth();
+  const { t } = useTranslation();
 
   const placeholderMethod = (): string => {
     if (formRequest.method === 'BANK') {
@@ -47,13 +49,13 @@ const WithdrawMethod: React.FC<props> = ({
     } else if (formRequest.method === 'E-WALLET') {
       return 'E-WALLET';
     } else {
-      return 'Select your withdraw method';
+      return `${t('circle.withdraw.method.method.placeholder')}`;
     }
   };
 
   const placeholderBankAccount = (): string => {
     if (formRequest.account_name === '') {
-      return 'Select your bank account';
+      return `${t('circle.withdraw.method.bankRekening.placeholder')}`;
     }
 
     return formRequest.account_name;
@@ -95,7 +97,7 @@ const WithdrawMethod: React.FC<props> = ({
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">
-                  Circle Balance
+                  {t('circle.banner.title3')}
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
                   {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
@@ -104,7 +106,7 @@ const WithdrawMethod: React.FC<props> = ({
             </Card>
             <div className="my-8">
               <label className="font-semibold text-base text-[#262626]">
-                Withdraw Method
+                {t('circle.withdraw.method.method.label')}
               </label>
               <Select
                 variant="standard"
@@ -113,18 +115,26 @@ const WithdrawMethod: React.FC<props> = ({
                 name="method"
               >
                 <Option value="BANK">
-                  <Typography>Bank Transfer</Typography>
-                  <Typography>Transfer via Banks</Typography>
+                  <Typography>
+                    {t('circle.withdraw.method.popUp.title1')}
+                  </Typography>
+                  <Typography>
+                    {t('circle.withdraw.method.popUp.subtitle1')}
+                  </Typography>
                 </Option>
                 <Option value="E-WALLET">
-                  <Typography>E-Wallet</Typography>
-                  <Typography>Transfer via E-Wallets</Typography>
+                  <Typography>
+                    {t('circle.withdraw.method.popUp.title2')}
+                  </Typography>
+                  <Typography>
+                    {t('circle.withdraw.method.popUp.subtitle2')}
+                  </Typography>
                 </Option>
               </Select>
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
-                Bank Account
+                {t('circle.withdraw.method.bankRekening.label')}
               </label>
               <Select
                 variant="standard"
@@ -147,7 +157,7 @@ const WithdrawMethod: React.FC<props> = ({
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
-                Account Number
+                {t('circle.withdraw.method.numberRekening.label')}
               </label>
               <Input
                 variant="static"
@@ -156,12 +166,14 @@ const WithdrawMethod: React.FC<props> = ({
                 name="account_number"
                 onChange={changeValue}
                 value={formRequest.account_number}
-                placeholder="Input Bank Account Number"
+                placeholder={`${t(
+                  'circle.withdraw.method.numberRekening.placeholder'
+                )}`}
               />
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
-                Account Name
+                {t('circle.withdraw.method.nameRekening.label')}
               </label>
               <Input
                 variant="static"
@@ -170,7 +182,9 @@ const WithdrawMethod: React.FC<props> = ({
                 name="account_name"
                 // onChange={change}
                 // value={formRequest.account_name}
-                placeholder="Your Bank Account Name"
+                placeholder={`${t(
+                  'circle.withdraw.method.nameRekening.placeholder'
+                )}`}
               />
             </div>
 
@@ -179,7 +193,7 @@ const WithdrawMethod: React.FC<props> = ({
                 className="w-1/2 bg-seeds-button-green mt-5 rounded-full capitalize"
                 onClick={() => changeStep('pin')}
               >
-                Continue
+                {t('circle.withdraw.method.button')}
               </Button>
             </div>
           </CCard>

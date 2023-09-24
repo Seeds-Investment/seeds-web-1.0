@@ -3,15 +3,18 @@ import NoDataModal from '@/containers/circle/create-circle/modalNoData';
 import { Switch } from '@headlessui/react';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import DoughnutChart from '../DoughnutChart';
 
 const PieModal = ({ closePieModal }: any): any => {
   const [cardCount, setCardCount] = useState<number[]>([0, 0, 0, 0]);
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [isOn, setIsOn] = useState<boolean>(false);
-  const [isDataIncomplete, setIsDataIncomplete] = useState<boolean>(false);
-  const [showAssetsLists, setShowAssetsLists] = useState<boolean>(true);
-  const [amount, setAmount] = useState<number>(0);
+  // const [isDataIncomplete, setIsDataIncomplete] = useState<boolean>(false);
+  // const [showAssetsLists, setShowAssetsLists] = useState<boolean>(false);
+  // const [amount, setAmount] = useState<number>(0);
+  const isDataIncomplete = false;
+  const showAssetsLists = false;
+  const amount = 0;
 
   const handleSliderChange = (value: number): any => {
     setSliderValue(value);
@@ -48,39 +51,6 @@ const PieModal = ({ closePieModal }: any): any => {
         ] // Adjust the backgroundColor array to match the length of the data array
       }
     ]
-  };
-
-  const options = {
-    plugins: {
-      legend: {
-        display: false
-      }
-    },
-    cutout: '50%',
-    elements: {
-      arc: {
-        borderWidth: 5,
-        borderRadius: 10
-      }
-    }
-  };
-  const centerText = '0%';
-
-  const textCenter = {
-    id: 'textCenter',
-    beforeDatasetsDraw(chart: any, args: any, pluginOptions: any) {
-      const { ctx } = chart;
-      ctx.save();
-      ctx.font = 'bold 20px Arial';
-      ctx.fillStyle = '#69FFC9';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(
-        centerText,
-        chart.getDatasetMeta(0).data[0].x,
-        chart.getDatasetMeta(0).data[0].y
-      );
-    }
   };
 
   const addCard: any = () => {
@@ -302,12 +272,7 @@ const PieModal = ({ closePieModal }: any): any => {
             </div>
 
             <div className="w-[180px] h-[180px] mx-auto my-auto">
-              <Doughnut
-                data={chartData}
-                options={options}
-                plugins={[textCenter]}
-                className="rounded-full aspect-auto"
-              />
+              <DoughnutChart data={chartData} centerText="+43%" />
             </div>
             <div>
               <h1 className="font-semibold text-md">Amount</h1>
@@ -325,7 +290,7 @@ const PieModal = ({ closePieModal }: any): any => {
               />
             </div>
 
-            {amount ? (
+            {amount !== 0 ? (
               <div className="mt-2 p-2 border border-red-500 bg-red-50 rounded-lg max-w-[300px] flex items-center">
                 <div className="flex items-center">
                   <svg

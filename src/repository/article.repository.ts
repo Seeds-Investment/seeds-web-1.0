@@ -27,3 +27,17 @@ export const getArticleById = async (id: string): Promise<any> => {
     return error.response;
   }
 };
+export const getArticleComment = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await articleService.get(`/news/v1/comment/${id}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

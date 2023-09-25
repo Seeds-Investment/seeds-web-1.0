@@ -34,12 +34,6 @@ export interface Metadata {
   totalRow: number;
 }
 
-const params = {
-  page: 1,
-  limit: 9
-  // order_by: 'scheduled_at,DESC'
-};
-
 function LimitString({
   text,
   limit
@@ -74,7 +68,10 @@ function LimitString({
 
 export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
-
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 9
+  });
   async function fetchArticles(): Promise<void> {
     try {
       const response = await getArticle(params);
@@ -96,7 +93,21 @@ export default function ArticleList(): React.ReactElement {
     fetchData().catch(error => {
       console.error('Error in fetchData:', error);
     });
-  }, []);
+  }, [params]);
+
+  const updateParams = (direction: 'decrease' | 'increase'): void => {
+    if (direction === 'decrease' && params.page > 1) {
+      setParams(prevParams => ({
+        ...prevParams,
+        page: prevParams.page - 1
+      }));
+    } else if (direction === 'increase') {
+      setParams(prevParams => ({
+        ...prevParams,
+        page: prevParams.page + 1
+      }));
+    }
+  };
 
   const { t } = useTranslation();
 
@@ -179,7 +190,7 @@ export default function ArticleList(): React.ReactElement {
               key={article.id}
               className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md"
             >
-              <Link href={`/article-list/${article.id}`}>
+              <Link href={`/article/${article.id}`}>
                 <img
                   src={article?.imageUrl}
                   alt={article?.title}
@@ -281,7 +292,12 @@ export default function ArticleList(): React.ReactElement {
         <div className="flex justify-center mt-8">
           <div className="mt-5 pb-10 pagination">
             <div className="bg-white rounded-full cursor-pointer flex flex-row gap-3 p-2 shadow-lg">
-              <div className="p-2">
+              <div
+                className="p-2"
+                onClick={() => {
+                  updateParams('decrease');
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -297,7 +313,12 @@ export default function ArticleList(): React.ReactElement {
                   />
                 </svg>
               </div>
-              <div className="rounded-full p-2 bg-gradient-to-r cursor-pointer from-[#9A76FE] to-[#4FE6AF]">
+              <div
+                className="rounded-full p-2 bg-gradient-to-r cursor-pointer from-[#9A76FE] to-[#4FE6AF]"
+                onClick={() => {
+                  updateParams('increase');
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"

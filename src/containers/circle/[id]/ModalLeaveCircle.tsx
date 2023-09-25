@@ -53,14 +53,16 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           subtitle="Please join other interesting circles"
           imageUrl={successCircleSetting.src}
           handleOpen={handleSubmit}
+          error={false}
         />
       ) : responseApi === 'failed' ? (
         <FinalModalCircle
-          button="Done"
-          title="Oops!"
-          subtitle="Something went wrong, please try again later."
+          button="Try Again"
+          title="Failed to leave the circle"
+          subtitle="The owner cannot leave the circle"
           imageUrl={errorCircle.src}
           handleOpen={handleSubmit}
+          error={true}
         />
       ) : null}
 

@@ -15,6 +15,7 @@ interface props {
   subtitle: string;
   button: string;
   imageUrl: string;
+  error: boolean;
 }
 
 const FinalModalCircle: React.FC<props> = ({
@@ -22,7 +23,8 @@ const FinalModalCircle: React.FC<props> = ({
   title,
   subtitle,
   button,
-  imageUrl
+  imageUrl,
+  error
 }) => {
   const router = useRouter();
 
@@ -62,7 +64,8 @@ const FinalModalCircle: React.FC<props> = ({
           </Typography>
 
           <Button
-            className="text-xs font-semibold w-[70%] mb-5 bg-[#3AC4A0] rounded-full lg:text-base"
+            className="text-xs font-semibold w-[70%] mb-5 rounded-full lg:text-base"
+            style={{ backgroundColor: error ? '#DA2D1F' : '#3AC4A0' }}
             onClick={() => {
               void router.push('/circle');
             }}

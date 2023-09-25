@@ -247,6 +247,7 @@ const CreateCircle = (): React.ReactElement => {
             button="Try Again"
             imageUrl={failedCircle.src}
             handleOpen={handleChangeStep}
+            error={true}
           />
         ) : (
           <CreateCirclePage

@@ -161,7 +161,7 @@ export const addImageCircle: AssetsInterface = {
 };
 
 export const errorCircle: AssetsInterface = {
-  src: '/assets/circle/ErrorCircle.svg',
+  src: '/assets/circle/ErrorCircleNew.svg',
   alt: 'errorCircle'
 };
 

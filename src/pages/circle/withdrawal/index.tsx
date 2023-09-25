@@ -147,7 +147,7 @@ const Withdrawal = (): JSX.Element => {
             withdrawCircle(formRequest)
               .then(res => {
                 console.log('response post = ', res);
-                // handleChangeStep('success');
+                handleChangeStep('success');
                 setIsLoadingSubmit(false);
               })
               .catch(err => {
@@ -202,6 +202,7 @@ const Withdrawal = (): JSX.Element => {
           subtitle="Something went wrong, please try again later."
           imageUrl={errorCircle.src}
           handleOpen={handleSubmit}
+          error={true}
         />
       ) : (
         <WithdrawCircle

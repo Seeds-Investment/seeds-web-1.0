@@ -280,6 +280,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
           button="Try Again"
           imageUrl={failedCircle.src}
           handleOpen={handleChangeStep}
+          error={true}
         />
       ) : (
         <>

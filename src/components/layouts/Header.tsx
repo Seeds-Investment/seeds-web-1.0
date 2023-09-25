@@ -106,11 +106,15 @@ const Header: React.FC = () => {
           About Us
         </Link>
       </li>
-      <li>
-        <Link href="/auth/login" className="cursor-pointer text-white">
-          Login
-        </Link>
-      </li>
+      {accessToken !== null && userInfo !== null ? (
+        <></>
+      ) : (
+        <li>
+          <Link href="/auth/login" className="cursor-pointer text-white">
+            Login
+          </Link>
+        </li>
+      )}
       <li>
         {accessToken !== null && userInfo !== null ? (
           <div className="flex">
@@ -286,12 +290,16 @@ const Header: React.FC = () => {
           </section>
         </section>
         <div className="xl:flex hidden items-center gap-4">
-          <Link
-            href="/auth/login"
-            className="cursor-pointer text-base font-semibold text-white mr-3"
-          >
-            Login
-          </Link>
+          {accessToken !== null && userInfo !== null ? (
+            <></>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="cursor-pointer text-base font-semibold text-white mr-3"
+            >
+              Login
+            </Link>
+          )}
           {accessToken !== null && userInfo !== null ? (
             <div className="flex">
               <div className="mt-2 mx-2 font-bold hidden lg:block">

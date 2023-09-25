@@ -72,7 +72,7 @@ export default function Section5Card({
         </div>
       </div>
       <div className="px-6 pt-4 pb-2">
-        <Link href={'/temporary'}>
+        <Link href={'/'}>
           <Button className="w-full bg-seeds-button-green mt-0 capitalize">
             Get A Ticket
           </Button>

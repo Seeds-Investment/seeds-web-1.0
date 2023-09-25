@@ -41,3 +41,24 @@ export const getArticleComment = async (id: string): Promise<any> => {
     }
   });
 };
+export const postComment = async (
+  id: string,
+  payload: {
+    comment: string;
+  }
+): Promise<any> => {
+  try {
+    let response = await articleService.post(`/news/v1/comment/${id}`, payload);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const postLike = async (id: string): Promise<any> => {
+  try {
+    let response = await articleService.post(`/news/v1/like/${id}`);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

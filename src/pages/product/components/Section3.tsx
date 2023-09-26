@@ -13,7 +13,7 @@ export default function Section3(): React.ReactElement {
       <Image
         src={bg}
         alt="bg"
-        className="absolute xl:w-[600px] -z-10 xl:translate-y-[40rem] translate-y-[85rem]"
+        className="absolute xl:w-[600px] -z-10 xl:translate-y-[40rem] translate-y-[65rem]"
       />
       <div className="min-w-full cursor-default font-poppins px-[38px]">
         <h1 className="bg-clip-text text-transparent text-center bg-gradient-to-r from-[#7555DA] to-[#4FE6AF] xl:text-[64px] text-3xl xl:py-10 font-semibold">

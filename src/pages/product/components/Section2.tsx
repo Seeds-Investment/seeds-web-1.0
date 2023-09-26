@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CardAsset from './CardAsset';
 import CardCircle from './CardCircle';
+import CardTournament from './CardTournament';
 
 const customGradient = (
   <>
@@ -87,6 +88,7 @@ export default function Section2(): React.ReactElement {
             >
               {value === 'asset' ? <CardAsset /> : ''}
               {value === 'circle' ? <CardCircle /> : ''}
+              {value === 'tournament' ? <CardTournament /> : ''}
             </TabPanel>
           ))}
         </TabsBody>

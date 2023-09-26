@@ -111,8 +111,8 @@ export default function Section1(): React.ReactElement {
             className={`absolute right-0 -translate-y-[27rem] w-[19.5rem] h-[28rem] drop-shadow-2xl
                             sm:w-[25rem] sm:h-[38rem] sm:-translate-y-[37rem]
                             md:w-[22rem] md:h-[28rem] md:-translate-y-[25rem]
-                            lg:w-[32rem] lg:h-[41rem] lg:-translate-y-[36rem]
-                            xl:w-[35rem] xl:h-[43rem] xl:-translate-y-[38rem] ${
+                            lg:w-[32rem] lg:h-[41rem] lg:-translate-y-[30rem]
+                            xl:w-[35rem] xl:h-[43rem] xl:-translate-y-[35rem] ${
                               width !== undefined && width >= 1690
                                 ? '2xl:w-[46rem] 2xl:h-[60rem]'
                                 : ''

@@ -1,5 +1,11 @@
 import Button from '@/components/ui/button/Button';
-import { getArticle, getArticleById } from '@/repository/article.repository';
+import {
+  getArticle,
+  getArticleById,
+  getArticleComment,
+  postComment,
+  postLike
+} from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Input } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
@@ -38,7 +44,16 @@ interface Article {
   total_likes: number;
   total_comments: number;
   total_shares: number;
+  is_liked: boolean;
 }
+
+interface FormRequestInterface {
+  comment: string;
+}
+
+const initialFormRequest = {
+  comment: ''
+};
 
 export interface Metadata {
   currentPage: number;
@@ -62,6 +77,13 @@ interface ArticleDetail {
   total_likes: number;
   total_comments: number;
   total_shares: number;
+  is_liked: boolean;
+}
+
+interface ArticleComment {
+  id: string;
+  comment: string;
+  created_at: string;
 }
 
 const params = {
@@ -76,10 +98,19 @@ export default function ArticleDetailPage(): JSX.Element {
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [comment, setComment] = useState('');
+  const [liked, setLiked] = useState(false);
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
+  const [articleComment, setArticleComment] = useState<ArticleComment | null>(
+    null
+  );
   const [articles, setArticles] = useState<Article[]>([]);
+  const [open, setOpen] = useState(false);
+  const [formRequest, setFormRequest] =
+    useState<FormRequestInterface>(initialFormRequest);
 
   async function fetchArticles(): Promise<void> {
     try {
@@ -131,18 +162,18 @@ export default function ArticleDetailPage(): JSX.Element {
             console.error('Error fetching article detail:', error);
           });
       };
-      // const fetchArticleComment = (): void => {
-      //   getArticleComment(id)
-      //     .then(response => {
-      //       if (response.status === 200) {
-      //         setArticleComment(response);
-      //       }
-      //     })
-      //     .catch(error => {
-      //       console.error('Error fetching article detail:', error);
-      //     });
-      // };
-      // fetchArticleComment();
+      const fetchArticleComment = (): void => {
+        getArticleComment(id)
+          .then(response => {
+            if (response.status === 200) {
+              setArticleComment(response.comments);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching article detail:', error);
+          });
+      };
+      fetchArticleComment();
       fetchArticleDetail();
     }
   }, [id]);
@@ -161,11 +192,68 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }
 
+  const updateComment = (comment: string): void => {
+    setComment(comment);
+    setFormRequest(prevState => ({
+      ...prevState,
+      comment: comment
+    }));
+    console.log(comment);
+  };
+
+  const submitComment = async (articleId: number): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await postComment(formRequest, articleId);
+      if (response.status === 200) {
+        setLoading(false);
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 3000);
+        setComment('');
+        setFormRequest(prevState => ({
+          ...prevState,
+          comment: ''
+        }));
+        setTimeout(() => {
+          void router.replace(router.asPath);
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const likeArticle = async (articleId: number): Promise<void> => {
+    try {
+      const response = await postLike(formRequest, articleId);
+      if (response.status === 200) {
+        setLiked(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (articleDetail == null) {
     return <p>Loading...</p>;
   }
   return (
     <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
+      {open && (
+        <div
+          id="myToast"
+          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
+        >
+          <p className="text-sm">
+            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
+              i
+            </span>
+            You have successfully created a comment
+          </p>
+        </div>
+      )}
       <h1 className="my-8 text-5xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
         {articleDetail.title}
       </h1>
@@ -179,22 +267,48 @@ export default function ArticleDetailPage(): JSX.Element {
           </p>
         </div>
         <div className="flex flex-row gap-3">
-          <div className="rounded-full p-1 bg-[#BDBDBD] w-8 h-8">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
+          {articleDetail.is_liked ? (
+            <div className="rounded-full p-1 w-8 h-8 bg-green-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                  stroke="white"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          ) : (
+            <div
+              className={`rounded-full p-1 w-8 h-8 cursor-pointer ${
+                liked ? 'bg-green-500' : 'bg-[#BDBDBD]'
+              }`}
+              onClick={async () => {
+                await likeArticle(articleDetail?.id);
+              }}
             >
-              <path
-                d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
-                stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                  stroke="white"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          )}
           <p className="align-middle"> +{articleDetail?.total_likes}</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -322,14 +436,23 @@ export default function ArticleDetailPage(): JSX.Element {
                 {userInfo.name}
               </h1>
               <div className="w-full">
-                <Input label="Type your comment.." />
+                <Input
+                  label="Type your comment.."
+                  onChange={e => {
+                    updateComment(e.target.value);
+                  }}
+                />
               </div>
             </div>
             <div className="pt-7">
               <Button
+                disabled={comment === '' && loading}
                 variant="purple"
                 label="Comment"
                 containerClasses="xl:w-[196px] h-full p-1 rounded-full"
+                onClick={async () => {
+                  await submitComment(articleDetail.id);
+                }}
               />
             </div>
           </div>
@@ -342,23 +465,14 @@ export default function ArticleDetailPage(): JSX.Element {
         {articleDetail.total_comments !== 0 ? (
           <div className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl">
             <div className="flex flex-row">
-              <img
-                src="https://placehold.co/600x600"
-                alt=""
-                className="xl:w-[48px] xl:h-[48px] rounded-full"
-              />
               <div className="xl:ml-4">
-                <h1 className="text-[#201B1C] text-lg font-semibold">Nama</h1>
                 <p className="text-[#7C7C7C] text-sm font-normal">
-                  09/03/2022. 12:24 PM
+                  {articleComment?.created_at}
                 </p>
               </div>
             </div>
             <p className="text-[#201B1C] text-base font-normal">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem
-              vitae consectetur, amet doloremque enim iure? Nesciunt,
-              praesentium! Sunt ducimus hic eum suscipit facere explicabo
-              dignissimos libero sed. Libero, eligendi voluptatibus.
+              {articleComment?.comment}
             </p>
           </div>
         ) : (

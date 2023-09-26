@@ -41,3 +41,48 @@ export const getArticleComment = async (id: string): Promise<any> => {
     }
   });
 };
+export const postComment = async (
+  formRequest: any,
+  articleId: number
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await articleService.post(
+      `/news/v1/comment/${articleId}`,
+      formRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const postLike = async (formRequest: any, id: number): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await articleService.post(
+      `/news/v1/like/${id}`,
+      formRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

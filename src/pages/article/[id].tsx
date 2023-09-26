@@ -231,10 +231,16 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
+        setArticleDetail(prevArticleDetail => {
+          if (prevArticleDetail !== null) {
+            return {
+              ...prevArticleDetail,
+              total_likes: prevArticleDetail?.total_likes + 1
+            };
+          }
+          return prevArticleDetail;
+        });
         setLiked(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
       }
     } catch (error) {
       console.log(error);

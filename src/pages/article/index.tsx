@@ -41,11 +41,7 @@ function LimitString({
   text: string;
   limit: number;
 }): JSX.Element {
-  const [showFullText, setShowFullText] = useState(false);
-
-  const toggleShowFullText = (): void => {
-    setShowFullText(!showFullText);
-  };
+  const [showFullText] = useState(false);
 
   const truncatedText = showFullText ? text : text.slice(0, limit);
 
@@ -55,10 +51,7 @@ function LimitString({
         {truncatedText}...
       </p>
       {!showFullText && text.length > limit && (
-        <button
-          className="text-[#7555DA] text-base font-normal underline"
-          onClick={toggleShowFullText}
-        >
+        <button className="text-[#7555DA] text-base font-normal underline">
           Read More
         </button>
       )}
@@ -209,7 +202,9 @@ export default function ArticleList(): React.ReactElement {
                 <h1 className="text-lg font-semibold text-[#000] my-4">
                   {article?.title}
                 </h1>
-                <LimitString text={article?.content} limit={100} />
+                <Link href={`/article/${article.id}`}>
+                  <LimitString text={article?.content} limit={100} />
+                </Link>
               </div>
               <div className="flex flex-row mt-4 bottom-2 w-full gap-4 left-4 absolute">
                 <div className="flex flex-row gap-1">

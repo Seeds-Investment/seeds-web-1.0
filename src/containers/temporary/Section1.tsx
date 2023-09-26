@@ -42,7 +42,7 @@ export default function Section1(): React.ReactElement {
   };
 
   const renderCard = (): JSX.Element => (
-    <CCard className="bg-clip overflow-hidden h-[700px] md:h-auto lg:h-auto shadow-lg rounded-xl border border-seeds-soft bg-white bg-opacity-30 mt-[100px] xl:mt-[300px]">
+    <CCard className="bg-clip overflow-hidden xl:h-[500px] h-[750px] md:h-auto lg:h-auto shadow-lg rounded-xl border border-seeds-soft bg-white bg-opacity-30 mt-[50px] xl:mt-[100px]">
       <div
         className="flex flex-col p-6 bg-no-repeat bg-right-bottom bg-[length:412px] h-full w-full md:bg-[length:340px] md:p-16 lg:bg-[length:420px]"
         style={{ backgroundImage: "url('/assets//temporary/play-ipon.png')" }}

@@ -2,8 +2,8 @@
 'use client';
 import CButton from '@/components/CButton';
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
-import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
+import PhoneInput from '@/components/PhoneInput';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
@@ -91,7 +91,7 @@ const LoginPage = (): JSX.Element => {
             password: '',
             keepMeLoggedIn: false
           });
-          await router.push('/temporary'); // Added await keyword here
+          await router.push('/'); // Added await keyword here
         } else {
           setErrorResponse('Invalid Phone Number or Password');
         }

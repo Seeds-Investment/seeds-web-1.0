@@ -1,3 +1,4 @@
+'use-client';
 import Button from '@/components/ui/button/Button';
 import {
   getArticle,
@@ -82,6 +83,8 @@ interface ArticleDetail {
 
 interface ArticleComment {
   id: string;
+  name: string;
+  avatar: string;
   comment: string;
   created_at: string;
 }
@@ -104,9 +107,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
-  const [articleComment, setArticleComment] = useState<ArticleComment | null>(
-    null
-  );
+  const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
@@ -156,6 +157,7 @@ export default function ArticleDetailPage(): JSX.Element {
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
+              console.log(response.news);
             }
           })
           .catch(error => {
@@ -217,8 +219,8 @@ export default function ArticleDetailPage(): JSX.Element {
           comment: ''
         }));
         setTimeout(() => {
-          void router.replace(router.asPath);
-        }, 3000);
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
@@ -230,11 +232,29 @@ export default function ArticleDetailPage(): JSX.Element {
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
         setLiked(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  function formatDate(inputDate: string): string {
+    const date = new Date(inputDate);
+    // Remove milliseconds to avoid precision issues
+    date.setMilliseconds(0);
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return date.toLocaleDateString('en-US', options).replace(',', '');
+  }
 
   if (articleDetail == null) {
     return <p>Loading...</p>;
@@ -463,17 +483,32 @@ export default function ArticleDetailPage(): JSX.Element {
           {articleDetail.total_comments} Comments
         </h1>
         {articleDetail.total_comments !== 0 ? (
-          <div className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl">
-            <div className="flex flex-row">
-              <div className="xl:ml-4">
-                <p className="text-[#7C7C7C] text-sm font-normal">
-                  {articleComment?.created_at}
+          <div className="flex flex-col">
+            {articleComment.map(article => (
+              <div
+                key={article?.id}
+                className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
+              >
+                <div className="flex flex-row">
+                  <img
+                    src={article?.avatar}
+                    alt=""
+                    className="xl:w-[48px] xl:h-[48px] rounded-full"
+                  />
+                  <div className="xl:ml-4">
+                    <h1 className="text-[#201B1C] text-lg font-semibold">
+                      {article?.name}
+                    </h1>
+                    <p className="text-[#7C7C7C] text-sm font-normal">
+                      {formatDate(article?.created_at)}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-[#201B1C] text-base font-normal">
+                  {article?.comment}
                 </p>
               </div>
-            </div>
-            <p className="text-[#201B1C] text-base font-normal">
-              {articleComment?.comment}
-            </p>
+            ))}
           </div>
         ) : (
           <></>

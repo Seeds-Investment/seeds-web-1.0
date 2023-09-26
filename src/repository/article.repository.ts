@@ -21,7 +21,6 @@ export const getArticle = async (params: {
 export const getArticleById = async (id: string): Promise<any> => {
   try {
     const response = await articleService.get(`/news/v1/${id}`);
-    console.log(response, '>>>>');
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
@@ -34,12 +33,16 @@ export const getArticleComment = async (id: string): Promise<any> => {
     return await Promise.resolve('Access token not found');
   }
 
-  return await articleService.get(`/news/v1/comment/${id}`, {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
-    }
-  });
+  try {
+    let response = await articleService.get(`/news/v1/comment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
 };
 export const postComment = async (
   formRequest: any,

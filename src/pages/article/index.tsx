@@ -101,7 +101,6 @@ export default function ArticleList(): React.ReactElement {
       }));
     }
   };
-
   const { t } = useTranslation();
 
   function formatDateToIndonesian(dateStr: string): string {

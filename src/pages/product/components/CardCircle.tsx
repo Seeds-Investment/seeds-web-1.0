@@ -45,7 +45,7 @@ export default function CardCircle(): React.ReactElement {
     <>
       {circle !== undefined && (
         <>
-          <div className="flex flex-row items-center justify-center my-5"></div>
+          <div className="grid grid-rows-4 grid-flow-col gap-4 items-center justify-center my-5"></div>
           {isLoadingCircle ? (
             <Typography className="w-full text-base font-semibold text-center">
               Loading....
@@ -54,14 +54,14 @@ export default function CardCircle(): React.ReactElement {
             circle.map((data, idx) => (
               <div
                 key={idx}
-                className="border border-black/10 rounded-[26px] bg-[url] w-full h-[25vh] my-4"
+                className="relative border border-black/10 rounded-[26px] bg-[url] w-full h-[25vh] my-4"
               >
                 <img
                   src={`${data.banner}`}
                   alt=""
-                  className="w-full h-full object-fill relative rounded-[26px] brightness-50"
+                  className="absolute w-full xl:h-full h-full object-fill rounded-[26px] brightness-50"
                 />
-                <div className="relative z-10 pt-10 w-full h-full rounded-[26px]">
+                <div className="relative z-10 xl:pt-[20px] pt-6 w-full xl:h-[175px] h-full rounded-[26px]">
                   <img
                     src={data.image}
                     className="w-[82px] h-[82px] mx-auto border-4 border-white rounded-full"

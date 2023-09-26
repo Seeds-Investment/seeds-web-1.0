@@ -10,16 +10,22 @@ interface props {
   setPages: any;
   setMedia: any;
   openPieModal: any;
+  setDocument: any;
 }
 const UniqueInputButton: React.FC<props> = ({
   setPages,
   setMedia,
-  openPieModal
+  openPieModal,
+  setDocument
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
   };
   const handleGallery = (): any => {
+    document.getElementById('MediaUpload')?.click();
+  };
+
+  const handleDocument = (): any => {
     document.getElementById('dokumenFile')?.click();
   };
   const handleImage = (event: any): any => {
@@ -33,22 +39,24 @@ const UniqueInputButton: React.FC<props> = ({
     const sizeFileOnMB: any = parseFloat(
       (fileMedia.size / 1024 / 1024).toFixed(20)
     );
-    if (sizeFileOnMB > maxFileMediaSize) {
+    if (sizeFileOnMB > maxFileMediaSize && !validation) {
       fileMediaEle.value = null;
       return new Error(
         'Foto yang anda Upload melebihi batas maksimal Upload (5 Megabyte)'
       );
-    } else if (validation) {
-      return new Error('Dokumen yang diuplaod harus berbentuk JPG atau JPEG');
     } else {
       return setMedia(fileMedia);
     }
+  };
+  const handlePDF = (event: any): any => {
+    const fileMedia = event.target.files[0];
+    return setDocument(fileMedia);
   };
   return (
     <div className="flex justify-between pb-10">
       <input
         type="file"
-        id="dokumenFile"
+        id="MediaUpload"
         onChange={handleImage}
         className="hidden"
         accept="image/jpg,image/jpeg,image/png,video/mp4,video/*"
@@ -146,11 +154,18 @@ const UniqueInputButton: React.FC<props> = ({
         </div>
         {/* PDF */}
         <div className="flex flex-col">
-          <button type="button" className="p-2">
+          <button type="button" onClick={handleDocument} className="p-2">
             <Image
               alt="unique_post"
               src={pdf}
               className="h-5 w-5 object-cover"
+            />
+            <input
+              type="file"
+              id="dokumenFile"
+              onChange={handlePDF}
+              className="hidden"
+              accept=".pdf"
             />
           </button>
           <h1 className="font-poppins font-semibold text-xs text-center">

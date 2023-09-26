@@ -7,10 +7,9 @@ const articleService = baseAxios(
 export const getArticle = async (params: {
   page: number;
   limit: number;
-  order_by?: string;
 }): Promise<any> => {
   try {
-    const response = await articleService.get('/discover/v1/article', {
+    const response = await articleService.get('/news/v1/all', {
       params
     });
 
@@ -21,9 +20,71 @@ export const getArticle = async (params: {
 };
 export const getArticleById = async (id: string): Promise<any> => {
   try {
-    const response = await articleService.get(`/discover/v1/article/${id}`);
-    console.log(response, '>>>>');
+    const response = await articleService.get(`/news/v1/${id}`);
     return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const getArticleComment = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  try {
+    let response = await articleService.get(`/news/v1/comment/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const postComment = async (
+  formRequest: any,
+  articleId: number
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await articleService.post(
+      `/news/v1/comment/${articleId}`,
+      formRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const postLike = async (formRequest: any, id: number): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await articleService.post(
+      `/news/v1/like/${id}`,
+      formRequest,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
   }

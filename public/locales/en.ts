@@ -239,6 +239,13 @@ export default {
     achievementBRONZETitle: 'Dapat {{count}} Bronze',
     achievementBRONZESubtitle: 'Kumpulkan Bronze lencana sebanyak mungkin.'
   },
+  legal: {
+    title1: 'Terms & Conditions',
+    title2: 'Disclosure',
+    title3: 'Privacy Policy',
+    title4: 'Social Media Guidelines',
+    title5: 'Circle Membership'
+  },
   faq: {
     title: 'Frequently Asked Questions',
     subTitle: 'Find answers to your questions about Seeds',
@@ -810,6 +817,11 @@ export default {
       description:
         'Explore our list of communities, find the ones that match with your interest, or create one.'
     },
+    banner: {
+      title1: 'Withdraw Profit',
+      title2: 'Transcation History',
+      title3: 'Circle Balance'
+    },
     create: {
       title: 'Create Cirlce',
       cover: 'Add Cover',
@@ -843,6 +855,123 @@ export default {
         label: 'I agree with the Terms and Conditions*',
         error: 'Make sure you agree with the terms and condition'
       }
+    },
+    typePopUp: {
+      title: 'Membership Types',
+      subtitle: 'Set your circle to free or premium for more access',
+      option: {
+        free: {
+          title: 'Free',
+          subtitle: 'Create an Investment Circle easily and for free'
+        },
+        premium: {
+          title: 'Premium',
+          subtitle: 'Create a Premium Circle for various benefits'
+        }
+      },
+      button: 'Continue'
+    },
+    settingMember: {
+      title: 'Setting Member',
+      add: 'Add your members',
+      subtitle:
+        'You can add members by searching for the name or using the share link later.',
+      button: 'Create Circle'
+    },
+    success: {
+      title: 'Success!',
+      subtitle:
+        'Congratulations! The new Circle has been successfully created. Share your Circle Now!'
+    },
+    empty: {
+      title: 'Sorry',
+      subtitle: 'The data you were looking for does not exist'
+    },
+    failed: {
+      title: 'Failed!',
+      subtitle:
+        'Sorry, the new Circle creation has been failed. Please try again!'
+    },
+    exist: {
+      title: 'Oops!',
+      subtitle:
+        'The circle name is already exists, please try with another name.'
+    },
+    premium: {
+      mainTitle: 'Setting Circle Premium',
+      title: 'Premium Circle Choice',
+      subtitle:
+        'Set your circle premium to Lifetime Membership or Subscription.',
+      option: {
+        title1: 'Lifetime Membership',
+        subtitle1:
+          'Member only need to pay one time to have access to the circle.',
+        title2: 'Subscription',
+        subtitle2:
+          'Member need to pay subscription every month/3 month/6month/12 month'
+      },
+      button: 'Done'
+    },
+    fee: {
+      title: 'Set Circle Membership Fee',
+      title2: 'Set Fee Membership',
+      placeholder: 'Minimum membership fee IDR. 20,000',
+      line: 'or input manual',
+      note: 'Seeds will directly take a 20% discount from every membership fee transaction.'
+    },
+    withdraw: {
+      method: {
+        title: 'Withdraw Method',
+        input: 'Input Withdrawal Nominal',
+        method: {
+          label: 'Withdraw Method',
+          placeholder: 'Select your withdraw method'
+        },
+        bankRekening: {
+          label: 'Bank Account',
+          placeholder: 'Select your bank account'
+        },
+        numberRekening: {
+          label: 'Account Number',
+          placeholder: 'Input Bank account number'
+        },
+        nameRekening: {
+          label: 'Account Name',
+          placeholder: 'Your Bank account name'
+        },
+        button: 'Continue',
+        popUp: {
+          title1: 'Bank Transfer',
+          title2: 'E-Wallet',
+          subtitle1: 'Transfer via Bank',
+          subtitle2: 'Transfer via E-Wallet'
+        }
+      },
+      pin: {
+        title: 'Enter Your PIN',
+        subtitle: 'Please enter your PIN number correctly',
+        wrong: {
+          title: 'Enter Your PIN',
+          subtitle1: 'Please enter your PIN number correctly',
+          subtitle2: 'Please make sure you have the right PIN and try again.'
+        }
+      },
+      success: {
+        title: 'Successful',
+        subtitle1: 'Your request has been made!',
+        subtitle2: 'The withdrawal request would take one business day.'
+      },
+      history: {
+        title: 'Transaction History',
+        tab1: 'Income',
+        tab2: 'Outcome',
+        sortBy: {
+          option1: 'Success',
+          option2: 'Pending',
+          option3: 'Failed',
+          option4: 'On Progress'
+        }
+      }
     }
   },
   articleList: {
@@ -851,7 +980,6 @@ export default {
     text3: 'Sort by',
     text4: 'Search'
   },
-
   validationErrors: {
     required: 'This field is required',
     invalidCountryCode: 'Invalid Country Code',
@@ -897,6 +1025,59 @@ export default {
         title2: 'Start Your Investing Journey',
         title3:
           'Expand your connection, learn about finance and grow your portfolio together with Seeds.'
+      }
+    }
+  },
+  circleSetting: {
+    popUpCircle: {
+      option1: 'Edit Circle',
+      option2: 'Delete Circle',
+      option3: 'Report Circle',
+      option4: 'Leave Circle'
+    },
+    popUpPost: {
+      option1: 'Edit Post',
+      option2: 'Report Post',
+      option3: 'Delete Post'
+    },
+    deleteCircle: {
+      popUpDelete: {
+        title: 'Delete',
+        subtitle1: 'Are you sure you want to delete this circle?',
+        subtitle2:
+          'If you delete this circle, you will permanently lose all data',
+        button1: 'Cancel',
+        button2: 'Delete Circle'
+      },
+      popUpDeleteCircle: {
+        title: 'Circle has been deleted',
+        subtitle: 'Please join other interesting circles'
+      }
+    },
+    reportCirlce: {
+      title: 'Report Cirlce',
+      subtitle1: 'This circle will be reported',
+      subtitle2: 'Why are you reporting this circle?',
+      option1: 'Spam',
+      option2: 'Nudity or sexual Activity',
+      option3: 'Hate speech or symbols',
+      option4: 'Bullying or harassment',
+      option5: 'I do not like it',
+      option6: 'Scam or fraud',
+      option7: 'Something else',
+      popUp: {
+        title: 'The report has been submitted',
+        subtitle: 'Thank you for helping us'
+      }
+    },
+    leaveCircle: {
+      title: 'Leave',
+      subtitle: 'Are you sure want to leave this circle?',
+      button1: 'Cancel',
+      button2: 'Leave Circle',
+      popUp: {
+        title: 'Successfully leaving the Circle',
+        subtitle: 'Please join other interesting circles.'
       }
     }
   }

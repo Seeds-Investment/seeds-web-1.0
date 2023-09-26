@@ -101,7 +101,7 @@ export default function Section1(): React.ReactElement {
                                         sm:w-[23rem] 
                                         md:w-[20rem] md:h-[26rem]
                                         lg:w-[29rem] lg:h-[38rem]
-                                        xl:w-[30rem] xl:h-[40rem]"
+                                        xl:w-[30rem] xl:h-[40rem] xl:translate-y-[2rem]"
               alt="img"
               src={shape}
             />
@@ -110,9 +110,9 @@ export default function Section1(): React.ReactElement {
             alt="img"
             className={`absolute right-0 -translate-y-[27rem] w-[19.5rem] h-[28rem] drop-shadow-2xl
                             sm:w-[25rem] sm:h-[38rem] sm:-translate-y-[37rem]
-                            md:w-[22rem] md:h-[28rem] md:-translate-y-[27rem]
-                            lg:w-[32rem] lg:h-[41rem] lg:-translate-y-[39rem]
-                            xl:w-[35rem] xl:h-[43rem] xl:-translate-y-[42rem] ${
+                            md:w-[22rem] md:h-[28rem] md:-translate-y-[25rem]
+                            lg:w-[32rem] lg:h-[41rem] lg:-translate-y-[30rem]
+                            xl:w-[35rem] xl:h-[43rem] xl:-translate-y-[35rem] ${
                               width !== undefined && width >= 1690
                                 ? '2xl:w-[46rem] 2xl:h-[60rem]'
                                 : ''
@@ -124,9 +124,9 @@ export default function Section1(): React.ReactElement {
             alt="img"
             className={`absolute right-0 -translate-y-[28rem] w-[18rem] h-[30rem] drop-shadow-2xl
                             sm:w-[25rem] sm:h-[40rem] sm:-translate-y-[38rem]
-                            md:w-[22rem] md:h-[30rem] md:-translate-y-[28rem]
-                            lg:w-[32rem] lg:h-[43rem] lg:-translate-y-[40rem] 
-                            xl:w-[35-rem] xl:h-[40rem] xl:-translate-y-[40rem] ${
+                            md:w-[22rem] md:h-[30rem] md:-translate-y-[25rem]
+                            lg:w-[32rem] lg:h-[43rem] lg:-translate-y-[35rem] 
+                            xl:w-[35-rem] xl:h-[40rem] xl:-translate-y-[35rem] ${
                               width !== undefined && width >= 1690
                                 ? '2xl:w-[47rem] 2xl:h-[58rem]'
                                 : ''

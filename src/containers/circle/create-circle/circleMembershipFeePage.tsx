@@ -2,12 +2,15 @@ import CCard from '@/components/CCard';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
+import { useTranslation } from 'react-i18next';
 
 const CircleMembershipFeePage = ({
   formRequest,
   changeStep,
   change
 }: any): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <div className="md:mx-8 lg:mx-[10rem] xl:mx-[22rem]">
       {formRequest !== undefined && (
@@ -20,13 +23,13 @@ const CircleMembershipFeePage = ({
               <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
             </button>
             <Typography className="mb-2 text-center text-lg font-poppins font-semibold">
-              Set Circle Membership Fee
+              {t('circle.fee.title')}
             </Typography>
             <p className="w-1/3"></p>
           </div>
           <CCard className="mt-2 p-10 border-none shadow-none rounded-xl bg-white">
             <Typography className="mb-5 text-base font-poppins font-semibold text-[#262626]">
-              Set Fee Membership
+              {t('circle.fee.title2')}
             </Typography>
             <div className="grid grid-rows-3 grid-flow-col gap-6 mb-6">
               <Button
@@ -81,7 +84,7 @@ const CircleMembershipFeePage = ({
             <div className="flex flex-row justify-between">
               <hr className="w-1/3 mt-3" />
               <Typography className="w-1/3 text-center">
-                or input manual
+                {t('circle.fee.line')}
               </Typography>
               <hr className="w-1/3 mt-3" />
             </div>
@@ -97,7 +100,7 @@ const CircleMembershipFeePage = ({
               className="w-full mt-16 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
               onClick={() => changeStep('membership')}
             >
-              Done
+              {t('circle.premium.button')}
             </Button>
           </CCard>
         </>

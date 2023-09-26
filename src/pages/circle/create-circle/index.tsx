@@ -1,16 +1,18 @@
+import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { failedCircle } from '@/constants/assets/icons';
+import CirclePremiumChoicePage from '@/containers/circle/create-circle/circlePremiumChoicePage';
+import CreateCirclePage from '@/containers/circle/create-circle/createCirclePage';
+import MembershipPage from '@/containers/circle/create-circle/membershipPage';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { createCircle } from '@/repository/circle.repository';
 import { uploadCloud } from '@/repository/storage';
 import { useState } from 'react';
-import CircleMembershipFeePage from '../components/circleMembershipFeePage';
-import CirclePremiumChoicePage from '../components/circlePremiumChoicePage';
-import CreateCirclePage from '../components/createCirclePage';
-import MembershipPage from '../components/membershipPage';
-import SuccessPage from '../components/successPage';
-import TermConditionPage from '../components/termConditionPage';
+import CircleMembershipFeePage from '../../../containers/circle/create-circle/circleMembershipFeePage';
+import SuccessPage from '../../../containers/circle/create-circle/successPage';
+import TermConditionPage from '../../../containers/circle/create-circle/termConditionPage';
 
 interface FormRequestInterface {
   name: string;
@@ -23,7 +25,7 @@ interface FormRequestInterface {
   memberships: any[];
   hashtags: any[];
   membership_type: string;
-  category: string;
+  categories: string[];
 }
 
 const initialFormRequest = {
@@ -37,7 +39,7 @@ const initialFormRequest = {
   memberships: [],
   hashtags: [],
   membership_type: '',
-  category: ''
+  categories: []
 };
 
 const CreateCircle = (): React.ReactElement => {
@@ -114,10 +116,12 @@ const CreateCircle = (): React.ReactElement => {
     }));
   };
 
-  const handleChangeValueCategory = (value: string): void => {
+  const handleChangeValueCategory = (value: any[]): void => {
+    const categoriesArray: string[] = value.map(item => item.label);
+
     setFormRequest(prevState => ({
       ...prevState,
-      category: value
+      categories: categoriesArray
     }));
   };
 
@@ -153,7 +157,7 @@ const CreateCircle = (): React.ReactElement => {
         return;
       }
 
-      if (formRequest.category === '') {
+      if (formRequest.categories.length === 0) {
         setError(prevError => ({
           ...prevError,
           category: 'Field is empty'
@@ -180,12 +184,12 @@ const CreateCircle = (): React.ReactElement => {
       setIsloadingSubmit(true);
       createCircle(formRequest)
         .then(res => {
-          console.log('response post = ', res);
           handleChangeStep('success');
           setIsloadingSubmit(false);
         })
         .catch(err => {
           setIsloadingSubmit(false);
+          handleChangeStep('failed');
           console.log(err);
         });
     } catch (error: any) {
@@ -236,6 +240,14 @@ const CreateCircle = (): React.ReactElement => {
           />
         ) : step === 'success' ? (
           <SuccessPage />
+        ) : step === 'failed' ? (
+          <FinalModalCircle
+            title="Failed!"
+            subtitle="Sorry, the new Circle creation has been failed. Please try again!"
+            button="Try Again"
+            imageUrl={failedCircle.src}
+            handleOpen={handleChangeStep}
+          />
         ) : (
           <CreateCirclePage
             formRequest={formRequest}

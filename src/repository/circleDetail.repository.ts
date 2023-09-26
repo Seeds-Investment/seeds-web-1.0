@@ -260,7 +260,7 @@ export const UseUploadMedia = async (media: any): Promise<any> => {
     formData,
     {
       headers: {
-        Accept: 'application/json',
+        Accept: 'multipart/form-data',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     }

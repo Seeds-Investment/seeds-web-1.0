@@ -10,6 +10,7 @@ interface ButtonProps {
   className?: string;
   style?: object;
   props?: object;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = 'light',
   className,
   style,
+  disabled = false,
   onClick,
   ...props
 }) => {
@@ -45,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({
       className={className ?? defaultButtonClasses}
       style={style}
       data-ripple-light="true"
+      disabled={disabled}
     >
       {label}
     </button>

@@ -7,7 +7,12 @@ import PrivacyPolicyTnC from './privacyPolicyTnc';
 import SocialMediaGuideTnc from './socialMediaGuideTnC';
 import TermAndConditionTnC from './termAndConditionTnC';
 
-const TermConditionPage = ({ changeStep }: any): JSX.Element => {
+const TermConditionPage = ({
+  changeStep,
+  handleRoute,
+  setIsChecked,
+  isChecked
+}: any): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -62,22 +67,46 @@ const TermConditionPage = ({ changeStep }: any): JSX.Element => {
         />
 
         <div className="text-center mt-10 mx-8 pb-2">
-          <input
-            type="checkbox"
-            name="tickBox"
-            className="mr-3"
-            // checked={false}
-            id="customCheck2"
-          />
+          {isChecked !== undefined ? (
+            <input
+              type="checkbox"
+              name="tickBox"
+              className="mr-3"
+              checked={isChecked}
+              onChange={() => {
+                if (isChecked === true) {
+                  setIsChecked(false);
+                }
+                setIsChecked(true);
+              }}
+              id="customCheck2"
+            />
+          ) : (
+            <input
+              type="checkbox"
+              name="tickBox"
+              className="mr-3"
+              id="customCheck2"
+            />
+          )}
           <label
             htmlFor="customCheck2"
             className="font-normal text-xs md:text-sm text-[#262626]"
           >
             I agree with the Terms and Conditions
           </label>
-          <Button className="w-full bg-seeds-button-green mt-10 rounded-full capitalize">
-            Continue
-          </Button>
+          {handleRoute !== undefined ? (
+            <Button
+              className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
+              onClick={() => handleRoute()}
+            >
+              Continue
+            </Button>
+          ) : (
+            <Button className="w-full bg-seeds-button-green mt-10 rounded-full capitalize">
+              Continue
+            </Button>
+          )}
         </div>
       </div>
     </>

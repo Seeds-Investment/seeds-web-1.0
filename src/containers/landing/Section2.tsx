@@ -28,6 +28,8 @@ export default function Section2(): React.ReactElement {
   useEffect(() => {
     void fetch(setNews);
   }, []);
+  const number = ['1', '2', '3', '4', '5', '6', '7'];
+  console.log(number);
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">
@@ -35,10 +37,10 @@ export default function Section2(): React.ReactElement {
           <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1a')}
           </span>
-          <span className="xl:text-[72px] text-[30px] font-bold text-[#262626] mr-2 md:text-5xl lg:text-7xl">
+          <span className="xl:text-[72px] text-[30px] font-bold text-[#262626] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1b')}
           </span>
-          <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl">
+          <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl xl:pb-4">
             {t('landing.section2.text1c')}
           </span>
 

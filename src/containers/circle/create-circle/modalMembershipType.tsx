@@ -12,6 +12,7 @@ import {
   Radio,
   Typography
 } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 const ModalMembershipType = ({
   openModal,
@@ -19,6 +20,8 @@ const ModalMembershipType = ({
   change,
   formRequest
 }: any): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <Dialog size="lg" open={openModal} handler={handleOpenModal}>
       {formRequest !== undefined && (
@@ -51,10 +54,10 @@ const ModalMembershipType = ({
               className="font-semibold text-base text-center"
               color="blue-gray"
             >
-              Membership Types
+              {t('circle.typePopUp.title')}
             </Typography>
             <Typography className="font-normal text-sm text-center mb-5 text-[#7C7C7C]">
-              Set your circle to free or premium for more access
+              {t('circle.typePopUp.subtitle')}
             </Typography>
 
             <Card color="white" shadow={false} className="w-full border-2 mb-5">
@@ -68,10 +71,10 @@ const ModalMembershipType = ({
                   />
                   <div className="flex w-full ml-5 flex-col gap-0.5">
                     <Typography className="font-semibold text-base text-[#262626]">
-                      Free
+                      {t('circle.typePopUp.option.free.title')}
                     </Typography>
                     <Typography className="font-normal text-sm text-[#7C7C7C]">
-                      Create an Investment Circle easily and for free
+                      {t('circle.typePopUp.option.free.subtitle')}
                     </Typography>
                   </div>
                   <div className="items-end">
@@ -106,10 +109,10 @@ const ModalMembershipType = ({
                   />
                   <div className="flex w-full ml-5 flex-col gap-0.5">
                     <Typography className="font-semibold text-base text-[#262626]">
-                      Premium
+                      {t('circle.typePopUp.option.premium.title')}
                     </Typography>
                     <Typography className="font-normal text-sm text-[#7C7C7C]">
-                      Create a Premium Circle for various benefits
+                      {t('circle.typePopUp.option.premium.subtitle')}
                     </Typography>
                   </div>
                   <div className="items-end">
@@ -138,7 +141,7 @@ const ModalMembershipType = ({
               className="w-full bg-seeds-button-green mt-2 rounded-full capitalize"
               onClick={handleOpenModal}
             >
-              Continue
+              {t('circle.typePopUp.button')}
             </Button>
           </DialogFooter>
         </>

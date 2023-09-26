@@ -2,9 +2,11 @@ import { successCircle } from '@/constants/assets/icons';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const SuccessPage = (): JSX.Element => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <div
@@ -20,11 +22,10 @@ const SuccessPage = (): JSX.Element => {
       />
 
       <Typography className="text-[16px] font-semibold mb-1 mt-5 md:text-5xl lg:text-[72px] text-black">
-        Success!
+        {t('circle.success.title')}
       </Typography>
       <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-xl lg:text-[20px] text-[#7C7C7C]">
-        Congratulations! The new Circle has been successfully created. Share
-        your Circle Now!
+        {t('circle.success.subtitle')}
       </Typography>
 
       <Button

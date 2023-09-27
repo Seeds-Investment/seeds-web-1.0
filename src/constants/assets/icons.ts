@@ -175,6 +175,16 @@ export const successCircleSetting: AssetsInterface = {
   alt: 'successCircle'
 };
 
+export const BCAIcon: AssetsInterface = {
+  src: '/assets/circle/BCA.svg',
+  alt: 'bca'
+};
+
+export const CeklisCircle: AssetsInterface = {
+  src: '/assets/circle/ceklisCircle.svg',
+  alt: 'bca'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -206,7 +216,9 @@ const Icons: Record<string, AssetsInterface> = {
   addImageCircle,
   failedCircle,
   errorCircle,
-  successCircleSetting
+  successCircleSetting,
+  BCAIcon,
+  CeklisCircle
 };
 
 export default Icons;

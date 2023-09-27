@@ -52,14 +52,16 @@ const ModalDeleteCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           subtitle="Please join other interesting circles"
           imageUrl={successCircleSetting.src}
           handleOpen={handleSubmit}
+          error={false}
         />
       ) : responseApi === 'failed' ? (
         <FinalModalCircle
-          button="Done"
-          title="Oops!"
-          subtitle="Something went wrong, please try again later."
+          button="Try Again"
+          title="Failed to delete the circle"
+          subtitle="Please make sure that you are a circle owner."
           imageUrl={errorCircle.src}
           handleOpen={handleSubmit}
+          error={true}
         />
       ) : null}
 

@@ -1,6 +1,7 @@
 import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import InputPinCircle from '@/components/circle/InputPinCircle';
 import { errorCircle } from '@/constants/assets/icons';
+import SuccessPage from '@/containers/circle/withdraw/SuccessPage';
 import WithdrawCircle from '@/containers/circle/withdraw/WithdrawCircle';
 import WithdrawMethod from '@/containers/circle/withdraw/WithdrawMethod';
 import withAuth from '@/helpers/withAuth';
@@ -147,7 +148,7 @@ const Withdrawal = (): JSX.Element => {
             withdrawCircle(formRequest)
               .then(res => {
                 console.log('response post = ', res);
-                // handleChangeStep('success');
+                handleChangeStep('success');
                 setIsLoadingSubmit(false);
               })
               .catch(err => {
@@ -202,7 +203,10 @@ const Withdrawal = (): JSX.Element => {
           subtitle="Something went wrong, please try again later."
           imageUrl={errorCircle.src}
           handleOpen={handleSubmit}
+          error={true}
         />
+      ) : step === 'success' ? (
+        <SuccessPage />
       ) : (
         <WithdrawCircle
           changeStep={handleChangeStep}

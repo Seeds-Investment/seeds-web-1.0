@@ -161,7 +161,7 @@ export const addImageCircle: AssetsInterface = {
 };
 
 export const errorCircle: AssetsInterface = {
-  src: '/assets/circle/ErrorCircle.svg',
+  src: '/assets/circle/ErrorCircleNew.svg',
   alt: 'errorCircle'
 };
 
@@ -173,6 +173,16 @@ export const failedCircle: AssetsInterface = {
 export const successCircleSetting: AssetsInterface = {
   src: '/assets/circle/SuccessCircleSetting.svg',
   alt: 'successCircle'
+};
+
+export const BCAIcon: AssetsInterface = {
+  src: '/assets/circle/BCA.svg',
+  alt: 'bca'
+};
+
+export const CeklisCircle: AssetsInterface = {
+  src: '/assets/circle/ceklisCircle.svg',
+  alt: 'bca'
 };
 
 const Icons: Record<string, AssetsInterface> = {
@@ -206,7 +216,9 @@ const Icons: Record<string, AssetsInterface> = {
   addImageCircle,
   failedCircle,
   errorCircle,
-  successCircleSetting
+  successCircleSetting,
+  BCAIcon,
+  CeklisCircle
 };
 
 export default Icons;

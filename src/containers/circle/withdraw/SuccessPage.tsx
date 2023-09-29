@@ -1,7 +1,11 @@
-import CCard from '@/components/CCard';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { BCAIcon, CeklisCircle } from '@/constants/assets/icons';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { Button, Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 interface props {
   data?: any;
@@ -9,6 +13,7 @@ interface props {
 
 const SuccessPage: React.FC<props> = ({ data }) => {
   const width = useWindowInnerWidth();
+  const router = useRouter();
 
   return (
     <PageGradient
@@ -28,9 +33,88 @@ const SuccessPage: React.FC<props> = ({ data }) => {
         } bg-white`}
       >
         <div className="flex items-center justify-center rounded-xl">
-          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white">
-            <p>test</p>
-          </CCard>
+          <Card
+            className="p-9 border-none rounded-xl shadow-none w-full md:w-2/3 xl:w-1/2 h-[50rem]"
+            style={{
+              background: 'linear-gradient(to bottom, #3AC4A0 50%, #FFFFFF 50%)'
+            }}
+          >
+            <div className="flex items-center justify-center mb-9 mt-3">
+              <Image
+                src={CeklisCircle.src}
+                alt="AVATAR"
+                width={80}
+                height={80}
+              />
+            </div>
+            <Typography className="text-2xl font-semibold text-white text-center">
+              Successful
+            </Typography>
+            <Typography className="text-sm font-normal text-white text-center">
+              Your request has been made!
+            </Typography>
+
+            <Card className="p-5 mt-8 bg-white">
+              <Typography className="text-sm font-semibold text-[#BDBDBD] text-center">
+                Payment Method
+              </Typography>
+              <div className="flex items-center justify-center mb-9 mt-3">
+                <Image src={BCAIcon.src} alt="AVATAR" width={90} height={90} />
+              </div>
+              <hr className="border-t-2 border-dashed" />
+              <div className="flex flex-row justify-between my-5">
+                <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                  Withdraw
+                </Typography>
+                <Typography className="text-sm font-semibold text-[#262626]">
+                  IDR 20.000
+                </Typography>
+              </div>
+              <div className="flex flex-row justify-between mb-5">
+                <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                  Admin
+                </Typography>
+                <Typography className="text-sm font-semibold text-[#262626]">
+                  IDR 2000
+                </Typography>
+              </div>
+              <hr />
+              <div className="flex flex-row justify-between my-5">
+                <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                  Total Amount
+                </Typography>
+                <Typography className="text-sm font-semibold text-[#262626]">
+                  IDR 80.000
+                </Typography>
+              </div>
+              <div className="flex flex-row justify-between mb-5">
+                <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                  ID Transaction
+                </Typography>
+                <Typography className="text-sm font-semibold text-[#262626]">
+                  1212121
+                </Typography>
+              </div>
+              <Typography className="text-[10px] font-normal text-[#BDBDBD] text-center">
+                12 Oct 2022 14:07:00 WIB No.Ref 702223456789
+              </Typography>
+            </Card>
+            <Typography className="text-sm font-light text-[#5263F9] mt-5 flex flex-row">
+              <InformationCircleIcon className="w-7 h-7 text-[#5263F9] mr-2" />
+              The withdrawal request would take one business day.
+            </Typography>
+
+            <div className="w-full flex items-center justify-center">
+              <Button
+                className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                onClick={() => {
+                  void router.push('/circle/transaction-history');
+                }}
+              >
+                Transaction History
+              </Button>
+            </div>
+          </Card>
         </div>
       </CardGradient>
     </PageGradient>

@@ -75,14 +75,16 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           subtitle="Terima kasih telah membantu kami"
           imageUrl={successCircleSetting.src}
           handleOpen={handleSubmit}
+          error={false}
         />
       ) : responseApi === 'failed' ? (
         <FinalModalCircle
-          button="Done"
-          title="Oops!"
-          subtitle="Something went wrong, please try again later."
+          button="Try Again"
+          title="Failed to report the circle"
+          subtitle="Report failed to send, try again later"
           imageUrl={errorCircle.src}
           handleOpen={handleSubmit}
+          error={true}
         />
       ) : null}
       <Dialog

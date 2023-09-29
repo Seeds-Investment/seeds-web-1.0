@@ -54,7 +54,7 @@ export default function Section2(): React.ReactElement {
       </Typography>
       <Tabs value={activeTab}>
         <TabsHeader
-          className="rounded-none border-none bg-transparent p-0"
+          className="rounded-none  border-none bg-transparent p-0"
           indicatorProps={{
             className:
               'bg-transparent border-b-4 border-[#3AC4A0] shadow-none rounded-none'

@@ -64,6 +64,17 @@ const Header: React.FC = () => {
     void fetchData();
   }, []);
 
+  function logout(): void {
+    // Remove specific items from local storage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresAt');
+    localStorage.removeItem('keepMeLoggedIn');
+
+    // Refresh the page
+    window.location.reload();
+  }
+
   const navList = (
     <ul className="flex flex-col gap-3 text-center w-full">
       <li>
@@ -301,17 +312,25 @@ const Header: React.FC = () => {
             </Link>
           )}
           {accessToken !== null && userInfo !== null ? (
-            <div className="flex">
-              <div className="mt-2 mx-2 font-bold hidden lg:block">
-                Hi, {userInfo.name}
+            <div className="flex flex-row">
+              <div className="flex">
+                <div className="mt-2 mx-2 font-bold hidden lg:block">
+                  Hi, {userInfo.name}
+                </div>
+                <Image
+                  alt="image"
+                  width={17}
+                  height={17}
+                  className="rounded-full w-10"
+                  src={userInfo.avatar}
+                />
               </div>
-              <Image
-                alt="image"
-                width={17}
-                height={17}
-                className="rounded-full w-10"
-                src={userInfo.avatar}
-              />
+              <button
+                className="block bg-[#DD2525] border border-transparent text-white text-base font-semibold py-2 px-8 xl:mx-8 rounded-full leading-tight focus:outline-none focus:shadow-outline"
+                onClick={logout}
+              >
+                Logout
+              </button>
             </div>
           ) : (
             <Button
@@ -322,7 +341,6 @@ const Header: React.FC = () => {
             />
           )}
           <div className="relative inline-flex">
-            <button className="block bg-transparent border border-transparent text-white px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"></button>
             <select
               className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
               value={selectedLanguage}

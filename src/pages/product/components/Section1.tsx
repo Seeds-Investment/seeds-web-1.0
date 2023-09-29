@@ -24,10 +24,12 @@ export default function Section1(): React.ReactElement {
         console.error('devUrl is an empty string.');
       } else {
         try {
-          const response = await fetch(`${devUrl}/play/v1/leaderboard`);
+          const response = await fetch(
+            `${devUrl}/play/v1/leaderboard?type=ARENA`
+          );
           if (response.ok) {
             const data = await response.json();
-            setDataLeaderboard(data.playLeaderboards);
+            setDataLeaderboard(data?.playLeaderboards);
           } else {
             console.error('Error fetching data:', response.status);
           }
@@ -206,7 +208,7 @@ export default function Section1(): React.ReactElement {
         <section className="flex flex-col justify-center xl:gap-5 xl:flex-row">
           <section className="xl:hidden block">
             <Image
-              src={dataLeaderboard[0]?.avatar_url}
+              src={dataLeaderboard?.[0]?.avatar_url}
               alt="profile"
               width={289}
               height={289}
@@ -214,17 +216,17 @@ export default function Section1(): React.ReactElement {
             />
             <section className="w-12 h-12 bg-[#FDBA22] mx-auto -mt-6 z-40 relative rounded-full">
               <p className="text-xl font-semibold text-white align-middle justify-center text-center py-2">
-                {dataLeaderboard[0]?.current_rank}st
+                {dataLeaderboard?.[0]?.current_rank}st
               </p>
             </section>
-            <h1 className="my-3">{dataLeaderboard[0]?.user_full_name}</h1>
+            <h1 className="my-3">{dataLeaderboard?.[0]?.user_full_name}</h1>
             <section className="bg-[#FFF7D280] text-[#D89918] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard[0]?.points} points
+              {dataLeaderboard?.[0]?.points} points
             </section>
           </section>
           <section className="xl:mt-10">
             <Image
-              src={dataLeaderboard[1]?.avatar_url}
+              src={dataLeaderboard?.[1]?.avatar_url}
               alt="profile"
               width={289}
               height={289}
@@ -232,17 +234,17 @@ export default function Section1(): React.ReactElement {
             />
             <section className="w-12 h-12 bg-[#7555DA] mx-auto -mt-6 z-40 relative rounded-full">
               <p className="text-xl font-semibold text-white align-middle justify-center text-center py-2">
-                {dataLeaderboard[1]?.current_rank}nd
+                {dataLeaderboard?.[1]?.current_rank}nd
               </p>
             </section>
-            <h1 className="my-3">{dataLeaderboard[1]?.user_full_name}</h1>
+            <h1 className="my-3">{dataLeaderboard?.[1]?.user_full_name}</h1>
             <section className="bg-[#7555DA]/10 text-[#7555DA] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard[1]?.points} points
+              {dataLeaderboard?.[1]?.points} points
             </section>
           </section>
           <section className="xl:block hidden">
             <Image
-              src={dataLeaderboard[0]?.avatar_url}
+              src={dataLeaderboard?.[0]?.avatar_url}
               alt="profile"
               width={289}
               height={289}
@@ -250,17 +252,17 @@ export default function Section1(): React.ReactElement {
             />
             <section className="w-12 h-12 bg-[#FDBA22] mx-auto -mt-6 z-40 relative rounded-full">
               <p className="text-xl font-semibold text-white align-middle justify-center text-center py-2">
-                {dataLeaderboard[0]?.current_rank}st
+                {dataLeaderboard?.[0]?.current_rank}st
               </p>
             </section>
-            <h1 className="my-3">{dataLeaderboard[0]?.user_full_name}</h1>
+            <h1 className="my-3">{dataLeaderboard?.[0]?.user_full_name}</h1>
             <section className="bg-[#FFF7D280] text-[#D89918] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard[0]?.points} points
+              {dataLeaderboard?.[0]?.points} points
             </section>
           </section>
           <section className="xl:mt-10">
             <Image
-              src={dataLeaderboard[2]?.avatar_url}
+              src={dataLeaderboard?.[2]?.avatar_url}
               alt="profile"
               width={289}
               height={289}
@@ -268,12 +270,12 @@ export default function Section1(): React.ReactElement {
             />
             <section className="w-12 h-12 bg-[#FF8560] mx-auto -mt-6 z-40 relative rounded-full">
               <p className="text-xl font-semibold text-white align-middle justify-center text-center py-2">
-                {dataLeaderboard[2]?.current_rank}rd
+                {dataLeaderboard?.[2]?.current_rank}rd
               </p>
             </section>
-            <h1 className="my-3">{dataLeaderboard[2]?.user_full_name}</h1>
+            <h1 className="my-3">{dataLeaderboard?.[2]?.user_full_name}</h1>
             <section className="bg-[#FF4A2B]/10 text-[#FF4A2B] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-10">
-              {dataLeaderboard[2]?.points} points
+              {dataLeaderboard?.[2]?.points} points
             </section>
           </section>
         </section>

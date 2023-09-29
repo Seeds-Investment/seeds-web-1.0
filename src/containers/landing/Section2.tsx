@@ -47,7 +47,7 @@ export default function Section2(): React.ReactElement {
           <Image
             alt="img"
             className="absolute w-[30%] -translate-y-[10rem] translate-x-[8rem]
-                2xl:w-[15%] 2xl:-translate-y-[7rem] 2xl:translate-x-[35rem]
+                2xl:w-[15%] 2xl:-translate-y-[7rem] 2xl:translate-x-[50rem]
                 lg:w-[15%] lg:-translate-y-[10rem] lg:translate-x-[30rem]
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
                 sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"

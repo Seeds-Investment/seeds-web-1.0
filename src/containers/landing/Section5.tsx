@@ -1,5 +1,7 @@
 import bg from '@/assets/landing-page/bg-discover.png';
 import faq from '@/assets/landing-page/faq.png';
+import vector2 from '@/assets/landing-page/vector-faq-2.png';
+import vector1 from '@/assets/landing-page/vector-faq.png';
 import CarouselNewsDesktop from '@/components/carousel/CarouselNewsDesktop';
 import CarouselNewsMobile from '@/components/carousel/CarouselNewsMobile';
 import {
@@ -101,6 +103,16 @@ export default function Section5(): React.ReactElement {
         </div>
       </div>
       <div className="mt-20">
+        <Image
+          src={vector1}
+          alt="faq"
+          className="absolute left-0 xl:block hidden"
+        />
+        <Image
+          src={vector2}
+          alt="faq"
+          className="absolute right-0 xl:block hidden"
+        />
         <Image
           src={faq}
           alt="faq"

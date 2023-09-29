@@ -93,26 +93,18 @@ export default function Section3(): React.ReactElement {
 
           <Image
             alt="img"
-            className={`absolute right-0 xl:translate-y-10 translate-y-[35rem] w-[250px]
+            className={`absolute right-0 xl:translate-y-[250px] translate-y-[35rem] w-[250px]
               md:w-[300px] md:-translate-y-5 
               lg:w-[400px] 
-              xl:w-[500px] ${
-                width !== undefined && width >= 1690
-                  ? '2xl:w-[50rem] 2xl:h-[77rem]'
-                  : ''
-              }`}
+              xl:w-[500px] ${width !== undefined && width >= 1690 ? '' : ''}`}
             src={shape}
           />
           <Image
             alt="img"
-            className={`absolute right-0 xl:translate-y-[150px] xl:-translate-x-[100px] translate-y-[35rem] w-[500px]
+            className={`absolute right-0 xl:translate-y-[350px] xl:-translate-x-[100px] translate-y-[35rem] w-[500px]
               md:w-[300px]  md:-translate-y-5 
               lg:w-[400px]
-              xl:w-[540px] ${
-                width !== undefined && width >= 1690
-                  ? '2xl:w-[50rem] 2xl:h-[77rem]'
-                  : ''
-              }`}
+              xl:w-[540px] ${width !== undefined && width >= 1690 ? '' : ''}`}
             src={about}
           />
         </div>

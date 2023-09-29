@@ -81,7 +81,9 @@ const Player = (): React.ReactElement => {
 
   const fetchLeaderboardData = async (): Promise<void> => {
     try {
-      const response = await axios.get(`${baseUrl}/play/v1/leaderboard`);
+      const response = await axios.get(
+        `${baseUrl}/play/v1/leaderboard?type=ARENA`
+      );
       const leaderboardData: LeaderboardData[] = response.data.playLeaderboards;
       setLeader(leaderboardData);
     } catch (error) {

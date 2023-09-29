@@ -2,7 +2,9 @@ import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import axios from 'axios';
 
-const baseUrl = baseAxios(`https://seeds-dev-gcp.seeds.finance/`);
+const baseUrl = baseAxios(
+  `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}/`
+);
 interface getDataCircleType {
   circleId: string;
 }

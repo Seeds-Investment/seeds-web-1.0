@@ -15,8 +15,20 @@ interface Transaction {
 }
 
 const CardTransaction: React.FC<props> = ({ data }) => {
+  function formatDate(inputDateString: any): string {
+    const date = new Date(inputDateString);
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear().toString();
+    const hours = date.getHours().toString();
+    const minutes = date.getMinutes().toString();
+    const milisec = date.getSeconds().toString();
+
+    return `${day}/${month}/${year},${hours}:${minutes}:${milisec} WIB`;
+  }
+
   return (
-    <Card className="flex flex-row w-full p-4 rounded-none bg-[#F9F9F9]">
+    <Card className="flex flex-row w-full p-4 rounded-none mb-6 bg-[#F9F9F9]">
       <div className="w-1/2 flex flex-row items-center justify-start">
         <div>
           <ArrowUpCircleIcon className="w-7 h-7 text-[#27A590] mr-2" />
@@ -38,7 +50,7 @@ const CardTransaction: React.FC<props> = ({ data }) => {
           {data.status}
         </Typography>
         <Typography className="text-xs text-end text-[#7C7C7C]">
-          {data.timestamp}
+          {formatDate(data.timestamp)}
         </Typography>
       </div>
     </Card>

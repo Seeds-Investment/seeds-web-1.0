@@ -189,7 +189,7 @@ export const getCircleTransactionIn = async (params: any): Promise<any> => {
     return await Promise.resolve(null);
   }
 
-  return await circleService.get(`/transaction/in`, {
+  return await circleService.get(`/transactions/in`, {
     params,
     headers: {
       Accept: 'application/json',
@@ -209,7 +209,7 @@ export const getCircleTransactionOut = async (params: any): Promise<any> => {
     return await Promise.resolve(null);
   }
 
-  return await circleService.get(`/transaction/out`, {
+  return await circleService.get(`/transactions/out`, {
     params,
     headers: {
       Accept: 'application/json',

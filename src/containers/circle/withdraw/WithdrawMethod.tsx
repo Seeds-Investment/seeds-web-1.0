@@ -93,7 +93,7 @@ const WithdrawMethod: React.FC<props> = ({
         } bg-white`}
       >
         <div className="flex items-center justify-center rounded-xl">
-          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white">
+          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-20 xl:mx-[15rem]">
             <Card className="bg-[#8a70e0] h-full">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">

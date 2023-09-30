@@ -55,7 +55,7 @@ const TransactionHistory = (): JSX.Element => {
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingTransaction, setIsLoadingTransaction] = useState(false);
   const [filterIncome] = useState(initialFilterIncome);
-  const [filterOutcome] = useState(initialFilterOutcome);
+  const [filterOutcome, setFilterOutcome] = useState(initialFilterOutcome);
   const [balance, setBalance] = useState(0);
   const [transactionIn, setTransactionIn] = useState<Transaction[]>();
   const [transactionOut, setTransactionOut] = useState<Transaction[]>();
@@ -64,6 +64,15 @@ const TransactionHistory = (): JSX.Element => {
     { label: `${t('circle.withdraw.history.tab1')}`, value: 'income' },
     { label: `${t('circle.withdraw.history.tab2')}`, value: 'outcome' }
   ];
+
+  const handleSortBy = (event: any): void => {
+    setFilterOutcome(prevState => ({
+      ...prevState,
+      status: event.target.value
+    }));
+
+    void fetchCircleTransactionOut();
+  };
 
   const fetchCircleBalance = async (): Promise<void> => {
     try {
@@ -128,10 +137,11 @@ const TransactionHistory = (): JSX.Element => {
   useEffect(() => {
     void fetchCircleBalance();
     void fetchCircleTransactionIn();
-    void fetchCircleTransactionOut();
   }, []);
 
-  console.log(transactionIn);
+  useEffect(() => {
+    void fetchCircleTransactionOut();
+  }, [filterOutcome.status]);
 
   return (
     <PageGradient
@@ -156,8 +166,8 @@ const TransactionHistory = (): JSX.Element => {
           </h6>
         </div>
         <div className="flex items-center justify-center rounded-xl">
-          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white">
-            <Card className="bg-[#8a70e0] h-full">
+          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-20 xl:mx-[15rem]">
+            <Card className="bg-[#8a70e0] h-full rounded-none">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">
                   {t('circle.banner.title3')}
@@ -217,20 +227,27 @@ const TransactionHistory = (): JSX.Element => {
                       </>
                     ) : (
                       <>
+                        <div className="flex items-end justify-end mb-4">
+                          <label htmlFor="sort_by" className="text-xs">
+                            Sort by:
+                          </label>
+                          <select
+                            name="sort_by"
+                            id="sort_by"
+                            onChange={handleSortBy}
+                            className="text-xs text-[#4DA81C]"
+                          >
+                            {dropdownValue?.map((data, idx) => (
+                              <option key={idx} value={data.value}>
+                                {data.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                         {!isLoadingTransaction ? (
                           transactionOut?.length !== 0 ? (
                             transactionOut?.map((data, idx) => (
                               <>
-                                <div className="ml-auto mt-3 md:w-1/4">
-                                  <label htmlFor="sort_by">Sort by:</label>
-                                  <select name="sort_by" id="sort_by">
-                                    {dropdownValue?.map((data, idx) => (
-                                      <option key={idx} value={data.value}>
-                                        {data.label}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
                                 <CardTransaction data={data} key={idx} />
                               </>
                             ))

@@ -46,8 +46,8 @@ export default function Section2(): React.ReactElement {
 
           <Image
             alt="img"
-            className="absolute w-[30%] -translate-y-[10rem] translate-x-[8rem]
-                2xl:w-[15%] 2xl:-translate-y-[7rem] 2xl:translate-x-[50rem]
+            className="fixed w-[30%] z-[99] -translate-y-[15rem] translate-x-[8rem]
+                2xl:w-[15%] 2xl:-translate-y-[20rem] 2xl:translate-x-[35rem]
                 lg:w-[15%] lg:-translate-y-[10rem] lg:translate-x-[30rem]
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
                 sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
@@ -74,7 +74,7 @@ export default function Section2(): React.ReactElement {
           </div>
 
           <div className="flex flex-col xl:flex-row gap-16 mx-auto mt-[15vh]">
-            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[396px] text-center font-poppins rounded-[45px]">
+            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] xl:mt-5 w-[331px] h-[356px] text-center font-poppins rounded-[45px] shadow-lg shadow-[#5e44ff66]">
               <Image
                 alt="image"
                 src={play}
@@ -88,7 +88,7 @@ export default function Section2(): React.ReactElement {
                 {t('landing.section2.text3b')}
               </p>
             </section>
-            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[396px] text-center font-poppins rounded-[45px] xl:mt-0 mt-20">
+            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] xl:mt-5 pb-[76px] w-[331px] h-[356px] text-center font-poppins rounded-[45px] xl:mt-0 mt-20 shadow-lg shadow-[#5e44ff66]">
               <Image
                 alt="image"
                 src={learn}

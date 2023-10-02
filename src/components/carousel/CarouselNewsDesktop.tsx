@@ -37,6 +37,10 @@ const CarouselNewsDesktop: React.FC = () => {
     }
   }, [devUrl, setCarouselData]);
 
+  function isImageUrlValid(url: string): boolean {
+    return url?.startsWith('http://') || url?.startsWith('https://');
+  }
+
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
@@ -95,29 +99,46 @@ const CarouselNewsDesktop: React.FC = () => {
         </IconButton>
       )}
     >
-      {carouselData.map((item, index) => (
-        <div
-          key={index}
-          className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end"
-        >
-          <img
-            src={item.imageUrl}
-            alt={`image ${index + 1}`}
-            className="h-full w-full object-cover mx-auto rounded-lg"
-          />
+      {carouselData.map((item, index) => {
+        const defaultNews = '/assets/default-news.png';
+        const imageUrl =
+          typeof item.imageUrl === 'string' ? item.imageUrl : defaultNews;
+
+        // Check if the imageUrl is valid before rendering the image
+        const isImageValid = isImageUrlValid(imageUrl);
+
+        return (
           <div
-            className="absolute inset-0 h-[93%] w-[95%] object-cover m-auto cursor-pointer bg-black bg-opacity-50 text-white rounded-lg p-5 z-20 left-0 right-0 top-0 bottom-0"
-            onClick={e => {
-              e.preventDefault();
-              handleItemClick(item.link);
-            }}
+            key={index}
+            className="border-2 relative border-[#7555DA] xl:w-[90%] mx-auto flex self-center align-middle rounded-lg xl:p-5 justify-end"
           >
-            <h1 className="items-end text-start text-3xl font-semibold absolute bottom-2 left-2 text-[#FFFFFF]">
-              {item.title}
-            </h1>
+            {isImageValid ? (
+              <img
+                src={imageUrl}
+                alt={`image ${index + 1}`}
+                className="h-full w-full object-cover mx-auto rounded-lg"
+              />
+            ) : (
+              <img
+                src={defaultNews}
+                alt="Default Image"
+                className="h-full w-full object-cover mx-auto rounded-lg"
+              />
+            )}
+            <div
+              className="absolute inset-0 h-[93%] w-[95%] object-cover m-auto cursor-pointer bg-black bg-opacity-50 text-white rounded-lg p-5 z-20 left-0 right-0 top-0 bottom-0"
+              onClick={e => {
+                e.preventDefault();
+                handleItemClick(item.link);
+              }}
+            >
+              <h1 className="items-end text-start text-3xl font-semibold absolute bottom-2 left-2 text-[#FFFFFF]">
+                {item.title}
+              </h1>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </Carousel>
   );
 };

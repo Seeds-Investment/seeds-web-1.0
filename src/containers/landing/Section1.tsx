@@ -93,7 +93,7 @@ export default function Section1(): React.ReactElement {
 
         <Image
           alt="img"
-          className="absolute -z-10 right-0 bottom-0 top-0 overflow-hidden md:w-[33%] lg:w-[33%] xl:w-[33%] w-[0%]"
+          className="absolute -z-10 right-0 bottom-0 top-0 overflow-hidden md:w-[33%] lg:w-[33%] xl:w-[29%] w-[0%]"
           src={vector}
         />
       </div>

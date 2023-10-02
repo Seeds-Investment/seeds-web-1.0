@@ -262,9 +262,17 @@ export default function ArticleDetailPage(): JSX.Element {
     return date.toLocaleDateString('en-US', options).replace(',', '');
   }
 
+  function isImageUrlValid(url: string): boolean {
+    return url?.startsWith('http://') || url?.startsWith('https://');
+  }
+
   if (articleDetail == null) {
     return <p>Loading...</p>;
   }
+
+  const defaultNews = '/assets/default-news.png';
+  const imageUrl = articleDetail?.imageUrl;
+  const isImageValid = isImageUrlValid(imageUrl);
   return (
     <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
       {open && (
@@ -353,7 +361,11 @@ export default function ArticleDetailPage(): JSX.Element {
       </div>
 
       <div className="w-full">
-        <img src={articleDetail?.imageUrl} alt="Image" className="w-full" />
+        {isImageValid ? (
+          <img src={imageUrl} alt="Image" className="w-full" />
+        ) : (
+          <img src={defaultNews} alt="Image" className="w-2/3 mx-auto" />
+        )}
       </div>
       <div className="flex flex-row border-b-4 pb-5 border-[#7555DA]">
         <p className="w-full mt-8 border-r pr-3 border-[#DBC8FF]">
@@ -363,90 +375,102 @@ export default function ArticleDetailPage(): JSX.Element {
           <h1 className="bg-clip-text text-xl font-semibold text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
             Hot News
           </h1>
-          {articles.map(article => (
-            <div className="mt-2 flex flex-row" key={article?.id}>
-              <img
-                src={article?.imageUrl}
-                alt=""
-                className="w-[75px] h-full rounded-2xl"
-              />
-              <div className="flex flex-col ml-3">
-                <h1 className="text-base font-semibold text-[#000000]">
-                  {article?.title}
-                </h1>
-                <div className="flex flex-row align-middle gap-2 items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M4.66634 7.33325L7.33301 1.33325C7.86344 1.33325 8.37215 1.54397 8.74722 1.91904C9.12229 2.29411 9.33301 2.80282 9.33301 3.33325V5.99992H13.1063C13.2996 5.99773 13.4911 6.03759 13.6674 6.11673C13.8437 6.19587 14.0008 6.31241 14.1276 6.45826C14.2544 6.60411 14.348 6.7758 14.4019 6.96142C14.4558 7.14704 14.4687 7.34216 14.4397 7.53325L13.5197 13.5333C13.4715 13.8512 13.31 14.141 13.0649 14.3493C12.8199 14.5575 12.5079 14.6702 12.1863 14.6666H4.66634M4.66634 7.33325V14.6666M4.66634 7.33325H2.66634C2.31272 7.33325 1.97358 7.47373 1.72353 7.72378C1.47348 7.97382 1.33301 8.31296 1.33301 8.66658V13.3333C1.33301 13.6869 1.47348 14.026 1.72353 14.2761C1.97358 14.5261 2.31272 14.6666 2.66634 14.6666H4.66634"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  <p>+ {article.total_likes}</p>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M14 7.66669C14.0023 8.5466 13.7967 9.41461 13.4 10.2C12.9296 11.1412 12.2065 11.9328 11.3116 12.4862C10.4168 13.0396 9.3855 13.3329 8.33333 13.3334C7.45342 13.3356 6.58541 13.1301 5.8 12.7334L2 14L3.26667 10.2C2.86995 9.41461 2.66437 8.5466 2.66667 7.66669C2.66707 6.61452 2.96041 5.58325 3.51381 4.68839C4.06722 3.79352 4.85884 3.0704 5.8 2.60002C6.58541 2.20331 7.45342 1.99772 8.33333 2.00002H8.66667C10.0562 2.07668 11.3687 2.66319 12.3528 3.64726C13.3368 4.63132 13.9233 5.94379 14 7.33335V7.66669Z"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  <p>{article.total_comments}</p>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                  >
-                    <path
-                      d="M12 5.33325C13.1046 5.33325 14 4.43782 14 3.33325C14 2.22868 13.1046 1.33325 12 1.33325C10.8954 1.33325 10 2.22868 10 3.33325C10 4.43782 10.8954 5.33325 12 5.33325Z"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M4 10C5.10457 10 6 9.10457 6 8C6 6.89543 5.10457 6 4 6C2.89543 6 2 6.89543 2 8C2 9.10457 2.89543 10 4 10Z"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M12 14.6667C13.1046 14.6667 14 13.7713 14 12.6667C14 11.5622 13.1046 10.6667 12 10.6667C10.8954 10.6667 10 11.5622 10 12.6667C10 13.7713 10.8954 14.6667 12 14.6667Z"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M5.72656 9.00659L10.2799 11.6599"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10.2732 4.34009L5.72656 6.99342"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
+          {articles.map(article => {
+            const imageUrl = article?.imageUrl;
+            const isImageValid = isImageUrlValid(imageUrl);
+            return (
+              <div className="mt-2 flex flex-row" key={article?.id}>
+                {isImageValid ? (
+                  <img
+                    src={article?.imageUrl}
+                    alt=""
+                    className="w-[75px] h-full rounded-2xl"
+                  />
+                ) : (
+                  <img
+                    src={defaultNews}
+                    alt=""
+                    className="w-[75px] h-full rounded-2xl"
+                  />
+                )}
+                <div className="flex flex-col ml-3">
+                  <h1 className="text-base font-semibold text-[#000000]">
+                    {article?.title}
+                  </h1>
+                  <div className="flex flex-row align-middle gap-2 items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M4.66634 7.33325L7.33301 1.33325C7.86344 1.33325 8.37215 1.54397 8.74722 1.91904C9.12229 2.29411 9.33301 2.80282 9.33301 3.33325V5.99992H13.1063C13.2996 5.99773 13.4911 6.03759 13.6674 6.11673C13.8437 6.19587 14.0008 6.31241 14.1276 6.45826C14.2544 6.60411 14.348 6.7758 14.4019 6.96142C14.4558 7.14704 14.4687 7.34216 14.4397 7.53325L13.5197 13.5333C13.4715 13.8512 13.31 14.141 13.0649 14.3493C12.8199 14.5575 12.5079 14.6702 12.1863 14.6666H4.66634M4.66634 7.33325V14.6666M4.66634 7.33325H2.66634C2.31272 7.33325 1.97358 7.47373 1.72353 7.72378C1.47348 7.97382 1.33301 8.31296 1.33301 8.66658V13.3333C1.33301 13.6869 1.47348 14.026 1.72353 14.2761C1.97358 14.5261 2.31272 14.6666 2.66634 14.6666H4.66634"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <p>+ {article.total_likes}</p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M14 7.66669C14.0023 8.5466 13.7967 9.41461 13.4 10.2C12.9296 11.1412 12.2065 11.9328 11.3116 12.4862C10.4168 13.0396 9.3855 13.3329 8.33333 13.3334C7.45342 13.3356 6.58541 13.1301 5.8 12.7334L2 14L3.26667 10.2C2.86995 9.41461 2.66437 8.5466 2.66667 7.66669C2.66707 6.61452 2.96041 5.58325 3.51381 4.68839C4.06722 3.79352 4.85884 3.0704 5.8 2.60002C6.58541 2.20331 7.45342 1.99772 8.33333 2.00002H8.66667C10.0562 2.07668 11.3687 2.66319 12.3528 3.64726C13.3368 4.63132 13.9233 5.94379 14 7.33335V7.66669Z"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <p>{article.total_comments}</p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M12 5.33325C13.1046 5.33325 14 4.43782 14 3.33325C14 2.22868 13.1046 1.33325 12 1.33325C10.8954 1.33325 10 2.22868 10 3.33325C10 4.43782 10.8954 5.33325 12 5.33325Z"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M4 10C5.10457 10 6 9.10457 6 8C6 6.89543 5.10457 6 4 6C2.89543 6 2 6.89543 2 8C2 9.10457 2.89543 10 4 10Z"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M12 14.6667C13.1046 14.6667 14 13.7713 14 12.6667C14 11.5622 13.1046 10.6667 12 10.6667C10.8954 10.6667 10 11.5622 10 12.6667C10 13.7713 10.8954 14.6667 12 14.6667Z"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5.72656 9.00659L10.2799 11.6599"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10.2732 4.34009L5.72656 6.99342"
+                        stroke="#262626"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div className="flex flex-col px-2">

@@ -220,8 +220,27 @@ export default function Section1(): React.ReactElement {
               </p>
             </section>
             <h1 className="my-3">{dataLeaderboard?.[0]?.user_full_name}</h1>
-            <section className="bg-[#FFF7D280] text-[#D89918] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard?.[0]?.points} points
+            <section className="bg-[#FFF7D280] flex flex-row justify-center text-[#3AC4A0] px-3 py-2 text-xl font-semibold rounded-lg w-[200px] mx-auto mb-6">
+              Win Rate
+              <span className="flex flex-row items-center text-xs font-semibold ml-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="14"
+                  viewBox="0 0 15 14"
+                  fill="none"
+                >
+                  <path
+                    d="M1.35101 10.9196C1.21672 10.9196 1.06004 10.8749 0.948133 10.763C0.72432 10.5393 0.72432 10.1814 0.948133 9.98013L5.15584 5.77494C5.37965 5.55126 5.73775 5.55126 5.93918 5.77494L8.33397 8.16832L13.2579 3.24735C13.4817 3.02367 13.8398 3.02367 14.0412 3.24735C14.265 3.47103 14.265 3.82892 14.0412 4.03023L8.71447 9.35383C8.49066 9.57751 8.13256 9.57751 7.93113 9.35383L5.53631 6.96044L1.73148 10.763C1.64195 10.8749 1.50768 10.9196 1.35101 10.9196Z"
+                    fill="#3AC4A0"
+                  />
+                  <path
+                    d="M13.6611 7.56467C13.3478 7.56467 13.1016 7.31862 13.1016 7.00547V4.20947H10.3039C9.99058 4.20947 9.74438 3.96342 9.74438 3.65027C9.74438 3.33711 9.99058 3.09106 10.3039 3.09106H13.6611C13.9745 3.09106 14.2207 3.33711 14.2207 3.65027V7.00547C14.2207 7.31862 13.9745 7.56467 13.6611 7.56467Z"
+                    fill="#3AC4A0"
+                  />
+                </svg>
+                ({dataLeaderboard?.[0]?.win_rate}%)
+              </span>
             </section>
           </section>
           <section className="xl:mt-10">
@@ -238,8 +257,27 @@ export default function Section1(): React.ReactElement {
               </p>
             </section>
             <h1 className="my-3">{dataLeaderboard?.[1]?.user_full_name}</h1>
-            <section className="bg-[#7555DA]/10 text-[#7555DA] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard?.[1]?.points} points
+            <section className="bg-[#7555DA]/10 text-[#3AC4A0] flex flex-row justify-center px-3 py-2 text-xl font-semibold rounded-lg w-[200px] mx-auto mb-6">
+              Win Rate
+              <span className="flex flex-row items-center text-xs font-semibold ml-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="14"
+                  viewBox="0 0 15 14"
+                  fill="none"
+                >
+                  <path
+                    d="M1.35101 10.9196C1.21672 10.9196 1.06004 10.8749 0.948133 10.763C0.72432 10.5393 0.72432 10.1814 0.948133 9.98013L5.15584 5.77494C5.37965 5.55126 5.73775 5.55126 5.93918 5.77494L8.33397 8.16832L13.2579 3.24735C13.4817 3.02367 13.8398 3.02367 14.0412 3.24735C14.265 3.47103 14.265 3.82892 14.0412 4.03023L8.71447 9.35383C8.49066 9.57751 8.13256 9.57751 7.93113 9.35383L5.53631 6.96044L1.73148 10.763C1.64195 10.8749 1.50768 10.9196 1.35101 10.9196Z"
+                    fill="#3AC4A0"
+                  />
+                  <path
+                    d="M13.6611 7.56467C13.3478 7.56467 13.1016 7.31862 13.1016 7.00547V4.20947H10.3039C9.99058 4.20947 9.74438 3.96342 9.74438 3.65027C9.74438 3.33711 9.99058 3.09106 10.3039 3.09106H13.6611C13.9745 3.09106 14.2207 3.33711 14.2207 3.65027V7.00547C14.2207 7.31862 13.9745 7.56467 13.6611 7.56467Z"
+                    fill="#3AC4A0"
+                  />
+                </svg>
+                ({dataLeaderboard?.[1]?.win_rate}%)
+              </span>
             </section>
           </section>
           <section className="xl:block hidden">
@@ -256,8 +294,27 @@ export default function Section1(): React.ReactElement {
               </p>
             </section>
             <h1 className="my-3">{dataLeaderboard?.[0]?.user_full_name}</h1>
-            <section className="bg-[#FFF7D280] text-[#D89918] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-6">
-              {dataLeaderboard?.[0]?.points} points
+            <section className="bg-[#FFF7D280] text-[#3AC4A0] flex flex-row justify-center px-3 py-2 text-xl font-semibold rounded-lg w-[200px] mx-auto mb-6">
+              Win Rate
+              <span className="flex flex-row items-center text-xs font-semibold ml-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="14"
+                  viewBox="0 0 15 14"
+                  fill="none"
+                >
+                  <path
+                    d="M1.35101 10.9196C1.21672 10.9196 1.06004 10.8749 0.948133 10.763C0.72432 10.5393 0.72432 10.1814 0.948133 9.98013L5.15584 5.77494C5.37965 5.55126 5.73775 5.55126 5.93918 5.77494L8.33397 8.16832L13.2579 3.24735C13.4817 3.02367 13.8398 3.02367 14.0412 3.24735C14.265 3.47103 14.265 3.82892 14.0412 4.03023L8.71447 9.35383C8.49066 9.57751 8.13256 9.57751 7.93113 9.35383L5.53631 6.96044L1.73148 10.763C1.64195 10.8749 1.50768 10.9196 1.35101 10.9196Z"
+                    fill="#3AC4A0"
+                  />
+                  <path
+                    d="M13.6611 7.56467C13.3478 7.56467 13.1016 7.31862 13.1016 7.00547V4.20947H10.3039C9.99058 4.20947 9.74438 3.96342 9.74438 3.65027C9.74438 3.33711 9.99058 3.09106 10.3039 3.09106H13.6611C13.9745 3.09106 14.2207 3.33711 14.2207 3.65027V7.00547C14.2207 7.31862 13.9745 7.56467 13.6611 7.56467Z"
+                    fill="#3AC4A0"
+                  />
+                </svg>
+                ({dataLeaderboard?.[0]?.win_rate}%)
+              </span>
             </section>
           </section>
           <section className="xl:mt-10">
@@ -274,8 +331,27 @@ export default function Section1(): React.ReactElement {
               </p>
             </section>
             <h1 className="my-3">{dataLeaderboard?.[2]?.user_full_name}</h1>
-            <section className="bg-[#FF4A2B]/10 text-[#FF4A2B] px-3 py-2 text-xl font-normal rounded-lg w-[150px] mx-auto mb-10">
-              {dataLeaderboard?.[2]?.points} points
+            <section className="bg-[#FF4A2B]/10 flex flex-row justify-center text-[#3AC4A0] px-3 py-2 text-xl font-semibold rounded-lg w-[200px] mx-auto mb-10">
+              Win Rate
+              <span className="flex flex-row items-center text-xs font-semibold ml-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="15"
+                  height="14"
+                  viewBox="0 0 15 14"
+                  fill="none"
+                >
+                  <path
+                    d="M1.35101 10.9196C1.21672 10.9196 1.06004 10.8749 0.948133 10.763C0.72432 10.5393 0.72432 10.1814 0.948133 9.98013L5.15584 5.77494C5.37965 5.55126 5.73775 5.55126 5.93918 5.77494L8.33397 8.16832L13.2579 3.24735C13.4817 3.02367 13.8398 3.02367 14.0412 3.24735C14.265 3.47103 14.265 3.82892 14.0412 4.03023L8.71447 9.35383C8.49066 9.57751 8.13256 9.57751 7.93113 9.35383L5.53631 6.96044L1.73148 10.763C1.64195 10.8749 1.50768 10.9196 1.35101 10.9196Z"
+                    fill="#3AC4A0"
+                  />
+                  <path
+                    d="M13.6611 7.56467C13.3478 7.56467 13.1016 7.31862 13.1016 7.00547V4.20947H10.3039C9.99058 4.20947 9.74438 3.96342 9.74438 3.65027C9.74438 3.33711 9.99058 3.09106 10.3039 3.09106H13.6611C13.9745 3.09106 14.2207 3.33711 14.2207 3.65027V7.00547C14.2207 7.31862 13.9745 7.56467 13.6611 7.56467Z"
+                    fill="#3AC4A0"
+                  />
+                </svg>
+                ({dataLeaderboard?.[2]?.win_rate}%)
+              </span>
             </section>
           </section>
         </section>

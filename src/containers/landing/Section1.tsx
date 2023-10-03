@@ -5,6 +5,8 @@ import rectangleLine1 from '@/assets/landing-page/rectangle-line-1.png';
 import rectangleLine2 from '@/assets/landing-page/rectangle-line-2.png';
 import rectangle from '@/assets/landing-page/rectangle.png';
 import s1Line2 from '@/assets/landing-page/s1-line-2.png';
+import vector2 from '@/assets/landing-page/vector-faq-2.png';
+import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import vector from '@/assets/landing-page/vector.png';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { Button } from '@material-tailwind/react';
@@ -95,6 +97,18 @@ export default function Section1(): React.ReactElement {
           alt="img"
           className="absolute -z-10 right-0 bottom-0 top-0 overflow-hidden md:w-[33%] lg:w-[33%] xl:w-[29%] w-[0%]"
           src={vector}
+        />
+
+        <Image
+          alt="img"
+          className="absolute right-0 -z-10 top-[200px] xl:block hidden"
+          src={vector3}
+        />
+
+        <Image
+          alt="img"
+          className="absolute right-0 -z-10 top-[600px] xl:block hidden"
+          src={vector2}
         />
       </div>
     </div>

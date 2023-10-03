@@ -2,7 +2,9 @@
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
 
-const numberMobile = ['1', '2', '3', '4', '5', '6', '7'];
+const handleItemClick = (link: string): void => {
+  window.open(link, '_blank');
+};
 
 const CarouselMobile: React.FC = () => {
   return (
@@ -75,16 +77,66 @@ const CarouselMobile: React.FC = () => {
         </IconButton>
       )}
     >
-      {numberMobile.map((num, index) => (
-        <Image
-          key={num} // Use num as the key if it's unique
-          src={`/assets/mobile/carousel-${num}.png`}
-          alt={`image ${num}`}
-          width={300}
-          height={500}
-          className="h-full w-full object-cover"
-        />
-      ))}
+      <Image
+        src={`/assets/mobile/carousel-1.png`}
+        alt={`image 1`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+        onClick={(): void => {
+          handleItemClick(
+            'https://play.google.com/store/apps/details?id=com.seeds.investment'
+          );
+        }}
+      />
+      <Image
+        src={`/assets/mobile/carousel-2.png`}
+        alt={`image 2`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+        onClick={(): void => {
+          handleItemClick('https://gplfantasy.app.link/SeedsGB');
+        }}
+      />
+      <Image
+        src={`/assets/mobile/carousel-3.png`}
+        alt={`image 3`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+        onClick={(): void => {
+          handleItemClick('https://gplfantasy.app.link/SeedsB');
+        }}
+      />
+      <Image
+        src={`/assets/mobile/carousel-4.png`}
+        alt={`image 4`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+      />
+      <Image
+        src={`/assets/mobile/carousel-5.png`}
+        alt={`image 5`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+      />
+      <Image
+        src={`/assets/mobile/carousel-6.png`}
+        alt={`image 6`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+      />
+      <Image
+        src={`/assets/mobile/carousel-7.png`}
+        alt={`image 7`}
+        width={300}
+        height={500}
+        className="h-full w-full object-cover"
+      />
     </Carousel>
   );
 };

@@ -102,7 +102,7 @@ const CarouselDesktop: React.FC = () => {
         }}
       />
       <Image
-        src={`/assets/carousel-8.jpeg`}
+        src={`/assets/carousel-8.png`}
         alt="image 1"
         width={1443}
         height={700}

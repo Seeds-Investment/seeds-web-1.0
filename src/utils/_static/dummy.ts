@@ -9,6 +9,10 @@ import card3 from '@/assets/landing-page/s2-card-3.png';
 import testi1 from '@/assets/landing-page/testi1.jpg';
 import testi2 from '@/assets/landing-page/testi2.jpg';
 import testi3 from '@/assets/landing-page/testi3.jpg';
+import testi4 from '@/assets/landing-page/testi4.jpg';
+import testi5 from '@/assets/landing-page/testi5.jpg';
+import testi6 from '@/assets/landing-page/testi6.jpg';
+import testi7 from '@/assets/landing-page/testi7.jpg';
 import user2 from '@/assets/landing-page/user-sample-2.png';
 import user1 from '@/assets/landing-page/user-sample.png';
 import type {
@@ -156,5 +160,37 @@ export const eventHighlightLandingPage: IEventHighlightLandingPage[] = [
     image: testi3,
     comment:
       'Mau berterima kasih kepada aplikasi Seeds….. Aplikasinya keren banget dan alhamdulliahnya kemarin aku juara 3…. Sekali lagi terima kasih, buat yang belum download, silahkan download dan langsung mainin aja ya'
+  },
+  {
+    id: '4',
+    name: 'Syalwa',
+    title: 'Juara 1 SPECIAL ARENA TOURNAMENT Seeds x JOHNNY WIDODO',
+    image: testi4,
+    comment:
+      "Hi, I'm Syalwa Regina, I’m the winner of Seeds Trading Competition. I was genuinely shocked when I unexpectedly won this tournament because I have no trading experience. There is a feature named “Connect” that allows me to interact with people who are more experienced in trading. It certainly helped me to win this competition and also gained some knowledge about investment and trading. For those who want to learn how to trade, download the app right away, play the virtual trading arena and become a champion like me!"
+  },
+  {
+    id: '5',
+    name: 'Fitria',
+    title: 'Juara 2 SPECIAL ARENA TOURNAMENT Seeds x JOHNNY WIDODO',
+    image: testi5,
+    comment:
+      "To be honest, I wasn't expecting to win because I knew nothing about trading. However, this is a whole package because there is a Connect Feature where  I can discuss with people who are experts in their fields, especially trading. As a result, it expands my understanding of trading, allowing me to apply what I’ve learned in the virtual trading game. Thank you so much Seeds!"
+  },
+  {
+    id: '6',
+    name: 'Alvin',
+    title: 'Juara 3 SPECIAL ARENA TOURNAMENT Seeds x JOHNNY WIDODO',
+    image: testi6,
+    comment:
+      'Seeds is a social investing platform that allows beginner investors like me to experience the real investing journey through gamification and ofc no risk at all! Overall, it’s a great app! I can learn and have fun at the same time! 😆'
+  },
+  {
+    id: '7',
+    name: 'Mahes',
+    title: 'Juara 1 Seeds Special Tournament Independence Day',
+    image: testi7,
+    comment:
+      'This virtual trading tournament could be a simulation for me to practice before diving into live trading!'
   }
 ];

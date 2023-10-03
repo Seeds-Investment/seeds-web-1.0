@@ -3,6 +3,8 @@ import chat from '@/assets/landing-page/chat-us.png';
 import learn from '@/assets/landing-page/learn.png';
 import play from '@/assets/landing-page/play.png';
 import earth from '@/assets/landing-page/s2-earth.png';
+import vector2 from '@/assets/landing-page/vector-faq-2.png';
+import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import CarouselDesktop from '@/components/carousel/CarouselDesktop';
 import CarouselMobile from '@/components/carousel/CarouselMobile';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -105,6 +107,17 @@ export default function Section2(): React.ReactElement {
           </div>
         </div>
       </div>
+      <Image
+        alt="img"
+        className="absolute right-0 -z-10 top-[1100px] xl:block hidden"
+        src={vector3}
+      />
+
+      <Image
+        alt="img"
+        className="absolute right-0 -z-10 top-[1400px] xl:block hidden"
+        src={vector2}
+      />
       <section className="mt-[150px]">
         <section className="xl:hidden block">
           <CarouselMobile />

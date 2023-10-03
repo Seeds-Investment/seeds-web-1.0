@@ -98,7 +98,7 @@ const Header: React.FC = () => {
           }`}
           href="/product"
         >
-          Product
+          Products
         </Link>
       </li>
       <li>
@@ -108,7 +108,7 @@ const Header: React.FC = () => {
           }`}
           href="/article"
         >
-          Article
+          Articles
         </Link>
       </li>
       <li>
@@ -288,7 +288,7 @@ const Header: React.FC = () => {
               }`}
               href="/product"
             >
-              Product
+              Products
             </Link>
             <Link
               className={`${
@@ -298,7 +298,7 @@ const Header: React.FC = () => {
               }`}
               href="/article"
             >
-              Article
+              Articles
             </Link>
             <Link
               className={`${

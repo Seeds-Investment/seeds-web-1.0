@@ -22,7 +22,7 @@ export default function Section4(): React.ReactElement {
   console.log(list);
 
   return (
-    <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
+    <div className="h-auto min-w-full cursor-default xl:mt-[200px] mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col items-center justify-center">
         <div className="flex flex-col w-full items-center px-10 justify-center mb-6 md:mb-8 lg:mb-6 xl:mb-4 sm:mb-20 font-poppins">
           <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl text-center pb-4">
@@ -36,7 +36,7 @@ export default function Section4(): React.ReactElement {
           className={`w-full h-[400px] xl:h-[864px] pt-[90px] font-poppins relative pb-20`}
         >
           <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[38vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
-          <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[143px] xl:w-[345px] h-[205px] xl:h-[494px] absolute z-10 xl:left-[40vw] left-[32vw] xl:top-auto top-10">
+          <div className="xl:rounded-[32px] rounded-[4px] w-[143px] xl:w-[345px] h-[205px] xl:h-[494px] absolute z-10 xl:left-[40vw] left-[32vw] xl:top-auto top-10">
             <iframe
               width="100%"
               height="500"
@@ -62,7 +62,7 @@ export default function Section4(): React.ReactElement {
               </span>
             </div>
           </div>
-          <div className="xl:rounded-[32px] rounded-[4px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 xl:left-[10vw] left-[5vw]">
+          <div className="xl:rounded-[32px] rounded-[4px]  w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 xl:left-[10vw] left-[5vw]">
             <iframe
               width="100%"
               height="500"
@@ -88,7 +88,7 @@ export default function Section4(): React.ReactElement {
               </span>
             </div>
           </div>
-          <div className="rounded-[32px] [box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 left-[75vw] xl:left-[70vw]">
+          <div className="rounded-[32px]  w-[81px] xl:w-[345px] h-[117px] xl:h-[494px] absolute z-10 left-[75vw] xl:left-[70vw]">
             <iframe
               width="100%"
               height="500"

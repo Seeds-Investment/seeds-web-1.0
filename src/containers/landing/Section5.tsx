@@ -1,5 +1,6 @@
 import bg from '@/assets/landing-page/bg-discover.png';
 import faq from '@/assets/landing-page/faq.png';
+import medal from '@/assets/landing-page/medal-blur.png';
 import vector2 from '@/assets/landing-page/vector-faq-2.png';
 import vector1 from '@/assets/landing-page/vector-faq.png';
 import CarouselNewsDesktop from '@/components/carousel/CarouselNewsDesktop';
@@ -57,6 +58,11 @@ export default function Section5(): React.ReactElement {
           {t('landing.section5.text2')}
         </h2>
         <div className="h-full flex items-center justify-center mt-7">
+          <Image
+            alt="img"
+            className="absolute left-0 -mt-[800px] w-[400px] xl:block hidden"
+            src={medal}
+          />
           {/* Parent container */}
           <div className="xl:w-4/5 w-[90%] bg-white bg-opacity-40 border xl:border-[#4FE6AF] border-[#7555DA] rounded-lg xl:rounded-[24px] shadow-md overflow-hidden text-center xl:p-5">
             <div className="bg-white bg-opacity-40 xl:p-4 relative">
@@ -129,7 +135,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={1} open={open} />}
               open={open === 1}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -148,7 +154,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={2} open={open} />}
               open={open === 2}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -167,7 +173,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={3} open={open} />}
               open={open === 3}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -186,7 +192,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={4} open={open} />}
               open={open === 4}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -205,7 +211,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={5} open={open} />}
               open={open === 5}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {

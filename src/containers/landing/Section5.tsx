@@ -135,7 +135,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={1} open={open} />}
               open={open === 1}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -154,7 +154,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={2} open={open} />}
               open={open === 2}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -173,7 +173,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={3} open={open} />}
               open={open === 3}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -192,7 +192,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={4} open={open} />}
               open={open === 4}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {
@@ -211,7 +211,7 @@ export default function Section5(): React.ReactElement {
             <Accordion
               icon={<Icon id={5} open={open} />}
               open={open === 5}
-              className="mb-2 rounded-lg border border-[#E9E9E9] px-4 backdrop-blur-sm"
+              className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
             >
               <AccordionHeader
                 onClick={(): void => {

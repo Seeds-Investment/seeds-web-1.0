@@ -81,7 +81,7 @@ const CircleMembershipFeePage = ({
                 IDR 100.000
               </Button>
             </div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-between mb-5">
               <hr className="w-1/3 mt-3" />
               <Typography className="w-1/3 text-center">
                 {t('circle.fee.line')}
@@ -90,11 +90,11 @@ const CircleMembershipFeePage = ({
             </div>
             <Input
               placeholder="Minimum membership fee IDR. 20,000"
-              className="mt-4"
               type="number"
               onChange={change}
               name="premium_fee"
               value={formRequest.premium_fee}
+              variant="outlined"
             />
 
             <Button

@@ -54,6 +54,30 @@ export const getCirclePost = async ({
   }
 };
 
+export const getMemberCircle = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/circle/v2/list/members?circle_id=${circleId}&page=1&limit=10`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const getStatusCircle = async ({
   circleId
 }: getDataCircleType): Promise<any> => {

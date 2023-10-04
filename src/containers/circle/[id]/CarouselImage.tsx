@@ -22,7 +22,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="flex justify-start w-full mb-20">
+    <div className="flex justify-start w-full mb-20 md:pl-0 pl-14">
       <div className="w-[800px]">
         <div className="max-w-full w-fit h-[300px] bg-transparent">
           <div className="relative bg-black max-w-full px-2 py-2">
@@ -31,11 +31,24 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             </h1>
           </div>
           <div className="flex justify-center h-full w-full">
-            <img
-              src={images[currentIndex]}
-              alt={`Slide ${currentIndex}`}
-              className="max-w-full max-h-[300px] object-fit transition-transform duration-300 transform"
-            />
+            {images[currentIndex].split('.')[
+              images[currentIndex].split('.').length - 1
+            ] !== 'mp4' ? (
+              <img
+                src={images[currentIndex]}
+                alt={`Slide ${currentIndex}`}
+                className="max-w-full max-h-[300px] object-fit transition-transform duration-300 transform"
+              />
+            ) : (
+              <video
+                controls
+                className="max-w-[50vw] max-h-[50vh] object-fit"
+                key={images[currentIndex]}
+              >
+                <source src={images[currentIndex]} type="video/mp4" />
+                Browser Anda tidak mendukung tag video.
+              </video>
+            )}
           </div>
           <div className="relative bg-black max-w-full px-2 py-2">
             <h1 className="text-white font-poppins text-sm">

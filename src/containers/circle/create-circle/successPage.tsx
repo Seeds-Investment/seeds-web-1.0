@@ -21,15 +21,15 @@ const SuccessPage = (): JSX.Element => {
         className="mt-10 h-1/2 w-1/2"
       />
 
-      <Typography className="text-[16px] font-semibold mb-1 mt-5 md:text-5xl lg:text-[72px] text-black">
+      <Typography className="text-[16px] font-semibold mb-1 mt-12 md:text-xl lg:text-lg text-black">
         {t('circle.success.title')}
       </Typography>
-      <Typography className="text-sm font-normal mb-7 leading-7 md:leading-5 md:text-xl lg:text-[20px] text-[#7C7C7C]">
+      <Typography className="text-sm font-normal mb-12 md:text-md lg:text-lg text-[#7C7C7C]">
         {t('circle.success.subtitle')}
       </Typography>
 
       <Button
-        className="text-xs font-semibold w-full bg-[#3AC4A0] rounded-full lg:text-base"
+        className="text-xs font-semibold w-[90%] bg-[#3AC4A0] rounded-full lg:text-base"
         onClick={() => {
           void router.push('/circle');
         }}

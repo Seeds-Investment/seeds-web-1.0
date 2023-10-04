@@ -90,7 +90,7 @@ const CreateCircle = (): React.ReactElement => {
     if (name === 'memberships') {
       setFormRequest(prevState => ({
         ...prevState,
-        [name]: [...formRequest.memberships, value]
+        [name]: [...formRequest.memberships, JSON.parse(value)]
       }));
     } else {
       setFormRequest(prevState => ({
@@ -182,6 +182,7 @@ const CreateCircle = (): React.ReactElement => {
   const handleSubmit = async (): Promise<void> => {
     try {
       setIsloadingSubmit(true);
+      formRequest.memberships = formRequest.memberships.map(user => user.id);
       createCircle(formRequest)
         .then(res => {
           handleChangeStep('success');

@@ -2,6 +2,7 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
+import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
 import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
@@ -206,11 +207,6 @@ const CirclePost = (): JSX.Element => {
     }
   });
 
-  const renderLoading = (): JSX.Element => (
-    <div className="h-72 absolute left-1/2">
-      <div className="animate-spinner absolute top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-    </div>
-  );
   const [hashtags, setHashtags] = useState<string[]>([]);
 
   const handleFormChange = (
@@ -276,7 +272,6 @@ const CirclePost = (): JSX.Element => {
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
       const { data } = await UseUploadMedia(mediaFile);
-      console.log(data, '<><>');
       form.media_urls.push(data.path);
     } catch (error: any) {
       console.error('Error Post Media:', error.message);
@@ -412,7 +407,7 @@ const CirclePost = (): JSX.Element => {
     >
       {/* posting section */}
       <div className="block bg-white mt-8 w-full rounded-xl">
-        {isLoading ? renderLoading() : <></>}
+        {isLoading ? <Loading /> : <></>}
         <div className="flex flex-col px-14 pt-8">
           {isEdit ? (
             <EditCircle dataCircle={dataCircle} circleId={circleId} />
@@ -429,11 +424,25 @@ const CirclePost = (): JSX.Element => {
               <form onSubmit={handlePostCircle}>
                 {media !== undefined && pages !== 'gif' && (
                   <div className="flex justify-center pb-2">
-                    <img
-                      src={URL?.createObjectURL(media)}
-                      alt="Preview Image"
-                      className="object-cover max-h-[30vh] w-fit"
-                    />
+                    {media.type.includes('image') === true ? (
+                      <img
+                        src={URL?.createObjectURL(media)}
+                        alt="Preview Image"
+                        className="object-cover max-h-[30vh] w-fit"
+                      />
+                    ) : (
+                      <video
+                        controls
+                        className="max-w-[50vw] max-h-[50vh] object-fit"
+                        key={URL?.createObjectURL(media)}
+                      >
+                        <source
+                          src={URL?.createObjectURL(media)}
+                          type="video/mp4"
+                        />
+                        Browser Anda tidak mendukung tag video.
+                      </video>
+                    )}
                   </div>
                 )}
                 {document !== undefined &&
@@ -494,24 +503,22 @@ const CirclePost = (): JSX.Element => {
                       )}
                     </div>
                   )}
-                {form.media_urls.length > 0 && pages !== 'gif' ? (
-                  form.media_urls.map((el: any, i: number) => {
-                    return (
-                      <div
-                        className="max-h-[230px] max-w-[230px] pl-16 mb-5"
-                        key={`${i} + 'MEDIA_URL'`}
-                      >
+                <div className="flex justify-center my-5 gap-4">
+                  {form.media_urls.length > 0 && pages !== 'gif' ? (
+                    form.media_urls.map((el: any, i: number) => {
+                      return (
                         <img
                           src={el}
+                          key={`${i} + 'MEDIA_URL'`}
                           alt="gif"
                           className="h-[230px] w-[230px] object-cover"
                         />
-                      </div>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 {handlePages()}
                 {form.polling?.options.length > 0 && pages === 'text' ? (
                   form.polling?.options.map((el: any, i: number) => {

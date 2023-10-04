@@ -1,5 +1,7 @@
+import { chrownCirclePremium } from '@/constants/assets/icons';
 import { DocumentIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 interface Circle {
@@ -31,7 +33,7 @@ export default function CardCircle({
   return (
     <Card
       shadow={false}
-      className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
+      className="h-[250px] max-w-full rounded-3xl overflow-hidden mr-3 relative"
     >
       {data?.cover !== undefined && (
         <div
@@ -49,18 +51,31 @@ export default function CardCircle({
               height: '100%'
             }}
             color="transparent"
-            // className="absolute inset-0 m-0 h-[250px] w-full rounded-none bg-[url('https://dev-assets.seeds.finance/circle/cover/8b08b9a2-1697-466a-969f-4866622ab58f.jpeg')] bg-cover bg-center"
             className="absolute inset-0 m-0 h-[250px] w-full rounded-none bg-cover bg-center"
           >
             <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
           </div>
-          <CardBody className="flex justify-center items-center relative py-14 px-3 md:px-12">
+          <CardBody className="flex justify-center items-center relative pt-8 pb-14">
             <div className="flex flex-col items-center justify-center">
+              {data.type !== 'free' ? (
+                <div className="flex items-end justify-end absolute top-0 right-0 mt-4 mr-2 bg-white rounded-3xl px-2 py-1">
+                  <Image
+                    src={chrownCirclePremium.src}
+                    alt="X"
+                    width={23}
+                    height={23}
+                    className="align-middle"
+                  />
+                  <Typography className="text-sm text-[#3AC4A0] font-semibold align-middle ml-1">
+                    Premium
+                  </Typography>
+                </div>
+              ) : null}
               <Avatar
                 size="xl"
                 variant="circular"
                 alt="tania andrew"
-                className="border-2 border-white"
+                className="border-2 border-white mt-6"
                 src={data.avatar}
               />
               <Typography className="text-base font-semibold text-white text-center mt-4">

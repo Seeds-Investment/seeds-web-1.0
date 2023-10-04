@@ -872,7 +872,7 @@ export default {
       button: 'Continue'
     },
     settingMember: {
-      title: 'Setting Member',
+      title: 'Add your members',
       add: 'Add your members',
       subtitle:
         'You can add members by searching for the name or using the share link later.',

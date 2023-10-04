@@ -1,6 +1,7 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import Loading from '@/components/popup/Loading';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,
@@ -20,7 +21,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 interface props {
   isLoading: boolean;
-  renderLoading: any;
   dataCircle: any;
   openModalDelete: any;
   openModalLeave: any;
@@ -33,7 +33,6 @@ interface props {
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
   isLoading,
-  renderLoading,
   openModalDelete,
   openModalLeave,
   openModalReport,
@@ -43,6 +42,7 @@ const CirclePostSection1: React.FC<props> = ({
 }) => {
   const [isLoadingJoin, setIsLoadingJoin] = useState<boolean>(false);
   const { t } = useTranslation();
+
   // const [payment, setPayment] = useState<any>({});
   const router = useRouter();
 
@@ -75,7 +75,7 @@ const CirclePostSection1: React.FC<props> = ({
   return (
     <>
       {isLoading ? (
-        renderLoading()
+        <Loading />
       ) : (
         <div className="flex flex-col bg-white rounded-xl">
           {isLoadingJoin ? (

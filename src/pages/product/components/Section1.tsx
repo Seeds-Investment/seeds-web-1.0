@@ -1,10 +1,14 @@
 'use client';
+import bgGradient from '@/assets/landing-page/bg-leaderboard.png';
 import crown from '@/assets/landing-page/crown.png';
 import card1 from '@/assets/landing-page/s3-frame-1.png';
 import card2 from '@/assets/landing-page/s3-frame-2.png';
 import card3 from '@/assets/landing-page/s3-frame-3.png';
 import line1 from '@/assets/landing-page/s3-line1.png';
 import shape from '@/assets/landing-page/s3-shape.png';
+import vectorLeft from '@/assets/landing-page/vector-left.png';
+import vector from '@/assets/landing-page/vector-product.png';
+import vectorRight from '@/assets/landing-page/vector-right.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -68,6 +72,11 @@ export default function Section1(): React.ReactElement {
     <div className="min-w-full cursor-default font-poppins">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 md:mt-[8rem] lg:mt-[12rem] 2xl:mt-[25rem]">
+          <Image
+            alt="img"
+            className="absolute left-0 -z-10 -top-5 xl:block hidden"
+            src={vector}
+          />
           <div className="w-2/3 justify-center p-5 md:w-full md:ml-5">
             <Typography
               className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]
@@ -96,7 +105,7 @@ export default function Section1(): React.ReactElement {
           </div>
         </div>
 
-        <div className="w-full cursor-default md:w-1/2">
+        <div className="w-full cursor-default md:w-1/2 xl:mt-10 lg:mt-14">
           <div className="flex justify-end">
             <Image
               className="w-[17rem]
@@ -197,7 +206,22 @@ export default function Section1(): React.ReactElement {
           />
         </div>
       </div>
-      <div className="mt-[200px] text-3xl font-semibold text-[#222222] justify-center text-center flex flex-col px-5">
+      <Image
+        alt="img"
+        className="absolute left-0 -z-10 mt-[100px] xl:block hidden"
+        src={bgGradient}
+      />
+      <Image
+        alt="img"
+        className="absolute left-0 -z-10 xl:mt-10 xl:block hidden"
+        src={vectorLeft}
+      />
+      <Image
+        alt="img"
+        className="absolute right-0 -z-10 xl:mt-10 xl:block hidden"
+        src={vectorRight}
+      />
+      <div className="mt-[200px] xl:mt-[300px] text-3xl font-semibold text-[#222222] justify-center text-center flex flex-col px-5">
         <h1 className="text-3xl xl:text-[64px] xl:mb-10 font-semibold">
           {t('landingPageV2.product.section2.title1')}
         </h1>

@@ -13,9 +13,7 @@ export const VoiceRecorder: React.FC<props> = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  console.log(audio);
 
-  // const [audioData, setAudioData] = useState<any>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
 
@@ -36,16 +34,19 @@ export const VoiceRecorder: React.FC<props> = ({
 
         mediaRecorder.current.onstop = () => {
           const audioBlob = new Blob(audioChunks.current, {
-            type: 'audio/wav'
+            type: 'audio/mpeg'
           });
+
           const currentDatetime = new Date();
-          const filename = `Recording-${currentDatetime.toISOString()}.wav`;
+          const filename = `Recording-${currentDatetime.toISOString()}.mpeg`;
           const audioFile = new File([audioBlob], filename, {
-            type: 'audio/wav',
+            type: audioBlob.type,
             lastModified: currentDatetime.getTime()
           });
+
           setAudio(audioFile);
           setAudioUrl(URL.createObjectURL(audioFile));
+
           audioChunks.current = [];
         };
       })
@@ -68,10 +69,12 @@ export const VoiceRecorder: React.FC<props> = ({
         audioUrl !== undefined &&
         audioUrl !== '' &&
         audio !== null && (
-          <audio controls>
-            <source src={audioUrl} type="audio/wav" className="w-full" />
-            Your browser does not support the audio element.
-          </audio>
+          <div className="flex justify-center">
+            <audio controls>
+              <source src={audioUrl} type="audio/wav" className="w-full" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
         )}
       <div className="flex items-center flex-col">
         <div

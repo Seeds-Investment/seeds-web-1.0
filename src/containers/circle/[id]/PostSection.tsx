@@ -52,16 +52,19 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
   const words = dataPost.content_text.split(' ');
   const media: string[] = [];
   const document: string[] = [];
+  const voice: string[] = [];
   function categorizeURL(url: string[]): any {
     const documentExtensions = ['pdf'];
-    // const voiceExtension: string[] = [];
+    const voiceExtension: string[] = ['mp3'];
 
     return url?.map((el: string) => {
       const urlParts = el.split('.');
 
       const extension = urlParts[urlParts.length - 1].toLowerCase();
 
-      if (!documentExtensions.includes(extension)) {
+      if (voiceExtension.includes(extension)) {
+        voice.push(el);
+      } else if (!documentExtensions.includes(extension)) {
         media.push(el);
       } else {
         document.push(el);
@@ -69,6 +72,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
       return <></>;
     });
   }
+
   return (
     <div className="w-full mb-10 pb-10 border-b border-neutral-soft">
       <div className="flex gap-4 md:gap-8">
@@ -132,9 +136,18 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
             </div>
 
             {categorizeURL(dataPost.media_urls)}
-            {media.length > 0 && <ImageCarousel images={media} />}
+            {voice.length > 0 && (
+              <audio controls>
+                <source
+                  src={voice[0]}
+                  type="audio/wav"
+                  className="w-full mb-4"
+                />
+                Your browser does not support the audio element.
+              </audio>
+            )}
             {document.length > 0 && (
-              <div className="flex justify-start md:pl-0 pl-14">
+              <div className="flex justify-start md:pl-0 pl-14 mb-4">
                 <div className="flex flex-col">
                   <div
                     className="flex justify-start cursor-pointer"
@@ -186,6 +199,8 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                 )}
               </div>
             )}
+            {media.length > 0 && <ImageCarousel images={media} />}
+
             <div className="flex">
               {words.map((el: string, i: number) => {
                 el += '\xa0';

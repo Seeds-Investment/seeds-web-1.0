@@ -1,3 +1,5 @@
+import vector from '@/assets/landing-page/vector-product.png';
+import vectorRight from '@/assets/landing-page/vector-right.png';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import {
   Tab,
@@ -7,6 +9,7 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CardAsset from './CardAsset';
@@ -49,15 +52,25 @@ export default function Section2(): React.ReactElement {
       customGradient={customGradient}
       className="overflow-hidden p-2 md:p-8 w-full"
     >
+      <Image
+        alt="img"
+        className="absolute right-0 -z-10 xl:mt-[200px] xl:block hidden"
+        src={vectorRight}
+      />
+      <Image
+        alt="img"
+        className="absolute left-0 -z-10 xl:mt-10 xl:block hidden"
+        src={vector}
+      />
       <Typography className="text-3xl font-semibold mb-5 text-[#222222]">
         {t('landingPageV2.product.section3.title1')}
       </Typography>
       <Tabs value={activeTab}>
         <TabsHeader
-          className="rounded-none  border-none bg-transparent p-0"
+          className="rounded-none border-none bg-transparent p-0 w-[30%]"
           indicatorProps={{
             className:
-              'bg-transparent border-b-4 border-[#3AC4A0] shadow-none rounded-none'
+              'bg-transparent border-b-4 w-[50%] mx-auto border-[#3AC4A0] shadow-none rounded-none'
           }}
         >
           {data.map(({ label, value }) => (
@@ -69,8 +82,8 @@ export default function Section2(): React.ReactElement {
               }}
               className={
                 activeTab === value
-                  ? 'text-sm font-normal text-[#262626]'
-                  : 'text-sm font-normal text-[#BDBDBD]'
+                  ? 'text-sm font-normal text-[#262626] pb-2'
+                  : 'text-sm font-normal text-[#BDBDBD] pb-2'
               }
             >
               {label}

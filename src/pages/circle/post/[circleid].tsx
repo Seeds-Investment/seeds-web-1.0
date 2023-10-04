@@ -146,6 +146,7 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getCirclePost({ circleId });
+      console.log(data, 'ini circle post');
 
       setDataPost(data);
     } catch (error: any) {
@@ -179,6 +180,7 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getCircleRecomend({ circleId });
+      console.log(data, 'ini circle recomm');
 
       setDataRecommend(data);
     } catch (error: any) {
@@ -394,6 +396,7 @@ const CirclePost = (): JSX.Element => {
 
   return (
     <MainPostLayout
+      dataCircle={dataCircle}
       circleId={circleId}
       dataPost={dataPost}
       dataRecommend={dataRecommend}
@@ -404,10 +407,12 @@ const CirclePost = (): JSX.Element => {
       isEdit={isEdit}
       isJoined={isJoined}
       setIsJoined={setIsJoined}
+      setIsLoading={setIsLoading}
+      isLoading={isLoading}
     >
       {/* posting section */}
       <div className="block bg-white mt-8 w-full rounded-xl">
-        {isLoading ? <Loading /> : <></>}
+        {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
           {isEdit ? (
             <EditCircle dataCircle={dataCircle} circleId={circleId} />

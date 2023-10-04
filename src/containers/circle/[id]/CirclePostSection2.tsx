@@ -9,19 +9,37 @@ import PostSection from './PostSection';
 interface props {
   circleId: string;
   isLoading: boolean;
-  renderLoading: any;
   setIsLoading: any;
   dataPost: any;
   dataRecommend: any;
+  dataCircle: any;
 }
+
+interface HashtagProps {
+  name: string;
+  onClose: () => void;
+}
+
+const Hashtag: React.FC<HashtagProps> = ({ name, onClose }) => {
+  return (
+    <span className="flex items-center bg-seeds-button-green rounded-full px-3 py-1 mr-2 mb-2">
+      <Typography className="text-sm font-poppins text-white font-medium">
+        {name}
+      </Typography>
+      {/* <button onClick={onClose} className="text-xs font-poppins text-white">
+        <Image src={XIcon.src} alt={XIcon.alt} width={20} height={20} />
+      </button> */}
+    </span>
+  );
+};
 
 const CirclePostSection2: React.FC<props> = ({
   setIsLoading,
   circleId,
   isLoading,
-  renderLoading,
   dataPost,
-  dataRecommend
+  dataRecommend,
+  dataCircle
 }) => {
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
@@ -174,6 +192,36 @@ const CirclePostSection2: React.FC<props> = ({
           </div>
         </div>
       );
+    } else if (tabs === 'about') {
+      return (
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <h1 className="text-base font-semibold font-poppins">
+              About this Circle
+            </h1>
+            <p className="text-neutral-medium font-normal font-poppins">
+              {dataCircle.description}
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h1 className="text-base font-semibold font-poppins">
+              Circle Rules
+            </h1>
+            <p className="text-neutral-medium font-normal font-poppins">
+              {dataCircle.description_rules}
+            </p>
+          </div>
+          <div className="flex flex-wrap">
+            <h1 className="text-base font-semibold mb-4 w-full font-poppins">
+              Hashtag
+            </h1>
+            {dataCircle?.hashtags?.map((el: any) => {
+              return <Hashtag name={el.name} onClose={() => {}} key={el.id} />;
+            })}
+            {/* ...tambahkan hashtag lainnya sesuai kebutuhan */}
+          </div>
+        </div>
+      );
     }
   };
 
@@ -183,50 +231,46 @@ const CirclePostSection2: React.FC<props> = ({
     'text-neutral-soft font-poppins font-normal text-xs md:text-base pb-2';
   return (
     <>
-      {isLoading ? (
-        renderLoading()
-      ) : (
-        <div className="bg-white my-8 rounded-xl">
-          <div className="h-fit w-full py-8 px-14 md:ml-0">
-            {/* navigation */}
-            <div className="flex justify-start border-b border-neutral-soft w-fit gap-8 mb-8 ml-5 md:ml-0">
-              <button
-                onClick={(): any => {
-                  setTabs('post');
-                }}
-                className={tabs === 'post' ? active : inActive}
-              >
-                Post
-              </button>
-              <button
-                onClick={(): any => {
-                  setTabs('recommended');
-                }}
-                className={tabs === 'recommended' ? active : inActive}
-              >
-                Recommended
-              </button>
-              <button
-                onClick={(): any => {
-                  setTabs('members');
-                }}
-                className={tabs === 'members' ? active : inActive}
-              >
-                Members
-              </button>
-              <button
-                onClick={(): any => {
-                  setTabs('about');
-                }}
-                className={tabs === 'about' ? active : inActive}
-              >
-                About
-              </button>
-            </div>
-            {handlePages()}
+      <div className="bg-white my-8 rounded-xl">
+        <div className="h-fit w-full py-8 px-14 md:ml-0">
+          {/* navigation */}
+          <div className="flex justify-start border-b border-neutral-soft w-fit gap-8 mb-8 ml-5 md:ml-0">
+            <button
+              onClick={(): any => {
+                setTabs('post');
+              }}
+              className={tabs === 'post' ? active : inActive}
+            >
+              Post
+            </button>
+            <button
+              onClick={(): any => {
+                setTabs('recommended');
+              }}
+              className={tabs === 'recommended' ? active : inActive}
+            >
+              Recommended
+            </button>
+            <button
+              onClick={(): any => {
+                setTabs('members');
+              }}
+              className={tabs === 'members' ? active : inActive}
+            >
+              Members
+            </button>
+            <button
+              onClick={(): any => {
+                setTabs('about');
+              }}
+              className={tabs === 'about' ? active : inActive}
+            >
+              About
+            </button>
           </div>
+          {handlePages()}
         </div>
-      )}
+      </div>
     </>
   );
 };

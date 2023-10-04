@@ -13,6 +13,7 @@ export const VoiceRecorder: React.FC<props> = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  console.log(audio);
 
   // const [audioData, setAudioData] = useState<any>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -37,9 +38,14 @@ export const VoiceRecorder: React.FC<props> = ({
           const audioBlob = new Blob(audioChunks.current, {
             type: 'audio/wav'
           });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudio(audioBlob);
-          setAudioUrl(audioUrl);
+          const currentDatetime = new Date();
+          const filename = `Recording-${currentDatetime.toISOString()}.wav`;
+          const audioFile = new File([audioBlob], filename, {
+            type: 'audio/wav',
+            lastModified: currentDatetime.getTime()
+          });
+          setAudio(audioFile);
+          setAudioUrl(URL.createObjectURL(audioFile));
           audioChunks.current = [];
         };
       })

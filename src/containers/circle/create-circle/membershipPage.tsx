@@ -58,13 +58,6 @@ const MembershipPage = ({
     return member;
   };
 
-  const handleEnterPress = (e: any): void => {
-    e.preventDefault();
-    fetchUserFriends()
-      .then()
-      .catch(() => {});
-  };
-
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
     const value = target.value;
@@ -98,7 +91,7 @@ const MembershipPage = ({
     fetchUserFriends()
       .then()
       .catch(() => {});
-  }, []);
+  }, [filter.search]);
 
   const handleFound = (id: string): string => {
     const data = formRequest.memberships.find(function (member: any) {
@@ -163,20 +156,16 @@ const MembershipPage = ({
                 })
               : null}
           </div>
-          <form onSubmit={handleEnterPress} className="w-full mb-10">
-            <SearchCircle
-              name="search"
-              type="outline"
-              prefix={
-                <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
-              }
-              onChange={e => {
-                handleChangeFilter(e);
-              }}
-              placeholder="Search"
-              value={filter.search}
-            />
-          </form>
+          <SearchCircle
+            name="search"
+            type="outline"
+            prefix={<MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />}
+            onChange={e => {
+              handleChangeFilter(e);
+            }}
+            placeholder="Search"
+            value={filter.search}
+          />
 
           {!isLoading ? (
             userFriends?.length !== 0 ? (
@@ -184,7 +173,7 @@ const MembershipPage = ({
                 <Card
                   color="white"
                   shadow={false}
-                  className="w-full mb-3"
+                  className="w-full my-3"
                   key={idx}
                 >
                   <CardBody className="p-3 inline-block h-auto">

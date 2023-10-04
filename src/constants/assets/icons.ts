@@ -185,6 +185,11 @@ export const CeklisCircle: AssetsInterface = {
   alt: 'bca'
 };
 
+export const chrownCirclePremium: AssetsInterface = {
+  src: '/assets/circle/chrown.svg',
+  alt: 'chrown'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -218,7 +223,8 @@ const Icons: Record<string, AssetsInterface> = {
   errorCircle,
   successCircleSetting,
   BCAIcon,
-  CeklisCircle
+  CeklisCircle,
+  chrownCirclePremium
 };
 
 export default Icons;

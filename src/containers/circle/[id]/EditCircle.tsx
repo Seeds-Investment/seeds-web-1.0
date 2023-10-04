@@ -79,7 +79,7 @@ interface FormRequestInterface {
   description_rules: string;
   type: string;
   premium_fee: number;
-  memberships: any[];
+  memberships: string[];
   hashtags: OptionType[];
   membership_type: string;
   category: string;
@@ -146,8 +146,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
         ...prevState,
         [name]: [...formRequest.memberships, value]
       }));
-    }
-    if (name === 'premium_fee') {
+    } else if (name === 'premium_fee') {
       value = parseInt(value);
       setFormRequest(prevState => ({
         ...prevState,
@@ -230,7 +229,6 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
       hashtags: mappedOptions,
       category: dataCircle.category,
       membership_type: dataCircle.type,
-      memberships: [],
       premium_fee: dataCircle.premium_fee,
       type: dataCircle.type
     }));

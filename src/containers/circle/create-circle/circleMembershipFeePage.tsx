@@ -91,6 +91,7 @@ const CircleMembershipFeePage = ({
             <Input
               placeholder="Minimum membership fee IDR. 20,000"
               className="mt-4"
+              type="number"
               onChange={change}
               name="premium_fee"
               value={formRequest.premium_fee}

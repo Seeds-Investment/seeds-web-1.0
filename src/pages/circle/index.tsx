@@ -145,23 +145,12 @@ const Circle = (): React.ReactElement => {
     }));
   };
 
-  const handleEnterPress = (e: any): void => {
-    e.preventDefault();
-    fetchCircle()
-      .then()
-      .catch(() => {});
-  };
-
   const handleChangeTab = (value: any): void => {
     setActiveTab(value);
     setFilter(prevState => ({
       ...prevState,
       type: value
     }));
-
-    fetchCircle()
-      .then()
-      .catch(() => {});
   };
 
   const handleSortBy = (event: any): void => {
@@ -234,14 +223,16 @@ const Circle = (): React.ReactElement => {
       .then()
       .catch(() => {});
 
-    fetchCircle()
-      .then()
-      .catch(() => {});
-
     fetchCircleBalance()
       .then()
       .catch(() => {});
-  }, [activeTab]);
+  }, []);
+
+  useEffect(() => {
+    fetchCircle()
+      .then()
+      .catch(() => {});
+  }, [activeTab, filter.search]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -307,9 +298,14 @@ const Circle = (): React.ReactElement => {
         </Typography>
         <div className="">
           {isLoadingLeaderBoard ? (
-            <Typography className="text-base font-semibold text-[#262626] text-left items-start">
-              Loading....
-            </Typography>
+            <Card
+              shadow={false}
+              className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
+            >
+              <Typography className="flex items-center justify-center font-semibold text-xl">
+                Loading...
+              </Typography>
+            </Card>
           ) : (
             <Slider {...settings}>
               {leaderBoards?.map((data, idx) => (
@@ -330,20 +326,16 @@ const Circle = (): React.ReactElement => {
         </Typography>
 
         {width !== undefined && width < 768 ? (
-          <form onSubmit={handleEnterPress}>
-            <SearchCircle
-              name="search"
-              type="outline"
-              prefix={
-                <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
-              }
-              onChange={e => {
-                handleChangeFilter(e);
-              }}
-              placeholder="Search"
-              value={filter.search}
-            />
-          </form>
+          <SearchCircle
+            name="search"
+            type="outline"
+            prefix={<MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />}
+            onChange={e => {
+              handleChangeFilter(e);
+            }}
+            placeholder="Search"
+            value={filter.search}
+          />
         ) : null}
         <div className="">
           <Tabs value={activeTab}>
@@ -389,20 +381,18 @@ const Circle = (): React.ReactElement => {
                 </select>
               </div>
               {width !== undefined && width >= 768 ? (
-                <form onSubmit={handleEnterPress} className="w-1/4 md:pr-10">
-                  <SearchCircle
-                    name="search"
-                    type="outline"
-                    prefix={
-                      <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
-                    }
-                    onChange={e => {
-                      handleChangeFilter(e);
-                    }}
-                    placeholder="Search"
-                    value={filter.search}
-                  />
-                </form>
+                <SearchCircle
+                  name="search"
+                  type="outline"
+                  prefix={
+                    <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
+                  }
+                  onChange={e => {
+                    handleChangeFilter(e);
+                  }}
+                  placeholder="Search"
+                  value={filter.search}
+                />
               ) : null}
             </div>
 
@@ -411,9 +401,14 @@ const Circle = (): React.ReactElement => {
                 <TabPanel key={value} value={value}>
                   <div className="">
                     {isLoadingCircle ? (
-                      <Typography className="text-base font-semibold text-[#262626] text-center items-start">
-                        Loading....
-                      </Typography>
+                      <Card
+                        shadow={false}
+                        className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
+                      >
+                        <Typography className="flex items-center justify-center font-semibold text-xl">
+                          Loading...
+                        </Typography>
+                      </Card>
                     ) : (
                       <div className="flex flex-wrap">
                         {circle !== null ? (

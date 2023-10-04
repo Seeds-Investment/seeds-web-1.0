@@ -23,7 +23,7 @@ const ModalMembershipType = ({
   const { t } = useTranslation();
 
   return (
-    <Dialog size="lg" open={openModal} handler={handleOpenModal}>
+    <Dialog size="sm" open={openModal} handler={handleOpenModal}>
       {formRequest !== undefined && (
         <>
           <DialogHeader className="justify-end">

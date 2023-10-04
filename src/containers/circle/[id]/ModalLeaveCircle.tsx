@@ -31,7 +31,6 @@ const ModalLeaveCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
         .then(res => {
           setResponseApi('success');
           setIsLoading(false);
-          window.alert('An error occurred while leave the circle');
         })
         .catch(err => {
           setIsLoading(false);

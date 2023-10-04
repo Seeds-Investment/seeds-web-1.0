@@ -70,7 +70,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   }
 
   useEffect(() => {
-    if (typeof articleId === 'string' && articleId.trim() !== '') {
+    if (typeof articleId !== 'string') {
       // Check if articleId is a valid non-empty string
       const fetchArticleDetail = (): void => {
         getArticleById(articleId)
@@ -78,6 +78,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
             if (response.status === 200) {
               setArticleDetail(response.news);
             }
+            console.log(response);
           })
           .catch(error => {
             console.error('Error fetching article detail:', error);

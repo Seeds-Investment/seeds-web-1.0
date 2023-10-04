@@ -79,7 +79,7 @@ interface FormRequestInterface {
   description_rules: string;
   type: string;
   premium_fee: number;
-  memberships: string[];
+  memberships: any[];
   hashtags: OptionType[];
   membership_type: string;
   category: string;
@@ -108,6 +108,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [step, setStep] = useState('');
+  const [isLoadingSubmit, setIsloadingSubmit] = useState(false);
 
   const handleOpenModalMembership = (): void => {
     setOpenModalMembership(!openModalMembership);
@@ -144,7 +145,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
     if (name === 'memberships') {
       setFormRequest(prevState => ({
         ...prevState,
-        [name]: [...formRequest.memberships, value]
+        [name]: [...formRequest.memberships, JSON.parse(value)]
       }));
     } else if (name === 'premium_fee') {
       value = parseInt(value);
@@ -186,6 +187,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
 
   const handleSubmit = async (): Promise<void> => {
     try {
+      setIsloadingSubmit(true);
       const mappedOptions: any[] = formRequest.hashtags?.map(
         (item: OptionType) => ({
           id: item.value,
@@ -194,6 +196,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
       );
 
       formRequest.hashtags = mappedOptions;
+      formRequest.memberships = formRequest.memberships.map(user => user.id);
 
       updateCircle(formRequest, circleId)
         .then(res => {
@@ -201,10 +204,12 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
           window.location.reload();
         })
         .catch(err => {
+          setIsloadingSubmit(false);
           console.log(err);
           setStep('failed');
         });
     } catch (error: any) {
+      setIsloadingSubmit(false);
       console.error('Error fetching circle data:', error.message);
     }
   };
@@ -255,7 +260,7 @@ const EditCircle: React.FC<props> = ({ dataCircle, circleId }) => {
           change={handleChangeValue}
           removeMember={removeMemberships}
           submit={handleSubmit}
-          // isLoadingSubmit={isLoadingSubmit}
+          isLoadingSubmit={isLoadingSubmit}
         />
       ) : step === 'premium_choice' ? (
         <CirclePremiumChoicePage

@@ -20,13 +20,6 @@ interface UserFriends {
   username: string;
 }
 
-const initialUserFriends = {
-  id: '',
-  name: '',
-  avatar: '',
-  username: ''
-};
-
 const initialFilter = {
   page: 1,
   limit: 10,
@@ -45,18 +38,6 @@ const MembershipPage = ({
   const [isLoading, setIsLoading] = useState(false);
   const [userFriends, setUserFriends] = useState<UserFriends[]>();
   const { t } = useTranslation();
-
-  const handleFindMemberInState = (id: string): UserFriends => {
-    let member: UserFriends = initialUserFriends;
-
-    userFriends
-      ?.filter(x => x.id === id)
-      .forEach(data => {
-        member = data;
-      });
-
-    return member;
-  };
 
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
@@ -95,7 +76,7 @@ const MembershipPage = ({
 
   const handleFound = (id: string): string => {
     const data = formRequest.memberships.find(function (member: any) {
-      return member === id;
+      return member.id === id;
     });
 
     return data;
@@ -126,36 +107,39 @@ const MembershipPage = ({
               {t('circle.settingMember.subtitle')}
             </Typography>
           </div>
-          <div className="flex flex-row mb-5">
-            {formRequest.memberships.length !== 0
-              ? formRequest.memberships.map((data: any, idx: number) => {
-                  const member = handleFindMemberInState(data);
-                  return (
-                    <div
-                      className="flex items-center justify-center mr-5"
-                      key={idx}
-                    >
-                      <div className="relative flex flex-col items-center justify-center">
-                        <Avatar
-                          size="md"
-                          variant="circular"
-                          src={member.avatar}
-                          alt="Avatar"
-                          className="mb-2"
-                        />
-                        <XCircleIcon
-                          className="w-6 h-6 z-10 absolute transform top-5 text-[#3AC4A0] border-white translate-x-1/2 translate-y-1/2"
-                          onClick={() => removeMember(idx)}
-                        />
-                        <Typography className="font-normal text-sm text-[#7C7C7C]">
-                          {member.name}
-                        </Typography>
+          {isLoadingSubmit === true ? (
+            <Typography className="text-center">Loading....</Typography>
+          ) : (
+            <div className="flex flex-row mb-5">
+              {formRequest.memberships.length !== 0
+                ? formRequest.memberships.map((data: any, idx: number) => {
+                    return (
+                      <div
+                        className="flex items-center justify-center mr-5"
+                        key={idx}
+                      >
+                        <div className="relative flex flex-col items-center justify-center">
+                          <Avatar
+                            size="md"
+                            variant="circular"
+                            src={data.avatar}
+                            alt="Avatar"
+                            className="mb-2"
+                          />
+                          <XCircleIcon
+                            className="w-6 h-6 z-10 absolute transform top-5 text-[#3AC4A0] border-white translate-x-1/2 translate-y-1/2"
+                            onClick={() => removeMember(idx)}
+                          />
+                          <Typography className="font-normal text-sm text-[#7C7C7C]">
+                            {data.name}
+                          </Typography>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })
-              : null}
-          </div>
+                    );
+                  })
+                : null}
+            </div>
+          )}
           <SearchCircle
             name="search"
             type="outline"
@@ -206,7 +190,7 @@ const MembershipPage = ({
                           <Button
                             className="bg-[#DCFCE4] text-[#3AC4A0] rounded-full shadow-none"
                             name="memberships"
-                            value={data.id}
+                            value={JSON.stringify(data)}
                             onClick={change}
                           >
                             Add
@@ -241,7 +225,7 @@ const MembershipPage = ({
               onClick={submit}
               disabled={true}
             >
-              {t('circle.settingMember.button')}
+              Loading...
             </Button>
           ) : (
             <Button

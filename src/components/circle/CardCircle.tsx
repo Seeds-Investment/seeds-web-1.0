@@ -58,7 +58,7 @@ export default function CardCircle({
           <CardBody className="flex justify-center items-center relative pt-8 pb-14">
             <div className="flex flex-col items-center justify-center">
               {data.type !== 'free' ? (
-                <div className="flex items-end justify-end absolute top-0 right-0 mt-4 mr-2 bg-white rounded-3xl p-1">
+                <div className="flex items-end justify-end absolute top-0 right-0 mt-4 mr-2 bg-white rounded-3xl px-2 py-1">
                   <Image
                     src={chrownCirclePremium.src}
                     alt="X"

@@ -31,13 +31,17 @@ const UniqueInputButton: React.FC<props> = ({
   const handleImage = (event: any): any => {
     const fileMedia = event.target.files[0];
     const fileMediaEle = event.target;
+
+    if (fileMedia?.type?.includes('video') === true) {
+      return setMedia(fileMedia);
+    }
     const validation =
-      fileMedia.type !== 'image/jpg' &&
-      fileMedia.type !== 'image/jpeg' &&
-      fileMedia.type !== 'image/png';
+      fileMedia?.type !== 'image/jpg' &&
+      fileMedia?.type !== 'image/jpeg' &&
+      fileMedia?.type !== 'image/png';
     const maxFileMediaSize = 5;
     const sizeFileOnMB: any = parseFloat(
-      (fileMedia.size / 1024 / 1024).toFixed(20)
+      (fileMedia?.size / 1024 / 1024).toFixed(20)
     );
     if (sizeFileOnMB > maxFileMediaSize && !validation) {
       fileMediaEle.value = null;
@@ -48,6 +52,7 @@ const UniqueInputButton: React.FC<props> = ({
       return setMedia(fileMedia);
     }
   };
+
   const handlePDF = (event: any): any => {
     const fileMedia = event.target.files[0];
     return setDocument(fileMedia);
@@ -59,7 +64,7 @@ const UniqueInputButton: React.FC<props> = ({
         id="MediaUpload"
         onChange={handleImage}
         className="hidden"
-        accept="image/jpg,image/jpeg,image/png,video/mp4,video/*"
+        accept="image/jpg,image/jpeg,image/png,video/mp4"
       />
       <div className="flex gap-[18px]">
         {/* gallery */}

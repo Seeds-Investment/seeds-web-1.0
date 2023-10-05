@@ -1,7 +1,6 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CirclePostSection1 from '@/containers/circle/[id]/CirclePostSection1';
 import CirclePostSection2 from '@/containers/circle/[id]/CirclePostSection2';
-import { getDetailCircle } from '@/repository/circleDetail.repository';
 import Image from 'next/image';
 import {
   CircleBig,
@@ -9,7 +8,6 @@ import {
   CircleSmall,
   LockedCircle
 } from 'public/assets/circle';
-import { useEffect, useState } from 'react';
 
 interface props {
   children: React.ReactNode;
@@ -23,6 +21,9 @@ interface props {
   isEdit: boolean;
   isJoined: boolean;
   setIsJoined: any;
+  dataCircle: any;
+  setIsLoading: any;
+  isLoading: boolean;
 }
 
 const MainPostLayout: React.FC<props> = ({
@@ -36,35 +37,11 @@ const MainPostLayout: React.FC<props> = ({
   handleEdit,
   isEdit,
   isJoined,
-  setIsJoined
+  setIsJoined,
+  dataCircle,
+  setIsLoading,
+  isLoading
 }) => {
-  const [dataCircle, setData]: any = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const renderLoading = (): JSX.Element => (
-    <div className="h-72">
-      <div className="animate-spinner relative top-1/2 left-1/2 -mt-8 -ml-8 w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
-    </div>
-  );
-
-  const fetchDetailCircle = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getDetailCircle({ circleId });
-
-      setData(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchDetailCircle();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [circleId]);
-
   const customGradient = (
     <>
       <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />
@@ -88,7 +65,6 @@ const MainPostLayout: React.FC<props> = ({
               <CirclePostSection1
                 dataCircle={dataCircle}
                 isLoading={isLoading}
-                renderLoading={renderLoading}
                 openModalDelete={openModalDelete}
                 openModalLeave={openModalLeave}
                 openModalReport={openModalReport}
@@ -102,7 +78,7 @@ const MainPostLayout: React.FC<props> = ({
                     <Image
                       src={LockedCircle}
                       alt="image"
-                      className="w-[190px] h-[250px] z-50"
+                      className="w-[190px] h-[250px] z-40"
                     />
                   </div>
                   <div className="flex justify-center relative bottom-[35%]">
@@ -149,7 +125,7 @@ const MainPostLayout: React.FC<props> = ({
                       dataPost={dataPost}
                       dataRecommend={dataRecommend}
                       isLoading={isLoading}
-                      renderLoading={renderLoading}
+                      dataCircle={dataCircle}
                     />
                   )}
                 </>

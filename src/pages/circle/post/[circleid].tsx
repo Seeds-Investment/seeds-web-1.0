@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import PieModal from '../../../components/circle/modalPie';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
+import CommentView from './CommentView';
 
 const dataSelection: typeOfSelection[] = [
   {
@@ -560,6 +561,9 @@ const CirclePost = (): JSX.Element => {
         handleOpen={handleOpenModalReport}
         circleId={circleId}
       />
+      {/* comment view */}
+      <CommentView />
+      {/*  */}
     </MainPostLayout>
   );
 };

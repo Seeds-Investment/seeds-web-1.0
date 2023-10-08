@@ -124,6 +124,7 @@ const Circle = (): React.ReactElement => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const [hasMore, setHasMore] = useState(true);
   const dataTab = [
     {
       label: 'MyCircle',
@@ -156,6 +157,7 @@ const Circle = (): React.ReactElement => {
   const handleChangeTab = (value: any): void => {
     setActiveTab(value);
     setCircle([]);
+    setHasMore(true);
     setFilter(prevState => ({
       ...prevState,
       type: value,
@@ -197,9 +199,18 @@ const Circle = (): React.ReactElement => {
       setIsLoadingCircle(true);
       getCircle(filter)
         .then(res => {
-          const data = res.data;
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+
           if (res.data !== null) {
             setCircle(prevState => [...prevState, ...data]);
+            if (circle.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
           }
 
           setIsLoadingCircle(false);
@@ -262,9 +273,11 @@ const Circle = (): React.ReactElement => {
   }, []);
 
   useEffect(() => {
-    fetchCircle()
-      .then()
-      .catch(() => {});
+    if (hasMore) {
+      fetchCircle()
+        .then()
+        .catch(() => {});
+    }
   }, [activeTab, filter.search, filter.page]);
 
   return (

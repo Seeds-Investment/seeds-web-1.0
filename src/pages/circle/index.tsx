@@ -45,9 +45,17 @@ interface CircleInterface {
   updated_at: string;
 }
 
+interface Filter {
+  search: string;
+  limit: number;
+  page: number;
+  sort_by: string;
+  type: string;
+}
+
 const initialFilter = {
   search: '',
-  limit: 200,
+  limit: 10,
   page: 1,
   sort_by: '',
   type: 'my_circle'
@@ -110,8 +118,8 @@ const Circle = (): React.ReactElement => {
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
   const [balance, setBalance] = useState(0);
-  const [circle, setCircle] = useState<CircleInterface[]>();
-  const [filter, setFilter] = useState(initialFilter);
+  const [circle, setCircle] = useState<CircleInterface[]>([]);
+  const [filter, setFilter] = useState<Filter>(initialFilter);
   const [activeTab, setActiveTab] = useState<string>('my_circle');
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
@@ -147,9 +155,11 @@ const Circle = (): React.ReactElement => {
 
   const handleChangeTab = (value: any): void => {
     setActiveTab(value);
+    setCircle([]);
     setFilter(prevState => ({
       ...prevState,
-      type: value
+      type: value,
+      page: 1
     }));
   };
 
@@ -187,7 +197,11 @@ const Circle = (): React.ReactElement => {
       setIsLoadingCircle(true);
       getCircle(filter)
         .then(res => {
-          setCircle(res.data);
+          const data = res.data;
+          if (res.data !== null) {
+            setCircle(prevState => [...prevState, ...data]);
+          }
+
           setIsLoadingCircle(false);
         })
         .catch(err => {
@@ -218,6 +232,25 @@ const Circle = (): React.ReactElement => {
     }
   };
 
+  const handleScroll = (): void => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingCircle) {
+      setFilter(prevState => ({
+        ...prevState,
+        page: prevState.page + 1
+      }));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
   useEffect(() => {
     fetchCircleLeaderBoard()
       .then()
@@ -232,7 +265,7 @@ const Circle = (): React.ReactElement => {
     fetchCircle()
       .then()
       .catch(() => {});
-  }, [activeTab, filter.search]);
+  }, [activeTab, filter.search, filter.page]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -400,35 +433,29 @@ const Circle = (): React.ReactElement => {
               {dataTab.map(({ value, data }) => (
                 <TabPanel key={value} value={value}>
                   <div className="">
-                    {isLoadingCircle ? (
-                      <Card
-                        shadow={false}
-                        className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
-                      >
-                        <Typography className="flex items-center justify-center font-semibold text-xl">
+                    <div className="flex flex-wrap">
+                      {circle.length !== 0 ? (
+                        circle?.map((data, idx) => (
+                          <div
+                            className={`w-${
+                              idx === 0 ? 'full' : '1/2'
+                            } mb-3 md:w-1/4`}
+                            key={idx}
+                          >
+                            <CardCircle data={data} cover={data.cover} />
+                          </div>
+                        ))
+                      ) : (
+                        <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
+                          Data Not Found
+                        </Typography>
+                      )}
+                      {isLoadingCircle && (
+                        <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
                           Loading...
                         </Typography>
-                      </Card>
-                    ) : (
-                      <div className="flex flex-wrap">
-                        {circle !== null ? (
-                          circle?.map((data, idx) => (
-                            <div
-                              className={`w-${
-                                idx === 0 ? 'full' : '1/2'
-                              } mb-3 md:w-1/4`}
-                              key={idx}
-                            >
-                              <CardCircle data={data} cover={data.cover} />
-                            </div>
-                          ))
-                        ) : (
-                          <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                            Data Not Found
-                          </Typography>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </TabPanel>
               ))}

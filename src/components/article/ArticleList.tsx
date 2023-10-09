@@ -203,7 +203,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </div>
         <div className="flex flex-row mt-4 bottom-2 w-full gap-4 left-4 absolute">
           <div className="flex flex-row gap-1">
-            {articleDetail?.is_liked !== null ? (
+            {articleDetail?.is_liked !== undefined && articleDetail.is_liked ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"

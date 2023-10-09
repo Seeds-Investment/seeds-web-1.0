@@ -233,7 +233,7 @@ export default function Section1(): React.ReactElement {
           <section className="xl:hidden block">
             <Image
               src={dataLeaderboard?.[0]?.avatar_url}
-              alt="profile"
+              alt={dataLeaderboard?.[0]?.user_id}
               width={289}
               height={289}
               className="z-10 mx-auto rounded-2xl border border-black/10"
@@ -270,7 +270,7 @@ export default function Section1(): React.ReactElement {
           <section className="xl:mt-10">
             <Image
               src={dataLeaderboard?.[1]?.avatar_url}
-              alt="profile"
+              alt={dataLeaderboard?.[1]?.user_id}
               width={289}
               height={289}
               className="z-10 mx-auto rounded-2xl border border-black/10"
@@ -307,7 +307,7 @@ export default function Section1(): React.ReactElement {
           <section className="xl:block hidden">
             <Image
               src={dataLeaderboard?.[0]?.avatar_url}
-              alt="profile"
+              alt={dataLeaderboard?.[0]?.user_id}
               width={289}
               height={289}
               className="z-10 mx-auto rounded-2xl border border-black/10"
@@ -344,7 +344,7 @@ export default function Section1(): React.ReactElement {
           <section className="xl:mt-10">
             <Image
               src={dataLeaderboard?.[2]?.avatar_url}
-              alt="profile"
+              alt={dataLeaderboard?.[2]?.user_id}
               width={289}
               height={289}
               className="z-10 mx-auto rounded-2xl border border-black/10"

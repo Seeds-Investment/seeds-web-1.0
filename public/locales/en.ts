@@ -777,14 +777,14 @@ export default {
   },
   aboutUs: {
     title1: 'About Us',
-    text1:
-      'Our dream is to help [people/millennials and Gen Z] by creating an investment experience with an active community and access to multiple [instruments/assets] on one platform. Investments are made easier with opportunities for learning, discussion, and full transparency between users.',
+    text1: 'Seeds, Where Gaming Meets Investing!',
     text2:
-      'Because seeds believe that everyone has the same opportunity to invest regardless of background.',
-    text3: 'Seeds, Investing, Together',
+      'Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community. ',
+    text3:
+      "Let's grow together and be a part of the next generation of savvy investors. Start your transformative journey with Seeds today!",
     title2: 'People',
     text4:
-      'We Identify opportunities you uniquely own by analysing your business, your market, and cultural shifts in the world.',
+      'We identify opportunities you uniquely own by analysing your business, your market, and cultural shifts in the world.',
     title3: 'Our Value',
     text5:
       'For us, our values are more than just worlds. They are ways of living, creating, and doing.',

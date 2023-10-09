@@ -81,9 +81,11 @@ export default function AboutUsPage(): React.ReactElement {
                 {t('aboutUs.title2')}
               </div>
               <Image
-                className="w-full z-10 h-full hidden lg:block 
-                lg:w-[125%] lg:-translate-y-[-3rem] lg:translate-x-[0rem]"
+                className="w-[full] z-10 h-full hidden lg:block 
+                lg:w-[150%] lg:-translate-y-[-3rem] lg:translate-x-[0rem]"
                 alt="img"
+                width={285}
+                height={299}
                 src={image1}
               />
             </div>
@@ -93,9 +95,6 @@ export default function AboutUsPage(): React.ReactElement {
               </div>
             </div>
             <div className="w-full mx-5 mt-10">
-              <div className="z-30 relative text-8xl text-left ml-[30%] lg:text-left font-montserrat text-white font-bold mb-3 lg:text-8xl lg:mb-7 lg:mt-[20%]  lg:ml-[20%]">
-                +120
-              </div>
               <Image
                 className="w-full h-auto mt-3 mx-5 block lg:hidden"
                 alt="img"
@@ -114,7 +113,7 @@ export default function AboutUsPage(): React.ReactElement {
               </div>
             </div>
             <div className="mt-5 lg:mt-10 lg:ml-12">
-              <div className="text-xl text-[#745AD9] font-normal me-5 mb-7 lg:me-12 lg:text-5xl lg:mb-0">
+              <div className="text-xl text-[#745AD9] font-normal me-5 mb-7 lg:me-16 lg:text-5xl lg:mb-0">
                 {t('aboutUs.text5')}
               </div>
 

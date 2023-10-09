@@ -54,7 +54,6 @@ export default function CardCircle(): React.ReactElement {
     <>
       {circle !== undefined && (
         <>
-          <div className="grid grid-rows-4 grid-flow-col gap-4 items-center justify-center my-5"></div>
           {isLoadingCircle ? (
             <Typography className="w-full text-base font-semibold text-center">
               Loading....

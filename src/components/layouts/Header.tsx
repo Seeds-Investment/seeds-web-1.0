@@ -1,7 +1,13 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { IconButton } from '@material-tailwind/react';
+import {
+  IconButton,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList
+} from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -52,6 +58,7 @@ const Header: React.FC = () => {
   const _handleRedirectJoinUs = (): any => {
     return router.push('/auth/register');
   };
+
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
@@ -60,6 +67,11 @@ const Header: React.FC = () => {
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
+  };
+  const [openLanguage, setOpenLanguage] = useState(false);
+
+  const handleDropdownLanguage = (): void => {
+    setOpenLanguage(!openLanguage);
   };
 
   useEffect(() => {
@@ -350,30 +362,64 @@ const Header: React.FC = () => {
               onClick={() => _handleRedirectJoinUs()}
             />
           )}
-          <div className="relative inline-flex">
-            <select
-              className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
-              value={selectedLanguage}
-              onChange={(e): void => {
-                handleLanguageChange(e.target.value as 'EN' | 'ID');
-              }}
-            >
-              <option value="EN">EN</option>
-              <option value="ID">ID</option>
-            </select>
+          <div
+            className="relative inline-flex"
+            onClick={handleDropdownLanguage}
+          >
+            <h1 className="text-white font-medium text-base">
+              {selectedLanguage}
+            </h1>
             <div className="flex items-center ml-2">
               {languageCtx.language === 'EN' ? (
                 <Image src={US} width={16} alt="US-flag" />
               ) : (
                 <Image src={ID} width={16} alt="ID-flag" />
               )}
+            </div>
+            <div
+              className="flex self-center items-center"
+              onClick={handleDropdownLanguage}
+            >
+              <Menu open={openLanguage}>
+                <MenuHandler>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="3"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </MenuHandler>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      handleLanguageChange('EN');
+                    }}
+                  >
+                    EN
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleLanguageChange('ID');
+                    }}
+                  >
+                    ID
+                  </MenuItem>
+                </MenuList>
+              </Menu>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="3"
                 stroke="#FFFFFF"
-                className="w-6 h-6"
+                className="w-6 h-6 -ml-4"
               >
                 <path
                   strokeLinecap="round"

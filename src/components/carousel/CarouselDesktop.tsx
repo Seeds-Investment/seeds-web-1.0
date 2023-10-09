@@ -82,9 +82,9 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-1.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover cursor-pointer"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
         onClick={(): void => {
           handleItemClick(
             'https://play.google.com/store/apps/details?id=com.seeds.investment'
@@ -94,9 +94,9 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-2.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover cursor-pointer"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
         onClick={(): void => {
           handleItemClick('https://gplfantasy.app.link/SeedsGB');
         }}
@@ -104,9 +104,9 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-8.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover cursor-pointer"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
         onClick={(): void => {
           handleItemClick('https://gplfantasy.app.link/SeedsB');
         }}
@@ -114,37 +114,37 @@ const CarouselDesktop: React.FC = () => {
       <Image
         src={`/assets/carousel-3.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover"
       />
       <Image
         src={`/assets/carousel-4.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover"
       />
       <Image
         src={`/assets/carousel-5.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover"
       />
       <Image
         src={`/assets/carousel-6.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover"
       />
       <Image
         src={`/assets/carousel-7.png`}
         alt="image 1"
-        width={1443}
-        height={700}
-        className="h-[80%] w-full object-cover"
+        width={1430}
+        height={900}
+        className="h-[100vh] w-[full] mx-auto object-cover"
       />
     </Carousel>
   );

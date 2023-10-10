@@ -6,7 +6,7 @@ import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { loginPhoneNumber } from '@/repository/auth.repository';
-import { getUserInfo } from '@/repository/profile.repository';
+import { createPin, getUserInfo } from '@/repository/profile.repository';
 import { Button, Input } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -32,7 +32,8 @@ interface FormCheckPassword {
 }
 
 interface FormCreatePin {
-  pin: string[];
+  pin: any;
+  old_pin: '';
 }
 
 const initialFormCheckPassword = {
@@ -50,7 +51,8 @@ const CreatePin = (): JSX.Element => {
     initialFormCheckPassword
   );
   const [formCreatePin, setFormCreatePin] = useState<FormCreatePin>({
-    pin: []
+    pin: [],
+    old_pin: ''
   });
   const [errorPassword, setErrorPassword] = useState<string>('');
   const [step, setStep] = useState<string>('password');
@@ -126,7 +128,20 @@ const CreatePin = (): JSX.Element => {
 
   const SubmitCreatePin = async (): Promise<void> => {
     try {
-      console.log('hehealskdasl sladkm');
+      formCreatePin.pin = formCreatePin.pin.join('');
+      console.log(formCreatePin);
+
+      createPin(formCreatePin)
+        .then(res => {
+          if (res.status === 401) {
+            setErrorPassword('Wrong Password');
+          } else {
+            setStep('success');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } catch (error: any) {
       console.error('Error submit pin:', error.message);
     }
@@ -244,6 +259,8 @@ const CreatePin = (): JSX.Element => {
           title="Create Your Pin"
           subtitle="Please enter your PIN number correctly"
         />
+      ) : step === 'success' ? (
+        <p>LKsdmlaksdmasdasd</p>
       ) : null}
     </>
   );

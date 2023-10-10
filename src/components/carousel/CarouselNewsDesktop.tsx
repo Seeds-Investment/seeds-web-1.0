@@ -116,13 +116,13 @@ const CarouselNewsDesktop: React.FC = () => {
               <img
                 src={imageUrl}
                 alt={`image ${index + 1}`}
-                className="h-full w-full object-cover mx-auto rounded-lg"
+                className="h-[70vh] w-full object-cover mx-auto rounded-lg"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt="Default Image"
-                className="h-full w-full object-cover mx-auto rounded-lg"
+                className="h-[70vh] w-full object-cover mx-auto rounded-lg"
               />
             )}
             <div

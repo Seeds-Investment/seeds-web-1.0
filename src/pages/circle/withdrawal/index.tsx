@@ -20,6 +20,14 @@ interface FormRequest {
   pin: any;
 }
 
+interface RequiredForm {
+  nominal: string;
+  method: string;
+  bankAccount: string;
+  accountNumber: string;
+  accountName: string;
+}
+
 const initialFormRequest = {
   method: '',
   account_name: '',
@@ -39,20 +47,74 @@ const initialEditProfile = {
   phone: ''
 };
 
+const initialRequiredForm = {
+  nominal: '',
+  method: '',
+  bankAccount: '',
+  accountNumber: '',
+  accountName: ''
+};
+
 const Withdrawal = (): JSX.Element => {
   const [step, setStep] = useState('');
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(initialEditProfile);
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
+  const [requiredForm, setRequiredForm] =
+    useState<RequiredForm>(initialRequiredForm);
 
-  const handleChangeStep = (value: string): void => {
-    setStep(value);
+  const handleChangeValueRequired = (name: string, value: string): void => {
+    setRequiredForm(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  console.log(isLoadingSubmit);
+  const handleChangeStep = (value: string): void => {
+    if (value === 'method') {
+      if (formRequest.amount === '') {
+        handleChangeValueRequired('nominal', 'Please input withdraw nominal');
+      } else {
+        setStep(value);
+      }
+    } else if (value === 'pin') {
+      if (formRequest.method === '') {
+        handleChangeValueRequired('method', 'Please input method withdraw');
+      } else {
+        handleChangeValueRequired('method', '');
+      }
+
+      if (formRequest.account_name === '') {
+        handleChangeValueRequired(
+          'bankAccount',
+          'Please input Bank Account Type'
+        );
+      } else {
+        handleChangeValueRequired('bankAccount', '');
+      }
+
+      if (formRequest.account_number === '') {
+        handleChangeValueRequired(
+          'accountNumber',
+          'Please input Bank account number'
+        );
+      } else {
+        handleChangeValueRequired('accountNumber', '');
+      }
+
+      if (
+        formRequest.method !== '' &&
+        formRequest.account_name !== '' &&
+        formRequest.account_number !== ''
+      ) {
+        setStep(value);
+      }
+    } else {
+      setStep(value);
+    }
+  };
 
   const handleChangeValue = (event: any): void => {
     const target = event.target;
@@ -140,8 +202,6 @@ const Withdrawal = (): JSX.Element => {
       user.pin = formRequest.pin;
       formRequest.amount = parseInt(formRequest.amount);
 
-      setIsLoadingSubmit(true);
-
       editUserInfo(user)
         .then(res => {
           if (res.status === 200) {
@@ -149,10 +209,8 @@ const Withdrawal = (): JSX.Element => {
               .then(res => {
                 console.log('response post = ', res);
                 handleChangeStep('success');
-                setIsLoadingSubmit(false);
               })
               .catch(err => {
-                setIsLoadingSubmit(false);
                 console.log(err);
                 handleChangeStep('failed');
               });
@@ -163,7 +221,6 @@ const Withdrawal = (): JSX.Element => {
           handleChangeStep('failed');
         });
     } catch (error: any) {
-      setIsLoadingSubmit(false);
       console.error('Error fetching circle data:', error.message);
     }
   };
@@ -195,6 +252,7 @@ const Withdrawal = (): JSX.Element => {
           changeValueMethod={handleChangeValueMethod}
           changeValueAccountName={handleChangeValueAccountName}
           changeValue={handleChangeValue}
+          formRequired={requiredForm}
         />
       ) : step === 'failed' ? (
         <FinalModalCircle
@@ -214,6 +272,7 @@ const Withdrawal = (): JSX.Element => {
           balance={balance}
           formRequest={formRequest}
           changeValue={handleChangeValue}
+          requiredForm={requiredForm}
         />
       )}
     </>

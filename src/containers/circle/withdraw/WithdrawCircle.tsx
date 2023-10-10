@@ -24,12 +24,21 @@ interface FormRequest {
   pin: string[];
 }
 
+interface RequiredForm {
+  nominal: string;
+  method: string;
+  bankAccount: string;
+  accountNumber: string;
+  accountName: string;
+}
+
 interface props {
   changeStep: any;
   isLoadingBalance: boolean;
   balance: number;
   changeValue: any;
   formRequest: FormRequest;
+  requiredForm: RequiredForm;
 }
 
 interface Income {
@@ -50,7 +59,8 @@ const WithdrawCircle: React.FC<props> = ({
   balance,
   isLoadingBalance,
   formRequest,
-  changeValue
+  changeValue,
+  requiredForm
 }) => {
   const width = useWindowInnerWidth();
   const [isLoading, setIsLoading] = useState(false);
@@ -137,6 +147,11 @@ const WithdrawCircle: React.FC<props> = ({
                 placeholder="IDR 0"
               />
               <hr />
+              {requiredForm.nominal !== '' && (
+                <small className="text-[#ff515d] font-bold">
+                  {requiredForm.nominal}
+                </small>
+              )}
             </div>
             <label className="font-semibold text-base mb-2 text-[#262626]">
               List Circle

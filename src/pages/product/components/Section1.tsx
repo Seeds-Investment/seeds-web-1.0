@@ -71,7 +71,7 @@ export default function Section1(): React.ReactElement {
   return (
     <div className="min-w-full cursor-default font-poppins">
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 md:mt-[8rem] lg:mt-[12rem] 2xl:mt-[25rem]">
+        <div className="w-full md:w-1/2 md:mt-[6rem] lg:mt-[8rem] 2xl:mt-[16rem]">
           <Image
             alt="img"
             className="absolute left-0 -z-10 -top-5 xl:block hidden"

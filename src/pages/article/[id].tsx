@@ -4,8 +4,7 @@ import {
   getArticle,
   getArticleById,
   getArticleComment,
-  postComment,
-  postLike
+  postComment
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Input } from '@material-tailwind/react';
@@ -103,7 +102,6 @@ export default function ArticleDetailPage(): JSX.Element {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
-  const [liked, setLiked] = useState(false);
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
@@ -227,26 +225,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   };
 
-  const likeArticle = async (articleId: number): Promise<void> => {
-    try {
-      const response = await postLike(formRequest, articleId);
-      if (response.status === 200) {
-        setArticleDetail(prevArticleDetail => {
-          if (prevArticleDetail !== null) {
-            return {
-              ...prevArticleDetail,
-              total_likes: prevArticleDetail?.total_likes + 1
-            };
-          }
-          return prevArticleDetail;
-        });
-        setLiked(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   function formatDate(inputDate: string): string {
     const date = new Date(inputDate);
     // Remove milliseconds to avoid precision issues
@@ -288,7 +266,7 @@ export default function ArticleDetailPage(): JSX.Element {
           </p>
         </div>
       )}
-      <h1 className="my-8 text-5xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+      <h1 className="my-8 text-5xl font-semibold bg-clip-text text-transparent bg-gradient-to-r py-4 from-[#9A76FE] to-[#4FE6AF]">
         {articleDetail.title}
       </h1>
       <div className="flex flex-row justify-between my-4">
@@ -321,11 +299,8 @@ export default function ArticleDetailPage(): JSX.Element {
           ) : (
             <div
               className={`rounded-full p-1 w-8 h-8 cursor-pointer ${
-                liked ? 'bg-green-500' : 'bg-[#BDBDBD]'
+                articleDetail.is_liked ? 'bg-green-500' : 'bg-[#BDBDBD]'
               }`}
-              onClick={async () => {
-                await likeArticle(articleDetail?.id);
-              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

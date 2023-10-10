@@ -6,6 +6,7 @@ import line1 from '@/assets/about-us/line1.svg';
 import line2 from '@/assets/about-us/line2.svg';
 import meet from '@/assets/about-us/meet.svg';
 import play from '@/assets/about-us/play.svg';
+import vectorAbout from '@/assets/about-us/vector-about-us.png';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
 import Section1 from '@/containers/temporary/Section1';
@@ -113,7 +114,7 @@ export default function AboutUsPage(): React.ReactElement {
               </div>
             </div>
             <div className="mt-5 lg:mt-10 lg:ml-12">
-              <div className="text-xl text-[#745AD9] font-normal me-5 mb-7 lg:me-16 lg:text-5xl lg:mb-0">
+              <div className="text-xl text-[#745AD9] font-normal me-5 mb-7 lg:me-[14rem] lg:text-5xl lg:mb-0">
                 {t('aboutUs.text5')}
               </div>
 
@@ -206,6 +207,11 @@ export default function AboutUsPage(): React.ReactElement {
         <div className="z-0 top-24 lg:ml-[90%] lg:mt-[-6rem] -right-4 w-120 h-48 hidden lg:block bg-seeds-green blur-[90px] rounded-full"></div>
         <div className="z-0 hidden lg:block lg:top-[626px] lg:left-[325px] lg:ml-[30%] opacity-[50%] lg:w-[699px] lg:h-[698px] lg:mt-[-50rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
         <div className="w-full lg:mt-[-2rem] ">
+          <Image
+            className="xl:w-[699px] translate-x-[400px] -mt-[100px] -z-10 xl:h-[699px] absolute"
+            alt="img"
+            src={vectorAbout}
+          />
           <div className="w-full flex flex-col lg:flex-row">
             <div className=" w-full xl:mx-20  lg:mt-10 ">
               <div className="text-3xl ml-5 lg:mt-12 text-[#745AD9] font-semibold mb-3 lg:text-3xl lg:mb-8">

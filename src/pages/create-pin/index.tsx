@@ -57,7 +57,7 @@ const CreatePin = (): JSX.Element => {
   });
   const [errorPassword, setErrorPassword] = useState<string>('');
   const [step, setStep] = useState<string>('password');
-  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const cancelHandler = (): void => {
     router.back();

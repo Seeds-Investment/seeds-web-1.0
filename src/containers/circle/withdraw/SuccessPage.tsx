@@ -1,6 +1,6 @@
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { BCAIcon, CeklisCircle } from '@/constants/assets/icons';
+import { CeklisCircle } from '@/constants/assets/icons';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { Button, Card, Typography } from '@material-tailwind/react';
@@ -8,10 +8,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 interface props {
-  data?: any;
+  image: string;
+  withdraw: any;
+  admin: any;
+  amount: any;
 }
 
-const SuccessPage: React.FC<props> = ({ data }) => {
+const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
 
@@ -59,7 +62,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                 Payment Method
               </Typography>
               <div className="flex items-center justify-center mb-9 mt-3">
-                <Image src={BCAIcon.src} alt="AVATAR" width={90} height={90} />
+                <Image src={image} alt="AVATAR" width={90} height={90} />
               </div>
               <hr className="border-t-2 border-dashed" />
               <div className="flex flex-row justify-between my-5">
@@ -67,7 +70,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                   Withdraw
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR 20.000
+                  IDR {withdraw}
                 </Typography>
               </div>
               <div className="flex flex-row justify-between mb-5">
@@ -75,7 +78,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                   Admin
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR 2000
+                  IDR {admin}
                 </Typography>
               </div>
               <hr />
@@ -84,7 +87,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                   Total Amount
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR 80.000
+                  IDR {amount}
                 </Typography>
               </div>
               <div className="flex flex-row justify-between mb-5">
@@ -92,7 +95,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                   ID Transaction
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  1212121
+                  12345678910
                 </Typography>
               </div>
               <Typography className="text-[10px] font-normal text-[#BDBDBD] text-center">

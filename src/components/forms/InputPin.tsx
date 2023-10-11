@@ -20,6 +20,7 @@ interface props {
   deletePinHandler: any;
   title: string;
   subtitle?: string;
+  error?: any;
 }
 
 const InputPin: React.FC<props> = ({
@@ -28,13 +29,16 @@ const InputPin: React.FC<props> = ({
   onCancel,
   deletePinHandler,
   title,
-  subtitle
+  subtitle,
+  error = ''
 }) => {
   const width = useWindowInnerWidth();
 
   const pin = formRequest.pin;
 
-  const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4`;
+  const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
+    error !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'
+  }`;
   const isDisabled = pin.length === 6;
   const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
     !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
@@ -74,7 +78,9 @@ const InputPin: React.FC<props> = ({
         </Typography>
 
         <div
-          className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5`}
+          className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5 ${
+            error !== '' ? '' : 'sm:mb-10 mb-16'
+          }`}
         >
           {dotsRow.map((_, index) => (
             <span key={index} className={dotContainerClasses}>
@@ -91,6 +97,15 @@ const InputPin: React.FC<props> = ({
             </span>
           ))}
         </div>
+        {error !== '' && (
+          <p
+            className={`animate-fade-in mt-4 text-center font-light font-poppins text-base text-warning-hard ${
+              error !== '' ? 'sm:mb-10 mb-16' : ''
+            }`}
+          >
+            {error}
+          </p>
+        )}
 
         <div className="flex justify-evenly lg:justify-between [&>*]:flex [&>*]:flex-col [&>*]:gap-4">
           <div>

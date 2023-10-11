@@ -1,5 +1,5 @@
 import FinalModalCircle from '@/components/circle/FinalModalCircle';
-import InputPinCircle from '@/components/circle/InputPinCircle';
+import InputPin from '@/components/forms/InputPin';
 import { errorCircle } from '@/constants/assets/icons';
 import SuccessPage from '@/containers/circle/withdraw/SuccessPage';
 import WithdrawCircle from '@/containers/circle/withdraw/WithdrawCircle';
@@ -9,7 +9,7 @@ import {
   getCircleBalance,
   withdrawCircle
 } from '@/repository/circle.repository';
-import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 interface FormRequest {
@@ -60,6 +60,7 @@ const Withdrawal = (): JSX.Element => {
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(initialEditProfile);
+  const [errorPin, setErrorPin] = useState<string>('');
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
   const [requiredForm, setRequiredForm] =
@@ -202,22 +203,26 @@ const Withdrawal = (): JSX.Element => {
       user.pin = formRequest.pin;
       formRequest.amount = parseInt(formRequest.amount);
 
-      editUserInfo(user)
+      withdrawCircle(formRequest)
         .then(res => {
-          if (res.status === 200) {
-            withdrawCircle(formRequest)
-              .then(res => {
-                console.log('response post = ', res);
-                handleChangeStep('success');
-              })
-              .catch(err => {
-                console.log(err);
-                handleChangeStep('failed');
-              });
+          if (res.status !== 200) {
+            if (res.data.message === 'invalid PIN') {
+              setErrorPin(
+                'Please make sure you have the right PIN and try again.'
+              );
+              setFormRequest(prevstate => ({
+                ...prevstate,
+                pin: []
+              }));
+            } else {
+              handleChangeStep('failed');
+            }
+          } else {
+            handleChangeStep('success');
           }
         })
         .catch(err => {
-          console.error(err);
+          console.log(err);
           handleChangeStep('failed');
         });
     } catch (error: any) {
@@ -237,11 +242,14 @@ const Withdrawal = (): JSX.Element => {
   return (
     <>
       {step === 'pin' ? (
-        <InputPinCircle
+        <InputPin
           formRequest={formRequest}
           enterPinHandler={handleValuePin}
           onCancel={handleChangeStep}
           deletePinHandler={handleRemovePin}
+          title="Enter Your PIN"
+          subtitle="Please enter your PIN correctly"
+          error={errorPin}
         />
       ) : step === 'method' ? (
         <WithdrawMethod

@@ -2,7 +2,6 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon, DeleteIcon, Logo } from 'public/assets/vector';
-import { useTranslation } from 'react-i18next';
 import CardGradient from '../ui/card/CardGradient';
 
 const numbersColumn1 = ['1', '4', '7'];
@@ -14,33 +13,32 @@ const dotContainerClasses = 'relative flex justify-center items-center';
 const animationClasses =
   'absolute animate-ping w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-neutral-medium';
 
-interface FormRequest {
-  method: string;
-  account_name: string;
-  account_number: string;
-  amount: number;
-  pin: string[];
-}
-
 interface props {
-  formRequest: FormRequest;
+  formRequest: any;
   enterPinHandler: any;
   onCancel: any;
   deletePinHandler: any;
+  title: string;
+  subtitle?: string;
+  error?: any;
 }
 
-const InputPinCircle: React.FC<props> = ({
+const InputPin: React.FC<props> = ({
   formRequest,
   enterPinHandler,
   onCancel,
-  deletePinHandler
+  deletePinHandler,
+  title,
+  subtitle,
+  error = ''
 }) => {
   const width = useWindowInnerWidth();
-  const { t } = useTranslation();
 
   const pin = formRequest.pin;
 
-  const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4`;
+  const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
+    error !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'
+  }`;
   const isDisabled = pin.length === 6;
   const buttonClasses = `z-10 flex justify-center items-center w-10 h-10 transition-colors rounded-full font-montserrat text-3xl font-semibold hover:bg-gray-200 ${
     !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
@@ -61,7 +59,7 @@ const InputPinCircle: React.FC<props> = ({
       <div className="max-w-max mx-auto mt-6 mb-36">
         <div className="relative flex items-center sm:mb-8 mb-10">
           <button
-            onClick={() => onCancel('method')}
+            onClick={() => onCancel()}
             className="absolute left-0 w-10 transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300"
           >
             <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
@@ -72,15 +70,17 @@ const InputPinCircle: React.FC<props> = ({
         </div>
 
         <Typography className="mb-2 lg:text-3xl text-2xl font-poppins font-semibold text-center text-neutral-medium">
-          {t('inputPin.title.enterPin')}
+          {title}
         </Typography>
 
         <Typography className="mb-5 text-base font-poppins font-normal text-center text-neutral-medium">
-          {t('circle.withdraw.pin.subtitle')}
+          {subtitle}
         </Typography>
 
         <div
-          className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5`}
+          className={`transition-all duration-700 flex justify-center items-center gap-14 lg:gap-20 h-10 px-5 ${
+            error !== '' ? '' : 'sm:mb-10 mb-16'
+          }`}
         >
           {dotsRow.map((_, index) => (
             <span key={index} className={dotContainerClasses}>
@@ -97,6 +97,15 @@ const InputPinCircle: React.FC<props> = ({
             </span>
           ))}
         </div>
+        {error !== '' && (
+          <p
+            className={`animate-fade-in mt-4 text-center font-light font-poppins text-base text-warning-hard ${
+              error !== '' ? 'sm:mb-10 mb-16' : ''
+            }`}
+          >
+            {error}
+          </p>
+        )}
 
         <div className="flex justify-evenly lg:justify-between [&>*]:flex [&>*]:flex-col [&>*]:gap-4">
           <div>
@@ -136,7 +145,6 @@ const InputPinCircle: React.FC<props> = ({
                 onClick={() =>
                   number === '' ? deletePinHandler() : enterPinHandler(number)
                 }
-                // onClick={() => enterPinHandler(number)}
                 disabled={number === '' ? false : isDisabled}
               >
                 {number === '' ? (
@@ -153,4 +161,4 @@ const InputPinCircle: React.FC<props> = ({
   );
 };
 
-export default InputPinCircle;
+export default InputPin;

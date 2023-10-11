@@ -17,7 +17,7 @@ body {
 
 @layer components {
   .document-header {
-    @apply flex justify-around items-center px-[80px] mx-auto mb-0 w-full xl:h-[80px] bg-white;
+    @apply flex justify-evenly items-center px-[80px] mx-auto mb-0 w-full xl:h-[80px] bg-white;
   }
 }
 

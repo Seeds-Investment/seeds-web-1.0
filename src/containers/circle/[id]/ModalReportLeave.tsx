@@ -1,6 +1,6 @@
 import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import { errorCircle, successCircleSetting } from '@/constants/assets/icons';
-import { reportCircle } from '@/repository/report.repository';
+import { reportCircle, reportOptions } from '@/repository/report.repository';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface props {
@@ -23,26 +23,21 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [responseApi, setResponseApi] = useState('');
   const { t } = useTranslation();
+  const [options, setOptions] = useState<any[]>();
   const [formRequest, setFormRequest] = useState({
     target_circle_id: circleId,
-    type_report: ''
+    type_report: '',
+    question_report_id: ''
   });
 
-  const options = [
-    `${t('circleSetting.reportCirlce.option1')}`,
-    `${t('circleSetting.reportCirlce.option2')}`,
-    `${t('circleSetting.reportCirlce.option3')}`,
-    `${t('circleSetting.reportCirlce.option4')}`,
-    `${t('circleSetting.reportCirlce.option5')}`,
-    `${t('circleSetting.reportCirlce.option6')}`,
-    `${t('circleSetting.reportCirlce.option7')}`
-  ];
-
   const handleRadioChange = (event: any): void => {
+    const value = JSON.parse(event.target.value);
+
     setFormRequest(prevState => {
       return {
         ...prevState,
-        type_report: event.target.value
+        type_report: value.title,
+        question_report_id: value.id
       };
     });
   };
@@ -65,6 +60,30 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
       console.error('Error fetching circle data:', error.message);
     }
   };
+
+  const fetchReportOptions = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      reportOptions()
+        .then(res => {
+          setOptions(res);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log(err);
+        });
+    } catch (error: any) {
+      setIsLoading(false);
+      console.error('Error fetching circle data:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchReportOptions()
+      .then()
+      .catch(() => {});
+  }, []);
 
   return (
     <>
@@ -116,14 +135,14 @@ const ModalReportCircle: React.FC<props> = ({ open, handleOpen, circleId }) => {
           </Typography>
 
           <div className="flex flex-col mt-5 gap-3">
-            {options.map((data, idx) => (
+            {options?.map((data, idx) => (
               <div className="flex justify-between" key={idx}>
                 <Typography className="text-sm font-normal text-black">
-                  {data}
+                  {data.title}
                 </Typography>
                 <input
                   type="radio"
-                  value={data}
+                  value={JSON.stringify(data)}
                   onChange={handleRadioChange}
                   id="radioButton01"
                   name="radioGroup"

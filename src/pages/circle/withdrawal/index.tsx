@@ -1,5 +1,5 @@
 import FinalModalCircle from '@/components/circle/FinalModalCircle';
-import InputPinCircle from '@/components/circle/InputPinCircle';
+import InputPin from '@/components/forms/InputPin';
 import { errorCircle } from '@/constants/assets/icons';
 import SuccessPage from '@/containers/circle/withdraw/SuccessPage';
 import WithdrawCircle from '@/containers/circle/withdraw/WithdrawCircle';
@@ -9,7 +9,7 @@ import {
   getCircleBalance,
   withdrawCircle
 } from '@/repository/circle.repository';
-import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 interface FormRequest {
@@ -18,6 +18,14 @@ interface FormRequest {
   account_number: string;
   amount: any;
   pin: any;
+}
+
+interface RequiredForm {
+  nominal: string;
+  method: string;
+  bankAccount: string;
+  accountNumber: string;
+  accountName: string;
 }
 
 const initialFormRequest = {
@@ -39,20 +47,75 @@ const initialEditProfile = {
   phone: ''
 };
 
+const initialRequiredForm = {
+  nominal: '',
+  method: '',
+  bankAccount: '',
+  accountNumber: '',
+  accountName: ''
+};
+
 const Withdrawal = (): JSX.Element => {
   const [step, setStep] = useState('');
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [balance, setBalance] = useState(0);
   const [user, setUser] = useState(initialEditProfile);
+  const [errorPin, setErrorPin] = useState<string>('');
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
+  const [requiredForm, setRequiredForm] =
+    useState<RequiredForm>(initialRequiredForm);
 
-  const handleChangeStep = (value: string): void => {
-    setStep(value);
+  const handleChangeValueRequired = (name: string, value: string): void => {
+    setRequiredForm(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  console.log(isLoadingSubmit);
+  const handleChangeStep = (value: string): void => {
+    if (value === 'method') {
+      if (formRequest.amount === '') {
+        handleChangeValueRequired('nominal', 'Please input withdraw nominal');
+      } else {
+        setStep(value);
+      }
+    } else if (value === 'pin') {
+      if (formRequest.method === '') {
+        handleChangeValueRequired('method', 'Please input method withdraw');
+      } else {
+        handleChangeValueRequired('method', '');
+      }
+
+      if (formRequest.account_name === '') {
+        handleChangeValueRequired(
+          'bankAccount',
+          'Please input Bank Account Type'
+        );
+      } else {
+        handleChangeValueRequired('bankAccount', '');
+      }
+
+      if (formRequest.account_number === '') {
+        handleChangeValueRequired(
+          'accountNumber',
+          'Please input Bank account number'
+        );
+      } else {
+        handleChangeValueRequired('accountNumber', '');
+      }
+
+      if (
+        formRequest.method !== '' &&
+        formRequest.account_name !== '' &&
+        formRequest.account_number !== ''
+      ) {
+        setStep(value);
+      }
+    } else {
+      setStep(value);
+    }
+  };
 
   const handleChangeValue = (event: any): void => {
     const target = event.target;
@@ -140,30 +203,29 @@ const Withdrawal = (): JSX.Element => {
       user.pin = formRequest.pin;
       formRequest.amount = parseInt(formRequest.amount);
 
-      setIsLoadingSubmit(true);
-
-      editUserInfo(user)
+      withdrawCircle(formRequest)
         .then(res => {
-          if (res.status === 200) {
-            withdrawCircle(formRequest)
-              .then(res => {
-                console.log('response post = ', res);
-                handleChangeStep('success');
-                setIsLoadingSubmit(false);
-              })
-              .catch(err => {
-                setIsLoadingSubmit(false);
-                console.log(err);
-                handleChangeStep('failed');
-              });
+          if (res.status !== 200) {
+            if (res.data.message === 'invalid PIN') {
+              setErrorPin(
+                'Please make sure you have the right PIN and try again.'
+              );
+              setFormRequest(prevstate => ({
+                ...prevstate,
+                pin: []
+              }));
+            } else {
+              handleChangeStep('failed');
+            }
+          } else {
+            handleChangeStep('success');
           }
         })
         .catch(err => {
-          console.error(err);
+          console.log(err);
           handleChangeStep('failed');
         });
     } catch (error: any) {
-      setIsLoadingSubmit(false);
       console.error('Error fetching circle data:', error.message);
     }
   };
@@ -180,11 +242,14 @@ const Withdrawal = (): JSX.Element => {
   return (
     <>
       {step === 'pin' ? (
-        <InputPinCircle
+        <InputPin
           formRequest={formRequest}
           enterPinHandler={handleValuePin}
           onCancel={handleChangeStep}
           deletePinHandler={handleRemovePin}
+          title="Enter Your PIN"
+          subtitle="Please enter your PIN correctly"
+          error={errorPin}
         />
       ) : step === 'method' ? (
         <WithdrawMethod
@@ -195,6 +260,7 @@ const Withdrawal = (): JSX.Element => {
           changeValueMethod={handleChangeValueMethod}
           changeValueAccountName={handleChangeValueAccountName}
           changeValue={handleChangeValue}
+          formRequired={requiredForm}
         />
       ) : step === 'failed' ? (
         <FinalModalCircle
@@ -214,6 +280,7 @@ const Withdrawal = (): JSX.Element => {
           balance={balance}
           formRequest={formRequest}
           changeValue={handleChangeValue}
+          requiredForm={requiredForm}
         />
       )}
     </>

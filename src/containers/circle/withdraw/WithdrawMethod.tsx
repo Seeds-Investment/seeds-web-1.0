@@ -11,6 +11,8 @@ import {
   Select,
   Typography
 } from '@material-tailwind/react';
+import Image from 'next/image';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
 
 interface FormRequest {
@@ -21,6 +23,14 @@ interface FormRequest {
   pin: string[];
 }
 
+interface RequiredForm {
+  nominal: string;
+  method: string;
+  bankAccount: string;
+  accountNumber: string;
+  accountName: string;
+}
+
 interface props {
   changeStep: any;
   isLoadingBalance: boolean;
@@ -29,6 +39,7 @@ interface props {
   formRequest: FormRequest;
   changeValueAccountName: any;
   changeValue: any;
+  formRequired: RequiredForm;
 }
 
 const WithdrawMethod: React.FC<props> = ({
@@ -38,7 +49,8 @@ const WithdrawMethod: React.FC<props> = ({
   formRequest,
   changeValueMethod,
   changeValueAccountName,
-  changeValue
+  changeValue,
+  formRequired
 }) => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
@@ -92,6 +104,18 @@ const WithdrawMethod: React.FC<props> = ({
             : ''
         } bg-white`}
       >
+        <div className="flex items-center justify-between mb-4">
+          <button
+            className="w-1/3 items-start text-left transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:bg-gray-200"
+            onClick={() => changeStep('asd')}
+          >
+            <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+          </button>
+          <Typography className="mb-2 text-center text-lg font-poppins w-1/3 font-semibold">
+            Withdraw Method
+          </Typography>
+          <p className="w-1/3"></p>
+        </div>
         <div className="flex items-center justify-center rounded-xl">
           <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-20 xl:mx-[15rem]">
             <Card className="bg-[#8a70e0] h-full">
@@ -131,6 +155,11 @@ const WithdrawMethod: React.FC<props> = ({
                   </Typography>
                 </Option>
               </Select>
+              {formRequired.method !== '' && (
+                <small className="text-[#ff515d] font-bold">
+                  {formRequired.method}
+                </small>
+              )}
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
@@ -154,6 +183,11 @@ const WithdrawMethod: React.FC<props> = ({
                       </Option>
                     ))}
               </Select>
+              {formRequired.bankAccount !== '' && (
+                <small className="text-[#ff515d] font-bold">
+                  {formRequired.bankAccount}
+                </small>
+              )}
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
@@ -170,6 +204,11 @@ const WithdrawMethod: React.FC<props> = ({
                   'circle.withdraw.method.numberRekening.placeholder'
                 )}`}
               />
+              {formRequired.accountNumber !== '' && (
+                <small className="text-[#ff515d] font-bold">
+                  {formRequired.accountNumber}
+                </small>
+              )}
             </div>
             <div className="mb-8">
               <label className="font-semibold text-base text-[#262626]">
@@ -186,6 +225,11 @@ const WithdrawMethod: React.FC<props> = ({
                   'circle.withdraw.method.nameRekening.placeholder'
                 )}`}
               />
+              {formRequired.accountName !== '' && (
+                <small className="text-[#ff515d] font-bold">
+                  {formRequired.accountName}
+                </small>
+              )}
             </div>
 
             <div className="w-full flex items-center justify-center">

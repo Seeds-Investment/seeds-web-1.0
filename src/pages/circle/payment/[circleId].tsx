@@ -14,12 +14,14 @@ const CirclePayment: React.FC = () => {
   const router = useRouter();
 
   const circleId: string | any = router.query.circleId;
+  const [monthVal, setMonthVal] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [pages, setPages] = useState<string>('chooseSubs');
   const [dataPost, setDataPost]: any = useState();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const height = useWindowInnerHeight();
+
   const fetchDetailCircle = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -57,7 +59,14 @@ const CirclePayment: React.FC = () => {
 
   const handlePages = (): any => {
     if (pages === 'chooseSubs') {
-      return <ChooseSubs setPages={setPages} dataPost={dataPost} />;
+      return (
+        <ChooseSubs
+          setPages={setPages}
+          dataPost={dataPost}
+          monthVal={monthVal}
+          setMonthVal={setMonthVal}
+        />
+      );
     } else if (pages === 'terms') {
       return (
         <div className="flex justify-center ">
@@ -85,7 +94,7 @@ const CirclePayment: React.FC = () => {
     <>
       {isLoading ? <Loading /> : <></>}
       {pages === 'choosePayment' ? (
-        <PaymentList dataPost={dataPost} />
+        <PaymentList dataPost={dataPost} monthVal={monthVal} />
       ) : (
         <CirclePaymentLayout>
           <div className=" w-screen sm:w-full h-fit mb-10 rounded-xl">

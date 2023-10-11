@@ -1,7 +1,6 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
 import {
-  ArrowDown,
   ArrowUp,
   Bookmark,
   ChatBubble,
@@ -11,17 +10,20 @@ import {
   TripleDots
 } from '@/constants/assets/icons';
 import { Sprout } from '@/constants/assets/images';
+import { postLikeCirclePost } from '@/repository/circleDetail.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { PDFViewer } from 'public/assets/circle';
+import { Like, PDFViewer } from 'public/assets/circle';
 import { useState } from 'react';
 import ImageCarousel from './CarouselImage';
 import PollingView from './PollingView';
 
 interface props {
   dataPost: any;
+  setData: any;
+  fetchPost: any;
 }
-const PostSection: React.FC<props> = ({ dataPost }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, fetchPost }) => {
   const [docModal, setDocModal]: any = useState<boolean>(false);
 
   function formatDate(inputDateString: any): string {
@@ -73,6 +75,35 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
     });
   }
 
+  const likePost = async (type: number): Promise<void> => {
+    try {
+      const response = await postLikeCirclePost(type, dataPost.id);
+
+      if (response.status === 200) {
+        setData((prevDataPost: any | null) => {
+          if (prevDataPost !== null) {
+            const newData = prevDataPost.map((el: any) => {
+              if (el.id === dataPost.id) {
+                if (dataPost.status_like === true) {
+                  el.total_upvote -= 1;
+                  el.status_like = false;
+                } else {
+                  el.total_upvote++;
+                  el.status_like = true;
+                }
+              }
+              return el;
+            });
+
+            return newData;
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full mb-10 pb-10 border-b border-neutral-soft">
       <div className="flex gap-4 md:gap-8">
@@ -83,7 +114,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
               alt="AVATAR"
               width={48}
               height={48}
-              className=" w-15 h-15 aspect-square rounded-full outline outline-black"
+              className="rounded-full outline outline-black"
             />
           </div>
         </div>
@@ -97,7 +128,7 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
                     alt="AVATAR"
                     width={48}
                     height={48}
-                    className=" w-11 h-11  rounded-full outline outline-black"
+                    className="w-11 h-11 rounded-full outline outline-black"
                   />
                 </div>
               </div>
@@ -231,28 +262,23 @@ const PostSection: React.FC<props> = ({ dataPost }) => {
           <div className="flex justify-between items-center mt-4">
             <div className="flex gap-1 md:gap-5">
               <div className="flex items-center gap-1 pr-2">
-                <Image
-                  src={ArrowUp.src}
-                  alt={ArrowUp.alt}
-                  width={20}
-                  height={20}
-                />
+                <div
+                  className={`${
+                    dataPost.status_like === true
+                      ? 'bg-seeds-green/30'
+                      : 'hover:bg-seeds-green/30'
+                  } p-2 rounded-full cursor-pointer`}
+                  onClick={async () => {
+                    await likePost(1);
+                  }}
+                >
+                  <Image src={Like} alt={ArrowUp.alt} width={20} height={20} />
+                </div>
                 <Typography className="text-[#50E6AF] text-sm">
                   +{dataPost.total_upvote}
                 </Typography>
               </div>
-              <div className="flex items-center gap-1 pr-2">
-                <Image
-                  src={ArrowDown.src}
-                  alt={ArrowDown.alt}
-                  width={20}
-                  height={20}
-                />
-                <Typography className="text-[#c94343] text-sm">
-                  -{dataPost.total_downvote}
-                </Typography>
-              </div>
-              <div className="flex items-center gap-1 pr-2">
+              <div className="flex items-center gap-1">
                 <Image
                   src={ChatBubble.src}
                   alt={ChatBubble.alt}

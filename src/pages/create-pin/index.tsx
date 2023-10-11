@@ -1,7 +1,8 @@
+import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import InputPin from '@/components/forms/InputPin';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { Eye, EyeSlash } from '@/constants/assets/icons';
+import { Eye, EyeSlash, successCircleSetting } from '@/constants/assets/icons';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -56,6 +57,7 @@ const CreatePin = (): JSX.Element => {
   });
   const [errorPassword, setErrorPassword] = useState<string>('');
   const [step, setStep] = useState<string>('password');
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   const cancelHandler = (): void => {
     router.back();
@@ -129,14 +131,13 @@ const CreatePin = (): JSX.Element => {
   const SubmitCreatePin = async (): Promise<void> => {
     try {
       formCreatePin.pin = formCreatePin.pin.join('');
-      console.log(formCreatePin);
 
       createPin(formCreatePin)
         .then(res => {
           if (res.status === 401) {
             setErrorPassword('Wrong Password');
           } else {
-            setStep('success');
+            setIsSuccess(true);
           }
         })
         .catch(err => {
@@ -145,6 +146,10 @@ const CreatePin = (): JSX.Element => {
     } catch (error: any) {
       console.error('Error submit pin:', error.message);
     }
+  };
+
+  const handleSubmit = (): void => {
+    console.log('lajnsdlaksd');
   };
 
   useEffect(() => {
@@ -259,8 +264,18 @@ const CreatePin = (): JSX.Element => {
           title="Create Your Pin"
           subtitle="Please enter your PIN number correctly"
         />
-      ) : step === 'success' ? (
-        <p>LKsdmlaksdmasdasd</p>
+      ) : null}
+
+      {isSuccess ? (
+        <FinalModalCircle
+          button="Done"
+          title="Success!"
+          subtitle="Congratulations, you have successfully create your PIN."
+          imageUrl={successCircleSetting.src}
+          handleOpen={handleSubmit}
+          error={false}
+          redirect="/user-setting"
+        />
       ) : null}
     </>
   );

@@ -109,9 +109,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       console.log(response);
 
       if (response.success === true) {
-        // await router.push(response.data.Response.payment_url).catch(error => {
-        //   console.log(error);
-        // });
+        window.open(response.data.Response.payment_url as string, '_blank');
         await router
           .push(
             `/circle/payment/receipt/${

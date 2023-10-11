@@ -698,14 +698,14 @@ export default {
   },
   aboutUs: {
     title1: 'Tentang Kami',
-    text1:
-      'Impian kami adalah membantu [masyarakat/generasi millenials dan Gen Z] dengan membuat pengalaman investasi dengan aktif berkomunitas dan akses ke multi [instrument/aset] dalam satu platform. Investasi pun jadi lebih mudah dengan kesempatan belajar, diskusi, dan penuh transparansi antar pengguna.',
+    text1: 'Seeds, Di Mana Gaming Bertemu Investasi!',
     text2:
-      'Karena seeds percaya bahwa setiap orang punya kesempatan sama untuk berinvestasi terlepas dari latar belakangnya.',
-    text3: 'Seeds, Berinvestasi, Bersama',
+      'Masuki dunia investasi melalui Play Arena kami—naik ke puncak leaderboard, menangkan hadiah-hadiah seru, dan sempurnakan strategi investasi kamu TANPA RISIKO. Kamu juga dapat terhubung dengan para ahli keuangan dan individu sejenis dalam komunitas kami yang kuat dan interaktif.',
+    text3:
+      'Ayo tumbuh bersama dan menjadi bagian dari generasi investor cerdas berikutnya. Mulai perjalanan transformasional kamu dengan Seeds hari ini.',
     title2: 'People',
     text4:
-      'Kami Mengidentifikasi peluang yang Anda miliki secara unik dengan menganalisis bisnis Anda, pasar Anda, dan perubahan budaya di dunia.',
+      'Kami mengidentifikasi peluang unik yang kamu miliki dengan menganalisis bisnis, pasar, dan pergeseran budaya di dunia',
     title3: 'Nilai Kami',
     text5:
       'Bagi kami, nilai-nilai kami lebih dari sekadar dunia. Mereka adalah cara hidup, mencipta, dan melakukan.',

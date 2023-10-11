@@ -1,5 +1,5 @@
 import appstore from '@/assets/landing-page/appstore.svg';
-import email from '@/assets/landing-page/email.png';
+import email from '@/assets/landing-page/email.svg';
 import facebook from '@/assets/landing-page/facebook.svg';
 import instagram from '@/assets/landing-page/instagram.svg';
 import kemenkumham from '@/assets/landing-page/kemenkumham.svg';

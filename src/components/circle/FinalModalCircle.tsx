@@ -16,6 +16,7 @@ interface props {
   button: string;
   imageUrl: string;
   error: boolean;
+  redirect?: string;
 }
 
 const FinalModalCircle: React.FC<props> = ({
@@ -24,7 +25,8 @@ const FinalModalCircle: React.FC<props> = ({
   subtitle,
   button,
   imageUrl,
-  error
+  error,
+  redirect = '/circle'
 }) => {
   const router = useRouter();
 
@@ -39,7 +41,7 @@ const FinalModalCircle: React.FC<props> = ({
         <XMarkIcon
           className="cursor-pointer"
           onClick={() => {
-            void router.push('/circle');
+            void router.push(redirect);
           }}
           width={30}
           height={30}
@@ -67,7 +69,7 @@ const FinalModalCircle: React.FC<props> = ({
             className="text-xs font-semibold w-[70%] mb-5 rounded-full lg:text-base"
             style={{ backgroundColor: error ? '#DA2D1F' : '#3AC4A0' }}
             onClick={() => {
-              void router.push('/circle');
+              void router.push(redirect);
             }}
           >
             {button}

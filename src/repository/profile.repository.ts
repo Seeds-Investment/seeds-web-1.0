@@ -51,3 +51,18 @@ export const editUserInfo = async (formData: EditForm): Promise<any> => {
     return error.response;
   }
 };
+
+export const createPin = async (formRequest: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.patch(`/pin`, formRequest, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

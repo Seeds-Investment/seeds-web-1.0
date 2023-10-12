@@ -88,7 +88,7 @@ const UserSetting: React.FC = () => {
       startAdornment: CreatePinIcon,
       onClick: async () => {
         try {
-          await router.push('/create-pin');
+          await router.push('/user-setting/create-pin');
         } catch (error) {
           console.error('Error navigating to Create Pin:', error);
         }

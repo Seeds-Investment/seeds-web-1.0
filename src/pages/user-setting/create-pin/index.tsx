@@ -1,8 +1,8 @@
-import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import InputPin from '@/components/forms/InputPin';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { Eye, EyeSlash, successCircleSetting } from '@/constants/assets/icons';
+import { Eye, EyeSlash } from '@/constants/assets/icons';
+import ModalSuccess from '@/containers/setting/create-pin/ModalSuccess';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -148,10 +148,6 @@ const CreatePin = (): JSX.Element => {
     }
   };
 
-  const handleSubmit = (): void => {
-    console.log('lajnsdlaksd');
-  };
-
   useEffect(() => {
     fetchUserData()
       .then()
@@ -242,6 +238,12 @@ const CreatePin = (): JSX.Element => {
                     {errorPassword}
                   </small>
                 )}
+                <a
+                  href="/auth/forgot-password"
+                  className="flex mt-3 underline font-semibold text-xs items-end justify-end text-[#3AC4A0]"
+                >
+                  Forgot Password?
+                </a>
 
                 <Button
                   className="w-full items-center justify-center mt-16 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
@@ -267,15 +269,17 @@ const CreatePin = (): JSX.Element => {
       ) : null}
 
       {isSuccess ? (
-        <FinalModalCircle
-          button="Done"
-          title="Success!"
-          subtitle="Congratulations, you have successfully create your PIN."
-          imageUrl={successCircleSetting.src}
-          handleOpen={handleSubmit}
-          error={false}
-          redirect="/user-setting"
-        />
+        // <FinalModalCircle
+        //   button="Done"
+        //   title="Success!"
+        //   subtitle="Congratulations, you have successfully create your PIN."
+        //   imageUrl={successCircleSetting.src}
+        //   handleOpen={handleSubmit}
+        //   error={false}
+        //   redirect="/user-setting"
+        // />
+
+        <ModalSuccess />
       ) : null}
     </>
   );

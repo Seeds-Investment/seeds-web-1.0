@@ -65,6 +65,7 @@ const Withdrawal = (): JSX.Element => {
     useState<FormRequest>(initialFormRequest);
   const [requiredForm, setRequiredForm] =
     useState<RequiredForm>(initialRequiredForm);
+  const [image, setImage] = useState<string>('');
 
   const handleChangeValueRequired = (name: string, value: string): void => {
     setRequiredForm(prevState => ({
@@ -136,9 +137,11 @@ const Withdrawal = (): JSX.Element => {
   };
 
   const handleChangeValueAccountName = (value: any): void => {
+    setImage(value.logo_url);
+
     setFormRequest(prevState => ({
       ...prevState,
-      account_name: value
+      account_name: value.payment_method
     }));
   };
 
@@ -272,7 +275,12 @@ const Withdrawal = (): JSX.Element => {
           error={true}
         />
       ) : step === 'success' ? (
-        <SuccessPage />
+        <SuccessPage
+          image={image}
+          withdraw={formRequest.amount}
+          admin={20000}
+          amount={formRequest.amount}
+        />
       ) : (
         <WithdrawCircle
           changeStep={handleChangeStep}

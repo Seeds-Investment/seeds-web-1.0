@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getPaymentList } from '@/repository/payment.repository';
 import {
   Button,
   Card,
@@ -13,6 +14,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface FormRequest {
@@ -54,11 +56,13 @@ const WithdrawMethod: React.FC<props> = ({
 }) => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
+  const [eWalletOptions, setEWalletOptions] = useState<any[]>([]);
+  const [bankOptions, setBankOptions] = useState<any[]>([]);
 
   const placeholderMethod = (): string => {
-    if (formRequest.method === 'BANK') {
+    if (formRequest.method === 'bank') {
       return 'BANK';
-    } else if (formRequest.method === 'E-WALLET') {
+    } else if (formRequest.method === 'e-wallet') {
       return 'E-WALLET';
     } else {
       return `${t('circle.withdraw.method.method.placeholder')}`;
@@ -73,19 +77,19 @@ const WithdrawMethod: React.FC<props> = ({
     return formRequest.account_name;
   };
 
-  const optionsEWallet = [
-    { label: 'GOPAY', value: 'GOPAY' },
-    { label: 'SHOPEEPAY', value: 'SHOPEEPAY' },
-    { label: 'OVO', value: 'OVO' },
-    { label: 'DANA', value: 'DANA' }
-  ];
+  const fetchPaymentList = async (): Promise<void> => {
+    try {
+      const data = await getPaymentList();
+      setBankOptions(data.type_va);
+      setEWalletOptions(data.type_ewallet);
+    } catch (error: any) {
+      console.error('Error fetching Payment List', error.message);
+    }
+  };
 
-  const optionsBank = [
-    { label: 'BANK BRI', value: 'BANK BRI' },
-    { label: 'BANK BCA', value: 'BANK BCA' },
-    { label: 'BANK BNI', value: 'BANK BNI' },
-    { label: 'BANK MANDIRI', value: 'BANK MANDIRI' }
-  ];
+  useEffect(() => {
+    void fetchPaymentList();
+  }, []);
 
   return (
     <PageGradient
@@ -138,7 +142,7 @@ const WithdrawMethod: React.FC<props> = ({
                 onChange={changeValueMethod}
                 name="method"
               >
-                <Option value="BANK">
+                <Option value="bank">
                   <Typography>
                     {t('circle.withdraw.method.popUp.title1')}
                   </Typography>
@@ -146,7 +150,7 @@ const WithdrawMethod: React.FC<props> = ({
                     {t('circle.withdraw.method.popUp.subtitle1')}
                   </Typography>
                 </Option>
-                <Option value="E-WALLET">
+                <Option value="e-wallet">
                   <Typography>
                     {t('circle.withdraw.method.popUp.title2')}
                   </Typography>
@@ -171,15 +175,15 @@ const WithdrawMethod: React.FC<props> = ({
                 onChange={changeValueAccountName}
                 name="account_name"
               >
-                {formRequest.method === 'BANK'
-                  ? optionsBank.map((data, idx) => (
-                      <Option value={data.value} key={idx}>
-                        {data.label}
+                {formRequest.method === 'bank'
+                  ? bankOptions.map((data, idx) => (
+                      <Option value={data} key={idx}>
+                        {data.payment_method}
                       </Option>
                     ))
-                  : optionsEWallet.map((data, idx) => (
-                      <Option value={data.value} key={idx}>
-                        {data.label}
+                  : eWalletOptions.map((data, idx) => (
+                      <Option value={data} key={idx}>
+                        {data.payment_method}
                       </Option>
                     ))}
               </Select>

@@ -1,13 +1,14 @@
 import baseAxios from '@/utils/common/axios';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const articleService = baseAxios(
   `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}`
 );
 
-export const getArticle = async (params: {
-  page: number;
-  limit: number;
-}): Promise<any> => {
+export const getArticle = async (params: any): Promise<any> => {
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
   try {
     const response = await articleService.get('/news/v1/all', {
       params

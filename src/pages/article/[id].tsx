@@ -4,7 +4,8 @@ import {
   getArticle,
   getArticleById,
   getArticleComment,
-  postComment
+  postComment,
+  postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Input } from '@material-tailwind/react';
@@ -201,6 +202,39 @@ export default function ArticleDetailPage(): JSX.Element {
     console.log(comment);
   };
 
+  const likeArticle = async (articleId: number): Promise<void> => {
+    try {
+      const response = await postLike(formRequest, articleId);
+      if (response.status === 200) {
+        if (response.is_liked === true) {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes + 1,
+                is_liked: true
+              };
+            }
+            return prevArticleDetail;
+          });
+        } else {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes - 1,
+                is_liked: false
+              };
+            }
+            return prevArticleDetail;
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const submitComment = async (articleId: number): Promise<void> => {
     try {
       setLoading(true);
@@ -279,8 +313,13 @@ export default function ArticleDetailPage(): JSX.Element {
           </p>
         </div>
         <div className="flex flex-row gap-3">
-          {articleDetail.is_liked ? (
-            <div className="rounded-full p-1 w-8 h-8 bg-green-500">
+          {articleDetail?.is_liked !== undefined && articleDetail.is_liked ? (
+            <div
+              className="rounded-full p-1 w-8 h-8 bg-green-500 cursor-pointer"
+              onClick={async () => {
+                await likeArticle(articleDetail?.id ?? 0);
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -301,6 +340,9 @@ export default function ArticleDetailPage(): JSX.Element {
               className={`rounded-full p-1 w-8 h-8 cursor-pointer ${
                 articleDetail.is_liked ? 'bg-green-500' : 'bg-[#BDBDBD]'
               }`}
+              onClick={async () => {
+                await likeArticle(articleDetail?.id ?? 0);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

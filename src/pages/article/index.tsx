@@ -1,8 +1,9 @@
 import ArticleCard from '@/components/article/ArticleList';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
+import useService from '@/hooks/useFetch';
 import { getArticle } from '@/repository/article.repository';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 export interface ArticleListRoot {
   promoCodeList: Article[];
@@ -33,45 +34,45 @@ export interface Metadata {
   totalRow: number;
 }
 
+export interface PlayParams {
+  language: string;
+  search: string;
+  limit: number;
+  page: number;
+}
+
+const initialFilter = {
+  search: '',
+  limit: 9,
+  page: 1,
+  language: ''
+};
+
+const initialData = {
+  news: []
+};
+
 export default function ArticleList(): React.ReactElement {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [params, setParams] = useState({
-    page: 1,
-    limit: 9
-  });
-  async function fetchArticles(): Promise<void> {
-    try {
-      const response = await getArticle(params);
-      if (response.status === 200) {
-        setArticles(response.news);
-      } else {
-        console.error('Failed to fetch articles:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching articles:', error);
+  const [filter, setFilter] = useState(initialFilter);
+  const { data } = useService(getArticle, filter, 500);
+
+  const dataArticle = useMemo(() => {
+    if (typeof data === 'undefined' || data === null || data === '') {
+      return initialData;
     }
-  }
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchArticles();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, [params]);
+    return data;
+  }, [data]);
 
   const updateParams = (direction: 'decrease' | 'increase'): void => {
-    if (direction === 'decrease' && params.page > 1) {
-      setParams(prevParams => ({
-        ...prevParams,
-        page: prevParams.page - 1
+    if (direction === 'decrease' && filter.page > 1) {
+      setFilter(prevFilter => ({
+        ...prevFilter,
+        page: prevFilter.page - 1
       }));
     } else if (direction === 'increase') {
-      setParams(prevParams => ({
-        ...prevParams,
-        page: prevParams.page + 1
+      setFilter(prevFilter => ({
+        ...prevFilter,
+        page: prevFilter.page + 1
       }));
     }
   };
@@ -124,6 +125,17 @@ export default function ArticleList(): React.ReactElement {
               placeholder="Search"
               aria-label="Search"
               aria-describedby="button-addon2"
+              value={filter.search}
+              onChange={e => {
+                setFilter({
+                  ...filter,
+                  search: e.target.value
+                });
+                void getArticle({
+                  ...filter,
+                  search: e.target.value
+                });
+              }}
             />
           </div>
         </div>
@@ -140,8 +152,8 @@ export default function ArticleList(): React.ReactElement {
           </select>
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-          {articles.map(article => {
-            return <ArticleCard key={article.id} articleId={article.id} />;
+          {dataArticle?.news.map((data: any) => {
+            return <ArticleCard key={data.id} articleId={data.id} />;
           })}
         </div>
 

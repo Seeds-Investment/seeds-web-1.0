@@ -33,7 +33,7 @@ interface Payment {
 
 interface props {
   dataPost?: any;
-  monthVal: string;
+  monthVal?: string;
 }
 
 const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
@@ -66,9 +66,10 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       console.log(error);
     }
   };
+
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
-      return parseInt(monthVal.slice(0, 2));
+      return parseInt(monthVal.substring(0, 2));
     } else {
       return 1;
     }

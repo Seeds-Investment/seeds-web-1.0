@@ -9,19 +9,21 @@ import {
   CircleSmall,
   circlePayment
 } from 'public/assets/circle';
-const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
+
 interface props {
   dataPost: any;
   setPages: any;
   monthVal: string;
   setMonthVal: any;
 }
+
 const ChooseSubs: React.FC<props> = ({
   dataPost,
   setPages,
   monthVal,
   setMonthVal
 }) => {
+  const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
   const height = useWindowInnerHeight();
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -37,7 +39,13 @@ const ChooseSubs: React.FC<props> = ({
     }
     setPages('terms');
   };
-  const numberMonth = parseInt(monthVal.slice(0, 2));
+  const numberMonth = (): number => {
+    if (monthVal !== undefined && monthVal.length > 0) {
+      return parseInt(monthVal.substring(0, 2));
+    } else {
+      return 1;
+    }
+  };
 
   return (
     <>
@@ -133,11 +141,7 @@ const ChooseSubs: React.FC<props> = ({
             <div className="flex justify-center">
               <div className="flex flex-col pb-2">
                 <h1 className="pt-4 text-center font-poppins text-base font-semibold">
-                  Rp{' '}
-                  {formatCurrency(
-                    dataPost?.premium_fee *
-                      (Number.isNaN(numberMonth) ? 1 : numberMonth)
-                  )}
+                  Rp {formatCurrency(dataPost?.premium_fee * numberMonth())}
                 </h1>
                 <h1 className="pt-2 text-center font-poppins text-base font-light">
                   Get full access according to your subscription time

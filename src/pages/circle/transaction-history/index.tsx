@@ -24,12 +24,12 @@ import { useTranslation } from 'react-i18next';
 
 const initialFilterIncome = {
   page: 1,
-  limit: 10
+  limit: 100
 };
 
 const initialFilterOutcome = {
   page: 1,
-  limit: 10,
+  limit: 100,
   status: ''
 };
 

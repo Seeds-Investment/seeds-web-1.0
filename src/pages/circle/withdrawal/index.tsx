@@ -9,7 +9,6 @@ import {
   getCircleBalance,
   withdrawCircle
 } from '@/repository/circle.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 interface FormRequest {
@@ -28,23 +27,30 @@ interface RequiredForm {
   accountName: string;
 }
 
+interface DataResponse {
+  image: string;
+  amount: number;
+  adminAmount: number;
+  id: string;
+  reference_number: string;
+  created_at: any;
+}
+
+const initialDataResponse = {
+  image: '',
+  amount: 0,
+  adminAmount: 0,
+  id: '',
+  reference_number: '',
+  created_at: ''
+};
+
 const initialFormRequest = {
   method: '',
   account_name: '',
   account_number: '',
   amount: '',
   pin: []
-};
-
-const initialEditProfile = {
-  name: '',
-  seedsTag: '',
-  email: '',
-  pin: '',
-  avatar: '',
-  bio: '',
-  birthDate: '',
-  phone: ''
 };
 
 const initialRequiredForm = {
@@ -59,13 +65,14 @@ const Withdrawal = (): JSX.Element => {
   const [step, setStep] = useState('');
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [balance, setBalance] = useState(0);
-  const [user, setUser] = useState(initialEditProfile);
   const [errorPin, setErrorPin] = useState<string>('');
   const [formRequest, setFormRequest] =
     useState<FormRequest>(initialFormRequest);
   const [requiredForm, setRequiredForm] =
     useState<RequiredForm>(initialRequiredForm);
   const [image, setImage] = useState<string>('');
+  const [dataSuccess, setDataSuccess] =
+    useState<DataResponse>(initialDataResponse);
 
   const handleChangeValueRequired = (name: string, value: string): void => {
     setRequiredForm(prevState => ({
@@ -177,33 +184,9 @@ const Withdrawal = (): JSX.Element => {
     }));
   };
 
-  const fetchUserInfo = async (): Promise<void> => {
-    try {
-      getUserInfo()
-        .then(res => {
-          setUser(prevState => ({
-            ...prevState,
-            avatar: res.avatar,
-            bio: res.bio,
-            birthDate: res.birthDate,
-            email: res.email,
-            name: res.name,
-            phone: res.phone,
-            seedsTag: res.seedsTag
-          }));
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleSubmit = async (): Promise<any> => {
     try {
       formRequest.pin = formRequest.pin.join('');
-      user.pin = formRequest.pin;
       formRequest.amount = parseInt(formRequest.amount);
 
       withdrawCircle(formRequest)
@@ -221,6 +204,11 @@ const Withdrawal = (): JSX.Element => {
               handleChangeStep('failed');
             }
           } else {
+            setDataSuccess(res.data);
+            setDataSuccess(prevData => ({
+              ...prevData,
+              image: image
+            }));
             handleChangeStep('success');
           }
         })
@@ -235,12 +223,13 @@ const Withdrawal = (): JSX.Element => {
 
   useEffect(() => {
     void fetchCircleBalance();
-    void fetchUserInfo();
 
     if (formRequest.pin.length === 6) {
       void handleSubmit();
     }
   }, [formRequest.pin]);
+
+  console.log(dataSuccess);
 
   return (
     <>
@@ -275,12 +264,7 @@ const Withdrawal = (): JSX.Element => {
           error={true}
         />
       ) : step === 'success' ? (
-        <SuccessPage
-          image={image}
-          withdraw={formRequest.amount}
-          admin={20000}
-          amount={formRequest.amount}
-        />
+        <SuccessPage data={dataSuccess} />
       ) : (
         <WithdrawCircle
           changeStep={handleChangeStep}

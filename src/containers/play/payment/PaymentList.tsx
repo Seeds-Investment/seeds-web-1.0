@@ -33,7 +33,7 @@ interface Payment {
 
 interface props {
   dataPost?: any;
-  monthVal: string;
+  monthVal?: string;
 }
 
 const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
@@ -66,7 +66,14 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       console.log(error);
     }
   };
-  const numberMonth = parseInt(monthVal.slice(0, 2));
+
+  const numberMonth = (): number => {
+    if (monthVal !== undefined && monthVal.length > 0) {
+      return parseInt(monthVal.substring(0, 2));
+    } else {
+      return 1;
+    }
+  };
 
   useEffect(() => {
     void fetchData();
@@ -93,7 +100,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
         circle_id: dataPost?.id,
         duration: 1,
         payment_request: {
-          amount: totalAmount * numberMonth,
+          amount: totalAmount * numberMonth(),
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
@@ -106,7 +113,6 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           spot_type: 'Join Circle Premium'
         }
       });
-      console.log(response);
 
       if (response.success === true) {
         if (response.data.Response.payment_url !== undefined) {
@@ -185,14 +191,14 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           <WalletForm
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth > 0 ? numberMonth : 1}
+            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
           />
         ) : (
           <VirtualAccountGuide
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth > 0 ? numberMonth : 1}
+            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
           />
         )}

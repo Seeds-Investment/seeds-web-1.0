@@ -15,18 +15,20 @@ interface VirtualAccountGuideProps {
     totalAmount: number,
     phoneNumber?: string | undefined
   ) => Promise<void>;
+  numberMonth: number;
 }
 
 const VirtualAccountGuide = ({
   payment,
   dataPost,
-  handlePay
+  handlePay,
+  numberMonth
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
   const userName = 'Jeri';
-  const admissionFee = dataPost?.premium_fee as number;
+  const admissionFee = dataPost?.premium_fee * numberMonth;
   const adminFee = dataPost?.admin_fee as number;
   const totalFee = admissionFee + adminFee;
   const translationsId = 'PlayPayment.VirtualAccountGuide';

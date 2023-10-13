@@ -32,6 +32,7 @@ const LoginPage = (): JSX.Element => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [disable, setDisable] = useState<boolean>(false);
   const [errorPhone, setErrorPhone] = useState<any>('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [errorResponse, setErrorResponse] = useState<string>('');
@@ -56,6 +57,7 @@ const LoginPage = (): JSX.Element => {
   const submitData = async (): Promise<void> => {
     try {
       setLoading(true);
+      setDisable(true);
       if (formData.phoneNumber === '') {
         setErrorPhone(t('validation.phoneNumberEmpty'));
       } else {
@@ -100,6 +102,7 @@ const LoginPage = (): JSX.Element => {
       // Handle the error appropriately
     } finally {
       setLoading(false);
+      setDisable(false);
     }
   };
 
@@ -254,6 +257,7 @@ const LoginPage = (): JSX.Element => {
             )}
           </Button>
           <Button
+            disabled={disable}
             onClick={async () => {
               try {
                 await router.push('/auth/register');
@@ -263,17 +267,7 @@ const LoginPage = (): JSX.Element => {
             }}
             className={`mx-auto w-full rounded-full border border-[#3AC4A0] mt-5 text-[#3AC4A0] bg-transparent hover:bg-[#3AC4A0] hover:text-white transition-colors`}
           >
-            {loading ? (
-              <Image
-                src={Loader.src}
-                alt={Loader.alt}
-                className="mx-auto animate-spin object-contain object-[center_center]"
-                width={25}
-                height={25}
-              />
-            ) : (
-              t('authPage.register')
-            )}
+            {t('authPage.register')}
           </Button>
           <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
             {t('or')}

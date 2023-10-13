@@ -24,6 +24,10 @@ interface props {
   dataCircle: any;
   setIsLoading: any;
   isLoading: boolean;
+  setDataPost: any;
+  setDataRecommend: any;
+  fetchCirclePost: any;
+  fetchCircleRecommend: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
@@ -40,7 +44,11 @@ const MainPostLayout: React.FC<props> = ({
   setIsJoined,
   dataCircle,
   setIsLoading,
-  isLoading
+  isLoading,
+  setDataPost,
+  setDataRecommend,
+  fetchCirclePost,
+  fetchCircleRecommend
 }) => {
   const customGradient = (
     <>
@@ -120,12 +128,16 @@ const MainPostLayout: React.FC<props> = ({
                     <></>
                   ) : (
                     <CirclePostSection2
+                      fetchCirclePost={fetchCirclePost}
+                      fetchCircleRecommend={fetchCircleRecommend}
                       setIsLoading={setIsLoading}
                       circleId={circleId}
                       dataPost={dataPost}
                       dataRecommend={dataRecommend}
                       isLoading={isLoading}
                       dataCircle={dataCircle}
+                      setDataPost={setDataPost}
+                      setDataRecommend={setDataRecommend}
                     />
                   )}
                 </>

@@ -190,6 +190,11 @@ export const chrownCirclePremium: AssetsInterface = {
   alt: 'chrown'
 };
 
+export const SuccessPinImage: AssetsInterface = {
+  src: '/assets/setting-page/successPin.svg',
+  alt: 'chrown'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -224,7 +229,8 @@ const Icons: Record<string, AssetsInterface> = {
   successCircleSetting,
   BCAIcon,
   CeklisCircle,
-  chrownCirclePremium
+  chrownCirclePremium,
+  SuccessPinImage
 };
 
 export default Icons;

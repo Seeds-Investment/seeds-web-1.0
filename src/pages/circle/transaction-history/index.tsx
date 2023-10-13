@@ -43,10 +43,10 @@ interface Transaction {
 }
 
 const dropdownValue = [
-  { label: 'Pending', value: 'PENDING' },
-  { label: 'Fail', value: 'FAIL' },
-  { label: 'Reject', value: 'REJECT' },
-  { label: 'Success', value: 'SUCCESS' }
+  { label: 'Pending', value: 'pending' },
+  { label: 'Fail', value: 'fail' },
+  { label: 'Reject', value: 'reject' },
+  { label: 'Success', value: 'success' }
 ];
 
 const TransactionHistory = (): JSX.Element => {
@@ -202,72 +202,74 @@ const TransactionHistory = (): JSX.Element => {
               </TabsHeader>
               <TabsBody>
                 {data.map(({ value }) => (
-                  <TabPanel key={value} value={value}>
-                    {value === 'income' ? (
-                      <>
-                        {!isLoadingTransaction ? (
-                          transactionIn?.length !== 0 ? (
-                            transactionIn?.map((data, idx) => (
-                              <CardTransaction data={data} key={idx} />
-                            ))
-                          ) : (
-                            <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
-                              <Typography className="text-sm font-semibold text-[#262626]">
-                                Data Not Found
-                              </Typography>
-                            </div>
-                          )
-                        ) : (
-                          <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
-                            <Typography className="text-sm font-semibold text-[#262626]">
-                              Loading...
-                            </Typography>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex items-end justify-end mb-4">
-                          <label htmlFor="sort_by" className="text-xs">
-                            Sort by:
-                          </label>
-                          <select
-                            name="sort_by"
-                            id="sort_by"
-                            onChange={handleSortBy}
-                            className="text-xs text-[#4DA81C]"
-                          >
-                            {dropdownValue?.map((data, idx) => (
-                              <option key={idx} value={data.value}>
-                                {data.label}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        {!isLoadingTransaction ? (
-                          transactionOut?.length !== 0 ? (
-                            transactionOut?.map((data, idx) => (
-                              <>
+                  <div className="overflow-x-auto" key={value}>
+                    <TabPanel key={value} value={value}>
+                      {value === 'income' ? (
+                        <>
+                          {!isLoadingTransaction ? (
+                            transactionIn?.length !== 0 ? (
+                              transactionIn?.map((data, idx) => (
                                 <CardTransaction data={data} key={idx} />
-                              </>
-                            ))
+                              ))
+                            ) : (
+                              <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                                <Typography className="text-sm font-semibold text-[#262626]">
+                                  Data Not Found
+                                </Typography>
+                              </div>
+                            )
                           ) : (
                             <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
                               <Typography className="text-sm font-semibold text-[#262626]">
-                                Data Not Found
+                                Loading...
                               </Typography>
                             </div>
-                          )
-                        ) : (
-                          <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
-                            <Typography className="text-sm font-semibold text-[#262626]">
-                              Loading...
-                            </Typography>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-end justify-end mb-4">
+                            <label htmlFor="sort_by" className="text-xs">
+                              Sort by:
+                            </label>
+                            <select
+                              name="sort_by"
+                              id="sort_by"
+                              onChange={handleSortBy}
+                              className="text-xs text-[#4DA81C]"
+                            >
+                              {dropdownValue?.map((data, idx) => (
+                                <option key={idx} value={data.value}>
+                                  {data.label}
+                                </option>
+                              ))}
+                            </select>
                           </div>
-                        )}
-                      </>
-                    )}
-                  </TabPanel>
+                          {!isLoadingTransaction ? (
+                            transactionOut?.length !== 0 ? (
+                              transactionOut?.map((data, idx) => (
+                                <>
+                                  <CardTransaction data={data} key={idx} />
+                                </>
+                              ))
+                            ) : (
+                              <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                                <Typography className="text-sm font-semibold text-[#262626]">
+                                  Data Not Found
+                                </Typography>
+                              </div>
+                            )
+                          ) : (
+                            <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
+                              <Typography className="text-sm font-semibold text-[#262626]">
+                                Loading...
+                              </Typography>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </TabPanel>
+                  </div>
                 ))}
               </TabsBody>
             </Tabs>

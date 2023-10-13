@@ -229,8 +229,6 @@ const Withdrawal = (): JSX.Element => {
     }
   }, [formRequest.pin]);
 
-  console.log(dataSuccess);
-
   return (
     <>
       {step === 'pin' ? (

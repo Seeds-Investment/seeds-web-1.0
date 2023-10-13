@@ -28,9 +28,7 @@ export default function Section1(): React.ReactElement {
         console.error('devUrl is an empty string.');
       } else {
         try {
-          const response = await fetch(
-            `${devUrl}/play/v1/leaderboard?type=ARENA`
-          );
+          const response = await fetch(`${devUrl}/play/v1/leaderboard`);
           if (response.ok) {
             const data = await response.json();
             setDataLeaderboard(data?.playLeaderboards);

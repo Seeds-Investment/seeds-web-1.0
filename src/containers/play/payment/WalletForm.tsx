@@ -15,18 +15,19 @@ interface WalletFormProps {
     phoneNumber?: string | undefined
   ) => Promise<void>;
   dataPost: any;
+  numberMonth: number;
 }
 
 const WalletForm = ({
   payment,
   handlePay,
-  dataPost
+  dataPost,
+  numberMonth
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
   const [phone, setPhone] = useState('');
-  const deadline = '5 October 2022 10;08pm';
-  const admissionFee = dataPost?.premium_fee as number;
+  const admissionFee = dataPost?.premium_fee * numberMonth;
   const adminFee = dataPost?.admin_fee as number;
   const totalFee = admissionFee + adminFee;
 
@@ -55,9 +56,6 @@ const WalletForm = ({
           }}
         />
       </div>
-      <Typography className="text-[#3C49D6] font-normal">
-        {t(`${translationId}.paymentDeadline`, { date: deadline })}
-      </Typography>
     </div>
   );
 

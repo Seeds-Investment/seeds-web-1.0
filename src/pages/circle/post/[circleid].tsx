@@ -239,6 +239,7 @@ const CirclePost = (): JSX.Element => {
       return null;
     });
   };
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -409,6 +410,10 @@ const CirclePost = (): JSX.Element => {
       setIsJoined={setIsJoined}
       setIsLoading={setIsLoading}
       isLoading={isLoading}
+      setDataPost={setDataPost}
+      setDataRecommend={setDataRecommend}
+      fetchCirclePost={fetchCirclePost}
+      fetchCircleRecommend={fetchCircleRecommended}
     >
       {/* posting section */}
       <div className="block bg-white mt-8 w-full rounded-xl">

@@ -33,9 +33,10 @@ interface Payment {
 
 interface props {
   dataPost?: any;
+  monthVal: string;
 }
 
-const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
+const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -65,6 +66,7 @@ const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
       console.log(error);
     }
   };
+  const numberMonth = parseInt(monthVal.slice(0, 2));
 
   useEffect(() => {
     void fetchData();
@@ -91,7 +93,7 @@ const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
         circle_id: dataPost?.id,
         duration: 1,
         payment_request: {
-          amount: totalAmount,
+          amount: totalAmount * numberMonth,
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
@@ -104,9 +106,21 @@ const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
           spot_type: 'Join Circle Premium'
         }
       });
+      console.log(response);
 
       if (response.success === true) {
-        await router.push(response.data.Response.payment_url);
+        if (response.data.Response.payment_url !== undefined) {
+          window.open(response.data.Response.payment_url as string, '_blank');
+        }
+        await router
+          .push(
+            `/circle/payment/receipt/${
+              response.data.Response.order_id as string
+            }`
+          )
+          .catch(error => {
+            console.log(error);
+          });
       }
     } catch (error) {
       console.log(error);
@@ -171,12 +185,14 @@ const PaymentList: React.FC<props> = ({ dataPost }): JSX.Element => {
           <WalletForm
             payment={option}
             handlePay={handlePay}
+            numberMonth={numberMonth > 0 ? numberMonth : 1}
             dataPost={dataPost}
           />
         ) : (
           <VirtualAccountGuide
             payment={option}
             handlePay={handlePay}
+            numberMonth={numberMonth > 0 ? numberMonth : 1}
             dataPost={dataPost}
           />
         )}

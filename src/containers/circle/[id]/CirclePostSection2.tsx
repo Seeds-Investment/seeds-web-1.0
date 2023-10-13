@@ -13,6 +13,10 @@ interface props {
   dataPost: any;
   dataRecommend: any;
   dataCircle: any;
+  setDataRecommend: any;
+  setDataPost: any;
+  fetchCirclePost: any;
+  fetchCircleRecommend: any;
 }
 
 interface HashtagProps {
@@ -39,7 +43,11 @@ const CirclePostSection2: React.FC<props> = ({
   isLoading,
   dataPost,
   dataRecommend,
-  dataCircle
+  dataCircle,
+  setDataPost,
+  setDataRecommend,
+  fetchCirclePost,
+  fetchCircleRecommend
 }) => {
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
@@ -57,6 +65,7 @@ const CirclePostSection2: React.FC<props> = ({
       setIsLoading(true);
 
       const { data } = await getMemberCircle({ circleId });
+      console.log(data);
 
       setMember(data);
     } catch (error: any) {
@@ -65,10 +74,13 @@ const CirclePostSection2: React.FC<props> = ({
       setIsLoading(false);
     }
   };
-  const newData = member.filter(el => {
-    if (searchMember === '') return true;
-    return el.name.toLowerCase().includes(searchMember.toLowerCase());
-  });
+
+  const newData = Array.isArray(member)
+    ? member.filter(el => {
+        if (searchMember === '') return true;
+        return el.name.toLowerCase().includes(searchMember.toLowerCase());
+      })
+    : [];
 
   useEffect(() => {
     void fetchCircleMember();
@@ -82,7 +94,14 @@ const CirclePostSection2: React.FC<props> = ({
           dataPost !== null &&
           dataPost.length > 0 ? (
             dataPost?.map((el: any) => {
-              return <PostSection dataPost={el} key={el.id} />;
+              return (
+                <PostSection
+                  dataPost={el}
+                  key={el.id}
+                  setData={setDataPost}
+                  fetchPost={fetchCirclePost}
+                />
+              );
             })
           ) : (
             <></>
@@ -96,7 +115,14 @@ const CirclePostSection2: React.FC<props> = ({
           dataRecommend !== null &&
           dataRecommend.length > 0 ? (
             dataRecommend?.map((el: any) => {
-              return <PostSection dataPost={el} key={el.id} />;
+              return (
+                <PostSection
+                  dataPost={el}
+                  key={el.id}
+                  setData={setDataRecommend}
+                  fetchPost={fetchCircleRecommend}
+                />
+              );
             })
           ) : (
             <></>
@@ -195,7 +221,7 @@ const CirclePostSection2: React.FC<props> = ({
     } else if (tabs === 'about') {
       return (
         <div className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-4 w-full border-b-2 border-neutral-ultrasoft pb-5">
             <h1 className="text-base font-semibold font-poppins">
               About this Circle
             </h1>
@@ -203,7 +229,7 @@ const CirclePostSection2: React.FC<props> = ({
               {dataCircle.description}
             </p>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 w-full border-b-2 border-neutral-ultrasoft pb-5">
             <h1 className="text-base font-semibold font-poppins">
               Circle Rules
             </h1>

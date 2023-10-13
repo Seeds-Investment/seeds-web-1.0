@@ -316,9 +316,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               {orderDetail?.vaNumber !== undefined && steps.length > 0 && (
                 <Card className="p-5 mt-8 bg-white">
                   <div className="flex justify-between">
-                    <h1 className="text-xl font-bold mb-4 cursor-pointer">
-                      How to Pay
-                    </h1>
+                    <h1 className="text-xl font-bold mb-4">How to Pay</h1>
                     <button className="ml-2" onClick={toggleDropdown}>
                       {isOpen ? '▲' : '▼'}
                     </button>

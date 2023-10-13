@@ -66,7 +66,7 @@ export default function CardCircle(): React.ReactElement {
               return (
                 <div
                   key={idx}
-                  className="relative border border-black/10 rounded-[26px] bg-[url] w-full h-[25vh] my-4"
+                  className="relative border border-black/10 rounded-[26px] bg-[url] w-full h-[220px] my-4"
                 >
                   {isImageValid ? (
                     <img

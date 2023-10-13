@@ -29,7 +29,7 @@ export default function Section1(): React.ReactElement {
       } else {
         try {
           const response = await fetch(
-            `${devUrl}/play/v1/leaderboard?type=ARENA`
+            `${devUrl}/play/v1/leaderboard?page=1&limit=3`
           );
           if (response.ok) {
             const data = await response.json();

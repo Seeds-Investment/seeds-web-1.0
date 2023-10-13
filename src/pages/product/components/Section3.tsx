@@ -28,7 +28,7 @@ export default function Section3(): React.ReactElement {
         <div className="xl:hidden block">
           <CarouselProfileMobile />
         </div>
-        <div className="mt-20 flex flex-col xl:flex-row-reverse">
+        <div className="mt-20 flex flex-col xl:flex-row-reverse xl:justify-between">
           <div className="flex flex-col xl:flex-col xl:w-[70%] xl:mt-10">
             <h1 className="text-[#201B1C] text-3xl font-semibold xl:font-bold xl:text-[64px] xl:py-5">
               {t('landingPageV2.product.section5.title1')}

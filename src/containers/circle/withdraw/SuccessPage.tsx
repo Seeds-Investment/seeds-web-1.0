@@ -8,15 +8,28 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 interface props {
-  image: string;
-  withdraw: any;
-  admin: any;
-  amount: any;
+  data: Data;
 }
 
-const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
+interface Data {
+  image: string;
+  amount: number;
+  adminAmount: number;
+  id: string;
+  reference_number: string;
+  created_at: any;
+}
+
+const SuccessPage: React.FC<props> = ({ data }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const date = new Date(data.created_at);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}`;
 
   return (
     <PageGradient
@@ -62,7 +75,7 @@ const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
                 Payment Method
               </Typography>
               <div className="flex items-center justify-center mb-9 mt-3">
-                <Image src={image} alt="AVATAR" width={90} height={90} />
+                <Image src={data.image} alt="AVATAR" width={90} height={90} />
               </div>
               <hr className="border-t-2 border-dashed" />
               <div className="flex flex-row justify-between my-5">
@@ -70,7 +83,7 @@ const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
                   Withdraw
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR {withdraw}
+                  IDR {new Intl.NumberFormat().format(data.amount)}
                 </Typography>
               </div>
               <div className="flex flex-row justify-between mb-5">
@@ -78,7 +91,7 @@ const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
                   Admin
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR {admin}
+                  IDR {new Intl.NumberFormat().format(20000)}
                 </Typography>
               </div>
               <hr />
@@ -87,7 +100,7 @@ const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
                   Total Amount
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR {amount}
+                  IDR {new Intl.NumberFormat().format(data.amount)}
                 </Typography>
               </div>
               <div className="flex flex-row justify-between mb-5">
@@ -95,12 +108,20 @@ const SuccessPage: React.FC<props> = ({ image, withdraw, admin, amount }) => {
                   ID Transaction
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  12345678910
+                  {data.id}
                 </Typography>
               </div>
-              <Typography className="text-[10px] font-normal text-[#BDBDBD] text-center">
-                12 Oct 2022 14:07:00 WIB No.Ref 702223456789
-              </Typography>
+              <div className="flex justify-center">
+                <Typography className="text-[10px] mr-5 font-normal text-[#BDBDBD] text-center">
+                  {formattedDate}
+                </Typography>
+                <Typography className="text-[10px] font-normal text-[#BDBDBD] text-center">
+                  No.Ref {data.reference_number}
+                </Typography>
+              </div>
+              {/* <Typography className="text-[10px] font-normal text-[#BDBDBD] text-center">
+                {formattedDate} No.Ref {data.reference_number}
+              </Typography> */}
             </Card>
             <Typography className="text-sm font-light text-[#5263F9] mt-5 flex flex-row">
               <InformationCircleIcon className="w-7 h-7 text-[#5263F9] mr-2" />

@@ -143,12 +143,16 @@ const Withdrawal = (): JSX.Element => {
     }));
   };
 
+  const handleBankValue = (value: string): string => {
+    return value.substr(0, value.indexOf('_'));
+  };
+
   const handleChangeValueAccountName = (value: any): void => {
     setImage(value.logo_url);
 
     setFormRequest(prevState => ({
       ...prevState,
-      account_name: value.payment_method
+      account_name: handleBankValue(value.payment_method)
     }));
   };
 

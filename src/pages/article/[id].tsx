@@ -385,9 +385,10 @@ export default function ArticleDetailPage(): JSX.Element {
         )}
       </div>
       <div className="flex flex-row border-b-4 pb-5 border-[#7555DA]">
-        <p className="w-full mt-8 border-r pr-3 border-[#DBC8FF]">
-          {articleDetail?.content}
-        </p>
+        <p
+          className="w-full mt-8 border-r pr-3 border-[#DBC8FF]"
+          dangerouslySetInnerHTML={{ __html: `${articleDetail?.content}` }}
+        ></p>
         <div className="flex flex-col gap-4 pl-4 mt-5 w-[50vw]">
           <h1 className="bg-clip-text text-xl font-semibold text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
             Hot News

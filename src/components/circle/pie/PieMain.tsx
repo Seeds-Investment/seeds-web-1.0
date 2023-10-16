@@ -3,7 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import CardAssetSlider from './CardAssetSlider';
 
 interface props {
-  closePieModal: any;
+  setPages: any;
   chartData: any;
   changeToAsset: any;
   selectedAsset: any[];
@@ -12,15 +12,13 @@ interface props {
 }
 
 const PieMain: React.FC<props> = ({
-  closePieModal,
+  setPages,
   chartData,
   changeToAsset,
   selectedAsset,
   changeSlider,
   sumAsset
 }) => {
-  console.log(selectedAsset);
-
   return (
     <div>
       <div>
@@ -28,7 +26,7 @@ const PieMain: React.FC<props> = ({
       </div>
       <button
         className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
-        onClick={closePieModal}
+        onClick={setPages}
       >
         <XMarkIcon className="cursor-pointer" width={30} height={30} />
       </button>

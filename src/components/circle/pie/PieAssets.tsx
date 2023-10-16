@@ -11,6 +11,7 @@ interface props {
   handleSelectedAsset: any;
   selectedAsset: any[];
   removeSelectedAsset: any;
+  setPages: any;
 }
 
 interface AssetInterface {
@@ -49,7 +50,8 @@ const PieAssets: React.FC<props> = ({
   changeToAsset,
   selectedAsset,
   handleSelectedAsset,
-  removeSelectedAsset
+  removeSelectedAsset,
+  setPages
 }) => {
   const [asset, setAsset] = useState<AssetInterface[]>();
   const [filterAsset, setFilterAsset] = useState(initialFilterAsset);
@@ -95,7 +97,10 @@ const PieAssets: React.FC<props> = ({
       <div>
         <h1 className="font-bold text-xl text-black">Select Asset</h1>
       </div>
-      <button className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md">
+      <button
+        className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
+        onClick={setPages}
+      >
         <XMarkIcon className="cursor-pointer" width={30} height={30} />
       </button>
 

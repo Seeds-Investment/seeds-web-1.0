@@ -118,10 +118,6 @@ const CirclePost = (): JSX.Element => {
     setIsPieModalOpen(true);
   };
 
-  const closePieModal: any = () => {
-    setIsPieModalOpen(false);
-  };
-
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -354,7 +350,13 @@ const CirclePost = (): JSX.Element => {
         />
       );
     } else if (pages === 'pie' && isPieModalOpen) {
-      return <ModalPie closePieModal={closePieModal} />;
+      return (
+        <ModalPie
+          setPages={setPages}
+          changeForm={handleFormChange}
+          form={form}
+        />
+      );
     } else if (pages === 'poll') {
       return <PollInput setPages={setPages} form={form} />;
     }

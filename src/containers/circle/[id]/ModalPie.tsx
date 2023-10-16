@@ -32,13 +32,23 @@ interface AssetInterface {
   value: number;
 }
 
-const ModalPie = ({ closePieModal }: any): any => {
+interface props {
+  changeForm: any;
+  form: any;
+  setPages: any;
+}
+
+const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
   const [isAsset, setIsAsset] = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [sumAsset, setSumAsset] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
-  const handleOpen = (): void => {};
+  const handleOpen = (): void => {
+    setPages('text');
+    setIsOpen(!isOpen);
+  };
 
   const handleAssets = (): void => {
     setIsAsset(!isAsset);
@@ -141,13 +151,14 @@ const ModalPie = ({ closePieModal }: any): any => {
 
   return (
     <Dialog
-      open={true}
+      open={isOpen}
       handler={handleOpen}
       className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
       <div className="bg-white rounded-lg p-14 shadow-md relative overflow-y-auto max-h-screen">
         {isAsset ? (
           <PieAssets
+            setPages={handleOpen}
             changeToAsset={handleAssets}
             selectedAsset={selectedAsset}
             handleSelectedAsset={handleSelectedAsset}
@@ -155,7 +166,7 @@ const ModalPie = ({ closePieModal }: any): any => {
           />
         ) : (
           <PieMain
-            closePieModal={closePieModal}
+            setPages={handleOpen}
             chartData={chartData}
             changeToAsset={handleAssets}
             selectedAsset={selectedAsset}

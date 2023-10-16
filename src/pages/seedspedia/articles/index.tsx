@@ -38,7 +38,9 @@ export default function ArticleList(): React.ReactElement {
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
-    source: 'articles'
+    source: 'articles',
+    language: '',
+    search: ''
   });
   async function fetchArticles(): Promise<void> {
     try {

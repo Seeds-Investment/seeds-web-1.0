@@ -7,6 +7,8 @@ const articleService = baseAxios(
 export const getArticle = async (params: {
   page: number;
   limit: number;
+  search: string;
+  language: string;
   source: string;
 }): Promise<any> => {
   try {

@@ -92,8 +92,10 @@ interface ArticleComment {
 const params = {
   page: 1,
   limit: 8,
-  order_by: 'scheduled_at,DESC',
-  source: 'news'
+  search: '',
+  language: '',
+  source: 'news',
+  order_by: 'scheduled_at,DESC'
 };
 
 export default function ArticleDetailPage(): JSX.Element {
@@ -368,9 +370,10 @@ export default function ArticleDetailPage(): JSX.Element {
         )}
       </div>
       <div className="flex flex-row border-b-4 pb-5 border-[#7555DA]">
-        <p className="w-full mt-8 border-r pr-3 border-[#DBC8FF]">
-          {articleDetail?.content}
-        </p>
+        <p
+          className="w-full mt-8 border-r pr-3 border-[#DBC8FF]"
+          dangerouslySetInnerHTML={{ __html: `${articleDetail?.content}` }}
+        ></p>
       </div>
       <div className="flex flex-col px-2">
         {accessToken !== null && userInfo !== null ? (

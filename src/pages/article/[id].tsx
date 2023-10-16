@@ -92,7 +92,9 @@ interface ArticleComment {
 const params = {
   page: 1,
   limit: 8,
-  order_by: 'scheduled_at,DESC'
+  language: '',
+  source: '',
+  search: ''
 };
 
 export default function ArticleDetailPage(): JSX.Element {

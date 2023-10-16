@@ -45,7 +45,8 @@ const initialFilter = {
   search: '',
   limit: 9,
   page: 1,
-  language: ''
+  language: '',
+  source: ''
 };
 
 const initialData = {

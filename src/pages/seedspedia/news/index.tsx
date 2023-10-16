@@ -1,7 +1,6 @@
 import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
-
 import { getArticle } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +42,9 @@ export default function ArticleList(): React.ReactElement {
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
-    source: 'news'
+    source: 'news',
+    language: '',
+    search: ''
   });
 
   async function fetchArticles(): Promise<void> {

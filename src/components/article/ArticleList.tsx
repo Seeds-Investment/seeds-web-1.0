@@ -1,7 +1,7 @@
 'use-client';
 import { getArticleById, postLike } from '@/repository/article.repository';
-import { format, parseISO } from 'date-fns';
-import { id } from 'date-fns/locale';
+// import { format, parseISO } from 'date-fns';
+// import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -125,17 +125,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
-  function formatDateToIndonesian(dateStr: string): string {
-    try {
-      const parsedDate = parseISO(dateStr);
-      const formattedDate = format(parsedDate, 'd MMMM yyyy', { locale: id }); // id adalah kode bahasa Indonesia
+  // function formatDateToIndonesian(dateStr: string): string {
+  //   try {
+  //     const parsedDate = parseISO(dateStr);
+  //     const formattedDate = format(parsedDate, 'd MMMM yyyy', { locale: id }); // id adalah kode bahasa Indonesia
 
-      return formattedDate;
-    } catch (error) {
-      console.error('Error parsing or formatting date:', error);
-      return ''; // Mengembalikan string kosong jika terjadi kesalahan
-    }
-  }
+  //     return formattedDate;
+  //   } catch (error) {
+  //     console.error('Error parsing or formatting date:', error);
+  //     return ''; // Mengembalikan string kosong jika terjadi kesalahan
+  //   }
+  // }
 
   function copyValueWithUrl(valueToCopy: number): boolean {
     const textToCopy = `${baseUrl}/article/${valueToCopy}`;
@@ -204,7 +204,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
               {articleDetail?.author}
             </p>
             <p className="text-base font-normal text-[#8A8A8A]">
-              {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
+              {/* {formatDateToIndonesian(articleDetail?.publicationDate ?? '')} */}
             </p>
           </div>
           <h1 className="text-lg font-semibold text-[#000] my-4">

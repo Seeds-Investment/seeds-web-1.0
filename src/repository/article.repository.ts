@@ -1,18 +1,19 @@
 import baseAxios from '@/utils/common/axios';
-import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const articleService = baseAxios(
   `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}`
 );
 
-export const getArticle = async (params: any): Promise<any> => {
-  if (isUndefindOrNull(params) || isEmptyString(params)) {
-    return await Promise.resolve(null);
-  }
+export const getArticle = async (params: {
+  page: number;
+  limit: number;
+  source: string;
+}): Promise<any> => {
   try {
     const response = await articleService.get('/news/v1/all', {
       params
     });
+    console.log(response, '>>>>');
 
     return { ...response, status: 200 };
   } catch (error: any) {
@@ -86,6 +87,24 @@ export const postLike = async (formRequest: any, id: number): Promise<any> => {
       }
     );
     return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const getHotNews = async (
+  page: number,
+  limit: number,
+  language: string
+): Promise<any> => {
+  try {
+    const response = await articleService.get('/news/v1/hot', {
+      params: {
+        page,
+        limit,
+        language
+      }
+    });
+    return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }

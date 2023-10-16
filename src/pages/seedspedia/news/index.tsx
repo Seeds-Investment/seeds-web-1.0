@@ -1,0 +1,328 @@
+import NewsCard from '@/components/seedsPedia/newsCard';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import Section6 from '@/containers/landing/Section6';
+
+import { getArticle } from '@/repository/article.repository';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
+
+export interface ArticleListRoot {
+  promoCodeList: Article[];
+  metadata: Metadata;
+}
+interface Article {
+  id: string;
+  title: string;
+  author: string;
+  link: string;
+  videoUrl: string;
+  imageUrl: string;
+  content: string;
+  sourceId: string;
+  language: string;
+  category: string;
+  is_liked: boolean;
+  publicationDate: string;
+  total_likes: number;
+  total_comments: number;
+  total_shares: number;
+}
+
+export interface Metadata {
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
+export default function ArticleList(): React.ReactElement {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [hotNews, setHotNews] = useState<Article[]>([]);
+
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 9,
+    source: 'news'
+  });
+
+  async function fetchArticles(): Promise<void> {
+    try {
+      const response = await getArticle({
+        ...params,
+        source: params.source
+      });
+
+      if (response.status === 200) {
+        setArticles(response.news);
+      } else {
+        console.error('Failed to fetch articles:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  }
+
+  async function fetchHotNews(): Promise<void> {
+    try {
+      const response = await getArticle({
+        ...params,
+        source: params.source
+      });
+
+      if (response.status === 200) {
+        setHotNews(response.news);
+      } else {
+        console.error('Failed to fetch articles:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      await fetchArticles();
+      await fetchHotNews();
+    };
+
+    fetchData().catch(error => {
+      console.error('Error in fetchData:', error);
+    });
+  }, [params]);
+
+  const updateParams = (direction: 'decrease' | 'increase'): void => {
+    if (direction === 'decrease' && params.page > 1) {
+      setParams(prevParams => ({
+        ...prevParams,
+        page: prevParams.page - 1
+      }));
+    } else if (direction === 'increase') {
+      setParams(prevParams => ({
+        ...prevParams,
+        page: prevParams.page + 1
+      }));
+    }
+  };
+
+  const { t } = useTranslation();
+
+  // const timeAgo = (dateString: string): string => {
+  //   const createdDate = new Date(dateString);
+  //   const currentDate = new Date();
+  //   const timeDifference = currentDate.getTime() - createdDate.getTime();
+  //   const secondsDifference = Math.floor(timeDifference / 1000);
+
+  //   if (secondsDifference < 60) {
+  //     return `${secondsDifference} seconds ago`;
+  //   } else if (secondsDifference < 3600) {
+  //     const minutes = Math.floor(secondsDifference / 60);
+  //     return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+  //   } else if (secondsDifference < 86400) {
+  //     const hours = Math.floor(secondsDifference / 3600);
+  //     return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+  //   } else {
+  //     const days = Math.floor(secondsDifference / 86400);
+  //     return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+  //   }
+  // };
+
+  const defaultHotNewsImage = '/assets/default-news.png';
+  function isImageUrlValid(url: string): boolean {
+    return url?.startsWith('http://') || url?.startsWith('https://');
+  }
+  return (
+    <>
+      <PageGradient className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
+        <div className="flex z-10 flex-col lg:flex-row justify-between">
+          <div className="flex flex-col">
+            <div className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r mt-3 xl:mt-5 from-[#9A76FE] to-[#4FE6AF]">
+              {t('articleList.text1')}
+            </div>
+            <div className=" text-md font-semibold text-gray-500">
+              {t('articleList.text2')}
+            </div>
+          </div>
+          <div className="lg:flex-col  justify-end mt-4 ">
+            <input
+              type="search"
+              className="w-full lg:w-[300px] lg:h-[40px] rounded-3xl border-[1px] px-[8px] justify-between py-[12px] text-[#7C7C7C] "
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="button-addon2"
+            />
+            <div className="lg:flex  justify-end mt-4 ">
+              <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+                {t('articleList.text3')} :
+              </div>
+              <select
+                className="me-5 hidden lg:block text-base font-semibold"
+                aria-label="All"
+              >
+                <option value="option1">All</option>
+                <option value="option2">All</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="lg:hidden z-10 flex justify-end mt-5">
+          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+            {t('articleList.text3')} :
+          </div>
+          <select
+            className="me-5 justify-end lg:hidden text-base font-semibold"
+            aria-label="All"
+          >
+            <option value="option1">All</option>
+            <option value="option2">All</option>
+          </select>
+        </div>
+        <div className="lg:flex  justify-center mt-4 gap-2 ">
+          <button className="py-1 rounded-full text-md px-2 bg-[#3AC4A0] text-white">
+            All
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            General
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Cripto
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            US Stocks
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Indo Stocks
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Commodities
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Indices
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Forex
+          </button>
+          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+            Finance
+          </button>
+        </div>
+
+        <Slider
+          slidesToShow={3} // Sesuaikan jumlah tampilan item
+          speed={500}
+          className="gap-5"
+          centerMode={false} // Aktifkan centerMode
+          centerPadding="120px" // Sesuaikan jarak margin di sini
+          slidesToScroll={1}
+          dots={true}
+          responsive={[
+            {
+              breakpoint: 1024,
+              settings: {
+                dots: true,
+                slidesToShow: 3
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                dots: true,
+                slidesToShow: 2
+              }
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                dots: true,
+                slidesToShow: 1
+              }
+            }
+          ]}
+        >
+          {hotNews.map((data, key) => (
+            <div
+              key={key}
+              className="border border-spacing-20 rounded-xl border-gray-100 w-[200px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 mx-[100px]"
+            >
+              {isImageUrlValid(data.imageUrl) ? (
+                <img
+                  src={data.imageUrl}
+                  alt={data.title}
+                  className="w-full rounded-xl h-[240px]"
+                />
+              ) : (
+                <img
+                  src={defaultHotNewsImage}
+                  alt={data.title}
+                  className="w-full rounded-xl h-[240px]"
+                />
+              )}
+              <div className="absolute top-0  right-0 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
+                Hot News
+              </div>
+              <h3 className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.7)] text-white p-2 text-left">
+                {data.title}
+              </h3>
+            </div>
+          ))}
+        </Slider>
+
+        <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
+          {articles.map(article => {
+            return <NewsCard key={article.id} articleId={article.id} />;
+          })}
+        </div>
+
+        <div className="flex justify-center mt-8">
+          <div className="mt-5 pb-10 pagination">
+            <div className="bg-white rounded-full cursor-pointer flex flex-row gap-3 p-2 shadow-lg">
+              <div
+                className="p-2"
+                onClick={() => {
+                  updateParams('decrease');
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M12.5 15L7.5 10L12.5 5"
+                    stroke="#7C7C7C"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div
+                className="rounded-full p-2 bg-gradient-to-r cursor-pointer from-[#9A76FE] to-[#4FE6AF]"
+                onClick={() => {
+                  updateParams('increase');
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M7.5 15L12.5 10L7.5 5"
+                    stroke="white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </PageGradient>
+      <Section6 />
+    </>
+  );
+}

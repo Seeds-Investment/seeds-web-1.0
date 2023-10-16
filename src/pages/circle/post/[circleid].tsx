@@ -8,6 +8,7 @@ import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
 import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
+import ModalPie from '@/containers/circle/[id]/ModalPie';
 import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
 import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
@@ -27,7 +28,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
-import PieModal from '../../../components/circle/modalPie';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
 
@@ -354,7 +354,7 @@ const CirclePost = (): JSX.Element => {
         />
       );
     } else if (pages === 'pie' && isPieModalOpen) {
-      return <PieModal closePieModal={closePieModal} />;
+      return <ModalPie closePieModal={closePieModal} />;
     } else if (pages === 'poll') {
       return <PollInput setPages={setPages} form={form} />;
     }

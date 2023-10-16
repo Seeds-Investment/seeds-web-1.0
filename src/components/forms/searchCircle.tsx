@@ -27,7 +27,7 @@ export function SearchCircle({
 }: Props): React.ReactElement {
   const variants: any = {
     '': `py-3 border-b border-[#BDBDBD]`,
-    outline: `p-3 rounded-full border border-[#BDBDBD]`
+    outline: `p-3 rounded-lg border border-[#BDBDBD]`
   };
 
   function classNames(...classes: string[]): string {

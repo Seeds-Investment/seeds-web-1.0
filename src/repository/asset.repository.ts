@@ -70,3 +70,16 @@ export const tournamentTop = async (): Promise<any> => {
     }
   });
 };
+
+export const assetAll = async (params: any): Promise<any> => {
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await assetService.get(`/search`, {
+    params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};

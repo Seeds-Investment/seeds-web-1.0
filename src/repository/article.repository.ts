@@ -10,12 +10,12 @@ export const getArticle = async (params: {
   search: string;
   language: string;
   source: string;
+  category: string;
 }): Promise<any> => {
   try {
     const response = await articleService.get('/news/v1/all', {
       params
     });
-    console.log(response, '>>>>');
 
     return { ...response, status: 200 };
   } catch (error: any) {

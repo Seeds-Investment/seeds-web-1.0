@@ -35,18 +35,22 @@ export interface Metadata {
 
 export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
     page: 1,
     limit: 9,
     source: 'articles',
     language: '',
-    search: ''
+    search: '',
+    category: 'All'
   });
   async function fetchArticles(): Promise<void> {
     try {
       const response = await getArticle({
         ...params,
-        source: params.source
+        source: params.source,
+        category: params.category
       });
       console.log(response, 'abcde');
 
@@ -70,6 +74,16 @@ export default function ArticleList(): React.ReactElement {
     });
   }, [params]);
 
+  useEffect(() => {
+    setParams(prevParams => ({
+      ...prevParams,
+      search: searchInput,
+      page: 1
+    }));
+
+    void fetchArticles();
+  }, [searchInput]);
+
   const updateParams = (direction: 'decrease' | 'increase'): void => {
     if (direction === 'decrease' && params.page > 1) {
       setParams(prevParams => ({
@@ -82,6 +96,14 @@ export default function ArticleList(): React.ReactElement {
         page: prevParams.page + 1
       }));
     }
+  };
+  const updateCategory = (newCategory: string): void => {
+    setParams(prevParams => ({
+      ...prevParams,
+      category: newCategory
+    }));
+
+    setActiveCategory(newCategory);
   };
 
   const { t } = useTranslation();
@@ -125,6 +147,9 @@ export default function ArticleList(): React.ReactElement {
               placeholder="Search"
               aria-label="Search"
               aria-describedby="button-addon2"
+              onChange={e => {
+                setSearchInput(e.target.value);
+              }}
             />
             <div className="lg:flex  justify-end mt-4 ">
               <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
@@ -153,31 +178,113 @@ export default function ArticleList(): React.ReactElement {
           </select>
         </div>
         <div className="lg:flex  justify-center mt-4 gap-2 ">
-          <button className="py-1 rounded-full text-md px-2 bg-[#3AC4A0] text-white">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'All'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('All');
+            }}
+          >
             All
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'general'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('general');
+            }}
+          >
             General
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'cripto'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('cripto');
+            }}
+          >
             Cripto
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
-            US Stocks
+
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'usstocks'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('usstocks');
+            }}
+          >
+            Us Stocks
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'indostocks'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('indostocks');
+            }}
+          >
             Indo Stocks
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'commodities'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('commodities');
+            }}
+          >
             Commodities
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'indices'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('indices');
+            }}
+          >
             Indices
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'forex'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('forex');
+            }}
+          >
             Forex
           </button>
-          <button className="py-1 rounded-full text-md px-2 text-[#3AC4A0]">
+          <button
+            className={`py-1 rounded-full text-md px-2 ${
+              activeCategory === 'finance'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0]'
+            }`}
+            onClick={() => {
+              updateCategory('finance');
+            }}
+          >
             Finance
           </button>
         </div>

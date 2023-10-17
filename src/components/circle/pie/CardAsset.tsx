@@ -24,9 +24,14 @@ interface AssetInterface {
 interface props {
   data: AssetInterface;
   handleSelectedAsset: any;
+  isDefaultChecked: any;
 }
 
-const CardAsset: React.FC<props> = ({ data, handleSelectedAsset }) => {
+const CardAsset: React.FC<props> = ({
+  data,
+  handleSelectedAsset,
+  isDefaultChecked
+}) => {
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
       return true;
@@ -84,6 +89,7 @@ const CardAsset: React.FC<props> = ({ data, handleSelectedAsset }) => {
               color="green"
               value={JSON.stringify(data)}
               onClick={handleSelectedAsset}
+              defaultChecked={isDefaultChecked(data)}
             />
           </div>
         </div>

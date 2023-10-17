@@ -1,5 +1,5 @@
 import { SearchCircle } from '@/components/forms/searchCircle';
-import { assetAll } from '@/repository/asset.repository';
+import { assetTop } from '@/repository/asset.repository';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
@@ -71,7 +71,7 @@ const PieAssets: React.FC<props> = ({
   const fetchTopAsset = async (): Promise<void> => {
     try {
       setIsLoadingAsset(true);
-      assetAll(filterAsset)
+      assetTop(filterAsset)
         .then(res => {
           setAsset(res.result);
           setIsLoadingAsset(false);
@@ -83,6 +83,15 @@ const PieAssets: React.FC<props> = ({
     } catch (error: any) {
       setIsLoadingAsset(false);
       console.error('Error fetching asset data:', error.message);
+    }
+  };
+
+  const handleDefaultChecked = (data: AssetInterface): boolean => {
+    const isDataExist = selectedAsset?.some(item => item.id === data.id);
+    if (isDataExist) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -167,6 +176,7 @@ const PieAssets: React.FC<props> = ({
                 data={data}
                 key={idx}
                 handleSelectedAsset={handleSelectedAsset}
+                isDefaultChecked={handleDefaultChecked}
               />
             ))
           ) : (

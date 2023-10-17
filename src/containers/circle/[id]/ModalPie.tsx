@@ -30,6 +30,7 @@ interface AssetInterface {
   price: number;
   regularPercentage: number;
   value: number;
+  isLock: boolean;
 }
 
 interface props {
@@ -38,12 +39,28 @@ interface props {
   setPages: any;
 }
 
+interface errorMessage {
+  title: string;
+  amount: string;
+  moreThan100: string;
+  moreThan8: string;
+}
+
+const initialErrorMessage = {
+  title: '',
+  amount: '',
+  moreThan100: '',
+  moreThan8: ''
+};
+
 const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
   const [isAsset, setIsAsset] = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [sumAsset, setSumAsset] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] =
+    useState<errorMessage>(initialErrorMessage);
 
   const handleOpen = (): void => {
     setPages('text');
@@ -51,7 +68,28 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
   };
 
   const handleAssets = (): void => {
-    setIsAsset(!isAsset);
+    if (form.pie_title === '') {
+      handleChangeErrorMessage('title', 'Title is required');
+    } else {
+      handleChangeErrorMessage('title', '');
+    }
+
+    if (form.pie_amount === 0) {
+      handleChangeErrorMessage('amount', 'Amount is required');
+    } else {
+      handleChangeErrorMessage('amount', '');
+    }
+
+    if (form.pie_title !== '' && form.pie_amount !== 0) {
+      setIsAsset(!isAsset);
+    }
+  };
+
+  const handleChangeErrorMessage = (name: string, value: string): void => {
+    setErrorMessage(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const createRandomColor = (): string => {
@@ -93,6 +131,9 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
     const target = e.target;
     const value = JSON.parse(target.value);
 
+    value.isLock = false;
+    value.value = 0;
+
     if (selectedAsset.length >= 8) {
       console.error('Jumlah data maksimal telah tercapai (8)');
       return;
@@ -127,6 +168,7 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
 
       setSumAsset(total);
       if (total <= 100) {
+        handleChangeErrorMessage('moreThan100', '');
         setSelectedAsset(prevState => {
           const updatedData = [...prevState];
           updatedData[index].value = newValue;
@@ -143,9 +185,22 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
           ]
         };
       } else {
+        handleChangeErrorMessage(
+          'moreThan100',
+          'You cannot set value more than 100'
+        );
         console.error('Jumlah total data tidak boleh melebihi 100');
         return prevState;
       }
+    });
+  };
+
+  const handleAssetIsLock = (e: any, index: number): void => {
+    setSelectedAsset(prevState => {
+      const updatedData = [...prevState];
+      updatedData[index].isLock = !updatedData[index].isLock;
+
+      return updatedData;
     });
   };
 
@@ -172,6 +227,10 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
             selectedAsset={selectedAsset}
             changeSlider={handleSliderAsset}
             sumAsset={sumAsset}
+            changeForm={changeForm}
+            form={form}
+            errorMessage={errorMessage}
+            changeIsLock={handleAssetIsLock}
           />
         )}
       </div>

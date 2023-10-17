@@ -91,6 +91,8 @@ interface form {
     canAddNewOption: boolean;
     endDate: string;
   };
+  pie_title: string;
+  pie_amount: number;
 }
 
 const CirclePost = (): JSX.Element => {
@@ -202,7 +204,9 @@ const CirclePost = (): JSX.Element => {
       isMultiVote: false,
       canAddNewOption: false,
       endDate: ''
-    }
+    },
+    pie_title: '',
+    pie_amount: 0
   });
 
   const [hashtags, setHashtags] = useState<string[]>([]);
@@ -319,7 +323,9 @@ const CirclePost = (): JSX.Element => {
           isMultiVote: false,
           canAddNewOption: false,
           endDate: ''
-        }
+        },
+        pie_title: '',
+        pie_amount: 0
       });
       setAudio(null);
       setMedia(undefined);

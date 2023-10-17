@@ -9,6 +9,10 @@ interface props {
   selectedAsset: any[];
   changeSlider: any;
   sumAsset: number;
+  form: any;
+  changeForm: any;
+  errorMessage: any;
+  changeIsLock: any;
 }
 
 const PieMain: React.FC<props> = ({
@@ -17,8 +21,14 @@ const PieMain: React.FC<props> = ({
   changeToAsset,
   selectedAsset,
   changeSlider,
-  sumAsset
+  sumAsset,
+  form,
+  changeForm,
+  errorMessage,
+  changeIsLock
 }) => {
+  console.log(selectedAsset);
+
   return (
     <div>
       <div>
@@ -36,7 +46,15 @@ const PieMain: React.FC<props> = ({
           type="text"
           className="ml-2 border-none outline-none"
           placeholder="Create your title Pie"
+          name="pie_title"
+          value={form.pie_title}
+          onChange={changeForm}
         />
+        {errorMessage.title !== '' && (
+          <small className="text-[#ff515d] font-bold">
+            {errorMessage.title}
+          </small>
+        )}
       </div>
 
       <div className="w-[180px] h-[180px] mx-auto my-auto">
@@ -53,7 +71,15 @@ const PieMain: React.FC<props> = ({
         <input
           type="number"
           className="ml-2 border-none outline-none text-xl font-bold"
+          name="pie_amount"
+          value={form.pie_amount}
+          onChange={changeForm}
         />
+        {errorMessage.amount !== '' && (
+          <small className="text-[#ff515d] font-bold">
+            {errorMessage.amount}
+          </small>
+        )}
       </div>
 
       <div className="flex items-center py-2 justify-between">
@@ -66,6 +92,12 @@ const PieMain: React.FC<props> = ({
         </button>
       </div>
 
+      {errorMessage.moreThan100 !== '' && (
+        <small className="text-[#ff515d] font-bold">
+          {errorMessage.moreThan100}
+        </small>
+      )}
+
       <div>
         {selectedAsset.length !== 0
           ? selectedAsset.map((data, idx) => (
@@ -74,6 +106,7 @@ const PieMain: React.FC<props> = ({
                 key={idx}
                 changeSlider={changeSlider}
                 index={idx}
+                changeIsLock={changeIsLock}
               />
             ))
           : null}

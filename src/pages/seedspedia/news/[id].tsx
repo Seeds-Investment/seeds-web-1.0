@@ -95,7 +95,8 @@ const params = {
   order_by: 'scheduled_at,DESC',
   source: 'news',
   language: '',
-  search: ''
+  search: '',
+  category: 'all'
 };
 
 export default function ArticleDetailPage(): JSX.Element {

@@ -46,6 +46,9 @@ interface Article {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  assets: any[];
+  circles: any[];
+  peoples: any[];
 }
 
 interface FormRequestInterface {
@@ -79,6 +82,9 @@ interface ArticleDetail {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  assets: any[];
+  circles: any[];
+  peoples: any[];
 }
 
 interface ArticleComment {
@@ -95,7 +101,8 @@ const params = {
   search: '',
   language: '',
   source: 'news',
-  order_by: 'scheduled_at,DESC'
+  order_by: 'scheduled_at,DESC',
+  category: 'All'
 };
 
 export default function ArticleDetailPage(): JSX.Element {
@@ -369,11 +376,56 @@ export default function ArticleDetailPage(): JSX.Element {
           <img src={defaultNews} alt="Image" className="w-full" />
         )}
       </div>
-      <div className="flex flex-row border-b-4 pb-5 border-[#7555DA]">
+      <div className="flex flex-col border-b-4 pb-5 border-[#7555DA]">
         <p
           className="w-full mt-8 border-r pr-3 border-[#DBC8FF]"
           dangerouslySetInnerHTML={{ __html: `${articleDetail?.content}` }}
         ></p>
+        <div className="my-4">
+          <div>
+            <p className="font-bold text-md">People </p>
+            <div className="flex flex-row gap-3">
+              {articleDetail?.peoples.map(people => (
+                <p
+                  key={people.id}
+                  className="text-md flex underline text-[#3AC4A0]"
+                >
+                  {people.name}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="my-4">
+          <div>
+            <p className="font-bold text-md">Circle </p>
+            <div className="flex flex-row gap-3">
+              {articleDetail?.circles.map(circle => (
+                <p
+                  key={circle.id}
+                  className="text-md flex flex-row underline text-[#3AC4A0]"
+                >
+                  {circle.name}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="my-4">
+          <div>
+            <p className="font-bold text-md">Assets </p>
+            <div className="flex flex-row gap-3">
+              {articleDetail?.assets.map(assets => (
+                <p
+                  key={assets.id}
+                  className="text-md flex underline text-[#3AC4A0]"
+                >
+                  {assets.name}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col px-2">
         {accessToken !== null && userInfo !== null ? (

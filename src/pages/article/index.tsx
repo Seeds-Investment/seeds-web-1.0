@@ -39,6 +39,7 @@ export interface PlayParams {
   search: string;
   limit: number;
   page: number;
+  category: string;
 }
 
 const initialFilter = {
@@ -46,7 +47,8 @@ const initialFilter = {
   limit: 9,
   page: 1,
   language: '',
-  source: ''
+  source: '',
+  category: 'all'
 };
 
 const initialData = {

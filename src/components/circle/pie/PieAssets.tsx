@@ -1,5 +1,5 @@
 import { SearchCircle } from '@/components/forms/searchCircle';
-import { assetTop } from '@/repository/asset.repository';
+import { assetAll } from '@/repository/asset.repository';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
@@ -71,7 +71,7 @@ const PieAssets: React.FC<props> = ({
   const fetchTopAsset = async (): Promise<void> => {
     try {
       setIsLoadingAsset(true);
-      assetTop(filterAsset)
+      assetAll(filterAsset)
         .then(res => {
           setAsset(res.result);
           setIsLoadingAsset(false);

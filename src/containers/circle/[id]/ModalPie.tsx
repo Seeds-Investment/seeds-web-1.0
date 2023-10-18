@@ -11,16 +11,6 @@ interface ChartData {
   }>;
 }
 
-const initialChartData = {
-  labels: ['dummy'],
-  datasets: [
-    {
-      data: [100],
-      backgroundColor: ['#9F9F9F']
-    }
-  ]
-};
-
 interface AssetInterface {
   id: string;
   quote: string;
@@ -37,6 +27,10 @@ interface props {
   changeForm: any;
   form: any;
   setPages: any;
+  selectedAsset: AssetInterface[];
+  setSelectedAsset: any;
+  chartData: ChartData;
+  setChartData: any;
 }
 
 interface errorMessage {
@@ -53,10 +47,16 @@ const initialErrorMessage = {
   moreThan8: ''
 };
 
-const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
+const ModalPie: React.FC<props> = ({
+  setPages,
+  changeForm,
+  form,
+  selectedAsset,
+  setSelectedAsset,
+  chartData,
+  setChartData
+}) => {
   const [isAsset, setIsAsset] = useState<boolean>(false);
-  const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
-  const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [sumAsset, setSumAsset] = useState(0);
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] =
@@ -113,7 +113,7 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
         ]
       });
     } else {
-      setChartData(prevState => ({
+      setChartData((prevState: ChartData) => ({
         ...prevState,
         labels: [...chartData.labels, value.quote],
         datasets: [
@@ -146,7 +146,10 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
       setSelectedAsset(newData);
     } else {
       handleChartData(value);
-      setSelectedAsset(oldMessages => [...oldMessages, value]);
+      setSelectedAsset((oldMessages: AssetInterface[]) => [
+        ...oldMessages,
+        value
+      ]);
     }
   };
 
@@ -161,7 +164,7 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
     const target = e.target;
     const newValue = Math.round(target.value);
 
-    setChartData(prevState => {
+    setChartData((prevState: ChartData) => {
       const updatedData = [...prevState.datasets[0].data];
       updatedData[index] = newValue;
       const total = updatedData.reduce((acc, value) => acc + value, 0);
@@ -169,7 +172,7 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
       setSumAsset(total);
       if (total <= 100) {
         handleChangeErrorMessage('moreThan100', '');
-        setSelectedAsset(prevState => {
+        setSelectedAsset((prevState: AssetInterface[]) => {
           const updatedData = [...prevState];
           updatedData[index].value = newValue;
 
@@ -196,7 +199,7 @@ const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
   };
 
   const handleAssetIsLock = (e: any, index: number): void => {
-    setSelectedAsset(prevState => {
+    setSelectedAsset((prevState: AssetInterface[]) => {
       const updatedData = [...prevState];
       updatedData[index].isLock = !updatedData[index].isLock;
 

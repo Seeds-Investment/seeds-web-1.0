@@ -1,5 +1,6 @@
 import DoughnutChart from '@/components/DoughnutChart';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Button } from '@material-tailwind/react';
 import CardAssetSlider from './CardAssetSlider';
 
 interface props {
@@ -27,8 +28,6 @@ const PieMain: React.FC<props> = ({
   errorMessage,
   changeIsLock
 }) => {
-  console.log(selectedAsset);
-
   return (
     <div>
       <div>
@@ -113,9 +112,12 @@ const PieMain: React.FC<props> = ({
       </div>
 
       <div className="flex items-center justify-center">
-        <button className="text-white font-semibold font-poppins bg-seeds-button-green p-2 rounded-full mt-2 w-1/2">
+        <Button
+          className="text-white font-semibold font-poppins bg-seeds-button-green p-2 rounded-full mt-2 w-1/2"
+          onClick={setPages}
+        >
           Save
-        </button>
+        </Button>
       </div>
     </div>
   );

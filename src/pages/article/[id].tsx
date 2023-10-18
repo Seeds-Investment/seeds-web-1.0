@@ -94,7 +94,8 @@ const params = {
   limit: 8,
   language: '',
   source: '',
-  search: ''
+  search: '',
+  category: 'all'
 };
 
 export default function ArticleDetailPage(): JSX.Element {
@@ -199,7 +200,7 @@ export default function ArticleDetailPage(): JSX.Element {
     setComment(comment);
     setFormRequest(prevState => ({
       ...prevState,
-      comment: comment
+      comment
     }));
     console.log(comment);
   };

@@ -4,16 +4,23 @@ import {
   Card,
   CardBody,
   Slider,
+  Switch,
   Typography
 } from '@material-tailwind/react';
 
 interface props {
   data: any;
   changeSlider: any;
-  index: any;
+  index: number;
+  changeIsLock: any;
 }
 
-const CardAssetSlider: React.FC<props> = ({ data, changeSlider, index }) => {
+const CardAssetSlider: React.FC<props> = ({
+  data,
+  changeSlider,
+  index,
+  changeIsLock
+}) => {
   return (
     <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
       <CardBody className="p-3 inline-block h-auto">
@@ -52,12 +59,30 @@ const CardAssetSlider: React.FC<props> = ({ data, changeSlider, index }) => {
 
         <Slider
           color="green"
-          className="text-[#3AC4A0] mt-5"
+          className={`text-[#3AC4A0] mt-5 ${
+            data.isLock === true ? 'opacity-50 pointer-events-none' : ''
+          }`}
           onClick={e => changeSlider(e, index)}
           min={0}
           max={100}
           defaultValue={data.value}
         />
+
+        <div className="flex items-end justify-end mt-5">
+          <Switch
+            id={`is-lock-asset-` + index.toString()}
+            ripple={false}
+            className="h-full w-full checked:bg-[#2ec946]"
+            containerProps={{
+              className: 'w-11 h-6'
+            }}
+            circleProps={{
+              className: 'before:hidden left-0.5 border-none'
+            }}
+            onClick={e => changeIsLock(e, index)}
+            defaultChecked={data.isLock}
+          />
+        </div>
       </CardBody>
     </Card>
   );

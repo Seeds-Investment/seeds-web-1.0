@@ -1,5 +1,5 @@
 import { SearchCircle } from '@/components/forms/searchCircle';
-import { assetAll } from '@/repository/asset.repository';
+import { assetTop } from '@/repository/asset.repository';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
@@ -11,6 +11,7 @@ interface props {
   handleSelectedAsset: any;
   selectedAsset: any[];
   removeSelectedAsset: any;
+  setPages: any;
 }
 
 interface AssetInterface {
@@ -49,7 +50,8 @@ const PieAssets: React.FC<props> = ({
   changeToAsset,
   selectedAsset,
   handleSelectedAsset,
-  removeSelectedAsset
+  removeSelectedAsset,
+  setPages
 }) => {
   const [asset, setAsset] = useState<AssetInterface[]>();
   const [filterAsset, setFilterAsset] = useState(initialFilterAsset);
@@ -69,7 +71,7 @@ const PieAssets: React.FC<props> = ({
   const fetchTopAsset = async (): Promise<void> => {
     try {
       setIsLoadingAsset(true);
-      assetAll(filterAsset)
+      assetTop(filterAsset)
         .then(res => {
           setAsset(res.result);
           setIsLoadingAsset(false);
@@ -84,6 +86,15 @@ const PieAssets: React.FC<props> = ({
     }
   };
 
+  const handleDefaultChecked = (data: AssetInterface): boolean => {
+    const isDataExist = selectedAsset?.some(item => item.id === data.id);
+    if (isDataExist) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchTopAsset()
       .then()
@@ -95,7 +106,10 @@ const PieAssets: React.FC<props> = ({
       <div>
         <h1 className="font-bold text-xl text-black">Select Asset</h1>
       </div>
-      <button className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md">
+      <button
+        className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
+        onClick={setPages}
+      >
         <XMarkIcon className="cursor-pointer" width={30} height={30} />
       </button>
 
@@ -162,6 +176,7 @@ const PieAssets: React.FC<props> = ({
                 data={data}
                 key={idx}
                 handleSelectedAsset={handleSelectedAsset}
+                isDefaultChecked={handleDefaultChecked}
               />
             ))
           ) : (

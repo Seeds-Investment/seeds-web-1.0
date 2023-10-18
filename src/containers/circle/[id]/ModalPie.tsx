@@ -30,18 +30,66 @@ interface AssetInterface {
   price: number;
   regularPercentage: number;
   value: number;
+  isLock: boolean;
 }
 
-const ModalPie = ({ closePieModal }: any): any => {
+interface props {
+  changeForm: any;
+  form: any;
+  setPages: any;
+}
+
+interface errorMessage {
+  title: string;
+  amount: string;
+  moreThan100: string;
+  moreThan8: string;
+}
+
+const initialErrorMessage = {
+  title: '',
+  amount: '',
+  moreThan100: '',
+  moreThan8: ''
+};
+
+const ModalPie: React.FC<props> = ({ setPages, changeForm, form }) => {
   const [isAsset, setIsAsset] = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [sumAsset, setSumAsset] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] =
+    useState<errorMessage>(initialErrorMessage);
 
-  const handleOpen = (): void => {};
+  const handleOpen = (): void => {
+    setPages('text');
+    setIsOpen(!isOpen);
+  };
 
   const handleAssets = (): void => {
-    setIsAsset(!isAsset);
+    if (form.pie_title === '') {
+      handleChangeErrorMessage('title', 'Title is required');
+    } else {
+      handleChangeErrorMessage('title', '');
+    }
+
+    if (form.pie_amount === 0) {
+      handleChangeErrorMessage('amount', 'Amount is required');
+    } else {
+      handleChangeErrorMessage('amount', '');
+    }
+
+    if (form.pie_title !== '' && form.pie_amount !== 0) {
+      setIsAsset(!isAsset);
+    }
+  };
+
+  const handleChangeErrorMessage = (name: string, value: string): void => {
+    setErrorMessage(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const createRandomColor = (): string => {
@@ -83,6 +131,9 @@ const ModalPie = ({ closePieModal }: any): any => {
     const target = e.target;
     const value = JSON.parse(target.value);
 
+    value.isLock = false;
+    value.value = 0;
+
     if (selectedAsset.length >= 8) {
       console.error('Jumlah data maksimal telah tercapai (8)');
       return;
@@ -117,6 +168,7 @@ const ModalPie = ({ closePieModal }: any): any => {
 
       setSumAsset(total);
       if (total <= 100) {
+        handleChangeErrorMessage('moreThan100', '');
         setSelectedAsset(prevState => {
           const updatedData = [...prevState];
           updatedData[index].value = newValue;
@@ -133,21 +185,35 @@ const ModalPie = ({ closePieModal }: any): any => {
           ]
         };
       } else {
+        handleChangeErrorMessage(
+          'moreThan100',
+          'You cannot set value more than 100'
+        );
         console.error('Jumlah total data tidak boleh melebihi 100');
         return prevState;
       }
     });
   };
 
+  const handleAssetIsLock = (e: any, index: number): void => {
+    setSelectedAsset(prevState => {
+      const updatedData = [...prevState];
+      updatedData[index].isLock = !updatedData[index].isLock;
+
+      return updatedData;
+    });
+  };
+
   return (
     <Dialog
-      open={true}
+      open={isOpen}
       handler={handleOpen}
       className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
       <div className="bg-white rounded-lg p-14 shadow-md relative overflow-y-auto max-h-screen">
         {isAsset ? (
           <PieAssets
+            setPages={handleOpen}
             changeToAsset={handleAssets}
             selectedAsset={selectedAsset}
             handleSelectedAsset={handleSelectedAsset}
@@ -155,12 +221,16 @@ const ModalPie = ({ closePieModal }: any): any => {
           />
         ) : (
           <PieMain
-            closePieModal={closePieModal}
+            setPages={handleOpen}
             chartData={chartData}
             changeToAsset={handleAssets}
             selectedAsset={selectedAsset}
             changeSlider={handleSliderAsset}
             sumAsset={sumAsset}
+            changeForm={changeForm}
+            form={form}
+            errorMessage={errorMessage}
+            changeIsLock={handleAssetIsLock}
           />
         )}
       </div>

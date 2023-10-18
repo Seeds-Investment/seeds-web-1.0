@@ -3,21 +3,29 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import CardAssetSlider from './CardAssetSlider';
 
 interface props {
-  closePieModal: any;
+  setPages: any;
   chartData: any;
   changeToAsset: any;
   selectedAsset: any[];
   changeSlider: any;
   sumAsset: number;
+  form: any;
+  changeForm: any;
+  errorMessage: any;
+  changeIsLock: any;
 }
 
 const PieMain: React.FC<props> = ({
-  closePieModal,
+  setPages,
   chartData,
   changeToAsset,
   selectedAsset,
   changeSlider,
-  sumAsset
+  sumAsset,
+  form,
+  changeForm,
+  errorMessage,
+  changeIsLock
 }) => {
   console.log(selectedAsset);
 
@@ -28,7 +36,7 @@ const PieMain: React.FC<props> = ({
       </div>
       <button
         className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
-        onClick={closePieModal}
+        onClick={setPages}
       >
         <XMarkIcon className="cursor-pointer" width={30} height={30} />
       </button>
@@ -38,7 +46,15 @@ const PieMain: React.FC<props> = ({
           type="text"
           className="ml-2 border-none outline-none"
           placeholder="Create your title Pie"
+          name="pie_title"
+          value={form.pie_title}
+          onChange={changeForm}
         />
+        {errorMessage.title !== '' && (
+          <small className="text-[#ff515d] font-bold">
+            {errorMessage.title}
+          </small>
+        )}
       </div>
 
       <div className="w-[180px] h-[180px] mx-auto my-auto">
@@ -55,7 +71,15 @@ const PieMain: React.FC<props> = ({
         <input
           type="number"
           className="ml-2 border-none outline-none text-xl font-bold"
+          name="pie_amount"
+          value={form.pie_amount}
+          onChange={changeForm}
         />
+        {errorMessage.amount !== '' && (
+          <small className="text-[#ff515d] font-bold">
+            {errorMessage.amount}
+          </small>
+        )}
       </div>
 
       <div className="flex items-center py-2 justify-between">
@@ -68,6 +92,12 @@ const PieMain: React.FC<props> = ({
         </button>
       </div>
 
+      {errorMessage.moreThan100 !== '' && (
+        <small className="text-[#ff515d] font-bold">
+          {errorMessage.moreThan100}
+        </small>
+      )}
+
       <div>
         {selectedAsset.length !== 0
           ? selectedAsset.map((data, idx) => (
@@ -76,6 +106,7 @@ const PieMain: React.FC<props> = ({
                 key={idx}
                 changeSlider={changeSlider}
                 index={idx}
+                changeIsLock={changeIsLock}
               />
             ))
           : null}

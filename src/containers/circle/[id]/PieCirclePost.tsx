@@ -3,7 +3,7 @@ import CCard from '@/components/CCard';
 import DoughnutChart from '@/components/DoughnutChart';
 import { Copy, EyePurple } from '@/constants/assets/icons';
 import { Sprout } from '@/constants/assets/images';
-import { Typography } from '@material-tailwind/react';
+import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 interface props {
   data: any;
@@ -20,7 +20,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
   }
 
   return (
-    <CCard className="md:max-w-[530px] md:max-h-[285px] p-5 bg-[#F7FBFA]">
+    <CCard className="w-full p-5 bg-[#F7FBFA]">
       <div className="flex gap-5 items-center">
         <Image
           src={data?.issuer_data.avatar}
@@ -36,21 +36,16 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
             </Typography>
             <Image src={Sprout.src} alt={Sprout.alt} height={22} width={22} />
           </div>
-          {/* <div className="flex items-center gap-2">
-              <Typography>@ismael</Typography>
-              <Image src={Dot.src} alt={Dot.alt} width={8} height={8} />
-              <Typography>09/03/2023</Typography>
-              <Image src={Dot.src} alt={Dot.alt} width={8} height={8} />
-              <Typography>12.39 PM</Typography>
-            </div> */}
         </div>
       </div>
       <div className="flex justify-between ">
         <div className="flex flex-col gap-3">
-          <Typography className="mt-4  aspect-auto">Stock-feature</Typography>
+          <Typography className="mt-4  aspect-auto">
+            {data.pie_title}
+          </Typography>
           <div className="flex gap-1">
             {data.pie.map((data: any, idx: number) => (
-              <img
+              <Avatar
                 key={idx}
                 src={data.logo}
                 alt={data.name}

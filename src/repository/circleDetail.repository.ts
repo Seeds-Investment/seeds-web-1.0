@@ -193,6 +193,9 @@ export const createPostCircleDetail = async (formData: {
   polling_multiple?: boolean;
   polling_new_option?: boolean;
   polling_date?: string;
+  pie_title?: string;
+  pie_amount?: number;
+  pie?: any[];
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -223,7 +226,10 @@ export const createPostCircleDetail = async (formData: {
       pollings: formData.pollings,
       polling_multiple: formData.polling_multiple,
       polling_new_option: formData.polling_new_option,
-      polling_date: formData.polling_date
+      polling_date: formData.polling_date,
+      pie_title: formData.pie_title,
+      pie_amount: formData.pie_amount,
+      pie: formData.pie
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {

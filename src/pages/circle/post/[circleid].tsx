@@ -2,6 +2,7 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
+import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
 import EditCircle from '@/containers/circle/[id]/EditCircle';
@@ -92,8 +93,39 @@ interface form {
     endDate: string;
   };
   pie_title: string;
-  pie_amount: number;
+  pie_amount: any;
+  pie: [];
 }
+
+interface AssetInterface {
+  id: string;
+  quote: string;
+  currency: string;
+  image: string;
+  name: string;
+  price: number;
+  regularPercentage: number;
+  value: number;
+  isLock: boolean;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: Array<{
+    data: number[];
+    backgroundColor: string[];
+  }>;
+}
+
+const initialChartData = {
+  labels: ['dummy'],
+  datasets: [
+    {
+      data: [100],
+      backgroundColor: ['#9F9F9F']
+    }
+  ]
+};
 
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
@@ -111,7 +143,8 @@ const CirclePost = (): JSX.Element => {
   const [dataCircle, setData]: any = useState({});
   const [document, setDocument]: any = useState<any>(null);
   const [docModal, setDocModal]: any = useState<boolean>(false);
-  // const [pieData, setPieData] = useState({/* data untuk modal pie */});
+  const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
     svg: globe
@@ -144,7 +177,6 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getCirclePost({ circleId });
-      console.log(data, 'ini circle post');
 
       setDataPost(data);
     } catch (error: any) {
@@ -178,7 +210,6 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getCircleRecomend({ circleId });
-      console.log(data, 'ini circle recomm');
 
       setDataRecommend(data);
     } catch (error: any) {
@@ -206,7 +237,8 @@ const CirclePost = (): JSX.Element => {
       endDate: ''
     },
     pie_title: '',
-    pie_amount: 0
+    pie_amount: 0,
+    pie: []
   });
 
   const [hashtags, setHashtags] = useState<string[]>([]);
@@ -312,6 +344,19 @@ const CirclePost = (): JSX.Element => {
             ? new Date(form.polling.endDate)
             : undefined;
       }
+
+      if (form.pie_title !== '') {
+        const newDataPie = selectedAsset.map(item => ({
+          asset_id: item.id,
+          price: item.price,
+          allocation: item.value
+        }));
+
+        payload.pie = newDataPie;
+        payload.pie_title = form.pie_title;
+        payload.pie_amount = parseInt(form.pie_amount);
+      }
+
       await createPostCircleDetail(payload);
 
       setForm({
@@ -325,12 +370,15 @@ const CirclePost = (): JSX.Element => {
           endDate: ''
         },
         pie_title: '',
-        pie_amount: 0
+        pie_amount: 0,
+        pie: []
       });
       setAudio(null);
       setMedia(undefined);
       setDocument(null);
       setHashtags([]);
+      setSelectedAsset([]);
+      setChartData(initialChartData);
       await fetchCirclePost();
       await fetchCircleRecommended();
     } catch (error: any) {
@@ -361,6 +409,10 @@ const CirclePost = (): JSX.Element => {
           setPages={setPages}
           changeForm={handleFormChange}
           form={form}
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+          chartData={chartData}
+          setChartData={setChartData}
         />
       );
     } else if (pages === 'poll') {
@@ -552,6 +604,14 @@ const CirclePost = (): JSX.Element => {
                 ) : (
                   <></>
                 )}
+                {form.pie_title !== '' ? (
+                  <PiePreviewPost
+                    form={form}
+                    userData={userInfo}
+                    chartData={chartData}
+                    data={selectedAsset}
+                  />
+                ) : null}
                 {pages !== 'gif' ? (
                   <UniqueInputButton
                     setPages={setPages}

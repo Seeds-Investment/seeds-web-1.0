@@ -14,8 +14,9 @@ import { postLikeCirclePost } from '@/repository/circleDetail.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Like, PDFViewer } from 'public/assets/circle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImageCarousel from './CarouselImage';
+import PieCirclePost from './PieCirclePost';
 import PollingView from './PollingView';
 
 interface props {
@@ -23,8 +24,28 @@ interface props {
   setData: any;
   fetchPost: any;
 }
+
+interface ChartData {
+  labels: string[];
+  datasets: Array<{
+    data: number[];
+    backgroundColor: string[];
+  }>;
+}
+
+const initialChartData = {
+  labels: ['dummy'],
+  datasets: [
+    {
+      data: [100],
+      backgroundColor: ['#9F9F9F']
+    }
+  ]
+};
+
 const PostSection: React.FC<props> = ({ dataPost, setData, fetchPost }) => {
   const [docModal, setDocModal]: any = useState<boolean>(false);
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
 
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
@@ -103,6 +124,32 @@ const PostSection: React.FC<props> = ({ dataPost, setData, fetchPost }) => {
       console.log(error);
     }
   };
+
+  const handleSetChartData = (): void => {
+    const convertedData: ChartData = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          backgroundColor: []
+        }
+      ]
+    };
+
+    dataPost.pie.forEach((item: any) => {
+      convertedData.labels.push(item.name);
+      convertedData.datasets[0].data.push(item.allocation);
+      convertedData.datasets[0].backgroundColor.push(item.backgroundcolor);
+    });
+
+    setChartData(convertedData);
+  };
+
+  useEffect(() => {
+    if (dataPost.pie_title !== '') {
+      handleSetChartData();
+    }
+  }, []);
 
   return (
     <div className="w-full mb-10 pb-10 border-b border-neutral-soft">
@@ -258,6 +305,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, fetchPost }) => {
                 pollingDate={dataPost.polling_date}
               />
             )}
+
+            {dataPost.pie_title !== '' ? (
+              <PieCirclePost data={dataPost} chartData={chartData} />
+            ) : null}
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex gap-1 md:gap-5">

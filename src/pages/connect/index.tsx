@@ -300,7 +300,7 @@ const Circle = (): React.ReactElement => {
             <div
               className="flex justify-between items-center w-full"
               onClick={() => {
-                void router.push(`/circle/withdrawal`);
+                void router.push(`/connect/withdrawal`);
               }}
             >
               <Typography className="text-sm font-semibold text-[#7555DA]">
@@ -317,7 +317,7 @@ const Circle = (): React.ReactElement => {
             <div
               className="flex justify-between items-center w-full"
               onClick={() => {
-                void router.push(`/circle/transaction-history`);
+                void router.push(`/connect/transaction-history`);
               }}
             >
               <Typography className="text-sm font-semibold text-[#7555DA]">
@@ -409,7 +409,7 @@ const Circle = (): React.ReactElement => {
               <Button
                 className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full md:w-1/2"
                 onClick={() => {
-                  void router.push('/circle/create-circle');
+                  void router.push('/connect/create-circle');
                 }}
               >
                 Create Circle +

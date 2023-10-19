@@ -38,7 +38,7 @@ export default function CardCircle({
       {data?.cover !== undefined && (
         <div
           onClick={() => {
-            router.push(`/circle/post/${data.id}`).catch(error => {
+            router.push(`/connect/post/${data.id}`).catch(error => {
               console.log(error);
             });
           }}

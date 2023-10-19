@@ -31,7 +31,7 @@ const SuccessPage = (): JSX.Element => {
       <Button
         className="text-xs font-semibold w-[90%] bg-[#3AC4A0] rounded-full lg:text-base"
         onClick={() => {
-          void router.push('/circle');
+          void router.push('/connect');
         }}
       >
         Continue

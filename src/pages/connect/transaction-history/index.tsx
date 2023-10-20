@@ -202,8 +202,8 @@ const TransactionHistory = (): JSX.Element => {
               </TabsHeader>
               <TabsBody>
                 {data.map(({ value }) => (
-                  <div className="overflow-x-auto" key={value}>
-                    <TabPanel key={value} value={value}>
+                  <TabPanel key={value} value={value}>
+                    <div className="overflow-x-auto h-[35rem]" key={value}>
                       {value === 'income' ? (
                         <>
                           {!isLoadingTransaction ? (
@@ -268,8 +268,8 @@ const TransactionHistory = (): JSX.Element => {
                           )}
                         </>
                       )}
-                    </TabPanel>
-                  </div>
+                    </div>
+                  </TabPanel>
                 ))}
               </TabsBody>
             </Tabs>

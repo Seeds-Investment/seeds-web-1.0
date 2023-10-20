@@ -975,10 +975,11 @@ export default {
     }
   },
   articleList: {
-    text1: 'Latest Article',
-    text2: 'Find more news you might like.',
+    text1: 'Article',
+    text2: 'Explore our curated financial articles',
     text3: 'Sort by',
-    text4: 'Search'
+    text4: 'Search',
+    text7: 'News'
   },
   validationErrors: {
     required: 'This field is required',

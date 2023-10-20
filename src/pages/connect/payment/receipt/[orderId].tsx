@@ -261,6 +261,10 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   </div>
                 )}
                 <hr className="border-t-2 border-dashed" />
+                <div className="flex justify-between relative bottom-3 z-50">
+                  <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
+                  <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
+                </div>
                 <div className="flex flex-row justify-between my-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     Circle Membership
@@ -354,7 +358,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
                     void router.push(
-                      `/circle/post/${orderDetail?.itemId as string}`
+                      `/connect/post/${orderDetail?.itemId as string}`
                     );
                   }}
                 >

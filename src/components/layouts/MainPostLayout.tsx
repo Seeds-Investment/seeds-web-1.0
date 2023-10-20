@@ -2,12 +2,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CirclePostSection1 from '@/containers/circle/[id]/CirclePostSection1';
 import CirclePostSection2 from '@/containers/circle/[id]/CirclePostSection2';
 import Image from 'next/image';
-import {
-  CircleBig,
-  CircleNormal,
-  CircleSmall,
-  LockedCircle
-} from 'public/assets/circle';
+import { WrongGirl } from 'public/assets/circle';
 
 interface props {
   children: React.ReactNode;
@@ -72,7 +67,7 @@ const MainPostLayout: React.FC<props> = ({
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
-                isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 openModalDelete={openModalDelete}
                 openModalLeave={openModalLeave}
                 openModalReport={openModalReport}
@@ -82,35 +77,14 @@ const MainPostLayout: React.FC<props> = ({
               />
               {dataCircle.type !== 'free' && !isJoined ? (
                 <div className="h-[80vh] rounded-xl bg-white mb-10">
-                  <div className="flex justify-center relative right-2">
+                  <div className="flex justify-center">
                     <Image
-                      src={LockedCircle}
+                      src={WrongGirl}
                       alt="image"
-                      className="w-[190px] h-[250px] z-40"
+                      className="w-[250px] h-[250px]"
                     />
                   </div>
-                  <div className="flex justify-center relative bottom-[35%]">
-                    <Image
-                      src={CircleSmall}
-                      alt="image"
-                      className="w-[220px] h-[220px] z-10"
-                    />
-                  </div>
-                  <div className="flex justify-center relative bottom-[65%]">
-                    <Image
-                      src={CircleNormal}
-                      alt="image"
-                      className="w-[170px] h-[170px] z-20"
-                    />
-                  </div>
-                  <div className="flex justify-center relative bottom-[87%]">
-                    <Image
-                      src={CircleBig}
-                      alt="image"
-                      className="w-[110px] h-[110px] z-30"
-                    />
-                  </div>
-                  <div className="flex justify-center relative bottom-[75%]">
+                  <div className="flex justify-center">
                     <div className="flex flex-col gap-2">
                       <h1 className="font-poppins font-semibold text-base text-center">
                         This circle is private
@@ -128,13 +102,10 @@ const MainPostLayout: React.FC<props> = ({
                     <></>
                   ) : (
                     <CirclePostSection2
-                      fetchCirclePost={fetchCirclePost}
-                      fetchCircleRecommend={fetchCircleRecommend}
                       setIsLoading={setIsLoading}
                       circleId={circleId}
                       dataPost={dataPost}
                       dataRecommend={dataRecommend}
-                      isLoading={isLoading}
                       dataCircle={dataCircle}
                       setDataPost={setDataPost}
                       setDataRecommend={setDataRecommend}

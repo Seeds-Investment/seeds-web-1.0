@@ -39,13 +39,16 @@ export interface PlayParams {
   search: string;
   limit: number;
   page: number;
+  category: string;
 }
 
 const initialFilter = {
   search: '',
   limit: 9,
   page: 1,
-  language: ''
+  language: '',
+  source: '',
+  category: 'all'
 };
 
 const initialData = {

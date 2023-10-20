@@ -195,6 +195,36 @@ export const SuccessPinImage: AssetsInterface = {
   alt: 'chrown'
 };
 
+export const WithdrawCircleIcon: AssetsInterface = {
+  src: '/assets/circle/withdrawCircleIcon.svg',
+  alt: 'withdraw circle'
+};
+
+export const HistoryCirlceIcon: AssetsInterface = {
+  src: '/assets/circle/historyCircleIcon.svg',
+  alt: 'history circle'
+};
+
+export const CircleLineLight: AssetsInterface = {
+  src: '/assets/circle/circleLine.svg',
+  alt: 'chrown'
+};
+
+export const CircleLineBold: AssetsInterface = {
+  src: '/assets/circle/circleBold.svg',
+  alt: 'chrown'
+};
+
+export const CircleLineBoldSmall: AssetsInterface = {
+  src: '/assets/circle/circleLineBoldSmall.svg',
+  alt: 'chrown'
+};
+
+export const CircleDot: AssetsInterface = {
+  src: '/assets/circle/circleDot.svg',
+  alt: 'chrown'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,
@@ -230,7 +260,13 @@ const Icons: Record<string, AssetsInterface> = {
   BCAIcon,
   CeklisCircle,
   chrownCirclePremium,
-  SuccessPinImage
+  SuccessPinImage,
+  HistoryCirlceIcon,
+  WithdrawCircleIcon,
+  CircleLineBold,
+  CircleLineLight,
+  CircleLineBoldSmall,
+  CircleDot
 };
 
 export default Icons;

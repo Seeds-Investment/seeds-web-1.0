@@ -2,12 +2,14 @@ import friends from '@/assets/circle-page/friends.svg';
 import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
+import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
 import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
 import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
+import ModalPie from '@/containers/circle/[id]/ModalPie';
 import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
 import { PollInput } from '@/containers/circle/[id]/PollingInput';
 import CirclePostInputText from '@/containers/circle/[id]/PostText';
@@ -20,14 +22,16 @@ import {
   getCirclePost,
   getCircleRecomend,
   getDetailCircle,
-  getStatusCircle
+  getStatusCircle,
+  searchAssets,
+  searchCircleByName,
+  searchUser
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
-import PieModal from '../../../components/circle/modalPie';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
 
@@ -53,7 +57,6 @@ const dataSelection: typeOfSelection[] = [
     message: 'Followers that you followback'
   }
 ];
-
 interface typeOfPost {
   type: string;
   svg: any;
@@ -91,7 +94,48 @@ interface form {
     canAddNewOption: boolean;
     endDate: string;
   };
+  pie_title: string;
+  pie_amount: any;
+  pie: [];
 }
+
+interface AssetInterface {
+  id: string;
+  quote: string;
+  currency: string;
+  image: string;
+  name: string;
+  price: number;
+  regularPercentage: number;
+  value: number;
+  isLock: boolean;
+}
+
+interface CirclePeopleData {
+  id: string;
+  name: string;
+  avatar: string;
+  tag: string;
+  type: string;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: Array<{
+    data: number[];
+    backgroundColor: string[];
+  }>;
+}
+
+const initialChartData = {
+  labels: ['dummy'],
+  datasets: [
+    {
+      data: [100],
+      backgroundColor: ['#9F9F9F']
+    }
+  ]
+};
 
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
@@ -106,23 +150,46 @@ const CirclePost = (): JSX.Element => {
   const [openModalLeave, setOpenModalLeave] = useState(false);
   const [openModalReport, setOpenMOdalReport] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isSymbol, setIsSymbol] = useState(false);
   const [dataCircle, setData]: any = useState({});
   const [document, setDocument]: any = useState<any>(null);
   const [docModal, setDocModal]: any = useState<boolean>(false);
-  // const [pieData, setPieData] = useState({/* data untuk modal pie */});
+  const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [circlePeopleData, setCirclePeopleData] = useState<
+    [] | CirclePeopleData[]
+  >([]);
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  const [dataPost, setDataPost]: any = useState([]);
+  const [dataRecommend, setDataRecommend]: any = useState([]);
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [isJoined, setIsJoined] = useState(false);
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
     svg: globe
   });
+  const [form, setForm] = useState<form>({
+    content_text: '',
+    privacy: dropVal.type.toLowerCase(),
+    media_urls: [],
+    polling: {
+      options: [],
+      isMultiVote: false,
+      canAddNewOption: false,
+      endDate: ''
+    },
+    pie_title: '',
+    pie_amount: 0,
+    pie: []
+  });
+
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
   };
-
-  const closePieModal: any = () => {
-    setIsPieModalOpen(false);
-  };
-
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -133,20 +200,14 @@ const CirclePost = (): JSX.Element => {
         console.log(error);
       }
     };
-
     void fetchData();
   }, []);
-
-  const [dataPost, setDataPost]: any = useState([]);
-  const [dataRecommend, setDataRecommend]: any = useState([]);
-  const [isJoined, setIsJoined] = useState(false);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
       setIsLoading(true);
 
       const { data } = await getCirclePost({ circleId });
-      console.log(data, 'ini circle post');
 
       setDataPost(data);
     } catch (error: any) {
@@ -180,7 +241,6 @@ const CirclePost = (): JSX.Element => {
       setIsLoading(true);
 
       const { data } = await getCircleRecomend({ circleId });
-      console.log(data, 'ini circle recomm');
 
       setDataRecommend(data);
     } catch (error: any) {
@@ -190,26 +250,64 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
+  const fetchDetailCircle = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await getDetailCircle({ circleId });
+
+      setData(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     void fetchCirclePost();
     void fetchCircleRecommended();
     void fetchUserInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    void fetchDetailCircle();
   }, [circleId]);
 
-  const [form, setForm] = useState<form>({
-    content_text: '',
-    privacy: dropVal.type.toLowerCase(),
-    media_urls: [],
-    polling: {
-      options: [],
-      isMultiVote: false,
-      canAddNewOption: false,
-      endDate: ''
+  useEffect(() => {
+    if (selectedValue.length > 0) {
+      setCirclePeopleData([]);
+      setIsSymbol(false);
+      if (form.content_text.includes(' ')) {
+        const words = form.content_text.split(' ');
+        const currentWord = words[words.length - 1];
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          newVal = words.join(' ') + ` @${selectedValue} `;
+        }
+        if (currentWord.includes('$')) {
+          newVal = words.join(' ') + ` $${selectedValue} `;
+        }
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: newVal
+        }));
+        setSelectedValue('');
+      } else {
+        if (form.content_text.includes('@')) {
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: `@${selectedValue} `
+          }));
+        }
+        if (form.content_text.includes('$')) {
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: `$${selectedValue} `
+          }));
+        }
+        setSelectedValue('');
+      }
     }
-  });
-
-  const [hashtags, setHashtags] = useState<string[]>([]);
+  }, [selectedValue]);
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -217,6 +315,8 @@ const CirclePost = (): JSX.Element => {
     const { name, value } = event.target;
     setForm(prevForm => ({ ...prevForm, [name]: value }));
     if (value.endsWith(' ')) {
+      setIsSymbol(false);
+      setCirclePeopleData([]);
       const words = value.split(' ');
       const currentWord = words[words.length - 2];
 
@@ -228,6 +328,95 @@ const CirclePost = (): JSX.Element => {
           const newVal = words.join(' ') + ' ';
           setForm(prevForm => ({ ...prevForm, [name]: newVal }));
         }
+      }
+    }
+
+    let currentWord = '';
+    if (value.includes(' ')) {
+      const words = value.split(' ');
+      currentWord = words[words.length - 1];
+    } else {
+      currentWord = value;
+    }
+    if (!currentWord.includes('@') || currentWord.includes('$')) {
+      setIsSymbol(false);
+    }
+
+    if (currentWord?.startsWith('$')) {
+      setIsSymbol(true);
+      if (currentWord.slice(1).length > 2) {
+        if (debounceTimer !== null) clearTimeout(debounceTimer);
+        setDebounceTimer(
+          setTimeout((): void => {
+            void (async (): Promise<void> => {
+              try {
+                const { result } = await searchAssets({
+                  search: currentWord.slice(1),
+                  limit: 10,
+                  page: 1
+                });
+
+                const newAssets = result.map((element: any) => ({
+                  id: element.id,
+                  name: element.name,
+                  avatar: element.image,
+                  tag: element.quote,
+                  type: 'assets'
+                }));
+                setCirclePeopleData(newAssets);
+              } catch (error: any) {
+                console.error(error);
+              }
+            })();
+          }, 500)
+        );
+      } else {
+        setCirclePeopleData([]);
+      }
+    }
+
+    if (currentWord?.startsWith('@')) {
+      setIsSymbol(true);
+      if (currentWord.slice(1).length > 2) {
+        if (debounceTimer !== null) clearTimeout(debounceTimer);
+        setDebounceTimer(
+          setTimeout((): void => {
+            void (async (): Promise<void> => {
+              const { result } = await searchCircleByName({
+                search: currentWord.slice(1),
+                limit: 10,
+                page: 1
+              });
+
+              const data = await searchUser({
+                search: currentWord.slice(1),
+                limit: 10,
+                page: 1
+              });
+
+              const newCircle = result.map((element: any) => ({
+                id: element.id,
+                name: element.name,
+                avatar: element.image,
+                tag: element.totalRating,
+                type: 'circle'
+              }));
+
+              const newPeople = data.result.map((element: any) => ({
+                id: element.id,
+                name: element.name,
+                avatar: element.avatar,
+                tag: element.seedsTag,
+                type: 'user'
+              }));
+
+              const combinedData = [...newCircle, ...newPeople];
+              setCirclePeopleData(combinedData);
+            })();
+          }, 500)
+        );
+      } else {
+        setCirclePeopleData([]);
       }
     }
 
@@ -246,10 +435,18 @@ const CirclePost = (): JSX.Element => {
     const { value } = event.target;
     if (value === 'Public') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: globe }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: globe
+      }));
     } else if (value === 'Private') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: privat }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: privat
+      }));
     } else if (value === 'Friends Only') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
@@ -312,6 +509,19 @@ const CirclePost = (): JSX.Element => {
             ? new Date(form.polling.endDate)
             : undefined;
       }
+
+      if (form.pie_title !== '') {
+        const newDataPie = selectedAsset.map(item => ({
+          asset_id: item.id,
+          price: item.price,
+          allocation: item.value
+        }));
+
+        payload.pie = newDataPie;
+        payload.pie_title = form.pie_title;
+        payload.pie_amount = parseInt(form.pie_amount);
+      }
+
       await createPostCircleDetail(payload);
 
       setForm({
@@ -323,12 +533,17 @@ const CirclePost = (): JSX.Element => {
           isMultiVote: false,
           canAddNewOption: false,
           endDate: ''
-        }
+        },
+        pie_title: '',
+        pie_amount: 0,
+        pie: []
       });
       setAudio(null);
       setMedia(undefined);
       setDocument(null);
       setHashtags([]);
+      setSelectedAsset([]);
+      setChartData(initialChartData);
       await fetchCirclePost();
       await fetchCircleRecommended();
     } catch (error: any) {
@@ -341,7 +556,13 @@ const CirclePost = (): JSX.Element => {
   const handlePages = (): any => {
     if (pages === 'text') {
       return (
-        <CirclePostInputText handleFormChange={handleFormChange} form={form} />
+        <CirclePostInputText
+          handleFormChange={handleFormChange}
+          form={form}
+          showDropdown={isSymbol}
+          dropDownData={circlePeopleData}
+          setSelectedValue={setSelectedValue}
+        />
       );
     } else if (pages === 'gif') {
       return <Gif_Post setPages={setPages} form={form} />;
@@ -354,7 +575,17 @@ const CirclePost = (): JSX.Element => {
         />
       );
     } else if (pages === 'pie' && isPieModalOpen) {
-      return <PieModal closePieModal={closePieModal} />;
+      return (
+        <ModalPie
+          setPages={setPages}
+          changeForm={handleFormChange}
+          form={form}
+          selectedAsset={selectedAsset}
+          setSelectedAsset={setSelectedAsset}
+          chartData={chartData}
+          setChartData={setChartData}
+        />
+      );
     } else if (pages === 'poll') {
       return <PollInput setPages={setPages} form={form} />;
     }
@@ -375,25 +606,6 @@ const CirclePost = (): JSX.Element => {
   const handleEditCircle = (): void => {
     setIsEdit(!isEdit);
   };
-
-  const fetchDetailCircle = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getDetailCircle({ circleId });
-      console.log('ini data circle', data);
-
-      setData(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchDetailCircle();
-  }, []);
 
   return (
     <MainPostLayout
@@ -544,6 +756,14 @@ const CirclePost = (): JSX.Element => {
                 ) : (
                   <></>
                 )}
+                {form.pie_title !== '' ? (
+                  <PiePreviewPost
+                    form={form}
+                    userData={userInfo}
+                    chartData={chartData}
+                    data={selectedAsset}
+                  />
+                ) : null}
                 {pages !== 'gif' ? (
                   <UniqueInputButton
                     setPages={setPages}
@@ -559,7 +779,6 @@ const CirclePost = (): JSX.Element => {
           )}
         </div>
       </div>
-
       <ModalDeleteCircle
         open={openModalDelete}
         handleOpen={handleOpenModalDelete}

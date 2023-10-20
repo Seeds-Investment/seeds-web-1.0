@@ -91,6 +91,10 @@ const WithdrawMethod: React.FC<props> = ({
     void fetchPaymentList();
   }, []);
 
+  const handleBankValue = (value: string): string => {
+    return value.substr(0, value.indexOf('_'));
+  };
+
   return (
     <PageGradient
       defaultGradient
@@ -178,7 +182,7 @@ const WithdrawMethod: React.FC<props> = ({
                 {formRequest.method === 'bank'
                   ? bankOptions.map((data, idx) => (
                       <Option value={data} key={idx}>
-                        {data.payment_method}
+                        {handleBankValue(data.payment_method)}
                       </Option>
                     ))
                   : eWalletOptions.map((data, idx) => (

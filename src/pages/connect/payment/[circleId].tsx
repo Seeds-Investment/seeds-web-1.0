@@ -12,7 +12,6 @@ import ChooseSubs from './ChooseSubs';
 
 const CirclePayment: React.FC = () => {
   const router = useRouter();
-
   const circleId: string | any = router.query.circleId;
   const [monthVal, setMonthVal] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -20,7 +19,6 @@ const CirclePayment: React.FC = () => {
   const [pages, setPages] = useState<string>('chooseSubs');
   const [dataPost, setDataPost]: any = useState();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const height = useWindowInnerHeight();
 
   const fetchDetailCircle = async (): Promise<void> => {
     try {
@@ -42,7 +40,7 @@ const CirclePayment: React.FC = () => {
       const { data } = await getStatusCircle({ circleId });
       const { status }: any = data;
       if (status === 'accepted') {
-        router.push(`/circle`).catch(error => {
+        router.push(`/connect`).catch(error => {
           console.log(error);
         });
       }

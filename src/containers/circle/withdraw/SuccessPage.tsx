@@ -132,7 +132,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
               <Button
                 className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                 onClick={() => {
-                  void router.push('/circle/transaction-history');
+                  void router.push('/connect/transaction-history');
                 }}
               >
                 Transaction History

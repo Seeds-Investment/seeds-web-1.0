@@ -116,17 +116,17 @@ const CarouselNewsDesktop: React.FC = () => {
               <img
                 src={imageUrl}
                 alt={`image ${index + 1}`}
-                className="h-[70vh] w-full object-cover mx-auto rounded-lg"
+                className="h-[70vh] w-full object-cover mx-auto rounded-lg brightness-50"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt="Default Image"
-                className="h-[70vh] w-full object-cover mx-auto rounded-lg"
+                className="h-[70vh] w-full object-cover mx-auto rounded-lg brightness-50"
               />
             )}
             <div
-              className="absolute inset-0 h-[93%] w-[95%] object-cover m-auto cursor-pointer bg-black bg-opacity-50 text-white rounded-lg p-5 z-20 left-0 right-0 top-0 bottom-0"
+              className="absolute inset-0 h-[94%] w-[96%] object-cover m-auto cursor-pointertext-white rounded-lg p-5 z-20 left-0 right-0 top-0 bottom-0"
               onClick={e => {
                 e.preventDefault();
                 handleItemClick(item.link);

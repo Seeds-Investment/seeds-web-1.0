@@ -163,9 +163,11 @@ const CarouselProfileDesktop: React.FC = () => {
           {profileData[selectedIndex]?.label}
         </p>
         <p className="text-[#7C7C7C] text-base font-normal">
-          Influencer, social-preneur, and 30 under 30 Forbes 2023 One of the
-          greatest minds in the current Indonesian finance world focused on
-          self-development, financial advice, leadership and even UX design.
+          {selectedIndex === 1
+            ? 'Influencer, social-preneur, and 30 under 30 Forbes 2023 One of the greatest minds in the current Indonesian finance world focused on self-development, financial advice, leadership and even UX design.'
+            : selectedIndex === 0
+            ? 'Prominent Investor, Resolute CEO, and Forbes 30 Under 30 Honoree for 2023. Revered as a leading luminary in the Indonesian finance arena, with an unwavering commitment to shaping groundbreaking investment paradigms. Renowned for providing invaluable financial counsel, empowering leadership, and driving visionary growth within the realm of investment.'
+            : 'Eminent Investor and Forbes 30 Under 30 Awardee in 2023. Celebrated as a driving force in the Indonesian finance landscape, specializing in astute investment strategies and financial acumen. Known for guiding individuals and organizations towards profitable investment decisions and achieving financial success.'}
         </p>
       </div>
       <div

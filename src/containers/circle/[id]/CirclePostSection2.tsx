@@ -8,15 +8,12 @@ import { useEffect, useState } from 'react';
 import PostSection from './PostSection';
 interface props {
   circleId: string;
-  isLoading: boolean;
   setIsLoading: any;
   dataPost: any;
   dataRecommend: any;
   dataCircle: any;
   setDataRecommend: any;
   setDataPost: any;
-  fetchCirclePost: any;
-  fetchCircleRecommend: any;
 }
 
 interface HashtagProps {
@@ -40,14 +37,11 @@ const Hashtag: React.FC<HashtagProps> = ({ name, onClose }) => {
 const CirclePostSection2: React.FC<props> = ({
   setIsLoading,
   circleId,
-  isLoading,
   dataPost,
   dataRecommend,
   dataCircle,
   setDataPost,
-  setDataRecommend,
-  fetchCirclePost,
-  fetchCircleRecommend
+  setDataRecommend
 }) => {
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
@@ -65,7 +59,6 @@ const CirclePostSection2: React.FC<props> = ({
       setIsLoading(true);
 
       const { data } = await getMemberCircle({ circleId });
-      console.log(data);
 
       setMember(data);
     } catch (error: any) {
@@ -95,12 +88,7 @@ const CirclePostSection2: React.FC<props> = ({
           dataPost.length > 0 ? (
             dataPost?.map((el: any) => {
               return (
-                <PostSection
-                  dataPost={el}
-                  key={el.id}
-                  setData={setDataPost}
-                  fetchPost={fetchCirclePost}
-                />
+                <PostSection dataPost={el} key={el.id} setData={setDataPost} />
               );
             })
           ) : (
@@ -120,7 +108,6 @@ const CirclePostSection2: React.FC<props> = ({
                   dataPost={el}
                   key={el.id}
                   setData={setDataRecommend}
-                  fetchPost={fetchCircleRecommend}
                 />
               );
             })

@@ -26,7 +26,7 @@ const FinalModalCircle: React.FC<props> = ({
   button,
   imageUrl,
   error,
-  redirect = '/circle'
+  redirect = '/connect'
 }) => {
   const router = useRouter();
 

@@ -116,11 +116,11 @@ const Header: React.FC = () => {
       <li>
         <Link
           className={`${
-            router.pathname === '/seedspedia' ? 'text-[#261679]' : 'text-white'
+            router.pathname === '/article' ? 'text-[#261679]' : 'text-white'
           }`}
-          href="/seedspedia"
+          href="/article"
         >
-          Seedspedia
+          Article
         </Link>
       </li>
       <li>
@@ -304,13 +304,13 @@ const Header: React.FC = () => {
             </Link>
             <Link
               className={`${
-                router.pathname === '/seedspedia'
+                router.pathname === '/article'
                   ? 'text-[#261679] underline-offset-8 underline'
                   : 'text-white'
               }`}
-              href="/seedspedia"
+              href="/article"
             >
-              SeedsPedia
+              Article
             </Link>
             <Link
               className={`${

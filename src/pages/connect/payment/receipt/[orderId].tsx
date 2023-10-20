@@ -358,7 +358,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
                     void router.push(
-                      `/circle/post/${orderDetail?.itemId as string}`
+                      `/connect/post/${orderDetail?.itemId as string}`
                     );
                   }}
                 >

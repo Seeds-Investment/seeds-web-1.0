@@ -2,18 +2,17 @@ import CCard from '@/components/CCard';
 import CardCircle from '@/components/circle/CardCircle';
 import { SearchCircle } from '@/components/forms/searchCircle';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import BannerCircleList from '@/containers/circle/main/Banner';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircle,
-  getCircleBalance,
   getCircleLeaderBoard
 } from '@/repository/circle.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Button,
   Card,
-  CardBody,
   Tab,
   TabPanel,
   Tabs,
@@ -115,9 +114,7 @@ const settings: Settings = {
 const Circle = (): React.ReactElement => {
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [isLoadingCircle, setIsLoadingCircle] = useState(false);
-  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
-  const [balance, setBalance] = useState(0);
   const [circle, setCircle] = useState<CircleInterface[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [activeTab, setActiveTab] = useState<string>('my_circle');
@@ -229,24 +226,6 @@ const Circle = (): React.ReactElement => {
     }
   };
 
-  const fetchCircleBalance = async (): Promise<void> => {
-    try {
-      setIsLoadingBalance(true);
-      getCircleBalance()
-        .then(res => {
-          setBalance(res.data.balance);
-          setIsLoadingBalance(false);
-        })
-        .catch(err => {
-          console.log(err);
-          setIsLoadingBalance(false);
-        });
-    } catch (error: any) {
-      setIsLoadingBalance(false);
-      console.error('Error fetching circle data:', error.message);
-    }
-  };
-
   const handleScroll = (): void => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
@@ -270,10 +249,6 @@ const Circle = (): React.ReactElement => {
     fetchCircleLeaderBoard()
       .then()
       .catch(() => {});
-
-    fetchCircleBalance()
-      .then()
-      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -286,58 +261,7 @@ const Circle = (): React.ReactElement => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2">
-            <Card className="bg-[#8a70e0] h-full">
-              <CardBody>
-                <Typography color="white" className="text-base font-normal">
-                  Circle Balance
-                </Typography>
-                <Typography color="white" className="text-2xl font-semibold">
-                  {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
-                </Typography>
-              </CardBody>
-            </Card>
-          </div>
-          <div className="w-full md:w-1/2 md:ml-5 h-full">
-            <div
-              className="flex justify-between items-center w-full"
-              onClick={() => {
-                void router.push(`/circle/withdrawal`);
-              }}
-            >
-              <Typography className="text-sm font-semibold text-[#7555DA]">
-                Withdraw Profit
-              </Typography>
-              <Button
-                className="text-md font-normal bg-white text-black rounded-full shadow-none"
-                disabled
-              >
-                {'>'}
-              </Button>
-            </div>
-            <hr />
-            <div
-              className="flex justify-between items-center w-full"
-              onClick={() => {
-                void router.push(`/circle/transaction-history`);
-              }}
-            >
-              <Typography className="text-sm font-semibold text-[#7555DA]">
-                Transation History
-              </Typography>
-              <Button
-                className="text-md font-normal bg-white text-black rounded-full shadow-none"
-                disabled
-              >
-                {'>'}
-              </Button>
-            </div>
-            <hr />
-          </div>
-        </div>
-      </CCard>
+      <BannerCircleList />
 
       <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
@@ -413,7 +337,7 @@ const Circle = (): React.ReactElement => {
               <Button
                 className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full md:w-1/2"
                 onClick={() => {
-                  void router.push('/circle/create-circle');
+                  void router.push('/connect/create-circle');
                 }}
               >
                 Create Circle +

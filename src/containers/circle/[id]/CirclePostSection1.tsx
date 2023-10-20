@@ -57,7 +57,7 @@ const CirclePostSection1: React.FC<props> = ({
         }
       } else {
         router
-          .push(`/circle/payment/${dataCircle?.id as string}`)
+          .push(`/connect/payment/${dataCircle?.id as string}`)
           .catch(error => {
             console.log(error);
           });

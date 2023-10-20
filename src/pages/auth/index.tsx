@@ -41,7 +41,7 @@ const AuthIndex = (): JSX.Element => {
         <div className="flex justify-around gap-5 mt-5">
           <CButton
             onClick={() => {
-              router.push('/circle/auth/login').catch(error => {
+              router.push('/connect/auth/login').catch(error => {
                 console.log(error);
               });
             }}
@@ -51,7 +51,7 @@ const AuthIndex = (): JSX.Element => {
           </CButton>
           <CButton
             onClick={() => {
-              router.push('/circle/auth/register').catch(error => {
+              router.push('/connect/auth/register').catch(error => {
                 console.log(error);
               });
             }}

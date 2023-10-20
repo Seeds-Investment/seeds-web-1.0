@@ -120,7 +120,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
         }
         await router
           .push(
-            `/circle/payment/receipt/${
+            `/connect/payment/receipt/${
               response.data.Response.order_id as string
             }`
           )

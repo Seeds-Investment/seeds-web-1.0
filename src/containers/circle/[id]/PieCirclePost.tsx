@@ -20,7 +20,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
   }
 
   return (
-    <CCard className="w-full p-5 bg-[#F7FBFA]">
+    <CCard className="w-full md:w-2/3 lg:w-1/2 p-5 bg-[#F7FBFA]">
       <div className="flex gap-5 items-center">
         <Image
           src={data?.issuer_data.avatar}

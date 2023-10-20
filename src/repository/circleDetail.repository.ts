@@ -8,7 +8,9 @@ const baseUrl = baseAxios(
 interface getDataCircleType {
   circleId: string;
 }
-
+interface getDataPostCircleType {
+  postId: string;
+}
 export const getDetailCircle = async ({
   circleId
 }: getDataCircleType): Promise<any> => {
@@ -48,6 +50,27 @@ export const getCirclePost = async ({
         }
       }
     );
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getDetailCirclePost = async ({
+  postId
+}: getDataPostCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(postId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(`/post/v2/find/${postId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
@@ -161,6 +184,7 @@ interface JoinCircleType {
   duration: number;
   payment_request: any;
 }
+
 export const joinCirclePost = async (data: JoinCircleType): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -181,6 +205,7 @@ export const joinCirclePost = async (data: JoinCircleType): Promise<any> => {
   });
   return response;
 };
+
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];
@@ -302,7 +327,7 @@ export const UseUploadMedia = async (media: any): Promise<any> => {
 
 export const postLikeCirclePost = async (
   type: number,
-  id: number
+  id: string
 ): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -326,4 +351,104 @@ export const postLikeCirclePost = async (
   } catch (error: any) {
     return error.response;
   }
+};
+
+export const postPinCirclePost = async (
+  type: string,
+  id: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.patch(
+      `/post/v2/update/pinned`,
+      {
+        post_id: id,
+        type
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const postSavedCirclePost = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.post(
+      `/post/saving/v1/create`,
+      {
+        post_id: id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const searchCircleByName = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await baseUrl.get(`circle/v1/search`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const searchAssets = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await baseUrl.get(`asset/v1/search`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const searchUser = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await baseUrl.get(`user/v1/search`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

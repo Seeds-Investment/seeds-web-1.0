@@ -125,6 +125,10 @@ const Circle = (): React.ReactElement => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [hasMore, setHasMore] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
+  // const handleOpen = (): void => {
+  //   setIsOpen(!isOpen);
+  // };
   const dataTab = [
     {
       label: 'MyCircle',
@@ -476,6 +480,7 @@ const Circle = (): React.ReactElement => {
           </Tabs>
         </div>
       </CCard>
+      {/* <ModalPost open={isOpen} handleOpen={handleOpen} /> */}
     </PageGradient>
   );
 };

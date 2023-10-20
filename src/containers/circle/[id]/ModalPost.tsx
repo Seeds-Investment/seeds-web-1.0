@@ -5,67 +5,42 @@ import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
-import EditCircle from '@/containers/circle/[id]/EditCircle';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
-import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
-import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
-import ModalPie from '@/containers/circle/[id]/ModalPie';
-import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
-import { PollInput } from '@/containers/circle/[id]/PollingInput';
-import CirclePostInputText from '@/containers/circle/[id]/PostText';
-import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
-import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
-import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
-  createPostCircleDetail,
-  getCirclePost,
-  getCircleRecomend,
-  getDetailCircle,
-  getStatusCircle,
   searchAssets,
   searchCircleByName,
   searchUser
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { Dialog } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
+import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
-import MainPostLayout from '../../../components/layouts/MainPostLayout';
-import ProfilePost from '../../../containers/circle/[id]/ProfilePost';
+import ModalPie from './ModalPie';
+import { PollInput } from './PollingInput';
+import CirclePostInputText from './PostText';
+import ProfilePost from './ProfilePost';
+import UniqueInputButton from './UniqueInputButton';
+import { VoiceRecorder } from './VoiceRecording';
 
-const dataSelection: typeOfSelection[] = [
-  {
-    name: 'Public',
-    svg: globe,
-    message: 'Everyone can see your post'
-  },
-  {
-    name: 'Private',
-    svg: privat,
-    message: 'Only you can see your post'
-  },
-  {
-    name: 'Friends Only',
-    svg: friends,
-    message: 'Followers that you followback'
-  },
-  {
-    name: 'Premium',
-    svg: star,
-    message: 'Followers that you followback'
-  }
-];
+interface props {
+  open: any;
+  handleOpen: () => void;
+}
+
 interface typeOfPost {
   type: string;
   svg: any;
 }
+
 interface typeOfSelection {
   name: string;
   svg: any;
   message: string;
 }
+
 interface UserData {
   id: string;
   name: string;
@@ -137,36 +112,48 @@ const initialChartData = {
   ]
 };
 
-const CirclePost = (): JSX.Element => {
-  const router = useRouter();
-  const circleId: string | any = router.query.circleid;
-  const [audio, setAudio] = useState<any>(null);
+const dataSelection: typeOfSelection[] = [
+  {
+    name: 'Public',
+    svg: globe,
+    message: 'Everyone can see your post'
+  },
+  {
+    name: 'Private',
+    svg: privat,
+    message: 'Only you can see your post'
+  },
+  {
+    name: 'Friends Only',
+    svg: friends,
+    message: 'Followers that you followback'
+  },
+  {
+    name: 'Premium',
+    svg: star,
+    message: 'Followers that you followback'
+  }
+];
+const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
   const [isPieModalOpen, setIsPieModalOpen] = useState(false);
-  const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [openModalLeave, setOpenModalLeave] = useState(false);
-  const [openModalReport, setOpenMOdalReport] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [isSymbol, setIsSymbol] = useState(false);
-  const [dataCircle, setData]: any = useState({});
   const [document, setDocument]: any = useState<any>(null);
+  const [isSymbol, setIsSymbol] = useState(false);
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
-  const [selectedValue, setSelectedValue] = useState<string>('');
   const [circlePeopleData, setCirclePeopleData] = useState<
     [] | CirclePeopleData[]
   >([]);
+  const [selectedValue, setSelectedValue] = useState<string>('');
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
-  const [dataPost, setDataPost]: any = useState([]);
-  const [dataRecommend, setDataRecommend]: any = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  const [isJoined, setIsJoined] = useState(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
@@ -186,90 +173,9 @@ const CirclePost = (): JSX.Element => {
     pie_amount: 0,
     pie: []
   });
-
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
   };
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    void fetchData();
-  }, []);
-
-  const fetchCirclePost = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getCirclePost({ circleId });
-
-      setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchUserInfo = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getStatusCircle({ circleId });
-      const { status }: any = data;
-
-      if (status === 'accepted') {
-        setIsJoined(true);
-      } else {
-        setIsJoined(false);
-      }
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchCircleRecommended = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getCircleRecomend({ circleId });
-
-      setDataRecommend(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Recommend:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchDetailCircle = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getDetailCircle({ circleId });
-
-      setData(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchCirclePost();
-    void fetchCircleRecommended();
-    void fetchUserInfo();
-    void fetchDetailCircle();
-  }, [circleId]);
 
   useEffect(() => {
     if (selectedValue.length > 0) {
@@ -429,6 +335,18 @@ const CirclePost = (): JSX.Element => {
       return null;
     });
   };
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await getUserInfo();
+        setUserInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    void fetchData();
+  }, []);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -436,18 +354,10 @@ const CirclePost = (): JSX.Element => {
     const { value } = event.target;
     if (value === 'Public') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({
-        ...prevDropVal,
-        type: value,
-        svg: globe
-      }));
+      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: globe }));
     } else if (value === 'Private') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({
-        ...prevDropVal,
-        type: value,
-        svg: privat
-      }));
+      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: privat }));
     } else if (value === 'Friends Only') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
@@ -498,7 +408,6 @@ const CirclePost = (): JSX.Element => {
         privacy: form.privacy,
         is_pinned: false,
         user_id: userInfo?.id,
-        circleId,
         hashtags
       };
       if (form.polling.options.length > 0) {
@@ -523,7 +432,7 @@ const CirclePost = (): JSX.Element => {
         payload.pie_amount = parseInt(form.pie_amount);
       }
 
-      await createPostCircleDetail(payload);
+      // await createPostCircleDetail(payload);
 
       setForm({
         content_text: '',
@@ -545,8 +454,6 @@ const CirclePost = (): JSX.Element => {
       setHashtags([]);
       setSelectedAsset([]);
       setChartData(initialChartData);
-      await fetchCirclePost();
-      await fetchCircleRecommended();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -592,81 +499,56 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
-  const handleOpenModalDelete = (): void => {
-    setOpenModalDelete(!openModalDelete);
-  };
-
-  const handleOpenModalLeave = (): void => {
-    setOpenModalLeave(!openModalLeave);
-  };
-
-  const handleOpenModalReport = (): void => {
-    setOpenMOdalReport(!openModalReport);
-  };
-
-  const handleEditCircle = (): void => {
-    setIsEdit(!isEdit);
-  };
-
   return (
-    <MainPostLayout
-      dataCircle={dataCircle}
-      circleId={circleId}
-      dataPost={dataPost}
-      dataRecommend={dataRecommend}
-      openModalDelete={handleOpenModalDelete}
-      openModalLeave={handleOpenModalLeave}
-      openModalReport={handleOpenModalReport}
-      handleEdit={handleEditCircle}
-      isEdit={isEdit}
-      isJoined={isJoined}
-      setIsJoined={setIsJoined}
-      setIsLoading={setIsLoading}
-      isLoading={isLoading}
-      setDataPost={setDataPost}
-      setDataRecommend={setDataRecommend}
-      fetchCirclePost={fetchCirclePost}
-      fetchCircleRecommend={fetchCircleRecommended}
+    <Dialog
+      open={open}
+      handler={handleOpen}
+      size="lg"
+      className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
-      {/* posting section */}
-      <div className="block bg-white mt-8 w-full rounded-xl">
+      <div className="block bg-white w-full rounded-xl">
         {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
-          {isEdit ? (
-            <EditCircle dataCircle={dataCircle} circleId={circleId} />
-          ) : (
-            <>
-              <ProfilePost
-                handleDropDown={handleDropDown}
-                dropVal={dropVal}
-                drop={drop}
-                dataSelection={dataSelection}
-                handleInputChange={handleInputChange}
-              />
-              {/* form text section */}
-              <form onSubmit={handlePostCircle}>
-                {media !== undefined && pages !== 'gif' && (
-                  <div className="flex justify-center pb-2">
-                    {media.type.includes('image') === true ? (
-                      <img
-                        src={URL?.createObjectURL(media)}
-                        alt="Preview Image"
-                        className="object-cover max-h-[30vh] w-fit"
-                      />
-                    ) : (
-                      <video
-                        controls
-                        className="max-w-[50vw] max-h-[50vh] object-fit"
-                        key={URL?.createObjectURL(media)}
-                      >
-                        <source
-                          src={URL?.createObjectURL(media)}
-                          type="video/mp4"
-                        />
-                        Browser Anda tidak mendukung tag video.
-                      </video>
-                    )}
-                  </div>
+          <>
+            {pages !== 'gif' && (
+              <div className="flex justify-between">
+                <div
+                  onClick={() => {
+                    setPages('text');
+                  }}
+                  className="cursor-pointer"
+                >
+                  <ProfilePost
+                    handleDropDown={handleDropDown}
+                    dropVal={dropVal}
+                    drop={drop}
+                    dataSelection={dataSelection}
+                    handleInputChange={handleInputChange}
+                  />
+                </div>
+                <div
+                  className="flex flex-col justify-start cursor-pointer"
+                  onClick={() => {
+                    handleOpen();
+                  }}
+                >
+                  <Image src={XIcon} alt="close" width={30} height={30} />
+                </div>
+              </div>
+            )}
+            {handlePages()}
+            {/* form text section */}
+            <form onSubmit={handlePostCircle}>
+              <div className="flex justify-between pl-16 pb-4 z-0">
+                {audio !== null && pages !== 'gif' && (
+                  <audio controls>
+                    <source
+                      src={URL?.createObjectURL(audio)}
+                      type="audio/wav"
+                      className="w-full"
+                    />
+                    Your browser does not support the audio element.
+                  </audio>
                 )}
                 {document !== undefined &&
                   document !== null &&
@@ -694,7 +576,7 @@ const CirclePost = (): JSX.Element => {
                           onClose={() => {
                             setDocModal(false);
                           }}
-                          modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+                          modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
                         >
                           <embed
                             src={URL?.createObjectURL(document)}
@@ -726,79 +608,85 @@ const CirclePost = (): JSX.Element => {
                       )}
                     </div>
                   )}
-                <div className="flex justify-center my-5 gap-4">
-                  {form.media_urls.length > 0 && pages !== 'gif' ? (
-                    form.media_urls.map((el: any, i: number) => {
-                      return (
-                        <img
-                          src={el}
-                          key={`${i} + 'MEDIA_URL'`}
-                          alt="gif"
-                          className="h-[230px] w-[230px] object-cover"
-                        />
-                      );
-                    })
+              </div>
+              {media !== undefined && pages !== 'gif' && (
+                <div className="flex justify-center pb-2">
+                  {media.type.includes('image') === true ? (
+                    <img
+                      src={URL?.createObjectURL(media)}
+                      alt="Preview Image"
+                      className="object-cover max-h-[30vh] w-fit"
+                    />
                   ) : (
-                    <></>
+                    <video
+                      controls
+                      className="max-w-[50vw] max-h-[50vh] object-fit"
+                      key={URL?.createObjectURL(media)}
+                    >
+                      <source
+                        src={URL?.createObjectURL(media)}
+                        type="video/mp4"
+                      />
+                      Browser Anda tidak mendukung tag video.
+                    </video>
                   )}
                 </div>
-                {handlePages()}
-                {form.polling?.options.length > 0 && pages === 'text' ? (
-                  form.polling?.options.map((el: any, i: number) => {
+              )}
+
+              <div className="flex justify-center my-5 gap-4">
+                {form.media_urls.length > 0 && pages !== 'gif' ? (
+                  form.media_urls.map((el: any, i: number) => {
                     return (
-                      <div
-                        className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
-                        key={`${i} + 'Polling'`}
-                      >
-                        {el.content_text}
-                      </div>
+                      <img
+                        src={el}
+                        key={`${i} + 'MEDIA_URL'`}
+                        alt="gif"
+                        className="h-[230px] w-[230px] object-cover"
+                      />
                     );
                   })
                 ) : (
                   <></>
                 )}
-                {form.pie_title !== '' ? (
-                  <PiePreviewPost
-                    form={form}
-                    userData={userInfo}
-                    chartData={chartData}
-                    data={selectedAsset}
-                  />
-                ) : null}
-                {pages !== 'gif' ? (
-                  <UniqueInputButton
-                    setPages={setPages}
-                    setMedia={setMedia}
-                    openPieModal={openPieModal}
-                    setDocument={setDocument}
-                  />
-                ) : (
-                  <></>
-                )}
-              </form>
-            </>
-          )}
+              </div>
+              {form.polling?.options.length > 0 && pages === 'text' ? (
+                form.polling?.options.map((el: any, i: number) => {
+                  return (
+                    <div
+                      className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                      key={`${i} + 'Polling'`}
+                    >
+                      {el.content_text}
+                    </div>
+                  );
+                })
+              ) : (
+                <></>
+              )}
+              {form.pie_title !== '' ? (
+                <PiePreviewPost
+                  form={form}
+                  userData={userInfo}
+                  chartData={chartData}
+                  data={selectedAsset}
+                />
+              ) : null}
+              {pages !== 'gif' ? (
+                <UniqueInputButton
+                  setPages={setPages}
+                  setMedia={setMedia}
+                  openPieModal={openPieModal}
+                  setDocument={setDocument}
+                />
+              ) : (
+                <></>
+              )}
+            </form>
+          </>
         </div>
       </div>
-      <ModalDeleteCircle
-        open={openModalDelete}
-        handleOpen={handleOpenModalDelete}
-        circleId={circleId}
-      />
-
-      <ModalLeaveCircle
-        open={openModalLeave}
-        handleOpen={handleOpenModalLeave}
-        circleId={circleId}
-      />
-
-      <ModalReportCircle
-        open={openModalReport}
-        handleOpen={handleOpenModalReport}
-        circleId={circleId}
-      />
-    </MainPostLayout>
+    </Dialog>
   );
 };
 
-export default withAuth(CirclePost);
+export default ModalPost;

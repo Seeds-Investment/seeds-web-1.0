@@ -85,10 +85,13 @@ const ProfilePost: React.FC<props> = ({
               </div>
             </button>
             {drop ? (
-              <div className="bg-white absolute mt-[40vh] rounded-2xl border border-neutral-soft w-[340px] flex flex-col justify-center items-center transition">
+              <div className="bg-white absolute z-[10] mt-[40vh] rounded-2xl border border-neutral-soft w-[340px] flex flex-col justify-center items-center transition">
                 {dataSelection.map((el: typeOfSelection, i) => {
                   return (
-                    <label className="cursor-default" key={i}>
+                    <label
+                      className="cursor-default"
+                      key={`${i}radioSelection`}
+                    >
                       <input
                         type="radio"
                         className="peer sr-only"

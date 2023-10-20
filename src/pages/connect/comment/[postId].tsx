@@ -13,6 +13,7 @@ const Comment: React.FC = () => {
   const postId: string | any = router.query.postId;
   const [dataPost, setDataPost] = useState<null | any[]>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const fetchDetailCirclePost = async (): Promise<void> => {
     try {
       setIsLoading(true);

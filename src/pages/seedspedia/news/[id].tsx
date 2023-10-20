@@ -117,8 +117,8 @@ export default function ArticleDetailPage(): JSX.Element {
   const [open, setOpen] = useState(false);
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
-    const baseUrl =
-      process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
 
   async function fetchArticles(): Promise<void> {
     try {
@@ -187,7 +187,7 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }, [id]);
 
-   function copyValueWithUrl(valueToCopy: number): boolean {
+  function copyValueWithUrl(valueToCopy: number): boolean {
     const textToCopy = `${baseUrl}/seedspedia/news/${valueToCopy}`;
 
     const textArea = document.createElement('textarea');
@@ -283,7 +283,7 @@ export default function ArticleDetailPage(): JSX.Element {
 
   function formatDate(inputDate: string): string {
     const date = new Date(inputDate);
-    
+
     date.setMilliseconds(0);
 
     const options: Intl.DateTimeFormatOptions = {

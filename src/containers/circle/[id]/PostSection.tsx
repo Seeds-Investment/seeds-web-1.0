@@ -124,7 +124,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
 
               return newData;
             } else {
-              const updatedDataPost = { ...prevDataPost }; // clone objek agar tidak mengubah objek asli
+              const updatedDataPost = { ...prevDataPost };
 
               if (dataPost.status_like === true) {
                 updatedDataPost.total_upvote -= 1;
@@ -150,18 +150,29 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
       if (response.status === 200) {
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
-            const newData = prevDataPost.map((el: any) => {
-              if (el.id === dataPost.id) {
-                if (dataPost.is_pinned === true) {
-                  el.is_pinned = false;
-                } else {
-                  el.is_pinned = true;
+            if (Array.isArray(prevDataPost)) {
+              const newData = prevDataPost.map((el: any) => {
+                if (el.id === dataPost.id) {
+                  if (dataPost.is_pinned === true) {
+                    el.is_pinned = false;
+                  } else {
+                    el.is_pinned = true;
+                  }
                 }
-              }
-              return el;
-            });
+                return el;
+              });
 
-            return newData;
+              return newData;
+            } else {
+              const updatedDataPost = { ...prevDataPost };
+              if (dataPost.is_pinned === true) {
+                updatedDataPost.is_pinned = false;
+              } else {
+                updatedDataPost.is_pinned = true;
+              }
+
+              return updatedDataPost;
+            }
           }
         });
       }
@@ -176,18 +187,29 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
       if (response.status === 200) {
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
-            const newData = prevDataPost.map((el: any) => {
-              if (el.id === dataPost.id) {
-                if (dataPost.status_saved === true) {
-                  el.status_saved = false;
-                } else {
-                  el.status_saved = true;
+            if (Array.isArray(prevDataPost)) {
+              const newData = prevDataPost.map((el: any) => {
+                if (el.id === dataPost.id) {
+                  if (dataPost.status_saved === true) {
+                    el.status_saved = false;
+                  } else {
+                    el.status_saved = true;
+                  }
                 }
-              }
-              return el;
-            });
+                return el;
+              });
 
-            return newData;
+              return newData;
+            } else {
+              const updatedDataPost = { ...prevDataPost };
+              if (dataPost.status_saved === true) {
+                updatedDataPost.status_saved = false;
+              } else {
+                updatedDataPost.status_saved = true;
+              }
+
+              return updatedDataPost;
+            }
           }
         });
       }
@@ -405,7 +427,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   className="cursor-pointer flex gap-2"
                   onClick={() => {
                     router
-                      .push(`/circle/comment/${dataPost.id as string}`)
+                      .push(`/connect/comment/${dataPost.id as string}`)
                       .catch((err: any) => {
                         console.error(err);
                       });

@@ -1,3 +1,4 @@
+import vectorLeft from '@/assets/landing-page/top-asset-left.png';
 import vector from '@/assets/landing-page/vector-product.png';
 import vectorRight from '@/assets/landing-page/vector-right.png';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -61,6 +62,11 @@ export default function Section2(): React.ReactElement {
         alt="img"
         className="absolute left-0 -z-10 xl:mt-10 xl:block hidden"
         src={vector}
+      />
+      <Image
+        alt="img"
+        className="absolute left-0 -z-10 xl:mt-15 xl:block hidden"
+        src={vectorLeft}
       />
       <Typography className="text-3xl font-semibold mb-5 text-[#222222]">
         {t('landingPageV2.product.section3.title1')}

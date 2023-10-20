@@ -166,7 +166,7 @@ export default function CardAsset(): React.ReactElement {
           ) : asset.length !== 0 ? (
             asset.map((data, idx) => (
               <Card
-                className="flex flex-row shadow-md rounded-xl mb-7 p-4 bg-transparent h-[80px] items-center"
+                className="flex flex-row bg-[#FFFFFF]/50 border border-[#D3D3D3] backdrop-blur rounded-xl mb-7 p-4 h-[80px] items-center"
                 key={idx}
               >
                 <div className="flex flex-row justify-start items-center w-1/3">

@@ -98,9 +98,9 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
 
       const response = await joinCirclePost({
         circle_id: dataPost?.id,
-        duration: 1,
+        duration: numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
         payment_request: {
-          amount: totalAmount * numberMonth(),
+          amount: totalAmount,
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,

@@ -3,12 +3,7 @@ import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { formatCurrency } from '@/utils/common/currency';
 
 import Image from 'next/image';
-import {
-  CircleBig,
-  CircleNormal,
-  CircleSmall,
-  circlePayment
-} from 'public/assets/circle';
+import { PaymentSVG } from 'public/assets/circle';
 
 interface props {
   dataPost: any;
@@ -54,32 +49,7 @@ const ChooseSubs: React.FC<props> = ({
       </div>
       <div className="flex justify-center">
         <div className="flex justify-center absolute pl-4 pt-2">
-          <Image
-            src={circlePayment}
-            alt="image"
-            className="w-[180px] h-[230px] z-50"
-          />
-        </div>
-        <div className="flex justify-center absolute pt-6">
-          <Image
-            src={CircleSmall}
-            alt="image"
-            className="w-[220px] h-[220px] z-10"
-          />
-        </div>
-        <div className="flex justify-center absolute pt-12">
-          <Image
-            src={CircleNormal}
-            alt="image"
-            className="w-[170px] h-[170px] z-20"
-          />
-        </div>
-        <div className="flex justify-center absolute pt-20">
-          <Image
-            src={CircleBig}
-            alt="image"
-            className="w-[110px] h-[110px] z-30"
-          />
+          <Image src={PaymentSVG} alt="image" className="w-[230px] h-[230px]" />
         </div>
       </div>
       <div className="flex justify-center pt-[250px]">

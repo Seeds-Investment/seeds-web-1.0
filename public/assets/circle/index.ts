@@ -1,3 +1,5 @@
+export { default as PaymentSVG } from 'public/assets/circle/Payment.svg';
+export { default as WrongGirl } from 'public/assets/circle/Wrong.png';
 export { default as CircleNormal } from 'public/assets/circle/circleNormal.svg';
 export { default as Pending } from 'public/assets/circle/circlePending.svg';
 export { default as CircleSmall } from 'public/assets/circle/circleSmall.svg';

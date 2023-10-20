@@ -1,4 +1,5 @@
 'use client';
+import aboutUs2 from '@/assets/about-us/about-us-right.png';
 import aboutUs1 from '@/assets/about-us/aboutUs1.svg';
 import image1 from '@/assets/about-us/image1.svg';
 import learn from '@/assets/about-us/learn.svg';
@@ -105,8 +106,13 @@ export default function AboutUsPage(): React.ReactElement {
           </div>
         </div>
 
-        <div className="z-20 hidden lg:block relative top-[42px] left-[55px] lg:ml-[30%] opacity-[50%] w-[699px] h-[698px] lg:mt-[-30rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
+        <div className="z-20 hidden lg:block relative top-[42px] left-[55px] lg:ml-[30%] opacity-[60%] w-[699px] h-[728px] lg:mt-[-30rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
         <div className="w-full z-10 relative mx-5 mt-5 lg:mt-[-10rem] bg-[#FFFFFF]">
+          <Image
+            className="w-full h-auto absolute -z-10 right-0 -top-[12vh]"
+            alt="img"
+            src={aboutUs2}
+          />
           <div className="flex flex-col lg:flex-row">
             <div className=" w-[450px]  lg:mt-10 lg:ml-20">
               <div className="text-3xl text-[#745AD9] font-semibold mb-3 lg:text-3xl  lg:mb-0">
@@ -205,7 +211,7 @@ export default function AboutUsPage(): React.ReactElement {
           </div>
         </div>
         <div className="z-0 top-24 lg:ml-[90%] lg:mt-[-6rem] -right-4 w-120 h-48 hidden lg:block bg-seeds-green blur-[90px] rounded-full"></div>
-        <div className="z-0 hidden lg:block lg:top-[626px] lg:left-[325px] lg:ml-[30%] opacity-[50%] lg:w-[699px] lg:h-[698px] lg:mt-[-50rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
+        <div className="z-0 hidden lg:block lg:top-[726px] lg:left-[325px] lg:ml-[30%] opacity-[50%] lg:w-[699px] lg:h-[798px] lg:mt-[-50rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
         <div className="w-full lg:mt-[-2rem] ">
           <Image
             className="xl:w-[699px] translate-x-[400px] -mt-[100px] -z-10 xl:h-[699px] absolute"
@@ -213,6 +219,11 @@ export default function AboutUsPage(): React.ReactElement {
             src={vectorAbout}
           />
           <div className="w-full flex flex-col lg:flex-row">
+            <Image
+              className="w-full h-auto absolute -z-10 right-0 -mt-[10vh]"
+              alt="img"
+              src={aboutUs2}
+            />
             <div className=" w-full xl:mx-20  lg:mt-10 ">
               <div className="text-3xl ml-5 lg:mt-12 text-[#745AD9] font-semibold mb-3 lg:text-3xl lg:mb-8">
                 {t('aboutUs.title3')}

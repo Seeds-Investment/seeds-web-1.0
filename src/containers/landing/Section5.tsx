@@ -98,7 +98,7 @@ export default function Section5(): React.ReactElement {
             <img
               src="/assets/images/communities.png"
               alt=""
-              className="mt-10 xl:block hidden w-full h-full"
+              className="-mt-[300px] xl:block hidden w-full h-full"
             />
             <img
               src="/assets/images/community.png"

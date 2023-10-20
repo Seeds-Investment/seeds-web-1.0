@@ -35,7 +35,6 @@ export default function Section4(): React.ReactElement {
         <div
           className={`w-full h-[400px] xl:h-[864px] pt-[90px] font-poppins relative pb-20`}
         >
-          <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[38vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
           <div className="xl:rounded-[32px] rounded-[4px] w-[143px] xl:w-[345px] h-[205px] xl:h-[494px] absolute z-10 xl:left-[40vw] left-[32vw] xl:top-auto top-10">
             <iframe
               width="100%"
@@ -116,6 +115,8 @@ export default function Section4(): React.ReactElement {
           </div>
           <div className="w-full h-[217px] bg-gradient-to-bl from-[rgba(79,230,175,1)] to-[rgba(154,118,254,1)] bottom-[200px] inset-x-[0] absolute z-0 mx-auto xl:block hidden" />
           <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[8vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
+          <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] left-[38vw] backdrop-blur-[24px] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
+
           <div className="[box-shadow:0px_0px_0px_1px_rgba(219,_200,_255,_1)_inset] [box-shadow-width:1px] w-[345px] h-[494px] backdrop-blur-[24px] left-[68vw] rounded-[32px] absolute bottom-[320px] xl:block hidden" />
           <div className="gap-[53px] absolute inline-flex items-start text-left text-white"></div>
         </div>

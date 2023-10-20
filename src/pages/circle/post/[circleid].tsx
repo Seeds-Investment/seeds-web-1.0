@@ -379,7 +379,6 @@ const CirclePost = (): JSX.Element => {
       setIsSymbol(true);
       if (currentWord.slice(1).length > 2) {
         if (debounceTimer !== null) clearTimeout(debounceTimer);
-
         setDebounceTimer(
           setTimeout((): void => {
             void (async (): Promise<void> => {

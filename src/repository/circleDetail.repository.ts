@@ -212,7 +212,7 @@ export const createPostCircleDetail = async (formData: {
   privacy: string;
   is_pinned: boolean;
   user_id: string | any;
-  circleId: string | any;
+  circleId?: string | any;
   hashtags: string[] | any;
   pollings?: Polling[] | any;
   polling_multiple?: boolean;
@@ -234,8 +234,7 @@ export const createPostCircleDetail = async (formData: {
       isUndefindOrNull(formData.privacy) ||
       isUndefindOrNull(formData.is_pinned) ||
       isUndefindOrNull(formData.user_id) ||
-      isUndefindOrNull(formData.hashtags) ||
-      isUndefindOrNull(formData.circleId)
+      isUndefindOrNull(formData.hashtags)
     ) {
       return await Promise.resolve(null);
     }

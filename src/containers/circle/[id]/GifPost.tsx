@@ -8,7 +8,7 @@ import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 interface form {
   content_text: string;
-  privacy: string;
+  privacy?: string;
   media_urls: string[];
 }
 interface props {

@@ -4,6 +4,7 @@ import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -106,6 +107,8 @@ export default function ArticleList(): React.ReactElement {
     setActiveCategory(newCategory);
   };
 
+   
+
   const { t } = useTranslation();
 
   // const timeAgo = (dateString: string): string => {
@@ -128,15 +131,28 @@ export default function ArticleList(): React.ReactElement {
   //   }
   // };
 
+  const customGradient = (
+    <>
+      <span className="-z-10 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
+      <span className="-z-10 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
+      <span className="-z-10 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
+      <span className="-z-10 fixed top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
+      <span className="-z-10 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+    </>
+  );
+
   return (
     <>
-      <PageGradient className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
+      <PageGradient
+        customGradient={customGradient}
+        className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
+      >
         <div className="flex z-10 flex-col lg:flex-row justify-between">
           <div className="flex flex-col">
-            <div className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r mt-3 xl:mt-5 from-[#9A76FE] to-[#4FE6AF]">
+            <div className="text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text1')}
             </div>
-            <div className=" text-md font-semibold text-gray-500">
+            <div className=" text-md font-normal text-gray-500">
               {t('articleList.text2')}
             </div>
           </div>

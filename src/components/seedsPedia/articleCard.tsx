@@ -1,7 +1,7 @@
 'use-client';
 import { getArticleById, postLike } from '@/repository/article.repository';
-// import { format, parseISO } from 'date-fns';
-// import { id } from 'date-fns/locale';
+import { format, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -120,20 +120,20 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
-  //   function formatDateToIndonesian(dateStr: string): string {
-  //     try {
-  //       const parsedDate = parseISO(dateStr);
-  //       const formattedDate = format(parsedDate, 'd MMMM ', { locale: id });
+  function formatDateToIndonesian(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const formattedDate = format(parsedDate, 'd MMMM ', { locale: id });
 
-  //       return formattedDate;
-  //     } catch (error) {
-  //       console.error('Error parsing or formatting date:', error);
-  //       return '';
-  //     }
-  //   }
+      return formattedDate;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
 
   function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/article/${valueToCopy}`;
+    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}`;
 
     const textArea = document.createElement('textarea');
     textArea.value = textToCopy;
@@ -179,14 +179,14 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <div className="p-4 w-3/4">
-          {/* <div className="flex flex-row justify-between">
-            <p className="text-base font-normal text-[#7C7C7C]">
+          <div className="flex flex-row justify-between">
+            {/* <p className="text-base font-normal text-[#7C7C7C]">
               {articleDetail?.author}
-            </p>
-            <p className="text-base font-normal text-[#8A8A8A]">
+            </p> */}
+            {/* <p className="text-base font-normal text-[#8A8A8A]">
               {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
-            </p>
-          </div> */}
+            </p> */}
+          </div>
           <h1 className="text-lg font-semibold text-[#000] my-4">
             {articleDetail?.title}
           </h1>
@@ -215,9 +215,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
               {/* <p className="text-base font-normal text-[#7C7C7C]">
                {articleDetail?.author}
              </p> */}
-              {/* <p className="text-base font-normal text-[#8A8A8A]">
+              <p className="text-base font-normal text-[#8A8A8A]">
                 {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
-              </p> */}
+              </p>
             </div>
             <div className="flex flex-row gap-2">
               <div className="flex flex-row gap-1">
@@ -257,7 +257,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                     />
                   </svg>
                 )}
-                <span>{articleDetail?.total_likes}</span>
+                <span className="mx-2">+{articleDetail?.total_likes}</span>
               </div>
               {/* <div className="flex flex-row gap-1">
               <svg

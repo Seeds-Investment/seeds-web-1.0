@@ -1,6 +1,6 @@
 'use-client';
 import { getArticleById, postLike } from '@/repository/article.repository';
-import { format, parseISO } from 'date-fns';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -69,9 +69,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           {truncatedText}...
         </p>
         {!showFullText && text.length > limit && (
-          <button className="text-[#7555DA] text-base font-normal underline">
-            Read More
-          </button>
+          <button className="text-[#7555DA] text-base font-normal underline"></button>
         )}
       </div>
     );
@@ -132,6 +130,17 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     }
   }
 
+  function formatDateToIndonesianAgo(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const distance = formatDistanceToNow(parsedDate, { locale: id });
+      return `.  ${distance}`;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
+
   function copyValueWithUrl(valueToCopy: number): boolean {
     const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}`;
 
@@ -178,19 +187,14 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </div>
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
-        <div className="p-4 w-3/4">
-          <div className="flex flex-row justify-between">
-            {/* <p className="text-base font-normal text-[#7C7C7C]">
-              {articleDetail?.author}
-            </p> */}
-            {/* <p className="text-base font-normal text-[#8A8A8A]">
-              {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
-            </p> */}
-          </div>
-          <h1 className="text-lg font-semibold text-[#000] my-4">
+        <div className="px-4 pb-3 w-3/4">
+          <h1 className="text-base font-semibold text-[#000] my-4">
             {articleDetail?.title}
           </h1>
-          <Link href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}>
+          <Link
+            className="text-sm"
+            href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}
+          >
             <LimitString text={cleanedContent} limit={100} />
           </Link>
         </div>
@@ -200,23 +204,25 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
               <img
                 src={imageUrl}
                 alt={articleDetail?.title}
-                className="w-full h-[238px] rounded-[18px]"
+                className="w-[238ox] h-[138px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt={articleDetail?.title}
-                className="w-full h-[238px] rounded-[18px]"
+                className="w-[238px] h-[138px] rounded-[18px]"
               />
             )}
           </Link>
           <div className="flex flex-row justify-between mt-4 bottom-2 w-full gap-4 right-5 absolute">
             <div className="flex flex-row ms-7 justify-between">
-              {/* <p className="text-base font-normal text-[#7C7C7C]">
-               {articleDetail?.author}
-             </p> */}
-              <p className="text-base font-normal text-[#8A8A8A]">
+              <p className="text-xs font-normal text-[#8A8A8A]">
                 {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
+              </p>
+              <p className="text-xs font-normal text-[#7C7C7C]">
+                {formatDateToIndonesianAgo(
+                  articleDetail?.publicationDate ?? ''
+                )}
               </p>
             </div>
             <div className="flex flex-row gap-2">

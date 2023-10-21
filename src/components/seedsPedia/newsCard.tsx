@@ -1,8 +1,9 @@
 'use-client';
 import { getArticleById } from '@/repository/article.repository';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-
 interface ArticleCardProps {
   articleId: string;
 }
@@ -56,9 +57,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           {truncatedText}...
         </p>
         {!showFullText && text.length > limit && (
-          <button className="text-[#7555DA] text-base font-normal underline">
-            Read More
-          </button>
+          <button className="text-[#7555DA] text-base font-normal underline"></button>
         )}
       </div>
     );
@@ -87,6 +86,29 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
 
+  function formatDateToIndonesian(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const formattedDate = format(parsedDate, 'd MMMM ', { locale: id });
+
+      return formattedDate;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
+
+  function formatDateToIndonesianAgo(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const distance = formatDistanceToNow(parsedDate, { locale: id });
+      return `.  ${distance}`;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
+
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl ?? defaultNews;
   const isImageValid = isImageUrlValid(imageUrl);
@@ -106,21 +128,36 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </div>
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
-        <div className="p-4 w-3/4">
-          {/* <div className="flex flex-row justify-between">
-            <p className="text-base font-normal text-[#7C7C7C]">
-              {articleDetail?.author}
-            </p>
-            <p className="text-base font-normal text-[#8A8A8A]">
+        <div className="px-4 pb-3 w-3/4">
+          <div className="flex flex-row justify-between">
+            {/* <p className="text-xs font-normal text-[#8A8A8A]">
               {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
             </p>
-          </div> */}
-          <h1 className="text-lg font-semibold text-[#000] my-4">
+            <p className="text-xs font-normal text-[#7C7C7C]">
+              {formatDateToIndonesianAgo(articleDetail?.publicationDate ?? '')}
+            </p> */}
+          </div>
+          <h1 className="text-base font-semibold text-[#000] my-4">
             {articleDetail?.title}
           </h1>
-          <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
+          <Link
+            className="text-sm"
+            href={`/seedspedia/news/${articleDetail?.id ?? 0}`}
+          >
             <LimitString text={cleanedContent} limit={100} />
           </Link>
+          <div className="flex flex-row justify-between bottom-2 w-full gap-4 right-5 absolute">
+            <div className="flex flex-row ms-7 justify-between">
+              <p className="text-xs font-normal text-[#8A8A8A]">
+                {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
+              </p>
+              <p className="text-xs font-normal text-[#7C7C7C]">
+                {formatDateToIndonesianAgo(
+                  articleDetail?.publicationDate ?? ''
+                )}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="p-4 w-[45%] flex flex-col ">
           <Link href={`/seedspedia/article/${articleDetail?.id ?? 0}`}>
@@ -128,13 +165,13 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
               <img
                 src={imageUrl}
                 alt={articleDetail?.title}
-                className="w-full h-[238px] rounded-[18px]"
+                className="w-full h-[138px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt={articleDetail?.title}
-                className="w-full h-[238px] rounded-[18px]"
+                className="w-full h-[138px] rounded-[18px]"
               />
             )}
           </Link>

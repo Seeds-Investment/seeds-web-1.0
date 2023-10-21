@@ -75,7 +75,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   };
 
   return (
-    <div className="hidden md:block bg-white pl-[5vh] py-8 w-full">
+    <div className="hidden md:block bg-white pl-[5vh] w-full">
       <div className="flex h-14 w-[375px]">
         <div className="flex flex-col justify-center">
           <button type="button" onClick={cancelHandler}>

@@ -107,8 +107,6 @@ export default function ArticleList(): React.ReactElement {
     setActiveCategory(newCategory);
   };
 
-   
-
   const { t } = useTranslation();
 
   // const timeAgo = (dateString: string): string => {

@@ -12,7 +12,7 @@ interface CirclePeopleData {
 
 interface form {
   content_text: string;
-  media_urls: string[];
+  media_url: string;
 }
 
 interface props {
@@ -88,7 +88,7 @@ const CommentInput: React.FC<props> = ({
         <img
           alt="bg-avatar-sm"
           src={userInfo?.avatar}
-          className="h-[48px] w-[48px] rounded-full object-cover"
+          className="h-[48px] w-[48px] rounded-full object-cover outline outline-black"
         />
         <div className="flex h-full w-full items-center">
           <textarea

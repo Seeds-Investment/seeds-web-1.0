@@ -245,7 +245,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   }, []);
 
   return (
-    <div className="w-full mb-10 pb-10 border-b border-neutral-soft">
+    <div
+      className="w-full mt-5 pb-5 border-b border-neutral-soft"
+      key={dataPost.id}
+    >
       <div className="flex gap-4 md:gap-8">
         <div className="hidden md:flex">
           <div>
@@ -268,7 +271,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                     alt="AVATAR"
                     width={48}
                     height={48}
-                    className="w-11 h-11 rounded-full outline outline-black"
+                    className="rounded-full outline outline-black"
                   />
                 </div>
               </div>

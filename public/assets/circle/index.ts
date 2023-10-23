@@ -4,6 +4,8 @@ export { default as CircleNormal } from 'public/assets/circle/circleNormal.svg';
 export { default as Pending } from 'public/assets/circle/circlePending.svg';
 export { default as CircleSmall } from 'public/assets/circle/circleSmall.svg';
 export { default as CircleBig } from 'public/assets/circle/circlebig.svg';
+export { default as galleryV2 } from 'public/assets/circle/galleryV2.svg';
+export { default as GIFV2 } from 'public/assets/circle/gifV2.svg';
 export { default as Like } from 'public/assets/circle/like.svg';
 export { default as LockedCircle } from 'public/assets/circle/lockedAccount.png';
 export { default as circlePayment } from 'public/assets/circle/paymentCircle.png';

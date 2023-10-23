@@ -64,7 +64,7 @@ export default function Section1(): React.ReactElement {
   }
   return (
     <div className="min-w-full cursor-default font-poppins">
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row h-[100vh]">
         <div className="w-full md:w-1/2 flex items-center">
           <Image
             alt="img"
@@ -102,7 +102,7 @@ export default function Section1(): React.ReactElement {
         <div className="w-full cursor-default md:w-1/2">
           <Image
             alt="img"
-            className="xl:block xl:mt-0 -mt-[80px]"
+            className="xl:block xl:-mt-[100px] -mt-[80px]"
             src={section1}
           />
         </div>

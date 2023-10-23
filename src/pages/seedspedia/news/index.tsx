@@ -131,6 +131,7 @@ export default function ArticleList(): React.ReactElement {
 
     setActiveCategory(newCategory);
   };
+  const hotNewsItemClass = 'mb-2 mx-48';
 
   const { t } = useTranslation();
 
@@ -362,7 +363,7 @@ export default function ArticleList(): React.ReactElement {
         <Slider
           slidesToShow={3}
           speed={500}
-          className=" my-12"
+          className="my-12"
           slidesToScroll={1}
           responsive={[
             {
@@ -383,7 +384,7 @@ export default function ArticleList(): React.ReactElement {
               breakpoint: 480,
               settings: {
                 dots: true,
-                slidesToShow: 3
+                slidesToShow: 1 // Ubah jumlah tampilan hot news di sini menjadi 1
               }
             }
           ]}
@@ -391,7 +392,7 @@ export default function ArticleList(): React.ReactElement {
           {hotNews.map((data, key) => (
             <div
               key={key}
-              className="border border-spacing-20 rounded-xl border-gray-100 w-[200px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 mx-[100px]"
+              className={`border border-spacing-20 rounded-xl border-gray-100 w-[200px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
             >
               {isImageUrlValid(data.imageUrl) ? (
                 <img
@@ -406,7 +407,7 @@ export default function ArticleList(): React.ReactElement {
                   className="w-full rounded-xl h-[240px]"
                 />
               )}
-              <div className="absolute top-0  right-0 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
+              <div className="absolute top-0 right-0 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
                 Hot News
               </div>
               <h3 className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.7)] text-white p-2 text-left">

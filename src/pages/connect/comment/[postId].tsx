@@ -1,6 +1,9 @@
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import CommentInput from '@/containers/circle/[id]/CommentInput';
+import GifSection from '@/containers/circle/[id]/GifSection';
 import PostSection from '@/containers/circle/[id]/PostSection';
+import UniqueInputComment from '@/containers/circle/[id]/UniqueInputComment';
 import withAuth from '@/helpers/withAuth';
 import {
   UseUploadMedia,
@@ -17,9 +20,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
-import CommentInput from './component/CommentInput';
-import GifSection from './component/GifSection';
-import UniqueInputComment from './component/UniqueInputComment';
 interface typeOfCommentForm {
   post_id: string;
   user_id: string;

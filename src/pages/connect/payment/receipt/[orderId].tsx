@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getHowToPay,
@@ -373,4 +374,4 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   );
 };
 
-export default SuccessPaymentPage;
+export default withAuth(SuccessPaymentPage);

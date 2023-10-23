@@ -2,6 +2,7 @@ import CirclePaymentLayout from '@/components/layouts/CirclePaymentLayout';
 import Loading from '@/components/popup/Loading';
 import TermConditionPage from '@/containers/circle/create-circle/termConditionPage';
 import PaymentList from '@/containers/play/payment/PaymentList';
+import withAuth from '@/helpers/withAuth';
 import {
   getDetailCircle,
   getStatusCircle
@@ -104,4 +105,4 @@ const CirclePayment: React.FC = () => {
   );
 };
 
-export default CirclePayment;
+export default withAuth(CirclePayment);

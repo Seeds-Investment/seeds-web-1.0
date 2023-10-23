@@ -1,3 +1,4 @@
+import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -11,27 +12,58 @@ interface CirclePeopleData {
 
 interface form {
   content_text: string;
-  privacy: string;
-  media_urls: string[];
+  media_url: string;
 }
 
 interface props {
   form: form;
   handleFormChange: any;
   showDropdown: boolean;
-  dropDownData?: CirclePeopleData[] | [];
+  dropDownData: CirclePeopleData[] | [];
   setSelectedValue: any;
+  setIsLoading: any;
 }
 
-const CirclePostInputText: React.FC<props> = ({
+interface UserData {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+}
+
+const CommentInput: React.FC<props> = ({
   form,
   handleFormChange,
   showDropdown,
   dropDownData,
-  setSelectedValue
+  setSelectedValue,
+  setIsLoading
 }) => {
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        setIsLoading(true);
+        const response = await getUserInfo();
+        setUserInfo(response);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    void fetchData();
+  }, []);
+
   useEffect(() => {
     if (textAreaRef.current !== null && showDropdown) {
       const rect = textAreaRef.current.getBoundingClientRect();
@@ -51,18 +83,25 @@ const CirclePostInputText: React.FC<props> = ({
   }, [showDropdown, form.content_text]);
 
   return (
-    <div className="pl-16 mb-[60px]">
-      <textarea
-        name="content_text"
-        ref={textAreaRef}
-        id="circle-post"
-        onChange={handleFormChange}
-        value={form.content_text}
-        className="w-[100%] h-12 focus:outline-none bg-transparent font-poppins placeholder:font-poppins"
-        placeholder={
-          'What do you want to disscuss?\nUse @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
-        }
-      ></textarea>
+    <div className="mb-4">
+      <div className="flex justify-start gap-4 h-fit">
+        <img
+          alt="bg-avatar-sm"
+          src={userInfo?.avatar}
+          className="h-[48px] w-[48px] rounded-full object-cover outline outline-black"
+        />
+        <div className="flex h-full w-full items-center">
+          <textarea
+            name="content_text"
+            ref={textAreaRef}
+            id="circle-post"
+            onChange={handleFormChange}
+            value={form.content_text}
+            className="w-[100%] h-fit focus:outline-none bg-transparent font-poppins placeholder:font-poppins placeholder:text-neutral-medium"
+            placeholder={'Reply...'}
+          ></textarea>
+        </div>
+      </div>
       {showDropdown && (
         <div
           className="absolute shadow-lg border-x border-b border-black/20 bg-white pb-2 rounded-b-xl max-h-[300px] overflow-auto"
@@ -117,4 +156,4 @@ const CirclePostInputText: React.FC<props> = ({
   );
 };
 
-export default CirclePostInputText;
+export default CommentInput;

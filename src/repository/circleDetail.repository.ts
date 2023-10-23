@@ -8,6 +8,16 @@ const baseUrl = baseAxios(
 interface getDataCircleType {
   circleId: string;
 }
+
+interface typeOfComment {
+  post_id: string;
+  user_id: string;
+  parent_id: string;
+  content_text: string;
+  media_url: string;
+  media_type: string;
+}
+
 interface getDataPostCircleType {
   postId: string;
 }
@@ -71,6 +81,30 @@ export const getDetailCirclePost = async ({
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getAllComment = async ({
+  postId
+}: getDataPostCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(postId)) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await baseUrl.get(
+      `/post/comment/v2/list?post_id=${postId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
@@ -212,7 +246,7 @@ export const createPostCircleDetail = async (formData: {
   privacy: string;
   is_pinned: boolean;
   user_id: string | any;
-  circleId: string | any;
+  circleId?: string | any;
   hashtags: string[] | any;
   pollings?: Polling[] | any;
   polling_multiple?: boolean;
@@ -234,8 +268,7 @@ export const createPostCircleDetail = async (formData: {
       isUndefindOrNull(formData.privacy) ||
       isUndefindOrNull(formData.is_pinned) ||
       isUndefindOrNull(formData.user_id) ||
-      isUndefindOrNull(formData.hashtags) ||
-      isUndefindOrNull(formData.circleId)
+      isUndefindOrNull(formData.hashtags)
     ) {
       return await Promise.resolve(null);
     }
@@ -258,6 +291,42 @@ export const createPostCircleDetail = async (formData: {
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createComment = async (formData: typeOfComment): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (
+      isUndefindOrNull(formData.content_text) ||
+      isUndefindOrNull(formData.post_id) ||
+      isUndefindOrNull(formData.user_id)
+    ) {
+      return await Promise.resolve(null);
+    }
+
+    const body = JSON.stringify({
+      content_text: formData.content_text,
+      media_url: formData.media_url,
+      user_id: formData.user_id,
+      post_id: formData.post_id,
+      parent_id: formData.parent_id,
+      media_type: formData.media_type
+    });
+
+    const response = await baseUrl.post('/post/comment/v2/create', body, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

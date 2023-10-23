@@ -8,15 +8,16 @@ import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 interface form {
   content_text: string;
-  privacy?: string;
-  media_urls: string[];
+  media_url: string;
+  media_type: string;
 }
 interface props {
   setPages: any;
-  form: form;
+  setForm: any;
+  setMedia: any;
 }
 
-const GifPost: React.FC<props> = ({ setPages, form }) => {
+const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
   const [dataGif, setData]: any = useState();
   const [search, setSearch] = useState({
     searchGif: ''
@@ -46,11 +47,15 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
 
   useEffect(() => {
     void fetchGif();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handlePostGif = (url: any): any => {
-    form.media_urls.push(url);
+    setForm((prevForm: form) => ({
+      ...prevForm,
+      media_url: url,
+      media_type: 'image'
+    }));
+    setMedia(undefined);
     setPages('text');
   };
 
@@ -75,7 +80,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   };
 
   return (
-    <div className="hidden md:block bg-white pl-[5vh] w-full">
+    <div className="hidden md:block bg-white pb-4 w-full">
       <div className="flex h-14 w-[375px]">
         <div className="flex flex-col justify-center">
           <button type="button" onClick={cancelHandler}>
@@ -127,4 +132,4 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
     </div>
   );
 };
-export default GifPost;
+export default GifSection;

@@ -1,6 +1,8 @@
 'use-client';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import Image from 'next/image';
+
 import {
   getArticle,
   getArticleById,
@@ -15,6 +17,7 @@ import { id as ID } from 'date-fns/locale';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import author from '../../../../public/assets/author.png';
 
 interface UserData {
   name: string;
@@ -346,6 +349,7 @@ export default function ArticleDetailPage(): JSX.Element {
 
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl;
+
   const isImageValid = isImageUrlValid(imageUrl);
 
   const customGradient = (
@@ -377,13 +381,23 @@ export default function ArticleDetailPage(): JSX.Element {
           {articleDetail.title}
         </h1>
         <div className="flex flex-row justify-between my-4">
-          <div className="flex flex-col">
-            <h4 className="text-xl font-semibold text-[#262626]">
-              {articleDetail.author}
-            </h4>
-            <p className="text-sm font-semibold text-[#8A8A8A]">
-              {formatDateToIndonesian(articleDetail?.publicationDate)}
-            </p>
+          <div className="flex gap-3">
+            <div className="relative w-16 h-16 rounded-full overflow-hidden">
+              <Image
+                src={author}
+                alt="Author"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h4 className="text-xl font-semibold text-[#262626] mt-2">
+                {articleDetail.author}
+              </h4>
+              <p className="text-sm font-semibold text-[#8A8A8A]">
+                {formatDateToIndonesian(articleDetail?.publicationDate)}
+              </p>
+            </div>
           </div>
           <div className="flex flex-row gap-3">
             {articleDetail?.is_liked !== undefined && articleDetail.is_liked ? (
@@ -646,7 +660,7 @@ export default function ArticleDetailPage(): JSX.Element {
                   </div>
                   <div>
                     <div className="mt-1 w-[100px] h-[100px]">
-                      {isImageValid ? (
+                      {isImageUrlValid(article.imageUrl) ? (
                         <img
                           src={article?.imageUrl}
                           alt=""

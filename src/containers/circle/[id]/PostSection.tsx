@@ -245,7 +245,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   }, []);
 
   return (
-    <div className="w-full mb-10 pb-10 border-b border-neutral-soft">
+    <div
+      className="w-full mt-5 pb-5 border-b border-neutral-soft"
+      key={dataPost.id}
+    >
       <div className="flex gap-4 md:gap-8">
         <div className="hidden md:flex">
           <div>
@@ -260,7 +263,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
         </div>
         <div className="w-full">
           <div className="mb-4">
-            <div className="flex gap-5">
+            <div className="flex gap-5 pb-4">
               <div className="md:hidden flex">
                 <div>
                   <Image
@@ -268,7 +271,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                     alt="AVATAR"
                     width={48}
                     height={48}
-                    className="w-11 h-11 rounded-full outline outline-black"
+                    className="rounded-full outline outline-black"
                   />
                 </div>
               </div>
@@ -305,7 +308,30 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                 </div>
               </div>
             </div>
-
+            <div className="flex">
+              {words.map((el: string, i: number) => {
+                el += '\xa0';
+                return el.startsWith('#') || el.startsWith('@') ? (
+                  <>
+                    <Typography
+                      key={`${i} + ${el}  + 'hashtags'`}
+                      className="text-[#5E44FF] font-normal font-poppins cursor-pointer"
+                    >
+                      {el}
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Typography
+                      key={`${i} + ${el} + 'normal text'`}
+                      className="font-poppins text-black"
+                    >
+                      {el}
+                    </Typography>
+                  </>
+                );
+              })}
+            </div>
             {categorizeURL(dataPost.media_urls)}
             {voice.length > 0 && (
               <audio controls>
@@ -371,26 +397,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               </div>
             )}
             {media.length > 0 && <ImageCarousel images={media} />}
-
-            <div className="flex">
-              {words.map((el: string, i: number) => {
-                el += '\xa0';
-                return el.startsWith('#') ? (
-                  <>
-                    <Typography key={`${i} + ${el}  + 'hashtags'`}>
-                      <h1 className="text-[#5E44FF]">{el}</h1>
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <Typography key={`${i} + ${el} + 'normal text'`}>
-                      {el}
-                    </Typography>
-                  </>
-                );
-              })}
-            </div>
-
             {dataPost.pollings?.length > 0 && (
               <PollingView
                 data={dataPost.pollings}

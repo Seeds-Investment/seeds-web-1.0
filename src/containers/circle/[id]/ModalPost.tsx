@@ -8,6 +8,7 @@ import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import {
   UseUploadMedia,
+  createPostCircleDetail,
   searchAssets,
   searchCircleByName,
   searchUser
@@ -432,7 +433,7 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
         payload.pie_amount = parseInt(form.pie_amount);
       }
 
-      // await createPostCircleDetail(payload);
+      await createPostCircleDetail(payload);
 
       setForm({
         content_text: '',

@@ -143,39 +143,7 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }
 
-  const likeArticle = async (articleId: number): Promise<void> => {
-    try {
-      const response = await postLike(formRequest, articleId);
-      if (response.status === 200) {
-        if (response.is_liked === true) {
-          setArticleDetail(prevArticleDetail => {
-            if (prevArticleDetail !== null) {
-              return {
-                ...prevArticleDetail,
-                total_likes: prevArticleDetail?.total_likes + 1,
-                is_liked: true
-              };
-            }
-            return prevArticleDetail;
-          });
-        } else {
-          setArticleDetail(prevArticleDetail => {
-            if (prevArticleDetail !== null) {
-              return {
-                ...prevArticleDetail,
-                total_likes: prevArticleDetail?.total_likes - 1,
-                is_liked: false
-              };
-            }
-            return prevArticleDetail;
-          });
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await fetchArticles();
@@ -304,25 +272,38 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   };
 
-  // const likeArticle = async (articleId: number): Promise<void> => {
-  //   try {
-  //     const response = await postLike(formRequest, articleId);
-  //     if (response.status === 200) {
-  //       setArticleDetail(prevArticleDetail => {
-  //         if (prevArticleDetail !== null) {
-  //           return {
-  //             ...prevArticleDetail,
-  //             total_likes: prevArticleDetail?.total_likes + 1
-  //           };
-  //         }
-  //         return prevArticleDetail;
-  //       });
-  //       setLiked(true);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const likeArticle = async (articleId: number): Promise<void> => {
+    try {
+      const response = await postLike(formRequest, articleId);
+      if (response.status === 200) {
+        if (response.is_liked === true) {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes + 1,
+                is_liked: true
+              };
+            }
+            return prevArticleDetail;
+          });
+        } else {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes - 1,
+                is_liked: false
+              };
+            }
+            return prevArticleDetail;
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function formatDate(inputDate: string): string {
     const date = new Date(inputDate);

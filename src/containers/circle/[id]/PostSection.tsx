@@ -18,7 +18,19 @@ import {
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Like, PDFViewer } from 'public/assets/circle';
+import { Like, PDFViewer, clipCopy } from 'public/assets/circle';
+import {
+  FacebookShare,
+  InstagramShare,
+  LinkedinShare,
+  MassengerShare,
+  NearbyShare,
+  TelegramShare,
+  TiktokShare,
+  TwitterShare,
+  WhatsappShare
+} from 'public/assets/circle/share';
+import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import ImageCarousel from './CarouselImage';
 import PieCirclePost from './PieCirclePost';
@@ -37,6 +49,13 @@ interface ChartData {
   }>;
 }
 
+interface ShareData {
+  name: string;
+  image: any;
+  link: string;
+  class: string;
+}
+
 const initialChartData = {
   labels: ['dummy'],
   datasets: [
@@ -47,10 +66,83 @@ const initialChartData = {
   ]
 };
 
+const shareData: ShareData[] = [
+  {
+    name: 'Instagram',
+    image: InstagramShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Tiktok',
+    image: TiktokShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Facebook',
+    image: FacebookShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Twitter',
+    image: TwitterShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Whatsapp',
+    image: WhatsappShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Telegram',
+    image: TelegramShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Massenger',
+    image: MassengerShare,
+    link: 'www.instagram.com',
+    class: ''
+  },
+  {
+    name: 'Linkedin',
+    image: LinkedinShare,
+    link: 'www.instagram.com',
+    class: 'bg-[#0A66C2]'
+  },
+  {
+    name: 'Near by',
+    image: NearbyShare,
+    link: 'www.instagram.com',
+    class: 'bg-[#69FFC9]'
+  }
+];
+
 const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isShare, setIsShare] = useState(false);
+
+  const handleOpen = (): void => {
+    setIsShare(!isShare);
+  };
+
+  const handleCopyClick = async (text: string): Promise<void> => {
+    await navigator.clipboard.writeText(text).then(() => {
+      setIsCopied(true);
+      setTimeout((): void => {
+        setIsCopied(false);
+      }, 2000);
+    });
+  };
+  console.log(isCopied);
 
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
@@ -449,12 +541,112 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <Image
-                  src={ShareBlack.src}
-                  alt={ShareBlack.alt}
-                  width={20}
-                  height={20}
-                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleOpen();
+                  }}
+                >
+                  <Image
+                    src={ShareBlack.src}
+                    alt={ShareBlack.alt}
+                    width={20}
+                    height={20}
+                  />
+                </button>
+                {isShare && (
+                  <div className="w-[420px] absolute bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
+                    <div className="flex flex-col px-4 py-2">
+                      <div className="flex justify-between">
+                        <Typography className="font-poppins font-semibold text-xl text-black">
+                          Share This Post
+                        </Typography>
+                        <Image
+                          src={XIcon}
+                          alt="x"
+                          width={20}
+                          height={20}
+                          className="cursor-pointer"
+                          onClick={() => {
+                            handleOpen();
+                          }}
+                        />
+                      </div>
+                      <div className="flex justify-center pt-5">
+                        <Typography className="font-poppins font-light text-base text-neutral-medium">
+                          Share links:
+                        </Typography>
+                      </div>
+                      <div className="flex justify-center pb-4 border-b border-neutral-ultrasoft">
+                        <div className="flex border rounded-xl justify-start border-neutral-ultrasoft p-2 min-w-[300px]">
+                          <input
+                            type="text"
+                            readOnly
+                            value={`http:localhost:3000${router.asPath}`}
+                            onClick={() => {
+                              handleCopyClick(
+                                `http:localhost:3000${router.asPath}`
+                              ).catch((err: any) => {
+                                console.log(err);
+                              });
+                            }}
+                            className="text-black w-[260px]"
+                          />
+                          <div className="flex items-center pl-2">
+                            <button type="button">
+                              <Image
+                                src={clipCopy}
+                                alt="copy"
+                                width={20}
+                                height={20}
+                                onClick={() => {
+                                  handleCopyClick(
+                                    `http:localhost:3000${router.asPath}`
+                                  ).catch((err: any) => {
+                                    console.log(err);
+                                  });
+                                }}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center py-4 border-b border-neutral-ultrasoft">
+                        <Typography className="font-poppins font-normal text-base text-black">
+                          No recommended people to share with
+                        </Typography>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4 py-4">
+                        {shareData.map((el: ShareData, i: number) => {
+                          return (
+                            <div
+                              className="flex flex-col items-center"
+                              key={`shareImage${i}`}
+                            >
+                              <Image
+                                src={el.image}
+                                alt="shareImage"
+                                width={40}
+                                height={40}
+                                onClick={() => {
+                                  handleCopyClick(
+                                    `http:localhost:3000${router.asPath}`
+                                  ).catch((err: any) => {
+                                    console.log(err);
+                                  });
+                                }}
+                                className={`cursor-pointer rounded-full ${el.class}`}
+                              />
+                              <Typography className="font-poppins font-normal text-base text-black">
+                                {el.name}
+                              </Typography>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-5">

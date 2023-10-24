@@ -1,15 +1,18 @@
-'use client';
 import CCard from '@/components/CCard';
 import DoughnutChart from '@/components/DoughnutChart';
 import { Copy, EyePurple } from '@/constants/assets/icons';
 import { Sprout } from '@/constants/assets/images';
 import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
+import CopyPie from './CopyPie';
 interface props {
   data: any;
   chartData: any;
 }
 const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
+  const [modalCopyPie, setModalCopyPie] = useState<boolean>(false);
+
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
     const day = date.getUTCDate().toString().padStart(2, '0');
@@ -21,6 +24,15 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
 
   return (
     <CCard className="w-full md:w-2/3 lg:w-1/2 p-5 bg-[#F7FBFA]">
+      <CopyPie
+        isOpen={modalCopyPie}
+        handleOpen={() => {
+          setModalCopyPie(!modalCopyPie);
+        }}
+        chartData={chartData}
+        form={data}
+      />
+
       <div className="flex gap-5 items-center">
         <Image
           src={data?.issuer_data.avatar}
@@ -64,9 +76,14 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
             <DoughnutChart data={chartData} centerText="+43%" />
           </div>
           <div className="flex justify-end">
-            <div className="bg-[#5E44FF] flex gap-1 justify-center items-center w-fit aspect-auto rounded-full p-2 ">
-              <Image src={Copy.src} alt={Copy.alt} width={20} height={20} />
-              <Typography className="text-white hidden md:flex">
+            <div
+              className="bg-[#5E44FF] flex gap-1 justify-center items-center w-fit aspect-auto rounded-full px-3 py-2"
+              onClick={() => {
+                setModalCopyPie(!modalCopyPie);
+              }}
+            >
+              <Image src={Copy.src} alt={Copy.alt} width={15} height={15} />
+              <Typography className="text-white text-sm hidden md:flex">
                 Copy Pie
               </Typography>
             </div>

@@ -21,7 +21,7 @@ const SeedsPedia: React.FC = () => {
     <div className="flex items-center justify-center h-full">
       <Tabs value={activeTab}>
         <TabsHeader
-          className="w-[20%] text-center justify-center mx-auto  rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+          className="w-[15%] text-center justify-center mx-auto  rounded-none bg-transparent p-0"
           indicatorProps={{
             className: 'shadow-none rounded-none'
           }}

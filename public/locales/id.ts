@@ -896,10 +896,14 @@ export default {
   },
 
   articleList: {
-    text1: 'Artikel Terbaru',
-    text2: 'Find more news you might like.',
-    text3: 'Sort by',
-    text4: 'Search'
+    text1: 'Daftar Artikel',
+    text2: 'Jelajahi artikel keuangan pilihan kami',
+    text3: 'Sort by :',
+    text4: 'Cari',
+    text5: 'Jangan lewatkan berita finansial populer disini !',
+    text6: 'Kamu mungkin suka',
+    text7: 'Daftar Berita',
+    text8: 'lihat semua'
   },
 
   validationErrors: {

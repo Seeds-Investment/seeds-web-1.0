@@ -3,10 +3,10 @@ import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
-
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -146,11 +146,11 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      <span className="-z-10 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-10 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      <span className="-z-10 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="-z-10 fixed top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-10 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+      <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
+      <span className="-z-10 absolute bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
+      <span className="-z-10 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
+      <span className="-z-10 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
+      <span className="-z-10 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
     </>
   );
 
@@ -201,7 +201,7 @@ export default function ArticleList(): React.ReactElement {
             </div>
             <div className="lg:flex  justify-end mt-4 ">
               <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')} :
+                {t('articleList.text3')}
               </div>
               <select
                 className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
@@ -348,26 +348,27 @@ export default function ArticleList(): React.ReactElement {
             World
           </button>
         </div>
-
         <Slider
-          slidesToShow={3}
+          slidesToShow={2.4}
           speed={500}
           className="my-12"
           initialSlide={0}
-          slidesToScroll={1}
+          // slidesToScroll={1}
           responsive={[
             {
               breakpoint: 1024,
               settings: {
                 dots: true,
-                slidesToShow: 3
+                slidesToShow: 2.4,
+                slidesToScroll: 1
               }
             },
             {
               breakpoint: 768,
               settings: {
                 dots: true,
-                slidesToShow: 3
+                slidesToShow: 2.4,
+                slidesToScroll: 1
               }
             },
             {
@@ -382,25 +383,27 @@ export default function ArticleList(): React.ReactElement {
           {hotNews.map((data, key) => (
             <div
               key={key}
-              className={`border border-spacing-20 rounded-xl border-gray-100 w-[200px] flex flex-col items-start bg-white cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
+              className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
             >
-              {isImageUrlValid(data.imageUrl) ? (
-                <img
-                  src={data.imageUrl}
-                  alt={data.title}
-                  className="w-full rounded-xl h-[240px]"
-                />
-              ) : (
-                <img
-                  src={defaultHotNewsImage}
-                  alt={data.title}
-                  className="w-full rounded-xl h-[240px]"
-                />
-              )}
-              <div className="absolute top-0 right-0 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
+              <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
+                {isImageUrlValid(data.imageUrl) ? (
+                  <img
+                    src={data.imageUrl}
+                    alt={data.title}
+                    className="w-full rounded-xl h-[240px]"
+                  />
+                ) : (
+                  <img
+                    src={defaultHotNewsImage}
+                    alt={data.title}
+                    className="w-full rounded-xl h-[240px]"
+                  />
+                )}
+              </Link>
+              <div className="absolute top-0 right-5 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
                 Hot News
               </div>
-              <h3 className="absolute bottom-0 left-0 right-0 bg-[rgba(0,0,0,0.7)] text-white p-2 text-left">
+              <h3 className="absolute bottom-0 left-0 right-0 bg-transparent text-white p-2 text-left">
                 {data.title}
               </h3>
             </div>

@@ -2,6 +2,7 @@
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 import {
   getArticle,
@@ -122,6 +123,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
+  const { t } = useTranslation();
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [open, setOpen] = useState(false);
@@ -143,7 +145,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }
 
-  
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await fetchArticles();
@@ -580,10 +581,10 @@ export default function ArticleDetailPage(): JSX.Element {
           )}
         </div>
         <div className="mt-12 flex z-10 justify-between">
-          <p className="text-3xl font-bold ">You May Like</p>
+          <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
           <Link href={'/seedspedia'}>
             <p className="flex text-md border border-1 p-2 font-semibold">
-              see all
+              {t('articleList.text8')}
               <span className="mt-1">
                 <svg
                   width="20"

@@ -980,7 +980,9 @@ export default {
     text3: 'Sort by :',
     text4: 'Search',
     text5: "Don't miss popular financial news here!",
-    text7: 'News'
+    text6: 'You may like',
+    text7: 'News',
+    text8: 'See all'
   },
   validationErrors: {
     required: 'This field is required',

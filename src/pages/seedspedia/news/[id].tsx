@@ -14,6 +14,7 @@ import { id as ID } from 'date-fns/locale';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserData {
   name: string;
@@ -112,6 +113,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
+  const { t } = useTranslation();
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [open, setOpen] = useState(false);
@@ -491,10 +493,10 @@ export default function ArticleDetailPage(): JSX.Element {
           )}
         </div>
         <div className="mt-12 flex justify-between">
-          <p className="text-3xl font-bold ">You May Like</p>
+          <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
           <Link href={'/seedspedia'}>
             <p className="flex text-md border border-1 p-2 font-semibold">
-              see all
+              {t('articleList.text8')}
               <span className="mt-1">
                 <svg
                   width="20"

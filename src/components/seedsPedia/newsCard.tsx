@@ -32,36 +32,36 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   );
   const [open] = useState(false);
 
-  const stripHtmlTags = (html: any): string => {
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = html;
-    return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
-  };
+  // const stripHtmlTags = (html: any): string => {
+  //   const tempElement = document.createElement('div');
+  //   tempElement.innerHTML = html;
+  //   return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
+  // };
 
-  const cleanedContent = stripHtmlTags(articleDetail?.content ?? '');
+  // const cleanedContent = stripHtmlTags(articleDetail?.content ?? '');
 
-  function LimitString({
-    text,
-    limit
-  }: {
-    text: string;
-    limit: number;
-  }): JSX.Element {
-    const [showFullText] = useState(false);
+  // function LimitString({
+  //   text,
+  //   limit
+  // }: {
+  //   text: string;
+  //   limit: number;
+  // }): JSX.Element {
+  //   const [showFullText] = useState(false);
 
-    const truncatedText = showFullText ? text : text.slice(0, limit);
+  //   const truncatedText = showFullText ? text : text.slice(0, limit);
 
-    return (
-      <div>
-        <p className="text-base font-normal text-[#7C7C7C] my-2">
-          {truncatedText}...
-        </p>
-        {!showFullText && text.length > limit && (
-          <button className="text-[#7555DA] text-base font-normal underline"></button>
-        )}
-      </div>
-    );
-  }
+  //   return (
+  //     <div>
+  //       <p className="text-base font-normal text-[#7C7C7C] my-2">
+  //         {truncatedText}...
+  //       </p>
+  //       {!showFullText && text.length > limit && (
+  //         <button className="text-[#7555DA] text-base font-normal underline"></button>
+  //       )}
+  //     </div>
+  //   );
+  // }
 
   useEffect(() => {
     if (typeof articleId !== 'string') {
@@ -128,7 +128,7 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </div>
       )}
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
-        <div className="px-4 pb-3 w-3/4">
+        <div className="px-4 py-3 w-3/4">
           <div className="flex flex-row justify-between">
             {/* <p className="text-xs font-normal text-[#8A8A8A]">
               {formatDateToIndonesian(articleDetail?.publicationDate ?? '')}
@@ -137,15 +137,18 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
               {formatDateToIndonesianAgo(articleDetail?.publicationDate ?? '')}
             </p> */}
           </div>
-          <h1 className="text-base font-semibold text-[#000] my-4">
-            {articleDetail?.title}
-          </h1>
           <Link
+            href={`/seedspedia/news/${articleDetail?.id ?? 0}`}
+            className="text-base font-semibold text-[#000] my-4"
+          >
+            {articleDetail?.title}
+          </Link>
+          {/* <Link
             className="text-sm"
             href={`/seedspedia/news/${articleDetail?.id ?? 0}`}
           >
             <LimitString text={cleanedContent} limit={100} />
-          </Link>
+          </Link> */}
           <div className="flex flex-row justify-between bottom-2 w-full gap-4 right-5 absolute">
             <div className="flex flex-row ms-7 justify-between">
               <p className="text-xs font-normal text-[#8A8A8A]">
@@ -159,19 +162,19 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
             </div>
           </div>
         </div>
-        <div className="p-4 w-[45%] flex flex-col ">
-          <Link href={`/seedspedia/article/${articleDetail?.id ?? 0}`}>
+        <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
+          <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
             {isImageValid ? (
               <img
                 src={imageUrl}
                 alt={articleDetail?.title}
-                className="w-full h-[138px] rounded-[18px]"
+                className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt={articleDetail?.title}
-                className="w-full h-[138px] rounded-[18px]"
+                className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             )}
           </Link>

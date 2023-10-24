@@ -977,8 +977,9 @@ export default {
   articleList: {
     text1: 'Article',
     text2: 'Explore our curated financial articles',
-    text3: 'Sort by',
+    text3: 'Sort by :',
     text4: 'Search',
+    text5: "Don't miss popular financial news here!",
     text7: 'News'
   },
   validationErrors: {

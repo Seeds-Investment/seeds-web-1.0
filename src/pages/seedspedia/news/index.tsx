@@ -177,7 +177,7 @@ export default function ArticleList(): React.ReactElement {
             <div className="w-full lg:w-[300px] lg:h-[40px] bg-white border-black rounded-3xl flex border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full  border-none lg:w-[300px] px-[8px] lg:h-[38px] "
+                className=" text-[#7C7C7C] w-full rounded-3xl border-none lg:w-[300px] focus:outline-none px-[8px] lg:h-[38px] "
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
@@ -215,7 +215,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:hidden z-10 flex justify-end mt-5">
           <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')} :
+            {t('articleList.text3')}
           </div>
           <select
             className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"

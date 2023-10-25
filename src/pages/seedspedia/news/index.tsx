@@ -146,11 +146,11 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-10 absolute bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      <span className="-z-10 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="-z-10 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-10 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+      <span className="-z-10 fixed bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+      <span className="-z-10 fixed bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+      {/* <span className="-z-10 fixed -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+      <span className="-z-10 fixed bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+      <span className="-z-10 fixed bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
     </>
   );
 
@@ -174,10 +174,10 @@ export default function ArticleList(): React.ReactElement {
             </div>
           </div>
           <div className="lg:flex-col  justify-end mt-4 ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-[1px] px-[8px] justify-between ">
+            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white border-black rounded-3xl flex border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full rounded-3xl border-none lg:w-[300px] px-[8px] lg:h-[39px] "
+                className=" text-[#7C7C7C] w-full  border-none lg:w-[300px] px-[8px] lg:h-[38px] "
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
@@ -227,7 +227,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md px-3 ${
+            className={`py-1 rounded-full text-md px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -375,7 +375,8 @@ export default function ArticleList(): React.ReactElement {
               breakpoint: 480,
               settings: {
                 dots: true,
-                slidesToShow: 1
+                slidesToShow: 1,
+                slidesToScroll: 0
               }
             }
           ]}

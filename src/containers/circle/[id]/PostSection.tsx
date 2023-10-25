@@ -232,10 +232,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
     dataPost.pie.forEach((item: any) => {
       convertedData.labels.push(item.name);
       convertedData.datasets[0].data.push(item.allocation);
-      convertedData.datasets[0].backgroundColor.push(item.backgroundcolor);
+      convertedData.datasets[0].backgroundColor.push(createRandomColor());
     });
 
     setChartData(convertedData);
+  };
+
+  const createRandomColor = (): string => {
+    const generate = Math.floor(Math.random() * 16777215).toString(16);
+
+    return '#' + generate;
   };
 
   useEffect(() => {

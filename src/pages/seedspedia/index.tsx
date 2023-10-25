@@ -31,7 +31,7 @@ const SeedsPedia: React.FC = () => {
             onClick={() => {
               handleTabChange('article');
             }}
-            className={`text-end text-2xl mt-3 xl:mt-5 ${
+            className={`text-end text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'article'
                 ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
                 : 'text-[#7C7C7C] text-xl font-normal'
@@ -44,7 +44,7 @@ const SeedsPedia: React.FC = () => {
             onClick={() => {
               handleTabChange('news');
             }}
-            className={`text-start text-xl mt-3 xl:mt-5 ${
+            className={`text-start text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'news'
                 ? 'text-[#9A76FE] to-[#4FE6AF] font-semibold border-b-4 border-b-[#9A76FE]'
                 : 'text-[#7C7C7C] text-xl font-normal'

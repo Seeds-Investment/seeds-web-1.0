@@ -1,5 +1,6 @@
 import PieAssets from '@/components/circle/pie/PieAssets';
 import PieMain from '@/components/circle/pie/PieMain';
+import { generateRandomColor } from '@/helpers/generateRandomColor';
 import { updatePost } from '@/repository/circleDetail.repository';
 import { Dialog } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
@@ -122,7 +123,7 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
   };
 
   const handleChartData = (value: any): void => {
-    const color = createRandomColor();
+    const color = generateRandomColor();
 
     const foundDummy = chartData.labels.includes('dummy');
     if (foundDummy) {
@@ -264,17 +265,11 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
     form.pie.forEach((item: any) => {
       convertedData.labels.push(item.name);
       convertedData.datasets[0].data.push(item.allocation);
-      convertedData.datasets[0].backgroundColor.push(createRandomColor());
+      convertedData.datasets[0].backgroundColor.push(generateRandomColor());
     });
 
     setChartData(convertedData);
   }, []);
-
-  const createRandomColor = (): string => {
-    const generate = Math.floor(Math.random() * 16777215).toString(16);
-
-    return '#' + generate;
-  };
 
   return (
     <Dialog

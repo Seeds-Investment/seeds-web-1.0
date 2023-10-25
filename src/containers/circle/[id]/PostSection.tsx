@@ -10,6 +10,7 @@ import {
   TripleDots
 } from '@/constants/assets/icons';
 import { Sprout } from '@/constants/assets/images';
+import { generateRandomColor } from '@/helpers/generateRandomColor';
 import {
   postLikeCirclePost,
   postPinCirclePost,
@@ -232,16 +233,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
     dataPost.pie.forEach((item: any) => {
       convertedData.labels.push(item.name);
       convertedData.datasets[0].data.push(item.allocation);
-      convertedData.datasets[0].backgroundColor.push(createRandomColor());
+      convertedData.datasets[0].backgroundColor.push(generateRandomColor());
     });
 
     setChartData(convertedData);
-  };
-
-  const createRandomColor = (): string => {
-    const generate = Math.floor(Math.random() * 16777215).toString(16);
-
-    return '#' + generate;
   };
 
   useEffect(() => {

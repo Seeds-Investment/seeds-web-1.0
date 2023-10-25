@@ -1,5 +1,6 @@
 import PieAssets from '@/components/circle/pie/PieAssets';
 import PieMain from '@/components/circle/pie/PieMain';
+import { generateRandomColor } from '@/helpers/generateRandomColor';
 import { Dialog } from '@material-tailwind/react';
 import { useState } from 'react';
 
@@ -92,14 +93,8 @@ const ModalPie: React.FC<props> = ({
     }));
   };
 
-  const createRandomColor = (): string => {
-    const generate = Math.floor(Math.random() * 16777215).toString(16);
-
-    return '#' + generate;
-  };
-
   const handleChartData = (value: any): void => {
-    const color = createRandomColor();
+    const color = generateRandomColor();
 
     const foundDummy = chartData.labels.includes('dummy');
     if (foundDummy) {

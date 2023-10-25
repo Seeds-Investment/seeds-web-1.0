@@ -55,7 +55,6 @@ export default function ArticleList(): React.ReactElement {
         source: params.source,
         category: params.category
       });
-      console.log(response, 'abcde');
 
       if (response.status === 200) {
         setArticles(response.news);
@@ -120,11 +119,11 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      <span className="-z-10 fixed bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-      <span className="-z-10 fixed bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-      {/* <span className="-z-10 fixed -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-10 fixed bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-      <span className="-z-10 fixed bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
     </>
   );
 
@@ -149,8 +148,8 @@ export default function ArticleList(): React.ReactElement {
                 type="search"
                 className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
                 placeholder="Search"
-                // aria-label="Search"
-                // aria-describedby="button-addon2"
+                aria-label="Search"
+                aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}

@@ -147,10 +147,10 @@ export default function ArticleList(): React.ReactElement {
             <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full border-b-[1px] border-black lg:w-[300px] px-[8px] lg:h-[38px] "
+                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
+                // aria-label="Search"
+                // aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}
@@ -171,7 +171,7 @@ export default function ArticleList(): React.ReactElement {
             </div>
             <div className="lg:flex  justify-end mt-4 ">
               <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')} :
+                {t('articleList.text3')}
               </div>
               <select
                 className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
@@ -185,7 +185,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:hidden z-10 flex justify-end mt-5">
           <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')} :
+            {t('articleList.text3')}
           </div>
           <select
             className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"

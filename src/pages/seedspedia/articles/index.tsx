@@ -1,3 +1,4 @@
+import ArtPagination from '@/components/ArtPagination';
 import ArticleCard from '@/components/seedsPedia/articleCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section6 from '@/containers/landing/Section6';
@@ -44,7 +45,8 @@ export default function ArticleList(): React.ReactElement {
     source: 'articles',
     language: '',
     search: '',
-    category: 'All'
+    category: 'All',
+    totalPage: 9
   });
   async function fetchArticles(): Promise<void> {
     try {
@@ -53,7 +55,6 @@ export default function ArticleList(): React.ReactElement {
         source: params.source,
         category: params.category
       });
-      console.log(response, 'abcde');
 
       if (response.status === 200) {
         setArticles(response.news);
@@ -85,19 +86,6 @@ export default function ArticleList(): React.ReactElement {
     void fetchArticles();
   }, [searchInput]);
 
-  const updateParams = (direction: 'decrease' | 'increase'): void => {
-    if (direction === 'decrease' && params.page > 1) {
-      setParams(prevParams => ({
-        ...prevParams,
-        page: prevParams.page - 1
-      }));
-    } else if (direction === 'increase') {
-      setParams(prevParams => ({
-        ...prevParams,
-        page: prevParams.page + 1
-      }));
-    }
-  };
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
       ...prevParams,
@@ -131,11 +119,11 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      <span className="-z-10 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-10 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      <span className="-z-10 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="-z-10 fixed top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-10 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
     </>
   );
 
@@ -155,10 +143,10 @@ export default function ArticleList(): React.ReactElement {
             </div>
           </div>
           <div className="lg:flex-col  justify-end mt-4  ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-[1px] px-[8px] justify-between ">
+            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full rounded-3xl border-none lg:w-[300px] px-[8px] lg:h-[39px] "
+                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
@@ -182,10 +170,10 @@ export default function ArticleList(): React.ReactElement {
             </div>
             <div className="lg:flex  justify-end mt-4 ">
               <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')} :
+                {t('articleList.text3')}
               </div>
               <select
-                className="me-5 hidden lg:block text-base font-semibold"
+                className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
                 aria-label="All"
               >
                 <option value="option1">All</option>
@@ -196,10 +184,10 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:hidden z-10 flex justify-end mt-5">
           <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')} :
+            {t('articleList.text3')}
           </div>
           <select
-            className="me-5 justify-end lg:hidden text-base font-semibold"
+            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
             aria-label="All"
           >
             <option value="option1">All</option>
@@ -208,10 +196,10 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('All');
@@ -223,7 +211,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'general'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('general');
@@ -233,22 +221,22 @@ export default function ArticleList(): React.ReactElement {
           </button>
           <button
             className={`py-1 rounded-full text-md px-2 ${
-              activeCategory === 'cripto'
+              activeCategory === 'crypto'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
-              updateCategory('cripto');
+              updateCategory('crypto');
             }}
           >
-            Cripto
+            Crypto
           </button>
 
           <button
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'usstocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('usstocks');
@@ -260,7 +248,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'indostocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('indostocks');
@@ -272,7 +260,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'commodities'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('commodities');
@@ -284,7 +272,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'indices'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('indices');
@@ -296,7 +284,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'forex'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('forex');
@@ -308,7 +296,7 @@ export default function ArticleList(): React.ReactElement {
             className={`py-1 rounded-full text-md px-2 ${
               activeCategory === 'finance'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0]'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
             }`}
             onClick={() => {
               updateCategory('finance');
@@ -323,53 +311,14 @@ export default function ArticleList(): React.ReactElement {
           })}
         </div>
 
-        <div className="flex justify-center mt-8">
-          <div className="mt-5 pb-10 pagination">
-            <div className="bg-white rounded-full cursor-pointer flex flex-row gap-3 p-2 shadow-lg">
-              <div
-                className="p-2"
-                onClick={() => {
-                  updateParams('decrease');
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                >
-                  <path
-                    d="M12.5 15L7.5 10L12.5 5"
-                    stroke="#7C7C7C"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-              <div
-                className="rounded-full p-2 bg-gradient-to-r cursor-pointer from-[#9A76FE] to-[#4FE6AF]"
-                onClick={() => {
-                  updateParams('increase');
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                >
-                  <path
-                    d="M7.5 15L12.5 10L7.5 5"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+        <div className="hidden lg:flex  justify-center mx-auto my-8">
+          <ArtPagination
+            currentPage={params.page}
+            totalPages={params.totalPage}
+            onPageChange={page => {
+              setParams({ ...params, page });
+            }}
+          />
         </div>
       </PageGradient>
       <Section6 />

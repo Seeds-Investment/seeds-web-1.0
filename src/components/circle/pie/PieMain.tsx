@@ -14,6 +14,8 @@ interface props {
   changeForm: any;
   errorMessage: any;
   changeIsLock: any;
+  isEdit?: boolean;
+  submitEditPie?: any;
 }
 
 const PieMain: React.FC<props> = ({
@@ -26,7 +28,9 @@ const PieMain: React.FC<props> = ({
   form,
   changeForm,
   errorMessage,
-  changeIsLock
+  changeIsLock,
+  isEdit = false,
+  submitEditPie
 }) => {
   return (
     <div>
@@ -114,7 +118,7 @@ const PieMain: React.FC<props> = ({
       <div className="flex items-center justify-center">
         <Button
           className="text-white font-semibold font-poppins bg-seeds-button-green p-2 rounded-full mt-2 w-1/2"
-          onClick={setPages}
+          onClick={!isEdit ? setPages : submitEditPie}
         >
           Save
         </Button>

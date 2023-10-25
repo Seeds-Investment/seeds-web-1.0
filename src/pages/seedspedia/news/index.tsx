@@ -146,11 +146,11 @@ export default function ArticleList(): React.ReactElement {
 
   const customGradient = (
     <>
-      <span className="-z-10 fixed bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-      <span className="-z-10 fixed bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-      {/* <span className="-z-10 fixed -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-10 fixed bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-      <span className="-z-10 fixed bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
     </>
   );
 
@@ -174,10 +174,10 @@ export default function ArticleList(): React.ReactElement {
             </div>
           </div>
           <div className="lg:flex-col  justify-end mt-4 ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white border-black rounded-3xl flex border-[1px] px-[8px] justify-between ">
+            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full rounded-3xl border-none lg:w-[300px] focus:outline-none px-[8px] lg:h-[38px] "
+                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
@@ -215,7 +215,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:hidden z-10 flex justify-end mt-5">
           <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')}
+            {t('articleList.text3')} :
           </div>
           <select
             className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
@@ -375,8 +375,7 @@ export default function ArticleList(): React.ReactElement {
               breakpoint: 480,
               settings: {
                 dots: true,
-                slidesToShow: 1,
-                slidesToScroll: 0
+                slidesToShow: 1
               }
             }
           ]}

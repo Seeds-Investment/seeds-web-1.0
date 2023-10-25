@@ -84,7 +84,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
             if (response.status === 200) {
               setArticleDetail(response.news);
             }
-            console.log(response);
           })
           .catch(error => {
             console.error('Error fetching article detail:', error);

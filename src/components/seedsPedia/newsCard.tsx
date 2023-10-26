@@ -65,7 +65,6 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
 
   useEffect(() => {
     if (typeof articleId !== 'string') {
-      
       const fetchArticleDetail = (): void => {
         getArticleById(articleId)
           .then(response => {

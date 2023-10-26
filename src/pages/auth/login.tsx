@@ -93,7 +93,7 @@ const LoginPage = (): JSX.Element => {
             password: '',
             keepMeLoggedIn: false
           });
-          await router.push('/'); // Added await keyword here
+          await router.push('/social'); // Added await keyword here
         } else {
           setErrorResponse('Invalid Phone Number or Password');
         }

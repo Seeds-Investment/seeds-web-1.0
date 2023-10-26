@@ -1,5 +1,6 @@
 'use client';
 import Header from '@/components/layouts/Header';
+import SocialLayout from '@/components/layouts/SocialLayout';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
@@ -29,15 +30,33 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const pathsWithoutHeader = ['', 'auth', 'story-boarding', 'term-condition'];
+const pathsWithoutHeader = [
+  '',
+  'auth',
+  'story-boarding',
+  'term-condition',
+  'social'
+];
 
-function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+function App({
+  Component,
+  pageProps,
+  router
+}: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);
 
   const path = useRouter().pathname.split('/')[1];
 
   const renderHeader =
     !pathsWithoutHeader.includes(path) && !path.includes('_error');
+
+  if (router.pathname.startsWith('/social')) {
+    return (
+      <SocialLayout>
+        <Component {...pageProps} />
+      </SocialLayout>
+    );
+  }
 
   return (
     <Provider store={store}>

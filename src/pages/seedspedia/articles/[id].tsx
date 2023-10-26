@@ -143,7 +143,6 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   }
 
-  
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await fetchArticles();

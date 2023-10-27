@@ -422,6 +422,34 @@ export const postLikeCirclePost = async (
   }
 };
 
+export const postLikeComment = async (
+  type: number,
+  id: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.post(
+      `/post/comment/v2/rating`,
+      {
+        post_id: id,
+        type
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const postPinCirclePost = async (
   type: string,
   id: string
@@ -490,15 +518,17 @@ export const searchCircleByName = async (params: any): Promise<any> => {
   });
 };
 
-export const searchAssets = async (params: any): Promise<any> => {
+export const getUserTagList = async (
+  cat: string,
+  value: string
+): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     return await Promise.resolve('Access token not found');
   }
 
-  return await baseUrl.get(`asset/v1/search`, {
-    params,
+  return await baseUrl.get(`/tag/v1/${cat}?search=${value}`, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

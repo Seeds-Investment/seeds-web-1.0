@@ -1,7 +1,6 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
 import {
-  ArrowUp,
   Bookmark,
   ChatBubble,
   Dot,
@@ -18,7 +17,7 @@ import {
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Like, PDFViewer, clipCopy } from 'public/assets/circle';
+import { PDFViewer, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -30,7 +29,7 @@ import {
   TwitterShare,
   WhatsappShare
 } from 'public/assets/circle/share';
-import { XIcon } from 'public/assets/vector';
+import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import ImageCarousel from './CarouselImage';
 import PieCirclePost from './PieCirclePost';
@@ -129,7 +128,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
   const [isShare, setIsShare] = useState(false);
-
+  if (isCopied) {
+    console.log('success');
+  }
   const handleOpen = (): void => {
     setIsShare(!isShare);
   };
@@ -142,7 +143,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
       }, 2000);
     });
   };
-  console.log(isCopied);
 
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
@@ -349,7 +349,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               alt="AVATAR"
               width={48}
               height={48}
-              className="rounded-full outline outline-black"
+              className="rounded-full"
             />
           </div>
         </div>
@@ -363,7 +363,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                     alt="AVATAR"
                     width={48}
                     height={48}
-                    className="rounded-full outline outline-black"
+                    className="rounded-full"
                   />
                 </div>
               </div>
@@ -505,16 +505,42 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
             <div className="flex gap-1 md:gap-5">
               <div className="flex items-center gap-1 pr-2">
                 <div
-                  className={`${
-                    dataPost.status_like === true
-                      ? 'bg-seeds-green/30'
-                      : 'hover:bg-seeds-green/30'
-                  } p-2 rounded-full cursor-pointer`}
+                  className={`p-2 rounded-full cursor-pointer`}
                   onClick={async () => {
                     await likePost(1);
                   }}
                 >
-                  <Image src={Like} alt={ArrowUp.alt} width={20} height={20} />
+                  {dataPost.status_like === true ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="#4FE6AF"
+                    >
+                      <path
+                        d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                        stroke="white"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="white"
+                    >
+                      <path
+                        d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                        stroke="black"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  )}
                 </div>
                 <Typography className="text-[#50E6AF] text-sm">
                   +{dataPost.total_upvote}
@@ -666,21 +692,26 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               </div>
               <div className="flex items-center gap-1">
                 <div
-                  className={`${
-                    dataPost.status_saved === true
-                      ? 'bg-seeds-green/30'
-                      : 'hover:bg-seeds-green/30'
-                  } p-2 rounded-full cursor-pointer`}
+                  className={`p-2 rounded-full cursor-pointer`}
                   onClick={async () => {
                     await savePost();
                   }}
                 >
-                  <Image
-                    src={Bookmark.src}
-                    alt={Bookmark.alt}
-                    width={20}
-                    height={20}
-                  />
+                  {dataPost.status_saved === true ? (
+                    <Image
+                      src={BookmarkFill.src}
+                      alt={BookmarkFill.alt}
+                      width={20}
+                      height={20}
+                    />
+                  ) : (
+                    <Image
+                      src={Bookmark.src}
+                      alt={Bookmark.alt}
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </div>
               </div>
             </div>

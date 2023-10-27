@@ -65,7 +65,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
 
     return (
       <div>
-        <p className="text-base font-normal text-[#7C7C7C] my-2">
+        <p className="text-sm font-normal text-[#7C7C7C] my-2">
           {truncatedText}...
         </p>
         {!showFullText && text.length > limit && (
@@ -84,7 +84,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
             if (response.status === 200) {
               setArticleDetail(response.news);
             }
-            console.log(response);
           })
           .catch(error => {
             console.error('Error fetching article detail:', error);
@@ -98,22 +97,34 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     try {
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
-        setArticleDetail(prevArticleDetail => {
-          if (prevArticleDetail !== null) {
-            return {
-              ...prevArticleDetail,
-              total_likes: prevArticleDetail?.total_likes + 1,
-              is_liked: true
-            };
-          }
-          return prevArticleDetail;
-        });
+        if (response.is_liked === true) {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes + 1,
+                is_liked: true
+              };
+            }
+            return prevArticleDetail;
+          });
+        } else {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes - 1,
+                is_liked: false
+              };
+            }
+            return prevArticleDetail;
+          });
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
@@ -189,28 +200,31 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
       <div className="bg-[#FFF]  flex lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <div className="px-4 pb-3 w-3/4">
           <h1 className="text-base font-semibold text-[#000] my-4">
-            {articleDetail?.title}
+            {articleDetail?.title !== undefined &&
+            articleDetail.title.length > 45
+              ? `${articleDetail.title.slice(0, 45)}...`
+              : articleDetail?.title}
           </h1>
           <Link
             className="text-sm"
             href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}
           >
-            <LimitString text={cleanedContent} limit={100} />
+            <LimitString text={cleanedContent} limit={80} />
           </Link>
         </div>
-        <div className="p-4 w-[45%] flex flex-col ">
-          <Link href={`/seedspedia/article/${articleDetail?.id ?? 0}`}>
+        <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
+          <Link href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}>
             {isImageValid ? (
               <img
                 src={imageUrl}
                 alt={articleDetail?.title}
-                className="w-[238ox] h-[138px] rounded-[18px]"
+                className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt={articleDetail?.title}
-                className="w-[238px] h-[138px] rounded-[18px]"
+                className="w-[153px] object-cover h-[160px] rounded-[18px]"
               />
             )}
           </Link>
@@ -235,6 +249,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
                     height="25"
                     viewBox="0 0 25 25"
                     fill="#4CAF51"
+                    className="cursor-pointer"
+                    onClick={async () => {
+                      await likeArticle(articleDetail?.id ?? 0);
+                    }}
                   >
                     <path
                       d="M7.00293 11.0779L11.0029 2.07788C11.7986 2.07788 12.5616 2.39395 13.1243 2.95656C13.6869 3.51917 14.0029 4.28223 14.0029 5.07788V9.07788H19.6629C19.9528 9.0746 20.24 9.13438 20.5045 9.2531C20.769 9.37181 21.0045 9.54661 21.1948 9.76539C21.385 9.98417 21.5254 10.2417 21.6063 10.5201C21.6871 10.7986 21.7064 11.0912 21.6629 11.3779L20.2829 20.3779C20.2106 20.8548 19.9684 21.2895 19.6008 21.6019C19.2333 21.9143 18.7653 22.0833 18.2829 22.0779H7.00293M7.00293 11.0779V22.0779M7.00293 11.0779H4.00293C3.4725 11.0779 2.96379 11.2886 2.58872 11.6637C2.21364 12.0387 2.00293 12.5474 2.00293 13.0779V20.0779C2.00293 20.6083 2.21364 21.117 2.58872 21.4921C2.96379 21.8672 3.4725 22.0779 4.00293 22.0779H7.00293"

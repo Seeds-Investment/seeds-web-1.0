@@ -1,4 +1,3 @@
-// components/Layout.tsx
 import React from 'react';
 import HeaderLogin from './HeaderLogin';
 import SidebarLogin from './SidebarLogin';
@@ -19,7 +18,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
           <HeaderLogin />
         </header>
 
-        <main className="flex-1 p-4 mx-14">{children}</main>
+        <main className="flex-1 p-4 mx-11">{children}</main>
       </div>
     </div>
   );

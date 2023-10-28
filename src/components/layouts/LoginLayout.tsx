@@ -1,3 +1,4 @@
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import React from 'react';
 import HeaderLogin from './HeaderLogin';
 import SidebarLogin from './SidebarLogin';
@@ -7,9 +8,15 @@ interface props {
 }
 
 const LoginLayout: React.FC<props> = ({ children }) => {
+  const width = useWindowInnerWidth();
+
   return (
-    <div className="flex h-screen bg-[#F9F9F9]">
-      <aside className="w-1/6 py-6 social-header bg-white">
+    <div className="flex h-screen">
+      <aside
+        className={`w-1/6 py-6 social-header bg-white ${
+          width !== undefined ? (width >= 1024 ? '' : 'hidden') : ''
+        }`}
+      >
         <SidebarLogin />
       </aside>
 
@@ -18,7 +25,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
           <HeaderLogin />
         </header>
 
-        <main className="flex-1 p-4 mx-11">{children}</main>
+        <div className="flex-1 p-4 mx-11">{children}</div>
       </div>
     </div>
   );

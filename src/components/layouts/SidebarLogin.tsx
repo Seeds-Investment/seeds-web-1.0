@@ -13,7 +13,16 @@ const SidebarLogin: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const isLinkActive = (href: string): string => {
-    return router.asPath === href ? 'active' : '';
+    return router.asPath.startsWith(href) ? 'active' : '';
+  };
+
+  const handleLogout = (): void => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresAt');
+    localStorage.removeItem('keepMeLoggedIn');
+
+    window.location.reload();
   };
 
   return (
@@ -45,6 +54,14 @@ const SidebarLogin: React.FC = () => {
           <Image width={20} height={20} src={setting} alt="" />
           <h1>Setting</h1>
         </Link>
+        <div className="mx-auto mt-auto">
+          <button
+            className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </ul>
     </div>
   );

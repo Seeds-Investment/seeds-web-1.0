@@ -1,6 +1,7 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/socialV2/main/Card1';
 import Card2 from '@/containers/socialV2/main/Card2';
+import withAuth from '@/helpers/withAuth';
 import { useState } from 'react';
 
 const Social: React.FC = () => {
@@ -15,4 +16,4 @@ const Social: React.FC = () => {
   );
 };
 
-export default Social;
+export default withAuth(Social);

@@ -1,6 +1,6 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Card1 from '@/containers/social/main/Card1';
-import Card2 from '@/containers/social/main/Card2';
+import Card1 from '@/containers/socialV2/main/Card1';
+import Card2 from '@/containers/socialV2/main/Card2';
 import { useState } from 'react';
 
 const Social: React.FC = () => {

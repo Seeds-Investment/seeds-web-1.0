@@ -110,11 +110,8 @@ export default function CardTournament(): React.ReactElement {
                   const imageUrl = data?.banner ?? defaultCircle;
                   const isImageValid = isImageUrlValid(imageUrl);
                   return (
-                    <div
-                      className="relative max-w-s overflow-hidden mr-5"
-                      key={idx}
-                    >
-                      <div className="rounded-lg shadow-md p-6">
+                    <div className="relative overflow-hidden mr-2" key={idx}>
+                      <div className="rounded-lg shadow-md p-2">
                         <div className="flex items-center">
                           {isImageValid ? (
                             <img

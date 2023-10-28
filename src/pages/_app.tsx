@@ -1,6 +1,6 @@
 'use client';
 import Header from '@/components/layouts/Header';
-import SocialLayout from '@/components/layouts/SocialLayout';
+import LoginLayout from '@/components/layouts/LoginLayout';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
@@ -50,12 +50,14 @@ function App({
   const renderHeader =
     !pathsWithoutHeader.includes(path) && !path.includes('_error');
 
-  if (router.pathname.startsWith('/social')) {
-    return (
-      <SocialLayout>
-        <Component {...pageProps} />
-      </SocialLayout>
-    );
+  const loginLayouts =
+    router.pathname.startsWith('/homepage') ||
+    router.pathname.startsWith('/social') ||
+    router.pathname.startsWith('/connect') ||
+    router.pathname.startsWith('/play');
+
+  if (loginLayouts) {
+    return <LoginLayout>{getLayout(<Component {...pageProps} />)}</LoginLayout>;
   }
 
   return (

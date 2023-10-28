@@ -50,7 +50,7 @@ const SidebarLogin: React.FC = () => {
           <Image width={20} height={20} src={play} alt="" />
           <h1>Play</h1>
         </Link>
-        <Link className={isLinkActive('/setting')} href="/setting">
+        <Link className={isLinkActive('/user-setting')} href="/user-setting">
           <Image width={20} height={20} src={setting} alt="" />
           <h1>Setting</h1>
         </Link>

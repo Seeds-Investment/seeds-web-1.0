@@ -54,8 +54,8 @@ function App({
     router.pathname.startsWith('/homepage') ||
     router.pathname.startsWith('/social') ||
     router.pathname.startsWith('/connect') ||
-    router.pathname.startsWith('/play');
-
+    router.pathname.startsWith('/play') ||
+    router.pathname.startsWith('/user-setting');
   if (loginLayouts) {
     return <LoginLayout>{getLayout(<Component {...pageProps} />)}</LoginLayout>;
   }

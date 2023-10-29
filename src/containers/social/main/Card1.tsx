@@ -1,6 +1,16 @@
 import CCard from '@/components/CCard';
+import FilterIcon from '@/components/svgs/filterIcon';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import {
+  Button,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Tab,
+  Tabs,
+  TabsHeader
+} from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 
 const dataTab = [
@@ -13,6 +23,12 @@ interface props {
   activeTab: string;
   setActiveTab: any;
 }
+
+const optionsFilter = [
+  { title: 'All', subtitle: 'Everyone' },
+  { title: 'Personal', subtitle: 'Your only friend' },
+  { title: 'Post by Circle', subtitle: 'Create a post in circle' }
+];
 
 const Card1: React.FC<props> = ({ activeTab, setActiveTab }) => {
   const router = useRouter();
@@ -41,10 +57,22 @@ const Card1: React.FC<props> = ({ activeTab, setActiveTab }) => {
             </div>
           </div>
         </div>
-
-        <a>
-          <Button className="text-[#7C7C7C] bg-white">Filter</Button>
-        </a>
+        <Menu>
+          <MenuHandler>
+            <Button className="flex flex-row gap-2 border-[#E9E9E9] bg-[#FFF] rounded-md text-[#7C7C7C]">
+              <FilterIcon />
+              Filter
+            </Button>
+          </MenuHandler>
+          <MenuList>
+            {optionsFilter.map((data, idx) => (
+              <MenuItem key={idx}>
+                <h1 className="font-semibold">{data.title}</h1>
+                <p className="font-normal">{data.subtitle}</p>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       </div>
 
       <Tabs value={activeTab}>

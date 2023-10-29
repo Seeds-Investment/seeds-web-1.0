@@ -13,7 +13,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
   return (
     <div className="flex h-screen">
       <aside
-        className={`w-1/6 py-6 social-header bg-white ${
+        className={`w-1/6 h-screen py-6 social-sidebar ${
           width !== undefined ? (width >= 1024 ? '' : 'hidden') : ''
         }`}
       >

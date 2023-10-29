@@ -9,6 +9,17 @@ import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import Logo from '../ui/vector/Logo';
 
+const menu = [
+  { title: 'Social', url: '/social', image: social },
+  { title: 'Homepage', url: '/homepage', image: homepage },
+  { title: 'Connect', url: '/connect', image: connect },
+  { title: 'Play', url: '/play', image: play },
+  { title: 'Setting', url: '/user-setting', image: setting }
+  // { title: 'Notification', url : '/setting', image: notification},
+  // { title: 'Chat', url : '/setting', image: chat},
+  // { title: 'Profile', url : '/setting', image: setting},
+];
+
 const SidebarLogin: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -34,27 +45,13 @@ const SidebarLogin: React.FC = () => {
         />
       </Link>
       <ul className="flex flex-col items-start w-full social-sidebar-list">
-        <Link className={isLinkActive('/social')} href="/social">
-          <Image width={20} height={20} src={social} alt="" />
-          <h1>Social</h1>
-        </Link>
-        <Link className={isLinkActive('/homepage')} href="/homepage">
-          <Image width={20} height={20} src={homepage} alt="" />
-          <h1>Homepage</h1>
-        </Link>
-        <Link href="/connect" className={isLinkActive('/connect')}>
-          <Image width={20} height={20} src={connect} alt="" />
-          <h1>Connect</h1>
-        </Link>
-        <Link className={isLinkActive('/play')} href="/play">
-          <Image width={20} height={20} src={play} alt="" />
-          <h1>Play</h1>
-        </Link>
-        <Link className={isLinkActive('/user-setting')} href="/user-setting">
-          <Image width={20} height={20} src={setting} alt="" />
-          <h1>Setting</h1>
-        </Link>
-        <div className="mx-auto mt-auto">
+        {menu.map((data, idx) => (
+          <Link className={isLinkActive(data.url)} href={data.url} key={idx}>
+            <Image width={20} height={20} src={data.image} alt="" />
+            <h1>{data.title}</h1>
+          </Link>
+        ))}
+        <div className="mx-auto">
           <button
             className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
             onClick={handleLogout}

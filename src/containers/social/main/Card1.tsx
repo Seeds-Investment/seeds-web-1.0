@@ -34,7 +34,7 @@ const Card1: React.FC<props> = ({ activeTab, setActiveTab }) => {
   const router = useRouter();
 
   return (
-    <CCard className="flex p-2 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+    <CCard className="flex p-2 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row items-center justify-center w-full mb-2">
         <div className="mr-2 w-1/2">
           <div

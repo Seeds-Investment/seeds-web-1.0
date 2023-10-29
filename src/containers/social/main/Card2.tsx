@@ -4,20 +4,39 @@ import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Sprout } from 'public/assets/images';
 
-const Card2: React.FC = () => {
+interface UserData {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  preferredLanguage: string;
+  _pin: string;
+}
+
+interface props {
+  userData: UserData;
+}
+
+const Card2: React.FC<props> = ({ userData }) => {
   return (
-    <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+    <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row">
         <Avatar
           size="md"
           variant="circular"
-          src="https://picsum.photos/seed/picsum/200/300"
+          src={userData.avatar}
           alt="Avatar"
           className="mr-5"
         />
         <div className="flex flex-col w-full">
           <div className="flex flex-row">
-            <p className="text-base font-semibold text-black">Anika Curtis</p>
+            <p className="text-base font-semibold text-black">
+              {userData.name}
+            </p>
             <CheckCircleIcon
               width={20}
               height={20}
@@ -29,7 +48,9 @@ const Card2: React.FC = () => {
               Investor
             </p>
           </div>
-          <p className="text-base font-light text-[#7C7C7C] mb-3">@anika</p>
+          <p className="text-base font-light text-[#7C7C7C] mb-3">
+            {userData.seedsTag}
+          </p>
 
           <div className="border border-[#7C7C7C] rounded-2xl w-full p-4">
             <p>What do you want to discuss? </p>

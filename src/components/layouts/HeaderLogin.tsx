@@ -52,7 +52,7 @@ const HeaderLogin: React.FC = () => {
         <Image
           src={US}
           className="w-[30px] h-[20px] self-center"
-          alt="ID-flag"
+          alt="US-flag"
         />
       </section>
       <section>

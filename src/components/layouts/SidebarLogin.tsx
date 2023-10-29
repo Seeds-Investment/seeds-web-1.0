@@ -51,7 +51,7 @@ const SidebarLogin: React.FC = () => {
             <h1>{data.title}</h1>
           </Link>
         ))}
-        <div className="mx-auto">
+        <div className="mx-auto mt-[40%]">
           <button
             className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
             onClick={handleLogout}

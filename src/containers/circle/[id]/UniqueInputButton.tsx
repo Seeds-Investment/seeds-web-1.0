@@ -11,12 +11,16 @@ interface props {
   setMedia: any;
   openPieModal: any;
   setDocument: any;
+  setErrorMessage: any;
+  setIsError: any;
 }
 const UniqueInputButton: React.FC<props> = ({
   setPages,
   setMedia,
   openPieModal,
-  setDocument
+  setDocument,
+  setErrorMessage,
+  setIsError
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
@@ -28,26 +32,63 @@ const UniqueInputButton: React.FC<props> = ({
   const handleDocument = (): any => {
     document.getElementById('dokumenFile')?.click();
   };
+
   const handleImage = (event: any): any => {
     const fileMedia = event.target.files[0];
     const fileMediaEle = event.target;
 
     if (fileMedia?.type?.includes('video') === true) {
-      return setMedia(fileMedia);
+      const validation =
+        fileMedia?.type !== 'video/mp4' && fileMedia?.type !== 'video/mov';
+      const maxFileMediaSize = 20;
+      const sizeFileOnMB: any = parseFloat(
+        (fileMedia?.size / 1024 / 1024).toFixed(20)
+      );
+      if (validation) {
+        fileMediaEle.value = null;
+        setIsError(true);
+        setErrorMessage(
+          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+        );
+        return new Error(
+          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+        );
+      }
+      if (sizeFileOnMB > maxFileMediaSize) {
+        fileMediaEle.value = null;
+        setIsError(true);
+        setErrorMessage('Your image is exceeding the 5MB size limit');
+        return new Error('Your image is exceeding the 5MB size limit');
+      } else {
+        return setMedia(fileMedia);
+      }
     }
     const validation =
       fileMedia?.type !== 'image/jpg' &&
       fileMedia?.type !== 'image/jpeg' &&
+      fileMedia?.type !== 'image/heic' &&
+      fileMedia?.type !== 'image/heif' &&
       fileMedia?.type !== 'image/png';
     const maxFileMediaSize = 5;
     const sizeFileOnMB: any = parseFloat(
       (fileMedia?.size / 1024 / 1024).toFixed(20)
     );
-    if (sizeFileOnMB > maxFileMediaSize && !validation) {
+
+    if (validation) {
       fileMediaEle.value = null;
-      return new Error(
-        'Foto yang anda Upload melebihi batas maksimal Upload (5 Megabyte)'
+      setIsError(true);
+      setErrorMessage(
+        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
       );
+      return new Error(
+        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+      );
+    }
+    if (sizeFileOnMB > maxFileMediaSize) {
+      fileMediaEle.value = null;
+      setIsError(true);
+      setErrorMessage('Your image is exceeding the 5MB size limit');
+      return new Error('Your image is exceeding the 5MB size limit');
     } else {
       return setMedia(fileMedia);
     }
@@ -57,14 +98,15 @@ const UniqueInputButton: React.FC<props> = ({
     const fileMedia = event.target.files[0];
     return setDocument(fileMedia);
   };
+
   return (
-    <div className="flex justify-between pb-10">
+    <div className="flex justify-between pb-10 border-t border-neutral-ultrasoft">
       <input
         type="file"
         id="MediaUpload"
         onChange={handleImage}
         className="hidden"
-        accept="image/jpg,image/jpeg,image/png,video/mp4"
+        accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
       />
       <div className="flex gap-[18px]">
         {/* gallery */}
@@ -179,7 +221,7 @@ const UniqueInputButton: React.FC<props> = ({
         </div>
       </div>
       {/* post button */}
-      <div className="flex justify-end h-full">
+      <div className="flex items-center">
         <button
           type="submit"
           className="flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit bg-seeds-button-green"

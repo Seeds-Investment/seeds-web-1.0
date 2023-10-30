@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Sprout } from 'public/assets/images';
 import { Search, TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PostSection from './PostSection';
 interface props {
   circleId: string;
@@ -43,6 +44,7 @@ const CirclePostSection2: React.FC<props> = ({
   setDataPost,
   setDataRecommend
 }) => {
+  const { t } = useTranslation();
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
   const [searchMember, setSearchMember] = useState<string>('');
@@ -254,7 +256,7 @@ const CirclePostSection2: React.FC<props> = ({
               }}
               className={tabs === 'post' ? active : inActive}
             >
-              Post
+              {t('circleDetail.navigator.post')}
             </button>
             <button
               onClick={(): any => {
@@ -262,7 +264,7 @@ const CirclePostSection2: React.FC<props> = ({
               }}
               className={tabs === 'recommended' ? active : inActive}
             >
-              Recommended
+              {t('circleDetail.navigator.recomend')}
             </button>
             <button
               onClick={(): any => {
@@ -270,7 +272,7 @@ const CirclePostSection2: React.FC<props> = ({
               }}
               className={tabs === 'members' ? active : inActive}
             >
-              Members
+              {t('circleDetail.navigator.listMembers')}
             </button>
             <button
               onClick={(): any => {
@@ -278,7 +280,7 @@ const CirclePostSection2: React.FC<props> = ({
               }}
               className={tabs === 'about' ? active : inActive}
             >
-              About
+              {t('circleDetail.navigator.about')}
             </button>
           </div>
           {handlePages()}

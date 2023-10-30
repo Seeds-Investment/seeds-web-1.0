@@ -32,6 +32,13 @@ interface TrendingProfile {
   followers: string;
 }
 
+interface Filter {
+  page: number;
+  limit: number;
+  type: string;
+  sort_by: string;
+}
+
 const initialUserInfo = {
   name: '',
   seedsTag: '',
@@ -45,7 +52,7 @@ const initialUserInfo = {
   _pin: ''
 };
 
-const initialParamsPost = {
+const initialFilter = {
   page: 1,
   limit: 10,
   type: '',
@@ -59,6 +66,7 @@ const Social: React.FC = () => {
   const [trendingProfile, setTrendingProfile] = useState<TrendingProfile[]>([]);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
+  const [filter, setFilter] = useState<Filter>(initialFilter);
   console.log(dataPost, trendingProfile, isLoadingPost, isLoadingTrending);
 
   const handleChangeTab = (value: string): void => {
@@ -77,6 +85,15 @@ const Social: React.FC = () => {
     }
   };
 
+  const handleChangeFilter = (name: string, value: string): void => {
+    setFilter(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+
+    // if (activeTab)
+  };
+
   const fetchUserInfo = async (): Promise<void> => {
     try {
       const response = await getUserInfo();
@@ -89,7 +106,7 @@ const Social: React.FC = () => {
   const fetchPostFollowing = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostFollowing(initialParamsPost);
+      const response = await getSocialPostFollowing(initialFilter);
       setDataPost(response.data);
       setIsLoadingPost(false);
     } catch (error) {
@@ -101,7 +118,7 @@ const Social: React.FC = () => {
   const fetchPostForYou = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostForYou(initialParamsPost);
+      const response = await getSocialPostForYou(initialFilter);
       setDataPost(response);
       setIsLoadingPost(false);
     } catch (error) {
@@ -113,7 +130,7 @@ const Social: React.FC = () => {
   const fetchPostMySpace = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostMySpace(initialParamsPost);
+      const response = await getSocialPostMySpace(initialFilter);
       setDataPost(response);
       setIsLoadingPost(false);
     } catch (error) {
@@ -139,9 +156,15 @@ const Social: React.FC = () => {
     void fetchPostFollowing();
   }, []);
 
+  console.log(filter);
+
   return (
     <PageGradient defaultGradient className="w-full">
-      <Card1 activeTab={activeTab} setActiveTab={handleChangeTab} />
+      <Card1
+        activeTab={activeTab}
+        setActiveTab={handleChangeTab}
+        changeFilter={handleChangeFilter}
+      />
 
       <Card2 userData={userInfo} />
     </PageGradient>

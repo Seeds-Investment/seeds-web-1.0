@@ -13,6 +13,9 @@ const circleService = baseAxios(
 const tournamentService = baseAxios(
   `${process.env.NEXT_PUBLIC_URL ?? devUrl}/play/v1/`
 );
+const marketService = baseAxios(
+  `${process.env.NEXT_PUBLIC_URL ?? devUrl}/market/v1/`
+);
 
 export const getTrendingAssets = async (): Promise<any> => {
   try {
@@ -78,6 +81,18 @@ export const assetAll = async (params: any): Promise<any> => {
 
   return await assetService.get(`/search`, {
     params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetById = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  return await marketService.get(`/single/${id}`, {
     headers: {
       Accept: 'application/json'
     }

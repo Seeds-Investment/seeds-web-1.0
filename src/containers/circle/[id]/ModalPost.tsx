@@ -3,7 +3,6 @@ import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
-import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import {
@@ -14,6 +13,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { Dialog, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -25,8 +25,11 @@ import UniqueInputButton from './UniqueInputButton';
 import { VoiceRecorder } from './VoiceRecording';
 
 interface props {
-  open: any;
+  open: boolean;
   handleOpen: () => void;
+  fetchData1: () => Promise<void>;
+  fetchData2: () => Promise<void>;
+  setIsLoading: any;
 }
 
 interface typeOfPost {
@@ -146,8 +149,17 @@ const tagOption = [
   }
 ];
 
-const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const ModalPost: React.FC<props> = ({
+  open,
+  handleOpen,
+  fetchData1,
+  fetchData2,
+  setIsLoading
+}) => {
+  const router = useRouter();
+  const circleId: string | any = router.query.circleid;
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
@@ -217,21 +229,32 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
     if (selectedValue.tag.length > 0) {
       setIsSymbol(false);
       if (form.content_text.includes(' ')) {
+        let isSpace = false;
         const words = form.content_text.split(' ');
         const currentWord = words[words.length - 1];
+        const wordBefore = words[words.length - 2];
+        if (wordBefore.endsWith(' ')) {
+          wordBefore.replace(' ', '');
+          words.pop();
+          isSpace = true;
+        }
         words.pop();
         let newVal = '';
         if (currentWord.includes('@')) {
-          const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`@${selectedValue.tag}`]: newActualTag
           };
           setTagMapping(newTagMapping);
-          newVal = words.join(' ') + newActualTag;
+          if (isSpace) {
+            newVal = words.join(' ') + wordBefore + newActualTag;
+          } else {
+            newVal = words.join(' ') + newActualTag;
+          }
         }
         if (currentWord.includes('$')) {
-          const newActualTag = ` $[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`$${selectedValue.tag}`]: newActualTag
@@ -249,7 +272,7 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
         });
       } else {
         if (form.content_text.includes('@')) {
-          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`@${selectedValue.tag}`]: newActualTag
@@ -261,7 +284,7 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
           }));
         }
         if (form.content_text.includes('$')) {
-          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`$${selectedValue.tag}`]: newActualTag
@@ -283,10 +306,10 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
         words.pop();
         let newVal = '';
         if (currentWord.includes('@')) {
-          newVal = words.join(' ') + ` @${selectedValue.tag}`;
+          newVal = words.join(' ') + ` @${selectedValue.tag} `;
         }
         if (currentWord.includes('$')) {
-          newVal = words.join(' ') + ` $${selectedValue.tag}`;
+          newVal = words.join(' ') + ` $${selectedValue.tag} `;
         }
         setDisplayValue(newVal);
         setSelectedValue({
@@ -295,10 +318,10 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
         });
       } else {
         if (displayValue.includes('@')) {
-          setDisplayValue(`@${selectedValue.tag}`);
+          setDisplayValue(`@${selectedValue.tag} `);
         }
         if (form.content_text.includes('$')) {
-          setDisplayValue(`$${selectedValue.tag}`);
+          setDisplayValue(`$${selectedValue.tag} `);
         }
         setSelectedValue({
           id: '',
@@ -342,6 +365,7 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
     if (matches?.length > 0) {
       const lastMention = matches[matches.length - 1];
       const cleanedValue = lastMention.replace(/[#$@]/g, '');
+      console.log(lastMention, cleanedValue);
       if (debounceTimer !== null) clearTimeout(debounceTimer);
       if (lastMention.length > 3) {
         setDebounceTimer(
@@ -463,16 +487,25 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       clearTimeout(timeoutId);
     };
   }, [form.content_text]);
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
     const { value } = event.target;
     if (value === 'Public') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: globe }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: globe
+      }));
     } else if (value === 'Private') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: privat }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: privat
+      }));
     } else if (value === 'Friends Only') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
@@ -517,14 +550,27 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       if (document !== undefined && document !== null) {
         await postMedia(document);
       }
-      const payload: any = {
-        content_text: form.content_text,
-        media_urls: form.media_urls,
-        privacy: form.privacy,
-        is_pinned: false,
-        user_id: userInfo?.id,
-        hashtags
-      };
+      let payload: any;
+      if (circleId !== undefined) {
+        payload = {
+          content_text: form.content_text,
+          media_urls: form.media_urls,
+          privacy: form.privacy,
+          is_pinned: false,
+          user_id: userInfo?.id,
+          circleId,
+          hashtags
+        };
+      } else {
+        payload = {
+          content_text: form.content_text,
+          media_urls: form.media_urls,
+          privacy: form.privacy,
+          is_pinned: false,
+          user_id: userInfo?.id,
+          hashtags
+        };
+      }
       if (form.polling.options.length > 0) {
         payload.pollings = form.polling.options;
         payload.polling_multiple = form.polling.isMultiVote;
@@ -567,8 +613,14 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       setMedia(undefined);
       setDocument(null);
       setHashtags([]);
+      setDisplayValue('');
       setSelectedAsset([]);
       setChartData(initialChartData);
+      handleOpen();
+      await fetchData1();
+      await fetchData2();
+      setLastWordsWithSymbol('');
+      setIsSymbol(false);
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -842,8 +894,38 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
       <div className="block bg-white w-full rounded-xl">
-        {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
+          {isError && (
+            <div className="flex justify-center">
+              <div className="absolute -top-20 bg-white border-l-8 rounded-md border-[#FF3838] min-w-[200px] max-w-[300px] xl:min-w-[400px] xl:max-w-[405px]">
+                <div className="flex justify-start p-2 gap-4">
+                  <div className="flex items-center">
+                    <div className="p-1 rounded-full bg-[#FFEBEB]">
+                      <div className="p-1 rounded-full bg-[#fcdbdb]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 2.25C10.0716 2.25 8.18657 2.82183 6.58319 3.89317C4.97982 4.96451 3.73013 6.48726 2.99218 8.26884C2.25422 10.0504 2.06114 12.0108 2.43735 13.9021C2.81355 15.7934 3.74215 17.5307 5.10571 18.8943C6.46928 20.2579 8.20656 21.1865 10.0979 21.5627C11.9892 21.9389 13.9496 21.7458 15.7312 21.0078C17.5127 20.2699 19.0355 19.0202 20.1068 17.4168C21.1782 15.8134 21.75 13.9284 21.75 12C21.7473 9.41498 20.7192 6.93661 18.8913 5.10872C17.0634 3.28084 14.585 2.25273 12 2.25ZM11.25 7.5C11.25 7.30109 11.329 7.11032 11.4697 6.96967C11.6103 6.82902 11.8011 6.75 12 6.75C12.1989 6.75 12.3897 6.82902 12.5303 6.96967C12.671 7.11032 12.75 7.30109 12.75 7.5V12.75C12.75 12.9489 12.671 13.1397 12.5303 13.2803C12.3897 13.421 12.1989 13.5 12 13.5C11.8011 13.5 11.6103 13.421 11.4697 13.2803C11.329 13.1397 11.25 12.9489 11.25 12.75V7.5ZM12 17.25C11.7775 17.25 11.56 17.184 11.375 17.0604C11.19 16.9368 11.0458 16.7611 10.9606 16.5555C10.8755 16.35 10.8532 16.1238 10.8966 15.9055C10.94 15.6873 11.0472 15.4868 11.2045 15.3295C11.3618 15.1722 11.5623 15.065 11.7805 15.0216C11.9988 14.9782 12.225 15.0005 12.4305 15.0856C12.6361 15.1708 12.8118 15.315 12.9354 15.5C13.059 15.685 13.125 15.9025 13.125 16.125C13.125 16.4234 13.0065 16.7095 12.7955 16.9205C12.5845 17.1315 12.2984 17.25 12 17.25Z"
+                            fill="#FF3838"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <Typography className="text-black">
+                      {errorMessage}
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <>
             {pages !== 'gif' && (
               <div className="flex justify-between">
@@ -871,9 +953,9 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
                 </div>
               </div>
             )}
-            {handlePages()}
             {/* form text section */}
             <form onSubmit={handlePostCircle}>
+              {handlePages()}
               <div className="flex justify-between pl-16 pb-4 z-0">
                 {audio !== null && pages !== 'gif' && (
                   <audio controls>
@@ -1008,6 +1090,8 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
               ) : null}
               {pages !== 'gif' ? (
                 <UniqueInputButton
+                  setIsError={setIsError}
+                  setErrorMessage={setErrorMessage}
                   setPages={setPages}
                   setMedia={setMedia}
                   openPieModal={openPieModal}

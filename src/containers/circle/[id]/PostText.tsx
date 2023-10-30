@@ -18,13 +18,13 @@ const CirclePostInputText: React.FC<props> = ({
   const { t } = useTranslation();
 
   return (
-    <div className="pl-16 mb-[60px]">
+    <div className="mb-4 mt-2">
       <textarea
         name="content_text"
         id="circle-post"
         onChange={handleFormChange}
         value={displayValue}
-        className="w-[100%] h-12 focus:outline-none bg-transparent font-poppins placeholder:font-poppins"
+        className="w-[100%] h-12 focus:outline-none bg-transparent text-black font-poppins placeholder:font-poppins placeholder:text-neutral-soft placeholder:text-base"
         placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
       ></textarea>
       {renderUserSuggestion}

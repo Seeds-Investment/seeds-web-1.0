@@ -5,20 +5,27 @@ import GifSection from '@/containers/circle/[id]/GifSection';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import UniqueInputComment from '@/containers/circle/[id]/UniqueInputComment';
 import withAuth from '@/helpers/withAuth';
+import { getAssetById } from '@/repository/asset.repository';
 import {
   UseUploadMedia,
   createComment,
   getAllComment,
+  getDetailCircle,
   getDetailCirclePost,
   getUserTagList,
   postLikeComment
 } from '@/repository/circleDetail.repository';
+import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { formatCurrency } from '@/utils/common/currency';
+import { isUndefindOrNull } from '@/utils/common/utils';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { PlayLogo } from 'public/assets/circle';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 interface typeOfCommentForm {
   post_id: string;
   user_id: string;
@@ -133,6 +140,7 @@ const tagOption = [
 ];
 
 const Comment: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const postId: string | any = router.query.postId;
   const [mediaArr, setMediaArr] = useState<string[]>([]);
@@ -172,7 +180,11 @@ const Comment: React.FC = () => {
     circleList: [],
     playList: []
   });
-
+  const [thumbnailList, setThumbnailList] = useState<any>([]);
+  const [additionalPostData, setAdditionalPostData] = useState<any>({});
+  if (additionalPostData.length > 0) {
+    console.log('succes');
+  }
   const fetchDetailCirclePost = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -222,21 +234,32 @@ const Comment: React.FC = () => {
     if (selectedValue.tag.length > 0) {
       setIsSymbol(false);
       if (form.content_text.includes(' ')) {
+        let isSpace = false;
         const words = form.content_text.split(' ');
         const currentWord = words[words.length - 1];
+        const wordBefore = words[words.length - 2];
+        if (wordBefore.endsWith(' ')) {
+          wordBefore.replace(' ', '');
+          words.pop();
+          isSpace = true;
+        }
         words.pop();
         let newVal = '';
         if (currentWord.includes('@')) {
-          const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`@${selectedValue.tag}`]: newActualTag
           };
           setTagMapping(newTagMapping);
-          newVal = words.join(' ') + newActualTag;
+          if (isSpace) {
+            newVal = words.join(' ') + wordBefore + newActualTag;
+          } else {
+            newVal = words.join(' ') + newActualTag;
+          }
         }
         if (currentWord.includes('$')) {
-          const newActualTag = ` $[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`$${selectedValue.tag}`]: newActualTag
@@ -254,7 +277,7 @@ const Comment: React.FC = () => {
         });
       } else {
         if (form.content_text.includes('@')) {
-          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`@${selectedValue.tag}`]: newActualTag
@@ -266,7 +289,7 @@ const Comment: React.FC = () => {
           }));
         }
         if (form.content_text.includes('$')) {
-          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id}) `;
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
           const newTagMapping = {
             ...tagMapping,
             [`$${selectedValue.tag}`]: newActualTag
@@ -288,10 +311,10 @@ const Comment: React.FC = () => {
         words.pop();
         let newVal = '';
         if (currentWord.includes('@')) {
-          newVal = words.join(' ') + ` @${selectedValue.tag}`;
+          newVal = words.join(' ') + ` @${selectedValue.tag} `;
         }
         if (currentWord.includes('$')) {
-          newVal = words.join(' ') + ` $${selectedValue.tag}`;
+          newVal = words.join(' ') + ` $${selectedValue.tag} `;
         }
         setDisplayValue(newVal);
         setSelectedValue({
@@ -300,10 +323,10 @@ const Comment: React.FC = () => {
         });
       } else {
         if (displayValue.includes('@')) {
-          setDisplayValue(`@${selectedValue.tag}`);
+          setDisplayValue(`@${selectedValue.tag} `);
         }
         if (form.content_text.includes('$')) {
-          setDisplayValue(`$${selectedValue.tag}`);
+          setDisplayValue(`$${selectedValue.tag} `);
         }
         setSelectedValue({
           id: '',
@@ -433,7 +456,6 @@ const Comment: React.FC = () => {
       }
     }
   };
-
   const selectTypeTag = (type: any): void => {
     setOtherTagId(type?.id);
     if (type?.id === 1) {
@@ -515,10 +537,12 @@ const Comment: React.FC = () => {
         media_url: '',
         media_type: ''
       });
+
       setParent({
         id: '',
         seedsTag: ''
       });
+
       setDisplayValue('');
       setMediaArr([]);
       setMedia(undefined);
@@ -587,6 +611,288 @@ const Comment: React.FC = () => {
       }));
     }
   }, [parent.id, parent.seedsTag]);
+
+  const toUserProfile = (id: any): void => {
+    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('MyProfileScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (id !== undefined) {
+      router.push('ProfileUserScreen').catch(err => {
+        console.error(err);
+      });
+    } else {
+      router.push('ProfileUserScreen').catch(err => {
+        console.error(err);
+      });
+    }
+  };
+
+  const toCircleDetail = useCallback((id: string): void => {
+    router.push(`/connect/post/${id}`).catch(err => {
+      console.error(err);
+    });
+  }, []);
+
+  const renderTouchableText = (text: string): JSX.Element => {
+    checkingThumbnail(text);
+    let linkUrl = '';
+    const lines = text?.split('\n');
+    const renderedLines = lines?.map((line, index) => {
+      const parts = line.split(
+        /(@\[[^\]]+\]\([^)]+\)|#\[[^\]]+\]\([^)]+\)|\$\[[^\]]+\]\([^)]+\)|\b(?:https?|ftp):\/\/\S+|\b(?:www\.\S+)\b)/g
+      );
+
+      const renderedParts = parts
+        .map((part, partIndex) => {
+          if (
+            part.startsWith('@[') ||
+            part.startsWith('#[') ||
+            part.startsWith('$[')
+          ) {
+            const contentMatch = part.match(/\[([^\]]+)\]/);
+            const linkMatch = part.match(/\(([^)]+)\)/);
+
+            if (contentMatch !== null && linkMatch !== null) {
+              const content = contentMatch[1];
+              const link = linkMatch[1];
+
+              return (
+                <button
+                  style={{ marginBottom: 0 }}
+                  key={partIndex}
+                  onClick={() => {
+                    onPressTag(link);
+                  }}
+                >
+                  {link?.includes('-circle') ? (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      @{content}
+                    </Typography>
+                  ) : link?.includes('-asset') ? (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      #{content}
+                    </Typography>
+                  ) : (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      @{content}
+                    </Typography>
+                  )}
+                </button>
+              );
+            }
+          } else if (part.match(/#\[[^\]]+\]\([^)]+\)/) !== null) {
+            const matchResult = part.match(/#\[(.*?)\]/);
+            const extractedValue = matchResult !== null ? matchResult[1] : null;
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  onPressTag(extractedValue);
+                }}
+              >
+                <Typography className="font-poppins text-seeds-green font-normal">
+                  #{extractedValue}
+                </Typography>
+              </button>
+            );
+          } else if (
+            part.match(/\b(?:https?|ftp):\/\/\S+|\b(?:www\.\S+)\b/) !== null
+          ) {
+            linkUrl = part;
+            const link = part.startsWith('www.') ? `http://${part}` : part;
+            return (
+              <button
+                key={index}
+                onDoubleClick={() => {}}
+                onClick={() => {
+                  router.push(link).catch(err => {
+                    console.error(err);
+                  });
+                }}
+              >
+                <Typography className="text-blue-500 font-poppins">
+                  {part}
+                </Typography>
+              </button>
+            );
+          } else {
+            const words = part.split(' ');
+            return words.map((word: string, index: number) => {
+              if (word.startsWith('#')) {
+                const cleanedWord = word.replace(/#(\w+)/, '$1');
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      onPressTag(cleanedWord);
+                    }}
+                  >
+                    <pre className="font-poppins text-seeds-green font-normal">
+                      #{cleanedWord}{' '}
+                    </pre>
+                  </button>
+                );
+              } else {
+                return (
+                  <pre
+                    key={index}
+                    className="font-poppins text-black font-normal"
+                  >
+                    {word}{' '}
+                  </pre>
+                );
+              }
+            });
+          }
+          return undefined;
+        })
+        .filter(Boolean);
+
+      return (
+        <div key={index} className="flex justify-start">
+          {renderedParts}
+        </div>
+      );
+    });
+
+    return (
+      <div>
+        {renderedLines}
+        {linkUrl.length > 0 ? (
+          <div>
+            <div></div>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
+  function removeDuplicateIds(data: any): any {
+    const uniqueIds = new Set();
+    return data.filter((item: any) => {
+      if (!uniqueIds.has(item.id)) {
+        uniqueIds.add(item.id);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  function checkPostOrderPlay(inputString: string): boolean {
+    const patternRegex =
+      /^%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
+
+    const isMatching = patternRegex.test(inputString);
+    return isMatching;
+  }
+
+  function extractIdsOrderPlay(inputString: string): any {
+    // Define regular expressions to match the indicators and their values
+    const assetNameRegex = /%\[([^[\]]+)\]\(([^()]+)\)/;
+    const orderTypeRegex = /&\[(buy|sell)\]\(([^()]+)\)/;
+    const assetIconRegex = /\*\[asset_icon\]\(([^()]+)\)/;
+
+    // Extract values using regular expressions
+    const assetNameMatch = inputString.match(assetNameRegex);
+    const orderTypeMatch = inputString.match(orderTypeRegex);
+    const assetIconMatch = inputString.match(assetIconRegex);
+
+    return {
+      asset_name: assetNameMatch?.[1] ?? '',
+      order_type:
+        orderTypeMatch?.[1] === 'buy'
+          ? 'buy'
+          : orderTypeMatch?.[1] === 'sell'
+          ? 'sell'
+          : '',
+      order_amount: parseInt(orderTypeMatch?.[2] ?? '0', 10),
+      asset_icon: assetIconMatch?.[1] ?? ''
+    };
+  }
+
+  function extractIds(inputString: string): string[] {
+    const pattern = /[@#$]\[.*?\]\((.*?)\)/g;
+    const matches = inputString?.match(pattern) ?? [];
+    const ids = matches.map(match => match.match(/\((.*?)\)/)?.[1] ?? '');
+    return ids;
+  }
+
+  const checkingThumbnail = (text: string): any => {
+    if (checkPostOrderPlay(text)) {
+      const extractedDataPlayOrder = extractIdsOrderPlay(text);
+      setAdditionalPostData(extractedDataPlayOrder);
+      setThumbnailList([]);
+    } else {
+      const res = extractIds(text);
+
+      const tempThumbnailList: any = [];
+
+      const promises = res?.map(async (el: any) => {
+        if (el?.includes('-circle') === true) {
+          await getDetailCircle({
+            circleId: el?.replace('-circle', '')
+          }).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'circle', ...res?.data });
+          });
+        } else if (el?.includes('-play') === true) {
+          await getPlayById(el?.replace('-play', '')).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'play', ...res });
+          });
+        } else if (el?.includes('-asset') === true) {
+          await getAssetById(el?.replace('-asset', '')).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'asset', ...res });
+          });
+        }
+        await Promise.resolve();
+      });
+
+      Promise.all(promises)
+        .then(() => {
+          const filteredThumbnailList = removeDuplicateIds(tempThumbnailList);
+          setThumbnailList(filteredThumbnailList);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  };
+
+  const onPressTag = (content: any): void => {
+    if (content?.includes('-people') === true) {
+      toUserProfile(content?.replace('-people', ''));
+    } else if (content?.includes('-circle') === true) {
+      toCircleDetail(content?.replace('-circle', ''));
+    } else if (content?.includes('-asset') === true) {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    } else if (content?.includes('-play') === true) {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    } else {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    }
+  };
+
+  const toDetailTag = (item: any): void => {
+    if (item?.thumbnailType === 'circle') {
+      router.push('CircleDetailScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (item?.thumbnailType === 'play') {
+      router.push('PlayDetailScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (item?.thumbnailType === 'asset') {
+      router.push('OverviewAsset').catch(err => {
+        console.error(err);
+      });
+    }
+  };
 
   const renderLoading = (): JSX.Element => (
     <div className="h-72 flex justify-center">
@@ -972,30 +1278,191 @@ const Comment: React.FC = () => {
                                               </Typography>
                                             </div>
                                             <div className="flex items-center pt-[5px]">
-                                              {el.content_text
-                                                .split(' ')
-                                                .map(
-                                                  (el: string, i: number) => {
-                                                    el += '\xa0';
-                                                    return el.startsWith('#') ||
-                                                      el.startsWith('@') ? (
-                                                      <>
-                                                        <Typography
-                                                          key={`${i} + ${el}  + 'hashtags'`}
-                                                          className="text-[#5E44FF] font-normal font-poppins cursor-pointer"
-                                                        >
-                                                          {el}
-                                                        </Typography>
-                                                      </>
-                                                    ) : (
-                                                      <>
-                                                        <Typography
-                                                          key={`${i} + ${el} + 'normal text'`}
-                                                          className="text-xs md:text-sm text-black font-poppins"
-                                                        >
-                                                          {el}
-                                                        </Typography>
-                                                      </>
+                                              {renderTouchableText(
+                                                el.content_text
+                                              )}
+                                            </div>
+
+                                            <div className="flex justify-start gap-4 pt-4">
+                                              {thumbnailList.length > 0 &&
+                                                thumbnailList.map(
+                                                  (
+                                                    item: any,
+                                                    index: number
+                                                  ) => {
+                                                    return (
+                                                      <div
+                                                        className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
+                                                        key={`${
+                                                          item?.id as string
+                                                        }${index}`}
+                                                        onClick={() => {
+                                                          toDetailTag(item);
+                                                        }}
+                                                      >
+                                                        {item?.admission_fee >
+                                                        0 ? (
+                                                          <div className="flex justify-center pt-4">
+                                                            <div className="flex items-center">
+                                                              <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="17"
+                                                                height="10"
+                                                                viewBox="0 0 17 10"
+                                                                fill="none"
+                                                              >
+                                                                <path
+                                                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                                                  fill="#FDBA22"
+                                                                />
+                                                              </svg>
+                                                            </div>
+                                                            <Typography className="font-poppins text-black text-xs pl-2">
+                                                              Paid
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                          'circle' &&
+                                                        item?.type !==
+                                                          'free' ? (
+                                                          <div className="flex justify-center pt-4">
+                                                            <div className="flex items-center">
+                                                              <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="17"
+                                                                height="10"
+                                                                viewBox="0 0 17 10"
+                                                                fill="none"
+                                                              >
+                                                                <path
+                                                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                                                  fill="#FDBA22"
+                                                                />
+                                                              </svg>
+                                                            </div>
+                                                            <Typography className="font-poppins text-black text-xs pl-2">
+                                                              Premium
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                        'play' ? (
+                                                          <div className="flex justify-center py-2">
+                                                            <Image
+                                                              src={PlayLogo}
+                                                              alt="image"
+                                                              width={60}
+                                                              height={60}
+                                                              className="rounded-full object-cover"
+                                                            />
+                                                          </div>
+                                                        ) : (
+                                                          <div
+                                                            className={`${
+                                                              item?.thumbnailType ===
+                                                                'asset' ||
+                                                              (item?.thumbnailType ===
+                                                                'circle' &&
+                                                                item?.type ===
+                                                                  'free')
+                                                                ? 'pt-4'
+                                                                : ''
+                                                            } flex justify-center py-2`}
+                                                          >
+                                                            <img
+                                                              src={
+                                                                item?.thumbnailType ===
+                                                                'asset'
+                                                                  ? item
+                                                                      ?.marketAsset
+                                                                      ?.logo
+                                                                  : item?.logo !==
+                                                                    undefined
+                                                                  ? item.logo
+                                                                  : item?.avatar
+                                                              }
+                                                              alt="image"
+                                                              className="rounded-full object-cover"
+                                                              width={60}
+                                                              height={60}
+                                                            />
+                                                          </div>
+                                                        )}
+                                                        <div className="flex justify-center">
+                                                          <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
+                                                            {item?.name
+                                                              ?.length > 10
+                                                              ? (item?.name.substring(
+                                                                  0,
+                                                                  15
+                                                                ) as string) +
+                                                                '...'
+                                                              : item?.name}
+                                                            {item?.thumbnailType ===
+                                                              'asset' &&
+                                                              (item?.marketAsset
+                                                                ?.name?.length >
+                                                              10
+                                                                ? (item?.marketAsset?.name.substring(
+                                                                    0,
+                                                                    15
+                                                                  ) as string) +
+                                                                  '...'
+                                                                : item
+                                                                    ?.marketAsset
+                                                                    ?.name)}
+                                                          </Typography>
+                                                        </div>
+                                                        {item?.thumbnailType ===
+                                                        'play' ? (
+                                                          <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
+                                                            {
+                                                              item?.participants
+                                                                ?.length
+                                                            }{' '}
+                                                            participants
+                                                          </Typography>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                        'asset' ? (
+                                                          <div className="flex justify-center">
+                                                            <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
+                                                              {item?.marketAsset
+                                                                ?.exchangeCurrency ===
+                                                              'IDR'
+                                                                ? `IDR ${formatCurrency(
+                                                                    item
+                                                                      ?.marketAsset
+                                                                      ?.lastPrice
+                                                                      ?.close
+                                                                  )}`
+                                                                : `$${formatCurrency(
+                                                                    item
+                                                                      ?.marketAsset
+                                                                      ?.lastPrice
+                                                                      ?.close /
+                                                                      item
+                                                                        ?.marketAsset
+                                                                        ?.exchangeRate
+                                                                  )}`}
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                          'circle' && (
+                                                          <div className="flex justify-center">
+                                                            <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
+                                                              {
+                                                                item?.total_member
+                                                              }{' '}
+                                                              {t(
+                                                                'circleDetail.member'
+                                                              )}
+                                                            </Typography>
+                                                          </div>
+                                                        )}
+                                                      </div>
                                                     );
                                                   }
                                                 )}

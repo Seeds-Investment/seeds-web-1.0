@@ -27,8 +27,8 @@ import { VoiceRecorder } from './VoiceRecording';
 interface props {
   open: boolean;
   handleOpen: () => void;
-  fetchData1: () => Promise<void>;
-  fetchData2: () => Promise<void>;
+  fetchData1?: () => Promise<void>;
+  fetchData2?: () => Promise<void>;
   setIsLoading: any;
 }
 
@@ -617,8 +617,12 @@ const ModalPost: React.FC<props> = ({
       setSelectedAsset([]);
       setChartData(initialChartData);
       handleOpen();
-      await fetchData1();
-      await fetchData2();
+      if (fetchData1 !== undefined) {
+        await fetchData1();
+      }
+      if (fetchData2 !== undefined) {
+        await fetchData2();
+      }
       setLastWordsWithSymbol('');
       setIsSymbol(false);
     } catch (error: any) {

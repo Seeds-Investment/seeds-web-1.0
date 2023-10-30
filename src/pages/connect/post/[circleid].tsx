@@ -36,6 +36,15 @@ const CirclePost = (): JSX.Element => {
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
   };
+  const [isLoading, setIsLoading] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalLeave, setOpenModalLeave] = useState(false);
+  const [openModalReport, setOpenMOdalReport] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [dataCircle, setData]: any = useState({});
+  const [dataPost, setDataPost]: any = useState([]);
+  const [dataRecommend, setDataRecommend]: any = useState([]);
+  const [isJoined, setIsJoined] = useState(false);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -50,15 +59,6 @@ const CirclePost = (): JSX.Element => {
 
     void fetchData();
   }, []);
-  const [isLoading, setIsLoading] = useState(false);
-  const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [openModalLeave, setOpenModalLeave] = useState(false);
-  const [openModalReport, setOpenMOdalReport] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [dataCircle, setData]: any = useState({});
-  const [dataPost, setDataPost]: any = useState([]);
-  const [dataRecommend, setDataRecommend]: any = useState([]);
-  const [isJoined, setIsJoined] = useState(false);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
@@ -180,11 +180,8 @@ const CirclePost = (): JSX.Element => {
       isJoined={isJoined}
       setIsJoined={setIsJoined}
       setIsLoading={setIsLoading}
-      isLoading={isLoading}
       setDataPost={setDataPost}
       setDataRecommend={setDataRecommend}
-      fetchCirclePost={fetchCirclePost}
-      fetchCircleRecommend={fetchCircleRecommended}
     >
       {/* posting section */}
       <ModalPost
@@ -194,7 +191,7 @@ const CirclePost = (): JSX.Element => {
         fetchData2={fetchCircleRecommended}
         setIsLoading={setIsLoading}
       />
-      <div className="block bg-white mt-8 w-full rounded-xl">
+      <div className="bg-white mt-8 w-full rounded-xl">
         {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
           {isEdit ? (

@@ -35,7 +35,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
 
       <div className="flex gap-5 items-center">
         <Image
-          src={data?.issuer_data.avatar}
+          src={data?.owner.avatar}
           alt="avatar"
           width={48}
           height={48}
@@ -44,7 +44,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
         <div>
           <div className="flex gap-2 w-full">
             <Typography className="text-black sm:text-xs md:text-lg">
-              {data?.issuer_data.name}
+              {data?.owner.name}
             </Typography>
             <Image src={Sprout.src} alt={Sprout.alt} height={22} width={22} />
           </div>

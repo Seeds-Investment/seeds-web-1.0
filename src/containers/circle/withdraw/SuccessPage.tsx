@@ -38,7 +38,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
     >
       <CardGradient
         defaultGradient
-        className={`relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${
+        className={`relative overflow-hidden w-full sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${
           width !== undefined && width < 370
             ? 'min-h-[38rem]'
             : width !== undefined && width < 400

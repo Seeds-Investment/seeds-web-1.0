@@ -263,7 +263,7 @@ const Circle = (): React.ReactElement => {
     <PageGradient defaultGradient className="w-full">
       <BannerCircleList />
 
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.leaderBoard.title')}
         </Typography>
@@ -291,7 +291,7 @@ const Circle = (): React.ReactElement => {
           )}
         </div>
       </CCard>
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.list.title')}
         </Typography>

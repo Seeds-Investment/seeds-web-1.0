@@ -39,8 +39,6 @@ const CirclePostSection1: React.FC<props> = ({
   setIsJoined
 }) => {
   const { t } = useTranslation();
-
-  // const [payment, setPayment] = useState<any>({});
   const router = useRouter();
 
   const handleJoin = async (): Promise<void> => {
@@ -90,14 +88,14 @@ const CirclePostSection1: React.FC<props> = ({
         <div className="md:hidden flex justify-end h-fit gap-4 relative bottom-20">
           {isJoined ? (
             <button className="cursor-default bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-              Joined
+              {t('circleDetail.statusJoined')}
             </button>
           ) : (
             <button
               onClick={handleJoin}
               className="bg-seeds-button-green w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
             >
-              Join
+              {t('circleDetail.statusNotJoined')}
             </button>
           )}
           <div className="flex flex-col justify-center">
@@ -175,7 +173,9 @@ const CirclePostSection1: React.FC<props> = ({
               </div>
               <div className="flex justify-center flex-col">
                 <h1 className="text-neutral-soft text-xs font-normal font-poppins pl-2">
-                  {dataCircle?.total_member}
+                  {`${dataCircle?.total_member as string} ${t(
+                    'circleDetail.member'
+                  )}`}
                 </h1>
               </div>
             </div>
@@ -218,14 +218,14 @@ const CirclePostSection1: React.FC<props> = ({
               <div className="flex gap-2">
                 {isJoined ? (
                   <button className="bg-neutral-ultrasoft cursor-default w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                    Joined
+                    {t('circleDetail.statusJoined')}
                   </button>
                 ) : (
                   <button
                     onClick={handleJoin}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
                   >
-                    Join
+                    {t('circleDetail.statusNotJoined')}
                   </button>
                 )}
                 <div className="flex flex-col justify-center">

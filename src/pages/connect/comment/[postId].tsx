@@ -5,21 +5,27 @@ import GifSection from '@/containers/circle/[id]/GifSection';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import UniqueInputComment from '@/containers/circle/[id]/UniqueInputComment';
 import withAuth from '@/helpers/withAuth';
+import { getAssetById } from '@/repository/asset.repository';
 import {
   UseUploadMedia,
   createComment,
   getAllComment,
+  getDetailCircle,
   getDetailCirclePost,
-  searchAssets,
-  searchCircleByName,
-  searchUser
+  getUserTagList,
+  postLikeComment
 } from '@/repository/circleDetail.repository';
+import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { formatCurrency } from '@/utils/common/currency';
+import { isUndefindOrNull } from '@/utils/common/utils';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { PlayLogo } from 'public/assets/circle';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 interface typeOfCommentForm {
   post_id: string;
   user_id: string;
@@ -48,14 +54,6 @@ interface UserData {
   _pin: string;
 }
 
-interface CirclePeopleData {
-  id: string;
-  name: string;
-  avatar: string;
-  tag: string;
-  type: string;
-}
-
 interface TimeDifference {
   days: number;
   hours: number;
@@ -79,6 +77,11 @@ interface typeOfComment {
   created_at: string;
   updated_at: string;
   avatar: string;
+}
+
+interface typeOfSelected {
+  id: string;
+  tag: string;
 }
 
 interface typeOfParent {
@@ -121,7 +124,23 @@ function timeConverter(timestamp: string): string {
   }
 }
 
+const tagOption = [
+  {
+    id: 1,
+    name: 'User'
+  },
+  {
+    id: 2,
+    name: 'Circle'
+  },
+  {
+    id: 3,
+    name: 'Play'
+  }
+];
+
 const Comment: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const postId: string | any = router.query.postId;
   const [mediaArr, setMediaArr] = useState<string[]>([]);
@@ -132,15 +151,17 @@ const Comment: React.FC = () => {
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
   const [isSymbol, setIsSymbol] = useState(false);
-  const [circlePeopleData, setCirclePeopleData] = useState<
-    [] | CirclePeopleData[]
-  >([]);
-  const [selectedValue, setSelectedValue] = useState<string>('');
-  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [lastWordWithSymbol, setLastWordsWithSymbol] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState<typeOfSelected>({
+    id: '',
+    tag: ''
+  });
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [displayValue, setDisplayValue] = useState('');
+  const [tagMapping, setTagMapping] = useState({});
   const [form, setForm] = useState<typeOfForm>({
     content_text: '',
     media_url: '',
@@ -150,169 +171,48 @@ const Comment: React.FC = () => {
     id: '',
     seedsTag: ''
   });
+  const [tagLists, setTagLists] = useState<any>([]);
+  const [otherTagId, setOtherTagId] = useState(1);
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [dollarLists, setDollarLists] = useState<any>([]);
+  const [otherTagList, setOtherTagList] = useState<any>({
+    peopleList: [],
+    circleList: [],
+    playList: []
+  });
+  const [thumbnailList, setThumbnailList] = useState<any>([]);
+  const [additionalPostData, setAdditionalPostData] = useState<any>({});
+  if (additionalPostData.length > 0) {
+    console.log('succes');
+  }
+  const fetchDetailCirclePost = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const { data } = await getDetailCirclePost({ postId });
 
-  useEffect(() => {
-    if (selectedValue.length > 0) {
-      setCirclePeopleData([]);
-      setIsSymbol(false);
-      if (form.content_text.includes(' ')) {
-        const words = form.content_text.split(' ');
-        const currentWord = words[words.length - 1];
-        words.pop();
-        let newVal = '';
-        if (currentWord.includes('@')) {
-          newVal = words.join(' ') + ` @${selectedValue} `;
-        }
-        if (currentWord.includes('$')) {
-          newVal = words.join(' ') + ` $${selectedValue} `;
-        }
-        setForm(prevForm => ({
-          ...prevForm,
-          content_text: newVal
-        }));
-        setSelectedValue('');
-      } else {
-        if (form.content_text.includes('@')) {
-          setForm(prevForm => ({
-            ...prevForm,
-            content_text: `@${selectedValue} `
-          }));
-        }
-        if (form.content_text.includes('$')) {
-          setForm(prevForm => ({
-            ...prevForm,
-            content_text: `$${selectedValue} `
-          }));
-        }
-        setSelectedValue('');
-      }
+      setDataPost(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoading(false);
     }
-  }, [selectedValue]);
-
-  const handleFormChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ): any => {
-    const { name, value } = event.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
-    if (value.endsWith(' ')) {
-      setIsSymbol(false);
-      setCirclePeopleData([]);
-      const words = value.split(' ');
-      const currentWord = words[words.length - 2];
-
-      if (currentWord?.startsWith('#')) {
-        if (!hashtags.includes(currentWord)) {
-          hashtags.push(currentWord);
-          words.pop();
-
-          const newVal = words.join(' ') + ' ';
-          setForm(prevForm => ({ ...prevForm, [name]: newVal }));
-        }
-      }
-    }
-
-    let currentWord = '';
-    if (value.includes(' ')) {
-      const words = value.split(' ');
-      currentWord = words[words.length - 1];
-    } else {
-      currentWord = value;
-    }
-    if (!currentWord.includes('@') || currentWord.includes('$')) {
-      setIsSymbol(false);
-    }
-    if (!value.includes(`~${parent.seedsTag}`)) {
-      setParent({
-        id: '',
-        seedsTag: ''
-      });
-    }
-    if (currentWord?.startsWith('$')) {
-      setIsSymbol(true);
-      if (currentWord.slice(1).length > 2) {
-        if (debounceTimer !== null) clearTimeout(debounceTimer);
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
-              try {
-                const { result } = await searchAssets({
-                  search: currentWord.slice(1),
-                  limit: 10,
-                  page: 1
-                });
-
-                const newAssets = result.map((element: any) => ({
-                  id: element.id,
-                  name: element.name,
-                  avatar: element.image,
-                  tag: element.quote,
-                  type: 'assets'
-                }));
-                setCirclePeopleData(newAssets);
-              } catch (error: any) {
-                console.error(error);
-              }
-            })();
-          }, 500)
-        );
-      } else {
-        setCirclePeopleData([]);
-      }
-    }
-
-    if (currentWord?.startsWith('@')) {
-      setIsSymbol(true);
-      if (currentWord.slice(1).length > 2) {
-        if (debounceTimer !== null) clearTimeout(debounceTimer);
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
-              const { result } = await searchCircleByName({
-                search: currentWord.slice(1),
-                limit: 10,
-                page: 1
-              });
-
-              const data = await searchUser({
-                search: currentWord.slice(1),
-                limit: 10,
-                page: 1
-              });
-
-              const newCircle = result.map((element: any) => ({
-                id: element.id,
-                name: element.name,
-                avatar: element.image,
-                tag: element.totalRating,
-                type: 'circle'
-              }));
-
-              const newPeople = data.result.map((element: any) => ({
-                id: element.id,
-                name: element.name,
-                avatar: element.avatar,
-                tag: element.seedsTag,
-                type: 'user'
-              }));
-
-              const combinedData = [...newCircle, ...newPeople];
-              setCirclePeopleData(combinedData);
-            })();
-          }, 500)
-        );
-      } else {
-        setCirclePeopleData([]);
-      }
-    }
-
-    hashtags.map(el => {
-      if (!value.includes(el)) {
-        const index = hashtags.indexOf(el);
-        hashtags.splice(index, 1);
-      }
-      return null;
-    });
   };
+
+  const fetchComment = async (): Promise<void> => {
+    try {
+      setIsLoadingComment(true);
+      const { data } = await getAllComment({ postId });
+      setDataComment(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoadingComment(false);
+    }
+  };
+  useEffect(() => {
+    void fetchDetailCirclePost();
+    void fetchComment();
+  }, [postId]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -329,6 +229,267 @@ const Comment: React.FC = () => {
 
     void fetchData();
   }, []);
+
+  useEffect(() => {
+    if (selectedValue.tag.length > 0) {
+      setIsSymbol(false);
+      if (form.content_text.includes(' ')) {
+        let isSpace = false;
+        const words = form.content_text.split(' ');
+        const currentWord = words[words.length - 1];
+        const wordBefore = words[words.length - 2];
+        if (wordBefore.endsWith(' ')) {
+          wordBefore.replace(' ', '');
+          words.pop();
+          isSpace = true;
+        }
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`@${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          if (isSpace) {
+            newVal = words.join(' ') + wordBefore + newActualTag;
+          } else {
+            newVal = words.join(' ') + newActualTag;
+          }
+        }
+        if (currentWord.includes('$')) {
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`$${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          newVal = words.join(' ') + newActualTag;
+        }
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: newVal
+        }));
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      } else {
+        if (form.content_text.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`@${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        if (form.content_text.includes('$')) {
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`$${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      }
+      if (displayValue.includes(' ')) {
+        const words = displayValue.split(' ');
+        const currentWord = words[words.length - 1];
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          newVal = words.join(' ') + ` @${selectedValue.tag} `;
+        }
+        if (currentWord.includes('$')) {
+          newVal = words.join(' ') + ` $${selectedValue.tag} `;
+        }
+        setDisplayValue(newVal);
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      } else {
+        if (displayValue.includes('@')) {
+          setDisplayValue(`@${selectedValue.tag} `);
+        }
+        if (form.content_text.includes('$')) {
+          setDisplayValue(`$${selectedValue.tag} `);
+        }
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      }
+    }
+  }, [selectedValue]);
+
+  useEffect(() => {
+    if (
+      lastWordWithSymbol.includes('@') ||
+      lastWordWithSymbol.includes('#') ||
+      lastWordWithSymbol.includes('$')
+    ) {
+      setIsSymbol(true);
+    } else {
+      setIsSymbol(false);
+    }
+  }, [lastWordWithSymbol]);
+
+  const handleFormChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ): any => {
+    const { name, value } = event.target;
+    setDisplayValue(value);
+    let newActualValue = value;
+    for (const [key, value] of Object.entries(tagMapping)) {
+      newActualValue = newActualValue.replace(key, value as string);
+    }
+    setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+    const API_TYPE = ['people', 'plays', 'circles'];
+    const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
+    const words = value.split(' ');
+    const currentWord = words[words.length - 1];
+    if (words.length > 0) {
+      setLastWordsWithSymbol(currentWord);
+    } else {
+      setLastWordsWithSymbol(value);
+    }
+    if (matches?.length > 0) {
+      const lastMention = matches[matches.length - 1];
+      const cleanedValue = lastMention.replace(/[#$@]/g, '');
+      if (debounceTimer !== null) clearTimeout(debounceTimer);
+      if (lastMention.length > 3) {
+        setDebounceTimer(
+          setTimeout((): void => {
+            void (async (): Promise<void> => {
+              try {
+                if (lastMention.includes('#') === true) {
+                  const { data }: any = await getUserTagList(
+                    'hashtags',
+                    cleanedValue
+                  );
+
+                  setHashtags(
+                    data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-hashtag`
+                    }))
+                  );
+                } else if (lastMention.includes('$') === true) {
+                  const { data }: any = await getUserTagList(
+                    'assets',
+                    cleanedValue
+                  );
+
+                  setDollarLists(
+                    data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-asset`
+                    }))
+                  );
+                } else if (lastMention.includes('@') === true) {
+                  const promises = API_TYPE.map(async key => {
+                    return await getUserTagList(key, cleanedValue);
+                  });
+                  const results: any = await Promise.all(promises);
+                  setOtherTagList({
+                    peopleList: results[0]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-people`
+                    })),
+                    playList: results[1]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-play`
+                    })),
+                    circleList: results[2]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-circle`
+                    }))
+                  });
+                  setTimeout(() => {
+                    if (results[0]?.data?.length > 0) {
+                      setOtherTagId(1);
+                      setTagLists(
+                        results[0].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-people`
+                        }))
+                      );
+                    } else if (results[1]?.data?.length > 0) {
+                      setOtherTagId(3);
+                      setTagLists(
+                        results[1].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-play`
+                        }))
+                      );
+                    } else if (results[2]?.data?.length > 0) {
+                      setOtherTagId(2);
+                      setTagLists(
+                        results[2].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-circle`
+                        }))
+                      );
+                    }
+                  }, 500);
+                }
+              } catch (_) {
+                console.log(_);
+              }
+            })();
+          }, 500)
+        );
+      }
+    }
+  };
+  const selectTypeTag = (type: any): void => {
+    setOtherTagId(type?.id);
+    if (type?.id === 1) {
+      setTagLists(otherTagList?.peopleList);
+    }
+    if (type?.id === 2) {
+      setTagLists(otherTagList?.circleList);
+    }
+    if (type?.id === 3) {
+      setTagLists(otherTagList?.playList);
+    }
+  };
+
+  const processText = (text: string): string => {
+    const processedText = text.replace(/#(\w+)/g, '#[$1]()');
+    return processedText;
+  };
+
+  useEffect(() => {
+    const delay = 3000;
+    const timeoutId = setTimeout(() => {
+      const processedText = processText(form.content_text);
+      if (hashtags?.length < 1) {
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: processedText
+        }));
+      }
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [form.content_text]);
 
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
@@ -376,10 +537,13 @@ const Comment: React.FC = () => {
         media_url: '',
         media_type: ''
       });
+
       setParent({
         id: '',
         seedsTag: ''
       });
+
+      setDisplayValue('');
       setMediaArr([]);
       setMedia(undefined);
       setHashtags([]);
@@ -391,36 +555,48 @@ const Comment: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  const fetchDetailCirclePost = async (): Promise<void> => {
+  const likePost = async (type: number, id: string): Promise<void> => {
     try {
-      setIsLoading(true);
-      const { data } = await getDetailCirclePost({ postId });
+      const response = await postLikeComment(type, id);
 
-      setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
-    } finally {
-      setIsLoading(false);
+      if (response.status === 200) {
+        setDataComment((prevDataPost: any | null) => {
+          if (prevDataPost !== null) {
+            if (Array.isArray(prevDataPost)) {
+              const newData = prevDataPost.map((el: typeOfComment) => {
+                if (el.id === id) {
+                  if (el.is_liked) {
+                    el.total_like -= 1;
+                    el.is_liked = false;
+                  } else {
+                    el.total_like++;
+                    el.is_liked = true;
+                  }
+                }
+                return el;
+              });
+
+              return newData;
+            } else {
+              const updatedDataPost = { ...prevDataPost };
+
+              if (dataPost.is_liked === true) {
+                updatedDataPost.total_like -= 1;
+                updatedDataPost.is_liked = false;
+              } else {
+                updatedDataPost.total_like++;
+                updatedDataPost.is_liked = true;
+              }
+
+              return updatedDataPost;
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  const fetchComment = async (): Promise<void> => {
-    try {
-      setIsLoadingComment(true);
-      const { data } = await getAllComment({ postId });
-      setDataComment(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
-    } finally {
-      setIsLoadingComment(false);
-    }
-  };
-
-  useEffect(() => {
-    void fetchDetailCirclePost();
-    void fetchComment();
-  }, [postId]);
 
   useEffect(() => {
     if (parent.seedsTag.length > 0) {
@@ -436,6 +612,288 @@ const Comment: React.FC = () => {
     }
   }, [parent.id, parent.seedsTag]);
 
+  const toUserProfile = (id: any): void => {
+    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('MyProfileScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (id !== undefined) {
+      router.push('ProfileUserScreen').catch(err => {
+        console.error(err);
+      });
+    } else {
+      router.push('ProfileUserScreen').catch(err => {
+        console.error(err);
+      });
+    }
+  };
+
+  const toCircleDetail = useCallback((id: string): void => {
+    router.push(`/connect/post/${id}`).catch(err => {
+      console.error(err);
+    });
+  }, []);
+
+  const renderTouchableText = (text: string): JSX.Element => {
+    checkingThumbnail(text);
+    let linkUrl = '';
+    const lines = text?.split('\n');
+    const renderedLines = lines?.map((line, index) => {
+      const parts = line.split(
+        /(@\[[^\]]+\]\([^)]+\)|#\[[^\]]+\]\([^)]+\)|\$\[[^\]]+\]\([^)]+\)|\b(?:https?|ftp):\/\/\S+|\b(?:www\.\S+)\b)/g
+      );
+
+      const renderedParts = parts
+        .map((part, partIndex) => {
+          if (
+            part.startsWith('@[') ||
+            part.startsWith('#[') ||
+            part.startsWith('$[')
+          ) {
+            const contentMatch = part.match(/\[([^\]]+)\]/);
+            const linkMatch = part.match(/\(([^)]+)\)/);
+
+            if (contentMatch !== null && linkMatch !== null) {
+              const content = contentMatch[1];
+              const link = linkMatch[1];
+
+              return (
+                <button
+                  style={{ marginBottom: 0 }}
+                  key={partIndex}
+                  onClick={() => {
+                    onPressTag(link);
+                  }}
+                >
+                  {link?.includes('-circle') ? (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      @{content}
+                    </Typography>
+                  ) : link?.includes('-asset') ? (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      #{content}
+                    </Typography>
+                  ) : (
+                    <Typography className="font-poppins text-seeds-green font-normal">
+                      @{content}
+                    </Typography>
+                  )}
+                </button>
+              );
+            }
+          } else if (part.match(/#\[[^\]]+\]\([^)]+\)/) !== null) {
+            const matchResult = part.match(/#\[(.*?)\]/);
+            const extractedValue = matchResult !== null ? matchResult[1] : null;
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  onPressTag(extractedValue);
+                }}
+              >
+                <Typography className="font-poppins text-seeds-green font-normal">
+                  #{extractedValue}
+                </Typography>
+              </button>
+            );
+          } else if (
+            part.match(/\b(?:https?|ftp):\/\/\S+|\b(?:www\.\S+)\b/) !== null
+          ) {
+            linkUrl = part;
+            const link = part.startsWith('www.') ? `http://${part}` : part;
+            return (
+              <button
+                key={index}
+                onDoubleClick={() => {}}
+                onClick={() => {
+                  router.push(link).catch(err => {
+                    console.error(err);
+                  });
+                }}
+              >
+                <Typography className="text-blue-500 font-poppins">
+                  {part}
+                </Typography>
+              </button>
+            );
+          } else {
+            const words = part.split(' ');
+            return words.map((word: string, index: number) => {
+              if (word.startsWith('#')) {
+                const cleanedWord = word.replace(/#(\w+)/, '$1');
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      onPressTag(cleanedWord);
+                    }}
+                  >
+                    <pre className="font-poppins text-seeds-green font-normal">
+                      #{cleanedWord}{' '}
+                    </pre>
+                  </button>
+                );
+              } else {
+                return (
+                  <pre
+                    key={index}
+                    className="font-poppins text-black font-normal"
+                  >
+                    {word}{' '}
+                  </pre>
+                );
+              }
+            });
+          }
+          return undefined;
+        })
+        .filter(Boolean);
+
+      return (
+        <div key={index} className="flex justify-start">
+          {renderedParts}
+        </div>
+      );
+    });
+
+    return (
+      <div>
+        {renderedLines}
+        {linkUrl.length > 0 ? (
+          <div>
+            <div></div>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
+  function removeDuplicateIds(data: any): any {
+    const uniqueIds = new Set();
+    return data.filter((item: any) => {
+      if (!uniqueIds.has(item.id)) {
+        uniqueIds.add(item.id);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  function checkPostOrderPlay(inputString: string): boolean {
+    const patternRegex =
+      /^%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
+
+    const isMatching = patternRegex.test(inputString);
+    return isMatching;
+  }
+
+  function extractIdsOrderPlay(inputString: string): any {
+    // Define regular expressions to match the indicators and their values
+    const assetNameRegex = /%\[([^[\]]+)\]\(([^()]+)\)/;
+    const orderTypeRegex = /&\[(buy|sell)\]\(([^()]+)\)/;
+    const assetIconRegex = /\*\[asset_icon\]\(([^()]+)\)/;
+
+    // Extract values using regular expressions
+    const assetNameMatch = inputString.match(assetNameRegex);
+    const orderTypeMatch = inputString.match(orderTypeRegex);
+    const assetIconMatch = inputString.match(assetIconRegex);
+
+    return {
+      asset_name: assetNameMatch?.[1] ?? '',
+      order_type:
+        orderTypeMatch?.[1] === 'buy'
+          ? 'buy'
+          : orderTypeMatch?.[1] === 'sell'
+          ? 'sell'
+          : '',
+      order_amount: parseInt(orderTypeMatch?.[2] ?? '0', 10),
+      asset_icon: assetIconMatch?.[1] ?? ''
+    };
+  }
+
+  function extractIds(inputString: string): string[] {
+    const pattern = /[@#$]\[.*?\]\((.*?)\)/g;
+    const matches = inputString?.match(pattern) ?? [];
+    const ids = matches.map(match => match.match(/\((.*?)\)/)?.[1] ?? '');
+    return ids;
+  }
+
+  const checkingThumbnail = (text: string): any => {
+    if (checkPostOrderPlay(text)) {
+      const extractedDataPlayOrder = extractIdsOrderPlay(text);
+      setAdditionalPostData(extractedDataPlayOrder);
+      setThumbnailList([]);
+    } else {
+      const res = extractIds(text);
+
+      const tempThumbnailList: any = [];
+
+      const promises = res?.map(async (el: any) => {
+        if (el?.includes('-circle') === true) {
+          await getDetailCircle({
+            circleId: el?.replace('-circle', '')
+          }).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'circle', ...res?.data });
+          });
+        } else if (el?.includes('-play') === true) {
+          await getPlayById(el?.replace('-play', '')).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'play', ...res });
+          });
+        } else if (el?.includes('-asset') === true) {
+          await getAssetById(el?.replace('-asset', '')).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'asset', ...res });
+          });
+        }
+        await Promise.resolve();
+      });
+
+      Promise.all(promises)
+        .then(() => {
+          const filteredThumbnailList = removeDuplicateIds(tempThumbnailList);
+          setThumbnailList(filteredThumbnailList);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  };
+
+  const onPressTag = (content: any): void => {
+    if (content?.includes('-people') === true) {
+      toUserProfile(content?.replace('-people', ''));
+    } else if (content?.includes('-circle') === true) {
+      toCircleDetail(content?.replace('-circle', ''));
+    } else if (content?.includes('-asset') === true) {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    } else if (content?.includes('-play') === true) {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    } else {
+      router.push('').catch(err => {
+        console.error(err);
+      });
+    }
+  };
+
+  const toDetailTag = (item: any): void => {
+    if (item?.thumbnailType === 'circle') {
+      router.push('CircleDetailScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (item?.thumbnailType === 'play') {
+      router.push('PlayDetailScreen').catch(err => {
+        console.error(err);
+      });
+    } else if (item?.thumbnailType === 'asset') {
+      router.push('OverviewAsset').catch(err => {
+        console.error(err);
+      });
+    }
+  };
+
   const renderLoading = (): JSX.Element => (
     <div className="h-72 flex justify-center">
       <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
@@ -445,14 +903,16 @@ const Comment: React.FC = () => {
   const handlePages = (): any => {
     if (pages === 'text') {
       return (
-        <CommentInput
-          handleFormChange={handleFormChange}
-          form={form}
-          showDropdown={isSymbol}
-          dropDownData={circlePeopleData}
-          setSelectedValue={setSelectedValue}
-          setIsLoading={setIsLoading}
-        />
+        <>
+          <CommentInput
+            handleFormChange={handleFormChange}
+            displayValue={displayValue}
+            setIsLoading={setIsLoading}
+            renderUserSuggestion={renderUserSuggestion()}
+            renderUserHashtags={renderUserHashtags()}
+            renderDollarSuggestion={renderDollarSuggestion()}
+          />
+        </>
       );
     } else if (pages === 'gif') {
       return (
@@ -460,23 +920,231 @@ const Comment: React.FC = () => {
       );
     }
   };
-  const customGradient = (
-    <>
-      <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />
-      <span className="-z-10 absolute bottom-0 left-0 w-24 h-24 bg-seeds-green-2 blur-[90px]" />
-      <span className="-z-10 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-      <span className="-z-10 absolute top-64 -right-4 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45 rounded-full" />
-      <span className="-z-10 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
-    </>
-  );
+
+  const renderAvatar = (imageUrl: string): JSX.Element => {
+    return (
+      <img
+        src={imageUrl}
+        alt={`image avatar`}
+        className="rounded-full h-[48px] w-[48px] object-cover"
+      />
+    );
+  };
+
+  const renderNameAndTag = (name: string, seedsTag: string): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <Typography className="text-lg text-black font-poppins font-medium">
+          {name}
+        </Typography>
+        <Typography className="font-poppins text-neutral-medium text-base">
+          @{seedsTag}
+        </Typography>
+      </div>
+    );
+  };
+
+  const renderHashtags = (name: string, desc: string): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <Typography className="text-lg text-black font-poppins font-medium">
+          #{name}
+        </Typography>
+        <Typography className="font-poppins text-neutral-medium text-base">
+          {desc} posts
+        </Typography>
+      </div>
+    );
+  };
+
+  const renderUserSuggestion = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('@') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="flex justify-center gap-4">
+            {tagOption.map((el: { id: number; name: string }, i: number) => {
+              return (
+                <div
+                  className={`flex items-center p-2 border rounded-lg cursor-pointer px-4 ${
+                    otherTagId === el.id
+                      ? 'border-seeds-button-green bg-seeds-button-green/20'
+                      : 'border-neutral-soft'
+                  }`}
+                  key={el.id}
+                  onClick={() => {
+                    selectTypeTag(el);
+                  }}
+                >
+                  <Typography
+                    className={`font-poppins text-base font-normal ${
+                      otherTagId === el.id
+                        ? 'text-seeds-button-green'
+                        : 'text-neutral-soft'
+                    }`}
+                  >
+                    {el.name}
+                  </Typography>
+                </div>
+              );
+            })}
+          </div>
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {tagLists?.map((el: any, i: number) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={el.id}
+                  onClick={() => {
+                    const newTag = {
+                      tag: el.tag,
+                      id: el?.id
+                    };
+                    if (
+                      el?.members !== undefined ||
+                      el?.participants !== undefined
+                    ) {
+                      newTag.tag = el?.name;
+                    }
+                    setOtherTagList({
+                      peopleList: [],
+                      circleList: [],
+                      playList: []
+                    });
+                    setSelectedValue(newTag);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {el?.avatar !== undefined
+                    ? renderAvatar(el?.avatar)
+                    : el?.banner !== undefined
+                    ? renderAvatar(el?.banner)
+                    : null}
+                  {el?.tag !== undefined ? (
+                    renderNameAndTag(el?.name, el?.tag)
+                  ) : el?.members !== undefined ? (
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <Typography className="text-lg text-black font-poppins font-medium">
+                          {el?.name}
+                        </Typography>
+                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                          {el?.members} members
+                        </Typography>
+                      </div>
+                      <div className="flex items-center">
+                        {el?.hashtags?.map((el: any, i: number) => {
+                          return (
+                            <Typography
+                              key={`${el as string}${i}`}
+                              className="font-poppins text-seeds-button-green text-base font-semibold"
+                            >
+                              #{el}
+                            </Typography>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : el?.participants !== undefined ? (
+                    <div className="flex flex-col gap-2">
+                      <Typography className="text-lg text-black font-poppins font-medium">
+                        {el?.name}
+                      </Typography>
+                      <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                        {el?.participants} participants
+                      </Typography>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDollarSuggestion = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('$') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {dollarLists?.map((el: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={el.id}
+                  onClick={() => {
+                    const newDollar = {
+                      tag: el.ticker,
+                      id: el?.id
+                    };
+                    setSelectedValue(newDollar);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderAvatar(el?.logo)}
+                  <div className="flex flex-col">
+                    <Typography className="text-lg text-black font-poppins font-medium">
+                      {el?.ticker} / <span>{el?.currency}</span>
+                    </Typography>
+                    <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                      {el?.name}
+                    </Typography>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderUserHashtags = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('#') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {hashtags?.map((hashtag: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={hashtag.counter}
+                  onClick={() => {
+                    const newTag = {
+                      tag: hashtag.hashtag,
+                      id: ''
+                    };
+                    setSelectedValue(newTag);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderHashtags(hashtag.hashtag, hashtag.counter)}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
   return (
-    <PageGradient
-      customGradient={customGradient}
-      className="md:p-10 absolute overflow-hidden w-full min-h-[90vh]"
-    >
+    <PageGradient defaultGradient className="overflow-hidden">
       {isLoading && <Loading />}
       <div className="flex justify-center">
-        <div className="bg-transparent md:w-[90vw] w-[100vw]">
+        <div className="bg-transparent w-full">
           <div className="flex md:gap-8 flex-col">
             <div className="relative">
               <div className="bg-white my-8 rounded-xl shadow-sm">
@@ -572,7 +1240,7 @@ const Comment: React.FC = () => {
                                               alt="AVATAR"
                                               width={48}
                                               height={48}
-                                              className="rounded-full outline outline-black"
+                                              className="rounded-full object-cover"
                                             />
                                           </div>
                                         </div>
@@ -598,30 +1266,191 @@ const Comment: React.FC = () => {
                                               </Typography>
                                             </div>
                                             <div className="flex items-center pt-[5px]">
-                                              {el.content_text
-                                                .split(' ')
-                                                .map(
-                                                  (el: string, i: number) => {
-                                                    el += '\xa0';
-                                                    return el.startsWith('#') ||
-                                                      el.startsWith('@') ? (
-                                                      <>
-                                                        <Typography
-                                                          key={`${i} + ${el}  + 'hashtags'`}
-                                                          className="text-[#5E44FF] font-normal font-poppins cursor-pointer"
-                                                        >
-                                                          {el}
-                                                        </Typography>
-                                                      </>
-                                                    ) : (
-                                                      <>
-                                                        <Typography
-                                                          key={`${i} + ${el} + 'normal text'`}
-                                                          className="text-xs md:text-sm text-black font-poppins"
-                                                        >
-                                                          {el}
-                                                        </Typography>
-                                                      </>
+                                              {renderTouchableText(
+                                                el.content_text
+                                              )}
+                                            </div>
+
+                                            <div className="flex justify-start gap-4 pt-4">
+                                              {thumbnailList.length > 0 &&
+                                                thumbnailList.map(
+                                                  (
+                                                    item: any,
+                                                    index: number
+                                                  ) => {
+                                                    return (
+                                                      <div
+                                                        className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
+                                                        key={`${
+                                                          item?.id as string
+                                                        }${index}`}
+                                                        onClick={() => {
+                                                          toDetailTag(item);
+                                                        }}
+                                                      >
+                                                        {item?.admission_fee >
+                                                        0 ? (
+                                                          <div className="flex justify-center pt-4">
+                                                            <div className="flex items-center">
+                                                              <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="17"
+                                                                height="10"
+                                                                viewBox="0 0 17 10"
+                                                                fill="none"
+                                                              >
+                                                                <path
+                                                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                                                  fill="#FDBA22"
+                                                                />
+                                                              </svg>
+                                                            </div>
+                                                            <Typography className="font-poppins text-black text-xs pl-2">
+                                                              Paid
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                          'circle' &&
+                                                        item?.type !==
+                                                          'free' ? (
+                                                          <div className="flex justify-center pt-4">
+                                                            <div className="flex items-center">
+                                                              <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="17"
+                                                                height="10"
+                                                                viewBox="0 0 17 10"
+                                                                fill="none"
+                                                              >
+                                                                <path
+                                                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                                                  fill="#FDBA22"
+                                                                />
+                                                              </svg>
+                                                            </div>
+                                                            <Typography className="font-poppins text-black text-xs pl-2">
+                                                              Premium
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                        'play' ? (
+                                                          <div className="flex justify-center py-2">
+                                                            <Image
+                                                              src={PlayLogo}
+                                                              alt="image"
+                                                              width={60}
+                                                              height={60}
+                                                              className="rounded-full object-cover"
+                                                            />
+                                                          </div>
+                                                        ) : (
+                                                          <div
+                                                            className={`${
+                                                              item?.thumbnailType ===
+                                                                'asset' ||
+                                                              (item?.thumbnailType ===
+                                                                'circle' &&
+                                                                item?.type ===
+                                                                  'free')
+                                                                ? 'pt-4'
+                                                                : ''
+                                                            } flex justify-center py-2`}
+                                                          >
+                                                            <img
+                                                              src={
+                                                                item?.thumbnailType ===
+                                                                'asset'
+                                                                  ? item
+                                                                      ?.marketAsset
+                                                                      ?.logo
+                                                                  : item?.logo !==
+                                                                    undefined
+                                                                  ? item.logo
+                                                                  : item?.avatar
+                                                              }
+                                                              alt="image"
+                                                              className="rounded-full object-cover"
+                                                              width={60}
+                                                              height={60}
+                                                            />
+                                                          </div>
+                                                        )}
+                                                        <div className="flex justify-center">
+                                                          <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
+                                                            {item?.name
+                                                              ?.length > 10
+                                                              ? (item?.name.substring(
+                                                                  0,
+                                                                  15
+                                                                ) as string) +
+                                                                '...'
+                                                              : item?.name}
+                                                            {item?.thumbnailType ===
+                                                              'asset' &&
+                                                              (item?.marketAsset
+                                                                ?.name?.length >
+                                                              10
+                                                                ? (item?.marketAsset?.name.substring(
+                                                                    0,
+                                                                    15
+                                                                  ) as string) +
+                                                                  '...'
+                                                                : item
+                                                                    ?.marketAsset
+                                                                    ?.name)}
+                                                          </Typography>
+                                                        </div>
+                                                        {item?.thumbnailType ===
+                                                        'play' ? (
+                                                          <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
+                                                            {
+                                                              item?.participants
+                                                                ?.length
+                                                            }{' '}
+                                                            participants
+                                                          </Typography>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                        'asset' ? (
+                                                          <div className="flex justify-center">
+                                                            <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
+                                                              {item?.marketAsset
+                                                                ?.exchangeCurrency ===
+                                                              'IDR'
+                                                                ? `IDR ${formatCurrency(
+                                                                    item
+                                                                      ?.marketAsset
+                                                                      ?.lastPrice
+                                                                      ?.close
+                                                                  )}`
+                                                                : `$${formatCurrency(
+                                                                    item
+                                                                      ?.marketAsset
+                                                                      ?.lastPrice
+                                                                      ?.close /
+                                                                      item
+                                                                        ?.marketAsset
+                                                                        ?.exchangeRate
+                                                                  )}`}
+                                                            </Typography>
+                                                          </div>
+                                                        ) : null}
+                                                        {item?.thumbnailType ===
+                                                          'circle' && (
+                                                          <div className="flex justify-center">
+                                                            <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
+                                                              {
+                                                                item?.total_member
+                                                              }{' '}
+                                                              {t(
+                                                                'circleDetail.member'
+                                                              )}
+                                                            </Typography>
+                                                          </div>
+                                                        )}
+                                                      </div>
                                                     );
                                                   }
                                                 )}
@@ -669,7 +1498,12 @@ const Comment: React.FC = () => {
                                       </div>
                                       <div className="flex items-start">
                                         <div className="flex flex-col">
-                                          <button className="flex">
+                                          <button
+                                            className="flex"
+                                            onClick={async () => {
+                                              await likePost(1, el.id);
+                                            }}
+                                          >
                                             {el.is_liked ? (
                                               <svg
                                                 xmlns="http://www.w3.org/2000/svg"

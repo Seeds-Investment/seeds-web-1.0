@@ -3,19 +3,17 @@ import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
-import Loading from '@/components/popup/Loading';
 import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import {
   UseUploadMedia,
   createPostCircleDetail,
-  searchAssets,
-  searchCircleByName,
-  searchUser
+  getUserTagList
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { Dialog } from '@material-tailwind/react';
+import { Dialog, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -27,8 +25,11 @@ import UniqueInputButton from './UniqueInputButton';
 import { VoiceRecorder } from './VoiceRecording';
 
 interface props {
-  open: any;
+  open: boolean;
   handleOpen: () => void;
+  fetchData1?: () => Promise<void>;
+  fetchData2?: () => Promise<void>;
+  setIsLoading: any;
 }
 
 interface typeOfPost {
@@ -87,20 +88,17 @@ interface AssetInterface {
   isLock: boolean;
 }
 
-interface CirclePeopleData {
-  id: string;
-  name: string;
-  avatar: string;
-  tag: string;
-  type: string;
-}
-
 interface ChartData {
   labels: string[];
   datasets: Array<{
     data: number[];
     backgroundColor: string[];
   }>;
+}
+
+interface typeOfSelected {
+  id: string;
+  tag: string;
 }
 
 const initialChartData = {
@@ -135,8 +133,33 @@ const dataSelection: typeOfSelection[] = [
     message: 'Followers that you followback'
   }
 ];
-const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
-  const [isLoading, setIsLoading] = useState(false);
+
+const tagOption = [
+  {
+    id: 1,
+    name: 'User'
+  },
+  {
+    id: 2,
+    name: 'Circle'
+  },
+  {
+    id: 3,
+    name: 'Play'
+  }
+];
+
+const ModalPost: React.FC<props> = ({
+  open,
+  handleOpen,
+  fetchData1,
+  fetchData2,
+  setIsLoading
+}) => {
+  const router = useRouter();
+  const circleId: string | any = router.query.circleid;
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
   const [pages, setPages] = useState('text');
@@ -146,11 +169,6 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
   const [isSymbol, setIsSymbol] = useState(false);
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
-  const [circlePeopleData, setCirclePeopleData] = useState<
-    [] | CirclePeopleData[]
-  >([]);
-  const [selectedValue, setSelectedValue] = useState<string>('');
-  const [hashtags, setHashtags] = useState<string[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
@@ -159,6 +177,22 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
     svg: globe
+  });
+  const [lastWordWithSymbol, setLastWordsWithSymbol] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState<typeOfSelected>({
+    id: '',
+    tag: ''
+  });
+  const [displayValue, setDisplayValue] = useState('');
+  const [tagMapping, setTagMapping] = useState({});
+  const [tagLists, setTagLists] = useState<any>([]);
+  const [otherTagId, setOtherTagId] = useState(1);
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [dollarLists, setDollarLists] = useState<any>([]);
+  const [otherTagList, setOtherTagList] = useState<any>({
+    peopleList: [],
+    circleList: [],
+    playList: []
   });
   const [form, setForm] = useState<form>({
     content_text: '',
@@ -179,164 +213,6 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
   };
 
   useEffect(() => {
-    if (selectedValue.length > 0) {
-      setCirclePeopleData([]);
-      setIsSymbol(false);
-      if (form.content_text.includes(' ')) {
-        const words = form.content_text.split(' ');
-        const currentWord = words[words.length - 1];
-        words.pop();
-        let newVal = '';
-        if (currentWord.includes('@')) {
-          newVal = words.join(' ') + ` @${selectedValue} `;
-        }
-        if (currentWord.includes('$')) {
-          newVal = words.join(' ') + ` $${selectedValue} `;
-        }
-        setForm(prevForm => ({
-          ...prevForm,
-          content_text: newVal
-        }));
-        setSelectedValue('');
-      } else {
-        if (form.content_text.includes('@')) {
-          setForm(prevForm => ({
-            ...prevForm,
-            content_text: `@${selectedValue} `
-          }));
-        }
-        if (form.content_text.includes('$')) {
-          setForm(prevForm => ({
-            ...prevForm,
-            content_text: `$${selectedValue} `
-          }));
-        }
-        setSelectedValue('');
-      }
-    }
-  }, [selectedValue]);
-
-  const handleFormChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ): any => {
-    const { name, value } = event.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
-    if (value.endsWith(' ')) {
-      setIsSymbol(false);
-      setCirclePeopleData([]);
-      const words = value.split(' ');
-      const currentWord = words[words.length - 2];
-
-      if (currentWord?.startsWith('#')) {
-        if (!hashtags.includes(currentWord)) {
-          hashtags.push(currentWord);
-          words.pop();
-
-          const newVal = words.join(' ') + ' ';
-          setForm(prevForm => ({ ...prevForm, [name]: newVal }));
-        }
-      }
-    }
-
-    let currentWord = '';
-    if (value.includes(' ')) {
-      const words = value.split(' ');
-      currentWord = words[words.length - 1];
-    } else {
-      currentWord = value;
-    }
-    if (!currentWord.includes('@') || currentWord.includes('$')) {
-      setIsSymbol(false);
-    }
-
-    if (currentWord?.startsWith('$')) {
-      setIsSymbol(true);
-      if (currentWord.slice(1).length > 2) {
-        if (debounceTimer !== null) clearTimeout(debounceTimer);
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
-              try {
-                const { result } = await searchAssets({
-                  search: currentWord.slice(1),
-                  limit: 10,
-                  page: 1
-                });
-
-                const newAssets = result.map((element: any) => ({
-                  id: element.id,
-                  name: element.name,
-                  avatar: element.image,
-                  tag: element.quote,
-                  type: 'assets'
-                }));
-                setCirclePeopleData(newAssets);
-              } catch (error: any) {
-                console.error(error);
-              }
-            })();
-          }, 500)
-        );
-      } else {
-        setCirclePeopleData([]);
-      }
-    }
-
-    if (currentWord?.startsWith('@')) {
-      setIsSymbol(true);
-      if (currentWord.slice(1).length > 2) {
-        if (debounceTimer !== null) clearTimeout(debounceTimer);
-
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
-              const { result } = await searchCircleByName({
-                search: currentWord.slice(1),
-                limit: 10,
-                page: 1
-              });
-
-              const data = await searchUser({
-                search: currentWord.slice(1),
-                limit: 10,
-                page: 1
-              });
-
-              const newCircle = result.map((element: any) => ({
-                id: element.id,
-                name: element.name,
-                avatar: element.image,
-                tag: element.totalRating,
-                type: 'circle'
-              }));
-
-              const newPeople = data.result.map((element: any) => ({
-                id: element.id,
-                name: element.name,
-                avatar: element.avatar,
-                tag: element.seedsTag,
-                type: 'user'
-              }));
-
-              const combinedData = [...newCircle, ...newPeople];
-              setCirclePeopleData(combinedData);
-            })();
-          }, 500)
-        );
-      } else {
-        setCirclePeopleData([]);
-      }
-    }
-
-    hashtags.map(el => {
-      if (!value.includes(el)) {
-        const index = hashtags.indexOf(el);
-        hashtags.splice(index, 1);
-      }
-      return null;
-    });
-  };
-  useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response = await getUserInfo();
@@ -349,16 +225,287 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
     void fetchData();
   }, []);
 
+  useEffect(() => {
+    if (selectedValue.tag.length > 0) {
+      setIsSymbol(false);
+      if (form.content_text.includes(' ')) {
+        let isSpace = false;
+        const words = form.content_text.split(' ');
+        const currentWord = words[words.length - 1];
+        const wordBefore = words[words.length - 2];
+        if (wordBefore.endsWith(' ')) {
+          wordBefore.replace(' ', '');
+          words.pop();
+          isSpace = true;
+        }
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`@${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          if (isSpace) {
+            newVal = words.join(' ') + wordBefore + newActualTag;
+          } else {
+            newVal = words.join(' ') + newActualTag;
+          }
+        }
+        if (currentWord.includes('$')) {
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`$${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          newVal = words.join(' ') + newActualTag;
+        }
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: newVal
+        }));
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      } else {
+        if (form.content_text.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`@${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        if (form.content_text.includes('$')) {
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          const newTagMapping = {
+            ...tagMapping,
+            [`$${selectedValue.tag}`]: newActualTag
+          };
+          setTagMapping(newTagMapping);
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      }
+      if (displayValue.includes(' ')) {
+        const words = displayValue.split(' ');
+        const currentWord = words[words.length - 1];
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          newVal = words.join(' ') + ` @${selectedValue.tag} `;
+        }
+        if (currentWord.includes('$')) {
+          newVal = words.join(' ') + ` $${selectedValue.tag} `;
+        }
+        setDisplayValue(newVal);
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      } else {
+        if (displayValue.includes('@')) {
+          setDisplayValue(`@${selectedValue.tag} `);
+        }
+        if (form.content_text.includes('$')) {
+          setDisplayValue(`$${selectedValue.tag} `);
+        }
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      }
+    }
+  }, [selectedValue]);
+
+  useEffect(() => {
+    if (
+      lastWordWithSymbol.includes('@') ||
+      lastWordWithSymbol.includes('#') ||
+      lastWordWithSymbol.includes('$')
+    ) {
+      setIsSymbol(true);
+    } else {
+      setIsSymbol(false);
+    }
+  }, [lastWordWithSymbol]);
+
+  const handleFormChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ): any => {
+    const { name, value } = event.target;
+    setDisplayValue(value);
+    let newActualValue = value;
+    for (const [key, value] of Object.entries(tagMapping)) {
+      newActualValue = newActualValue.replace(key, value as string);
+    }
+    setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+    const API_TYPE = ['people', 'plays', 'circles'];
+    const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
+    const words = value.split(' ');
+    const currentWord = words[words.length - 1];
+    if (words.length > 0) {
+      setLastWordsWithSymbol(currentWord);
+    } else {
+      setLastWordsWithSymbol(value);
+    }
+    if (matches?.length > 0) {
+      const lastMention = matches[matches.length - 1];
+      const cleanedValue = lastMention.replace(/[#$@]/g, '');
+      console.log(lastMention, cleanedValue);
+      if (debounceTimer !== null) clearTimeout(debounceTimer);
+      if (lastMention.length > 3) {
+        setDebounceTimer(
+          setTimeout((): void => {
+            void (async (): Promise<void> => {
+              try {
+                if (lastMention.includes('#') === true) {
+                  const { data }: any = await getUserTagList(
+                    'hashtags',
+                    cleanedValue
+                  );
+
+                  setHashtags(
+                    data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-hashtag`
+                    }))
+                  );
+                } else if (lastMention.includes('$') === true) {
+                  const { data }: any = await getUserTagList(
+                    'assets',
+                    cleanedValue
+                  );
+
+                  setDollarLists(
+                    data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-asset`
+                    }))
+                  );
+                } else if (lastMention.includes('@') === true) {
+                  const promises = API_TYPE.map(async key => {
+                    return await getUserTagList(key, cleanedValue);
+                  });
+                  const results: any = await Promise.all(promises);
+                  setOtherTagList({
+                    peopleList: results[0]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-people`
+                    })),
+                    playList: results[1]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-play`
+                    })),
+                    circleList: results[2]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-circle`
+                    }))
+                  });
+                  setTimeout(() => {
+                    if (results[0]?.data?.length > 0) {
+                      setOtherTagId(1);
+                      setTagLists(
+                        results[0].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-people`
+                        }))
+                      );
+                    } else if (results[1]?.data?.length > 0) {
+                      setOtherTagId(3);
+                      setTagLists(
+                        results[1].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-play`
+                        }))
+                      );
+                    } else if (results[2]?.data?.length > 0) {
+                      setOtherTagId(2);
+                      setTagLists(
+                        results[2].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-circle`
+                        }))
+                      );
+                    }
+                  }, 500);
+                }
+              } catch (_) {
+                console.log(_);
+              }
+            })();
+          }, 500)
+        );
+      }
+    }
+  };
+
+  const selectTypeTag = (type: any): void => {
+    setOtherTagId(type?.id);
+    if (type?.id === 1) {
+      setTagLists(otherTagList?.peopleList);
+    }
+    if (type?.id === 2) {
+      setTagLists(otherTagList?.circleList);
+    }
+    if (type?.id === 3) {
+      setTagLists(otherTagList?.playList);
+    }
+  };
+
+  const processText = (text: string): string => {
+    const processedText = text.replace(/#(\w+)/g, '#[$1]()');
+    return processedText;
+  };
+
+  useEffect(() => {
+    const delay = 3000;
+    const timeoutId = setTimeout(() => {
+      const processedText = processText(form.content_text);
+      if (hashtags?.length < 1) {
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: processedText
+        }));
+      }
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [form.content_text]);
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
     const { value } = event.target;
     if (value === 'Public') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: globe }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: globe
+      }));
     } else if (value === 'Private') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
-      setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: privat }));
+      setDropVal(prevDropVal => ({
+        ...prevDropVal,
+        type: value,
+        svg: privat
+      }));
     } else if (value === 'Friends Only') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
@@ -403,14 +550,27 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       if (document !== undefined && document !== null) {
         await postMedia(document);
       }
-      const payload: any = {
-        content_text: form.content_text,
-        media_urls: form.media_urls,
-        privacy: form.privacy,
-        is_pinned: false,
-        user_id: userInfo?.id,
-        hashtags
-      };
+      let payload: any;
+      if (circleId !== undefined) {
+        payload = {
+          content_text: form.content_text,
+          media_urls: form.media_urls,
+          privacy: form.privacy,
+          is_pinned: false,
+          user_id: userInfo?.id,
+          circleId,
+          hashtags
+        };
+      } else {
+        payload = {
+          content_text: form.content_text,
+          media_urls: form.media_urls,
+          privacy: form.privacy,
+          is_pinned: false,
+          user_id: userInfo?.id,
+          hashtags
+        };
+      }
       if (form.polling.options.length > 0) {
         payload.pollings = form.polling.options;
         payload.polling_multiple = form.polling.isMultiVote;
@@ -453,8 +613,18 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       setMedia(undefined);
       setDocument(null);
       setHashtags([]);
+      setDisplayValue('');
       setSelectedAsset([]);
       setChartData(initialChartData);
+      handleOpen();
+      if (fetchData1 !== undefined) {
+        await fetchData1();
+      }
+      if (fetchData2 !== undefined) {
+        await fetchData2();
+      }
+      setLastWordsWithSymbol('');
+      setIsSymbol(false);
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -467,10 +637,10 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       return (
         <CirclePostInputText
           handleFormChange={handleFormChange}
-          form={form}
-          showDropdown={isSymbol}
-          dropDownData={circlePeopleData}
-          setSelectedValue={setSelectedValue}
+          displayValue={displayValue}
+          renderUserSuggestion={renderUserSuggestion()}
+          renderUserHashtags={renderUserHashtags()}
+          renderDollarSuggestion={renderDollarSuggestion()}
         />
       );
     } else if (pages === 'gif') {
@@ -500,6 +670,226 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
     }
   };
 
+  const renderAvatar = (imageUrl: string): JSX.Element => {
+    return (
+      <img
+        src={imageUrl}
+        alt={`image avatar`}
+        className="rounded-full h-[48px] w-[48px] object-cover"
+      />
+    );
+  };
+
+  const renderNameAndTag = (name: string, seedsTag: string): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <Typography className="text-lg text-black font-poppins font-medium">
+          {name}
+        </Typography>
+        <Typography className="font-poppins text-neutral-medium text-base">
+          @{seedsTag}
+        </Typography>
+      </div>
+    );
+  };
+
+  const renderHashtags = (name: string, desc: string): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <Typography className="text-lg text-black font-poppins font-medium">
+          #{name}
+        </Typography>
+        <Typography className="font-poppins text-neutral-medium text-base">
+          {desc} posts
+        </Typography>
+      </div>
+    );
+  };
+
+  const renderUserSuggestion = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('@') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="flex justify-center gap-4">
+            {tagOption.map((el: { id: number; name: string }, i: number) => {
+              return (
+                <div
+                  className={`flex items-center p-2 border rounded-lg cursor-pointer px-4 ${
+                    otherTagId === el.id
+                      ? 'border-seeds-button-green bg-seeds-button-green/20'
+                      : 'border-neutral-soft'
+                  }`}
+                  key={el.id}
+                  onClick={() => {
+                    selectTypeTag(el);
+                  }}
+                >
+                  <Typography
+                    className={`font-poppins text-base font-normal ${
+                      otherTagId === el.id
+                        ? 'text-seeds-button-green'
+                        : 'text-neutral-soft'
+                    }`}
+                  >
+                    {el.name}
+                  </Typography>
+                </div>
+              );
+            })}
+          </div>
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {tagLists?.map((el: any, i: number) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={el.id}
+                  onClick={() => {
+                    const newTag = {
+                      tag: el.tag,
+                      id: el?.id
+                    };
+                    if (
+                      el?.members !== undefined ||
+                      el?.participants !== undefined
+                    ) {
+                      newTag.tag = el?.name;
+                    }
+                    setOtherTagList({
+                      peopleList: [],
+                      circleList: [],
+                      playList: []
+                    });
+                    setSelectedValue(newTag);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {el?.avatar !== undefined
+                    ? renderAvatar(el?.avatar)
+                    : el?.banner !== undefined
+                    ? renderAvatar(el?.banner)
+                    : null}
+                  {el?.tag !== undefined ? (
+                    renderNameAndTag(el?.name, el?.tag)
+                  ) : el?.members !== undefined ? (
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <Typography className="text-lg text-black font-poppins font-medium">
+                          {el?.name}
+                        </Typography>
+                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                          {el?.members} members
+                        </Typography>
+                      </div>
+                      <div className="flex items-center">
+                        {el?.hashtags?.map((el: any, i: number) => {
+                          return (
+                            <Typography
+                              key={`${el as string}${i}`}
+                              className="font-poppins text-seeds-button-green text-base font-semibold"
+                            >
+                              #{el}
+                            </Typography>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : el?.participants !== undefined ? (
+                    <div className="flex flex-col gap-2">
+                      <Typography className="text-lg text-black font-poppins font-medium">
+                        {el?.name}
+                      </Typography>
+                      <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                        {el?.participants} participants
+                      </Typography>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDollarSuggestion = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('$') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {dollarLists?.map((el: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={el.id}
+                  onClick={() => {
+                    const newDollar = {
+                      tag: el.ticker,
+                      id: el?.id
+                    };
+                    setSelectedValue(newDollar);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderAvatar(el?.logo)}
+                  <div className="flex flex-col">
+                    <Typography className="text-lg text-black font-poppins font-medium">
+                      {el?.ticker} / <span>{el?.currency}</span>
+                    </Typography>
+                    <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                      {el?.name}
+                    </Typography>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderUserHashtags = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('#') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {hashtags?.map((hashtag: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={hashtag.counter}
+                  onClick={() => {
+                    const newTag = {
+                      tag: hashtag.hashtag,
+                      id: ''
+                    };
+                    setSelectedValue(newTag);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderHashtags(hashtag.hashtag, hashtag.counter)}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -508,8 +898,38 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
       className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
       <div className="block bg-white w-full rounded-xl">
-        {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
+          {isError && (
+            <div className="flex justify-center">
+              <div className="absolute -top-20 bg-white border-l-8 rounded-md border-[#FF3838] min-w-[200px] max-w-[300px] xl:min-w-[400px] xl:max-w-[405px]">
+                <div className="flex justify-start p-2 gap-4">
+                  <div className="flex items-center">
+                    <div className="p-1 rounded-full bg-[#FFEBEB]">
+                      <div className="p-1 rounded-full bg-[#fcdbdb]">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 2.25C10.0716 2.25 8.18657 2.82183 6.58319 3.89317C4.97982 4.96451 3.73013 6.48726 2.99218 8.26884C2.25422 10.0504 2.06114 12.0108 2.43735 13.9021C2.81355 15.7934 3.74215 17.5307 5.10571 18.8943C6.46928 20.2579 8.20656 21.1865 10.0979 21.5627C11.9892 21.9389 13.9496 21.7458 15.7312 21.0078C17.5127 20.2699 19.0355 19.0202 20.1068 17.4168C21.1782 15.8134 21.75 13.9284 21.75 12C21.7473 9.41498 20.7192 6.93661 18.8913 5.10872C17.0634 3.28084 14.585 2.25273 12 2.25ZM11.25 7.5C11.25 7.30109 11.329 7.11032 11.4697 6.96967C11.6103 6.82902 11.8011 6.75 12 6.75C12.1989 6.75 12.3897 6.82902 12.5303 6.96967C12.671 7.11032 12.75 7.30109 12.75 7.5V12.75C12.75 12.9489 12.671 13.1397 12.5303 13.2803C12.3897 13.421 12.1989 13.5 12 13.5C11.8011 13.5 11.6103 13.421 11.4697 13.2803C11.329 13.1397 11.25 12.9489 11.25 12.75V7.5ZM12 17.25C11.7775 17.25 11.56 17.184 11.375 17.0604C11.19 16.9368 11.0458 16.7611 10.9606 16.5555C10.8755 16.35 10.8532 16.1238 10.8966 15.9055C10.94 15.6873 11.0472 15.4868 11.2045 15.3295C11.3618 15.1722 11.5623 15.065 11.7805 15.0216C11.9988 14.9782 12.225 15.0005 12.4305 15.0856C12.6361 15.1708 12.8118 15.315 12.9354 15.5C13.059 15.685 13.125 15.9025 13.125 16.125C13.125 16.4234 13.0065 16.7095 12.7955 16.9205C12.5845 17.1315 12.2984 17.25 12 17.25Z"
+                            fill="#FF3838"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <Typography className="text-black">
+                      {errorMessage}
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <>
             {pages !== 'gif' && (
               <div className="flex justify-between">
@@ -537,9 +957,9 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
                 </div>
               </div>
             )}
-            {handlePages()}
             {/* form text section */}
             <form onSubmit={handlePostCircle}>
+              {handlePages()}
               <div className="flex justify-between pl-16 pb-4 z-0">
                 {audio !== null && pages !== 'gif' && (
                   <audio controls>
@@ -674,6 +1094,8 @@ const ModalPost: React.FC<props> = ({ open, handleOpen }) => {
               ) : null}
               {pages !== 'gif' ? (
                 <UniqueInputButton
+                  setIsError={setIsError}
+                  setErrorMessage={setErrorMessage}
                   setPages={setPages}
                   setMedia={setMedia}
                   openPieModal={openPieModal}

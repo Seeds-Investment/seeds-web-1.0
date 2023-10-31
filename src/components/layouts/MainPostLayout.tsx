@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { WrongGirl } from 'public/assets/circle';
 
 interface props {
+  open: boolean;
+  handleOpen: () => void;
   children: React.ReactNode;
   circleId: any;
-  dataPost: any;
-  dataRecommend: any;
   openModalDelete: any;
   openModalLeave: any;
   openModalReport: any;
@@ -18,15 +18,11 @@ interface props {
   setIsJoined: any;
   dataCircle: any;
   setIsLoading: any;
-  setDataPost: any;
-  setDataRecommend: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
   children,
   circleId,
-  dataPost,
-  dataRecommend,
   openModalDelete,
   openModalLeave,
   openModalReport,
@@ -36,8 +32,8 @@ const MainPostLayout: React.FC<props> = ({
   setIsJoined,
   dataCircle,
   setIsLoading,
-  setDataPost,
-  setDataRecommend
+  open,
+  handleOpen
 }) => {
   return (
     <PageGradient defaultGradient className="overflow-hidden w-full">
@@ -83,13 +79,11 @@ const MainPostLayout: React.FC<props> = ({
                     <></>
                   ) : (
                     <CirclePostSection2
+                      open={open}
+                      handleOpen={handleOpen}
                       setIsLoading={setIsLoading}
                       circleId={circleId}
-                      dataPost={dataPost}
-                      dataRecommend={dataRecommend}
                       dataCircle={dataCircle}
-                      setDataPost={setDataPost}
-                      setDataRecommend={setDataRecommend}
                     />
                   )}
                 </>

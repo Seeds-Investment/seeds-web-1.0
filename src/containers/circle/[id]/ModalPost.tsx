@@ -30,6 +30,9 @@ interface props {
   fetchData1?: () => Promise<void>;
   fetchData2?: () => Promise<void>;
   setIsLoading: any;
+  setIsLoadingPost?: any;
+  setFilter?: any;
+  setData?: any;
 }
 
 interface typeOfPost {
@@ -52,6 +55,7 @@ interface UserData {
   avatar: string;
   bio: string;
   birthDate: string;
+  preferredLanguage: string;
   phone: string;
   _pin: string;
 }
@@ -100,6 +104,20 @@ interface typeOfSelected {
   id: string;
   tag: string;
 }
+
+const initialUserInfo: UserData = {
+  id: '',
+  name: '',
+  seedsTag: '',
+  email: '',
+  pin: '',
+  avatar: '',
+  bio: '',
+  birthDate: '',
+  phone: '',
+  preferredLanguage: '',
+  _pin: ''
+};
 
 const initialChartData = {
   labels: ['dummy'],
@@ -154,7 +172,10 @@ const ModalPost: React.FC<props> = ({
   handleOpen,
   fetchData1,
   fetchData2,
-  setIsLoading
+  setIsLoading,
+  setIsLoadingPost,
+  setFilter,
+  setData
 }) => {
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
@@ -172,7 +193,7 @@ const ModalPost: React.FC<props> = ({
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
     type: 'Public',
@@ -539,8 +560,12 @@ const ModalPost: React.FC<props> = ({
 
   const handlePostCircle = async (event: any): Promise<void> => {
     event.preventDefault();
+    handleOpen();
     try {
       setIsLoading(true);
+      if (setIsLoadingPost !== undefined) {
+        setIsLoadingPost(true);
+      }
       if (media !== undefined && media !== null) {
         await postMedia(media);
       }
@@ -594,7 +619,6 @@ const ModalPost: React.FC<props> = ({
       }
 
       await createPostCircleDetail(payload);
-
       setForm({
         content_text: '',
         privacy: dropVal.type.toLowerCase(),
@@ -616,15 +640,34 @@ const ModalPost: React.FC<props> = ({
       setDisplayValue('');
       setSelectedAsset([]);
       setChartData(initialChartData);
-      handleOpen();
+      if (setData !== undefined) {
+        setData([]);
+      }
       if (fetchData1 !== undefined) {
-        await fetchData1();
+        fetchData1()
+          .then()
+          .catch(() => {});
       }
       if (fetchData2 !== undefined) {
-        await fetchData2();
+        fetchData2()
+          .then()
+          .catch(() => {});
       }
       setLastWordsWithSymbol('');
       setIsSymbol(false);
+      if (setFilter !== undefined) {
+        setFilter((prevState: any) => ({
+          ...prevState,
+          page: 1
+        }));
+      }
+      setOtherTagList({
+        peopleList: [],
+        circleList: [],
+        playList: []
+      });
+      setDollarLists([]);
+      setHashtags([]);
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -835,6 +878,7 @@ const ModalPost: React.FC<props> = ({
                       tag: el.ticker,
                       id: el?.id
                     };
+                    setDollarLists([]);
                     setSelectedValue(newDollar);
                     setIsSymbol(false);
                   }}
@@ -876,6 +920,7 @@ const ModalPost: React.FC<props> = ({
                       tag: hashtag.hashtag,
                       id: ''
                     };
+                    setHashtags([]);
                     setSelectedValue(newTag);
                     setIsSymbol(false);
                   }}

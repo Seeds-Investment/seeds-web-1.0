@@ -1,6 +1,7 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import Loading from '@/components/popup/Loading';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,
@@ -16,6 +17,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 interface props {
   setIsLoading: any;
@@ -30,7 +32,6 @@ interface props {
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
-  setIsLoading,
   openModalDelete,
   openModalLeave,
   openModalReport,
@@ -40,6 +41,7 @@ const CirclePostSection1: React.FC<props> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleJoin = async (): Promise<void> => {
     setIsLoading(true);
@@ -69,6 +71,7 @@ const CirclePostSection1: React.FC<props> = ({
 
   return (
     <div className="flex flex-col bg-white rounded-xl">
+      {isLoading && <Loading />}
       <div className="flex flex-col rounded-b-3xl px-14 py-8">
         <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
           <Image alt="pencil-edit" src={pencil} className="h-[13px] w-[14px]" />
@@ -76,7 +79,7 @@ const CirclePostSection1: React.FC<props> = ({
         <img
           alt="bg-circle"
           src={dataCircle?.cover}
-          className="md:max-h-[300px] max-h-[200px] 2xl:w-[100%] object-cover sm:rounded-t-3xl"
+          className="md:max-h-[200px] max-h-[150px] 2xl:w-[100%] object-cover sm:rounded-t-3xl"
         />
         <div className="bg-white left-5 rounded-full relative bottom-14 w-fit">
           <img

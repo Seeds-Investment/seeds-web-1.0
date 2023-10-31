@@ -9,6 +9,11 @@ interface getDataCircleType {
   circleId: string;
 }
 
+interface getDataPostType {
+  circleId: string;
+  page: number;
+  limit: number;
+}
 interface typeOfComment {
   post_id: string;
   user_id: string;
@@ -43,16 +48,18 @@ export const getDetailCircle = async ({
 };
 
 export const getCirclePost = async ({
-  circleId
-}: getDataCircleType): Promise<any> => {
+  circleId,
+  page,
+  limit
+}: getDataPostType): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     if (isUndefindOrNull(circleId)) {
       return await Promise.resolve(null);
     }
 
-    const response = await baseUrl.get(
-      `/post/v2/list?circle_id=${circleId}&page=1&limit=10`,
+    return await baseUrl.get(
+      `/post/v2/list?circle_id=${circleId}&page=${page}&limit=${limit}`,
       {
         headers: {
           Accept: 'application/json',
@@ -60,7 +67,6 @@ export const getCirclePost = async ({
         }
       }
     );
-    return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }
@@ -160,16 +166,18 @@ export const getStatusCircle = async ({
 };
 
 export const getCircleRecomend = async ({
-  circleId
-}: getDataCircleType): Promise<any> => {
+  circleId,
+  page,
+  limit
+}: getDataPostType): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     if (isUndefindOrNull(circleId)) {
       return await Promise.resolve(null);
     }
 
-    const response = await baseUrl.get(
-      `/post/v2/list/recommended?circle_id=${circleId}&page=1&limit=10`,
+    return await baseUrl.get(
+      `/post/v2/list/recommended?circle_id=${circleId}&page=${page}&limit=${limit}`,
       {
         headers: {
           Accept: 'application/json',
@@ -177,8 +185,6 @@ export const getCircleRecomend = async ({
         }
       }
     );
-
-    return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }

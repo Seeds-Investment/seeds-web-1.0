@@ -1,6 +1,10 @@
+import CCard from '@/components/CCard';
+import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import ModalPost from '@/containers/circle/[id]/ModalPost';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
+import PostCard from '@/containers/social/main/PostCard';
 import TrendingProfile from '@/containers/social/main/TrendingProfile';
 import withAuth from '@/helpers/withAuth';
 import { verifiedUser } from '@/repository/people.repository';
@@ -10,7 +14,16 @@ import {
   getSocialPostForYou,
   getSocialPostMySpace
 } from '@/repository/social.respository';
+import {
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography
+} from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserData {
   name: string;
@@ -23,8 +36,14 @@ interface UserData {
   phone: string;
   preferredLanguage: string;
   _pin: string;
+  verified: boolean;
 }
 
+interface optionSortBy {
+  title: string;
+  subtitle: string;
+  value: string;
+}
 interface TrendingProfileInterface {
   id: string;
   name: string;
@@ -50,6 +69,7 @@ const initialUserInfo = {
   birthDate: '',
   phone: '',
   preferredLanguage: '',
+  verified: false,
   _pin: ''
 };
 
@@ -60,20 +80,50 @@ const initialFilter = {
   sort_by: ''
 };
 
+const optionsFilter: optionSortBy[] = [
+  { title: 'All', subtitle: 'In descending order', value: '' },
+  {
+    title: 'Most Relevant',
+    subtitle: 'In descending order',
+    value: 'relevant'
+  },
+  {
+    title: 'Most Recent',
+    subtitle: 'In descending order',
+    value: 'recent'
+  }
+];
+
 const Social: React.FC = () => {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('following');
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
-  const [dataPost, setDataPost] = useState<any[]>();
+  const [dataPost, setDataPost] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [trendingProfile, setTrendingProfile] = useState<
     TrendingProfileInterface[]
   >([]);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<Filter>(initialFilter);
-  console.log(dataPost, trendingProfile, isLoadingPost, isLoadingTrending);
+  const [isOpen, setIsOpen] = useState(false);
+  console.log(dataPost);
+
+  const handleOpen = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   const handleChangeTab = (value: string): void => {
     setActiveTab(value);
+    setDataPost([]);
+    setHasMore(true);
+    setFilter(prevState => ({
+      ...prevState,
+      type: value,
+      page: 1
+    }));
     if (value === 'following') {
       void fetchPostFollowing();
     }
@@ -89,6 +139,8 @@ const Social: React.FC = () => {
   };
 
   const handleChangeFilter = (name: string, value: string): void => {
+    setDataPost([]);
+    setHasMore(true);
     setFilter(prevState => ({
       ...prevState,
       [name]: value
@@ -107,9 +159,27 @@ const Social: React.FC = () => {
   const fetchPostFollowing = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostFollowing(filter);
-      setDataPost(response.data);
-      setIsLoadingPost(false);
+      getSocialPostFollowing(filter)
+        .then(res => {
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+
+          if (res.data !== null) {
+            setDataPost(prevState => [...prevState, ...data]);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
+          }
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingPost(false);
+        });
     } catch (error) {
       setIsLoadingPost(false);
       console.log(error);
@@ -119,9 +189,27 @@ const Social: React.FC = () => {
   const fetchPostForYou = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostForYou(filter);
-      setDataPost(response);
-      setIsLoadingPost(false);
+      getSocialPostForYou(filter)
+        .then(res => {
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+
+          if (res.data !== null) {
+            setDataPost(prevState => [...prevState, ...data]);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
+          }
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingPost(false);
+        });
     } catch (error) {
       setIsLoadingPost(true);
       console.log(error);
@@ -131,9 +219,27 @@ const Social: React.FC = () => {
   const fetchPostMySpace = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostMySpace(filter);
-      setDataPost(response);
-      setIsLoadingPost(false);
+      getSocialPostMySpace(filter)
+        .then(res => {
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+
+          if (res.data !== null) {
+            setDataPost(prevState => [...prevState, ...data]);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
+          }
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingPost(false);
+        });
     } catch (error) {
       setIsLoadingPost(false);
       console.log(error);
@@ -158,9 +264,64 @@ const Social: React.FC = () => {
   }, []);
 
   console.log(filter);
+  const renderLoading = (): JSX.Element => (
+    <div className="flex justify-center h-10 pt-4">
+      <div className="h-72 absolute">
+        <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+      </div>
+    </div>
+  );
+
+  const handleScroll = (): void => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingPost) {
+      setFilter(prevState => ({
+        ...prevState,
+        page: prevState.page + 1
+      }));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
+  useEffect(() => {
+    if (hasMore) {
+      if (activeTab === 'following') {
+        void fetchPostFollowing();
+      }
+
+      if (activeTab === 'for_you') {
+        void fetchPostForYou();
+        void fetchTrendingProfile();
+      }
+
+      if (activeTab === 'space') {
+        void fetchPostMySpace();
+      }
+    }
+  }, [activeTab, filter.page, filter.sort_by]);
 
   return (
     <PageGradient defaultGradient className="w-full">
+      {isLoading && <Loading />}
+      <ModalPost
+        open={isOpen}
+        handleOpen={handleOpen}
+        setIsLoading={setIsLoading}
+        fetchData1={
+          activeTab === 'following' ? fetchPostFollowing : fetchPostForYou
+        }
+        setIsLoadingPost={setIsLoadingPost}
+        setFilter={setFilter}
+        setData={setDataPost}
+      />
       <Card1
         activeTab={activeTab}
         setActiveTab={handleChangeTab}
@@ -168,7 +329,7 @@ const Social: React.FC = () => {
         filter={filter}
       />
 
-      <Card2 userData={userInfo} />
+      <Card2 userData={userInfo} handleOpen={handleOpen} />
 
       {activeTab === 'for_you' ? (
         <TrendingProfile
@@ -176,6 +337,126 @@ const Social: React.FC = () => {
           trendingProfile={trendingProfile}
         />
       ) : null}
+
+      <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
+        <div className="flex justify-end">
+          <div className="absolute top-4 bg-white p-2 cursor-pointer">
+            <Menu>
+              <MenuHandler>
+                <div className="flex items-center gap-2">
+                  {optionsFilter
+                    .map((data: optionSortBy) => {
+                      if (data.value === filter.sort_by) {
+                        return (
+                          <Typography
+                            className="text-xs text-neutral-soft font-poppins"
+                            key={data.value}
+                          >
+                            {data.title}
+                          </Typography>
+                        );
+                      }
+                      return undefined;
+                    })
+                    .filter(Boolean)}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                  >
+                    <path
+                      d="M13.9423 4.66666H2.05752C1.79024 4.66666 1.65639 4.9898 1.84538 5.17879L7.78779 11.1212C7.90494 11.2383 8.09489 11.2383 8.21205 11.1212L14.1545 5.17879C14.3434 4.9898 14.2096 4.66666 13.9423 4.66666Z"
+                      fill="#7C7C7C"
+                    />
+                  </svg>
+                </div>
+              </MenuHandler>
+              <MenuList className="w-2/6 lg:w-1/6">
+                {optionsFilter.map((data, idx) => (
+                  <MenuItem
+                    key={idx}
+                    className={`mb-2 ${
+                      filter.sort_by === data.value ? 'bg-[#DCFCE4]' : ''
+                    }`}
+                    onClick={() => {
+                      handleChangeFilter('sort_by', data.value);
+                    }}
+                  >
+                    <h1 className="font-semibold font-montserrat">
+                      {data.title}
+                    </h1>
+                    <p className="font-normal font-montserrat">
+                      {data.subtitle}
+                    </p>
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
+          </div>
+        </div>
+        <div className="flex justify-start w-full border border-neutral-ultrasoft" />
+        {dataPost.length > 0 &&
+          dataPost.map((el: any, idx: number) => {
+            return (
+              <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
+                {el.circle !== undefined && (
+                  <div
+                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${
+                      el?.circle?.status_joined === true
+                        ? 'bg-[#E9E9E9]'
+                        : 'bg-[#DCFCE4]'
+                    } mt-5`}
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={el?.circle?.avatar}
+                        alt="image"
+                        className="w-7 h-7 rounded-full object-cover"
+                      />
+                      <Typography
+                        className={`text-sm text-black px-2 py-1 font-bold`}
+                      >
+                        {el?.circle?.name}
+                      </Typography>
+                    </div>
+                    <button
+                      className={`${
+                        el?.circle?.status_joined === true
+                          ? 'bg-[#BDBDBD] cursor-not-allowed'
+                          : 'bg-seeds-button-green'
+                      } rounded-full`}
+                    >
+                      <Typography
+                        className={`text-sm ${
+                          el?.circle?.status_joined === true
+                            ? 'text-neutral-soft'
+                            : 'text-white'
+                        } px-2 py-1 font-bold`}
+                        onClick={() => {
+                          if (el?.circle?.status_joined === false) {
+                            router
+                              .push(`/connect/post/${el?.circle_id as string}`)
+                              .catch(err => {
+                                console.error(err);
+                              });
+                          }
+                        }}
+                      >
+                        {el?.circle?.status_joined === true
+                          ? t('circleDetail.statusJoined')
+                          : t('circleDetail.statusNotJoined')}
+                      </Typography>
+                    </button>
+                  </div>
+                )}
+                <PostCard dataPost={el} setData={setDataPost} />
+              </div>
+            );
+          })}
+        {isLoadingPost && renderLoading()}
+      </CCard>
     </PageGradient>
   );
 };

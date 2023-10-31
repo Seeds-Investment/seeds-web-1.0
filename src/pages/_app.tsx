@@ -57,7 +57,20 @@ function App({
     router.pathname.startsWith('/play') ||
     router.pathname.startsWith('/user-setting');
   if (loginLayouts) {
-    return <LoginLayout>{getLayout(<Component {...pageProps} />)}</LoginLayout>;
+    // return <LoginLayout>{getLayout(<Component {...pageProps} />)}</LoginLayout>;
+    return (
+      <Provider store={store}>
+        <LanguageProvider>
+          <LoadingProvider>
+            <ErrorBEProvider>
+              <LoginLayout>
+                {getLayout(<Component {...pageProps} />)}
+              </LoginLayout>
+            </ErrorBEProvider>
+          </LoadingProvider>
+        </LanguageProvider>
+      </Provider>
+    );
   }
 
   return (

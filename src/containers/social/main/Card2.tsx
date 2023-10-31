@@ -59,7 +59,6 @@ const Card2: React.FC<props> = ({ userData }) => {
             <p className="text-base font-light text-[#7C7C7C] mb-3">
               {userData.seedsTag}
             </p>
-
             <div
               className="border border-[#7C7C7C] rounded-2xl w-full p-4 cursor-pointer"
               onClick={() => {

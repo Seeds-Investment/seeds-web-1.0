@@ -22,15 +22,26 @@ const dataTab = [
 interface props {
   activeTab: string;
   setActiveTab: any;
+  changeFilter: any;
+  filter: any;
 }
 
 const optionsFilter = [
-  { title: 'All', subtitle: 'Everyone' },
-  { title: 'Personal', subtitle: 'Your only friend' },
-  { title: 'Post by Circle', subtitle: 'Create a post in circle' }
+  { title: 'All', subtitle: 'Everyone', value: 'all' },
+  { title: 'Personal', subtitle: 'Your only friend', value: 'personal' },
+  {
+    title: 'Post by Circle',
+    subtitle: 'Create a post in circle',
+    value: 'circle'
+  }
 ];
 
-const Card1: React.FC<props> = ({ activeTab, setActiveTab }) => {
+const Card1: React.FC<props> = ({
+  activeTab,
+  setActiveTab,
+  changeFilter,
+  filter
+}) => {
   const router = useRouter();
 
   return (
@@ -64,9 +75,17 @@ const Card1: React.FC<props> = ({ activeTab, setActiveTab }) => {
               Filter
             </Button>
           </MenuHandler>
-          <MenuList>
+          <MenuList className="w-1/6">
             {optionsFilter.map((data, idx) => (
-              <MenuItem key={idx}>
+              <MenuItem
+                key={idx}
+                className={`mb-2 ${
+                  filter.type === data.value ? 'bg-[#DCFCE4]' : ''
+                }`}
+                onClick={() => {
+                  changeFilter('type', data.value);
+                }}
+              >
                 <h1 className="font-semibold">{data.title}</h1>
                 <p className="font-normal">{data.subtitle}</p>
               </MenuItem>

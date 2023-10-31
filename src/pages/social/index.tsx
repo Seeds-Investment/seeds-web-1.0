@@ -1,6 +1,7 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
+import TrendingProfile from '@/containers/social/main/TrendingProfile';
 import withAuth from '@/helpers/withAuth';
 import { verifiedUser } from '@/repository/people.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -24,7 +25,7 @@ interface UserData {
   _pin: string;
 }
 
-interface TrendingProfile {
+interface TrendingProfileInterface {
   id: string;
   name: string;
   seeds_tag: string;
@@ -63,7 +64,9 @@ const Social: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('following');
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [dataPost, setDataPost] = useState<any[]>();
-  const [trendingProfile, setTrendingProfile] = useState<TrendingProfile[]>([]);
+  const [trendingProfile, setTrendingProfile] = useState<
+    TrendingProfileInterface[]
+  >([]);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>(initialFilter);
@@ -167,6 +170,13 @@ const Social: React.FC = () => {
       />
 
       <Card2 userData={userInfo} />
+
+      {activeTab === 'for_you' ? (
+        <TrendingProfile
+          isLoading={isLoadingTrending}
+          trendingProfile={trendingProfile}
+        />
+      ) : null}
     </PageGradient>
   );
 };

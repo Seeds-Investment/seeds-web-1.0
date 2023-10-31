@@ -27,6 +27,12 @@ const HeaderLogin: React.FC = () => {
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const width = useWindowInnerWidth();
+  const [openSidebarResponsive, setOpenSidebarResponsive] =
+    useState<boolean>(false);
+
+  const handleOpenModal = (): void => {
+    setOpenSidebarResponsive(!openSidebarResponsive);
+  };
 
   const handleGetUserInfo = async (): Promise<void> => {
     try {
@@ -43,6 +49,8 @@ const HeaderLogin: React.FC = () => {
 
   return (
     <div>
+      {/* <SidebarLoginResponsive handleOpen={handleOpenModal} open={openSidebarResponsive} /> */}
+
       {width !== undefined ? (
         width < 768 ? (
           <div className="flex flex-row justify-between">
@@ -56,7 +64,12 @@ const HeaderLogin: React.FC = () => {
                 }
               />
             </Link>
-            <Bars4Icon width={30} height={30} className="items-center" />
+            <Bars4Icon
+              width={30}
+              height={30}
+              className="items-center"
+              onClick={handleOpenModal}
+            />
           </div>
         ) : (
           <section className="flex flex-row items-center justify-end gap-5">

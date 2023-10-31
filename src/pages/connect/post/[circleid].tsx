@@ -2,12 +2,9 @@ import Loading from '@/components/popup/Loading';
 import EditCircle from '@/containers/circle/[id]/EditCircle';
 import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
 import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
-import ModalPost from '@/containers/circle/[id]/ModalPost';
 import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
 import withAuth from '@/helpers/withAuth';
 import {
-  getCirclePost,
-  getCircleRecomend,
   getDetailCircle,
   getStatusCircle
 } from '@/repository/circleDetail.repository';
@@ -42,8 +39,6 @@ const CirclePost = (): JSX.Element => {
   const [openModalReport, setOpenMOdalReport] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [dataCircle, setData]: any = useState({});
-  const [dataPost, setDataPost]: any = useState([]);
-  const [dataRecommend, setDataRecommend]: any = useState([]);
   const [isJoined, setIsJoined] = useState(false);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
@@ -59,20 +54,6 @@ const CirclePost = (): JSX.Element => {
 
     void fetchData();
   }, []);
-
-  const fetchCirclePost = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getCirclePost({ circleId });
-
-      setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const fetchUserInfo = async (): Promise<void> => {
     try {
@@ -93,20 +74,6 @@ const CirclePost = (): JSX.Element => {
     }
   };
 
-  const fetchCircleRecommended = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await getCircleRecomend({ circleId });
-
-      setDataRecommend(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Recommend:', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const fetchDetailCircle = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -122,8 +89,6 @@ const CirclePost = (): JSX.Element => {
   };
 
   useEffect(() => {
-    void fetchCirclePost();
-    void fetchCircleRecommended();
     void fetchUserInfo();
     void fetchDetailCircle();
   }, [circleId]);
@@ -168,10 +133,10 @@ const CirclePost = (): JSX.Element => {
 
   return (
     <MainPostLayout
+      open={isOpen}
+      handleOpen={handleOpen}
       dataCircle={dataCircle}
       circleId={circleId}
-      dataPost={dataPost}
-      dataRecommend={dataRecommend}
       openModalDelete={handleOpenModalDelete}
       openModalLeave={handleOpenModalLeave}
       openModalReport={handleOpenModalReport}
@@ -180,19 +145,10 @@ const CirclePost = (): JSX.Element => {
       isJoined={isJoined}
       setIsJoined={setIsJoined}
       setIsLoading={setIsLoading}
-      setDataPost={setDataPost}
-      setDataRecommend={setDataRecommend}
     >
+      {isLoading && <Loading />}
       {/* posting section */}
-      <ModalPost
-        open={isOpen}
-        handleOpen={handleOpen}
-        fetchData1={fetchCirclePost}
-        fetchData2={fetchCircleRecommended}
-        setIsLoading={setIsLoading}
-      />
       <div className="bg-white mt-8 w-full rounded-xl">
-        {isLoading && <Loading />}
         <div className="flex flex-col px-14 pt-8">
           {isEdit ? (
             <EditCircle dataCircle={dataCircle} circleId={circleId} />

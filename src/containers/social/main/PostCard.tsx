@@ -687,7 +687,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                 <div className="flex justify-between">
                   <div className="flex gap-2">
                     <Typography className="font-bold text-black md:text-lg">
-                      @{dataPost.owner.seeds_tag ?? dataPost.owner.user_name}
+                      @{dataPost.owner.seeds_tag}
                     </Typography>
                     {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />

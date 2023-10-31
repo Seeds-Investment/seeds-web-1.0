@@ -1,20 +1,23 @@
 'use client';
-import { getMemberCircle } from '@/repository/circleDetail.repository';
+import {
+  getCirclePost,
+  getCircleRecomend,
+  getMemberCircle
+} from '@/repository/circleDetail.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Sprout } from 'public/assets/images';
 import { Search, TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ModalPost from './ModalPost';
 import PostSection from './PostSection';
 interface props {
+  open: boolean;
+  handleOpen: () => void;
   circleId: string;
   setIsLoading: any;
-  dataPost: any;
-  dataRecommend: any;
   dataCircle: any;
-  setDataRecommend: any;
-  setDataPost: any;
 }
 
 interface HashtagProps {
@@ -35,20 +38,32 @@ const Hashtag: React.FC<HashtagProps> = ({ name, onClose }) => {
   );
 };
 
+const initialFilter = {
+  limit: 10,
+  page: 1
+};
+
+interface Filter {
+  limit: number;
+  page: number;
+}
+
 const CirclePostSection2: React.FC<props> = ({
+  open,
+  handleOpen,
   setIsLoading,
   circleId,
-  dataPost,
-  dataRecommend,
-  dataCircle,
-  setDataPost,
-  setDataRecommend
+  dataCircle
 }) => {
   const { t } = useTranslation();
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
   const [searchMember, setSearchMember] = useState<string>('');
-
+  const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [dataPost, setDataPost] = useState<any[]>([]);
+  const [dataRecommend, setDataRecommend] = useState<any[]>([]);
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -56,9 +71,76 @@ const CirclePostSection2: React.FC<props> = ({
     setSearchMember(value);
   };
 
+  const fetchCirclePost = async (): Promise<void> => {
+    try {
+      setIsLoadingPost(true);
+
+      getCirclePost({
+        circleId,
+        page: filter.page,
+        limit: filter.limit
+      })
+        .then(res => {
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+
+          if (res.data !== null) {
+            setDataPost(prevState => [...prevState, ...data]);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
+          }
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingPost(false);
+        });
+    } catch (error: any) {
+      console.error('Error fetching Circle Post:', error.message);
+    }
+  };
+
+  const fetchCircleRecommended = async (): Promise<void> => {
+    try {
+      setIsLoadingPost(true);
+
+      getCircleRecomend({
+        circleId,
+        page: filter.page,
+        limit: filter.limit
+      })
+        .then(res => {
+          const data: any[] = res.data;
+          const total = res.metadata.total;
+          if (res.data !== null) {
+            setDataRecommend(prevState => [...prevState, ...data]);
+            if (dataRecommend.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
+          }
+          setIsLoadingPost(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoadingPost(false);
+        });
+    } catch (error: any) {
+      console.error('Error fetching Circle Recommend:', error.message);
+    }
+  };
+
   const fetchCircleMember = async (): Promise<void> => {
     try {
-      setIsLoading(true);
+      setIsLoadingPost(true);
 
       const { data } = await getMemberCircle({ circleId });
 
@@ -66,7 +148,7 @@ const CirclePostSection2: React.FC<props> = ({
     } catch (error: any) {
       console.error('Error fetching Circle Recommend:', error.message);
     } finally {
-      setIsLoading(false);
+      setIsLoadingPost(false);
     }
   };
 
@@ -81,21 +163,68 @@ const CirclePostSection2: React.FC<props> = ({
     void fetchCircleMember();
   }, []);
 
+  const handleScroll = (): void => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingPost) {
+      setFilter(prevState => ({
+        ...prevState,
+        page: prevState.page + 1
+      }));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
+  useEffect(() => {
+    if (hasMore) {
+      if (tabs === 'post') {
+        fetchCirclePost()
+          .then()
+          .catch(() => {});
+      } else if (tabs === 'recommended') {
+        fetchCircleRecommended()
+          .then()
+          .catch(() => {});
+      }
+    }
+  }, [tabs, filter.page]);
+
+  const renderLoading = (): JSX.Element => (
+    <div className="flex justify-center h-10">
+      <div className="h-72 absolute">
+        <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+      </div>
+    </div>
+  );
+
   const handlePages = (): any => {
     if (tabs === 'post') {
       return (
         <>
           {dataPost !== undefined &&
-          dataPost !== null &&
-          dataPost.length > 0 ? (
+            dataPost !== null &&
+            dataPost.length > 0 &&
             dataPost?.map((el: any) => {
               return (
                 <PostSection dataPost={el} key={el.id} setData={setDataPost} />
               );
-            })
-          ) : (
-            <></>
+            })}
+          {!isLoadingPost && dataPost.length === 0 && (
+            <div className="flex justify-center">
+              <Typography className="text-black font-poppins text-base">
+                Data not found
+              </Typography>
+            </div>
           )}
+
+          {isLoadingPost && renderLoading()}
         </>
       );
     } else if (tabs === 'recommended') {
@@ -116,6 +245,7 @@ const CirclePostSection2: React.FC<props> = ({
           ) : (
             <></>
           )}
+          {isLoadingPost && renderLoading()}
         </>
       );
     } else if (tabs === 'members') {
@@ -233,7 +363,6 @@ const CirclePostSection2: React.FC<props> = ({
             {dataCircle?.hashtags?.map((el: any) => {
               return <Hashtag name={el.name} onClose={() => {}} key={el.id} />;
             })}
-            {/* ...tambahkan hashtag lainnya sesuai kebutuhan */}
           </div>
         </div>
       );
@@ -244,15 +373,37 @@ const CirclePostSection2: React.FC<props> = ({
     'text-seeds-green font-poppins font-semibold text-xs md:text-base pb-2 border-b border-seeds-green';
   const inActive: string =
     'text-neutral-soft font-poppins font-normal text-xs md:text-base pb-2';
+
+  const handleChangeTab = (value: string): void => {
+    setTabs(value);
+    setDataPost([]);
+    setDataRecommend([]);
+    setHasMore(true);
+    setFilter(prevState => ({
+      ...prevState,
+      page: 1
+    }));
+  };
+
   return (
     <>
+      <ModalPost
+        open={open}
+        handleOpen={handleOpen}
+        fetchData1={fetchCirclePost}
+        fetchData2={fetchCircleRecommended}
+        setIsLoading={setIsLoading}
+        setIsLoadingPost={setIsLoadingPost}
+        setFilter={setFilter}
+        setData={tabs === 'post' ? setDataPost : setDataRecommend}
+      />
       <div className="bg-white my-8 rounded-xl">
         <div className="h-fit w-full py-8 px-14 md:ml-0">
           {/* navigation */}
           <div className="flex justify-start border-b border-neutral-soft w-fit gap-8 mb-8 ml-5 md:ml-0">
             <button
               onClick={(): any => {
-                setTabs('post');
+                handleChangeTab('post');
               }}
               className={tabs === 'post' ? active : inActive}
             >
@@ -260,7 +411,7 @@ const CirclePostSection2: React.FC<props> = ({
             </button>
             <button
               onClick={(): any => {
-                setTabs('recommended');
+                handleChangeTab('recommended');
               }}
               className={tabs === 'recommended' ? active : inActive}
             >
@@ -268,7 +419,7 @@ const CirclePostSection2: React.FC<props> = ({
             </button>
             <button
               onClick={(): any => {
-                setTabs('members');
+                handleChangeTab('members');
               }}
               className={tabs === 'members' ? active : inActive}
             >
@@ -276,7 +427,7 @@ const CirclePostSection2: React.FC<props> = ({
             </button>
             <button
               onClick={(): any => {
-                setTabs('about');
+                handleChangeTab('about');
               }}
               className={tabs === 'about' ? active : inActive}
             >

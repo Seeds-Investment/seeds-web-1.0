@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from 'react';
 import ChatIcon from '../svgs/chatIcon';
 import NotificationIcon from '../svgs/notificationIcon';
 import Logo from '../ui/vector/Logo';
+import SidebarLoginResponsive from './SidebarLoginResponsive';
 
 interface UserData {
   name: string;
@@ -51,7 +52,12 @@ const HeaderLogin: React.FC = () => {
 
   return (
     <div>
-      {/* <SidebarLoginResponsive handleOpen={handleOpenModal} open={openSidebarResponsive} /> */}
+      {openSidebarResponsive ? (
+        <SidebarLoginResponsive
+          handleOpen={handleOpenModal}
+          open={openSidebarResponsive}
+        />
+      ) : null}
 
       {width !== undefined ? (
         width < 768 ? (

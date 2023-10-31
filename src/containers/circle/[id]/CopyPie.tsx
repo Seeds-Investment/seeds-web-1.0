@@ -240,11 +240,11 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
 
     const assetData = form.pie.map((item: any) => ({
       id: item.id,
-      quote: item.real_ticker,
-      currency: item.exchange_currency,
-      image: item.logo,
+      realTicker: item.real_ticker,
+      exchange_currency: item.exchange_currency,
+      logo: item.logo,
       name: item.name,
-      price: item.price,
+      price: item.price_bar.open,
       regularPercentage: item.exchange_rate,
       value: item.allocation,
       isLock: false

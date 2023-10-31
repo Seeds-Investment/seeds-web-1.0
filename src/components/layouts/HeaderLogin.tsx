@@ -148,13 +148,15 @@ const HeaderLogin: React.FC = () => {
               <ChatIcon />
             </section>
             {accessToken !== null && userInfo !== null ? (
-              <Image
-                alt="image"
-                width={17}
-                height={17}
-                className="rounded-full w-10"
-                src={userInfo.avatar}
-              />
+              <Link href="/my-profile">
+                <Image
+                  alt="image"
+                  width={17}
+                  height={17}
+                  className="rounded-full w-10"
+                  src={userInfo.avatar}
+                />
+              </Link>
             ) : (
               <></>
             )}

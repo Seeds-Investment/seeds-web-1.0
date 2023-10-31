@@ -43,7 +43,7 @@ const PiePreviewPost: React.FC<props> = ({
           </Typography>
           <div className="flex gap-1">
             {data.map((data: any, idx: number) => (
-              <Avatar key={idx} size="xs" src={data.image} className="mr-2" />
+              <Avatar key={idx} size="xs" src={data.logo} className="mr-2" />
             ))}
           </div>
           <Typography variant="paragraph" className="font-bold">

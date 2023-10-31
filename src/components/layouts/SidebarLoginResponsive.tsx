@@ -1,13 +1,19 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { Dialog, DialogBody } from '@material-tailwind/react';
+import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
+import ID from 'public/assets/social/flag/ID.png';
+import US from 'public/assets/social/flag/US.png';
+import notification from 'public/assets/social/notification.svg';
+import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
+import { useContext } from 'react';
 import Logo from '../ui/vector/Logo';
 
 interface props {
@@ -21,58 +27,124 @@ const menu = [
   { title: 'Connect', url: '/connect', image: connect },
   { title: 'Play', url: '/play', image: play },
   { title: 'Setting', url: '/user-setting', image: setting },
-  { title: 'Notification', url: '/setting', image: setting },
-  { title: 'Chat', url: '/setting', image: setting },
-  { title: 'Profile', url: '/setting', image: setting }
+  { title: 'Notification', url: '/setting', image: notification },
+  { title: 'Chat', url: '/setting', image: chat },
+  { title: 'Profile', url: '/my-profile', image: profile }
 ];
 
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const languageCtx = useContext(LanguageContext);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
 
+  const handleLogout = (): void => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresAt');
+    localStorage.removeItem('keepMeLoggedIn');
+
+    window.location.reload();
+  };
+
   return (
-    <div>
-      <Dialog open={open} handler={handleOpen} size="xs">
-        <DialogBody>
-          <div className="flex flex-col items-center gap-3">
-            <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
-              <Logo
-                width={
-                  width !== undefined && width <= 640 ? '62.22' : undefined
-                }
-                height={
-                  width !== undefined && width <= 640 ? '23.58' : undefined
-                }
-              />
-            </Link>
-            <ul className="flex flex-col items-start w-full social-sidebar-list">
-              {menu.map((data, idx) => (
-                <Link
-                  className={isLinkActive(data.url)}
-                  href={data.url}
-                  key={idx}
-                >
-                  <Image width={20} height={20} src={data.image} alt="" />
-                  <h1>{data.title}</h1>
-                </Link>
-              ))}
-              <div className="mx-auto mt-[40%]">
+    <aside className="absolute z-20 left-0 w-2/3 h-screen py-6 bg-white">
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3">
+          <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
+            <Logo
+              width={width !== undefined && width <= 640 ? '62.22' : undefined}
+              height={width !== undefined && width <= 640 ? '23.58' : undefined}
+            />
+          </Link>
+          <ul className="flex flex-col items-start w-full social-sidebar-list">
+            {menu.map((data, idx) => (
+              <Link
+                className={isLinkActive(data.url)}
+                href={data.url}
+                key={idx}
+              >
+                <Image width={20} height={20} src={data.image} alt="" />
+                <h1>{data.title}</h1>
+              </Link>
+            ))}
+            <div className="flex flex-row">
+              <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
                 <button
-                  className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-                  // onClick={handleLogout}
+                  className={`transition-all duration-300 flex sm:justify-evenly py-3 px-3 items-center rounded-full bg-gray-100  ${
+                    width !== undefined && width <= 375 ? 'space-x-1' : ''
+                  } ${
+                    languageCtx.language === 'ID'
+                      ? 'border border-seeds-purple'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    languageCtx.languageHandler('ID');
+                  }}
                 >
-                  Logout
+                  <span
+                    className={`font-poppins mr-2 text-sm ${
+                      languageCtx.language === 'ID'
+                        ? 'sm:font-semibold text-seeds-purple'
+                        : 'text-black'
+                    }`}
+                  >
+                    ID
+                  </span>
+
+                  <Image
+                    src={ID}
+                    alt="ID-flag"
+                    className="w-[30px] h-[20px] self-center"
+                  />
                 </button>
-              </div>
-            </ul>
-          </div>
-        </DialogBody>
-      </Dialog>
-    </div>
+              </section>
+              <section className="border-r h-4 border-black my-3"></section>
+              <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
+                <button
+                  className={`transition-all duration-300 flex sm:justify-evenly py-3 px-3 items-center rounded-full bg-gray-100 ${
+                    width !== undefined && width <= 375 ? 'space-x-1' : ''
+                  } ${
+                    languageCtx.language === 'EN'
+                      ? 'border border-seeds-purple'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    languageCtx.languageHandler('EN');
+                  }}
+                >
+                  <span
+                    className={`font-poppins mr-1 text-sm ${
+                      languageCtx.language === 'EN'
+                        ? 'sm:font-semibold text-seeds-purple'
+                        : 'text-black'
+                    }`}
+                  >
+                    EN
+                  </span>
+                  <Image
+                    src={US}
+                    alt="US-flag"
+                    className="w-[30px] h-[20px] self-center"
+                  />
+                </button>
+              </section>
+            </div>
+            <div className="mx-auto">
+              <button
+                className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </aside>
   );
 };
 

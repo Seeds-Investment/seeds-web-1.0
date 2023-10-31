@@ -23,6 +23,7 @@ interface props {
   activeTab: string;
   setActiveTab: any;
   changeFilter: any;
+  filter: any;
 }
 
 const optionsFilter = [
@@ -35,7 +36,12 @@ const optionsFilter = [
   }
 ];
 
-const Card1: React.FC<props> = ({ activeTab, setActiveTab, changeFilter }) => {
+const Card1: React.FC<props> = ({
+  activeTab,
+  setActiveTab,
+  changeFilter,
+  filter
+}) => {
   const router = useRouter();
 
   return (
@@ -73,7 +79,9 @@ const Card1: React.FC<props> = ({ activeTab, setActiveTab, changeFilter }) => {
             {optionsFilter.map((data, idx) => (
               <MenuItem
                 key={idx}
-                className="mb-2"
+                className={`mb-2 ${
+                  filter.type === data.value ? 'bg-[#DCFCE4]' : ''
+                }`}
                 onClick={() => {
                   changeFilter('type', data.value);
                 }}

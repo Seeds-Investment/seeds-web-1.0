@@ -56,7 +56,7 @@ const initialUserInfo = {
 const initialFilter = {
   page: 1,
   limit: 10,
-  type: '',
+  type: 'all',
   sort_by: ''
 };
 
@@ -93,8 +93,6 @@ const Social: React.FC = () => {
       ...prevState,
       [name]: value
     }));
-
-    // if (activeTab)
   };
 
   const fetchUserInfo = async (): Promise<void> => {
@@ -109,7 +107,7 @@ const Social: React.FC = () => {
   const fetchPostFollowing = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostFollowing(initialFilter);
+      const response = await getSocialPostFollowing(filter);
       setDataPost(response.data);
       setIsLoadingPost(false);
     } catch (error) {
@@ -121,7 +119,7 @@ const Social: React.FC = () => {
   const fetchPostForYou = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostForYou(initialFilter);
+      const response = await getSocialPostForYou(filter);
       setDataPost(response);
       setIsLoadingPost(false);
     } catch (error) {
@@ -133,7 +131,7 @@ const Social: React.FC = () => {
   const fetchPostMySpace = async (): Promise<void> => {
     try {
       setIsLoadingPost(true);
-      const response = await getSocialPostMySpace(initialFilter);
+      const response = await getSocialPostMySpace(filter);
       setDataPost(response);
       setIsLoadingPost(false);
     } catch (error) {
@@ -167,6 +165,7 @@ const Social: React.FC = () => {
         activeTab={activeTab}
         setActiveTab={handleChangeTab}
         changeFilter={handleChangeFilter}
+        filter={filter}
       />
 
       <Card2 userData={userInfo} />

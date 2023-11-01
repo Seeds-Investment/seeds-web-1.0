@@ -549,7 +549,7 @@ export const searchUser = async (params: any): Promise<any> => {
     return await Promise.resolve('Access token not found');
   }
 
-  return await baseUrl.get(`user/v1/search`, {
+  return await baseUrl.get(`user/v1/list`, {
     params,
     headers: {
       Accept: 'application/json',

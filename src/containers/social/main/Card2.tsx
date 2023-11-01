@@ -45,9 +45,6 @@ const Card2: React.FC<props> = ({ userData, handleOpen }) => {
               <CheckCircleIcon width={20} height={20} color="#5E44FF" />
             )}
             <Image src={Sprout.src} alt={Sprout.alt} width={20} height={20} />
-            <p className="font-normal text-sm bg-[#DCFCE4] text-[#1A857D] rounded-2xl px-3 py-1">
-              Investor
-            </p>
           </div>
           <p className="text-base font-light text-[#7C7C7C] mb-3 font-poppins">
             @{userData.seedsTag}

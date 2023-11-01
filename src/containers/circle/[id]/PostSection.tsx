@@ -685,9 +685,9 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
 
               <div className="w-full">
                 <div className="flex justify-between">
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
                     <Typography className="font-bold text-black md:text-lg">
-                      @{dataPost.owner.seeds_tag ?? dataPost.owner.user_name}
+                      @{dataPost.owner.seeds_tag ?? dataPost.owner.username}
                     </Typography>
                     {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />
@@ -1012,7 +1012,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                   />
                 </button>
                 {isShare && (
-                  <div className="w-[420px] absolute bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
+                  <div className="w-[420px] absolute z-50 bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
                     <div className="flex flex-col px-4 py-2">
                       <div className="flex justify-between">
                         <Typography className="font-poppins font-semibold text-xl text-black">

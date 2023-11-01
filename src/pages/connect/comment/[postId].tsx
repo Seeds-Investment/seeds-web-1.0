@@ -93,6 +93,7 @@ const tagOption = [
 const Comment: React.FC = () => {
   const router = useRouter();
   const postId: string | any = router.query.postId;
+  const [golId, setGolId] = useState<number>(1);
   const [mediaArr, setMediaArr] = useState<string[]>([]);
   const [dataPost, setDataPost] = useState<null | any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -130,6 +131,8 @@ const Comment: React.FC = () => {
     circleList: [],
     playList: []
   });
+  console.log(parent);
+
   const fetchDetailCirclePost = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -487,7 +490,7 @@ const Comment: React.FC = () => {
         id: '',
         seedsTag: ''
       });
-
+      setGolId(golId + 1);
       setDisplayValue('');
       setMediaArr([]);
       setMedia(undefined);
@@ -503,11 +506,13 @@ const Comment: React.FC = () => {
 
   useEffect(() => {
     if (parent.seedsTag.length > 0) {
+      setDisplayValue(`~${parent.seedsTag} `);
       setForm((prevForm: typeOfForm) => ({
         ...prevForm,
         content_text: `~${parent.seedsTag} `
       }));
     } else {
+      setDisplayValue('');
       setForm((prevForm: typeOfForm) => ({
         ...prevForm,
         content_text: ''
@@ -854,6 +859,7 @@ const Comment: React.FC = () => {
                                       idx={i}
                                       setDataComment={setDataComment}
                                       setParent={setParent}
+                                      golId={golId}
                                       key={`${el.id} ${i}`}
                                     />
                                   );

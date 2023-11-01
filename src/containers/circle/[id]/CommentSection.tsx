@@ -1,5 +1,6 @@
 import { getAssetById } from '@/repository/asset.repository';
 import {
+  getAllReplyComment,
   getDetailCircle,
   postLikeComment
 } from '@/repository/circleDetail.repository';
@@ -50,6 +51,8 @@ interface props {
   idx: number;
   setDataComment: any;
   setParent: any;
+  isParent?: boolean;
+  golId: number;
 }
 
 interface TimeDifference {
@@ -98,13 +101,40 @@ const CommentSection: React.FC<props> = ({
   dataPost,
   idx,
   setDataComment,
-  setParent
+  setParent,
+  isParent = true,
+  golId
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const postId: string | any = router.query.postId;
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [dataReplyComment, setDataReplyComment] = useState<typeOfComment[]>([]);
+  const [isLoadingComment, setIsLoadingComment] = useState<boolean>(false);
+  const [isDrop, setIsDrop] = useState<boolean>(false);
+
+  const fetchReplyComment = async (): Promise<void> => {
+    try {
+      setIsLoadingComment(true);
+      const { data } = await getAllReplyComment({
+        postId,
+        parentId: dataPost.id
+      });
+      setDataReplyComment(data);
+    } catch (error: any) {
+      console.error('Error fetching Circle Detail:', error.message);
+    } finally {
+      setIsLoadingComment(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isParent) {
+      void fetchReplyComment();
+    }
+  }, []);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -116,7 +146,8 @@ const CommentSection: React.FC<props> = ({
     };
 
     void fetchData();
-  }, []);
+  }, [golId]);
+
   if (additionalPostData.length > 0) {
     console.log('succes');
   }
@@ -271,6 +302,12 @@ const CommentSection: React.FC<props> = ({
       </div>
     );
   };
+
+  const renderLoading = (): JSX.Element => (
+    <div className="h-72 flex justify-center">
+      <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+    </div>
+  );
 
   function removeDuplicateIds(data: any): any {
     const uniqueIds = new Set();
@@ -442,266 +479,289 @@ const CommentSection: React.FC<props> = ({
     }
   };
   return (
-    <div
-      className="w-full flex justify-between mt-5 pb-5"
-      key={`${dataPost.id}${idx + 1}`}
-    >
-      <div className="flex gap-4 md:gap-8">
-        <div className="hidden md:flex">
-          <div>
-            <img
-              src={dataPost.avatar}
-              alt="AVATAR"
-              width={48}
-              height={48}
-              className="rounded-full object-cover"
-            />
-          </div>
-        </div>
-        <div className="flex gap-5 pb-4">
-          <div className="md:hidden flex">
+    <div className="flex flex-col  mt-5 pb-5" key={`${dataPost.id}${idx + 1}`}>
+      <div className="w-full flex justify-between">
+        <div className="flex gap-4 md:gap-8">
+          <div className="hidden md:flex">
             <div>
               <img
                 src={dataPost.avatar}
                 alt="AVATAR"
                 width={48}
                 height={48}
-                className="rounded-full outline outline-black"
+                className="rounded-full object-cover"
               />
             </div>
           </div>
-          <div className="w-full">
-            <div className="flex justify-start gap-2">
-              <Typography className="font-semibold md:text-lg font-poppins">
-                @{dataPost.user_name}
-              </Typography>
-              <Typography className="text-xs md:text-sm text-neutral-soft font-poppins items-center flex">
-                {timeConverter(dataPost.created_at)}
-              </Typography>
-            </div>
-            <div className="flex items-center pt-[5px]">
-              {renderTouchableText(dataPost.content_text)}
-            </div>
-
-            <div className="flex justify-start gap-4 pt-4">
-              {thumbnailList.length > 0 &&
-                thumbnailList.map((item: any, index: number) => {
-                  return (
-                    <div
-                      className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
-                      key={`${item?.id as string}${index}`}
-                      onClick={() => {
-                        toDetailTag(item);
-                      }}
-                    >
-                      {item?.admission_fee > 0 ? (
-                        <div className="flex justify-center pt-4">
-                          <div className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="17"
-                              height="10"
-                              viewBox="0 0 17 10"
-                              fill="none"
-                            >
-                              <path
-                                d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
-                                fill="#FDBA22"
-                              />
-                            </svg>
-                          </div>
-                          <Typography className="font-poppins text-black text-xs pl-2">
-                            Paid
-                          </Typography>
-                        </div>
-                      ) : null}
-                      {item?.thumbnailType === 'circle' &&
-                      item?.type !== 'free' ? (
-                        <div className="flex justify-center pt-4">
-                          <div className="flex items-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="17"
-                              height="10"
-                              viewBox="0 0 17 10"
-                              fill="none"
-                            >
-                              <path
-                                d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
-                                fill="#FDBA22"
-                              />
-                            </svg>
-                          </div>
-                          <Typography className="font-poppins text-black text-xs pl-2">
-                            Premium
-                          </Typography>
-                        </div>
-                      ) : null}
-                      {item?.thumbnailType === 'play' ? (
-                        <div className="flex justify-center py-2">
-                          <Image
-                            src={PlayLogo}
-                            alt="image"
-                            width={60}
-                            height={60}
-                            className="rounded-full object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          className={`${
-                            item?.thumbnailType === 'asset' ||
-                            (item?.thumbnailType === 'circle' &&
-                              item?.type === 'free')
-                              ? 'pt-4'
-                              : ''
-                          } flex justify-center py-2`}
-                        >
-                          <img
-                            src={
-                              item?.thumbnailType === 'asset'
-                                ? item?.marketAsset?.logo
-                                : item?.logo !== undefined
-                                ? item.logo
-                                : item?.avatar
-                            }
-                            alt="image"
-                            className="rounded-full object-cover"
-                            width={60}
-                            height={60}
-                          />
-                        </div>
-                      )}
-                      <div className="flex justify-center">
-                        <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
-                          {item?.name?.length > 10
-                            ? (item?.name.substring(0, 15) as string) + '...'
-                            : item?.name}
-                          {item?.thumbnailType === 'asset' &&
-                            (item?.marketAsset?.name?.length > 10
-                              ? (item?.marketAsset?.name.substring(
-                                  0,
-                                  15
-                                ) as string) + '...'
-                              : item?.marketAsset?.name)}
-                        </Typography>
-                      </div>
-                      {item?.thumbnailType === 'play' ? (
-                        <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
-                          {item?.participants?.length} participants
-                        </Typography>
-                      ) : null}
-                      {item?.thumbnailType === 'asset' ? (
-                        <div className="flex justify-center">
-                          <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
-                            {item?.marketAsset?.exchangeCurrency === 'IDR'
-                              ? `IDR ${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close
-                                )}`
-                              : `$${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close /
-                                    item?.marketAsset?.exchangeRate
-                                )}`}
-                          </Typography>
-                        </div>
-                      ) : null}
-                      {item?.thumbnailType === 'circle' && (
-                        <div className="flex justify-center">
-                          <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
-                            {item?.total_member} {t('circleDetail.member')}
-                          </Typography>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-            </div>
-            {dataPost.media_url.length > 0 && (
-              <div className="flex justify- py-2">
-                {dataPost.media_type === 'image' && (
-                  <img
-                    src={dataPost.media_url}
-                    alt="image"
-                    className="min-w-[200px] object-cover max-h-[300px]"
-                  />
-                )}
-                {dataPost.media_type === 'video' && (
-                  <video
-                    controls
-                    className="max-w-[50vw] max-h-[50vh] object-fit"
-                    key={dataPost.media_url}
-                  >
-                    <source src={dataPost.media_url} type="video/mp4" />
-                    Browser Anda tidak mendukung tag video.
-                  </video>
-                )}
+          <div className="flex gap-5 pb-4">
+            <div className="md:hidden flex">
+              <div>
+                <img
+                  src={dataPost.avatar}
+                  alt="AVATAR"
+                  width={48}
+                  height={48}
+                  className="rounded-full outline outline-black"
+                />
               </div>
-            )}
+            </div>
+            <div className="w-full">
+              <div className="flex justify-start gap-2">
+                <Typography className="font-semibold md:text-lg font-poppins">
+                  @{dataPost.user_name}
+                </Typography>
+                <Typography className="text-xs md:text-sm text-neutral-soft font-poppins items-center flex">
+                  {timeConverter(dataPost.created_at)}
+                </Typography>
+              </div>
+              <div className="flex items-center pt-[5px]">
+                {renderTouchableText(dataPost.content_text)}
+              </div>
+
+              <div className="flex justify-start gap-4 pt-4">
+                {thumbnailList.length > 0 &&
+                  thumbnailList.map((item: any, index: number) => {
+                    return (
+                      <div
+                        className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
+                        key={`${item?.id as string}${index}`}
+                        onClick={() => {
+                          toDetailTag(item);
+                        }}
+                      >
+                        {item?.admission_fee > 0 ? (
+                          <div className="flex justify-center pt-4">
+                            <div className="flex items-center">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="17"
+                                height="10"
+                                viewBox="0 0 17 10"
+                                fill="none"
+                              >
+                                <path
+                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                  fill="#FDBA22"
+                                />
+                              </svg>
+                            </div>
+                            <Typography className="font-poppins text-black text-xs pl-2">
+                              Paid
+                            </Typography>
+                          </div>
+                        ) : null}
+                        {item?.thumbnailType === 'circle' &&
+                        item?.type !== 'free' ? (
+                          <div className="flex justify-center pt-4">
+                            <div className="flex items-center">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="17"
+                                height="10"
+                                viewBox="0 0 17 10"
+                                fill="none"
+                              >
+                                <path
+                                  d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                  fill="#FDBA22"
+                                />
+                              </svg>
+                            </div>
+                            <Typography className="font-poppins text-black text-xs pl-2">
+                              Premium
+                            </Typography>
+                          </div>
+                        ) : null}
+                        {item?.thumbnailType === 'play' ? (
+                          <div className="flex justify-center py-2">
+                            <Image
+                              src={PlayLogo}
+                              alt="image"
+                              width={60}
+                              height={60}
+                              className="rounded-full object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className={`${
+                              item?.thumbnailType === 'asset' ||
+                              (item?.thumbnailType === 'circle' &&
+                                item?.type === 'free')
+                                ? 'pt-4'
+                                : ''
+                            } flex justify-center py-2`}
+                          >
+                            <img
+                              src={
+                                item?.thumbnailType === 'asset'
+                                  ? item?.marketAsset?.logo
+                                  : item?.logo !== undefined
+                                  ? item.logo
+                                  : item?.avatar
+                              }
+                              alt="image"
+                              className="rounded-full object-cover"
+                              width={60}
+                              height={60}
+                            />
+                          </div>
+                        )}
+                        <div className="flex justify-center">
+                          <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
+                            {item?.name?.length > 10
+                              ? (item?.name.substring(0, 15) as string) + '...'
+                              : item?.name}
+                            {item?.thumbnailType === 'asset' &&
+                              (item?.marketAsset?.name?.length > 10
+                                ? (item?.marketAsset?.name.substring(
+                                    0,
+                                    15
+                                  ) as string) + '...'
+                                : item?.marketAsset?.name)}
+                          </Typography>
+                        </div>
+                        {item?.thumbnailType === 'play' ? (
+                          <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
+                            {item?.participants?.length} participants
+                          </Typography>
+                        ) : null}
+                        {item?.thumbnailType === 'asset' ? (
+                          <div className="flex justify-center">
+                            <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
+                              {item?.marketAsset?.exchangeCurrency === 'IDR'
+                                ? `IDR ${formatCurrency(
+                                    item?.marketAsset?.lastPrice?.close
+                                  )}`
+                                : `$${formatCurrency(
+                                    item?.marketAsset?.lastPrice?.close /
+                                      item?.marketAsset?.exchangeRate
+                                  )}`}
+                            </Typography>
+                          </div>
+                        ) : null}
+                        {item?.thumbnailType === 'circle' && (
+                          <div className="flex justify-center">
+                            <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
+                              {item?.total_member} {t('circleDetail.member')}
+                            </Typography>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
+              {dataPost.media_url.length > 0 && (
+                <div className="flex justify- py-2">
+                  {dataPost.media_type === 'image' && (
+                    <img
+                      src={dataPost.media_url}
+                      alt="image"
+                      className="min-w-[200px] object-cover max-h-[300px]"
+                    />
+                  )}
+                  {dataPost.media_type === 'video' && (
+                    <video
+                      controls
+                      className="max-w-[50vw] max-h-[50vh] object-fit"
+                      key={dataPost.media_url}
+                    >
+                      <source src={dataPost.media_url} type="video/mp4" />
+                      Browser Anda tidak mendukung tag video.
+                    </video>
+                  )}
+                </div>
+              )}
+              {isParent && (
+                <button
+                  className="flex items-center pt-[5px]"
+                  onClick={() => {
+                    if (dataReplyComment.length > 0 && !isDrop) {
+                      setIsDrop(true);
+                    } else {
+                      setParent({
+                        id: dataPost.id,
+                        seedsTag: dataPost.user_name
+                      });
+                    }
+                  }}
+                >
+                  <Typography className="text-xs md:text-sm text-neutral-soft font-poppins">
+                    {dataReplyComment.length > 0 && !isDrop
+                      ? `View ${dataReplyComment.length} more replies`
+                      : 'Reply'}
+                  </Typography>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-start">
+          <div className="flex flex-col">
             <button
-              className="flex items-center pt-[5px]"
-              onClick={() => {
-                setParent({
-                  id: dataPost.id,
-                  seedsTag: dataPost.user_name
-                });
+              className="flex"
+              onClick={async () => {
+                await likePost(1, dataPost.id);
               }}
             >
-              <Typography className="text-xs md:text-sm text-neutral-soft font-poppins">
-                Reply
-              </Typography>
+              {dataPost.is_liked ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="20"
+                  viewBox="0 0 24 20"
+                  fill="none"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M1.09998 10.4939C-0.180856 6.65732 1.31724 1.8874 5.51548 0.590992C7.72382 -0.0927161 10.449 0.477613 11.9973 2.52645C13.4572 0.402027 16.2612 -0.0881351 18.4671 0.590992C22.6642 1.8874 24.1706 6.65732 22.891 10.4939C20.8975 16.5751 13.9418 19.7428 11.9973 19.7428C10.0539 19.7428 3.16031 16.6461 1.09998 10.4939Z"
+                    fill="#DA2D1F"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="26"
+                  height="22"
+                  viewBox="0 0 26 22"
+                  fill="none"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M2.09998 11.9304C0.819144 8.09385 2.31724 3.32393 6.51548 2.02752C8.72382 1.34381 11.449 1.91414 12.9973 3.96297C14.4572 1.83855 17.2612 1.34839 19.4671 2.02752C23.6642 3.32393 25.1706 8.09385 23.891 11.9304C21.8975 18.0116 14.9418 21.1794 12.9973 21.1794C11.0539 21.1794 4.16031 18.0826 2.09998 11.9304Z"
+                    stroke="#BDBDBD"
+                    strokeWidth="1.61976"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
             </button>
+
+            <Typography className="font-poppins text-neutral-soft text-center">
+              {dataPost.total_like}
+            </Typography>
           </div>
         </div>
       </div>
-      <div className="flex items-start">
-        <div className="flex flex-col">
-          <button
-            className="flex"
-            onClick={async () => {
-              await likePost(1, dataPost.id);
-            }}
-          >
-            {dataPost.is_liked ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="20"
-                viewBox="0 0 24 20"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M1.09998 10.4939C-0.180856 6.65732 1.31724 1.8874 5.51548 0.590992C7.72382 -0.0927161 10.449 0.477613 11.9973 2.52645C13.4572 0.402027 16.2612 -0.0881351 18.4671 0.590992C22.6642 1.8874 24.1706 6.65732 22.891 10.4939C20.8975 16.5751 13.9418 19.7428 11.9973 19.7428C10.0539 19.7428 3.16031 16.6461 1.09998 10.4939Z"
-                  fill="#DA2D1F"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="22"
-                viewBox="0 0 26 22"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M2.09998 11.9304C0.819144 8.09385 2.31724 3.32393 6.51548 2.02752C8.72382 1.34381 11.449 1.91414 12.9973 3.96297C14.4572 1.83855 17.2612 1.34839 19.4671 2.02752C23.6642 3.32393 25.1706 8.09385 23.891 11.9304C21.8975 18.0116 14.9418 21.1794 12.9973 21.1794C11.0539 21.1794 4.16031 18.0826 2.09998 11.9304Z"
-                  stroke="#BDBDBD"
-                  strokeWidth="1.61976"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </button>
-
-          <Typography className="font-poppins text-neutral-soft text-center">
-            {dataPost.total_like}
-          </Typography>
-        </div>
-      </div>
+      {isDrop &&
+        dataReplyComment.map((el, idx) => {
+          return (
+            <div className="pl-14" key={`${el.id}${idx}`}>
+              {isLoadingComment && renderLoading()}
+              <CommentSection
+                dataPost={el}
+                setDataComment={setDataReplyComment}
+                setParent={setParent}
+                idx={idx}
+                isParent={false}
+                golId={1}
+              />
+            </div>
+          );
+        })}
     </div>
   );
 };

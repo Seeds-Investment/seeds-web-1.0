@@ -331,7 +331,7 @@ export const createPostCircleDetail = async (formData: {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    return response;
+    return { ...response, status: 200 };
   } catch (error) {
     return error;
   }

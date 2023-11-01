@@ -27,8 +27,6 @@ import { VoiceRecorder } from './VoiceRecording';
 interface props {
   open: boolean;
   handleOpen: () => void;
-  fetchData1?: () => Promise<void>;
-  fetchData2?: () => Promise<void>;
   setIsLoading: any;
   setIsLoadingPost?: any;
   setFilter?: any;
@@ -170,8 +168,6 @@ const tagOption = [
 const ModalPost: React.FC<props> = ({
   open,
   handleOpen,
-  fetchData1,
-  fetchData2,
   setIsLoading,
   setIsLoadingPost,
   setFilter,
@@ -619,6 +615,7 @@ const ModalPost: React.FC<props> = ({
       }
 
       await createPostCircleDetail(payload);
+
       setForm({
         content_text: '',
         privacy: dropVal.type.toLowerCase(),
@@ -640,27 +637,17 @@ const ModalPost: React.FC<props> = ({
       setDisplayValue('');
       setSelectedAsset([]);
       setChartData(initialChartData);
-      if (setData !== undefined) {
-        setData([]);
-      }
-      if (fetchData1 !== undefined) {
-        fetchData1()
-          .then()
-          .catch(() => {});
-      }
-      if (fetchData2 !== undefined) {
-        fetchData2()
-          .then()
-          .catch(() => {});
-      }
-      setLastWordsWithSymbol('');
-      setIsSymbol(false);
       if (setFilter !== undefined) {
         setFilter((prevState: any) => ({
           ...prevState,
           page: 1
         }));
       }
+      if (setData !== undefined) {
+        setData([]);
+      }
+      setLastWordsWithSymbol('');
+      setIsSymbol(false);
       setOtherTagList({
         peopleList: [],
         circleList: [],

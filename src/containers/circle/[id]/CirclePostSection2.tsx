@@ -64,6 +64,7 @@ const CirclePostSection2: React.FC<props> = ({
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [dataRecommend, setDataRecommend] = useState<any[]>([]);
+  const [isIncrease, setIsIncrease] = useState(false);
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -94,13 +95,17 @@ const CirclePostSection2: React.FC<props> = ({
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error: any) {
+      setIsIncrease(false);
+      setIsLoadingPost(false);
       console.error('Error fetching Circle Post:', error.message);
     }
   };
@@ -127,13 +132,17 @@ const CirclePostSection2: React.FC<props> = ({
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error: any) {
+      setIsIncrease(false);
+      setIsLoadingPost(false);
       console.error('Error fetching Circle Recommend:', error.message);
     }
   };
@@ -167,10 +176,15 @@ const CirclePostSection2: React.FC<props> = ({
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingPost) {
-      setFilter(prevState => ({
-        ...prevState,
-        page: prevState.page + 1
-      }));
+      if (!isIncrease) {
+        setIsIncrease(true);
+        setTimeout(() => {
+          setFilter(prevState => ({
+            ...prevState,
+            page: prevState.page + 1
+          }));
+        }, 1000);
+      }
     }
   };
 
@@ -203,6 +217,7 @@ const CirclePostSection2: React.FC<props> = ({
       </div>
     </div>
   );
+  console.log(filter);
 
   const handlePages = (): any => {
     if (tabs === 'post') {
@@ -390,12 +405,16 @@ const CirclePostSection2: React.FC<props> = ({
       <ModalPost
         open={open}
         handleOpen={handleOpen}
-        fetchData1={fetchCirclePost}
-        fetchData2={fetchCircleRecommended}
         setIsLoading={setIsLoading}
         setIsLoadingPost={setIsLoadingPost}
         setFilter={setFilter}
-        setData={tabs === 'post' ? setDataPost : setDataRecommend}
+        setData={
+          tabs === 'post'
+            ? setDataPost
+            : tabs === 'recommended'
+            ? setDataRecommend
+            : undefined
+        }
       />
       <div className="bg-white my-8 rounded-xl">
         <div className="h-fit w-full py-8 px-14 md:ml-0">

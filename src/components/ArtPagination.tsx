@@ -111,7 +111,7 @@ const ArtPagination: React.FC<PaginationProps> = ({
               onChange={handleInputChange}
               value={inputPage}
               type="text"
-              className="rounded-full border border-[#3AC4A0] block w-full px-2 text-[#262626] text-sm h-[23px] placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
+              className="rounded-full w-12 border border-[#3AC4A0] block  px-2 text-[#262626] text-sm h-[23px] placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
             />
           </div>
           <div className="flex-1">

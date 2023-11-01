@@ -115,7 +115,7 @@ export default function ArticleList(): React.ReactElement {
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
       ...prevParams,
-      category: newCategory
+      category: newCategory.toLowerCase()
     }));
 
     setActiveCategory(newCategory);
@@ -143,6 +143,21 @@ export default function ArticleList(): React.ReactElement {
   //     return `${days} ${days === 1 ? 'day' : 'days'} ago`;
   //   }
   // };
+
+  const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
+
+  const categories = [
+    'All',
+    'Business',
+    'Entertainment',
+    'Health',
+    'Politics',
+    'Science',
+    'Sports',
+    'Technology',
+    'Top',
+    'World'
+  ];
 
   const customGradient = (
     <>
@@ -225,7 +240,40 @@ export default function ArticleList(): React.ReactElement {
             <option value="option2">All</option>
           </select>
         </div>
-        <div className="lg:flex  justify-center mt-4 gap-2 ">
+        <div className="lg:hidden mt-4 ">
+          <Slider
+            slidesToShow={4}
+            speed={500}
+            initialSlide={0}
+            responsive={[
+              {
+                breakpoint: 768,
+                settings: {
+                  dots: false,
+                  slidesToShow: 4,
+                  slidesToScroll: 1
+                }
+              }
+            ]}
+          >
+            {categories.map((category, key) => (
+              <div
+                key={key}
+                className={`${categoryItemClass} ${
+                  activeCategory === category
+                    ? 'bg-[#3AC4A0] text-white'
+                    : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                }`}
+                onClick={() => {
+                  updateCategory(category);
+                }}
+              >
+                {category}
+              </div>
+            ))}
+          </Slider>
+        </div>
+        <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
             className={`py-1 rounded-full text-md px-4 ${
               activeCategory === 'All'

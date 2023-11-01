@@ -47,10 +47,10 @@ export default {
         'Temukan berita yang sedang tren dan dapatkan ilmu tentang finansial dan investasi terbaru.'
     },
     section6: {
-      text1: 'Komunitas',
-      text2: 'Kita',
-      text3:
-        'Kami berkomitmen untuk meningkatkan literasi finansial para Gen-Z dan millennials di Asia Tenggara.'
+      text1: 'Investasi, bersama',
+      text2:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text3: 'Unduh App Kami'
     }
   },
   second: 'detik',

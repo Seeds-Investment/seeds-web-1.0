@@ -102,7 +102,7 @@ export default function Section1(): React.ReactElement {
         <div className="w-full cursor-default md:w-1/2">
           <Image
             alt="img"
-            className="xl:block xl:-mt-[100px] -mt-[80px]"
+            className="xl:block xl:-mt-[100px] -mt-[150px]"
             src={section1}
           />
         </div>

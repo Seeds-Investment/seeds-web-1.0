@@ -109,7 +109,7 @@ const Card1: React.FC<props> = ({
               onClick={() => setActiveTab(value)}
               className={`${
                 activeTab === value ? 'text-[#3AC4A0]' : 'text-[#7C7C7C]'
-              } text-base font-semibold`}
+              } text-base z-0 font-semibold`}
             >
               {label}
             </Tab>

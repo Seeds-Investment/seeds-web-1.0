@@ -80,8 +80,7 @@ export default function Section1(): React.ReactElement {
             src={cartoon}
           />
           <Image
-            // className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
-            className="xl:w-[400px] xl:ml-[10vw] ml-[30vw] z-10 h-full"
+            className="xl:w-[400px] md:ml-[2vw] xl:ml-[10vw] ml-[30vw] z-10 h-full"
             alt="img"
             src={phone}
           />

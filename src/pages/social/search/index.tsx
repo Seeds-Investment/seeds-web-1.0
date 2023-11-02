@@ -3,6 +3,7 @@ import CardCircle from '@/components/circle/CardCircle';
 import CardAsset from '@/components/circle/pie/CardAsset';
 import CardHashtag from '@/components/social/CardHashtag';
 import CardPeople from '@/components/social/CardPeople';
+import CardPlay from '@/components/social/CardPlay';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getCircle } from '@/repository/circle.repository';
 import { searchUser } from '@/repository/circleDetail.repository';
@@ -249,6 +250,10 @@ const Search: React.FC = () => {
                           ) : activeTab === 'people' ? (
                             <div key={idx} className="w-full">
                               <CardPeople data={data} />
+                            </div>
+                          ) : activeTab === 'play' ? (
+                            <div key={idx} className="w-full lg:w-1/2">
+                              <CardPlay data={data} />
                             </div>
                           ) : (
                             activeTab

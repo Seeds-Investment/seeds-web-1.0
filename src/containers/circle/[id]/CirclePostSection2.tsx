@@ -65,6 +65,7 @@ const CirclePostSection2: React.FC<props> = ({
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [dataRecommend, setDataRecommend] = useState<any[]>([]);
   const [isIncrease, setIsIncrease] = useState(false);
+  const [golId, setGolId] = useState<number>(1);
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -149,7 +150,7 @@ const CirclePostSection2: React.FC<props> = ({
 
   const fetchCircleMember = async (): Promise<void> => {
     try {
-      setIsLoadingPost(true);
+      setIsLoading(true);
 
       const { data } = await getMemberCircle({ circleId });
 
@@ -157,7 +158,7 @@ const CirclePostSection2: React.FC<props> = ({
     } catch (error: any) {
       console.error('Error fetching Circle Recommend:', error.message);
     } finally {
-      setIsLoadingPost(false);
+      setIsLoading(false);
     }
   };
 
@@ -208,7 +209,7 @@ const CirclePostSection2: React.FC<props> = ({
           .catch(() => {});
       }
     }
-  }, [tabs, filter.page]);
+  }, [tabs, filter.page, golId]);
 
   const renderLoading = (): JSX.Element => (
     <div className="flex justify-center h-10">
@@ -217,7 +218,6 @@ const CirclePostSection2: React.FC<props> = ({
       </div>
     </div>
   );
-  console.log(filter);
 
   const handlePages = (): any => {
     if (tabs === 'post') {
@@ -415,6 +415,7 @@ const CirclePostSection2: React.FC<props> = ({
             ? setDataRecommend
             : undefined
         }
+        setGolId={setGolId}
       />
       <div className="bg-white my-8 rounded-xl">
         <div className="h-fit w-full py-8 px-14 md:ml-0">

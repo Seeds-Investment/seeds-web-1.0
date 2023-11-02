@@ -31,6 +31,7 @@ interface props {
   setIsLoadingPost?: any;
   setFilter?: any;
   setData?: any;
+  setGolId: any;
 }
 
 interface typeOfPost {
@@ -171,7 +172,8 @@ const ModalPost: React.FC<props> = ({
   setIsLoading,
   setIsLoadingPost,
   setFilter,
-  setData
+  setData,
+  setGolId
 }) => {
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
@@ -630,6 +632,7 @@ const ModalPost: React.FC<props> = ({
         pie_amount: 0,
         pie: []
       });
+      setGolId((prevState: number) => prevState + 1);
       setAudio(null);
       setMedia(undefined);
       setDocument(null);

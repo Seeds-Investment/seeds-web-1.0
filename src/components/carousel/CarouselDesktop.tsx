@@ -1,14 +1,30 @@
 'use client';
 import { Carousel, IconButton } from '@material-tailwind/react';
 import Image from 'next/image';
-
+interface Banner {
+  id: string;
+  name: string;
+  external_url: string;
+  image_url: string;
+  type: string;
+  title: string;
+  description: string;
+  tnc: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+}
+interface props {
+  banner: Banner[];
+}
 const number = ['1', '2', '3', '4', '5', '6', '7'];
 const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
 };
 console.log(number);
 
-const CarouselDesktop: React.FC = () => {
+const CarouselDesktop: React.FC<props> = ({ banner }) => {
   return (
     <Carousel
       loop={true}
@@ -79,73 +95,21 @@ const CarouselDesktop: React.FC = () => {
         </IconButton>
       )}
     >
-      <Image
-        src={`/assets/carousel-1.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
-        onClick={(): void => {
-          handleItemClick(
-            'https://play.google.com/store/apps/details?id=com.seeds.investment'
-          );
-        }}
-      />
-      <Image
-        src={`/assets/carousel-2.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
-        onClick={(): void => {
-          handleItemClick('https://gplfantasy.app.link/SeedsGB');
-        }}
-      />
-      <Image
-        src={`/assets/carousel-8.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover cursor-pointer"
-        onClick={(): void => {
-          handleItemClick('https://gplfantasy.app.link/SeedsB');
-        }}
-      />
-      <Image
-        src={`/assets/carousel-3.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover"
-      />
-      <Image
-        src={`/assets/carousel-4.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover"
-      />
-      <Image
-        src={`/assets/carousel-5.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover"
-      />
-      <Image
-        src={`/assets/carousel-6.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover"
-      />
-      <Image
-        src={`/assets/carousel-7.png`}
-        alt="image 1"
-        width={1430}
-        height={900}
-        className="h-[100vh] w-[full] mx-auto object-cover"
-      />
+      {banner?.map((el: Banner, i: number) => {
+        return (
+          <Image
+            src={el.image_url}
+            key={`${el.id}${i}`}
+            alt="image carousel"
+            width={1430}
+            height={900}
+            className="mx-auto object-cover cursor-pointer"
+            onClick={(): void => {
+              handleItemClick(el.external_url);
+            }}
+          />
+        );
+      })}
     </Carousel>
   );
 };

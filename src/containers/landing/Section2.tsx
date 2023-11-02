@@ -8,6 +8,7 @@ import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import CarouselDesktop from '@/components/carousel/CarouselDesktop';
 import CarouselMobile from '@/components/carousel/CarouselMobile';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getBanner } from '@/repository/discover.repository';
 import { getExternalNews } from '@/repository/news.repository';
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
@@ -21,17 +22,57 @@ const fetch = async (
   setNews(data);
 };
 
+const fetchBannerMain = async (
+  setData: Dispatch<SetStateAction<Banner[]>>
+): Promise<void> => {
+  const res = await getBanner({ page: 1, limit: 10, type: 'main' });
+  const data: Banner[] = res?.data;
+  setData(data);
+};
+
+interface Banner {
+  id: string;
+  name: string;
+  external_url: string;
+  image_url: string;
+  type: string;
+  title: string;
+  description: string;
+  tnc: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+}
+
+const initialBanner: Banner = {
+  id: 'edcc3bf1-0d8d-476e-ab93-2852554c25a2',
+  name: 'adalagikah',
+  external_url: 'https://seeds.finance/seedspedia/articles/1539',
+  image_url:
+    'https://dev-assets.seeds.finance/storage/cloud/63199678-7048-44a8-84df-19e190fd6942.jpeg',
+  type: 'main',
+  title: '',
+  description: '',
+  tnc: '',
+  is_active: true,
+  created_at: '2023-10-24T13:39:55.80134Z',
+  updated_at: '2023-11-02T12:57:20.933605Z',
+  deleted_at: '0001-01-01T00:00:00Z'
+};
+
 export default function Section2(): React.ReactElement {
   const { t } = useTranslation();
   const [news, setNews] = useState([]);
+  const [bannerMain, setBannerMain] = useState<Banner[]>([initialBanner]);
   const width = useWindowInnerWidth();
   console.log(news);
 
   useEffect(() => {
     void fetch(setNews);
+    void fetchBannerMain(setBannerMain);
   }, []);
-  const number = ['1', '2', '3', '4', '5', '6', '7'];
-  console.log(number);
+
   return (
     <div className="h-auto min-w-full cursor-default mt-16 lg:mt-10 sm:mt-10">
       <div className="flex flex-col lg:p-5 items-center justify-center">
@@ -120,10 +161,10 @@ export default function Section2(): React.ReactElement {
       />
       <section className="mt-[150px]">
         <section className="xl:hidden block">
-          <CarouselMobile />
+          <CarouselMobile banner={bannerMain} />
         </section>
         <section className="xl:block hidden">
-          <CarouselDesktop />
+          <CarouselDesktop banner={bannerMain} />
         </section>
       </section>
       {/* <Image

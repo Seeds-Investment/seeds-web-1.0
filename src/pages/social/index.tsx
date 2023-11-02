@@ -104,6 +104,7 @@ const Social: React.FC = () => {
   const [trendingProfile, setTrendingProfile] = useState<
     TrendingProfileInterface[]
   >([]);
+  const [golId, setGolId] = useState<number>(1);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState(true);
@@ -320,7 +321,7 @@ const Social: React.FC = () => {
         void fetchPostMySpace();
       }
     }
-  }, [activeTab, filter.page, filter.sort_by]);
+  }, [activeTab, filter.page, filter.sort_by, golId]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -332,6 +333,7 @@ const Social: React.FC = () => {
         setIsLoadingPost={setIsLoadingPost}
         setFilter={setFilter}
         setData={setDataPost}
+        setGolId={setGolId}
       />
       <Card1
         activeTab={activeTab}

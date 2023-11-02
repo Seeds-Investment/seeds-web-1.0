@@ -134,7 +134,8 @@ const CommentSection: React.FC<props> = ({
     if (isParent) {
       void fetchReplyComment();
     }
-  }, []);
+  }, [golId]);
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -146,7 +147,7 @@ const CommentSection: React.FC<props> = ({
     };
 
     void fetchData();
-  }, [golId]);
+  }, []);
 
   if (additionalPostData.length > 0) {
     console.log('succes');

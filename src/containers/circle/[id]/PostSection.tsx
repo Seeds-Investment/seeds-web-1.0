@@ -8,7 +8,6 @@ import {
   ShareBlack,
   TripleDots
 } from '@/constants/assets/icons';
-import { Sprout } from '@/constants/assets/images';
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
@@ -692,13 +691,6 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                     {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />
                     )}
-
-                    <Image
-                      src={Sprout.src}
-                      alt={Sprout.alt}
-                      width={20}
-                      height={20}
-                    />
                   </div>
                   <Image
                     src={TripleDots.src}

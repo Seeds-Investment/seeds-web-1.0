@@ -37,6 +37,13 @@ const dataTab = [
   { label: 'Hashtag', value: 'hashtag' }
 ];
 
+const optionSortBy = [
+  { label: 'All', value: 'all' },
+  { label: 'Rating', value: 'rating' },
+  { label: 'Member', value: 'member' },
+  { label: 'Post', value: 'post' }
+];
+
 const initialFilter = {
   search: '',
   limit: 10,
@@ -227,6 +234,16 @@ const Search: React.FC = () => {
               </Tab>
             ))}
           </TabsHeader>
+          <div className="flex justify-end mt-2">
+            <label htmlFor="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by">
+              {optionSortBy?.map((data, idx) => (
+                <option key={idx} value={data.value}>
+                  {data.label}
+                </option>
+              ))}
+            </select>
+          </div>
           <TabsBody>
             {dataTab.map(({ value }) => (
               <TabPanel key={value} value={value}>

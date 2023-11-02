@@ -324,9 +324,11 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
         .filter(Boolean);
 
       return (
-        <pre key={index} className="flex justify-start max-w-full">
-          {renderedParts}
-        </pre>
+        <div className="flex justify-start flex-col" key={10000}>
+          <p className="flex break-words overflow-hidden flex-wrap">
+            {renderedParts}
+          </p>
+        </div>
       );
     });
 

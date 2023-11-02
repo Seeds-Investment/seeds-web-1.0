@@ -267,9 +267,9 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                   onPressTag(extractedValue);
                 }}
               >
-                <pre className="font-poppins text-seeds-green font-normal">
+                <span className="font-poppins text-seeds-green font-normal">
                   #{extractedValue}
-                </pre>
+                </span>
               </button>
             );
           } else if (
@@ -287,7 +287,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <span className="text-blue-500 font-poppins">{part}</span>
               </button>
             );
           } else {
@@ -302,9 +302,9 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                       onPressTag(cleanedWord);
                     }}
                   >
-                    <pre className="font-poppins text-seeds-green font-normal">
+                    <span className="font-poppins text-seeds-green font-normal">
                       #{cleanedWord}{' '}
-                    </pre>
+                    </span>
                   </button>
                 );
               } else {
@@ -324,9 +324,11 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
         .filter(Boolean);
 
       return (
-        <pre key={index} className="flex justify-start max-w-full">
-          {renderedParts}
-        </pre>
+        <div className="flex justify-start flex-col" key={10000}>
+          <p className="flex break-words overflow-hidden flex-wrap">
+            {renderedParts}
+          </p>
+        </div>
       );
     });
 

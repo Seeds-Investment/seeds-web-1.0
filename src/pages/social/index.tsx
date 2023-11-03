@@ -109,7 +109,6 @@ const Social: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [isOpen, setIsOpen] = useState(false);
-  console.log(dataPost);
 
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
@@ -263,7 +262,6 @@ const Social: React.FC = () => {
     void fetchPostFollowing();
   }, []);
 
-  console.log(filter);
   const renderLoading = (): JSX.Element => (
     <div className="flex justify-center h-10 pt-4">
       <div className="h-72 absolute">

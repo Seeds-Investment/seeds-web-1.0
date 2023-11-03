@@ -56,6 +56,7 @@ const Search: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const handleChangeTab = (value: string): void => {
     setActiveTab(value);
@@ -112,7 +113,11 @@ const Search: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await getPlayAll(filter);
-      setData(response.playList);
+      if (response.playList === null) {
+        setData([]);
+      } else {
+        setData(response.playList);
+      }
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -166,6 +171,16 @@ const Search: React.FC = () => {
   };
 
   useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearch(filter.search);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [filter.search]);
+
+  useEffect(() => {
     if (activeTab === 'people') {
       void fetchDataPeople();
     }
@@ -185,7 +200,7 @@ const Search: React.FC = () => {
     if (activeTab === 'hashtag') {
       void fetchDataHashtag();
     }
-  }, [filter]);
+  }, [debouncedSearch]);
 
   return (
     <PageGradient defaultGradient className="w-full">

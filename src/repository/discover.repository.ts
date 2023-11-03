@@ -9,22 +9,12 @@ const discoverService = baseAxios(
 
 export const getBanner = async (params: any): Promise<any> => {
   try {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
-
     if (isUndefindOrNull(params) || isEmptyString(params)) {
       return await Promise.resolve(null);
     }
 
     return await discoverService.get(`/banner`, {
-      params,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
-      }
+      params
     });
   } catch (error: any) {
     return error.response;

@@ -72,6 +72,11 @@ export const EarnXP: AssetsInterface = {
   alt: 'earn'
 };
 
+export const KopKen: AssetsInterface = {
+  src: '/assets/social/KopKen.svg',
+  alt: 'kopken'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -86,7 +91,8 @@ const Images: Record<string, AssetsInterface> = {
   SilverMedal,
   GoldMedal,
   Logout,
-  EarnXP
+  EarnXP,
+  KopKen
 };
 
 export default Images;

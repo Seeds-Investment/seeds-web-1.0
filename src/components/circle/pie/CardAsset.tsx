@@ -13,8 +13,8 @@ import React from 'react';
 
 interface props {
   data: any;
-  handleSelectedAsset: any;
-  isDefaultChecked: any;
+  handleSelectedAsset?: any;
+  isDefaultChecked?: any;
 }
 
 const CardAsset: React.FC<props> = ({
@@ -57,7 +57,7 @@ const CardAsset: React.FC<props> = ({
 
           <div className="ml-auto flex flex-col gap-0.5">
             <Typography className="font-semibold text-base text-[#262626]">
-              Rp {new Intl.NumberFormat().format(data.priceBar.open)}
+              Rp {new Intl.NumberFormat().format(data.priceBar?.open)}
             </Typography>
             <Typography
               className={`flex font-normal text-sm ${
@@ -78,15 +78,17 @@ const CardAsset: React.FC<props> = ({
               {data.exchangeRate}
             </Typography>
           </div>
-          <div>
-            <Checkbox
-              className="border-[#3AC4A0]"
-              color="green"
-              value={JSON.stringify(data)}
-              onClick={handleSelectedAsset}
-              defaultChecked={isDefaultChecked(data)}
-            />
-          </div>
+          {handleSelectedAsset !== undefined ? (
+            <div>
+              <Checkbox
+                className="border-[#3AC4A0]"
+                color="green"
+                value={JSON.stringify(data)}
+                onClick={handleSelectedAsset}
+                defaultChecked={isDefaultChecked(data)}
+              />
+            </div>
+          ) : null}
         </div>
       </CardBody>
     </Card>

@@ -1,6 +1,10 @@
 import baseAxios from '@/utils/common/axios';
 
-const authService = baseAxios(`https://seeds-dev-gcp.seeds.finance/user/v1`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/user/v1`
+);
 
 export const searchUser = async (): Promise<any> => {
   try {

@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 
-interface CircleInterface {
+export interface CircleInterface {
   id: string;
   name: string;
   avatar: string;

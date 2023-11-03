@@ -4,7 +4,9 @@ import CardAsset from '@/components/circle/pie/CardAsset';
 import CardHashtag from '@/components/social/CardHashtag';
 import CardPeople from '@/components/social/CardPeople';
 import CardPlay from '@/components/social/CardPlay';
+import CardPromo from '@/components/social/CardPromo';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { KopKen } from '@/constants/assets/images';
 import { getCircle } from '@/repository/circle.repository';
 import { searchUser } from '@/repository/circleDetail.repository';
 import { getMarketList } from '@/repository/market.repository';
@@ -51,6 +53,49 @@ const initialFilter = {
   sort_by: ''
 };
 
+const PROMO_DUMMY = [
+  {
+    title: 'Kopi Kenangan',
+    image: KopKen.src,
+    amount: '3 Voucher',
+    voucher: [
+      '25% discount Kopi Kenangan using e-wallet payment...',
+      '25% discount Kopi Kenangan using e-wallet payment...',
+      '25% discount Kopi Kenangan using e-wallet payment...'
+    ]
+  },
+  {
+    title: 'Burger King',
+    image: KopKen.src,
+    amount: '3 Voucher',
+    voucher: [
+      '10% discount Burger King using e-wallet payment...',
+      '10% discount Burger King using e-wallet payment...',
+      '10% discount Burger King using e-wallet payment...'
+    ]
+  },
+  {
+    title: 'Hypermart',
+    image: KopKen.src,
+    amount: '3 Voucher',
+    voucher: [
+      '5% discount Hypermart using e-wallet payment...',
+      '5% discount Hypermart using e-wallet payment...',
+      '5% discount Hypermart using e-wallet payment...'
+    ]
+  },
+  {
+    title: 'Miniso',
+    image: KopKen.src,
+    amount: '3 Voucher',
+    voucher: [
+      '15% discount Miniso using e-wallet payment...',
+      '15% discount Miniso using e-wallet payment...',
+      '15% discount Miniso using e-wallet payment...'
+    ]
+  }
+];
+
 const Search: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -80,6 +125,10 @@ const Search: React.FC = () => {
     if (value === 'hashtag') {
       void fetchDataHashtag();
     }
+
+    if (value === 'promo') {
+      void fetchDataPromo();
+    }
   };
 
   const handleChangeFilter = (event: any): void => {
@@ -91,6 +140,10 @@ const Search: React.FC = () => {
       ...prevState,
       [name]: value
     }));
+  };
+
+  const fetchDataPromo = async (): Promise<void> => {
+    setData(PROMO_DUMMY);
   };
 
   const fetchDataCircle = async (): Promise<void> => {
@@ -288,7 +341,9 @@ const Search: React.FC = () => {
                               <CardPlay data={data} />
                             </div>
                           ) : (
-                            activeTab
+                            <div key={idx} className="w-full">
+                              <CardPromo data={data} />
+                            </div>
                           )}
                         </>
                       ))

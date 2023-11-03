@@ -8,7 +8,6 @@ import {
   ShareBlack,
   TripleDots
 } from '@/constants/assets/icons';
-import { Sprout } from '@/constants/assets/images';
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
@@ -325,9 +324,11 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
         .filter(Boolean);
 
       return (
-        <pre key={index} className="flex justify-start max-w-full">
-          {renderedParts}
-        </pre>
+        <div className="flex justify-start flex-col" key={10000}>
+          <p className="flex break-words overflow-hidden flex-wrap">
+            {renderedParts}
+          </p>
+        </div>
       );
     });
 
@@ -685,20 +686,13 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
 
               <div className="w-full">
                 <div className="flex justify-between">
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-2">
                     <Typography className="font-bold text-black md:text-lg">
-                      @{dataPost.owner.seeds_tag ?? dataPost.owner.user_name}
+                      @{dataPost.owner.seeds_tag ?? dataPost.owner.username}
                     </Typography>
                     {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />
                     )}
-
-                    <Image
-                      src={Sprout.src}
-                      alt={Sprout.alt}
-                      width={20}
-                      height={20}
-                    />
                   </div>
                   <Image
                     src={TripleDots.src}
@@ -1012,7 +1006,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                   />
                 </button>
                 {isShare && (
-                  <div className="w-[420px] absolute bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
+                  <div className="w-[420px] absolute z-50 bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
                     <div className="flex flex-col px-4 py-2">
                       <div className="flex justify-between">
                         <Typography className="font-poppins font-semibold text-xl text-black">

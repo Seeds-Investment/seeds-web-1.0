@@ -4,9 +4,9 @@ import {
   getCircleRecomend,
   getMemberCircle
 } from '@/repository/circleDetail.repository';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { Sprout } from 'public/assets/images';
 import { Search, TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -64,6 +64,8 @@ const CirclePostSection2: React.FC<props> = ({
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [dataRecommend, setDataRecommend] = useState<any[]>([]);
+  const [isIncrease, setIsIncrease] = useState(false);
+  const [golId, setGolId] = useState<number>(1);
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
@@ -94,13 +96,17 @@ const CirclePostSection2: React.FC<props> = ({
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error: any) {
+      setIsIncrease(false);
+      setIsLoadingPost(false);
       console.error('Error fetching Circle Post:', error.message);
     }
   };
@@ -127,13 +133,17 @@ const CirclePostSection2: React.FC<props> = ({
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error: any) {
+      setIsIncrease(false);
+      setIsLoadingPost(false);
       console.error('Error fetching Circle Recommend:', error.message);
     }
   };
@@ -159,18 +169,19 @@ const CirclePostSection2: React.FC<props> = ({
       })
     : [];
 
-  useEffect(() => {
-    void fetchCircleMember();
-  }, []);
-
   const handleScroll = (): void => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingPost) {
-      setFilter(prevState => ({
-        ...prevState,
-        page: prevState.page + 1
-      }));
+      if (!isIncrease) {
+        setIsIncrease(true);
+        setTimeout(() => {
+          setFilter(prevState => ({
+            ...prevState,
+            page: prevState.page + 1
+          }));
+        }, 1000);
+      }
     }
   };
 
@@ -192,9 +203,13 @@ const CirclePostSection2: React.FC<props> = ({
         fetchCircleRecommended()
           .then()
           .catch(() => {});
+      } else if (tabs === 'members') {
+        fetchCircleMember()
+          .then()
+          .catch(() => {});
       }
     }
-  }, [tabs, filter.page]);
+  }, [tabs, filter.page, golId]);
 
   const renderLoading = (): JSX.Element => (
     <div className="flex justify-center h-10">
@@ -251,90 +266,101 @@ const CirclePostSection2: React.FC<props> = ({
     } else if (tabs === 'members') {
       return (
         <div className="flex flex-col">
-          <div className="flex justify-between w-full md:max-w-[340px]">
-            <Typography className="text-black font-semibold font-poppins">
-              Participants
-            </Typography>
-            <Typography className="text-black font-normal font-poppins">
-              {member.length} Participants
-            </Typography>
-          </div>
-          <div className="flex justify-start mt-8 relative right-6">
-            <div className="flex justify-center flex-col relative left-10">
-              <Image
-                alt="Search"
-                src={Search}
-                className="h-6 w-6 object-cover"
-              />
-            </div>
-            <input
-              type="text"
-              value={searchMember}
-              onChange={handleFormChange}
-              className="h-10 pl-12 focus:outline-none focus:outline focus:outline-seeds-green placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
-              placeholder="Search Member"
-            />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 pt-10">
-            {newData.map((el: any) => {
-              return (
-                <div className="flex gap-5" key={el.id}>
-                  <div className="hidden md:flex">
-                    <div>
-                      <Image
-                        src={el.avatar}
-                        alt="AVATAR"
-                        width={48}
-                        height={48}
-                        className=" w-15 h-15 aspect-square rounded-full outline outline-black"
-                      />
-                    </div>
-                  </div>
-                  <div className="md:hidden flex">
-                    <div>
-                      <Image
-                        src={el?.avatar}
-                        alt="AVATAR"
-                        width={48}
-                        height={48}
-                        className=" w-11 h-11  rounded-full outline outline-black"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="w-full">
-                    <div className="flex justify-between">
-                      <div className="flex gap-2">
-                        <Typography className="font-bold md:text-lg">
-                          {el?.name}
-                        </Typography>
-                        <Image
-                          src={Sprout.src}
-                          alt={Sprout.alt}
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                      <div className="flex p-2 rounded-full px-4 hover:bg-seeds-green/75 bg-seeds-green/20 cursor-pointer">
-                        <Image
-                          src={TripleDots.src}
-                          alt={TripleDots.alt}
-                          height={8}
-                          width={8}
-                          className="w-auto h-auto relative"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex gap-1 items-center text-neutral-soft">
-                      <Typography className="text-xs md:text-sm">
-                        @{el?.username}
-                      </Typography>
-                    </div>
-                  </div>
+          {isLoadingPost ? (
+            renderLoading()
+          ) : (
+            <div className="flex flex-col">
+              <div className="flex justify-between w-full md:max-w-[340px]">
+                <Typography className="text-black font-semibold font-poppins">
+                  Participants
+                </Typography>
+                <Typography className="text-black font-normal font-poppins">
+                  {member.length} Participants
+                </Typography>
+              </div>
+              <div className="flex justify-start mt-8 relative right-6">
+                <div className="flex justify-center flex-col relative left-10">
+                  <Image
+                    alt="Search"
+                    src={Search}
+                    className="h-6 w-6 object-cover"
+                  />
                 </div>
-              );
-            })}
-          </div>
+                <input
+                  type="text"
+                  value={searchMember}
+                  onChange={handleFormChange}
+                  className="h-10 pl-12 focus:outline-none focus:outline focus:outline-seeds-green placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
+                  placeholder="Search Member"
+                />
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 pt-10">
+                {newData.map((el: any) => {
+                  return (
+                    <div className="flex gap-5" key={el.id}>
+                      <div className="hidden md:flex">
+                        <div>
+                          <Image
+                            src={el.avatar}
+                            alt="AVATAR"
+                            width={48}
+                            height={48}
+                            className=" w-15 h-15 aspect-square rounded-full outline outline-black"
+                          />
+                        </div>
+                      </div>
+                      <div className="md:hidden flex">
+                        <div>
+                          <Image
+                            src={el?.avatar}
+                            alt="AVATAR"
+                            width={48}
+                            height={48}
+                            className=" w-11 h-11  rounded-full outline outline-black"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="w-full">
+                        <div className="flex justify-between">
+                          <div className="flex items-start">
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-2">
+                                <Typography className="font-bold md:text-lg font-poppins">
+                                  {el?.name}
+                                </Typography>
+                                {el.verified === true && (
+                                  <CheckCircleIcon
+                                    width={20}
+                                    height={20}
+                                    color="#5E44FF"
+                                  />
+                                )}
+                              </div>
+                              <div className="flex gap-1 items-center">
+                                <Typography className="text-xs md:text-sm font-poppins text-neutral-soft">
+                                  @{el?.username}
+                                </Typography>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex p-2 rounded-full px-4 max-h-10 hover:bg-seeds-green/75 bg-seeds-green/20 cursor-pointer">
+                            <Image
+                              src={TripleDots.src}
+                              alt={TripleDots.alt}
+                              height={8}
+                              width={8}
+                              className="w-auto h-auto relative"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       );
     } else if (tabs === 'about') {
@@ -390,12 +416,17 @@ const CirclePostSection2: React.FC<props> = ({
       <ModalPost
         open={open}
         handleOpen={handleOpen}
-        fetchData1={fetchCirclePost}
-        fetchData2={fetchCircleRecommended}
         setIsLoading={setIsLoading}
         setIsLoadingPost={setIsLoadingPost}
         setFilter={setFilter}
-        setData={tabs === 'post' ? setDataPost : setDataRecommend}
+        setData={
+          tabs === 'post'
+            ? setDataPost
+            : tabs === 'recommended'
+            ? setDataRecommend
+            : undefined
+        }
+        setGolId={setGolId}
       />
       <div className="bg-white my-8 rounded-xl">
         <div className="h-fit w-full py-8 px-14 md:ml-0">

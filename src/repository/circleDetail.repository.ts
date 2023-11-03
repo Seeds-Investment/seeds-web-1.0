@@ -26,6 +26,11 @@ interface typeOfComment {
 interface getDataPostCircleType {
   postId: string;
 }
+
+interface getDataCommentType {
+  postId: string;
+  parentId: string;
+}
 export const getDetailCircle = async ({
   circleId
 }: getDataCircleType): Promise<any> => {
@@ -88,6 +93,30 @@ export const getDetailCirclePost = async ({
       }
     });
     return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getAllReplyComment = async ({
+  postId,
+  parentId
+}: getDataCommentType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(postId)) {
+      return await Promise.resolve(null);
+    }
+
+    return await baseUrl.get(
+      `/post/comment/v2/list?post_id=${postId}&parent_id=${parentId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
   } catch (error: any) {
     return error.response;
   }
@@ -302,7 +331,7 @@ export const createPostCircleDetail = async (formData: {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    return response;
+    return { ...response, status: 200 };
   } catch (error) {
     return error;
   }

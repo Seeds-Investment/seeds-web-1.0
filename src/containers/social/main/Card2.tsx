@@ -24,8 +24,6 @@ interface props {
 }
 
 const Card2: React.FC<props> = ({ userData, handleOpen }) => {
-  console.log(userData);
-
   return (
     <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row">

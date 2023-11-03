@@ -36,7 +36,8 @@ export default {
     },
     section4: {
       text1: 'Over 1000+ people trust us',
-      text2: 'Professionals, universities, many more do!',
+      text2:
+        'Professionw-1/2 text-white tracking-widestals, universities, many more do!',
       text3: 'Chat',
       text4: 'with like-minded people',
       text5: 'Our Recommendation Circle',
@@ -48,10 +49,10 @@ export default {
         'Explore trending news and gain insights about Finance and Investing.'
     },
     section6: {
-      text1: 'Our',
-      text2: 'Communities',
-      text3:
-        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia."
+      text1:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text2: 'Investing, together',
+      text3: 'Download Our App'
     },
     section7: {
       text1: 'Frequently Asked Questions',

@@ -104,11 +104,13 @@ const Social: React.FC = () => {
   const [trendingProfile, setTrendingProfile] = useState<
     TrendingProfileInterface[]
   >([]);
+  const [golId, setGolId] = useState<number>(1);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [isOpen, setIsOpen] = useState(false);
+  const [isIncrease, setIsIncrease] = useState(false);
 
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
@@ -173,13 +175,16 @@ const Social: React.FC = () => {
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error) {
+      setIsIncrease(false);
       setIsLoadingPost(false);
       console.log(error);
     }
@@ -203,14 +208,17 @@ const Social: React.FC = () => {
           } else {
             setHasMore(false);
           }
+          setIsIncrease(false);
           setIsLoadingPost(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error) {
-      setIsLoadingPost(true);
+      setIsIncrease(false);
+      setIsLoadingPost(false);
       console.log(error);
     }
   };
@@ -234,12 +242,15 @@ const Social: React.FC = () => {
             setHasMore(false);
           }
           setIsLoadingPost(false);
+          setIsIncrease(false);
         })
         .catch(err => {
           console.log(err);
+          setIsIncrease(false);
           setIsLoadingPost(false);
         });
     } catch (error) {
+      setIsIncrease(false);
       setIsLoadingPost(false);
       console.log(error);
     }
@@ -259,7 +270,6 @@ const Social: React.FC = () => {
 
   useEffect(() => {
     void fetchUserInfo();
-    void fetchPostFollowing();
   }, []);
 
   const renderLoading = (): JSX.Element => (
@@ -274,10 +284,15 @@ const Social: React.FC = () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingPost) {
-      setFilter(prevState => ({
-        ...prevState,
-        page: prevState.page + 1
-      }));
+      if (!isIncrease) {
+        setIsIncrease(true);
+        setTimeout(() => {
+          setFilter(prevState => ({
+            ...prevState,
+            page: prevState.page + 1
+          }));
+        }, 1000);
+      }
     }
   };
 
@@ -304,7 +319,7 @@ const Social: React.FC = () => {
         void fetchPostMySpace();
       }
     }
-  }, [activeTab, filter.page, filter.sort_by]);
+  }, [activeTab, filter.page, filter.sort_by, golId]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -313,12 +328,10 @@ const Social: React.FC = () => {
         open={isOpen}
         handleOpen={handleOpen}
         setIsLoading={setIsLoading}
-        fetchData1={
-          activeTab === 'following' ? fetchPostFollowing : fetchPostForYou
-        }
         setIsLoadingPost={setIsLoadingPost}
         setFilter={setFilter}
         setData={setDataPost}
+        setGolId={setGolId}
       />
       <Card1
         activeTab={activeTab}

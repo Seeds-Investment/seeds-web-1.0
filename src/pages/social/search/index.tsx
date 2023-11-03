@@ -7,6 +7,7 @@ import CardPlay from '@/components/social/CardPlay';
 import CardPromo from '@/components/social/CardPromo';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { KopKen } from '@/constants/assets/images';
+import withAuth from '@/helpers/withAuth';
 import { getCircle } from '@/repository/circle.repository';
 import { searchUser } from '@/repository/circleDetail.repository';
 import { getMarketList } from '@/repository/market.repository';
@@ -367,4 +368,4 @@ const Search: React.FC = () => {
   );
 };
 
-export default Search;
+export default withAuth(Search);

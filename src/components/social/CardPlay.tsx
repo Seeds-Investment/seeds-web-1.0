@@ -2,8 +2,8 @@ import { generateFormattedDate } from '@/helpers/dateFormat';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   ClockIcon,
-  CurrencyDollarIcon,
   ShareIcon,
+  TagIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
 import { Button, Card, Typography } from '@material-tailwind/react';
@@ -146,11 +146,7 @@ const CardPlay: React.FC<props> = ({ data }) => {
                 borderLeftWidth: 1
               }}
             >
-              <CurrencyDollarIcon
-                width={20}
-                height={20}
-                className="mr-2 text-[#3AC4A0]"
-              />
+              <TagIcon width={20} height={20} className="mr-2 text-[#3AC4A0]" />
               <div className="flex-col">
                 <Typography className="text-xs font-normal">Fee</Typography>
                 <Typography className="text-xs text-black font-semibold">

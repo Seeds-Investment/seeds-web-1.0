@@ -47,7 +47,7 @@ const PiePreviewPost: React.FC<props> = ({
             ))}
           </div>
           <Typography variant="paragraph" className="font-bold">
-            Rp.{new Intl.NumberFormat().format(form.pie_amount)}
+            Rp.{form.pie_amount}
           </Typography>
         </div>
         <div className="flex flex-col gap-1">

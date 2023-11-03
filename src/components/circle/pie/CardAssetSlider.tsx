@@ -13,13 +13,15 @@ interface props {
   changeSlider: any;
   index: number;
   changeIsLock: any;
+  sumAsset: number;
 }
 
 const CardAssetSlider: React.FC<props> = ({
   data,
   changeSlider,
   index,
-  changeIsLock
+  changeIsLock,
+  sumAsset
 }) => {
   return (
     <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
@@ -58,7 +60,7 @@ const CardAssetSlider: React.FC<props> = ({
                     width={20}
                     className="mr-2"
                   />
-                  {data.regularPercentage.toString().substring(0, 4)}
+                  {data.exchangeRate.toString().substring(0, 4)}
                 </Typography>
               </>
             ) : (

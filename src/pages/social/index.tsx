@@ -319,7 +319,7 @@ const Social: React.FC = () => {
         void fetchPostMySpace();
       }
     }
-  }, [activeTab, filter.page, filter.sort_by, golId]);
+  }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);
 
   return (
     <PageGradient defaultGradient className="w-full">

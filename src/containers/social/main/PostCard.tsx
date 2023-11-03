@@ -665,7 +665,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
         <div className="hidden md:flex">
           <div>
             <img
-              src={dataPost.owner.avatar}
+              src={dataPost.owner !== undefined ? dataPost.owner.avatar : null}
               alt="AVATAR"
               className="rounded-full w-12 h-12"
             />
@@ -677,7 +677,11 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
               <div className="md:hidden flex">
                 <div>
                   <img
-                    src={dataPost.owner.avatar}
+                    src={
+                      dataPost.owner !== undefined
+                        ? dataPost.owner.avatar
+                        : null
+                    }
                     alt="AVATAR"
                     className="rounded-full w-12 h-12"
                   />
@@ -688,11 +692,20 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
                     <Typography className="font-bold text-black md:text-lg">
-                      @{dataPost.owner.seeds_tag}
+                      @
+                      {dataPost.owner !== undefined
+                        ? dataPost.owner.seeds_tag
+                        : null}
                     </Typography>
-                    {dataPost.owner.verified === true && (
-                      <CheckCircleIcon width={20} height={20} color="#5E44FF" />
-                    )}
+                    {dataPost.owner !== undefined ? (
+                      dataPost.owner.verified === true ? (
+                        <CheckCircleIcon
+                          width={20}
+                          height={20}
+                          color="#5E44FF"
+                        />
+                      ) : null
+                    ) : null}
                   </div>
                   <Image
                     src={TripleDots.src}

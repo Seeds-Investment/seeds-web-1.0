@@ -9,8 +9,8 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { KopKen } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
 import { getCircle } from '@/repository/circle.repository';
-import { searchUser } from '@/repository/circleDetail.repository';
 import { getMarketList } from '@/repository/market.repository';
+import { searchUser, trendingUser } from '@/repository/people.repository';
 import { getPlayAll } from '@/repository/play.repository';
 import { getHashtagSocial } from '@/repository/social.respository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -108,7 +108,11 @@ const Search: React.FC = () => {
     setActiveTab(value);
 
     if (value === 'people') {
-      void fetchDataPeople();
+      if (filter.search !== '') {
+        void fetchDataSearchPeople();
+      } else {
+        void fetchDataPeople();
+      }
     }
 
     if (value === 'play') {
@@ -215,8 +219,20 @@ const Search: React.FC = () => {
   const fetchDataPeople = async (): Promise<void> => {
     try {
       setIsLoading(true);
+      const response = await trendingUser();
+      setData(response.result);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDataSearchPeople = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
       const response = await searchUser(filter);
-      setData(response.data);
+      setData(response.result);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -236,7 +252,11 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     if (activeTab === 'people') {
-      void fetchDataPeople();
+      if (filter.search !== '') {
+        void fetchDataSearchPeople();
+      } else {
+        void fetchDataPeople();
+      }
     }
 
     if (activeTab === 'play') {

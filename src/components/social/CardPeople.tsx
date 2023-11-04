@@ -29,11 +29,10 @@ const CardPeople: React.FC<props> = ({ data }) => {
             <CheckBadgeIcon width={20} height={20} color="#5E44FF" />
           </div>
           <Typography className="font-normal text-sm text-[#7C7C7C]">
-            @{data.username}
+            @{data.seedsTag}
           </Typography>
           <Typography className="font-normal text-sm text-[#262626]">
-            {/* {data.followers} Followers */}
-            10 Followers
+            {data.followers} Followers
           </Typography>
         </div>
         <div className="ml-auto flex flex-col gap-0.5">

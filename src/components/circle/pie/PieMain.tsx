@@ -32,7 +32,6 @@ const PieMain: React.FC<props> = ({
   isEdit = false,
   submitEditPie
 }) => {
-  console.log('selexted asset', selectedAsset);
   return (
     <div>
       <div>

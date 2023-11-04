@@ -1,5 +1,6 @@
 import PieAssets from '@/components/circle/pie/PieAssets';
 import PieMain from '@/components/circle/pie/PieMain';
+import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
 import { updatePost } from '@/repository/circleDetail.repository';
 import { Dialog } from '@material-tailwind/react';
@@ -74,7 +75,11 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
   const handleChangeFormPie = (e: any): void => {
     const target = e.target;
     const name = target.name;
-    const value = target.value;
+    let value = target.value;
+
+    if (name === 'pie_amount') {
+      value = formatCurrency(value);
+    }
 
     setFormPie((prevState: any) => ({
       ...prevState,
@@ -216,7 +221,7 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
 
     payload.pie = newDataPie;
     payload.pie_title = formPie?.pie_title;
-    payload.pie_amount = parseInt(formPie?.pie_amount);
+    payload.pie_amount = stringToNumberCurrency(formPie?.pie_amount);
 
     updatePost(payload, form.id)
       .then(resData => {
@@ -234,7 +239,7 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
   useEffect(() => {
     setFormPie({
       pie_title: form.pie_title,
-      pie_amount: form.pie_amount,
+      pie_amount: formatCurrency(form.pie_amount.toString()),
       pie: form.pie
     });
 
@@ -245,7 +250,7 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
       logo: item.logo,
       name: item.name,
       price: item.price_bar.open,
-      regularPercentage: item.exchange_rate,
+      exchangeRate: item.exchange_rate,
       value: item.allocation,
       isLock: false
     }));

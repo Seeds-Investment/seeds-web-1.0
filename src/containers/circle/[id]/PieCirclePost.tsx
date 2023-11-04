@@ -22,6 +22,15 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
     return `${day}/${month}/${year}`;
   }
 
+  const sumValueAsset = (assets: any[]): string => {
+    const sumAsset = assets.reduce(
+      (acc: number, current: any) => acc + parseInt(current.allocation),
+      0
+    );
+
+    return sumAsset.toString();
+  };
+
   return (
     <CCard className="w-full md:w-2/3 lg:w-1/2 p-5 bg-[#F7FBFA]">
       <CopyPie
@@ -73,7 +82,10 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-[100px] lg:w-[130px] aspect-auto">
-            <DoughnutChart data={chartData} centerText="+43%" />
+            <DoughnutChart
+              data={chartData}
+              centerText={'+' + sumValueAsset(data.pie) + '%'}
+            />
           </div>
           <div className="flex justify-end">
             <div

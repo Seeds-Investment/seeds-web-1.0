@@ -189,6 +189,7 @@ code {
   overflow: hidden;
   float: left;
 }
+
 .spotlight:after {
   content: ' ';
   position: absolute;
@@ -218,4 +219,41 @@ code {
 
 .widthPDF {
   width: calc(100vw - 200px);
+}
+
+.MentionInputTextArea textarea {
+  outline: none;
+}
+
+.MentionInputTextArea {
+  position: relative;
+}
+
+.MentionInputTextArea > div {
+  position: absolute;
+  left: 0;
+  margin-top: 20px !important;
+  width: 100%;
+  min-width: 300px;
+  background-color: white;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.custom-div-style {
+  display: block !important;
+  width: 100% !important;
+  position: relative !important;
+  margin: 0px !important;
+  bottom: 32px !important;
+  box-sizing: border-box !important;
+  background-color: transparent !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  letter-spacing: inherit !important;
+  bottom: 0px !important;
+  overflow: hidden !important;
+  resize: none !important;
+  height: fit-content !important;
+  min-height: 100px !important;
 }

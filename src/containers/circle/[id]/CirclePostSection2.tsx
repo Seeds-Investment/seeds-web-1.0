@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Search, TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ModalPost from './ModalPost';
+import ModalMention from './ModalMention';
 import PostSection from './PostSection';
 interface props {
   open: boolean;
@@ -413,7 +413,7 @@ const CirclePostSection2: React.FC<props> = ({
 
   return (
     <>
-      <ModalPost
+      <ModalMention
         open={open}
         handleOpen={handleOpen}
         setIsLoading={setIsLoading}

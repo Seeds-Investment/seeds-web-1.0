@@ -1,7 +1,7 @@
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import ModalPost from '@/containers/circle/[id]/ModalPost';
+import ModalMention from '@/containers/circle/[id]/ModalMention';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
 import PostCard from '@/containers/social/main/PostCard';
@@ -206,7 +206,11 @@ const Social: React.FC = () => {
               setHasMore(false);
             }
           } else {
-            setHasMore(false);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
           }
           setIsIncrease(false);
           setIsLoadingPost(false);
@@ -239,7 +243,11 @@ const Social: React.FC = () => {
               setHasMore(false);
             }
           } else {
-            setHasMore(false);
+            if (dataPost.length + data.length < total) {
+              setHasMore(true);
+            } else {
+              setHasMore(false);
+            }
           }
           setIsLoadingPost(false);
           setIsIncrease(false);
@@ -324,7 +332,7 @@ const Social: React.FC = () => {
   return (
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
-      <ModalPost
+      <ModalMention
         open={isOpen}
         handleOpen={handleOpen}
         setIsLoading={setIsLoading}

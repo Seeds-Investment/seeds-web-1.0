@@ -221,14 +221,9 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
       );
       const renderedParts = parts
         .map((part, partIndex) => {
-          if (
-            part.startsWith('@[') ||
-            part.startsWith('#[') ||
-            part.startsWith('$[')
-          ) {
+          if (part.startsWith('@[') || part.startsWith('$[')) {
             const contentMatch = part.match(/\[([^\]]+)\]/);
             const linkMatch = part.match(/\(([^)]+)\)/);
-
             if (contentMatch !== null && linkMatch !== null) {
               const content = contentMatch[1];
               const link = linkMatch[1];
@@ -294,7 +289,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
             const words = part.split(' ');
             return words.map((word: string, index: number) => {
               if (word.startsWith('#')) {
-                const cleanedWord = word.replace(/#(\w+)/, '$1');
+                const cleanedWord = word.replace(/#\[(.*?)\]\(\)/g, '$1');
                 return (
                   <button
                     key={index}
@@ -302,9 +297,9 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                       onPressTag(cleanedWord);
                     }}
                   >
-                    <span className="font-poppins text-seeds-green font-normal">
+                    <pre className="font-poppins text-seeds-green font-normal">
                       #{cleanedWord}{' '}
-                    </span>
+                    </pre>
                   </button>
                 );
               } else {
@@ -555,8 +550,6 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
   };
 
   const pinPost = async (type: string): Promise<void> => {
-    console.log(dataPost);
-
     try {
       const response = await postPinCirclePost(type, dataPost.id);
       if (response.status === 200) {

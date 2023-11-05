@@ -72,7 +72,7 @@ const PieMain: React.FC<props> = ({
       <div className="flex items-center border-b border-gray-400 py-2">
         <h1 className="font-bold text-sm items-start text-black">IDR</h1>
         <input
-          type="number"
+          type="text"
           className="ml-2 border-none outline-none text-xl font-bold"
           name="pie_amount"
           value={form.pie_amount}
@@ -110,6 +110,7 @@ const PieMain: React.FC<props> = ({
                 changeSlider={changeSlider}
                 index={idx}
                 changeIsLock={changeIsLock}
+                sumAsset={sumAsset}
               />
             ))
           : null}

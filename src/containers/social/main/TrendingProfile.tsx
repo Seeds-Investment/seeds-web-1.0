@@ -1,6 +1,5 @@
 import CCard from '@/components/CCard';
-import { Button } from '@material-tailwind/react';
-import Image from 'next/image';
+import { Avatar, Button } from '@material-tailwind/react';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 
@@ -58,8 +57,8 @@ const TrendingProfile: React.FC<props> = ({ isLoading, trendingProfile }) => {
                 <div className="p-2">
                   <div className="bg-[#F9F9F9] border border-[#E9E9E9] rounded-xl">
                     <section className="flex flex-col items-center justify-center p-4 gap-2">
-                      <Image
-                        src={data?.avatar}
+                      <Avatar
+                        src={data.avatar}
                         alt="people"
                         width={40}
                         height={40}
@@ -67,13 +66,13 @@ const TrendingProfile: React.FC<props> = ({ isLoading, trendingProfile }) => {
                       />
 
                       <h1 className="text-[#262626] text-sm text-center font-semibold">
-                        {data?.name}
+                        {data.name}
                       </h1>
                       <p className="text-[#7C7C7C] text-sm font-light">
-                        @{data?.seeds_tag}
+                        @{data.seedsTag}
                       </p>
                       <p className="text-[#262626] text-xs font-normal">
-                        {data?.followers} Followers
+                        {data.followers} Followers
                       </p>
                       <Button className="bg-[#3AC4A0] rounded-full">
                         Follow

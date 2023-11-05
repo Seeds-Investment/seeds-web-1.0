@@ -2,6 +2,7 @@ import CCard from '@/components/CCard';
 import DoughnutChart from '@/components/DoughnutChart';
 import { Copy, EyePurple } from '@/constants/assets/icons';
 import { Sprout } from '@/constants/assets/images';
+import { generateFullDatetime } from '@/helpers/dateFormat';
 import { Avatar, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -13,14 +14,14 @@ interface props {
 const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
   const [modalCopyPie, setModalCopyPie] = useState<boolean>(false);
 
-  function formatDate(inputDateString: any): string {
-    const date = new Date(inputDateString);
-    const day = date.getUTCDate().toString().padStart(2, '0');
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const year = date.getUTCFullYear().toString();
+  const sumValueAsset = (assets: any[]): string => {
+    const sumAsset = assets.reduce(
+      (acc: number, current: any) => acc + parseInt(current.allocation),
+      0
+    );
 
-    return `${day}/${month}/${year}`;
-  }
+    return sumAsset.toString();
+  };
 
   return (
     <CCard className="w-full md:w-2/3 lg:w-1/2 p-5 bg-[#F7FBFA]">
@@ -73,7 +74,10 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-[100px] lg:w-[130px] aspect-auto">
-            <DoughnutChart data={chartData} centerText="+43%" />
+            <DoughnutChart
+              data={chartData}
+              centerText={'+' + sumValueAsset(data.pie) + '%'}
+            />
           </div>
           <div className="flex justify-end">
             <div
@@ -103,7 +107,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
         </div>
         <div>
           <Typography className="font-light text-sm text-gray-400">
-            {formatDate(data.created_at)},19.05.50 WIB
+            {generateFullDatetime(data.created_at)}
           </Typography>
         </div>
       </div>

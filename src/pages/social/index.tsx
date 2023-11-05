@@ -7,7 +7,7 @@ import Card2 from '@/containers/social/main/Card2';
 import PostCard from '@/containers/social/main/PostCard';
 import TrendingProfile from '@/containers/social/main/TrendingProfile';
 import withAuth from '@/helpers/withAuth';
-import { verifiedUser } from '@/repository/people.repository';
+import { trendingUser } from '@/repository/people.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getSocialPostFollowing,
@@ -267,8 +267,8 @@ const Social: React.FC = () => {
   const fetchTrendingProfile = async (): Promise<void> => {
     try {
       setIsLoadingTrending(true);
-      const response = await verifiedUser();
-      setTrendingProfile(response.data);
+      const response = await trendingUser();
+      setTrendingProfile(response.result);
       setIsLoadingTrending(false);
     } catch (error) {
       console.log(error);
@@ -327,7 +327,7 @@ const Social: React.FC = () => {
         void fetchPostMySpace();
       }
     }
-  }, [activeTab, filter.page, filter.sort_by, golId]);
+  }, [activeTab, filter.page, filter.sort_by, golId, filter.type]);
 
   return (
     <PageGradient defaultGradient className="w-full">

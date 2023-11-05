@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
 const playService = baseAxios(
   `${
@@ -37,4 +38,24 @@ export const getPlayById = async (id: string): Promise<any> => {
   } catch (error) {
     await Promise.resolve();
   }
+};
+
+export const getPlayAll = async (params: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await playService.get(`/list`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

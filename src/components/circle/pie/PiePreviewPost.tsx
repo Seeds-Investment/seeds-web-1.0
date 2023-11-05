@@ -17,6 +17,15 @@ const PiePreviewPost: React.FC<props> = ({
   data,
   chartData
 }) => {
+  const sumValueAsset = (assets: any[]): string => {
+    const sumAsset = assets.reduce(
+      (acc: number, current: any) => acc + parseInt(current.value),
+      0
+    );
+
+    return sumAsset.toString();
+  };
+
   return (
     <CCard className="w-2/3 p-5 bg-[#F7FBFA]">
       <div className="flex gap-5 items-center">
@@ -47,12 +56,15 @@ const PiePreviewPost: React.FC<props> = ({
             ))}
           </div>
           <Typography variant="paragraph" className="font-bold">
-            Rp.{new Intl.NumberFormat().format(form.pie_amount)}
+            Rp.{form.pie_amount}
           </Typography>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-[100px] lg:w-[130px] aspect-auto">
-            <DoughnutChart data={chartData} centerText="+43%" />
+            <DoughnutChart
+              data={chartData}
+              centerText={'+' + sumValueAsset(data) + '%'}
+            />
           </div>
         </div>
       </div>

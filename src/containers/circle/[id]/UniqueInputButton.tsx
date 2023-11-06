@@ -230,7 +230,7 @@ const UniqueInputButton: React.FC<props> = ({
           type="submit"
           disabled={isEmpty}
           className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
-            isEmpty || isError
+            isEmpty
               ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
               : 'bg-seeds-button-green text-white'
           }`}

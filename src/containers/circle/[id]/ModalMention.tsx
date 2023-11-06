@@ -177,7 +177,7 @@ const ModalMention: React.FC<props> = ({
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
   const [isError, setIsError] = useState<boolean>(false);
-  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+  const [isDisable, setIsDisable] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
@@ -249,9 +249,9 @@ const ModalMention: React.FC<props> = ({
       media === undefined &&
       document === null
     ) {
-      setIsEmpty(true);
+      setIsDisable(true);
     } else {
-      setIsEmpty(false);
+      setIsDisable(false);
     }
   }, [form, audio, media, document]);
 
@@ -274,7 +274,10 @@ const ModalMention: React.FC<props> = ({
       setErrorMessage('Text exceed 500 varchar');
     } else if (form.content_text.length > 250) {
       setIsError(true);
+      setIsDisable(true);
       setErrorMessage('Your thread is exceeding the maximum character limit');
+    } else {
+      setIsDisable(false);
     }
   }, [form.content_text]);
 
@@ -1096,7 +1099,7 @@ const ModalMention: React.FC<props> = ({
                   setMedia={setMedia}
                   openPieModal={openPieModal}
                   setDocument={setDocument}
-                  isEmpty={isEmpty}
+                  isEmpty={isDisable}
                   isError={isError}
                 />
               ) : (

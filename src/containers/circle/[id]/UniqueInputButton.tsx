@@ -13,6 +13,7 @@ interface props {
   setDocument: any;
   setErrorMessage: any;
   setIsError: any;
+  isError: boolean;
   isEmpty: boolean;
 }
 const UniqueInputButton: React.FC<props> = ({
@@ -22,7 +23,8 @@ const UniqueInputButton: React.FC<props> = ({
   setDocument,
   setErrorMessage,
   setIsError,
-  isEmpty
+  isEmpty,
+  isError
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
@@ -59,8 +61,8 @@ const UniqueInputButton: React.FC<props> = ({
       if (sizeFileOnMB > maxFileMediaSize) {
         fileMediaEle.value = null;
         setIsError(true);
-        setErrorMessage('Your image is exceeding the 5MB size limit');
-        return new Error('Your image is exceeding the 5MB size limit');
+        setErrorMessage('Your image is exceeding the 20MB size limit');
+        return new Error('Your image is exceeding the 20MB size limit');
       } else {
         return setMedia(fileMedia);
       }
@@ -228,7 +230,7 @@ const UniqueInputButton: React.FC<props> = ({
           type="submit"
           disabled={isEmpty}
           className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
-            isEmpty
+            isEmpty || isError
               ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
               : 'bg-seeds-button-green text-white'
           }`}

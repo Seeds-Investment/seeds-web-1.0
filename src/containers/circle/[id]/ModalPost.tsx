@@ -1166,6 +1166,7 @@ const ModalPost: React.FC<props> = ({
                   openPieModal={openPieModal}
                   isEmpty={isEmpty}
                   setDocument={setDocument}
+                  isError={isError}
                 />
               ) : (
                 <></>

@@ -179,6 +179,7 @@ const ModalPost: React.FC<props> = ({
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
   const [isError, setIsError] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
@@ -244,6 +245,24 @@ const ModalPost: React.FC<props> = ({
 
     void fetchData();
   }, []);
+
+  useEffect(() => {
+    if (
+      form.content_text.length === 0 &&
+      form.media_urls.length === 0 &&
+      form.polling.options.length === 0 &&
+      form.pie_title.length === 0 &&
+      form.pie.length === 0 &&
+      form.pie_amount === 0 &&
+      audio === null &&
+      media === undefined &&
+      document === null
+    ) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  }, [form, audio, media, document]);
 
   useEffect(() => {
     if (selectedValue.tag.length > 0) {
@@ -1145,6 +1164,7 @@ const ModalPost: React.FC<props> = ({
                   setPages={setPages}
                   setMedia={setMedia}
                   openPieModal={openPieModal}
+                  isEmpty={isEmpty}
                   setDocument={setDocument}
                 />
               ) : (

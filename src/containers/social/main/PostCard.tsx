@@ -882,9 +882,7 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                               : item?.avatar
                           }
                           alt="image"
-                          className="rounded-full object-cover"
-                          width={60}
-                          height={60}
+                          className="rounded-full object-cover w-14 h-14"
                         />
                       </div>
                     )}

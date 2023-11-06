@@ -6,7 +6,7 @@ index c2aaa54..98c4652 100644
  import * as React from "react";
  
 -export {};
-+export { };
++export {};
  
  /**
   * MentionsInput is the main component rendering the textarea control. It takes one or multiple Mention components as its children.

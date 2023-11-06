@@ -13,6 +13,7 @@ interface props {
   setDocument: any;
   setErrorMessage: any;
   setIsError: any;
+  isEmpty: boolean;
 }
 const UniqueInputButton: React.FC<props> = ({
   setPages,
@@ -20,7 +21,8 @@ const UniqueInputButton: React.FC<props> = ({
   openPieModal,
   setDocument,
   setErrorMessage,
-  setIsError
+  setIsError,
+  isEmpty
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
@@ -224,7 +226,12 @@ const UniqueInputButton: React.FC<props> = ({
       <div className="flex items-center">
         <button
           type="submit"
-          className="flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit bg-seeds-button-green"
+          disabled={isEmpty}
+          className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
+            isEmpty
+              ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
+              : 'bg-seeds-button-green text-white'
+          }`}
         >
           Post
         </button>

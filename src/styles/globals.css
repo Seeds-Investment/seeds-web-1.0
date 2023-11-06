@@ -233,16 +233,29 @@ code {
   position: absolute;
   left: 0;
   margin-top: 20px !important;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
   width: 100%;
   min-width: 300px;
   background-color: white;
   max-height: 300px;
   overflow: auto;
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color),
+    0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .custom-div-style {
   display: block !important;
+  padding: 0px !important;
   width: 100% !important;
+  box-shadow: none !important;
+  border-radius: 0px !important;
   position: relative !important;
   margin: 0px !important;
   bottom: 32px !important;

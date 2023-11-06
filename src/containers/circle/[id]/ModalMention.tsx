@@ -176,6 +176,7 @@ const ModalMention: React.FC<props> = ({
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
   const [isError, setIsError] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<any>();
@@ -236,6 +237,24 @@ const ModalMention: React.FC<props> = ({
   }, []);
 
   useEffect(() => {
+    if (
+      form.content_text.length === 0 &&
+      form.media_urls.length === 0 &&
+      form.polling.options.length === 0 &&
+      form.pie_title.length === 0 &&
+      form.pie.length === 0 &&
+      form.pie_amount === 0 &&
+      audio === null &&
+      media === undefined &&
+      document === null
+    ) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  }, [form, audio, media, document]);
+
+  useEffect(() => {
     if (form.content_text?.length > 2) {
       getUserListForTag(form.content_text);
     } else {
@@ -246,6 +265,9 @@ const ModalMention: React.FC<props> = ({
       });
       setTagLists([]);
     }
+    if (form.content_text.length === 0) {
+      setIsUserSuggest(false);
+    }
   }, [form.content_text]);
 
   const getUserListForTag = (value: string): void => {
@@ -255,94 +277,92 @@ const ModalMention: React.FC<props> = ({
       const lastMention = matches[matches.length - 1];
       const cleanedValue = lastMention.replace(/[#$@]/g, '');
       if (debounceTimer !== null) clearTimeout(debounceTimer);
-      if (lastMention.length > 3) {
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
-              try {
-                if (lastMention.includes('#') === true) {
-                  const { data }: any = await getUserTagList(
-                    'hashtags',
-                    cleanedValue
-                  );
+      setDebounceTimer(
+        setTimeout((): void => {
+          void (async (): Promise<void> => {
+            try {
+              if (lastMention.includes('#') === true) {
+                const { data }: any = await getUserTagList(
+                  'hashtags',
+                  cleanedValue
+                );
 
-                  setHashtags(
-                    data?.map((item: any) => ({
-                      ...item,
-                      id: `${item.id as string}-hashtag`,
-                      display: item.hashtag
-                    }))
-                  );
-                } else if (lastMention.includes('$') === true) {
-                  const { data }: any = await getUserTagList(
-                    'assets',
-                    cleanedValue
-                  );
+                setHashtags(
+                  data?.map((item: any) => ({
+                    ...item,
+                    id: `${item.id as string}-hashtag`,
+                    display: item.hashtag
+                  }))
+                );
+              } else if (lastMention.includes('$') === true) {
+                const { data }: any = await getUserTagList(
+                  'assets',
+                  cleanedValue
+                );
 
-                  setDollarLists(
-                    data?.map((item: any) => ({
-                      ...item,
-                      id: `${item.id as string}-asset`,
-                      display: item.ticker
-                    }))
-                  );
-                } else if (lastMention.includes('@') === true) {
-                  const promises = API_TYPE.map(async key => {
-                    return await getUserTagList(key, cleanedValue);
-                  });
-                  const results: any = await Promise.all(promises);
-                  setOtherTagList({
-                    peopleList: results[0]?.data?.map((item: any) => ({
-                      ...item,
-                      id: `${item.id as string}-people`
-                    })),
-                    playList: results[1]?.data?.map((item: any) => ({
-                      ...item,
-                      id: `${item.id as string}-play`
-                    })),
-                    circleList: results[2]?.data?.map((item: any) => ({
-                      ...item,
-                      id: `${item.id as string}-circle`
-                    }))
-                  });
-                  setTimeout(() => {
-                    if (results[0]?.data?.length > 0) {
-                      setOtherTagId(1);
-                      setTagLists(
-                        results[0].data.map((item: any) => ({
-                          ...item,
-                          id: `${item.id as string}-people`,
-                          display: item.tag
-                        }))
-                      );
-                    } else if (results[1]?.data?.length > 0) {
-                      setOtherTagId(3);
-                      setTagLists(
-                        results[1].data.map((item: any) => ({
-                          ...item,
-                          id: `${item.id as string}-play`,
-                          display: item.name
-                        }))
-                      );
-                    } else if (results[2]?.data?.length > 0) {
-                      setOtherTagId(2);
-                      setTagLists(
-                        results[2].data.map((item: any) => ({
-                          ...item,
-                          id: `${item.id as string}-circle`,
-                          display: item.name
-                        }))
-                      );
-                    }
-                  }, 500);
-                }
-              } catch (_) {
-                console.log(_);
+                setDollarLists(
+                  data?.map((item: any) => ({
+                    ...item,
+                    id: `${item.id as string}-asset`,
+                    display: item.ticker
+                  }))
+                );
+              } else if (lastMention.includes('@') === true) {
+                const promises = API_TYPE.map(async key => {
+                  return await getUserTagList(key, cleanedValue);
+                });
+                const results: any = await Promise.all(promises);
+                setOtherTagList({
+                  peopleList: results[0]?.data?.map((item: any) => ({
+                    ...item,
+                    id: `${item.id as string}-people`
+                  })),
+                  playList: results[1]?.data?.map((item: any) => ({
+                    ...item,
+                    id: `${item.id as string}-play`
+                  })),
+                  circleList: results[2]?.data?.map((item: any) => ({
+                    ...item,
+                    id: `${item.id as string}-circle`
+                  }))
+                });
+                setTimeout(() => {
+                  if (results[0]?.data?.length > 0) {
+                    setOtherTagId(1);
+                    setTagLists(
+                      results[0].data.map((item: any) => ({
+                        ...item,
+                        id: `${item.id as string}-people`,
+                        display: item.tag
+                      }))
+                    );
+                  } else if (results[1]?.data?.length > 0) {
+                    setOtherTagId(3);
+                    setTagLists(
+                      results[1].data.map((item: any) => ({
+                        ...item,
+                        id: `${item.id as string}-play`,
+                        display: item.name
+                      }))
+                    );
+                  } else if (results[2]?.data?.length > 0) {
+                    setOtherTagId(2);
+                    setTagLists(
+                      results[2].data.map((item: any) => ({
+                        ...item,
+                        id: `${item.id as string}-circle`,
+                        display: item.name
+                      }))
+                    );
+                  }
+                }, 500);
               }
-            })();
-          }, 200)
-        );
-      }
+            } catch (_) {
+              console.log(_);
+            }
+          })();
+        }, 200)
+      );
     }
   };
 
@@ -619,7 +639,7 @@ const ModalMention: React.FC<props> = ({
                 setIsUserSuggest(true);
                 return (
                   <div
-                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2 w-full"
+                    className="flex py-2 border-b px-2 border-neutral-soft cursor-pointer gap-2 w-full"
                     key={suggestion.id}
                     onClick={() => {
                       setOtherTagList({
@@ -1068,6 +1088,7 @@ const ModalMention: React.FC<props> = ({
                   setMedia={setMedia}
                   openPieModal={openPieModal}
                   setDocument={setDocument}
+                  isEmpty={isEmpty}
                 />
               ) : (
                 <></>

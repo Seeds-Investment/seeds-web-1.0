@@ -1,28 +1,49 @@
 diff --git a/node_modules/@types/react-mentions/index.d.ts b/node_modules/@types/react-mentions/index.d.ts
-index c2aaa54..8cc261c 100644
+index c2aaa54..98c4652 100644
 --- a/node_modules/@types/react-mentions/index.d.ts
 +++ b/node_modules/@types/react-mentions/index.d.ts
 @@ -1,6 +1,6 @@
  import * as React from "react";
  
 -export {};
-+export { };
++export {};
  
  /**
   * MentionsInput is the main component rendering the textarea control. It takes one or multiple Mention components as its children.
-@@ -120,7 +120,7 @@ export interface MentionItem {
+@@ -88,7 +88,7 @@ export interface MentionProps {
+     onAdd?: ((id: string | number, display: string) => void) | undefined;
+     renderSuggestion?:
+         | ((
+-            suggestion: SuggestionDataItem,
++            suggestion: any,
+             search: string,
+             highlightedDisplay: React.ReactNode,
+             index: number,
+@@ -100,7 +100,7 @@ export interface MentionProps {
+     displayTransform?: DisplayTransformFunc | undefined;
+     trigger: string | RegExp;
+     isLoading?: boolean | undefined;
+-    data: SuggestionDataItem[] | DataFunc;
++    data: any[] | DataFunc;
+     style?: any;
+     appendSpaceOnAdd?: boolean | undefined;
+     regex?: RegExp | undefined;
+@@ -120,10 +120,6 @@ export interface MentionItem {
  /**
   * The shape of suggestion items.
   */
 -export interface SuggestionDataItem {
-+export interface any {
-     id: string | number;
-     display?: string;
- }
-@@ -145,5 +145,5 @@ export type OnChangeHandlerFunc = (
+-    id: string | number;
+-    display?: string;
+-}
+ 
+ /**
+  * Defines the function signature for implementing @see MentionsInputProps.displayTransform
+@@ -145,5 +141,5 @@ export type OnChangeHandlerFunc = (
   */
  export type DataFunc = (
      query: string,
 -    callback: (data: SuggestionDataItem[]) => void,
+-) => Promise<void> | void | Promise<SuggestionDataItem[]> | SuggestionDataItem[];
 +    callback: (data: any[]) => void,
- ) => Promise<void> | void | Promise<SuggestionDataItem[]> | SuggestionDataItem[];
++) => Promise<void> | void | Promise<any[]> | any[];

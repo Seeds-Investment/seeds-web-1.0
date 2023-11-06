@@ -198,7 +198,7 @@ const ModalMention: React.FC<props> = ({
   });
   const [tagLists, setTagLists] = useState<any>([]);
   const [otherTagId, setOtherTagId] = useState(1);
-  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [hashtags, setHashtags] = useState<any[]>([]);
   const [dollarLists, setDollarLists] = useState<any>([]);
   const [otherTagList, setOtherTagList] = useState<any>({
     peopleList: [],
@@ -651,50 +651,55 @@ const ModalMention: React.FC<props> = ({
                       setIsUserSuggest(false);
                     }}
                   >
-                    {suggestion?.avatar !== undefined
-                      ? renderAvatar(suggestion?.avatar)
-                      : suggestion?.banner !== undefined
-                      ? renderAvatar(suggestion?.banner)
-                      : null}
-                    {suggestion?.tag !== undefined ? (
-                      renderNameAndTag(
-                        suggestion?.name,
-                        suggestion?.tag,
-                        suggestion?.verified
-                      )
-                    ) : suggestion?.members !== undefined ? (
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <Typography className="text-lg text-black font-poppins font-medium">
-                            {suggestion?.name}
-                          </Typography>
-                          <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                            {suggestion?.members} members
-                          </Typography>
-                        </div>
-                        <div className="flex items-center">
-                          {suggestion?.hashtags?.map((el: any, i: number) => {
-                            return (
-                              <Typography
-                                key={`${el as string}${i}`}
-                                className="font-poppins text-seeds-button-green text-base font-semibold"
-                              >
-                                #{el}
-                              </Typography>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ) : suggestion?.participants !== undefined ? (
-                      <div className="flex flex-col gap-2">
-                        <Typography className="text-lg text-black font-poppins font-medium">
-                          {suggestion?.name}
-                        </Typography>
-                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                          {suggestion?.participants} participants
-                        </Typography>
-                      </div>
-                    ) : null}
+                    {tagLists.map((el: any) => {
+                      if (suggestion.id === el.id) {
+                        return (
+                          <>
+                            {el?.avatar !== undefined
+                              ? renderAvatar(el?.avatar)
+                              : el?.banner !== undefined
+                              ? renderAvatar(el?.banner)
+                              : null}
+                            {el?.tag !== undefined ? (
+                              renderNameAndTag(el?.name, el?.tag, el?.verified)
+                            ) : el?.members !== undefined ? (
+                              <div className="flex flex-col">
+                                <div className="flex items-center gap-2">
+                                  <Typography className="text-lg text-black font-poppins font-medium">
+                                    {el?.name}
+                                  </Typography>
+                                  <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                                    {el?.members} members
+                                  </Typography>
+                                </div>
+                                <div className="flex items-center">
+                                  {el?.hashtags?.map((el: any, i: number) => {
+                                    return (
+                                      <Typography
+                                        key={`${el as string}${i}`}
+                                        className="font-poppins text-seeds-button-green text-base font-semibold"
+                                      >
+                                        #{el}
+                                      </Typography>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : el?.participants !== undefined ? (
+                              <div className="flex flex-col gap-2">
+                                <Typography className="text-lg text-black font-poppins font-medium">
+                                  {el?.name}
+                                </Typography>
+                                <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                                  {el?.participants} participants
+                                </Typography>
+                              </div>
+                            ) : null}
+                          </>
+                        );
+                      }
+                      return <></>;
+                    })}
                   </div>
                 );
               }}
@@ -705,6 +710,7 @@ const ModalMention: React.FC<props> = ({
               markup="$[__display__](__id__)"
               style={{ color: '#4FE6AF' }}
               renderSuggestion={suggestion => {
+                setIsUserSuggest(false);
                 return (
                   <div
                     className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
@@ -713,16 +719,25 @@ const ModalMention: React.FC<props> = ({
                       setDollarLists([]);
                     }}
                   >
-                    {renderAvatar(suggestion?.logo)}
-                    <div className="flex flex-col">
-                      <Typography className="text-lg text-black font-poppins font-medium">
-                        {suggestion?.ticker} /{' '}
-                        <span>{suggestion?.currency}</span>
-                      </Typography>
-                      <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                        {suggestion?.name}
-                      </Typography>
-                    </div>
+                    {dollarLists.map((el: any) => {
+                      if (suggestion.id === el.id) {
+                        return (
+                          <>
+                            {renderAvatar(el?.logo)}
+                            <div className="flex flex-col">
+                              <Typography className="text-lg text-black font-poppins font-medium">
+                                {el?.ticker} / <span>{el?.currency}</span>
+                              </Typography>
+                              <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                                {el?.name}
+                              </Typography>
+                            </div>
+                            ;
+                          </>
+                        );
+                      }
+                      return <></>;
+                    })}
                   </div>
                 );
               }}
@@ -733,15 +748,21 @@ const ModalMention: React.FC<props> = ({
               markup="#[__display__]()"
               style={{ color: '#4FE6AF' }}
               renderSuggestion={suggestion => {
+                setIsUserSuggest(false);
                 return (
                   <div
                     className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
-                    key={suggestion.counter}
+                    key={suggestion.display}
                     onClick={() => {
                       setHashtags([]);
                     }}
                   >
-                    {renderHashtags(suggestion.hashtag, suggestion.counter)}
+                    {hashtags.map((el: any) => {
+                      if (el.hashtag === suggestion.display) {
+                        return <>{renderHashtags(el.hashtag, el.counter)}</>;
+                      }
+                      return <></>;
+                    })}
                   </div>
                 );
               }}

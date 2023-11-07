@@ -1,5 +1,9 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
-import { DocumentIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+  DocumentTextIcon,
+  HandThumbUpIcon,
+  UsersIcon
+} from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -83,20 +87,20 @@ export default function CardCircle({
               </Typography>
 
               <div className="flex flex-row text-center">
-                <div className="flex flex-row mr-3">
-                  <UserGroupIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <HandThumbUpIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_rating}
                   </Typography>
                 </div>
-                <div className="flex flex-row mr-3">
-                  <UserGroupIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <UsersIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_member}
                   </Typography>
                 </div>
-                <div className="flex flex-row mr-3">
-                  <DocumentIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <DocumentTextIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_post}
                   </Typography>

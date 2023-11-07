@@ -1,11 +1,6 @@
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
-import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  Typography
-} from '@material-tailwind/react';
+import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
+import FollowButton from '../FollowButton';
 
 interface props {
   data: any;
@@ -36,9 +31,11 @@ const CardPeople: React.FC<props> = ({ data }) => {
           </Typography>
         </div>
         <div className="ml-auto flex flex-col gap-0.5">
-          <Button className="font-semibold text-xs rounded-3xl text-white bg-[#3AC4A0]">
-            Follow
-          </Button>
+          <FollowButton
+            userId={data.id}
+            isFollowed={data.is_followed ?? false}
+            customClass="font-semibold text-xs rounded-2xl text-white"
+          />
         </div>
       </CardBody>
     </Card>

@@ -7,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 interface Props {
   isFollowed: boolean;
   userId: string;
+  customClass?: string;
 }
 
 export default function FollowButton({
   isFollowed: isFollowedProp,
-  userId
+  userId,
+  customClass
 }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +31,15 @@ export default function FollowButton({
     }
   };
 
+  const defaultClass = 'mx-auto px-16 rounded-full normal-case mt-5';
+
   return (
     <Button
       disabled={isLoading}
       onClick={onFollow}
-      className={`mx-auto px-16 rounded-full normal-case ${
+      className={`${customClass === undefined ? defaultClass : customClass}  ${
         isFollowed || isLoading ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
-      } mt-5`}
+      }`}
     >
       {isFollowed ? t('followButton.following') : t('followButton.follow')}
     </Button>

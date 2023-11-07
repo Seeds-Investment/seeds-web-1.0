@@ -604,3 +604,24 @@ export const updatePost = async (
     }
   });
 };
+
+export const searchHashtag = async (params: any): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    let response = await baseUrl.get(`/tag/v1/hashtags`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

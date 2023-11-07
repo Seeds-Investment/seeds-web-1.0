@@ -9,6 +9,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { KopKen } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
 import { getCircle } from '@/repository/circle.repository';
+import { searchHashtag } from '@/repository/circleDetail.repository';
 import { getMarketList } from '@/repository/market.repository';
 import { searchUser, trendingUser } from '@/repository/people.repository';
 import { getPlayAll } from '@/repository/play.repository';
@@ -129,6 +130,11 @@ const Search: React.FC = () => {
 
     if (value === 'hashtag') {
       void fetchDataHashtag();
+      if (filter.search !== '') {
+        void fetchDataSearchHashtag();
+      } else {
+        void fetchDataHashtag();
+      }
     }
 
     if (value === 'promo') {
@@ -240,6 +246,22 @@ const Search: React.FC = () => {
     }
   };
 
+  const fetchDataSearchHashtag = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await searchHashtag(filter);
+      const newData = response.data.map((data: any) => ({
+        frequency: data.counter,
+        hashtag: data.hashtag
+      }));
+      setData(newData);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearch(filter.search);
@@ -272,7 +294,11 @@ const Search: React.FC = () => {
     }
 
     if (activeTab === 'hashtag') {
-      void fetchDataHashtag();
+      if (filter.search !== '') {
+        void fetchDataSearchHashtag();
+      } else {
+        void fetchDataHashtag();
+      }
     }
   }, [debouncedSearch]);
 

@@ -33,7 +33,7 @@ const CardPeople: React.FC<props> = ({ data }) => {
         <div className="ml-auto flex flex-col gap-0.5">
           <FollowButton
             userId={data.id}
-            isFollowed={data.is_followed ?? false}
+            isFollowed={data.isFollowed ?? false}
             customClass="font-semibold text-xs rounded-2xl text-white"
           />
         </div>

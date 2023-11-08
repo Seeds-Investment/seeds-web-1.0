@@ -8,7 +8,19 @@ const authService = baseAxios(
 
 export const searchUser = async (params: any): Promise<any> => {
   try {
-    let response = await authService.get(`/search`, { params });
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    let response = await authService.get(`/search`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
@@ -26,7 +38,18 @@ export const verifiedUser = async (): Promise<any> => {
 
 export const trendingUser = async (): Promise<any> => {
   try {
-    const response = await authService.get('/trending?page=1&limit=15');
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await authService.get('/trending?page=1&limit=15', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
     return (response.data = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;

@@ -37,29 +37,29 @@ const SidebarLogin: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 h-full">
       <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
           height={width !== undefined && width <= 640 ? '23.58' : undefined}
         />
       </Link>
-      <ul className="flex flex-col items-start w-full social-sidebar-list">
+      <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
           <Link className={isLinkActive(data.url)} href={data.url} key={idx}>
             <Image width={20} height={20} src={data.image} alt="" />
             <h1>{data.title}</h1>
           </Link>
         ))}
-        <div className="mx-auto mt-[40%]">
-          <button
-            className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </div>
       </ul>
+      <div className="mx-auto">
+        <button
+          className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

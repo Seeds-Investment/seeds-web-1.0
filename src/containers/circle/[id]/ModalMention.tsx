@@ -1035,14 +1035,14 @@ const ModalMention: React.FC<props> = ({
                   </div>
                 )}
             </div>
-            <div className="flex flex-col max-h-[30vh] overflow-auto">
+            <div className="flex flex-col max-h-[32vh] overflow-auto pb-2">
               <div className="flex items-center">
-                <div className="flex flex-wrap pb-2 gap-4">
+                <div className="flex flex-wrap gap-4">
                   {media.length > 0 &&
                     pages !== 'gif' &&
                     media.map((el: File, i: number) => (
                       <div
-                        className="flex flex-col pb-2 gap-4"
+                        className="flex flex-col gap-4"
                         key={`${i} this is file`}
                       >
                         {el.type.includes('image') ? (
@@ -1055,13 +1055,11 @@ const ModalMention: React.FC<props> = ({
                           <video
                             controls
                             className="max-w-[30vw] max-h-[30vh] object-fit"
-                            key={URL?.createObjectURL(el)}
                           >
                             <source
                               src={URL?.createObjectURL(el)}
                               type="video/mp4"
                             />
-                            Browser Anda tidak mendukung tag video.
                           </video>
                         )}
                       </div>

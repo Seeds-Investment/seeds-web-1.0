@@ -1062,7 +1062,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                                 height={20}
                                 onClick={() => {
                                   handleCopyClick(
-                                    `http:localhost:3000${router.asPath}`
+                                    process.env.NEXTAUTH_URL !== undefined
+                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
+                                      : `http:localhost:3000${router.asPath}`
                                   ).catch((err: any) => {
                                     console.log(err);
                                   });

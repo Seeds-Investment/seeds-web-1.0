@@ -5,6 +5,7 @@ import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -385,7 +386,13 @@ const ModalMention: React.FC<props> = ({
   ): any => {
     const { name, value } = event.target;
     const newActualValue = value;
-    setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+
+    if (name === 'pie_amount') {
+      const formattedValue = formatCurrency(value);
+      setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
+    } else {
+      setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+    }
   };
 
   const selectTypeTag = (type: any): void => {
@@ -529,7 +536,7 @@ const ModalMention: React.FC<props> = ({
 
         payload.pie = newDataPie;
         payload.pie_title = form.pie_title;
-        payload.pie_amount = parseInt(form.pie_amount);
+        payload.pie_amount = stringToNumberCurrency(form.pie_amount);
       }
 
       await createPostCircleDetail(payload);

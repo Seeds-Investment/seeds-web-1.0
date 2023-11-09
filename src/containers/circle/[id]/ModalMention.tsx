@@ -1037,46 +1037,48 @@ const ModalMention: React.FC<props> = ({
             </div>
             <div className="flex flex-col max-h-[30vh] overflow-auto">
               <div className="flex items-center">
-                {media.length > 0 &&
-                  pages !== 'gif' &&
-                  media.map((el: File, i: number) => (
-                    <div
-                      className="flex flex-wrap pb-2 gap-4"
-                      key={`${i} this is file`}
-                    >
-                      {el.type.includes('image') ? (
-                        <img
-                          src={URL?.createObjectURL(el)}
-                          alt="Preview Image"
-                          className="object-fit max-h-[30vh] max-w-[30vw]"
-                        />
-                      ) : (
-                        <video
-                          controls
-                          className="max-w-[30vw] max-h-[30vh] object-fit"
-                          key={URL?.createObjectURL(el)}
-                        >
-                          <source
+                <div className="flex flex-wrap pb-2 gap-4">
+                  {media.length > 0 &&
+                    pages !== 'gif' &&
+                    media.map((el: File, i: number) => (
+                      <div
+                        className="flex flex-col pb-2 gap-4"
+                        key={`${i} this is file`}
+                      >
+                        {el.type.includes('image') ? (
+                          <img
                             src={URL?.createObjectURL(el)}
-                            type="video/mp4"
+                            alt="Preview Image"
+                            className="object-fit max-h-[30vh] max-w-[30vw]"
                           />
-                          Browser Anda tidak mendukung tag video.
-                        </video>
-                      )}
-                      {form.media_urls.length > 0 &&
-                        pages !== 'gif' &&
-                        form.media_urls.map((el: any, i: number) => {
-                          return (
-                            <img
-                              src={el}
-                              key={`${i} + 'MEDIA_URL'`}
-                              alt="gif"
-                              className="h-[230px] w-[230px] object-cover"
+                        ) : (
+                          <video
+                            controls
+                            className="max-w-[30vw] max-h-[30vh] object-fit"
+                            key={URL?.createObjectURL(el)}
+                          >
+                            <source
+                              src={URL?.createObjectURL(el)}
+                              type="video/mp4"
                             />
-                          );
-                        })}
-                    </div>
-                  ))}
+                            Browser Anda tidak mendukung tag video.
+                          </video>
+                        )}
+                      </div>
+                    ))}
+                  {form.media_urls.length > 0 &&
+                    pages !== 'gif' &&
+                    form.media_urls.map((el: any, i: number) => {
+                      return (
+                        <img
+                          src={el}
+                          key={`${i} + 'MEDIA_URL'`}
+                          alt="gif"
+                          className="h-[230px] w-[230px] object-cover"
+                        />
+                      );
+                    })}
+                </div>
               </div>
 
               {form.polling?.options.length > 0 && pages === 'text' ? (

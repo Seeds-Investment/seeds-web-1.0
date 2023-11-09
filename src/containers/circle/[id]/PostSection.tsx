@@ -96,7 +96,7 @@ const shareData: ShareData[] = [
   {
     name: 'Tiktok',
     image: TiktokShare,
-    link: 'www.instagram.com',
+    link: 'https://www.tiktok.com/',
     class: ''
   },
   {
@@ -143,7 +143,7 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostCard: React.FC<props> = ({ dataPost, setData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
@@ -1150,4 +1150,4 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
     </div>
   );
 };
-export default PostCard;
+export default PostSection;

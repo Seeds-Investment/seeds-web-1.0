@@ -2,9 +2,9 @@ import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
+import PostSection from '@/containers/circle/[id]/PostSection';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
-import PostCard from '@/containers/social/main/PostCard';
 import TrendingProfile from '@/containers/social/main/TrendingProfile';
 import withAuth from '@/helpers/withAuth';
 import { trendingUser } from '@/repository/people.repository';
@@ -470,7 +470,7 @@ const Social: React.FC = () => {
                     </button>
                   </div>
                 )}
-                <PostCard dataPost={el} setData={setDataPost} />
+                <PostSection dataPost={el} setData={setDataPost} />
               </div>
             );
           })}

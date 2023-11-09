@@ -64,7 +64,7 @@ const UniqueInputButton: React.FC<props> = ({
         setErrorMessage('Your image is exceeding the 20MB size limit');
         return new Error('Your image is exceeding the 20MB size limit');
       } else {
-        return setMedia(fileMedia);
+        return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);
       }
     }
     const validation =
@@ -94,7 +94,7 @@ const UniqueInputButton: React.FC<props> = ({
       setErrorMessage('Your image is exceeding the 5MB size limit');
       return new Error('Your image is exceeding the 5MB size limit');
     } else {
-      return setMedia(fileMedia);
+      return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);
     }
   };
 
@@ -228,9 +228,9 @@ const UniqueInputButton: React.FC<props> = ({
       <div className="flex items-center">
         <button
           type="submit"
-          disabled={isEmpty}
+          disabled={isEmpty || isError}
           className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
-            isEmpty
+            isEmpty || isError
               ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
               : 'bg-seeds-button-green text-white'
           }`}

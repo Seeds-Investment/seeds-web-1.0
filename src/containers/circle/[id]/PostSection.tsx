@@ -90,7 +90,7 @@ const shareData: ShareData[] = [
   {
     name: 'Instagram',
     image: InstagramShare,
-    link: 'www.instagram.com',
+    link: 'https://www.instagram.com/',
     class: ''
   },
   {
@@ -102,13 +102,13 @@ const shareData: ShareData[] = [
   {
     name: 'Facebook',
     image: FacebookShare,
-    link: 'www.instagram.com',
+    link: 'https://www.facebook.com/',
     class: ''
   },
   {
     name: 'Twitter',
     image: TwitterShare,
-    link: 'www.instagram.com',
+    link: 'https://twitter.com/',
     class: ''
   },
   {
@@ -120,19 +120,19 @@ const shareData: ShareData[] = [
   {
     name: 'Telegram',
     image: TelegramShare,
-    link: 'www.instagram.com',
+    link: 'https://web.telegram.org/',
     class: ''
   },
   {
     name: 'Massenger',
     image: MassengerShare,
-    link: 'www.instagram.com',
+    link: 'https://www.messenger.com/',
     class: ''
   },
   {
     name: 'Linkedin',
     image: LinkedinShare,
-    link: 'www.instagram.com',
+    link: 'https://www.linkedin.com/',
     class: 'bg-[#0A66C2]'
   },
   {
@@ -170,6 +170,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
+  };
+
+  const handleItemClick = (link: string): void => {
+    window.open(link, '_blank');
   };
 
   const handleCopyClick = async (text: string): Promise<void> => {
@@ -1033,10 +1037,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                           <input
                             type="text"
                             readOnly
-                            value={`http:localhost:3000${router.asPath}`}
+                            value={
+                              process.env.NEXTAUTH_URL !== undefined
+                                ? `${process.env.NEXTAUTH_URL}${router.asPath}`
+                                : `http:localhost:3000${router.asPath}`
+                            }
                             onClick={() => {
                               handleCopyClick(
-                                `http:localhost:3000${router.asPath}`
+                                process.env.NEXTAUTH_URL !== undefined
+                                  ? `${process.env.NEXTAUTH_URL}${router.asPath}`
+                                  : `http:localhost:3000${router.asPath}`
                               ).catch((err: any) => {
                                 console.log(err);
                               });
@@ -1081,10 +1091,13 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                                 height={40}
                                 onClick={() => {
                                   handleCopyClick(
-                                    `http:localhost:3000${router.asPath}`
+                                    process.env.NEXTAUTH_URL !== undefined
+                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
+                                      : `http:localhost:3000${router.asPath}`
                                   ).catch((err: any) => {
                                     console.log(err);
                                   });
+                                  handleItemClick(el.link);
                                 }}
                                 className={`cursor-pointer rounded-full ${el.class}`}
                               />

@@ -7,6 +7,7 @@ export { default as CircleBig } from 'public/assets/circle/circlebig.svg';
 export { default as clipCopy } from 'public/assets/circle/clipCopy.svg';
 export { default as galleryV2 } from 'public/assets/circle/galleryV2.svg';
 export { default as GIFV2 } from 'public/assets/circle/gifV2.svg';
+export { default as PremiumContent } from 'public/assets/circle/icon-premium-content.svg';
 export { default as Like } from 'public/assets/circle/like.svg';
 export { default as LockedCircle } from 'public/assets/circle/lockedAccount.png';
 export { default as circlePayment } from 'public/assets/circle/paymentCircle.png';

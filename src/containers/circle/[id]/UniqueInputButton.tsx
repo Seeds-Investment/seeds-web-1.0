@@ -110,8 +110,9 @@ const UniqueInputButton: React.FC<props> = ({
       setIsError(true);
       setErrorMessage('Your file is exceeding the 5MB size limit');
       return new Error('Your file is exceeding the 5MB size limit');
+    } else {
+      return setDocument(fileMedia);
     }
-    return setDocument(fileMedia);
   };
 
   return (

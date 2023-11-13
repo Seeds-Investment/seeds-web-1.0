@@ -181,9 +181,10 @@ const ModalMention: React.FC<props> = ({
   const circleId: string | any = router.query.circleid;
   const [isError, setIsError] = useState<boolean>(false);
   const [isDisable, setIsDisable] = useState<boolean>(false);
+  const [isEmpty, setisEmpty] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
-  const [media, setMedia] = useState<any>();
+  const [media, setMedia] = useState<File[]>([]);
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
   const [isPieModalOpen, setIsPieModalOpen] = useState(false);
@@ -251,17 +252,17 @@ const ModalMention: React.FC<props> = ({
       form.pie.length === 0 &&
       form.pie_amount === 0 &&
       audio === null &&
-      media === undefined &&
+      media.length === 0 &&
       document === null
     ) {
-      setIsDisable(true);
+      setisEmpty(true);
     } else {
-      setIsDisable(false);
+      setisEmpty(false);
     }
   }, [form, audio, media, document]);
 
   useEffect(() => {
-    if (form.content_text?.length > 2) {
+    if (form.content_text?.length > 0) {
       getUserListForTag(form.content_text);
     } else {
       setOtherTagList({
@@ -274,10 +275,7 @@ const ModalMention: React.FC<props> = ({
     if (form.content_text.length === 0) {
       setIsUserSuggest(false);
     }
-    if (form.content_text.length > 500) {
-      setIsError(true);
-      setErrorMessage('Text exceed 500 varchar');
-    } else if (form.content_text.length > 250) {
+    if (form.content_text.length > 250) {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage('Your thread is exceeding the maximum character limit');
@@ -288,15 +286,15 @@ const ModalMention: React.FC<props> = ({
 
   const getUserListForTag = useCallback(
     (value: string): void => {
-      const API_TYPE = ['people', 'plays', 'circles'];
-      const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
-      if (matches !== null && Array.isArray(matches)) {
-        const lastMention = matches[matches.length - 1];
-        const cleanedValue = lastMention.replace(/[#$@]/g, '');
-        if (debounceTimer !== null) clearTimeout(debounceTimer);
-        setDebounceTimer(
-          setTimeout((): void => {
-            void (async (): Promise<void> => {
+      if (debounceTimer !== null) clearTimeout(debounceTimer);
+      setDebounceTimer(
+        setTimeout((): void => {
+          void (async (): Promise<void> => {
+            const API_TYPE = ['people', 'plays', 'circles'];
+            const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
+            if (Array.isArray(matches) && matches.length > 0) {
+              const lastMention = matches[matches.length - 1];
+              const cleanedValue = lastMention.replace(/[#$@]/g, '');
               try {
                 if (lastMention.includes('#') === true) {
                   const { data }: any = await getUserTagList(
@@ -377,12 +375,12 @@ const ModalMention: React.FC<props> = ({
               } catch (_) {
                 console.log(_);
               }
-            })();
-          }, 500)
-        );
-      }
+            }
+          })();
+        }, 500)
+      );
     },
-    [debounceTimer]
+    [setDebounceTimer]
   );
 
   const handleFormChange = (
@@ -418,7 +416,7 @@ const ModalMention: React.FC<props> = ({
   };
 
   useEffect(() => {
-    const delay = 3000;
+    const delay = 2000;
     const timeoutId = setTimeout(() => {
       const processedText = processText(form.content_text);
       if (hashtags?.length < 1) {
@@ -477,8 +475,16 @@ const ModalMention: React.FC<props> = ({
 
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
-      const { data } = await UseUploadMedia(mediaFile);
-      form.media_urls.push(data.path);
+      if (Array.isArray(mediaFile)) {
+        for (let index = 0; index < mediaFile.length; index++) {
+          const element = mediaFile[index];
+          const { data } = await UseUploadMedia(element);
+          form.media_urls.push(data.path);
+        }
+      } else {
+        const { data } = await UseUploadMedia(mediaFile);
+        form.media_urls.push(data.path);
+      }
     } catch (error: any) {
       console.error('Error Post Media:', error.message);
     }
@@ -492,9 +498,10 @@ const ModalMention: React.FC<props> = ({
       if (setIsLoadingPost !== undefined) {
         setIsLoadingPost(true);
       }
-      if (media !== undefined && media !== null) {
+      if (media.length > 0) {
         await postMedia(media);
       }
+
       if (audio !== undefined && audio !== null) {
         await postMedia(audio);
       }
@@ -567,7 +574,7 @@ const ModalMention: React.FC<props> = ({
       });
       setGolId((prevState: number) => prevState + 1);
       setAudio(null);
-      setMedia(undefined);
+      setMedia([]);
       setDocument(null);
       setHashtags([]);
       setSelectedAsset([]);
@@ -611,7 +618,7 @@ const ModalMention: React.FC<props> = ({
       };
       applyCustomStyle();
     }
-  }, [open]);
+  }, [open, pages]);
 
   const handlePages = (): any => {
     if (pages === 'text') {
@@ -897,7 +904,7 @@ const ModalMention: React.FC<props> = ({
           premium_fee: ''
         });
         setAudio(null);
-        setMedia(undefined);
+        setMedia([]);
         setDocument(null);
         setHashtags([]);
         setSelectedAsset([]);
@@ -928,174 +935,177 @@ const ModalMention: React.FC<props> = ({
               setIsError(false);
             }}
           />
-          <>
-            {pages !== 'gif' && (
-              <div className="flex justify-between">
-                <div
-                  onClick={() => {
-                    setPages('text');
-                  }}
-                  className="cursor-pointer"
-                >
-                  <ProfilePost
-                    handleDropDown={handleDropDown}
-                    dropVal={dropVal}
-                    drop={drop}
-                    dataSelection={dataSelection}
-                    handleInputChange={handleInputChange}
-                  />
-                </div>
-                <div
-                  className="flex flex-col justify-start cursor-pointer"
-                  onClick={() => {
-                    handleOpen();
-                    setForm({
-                      content_text: '',
-                      privacy: dropVal.type.toLowerCase(),
-                      media_urls: [],
-                      polling: {
-                        options: [],
-                        isMultiVote: false,
-                        canAddNewOption: false,
-                        endDate: ''
-                      },
-                      pie_title: '',
-                      pie_amount: 0,
-                      pie: [],
-                      premium_fee: ''
-                    });
-                    setAudio(null);
-                    setMedia(undefined);
-                    setDocument(null);
-                    setHashtags([]);
-                    setSelectedAsset([]);
-                    setChartData(initialChartData);
-                    setOtherTagList({
-                      peopleList: [],
-                      circleList: [],
-                      playList: []
-                    });
-                    setDollarLists([]);
-                    setHashtags([]);
-                  }}
-                >
-                  <Image src={XIcon} alt="close" width={30} height={30} />
-                </div>
+          {pages !== 'gif' && (
+            <div className="flex justify-between">
+              <div
+                onClick={() => {
+                  setPages('text');
+                }}
+                className="cursor-pointer"
+              >
+                <ProfilePost
+                  handleDropDown={handleDropDown}
+                  dropVal={dropVal}
+                  drop={drop}
+                  dataSelection={dataSelection}
+                  handleInputChange={handleInputChange}
+                />
               </div>
-            )}
-            {/* form text section */}
-            <form onSubmit={handlePostCircle}>
-              {handlePages()}
-              <div className="flex justify-between pl-16 pb-4 z-0">
-                {audio !== null && pages !== 'gif' && (
-                  <audio controls>
-                    <source
-                      src={URL?.createObjectURL(audio)}
-                      type="audio/wav"
-                      className="w-full"
-                    />
-                    Your browser does not support the audio element.
-                  </audio>
-                )}
-                {document !== undefined &&
-                  document !== null &&
-                  pages !== 'gif' && (
-                    <div className="flex justify-center pb-2">
-                      <div className="flex flex-col">
-                        <div
-                          className="flex justify-center cursor-pointer"
-                          onClick={() => {
-                            setDocModal(true);
-                          }}
-                        >
-                          <Image
-                            src={PDFViewer}
-                            alt="pdf"
-                            className="w-[100px] h-[100px]"
-                          />
-                        </div>
-                        <h1 className="text-base font-poppins font-medium">
-                          {document.name}
-                        </h1>
+              <div
+                className="flex flex-col justify-start cursor-pointer"
+                onClick={() => {
+                  handleOpen();
+                  setForm({
+                    content_text: '',
+                    privacy: dropVal.type.toLowerCase(),
+                    media_urls: [],
+                    polling: {
+                      options: [],
+                      isMultiVote: false,
+                      canAddNewOption: false,
+                      endDate: ''
+                    },
+                    pie_title: '',
+                    pie_amount: 0,
+                    pie: [],
+                    premium_fee: ''
+                  });
+                  setAudio(null);
+                  setMedia([]);
+                  setDocument(null);
+                  setHashtags([]);
+                  setSelectedAsset([]);
+                  setChartData(initialChartData);
+                  setOtherTagList({
+                    peopleList: [],
+                    circleList: [],
+                    playList: []
+                  });
+                  setDollarLists([]);
+                  setHashtags([]);
+                }}
+              >
+                <Image src={XIcon} alt="close" width={30} height={30} />
+              </div>
+            </div>
+          )}
+          {/* form text section */}
+          <form onSubmit={handlePostCircle}>
+            {handlePages()}
+            <div className="flex justify-between pl-16 pb-4 z-0">
+              {audio !== null && pages !== 'gif' && (
+                <audio controls>
+                  <source
+                    src={URL?.createObjectURL(audio)}
+                    type="audio/wav"
+                    className="w-full"
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              )}
+              {document !== undefined &&
+                document !== null &&
+                pages !== 'gif' && (
+                  <div className="flex justify-center pb-2">
+                    <div className="flex flex-col">
+                      <div
+                        className="flex justify-center cursor-pointer"
+                        onClick={() => {
+                          setDocModal(true);
+                        }}
+                      >
+                        <Image
+                          src={PDFViewer}
+                          alt="pdf"
+                          className="w-[100px] h-[100px]"
+                        />
                       </div>
-                      {docModal === true && (
-                        <Modal
-                          onClose={() => {
+                      <h1 className="text-base font-poppins font-medium">
+                        {document.name}
+                      </h1>
+                    </div>
+                    {docModal === true && (
+                      <Modal
+                        onClose={() => {
+                          setDocModal(false);
+                        }}
+                        modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+                      >
+                        <embed
+                          src={URL?.createObjectURL(document)}
+                          type="application/pdf"
+                          className="widthPDF h-screen"
+                        />
+                        <button
+                          className="z-50 fixed text-white top-3 -right-14"
+                          onClick={() => {
                             setDocModal(false);
                           }}
-                          modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
                         >
-                          <embed
-                            src={URL?.createObjectURL(document)}
-                            type="application/pdf"
-                            className="widthPDF h-screen"
-                          />
-                          <button
-                            className="z-50 fixed text-white top-3 -right-14"
-                            onClick={() => {
-                              setDocModal(false);
-                            }}
+                          <svg
+                            className="h-8 w-8 text-white bg-black/20 rounded-full"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           >
-                            <svg
-                              className="h-8 w-8 text-white bg-black/20 rounded-full"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              {' '}
-                              <circle cx="12" cy="12" r="10" />{' '}
-                              <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                              <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                          </button>
-                        </Modal>
-                      )}
-                    </div>
-                  )}
-              </div>
-              {media !== undefined && pages !== 'gif' && (
-                <div className="flex justify-center pb-2">
-                  {media.type.includes('image') === true ? (
-                    <img
-                      src={URL?.createObjectURL(media)}
-                      alt="Preview Image"
-                      className="object-cover max-h-[30vh] w-fit"
-                    />
-                  ) : (
-                    <video
-                      controls
-                      className="max-w-[50vw] max-h-[50vh] object-fit"
-                      key={URL?.createObjectURL(media)}
-                    >
-                      <source
-                        src={URL?.createObjectURL(media)}
-                        type="video/mp4"
-                      />
-                      Browser Anda tidak mendukung tag video.
-                    </video>
-                  )}
-                </div>
-              )}
-
-              <div className="flex justify-center my-5 gap-4">
-                {form.media_urls.length > 0 && pages !== 'gif' ? (
-                  form.media_urls.map((el: any, i: number) => {
-                    return (
-                      <img
-                        src={el}
-                        key={`${i} + 'MEDIA_URL'`}
-                        alt="gif"
-                        className="h-[230px] w-[230px] object-cover"
-                      />
-                    );
-                  })
-                ) : (
-                  <></>
+                            {' '}
+                            <circle cx="12" cy="12" r="10" />{' '}
+                            <line x1="15" y1="9" x2="9" y2="15" />{' '}
+                            <line x1="9" y1="9" x2="15" y2="15" />
+                          </svg>
+                        </button>
+                      </Modal>
+                    )}
+                  </div>
                 )}
+            </div>
+            <div className="flex flex-col max-h-[32vh] overflow-auto pb-2">
+              <div className="flex items-center">
+                <div className="flex flex-wrap gap-4">
+                  {media.length > 0 &&
+                    pages !== 'gif' &&
+                    media.map((el: File, i: number) => (
+                      <div
+                        className="flex flex-col gap-4"
+                        key={`${i} this is file`}
+                      >
+                        {el.type.includes('image') ? (
+                          <img
+                            src={URL?.createObjectURL(el)}
+                            alt="Preview Image"
+                            className="object-fit max-h-[30vh] max-w-[30vw]"
+                          />
+                        ) : (
+                          <video
+                            controls
+                            className="max-w-[30vw] max-h-[30vh] object-fit"
+                          >
+                            <source
+                              src={URL?.createObjectURL(el)}
+                              type="video/mp4"
+                            />
+                          </video>
+                        )}
+                      </div>
+                    ))}
+                  {form.media_urls.length > 0 &&
+                    pages !== 'gif' &&
+                    form.media_urls.map((el: any, i: number) => {
+                      return (
+                        <img
+                          src={el}
+                          key={`${i} + 'MEDIA_URL'`}
+                          alt="gif"
+                          className="h-[230px] w-[230px] object-cover"
+                        />
+                      );
+                    })}
+                </div>
               </div>
+
               {form.polling?.options.length > 0 && pages === 'text' ? (
                 form.polling?.options.map((el: any, i: number) => {
                   return (
@@ -1118,22 +1128,21 @@ const ModalMention: React.FC<props> = ({
                   data={selectedAsset}
                 />
               ) : null}
-              {pages !== 'gif' ? (
-                <UniqueInputButton
-                  setIsError={setIsError}
-                  setErrorMessage={setErrorMessage}
-                  setPages={setPages}
-                  setMedia={setMedia}
-                  openPieModal={openPieModal}
-                  setDocument={setDocument}
-                  isEmpty={isDisable}
-                  isError={isError}
-                />
-              ) : (
-                <></>
-              )}
-            </form>
-          </>
+            </div>
+
+            {pages !== 'gif' && (
+              <UniqueInputButton
+                setIsError={setIsError}
+                setErrorMessage={setErrorMessage}
+                setPages={setPages}
+                setMedia={setMedia}
+                openPieModal={openPieModal}
+                setDocument={setDocument}
+                isEmpty={isDisable}
+                isError={isEmpty}
+              />
+            )}
+          </form>
         </div>
       </div>
     </Dialog>

@@ -25,8 +25,6 @@ interface props {
 }
 
 const CarouselMobile: React.FC<props> = ({ banner }) => {
-  console.log(banner);
-
   return (
     <Carousel
       loop={true}

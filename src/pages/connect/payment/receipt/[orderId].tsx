@@ -186,10 +186,10 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               className="p-9 border-none rounded-xl shadow-none w-full md:w-2/3 xl:w-1/2 h-full"
               style={{
                 background:
-                  'linear-gradient(to bottom, #3AC4A0 50%, #FFFFFF 50%)'
+                  'linear-gradient(to bottom, #3AC4A0 55%, #FFFFFF 50%)'
               }}
             >
-              <div className="flex items-center justify-center mb-9 mt-3">
+              <div className="flex items-center justify-center mb-4 mt-3">
                 {orderDetail?.vaNumber !== undefined ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">

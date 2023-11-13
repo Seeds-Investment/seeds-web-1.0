@@ -100,6 +100,17 @@ const UniqueInputButton: React.FC<props> = ({
 
   const handlePDF = (event: any): any => {
     const fileMedia = event.target.files[0];
+    const fileMediaEle = event.target;
+    const maxFileMediaSize = 5;
+    const sizeFileOnMB: any = parseFloat(
+      (fileMedia?.size / 1024 / 1024).toFixed(20)
+    );
+    if (sizeFileOnMB > maxFileMediaSize) {
+      fileMediaEle.value = null;
+      setIsError(true);
+      setErrorMessage('Your file is exceeding the 5MB size limit');
+      return new Error('Your file is exceeding the 5MB size limit');
+    }
     return setDocument(fileMedia);
   };
 

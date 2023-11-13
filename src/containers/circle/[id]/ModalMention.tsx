@@ -595,6 +595,7 @@ const ModalMention: React.FC<props> = ({
       });
       setDollarLists([]);
       setHashtags([]);
+      window.location.reload();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -880,8 +881,6 @@ const ModalMention: React.FC<props> = ({
       </div>
     );
   };
-
-  console.log(form);
 
   return (
     <Dialog

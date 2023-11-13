@@ -6,6 +6,7 @@ interface typeOfSelection {
   name: string;
   svg: any;
   message: string;
+  type: string;
 }
 
 interface props {

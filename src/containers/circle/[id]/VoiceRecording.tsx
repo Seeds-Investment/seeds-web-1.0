@@ -13,7 +13,9 @@ export const VoiceRecorder: React.FC<props> = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-
+  if (audio !== undefined) {
+    console.log(audioUrl);
+  }
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
 
@@ -65,7 +67,7 @@ export const VoiceRecorder: React.FC<props> = ({
 
   return (
     <>
-      {audioUrl !== null &&
+      {/* {audioUrl !== null &&
         audioUrl !== undefined &&
         audioUrl !== '' &&
         audio !== null && (
@@ -75,7 +77,7 @@ export const VoiceRecorder: React.FC<props> = ({
               Your browser does not support the audio element.
             </audio>
           </div>
-        )}
+        )} */}
       <div className="flex items-center flex-col">
         <div
           className={`mb-4 rounded-full ${

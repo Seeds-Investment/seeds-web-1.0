@@ -48,6 +48,7 @@ interface typeOfSelection {
   name: string;
   svg: any;
   message: string;
+  type: string;
 }
 
 interface UserData {
@@ -133,22 +134,26 @@ const dataSelection: typeOfSelection[] = [
   {
     name: 'Public',
     svg: globe,
-    message: 'Everyone can see your post'
+    message: 'Everyone can see your post',
+    type: 'PUBLIC'
   },
   {
     name: 'Private',
     svg: privat,
-    message: 'Only you can see your post'
+    message: 'Only you can see your post',
+    type: 'PRIVATE'
   },
   {
     name: 'Friends Only',
     svg: friends,
-    message: 'Followers that you followback'
+    message: 'Followers that you followback',
+    type: 'FRIENDS'
   },
   {
     name: 'Premium',
     svg: star,
-    message: 'Followers that you followback'
+    message: 'Followers that you followback',
+    type: 'PREMIUM'
   }
 ];
 
@@ -451,7 +456,7 @@ const ModalMention: React.FC<props> = ({
         svg: privat
       }));
     } else if (value === 'Friends Only') {
-      setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
+      setForm(prevForm => ({ ...prevForm, privacy: 'friends' }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
@@ -472,6 +477,7 @@ const ModalMention: React.FC<props> = ({
       setDrop(false);
     }
   };
+  console.log(form);
 
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
@@ -991,7 +997,7 @@ const ModalMention: React.FC<props> = ({
           {/* form text section */}
           <form onSubmit={handlePostCircle}>
             {handlePages()}
-            <div className="flex justify-between pl-16 pb-4 z-0">
+            <div className="flex justify-evenly pb-4 z-0">
               {audio !== null && pages !== 'gif' && (
                 <audio controls>
                   <source
@@ -1006,30 +1012,27 @@ const ModalMention: React.FC<props> = ({
                 document !== null &&
                 pages !== 'gif' && (
                   <div className="flex justify-center pb-2">
-                    <div className="flex flex-col">
-                      <div
-                        className="flex justify-center cursor-pointer"
-                        onClick={() => {
-                          setDocModal(true);
-                        }}
-                      >
+                    <div
+                      className="flex flex-col"
+                      onClick={() => {
+                        setDocModal(true);
+                      }}
+                    >
+                      <div className="flex justify-center cursor-pointer">
                         <Image
                           src={PDFViewer}
                           alt="pdf"
-                          className="w-[100px] h-[100px]"
+                          className="w-[60px] h-[60px]"
                         />
                       </div>
-                      <h1 className="text-base font-poppins font-medium">
-                        {document.name}
+                      <h1 className="text-sm text-black font-poppins font-medium">
+                        {document.name.length > 10
+                          ? (document.name.substring(0, 15) as string) + '...'
+                          : document.name}
                       </h1>
                     </div>
                     {docModal === true && (
-                      <Modal
-                        onClose={() => {
-                          setDocModal(false);
-                        }}
-                        modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
-                      >
+                      <Modal modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent">
                         <embed
                           src={URL?.createObjectURL(document)}
                           type="application/pdf"

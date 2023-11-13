@@ -1055,20 +1055,28 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                             type="text"
                             readOnly
                             value={
-                              process.env.NEXTAUTH_URL !== undefined
-                                ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                : `http:localhost:3000${router.asPath}`
+                              process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                ? `${
+                                    process.env.NEXT_PUBLIC_DOMAIN
+                                  }/connect/comment/${dataPost.id as string}`
+                                : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                    dataPost.id as string
+                                  }`
                             }
                             onClick={() => {
                               handleCopyClick(
-                                process.env.NEXTAUTH_URL !== undefined
-                                  ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                  : `http:localhost:3000${router.asPath}`
+                                process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                  ? `${
+                                      process.env.NEXT_PUBLIC_DOMAIN
+                                    }/connect/comment/${dataPost.id as string}`
+                                  : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                      dataPost.id as string
+                                    }`
                               ).catch((err: any) => {
                                 console.log(err);
                               });
                             }}
-                            className="text-black w-[260px]"
+                            className="text-black w-[260px] outline-none focus:outline-none cursor-pointer"
                           />
                           <div className="flex items-center pl-2">
                             <button type="button">
@@ -1079,9 +1087,15 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                                 height={20}
                                 onClick={() => {
                                   handleCopyClick(
-                                    process.env.NEXTAUTH_URL !== undefined
-                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                      : `http:localhost:3000${router.asPath}`
+                                    process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                      ? `${
+                                          process.env.NEXT_PUBLIC_DOMAIN
+                                        }/connect/comment/${
+                                          dataPost.id as string
+                                        }`
+                                      : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                          dataPost.id as string
+                                        }`
                                   ).catch((err: any) => {
                                     console.log(err);
                                   });
@@ -1110,9 +1124,15 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                                 height={40}
                                 onClick={() => {
                                   handleCopyClick(
-                                    process.env.NEXTAUTH_URL !== undefined
-                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                      : `http:localhost:3000${router.asPath}`
+                                    process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                      ? `${
+                                          process.env.NEXT_PUBLIC_DOMAIN
+                                        }/connect/comment/${
+                                          dataPost.id as string
+                                        }`
+                                      : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                          dataPost.id as string
+                                        }`
                                   ).catch((err: any) => {
                                     console.log(err);
                                   });

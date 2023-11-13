@@ -23,7 +23,7 @@ import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -1148,6 +1148,14 @@ const PostCard: React.FC<props> = ({ dataPost, setData }) => {
                 </div>
               </div>
             </div>
+          </div>
+          <div>
+            {dataPost.privacy === 'premium' ? (
+              <div className="inline-flex mt-3 bg-[#DCFCE4] rounded-3xl px-3 py-1">
+                <ArrowUpRightIcon className="w-5 h-5 text-[#3AC4A0] mr-1" />
+                <p className="text-[#3AC4A0]">Premium</p>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

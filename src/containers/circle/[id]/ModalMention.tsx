@@ -5,6 +5,8 @@ import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
+import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -80,6 +82,7 @@ interface form {
   pie_title: string;
   pie_amount: any;
   pie: [];
+  premium_fee: any;
 }
 
 interface AssetInterface {
@@ -202,6 +205,7 @@ const ModalMention: React.FC<props> = ({
   const [otherTagId, setOtherTagId] = useState(1);
   const [hashtags, setHashtags] = useState<any[]>([]);
   const [dollarLists, setDollarLists] = useState<any>([]);
+  const [isOpenPremiumPrice, setIsOpenPremiumPrice] = useState<boolean>(false);
   const [otherTagList, setOtherTagList] = useState<any>({
     peopleList: [],
     circleList: [],
@@ -219,7 +223,8 @@ const ModalMention: React.FC<props> = ({
     },
     pie_title: '',
     pie_amount: 0,
-    pie: []
+    pie: [],
+    premium_fee: ''
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -383,7 +388,13 @@ const ModalMention: React.FC<props> = ({
   ): any => {
     const { name, value } = event.target;
     const newActualValue = value;
-    setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+
+    if (name === 'pie_amount') {
+      const formattedValue = formatCurrency(value);
+      setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
+    } else {
+      setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+    }
   };
 
   const selectTypeTag = (type: any): void => {
@@ -449,6 +460,7 @@ const ModalMention: React.FC<props> = ({
     } else if (value === 'Premium') {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: star }));
+      setIsOpenPremiumPrice(true);
     }
     setDrop(false);
   };
@@ -536,7 +548,11 @@ const ModalMention: React.FC<props> = ({
 
         payload.pie = newDataPie;
         payload.pie_title = form.pie_title;
-        payload.pie_amount = parseInt(form.pie_amount);
+        payload.pie_amount = stringToNumberCurrency(form.pie_amount);
+      }
+
+      if (form.privacy === 'premium') {
+        payload.premium_fee = parseInt(form.premium_fee);
       }
 
       await createPostCircleDetail(payload);
@@ -553,7 +569,8 @@ const ModalMention: React.FC<props> = ({
         },
         pie_title: '',
         pie_amount: 0,
-        pie: []
+        pie: [],
+        premium_fee: ''
       });
       setGolId((prevState: number) => prevState + 1);
       setAudio(null);
@@ -578,6 +595,7 @@ const ModalMention: React.FC<props> = ({
       });
       setDollarLists([]);
       setHashtags([]);
+      window.location.reload();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -881,7 +899,8 @@ const ModalMention: React.FC<props> = ({
           },
           pie_title: '',
           pie_amount: 0,
-          pie: []
+          pie: [],
+          premium_fee: ''
         });
         setAudio(null);
         setMedia([]);
@@ -901,6 +920,12 @@ const ModalMention: React.FC<props> = ({
       className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
     >
       <div className="block bg-white w-full rounded-xl">
+        <ModalChoosePricePremium
+          isOpen={isOpenPremiumPrice}
+          setIsOpen={setIsOpenPremiumPrice}
+          changeForm={handleFormChange}
+          form={form}
+        />
         <div className="flex flex-col px-14 pt-8">
           <Toast
             message={errorMessage}
@@ -941,7 +966,8 @@ const ModalMention: React.FC<props> = ({
                     },
                     pie_title: '',
                     pie_amount: 0,
-                    pie: []
+                    pie: [],
+                    premium_fee: ''
                   });
                   setAudio(null);
                   setMedia([]);

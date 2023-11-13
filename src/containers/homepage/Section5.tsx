@@ -1,0 +1,75 @@
+import {
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader
+} from '@material-tailwind/react';
+import React, { useState } from 'react';
+import ArticlePage from './article/ArticlePage';
+import NewsPage from './news/NewsPage';
+
+const Section5: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('article');
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div className="w-full h-auto cursor-default">
+      <div className="text-3xl font-semibold text-[#262626]">SeedsPedia</div>
+      <div className=" text-sm mt-3 font-light text-[#262626]">
+        Your all-in-one source for financial updates
+      </div>
+      <div className="flex items-center justify-center h-full">
+        <Tabs value={activeTab}>
+          <TabsHeader
+            className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
+            indicatorProps={{
+              className: 'shadow-none rounded-none'
+            }}
+          >
+            <Tab
+              value="article"
+              onClick={() => {
+                handleTabChange('article');
+              }}
+              className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                activeTab === 'article'
+                  ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
+                  : 'text-[#7C7C7C] text-xl font-normal'
+              }`}
+            >
+              Article
+            </Tab>
+            <Tab
+              value="news"
+              onClick={() => {
+                handleTabChange('news');
+              }}
+              className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                activeTab === 'news'
+                  ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
+                  : 'text-[#7C7C7C] text-xl font-normal'
+              }`}
+            >
+              News
+            </Tab>
+          </TabsHeader>
+          <TabsBody>
+            <TabPanel value="article">
+              <ArticlePage />
+            </TabPanel>
+            <TabPanel value="news">
+              <NewsPage />
+            </TabPanel>
+          </TabsBody>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default Section5;

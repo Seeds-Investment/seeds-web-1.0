@@ -1,12 +1,12 @@
 'use client';
+import MoreOption from '@/components/MoreOption';
 import Modal from '@/components/ui/modal/Modal';
 import {
   Bookmark,
   ChatBubble,
   Dot,
   Pin,
-  ShareBlack,
-  TripleDots
+  ShareBlack
 } from '@/constants/assets/icons';
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
@@ -715,13 +715,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                         )
                       : null}
                   </div>
-                  <Image
-                    src={TripleDots.src}
-                    alt={TripleDots.alt}
-                    height={8}
-                    width={8}
-                    className="w-auto h-auto pr-2"
-                  />
+                  <MoreOption dataPost={dataPost} />
                 </div>
                 <div className="flex gap-1 items-center text-gray-500">
                   <Typography className="text-xs md:text-sm">

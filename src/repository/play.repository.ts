@@ -79,4 +79,3 @@ export const getPlaySimulation = async (datePeriod: string): Promise<any> => {
     console.error('Error fetching play simulation:', error);
   }
 };
-

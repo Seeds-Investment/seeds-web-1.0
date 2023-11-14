@@ -15,7 +15,7 @@ interface dataInterface {
 const initialFilterAsset = {
   limit: 5,
   page: 1,
-  sortBy: 'crypto'
+  assetType: 'crypto'
 };
 
 export default function CardAsset(): React.ReactElement {
@@ -23,21 +23,10 @@ export default function CardAsset(): React.ReactElement {
   const [isLoadingAsset, setIsLoadingAsset] = useState(false);
   const [filterAsset, setFilterAsset] = useState(initialFilterAsset);
 
-  const handleSortBy = (event: any): void => {
-    setFilterAsset(prevState => ({
-      ...prevState,
-      sortBy: event.target.value
-    }));
-
-    fetchTopAsset()
-      .then()
-      .catch(() => {});
-  };
-
-  const fetchTopAsset = async (): Promise<void> => {
+  const fetchTopAsset = async (params: any): Promise<void> => {
     try {
       setIsLoadingAsset(true);
-      assetTop(filterAsset)
+      assetTop(params)
         .then(res => {
           setAsset(res.result);
           setIsLoadingAsset(false);
@@ -53,7 +42,7 @@ export default function CardAsset(): React.ReactElement {
   };
 
   useEffect(() => {
-    fetchTopAsset()
+    fetchTopAsset(filterAsset)
       .then()
       .catch(() => {});
   }, []);
@@ -64,11 +53,20 @@ export default function CardAsset(): React.ReactElement {
         <>
           <div className="flex flex-row items-center justify-center my-10">
             <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
-              {filterAsset.sortBy === 'crypto' ? (
+              {filterAsset.assetType === 'crypto' ? (
                 <button
                   className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
-                  onClick={handleSortBy}
-                  name="sortBy"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'crypto'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'crypto'
+                    });
+                  }}
+                  name="assetType"
                   value="crypto"
                 >
                   Crypto
@@ -76,8 +74,17 @@ export default function CardAsset(): React.ReactElement {
               ) : (
                 <button
                   className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
-                  onClick={handleSortBy}
-                  name="sortBy"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'crypto'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'crypto'
+                    });
+                  }}
+                  name="assetType"
                   value="crypto"
                 >
                   Crypto
@@ -85,53 +92,98 @@ export default function CardAsset(): React.ReactElement {
               )}
             </div>
             <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
-              {filterAsset.sortBy === 'idStock' ? (
+              {filterAsset.assetType === 'id_stock' ? (
                 <button
                   className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
-                  onClick={handleSortBy}
-                  name="sortBy"
-                  value="idStock"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'id_stock'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'id_stock'
+                    });
+                  }}
+                  name="assetType"
+                  value="id_stock"
                 >
                   ID Stocks
                 </button>
               ) : (
                 <button
                   className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
-                  onClick={handleSortBy}
-                  name="sortBy"
-                  value="idStock"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'id_stock'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'id_stock'
+                    });
+                  }}
+                  name="assetType"
+                  value="id_stock"
                 >
                   ID Stocks
                 </button>
               )}
             </div>
             <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
-              {filterAsset.sortBy === 'usStock' ? (
+              {filterAsset.assetType === 'us_stock' ? (
                 <button
                   className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
-                  onClick={handleSortBy}
-                  name="sortBy"
-                  value="usStock"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'us_stock'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'us_stock'
+                    });
+                  }}
+                  name="assetType"
+                  value="us_stock"
                 >
                   US Stocks
                 </button>
               ) : (
                 <button
                   className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
-                  onClick={handleSortBy}
-                  name="sortBy"
-                  value="usStock"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'us_stock'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'us_stock'
+                    });
+                  }}
+                  name="assetType"
+                  value="us_stock"
                 >
                   US Stocks
                 </button>
               )}
             </div>
             <div className="whitespace-nowrap rounded-lg text-sm mr-2 md:mr-4 shadow-lg">
-              {filterAsset.sortBy === 'commodities' ? (
+              {filterAsset.assetType === 'commodities' ? (
                 <button
                   className="text-white p-3 rounded-lg text-xs md:text-base font-semibold bg-gradient-to-r from-[#7555DA] to-[#4FE6AF]"
-                  onClick={handleSortBy}
-                  name="sortBy"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'commodities'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'commodities'
+                    });
+                  }}
+                  name="assetType"
                   value="commodities"
                 >
                   Commodities
@@ -139,8 +191,17 @@ export default function CardAsset(): React.ReactElement {
               ) : (
                 <button
                   className="text-[#7C7C7C] p-3 rounded-lg text-xs md:text-base font-semibold bg-white"
-                  onClick={handleSortBy}
-                  name="sortBy"
+                  onClick={() => {
+                    setFilterAsset({
+                      ...filterAsset,
+                      assetType: 'commodities'
+                    });
+                    void fetchTopAsset({
+                      ...filterAsset,
+                      assetType: 'commodities'
+                    });
+                  }}
+                  name="assetType"
                   value="commodities"
                 >
                   Commodities
@@ -192,7 +253,9 @@ export default function CardAsset(): React.ReactElement {
               </Card>
             ))
           ) : (
-            <p>not found</p>
+            <Typography className="w-full text-base font-semibold text-center">
+              Not Found
+            </Typography>
           )}
         </>
       )}

@@ -14,7 +14,8 @@ export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
   const [dataLeaderboard, setDataLeaderboard] = useState<leaderboard[]>([]);
 
-  const devUrl = process?.env?.NEXT_PUBLIC_URL ?? '';
+  const devUrl =
+    process?.env?.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance';
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       const url: string = devUrl ?? '';
@@ -47,7 +48,7 @@ export default function Section1(): React.ReactElement {
     } else {
       console.error('devUrl is not a valid string or is an empty string.');
     }
-  }, [devUrl, setDataLeaderboard]);
+  }, []);
   interface leaderboard {
     user_id: string;
     avatar_url: string;

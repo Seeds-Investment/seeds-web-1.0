@@ -13,7 +13,7 @@ export const VoiceRecorder: React.FC<props> = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  if (audio !== undefined) {
+  if (audio === '') {
     console.log(audioUrl);
   }
   const mediaRecorder = useRef<MediaRecorder | null>(null);

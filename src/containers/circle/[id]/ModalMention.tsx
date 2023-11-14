@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { PDFViewer } from 'public/assets/circle';
 import { XIcon } from 'public/assets/vector';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mention, MentionsInput } from 'react-mentions';
 import ModalPie from './ModalPie';
@@ -171,7 +171,10 @@ const tagOption = [
     name: 'Play'
   }
 ];
-
+interface typeOfSelected {
+  id: string;
+  tag: string;
+}
 const ModalMention: React.FC<props> = ({
   open,
   handleOpen,
@@ -193,8 +196,14 @@ const ModalMention: React.FC<props> = ({
   const [pages, setPages] = useState('text');
   const [drop, setDrop] = useState(false);
   const [isPieModalOpen, setIsPieModalOpen] = useState(false);
+  const [isSymbol, setIsSymbol] = useState(false);
   const [document, setDocument]: any = useState<any>(null);
-  const [isUserSuggest, setIsUserSuggest] = useState(false);
+  const [lastWordWithSymbol, setLastWordsWithSymbol] = useState<string>('');
+  const [lastWordWithChar, setLastWordsWithChar] = useState<string>('');
+  const [selectedValue, setSelectedValue] = useState<typeOfSelected>({
+    id: '',
+    tag: ''
+  });
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
@@ -267,19 +276,6 @@ const ModalMention: React.FC<props> = ({
   }, [form, audio, media, document]);
 
   useEffect(() => {
-    if (form.content_text?.length > 0) {
-      getUserListForTag(form.content_text);
-    } else {
-      setOtherTagList({
-        peopleList: [],
-        circleList: [],
-        playList: []
-      });
-      setTagLists([]);
-    }
-    if (form.content_text.length === 0) {
-      setIsUserSuggest(false);
-    }
     if (form.content_text.length > 250) {
       setIsError(true);
       setIsDisable(true);
@@ -289,17 +285,126 @@ const ModalMention: React.FC<props> = ({
     }
   }, [form.content_text]);
 
-  const getUserListForTag = useCallback(
-    (value: string): void => {
+  useEffect(() => {
+    if (otherTagId === 1) {
+      setTagLists(otherTagList?.peopleList);
+    } else if (otherTagId === 2) {
+      setTagLists(otherTagList?.circleList);
+    } else if (otherTagId === 3) {
+      setTagLists(otherTagList?.playList);
+    }
+  }, [otherTagId]);
+
+  useEffect(() => {
+    if (selectedValue.tag.length > 0) {
+      setIsSymbol(false);
+      if (form.content_text.includes(' ')) {
+        let isSpace = false;
+        const words = form.content_text.split(' ');
+        const currentWord = words[words.length - 1];
+        const wordBefore = words[words.length - 2];
+        if (wordBefore.endsWith(' ')) {
+          wordBefore.replace(' ', '');
+          words.pop();
+          isSpace = true;
+        }
+        words.pop();
+        let newVal = '';
+        if (currentWord.includes('@')) {
+          const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id})`;
+          if (isSpace) {
+            newVal = words.join(' ') + wordBefore + newActualTag;
+          } else {
+            newVal = words.join(' ') + newActualTag;
+          }
+        }
+        if (currentWord.includes('$')) {
+          const newActualTag = ` $[${selectedValue.tag}](${selectedValue.id})`;
+          newVal = words.join(' ') + newActualTag;
+        }
+        setForm(prevForm => ({
+          ...prevForm,
+          content_text: newVal
+        }));
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      } else {
+        if (form.content_text.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        if (form.content_text.includes('$')) {
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        setSelectedValue({
+          id: '',
+          tag: ''
+        });
+      }
+    }
+  }, [selectedValue]);
+
+  useEffect(() => {
+    if (lastWordWithSymbol.includes('#') || lastWordWithSymbol.includes('$')) {
+      setIsSymbol(true);
+    } else if (
+      !lastWordWithSymbol.includes('#') ||
+      !lastWordWithSymbol.includes('$')
+    ) {
+      setIsSymbol(false);
+    }
+  }, [lastWordWithSymbol]);
+
+  useEffect(() => {
+    if (lastWordWithChar.length > 0) {
+      setIsSymbol(true);
+    }
+  });
+  const handleFormChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement> | any
+  ): any => {
+    const { name, value } = event.target;
+    if (name === 'pie_amount') {
+      const formattedValue = formatCurrency(value);
+      setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
+    }
+    const newActualValue = value;
+    setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
+    const API_TYPE = ['people', 'plays', 'circles'];
+    const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
+    const words = value.split(' ');
+    const circleFind = value.split('@');
+    const currentCircleFind = circleFind[circleFind.length - 1];
+
+    if (circleFind.length > 0) {
+      setLastWordsWithChar(currentCircleFind);
+    }
+
+    const currentWord = words[words.length - 1];
+    if (words.length > 0) {
+      setLastWordsWithSymbol(currentWord);
+    } else {
+      setLastWordsWithSymbol(value);
+    }
+
+    if (matches?.length > 0) {
+      const lastMention = matches[matches.length - 1];
+      const cleanedValue = lastMention.replace(/[#$@]/g, '');
+
       if (debounceTimer !== null) clearTimeout(debounceTimer);
-      setDebounceTimer(
-        setTimeout((): void => {
-          void (async (): Promise<void> => {
-            const API_TYPE = ['people', 'plays', 'circles'];
-            const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
-            if (Array.isArray(matches) && matches.length > 0) {
-              const lastMention = matches[matches.length - 1];
-              const cleanedValue = lastMention.replace(/[#$@]/g, '');
+      if (lastMention.length > 3) {
+        setDebounceTimer(
+          setTimeout((): void => {
+            void (async (): Promise<void> => {
               try {
                 if (lastMention.includes('#') === true) {
                   const { data }: any = await getUserTagList(
@@ -335,15 +440,18 @@ const ModalMention: React.FC<props> = ({
                   setOtherTagList({
                     peopleList: results[0]?.data?.map((item: any) => ({
                       ...item,
-                      id: `${item.id as string}-people`
+                      id: `${item.id as string}-people`,
+                      display: item.tag
                     })),
                     playList: results[1]?.data?.map((item: any) => ({
                       ...item,
-                      id: `${item.id as string}-play`
+                      id: `${item.id as string}-play`,
+                      display: item.name
                     })),
                     circleList: results[2]?.data?.map((item: any) => ({
                       ...item,
-                      id: `${item.id as string}-circle`
+                      id: `${item.id as string}-circle`,
+                      display: item.name
                     }))
                   });
                   setTimeout(() => {
@@ -352,8 +460,7 @@ const ModalMention: React.FC<props> = ({
                       setTagLists(
                         results[0].data.map((item: any) => ({
                           ...item,
-                          id: `${item.id as string}-people`,
-                          display: item.tag
+                          id: `${item.id as string}-people`
                         }))
                       );
                     } else if (results[1]?.data?.length > 0) {
@@ -361,8 +468,7 @@ const ModalMention: React.FC<props> = ({
                       setTagLists(
                         results[1].data.map((item: any) => ({
                           ...item,
-                          id: `${item.id as string}-play`,
-                          display: item.name
+                          id: `${item.id as string}-play`
                         }))
                       );
                     } else if (results[2]?.data?.length > 0) {
@@ -370,8 +476,7 @@ const ModalMention: React.FC<props> = ({
                       setTagLists(
                         results[2].data.map((item: any) => ({
                           ...item,
-                          id: `${item.id as string}-circle`,
-                          display: item.name
+                          id: `${item.id as string}-circle`
                         }))
                       );
                     }
@@ -380,25 +485,10 @@ const ModalMention: React.FC<props> = ({
               } catch (_) {
                 console.log(_);
               }
-            }
-          })();
-        }, 500)
-      );
-    },
-    [setDebounceTimer]
-  );
-
-  const handleFormChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ): any => {
-    const { name, value } = event.target;
-    const newActualValue = value;
-
-    if (name === 'pie_amount') {
-      const formattedValue = formatCurrency(value);
-      setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
-    } else {
-      setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
+            })();
+          }, 500)
+        );
+      }
     }
   };
 
@@ -477,7 +567,6 @@ const ModalMention: React.FC<props> = ({
       setDrop(false);
     }
   };
-  console.log(form);
 
   const postMedia = async (mediaFile: any): Promise<void> => {
     try {
@@ -627,45 +716,268 @@ const ModalMention: React.FC<props> = ({
     }
   }, [open, pages]);
 
+  const renderUserSuggestion = (): JSX.Element | undefined => {
+    if (lastWordWithChar.length > 3 && isSymbol) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="flex justify-center gap-4">
+            {tagOption.map((el: { id: number; name: string }, i: number) => {
+              return (
+                <div
+                  className={`flex items-center p-2 border rounded-lg cursor-pointer px-4 ${
+                    otherTagId === el.id
+                      ? 'border-seeds-button-green bg-seeds-button-green/20'
+                      : 'border-neutral-soft'
+                  }`}
+                  key={el.id}
+                  onClick={() => {
+                    selectTypeTag(el);
+                  }}
+                >
+                  <Typography
+                    className={`font-poppins text-base font-normal ${
+                      otherTagId === el.id
+                        ? 'text-seeds-button-green'
+                        : 'text-neutral-soft'
+                    }`}
+                  >
+                    {el.name}
+                  </Typography>
+                </div>
+              );
+            })}
+          </div>
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {tagLists?.map((el: any, i: number) => {
+              if (
+                el?.tag === undefined &&
+                el?.name.toLowerCase().includes(lastWordWithChar) === true
+              ) {
+                return (
+                  <div
+                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                    key={el.id}
+                    onClick={() => {
+                      const newTag = {
+                        tag: el.tag,
+                        id: el?.id
+                      };
+                      if (
+                        el?.members !== undefined ||
+                        el?.participants !== undefined
+                      ) {
+                        newTag.tag = el?.name;
+                      }
+                      setOtherTagList({
+                        peopleList: [],
+                        circleList: [],
+                        playList: []
+                      });
+                      setSelectedValue(newTag);
+                      setIsSymbol(false);
+                    }}
+                  >
+                    {el?.avatar !== undefined
+                      ? renderAvatar(el?.avatar)
+                      : el?.banner !== undefined
+                      ? renderAvatar(el?.banner)
+                      : null}
+                    {el?.tag !== undefined ? (
+                      renderNameAndTag(el?.name, el?.tag)
+                    ) : el?.members !== undefined ? (
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <Typography className="text-lg text-black font-poppins font-medium">
+                            {el?.name}
+                          </Typography>
+                          <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                            {el?.members} members
+                          </Typography>
+                        </div>
+                        <div className="flex items-center">
+                          {el?.hashtags?.map((el: any, i: number) => {
+                            return (
+                              <Typography
+                                key={`${el as string}${i}`}
+                                className="font-poppins text-seeds-button-green text-base font-semibold"
+                              >
+                                #{el}
+                              </Typography>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : el?.participants !== undefined ? (
+                      <div className="flex flex-col gap-2">
+                        <Typography className="text-lg text-black font-poppins font-medium">
+                          {el?.name}
+                        </Typography>
+                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                          {el?.participants} participants
+                        </Typography>
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              } else if (el?.tag !== undefined) {
+                return (
+                  <div
+                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                    key={el.id}
+                    onClick={() => {
+                      const newTag = {
+                        tag: el.tag,
+                        id: el?.id
+                      };
+                      if (
+                        el?.members !== undefined ||
+                        el?.participants !== undefined
+                      ) {
+                        newTag.tag = el?.name;
+                      }
+                      setOtherTagList({
+                        peopleList: [],
+                        circleList: [],
+                        playList: []
+                      });
+                      setSelectedValue(newTag);
+                      setIsSymbol(false);
+                    }}
+                  >
+                    {el?.avatar !== undefined
+                      ? renderAvatar(el?.avatar)
+                      : el?.banner !== undefined
+                      ? renderAvatar(el?.banner)
+                      : null}
+                    {el?.tag !== undefined ? (
+                      renderNameAndTag(el?.name, el?.tag)
+                    ) : el?.members !== undefined ? (
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <Typography className="text-lg text-black font-poppins font-medium">
+                            {el?.name}
+                          </Typography>
+                          <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                            {el?.members} members
+                          </Typography>
+                        </div>
+                        <div className="flex items-center">
+                          {el?.hashtags?.map((el: any, i: number) => {
+                            return (
+                              <Typography
+                                key={`${el as string}${i}`}
+                                className="font-poppins text-seeds-button-green text-base font-semibold"
+                              >
+                                #{el}
+                              </Typography>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : el?.participants !== undefined ? (
+                      <div className="flex flex-col gap-2">
+                        <Typography className="text-lg text-black font-poppins font-medium">
+                          {el?.name}
+                        </Typography>
+                        <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                          {el?.participants} participants
+                        </Typography>
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderDollarSuggestion = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('$') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {dollarLists?.map((el: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={el.id}
+                  onClick={() => {
+                    const newDollar = {
+                      tag: el.ticker,
+                      id: el?.id
+                    };
+                    setDollarLists([]);
+                    setSelectedValue(newDollar);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderAvatar(el?.logo)}
+                  <div className="flex flex-col">
+                    <Typography className="text-lg text-black font-poppins font-medium">
+                      {el?.ticker} / <span>{el?.currency}</span>
+                    </Typography>
+                    <Typography className="font-poppins text-neutral-soft text-base font-normal">
+                      {el?.name}
+                    </Typography>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const renderUserHashtags = (): JSX.Element | undefined => {
+    if (
+      lastWordWithSymbol.length > 3 &&
+      lastWordWithSymbol.includes('#') &&
+      isSymbol
+    ) {
+      return (
+        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+          <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
+            {hashtags?.map((hashtag: any) => {
+              return (
+                <div
+                  className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
+                  key={hashtag.counter}
+                  onClick={() => {
+                    const newTag = {
+                      tag: hashtag.hashtag,
+                      id: ''
+                    };
+                    setHashtags([]);
+                    setSelectedValue(newTag);
+                    setIsSymbol(false);
+                  }}
+                >
+                  {renderHashtags(hashtag.hashtag, hashtag.counter)}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+  };
+
   const handlePages = (): any => {
     if (pages === 'text') {
       return (
         <div className="mt-2">
-          {isUserSuggest && (
-            <div className="flex justify-center gap-4">
-              {tagOption.map((el: { id: number; name: string }, i: number) => {
-                return (
-                  <div
-                    className={`flex items-center p-2 border rounded-lg cursor-pointer px-4 ${
-                      otherTagId === el.id
-                        ? 'border-seeds-button-green bg-seeds-button-green/20'
-                        : 'border-neutral-soft'
-                    }`}
-                    key={el.id}
-                    onClick={() => {
-                      selectTypeTag(el);
-                    }}
-                  >
-                    <Typography
-                      className={`font-poppins text-base font-normal ${
-                        otherTagId === el.id
-                          ? 'text-seeds-button-green'
-                          : 'text-neutral-soft'
-                      }`}
-                    >
-                      {el.name}
-                    </Typography>
-                  </div>
-                );
-              })}
-            </div>
-          )}
           <MentionsInput
             onChange={e => {
-              setForm(prevForm => ({
-                ...prevForm,
-                content_text: e.target.value
-              }));
+              handleFormChange(e);
             }}
             ref={containerRef}
             value={form.content_text}
@@ -677,142 +989,26 @@ const ModalMention: React.FC<props> = ({
           >
             <Mention
               trigger={'@'}
-              data={tagLists}
+              data={[]}
               markup="@[__display__](__id__)"
               style={{ color: '#4FE6AF' }}
-              renderSuggestion={suggestion => {
-                setIsUserSuggest(true);
-                return (
-                  <div
-                    className="flex py-2 border-b px-2 border-neutral-soft cursor-pointer gap-2 w-full"
-                    key={suggestion.id}
-                    onClick={() => {
-                      setOtherTagList({
-                        peopleList: [],
-                        circleList: [],
-                        playList: []
-                      });
-                      setTagLists([]);
-                      setIsUserSuggest(false);
-                    }}
-                  >
-                    {tagLists.map((el: any) => {
-                      if (suggestion.id === el.id) {
-                        return (
-                          <>
-                            {el?.avatar !== undefined
-                              ? renderAvatar(el?.avatar)
-                              : el?.banner !== undefined
-                              ? renderAvatar(el?.banner)
-                              : null}
-                            {el?.tag !== undefined ? (
-                              renderNameAndTag(el?.name, el?.tag, el?.verified)
-                            ) : el?.members !== undefined ? (
-                              <div className="flex flex-col">
-                                <div className="flex items-center gap-2">
-                                  <Typography className="text-lg text-black font-poppins font-medium">
-                                    {el?.name}
-                                  </Typography>
-                                  <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                                    {el?.members} members
-                                  </Typography>
-                                </div>
-                                <div className="flex items-center">
-                                  {el?.hashtags?.map((el: any, i: number) => {
-                                    return (
-                                      <Typography
-                                        key={`${el as string}${i}`}
-                                        className="font-poppins text-seeds-button-green text-base font-semibold"
-                                      >
-                                        #{el}
-                                      </Typography>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            ) : el?.participants !== undefined ? (
-                              <div className="flex flex-col gap-2">
-                                <Typography className="text-lg text-black font-poppins font-medium">
-                                  {el?.name}
-                                </Typography>
-                                <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                                  {el?.participants} participants
-                                </Typography>
-                              </div>
-                            ) : null}
-                          </>
-                        );
-                      }
-                      return <></>;
-                    })}
-                  </div>
-                );
-              }}
             />
             <Mention
               trigger={'$'}
-              data={dollarLists}
+              data={[]}
               markup="$[__display__](__id__)"
               style={{ color: '#4FE6AF' }}
-              renderSuggestion={suggestion => {
-                setIsUserSuggest(false);
-                return (
-                  <div
-                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
-                    key={suggestion.id}
-                    onClick={() => {
-                      setDollarLists([]);
-                    }}
-                  >
-                    {dollarLists.map((el: any) => {
-                      if (suggestion.id === el.id) {
-                        return (
-                          <>
-                            {renderAvatar(el?.logo)}
-                            <div className="flex flex-col">
-                              <Typography className="text-lg text-black font-poppins font-medium">
-                                {el?.ticker} / <span>{el?.currency}</span>
-                              </Typography>
-                              <Typography className="font-poppins text-neutral-soft text-base font-normal">
-                                {el?.name}
-                              </Typography>
-                            </div>
-                            ;
-                          </>
-                        );
-                      }
-                      return <></>;
-                    })}
-                  </div>
-                );
-              }}
             />
             <Mention
               trigger={'#'}
-              data={hashtags}
+              data={[]}
               markup="#[__display__]()"
               style={{ color: '#4FE6AF' }}
-              renderSuggestion={suggestion => {
-                setIsUserSuggest(false);
-                return (
-                  <div
-                    className="flex py-2 border-b border-neutral-soft cursor-pointer gap-2"
-                    key={suggestion.display}
-                    onClick={() => {
-                      setHashtags([]);
-                    }}
-                  >
-                    {hashtags.map((el: any) => {
-                      if (el.hashtag === suggestion.display) {
-                        return <>{renderHashtags(el.hashtag, el.counter)}</>;
-                      }
-                      return <></>;
-                    })}
-                  </div>
-                );
-              }}
             />
           </MentionsInput>
+          {renderUserSuggestion()}
+          {renderDollarSuggestion()}
+          {renderUserHashtags()}
         </div>
       );
     } else if (pages === 'gif') {

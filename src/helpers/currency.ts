@@ -11,3 +11,10 @@ export const stringToNumberCurrency = (value: string): number => {
   const numberValue = parseInt(stringWithoutDots, 10);
   return numberValue;
 };
+
+export const standartCurrency = (value: any): string => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'IDR'
+  }).format(value);
+};

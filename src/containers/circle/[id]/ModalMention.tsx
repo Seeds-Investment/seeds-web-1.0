@@ -415,9 +415,11 @@ const ModalMention: React.FC<props> = ({
     if (name === 'pie_amount') {
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
+    } else {
+      const newActualValue = value;
+      setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
+      setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
     }
-    const newActualValue = value;
-    setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
     const API_TYPE = ['people', 'plays', 'circles'];
     const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
     const words = value.split(' ');

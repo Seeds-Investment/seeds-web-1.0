@@ -187,6 +187,7 @@ const ModalMention: React.FC<props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const circleId: string | any = router.query.circleid;
+  const [findId, setFindId] = useState<number>(1);
   const [isError, setIsError] = useState<boolean>(false);
   const [isDisable, setIsDisable] = useState<boolean>(false);
   const [isEmpty, setisEmpty] = useState<boolean>(false);
@@ -258,6 +259,13 @@ const ModalMention: React.FC<props> = ({
   }, []);
 
   useEffect(() => {
+    const findCircle = form.content_text.split('@');
+    if (findId - findCircle.length > 1) {
+      setFindId((prevState: number) => prevState - 1);
+    }
+  }, [form.content_text]);
+
+  useEffect(() => {
     if (
       form.content_text.length === 0 &&
       form.media_urls.length === 0 &&
@@ -282,6 +290,9 @@ const ModalMention: React.FC<props> = ({
       setErrorMessage('Your thread is exceeding the maximum character limit');
     } else {
       setIsDisable(false);
+    }
+    if (form.content_text.length < 3) {
+      setLastWordsWithChar('');
     }
   }, [form.content_text]);
 
@@ -310,8 +321,26 @@ const ModalMention: React.FC<props> = ({
         }
         words.pop();
         let newVal = '';
+        const circleFind = form.content_text.split('@');
+        circleFind.pop();
+        let str: string = '';
+        circleFind.forEach((el: string, i: number) => {
+          if (i > 0) {
+            str += `@${el}`;
+          } else {
+            str += el;
+          }
+        });
+
+        const currentCircleFind = `@${circleFind[circleFind.length - 1]}`;
+        if (currentCircleFind.includes('@')) {
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id}) `;
+          newVal = str + newActualTag;
+        }
+        console.log(newVal);
+
         if (currentWord.includes('@')) {
-          const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id})`;
+          const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id}) `;
           if (isSpace) {
             newVal = words.join(' ') + wordBefore + newActualTag;
           } else {
@@ -319,9 +348,14 @@ const ModalMention: React.FC<props> = ({
           }
         }
         if (currentWord.includes('$')) {
-          const newActualTag = ` $[${selectedValue.tag}](${selectedValue.id})`;
+          const newActualTag = ` $[${selectedValue.tag}](${selectedValue.id}) `;
           newVal = words.join(' ') + newActualTag;
         }
+        if (currentWord.includes('#')) {
+          const newActualTag = ` #[${selectedValue.tag}]() `;
+          newVal = words.join(' ') + newActualTag;
+        }
+
         setForm(prevForm => ({
           ...prevForm,
           content_text: newVal
@@ -332,14 +366,23 @@ const ModalMention: React.FC<props> = ({
         });
       } else {
         if (form.content_text.includes('@')) {
-          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id})`;
+          const newActualTag = `@[${selectedValue.tag}](${selectedValue.id}) `;
           setForm(prevForm => ({
             ...prevForm,
             content_text: newActualTag
           }));
         }
         if (form.content_text.includes('$')) {
-          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id})`;
+          const newActualTag = `$[${selectedValue.tag}](${selectedValue.id}) `;
+          setForm(prevForm => ({
+            ...prevForm,
+            content_text: newActualTag
+          }));
+        }
+        if (form.content_text.includes('#')) {
+          const newActualTag = `#[${selectedValue.tag}]() `;
+          console.log(newActualTag, selectedValue.tag);
+
           setForm(prevForm => ({
             ...prevForm,
             content_text: newActualTag
@@ -354,21 +397,17 @@ const ModalMention: React.FC<props> = ({
   }, [selectedValue]);
 
   useEffect(() => {
-    if (lastWordWithSymbol.includes('#') || lastWordWithSymbol.includes('$')) {
-      setIsSymbol(true);
-    } else if (
-      !lastWordWithSymbol.includes('#') ||
-      !lastWordWithSymbol.includes('$')
+    if (
+      lastWordWithSymbol.includes('@') ||
+      lastWordWithSymbol.includes('#') ||
+      lastWordWithSymbol.includes('$')
     ) {
+      setIsSymbol(true);
+    } else {
       setIsSymbol(false);
     }
   }, [lastWordWithSymbol]);
 
-  useEffect(() => {
-    if (lastWordWithChar.length > 0) {
-      setIsSymbol(true);
-    }
-  });
   const handleFormChange = (
     event: React.ChangeEvent<HTMLTextAreaElement> | any
   ): any => {
@@ -385,8 +424,10 @@ const ModalMention: React.FC<props> = ({
     const circleFind = value.split('@');
     const currentCircleFind = circleFind[circleFind.length - 1];
 
-    if (circleFind.length > 0) {
-      setLastWordsWithChar(currentCircleFind);
+    if (circleFind.length - 1 === findId && circleFind.length > 1) {
+      setLastWordsWithChar(`@${currentCircleFind as string}`);
+    } else {
+      setLastWordsWithChar('');
     }
 
     const currentWord = words[words.length - 1];
@@ -717,7 +758,14 @@ const ModalMention: React.FC<props> = ({
   }, [open, pages]);
 
   const renderUserSuggestion = (): JSX.Element | undefined => {
-    if (lastWordWithChar.length > 3 && isSymbol) {
+    if (
+      (lastWordWithSymbol.length > 2 &&
+        lastWordWithSymbol.includes('@') &&
+        isSymbol) ||
+      (otherTagId !== 1 &&
+        lastWordWithChar.length > 2 &&
+        lastWordWithChar.includes('@'))
+    ) {
       return (
         <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
           <div className="flex justify-center gap-4">
@@ -751,7 +799,9 @@ const ModalMention: React.FC<props> = ({
             {tagLists?.map((el: any, i: number) => {
               if (
                 el?.tag === undefined &&
-                el?.name.toLowerCase().includes(lastWordWithChar) === true
+                el?.name
+                  .toLowerCase()
+                  .includes(lastWordWithChar.split('@')[1]) === true
               ) {
                 return (
                   <div
@@ -773,6 +823,8 @@ const ModalMention: React.FC<props> = ({
                         circleList: [],
                         playList: []
                       });
+                      setFindId((prevState: number) => prevState + 1);
+                      setLastWordsWithChar('');
                       setSelectedValue(newTag);
                       setIsSymbol(false);
                     }}
@@ -840,6 +892,8 @@ const ModalMention: React.FC<props> = ({
                         circleList: [],
                         playList: []
                       });
+                      setFindId((prevState: number) => prevState + 1);
+                      setLastWordsWithChar('');
                       setSelectedValue(newTag);
                       setIsSymbol(false);
                     }}

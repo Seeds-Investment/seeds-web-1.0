@@ -16,6 +16,7 @@ interface UserData {
 
 const Section3 = (): React.ReactElement => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -30,8 +31,48 @@ const Section3 = (): React.ReactElement => {
     void fetchData();
   }, []);
 
+  function copyValueWithUrl(valueToCopy: string): boolean {
+    const textToCopy = `${valueToCopy}`;
+
+    const textArea = document.createElement('textarea');
+    textArea.value = textToCopy;
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    try {
+      const copied = document.execCommand('copy');
+      if (copied) {
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 3000);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.error('Error copying text: ', err);
+      return false;
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
   return (
     <div className="w-full h-auto cursor-default">
+      {open && (
+        <div
+          id="myToast"
+          className="fixed right-10 z-50 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg"
+        >
+          <p className="text-sm">
+            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
+              i
+            </span>
+            Referral Code copied to Clipboard
+          </p>
+        </div>
+      )}
       <h1 className="text-3xl font-semibold text-[#262626]">Referral Code</h1>
       <div className="mt-4 flex">
         <div className="flex justify-between border w-full border-gray-300 px-4 py-2 rounded-md">
@@ -39,7 +80,7 @@ const Section3 = (): React.ReactElement => {
             type="text"
             value={userInfo?.refCode}
             placeholder="Enter your referral code"
-            className="w-full"
+            className="w-full bg-white"
             disabled
           />
           <div className="flex">
@@ -49,6 +90,9 @@ const Section3 = (): React.ReactElement => {
               viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              onClick={() => {
+                copyValueWithUrl(userInfo?.refCode ?? '');
+              }}
             >
               <g clipPath="url(#clip0_1957_35948)">
                 <path
@@ -85,6 +129,9 @@ const Section3 = (): React.ReactElement => {
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={() => {
+              copyValueWithUrl(userInfo?.refCode ?? '');
+            }}
           >
             <g clipPath="url(#clip0_1957_35951)">
               <path

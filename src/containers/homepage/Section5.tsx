@@ -28,7 +28,7 @@ const Section5: React.FC = () => {
           <TabsHeader
             className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
             indicatorProps={{
-              className: 'shadow-none rounded-none'
+              className: 'shadow-none rounded-none bg-transparent'
             }}
           >
             <Tab
@@ -38,7 +38,7 @@ const Section5: React.FC = () => {
               }}
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'article'
-                  ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
+                  ? 'text-[#4FE6AF] bg-gradient-to-t from-[#bff8e3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
                   : 'text-[#7C7C7C] text-xl font-normal'
               }`}
             >
@@ -51,7 +51,7 @@ const Section5: React.FC = () => {
               }}
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'news'
-                  ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
+                  ? 'text-[#4FE6AF] bg-gradient-to-t from-[#bff8e3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
                   : 'text-[#7C7C7C] text-xl font-normal'
               }`}
             >

@@ -44,6 +44,7 @@ interface typeOfSelection {
   name: string;
   svg: any;
   message: string;
+  type: string;
 }
 
 interface UserData {
@@ -133,25 +134,28 @@ const dataSelection: typeOfSelection[] = [
   {
     name: 'Public',
     svg: globe,
-    message: 'Everyone can see your post'
+    message: 'Everyone can see your post',
+    type: 'PUBLIC'
   },
   {
     name: 'Private',
     svg: privat,
-    message: 'Only you can see your post'
+    message: 'Only you can see your post',
+    type: 'PRIVATE'
   },
   {
     name: 'Friends Only',
     svg: friends,
-    message: 'Followers that you followback'
+    message: 'Followers that you followback',
+    type: 'FRIENDS'
   },
   {
     name: 'Premium',
     svg: star,
-    message: 'Followers that you followback'
+    message: 'Followers that you followback',
+    type: 'PREMIUM'
   }
 ];
-
 const tagOption = [
   {
     id: 1,

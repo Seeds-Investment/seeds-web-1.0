@@ -59,3 +59,23 @@ export const getPlayAll = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const getPlaySimulation = async (datePeriod: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    const response = await playService.get('/simulation/user-achievement', {
+      params: {
+        date_period: datePeriod
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching play simulation:', error);
+  }
+};

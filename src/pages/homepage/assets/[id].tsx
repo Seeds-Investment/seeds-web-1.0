@@ -1,9 +1,14 @@
 import CCard from '@/components/CCard';
+import LineChart from '@/components/LineChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { standartCurrency } from '@/helpers/currency';
-import { getAssetById } from '@/repository/asset.repository';
+import {
+  calculatePercentageDifference,
+  formatNumber,
+  standartCurrency
+} from '@/helpers/currency';
+import { getDetailAsset } from '@/repository/asset.repository';
 import { StarIcon } from '@heroicons/react/24/outline';
-import { Avatar, Typography } from '@material-tailwind/react';
+import { Avatar } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -12,14 +17,18 @@ const AssetDetailPage: React.FC = () => {
   const { id } = router.query;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>();
+  const [params, setParams] = useState({
+    tf: 'minutely',
+    currency: 'IDR'
+  });
 
-  console.log(isLoading);
+  console.log(isLoading, setParams);
 
   const fetchDetailAsset = async (): Promise<void> => {
     try {
       if (typeof id === 'string') {
         setIsLoading(true);
-        const response = await getAssetById(id);
+        const response = await getDetailAsset(id, params);
         setData(response.marketAsset);
         setIsLoading(false);
       }
@@ -65,7 +74,14 @@ const AssetDetailPage: React.FC = () => {
             {standartCurrency(data?.lastPrice.open)}
           </p>
           <p className="text-sm font-normal text-[#5E44FF]">
-            +123,13 (4,94%) - today
+            {data?.lastPrice.vwap} (
+            {
+              calculatePercentageDifference(
+                data?.lastPrice.open,
+                data?.lastPrice.close
+              )?.value
+            }{' '}
+            %) - today
           </p>
         </CCard>
         <CCard className="flex w-full md:w-2/3 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
@@ -79,19 +95,19 @@ const AssetDetailPage: React.FC = () => {
           <div className="flex flex-row">
             <div className="flex-col w-1/3 text-center items-center">
               <p className="text-base font-semibold text-black">
-                {standartCurrency(data?.lastPrice.open)}
+                {formatNumber(data?.lastPrice.open)}
               </p>
               <p className="text-base font-light text-[#7C7C7C]">Open</p>
             </div>
             <div className="flex-col w-1/3 text-center items-center">
               <p className="text-base font-semibold text-black">
-                {standartCurrency(data?.lastPrice.high)}
+                {formatNumber(data?.lastPrice.high)}
               </p>
               <p className="text-base font-light text-[#7C7C7C]">Day High</p>
             </div>
             <div className="flex-col w-1/3 text-center items-center">
               <p className="text-base font-semibold text-black">
-                {standartCurrency(data?.lastPrice.low)}
+                {formatNumber(data?.lastPrice.low)}
               </p>
               <p className="text-base font-light text-[#7C7C7C]">Day Low</p>
             </div>
@@ -99,9 +115,7 @@ const AssetDetailPage: React.FC = () => {
         </CCard>
       </div>
       <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
-        <Typography className="text-center text-black text-2xl font-bold">
-          Detail Asset
-        </Typography>
+        <LineChart data={data} />
       </CCard>
     </PageGradient>
   );

@@ -36,10 +36,10 @@ interface XpComponentProps {
 
 const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center w-full md:w-[334px] gap-4">
       {data !== undefined && (
         <>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center gap-2">
             <Image
               src={
                 data.currentExp >= 1000
@@ -53,14 +53,10 @@ const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
                   : Seeds.src
               }
               alt={'plant'}
-              width={60}
-              height={60}
-              className="w-auto h-auto aspect-auto"
+              width={31}
+              height={31}
             />
-            <Typography
-              variant="h1"
-              className="text-black font-bold text-sm md:text-lg mt-2"
-            >
+            <Typography className="text-[#201B1C] text-xs font-semibold font-poppins">
               {data.currentExp >= 1000
                 ? 'Tree'
                 : data.currentExp >= 500
@@ -72,38 +68,38 @@ const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
                 : 'Seeds'}
             </Typography>
           </div>
-          <div className="flex flex-col gap-5 w-full">
-            <Typography className="text-black font-extrabold">
+          <div className="flex flex-col gap-2 w-full mr-2.5">
+            <Typography className="leading-4 text-[#262626] text-[10px] font-bold font-poppins">
               You have {data.currentExp} XP
             </Typography>
             <div className="relative">
               <div className="flex justify-between items-center">
                 <div
-                  className={`rounded-full w-4 h-4 outline z-20 outline-4 ${
-                    data.currentExp > 0 ? 'bg-[#3AC4A0]' : 'bg-gray-400'
-                  } outline-gray-400`}
+                  className={`rounded-full w-[15px] h-[15px] z-20 border-[2.75px] border-[#E9E9E9] ${
+                    data.currentExp > 0 ? 'bg-[#3AC4A0]' : 'bg-[#E9E9E9]'
+                  }`}
                 ></div>
                 <div
-                  className={`rounded-full w-4 h-4 outline z-20 ${
-                    data.currentExp >= 200 ? 'bg-[#3AC4A0]' : 'bg-gray-400'
-                  } outline-4 outline-gray-400`}
+                  className={`rounded-full w-[15px] h-[15px] z-20 border-[2.75px] border-[#E9E9E9] ${
+                    data.currentExp >= 200 ? 'bg-[#3AC4A0]' : 'bg-[#E9E9E9]'
+                  }`}
                 ></div>
                 <div
-                  className={`rounded-full w-4 h-4 outline z-20 ${
-                    data.currentExp >= 300 ? 'bg-[#3AC4A0]' : 'bg-gray-400'
-                  } outline-4 outline-gray-400`}
+                  className={`rounded-full w-[15px] h-[15px] z-20 border-[2.75px] border-[#E9E9E9] ${
+                    data.currentExp >= 300 ? 'bg-[#3AC4A0]' : 'bg-[#E9E9E9]'
+                  }`}
                 ></div>
                 <div
-                  className={`rounded-full w-4 h-4 outline z-20 ${
-                    data.currentExp >= 500 ? 'bg-[#3AC4A0]' : 'bg-gray-400'
-                  } outline-4 outline-gray-400`}
+                  className={`rounded-full w-[15px] h-[15px] z-20 border-[2.75px] border-[#E9E9E9] ${
+                    data.currentExp >= 500 ? 'bg-[#3AC4A0]' : 'bg-[#E9E9E9]'
+                  }`}
                 ></div>
                 <div
-                  className={`rounded-full w-4 h-4 outline z-20 ${
-                    data.currentExp >= 1000 ? 'bg-[#3AC4A0]' : 'bg-gray-400'
-                  } outline-4 outline-gray-400`}
+                  className={`rounded-full w-[15px] h-[15px] z-20 border-[2.75px] border-[#E9E9E9] ${
+                    data.currentExp >= 1000 ? 'bg-[#3AC4A0]' : 'bg-[#E9E9E9]'
+                  }`}
                 ></div>
-                <div className="w-full rounded-full absolute bg-gray-400 left-0 right-0  h-2"></div>
+                <div className="w-full rounded-full absolute bg-[#E9E9E9] h-[3px]"></div>
                 <div
                   className={`${
                     data.currentExp >= 1000
@@ -119,13 +115,15 @@ const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
                     data.currentExp >= 0 && data.currentExp < 200
                       ? 'hidden'
                       : ''
-                  } absolute rounded-full bg-[#3AC4A0] left-0 right-0 h-2`}
+                  } absolute rounded-full bg-[#3AC4A0] h-[3px]`}
                 ></div>
               </div>
             </div>
-            <Typography>{data.nextExp} XP to your next level!</Typography>
+            <Typography className="leading-4 text-[10px] text-[#262626] font-poppins font-normal">
+              {data.nextExp} XP to your next level!
+            </Typography>
           </div>
-          <Image src={Arrow.src} alt={Arrow.alt} height={20} width={20} />{' '}
+          <Image src={Arrow.src} alt={Arrow.alt} height={24} width={24} />
         </>
       )}
     </div>

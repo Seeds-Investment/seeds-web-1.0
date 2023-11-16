@@ -1,4 +1,5 @@
 'use client';
+import info from '@/assets/my-profile/play/info.svg';
 import {
   ArrowDown,
   ArrowUp,
@@ -9,8 +10,12 @@ import {
   ShareBlack,
   TripleDots
 } from '@/constants/assets/icons';
-import { Maintenance, Sprout } from '@/constants/assets/images';
+import { Sprout } from '@/constants/assets/images';
 import {
+  Avatar,
+  Card,
+  CardBody,
+  CardHeader,
   Tab,
   TabPanel,
   Tabs,
@@ -21,7 +26,6 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import PostPie from './PostPie';
-import PostPol from './Postpol';
 
 interface DataItem {
   label: string;
@@ -177,33 +181,85 @@ const UnderLineTab = ({ userData }: Params): JSX.Element => {
       )
     },
     {
-      label: 'Space',
-      value: 'space',
+      label: 'Circle',
+      value: 'circle',
       content: (
-        <div className="flex flex-col  justify-center items-center">
-          <Image
-            src={Maintenance.src}
-            alt={Maintenance.alt}
-            width={120}
-            height={120}
-            className="w-auto h-auto aspect-square"
-          />
-          <Typography variant="h3" className="font-bold text-black">
-            Oops
-          </Typography>
-          <Typography className="text-xl text-gray-500">
-            Sorry, we are still developing this feature
-          </Typography>
-        </div>
+        // <div className="flex flex-col  justify-center items-center">
+        //   <Image
+        //     src={Maintenance.src}
+        //     alt={Maintenance.alt}
+        //     width={120}
+        //     height={120}
+        //     className="w-auto h-auto aspect-square"
+        //   />
+        //   <Typography variant="h3" className="font-bold text-black">
+        //     Oops
+        //   </Typography>
+        //   <Typography className="text-xl text-gray-500">
+        //     Sorry, we are still developing this feature
+        //   </Typography>
+        // </div>
+        <>
+          <Card shadow={false} className="w-[292px] h-[152.81px] ">
+            <CardHeader
+              floated={false}
+              shadow={false}
+              color="transparent"
+              className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
+            >
+              <Avatar
+                size="xl"
+                variant="circular"
+                alt="tania andrew"
+                className="border-2 border-white"
+                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+              />
+            </CardHeader>
+            <CardBody className="relative py-14 px-6 md:px-12">
+              <Typography
+                variant="h2"
+                color="white"
+                className="mb-6 font-medium leading-[1.5]"
+              >
+                How we design and code open-source projects?
+              </Typography>
+              <Typography variant="h5" className="mb-4 text-gray-400">
+                Tania Andrew
+              </Typography>
+            </CardBody>
+          </Card>
+        </>
       )
     },
     {
       label: 'Play',
       value: 'play',
       content: (
-        <div className="">
-          <PostPol />
-        </div>
+        <>
+          <Typography className="text-lg text-[#262626] font-semibold font-poppins">
+            Total Play :{' '}
+            <span className="text-sm text-[#7C7C7C] font-normal font-poppins">
+              50 tournament
+            </span>
+          </Typography>
+          <Card
+            shadow={false}
+            className="flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] w-[164px] h-[92px]"
+          >
+            <CardBody className="p-0 flex flex-col items-center gap-2">
+              <div className="flex gap-[5px]">
+                <Image src={info} alt="information" />
+                <Typography className="text-[#3AC4A0] text-xs font-normal font-poppins">
+                  Win Percentage
+                </Typography>
+              </div>
+
+              <Typography className="text-[#3AC4A0] text-3xl font-semibold font-poppins">
+                80%
+              </Typography>
+            </CardBody>
+          </Card>
+        </>
       )
     }
   ];

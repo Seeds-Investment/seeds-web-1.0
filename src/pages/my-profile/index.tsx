@@ -1,28 +1,19 @@
 'use client';
-import CButton from '@/components/CButton';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';
-import SeedsCoin from '@/components/SeedsCoinCard';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import UnderLineTab from '@/components/UnderlineTab';
-import {
-  ArrowLeftBlack,
-  Setting,
-  Share,
-  Verified
-} from '@/constants/assets/icons';
-import { BronzeMedal, GoldMedal, SilverMedal } from '@/constants/assets/images';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { Share, Verified } from '@/constants/assets/icons';
 import withAuth from '@/helpers/withAuth';
 import { getExpData } from '@/repository/exp.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import ID from 'public/assets/images/flags/ID.png';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 const ProfilePage = (): JSX.Element => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
   const router = useRouter();
 
@@ -63,67 +54,6 @@ const ProfilePage = (): JSX.Element => {
       .catch(() => {});
   }, []);
 
-  //   currentExp: 300,
-  //   nextExp: 90,
-  //   expExpiration: '2024-01-01 23:59:59',
-  //   tierList: [
-  //     {
-  //       image: 'seeds.png',
-  //       name: 'Seeds',
-  //       rewards: [],
-  //       exp: 0
-  //     },
-  //     {
-  //       image: 'sprout.png',
-  //       name: 'Sprout',
-  //       rewards: [
-  //         {
-  //           name: 'Create 1 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 200
-  //     },
-  //     {
-  //       image: 'seedling.png',
-  //       name: 'Seedling',
-  //       rewards: [
-  //         {
-  //           name: 'Create 2 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 300
-  //     },
-  //     {
-  //       image: 'sapling.png',
-  //       name: 'Sapling',
-  //       rewards: [
-  //         {
-  //           name: 'Create 3 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 500
-  //     },
-  //     {
-  //       image: 'tree.png',
-  //       name: 'Tree',
-  //       rewards: [
-  //         {
-  //           name: 'Create a Play Arena',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 1000
-  //     }
-  //   ]
-  // };
-
   const _handleReferalCode = (): any => {
     return router.push('/my-profile/referalCode');
   };
@@ -132,240 +62,175 @@ const ProfilePage = (): JSX.Element => {
     return router.push('/edit-profile');
   };
 
+  console.log(userData);
+
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="flex justify-center">
-        <CCard className="flex justify-center w-full rounded-none md:rounded-lg md:mx-12 md:mt-5">
-          <div className="flex justify-between mx-2 md:mx-8 items-center py-5">
-            <Link href={'/'}>
-              <Image
-                src={ArrowLeftBlack.src}
-                alt={ArrowLeftBlack.alt}
-                width={30}
-                height={30}
-                className="transition cursor-pointer ease-in-out hover:scale-150"
-              />
-            </Link>
-            <Typography className="text-black font-bold text-xl">
-              {t('ProfilePage.title')}
-            </Typography>
-
+      {/* New Card */}
+      <CCard className="p-4 md:p-5">
+        <div className="flex md:gap-5">
+          <div className="shrink-0">
             <Image
-              src={Setting.src}
-              alt={Setting.alt}
-              width={30}
-              className="transition hover:scale-150 cursor-pointer"
-              height={30}
-              onClick={() => {
-                router
-                  .replace('user-setting')
-                  .then()
-                  .catch(() => {});
-              }}
+              src={userData?.avatar}
+              alt="AVATAR"
+              width={128}
+              height={128}
+              className="rounded-full"
             />
           </div>
-          <div className="flex flex-col justify-start md:hidden">
-            <div className="flex justify-evenly mb-3">
-              <Image
-                src={userData?.avatar}
-                alt="AVATAR"
-                width={100}
-                height={100}
-                className="outline outline-black rounded-full"
-              />
-              <div>
-                <div className="flex justify-center gap-4">
-                  <div>
-                    <p className="flex justify-center text-black font-extrabold">
-                      {userData?.posts}
+          <div className="flex flex-col w-full gap-4 justify-center">
+            <div className="xl:flex hidden justify-between">
+              <div className="flex flex-col gap-1">
+                <div className="flex gap-2">
+                  <Typography className="text-lg font-semibold font-poppins text-[#201B1C]">
+                    @{userData?.seedsTag ?? ''}
+                  </Typography>
+                  {userData?.verified === false && (
+                    <Image
+                      src={Verified?.src}
+                      alt={Verified?.alt}
+                      height={12}
+                      width={12}
+                    />
+                  )}
+                  <div className="flex justify-center items-center py-1 px-2 bg-[#DCFCE4] my-0.5 rounded-full">
+                    <p className="leading-4 text-[10px] text-[#1A857D] font-poppins font-normal">
+                      #Label
                     </p>
-                    Post
                   </div>
-                  <div>
-                    <p className="flex justify-center text-black font-extrabold">
-                      {userData?.followers}
-                    </p>
-                    Followers
-                  </div>{' '}
-                  <div>
-                    <div className="flex justify-center text-black font-extrabold">
-                      {userData?.following}
-                    </div>
-                    Following
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-3">
                   <Image
-                    className="bg-[#F2FDF9] rounded-full"
-                    src={
-                      userData?.badge === 'gold'
-                        ? GoldMedal.src
-                        : userData?.badge === 'silver'
-                        ? SilverMedal.src
-                        : BronzeMedal.src
-                    }
-                    alt={
-                      userData?.badge === 'gold'
-                        ? GoldMedal.alt
-                        : userData?.badge === 'silver'
-                        ? SilverMedal.alt
-                        : BronzeMedal.alt
-                    }
-                    width={30}
-                    height={30}
+                    src={ID}
+                    alt="ID-flag"
+                    className="w-[30px] h-[20px] self-center"
                   />
-                  <div className="bg-[#BAFBD0] flex gap-1 items-center rounded-full px-3">
-                    <Typography className="text-[#3AC4A0] text-sm font-bold">
-                      {userData?.claims?.refCode}
-                    </Typography>
+                </div>
+                <Typography className="text-sm text-[#7C7C7C] font-normal font-poppins">
+                  {userData?.name}
+                </Typography>
+              </div>
+              <div className="flex gap-4">
+                <div
+                  className="bg-[#DCFCE480] flex gap-2 items-center justify-center rounded-full w-[170px] h-[42px] border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
+                  onClick={() => _handleReferalCode()}
+                >
+                  <Typography className="text-[#27A590] text-sm font-normal font-poppins">
+                    Ref.Code: {userData?.claims?.refCode}
+                  </Typography>
+                  <div className="bg-[#27A590] rounded-full w-[14px] h-[14px] flex justify-center">
                     <Image
                       src={Share.src}
                       alt={Share.alt}
-                      width={25}
-                      height={25}
-                      className="bg-[#96F7C1] rounded-full p-2"
+                      width={8}
+                      height={8}
                     />
                   </div>
-                  <div className="bg-white outline w-[71px] flex items-center justify-center outline-black rounded-full  text-black">
-                    <Typography className="text-[10px] font-semibold">
-                      Edit Profile
-                    </Typography>
-                  </div>
+                </div>
+                <div
+                  className="border border-[#262626] w-[94px] h-[42px] flex items-center justify-center rounded-full self-center cursor-pointer"
+                  onClick={_handleEditProfile}
+                >
+                  <Typography className="text-xs text-[#262626] font-poppins font-normal">
+                    Edit Profile
+                  </Typography>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 p-5">
-              <div className="flex gap-2">
-                <Typography className="text-lg text-black font-bold">
-                  @{userData?.seedsTag ?? ''}
-                </Typography>
-                {userData?.verified === true && (
-                  <Image
-                    src={Verified?.src}
-                    alt={Verified?.alt}
-                    height={15}
-                    width={15}
-                  />
-                )}
+            <div className="flex gap-10 h-[36px] md:h-11 justify-center md:justify-normal">
+              <div className="w-[26px] md:w-20 flex flex-col items-center justify-center">
+                <p className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
+                  {userData?.posts}
+                </p>
+                <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
+                  Post
+                </p>
               </div>
-              <Typography className=" text-black font-bold">
-                {userData?.name}
-              </Typography>
-              <Typography className="text-sm font-bold w-4/5">
+              <div className="w-14 md:w-20 flex flex-col items-center justify-center">
+                <p className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
+                  {userData?.followers}
+                </p>
+                <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
+                  Followers
+                </p>
+              </div>
+              <div className="w-14 md:w-20 flex flex-col items-center justify-center">
+                <div className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
+                  {userData?.following}
+                </div>
+                <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
+                  Following
+                </p>
+              </div>
+            </div>
+            <div className="xl:flex hidden">
+              <Typography className="text-[#201B1C] text-base font-normal font-poppins">
                 {userData?.bio}
               </Typography>
             </div>
+            <div className="xl:flex hidden">
+              <ExpInfo data={expData} />
+            </div>
           </div>
-          <div className="justify-between mx-10 hidden md:flex">
-            <div className="flex items-center gap-10 px-5 pb-5">
+        </div>
+        {/* TODO: WEB IN MOBILE DEVICE */}
+        <div className="flex xl:hidden flex-col gap-[7px] px-4 py-[15.5px]">
+          <div className="flex gap-2">
+            <Typography className="self-center text-sm font-semibold font-poppins text-[#222222]">
+              @{userData?.seedsTag ?? ''}
+            </Typography>
+            {userData?.verified === false && (
               <Image
-                src={userData?.avatar}
-                alt="AVATAR"
-                width={120}
-                height={120}
-                className="outline outline-black rounded-full"
+                src={Verified?.src}
+                alt={Verified?.alt}
+                height={12}
+                width={12}
               />
-              <div>
-                <div className="flex gap-2 items-center mb-2">
-                  <Typography className="font-bold text-2xl text-black ">
-                    @{userData?.seedsTag ?? ''}
-                  </Typography>
-                  {userData?.verified === true && (
-                    <Image
-                      src={Verified.src}
-                      alt={Verified.alt}
-                      height={20}
-                      width={20}
-                    />
-                  )}
-                </div>
-                <Typography className="font-semibold mb-5">
-                  {userData?.name}
-                </Typography>
-                <div className="flex gap-4">
-                  <div className=" flex gap-1 text-lg">
-                    <p className="text-black font-extrabold">
-                      {userData?.posts}
-                    </p>
-                    Post
-                  </div>
-                  <div className=" flex gap-1 text-lg">
-                    <p className="text-black font-extrabold">
-                      {userData?.followers}
-                    </p>
-                    Followers
-                  </div>
-                  <div className=" flex gap-1 text-lg">
-                    <p className="text-black font-extrabold">
-                      {userData?.following}
-                    </p>
-                    Following
-                  </div>
-                </div>
-                <div className="mt-1">{userData?.bio}</div>
-              </div>
+            )}
+            <div className="flex justify-center items-center py-1 px-2 bg-[#DCFCE4] my-0.5 rounded-full">
+              <p className="leading-4 text-[10px] text-[#1A857D] font-poppins font-normal">
+                Investor
+              </p>
             </div>
-            <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-5 mx-auto">
-                <Image
-                  className="bg-[#F2FDF9] rounded-full"
-                  src={
-                    userData?.badge === 'gold'
-                      ? GoldMedal.src
-                      : userData?.badge === 'silver'
-                      ? SilverMedal.src
-                      : BronzeMedal.src
-                  }
-                  alt={
-                    userData?.badge === 'gold'
-                      ? GoldMedal.alt
-                      : userData?.badge === 'silver'
-                      ? SilverMedal.alt
-                      : BronzeMedal.alt
-                  }
-                  width={30}
-                  height={30}
-                />
-                <div
-                  className="bg-[#BAFBD0] flex gap-3 items-center rounded-full py-2 px-5"
-                  onClick={() => _handleReferalCode()}
-                >
-                  <Typography className="text-[#3AC4A0] font-bold">
-                    {userData?.refCode}
-                  </Typography>
-                  <Image
-                    src={Share.src}
-                    alt={Share.alt}
-                    width={30}
-                    height={30}
-                    onClick={() => _handleReferalCode()}
-                    className="bg-[#96F7C1] rounded-full p-2"
-                  />
-                </div>
-              </div>
-              <CButton
-                onClick={_handleEditProfile}
-                className="bg-white outline outline-black text-black rounded-full text-xs"
-              >
-                Edit Profile
-              </CButton>
+            <Image
+              src={ID}
+              alt="ID-flag"
+              className="w-[30px] h-[20px] self-center"
+            />
+          </div>
+          <Typography className="text-xs text-[#222222] font-normal font-poppins">
+            {userData?.name}
+          </Typography>
+          <Typography className="leading-4 text-[#222222] text-[10px] font-normal font-poppins">
+            {userData?.bio}
+          </Typography>
+        </div>
+        <div className="flex xl:hidden gap-2.5 py-2 px-4">
+          <div
+            className="bg-[#DCFCE480] flex gap-[37.5px] items-center justify-center rounded-full w-[166.5px] h-8 border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
+            onClick={() => _handleReferalCode()}
+          >
+            <Typography className="text-[#27A590] text-xs font-normal font-poppins">
+              Ref.Code: {userData?.claims?.refCode}
+            </Typography>
+            <div className="bg-[#27A590] rounded-full w-[14px] h-[14px] flex justify-center">
+              <Image src={Share.src} alt={Share.alt} width={8} height={8} />
             </div>
           </div>
-        </CCard>
-      </div>
-      <div>
-        <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+          <div
+            className="border border-[#262626] w-[166.5px] h-8 flex items-center justify-center rounded-full self-center cursor-pointer"
+            onClick={_handleEditProfile}
+          >
+            <Typography className="text-xs text-[#262626] font-poppins font-normal">
+              Edit Profile
+            </Typography>
+          </div>
+        </div>
+        <div className="flex xl:hidden">
           <ExpInfo data={expData} />
-        </CCard>
-      </div>
-      <div className="p-5 md:mt-5 md:rounded-lg  rounded-none lg:mx-8">
-        <SeedsCoin />
-      </div>
-      <div>
-        <CCard className="p-5 md:mt-5  md:rounded-lg  border-none rounded-none mb-5 md:mx-7 lg:mx-12">
-          <UnderLineTab userData={userData} />
-        </CCard>
-      </div>
+        </div>
+      </CCard>
+      <CCard className="p-5  md:rounded-lg my-4">
+        <UnderLineTab userData={userData} />
+      </CCard>
     </PageGradient>
   );
 };

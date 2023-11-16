@@ -19,12 +19,14 @@ import {
   Radio
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const listReportPost = async (): Promise<any> => {
   try {
     const response = await fetch(
-      'https://seeds-dev-gcp.seeds.finance/report/v1/questions',
+      `${
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      }/report/v1/questions`,
       {
         method: 'GET',
         headers: {
@@ -48,7 +50,9 @@ const listReportPost = async (): Promise<any> => {
 const listReportUser = async (): Promise<any> => {
   try {
     const response = await fetch(
-      'https://seeds-dev-gcp.seeds.finance/report/v1/questions?type=user',
+      `${
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      }/report/v1/questions?type=user`,
       {
         method: 'GET',
         headers: {
@@ -129,9 +133,15 @@ const MoreOption = ({ dataPost }: any): any => {
 
   const handleOpenReportPost = (value: any): void => {
     setReportPost(value);
+    if (value === 'sm') {
+      handleListReportPost();
+    }
   };
   const handleOpenReportUser = (value: any): void => {
     setReportUser(value);
+    if (value === 'sm') {
+      handleListReportUser();
+    }
   };
   const handleVerifyReportPost = (value: any): void => {
     setVerifyReportPost(value);
@@ -152,7 +162,7 @@ const MoreOption = ({ dataPost }: any): any => {
   const isDisabledPost = selectedPost === null;
   const isDisabledUser = selectedUser === null;
 
-  useEffect(() => {
+  const handleListReportPost = (): void => {
     listReportPost()
       .then(data => {
         setListPost(data);
@@ -160,6 +170,9 @@ const MoreOption = ({ dataPost }: any): any => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+  };
+
+  const handleListReportUser = (): void => {
     listReportUser()
       .then(data => {
         setListUser(data);
@@ -167,12 +180,15 @@ const MoreOption = ({ dataPost }: any): any => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  };
+
   const handleSubmitReportPost = async (event: any): Promise<any> => {
     event.preventDefault();
     try {
       const response = await fetch(
-        'https://seeds-dev-gcp.seeds.finance/report/v1/post',
+        `${
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        }/report/v1/post`,
         {
           method: 'POST',
           headers: {
@@ -195,7 +211,9 @@ const MoreOption = ({ dataPost }: any): any => {
     event.preventDefault();
     try {
       const response = await fetch(
-        'https://seeds-dev-gcp.seeds.finance/report/v1/user',
+        `${
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        }/report/v1/user`,
         {
           method: 'POST',
           headers: {
@@ -218,7 +236,9 @@ const MoreOption = ({ dataPost }: any): any => {
     event.preventDefault();
     try {
       const response = await fetch(
-        'https://seeds-dev-gcp.seeds.finance/user/v1/block',
+        `${
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        }/user/v1/block`,
         {
           method: 'POST',
           headers: {
@@ -242,7 +262,11 @@ const MoreOption = ({ dataPost }: any): any => {
       <div>
         <Menu placement="left-start">
           <MenuHandler>
-            <Image src={more_vertical} alt="" />
+            <Image
+              src={more_vertical}
+              alt="threeDots"
+              className="cursor-pointer"
+            />
           </MenuHandler>
           <MenuList className="list-none flex flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5 text-red-500">
             <MenuItem
@@ -253,7 +277,7 @@ const MoreOption = ({ dataPost }: any): any => {
                 handleOpenReportPost('sm');
               }}
             >
-              <Image src={flag} alt="" />
+              <Image src={flag} alt="reportPost" />
               Report Post
             </MenuItem>
             <MenuItem
@@ -264,7 +288,7 @@ const MoreOption = ({ dataPost }: any): any => {
                 handleOpenReportUser('sm');
               }}
             >
-              <Image src={report_user} alt="" />
+              <Image src={report_user} alt="reportUser" />
               Report User
             </MenuItem>
             <MenuItem
@@ -275,7 +299,7 @@ const MoreOption = ({ dataPost }: any): any => {
                 handleOpenBlock('xs');
               }}
             >
-              <Image src={block} alt="" />
+              <Image src={block} alt="blockUser" />
               Block User
             </MenuItem>
           </MenuList>
@@ -304,7 +328,7 @@ const MoreOption = ({ dataPost }: any): any => {
             <div className="mb-4">
               <Image
                 src={close}
-                alt=""
+                alt="close"
                 className="cursor-pointer"
                 onClick={() => {
                   handleChangePost('', '');
@@ -374,7 +398,7 @@ const MoreOption = ({ dataPost }: any): any => {
         className="text-center py-5 px-4 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
       >
         <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
-          <Image src={post_report_photo} alt="" />
+          <Image src={post_report_photo} alt="reportPostFigure" />
           <p className="mt-6 text-base font-semibold text-[#262626]">
             Report has been submitted
           </p>
@@ -417,7 +441,7 @@ const MoreOption = ({ dataPost }: any): any => {
             <div className="mb-4">
               <Image
                 src={close}
-                alt=""
+                alt="close"
                 onClick={() => {
                   handleChangeUser('', '');
                   handleOpenReportUser(null);
@@ -482,7 +506,7 @@ const MoreOption = ({ dataPost }: any): any => {
       >
         <form onSubmit={handleSubmitReportUser}>
           <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
-            <Image src={user_report_photo} alt="" />
+            <Image src={user_report_photo} alt="reportUserFigure" />
             <p className="mt-4 font-normal text-sm">
               Are you sure you want to report this account? You will no longer
               see statuses or threads posted by this profile.

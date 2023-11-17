@@ -24,7 +24,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { Transition } from '@headlessui/react';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -342,6 +342,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                     key={index}
                     className="font-poppins text-black font-normal"
                   >
+                    {/* See more premium */}
                     {word}{' '}
                   </pre>
                 );
@@ -1244,6 +1245,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-row mt-2">
+              {dataPost.privacy === 'premium' ? (
+                <div className="flex flex-row bg-[#DCFCE4] items-center py-1 px-2 rounded-xl">
+                  <ArrowUpRightIcon className="h-4 w-4 text-[#3AC4A0] mr-2" />
+                  <p className="text-[#3AC4A0]">Premium</p>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

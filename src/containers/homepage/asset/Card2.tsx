@@ -18,19 +18,19 @@ const Card2: React.FC<props> = ({ data }) => {
       <div className="flex flex-row">
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice.open)}
+            {formatNumber(data?.lastPrice?.open)}
           </p>
           <p className="text-base font-light text-[#7C7C7C]">Open</p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice.high)}
+            {formatNumber(data?.lastPrice?.high)}
           </p>
           <p className="text-base font-light text-[#7C7C7C]">Day High</p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice.low)}
+            {formatNumber(data?.lastPrice?.low)}
           </p>
           <p className="text-base font-light text-[#7C7C7C]">Day Low</p>
         </div>

@@ -38,14 +38,14 @@ const Card1: React.FC<props> = ({ data }) => {
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
-        {standartCurrency(data?.lastPrice.open)}
+        {standartCurrency(data?.lastPrice?.open)}
       </p>
       <p className="text-sm font-normal text-[#5E44FF]">
-        {data?.lastPrice.vwap} (
+        {data?.lastPrice?.vwap} (
         {
           calculatePercentageDifference(
-            data?.lastPrice.open,
-            data?.lastPrice.close
+            data?.lastPrice?.open,
+            data?.lastPrice?.close
           )?.value
         }{' '}
         %) - today

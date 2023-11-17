@@ -55,7 +55,7 @@ const PieAssets: React.FC<props> = ({
   removeSelectedAsset,
   setPages
 }) => {
-  const [asset, setAsset] = useState<AssetInterface[]>();
+  const [asset, setAsset] = useState<any[]>();
   const [filterAsset, setFilterAsset] = useState(initialFilterMarket);
   const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(false);
 

@@ -337,7 +337,6 @@ const ModalMention: React.FC<props> = ({
           const newActualTag = `@[${selectedValue.tag}](${selectedValue.id}) `;
           newVal = str + newActualTag;
         }
-        console.log(newVal);
 
         if (currentWord.includes('@')) {
           const newActualTag = ` @[${selectedValue.tag}](${selectedValue.id}) `;
@@ -773,7 +772,7 @@ const ModalMention: React.FC<props> = ({
         lastWordWithChar.includes('@'))
     ) {
       return (
-        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+        <div className="absolute z-50 shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
           <div className="flex justify-center gap-4">
             {tagOption.map((el: { id: number; name: string }, i: number) => {
               return (
@@ -962,7 +961,7 @@ const ModalMention: React.FC<props> = ({
       isSymbol
     ) {
       return (
-        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+        <div className="absolute shadow-lg border-x w-[90%] z-50 border-b border-black/20 bg-white pb-2 rounded-b-xl">
           <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
             {dollarLists?.map((el: any) => {
               return (
@@ -1004,7 +1003,7 @@ const ModalMention: React.FC<props> = ({
       isSymbol
     ) {
       return (
-        <div className="absolute shadow-lg border-x w-[90%] border-b border-black/20 bg-white pb-2 rounded-b-xl">
+        <div className="absolute shadow-lg border-x w-[90%] z-50 border-b border-black/20 bg-white pb-2 rounded-b-xl">
           <div className="max-h-[400px] overflow-auto w-[90%] ml-10">
             {hashtags?.map((hashtag: any) => {
               return (
@@ -1331,21 +1330,80 @@ const ModalMention: React.FC<props> = ({
                         key={`${i} this is file`}
                       >
                         {el.type.includes('image') ? (
-                          <img
-                            src={URL?.createObjectURL(el)}
-                            alt="Preview Image"
-                            className="object-fit max-h-[30vh] max-w-[30vw]"
-                          />
-                        ) : (
-                          <video
-                            controls
-                            className="max-w-[30vw] max-h-[30vh] object-fit"
-                          >
-                            <source
+                          <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                            <div className="flex justify-end">
+                              <div
+                                className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                onClick={() => {
+                                  const newMedia = media.filter(
+                                    (element, index) => {
+                                      if (index !== i) {
+                                        return element;
+                                      }
+                                      return null;
+                                    }
+                                  );
+                                  if (media.length > 1) {
+                                    setMedia(newMedia);
+                                  } else {
+                                    setMedia([]);
+                                  }
+                                }}
+                              >
+                                <Image
+                                  src={XIcon}
+                                  alt="close"
+                                  width={20}
+                                  height={20}
+                                />
+                              </div>
+                            </div>
+                            <img
                               src={URL?.createObjectURL(el)}
-                              type="video/mp4"
+                              alt="Preview Image"
+                              className="object-fit max-h-[30vh] max-w-[30vw]"
                             />
-                          </video>
+                          </div>
+                        ) : (
+                          <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                            <div className="flex justify-end">
+                              <div
+                                className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                onClick={() => {
+                                  const newMedia = media.filter(
+                                    (element, index) => {
+                                      if (index !== i) {
+                                        return element;
+                                      }
+                                      return null;
+                                    }
+                                  );
+                                  if (media.length > 1) {
+                                    setMedia(newMedia);
+                                  } else {
+                                    setMedia([]);
+                                  }
+                                }}
+                              >
+                                <Image
+                                  src={XIcon}
+                                  alt="close"
+                                  width={20}
+                                  height={20}
+                                />
+                              </div>
+                            </div>
+                            <video
+                              controls
+                              className="max-w-[30vw] max-h-[30vh] object-fit"
+                              key={el.name}
+                            >
+                              <source
+                                src={URL?.createObjectURL(el)}
+                                type="video/mp4"
+                              />
+                            </video>
+                          </div>
                         )}
                       </div>
                     ))}
@@ -1353,12 +1411,49 @@ const ModalMention: React.FC<props> = ({
                     pages !== 'gif' &&
                     form.media_urls.map((el: any, i: number) => {
                       return (
-                        <img
-                          src={el}
+                        <div
+                          className="max-h-[230px] max-w-[230px] relative -top-6"
                           key={`${i} + 'MEDIA_URL'`}
-                          alt="gif"
-                          className="h-[230px] w-[230px] object-cover"
-                        />
+                        >
+                          <div className="flex justify-end">
+                            <div
+                              className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                              onClick={() => {
+                                const newMedia = form.media_urls.filter(
+                                  (element, index) => {
+                                    if (index !== i) {
+                                      return element;
+                                    }
+                                    return null;
+                                  }
+                                );
+                                if (form.media_urls.length > 1) {
+                                  setForm(prevState => ({
+                                    ...prevState,
+                                    media_urls: newMedia
+                                  }));
+                                } else {
+                                  setForm(prevState => ({
+                                    ...prevState,
+                                    media_urls: []
+                                  }));
+                                }
+                              }}
+                            >
+                              <Image
+                                src={XIcon}
+                                alt="close"
+                                width={20}
+                                height={20}
+                              />
+                            </div>
+                          </div>
+                          <img
+                            src={el}
+                            alt="gif"
+                            className="h-[230px] w-[230px] object-cover"
+                          />
+                        </div>
                       );
                     })}
                 </div>

@@ -5,9 +5,7 @@ import ModalMention from '@/containers/circle/[id]/ModalMention';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
-import TrendingProfile from '@/containers/social/main/TrendingProfile';
 import withAuth from '@/helpers/withAuth';
-import { trendingUser } from '@/repository/people.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getSocialPostFollowing,
@@ -26,6 +24,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface UserData {
+  id: any;
   name: string;
   seedsTag: string;
   email: string;
@@ -44,13 +43,6 @@ interface optionSortBy {
   subtitle: string;
   value: string;
 }
-interface TrendingProfileInterface {
-  id: string;
-  name: string;
-  seeds_tag: string;
-  avatar: string;
-  followers: string;
-}
 
 interface Filter {
   page: number;
@@ -60,6 +52,7 @@ interface Filter {
 }
 
 const initialUserInfo = {
+  id: '',
   name: '',
   seedsTag: '',
   email: '',
@@ -101,12 +94,8 @@ const Social: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [trendingProfile, setTrendingProfile] = useState<
-    TrendingProfileInterface[]
-  >([]);
   const [golId, setGolId] = useState<number>(1);
   const [isLoadingPost, setIsLoadingPost] = useState<boolean>(false);
-  const [isLoadingTrending, setIsLoadingTrending] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [isOpen, setIsOpen] = useState(false);
@@ -131,7 +120,6 @@ const Social: React.FC = () => {
 
     if (value === 'for_you') {
       void fetchPostForYou();
-      void fetchTrendingProfile();
     }
 
     if (value === 'space') {
@@ -264,18 +252,6 @@ const Social: React.FC = () => {
     }
   };
 
-  const fetchTrendingProfile = async (): Promise<void> => {
-    try {
-      setIsLoadingTrending(true);
-      const response = await trendingUser();
-      setTrendingProfile(response.result);
-      setIsLoadingTrending(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoadingTrending(false);
-    }
-  };
-
   useEffect(() => {
     void fetchUserInfo();
   }, []);
@@ -320,7 +296,6 @@ const Social: React.FC = () => {
 
       if (activeTab === 'for_you') {
         void fetchPostForYou();
-        void fetchTrendingProfile();
       }
 
       if (activeTab === 'space') {
@@ -349,13 +324,6 @@ const Social: React.FC = () => {
       />
 
       <Card2 userData={userInfo} handleOpen={handleOpen} />
-
-      {activeTab === 'for_you' ? (
-        <TrendingProfile
-          isLoading={isLoadingTrending}
-          trendingProfile={trendingProfile}
-        />
-      ) : null}
 
       <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
         <div className="flex justify-end">

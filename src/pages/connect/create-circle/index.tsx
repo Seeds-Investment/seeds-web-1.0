@@ -57,10 +57,21 @@ const CreateCircle = (): React.ReactElement => {
   });
   const width = useWindowInnerWidth();
 
-  const handleUploadImage = (event: any): void => {
+  const handleUploadImage = (event: any): any => {
     const target = event.target;
     const name = target.name;
     const files = target.files;
+    const fileMedia = event.target.files[0];
+    const maxFileMediaSize = 5;
+    const sizeFileOnMB: any = parseFloat(
+      (fileMedia?.size / 1024 / 1024).toFixed(20)
+    );
+
+    if (sizeFileOnMB > maxFileMediaSize) {
+      target.value = null;
+      console.error('Your image is exceeding the 5MB size limit');
+      return null;
+    }
 
     const formData = new FormData();
     formData.append('file', files[0]);

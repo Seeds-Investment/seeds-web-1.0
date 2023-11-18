@@ -13,7 +13,8 @@ import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
 interface props {
@@ -36,22 +37,21 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
 
-  const handleLogout = (): void => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('expiresAt');
-    localStorage.removeItem('keepMeLoggedIn');
-
-    window.location.reload();
-  };
-
   return (
-    <aside className="absolute z-20 left-0 w-2/3 h-screen py-6 bg-white">
+    <aside className="absolute z-20 left-0 w-2/3 h-[50rem] py-6 bg-white">
+      {isLogoutModal && (
+        <ModalLogout
+          onClose={() => {
+            setIsLogoutModal(prev => !prev);
+          }}
+        />
+      )}
       <div className="flex flex-col items-center gap-3">
         <div className="flex flex-col items-center gap-3">
           <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
@@ -136,7 +136,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
             <div className="mx-auto">
               <button
                 className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-                onClick={handleLogout}
+                onClick={() => {
+                  setIsLogoutModal(true);
+                }}
               >
                 Logout
               </button>

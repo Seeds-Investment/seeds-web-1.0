@@ -7,6 +7,8 @@ import homepage from 'public/assets/social/discover.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
+import { useState } from 'react';
+import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
 const menu = [
@@ -23,21 +25,21 @@ const menu = [
 const SidebarLogin: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
 
-  const handleLogout = (): void => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('expiresAt');
-    localStorage.removeItem('keepMeLoggedIn');
-
-    window.location.reload();
-  };
-
   return (
     <div className="flex flex-col items-center gap-3 h-full">
+      {isLogoutModal && (
+        <ModalLogout
+          onClose={() => {
+            setIsLogoutModal(prev => !prev);
+          }}
+        />
+      )}
+
       <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
@@ -55,7 +57,9 @@ const SidebarLogin: React.FC = () => {
       <div className="mx-auto">
         <button
           className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-          onClick={handleLogout}
+          onClick={() => {
+            setIsLogoutModal(true);
+          }}
         >
           Logout
         </button>

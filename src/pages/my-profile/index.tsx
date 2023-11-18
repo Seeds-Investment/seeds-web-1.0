@@ -12,6 +12,85 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import { useEffect, useState } from 'react';
+
+const getListPost = async (userId: string | undefined): Promise<any> => {
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      }/post/v2/list/${userId ?? ''}/user?page=1&limit=10`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken') ?? ''}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const getListCircle = async (): Promise<any> => {
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      }/circle/v2/list?type=joined&page=1&limit=10`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken') ?? ''}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const getPlay = async (): Promise<any> => {
+  try {
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+      }/play/v1/joined?type=ALL`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken') ?? ''}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
 const ProfilePage = (): JSX.Element => {
   // const { t } = useTranslation();
 
@@ -19,31 +98,29 @@ const ProfilePage = (): JSX.Element => {
 
   const [userData, setUserData] = useState<Record<string, any>>();
   const [expData, setExpData] = useState<any>();
+  const [circleData, setCircleData] = useState<any[]>([]);
+  const [playData, setPlayData] = useState<any[]>([]);
+  const [postData, setPostData] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchUserProfile = async (): Promise<void> => {
-      try {
-        const userInfo = await getUserInfo();
-
-        setUserData(userInfo);
-      } catch (error: any) {
-        console.error('Error fetching user profile:', error.message);
-      }
-    };
-
-    const fetchExpData = async (): Promise<void> => {
-      try {
-        const expData = await getExpData();
-
-        setExpData(expData);
-      } catch (error: any) {
-        console.error('Error fetching exp data:', error.message);
-      }
-    };
-
     const fetchData = async (): Promise<void> => {
       try {
-        await Promise.all([fetchUserProfile(), fetchExpData()]);
+        const userInfo = await getUserInfo();
+        setUserData(userInfo);
+
+        const expData = await getExpData();
+        setExpData(expData);
+
+        const circleResponse = await getListCircle();
+        setCircleData(circleResponse);
+
+        const playResponse = await getPlay();
+        setPlayData(playResponse);
+
+        if (userInfo !== '') {
+          const postResponse = await getListPost(userInfo.id);
+          setPostData(postResponse);
+        }
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -61,8 +138,6 @@ const ProfilePage = (): JSX.Element => {
   const _handleEditProfile = (): any => {
     return router.push('/edit-profile');
   };
-
-  console.log(userData);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -229,7 +304,13 @@ const ProfilePage = (): JSX.Element => {
         </div>
       </CCard>
       <CCard className="p-5  md:rounded-lg my-4">
-        <UnderLineTab userData={userData} />
+        <UnderLineTab
+          userData={userData}
+          circleData={circleData}
+          playData={playData}
+          postData={postData}
+          setPostData={setPostData}
+        />
       </CCard>
     </PageGradient>
   );

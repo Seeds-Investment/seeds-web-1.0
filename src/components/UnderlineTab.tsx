@@ -1,16 +1,11 @@
 'use client';
+import likeCircle from '@/assets/my-profile/circle/likeCircle.svg';
+import memberCircle from '@/assets/my-profile/circle/memberCircle.svg';
+import postCircle from '@/assets/my-profile/circle/postCircle.svg';
 import info from '@/assets/my-profile/play/info.svg';
-import {
-  ArrowDown,
-  ArrowUp,
-  Bookmark,
-  ChatBubble,
-  Dot,
-  Pin,
-  ShareBlack,
-  TripleDots
-} from '@/constants/assets/icons';
-import { Sprout } from '@/constants/assets/images';
+import CCard from '@/components/CCard';
+import { chrownCirclePremium } from '@/constants/assets/icons';
+import PostSection from '@/containers/circle/[id]/PostSection';
 import {
   Avatar,
   Card,
@@ -24,8 +19,9 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import PostPie from './PostPie';
+import { useTranslation } from 'react-i18next';
 
 interface DataItem {
   label: string;
@@ -35,149 +31,106 @@ interface DataItem {
 
 interface Params {
   userData: any;
+  circleData: any;
+  playData: any;
+  postData: any;
+  setPostData: any;
 }
 
-const UnderLineTab = ({ userData }: Params): JSX.Element => {
-  const [activeTab, setActiveTab] = useState<string>('post');
+interface Item {
+  cover?: string;
+  type?: string;
+  avatar?: string;
+  name?: string;
+  total_like?: any;
+  total_member?: any;
+  total_post?: any;
+  percentage?: number;
+  logo?: any;
+  ticker?: any;
+  exchange?: any;
+}
 
+interface MyStyle extends React.CSSProperties {
+  '--image-url': string;
+}
+
+const UnderLineTab = ({
+  userData,
+  circleData,
+  playData,
+  postData,
+  setPostData
+}: Params): JSX.Element => {
+  const { t } = useTranslation();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<string>('circle');
   const data: DataItem[] = [
     {
       label: 'Post',
       value: 'post',
-      content: userData?.posts > 0 && (
-        <div className="w-full">
-          <div className="flex gap-4 md:gap-8">
-            <div className="hidden md:flex">
-              <div>
-                <Image
-                  src={userData.avatar}
-                  alt="AVATAR"
-                  width={60}
-                  height={60}
-                  className=" w-15 h-15 aspect-square rounded-full outline outline-black"
-                />
-              </div>
-            </div>
-            <div className="w-full">
-              <div className="mb-4">
-                <div className="flex gap-5">
-                  <div className="md:hidden flex">
-                    <div>
-                      <Image
-                        src={userData.avatar}
-                        alt="AVATAR"
-                        width={60}
-                        height={60}
-                        className=" w-11 h-11  rounded-full outline outline-black"
+      content: (
+        <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
+          <div className="flex justify-start w-full border border-neutral-ultrasoft" />
+          {postData?.data?.map((el: any, idx: number) => {
+            console.log(postData);
+            return (
+              <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
+                {el.circle !== undefined && (
+                  <div
+                    className={`flex justify-between p-2 rounded-t-2xl px-4 ${
+                      el?.circle?.status_joined === true
+                        ? 'bg-[#E9E9E9]'
+                        : 'bg-[#DCFCE4]'
+                    } mt-5`}
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={el?.circle?.avatar}
+                        alt="image"
+                        className="w-7 h-7 rounded-full object-cover"
                       />
+                      <Typography
+                        className={`text-sm text-black px-2 py-1 font-bold`}
+                      >
+                        {el?.circle?.name}
+                      </Typography>
                     </div>
+                    <button
+                      className={`${
+                        el?.circle?.status_joined === true
+                          ? 'bg-[#BDBDBD] cursor-not-allowed'
+                          : 'bg-seeds-button-green'
+                      } rounded-full`}
+                    >
+                      <Typography
+                        className={`text-sm ${
+                          el?.circle?.status_joined === true
+                            ? 'text-neutral-soft'
+                            : 'text-white'
+                        } px-2 py-1 font-bold`}
+                        onClick={() => {
+                          if (el?.circle?.status_joined === false) {
+                            router
+                              .push(`/connect/post/${el?.circle_id as string}`)
+                              .catch((err: any) => {
+                                console.error(err);
+                              });
+                          }
+                        }}
+                      >
+                        {el?.circle?.status_joined === true
+                          ? t('circleDetail.statusJoined')
+                          : t('circleDetail.statusNotJoined')}
+                      </Typography>
+                    </button>
                   </div>
-
-                  <div className="w-full">
-                    <div className="flex justify-between">
-                      <div className="flex gap-2">
-                        <Typography className="font-bold md:text-lg">
-                          Krisna Alifandi
-                        </Typography>
-                        <Image
-                          src={Sprout.src}
-                          alt={Sprout.alt}
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                      <Image
-                        src={TripleDots.src}
-                        alt={TripleDots.alt}
-                        height={8}
-                        width={8}
-                        className="w-auto h-auto"
-                      />
-                    </div>
-                    <div className="flex gap-1 items-center mt-2 text-gray-500">
-                      <Typography className="text-xs md:text-sm">
-                        @ismael
-                      </Typography>
-                      <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
-                      <Typography className="text-xs md:text-sm">
-                        09/11/2023
-                      </Typography>
-                      <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
-                      <Typography className="text-xs md:text-sm">
-                        12.39 PM
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-1 text-[#5E44FF] mt-5">
-                  <Typography>#NFT3d</Typography>
-                  <Typography>#NFTPostedArt</Typography>
-                </div>
-                <Typography>
-                  I just bought an asset using the copy pie feature
-                </Typography>
+                )}
+                <PostSection dataPost={el} setData={setPostData} />
               </div>
-              <PostPie />
-              <div className="flex justify-between items-center mt-4">
-                <div className="flex gap-1 md:gap-5">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={ArrowUp.src}
-                      alt={ArrowUp.alt}
-                      width={20}
-                      height={20}
-                    />
-                    <Typography className="text-[#50E6AF] text-sm">
-                      +32
-                    </Typography>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={ArrowDown.src}
-                      alt={ArrowDown.alt}
-                      width={20}
-                      height={20}
-                    />
-                    <Typography className="text-[#c94343] text-sm">
-                      -32
-                    </Typography>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={ChatBubble.src}
-                      alt={ChatBubble.alt}
-                      width={20}
-                      height={20}
-                    />
-                    <Typography>32</Typography>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={ShareBlack.src}
-                      alt={ShareBlack.alt}
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-5">
-                  <div className="flex items-center gap-1">
-                    <Image src={Pin.src} alt={Pin.alt} width={20} height={20} />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Image
-                      src={Bookmark.src}
-                      alt={Bookmark.alt}
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            );
+          })}
+        </CCard>
       )
     },
     {
@@ -199,67 +152,172 @@ const UnderLineTab = ({ userData }: Params): JSX.Element => {
         //     Sorry, we are still developing this feature
         //   </Typography>
         // </div>
-        <>
-          <Card shadow={false} className="w-[292px] h-[152.81px] ">
-            <CardHeader
-              floated={false}
-              shadow={false}
-              color="transparent"
-              className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
-            >
-              <Avatar
-                size="xl"
-                variant="circular"
-                alt="tania andrew"
-                className="border-2 border-white"
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-              />
-            </CardHeader>
-            <CardBody className="relative py-14 px-6 md:px-12">
-              <Typography
-                variant="h2"
-                color="white"
-                className="mb-6 font-medium leading-[1.5]"
+        <div className="flex flex-wrap gap-x-3 gap-y-4 justify-center lg:justify-start">
+          {circleData?.data?.map((item: Item, index: any) => {
+            console.log(circleData);
+            const myStyle: MyStyle = {
+              '--image-url': `url(${item.cover ?? ''})`
+            };
+            return (
+              <Card
+                shadow={false}
+                className="lg:w-[292px] lg:h-[152.81px] w-[343px] h-[177px]"
+                key={index}
               >
-                How we design and code open-source projects?
-              </Typography>
-              <Typography variant="h5" className="mb-4 text-gray-400">
-                Tania Andrew
-              </Typography>
-            </CardBody>
-          </Card>
-        </>
+                <CardHeader
+                  shadow={false}
+                  color="transparent"
+                  style={myStyle}
+                  className={`absolute m-0 h-full w-full bg-cover bg-center bg-[image:var(--image-url)] py-[13.46px] px-[16.87px]`}
+                >
+                  {item.type !== 'free' ? (
+                    <div className="flex w-[65.63px] h-[19.35px] absolute top-0 right-0 mr-[16.87px] mt-[13.46px] bg-white rounded-full gap-[3.37px] items-center justify-center">
+                      <Image
+                        src={chrownCirclePremium.src}
+                        alt="crown"
+                        width={10}
+                        height={10}
+                      />
+                      <Typography className="text-[6.73px] leading-[13.46px] text-[#3AC4A0] font-semibold font-poppins">
+                        Premium
+                      </Typography>
+                    </div>
+                  ) : null}
+                </CardHeader>
+                <CardBody className="p-0 relative flex flex-col items-center my-auto gap-1.5">
+                  <Avatar
+                    alt="circleAvatar"
+                    className="border-[1.68px] border-white w-16 h-16 bg-cover"
+                    src={`${item.avatar ?? ''}`}
+                  />
+                  <Typography className="text-white text-sm font-poppins font-semibold">
+                    {item.name}
+                  </Typography>
+                  <div className="flex gap-3">
+                    <div className="flex items-center gap-[1.68px]">
+                      <Image src={likeCircle} alt="likeCircle" />
+                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                        {item.total_like}
+                      </Typography>
+                    </div>
+                    <div className="flex items-center gap-[1.68px]">
+                      <Image src={memberCircle} alt="memberCircle" />
+                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                        {item.total_member}
+                      </Typography>
+                    </div>
+                    <div className="flex items-center gap-[1.68px]">
+                      <Image src={postCircle} alt="postCircle" />
+                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                        {item.total_post}
+                      </Typography>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            );
+          })}
+        </div>
       )
     },
     {
       label: 'Play',
       value: 'play',
       content: (
-        <>
-          <Typography className="text-lg text-[#262626] font-semibold font-poppins">
-            Total Play :{' '}
-            <span className="text-sm text-[#7C7C7C] font-normal font-poppins">
-              50 tournament
-            </span>
-          </Typography>
-          <Card
-            shadow={false}
-            className="flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] w-[164px] h-[92px]"
-          >
-            <CardBody className="p-0 flex flex-col items-center gap-2">
-              <div className="flex gap-[5px]">
-                <Image src={info} alt="information" />
-                <Typography className="text-[#3AC4A0] text-xs font-normal font-poppins">
-                  Win Percentage
-                </Typography>
-              </div>
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <Typography className="text-lg text-[#262626] font-semibold font-poppins">
+              Total Play :{' '}
+              <span className="text-sm text-[#7C7C7C] font-normal font-poppins">
+                {`${playData?.data?.play_total as string} tournament`}
+              </span>
+            </Typography>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {playData?.data?.win_percentages?.map(
+                (item: Item, index: any) => {
+                  return (
+                    <Card
+                      shadow={false}
+                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] h-[92px] ${
+                        item?.type === 'ALL' ? 'w-[192px]' : 'w-[164px]'
+                      }`}
+                      key={index}
+                    >
+                      <CardBody className="p-0 flex flex-col items-center gap-2">
+                        <div className="flex gap-[5px]">
+                          <Image src={info} alt="information" />
+                          <Typography className="text-[#3AC4A0] text-xs font-normal font-poppins">
+                            {`${
+                              item?.type === 'ALL'
+                                ? 'Win Percentage'
+                                : `${
+                                    item?.type?.charAt(0).toUpperCase() ?? ''
+                                  }${item?.type?.slice(1).toLowerCase() ?? ''}`
+                            }`}
+                          </Typography>
+                        </div>
 
-              <Typography className="text-[#3AC4A0] text-3xl font-semibold font-poppins">
-                80%
-              </Typography>
-            </CardBody>
-          </Card>
-        </>
+                        <Typography className="text-[#3AC4A0] text-3xl font-semibold font-poppins">
+                          {`${item.percentage ?? ''}%`}
+                        </Typography>
+                      </CardBody>
+                    </Card>
+                  );
+                }
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Typography className="text-lg text-[#262626] font-semibold font-poppins">
+              Top 3 Assets Returns
+            </Typography>
+            <div className="flex gap-[16.28px] flex-wrap">
+              {playData?.data?.asset_returns
+                ?.sort((a: any, b: any) => b.percentage - a.percentage)
+                .slice(0, 3)
+                .map((item: Item, index: any) => {
+                  return (
+                    <div
+                      className="flex justify-between p-[12.21px] w-[286.15px] bg-[#F9F9F9] border border-[#E9E9E9] rounded-lg"
+                      key={index}
+                    >
+                      <div className="flex h-[40.69px] gap-[12.21px]">
+                        <img
+                          src={item?.logo}
+                          alt={item?.name}
+                          width={40.69}
+                          height={40.69}
+                        />
+                        <div className="flex flex-col gap-[9.42px] justify-center">
+                          <Typography className="font-montserrat text-[12.21px] leading-[14.88px] font-bold text-[#424242]">
+                            {item?.ticker}/
+                            <span className="font-normal text-[#585858]">
+                              {item?.exchange}
+                            </span>
+                          </Typography>
+                          <Typography className="text-[12.21px] leading-[16.28px] text-[#BDBDBD] font-poppins font-normal">
+                            {(item?.name?.length ?? 0) >= 20
+                              ? `${item?.name?.slice(0, 20) ?? ''}...`
+                              : item.name}
+                          </Typography>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Typography className="text-[#3AC4A0] text-[14.24px] leading-[20.35px] font-poppins font-semibold">
+                          {item?.percentage}%
+                        </Typography>
+                        <Typography className="text-[#7555DA] text-[12.21px] leading-[16.28px] font-poppins font-normal">
+                          {`${item?.type?.charAt(0).toUpperCase() ?? ''}${
+                            item?.type?.slice(1).toLowerCase() ?? ''
+                          }`}
+                        </Typography>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        </div>
       )
     }
   ];
@@ -289,7 +347,7 @@ const UnderLineTab = ({ userData }: Params): JSX.Element => {
       </TabsHeader>
       <TabsBody>
         {data.map(({ value, content }) => (
-          <TabPanel key={value} value={value}>
+          <TabPanel key={value} value={value} className="px-0">
             {content}
           </TabPanel>
         ))}

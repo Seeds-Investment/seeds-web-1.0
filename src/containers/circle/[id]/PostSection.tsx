@@ -20,7 +20,6 @@ import {
   postSavedCirclePost
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { Transition } from '@headlessui/react';
@@ -47,6 +46,7 @@ import { useTranslation } from 'react-i18next';
 interface props {
   dataPost: any;
   setData: any;
+  userInfo: UserData;
 }
 
 interface ChartData {
@@ -144,30 +144,30 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    void fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<void> => {
+  //     try {
+  //       const response = await getUserInfo();
+  //       setUserInfo(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   void fetchData();
+  // }, []);
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
@@ -805,7 +805,8 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                 </div>
               </div>
               <div className="flex items-center mb-2">
-                {dataPost.privacy === 'premium'
+                {dataPost.privacy === 'premium' &&
+                dataPost.user_id !== userInfo.id
                   ? handleSeeMore(dataPost.content_text, 20)
                   : renderTouchableText(dataPost?.content_text)}
                 {/* {renderTouchableText(dataPost?.content_text)} */}

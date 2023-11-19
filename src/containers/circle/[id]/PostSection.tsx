@@ -27,7 +27,7 @@ import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, clipCopy } from 'public/assets/circle';
+import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -1233,11 +1233,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
               <div className="flex gap-5">
                 <div className="flex items-center gap-1">
                   <div
-                    className={`${
-                      dataPost.is_pinned === true
-                        ? 'bg-seeds-green/30'
-                        : 'hover:bg-seeds-green/30'
-                    } p-2 rounded-full cursor-pointer`}
+                    className={`p-2 rounded-full cursor-pointer`}
                     onClick={async () => {
                       if (dataPost.circle !== undefined) {
                         await pinPost('connect');
@@ -1246,7 +1242,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                       }
                     }}
                   >
-                    <Image src={Pin.src} alt={Pin.alt} width={20} height={20} />
+                    {dataPost.is_pinned === true ? (
+                      <Image src={UnPin} alt={'unpin'} width={20} height={20} />
+                    ) : (
+                      <Image
+                        src={Pin.src}
+                        alt={Pin.alt}
+                        width={20}
+                        height={20}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-1">

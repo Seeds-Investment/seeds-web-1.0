@@ -774,7 +774,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                       <Typography className="font-bold text-black md:text-lg">
                         @
                         {dataPost.owner !== undefined
-                          ? dataPost.owner.seeds_tag
+                          ? dataPost.owner.seeds_tag !== undefined
+                            ? dataPost.owner.seeds_tag
+                            : dataPost.owner.username
                           : null}
                       </Typography>
                       {/* {dataPost.owner.verified === true && (

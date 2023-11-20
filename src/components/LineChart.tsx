@@ -55,6 +55,18 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       x: {
         grid: {
           display: false
+        },
+        ticks: {
+          font: {
+            family: 'Arial', // Ganti dengan nama font yang diinginkan
+            size: 15, // Ukuran font
+            weight: 'bold' // Ketebalan font
+          },
+          color: '#7C7C7C', // Warna teks label
+          backgroundColor: '#7C7C7C',
+          backdropPadding: 30,
+          padding: 20,
+          backdropColor: '#7C7C7C'
         }
       },
       y: {

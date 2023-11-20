@@ -20,7 +20,7 @@ const ModalLogout: React.FC<Props> = ({ onClose }) => {
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');
-    await router.push('/story-boarding');
+    await router.push('/');
   };
 
   return (

@@ -1,11 +1,9 @@
 import { formatNumber } from '@/helpers/currency';
 import { Chart as ChartJS, registerables } from 'chart.js';
-import moment from 'moment';
 import { Line } from 'react-chartjs-2';
 
 interface LineChartProps {
   data: any;
-  filter: string;
 }
 
 ChartJS.register(...registerables);
@@ -22,48 +20,16 @@ const getGradient = (ctx: any, chartArea: any): any => {
   return gradient;
 };
 
-const LineChart: React.FC<LineChartProps> = ({ data, filter }) => {
-  // const labels_dummy = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  // const data_dummy = [0, 0, 0, 0, 0, 0];
-
-  const handleLable = (value: string): any => {
-    if (value === 'daily') {
-      return data?.priceBarHistory
-        .slice(0, 6)
-        .map((bar: any) => moment(bar.timestamp).format('hh:mm A'));
-    }
-
-    if (value === 'weekly') {
-      return data?.priceBarHistory
-        .slice(0, 6)
-        .map((bar: any) => moment(bar.timestamp).format('dddd'));
-    }
-
-    if (value === 'monthly') {
-      return data?.priceBarHistory
-        .slice(0, 6)
-        .map((bar: any) => moment(bar.timestamp).format('MMM YY'));
-    }
-
-    if (value === 'yearly') {
-      return data?.priceBarHistory
-        .slice(0, 6)
-        .map((bar: any) => moment(bar.timestamp).format('YYYY'));
-    }
-
-    if (value === 'alltime') {
-      return data?.priceBarHistory
-        .slice(0, 6)
-        .map((bar: any) => moment(bar.timestamp).format('YYYY'));
-    }
-  };
+const LineChart: React.FC<LineChartProps> = ({ data }) => {
+  const labelDummy = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const dataDummy = [0, 0, 0, 0, 0, 0];
 
   const dataChart = {
-    labels: handleLable(filter),
+    labels: data?.x ?? labelDummy,
     datasets: [
       {
         label: 'Price Bar',
-        data: data?.priceBarHistory.slice(0, 6).map((bar: any) => bar.close),
+        data: data?.y ?? dataDummy,
         fill: true,
         borderColor: '#3AC4A0',
         backgroundColor: function (context: any) {
@@ -89,6 +55,18 @@ const LineChart: React.FC<LineChartProps> = ({ data, filter }) => {
       x: {
         grid: {
           display: false
+        },
+        ticks: {
+          font: {
+            family: 'Arial', // Ganti dengan nama font yang diinginkan
+            size: 15, // Ukuran font
+            weight: 'bold' // Ketebalan font
+          },
+          color: '#7C7C7C', // Warna teks label
+          backgroundColor: '#7C7C7C',
+          backdropPadding: 30,
+          padding: 20,
+          backdropColor: '#7C7C7C'
         }
       },
       y: {

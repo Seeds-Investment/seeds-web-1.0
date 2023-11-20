@@ -809,7 +809,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
               <div className="flex items-center mb-2">
                 {dataPost.privacy === 'premium' &&
                 dataPost.user_id !== userInfo.id
-                  ? handleSeeMore(dataPost.content_text, 20)
+                  ? handleSeeMore(dataPost.content_text, 10)
                   : renderTouchableText(dataPost?.content_text)}
                 {/* {renderTouchableText(dataPost?.content_text)} */}
               </div>

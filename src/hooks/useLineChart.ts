@@ -49,13 +49,13 @@ const useLineChart = (
 ): IuseChart => {
   const priceBarHistory = useMemo(() => data?.priceBarHistory ?? [], [data]);
 
-  //   const [selectedTimeFrame, setSelectedTimeFrame] = useState<any>(
-  //     {
-  //       id: 1,
-  //       name: '1h',
-  //       value: 'hourly',
-  //     },
-  //   );
+  // const [selectedTimeFrame, setSelectedTimeFrame] = useState<any>(
+  //   {
+  //     id: 1,
+  //     name: '1h',
+  //     value: 'hourly',
+  //   },
+  // );
 
   const formatDateLabel = useCallback((timeFrame: any, date: string) => {
     if (timeFrame === 'alltime') {
@@ -68,7 +68,6 @@ const useLineChart = (
       return moment(date).format('MMM YY');
     }
     if (timeFrame === 'weekly') {
-      console.log('WKWKWKWKW');
       return moment(date).format('dddd');
     }
     if (timeFrame === 'daily') {
@@ -77,14 +76,14 @@ const useLineChart = (
     return moment(date).format('hh:mm A');
   }, []);
 
-  const onchangeTimeFrame = (value: any): void => {
+  const onchangeTimeFrame = (value: any): any => {
     // setSelectedTimeFrame(value);
   };
 
   const chartItem = useMemo(() => {
     const arrXLength = Array(6);
     const _priceBarHistory =
-      fromPortfolio !== null
+      fromPortfolio === true
         ? data.datasets
         : priceBarHistory.map((i: any) => {
             return i.close;
@@ -102,12 +101,11 @@ const useLineChart = (
 
     // label
     const totalGroup = 6;
-    const lables = fromPortfolio !== null ? data.labels : priceBarHistory;
+    const lables = fromPortfolio === true ? data.labels : priceBarHistory;
     const objectEachGroup = Math.ceil(lables.length / totalGroup);
     let label: any[] = [];
 
     // label for 1m (mothly)
-    console.log('timeframe', selectedTimeFrame);
     if (selectedTimeFrame === 'weekly') {
       const lastDate = priceBarHistory[_priceBarHistory.length - 1]?.timestamp;
       if (lastDate !== null) {
@@ -127,7 +125,7 @@ const useLineChart = (
         label.unshift('');
       } else {
         const formatTime: string | never =
-          fromPortfolio !== null
+          fromPortfolio === true
             ? currentGroup
             : formatDateLabel(selectedTimeFrame, currentGroup);
         label.push(formatTime);

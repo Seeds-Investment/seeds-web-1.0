@@ -99,7 +99,13 @@ const UserSetting: React.FC = () => {
       label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
-      onClick: () => {},
+      onClick: async () => {
+        // try {
+        //   await router.push('/block-list');
+        // } catch (error) {
+        //   console.error('Error navigating to Edit Profile:', error);
+        // }
+      },
       extraClasses: submenuClasses
     },
     {

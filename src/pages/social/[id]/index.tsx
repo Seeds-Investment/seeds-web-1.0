@@ -5,10 +5,11 @@ import ProfileSection from '@/components/profile/ProfileSection';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { getCircle } from '@/repository/circle.repository';
-import { getExpData } from '@/repository/exp.repository';
+import { getExpUserData } from '@/repository/exp.repository';
 import { getPlayJoined } from '@/repository/play.repository';
 import { getListPostByUserId } from '@/repository/post.repository';
-import { getUserInfo } from '@/repository/profile.repository';
+import { getOtherUser } from '@/repository/profile.repository';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface Post {
@@ -41,9 +42,12 @@ const play: Play = {
   type: 'ALL'
 };
 
-const ProfilePage = (): JSX.Element => {
-  const [profileData, setProfileData] = useState<Record<string, any>>();
-  const [expData, setExpData] = useState<any>();
+function UserProfile(): JSX.Element {
+  const router = useRouter();
+  const id = router.query.id as string;
+  const [userData, setUserData] = useState<Record<string, any>>();
+
+  const [expUserData, setExpUserData] = useState<any>();
   const [circleData, setCircleData] = useState<any[]>([]);
   const [playData, setPlayData] = useState<any[]>([]);
   const [postData, setPostData] = useState<any[]>([]);
@@ -51,11 +55,11 @@ const ProfilePage = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const dataInfo = await getUserInfo();
-        setProfileData(dataInfo);
+        const userData = await getOtherUser(id);
+        setUserData(userData);
 
-        const expData = await getExpData();
-        setExpData(expData);
+        const expUserData = await getExpUserData(id);
+        setExpUserData(expUserData);
 
         const circleResponse = await getCircle(circle);
         setCircleData(circleResponse);
@@ -63,8 +67,8 @@ const ProfilePage = (): JSX.Element => {
         const playResponse = await getPlayJoined(play);
         setPlayData(playResponse);
 
-        if (dataInfo !== '') {
-          const postResponse = await getListPostByUserId(dataInfo.id, post);
+        if (userData !== '') {
+          const postResponse = await getListPostByUserId(userData.id, post);
           setPostData(postResponse);
         }
       } catch (error: any) {
@@ -75,17 +79,16 @@ const ProfilePage = (): JSX.Element => {
     fetchData()
       .then()
       .catch(() => {});
-  }, []);
-
+  }, [id]);
   return (
     <PageGradient defaultGradient className="w-full">
       {/* New Card */}
       <CCard className="p-4 md:p-5">
-        <ProfileSection profileData={profileData} expData={expData} />
+        <ProfileSection profileData={userData} expData={expUserData} id={id} />
       </CCard>
       <CCard className="py-5 md:rounded-lg my-4">
         <UnderLineTab
-          profileData={profileData}
+          profileData={userData}
           circleData={circleData}
           playData={playData}
           postData={postData}
@@ -94,6 +97,6 @@ const ProfilePage = (): JSX.Element => {
       </CCard>
     </PageGradient>
   );
-};
+}
 
-export default withAuth(ProfilePage);
+export default withAuth(UserProfile);

@@ -21,6 +21,21 @@ export const getUserInfo = async (): Promise<any> => {
   });
 };
 
+export const getOtherUser = async (userId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.get(`${userId}/profile`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 interface EditForm {
   name: string;
   seedsTag: string;

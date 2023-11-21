@@ -26,6 +26,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface UserData {
+  id: string;
   name: string;
   seedsTag: string;
   email: string;
@@ -60,6 +61,7 @@ interface Filter {
 }
 
 const initialUserInfo = {
+  id: '',
   name: '',
   seedsTag: '',
   email: '',
@@ -470,7 +472,11 @@ const Social: React.FC = () => {
                     </button>
                   </div>
                 )}
-                <PostSection dataPost={el} setData={setDataPost} />
+                <PostSection
+                  dataPost={el}
+                  setData={setDataPost}
+                  profileData={userInfo}
+                />
               </div>
             );
           })}

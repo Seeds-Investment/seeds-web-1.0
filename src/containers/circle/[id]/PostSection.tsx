@@ -46,6 +46,7 @@ import { useTranslation } from 'react-i18next';
 interface props {
   dataPost: any;
   setData: any;
+  profileData?: any;
 }
 
 interface ChartData {
@@ -143,7 +144,7 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
@@ -671,7 +672,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
             <img
               src={dataPost.owner !== undefined ? dataPost.owner.avatar : null}
               alt="AVATAR"
-              className="rounded-full w-12 h-12"
+              className="rounded-full w-12 h-12 cursor-pointer"
+              onClick={async () => {
+                dataPost.user_id === profileData.id
+                  ? await router.push('/my-profile')
+                  : await router.push(`/social/${dataPost.user_id as string}`);
+              }}
             />
           </div>
         </div>
@@ -687,7 +693,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                         : null
                     }
                     alt="AVATAR"
-                    className="rounded-full w-12 h-12"
+                    className="rounded-full w-12 h-12 cursor-pointer"
+                    onClick={async () => {
+                      dataPost.user_id === profileData.id
+                        ? await router.push('/my-profile')
+                        : await router.push(
+                            `/social/${dataPost.user_id as string}`
+                          );
+                    }}
                   />
                 </div>
               </div>
@@ -695,7 +708,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               <div className="w-full">
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
-                    <Typography className="font-bold text-black md:text-lg">
+                    <Typography
+                      className="font-bold text-black md:text-lg cursor-pointer"
+                      onClick={async () => {
+                        dataPost.user_id === profileData.id
+                          ? await router.push('/my-profile')
+                          : await router.push(
+                              `/social/${dataPost.user_id as string}`
+                            );
+                      }}
+                    >
                       @
                       {dataPost.owner !== undefined
                         ? dataPost.owner.seeds_tag

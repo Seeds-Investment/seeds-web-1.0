@@ -3,7 +3,6 @@ import likeCircle from '@/assets/my-profile/circle/likeCircle.svg';
 import memberCircle from '@/assets/my-profile/circle/memberCircle.svg';
 import postCircle from '@/assets/my-profile/circle/postCircle.svg';
 import info from '@/assets/my-profile/play/info.svg';
-import CCard from '@/components/CCard';
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import {
@@ -30,7 +29,7 @@ interface DataItem {
 }
 
 interface Params {
-  userData: any;
+  profileData: any;
   circleData: any;
   playData: any;
   postData: any;
@@ -56,7 +55,7 @@ interface MyStyle extends React.CSSProperties {
 }
 
 const UnderLineTab = ({
-  userData,
+  profileData,
   circleData,
   playData,
   postData,
@@ -64,16 +63,14 @@ const UnderLineTab = ({
 }: Params): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string>('circle');
+  const [activeTab, setActiveTab] = useState<string>('post');
   const data: DataItem[] = [
     {
       label: 'Post',
       value: 'post',
       content: (
-        <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
-          <div className="flex justify-start w-full border border-neutral-ultrasoft" />
+        <div className="bg-white w-full mx-5">
           {postData?.data?.map((el: any, idx: number) => {
-            console.log(postData);
             return (
               <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
                 {el.circle !== undefined && (
@@ -130,31 +127,15 @@ const UnderLineTab = ({
               </div>
             );
           })}
-        </CCard>
+        </div>
       )
     },
     {
       label: 'Circle',
       value: 'circle',
       content: (
-        // <div className="flex flex-col  justify-center items-center">
-        //   <Image
-        //     src={Maintenance.src}
-        //     alt={Maintenance.alt}
-        //     width={120}
-        //     height={120}
-        //     className="w-auto h-auto aspect-square"
-        //   />
-        //   <Typography variant="h3" className="font-bold text-black">
-        //     Oops
-        //   </Typography>
-        //   <Typography className="text-xl text-gray-500">
-        //     Sorry, we are still developing this feature
-        //   </Typography>
-        // </div>
-        <div className="flex flex-wrap gap-x-3 gap-y-4 justify-center lg:justify-start">
+        <div className="flex flex-wrap gap-x-3 gap-y-4 justify-center py-4 lg:border-solid border-t border-[#E9E9E9] border-none 2xl:w-[900px] lg:w-[596px] w-[292px]">
           {circleData?.data?.map((item: Item, index: any) => {
-            console.log(circleData);
             const myStyle: MyStyle = {
               '--image-url': `url(${item.cover ?? ''})`
             };
@@ -224,7 +205,7 @@ const UnderLineTab = ({
       label: 'Play',
       value: 'play',
       content: (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 mx-5 w-full py-4 lg:border-solid border-t border-[#E9E9E9] border-none">
           <div className="flex flex-col gap-4">
             <Typography className="text-lg text-[#262626] font-semibold font-poppins">
               Total Play :{' '}
@@ -232,14 +213,15 @@ const UnderLineTab = ({
                 {`${playData?.data?.play_total as string} tournament`}
               </span>
             </Typography>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {playData?.data?.win_percentages?.map(
-                (item: Item, index: any) => {
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {playData?.data?.win_percentages
+                ?.sort((a: any, b: any) => a.type - b.type)
+                .map((item: Item, index: any) => {
                   return (
                     <Card
                       shadow={false}
-                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] h-[92px] ${
-                        item?.type === 'ALL' ? 'w-[192px]' : 'w-[164px]'
+                      className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${
+                        item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
                       }`}
                       key={index}
                     >
@@ -263,8 +245,7 @@ const UnderLineTab = ({
                       </CardBody>
                     </Card>
                   );
-                }
-              )}
+                })}
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -278,7 +259,7 @@ const UnderLineTab = ({
                 .map((item: Item, index: any) => {
                   return (
                     <div
-                      className="flex justify-between p-[12.21px] w-[286.15px] bg-[#F9F9F9] border border-[#E9E9E9] rounded-lg"
+                      className="flex justify-between p-[12.21px] lg:w-[286.15px] w-full bg-[#F9F9F9] border border-[#E9E9E9] rounded-lg"
                       key={index}
                     >
                       <div className="flex h-[40.69px] gap-[12.21px]">
@@ -296,7 +277,8 @@ const UnderLineTab = ({
                             </span>
                           </Typography>
                           <Typography className="text-[12.21px] leading-[16.28px] text-[#BDBDBD] font-poppins font-normal">
-                            {(item?.name?.length ?? 0) >= 20
+                            {(item?.name?.length ?? 0) >= 20 &&
+                            (window.innerWidth ?? 0) >= 1024
                               ? `${item?.name?.slice(0, 20) ?? ''}...`
                               : item.name}
                           </Typography>
@@ -324,30 +306,34 @@ const UnderLineTab = ({
   return (
     <Tabs value={activeTab}>
       <TabsHeader
-        className="bg-transparent"
+        className="p-0 bg-transparent h-12 border-b border-[#BDBDBD] rounded-none"
         indicatorProps={{
           className:
-            'bg-transparent mt-2 border-b-4 border-[#3AC4A0] shadow-none rounded-sm'
+            'bg-transparent border-b-4 border-[#27A590] shadow-none rounded-sm'
         }}
       >
-        <div className="flex w-1/2 mx-auto">
-          {data.map(({ label, value }) => (
-            <Tab
-              key={value}
-              value={value}
-              onClick={() => {
-                setActiveTab(value);
-              }}
-              className={`${activeTab === value ? 'text-[#3AC4A0]' : ''}`}
-            >
-              {label}
-            </Tab>
-          ))}
-        </div>
+        {data.map(({ label, value }) => (
+          <Tab
+            key={value}
+            value={value}
+            onClick={() => {
+              setActiveTab(value);
+            }}
+            className={`${
+              activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
+            } mx-[30px] text-base font-poppins font-semibold`}
+          >
+            {label}
+          </Tab>
+        ))}
       </TabsHeader>
       <TabsBody>
         {data.map(({ value, content }) => (
-          <TabPanel key={value} value={value} className="px-0">
+          <TabPanel
+            key={value}
+            value={value}
+            className="flex justify-center p-0 my-4"
+          >
             {content}
           </TabPanel>
         ))}

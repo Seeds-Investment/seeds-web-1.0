@@ -32,9 +32,11 @@ interface XpData {
 
 interface XpComponentProps {
   data: XpData;
+  profileData?: any;
+  id?: any;
 }
 
-const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
+const ExpInfo: React.FC<XpComponentProps> = ({ data, profileData, id }) => {
   return (
     <div className="flex items-center w-full md:w-[334px] gap-4">
       {data !== undefined && (
@@ -70,7 +72,7 @@ const ExpInfo: React.FC<XpComponentProps> = ({ data }) => {
           </div>
           <div className="flex flex-col gap-2 w-full mr-2.5">
             <Typography className="leading-4 text-[#262626] text-[10px] font-bold font-poppins">
-              You have {data.currentExp} XP
+              {id != null ? profileData?.name : 'You'} have {data.currentExp} XP
             </Typography>
             <div className="relative">
               <div className="flex justify-between items-center">

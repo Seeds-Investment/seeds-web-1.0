@@ -1,5 +1,4 @@
 'use client';
-import CCard from '@/components/CCard';
 import UnderLineTab from '@/components/UnderlineTab';
 import ProfileSection from '@/components/profile/ProfileSection';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -9,6 +8,7 @@ import { getExpData } from '@/repository/exp.repository';
 import { getPlayJoined } from '@/repository/play.repository';
 import { getListPostByUserId } from '@/repository/post.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { Card } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 
 interface Post {
@@ -80,10 +80,10 @@ const ProfilePage = (): JSX.Element => {
   return (
     <PageGradient defaultGradient className="w-full">
       {/* New Card */}
-      <CCard className="p-4 md:p-5">
+      <Card className="p-4 md:p-5" shadow={false}>
         <ProfileSection profileData={profileData} expData={expData} />
-      </CCard>
-      <CCard className="py-5 md:rounded-lg my-4">
+      </Card>
+      <Card className="py-5 md:rounded-lg my-4" shadow={false}>
         <UnderLineTab
           profileData={profileData}
           circleData={circleData}
@@ -91,7 +91,7 @@ const ProfilePage = (): JSX.Element => {
           postData={postData}
           setPostData={setPostData}
         />
-      </CCard>
+      </Card>
     </PageGradient>
   );
 };

@@ -7,9 +7,5 @@ export default function CCard({
   children,
   className
 }: ICard): React.ReactElement {
-  return (
-    <Card className={`${className}`} shadow={false}>
-      {children}
-    </Card>
-  );
+  return <Card className={`${className}`}>{children}</Card>;
 }

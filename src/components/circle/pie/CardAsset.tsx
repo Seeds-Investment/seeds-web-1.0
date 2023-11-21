@@ -9,19 +9,46 @@ import {
   Checkbox,
   Typography
 } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+interface IassetsData {
+  assetType: string;
+  createdAt: Date | string;
+  description: string;
+  exchange: string;
+  exchangeCurrency: string;
+  id: string;
+  isActive: boolean;
+  listedCountry: string;
+  logo: string;
+  name: string;
+  priceBarHistory: any[];
+  exchangeRate: number;
+  realTicker: string;
+  seedsTicker: string;
+  updatedAt: Date | string;
+  currentPrice: number;
+  currentPoint: number;
+  currentPl: number;
+  lastUpdated: Date | string;
+  priceBar: any;
+}
+
 interface props {
-  data: any;
+  data: IassetsData;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
+  isClick?: boolean;
 }
 
 const CardAsset: React.FC<props> = ({
   data,
   handleSelectedAsset,
-  isDefaultChecked
+  isDefaultChecked,
+  isClick = false
 }) => {
+  const router = useRouter();
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
       return true;
@@ -31,7 +58,19 @@ const CardAsset: React.FC<props> = ({
   };
 
   return (
-    <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
+    <Card
+      shadow={false}
+      className={`w-full my-3 bg-[#F9F9F9] ${isClick ? 'cursor-pointer' : ''}`}
+      onClick={
+        isClick
+          ? () => {
+              router.push(`/homepage/assets/${data.id}`).catch(error => {
+                console.log(error);
+              });
+            }
+          : () => {}
+      }
+    >
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
           <Avatar

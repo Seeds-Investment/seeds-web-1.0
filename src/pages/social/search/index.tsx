@@ -388,7 +388,7 @@ const Search: React.FC = () => {
                             </div>
                           ) : activeTab === 'asset' ? (
                             <div key={idx} className="w-full">
-                              <CardAsset data={data} />
+                              <CardAsset data={data} isClick={true} />
                             </div>
                           ) : activeTab === 'hashtag' ? (
                             <div key={idx} className="w-full">

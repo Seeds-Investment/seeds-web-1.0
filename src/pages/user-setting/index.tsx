@@ -4,6 +4,7 @@ import LevelButton from '@/components/ui/button/LevelButton';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -99,7 +100,13 @@ const UserSetting: React.FC = () => {
       label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
-      onClick: () => {},
+      onClick: async () => {
+        // try {
+        //   await router.push('/block-list');
+        // } catch (error) {
+        //   console.error('Error navigating to Edit Profile:', error);
+        // }
+      },
       extraClasses: submenuClasses
     },
     {
@@ -278,4 +285,4 @@ const UserSetting: React.FC = () => {
   );
 };
 
-export default UserSetting;
+export default withAuth(UserSetting);

@@ -99,3 +99,16 @@ export const getAssetById = async (id: string): Promise<any> => {
     }
   });
 };
+
+export const getDetailAsset = async (id: string, params: any): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  return await marketService.get(`/single/${id}`, {
+    params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};

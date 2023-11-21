@@ -20,15 +20,14 @@ import {
   postSavedCirclePost
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { Transition } from '@headlessui/react';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, clipCopy } from 'public/assets/circle';
+import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -47,6 +46,7 @@ import { useTranslation } from 'react-i18next';
 interface props {
   dataPost: any;
   setData: any;
+  userInfo: UserData;
 }
 
 interface ChartData {
@@ -144,30 +144,30 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    void fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<void> => {
+  //     try {
+  //       const response = await getUserInfo();
+  //       setUserInfo(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   void fetchData();
+  // }, []);
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
@@ -342,6 +342,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                     key={index}
                     className="font-poppins text-black font-normal"
                   >
+                    {/* See more premium */}
                     {word}{' '}
                   </pre>
                 );
@@ -705,6 +706,31 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
     );
   };
 
+  const [expanded, setExpanded] = useState(false);
+  const handleSeeMore = (text: string, maxWords: number): any => {
+    const words = text.split(' ');
+
+    const displayText = expanded
+      ? renderTouchableText(text)
+      : words.slice(0, maxWords).join(' ');
+
+    return (
+      <div>
+        <p>{displayText}</p>
+        {words.length > maxWords && (
+          <button
+            className="text-blue-600"
+            onClick={() => {
+              setExpanded(!expanded);
+            }}
+          >
+            {expanded ? 'See Less' : 'See More'}
+          </button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
       {isCopied && renderIsCopied()}
@@ -748,7 +774,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                       <Typography className="font-bold text-black md:text-lg">
                         @
                         {dataPost.owner !== undefined
-                          ? dataPost.owner.seeds_tag
+                          ? dataPost.owner.seeds_tag !== undefined
+                            ? dataPost.owner.seeds_tag
+                            : dataPost.owner.username
                           : null}
                       </Typography>
                       {/* {dataPost.owner.verified === true && (
@@ -778,8 +806,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center">
-                {renderTouchableText(dataPost?.content_text)}
+              <div className="flex items-center mb-2">
+                {dataPost.privacy === 'premium' &&
+                dataPost.user_id !== userInfo.id
+                  ? handleSeeMore(dataPost.content_text, 10)
+                  : renderTouchableText(dataPost?.content_text)}
+                {/* {renderTouchableText(dataPost?.content_text)} */}
               </div>
               {categorizeURL(dataPost.media_urls)}
               {voice.length > 0 && (
@@ -1011,8 +1043,8 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                         <path
                           d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
                           stroke="white"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     ) : (
@@ -1026,8 +1058,8 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                         <path
                           d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
                           stroke="black"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                     )}
@@ -1203,11 +1235,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               <div className="flex gap-5">
                 <div className="flex items-center gap-1">
                   <div
-                    className={`${
-                      dataPost.is_pinned === true
-                        ? 'bg-seeds-green/30'
-                        : 'hover:bg-seeds-green/30'
-                    } p-2 rounded-full cursor-pointer`}
+                    className={`p-2 rounded-full cursor-pointer`}
                     onClick={async () => {
                       if (dataPost.circle !== undefined) {
                         await pinPost('connect');
@@ -1216,7 +1244,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                       }
                     }}
                   >
-                    <Image src={Pin.src} alt={Pin.alt} width={20} height={20} />
+                    {dataPost.is_pinned === true ? (
+                      <Image src={UnPin} alt={'unpin'} width={20} height={20} />
+                    ) : (
+                      <Image
+                        src={Pin.src}
+                        alt={Pin.alt}
+                        width={20}
+                        height={20}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -1244,6 +1281,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-row mt-2">
+              {dataPost.privacy === 'premium' ? (
+                <div className="flex flex-row bg-[#DCFCE4] items-center py-1 px-2 rounded-xl">
+                  <ArrowUpRightIcon className="h-4 w-4 text-[#3AC4A0] mr-2" />
+                  <p className="text-[#3AC4A0]">Premium</p>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

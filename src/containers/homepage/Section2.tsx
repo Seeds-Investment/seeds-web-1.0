@@ -2,6 +2,7 @@ import { getPlaySimulation } from '@/repository/play.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import bestReward from '../../../public/assets/images/bestReward.svg';
 import goldHome from '../../../public/assets/images/goldHome.svg';
 
 interface DataPlayer {
@@ -160,20 +161,25 @@ const Section2 = (): React.ReactElement => {
             Win Reward every Month{' '}
             <span className="font-semibold">{'"Now in December"'}</span>
           </h1>
-          <div className="lg:flex flex-row file:justify-end">
-            <div className="border py-5 px-2 lg:py-3 lg:px-5 mt-2 w-full lg:w-[30%] justify-center text-center border-1 me-3 rounded-lg bg-[#7555DA]">
-              <h1 className="text-lg mb-2 font-semibold text-[#FFFFFF]">
-                1st Rank
-              </h1>
-              <h1 className="text-xs mb-2 font-normal text-[#FFFFFF]">
-                Total Prize
-              </h1>
-              <h1 className="text-base border-2 border-dashed p-2 border-[#FFFFFF] font-semibold text-[#FFFFFF]">
-                Rp 150.000
-              </h1>
+          <div className="lg:flex flex-row justify-end">
+            <div className="border lg:w-1/3 w-full  justify-center text-center border-1 me-3 rounded-lg bg-[#7555DA]">
+              <div className="">
+                <Image src={bestReward} alt="Next" width={72} height={72} />
+              </div>
+              <div className="px-5 pb-3 mt-[-50px]">
+                <h1 className="text-lg mb-2 font-semibold text-[#FFFFFF]">
+                  1st Rank
+                </h1>
+                <h1 className="text-xs mb-2 font-normal text-[#FFFFFF]">
+                  Total Prize
+                </h1>
+                <h1 className="text-base border-2 border-dashed p-2 border-[#FFFFFF] font-semibold text-[#FFFFFF]">
+                  Rp 150.000
+                </h1>
+              </div>
             </div>
-            <div className="flex w-full">
-              <div className="w-1/2 border py-2 px-3 me-3 mt-2 justify-center text-center border-1 rounded-lg">
+            <div className="flex w-full lg:w-1/2 justify-end ">
+              <div className="w-1/2  border py-2 px-3 me-3 mt-2 justify-center text-center border-1 rounded-lg">
                 <h1 className="text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
                   2nd Rank
                 </h1>

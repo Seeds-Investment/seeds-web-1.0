@@ -10,7 +10,6 @@ import {
 } from '@/constants/assets/icons';
 import { EarnXP } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getExpData } from '@/repository/exp.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
@@ -32,16 +31,6 @@ const ReferalCode = (): JSX.Element => {
       <span className="z-0 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
     </>
   );
-
-  const width = useWindowInnerWidth() ?? 0;
-  const bottomPosition =
-    width <= 320
-      ? 'bottom-9'
-      : width <= 375
-      ? 'bottom-16'
-      : width <= 425
-      ? 'bottom-[87px]'
-      : 'bottom-[95px]';
 
   useEffect(() => {
     const fetchUserProfile = async (): Promise<void> => {
@@ -76,72 +65,47 @@ const ReferalCode = (): JSX.Element => {
   }, []);
 
   return (
-    <PageGradient
-      customGradient={customGradient}
-      className="absolute overflow-hidden w-full"
-    >
-      <CCard className="p-5 mb-5 h-[253px] lg:h-[300px] rounded-none md:rounded-lg md:mt-2 md:mx-7 lg:mx-12 bg-[#3AC4A0]">
-        <div className="flex flex-col md:flex-row items-start justify-center h-full md:justify-start md:mx-3">
-          <div className="text-start md:text-left z-[2]">
-            <div className="text-white font-normal text-lg md:text-3xl">
-              {t('ReferalCode.title')}
-            </div>
-            <div className="text-white font-semibold text-3xl md:text-5xl">
-              {t('ReferalCode.subtitle')}
-            </div>
-          </div>
-          <div className="flex justify-end">
-            <div
-              className={
-                'absolute w-1/2 h-1/2 right-0 md:w-1/3 md:h-1/3 md:top-3 md:ml-2 lg:w-1/4 lg:h-full lg:top-4 z-[1] ' +
-                bottomPosition
-              }
-            >
-              <Image
-                src={EarnXP.src}
-                alt={EarnXP.alt}
-                width={100}
-                height={100}
-                className="w-auto h-auto aspect-auto"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative">
-          <CCard className="p-4 mt-3 rounded-lg w-full absolute -top-8 lg:static lg:w-1/3 lg:h-[90px] lg:ml-2 z-[2]">
+    <PageGradient customGradient={customGradient} className="">
+      <CCard className=" h-[196px] lg:h-[320px] bg-[#3AC4A0] flex flex-row justify-between items-center">
+        <div>
+          <Typography className="text-white font-normal text-3xl">
+            Referral Code
+          </Typography>
+          <CCard className="flex w-[471.41px] h-[111px] p-[21.93px] gap-[15.07px]">
             <div className="flex items-center justify-between">
-              <CCard className="p-3 mr-2 rounded-xl w-full bg-[#3AC4A0] sm:mx-2 md:mt-1 md:h-full">
-                <div className="flex items-center justify-between">
-                  <Typography className="mr-2 text-sm text-white md:text-xl">
-                    {userData?.refCode}
+              <CCard className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer">
+                <Typography className="text-white text-[19.19px] leading-[27.41px] font-poppins font-normal">
+                  {userData?.refCode}
+                </Typography>
+                <div className="flex gap-1">
+                  <Image
+                    src={Copy.src}
+                    alt={Copy.alt}
+                    width={27.41}
+                    height={27.41}
+                  />
+                  <Typography className="text-[19.19px] leading-[27.41px] font-semibold font-poppins text-white">
+                    Copy
                   </Typography>
-                  <div className="flex items-center md:w-full md:h-full lg:items-end lg:justify-end">
-                    <Image
-                      src={Copy.src}
-                      alt={Copy.alt}
-                      width={20}
-                      height={20}
-                      className="aspect-auto mr-1"
-                    />
-                    <Typography className="text-end font-semibold text-sm text-white md:text-xl">
-                      Copy
-                    </Typography>
-                  </div>
                 </div>
               </CCard>
-              <div className="flex items-center">
-                <Image
-                  src={ShareSquare.src}
-                  alt={ShareSquare.alt}
-                  width={60}
-                  height={60}
-                  className="aspect-auto"
-                />
-              </div>
+              <Image
+                src={ShareSquare.src}
+                alt={ShareSquare.alt}
+                width={67.15}
+                height={67.15}
+                className="cursor-pointer"
+              />
             </div>
           </CCard>
         </div>
+        <Image
+          src={EarnXP.src}
+          alt={EarnXP.alt}
+          width={299}
+          height={294}
+          className="self-end"
+        />
       </CCard>
 
       <CCard className="p-5 mx-4 mt-14 md:rounded-lg md:mx-7 lg:mx-12">

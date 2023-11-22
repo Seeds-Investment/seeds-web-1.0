@@ -7,6 +7,7 @@ import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
+import { countWords } from '@/helpers/text';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -283,6 +284,7 @@ const ModalMention: React.FC<props> = ({
     }
   }, [form, audio, media, document]);
 
+  console.log(form);
   useEffect(() => {
     if (form.content_text.length > 250) {
       setIsError(true);
@@ -291,6 +293,16 @@ const ModalMention: React.FC<props> = ({
     } else {
       setIsDisable(false);
     }
+
+    if (form.privacy === 'premium') {
+      if (countWords(form.content_text) < 10) {
+        setIsError(true);
+        setIsDisable(true);
+        setErrorMessage('Minimal 10 kata yaa guys');
+        setLastWordsWithChar('');
+      }
+    }
+
     if (form.content_text.length < 3) {
       setLastWordsWithChar('');
     }

@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import {
-  Checkbox as MTCheckbox,
-  Typography,
+  IconButton,
   Input,
-  IconButton
+  Checkbox as MTCheckbox,
+  Typography
 } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import 'react-datepicker/dist/react-datepicker.css';
 

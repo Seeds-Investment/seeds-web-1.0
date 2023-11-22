@@ -14,9 +14,18 @@ interface form {
 interface props {
   setPages: any;
   form: form;
+  isTooMuch: boolean;
+  setErrorMessage: any;
+  setIsError: any;
 }
 
-const GifPost: React.FC<props> = ({ setPages, form }) => {
+const GifPost: React.FC<props> = ({
+  setPages,
+  form,
+  isTooMuch,
+  setErrorMessage,
+  setIsError
+}) => {
   const [dataGif, setData]: any = useState();
   const [search, setSearch] = useState({
     searchGif: ''
@@ -50,7 +59,12 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   }, []);
 
   const handlePostGif = (url: any): any => {
-    form.media_urls.push(url);
+    if (isTooMuch) {
+      setIsError(true);
+      setErrorMessage('You can only post maximum 4 images, video and gif');
+    } else {
+      form.media_urls.push(url);
+    }
     setPages('text');
   };
 

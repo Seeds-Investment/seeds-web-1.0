@@ -3,6 +3,7 @@ import LineChart from '@/components/LineChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/homepage/asset/Card1';
 import Card2 from '@/containers/homepage/asset/Card2';
+import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -24,7 +25,7 @@ const AssetDetailPage: React.FC = () => {
     tf: 'daily',
     currency: 'IDR'
   });
-  // const {chartItem} = useLineChart(data, params.tf)
+  const { chartItem } = useLineChart(data, params.tf);
 
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
@@ -59,7 +60,7 @@ const AssetDetailPage: React.FC = () => {
 
       <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
         <div className="h-[35rem] mb-5">
-          <LineChart data={data} filter={params.tf} />
+          <LineChart data={chartItem} />
         </div>
 
         <Tabs value={'daily'}>

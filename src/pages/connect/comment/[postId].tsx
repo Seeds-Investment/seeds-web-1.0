@@ -90,6 +90,21 @@ const tagOption = [
   }
 ];
 
+const initialUserInfo = {
+  id: '',
+  name: '',
+  seedsTag: '',
+  email: '',
+  pin: '',
+  avatar: '',
+  bio: '',
+  birthDate: '',
+  phone: '',
+  preferredLanguage: '',
+  verified: false,
+  _pin: ''
+};
+
 const Comment: React.FC = () => {
   const router = useRouter();
   const postId: string | any = router.query.postId;
@@ -110,7 +125,7 @@ const Comment: React.FC = () => {
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [displayValue, setDisplayValue] = useState('');
   const [tagMapping, setTagMapping] = useState({});
   const [form, setForm] = useState<typeOfForm>({
@@ -462,7 +477,7 @@ const Comment: React.FC = () => {
         const payload: typeOfCommentForm = {
           content_text: form.content_text.replace(`~${parent.seedsTag} `, ''),
           media_url: mediaArr.length > 0 ? mediaArr[0] : form.media_url,
-          user_id: userInfo?.id as string,
+          user_id: userInfo.id,
           post_id: dataPost?.id,
           parent_id: parent.id,
           media_type: form.media_type
@@ -472,7 +487,7 @@ const Comment: React.FC = () => {
         const payload: typeOfCommentForm = {
           content_text: form.content_text,
           media_url: mediaArr.length > 0 ? mediaArr[0] : form.media_url,
-          user_id: userInfo?.id as string,
+          user_id: userInfo.id,
           post_id: dataPost?.id,
           parent_id: parent.id,
           media_type: form.media_type
@@ -792,7 +807,11 @@ const Comment: React.FC = () => {
                 <div className="h-fit w-full py-8 px-8 md:px-14">
                   <div className="flex flex-col">
                     {dataPost !== null && (
-                      <PostSection dataPost={dataPost} setData={setDataPost} />
+                      <PostSection
+                        dataPost={dataPost}
+                        setData={setDataPost}
+                        userInfo={userInfo}
+                      />
                     )}
                   </div>
                   <div className="block bg-white w-full rounded-xl">

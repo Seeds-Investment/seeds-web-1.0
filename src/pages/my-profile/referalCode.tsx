@@ -17,9 +17,12 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import ReferralCircle from '@/assets/ReferralCircle.svg';
+
 const ReferalCode = (): JSX.Element => {
   const [expData, setExpData] = useState<any>();
   const [userData, setUserData] = useState<Record<string, any>>();
+  console.log(userData);
   const { t } = useTranslation();
 
   const customGradient = (
@@ -67,8 +70,8 @@ const ReferalCode = (): JSX.Element => {
   return (
     <PageGradient customGradient={customGradient} className="">
       <CCard className=" h-[196px] lg:h-[320px] bg-[#3AC4A0] flex flex-row justify-between items-center">
-        <div>
-          <Typography className="text-white font-normal text-3xl">
+        <div className="flex flex-col gap-4 ml-[33px]">
+          <Typography className="text-white text-3xl font-light font-poppins">
             Referral Code
           </Typography>
           <CCard className="flex w-[471.41px] h-[111px] p-[21.93px] gap-[15.07px]">
@@ -98,14 +101,23 @@ const ReferalCode = (): JSX.Element => {
               />
             </div>
           </CCard>
+          <Typography className="text-2xl text-white font-normal font-poppins">
+            Total Referral Used{' '}
+            <span className="text-3xl text-white font-semibold font-poppins">
+              1000
+            </span>
+          </Typography>
         </div>
-        <Image
-          src={EarnXP.src}
-          alt={EarnXP.alt}
-          width={299}
-          height={294}
-          className="self-end"
-        />
+        <div className="self-end">
+          <Image
+            src={EarnXP.src}
+            alt={EarnXP.alt}
+            width={299}
+            height={294}
+            className="absolute right-0 bottom-0 z-50"
+          />
+          <Image src={ReferralCircle} alt="ReferralCircle" width={170} />
+        </div>
       </CCard>
 
       <CCard className="p-5 mx-4 mt-14 md:rounded-lg md:mx-7 lg:mx-12">

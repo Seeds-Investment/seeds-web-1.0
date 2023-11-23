@@ -171,16 +171,20 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
               width={12}
             />
           )}
-          <div className="flex justify-center items-center py-1 px-2 bg-[#DCFCE4] my-0.5 rounded-full">
-            <p className="leading-4 text-[10px] text-[#1A857D] font-poppins font-normal">
-              Investor
-            </p>
-          </div>
-          <Image
-            src={ID}
-            alt="ID-flag"
-            className="w-[30px] h-[20px] self-center"
-          />
+          {profileData?.label !== '' ? (
+            <div className="flex justify-center items-center py-1 px-2 bg-[#DCFCE4] my-0.5 rounded-full">
+              <p className="leading-4 text-[10px] text-[#1A857D] font-poppins font-normal">
+                {profileData?.label}
+              </p>
+            </div>
+          ) : null}
+          {profileData?.region !== '' ? (
+            <Image
+              src={ID}
+              alt="ID-flag"
+              className="w-[30px] h-[20px] self-center"
+            />
+          ) : null}
         </div>
         <Typography className="text-xs text-[#222222] font-normal font-poppins">
           {profileData?.name}

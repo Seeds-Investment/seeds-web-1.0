@@ -223,7 +223,7 @@ const UnderLineTab = ({
                       className={`flex justify-center border border-[#3AC4A0] bg-[#DCFCE4] sm:w-[164px] sm:mx-0 h-[92px] ${
                         item?.type === 'ALL' ? 'w-[192px] mx-16' : 'w-[164px]'
                       }`}
-                      key={index}
+                      key={item.type}
                     >
                       <CardBody className="p-0 flex flex-col items-center gap-2">
                         <div className="flex gap-[5px]">

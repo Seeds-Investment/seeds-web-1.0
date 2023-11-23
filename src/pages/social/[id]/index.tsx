@@ -21,10 +21,12 @@ interface Circle {
   limit: number;
   page: number;
   type: string;
+  user_id: string;
 }
 
 interface Play {
   type: string;
+  user_id: string;
 }
 
 const post: Post = {
@@ -32,19 +34,21 @@ const post: Post = {
   page: 1
 };
 
-const circle: Circle = {
-  limit: 10,
-  page: 1,
-  type: 'joined'
-};
-
-const play: Play = {
-  type: 'ALL'
-};
-
 function UserProfile(): JSX.Element {
   const router = useRouter();
   const id = router.query.id as string;
+  console.log(id);
+  const circle: Circle = {
+    limit: 10,
+    page: 1,
+    type: 'others_circle',
+    user_id: id
+  };
+  const play: Play = {
+    type: 'ALL',
+    user_id: id
+  };
+
   const [userData, setUserData] = useState<Record<string, any>>();
 
   const [expUserData, setExpUserData] = useState<any>();

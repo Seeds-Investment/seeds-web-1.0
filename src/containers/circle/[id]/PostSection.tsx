@@ -301,7 +301,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <pre className="text-blue-500 font-poppins">
+                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
+                </pre>
               </button>
             );
           } else {

@@ -5,6 +5,7 @@ import Section2 from '@/containers/homepage/Section2';
 import Section3 from '@/containers/homepage/Section3';
 import Section4 from '@/containers/homepage/Section4';
 import Section5 from '@/containers/homepage/Section5';
+import TrendingSection from '@/containers/homepage/TrendingSection';
 import withAuth from '@/helpers/withAuth';
 
 const Homepage: React.FC = () => {
@@ -21,6 +22,9 @@ const Homepage: React.FC = () => {
       </CCard>
       <CCard className="p-3 mb-5">
         <Section4 />
+      </CCard>
+      <CCard className="p-3 mb-5">
+        <TrendingSection />
       </CCard>
       <CCard className="p-3 mb-5">
         <Section5 />

@@ -63,67 +63,6 @@ const ProfilePage = (): JSX.Element => {
       .catch(() => {});
   }, []);
 
-  //   currentExp: 300,
-  //   nextExp: 90,
-  //   expExpiration: '2024-01-01 23:59:59',
-  //   tierList: [
-  //     {
-  //       image: 'seeds.png',
-  //       name: 'Seeds',
-  //       rewards: [],
-  //       exp: 0
-  //     },
-  //     {
-  //       image: 'sprout.png',
-  //       name: 'Sprout',
-  //       rewards: [
-  //         {
-  //           name: 'Create 1 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 200
-  //     },
-  //     {
-  //       image: 'seedling.png',
-  //       name: 'Seedling',
-  //       rewards: [
-  //         {
-  //           name: 'Create 2 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 300
-  //     },
-  //     {
-  //       image: 'sapling.png',
-  //       name: 'Sapling',
-  //       rewards: [
-  //         {
-  //           name: 'Create 3 Circle',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 500
-  //     },
-  //     {
-  //       image: 'tree.png',
-  //       name: 'Tree',
-  //       rewards: [
-  //         {
-  //           name: 'Create a Play Arena',
-  //           description:
-  //             'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-  //         }
-  //       ],
-  //       exp: 1000
-  //     }
-  //   ]
-  // };
-
   const _handleReferalCode = (): any => {
     return router.push('/my-profile/referalCode');
   };

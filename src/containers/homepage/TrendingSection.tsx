@@ -6,8 +6,8 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
-import ArticlePage from './article/ArticlePage';
 import NewsPage from './news/NewsPage';
+import CirclePage from './trending/CirclePage';
 
 interface typeOfTab {
   name: string;
@@ -37,7 +37,7 @@ const TrendingSection: React.FC = () => {
       <div className="flex items-center justify-center h-full">
         <Tabs value={activeTab}>
           <TabsHeader
-            className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
+            className="w-full text-center justify-center rounded-none bg-transparent p-0"
             indicatorProps={{
               className: 'shadow-none rounded-none bg-transparent'
             }}
@@ -63,7 +63,7 @@ const TrendingSection: React.FC = () => {
           </TabsHeader>
           <TabsBody>
             <TabPanel value="circle">
-              <ArticlePage />
+              <CirclePage />
             </TabPanel>
             <TabPanel value="asset">
               <NewsPage />

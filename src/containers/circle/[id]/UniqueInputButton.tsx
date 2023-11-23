@@ -15,6 +15,7 @@ interface props {
   setIsError: any;
   isError: boolean;
   isEmpty: boolean;
+  isTooMuch: boolean;
 }
 const UniqueInputButton: React.FC<props> = ({
   setPages,
@@ -24,7 +25,8 @@ const UniqueInputButton: React.FC<props> = ({
   setErrorMessage,
   setIsError,
   isEmpty,
-  isError
+  isError,
+  isTooMuch
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
@@ -40,6 +42,11 @@ const UniqueInputButton: React.FC<props> = ({
   const handleImage = (event: any): any => {
     const fileMedia = event.target.files[0];
     const fileMediaEle = event.target;
+    if (isTooMuch) {
+      setIsError(true);
+      setErrorMessage('You can only post maximum 4 images, video and gif');
+      return new Error('You can only post maximum 4 images, video and gif');
+    }
 
     if (fileMedia?.type?.includes('video') === true) {
       const validation =
@@ -116,128 +123,143 @@ const UniqueInputButton: React.FC<props> = ({
   };
 
   return (
-    <div className="flex justify-between pb-10 border-t border-neutral-ultrasoft">
-      <input
-        type="file"
-        id="MediaUpload"
-        onChange={handleImage}
-        className="hidden"
-        accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
-      />
-      <div className="flex gap-[18px]">
-        {/* gallery */}
-        <div className="flex flex-col">
-          <button type="button" onClick={handleGallery} className="p-2">
-            <Image
-              alt="unique_post"
-              src={gallery}
-              className="h-5 w-5 object-cover"
-            />
-          </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            Gallery
-          </h1>
+    <>
+      <div className="flex justify-between pb-10 border-t border-neutral-ultrasoft">
+        <input
+          type="file"
+          id="MediaUpload"
+          onChange={handleImage}
+          className="hidden"
+          accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+        />
+        <div className="flex gap-[18px]">
+          {/* gallery */}
+          <div className="flex flex-col">
+            <button type="button" onClick={handleGallery} className="p-2">
+              <Image
+                alt="unique_post"
+                src={gallery}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Gallery
+            </h1>
+          </div>
+          {/* GIF */}
+          <div className="flex flex-col">
+            <button
+              type="button"
+              onClick={() => {
+                handlePages('gif');
+              }}
+              className="p-2"
+            >
+              <Image
+                alt="unique_post"
+                src={gif}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              GIF
+            </h1>
+          </div>
+          {/* Poll */}
+          <div className="flex flex-col">
+            <button
+              type="button"
+              className="p-2"
+              onClick={() => {
+                handlePages('poll');
+              }}
+            >
+              <Image
+                alt="unique_post"
+                src={poll}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Poll
+            </h1>
+          </div>
+          {/* Pie */}
+          <div className="flex flex-col">
+            <button
+              type="button"
+              className="p-2"
+              onClick={() => {
+                handlePages('pie');
+                openPieModal();
+              }}
+            >
+              <Image
+                alt="unique_post"
+                src={pie}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Pie
+            </h1>
+          </div>
+          {/* Voice */}
+          <div className="flex flex-col">
+            <button
+              type="button"
+              onClick={() => {
+                handlePages('talk');
+              }}
+              className="p-2"
+            >
+              <Image
+                alt="unique_post"
+                src={talk}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Talk
+            </h1>
+          </div>
+          {/* PDF */}
+          <div className="flex flex-col">
+            <button type="button" onClick={handleDocument} className="p-2">
+              <Image
+                alt="unique_post"
+                src={pdf}
+                className="h-5 w-5 object-cover"
+              />
+              <input
+                type="file"
+                id="dokumenFile"
+                onChange={handlePDF}
+                className="hidden"
+                accept=".pdf"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              PDF
+            </h1>
+          </div>
         </div>
-        {/* GIF */}
-        <div className="flex flex-col">
+        {/* post button */}
+        <div className="hidden sm:flex items-center">
           <button
-            type="button"
-            onClick={() => {
-              handlePages('gif');
-            }}
-            className="p-2"
+            type="submit"
+            disabled={isEmpty || isError}
+            className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
+              isEmpty || isError
+                ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
+                : 'bg-seeds-button-green text-white'
+            }`}
           >
-            <Image
-              alt="unique_post"
-              src={gif}
-              className="h-5 w-5 object-cover"
-            />
+            Post
           </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            GIF
-          </h1>
-        </div>
-        {/* Poll */}
-        <div className="flex flex-col">
-          <button
-            type="button"
-            className="p-2"
-            onClick={() => {
-              handlePages('poll');
-            }}
-          >
-            <Image
-              alt="unique_post"
-              src={poll}
-              className="h-5 w-5 object-cover"
-            />
-          </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            Poll
-          </h1>
-        </div>
-        {/* Pie */}
-        <div className="flex flex-col">
-          <button
-            type="button"
-            className="p-2"
-            onClick={() => {
-              handlePages('pie');
-              openPieModal();
-            }}
-          >
-            <Image
-              alt="unique_post"
-              src={pie}
-              className="h-5 w-5 object-cover"
-            />
-          </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            Pie
-          </h1>
-        </div>
-        {/* Voice */}
-        <div className="flex flex-col">
-          <button
-            type="button"
-            onClick={() => {
-              handlePages('talk');
-            }}
-            className="p-2"
-          >
-            <Image
-              alt="unique_post"
-              src={talk}
-              className="h-5 w-5 object-cover"
-            />
-          </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            Talk
-          </h1>
-        </div>
-        {/* PDF */}
-        <div className="flex flex-col">
-          <button type="button" onClick={handleDocument} className="p-2">
-            <Image
-              alt="unique_post"
-              src={pdf}
-              className="h-5 w-5 object-cover"
-            />
-            <input
-              type="file"
-              id="dokumenFile"
-              onChange={handlePDF}
-              className="hidden"
-              accept=".pdf"
-            />
-          </button>
-          <h1 className="font-poppins font-semibold text-xs text-center">
-            PDF
-          </h1>
         </div>
       </div>
-      {/* post button */}
-      <div className="flex items-center">
+      <div className="flex sm:hidden items-center">
         <button
           type="submit"
           disabled={isEmpty || isError}
@@ -250,7 +272,7 @@ const UniqueInputButton: React.FC<props> = ({
           Post
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

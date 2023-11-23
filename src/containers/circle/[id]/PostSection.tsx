@@ -20,14 +20,14 @@ import {
   postSavedCirclePost
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { Transition } from '@headlessui/react';
+import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, clipCopy } from 'public/assets/circle';
+import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -46,7 +46,7 @@ import { useTranslation } from 'react-i18next';
 interface props {
   dataPost: any;
   setData: any;
-  profileData?: any;
+  userInfo: UserData;
 }
 
 interface ChartData {
@@ -144,30 +144,30 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    void fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<void> => {
+  //     try {
+  //       const response = await getUserInfo();
+  //       setUserInfo(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   void fetchData();
+  // }, []);
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
@@ -233,7 +233,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
           ) {
             const contentMatch = part.match(/\[([^\]]+)\]/);
             const linkMatch = part.match(/\(([^)]+)\)/);
+            if (contentMatch !== null && linkMatch === null) {
+              const content = contentMatch[1];
 
+              return (
+                <button style={{ marginBottom: 0 }} key={partIndex}>
+                  <pre className="font-poppins text-seeds-green font-normal">
+                    #{content}{' '}
+                  </pre>
+                </button>
+              );
+            }
             if (contentMatch !== null && linkMatch !== null) {
               const content = contentMatch[1];
               const link = linkMatch[1];
@@ -299,6 +309,20 @@ const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
             const words = part.split(' ');
             return words.map((word: string, index: number) => {
               if (word.startsWith('#')) {
+                if (word.startsWith('#[')) {
+                  const contentMatch = part.match(/\[([^\]]+)\]/);
+                  if (contentMatch !== null) {
+                    const content = contentMatch[1];
+
+                    return (
+                      <button style={{ marginBottom: 0 }} key={partIndex}>
+                        <pre className="font-poppins text-seeds-green font-normal">
+                          #{content}
+                        </pre>
+                      </button>
+                    );
+                  }
+                }
                 const cleanedWord = word.replace(/#(\w+)/, '$1');
                 return (
                   <button
@@ -318,6 +342,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
                     key={index}
                     className="font-poppins text-black font-normal"
                   >
+                    {/* See more premium */}
                     {word}{' '}
                   </pre>
                 );
@@ -463,7 +488,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
 
   const toDetailTag = useCallback((item: any) => {
     if (item?.thumbnailType === 'circle') {
-      router.push('CircleDetailScreen').catch(err => {
+      router.push(`/connect/post/${item.id as string}`).catch(err => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'play') {
@@ -661,541 +686,637 @@ const PostSection: React.FC<props> = ({ dataPost, setData, profileData }) => {
     }
   }, []);
 
-  return (
-    <div
-      className="w-full pb-5 mt-5 border-b border-neutral-ultrasoft"
-      key={`${dataPost.id as string}${Math.floor(Math.random() * 100000000)}`}
-    >
-      <div className="flex gap-4 md:gap-8">
-        <div className="hidden md:flex">
-          <div>
-            <img
-              src={dataPost.owner !== undefined ? dataPost.owner.avatar : null}
-              alt="AVATAR"
-              className="rounded-full w-12 h-12 cursor-pointer"
-              onClick={async () => {
-                dataPost.user_id === profileData.id
-                  ? await router.push('/my-profile')
-                  : await router.push(`/social/${dataPost.user_id as string}`);
-              }}
-            />
-          </div>
+  const renderIsCopied = (): JSX.Element => {
+    return (
+      <Transition
+        show={isCopied}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div className="z-[100000] fixed left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-[0 2px 8px bg-black/20 rounded-xl">
+          <Typography className="font-poppins text-black p-1">
+            Copied!
+          </Typography>
         </div>
-        <div className="w-full">
-          <div className="mb-4">
-            <div className="flex gap-5 pb-4">
-              <div className="md:hidden flex">
-                <div>
-                  <img
-                    src={
-                      dataPost.owner !== undefined
-                        ? dataPost.owner.avatar
-                        : null
-                    }
-                    alt="AVATAR"
-                    className="rounded-full w-12 h-12 cursor-pointer"
-                    onClick={async () => {
-                      dataPost.user_id === profileData.id
-                        ? await router.push('/my-profile')
-                        : await router.push(
-                            `/social/${dataPost.user_id as string}`
-                          );
-                    }}
-                  />
-                </div>
-              </div>
+      </Transition>
+    );
+  };
 
-              <div className="w-full">
-                <div className="flex justify-between">
-                  <div className="flex items-center gap-2">
-                    <Typography
-                      className="font-bold text-black md:text-lg cursor-pointer"
+  const [expanded, setExpanded] = useState(false);
+  const handleSeeMore = (text: string, maxWords: number): any => {
+    const words = text.split(' ');
+
+    const displayText = expanded
+      ? renderTouchableText(text)
+      : words.slice(0, maxWords).join(' ');
+
+    return (
+      <div>
+        <p>{displayText}</p>
+        {words.length > maxWords && (
+          <button
+            className="text-blue-600"
+            onClick={() => {
+              setExpanded(!expanded);
+            }}
+          >
+            {expanded ? 'See Less' : 'See More'}
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {isCopied && renderIsCopied()}
+
+      <div
+        className="w-full pb-5 mt-5 border-b border-neutral-ultrasoft"
+        key={`${dataPost.id as string}${Math.floor(Math.random() * 100000000)}`}
+      >
+        <div className="flex gap-4 md:gap-8">
+          <div className="hidden md:flex">
+            <div>
+              <img
+                src={
+                  dataPost.owner !== undefined ? dataPost.owner.avatar : null
+                }
+                alt="AVATAR"
+                className="rounded-full w-12 h-12 cursor-pointer"
+                onClick={async () => {
+                  dataPost.user_id === userInfo.id
+                    ? await router.push('/my-profile')
+                    : await router.push(
+                        `/social/${dataPost.user_id as string}`
+                      );
+                }}
+              />
+            </div>
+          </div>
+          <div className="w-full">
+            <div className="mb-4">
+              <div className="flex gap-5 pb-4">
+                <div className="md:hidden flex">
+                  <div>
+                    <img
+                      src={
+                        dataPost.owner !== undefined
+                          ? dataPost.owner.avatar
+                          : null
+                      }
+                      alt="AVATAR"
+                      className="rounded-full w-12 h-12 cursor-pointer"
                       onClick={async () => {
-                        dataPost.user_id === profileData.id
+                        dataPost.user_id === userInfo.id
                           ? await router.push('/my-profile')
                           : await router.push(
                               `/social/${dataPost.user_id as string}`
                             );
                       }}
-                    >
-                      @
-                      {dataPost.owner !== undefined
-                        ? dataPost.owner.seeds_tag
-                        : null}
-                    </Typography>
-                    {/* {dataPost.owner.verified === true && (
+                    />
+                  </div>
+                </div>
+
+                <div className="w-full">
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <Typography
+                        className="font-bold text-black md:text-lg cursor-pointer"
+                        onClick={async () => {
+                          dataPost.user_id === userInfo.id
+                            ? await router.push('/my-profile')
+                            : await router.push(
+                                `/social/${dataPost.user_id as string}`
+                              );
+                        }}
+                      >
+                        @
+                        {dataPost.owner !== undefined
+                          ? dataPost.owner.seeds_tag !== undefined
+                            ? dataPost.owner.seeds_tag
+                            : dataPost.owner.username
+                          : null}
+                      </Typography>
+                      {/* {dataPost.owner.verified === true && (
                       <CheckCircleIcon width={20} height={20} color="#5E44FF" />
                     )} */}
 
-                    {dataPost.owner !== undefined
-                      ? dataPost.owner.verified === true && (
-                          <CheckCircleIcon
-                            width={20}
-                            height={20}
-                            color="#5E44FF"
-                          />
-                        )
-                      : null}
+                      {dataPost.owner !== undefined
+                        ? dataPost.owner.verified === true && (
+                            <CheckCircleIcon
+                              width={20}
+                              height={20}
+                              color="#5E44FF"
+                            />
+                          )
+                        : null}
+                    </div>
+                    <MoreOption dataPost={dataPost} />
                   </div>
-                  <MoreOption dataPost={dataPost} />
-                </div>
-                <div className="flex gap-1 items-center text-gray-500">
-                  <Typography className="text-xs md:text-sm">
-                    {formatDate(dataPost.created_at)}
-                  </Typography>
-                  <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
-                  <Typography className="text-xs md:text-sm">
-                    {formatTime(dataPost.created_at)}
-                  </Typography>
+                  <div className="flex gap-1 items-center text-gray-500">
+                    <Typography className="text-xs md:text-sm">
+                      {formatDate(dataPost.created_at)}
+                    </Typography>
+                    <Image src={Dot.src} alt={Dot.alt} width={5} height={5} />
+                    <Typography className="text-xs md:text-sm">
+                      {formatTime(dataPost.created_at)}
+                    </Typography>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex items-center">
-              {renderTouchableText(dataPost?.content_text)}
-            </div>
-            {categorizeURL(dataPost.media_urls)}
-            {voice.length > 0 && (
-              <audio controls>
-                <source
-                  src={voice[0]}
-                  type="audio/wav"
-                  className="w-full mb-4"
-                />
-                Your browser does not support the audio element.
-              </audio>
-            )}
-            {document.length > 0 && (
-              <div className="flex justify-start md:pl-0 pl-14 mb-4">
-                <div className="flex flex-col">
-                  <div
-                    className="flex justify-start cursor-pointer"
-                    onClick={() => {
-                      setDocModal(true);
-                    }}
-                  >
-                    <Image
-                      src={PDFViewer}
-                      alt="pdf"
-                      className="w-[100px] h-[100px]"
-                    />
-                  </div>
-                </div>
-                {docModal === true && (
-                  <Modal
-                    onClose={() => {
-                      setDocModal(false);
-                    }}
-                    modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
-                  >
-                    <embed
-                      src={document[0]}
-                      type="application/pdf"
-                      className="widthPDF h-screen"
-                    />
-                    <button
-                      className="z-50 fixed text-white top-3 -right-14"
+              <div className="flex items-center mb-2">
+                {dataPost.privacy === 'premium' &&
+                dataPost.user_id !== userInfo.id
+                  ? handleSeeMore(dataPost.content_text, 10)
+                  : renderTouchableText(dataPost?.content_text)}
+                {/* {renderTouchableText(dataPost?.content_text)} */}
+              </div>
+              {categorizeURL(dataPost.media_urls)}
+              {voice.length > 0 && (
+                <audio controls>
+                  <source
+                    src={voice[0]}
+                    type="audio/wav"
+                    className="w-full mb-4"
+                  />
+                  Your browser does not support the audio element.
+                </audio>
+              )}
+              {document.length > 0 && (
+                <div className="flex justify-start md:pl-0 pl-14 mb-4">
+                  <div className="flex flex-col">
+                    <div
+                      className="flex justify-start cursor-pointer"
                       onClick={() => {
-                        setDocModal(false);
+                        setDocModal(true);
                       }}
                     >
-                      <svg
-                        className="h-8 w-8 text-white bg-black/20 rounded-full"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      <Image
+                        src={PDFViewer}
+                        alt="pdf"
+                        className="w-[100px] h-[100px]"
+                      />
+                    </div>
+                  </div>
+                  {docModal === true && (
+                    <Modal
+                      onClose={() => {
+                        setDocModal(false);
+                      }}
+                      modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+                    >
+                      <embed
+                        src={document[0]}
+                        type="application/pdf"
+                        className="widthPDF h-screen"
+                      />
+                      <button
+                        className="z-50 fixed text-white top-3 -right-14"
+                        onClick={() => {
+                          setDocModal(false);
+                        }}
                       >
-                        {' '}
-                        <circle cx="12" cy="12" r="10" />{' '}
-                        <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                        <line x1="9" y1="9" x2="15" y2="15" />
-                      </svg>
-                    </button>
-                  </Modal>
-                )}
-              </div>
-            )}
-            {media.length > 0 && <ImageCarousel images={media} />}
-            {dataPost.pollings?.length > 0 && (
-              <PollingView
-                data={dataPost.pollings}
-                totalVote={dataPost.total_polling}
-                pollingDate={dataPost.polling_date}
-              />
-            )}
+                        <svg
+                          className="h-8 w-8 text-white bg-black/20 rounded-full"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          {' '}
+                          <circle cx="12" cy="12" r="10" />{' '}
+                          <line x1="15" y1="9" x2="9" y2="15" />{' '}
+                          <line x1="9" y1="9" x2="15" y2="15" />
+                        </svg>
+                      </button>
+                    </Modal>
+                  )}
+                </div>
+              )}
+              {media.length > 0 && <ImageCarousel images={media} />}
+              {dataPost.pollings?.length > 0 && (
+                <PollingView
+                  data={dataPost.pollings}
+                  totalVote={dataPost.total_polling}
+                  pollingDate={dataPost.polling_date}
+                />
+              )}
 
-            {dataPost.pie_title !== '' ? (
-              <PieCirclePost data={dataPost} chartData={chartData} />
-            ) : null}
-          </div>
-          <div className="flex justify-start gap-4">
-            {thumbnailList.length > 0 &&
-              thumbnailList.map((item: any, index: number) => {
-                return (
+              {dataPost.pie_title !== '' ? (
+                <PieCirclePost data={dataPost} chartData={chartData} />
+              ) : null}
+            </div>
+            <div className="flex justify-start gap-4">
+              {thumbnailList.length > 0 &&
+                thumbnailList.map((item: any, index: number) => {
+                  return (
+                    <div
+                      className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
+                      key={`${item?.id as string}${index}`}
+                      onClick={() => {
+                        toDetailTag(item);
+                      }}
+                    >
+                      {item?.admission_fee > 0 ? (
+                        <div className="flex justify-center pt-4">
+                          <div className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="17"
+                              height="10"
+                              viewBox="0 0 17 10"
+                              fill="none"
+                            >
+                              <path
+                                d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                fill="#FDBA22"
+                              />
+                            </svg>
+                          </div>
+                          <Typography className="font-poppins text-black text-xs pl-2">
+                            Paid
+                          </Typography>
+                        </div>
+                      ) : null}
+                      {item?.thumbnailType === 'circle' &&
+                      item?.type !== 'free' ? (
+                        <div className="flex justify-center pt-4">
+                          <div className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="17"
+                              height="10"
+                              viewBox="0 0 17 10"
+                              fill="none"
+                            >
+                              <path
+                                d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
+                                fill="#FDBA22"
+                              />
+                            </svg>
+                          </div>
+                          <Typography className="font-poppins text-black text-xs pl-2">
+                            Premium
+                          </Typography>
+                        </div>
+                      ) : null}
+                      {item?.thumbnailType === 'play' ? (
+                        <div className="flex justify-center py-2">
+                          <Image
+                            src={PlayLogo}
+                            alt="image"
+                            width={60}
+                            height={60}
+                            className="rounded-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className={`${
+                            item?.thumbnailType === 'asset' ||
+                            (item?.thumbnailType === 'circle' &&
+                              item?.type === 'free')
+                              ? 'pt-4'
+                              : ''
+                          } flex justify-center py-2`}
+                        >
+                          <img
+                            src={
+                              item?.thumbnailType === 'asset'
+                                ? item?.marketAsset?.logo
+                                : item?.logo !== undefined
+                                ? item.logo
+                                : item?.avatar
+                            }
+                            alt="image"
+                            className="rounded-full object-cover"
+                            width={60}
+                            height={60}
+                          />
+                        </div>
+                      )}
+                      <div className="flex justify-center">
+                        <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
+                          {item?.name?.length > 10
+                            ? (item?.name.substring(0, 15) as string) + '...'
+                            : item?.name}
+                          {item?.thumbnailType === 'asset' &&
+                            (item?.marketAsset?.name?.length > 10
+                              ? (item?.marketAsset?.name.substring(
+                                  0,
+                                  15
+                                ) as string) + '...'
+                              : item?.marketAsset?.name)}
+                        </Typography>
+                      </div>
+                      {item?.thumbnailType === 'play' ? (
+                        <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
+                          {item?.participants?.length} participants
+                        </Typography>
+                      ) : null}
+                      {item?.thumbnailType === 'asset' ? (
+                        <div className="flex justify-center">
+                          <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
+                            {item?.marketAsset?.exchangeCurrency === 'IDR'
+                              ? `IDR ${formatCurrency(
+                                  item?.marketAsset?.lastPrice?.close
+                                )}`
+                              : `$${formatCurrency(
+                                  item?.marketAsset?.lastPrice?.close /
+                                    item?.marketAsset?.exchangeRate
+                                )}`}
+                          </Typography>
+                        </div>
+                      ) : null}
+                      {item?.thumbnailType === 'circle' && (
+                        <div className="flex justify-center">
+                          <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
+                            {item?.total_member} {t('circleDetail.member')}
+                          </Typography>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <div className="flex gap-3 md:gap-5">
+                <div className="flex items-center gap-1 pr-2">
                   <div
-                    className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
-                    key={`${item?.id as string}${index}`}
-                    onClick={() => {
-                      toDetailTag(item);
+                    className={`p-2 rounded-full cursor-pointer`}
+                    onClick={async () => {
+                      await likePost(1);
                     }}
                   >
-                    {item?.admission_fee > 0 ? (
-                      <div className="flex justify-center pt-4">
-                        <div className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="17"
-                            height="10"
-                            viewBox="0 0 17 10"
-                            fill="none"
-                          >
-                            <path
-                              d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
-                              fill="#FDBA22"
-                            />
-                          </svg>
-                        </div>
-                        <Typography className="font-poppins text-black text-xs pl-2">
-                          Paid
-                        </Typography>
-                      </div>
-                    ) : null}
-                    {item?.thumbnailType === 'circle' &&
-                    item?.type !== 'free' ? (
-                      <div className="flex justify-center pt-4">
-                        <div className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="17"
-                            height="10"
-                            viewBox="0 0 17 10"
-                            fill="none"
-                          >
-                            <path
-                              d="M11.8385 5L8.50521 0L6.00521 5L0.171875 3.33333L3.50521 10H13.5052L16.8385 3.33333L11.8385 5Z"
-                              fill="#FDBA22"
-                            />
-                          </svg>
-                        </div>
-                        <Typography className="font-poppins text-black text-xs pl-2">
-                          Premium
-                        </Typography>
-                      </div>
-                    ) : null}
-                    {item?.thumbnailType === 'play' ? (
-                      <div className="flex justify-center py-2">
-                        <Image
-                          src={PlayLogo}
-                          alt="image"
-                          width={60}
-                          height={60}
-                          className="rounded-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className={`${
-                          item?.thumbnailType === 'asset' ||
-                          (item?.thumbnailType === 'circle' &&
-                            item?.type === 'free')
-                            ? 'pt-4'
-                            : ''
-                        } flex justify-center py-2`}
+                    {dataPost.status_like === true ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="#4FE6AF"
                       >
-                        <img
-                          src={
-                            item?.thumbnailType === 'asset'
-                              ? item?.marketAsset?.logo
-                              : item?.logo !== undefined
-                              ? item.logo
-                              : item?.avatar
-                          }
-                          alt="image"
-                          className="rounded-full object-cover"
-                          width={60}
-                          height={60}
+                        <path
+                          d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                          stroke="white"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
-                      </div>
-                    )}
-                    <div className="flex justify-center">
-                      <Typography className="text-seeds-green font-semibold font-poppins text-xl text-center">
-                        {item?.name?.length > 10
-                          ? (item?.name.substring(0, 15) as string) + '...'
-                          : item?.name}
-                        {item?.thumbnailType === 'asset' &&
-                          (item?.marketAsset?.name?.length > 10
-                            ? (item?.marketAsset?.name.substring(
-                                0,
-                                15
-                              ) as string) + '...'
-                            : item?.marketAsset?.name)}
-                      </Typography>
-                    </div>
-                    {item?.thumbnailType === 'play' ? (
-                      <Typography className="text-neutral-soft font-poppins text-center pb-4 text-xs font-medium">
-                        {item?.participants?.length} participants
-                      </Typography>
-                    ) : null}
-                    {item?.thumbnailType === 'asset' ? (
-                      <div className="flex justify-center">
-                        <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
-                          {item?.marketAsset?.exchangeCurrency === 'IDR'
-                            ? `IDR ${formatCurrency(
-                                item?.marketAsset?.lastPrice?.close
-                              )}`
-                            : `$${formatCurrency(
-                                item?.marketAsset?.lastPrice?.close /
-                                  item?.marketAsset?.exchangeRate
-                              )}`}
-                        </Typography>
-                      </div>
-                    ) : null}
-                    {item?.thumbnailType === 'circle' && (
-                      <div className="flex justify-center">
-                        <Typography className="text-neutral-soft font-poppins text-xs font-medium pb-4">
-                          {item?.total_member} {t('circleDetail.member')}
-                        </Typography>
-                      </div>
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                      >
+                        <path
+                          d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                          stroke="black"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     )}
                   </div>
-                );
-              })}
-          </div>
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex gap-3 md:gap-5">
-              <div className="flex items-center gap-1 pr-2">
-                <div
-                  className={`p-2 rounded-full cursor-pointer`}
-                  onClick={async () => {
-                    await likePost(1);
-                  }}
-                >
-                  {dataPost.status_like === true ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="#4FE6AF"
-                    >
-                      <path
-                        d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
-                        stroke="white"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="white"
-                    >
-                      <path
-                        d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
-                        stroke="black"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  )}
+                  <Typography className="text-[#50E6AF] text-sm">
+                    +{dataPost.total_upvote}
+                  </Typography>
                 </div>
-                <Typography className="text-[#50E6AF] text-sm">
-                  +{dataPost.total_upvote}
-                </Typography>
-              </div>
-              <div className="flex items-center gap-1">
-                <div
-                  className="cursor-pointer flex gap-2"
-                  onClick={() => {
-                    router
-                      .push(`/connect/comment/${dataPost.id as string}`)
-                      .catch((err: any) => {
-                        console.error(err);
-                      });
-                  }}
-                >
-                  <Image
-                    src={ChatBubble.src}
-                    alt={ChatBubble.alt}
-                    width={20}
-                    height={20}
-                  />
-                  <Typography>{dataPost.total_comment}</Typography>
+                <div className="flex items-center gap-1">
+                  <div
+                    className="cursor-pointer flex gap-2"
+                    onClick={() => {
+                      router
+                        .push(`/connect/comment/${dataPost.id as string}`)
+                        .catch((err: any) => {
+                          console.error(err);
+                        });
+                    }}
+                  >
+                    <Image
+                      src={ChatBubble.src}
+                      alt={ChatBubble.alt}
+                      width={20}
+                      height={20}
+                    />
+                    <Typography>{dataPost.total_comment}</Typography>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  <Image
-                    src={ShareBlack.src}
-                    alt={ShareBlack.alt}
-                    width={20}
-                    height={20}
-                  />
-                </button>
-                {isShare && (
-                  <div className="w-[420px] absolute z-50 bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
-                    <div className="flex flex-col px-4 py-2">
-                      <div className="flex justify-between">
-                        <Typography className="font-poppins font-semibold text-xl text-black">
-                          Share This Post
-                        </Typography>
-                        <Image
-                          src={XIcon}
-                          alt="x"
-                          width={20}
-                          height={20}
-                          className="cursor-pointer"
-                          onClick={() => {
-                            handleOpen();
-                          }}
-                        />
-                      </div>
-                      <div className="flex justify-center pt-5">
-                        <Typography className="font-poppins font-light text-base text-neutral-medium">
-                          Share links:
-                        </Typography>
-                      </div>
-                      <div className="flex justify-center pb-4 border-b border-neutral-ultrasoft">
-                        <div className="flex border rounded-xl justify-start border-neutral-ultrasoft p-2 min-w-[300px]">
-                          <input
-                            type="text"
-                            readOnly
-                            value={
-                              process.env.NEXTAUTH_URL !== undefined
-                                ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                : `http:localhost:3000${router.asPath}`
-                            }
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleOpen();
+                    }}
+                  >
+                    <Image
+                      src={ShareBlack.src}
+                      alt={ShareBlack.alt}
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                  {isShare && (
+                    <div className="w-[420px] absolute z-50 bg-white ml-8 mt-[52vh] shadow-md rounded-xl">
+                      <div className="flex flex-col px-4 py-2">
+                        <div className="flex justify-between">
+                          <Typography className="font-poppins font-semibold text-xl text-black">
+                            Share This Post
+                          </Typography>
+                          <Image
+                            src={XIcon}
+                            alt="x"
+                            width={20}
+                            height={20}
+                            className="cursor-pointer"
                             onClick={() => {
-                              handleCopyClick(
-                                process.env.NEXTAUTH_URL !== undefined
-                                  ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                  : `http:localhost:3000${router.asPath}`
-                              ).catch((err: any) => {
-                                console.log(err);
-                              });
+                              handleOpen();
                             }}
-                            className="text-black w-[260px]"
                           />
-                          <div className="flex items-center pl-2">
-                            <button type="button">
-                              <Image
-                                src={clipCopy}
-                                alt="copy"
-                                width={20}
-                                height={20}
-                                onClick={() => {
-                                  handleCopyClick(
-                                    process.env.NEXTAUTH_URL !== undefined
-                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                      : `http:localhost:3000${router.asPath}`
-                                  ).catch((err: any) => {
-                                    console.log(err);
-                                  });
-                                }}
-                              />
-                            </button>
+                        </div>
+                        <div className="flex justify-center pt-5">
+                          <Typography className="font-poppins font-light text-base text-neutral-medium">
+                            Share links:
+                          </Typography>
+                        </div>
+                        <div className="flex justify-center pb-4 border-b border-neutral-ultrasoft">
+                          <div className="flex border rounded-xl justify-start border-neutral-ultrasoft p-2 min-w-[300px]">
+                            <input
+                              type="text"
+                              readOnly
+                              value={
+                                process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                  ? `${
+                                      process.env.NEXT_PUBLIC_DOMAIN
+                                    }/connect/comment/${dataPost.id as string}`
+                                  : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                      dataPost.id as string
+                                    }`
+                              }
+                              onClick={() => {
+                                handleCopyClick(
+                                  process.env.NEXT_PUBLIC_DOMAIN !== undefined
+                                    ? `${
+                                        process.env.NEXT_PUBLIC_DOMAIN
+                                      }/connect/comment/${
+                                        dataPost.id as string
+                                      }`
+                                    : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                        dataPost.id as string
+                                      }`
+                                ).catch((err: any) => {
+                                  console.log(err);
+                                });
+                              }}
+                              className="text-black w-[260px] outline-none focus:outline-none cursor-pointer"
+                            />
+                            <div className="flex items-center pl-2">
+                              <button type="button">
+                                <Image
+                                  src={clipCopy}
+                                  alt="copy"
+                                  width={20}
+                                  height={20}
+                                  onClick={() => {
+                                    handleCopyClick(
+                                      process.env.NEXT_PUBLIC_DOMAIN !==
+                                        undefined
+                                        ? `${
+                                            process.env.NEXT_PUBLIC_DOMAIN
+                                          }/connect/comment/${
+                                            dataPost.id as string
+                                          }`
+                                        : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                            dataPost.id as string
+                                          }`
+                                    ).catch((err: any) => {
+                                      console.log(err);
+                                    });
+                                  }}
+                                />
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex justify-center py-4 border-b border-neutral-ultrasoft">
-                        <Typography className="font-poppins font-normal text-base text-black">
-                          No recommended people to share with
-                        </Typography>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4 py-4">
-                        {shareData.map((el: ShareData, i: number) => {
-                          return (
-                            <div
-                              className="flex flex-col items-center"
-                              key={`shareImage${i}`}
-                            >
-                              <Image
-                                src={el.image}
-                                alt="shareImage"
-                                width={40}
-                                height={40}
-                                onClick={() => {
-                                  handleCopyClick(
-                                    process.env.NEXTAUTH_URL !== undefined
-                                      ? `${process.env.NEXTAUTH_URL}${router.asPath}`
-                                      : `http:localhost:3000${router.asPath}`
-                                  ).catch((err: any) => {
-                                    console.log(err);
-                                  });
-                                  handleItemClick(el.link);
-                                }}
-                                className={`cursor-pointer rounded-full ${el.class}`}
-                              />
-                              <Typography className="font-poppins font-normal text-base text-black">
-                                {el.name}
-                              </Typography>
-                            </div>
-                          );
-                        })}
+                        <div className="flex justify-center py-4 border-b border-neutral-ultrasoft">
+                          <Typography className="font-poppins font-normal text-base text-black">
+                            No recommended people to share with
+                          </Typography>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4 py-4">
+                          {shareData.map((el: ShareData, i: number) => {
+                            return (
+                              <div
+                                className="flex flex-col items-center"
+                                key={`shareImage${i}`}
+                              >
+                                <Image
+                                  src={el.image}
+                                  alt="shareImage"
+                                  width={40}
+                                  height={40}
+                                  onClick={() => {
+                                    handleCopyClick(
+                                      process.env.NEXT_PUBLIC_DOMAIN !==
+                                        undefined
+                                        ? `${
+                                            process.env.NEXT_PUBLIC_DOMAIN
+                                          }/connect/comment/${
+                                            dataPost.id as string
+                                          }`
+                                        : `https://user-dev-gcp.seeds.finance/connect/comment/${
+                                            dataPost.id as string
+                                          }`
+                                    ).catch((err: any) => {
+                                      console.log(err);
+                                    });
+                                    handleItemClick(el.link);
+                                  }}
+                                  className={`cursor-pointer rounded-full ${el.class}`}
+                                />
+                                <Typography className="font-poppins font-normal text-base text-black">
+                                  {el.name}
+                                </Typography>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-5">
-              <div className="flex items-center gap-1">
-                <div
-                  className={`${
-                    dataPost.is_pinned === true
-                      ? 'bg-seeds-green/30'
-                      : 'hover:bg-seeds-green/30'
-                  } p-2 rounded-full cursor-pointer`}
-                  onClick={async () => {
-                    if (dataPost.circle !== undefined) {
-                      await pinPost('connect');
-                    } else {
-                      await pinPost('social');
-                    }
-                  }}
-                >
-                  <Image src={Pin.src} alt={Pin.alt} width={20} height={20} />
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <div
-                  className={`p-2 rounded-full cursor-pointer`}
-                  onClick={async () => {
-                    await savePost();
-                  }}
-                >
-                  {dataPost.status_saved === true ? (
-                    <Image
-                      src={BookmarkFill.src}
-                      alt={BookmarkFill.alt}
-                      width={20}
-                      height={20}
-                    />
-                  ) : (
-                    <Image
-                      src={Bookmark.src}
-                      alt={Bookmark.alt}
-                      width={20}
-                      height={20}
-                    />
                   )}
                 </div>
               </div>
+              <div className="flex gap-5">
+                <div className="flex items-center gap-1">
+                  <div
+                    className={`p-2 rounded-full cursor-pointer`}
+                    onClick={async () => {
+                      if (dataPost.circle !== undefined) {
+                        await pinPost('connect');
+                      } else {
+                        await pinPost('social');
+                      }
+                    }}
+                  >
+                    {dataPost.is_pinned === true ? (
+                      <Image src={UnPin} alt={'unpin'} width={20} height={20} />
+                    ) : (
+                      <Image
+                        src={Pin.src}
+                        alt={Pin.alt}
+                        width={20}
+                        height={20}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div
+                    className={`p-2 rounded-full cursor-pointer`}
+                    onClick={async () => {
+                      await savePost();
+                    }}
+                  >
+                    {dataPost.status_saved === true ? (
+                      <Image
+                        src={BookmarkFill.src}
+                        alt={BookmarkFill.alt}
+                        width={20}
+                        height={20}
+                      />
+                    ) : (
+                      <Image
+                        src={Bookmark.src}
+                        alt={Bookmark.alt}
+                        width={20}
+                        height={20}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-row mt-2">
+              {dataPost.privacy === 'premium' ? (
+                <div className="flex flex-row bg-[#DCFCE4] items-center py-1 px-2 rounded-xl">
+                  <ArrowUpRightIcon className="h-4 w-4 text-[#3AC4A0] mr-2" />
+                  <p className="text-[#3AC4A0]">Premium</p>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default PostSection;

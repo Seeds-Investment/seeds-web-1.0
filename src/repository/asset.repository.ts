@@ -18,13 +18,13 @@ const marketService = baseAxios(
   `${process.env.NEXT_PUBLIC_URL ?? devUrl}/market/v1/`
 );
 
-export const getTrendingAssets = async (): Promise<any> => {
+export const getTrendingAssets = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     let response = await authService.get('/trending', {
-      params: {
-        page: 1,
-        limit: 10
-      }
+      params
     });
     return (response = { ...response, status: 200 });
   } catch (error: any) {
@@ -32,13 +32,13 @@ export const getTrendingAssets = async (): Promise<any> => {
   }
 };
 
-export const getTrendingCircle = async (): Promise<any> => {
+export const getTrendingCircle = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     let response = await authCircle.get('/trending', {
-      params: {
-        page: 1,
-        limit: 10
-      }
+      params
     });
     return (response = { ...response, status: 200 });
   } catch (error: any) {
@@ -94,6 +94,19 @@ export const getAssetById = async (id: string): Promise<any> => {
   }
 
   return await marketService.get(`/single/${id}`, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getDetailAsset = async (id: string, params: any): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  return await marketService.get(`/single/${id}`, {
+    params,
     headers: {
       Accept: 'application/json'
     }

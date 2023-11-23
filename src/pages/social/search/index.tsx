@@ -13,6 +13,7 @@ import { searchHashtag } from '@/repository/circleDetail.repository';
 import { getMarketList } from '@/repository/market.repository';
 import { searchUser, trendingUser } from '@/repository/people.repository';
 import { getPlayAll } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { getHashtagSocial } from '@/repository/social.respository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
@@ -104,6 +105,7 @@ const Search: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [userInfo, setUserInfo] = useState<any>();
 
   const handleChangeTab = (value: string): void => {
     setActiveTab(value);
@@ -262,6 +264,19 @@ const Search: React.FC = () => {
     }
   };
 
+  const fetchUserInfo = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    void fetchUserInfo();
+  }, []);
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearch(filter.search);
@@ -373,7 +388,7 @@ const Search: React.FC = () => {
                             </div>
                           ) : activeTab === 'asset' ? (
                             <div key={idx} className="w-full">
-                              <CardAsset data={data} />
+                              <CardAsset data={data} isClick={true} />
                             </div>
                           ) : activeTab === 'hashtag' ? (
                             <div key={idx} className="w-full">
@@ -381,7 +396,9 @@ const Search: React.FC = () => {
                             </div>
                           ) : activeTab === 'people' ? (
                             <div key={idx} className="w-full">
-                              <CardPeople data={data} />
+                              {userInfo?.id !== data.id ? (
+                                <CardPeople data={data} />
+                              ) : null}
                             </div>
                           ) : activeTab === 'play' ? (
                             <div key={idx} className="w-full lg:w-1/2">

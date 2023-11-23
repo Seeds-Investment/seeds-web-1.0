@@ -324,7 +324,9 @@ const Circle = (): React.ReactElement => {
                     onClick={() => {
                       handleChangeTab(value);
                     }}
-                    className={`${activeTab === value ? 'text-[#3AC4A0]' : ''}`}
+                    className={`${
+                      activeTab === value ? 'text-[#3AC4A0] z-0' : ''
+                    }`}
                   >
                     {label}
                   </Tab>

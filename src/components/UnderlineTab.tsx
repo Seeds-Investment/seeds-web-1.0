@@ -123,7 +123,11 @@ const UnderLineTab = ({
                     </button>
                   </div>
                 )}
-                <PostSection dataPost={el} setData={setPostData} />
+                <PostSection
+                  dataPost={el}
+                  setData={setPostData}
+                  userInfo={profileData}
+                />
               </div>
             );
           })}

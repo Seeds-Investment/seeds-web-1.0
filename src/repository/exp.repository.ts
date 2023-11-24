@@ -20,3 +20,11 @@ export const getExpData = async (): Promise<any> => {
     }
   });
 };
+
+export const getExpUserData = async (userId: string): Promise<any> => {
+  return await expService.get(`tiers/${userId}`, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};

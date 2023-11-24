@@ -16,7 +16,7 @@ import phone from 'public/assets/rectangle1.png';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 const fetch = async (): Promise<void> => {
-  const res = await getTrendingAssets();
+  const res = await getTrendingAssets({ page: 1, limit: 10 });
   console.log(res);
 };
 

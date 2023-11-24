@@ -290,6 +290,7 @@ export const createPostCircleDetail = async (formData: {
   pie_title?: string;
   pie_amount?: number;
   pie?: any[];
+  premium_fee: number;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -322,7 +323,8 @@ export const createPostCircleDetail = async (formData: {
       polling_date: formData.polling_date,
       pie_title: formData.pie_title,
       pie_amount: formData.pie_amount,
-      pie: formData.pie
+      pie: formData.pie,
+      premium_fee: formData.premium_fee
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {

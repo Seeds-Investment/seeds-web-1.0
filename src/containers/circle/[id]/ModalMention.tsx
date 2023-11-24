@@ -240,7 +240,7 @@ const ModalMention: React.FC<props> = ({
     pie_title: '',
     pie_amount: 0,
     pie: [],
-    premium_fee: ''
+    premium_fee: '0'
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -748,7 +748,7 @@ const ModalMention: React.FC<props> = ({
       });
       setDollarLists([]);
       setHashtags([]);
-      window.location.reload();
+      // window.location.reload();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {

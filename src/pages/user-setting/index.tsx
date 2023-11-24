@@ -101,11 +101,11 @@ const UserSetting: React.FC = () => {
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,
       onClick: async () => {
-        // try {
-        //   await router.push('/block-list');
-        // } catch (error) {
-        //   console.error('Error navigating to Edit Profile:', error);
-        // }
+        try {
+          await router.push('/user-setting/block-list');
+        } catch (error) {
+          console.error('Error navigating to Edit Profile:', error);
+        }
       },
       extraClasses: submenuClasses
     },

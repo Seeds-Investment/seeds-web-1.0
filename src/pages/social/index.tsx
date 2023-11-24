@@ -438,7 +438,11 @@ const Social: React.FC = () => {
                     </button>
                   </div>
                 )}
-                <PostSection dataPost={el} setData={setDataPost} />
+                <PostSection
+                  dataPost={el}
+                  setData={setDataPost}
+                  userInfo={userInfo}
+                />
               </div>
             );
           })}

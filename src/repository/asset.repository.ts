@@ -18,13 +18,13 @@ const marketService = baseAxios(
   `${process.env.NEXT_PUBLIC_URL ?? devUrl}/market/v1/`
 );
 
-export const getTrendingAssets = async (): Promise<any> => {
+export const getTrendingAssets = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     let response = await authService.get('/trending', {
-      params: {
-        page: 1,
-        limit: 10
-      }
+      params
     });
     return (response = { ...response, status: 200 });
   } catch (error: any) {
@@ -32,13 +32,13 @@ export const getTrendingAssets = async (): Promise<any> => {
   }
 };
 
-export const getTrendingCircle = async (): Promise<any> => {
+export const getTrendingCircle = async (params: {
+  page: number;
+  limit: number;
+}): Promise<any> => {
   try {
     let response = await authCircle.get('/trending', {
-      params: {
-        page: 1,
-        limit: 10
-      }
+      params
     });
     return (response = { ...response, status: 200 });
   } catch (error: any) {

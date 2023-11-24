@@ -1,34 +1,36 @@
 import CAccordion from '@/components/CAccordion';
+import PrivacyPolicyTnC from '@/containers/circle/create-circle/privacyPolicyTnc';
+import SocialMediaGuideTnc from '@/containers/circle/create-circle/socialMediaGuideTnC';
+import TermAndConditionTnC from '@/containers/circle/create-circle/termAndConditionTnC';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PrivacyPolicyTnC from './privacyPolicyTnc';
-import SocialMediaGuideTnc from './socialMediaGuideTnC';
-import TermAndConditionTnC from './termAndConditionTnC';
 
-const TermConditionPage = ({
-  changeStep,
-  handleRoute,
-  setIsChecked,
-  isChecked
-}: any): JSX.Element => {
+interface props {
+  stepBack: any;
+  stepNext: any;
+}
+
+const TnC: React.FC<props> = ({ stepBack, stepNext }) => {
   const { t } = useTranslation();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   return (
     <>
       <div className="flex flex-row mb-4">
         <button
           className="w-1/3 items-start text-left transition-colors rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:bg-gray-200"
-          onClick={() => changeStep('')}
+          onClick={stepBack}
         >
           <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
         </button>
       </div>
       <div
-        className={`relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 bg-white`}
+        className={`relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 lg:px-32 bg-white`}
       >
-        <div className="font-poppins font-normal leading-7 text-base text-neutral-500 flex flex-col items-center">
+        <div className="font-poppins font-semibold leading-7 text-lg text-neutral-500 flex flex-col items-center">
           {t('termAndCondition.title')}
         </div>
 
@@ -67,50 +69,33 @@ const TermConditionPage = ({
         />
 
         <div className="text-center mt-10 mx-8 pb-2">
-          {isChecked !== undefined ? (
-            <input
-              type="checkbox"
-              name="tickBox"
-              className="mr-3"
-              checked={isChecked}
-              onChange={() => {
-                if (isChecked === true) {
-                  setIsChecked(false);
-                }
-                setIsChecked(true);
-              }}
-              id="customCheck2"
-            />
-          ) : (
-            <input
-              type="checkbox"
-              name="tickBox"
-              className="mr-3"
-              id="customCheck2"
-            />
-          )}
+          <input
+            type="checkbox"
+            name="tickBox"
+            className="mr-3"
+            checked={isChecked}
+            onChange={() => {
+              setIsChecked(!isChecked);
+            }}
+            id="customCheck2"
+          />
           <label
             htmlFor="customCheck2"
             className="font-normal text-xs md:text-sm text-[#262626]"
           >
             I agree with the Terms and Conditions
           </label>
-          {handleRoute !== undefined ? (
-            <Button
-              className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
-              onClick={() => handleRoute()}
-            >
-              Continue
-            </Button>
-          ) : (
-            <Button className="w-full bg-seeds-button-green mt-10 rounded-full capitalize">
-              Continue
-            </Button>
-          )}
+          <Button
+            className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
+            disabled={!isChecked}
+            onClick={stepNext}
+          >
+            Continue
+          </Button>
         </div>
       </div>
     </>
   );
 };
 
-export default TermConditionPage;
+export default TnC;

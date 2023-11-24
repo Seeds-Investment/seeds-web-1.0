@@ -18,7 +18,7 @@ const CirclePremiumChoicePage = ({
   const { t } = useTranslation();
 
   return (
-    <div className="md:mx-8 lg:mx-[10rem] xl:mx-[22rem]">
+    <div className="md:mx-8">
       {formRequest !== undefined && (
         <>
           <div className="flex flex-row mb-4">

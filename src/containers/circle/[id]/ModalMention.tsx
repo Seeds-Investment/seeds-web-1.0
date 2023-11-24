@@ -3,10 +3,10 @@ import globe from '@/assets/circle-page/globe.svg';
 import privat from '@/assets/circle-page/private.svg';
 import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
-import Modal from '@/components/ui/modal/Modal';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
+import { countWords } from '@/helpers/text';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -17,12 +17,12 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Dialog, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer } from 'public/assets/circle';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mention, MentionsInput } from 'react-mentions';
 import ModalPie from './ModalPie';
+import PDFViewer from './PDFViewer';
 import { PollInput } from './PollingInput';
 import ProfilePost from './ProfilePost';
 import Toast from './Toast';
@@ -191,6 +191,7 @@ const ModalMention: React.FC<props> = ({
   const [isError, setIsError] = useState<boolean>(false);
   const [isDisable, setIsDisable] = useState<boolean>(false);
   const [isEmpty, setisEmpty] = useState<boolean>(false);
+  const [isTooMuch, setIsTooMuch] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [audio, setAudio] = useState<any>(null);
   const [media, setMedia] = useState<File[]>([]);
@@ -205,7 +206,6 @@ const ModalMention: React.FC<props> = ({
     id: '',
     tag: ''
   });
-  const [docModal, setDocModal]: any = useState<boolean>(false);
   const [selectedAsset, setSelectedAsset] = useState<AssetInterface[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
@@ -239,7 +239,7 @@ const ModalMention: React.FC<props> = ({
     pie_title: '',
     pie_amount: 0,
     pie: [],
-    premium_fee: ''
+    premium_fee: '0'
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -284,6 +284,14 @@ const ModalMention: React.FC<props> = ({
   }, [form, audio, media, document]);
 
   useEffect(() => {
+    if (form.media_urls.length + media.length === 4) {
+      setIsTooMuch(true);
+    } else if (form.media_urls.length + media.length < 4) {
+      setIsTooMuch(false);
+    }
+  }, [form.media_urls.length, media.length]);
+
+  useEffect(() => {
     if (form.content_text.length > 250) {
       setIsError(true);
       setIsDisable(true);
@@ -291,6 +299,16 @@ const ModalMention: React.FC<props> = ({
     } else {
       setIsDisable(false);
     }
+
+    if (form.privacy === 'premium') {
+      if (countWords(form.content_text) < 10) {
+        setIsError(true);
+        setIsDisable(true);
+        setErrorMessage('Please input minimum 10 words to post premium');
+        setLastWordsWithChar('');
+      }
+    }
+
     if (form.content_text.length < 3) {
       setLastWordsWithChar('');
     }
@@ -652,7 +670,7 @@ const ModalMention: React.FC<props> = ({
       let payload: any;
       if (circleId !== undefined) {
         payload = {
-          content_text: form.content_text,
+          content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
           media_urls: form.media_urls,
           privacy: form.privacy,
           is_pinned: false,
@@ -662,7 +680,7 @@ const ModalMention: React.FC<props> = ({
         };
       } else {
         payload = {
-          content_text: form.content_text,
+          content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
           media_urls: form.media_urls,
           privacy: form.privacy,
           is_pinned: false,
@@ -736,7 +754,7 @@ const ModalMention: React.FC<props> = ({
       });
       setDollarLists([]);
       setHashtags([]);
-      window.location.reload();
+      // window.location.reload();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {
@@ -1043,7 +1061,7 @@ const ModalMention: React.FC<props> = ({
             allowSpaceInQuery
             placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
             style={{ outline: 'none' }}
-            className="w-[100%] focus:outline-black MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins placeholder:text-neutral-soft placeholder:text-base"
+            className="w-[100%] focus:outline-black text-xs min-h-[100px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins sm:text-base placeholder:text-neutral-soft placeholder:text-base"
             a11ySuggestionsListLabel={'Suggested mentions'}
           >
             <Mention
@@ -1071,7 +1089,15 @@ const ModalMention: React.FC<props> = ({
         </div>
       );
     } else if (pages === 'gif') {
-      return <Gif_Post setPages={setPages} form={form} />;
+      return (
+        <Gif_Post
+          setPages={setPages}
+          form={form}
+          isTooMuch={isTooMuch}
+          setIsError={setIsError}
+          setErrorMessage={setErrorMessage}
+        />
+      );
     } else if (pages === 'talk') {
       return (
         <VoiceRecorder
@@ -1252,7 +1278,7 @@ const ModalMention: React.FC<props> = ({
           {/* form text section */}
           <form onSubmit={handlePostCircle}>
             {handlePages()}
-            <div className="flex justify-evenly pb-4 z-0">
+            <div className="flex justify-center pb-4 z-0">
               {audio !== null && pages !== 'gif' && (
                 <audio controls>
                   <source
@@ -1263,63 +1289,13 @@ const ModalMention: React.FC<props> = ({
                   Your browser does not support the audio element.
                 </audio>
               )}
-              {document !== undefined &&
-                document !== null &&
-                pages !== 'gif' && (
-                  <div className="flex justify-center pb-2">
-                    <div
-                      className="flex flex-col"
-                      onClick={() => {
-                        setDocModal(true);
-                      }}
-                    >
-                      <div className="flex justify-center cursor-pointer">
-                        <Image
-                          src={PDFViewer}
-                          alt="pdf"
-                          className="w-[60px] h-[60px]"
-                        />
-                      </div>
-                      <h1 className="text-sm text-black font-poppins font-medium">
-                        {document.name.length > 10
-                          ? (document.name.substring(0, 15) as string) + '...'
-                          : document.name}
-                      </h1>
-                    </div>
-                    {docModal === true && (
-                      <Modal modalClasses="z-[100000] animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent">
-                        <embed
-                          src={URL?.createObjectURL(document)}
-                          type="application/pdf"
-                          className="widthPDF h-screen"
-                        />
-                        <button
-                          className="z-50 fixed text-white top-3 -right-14"
-                          onClick={() => {
-                            setDocModal(false);
-                          }}
-                        >
-                          <svg
-                            className="h-8 w-8 text-white bg-black/20 rounded-full"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            {' '}
-                            <circle cx="12" cy="12" r="10" />{' '}
-                            <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                            <line x1="9" y1="9" x2="15" y2="15" />
-                          </svg>
-                        </button>
-                      </Modal>
-                    )}
-                  </div>
-                )}
             </div>
-            <div className="flex flex-col max-h-[32vh] overflow-auto pb-2">
+            <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
+              <div className="flex justify-center">
+                {document !== undefined &&
+                  document !== null &&
+                  pages !== 'gif' && <PDFViewer file={document} />}
+              </div>
               <div className="flex items-center">
                 <div className="flex flex-wrap gap-4">
                   {media.length > 0 &&
@@ -1493,6 +1469,7 @@ const ModalMention: React.FC<props> = ({
                 setDocument={setDocument}
                 isEmpty={isDisable}
                 isError={isEmpty}
+                isTooMuch={isTooMuch}
               />
             )}
           </form>

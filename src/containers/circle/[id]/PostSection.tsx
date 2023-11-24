@@ -1,6 +1,5 @@
 'use client';
 import MoreOption from '@/components/MoreOption';
-import Modal from '@/components/ui/modal/Modal';
 import {
   Bookmark,
   ChatBubble,
@@ -20,7 +19,6 @@ import {
   postSavedCirclePost
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { Transition } from '@headlessui/react';
@@ -28,7 +26,7 @@ import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
+import { PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -43,10 +41,12 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PDFViewer from './PDFViewer';
 
 interface props {
   dataPost: any;
   setData: any;
+  userInfo: UserData;
 }
 
 interface ChartData {
@@ -144,30 +144,29 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData }) => {
+const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    void fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async (): Promise<void> => {
+  //     try {
+  //       const response = await getUserInfo();
+  //       setUserInfo(response);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   void fetchData();
+  // }, []);
 
   const handleOpen = (): void => {
     setIsShare(!isShare);
@@ -302,7 +301,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <pre className="text-blue-500 font-poppins">
+                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
+                </pre>
               </button>
             );
           } else {
@@ -707,11 +708,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
   };
 
   const [expanded, setExpanded] = useState(false);
+  const redirectToPaymentPostPremium = (): any => {
+    router.push(`/social/payment/${dataPost.id as number}`).catch(error => {
+      console.log(error);
+    });
+  };
   const handleSeeMore = (text: string, maxWords: number): any => {
     const words = text.split(' ');
 
     const displayText = expanded
-      ? renderTouchableText(text)
+      ? redirectToPaymentPostPremium()
       : words.slice(0, maxWords).join(' ');
 
     return (
@@ -724,7 +730,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
               setExpanded(!expanded);
             }}
           >
-            {expanded ? 'See Less' : 'See More'}
+            See More
           </button>
         )}
       </div>
@@ -774,7 +780,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                       <Typography className="font-bold text-black md:text-lg">
                         @
                         {dataPost.owner !== undefined
-                          ? dataPost.owner.seeds_tag
+                          ? dataPost.owner.seeds_tag !== undefined
+                            ? dataPost.owner.seeds_tag
+                            : dataPost.owner.username
                           : null}
                       </Typography>
                       {/* {dataPost.owner.verified === true && (
@@ -805,8 +813,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                 </div>
               </div>
               <div className="flex items-center mb-2">
-                {dataPost.privacy === 'premium'
-                  ? handleSeeMore(dataPost.content_text, 20)
+                {dataPost.privacy === 'premium' &&
+                dataPost.user_id !== userInfo.id
+                  ? handleSeeMore(dataPost.content_text, 10)
                   : renderTouchableText(dataPost?.content_text)}
                 {/* {renderTouchableText(dataPost?.content_text)} */}
               </div>
@@ -821,59 +830,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData }) => {
                   Your browser does not support the audio element.
                 </audio>
               )}
-              {document.length > 0 && (
-                <div className="flex justify-start md:pl-0 pl-14 mb-4">
-                  <div className="flex flex-col">
-                    <div
-                      className="flex justify-start cursor-pointer"
-                      onClick={() => {
-                        setDocModal(true);
-                      }}
-                    >
-                      <Image
-                        src={PDFViewer}
-                        alt="pdf"
-                        className="w-[100px] h-[100px]"
-                      />
-                    </div>
-                  </div>
-                  {docModal === true && (
-                    <Modal
-                      onClose={() => {
-                        setDocModal(false);
-                      }}
-                      modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
-                    >
-                      <embed
-                        src={document[0]}
-                        type="application/pdf"
-                        className="widthPDF h-screen"
-                      />
-                      <button
-                        className="z-50 fixed text-white top-3 -right-14"
-                        onClick={() => {
-                          setDocModal(false);
-                        }}
-                      >
-                        <svg
-                          className="h-8 w-8 text-white bg-black/20 rounded-full"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {' '}
-                          <circle cx="12" cy="12" r="10" />{' '}
-                          <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                          <line x1="9" y1="9" x2="15" y2="15" />
-                        </svg>
-                      </button>
-                    </Modal>
-                  )}
-                </div>
-              )}
+              {document.length > 0 && <PDFViewer file={document[0]} />}
               {media.length > 0 && <ImageCarousel images={media} />}
               {dataPost.pollings?.length > 0 && (
                 <PollingView

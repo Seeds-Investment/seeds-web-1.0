@@ -150,7 +150,7 @@ const CreateCirclePage = ({
                 {t('circle.create.title')}
               </h6>
             </div>
-            <div className="flex items-center justify-center rounded-xl md:mx-8 lg:mx-20 xl:mx-[13rem]">
+            <div className="flex items-center justify-center rounded-xl">
               <label className="relative w-full h-44">
                 <Image
                   height={0}
@@ -176,7 +176,7 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
-            <div className="absolute z-10 flex items-center justify-center top-52 left-[43%] xl:left-[46%]">
+            <div className="absolute z-10 flex items-center justify-center top-52 left-[43%] xl:left-[45%]">
               <label className="relative rounded-full w-24 h-24 overflow-hidden">
                 <Image
                   height={0}
@@ -201,7 +201,7 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
-            <CCard className="p-9 border-none rounded-none shadow-none bg-white md:mx-8 lg:mx-20 xl:mx-[13rem]">
+            <CCard className="p-9 border-none rounded-none shadow-none bg-white">
               <div className="mb-10 pt-10 bg-white">
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">

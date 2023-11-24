@@ -4,6 +4,7 @@ import {
   getCircleRecomend,
   getMemberCircle
 } from '@/repository/circleDetail.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -18,6 +19,21 @@ interface props {
   circleId: string;
   setIsLoading: any;
   dataCircle: any;
+}
+
+interface UserData {
+  id: any;
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  preferredLanguage: string;
+  _pin: string;
+  verified: boolean;
 }
 
 interface HashtagProps {
@@ -48,6 +64,21 @@ interface Filter {
   page: number;
 }
 
+const initialUserInfo = {
+  id: '',
+  name: '',
+  seedsTag: '',
+  email: '',
+  pin: '',
+  avatar: '',
+  bio: '',
+  birthDate: '',
+  phone: '',
+  preferredLanguage: '',
+  verified: false,
+  _pin: ''
+};
+
 const CirclePostSection2: React.FC<props> = ({
   open,
   handleOpen,
@@ -66,12 +97,25 @@ const CirclePostSection2: React.FC<props> = ({
   const [dataRecommend, setDataRecommend] = useState<any[]>([]);
   const [isIncrease, setIsIncrease] = useState(false);
   const [golId, setGolId] = useState<number>(1);
+  const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
     const { value } = event.target;
     setSearchMember(value);
   };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await getUserInfo();
+        setUserInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    void fetchData();
+  }, []);
 
   const fetchCirclePost = async (): Promise<void> => {
     try {
@@ -228,7 +272,12 @@ const CirclePostSection2: React.FC<props> = ({
             dataPost.length > 0 &&
             dataPost?.map((el: any) => {
               return (
-                <PostSection dataPost={el} key={el.id} setData={setDataPost} />
+                <PostSection
+                  dataPost={el}
+                  key={el.id}
+                  setData={setDataPost}
+                  userInfo={userInfo}
+                />
               );
             })}
           {!isLoadingPost && dataPost.length === 0 && (
@@ -254,6 +303,7 @@ const CirclePostSection2: React.FC<props> = ({
                   dataPost={el}
                   key={el.id}
                   setData={setDataRecommend}
+                  userInfo={userInfo}
                 />
               );
             })

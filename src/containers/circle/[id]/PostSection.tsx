@@ -708,11 +708,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   };
 
   const [expanded, setExpanded] = useState(false);
+  const redirectToPaymentPostPremium = (): any => {
+    router.push(`/social/payment/${dataPost.id as number}`).catch(error => {
+      console.log(error);
+    });
+  };
   const handleSeeMore = (text: string, maxWords: number): any => {
     const words = text.split(' ');
 
     const displayText = expanded
-      ? renderTouchableText(text)
+      ? redirectToPaymentPostPremium()
       : words.slice(0, maxWords).join(' ');
 
     return (
@@ -725,7 +730,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
               setExpanded(!expanded);
             }}
           >
-            {expanded ? 'See Less' : 'See More'}
+            See More
           </button>
         )}
       </div>

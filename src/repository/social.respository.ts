@@ -86,3 +86,43 @@ export const getHashtagSocial = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const getDetailPostSocial = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  return await socialService.get(`/v2/find/${id}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const postPaymentPremiumContent = async (
+  formRequest: any
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(formRequest) || isEmptyString(formRequest)) {
+    return await Promise.resolve(null);
+  }
+
+  return await socialService.post(`/v2/order`, formRequest, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

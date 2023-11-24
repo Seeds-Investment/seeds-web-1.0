@@ -6,6 +6,7 @@ import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
+import { countWords } from '@/helpers/text';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -238,7 +239,7 @@ const ModalMention: React.FC<props> = ({
     pie_title: '',
     pie_amount: 0,
     pie: [],
-    premium_fee: ''
+    premium_fee: '0'
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -298,6 +299,16 @@ const ModalMention: React.FC<props> = ({
     } else {
       setIsDisable(false);
     }
+
+    if (form.privacy === 'premium') {
+      if (countWords(form.content_text) < 10) {
+        setIsError(true);
+        setIsDisable(true);
+        setErrorMessage('Please input minimum 10 words to post premium');
+        setLastWordsWithChar('');
+      }
+    }
+
     if (form.content_text.length < 3) {
       setLastWordsWithChar('');
     }
@@ -743,7 +754,7 @@ const ModalMention: React.FC<props> = ({
       });
       setDollarLists([]);
       setHashtags([]);
-      window.location.reload();
+      // window.location.reload();
     } catch (error: any) {
       console.error('Error fetching Circle Detail:', error.message);
     } finally {

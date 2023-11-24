@@ -325,7 +325,7 @@ const UnderLineTab = ({
             }}
             className={`${
               activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-            } mx-[30px] text-base font-poppins font-semibold`}
+            } mx-[30px] text-base font-poppins font-semibold z-10`}
           >
             {label}
           </Tab>

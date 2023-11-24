@@ -18,7 +18,10 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
   console.log(profileData);
   const router = useRouter();
   const _handleReferalCode = (): any => {
-    return router.push('/my-profile/referralCode');
+    return router.push({
+      pathname: `/my-profile/referralCode`,
+      query: { refCode: profileData.refCode, referralHistory: 'true' }
+    });
   };
 
   const _handleEditProfile = (): any => {

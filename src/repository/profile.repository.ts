@@ -6,6 +6,12 @@ const profileService = baseAxios(
   }/user/v1/`
 );
 
+const referralService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/referral-affiliates/v1/`
+);
+
 export const getUserInfo = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -36,6 +42,20 @@ export const getOtherUser = async (userId: string): Promise<any> => {
   });
 };
 
+export const getReferralHistory = async (refCode: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await referralService.get(`${refCode}/users`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
 interface EditForm {
   name: string;
   seedsTag: string;

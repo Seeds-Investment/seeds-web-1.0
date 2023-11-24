@@ -31,12 +31,10 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
     <>
       <div className="flex md:gap-5">
         <div className="shrink-0">
-          <Image
+          <img
             src={profileData?.avatar}
             alt="AVATAR"
-            width={128}
-            height={128}
-            className="rounded-full"
+            className="rounded-full h-32 w-32 object-cover"
           />
         </div>
         <div className="flex flex-col w-full gap-4 justify-center">

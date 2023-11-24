@@ -149,7 +149,7 @@ const CirclePost = (): JSX.Element => {
       {isLoading && <Loading />}
       {/* posting section */}
       <div className="bg-white mt-8 w-full rounded-xl">
-        <div className="flex flex-col px-14 pt-8">
+        <div className="flex flex-col md:px-14 pt-8">
           {isEdit ? (
             <EditCircle dataCircle={dataCircle} circleId={circleId} />
           ) : (

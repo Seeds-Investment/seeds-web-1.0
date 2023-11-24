@@ -31,7 +31,7 @@ const TrendingSection: React.FC = () => {
       <div className="text-3xl font-semibold text-[#262626]">
         Trending Today
       </div>
-      <div className=" text-sm mt-3 font-light text-[#262626]">
+      <div className="text-sm mt-3 font-light text-[#262626]">
         {`Check out what's popular right now`}
       </div>
       <div className="flex items-center justify-center h-full">
@@ -50,7 +50,7 @@ const TrendingSection: React.FC = () => {
                   onClick={() => {
                     handleTabChange(el.value);
                   }}
-                  className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                  className={`text-center z-0 text-xl bg-transparent mt-3 xl:mt-5 ${
                     activeTab === el.value
                       ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
                       : 'text-[#7C7C7C] text-xl font-normal'

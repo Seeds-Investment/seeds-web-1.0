@@ -283,7 +283,6 @@ const ModalMention: React.FC<props> = ({
     }
   }, [form, audio, media, document]);
 
-  console.log(form);
   useEffect(() => {
     if (form.media_urls.length + media.length === 4) {
       setIsTooMuch(true);
@@ -305,7 +304,7 @@ const ModalMention: React.FC<props> = ({
       if (countWords(form.content_text) < 10) {
         setIsError(true);
         setIsDisable(true);
-        setErrorMessage('Minimal 10 kata yaa guys');
+        setErrorMessage('Please input minimum 10 words to post premium');
         setLastWordsWithChar('');
       }
     }

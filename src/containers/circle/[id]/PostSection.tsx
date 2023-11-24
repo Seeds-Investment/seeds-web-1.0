@@ -730,7 +730,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
               setExpanded(!expanded);
             }}
           >
-            {expanded ? 'See Less' : 'See More'}
+            See More
           </button>
         )}
       </div>

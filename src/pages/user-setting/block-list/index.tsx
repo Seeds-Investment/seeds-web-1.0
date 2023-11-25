@@ -63,7 +63,7 @@ const BlockList: React.FC = () => {
         </div>
 
         {/* Menampilkan data blocklist menggunakan Card */}
-        {blocklistData && (
+        {blocklistData.length > 0 && (
           <div className="mt-8">
             {blocklistData.map((item: any, index: number) => (
               <BlockListCard key={index} data={item} />

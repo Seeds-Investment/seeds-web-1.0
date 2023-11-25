@@ -14,57 +14,23 @@ import {
 } from '@/constants/assets/icons';
 import { EarnXP } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getExpData } from '@/repository/exp.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { Card, Typography } from '@material-tailwind/react';
+import { getReferralHistory } from '@/repository/profile.repository';
+import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-// TODO: Change below me ASAP
-interface HistorySample {
-  name: string;
-  tag: string;
-  date: string;
-  time: string;
-  earnXP: string;
-}
-
-const referralHistorySample: HistorySample[] = [
-  {
-    name: 'margaretha',
-    tag: 'margarethatiwi',
-    date: '09/10/2019',
-    time: '19:05:50 WIB',
-    earnXP: '100 XP'
-  },
-  {
-    name: 'margaretha',
-    tag: 'margarethatiwi',
-    date: '09/10/2019',
-    time: '19:05:50 WIB',
-    earnXP: '100 XP'
-  },
-  {
-    name: 'margaretha',
-    tag: 'margarethatiwi',
-    date: '09/10/2019',
-    time: '19:05:50 WIB',
-    earnXP: '100 XP'
-  },
-  {
-    name: 'margaretha',
-    tag: 'margarethatiwi',
-    date: '09/10/2019',
-    time: '19:05:50 WIB',
-    earnXP: '100 XP'
-  }
-];
-// TODO: Change above me ASAP
-
 const ReferalCode = (): JSX.Element => {
+  const width = useWindowInnerWidth();
+  const router = useRouter();
+  const { refCode, referralHistory } = router.query;
+  console.log(refCode);
   const [expData, setExpData] = useState<any>();
-  const [userData, setUserData] = useState<Record<string, any>>();
+  const [refHistory, setRefHistory] = useState<any>();
+  console.log(refHistory);
   const { t } = useTranslation();
 
   const customGradient = (
@@ -78,29 +44,14 @@ const ReferalCode = (): JSX.Element => {
   );
 
   useEffect(() => {
-    const fetchUserProfile = async (): Promise<void> => {
-      try {
-        const userInfo = await getUserInfo();
-        setUserData(userInfo);
-      } catch (error: any) {
-        console.error('Error fetching user profile:', error.message);
-      }
-    };
-
-    const fetchExpData = async (): Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       try {
         const expData = await getExpData();
         setExpData(expData);
+        const refHistory = await getReferralHistory(refCode as string);
+        setRefHistory(refHistory);
       } catch (error: any) {
         console.error('Error fetching exp data:', error.message);
-      }
-    };
-
-    const fetchData = async (): Promise<void> => {
-      try {
-        await Promise.all([fetchUserProfile(), fetchExpData()]);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
       }
     };
 
@@ -116,25 +67,22 @@ const ReferalCode = (): JSX.Element => {
     >
       <Card
         shadow={false}
-        className="rounded-none md:rounded-[18px] h-[196px] lg:h-[320px] bg-[#3AC4A0] flex flex-row justify-end items-center lg:justify-between"
+        className="rounded-none md:rounded-[18px] h-[196px] lg:h-[320px] bg-[#3AC4A0] flex flex-row justify-end items-center 2xl:justify-between"
       >
-        <div className="hidden flex-col gap-4 ml-[33px] lg:flex">
+        <div className="hidden flex-col gap-4 ml-[33px] 2xl:flex">
           <Typography className="text-white text-3xl font-light font-poppins">
             Referral Code
           </Typography>
           <CCard className="flex w-[471.41px] h-[111px] p-[21.93px] gap-[15.07px]">
             <div className="flex items-center justify-between">
-              <Card
-                shadow={false}
-                className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer"
-              >
+              <Button className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer">
                 <Typography className="text-white text-[19.19px] leading-[27.41px] font-poppins font-normal">
-                  {userData?.refCode}
+                  {refCode}
                 </Typography>
                 <div
                   className="flex gap-1"
                   onClick={async () => {
-                    await navigator.clipboard.writeText(userData?.refCode);
+                    await navigator.clipboard.writeText(refCode as string);
                   }}
                 >
                   <Image
@@ -147,7 +95,7 @@ const ReferalCode = (): JSX.Element => {
                     Copy
                   </Typography>
                 </div>
-              </Card>
+              </Button>
               <Image
                 src={ShareSquare.src}
                 alt={ShareSquare.alt}
@@ -160,7 +108,7 @@ const ReferalCode = (): JSX.Element => {
           <Typography className="text-2xl text-white font-normal font-poppins">
             {t('ReferralCode.total')}{' '}
             <span className="text-3xl text-white font-semibold font-poppins">
-              {referralHistorySample.length}
+              {refHistory?.data?.length}
             </span>
           </Typography>
         </div>
@@ -168,12 +116,12 @@ const ReferalCode = (): JSX.Element => {
           <img
             src={EarnXP.src}
             alt={EarnXP.alt}
-            className="absolute lg:right-0 right-1/2 transform translate-x-1/2 lg:translate-x-0 bottom-0 z-50 h-[170px] lg:h-[294px]"
+            className="absolute 2xl:right-0 right-1/2 transform translate-x-1/2 2xl:translate-x-0 bottom-0 z-10 h-[170px] lg:h-[294px]"
           />
           <Image
             src={ReferralCircle}
             alt="ReferralCircle"
-            width={228}
+            width={width !== undefined ? (width >= 1280 ? 228 : 300) : 300}
             className="lg:flex hidden lg:rounded-br-[18px]"
           />
           <Image
@@ -236,11 +184,11 @@ const ReferalCode = (): JSX.Element => {
         shadow={false}
         className="rounded-none md:rounded-[18px] px-6 py-[17px]"
       >
-        <ExpInfo data={expData} />
+        <ExpInfo data={expData} referralHistory={referralHistory} />
       </Card>
       {/* TODO: FOR MOBILE SIZE */}
       <Card
-        className="flex lg:hidden w-full h-[174px] p-4 gap-2.5 rounded-none md:rounded-[18px]"
+        className="flex 2xl:hidden w-full h-[174px] p-4 gap-2.5 rounded-none md:rounded-[18px]"
         shadow={false}
       >
         <Typography className="text-[#7C7C7C] text-xs font-normal font-poppins">
@@ -249,7 +197,7 @@ const ReferalCode = (): JSX.Element => {
         <div
           className="flex items-center gap-3"
           onClick={async () => {
-            await navigator.clipboard.writeText(userData?.refCode);
+            await navigator.clipboard.writeText(refCode as string);
           }}
         >
           <Card
@@ -257,7 +205,7 @@ const ReferalCode = (): JSX.Element => {
             className="w-full h-11 p-3 bg-white border border-[#BDBDBD] flex flex-row justify-between items-center cursor-pointer"
           >
             <Typography className="text-[#262626] text-sm font-poppins font-normal">
-              {userData?.refCode}
+              {refCode}
             </Typography>
             <div className="flex items-center gap-1">
               <Image src={copyGreen} alt="copyGreen" width={20} height={20} />
@@ -278,7 +226,7 @@ const ReferalCode = (): JSX.Element => {
           {t('ReferralCode.total')}
         </Typography>
         <Typography className="text-3xl text-[#262626] font-semibold font-poppins">
-          {referralHistorySample.length}
+          {refHistory?.data?.length}
         </Typography>
       </Card>
       {/* TODO: END OF MOBILE SIZE */}
@@ -291,7 +239,7 @@ const ReferalCode = (): JSX.Element => {
           {t('ReferralCode.referralHistory')}
         </Typography>
         <div className="flex flex-wrap gap-4">
-          {referralHistorySample.map((item, index) => {
+          {refHistory?.data?.map((item: any, index: any) => {
             return (
               <Card
                 shadow={false}
@@ -306,17 +254,25 @@ const ReferalCode = (): JSX.Element => {
                 />
                 <div className="flex flex-col justify-center">
                   <Typography className="text-[#262626] text-[10px] leading-4 font-poppins font-semibold">
-                    {`${item.name} ${t('ReferralCode.used')}`}
+                    {`${item.name as string} ${t('ReferralCode.used')}`}
                   </Typography>
                   <Typography className="text-[#7C7C7C] text-[10px] leading-4 font-poppins font-normal">
-                    {`@${item.tag}`}
+                    {`@${item.seeds_tag as string}`}
                   </Typography>
                   <Typography className="text-[#BDBDBD] text-[10px] leading-4 font-poppins font-normal">
-                    {`${item.date}, ${item.time}`}
+                    {`${
+                      item.created_at
+                        .split('T')[0]
+                        .split('-')
+                        .reverse()
+                        .join('/') as string
+                    }, ${
+                      item.created_at.split('T')[1].split('.')[0] as string
+                    } WIB`}
                   </Typography>
                 </div>
                 <Typography className="text-[#4DA81C] text-sm font-poppins font-semibold text-right w-[79px]">
-                  {`+ ${item.earnXP}`}
+                  {`+ 100 XP`}
                 </Typography>
               </Card>
             );

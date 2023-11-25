@@ -12,7 +12,7 @@ export { default as Maintenance } from 'public/assets/images/maintenance.svg';
 export { default as Sapling } from 'public/assets/images/sapling.svg';
 export { default as Sadling } from 'public/assets/images/seedling.svg';
 export { default as Seeds } from 'public/assets/images/seeds.svg';
-export { default as Share } from 'public/assets/images/share.png';
+export { default as Share } from 'public/assets/images/share.svg';
 export { default as SilverMedal } from 'public/assets/images/silver-medal-1.png';
 export { default as Sprout } from 'public/assets/images/sprout.svg';
 export { default as SuccessRegister } from 'public/assets/images/success-register.png';

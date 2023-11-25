@@ -8,6 +8,8 @@ import {
 import React, { useState } from 'react';
 import NewsPage from './news/NewsPage';
 import CirclePage from './trending/CirclePage';
+import PeoplePage from './trending/PeoplePage';
+
 
 interface typeOfTab {
   name: string;
@@ -69,7 +71,7 @@ const TrendingSection: React.FC = () => {
               <NewsPage />
             </TabPanel>
             <TabPanel value="people">
-              <NewsPage />
+              <PeoplePage />
             </TabPanel>
             <TabPanel value="play">
               <NewsPage />

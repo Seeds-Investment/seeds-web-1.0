@@ -1,4 +1,3 @@
-import usePathName from '@/hooks/usePathName';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import React from 'react';
 import HeaderLogin from './HeaderLogin';
@@ -10,14 +9,13 @@ interface props {
 
 const LoginLayout: React.FC<props> = ({ children }) => {
   const width = useWindowInnerWidth();
-  const path = usePathName();
 
   return (
     <div className="flex h-screen">
       <aside
         className={`w-1/5 h-screen py-6 social-sidebar ${
           width !== undefined ? (width >= 768 ? '' : 'hidden') : ''
-        } ${path === '/my-profile/referralCode' ? 'hidden' : ''}`}
+        }`}
       >
         <SidebarLogin />
       </aside>

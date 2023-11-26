@@ -1,35 +1,39 @@
 import { getTrendingAssets } from '@/repository/asset.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import CircleTrendingCard from './CircleTrendingCard';
+import AssetTrendingCard from './AssetsTrendingCard';
+import AssetTrendingCardSkeleton from './skeleton/AssetsCardSkeleton';
 
-export interface CircleInterface {
-  banner: string;
+export interface AssetsInterface {
   id: string;
+  quote: string;
+  currency: string;
   image: string;
-  is_liked: false;
   name: string;
-  totalMember: number;
-  totalPost: number;
-  totalRating: number;
-  total_like: number;
+  price: number;
+  regularPercentage: number;
+  assetType: string;
 }
 
 export default function AssetsPage(): React.ReactElement {
-  const [circle, setCircle] = useState<CircleInterface[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [assets, setAssets] = useState<AssetsInterface[]>([]);
   async function fetchArticles(): Promise<void> {
     try {
+      setIsLoading(true);
       const response = await getTrendingAssets({
         page: 1,
         limit: 3
       });
       if (response.status === 200) {
-        setCircle(response.result);
+        setAssets(response.result);
       } else {
         console.error('Failed to fetch assets:', response);
       }
     } catch (error) {
       console.error('Error fetching assets:', error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -45,21 +49,21 @@ export default function AssetsPage(): React.ReactElement {
 
   return (
     <>
-      <div className="flex flex-wrap w-full">
-        {circle.length !== 0 &&
-          circle?.map((data, idx) => (
-            <div key={idx} className="w-full sm:w-1/2 lg:w-1/3 mb-5">
-              <CircleTrendingCard
-                data={data}
-                cover={data.banner}
-                isResponsive
-              />
-            </div>
-          ))}
+      <div className="flex flex-wrap">
+        {!isLoading
+          ? assets.length !== 0 &&
+            assets?.map((data, idx) => (
+              <div key={idx} className="w-full">
+                <AssetTrendingCard data={data} isClick={true} />
+              </div>
+            ))
+          : Array.from({ length: 3 }, (_, idx) => (
+              <AssetTrendingCardSkeleton key={idx} />
+            ))}
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/homepage/trending-circle'}
+          href={'/homepage/trending-assets'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
           See More

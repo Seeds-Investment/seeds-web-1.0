@@ -59,7 +59,11 @@ const nextConfig = {
     locales: ['en', 'es']
   },
   images: {
-    domains: ['dev-assets.seeds.finance', 'assets.seeds.finance'],
+    domains: [
+      'dev-assets.seeds.finance',
+      'assets.seeds.finance',
+      'cdn06.pramborsfm.com'
+    ],
     remotePatterns: [
       {
         protocol: 'https',

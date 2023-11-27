@@ -16,7 +16,7 @@ import phone from 'public/assets/rectangle1.png';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 const fetch = async (): Promise<void> => {
-  const res = await getTrendingAssets();
+  const res = await getTrendingAssets({ page: 1, limit: 10 });
   console.log(res);
 };
 
@@ -80,8 +80,7 @@ export default function Section1(): React.ReactElement {
             src={cartoon}
           />
           <Image
-            // className="min-w-[570px] max-w-[570px] absolute z-20 right-[80px] top-[100px]"
-            className="xl:w-[400px] xl:ml-[10vw] ml-[30vw] z-10 h-full"
+            className="xl:w-[400px] md:ml-[2vw] xl:ml-[10vw] ml-[30vw] z-10 h-full"
             alt="img"
             src={phone}
           />

@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 
-interface CircleInterface {
+export interface CircleInterface {
   id: string;
   name: string;
   avatar: string;
@@ -122,10 +122,6 @@ const Circle = (): React.ReactElement => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [hasMore, setHasMore] = useState(true);
-  // const [isOpen, setIsOpen] = useState(true);
-  // const handleOpen = (): void => {
-  //   setIsOpen(!isOpen);
-  // };
   const dataTab = [
     {
       label: 'MyCircle',
@@ -263,7 +259,7 @@ const Circle = (): React.ReactElement => {
     <PageGradient defaultGradient className="w-full">
       <BannerCircleList />
 
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.leaderBoard.title')}
         </Typography>
@@ -291,7 +287,7 @@ const Circle = (): React.ReactElement => {
           )}
         </div>
       </CCard>
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.list.title')}
         </Typography>
@@ -328,7 +324,9 @@ const Circle = (): React.ReactElement => {
                     onClick={() => {
                       handleChangeTab(value);
                     }}
-                    className={`${activeTab === value ? 'text-[#3AC4A0]' : ''}`}
+                    className={`${
+                      activeTab === value ? 'text-[#3AC4A0] z-0' : ''
+                    }`}
                   >
                     {label}
                   </Tab>
@@ -404,7 +402,6 @@ const Circle = (): React.ReactElement => {
           </Tabs>
         </div>
       </CCard>
-      {/* <ModalPost open={isOpen} handleOpen={handleOpen} /> */}
     </PageGradient>
   );
 };

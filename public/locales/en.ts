@@ -36,7 +36,8 @@ export default {
     },
     section4: {
       text1: 'Over 1000+ people trust us',
-      text2: 'Professionals, universities, many more do!',
+      text2:
+        'Professionw-1/2 text-white tracking-widestals, universities, many more do!',
       text3: 'Chat',
       text4: 'with like-minded people',
       text5: 'Our Recommendation Circle',
@@ -48,10 +49,10 @@ export default {
         'Explore trending news and gain insights about Finance and Investing.'
     },
     section6: {
-      text1: 'Our',
-      text2: 'Communities',
-      text3:
-        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia."
+      text1:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text2: 'Investing, together',
+      text3: 'Download Our App'
     },
     section7: {
       text1: 'Frequently Asked Questions',
@@ -684,13 +685,19 @@ export default {
     confirmButton: 'Log Out',
     cancelButton: 'Cancel'
   },
-  ReferalCode: {
+  ReferralCode: {
+    total: 'Total Referral Used',
     title: 'Refer your friends',
     subtitle: 'Earn more XP',
-    referal: 'How Referral Works',
-    option1: 'Invite your friend to install the app with the link',
+    referal: 'Refer your friends & Earn more XP',
+    referralHistory: 'Your Referral History',
+    option1: 'Invite your friend',
+    option1desc:
+      'Encourage your friend to install the app using your referral link.',
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
-    option3: 'Get more XP when your friend registered to Seeds'
+    option3: 'Earn Your XP',
+    option3desc: 'Earn more XP when your friend registers Seeds.',
+    used: 'has used your code'
   },
   PlayPayment: {
     title: 'Payment Method',
@@ -1083,6 +1090,19 @@ export default {
         title: 'Successfully leaving the Circle',
         subtitle: 'Please join other interesting circles.'
       }
+    }
+  },
+  circleDetail: {
+    member: 'Members',
+    statusJoined: 'Joined',
+    statusNotJoined: 'Join',
+    textAreaPlaceholder:
+      'What do you want to discuss? ...\nUse @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
+    navigator: {
+      post: 'Post',
+      recomend: 'Recommended',
+      listMembers: 'Members',
+      about: 'About'
     }
   }
 };

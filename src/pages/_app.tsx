@@ -1,5 +1,6 @@
 'use client';
 import Header from '@/components/layouts/Header';
+import LoginLayout from '@/components/layouts/LoginLayout';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
@@ -29,15 +30,48 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-const pathsWithoutHeader = ['', 'auth', 'story-boarding', 'term-condition'];
+const pathsWithoutHeader = [
+  '',
+  'auth',
+  'story-boarding',
+  'term-condition',
+  'social'
+];
 
-function App({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
+function App({
+  Component,
+  pageProps,
+  router
+}: AppPropsWithLayout): JSX.Element {
   const getLayout = Component.getLayout ?? (page => page);
 
   const path = useRouter().pathname.split('/')[1];
 
   const renderHeader =
     !pathsWithoutHeader.includes(path) && !path.includes('_error');
+
+  const loginLayouts =
+    router.pathname.startsWith('/homepage') ||
+    router.pathname.startsWith('/social') ||
+    router.pathname.startsWith('/connect') ||
+    router.pathname.startsWith('/play') ||
+    router.pathname.startsWith('/user-setting') ||
+    router.pathname.startsWith('/my-profile');
+  if (loginLayouts) {
+    return (
+      <Provider store={store}>
+        <LanguageProvider>
+          <LoadingProvider>
+            <ErrorBEProvider>
+              <LoginLayout>
+                {getLayout(<Component {...pageProps} />)}
+              </LoginLayout>
+            </ErrorBEProvider>
+          </LoadingProvider>
+        </LanguageProvider>
+      </Provider>
+    );
+  }
 
   return (
     <Provider store={store}>

@@ -214,7 +214,7 @@ export default function AboutUsPage(): React.ReactElement {
         <div className="z-0 hidden lg:block lg:top-[726px] lg:left-[325px] lg:ml-[30%] opacity-[50%] lg:w-[699px] lg:h-[798px] lg:mt-[-50rem]  bg-seeds-purple blur-[140px] rounded-full"></div>
         <div className="w-full lg:mt-[-2rem] ">
           <Image
-            className="xl:w-[699px] translate-x-[400px] -mt-[100px] -z-10 xl:h-[699px] absolute"
+            className="xl:w-[699px] -mt-[100px] -z-10 xl:h-[699px] absolute"
             alt="img"
             src={vectorAbout}
           />

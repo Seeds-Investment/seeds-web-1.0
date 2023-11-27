@@ -47,10 +47,10 @@ export default {
         'Temukan berita yang sedang tren dan dapatkan ilmu tentang finansial dan investasi terbaru.'
     },
     section6: {
-      text1: 'Komunitas',
-      text2: 'Kita',
-      text3:
-        'Kami berkomitmen untuk meningkatkan literasi finansial para Gen-Z dan millennials di Asia Tenggara.'
+      text1: 'Investasi, bersama',
+      text2:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text3: 'Unduh App Kami'
     }
   },
   second: 'detik',
@@ -602,13 +602,19 @@ export default {
     confirmButton: 'Keluar',
     cancelButton: 'Batal'
   },
-  ReferalCode: {
+  ReferralCode: {
+    total: 'Total Referral Dipakai',
     title: 'Referensikan teman anda',
     subtitle: 'Dapatkan lebih banyak XP',
-    referal: 'Bagaimana Link Bekerja',
-    option1: 'Undang teman anda untuk menginstal aplikasi dengan tautannya',
+    referal: 'Referensikan teman Anda & Dapatkan lebih banyak XP',
+    referralHistory: 'Riwayat Referensi Anda',
+    option1: 'Undang temanmu',
+    option1desc:
+      'Ajak teman Anda untuk menginstal aplikasi menggunakan link referral Anda.',
     option2: 'Pakai referal kode yang telah diberikan',
-    option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
+    option3: 'Raih XP Anda',
+    option3desc: 'Hasilkan lebih banyak XP saat teman Anda mendaftarkan Seeds.',
+    used: 'telah menggunakan kode Anda'
   },
   PlayPayment: {
     title: 'Payment Method',
@@ -1005,6 +1011,19 @@ export default {
         title: 'Kamu telah berhasil keluar dari Circle',
         subtitle: 'Silakan bergabung dengan circle lain yang menarik.'
       }
+    }
+  },
+  circleDetail: {
+    member: 'Anggota',
+    statusJoined: 'Bergabung',
+    statusNotJoined: 'Gabung',
+    textAreaPlaceholder:
+      'Apa yang ingin kamu diskusikan? ...\nGunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
+    navigator: {
+      post: 'Post',
+      recomend: 'Rekomendasi',
+      listMembers: 'Anggota',
+      about: 'Tentang'
     }
   }
 };

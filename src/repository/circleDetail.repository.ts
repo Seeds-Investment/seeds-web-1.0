@@ -9,6 +9,11 @@ interface getDataCircleType {
   circleId: string;
 }
 
+interface getDataPostType {
+  circleId: string;
+  page: number;
+  limit: number;
+}
 interface typeOfComment {
   post_id: string;
   user_id: string;
@@ -20,6 +25,11 @@ interface typeOfComment {
 
 interface getDataPostCircleType {
   postId: string;
+}
+
+interface getDataCommentType {
+  postId: string;
+  parentId: string;
 }
 export const getDetailCircle = async ({
   circleId
@@ -43,16 +53,18 @@ export const getDetailCircle = async ({
 };
 
 export const getCirclePost = async ({
-  circleId
-}: getDataCircleType): Promise<any> => {
+  circleId,
+  page,
+  limit
+}: getDataPostType): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     if (isUndefindOrNull(circleId)) {
       return await Promise.resolve(null);
     }
 
-    const response = await baseUrl.get(
-      `/post/v2/list?circle_id=${circleId}&page=1&limit=10`,
+    return await baseUrl.get(
+      `/post/v2/list?circle_id=${circleId}&page=${page}&limit=${limit}`,
       {
         headers: {
           Accept: 'application/json',
@@ -60,7 +72,6 @@ export const getCirclePost = async ({
         }
       }
     );
-    return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }
@@ -82,6 +93,30 @@ export const getDetailCirclePost = async ({
       }
     });
     return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getAllReplyComment = async ({
+  postId,
+  parentId
+}: getDataCommentType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(postId)) {
+      return await Promise.resolve(null);
+    }
+
+    return await baseUrl.get(
+      `/post/comment/v2/list?post_id=${postId}&parent_id=${parentId}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
   } catch (error: any) {
     return error.response;
   }
@@ -121,7 +156,7 @@ export const getMemberCircle = async ({
     }
 
     const response = await baseUrl.get(
-      `/circle/v2/list/members?circle_id=${circleId}&page=1&limit=10`,
+      `/circle/v2/list/members?circle_id=${circleId}&page=1&limit=9999`,
       {
         headers: {
           Accept: 'application/json',
@@ -160,16 +195,18 @@ export const getStatusCircle = async ({
 };
 
 export const getCircleRecomend = async ({
-  circleId
-}: getDataCircleType): Promise<any> => {
+  circleId,
+  page,
+  limit
+}: getDataPostType): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     if (isUndefindOrNull(circleId)) {
       return await Promise.resolve(null);
     }
 
-    const response = await baseUrl.get(
-      `/post/v2/list/recommended?circle_id=${circleId}&page=1&limit=10`,
+    return await baseUrl.get(
+      `/post/v2/list/recommended?circle_id=${circleId}&page=${page}&limit=${limit}`,
       {
         headers: {
           Accept: 'application/json',
@@ -177,8 +214,6 @@ export const getCircleRecomend = async ({
         }
       }
     );
-
-    return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;
   }
@@ -255,6 +290,7 @@ export const createPostCircleDetail = async (formData: {
   pie_title?: string;
   pie_amount?: number;
   pie?: any[];
+  premium_fee: number;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -287,7 +323,8 @@ export const createPostCircleDetail = async (formData: {
       polling_date: formData.polling_date,
       pie_title: formData.pie_title,
       pie_amount: formData.pie_amount,
-      pie: formData.pie
+      pie: formData.pie,
+      premium_fee: formData.premium_fee
     });
 
     const response = await baseUrl.post('/post/v2/create', body, {
@@ -296,7 +333,7 @@ export const createPostCircleDetail = async (formData: {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    return response;
+    return { ...response, status: 200 };
   } catch (error) {
     return error;
   }
@@ -366,9 +403,9 @@ export const selectPostPolling = async (
 const post = async (url: string, payload: any, headers = {}): Promise<any> => {
   return await axios({
     method: 'POST',
-    url: url,
+    url,
     data: payload,
-    headers: headers
+    headers
   });
 };
 
@@ -406,6 +443,34 @@ export const postLikeCirclePost = async (
   try {
     let response = await baseUrl.post(
       `/post/rating/v2/create`,
+      {
+        post_id: id,
+        type
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const postLikeComment = async (
+  type: number,
+  id: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.post(
+      `/post/comment/v2/rating`,
       {
         post_id: id,
         type
@@ -490,15 +555,17 @@ export const searchCircleByName = async (params: any): Promise<any> => {
   });
 };
 
-export const searchAssets = async (params: any): Promise<any> => {
+export const getUserTagList = async (
+  cat: string,
+  value: string
+): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     return await Promise.resolve('Access token not found');
   }
 
-  return await baseUrl.get(`asset/v1/search`, {
-    params,
+  return await baseUrl.get(`/tag/v1/${cat}?search=${value}`, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
@@ -513,7 +580,7 @@ export const searchUser = async (params: any): Promise<any> => {
     return await Promise.resolve('Access token not found');
   }
 
-  return await baseUrl.get(`user/v1/search`, {
+  return await baseUrl.get(`user/v1/list`, {
     params,
     headers: {
       Accept: 'application/json',
@@ -538,4 +605,25 @@ export const updatePost = async (
       Authorization: `Bearer ${accessToken ?? ''}`
     }
   });
+};
+
+export const searchHashtag = async (params: any): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    let response = await baseUrl.get(`/tag/v1/hashtags`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
 };

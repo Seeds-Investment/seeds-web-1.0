@@ -150,7 +150,7 @@ const TransactionHistory = (): JSX.Element => {
     >
       <CardGradient
         defaultGradient
-        className={`relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${
+        className={`relative overflow-hidden w-full sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${
           width !== undefined && width < 370
             ? 'min-h-[38rem]'
             : width !== undefined && width < 400
@@ -166,7 +166,7 @@ const TransactionHistory = (): JSX.Element => {
           </h6>
         </div>
         <div className="flex items-center justify-center rounded-xl">
-          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-20 xl:mx-[15rem]">
+          <CCard className="p-9 border-none rounded-none shadow-none w-full bg-white md:mx-8 lg:mx-10 xl:mx-[10rem]">
             <Card className="bg-[#8a70e0] h-full rounded-none">
               <CardBody>
                 <Typography color="white" className="text-base font-normal">

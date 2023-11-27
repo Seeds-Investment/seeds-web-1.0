@@ -46,7 +46,7 @@ export const Dot: AssetsInterface = {
 };
 
 export const Share: AssetsInterface = {
-  src: '/assets/images/share.png',
+  src: '/assets/images/share.svg',
   alt: 'share'
 };
 

@@ -43,7 +43,7 @@ const BannerCircleList = (): JSX.Element => {
   }, []);
 
   return (
-    <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+    <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
       <Card className="relative flex items-center justify-center bg-gradient-to-r from-[#B798FF] to-[#7555DA]">
         <Image
           src={CircleLineLight.src}

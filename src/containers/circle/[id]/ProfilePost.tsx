@@ -1,10 +1,12 @@
 import { getUserInfo } from '@/repository/profile.repository';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 interface typeOfSelection {
   name: string;
   svg: any;
   message: string;
+  type: string;
 }
 
 interface props {
@@ -64,12 +66,16 @@ const ProfilePost: React.FC<props> = ({
           <div className="flex flex-col justify-center pl-3">
             <button className="font-poppins text-xs" onClick={handleDropDown}>
               <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
-                <Image
-                  alt="type"
-                  src={dropVal.svg}
-                  className="h-3 w-3 rounded-full"
-                />
-                {dropVal.type}
+                <div className="flex items-center">
+                  <Image
+                    alt="type"
+                    src={dropVal.svg}
+                    className="h-3 w-3 rounded-full"
+                  />
+                </div>
+                <Typography className="text-black text-xs font-poppins">
+                  {dropVal.type}
+                </Typography>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"

@@ -91,7 +91,7 @@ const shareData: ShareData[] = [
   {
     name: 'Instagram',
     image: InstagramShare,
-    link: 'https://www.instagram.com/',
+    link: 'https://www.instagram.com/direct/inbox/',
     class: ''
   },
   {
@@ -109,13 +109,13 @@ const shareData: ShareData[] = [
   {
     name: 'Twitter',
     image: TwitterShare,
-    link: 'https://twitter.com/',
+    link: 'https://twitter.com/messages/compose',
     class: ''
   },
   {
     name: 'Whatsapp',
     image: WhatsappShare,
-    link: 'www.instagram.com',
+    link: 'https://api.whatsapp.com/',
     class: ''
   },
   {
@@ -133,7 +133,7 @@ const shareData: ShareData[] = [
   {
     name: 'Linkedin',
     image: LinkedinShare,
-    link: 'https://www.linkedin.com/',
+    link: 'https://www.linkedin.com/feed/',
     class: 'bg-[#0A66C2]'
   },
   {

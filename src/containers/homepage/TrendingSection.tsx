@@ -6,7 +6,7 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
-import NewsPage from './news/NewsPage';
+import AssetsPage from './trending/AssetsPage';
 import CirclePage from './trending/CirclePage';
 import PeoplePage from './trending/PeoplePage';
 import PlayPage from './trending/PlayPage';
@@ -68,7 +68,7 @@ const TrendingSection: React.FC = () => {
               <CirclePage />
             </TabPanel>
             <TabPanel value="asset">
-              <NewsPage />
+              <AssetsPage />
             </TabPanel>
             <TabPanel value="people">
               <PeoplePage />

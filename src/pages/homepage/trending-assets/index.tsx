@@ -1,71 +1,55 @@
 import ArtPagination from '@/components/ArtPagination';
-import CardCircle from '@/components/circle/CardCircle';
-import { getCircle } from '@/repository/circle.repository';
+import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
+import AssetTrendingCard from '@/containers/homepage/trending/AssetsTrendingCard';
+import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
+import { getTrendingAssets } from '@/repository/asset.repository';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export interface CircleListRoot {
-  CircleList: Circle[];
+export interface AssetsListRoot {
+  AssetList: AssetsInterface[];
   metadata: Metadata;
 }
 
-interface Circle {
-  id: string;
-  name: string;
-  avatar: string;
-  cover: string;
-  description: string;
-  description_rules: string;
-  type: string;
-  premium_fee: number;
-  admin_fee: number;
-  monthly_time: number;
-  total_rating: number;
-  total_member: number;
-  total_post: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Metadata {
-  currentPage: number;
+interface Metadata {
+  current_page: number;
   limit: number;
-  totalPage: number;
-  total: number;
+  total_page: number;
+  total_row: number;
 }
 
 interface Filter {
   search: string;
   limit: number;
   page: number;
-  sort_by: string;
+  sortBy: string;
 }
 
 const initialFilter: Filter = {
   search: '',
   limit: 10,
   page: 1,
-  sort_by: 'rating'
+  sortBy: 'rating'
 };
 
 const initialMetadata: Metadata = {
-  currentPage: 1,
+  current_page: 1,
   limit: 10,
-  totalPage: 10,
-  total: 100
+  total_page: 1,
+  total_row: 10
 };
 
 const optionSortBy = [
-  { label: 'All', value: 'all' },
-  { label: 'Rating', value: 'rating' },
-  { label: 'Member', value: 'member' },
-  { label: 'Post', value: 'post' }
+  { label: 'All', value: '' },
+  { label: 'Top Gainers', value: 'top gainers' },
+  { label: 'Top Lowest', value: 'top lowest' },
+  { label: 'Most Trades', value: 'most trades' }
 ];
 
-export default function ListCircle(): React.ReactElement {
+export default function ListAssets(): React.ReactElement {
   const { t } = useTranslation();
-  const [circle, setCircle] = useState<Circle[]>([]);
+  const [circle, setAssets] = useState<AssetsInterface[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -74,11 +58,11 @@ export default function ListCircle(): React.ReactElement {
   const fetchDataCircle = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getCircle(filter);
-      if (response.data === null) {
-        setCircle([]);
+      const response = await getTrendingAssets(filter);
+      if (response.result === null) {
+        setAssets([]);
       } else {
-        setCircle(response.data);
+        setAssets(response.result);
         setMetadata(response.metadata);
       }
       setIsLoading(false);
@@ -117,11 +101,10 @@ export default function ListCircle(): React.ReactElement {
       <div className="flex z-10 flex-col lg:flex-row justify-between">
         <div className="flex flex-col">
           <div className="text-3xl font-semibold bg-clip-text text-black">
-            Circle List
+            Asset List
           </div>
           <div className=" text-md font-normal text-gray-500">
-            Explore our list of communities, find the ones that match with your
-            interest, or create one.
+            Discover the latest trending assets.
           </div>
         </div>
         <div className="lg:flex-col justify-end mt-4  ">
@@ -160,7 +143,7 @@ export default function ListCircle(): React.ReactElement {
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 setFilter(prevState => ({
                   ...prevState,
-                  sort_by: e.target.value
+                  sortBy: e.target.value
                 }));
               }}
             >
@@ -198,10 +181,10 @@ export default function ListCircle(): React.ReactElement {
       <div className="flex flex-wrap mt-6">
         {!isLoading ? (
           circle.length !== 0 ? (
-            circle.map((data: Circle, idx: number) => {
+            circle.map((data: AssetsInterface, idx: number) => {
               return (
-                <div key={idx} className="w-full md:w-1/2 mb-5">
-                  <CardCircle data={data} cover={data.cover} />
+                <div key={idx} className="w-full mb-5">
+                  <AssetTrendingCard data={data} isClick={true} />
                 </div>
               );
             })
@@ -211,16 +194,16 @@ export default function ListCircle(): React.ReactElement {
             </Typography>
           )
         ) : (
-          <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-            Loading...
-          </Typography>
+          Array.from({ length: 10 }, (_, idx) => (
+            <AssetTrendingCardSkeleton key={idx} />
+          ))
         )}
       </div>
 
       <div className="flex justify-center mx-auto my-4">
         <ArtPagination
           currentPage={filter.page}
-          totalPages={metadata.totalPage}
+          totalPages={metadata.total_page}
           onPageChange={page => {
             setFilter({ ...filter, page });
           }}

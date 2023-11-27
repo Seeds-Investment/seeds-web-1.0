@@ -8,6 +8,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { postPaymentPremiumContent } from '@/repository/social.respository';
 import type { UserData } from '@/utils/interfaces/data.interfaces';
 import { Button, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,15 +24,14 @@ interface props {
 }
 
 const PaymentMethod: React.FC<props> = ({ data }) => {
-  console.log('isi data social = ', data);
-
   const [loading, setLoading] = useState(false);
-  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
+  const [qRisList, setQRisList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [option, setOption] = useState<Payment>({});
   const [openDialog, setOpenDialog] = useState(false);
   const { t } = useTranslation();
+  const router = useRouter();
 
   console.log(loading);
 
@@ -47,8 +47,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
   const fetchPaymentList = async (): Promise<void> => {
     try {
       const data = await getPaymentList();
-      setVirtualAccountList(data.type_va);
       setEWalletList(data.type_ewallet);
+      setQRisList(data.type_qris);
     } catch (error: any) {
       console.error('Error fetching Payment List', error.message);
     }
@@ -71,7 +71,7 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
       }
 
       const response = await postPaymentPremiumContent({
-        amount: 20000,
+        amount: totalAmount,
         payment_gateway: paymentGateway,
         payment_method: paymentMethod,
         phone_number: `+62${phoneNumber as string}`,
@@ -82,22 +82,14 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         email: userInfo?.email
       });
 
-      console.log('ini response order =>', response);
-
-      // if (response.success === true) {
-      //     if (response.data.Response.payment_url !== undefined) {
-      //     window.open(response.data.Response.payment_url as string, '_blank');
-      //     }
-      //     await router
-      //     .push(
-      //         `/connect/payment/receipt/${
-      //         response.data.Response.order_id as string
-      //         }`
-      //     )
-      //     .catch(error => {
-      //         console.log(error);
-      //     });
-      // }
+      if (response.payment_url !== undefined) {
+        window.open(response.payment_url as string, '_blank');
+      }
+      await router
+        .push(`/connect/payment/receipt/${response.order_id as string}`)
+        .catch(error => {
+          console.log(error);
+        });
     } catch (error) {
       console.log(error);
     } finally {
@@ -110,6 +102,19 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
     void fetchPaymentList();
   }, []);
 
+  const handleOpenDialog = (value: boolean): void => {
+    if (option.payment_type === 'qris') {
+      void handlePay(
+        option.payment_type,
+        'MIDTRANS',
+        'OTHER_QRIS',
+        data.premium_fee
+      );
+    } else {
+      setOpenDialog(value);
+    }
+  };
+
   return (
     <CCard className="flex p-8 mx-2 lg:mx-20 md:rounded-lg border-none rounded-none">
       <div className="flex flex-col justify-center">
@@ -118,8 +123,8 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
         </Typography>
         <div className="">
           <PaymentOptions
-            label={t('PlayPayment.virtualAccountLabel')}
-            options={virtualAccountList}
+            label="QRIS"
+            options={qRisList}
             onChange={setOption}
             currentValue={option}
           />
@@ -134,7 +139,7 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
             fullWidth
             className="bg-[#3AC4A0] rounded-2xl"
             onClick={() => {
-              setOpenDialog(true);
+              handleOpenDialog(true);
             }}
           >
             {t('PlayPayment.button')}

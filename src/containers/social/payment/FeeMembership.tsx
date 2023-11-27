@@ -12,10 +12,6 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
   return (
     <CCard className="flex p-8 mx-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-col justify-center pt-4">
-        <h1 className="font-poppins text-center font-semibold text-lg text-black">
-          Fee Membership
-        </h1>
-
         <div className="flex justify-center pl-4 pt-2">
           <Image src={PaymentSVG} alt="image" className="w-[230px] h-[230px]" />
         </div>

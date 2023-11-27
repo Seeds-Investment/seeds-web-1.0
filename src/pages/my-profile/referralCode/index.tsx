@@ -27,10 +27,8 @@ const ReferalCode = (): JSX.Element => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { refCode, referralHistory } = router.query;
-  console.log(refCode);
   const [expData, setExpData] = useState<any>();
   const [refHistory, setRefHistory] = useState<any>();
-  console.log(refHistory);
   const { t } = useTranslation();
 
   const customGradient = (

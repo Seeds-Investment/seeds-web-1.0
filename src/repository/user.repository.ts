@@ -77,3 +77,18 @@ export const getUserFriends = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const getBlocklist = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await authService.get('/blocklist', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

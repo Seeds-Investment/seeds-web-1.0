@@ -72,7 +72,7 @@ const CirclePostSection1: React.FC<props> = ({
   return (
     <div className="flex flex-col bg-white rounded-xl">
       {isLoading && <Loading />}
-      <div className="flex flex-col rounded-b-3xl px-14 py-8">
+      <div className="flex flex-col rounded-b-3xl md:px-14 py-8">
         <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
           <Image alt="pencil-edit" src={pencil} className="h-[13px] w-[14px]" />
         </button>

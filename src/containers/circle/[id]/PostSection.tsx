@@ -1,5 +1,6 @@
 'use client';
 import MoreOption from '@/components/MoreOption';
+import Modal from '@/components/ui/modal/Modal';
 import {
   Bookmark,
   ChatBubble,
@@ -26,7 +27,7 @@ import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
+import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -41,7 +42,6 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PDFViewer from './PDFViewer';
 
 interface props {
   dataPost: any;
@@ -147,6 +147,7 @@ const shareData: ShareData[] = [
 const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
   // const [userInfo, setUserInfo] = useState<UserData | null>(null);
@@ -301,9 +302,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">
-                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
-                </pre>
+                <pre className="text-blue-500 font-poppins">{part}</pre>
               </button>
             );
           } else {
@@ -753,7 +752,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   dataPost.owner !== undefined ? dataPost.owner.avatar : null
                 }
                 alt="AVATAR"
-                className="rounded-full w-12 h-12"
+                className="rounded-full w-12 h-12 cursor-pointer"
+                onClick={async () => {
+                  dataPost.user_id === userInfo.id
+                    ? await router.push('/my-profile')
+                    : await router.push(
+                        `/social/${dataPost.user_id as string}`
+                      );
+                }}
               />
             </div>
           </div>
@@ -769,7 +775,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           : null
                       }
                       alt="AVATAR"
-                      className="rounded-full w-12 h-12"
+                      className="rounded-full w-12 h-12 cursor-pointer"
+                      onClick={async () => {
+                        dataPost.user_id === userInfo.id
+                          ? await router.push('/my-profile')
+                          : await router.push(
+                              `/social/${dataPost.user_id as string}`
+                            );
+                      }}
                     />
                   </div>
                 </div>
@@ -777,7 +790,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 <div className="w-full">
                   <div className="flex justify-between">
                     <div className="flex items-center gap-2">
-                      <Typography className="font-bold text-black md:text-lg">
+                      <Typography
+                        className="font-bold text-black md:text-lg cursor-pointer"
+                        onClick={async () => {
+                          dataPost.user_id === userInfo.id
+                            ? await router.push('/my-profile')
+                            : await router.push(
+                                `/social/${dataPost.user_id as string}`
+                              );
+                        }}
+                      >
                         @
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
@@ -830,7 +852,59 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   Your browser does not support the audio element.
                 </audio>
               )}
-              {document.length > 0 && <PDFViewer file={document[0]} />}
+              {document.length > 0 && (
+                <div className="flex justify-start md:pl-0 pl-14 mb-4">
+                  <div className="flex flex-col">
+                    <div
+                      className="flex justify-start cursor-pointer"
+                      onClick={() => {
+                        setDocModal(true);
+                      }}
+                    >
+                      <Image
+                        src={PDFViewer}
+                        alt="pdf"
+                        className="w-[100px] h-[100px]"
+                      />
+                    </div>
+                  </div>
+                  {docModal === true && (
+                    <Modal
+                      onClose={() => {
+                        setDocModal(false);
+                      }}
+                      modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
+                    >
+                      <embed
+                        src={document[0]}
+                        type="application/pdf"
+                        className="widthPDF h-screen"
+                      />
+                      <button
+                        className="z-50 fixed text-white top-3 -right-14"
+                        onClick={() => {
+                          setDocModal(false);
+                        }}
+                      >
+                        <svg
+                          className="h-8 w-8 text-white bg-black/20 rounded-full"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          {' '}
+                          <circle cx="12" cy="12" r="10" />{' '}
+                          <line x1="15" y1="9" x2="9" y2="15" />{' '}
+                          <line x1="9" y1="9" x2="15" y2="15" />
+                        </svg>
+                      </button>
+                    </Modal>
+                  )}
+                </div>
+              )}
               {media.length > 0 && <ImageCarousel images={media} />}
               {dataPost.pollings?.length > 0 && (
                 <PollingView

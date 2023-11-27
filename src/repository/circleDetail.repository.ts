@@ -156,7 +156,7 @@ export const getMemberCircle = async ({
     }
 
     const response = await baseUrl.get(
-      `/circle/v2/list/members?circle_id=${circleId}&page=1&limit=10`,
+      `/circle/v2/list/members?circle_id=${circleId}&page=1&limit=9999`,
       {
         headers: {
           Accept: 'application/json',

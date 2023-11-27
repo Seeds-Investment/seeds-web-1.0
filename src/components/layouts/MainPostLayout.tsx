@@ -40,7 +40,7 @@ const MainPostLayout: React.FC<props> = ({
       {/* main component */}
       <div className="flex justify-center">
         <div className="bg-transparent w-full">
-          <div className="flex md:gap-8 flex-col">
+          <div className="flex md:gap-8 flex-col px-2">
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
@@ -84,6 +84,7 @@ const MainPostLayout: React.FC<props> = ({
                       setIsLoading={setIsLoading}
                       circleId={circleId}
                       dataCircle={dataCircle}
+                      isJoined={isJoined}
                     />
                   )}
                 </>

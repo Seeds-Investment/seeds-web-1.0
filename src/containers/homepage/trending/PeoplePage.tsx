@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { getTrendingPeople } from '../../../repository/asset.repository';
-import CircleTrendingCard from './CircleTrendingCard';
+
 
 export interface PeopleInterface {
   avatar: string;
@@ -51,12 +51,67 @@ export default function PeoplePage(): React.ReactElement {
       <div className="flex flex-wrap w-full">
         {people.length !== 0 &&
           people?.map((data, idx) => (
-            <div key={idx} className="w-full sm:w-1/2 lg:w-1/3 mb-5">
-              <CircleTrendingCard
-                data={data}
-                cover={data.banner}
-                isResponsive
-              />
+            <div
+              key={idx}
+              className={'w-full p-3 mb-2 rounded-xl border border-[#E9E9E9]'}
+            >
+              <div className="flex justify-between">
+                <div className="flex w-full items-center">
+                  <img
+                    src={data.avatar}
+                    alt={data.name}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="ml-3">
+                    <div className="flex">
+                      <h2 className="font-bold me-2">{data.name}</h2>
+                      <div className="mt-[7px] ">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_2012_74470)">
+                            <path
+                              d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
+                              fill="#5E44FF"
+                            />
+                            <path
+                              d="M3 6L5 8L9 4"
+                              stroke="white"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_2012_74470">
+                              <rect width="12" height="12" fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div className="text-[#1A857D] text-sm ms-2 px-1 bg-[#DCFCE4] rounded-full py-1">
+                        Investor
+                      </div>
+                    </div>
+                    <p className="font-light text-xs text-[#7C7C7C]">
+                      @{data.seedsTag}
+                    </p>
+
+                    <p className="font-normal text-xs text-[#262626]">
+                      {data.followers} Follower
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <button className="flex mt-3 font-semibold text-xs text-white px-3 py-2 rounded-full bg-[#3AC4A0]">
+                    Follow
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
       </div>

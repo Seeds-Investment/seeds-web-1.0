@@ -99,3 +99,22 @@ export const getPlaySimulation = async (datePeriod: string): Promise<any> => {
     console.error('Error fetching play simulation:', error);
   }
 };
+
+export const getTrendingPlayList = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await playService.get(`/trending`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};

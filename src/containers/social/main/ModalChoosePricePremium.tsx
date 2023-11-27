@@ -59,27 +59,27 @@ const ModalChoosePricePremium: React.FC<props> = ({
         <div className="grid grid-rows-3 grid-flow-col gap-2 mb-2">
           <Button
             className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
+            value={2000}
+            name="premium_fee"
+            onClick={changeForm}
+          >
+            IDR 2.000
+          </Button>
+          <Button
+            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
+            value={10000}
+            name="premium_fee"
+            onClick={changeForm}
+          >
+            IDR 10.000
+          </Button>
+          <Button
+            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
             value={20000}
             name="premium_fee"
             onClick={changeForm}
           >
             IDR 20.000
-          </Button>
-          <Button
-            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
-            value={40000}
-            name="premium_fee"
-            onClick={changeForm}
-          >
-            IDR 40.000
-          </Button>
-          <Button
-            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
-            value={75000}
-            name="premium_fee"
-            onClick={changeForm}
-          >
-            IDR 75.000
           </Button>
           <Button
             className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
@@ -91,19 +91,19 @@ const ModalChoosePricePremium: React.FC<props> = ({
           </Button>
           <Button
             className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
+            value={40000}
+            name="premium_fee"
+            onClick={changeForm}
+          >
+            IDR 40.000
+          </Button>
+          <Button
+            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
             value={50000}
             name="premium_fee"
             onClick={changeForm}
           >
             IDR 50.000
-          </Button>
-          <Button
-            className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
-            value={100000}
-            name="premium_fee"
-            onClick={changeForm}
-          >
-            IDR 100.000
           </Button>
         </div>
 
@@ -115,7 +115,7 @@ const ModalChoosePricePremium: React.FC<props> = ({
           <hr className="w-1/3 mt-3" />
         </div>
         <Input
-          placeholder="Minimum membership fee IDR. 20,000"
+          placeholder="Minimum Premium Content IDR. 2,000"
           type="number"
           onChange={changeForm}
           name="premium_fee"

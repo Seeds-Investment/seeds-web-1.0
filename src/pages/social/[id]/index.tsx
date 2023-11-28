@@ -37,7 +37,6 @@ const post: Post = {
 function UserProfile(): JSX.Element {
   const router = useRouter();
   const id = router.query.id as string;
-  console.log(id);
   const circle: Circle = {
     limit: 10,
     page: 1,

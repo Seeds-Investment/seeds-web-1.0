@@ -239,7 +239,7 @@ const ModalMention: React.FC<props> = ({
     pie_title: '',
     pie_amount: 0,
     pie: [],
-    premium_fee: '0'
+    premium_fee: ''
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);

@@ -69,7 +69,7 @@ interface UserData {
   phone: string;
   _pin: string;
 }
-
+        
 interface ShareData {
   name: string;
   image: any;
@@ -825,7 +825,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           )
                         : null}
                     </div>
-                    <MoreOption dataPost={dataPost} />
+                    <MoreOption dataPost={dataPost} userInfo={userInfo} />
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">
                     <Typography className="text-xs md:text-sm">

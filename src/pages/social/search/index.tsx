@@ -102,8 +102,6 @@ const PROMO_DUMMY = [
 
 const Search: React.FC = () => {
   const router = useRouter();
-  console.log(router.query);
-
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);

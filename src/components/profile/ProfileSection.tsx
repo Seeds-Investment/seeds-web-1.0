@@ -15,7 +15,6 @@ interface Params {
 }
 
 const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
-  console.log(profileData);
   const router = useRouter();
   const _handleReferalCode = (): any => {
     return router.push({

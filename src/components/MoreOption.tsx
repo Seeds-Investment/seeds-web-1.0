@@ -1,6 +1,8 @@
 'use client';
 import block from '@/assets/more-option/block.svg';
 import close from '@/assets/more-option/close.svg';
+import delet from '@/assets/more-option/delete.svg';
+import edit from '@/assets/more-option/edit.svg';
 import flag from '@/assets/more-option/flag.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import post_report_photo from '@/assets/more-option/post_report_photo.png';
@@ -92,7 +94,7 @@ const Icon = (): any => {
   );
 };
 
-const MoreOption = ({ dataPost }: any): any => {
+const MoreOption = ({ dataPost, userInfo }: any): any => {
   const [formDataPost, setFormPost] = React.useState({
     target_post_id: dataPost.id,
     type_report: '',
@@ -127,9 +129,15 @@ const MoreOption = ({ dataPost }: any): any => {
   const [verifyReportPost, setVerifyReportPost] = React.useState(null);
   const [verifyReportUser, setVerifyReportUser] = React.useState(null);
   const [blockUser, setBlockUser] = React.useState(null);
+  const [deletePost, setDeletePost] = React.useState(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedUser, setSelectedUser] = React.useState(null);
+
+  const handleOpen = (): void => {
+    setIsOpen(!isOpen);
+  };
 
   const handleOpenReportPost = (value: any): void => {
     setReportPost(value);
@@ -151,6 +159,9 @@ const MoreOption = ({ dataPost }: any): any => {
   };
   const handleOpenBlock = (value: any): void => {
     setBlockUser(value);
+  };
+  const handleOpenDelete = (value: any): void => {
+    setDeletePost(value);
   };
 
   const handleDisablePost = (option: any): void => {
@@ -201,7 +212,6 @@ const MoreOption = ({ dataPost }: any): any => {
         }
       );
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error('Error:', error);
@@ -226,7 +236,6 @@ const MoreOption = ({ dataPost }: any): any => {
         }
       );
       const data = await response.json();
-      console.log(data);
       return data;
     } catch (error) {
       console.error('Error:', error);
@@ -251,7 +260,33 @@ const MoreOption = ({ dataPost }: any): any => {
         }
       );
       const data = await response.json();
-      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  const handleSubmitDeletePost = async (
+    event: any,
+    postId: string
+  ): Promise<any> => {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+        }/post/v2/delete/${postId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${
+              localStorage.getItem('accessToken') ?? ''
+            }`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formDataBlock)
+        }
+      );
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error('Error:', error);
@@ -268,9 +303,11 @@ const MoreOption = ({ dataPost }: any): any => {
               className="cursor-pointer"
             />
           </MenuHandler>
-          <MenuList className="list-none flex flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5 text-red-500">
+          <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
             <MenuItem
-              className="flex py-2 gap-2 cursor-pointer"
+              className={`${
+                dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+              } py-2 gap-2 cursor-pointer`}
               style={{ color: '#FF3838' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
               onClick={() => {
@@ -281,7 +318,9 @@ const MoreOption = ({ dataPost }: any): any => {
               Report Post
             </MenuItem>
             <MenuItem
-              className="flex py-2 gap-2 cursor-pointer"
+              className={`${
+                dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+              }  py-2 gap-2 cursor-pointer`}
               style={{ color: '#FF3838' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
               onClick={() => {
@@ -292,7 +331,9 @@ const MoreOption = ({ dataPost }: any): any => {
               Report User
             </MenuItem>
             <MenuItem
-              className="flex py-2 gap-2 cursor-pointer"
+              className={`${
+                dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+              }  py-2 gap-2 cursor-pointer`}
               style={{ color: '#FF3838' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
               onClick={() => {
@@ -301,6 +342,32 @@ const MoreOption = ({ dataPost }: any): any => {
             >
               <Image src={block} alt="blockUser" />
               Block User
+            </MenuItem>
+            <MenuItem
+              className={`${
+                dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+              }  py-2 gap-2 cursor-pointer`}
+              style={{ color: '#000000' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
+              onClick={() => {
+                handleOpen();
+              }}
+            >
+              <Image src={edit} alt="editPost" />
+              Edit Post
+            </MenuItem>
+            <MenuItem
+              className={`${
+                dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+              }  py-2 gap-2 cursor-pointer`}
+              style={{ color: '#FF3838' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
+              onClick={() => {
+                handleOpenDelete('xs');
+              }}
+            >
+              <Image src={delet} alt="deletePost" />
+              Delete Post
             </MenuItem>
           </MenuList>
         </Menu>
@@ -380,7 +447,6 @@ const MoreOption = ({ dataPost }: any): any => {
                 handleOpenReportPost(null);
                 setSelectedPost(null);
                 handleVerifyReportPost('xs');
-                console.log(formDataPost);
               }}
             >
               Continue
@@ -488,7 +554,6 @@ const MoreOption = ({ dataPost }: any): any => {
               handleOpenReportUser(null);
               setSelectedUser(null);
               handleVerifyReportUser('xs');
-              console.log(formDataUser);
             }}
           >
             Continue
@@ -519,7 +584,6 @@ const MoreOption = ({ dataPost }: any): any => {
               data-ripple-light="true"
               onClick={() => {
                 handleVerifyReportUser(null);
-                console.log(formDataUser);
               }}
             >
               Report
@@ -573,6 +637,55 @@ const MoreOption = ({ dataPost }: any): any => {
               color="white"
               onClick={() => {
                 handleOpenBlock(null);
+              }}
+              className="min-w-full hover:bg-transparent focus:bg-transparent text-[#3AC4A0] text-sm font-semibold rounded-full capitalize p-0 font-poppins"
+            >
+              <span>Cancel</span>
+            </Button>
+          </DialogFooter>
+        </form>
+      </Dialog>
+      {/* TODO: EDIT POST MODAL */}
+
+      {/* TODO: DELETE POST MODAL */}
+      <Dialog
+        dismiss={{
+          outsidePress: false
+        }}
+        open={deletePost === 'xs'}
+        size={'xs'}
+        handler={handleOpenDelete}
+        className="text-center p-5 m-0 max-w-full sm:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl"
+      >
+        <form
+          onSubmit={async () =>
+            await handleSubmitDeletePost(event, dataPost.id)
+          }
+        >
+          <DialogBody className="p-0 mb-6 font-poppins">
+            <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
+              Delete Post
+            </p>
+            <p className="font-normal text-sm">
+              Are you sure want to delete this post?
+            </p>
+          </DialogBody>
+          <DialogFooter className="p-0">
+            <button
+              type="submit"
+              className="rounded-full min-w-full bg-[#DD2525] h-10 text-sm font-semibold capitalize text-white transition-all mb-6 font-poppins"
+              data-ripple-light="true"
+              onClick={() => {
+                handleOpenDelete(null);
+              }}
+            >
+              Delete
+            </button>
+            <Button
+              variant="text"
+              color="white"
+              onClick={() => {
+                handleOpenDelete(null);
               }}
               className="min-w-full hover:bg-transparent focus:bg-transparent text-[#3AC4A0] text-sm font-semibold rounded-full capitalize p-0 font-poppins"
             >

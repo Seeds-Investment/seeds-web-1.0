@@ -196,12 +196,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   }
 
   const toUserProfile = (id: any): void => {
-    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
-      router.push('MyProfileScreen').catch(err => {
+    if (dataPost?.user_id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('/my-profile').catch(err => {
         console.error(err);
       });
     } else if (id !== undefined) {
-      router.push('ProfileUserScreen').catch(err => {
+      router.push(`/social/${id as string}`).catch(err => {
         console.error(err);
       });
     } else {
@@ -472,15 +472,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
     } else if (content?.includes('-circle') === true) {
       toCircleDetail(content?.replace('-circle', ''));
     } else if (content?.includes('-asset') === true) {
-      router.push('').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${content?.replace('-asset', '') as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     } else if (content?.includes('-play') === true) {
       router.push('').catch(err => {
         console.error(err);
       });
     } else {
-      router.push('').catch(err => {
+      router.push(`/social/search?hashtags=${content as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -496,9 +498,11 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router.push('OverviewAsset').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${item.marketAsset.id as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     }
   }, []);
 

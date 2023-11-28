@@ -718,14 +718,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const handleSeeMore = (text: string, maxWords: number): any => {
     const words = text.split(' ');
 
-    const displayText = expanded
-      ? redirectToPaymentPostPremium()
-      : words.slice(0, maxWords).join(' ');
+    const displayText =
+      dataPost.status_payment === true
+        ? text
+        : expanded
+        ? redirectToPaymentPostPremium()
+        : words.slice(0, maxWords).join(' ');
 
     return (
       <div>
         <p>{displayText}</p>
-        {words.length > maxWords && (
+        {words.length > maxWords && dataPost.status_payment === false ? (
           <button
             className="text-blue-600"
             onClick={() => {
@@ -734,7 +737,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
           >
             See More
           </button>
-        )}
+        ) : null}
       </div>
     );
   };

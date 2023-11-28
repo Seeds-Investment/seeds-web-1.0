@@ -24,6 +24,7 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface Filter {
@@ -100,12 +101,25 @@ const PROMO_DUMMY = [
 ];
 
 const Search: React.FC = () => {
+  const router = useRouter();
+  console.log(router.query);
+
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [userInfo, setUserInfo] = useState<any>();
+
+  useEffect(() => {
+    if (router.query.hashtags !== undefined) {
+      setActiveTab('hashtag');
+      setFilter(prevState => ({
+        ...prevState,
+        search: router.query.hashtags as string
+      }));
+    }
+  }, []);
 
   const handleChangeTab = (value: string): void => {
     setActiveTab(value);
@@ -326,6 +340,7 @@ const Search: React.FC = () => {
               <input
                 type="text"
                 name="search"
+                value={filter.search}
                 onChange={e => {
                   handleChangeFilter(e);
                 }}

@@ -37,7 +37,6 @@ const post: Post = {
 function UserProfile(): JSX.Element {
   const router = useRouter();
   const id = router.query.id as string;
-  console.log(id);
   const circle: Circle = {
     limit: 10,
     page: 1,
@@ -52,6 +51,7 @@ function UserProfile(): JSX.Element {
   const [userData, setUserData] = useState<Record<string, any>>();
 
   const [expUserData, setExpUserData] = useState<any>();
+  console.log(expUserData);
   const [circleData, setCircleData] = useState<any[]>([]);
   const [playData, setPlayData] = useState<any[]>([]);
   const [postData, setPostData] = useState<any[]>([]);

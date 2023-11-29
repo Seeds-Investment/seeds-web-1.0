@@ -1,4 +1,5 @@
 import CCard from '@/components/CCard';
+import { standartCurrency } from '@/helpers/currency';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
@@ -12,10 +13,6 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
   return (
     <CCard className="flex p-8 mx-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-col justify-center pt-4">
-        <h1 className="font-poppins text-center font-semibold text-lg text-black">
-          Fee Membership
-        </h1>
-
         <div className="flex justify-center pl-4 pt-2">
           <Image src={PaymentSVG} alt="image" className="w-[230px] h-[230px]" />
         </div>
@@ -38,7 +35,7 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
           <div className="flex justify-center">
             <div className="flex flex-col pb-7 px-7">
               <h1 className="pt-4 text-center text-black font-poppins text-base font-semibold">
-                Rp {detailPost.premium_fee}
+                {standartCurrency(detailPost?.premium_fee)}
               </h1>
               <h1 className="pt-2 text-center font-poppins text-base font-light">
                 One time payment for this specific content

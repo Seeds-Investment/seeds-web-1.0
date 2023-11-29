@@ -69,7 +69,7 @@ interface UserData {
   phone: string;
   _pin: string;
 }
-
+        
 interface ShareData {
   name: string;
   image: any;
@@ -91,7 +91,7 @@ const shareData: ShareData[] = [
   {
     name: 'Instagram',
     image: InstagramShare,
-    link: 'https://www.instagram.com/',
+    link: 'https://www.instagram.com/direct/inbox/',
     class: ''
   },
   {
@@ -109,13 +109,13 @@ const shareData: ShareData[] = [
   {
     name: 'Twitter',
     image: TwitterShare,
-    link: 'https://twitter.com/',
+    link: 'https://twitter.com/messages/compose',
     class: ''
   },
   {
     name: 'Whatsapp',
     image: WhatsappShare,
-    link: 'www.instagram.com',
+    link: 'https://api.whatsapp.com/',
     class: ''
   },
   {
@@ -133,7 +133,7 @@ const shareData: ShareData[] = [
   {
     name: 'Linkedin',
     image: LinkedinShare,
-    link: 'https://www.linkedin.com/',
+    link: 'https://www.linkedin.com/feed/',
     class: 'bg-[#0A66C2]'
   },
   {
@@ -196,12 +196,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   }
 
   const toUserProfile = (id: any): void => {
-    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
-      router.push('MyProfileScreen').catch(err => {
+    if (dataPost?.user_id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('/my-profile').catch(err => {
         console.error(err);
       });
     } else if (id !== undefined) {
-      router.push('ProfileUserScreen').catch(err => {
+      router.push(`/social/${id as string}`).catch(err => {
         console.error(err);
       });
     } else {
@@ -472,15 +472,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
     } else if (content?.includes('-circle') === true) {
       toCircleDetail(content?.replace('-circle', ''));
     } else if (content?.includes('-asset') === true) {
-      router.push('').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${content?.replace('-asset', '') as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     } else if (content?.includes('-play') === true) {
       router.push('').catch(err => {
         console.error(err);
       });
     } else {
-      router.push('').catch(err => {
+      router.push(`/social/search?hashtags=${content as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -496,9 +498,11 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router.push('OverviewAsset').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${item.marketAsset.id as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     }
   }, []);
 
@@ -715,14 +719,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const handleSeeMore = (text: string, maxWords: number): any => {
     const words = text.split(' ');
 
-    const displayText = expanded
-      ? redirectToPaymentPostPremium()
-      : words.slice(0, maxWords).join(' ');
+    const displayText =
+      dataPost.status_payment === true
+        ? text
+        : expanded
+        ? redirectToPaymentPostPremium()
+        : words.slice(0, maxWords).join(' ');
 
     return (
       <div>
         <p>{displayText}</p>
-        {words.length > maxWords && (
+        {words.length > maxWords && dataPost.status_payment === false ? (
           <button
             className="text-blue-600"
             onClick={() => {
@@ -731,7 +738,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
           >
             See More
           </button>
-        )}
+        ) : null}
       </div>
     );
   };
@@ -746,13 +753,13 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
       >
         <div className="flex gap-4 md:gap-8">
           <div className="hidden md:flex">
-            <div>
+            <div className="shrink-0">
               <img
                 src={
                   dataPost.owner !== undefined ? dataPost.owner.avatar : null
                 }
                 alt="AVATAR"
-                className="rounded-full w-12 h-12 cursor-pointer"
+                className="rounded-full w-12 h-12 object-cover cursor-pointer"
                 onClick={async () => {
                   dataPost.user_id === userInfo.id
                     ? await router.push('/my-profile')
@@ -767,7 +774,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
             <div className="mb-4">
               <div className="flex gap-5 pb-4">
                 <div className="md:hidden flex">
-                  <div>
+                  <div className="shrink-0">
                     <img
                       src={
                         dataPost.owner !== undefined
@@ -775,7 +782,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           : null
                       }
                       alt="AVATAR"
-                      className="rounded-full w-12 h-12 cursor-pointer"
+                      className="rounded-full w-12 h-12 object-cover cursor-pointer"
                       onClick={async () => {
                         dataPost.user_id === userInfo.id
                           ? await router.push('/my-profile')
@@ -821,7 +828,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           )
                         : null}
                     </div>
-                    <MoreOption dataPost={dataPost} />
+                    <MoreOption dataPost={dataPost} userInfo={userInfo} />
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">
                     <Typography className="text-xs md:text-sm">

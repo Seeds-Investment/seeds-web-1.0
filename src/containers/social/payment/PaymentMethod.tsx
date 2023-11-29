@@ -1,8 +1,6 @@
 import CCard from '@/components/CCard';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PaymentOptions from '@/containers/play/payment/PaymentOptions';
-import VirtualAccountGuide from '@/containers/play/payment/VirtualAccountGuide';
-import WalletForm from '@/containers/play/payment/WalletForm';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { postPaymentPremiumContent } from '@/repository/social.respository';
@@ -11,6 +9,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ModalEWallet from './ModalEWallet';
 
 interface Payment {
   id?: string;
@@ -162,21 +161,7 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           setOpenDialog(false);
         }}
       >
-        {option.payment_type === 'ewallet' ? (
-          <WalletForm
-            payment={option}
-            handlePay={handlePay}
-            numberMonth={1}
-            dataPost={data}
-          />
-        ) : (
-          <VirtualAccountGuide
-            payment={option}
-            handlePay={handlePay}
-            numberMonth={1}
-            dataPost={data}
-          />
-        )}
+        <ModalEWallet payment={option} handlePay={handlePay} dataPost={data} />
       </Dialog>
     </CCard>
   );

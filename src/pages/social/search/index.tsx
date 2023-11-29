@@ -107,6 +107,7 @@ const Search: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
+  console.log(data);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [userInfo, setUserInfo] = useState<any>();

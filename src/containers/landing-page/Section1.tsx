@@ -1,6 +1,6 @@
-import body1 from '@/assets/landing-page/body1.png';
-import body2 from '@/assets/landing-page/body2.png';
-import body3 from '@/assets/landing-page/body3.png';
+import body1 from '@/assets/landing-page/Body1.png';
+import body2 from '@/assets/landing-page/Body2.png';
+import body3 from '@/assets/landing-page/Body3.png';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { downloadOurApp } from '@/utils/_static';
 import { Button } from '@material-tailwind/react';

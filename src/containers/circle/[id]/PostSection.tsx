@@ -69,7 +69,7 @@ interface UserData {
   phone: string;
   _pin: string;
 }
-        
+
 interface ShareData {
   name: string;
   image: any;

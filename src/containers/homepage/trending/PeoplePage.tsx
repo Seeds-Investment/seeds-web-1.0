@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { getTrendingPeople } from '../../../repository/asset.repository';
 
-
 export interface PeopleInterface {
   avatar: string;
   followers: number;

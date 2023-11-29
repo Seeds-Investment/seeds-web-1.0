@@ -275,6 +275,91 @@ export const joinCirclePost = async (data: JoinCircleType): Promise<any> => {
   return response;
 };
 
+export const updatePostSocialAndCircle = async (
+  formData: {
+    content_text: string;
+    media_urls: string[];
+    privacy: string;
+    is_pinned: boolean;
+    user_id: string | any;
+    circleId?: string | any;
+    hashtags: string[] | any;
+    pollings?: Polling[] | any;
+    polling_multiple?: boolean;
+    polling_new_option?: boolean;
+    polling_date?: string;
+    pie_title?: string;
+    pie_amount?: number;
+    pie?: any[];
+    premium_fee: number;
+  },
+  id: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (
+      isUndefindOrNull(formData.content_text) ||
+      isUndefindOrNull(formData.media_urls) ||
+      isUndefindOrNull(formData.privacy) ||
+      isUndefindOrNull(formData.is_pinned) ||
+      isUndefindOrNull(formData.user_id) ||
+      isUndefindOrNull(formData.hashtags)
+    ) {
+      return await Promise.resolve(null);
+    }
+
+    const body = JSON.stringify({
+      content_text: formData.content_text,
+      media_urls: formData.media_urls,
+      privacy: formData.privacy,
+      is_pinned: formData.is_pinned,
+      user_id: formData.user_id,
+      circle_id: formData.circleId,
+      hashtags: formData.hashtags,
+      pollings: formData.pollings,
+      polling_multiple: formData.polling_multiple,
+      polling_new_option: formData.polling_new_option,
+      polling_date: formData.polling_date,
+      pie_title: formData.pie_title,
+      pie_amount: formData.pie_amount,
+      pie: formData.pie,
+      premium_fee: formData.premium_fee
+    });
+
+    const response = await baseUrl.put(`/post/v2/update/${id}`, body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return { ...response, status: 200 };
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updatePost = async (
+  formRequest: any,
+  id: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await baseUrl.put(`/post/v2/update/${id}`, formRequest, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const createPostCircleDetail = async (formData: {
   content_text: string;
   media_urls: string[];
@@ -582,24 +667,6 @@ export const searchUser = async (params: any): Promise<any> => {
 
   return await baseUrl.get(`user/v1/list`, {
     params,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
-    }
-  });
-};
-
-export const updatePost = async (
-  formRequest: any,
-  id: string
-): Promise<any> => {
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (accessToken === null || accessToken === '') {
-    return await Promise.resolve('Access token not found');
-  }
-
-  return await baseUrl.put(`/post/v2/update/${id}`, formRequest, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

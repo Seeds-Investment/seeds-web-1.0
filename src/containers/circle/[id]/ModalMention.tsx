@@ -10,7 +10,8 @@ import { countWords } from '@/helpers/text';
 import {
   UseUploadMedia,
   createPostCircleDetail,
-  getUserTagList
+  getUserTagList,
+  updatePostSocialAndCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -34,6 +35,8 @@ interface props {
   handleOpen: () => void;
   setIsLoading: any;
   setIsLoadingPost?: any;
+  dataPost?: any;
+  setDataPost?: any;
   setFilter?: any;
   setData?: any;
   setGolId: any;
@@ -182,7 +185,9 @@ const ModalMention: React.FC<props> = ({
   setIsLoadingPost,
   setFilter,
   setData,
-  setGolId
+  setGolId,
+  dataPost,
+  setDataPost
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -239,7 +244,7 @@ const ModalMention: React.FC<props> = ({
     pie_title: '',
     pie_amount: 0,
     pie: [],
-    premium_fee: '0'
+    premium_fee: ''
   });
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -257,6 +262,28 @@ const ModalMention: React.FC<props> = ({
 
     void fetchData();
   }, []);
+  useEffect(() => {
+    if (dataPost !== undefined) {
+      setForm(prevState => ({
+        ...prevState,
+        content_text: dataPost.content_text,
+        privacy: dataPost.privacy,
+        media_urls: dataPost.media_urls?.length > 0 ? dataPost.media_urls : [],
+        polling: {
+          options: dataPost.pollings !== undefined ? dataPost.pollings : [],
+          isMultiVote: dataPost.polling_multiple,
+          canAddNewOption: dataPost.polling_new_option,
+          endDate:
+            dataPost.polling_date === '0001-01-01T00:00:00Z'
+              ? ''
+              : dataPost.polling_date
+        },
+        pie: dataPost.pie,
+        pie_amount: dataPost.pie_amount,
+        pie_title: dataPost.pie_title
+      }));
+    }
+  }, [dataPost]);
 
   useEffect(() => {
     const findCircle = form.content_text.split('@');
@@ -292,7 +319,15 @@ const ModalMention: React.FC<props> = ({
   }, [form.media_urls.length, media.length]);
 
   useEffect(() => {
-    if (form.content_text.length > 250) {
+    const regexPattern = /@\[.*?\]\(.*?\)/g;
+    const cleanedString = form.content_text.replace(regexPattern, '');
+    const totalChar = cleanedString.length;
+
+    if (totalChar > 255 && form.privacy !== 'premium') {
+      setIsError(true);
+      setIsDisable(true);
+      setErrorMessage('Your thread is exceeding the maximum character limit');
+    } else if (totalChar > 500 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage('Your thread is exceeding the maximum character limit');
@@ -714,7 +749,32 @@ const ModalMention: React.FC<props> = ({
         payload.premium_fee = parseInt(form.premium_fee);
       }
 
-      await createPostCircleDetail(payload);
+      if (dataPost !== undefined) {
+        const res = await updatePostSocialAndCircle(payload, dataPost.id);
+        if (res.status === 200) {
+          setDataPost((prevState: any) => {
+            if (Array.isArray(prevState)) {
+              const newData = prevState.map((el: any) => {
+                el.content_text = form.content_text;
+                el.privacy = form.privacy;
+                el.media_urls = form.media_urls;
+                el.pollings = form.polling.options;
+                el.polling_multiple = form.polling.isMultiVote;
+                el.canAddNewOption = form.polling.canAddNewOption;
+                el.endDate = form.polling.endDate;
+                el.pie = form.pie;
+                el.pie_amount = form.pie_amount;
+                el.pie_title = form.pie_title;
+                return el;
+              });
+              return newData;
+            }
+            return prevState;
+          });
+        }
+      } else {
+        await createPostCircleDetail(payload);
+      }
 
       setForm({
         content_text: '',
@@ -756,7 +816,7 @@ const ModalMention: React.FC<props> = ({
       setHashtags([]);
       // window.location.reload();
     } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+      console.error('Error posting or editing:', error.message);
     } finally {
       setIsLoading(false);
     }

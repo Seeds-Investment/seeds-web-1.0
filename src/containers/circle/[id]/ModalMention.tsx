@@ -319,7 +319,15 @@ const ModalMention: React.FC<props> = ({
   }, [form.media_urls.length, media.length]);
 
   useEffect(() => {
-    if (form.content_text.length > 250) {
+    const regexPattern = /@\[.*?\]\(.*?\)/g;
+    const cleanedString = form.content_text.replace(regexPattern, '');
+    const totalChar = cleanedString.length;
+
+    if (totalChar > 255 && form.privacy !== 'premium') {
+      setIsError(true);
+      setIsDisable(true);
+      setErrorMessage('Your thread is exceeding the maximum character limit');
+    } else if (totalChar > 500 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage('Your thread is exceeding the maximum character limit');

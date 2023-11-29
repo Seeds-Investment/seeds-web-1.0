@@ -301,7 +301,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <pre className="text-blue-500 font-poppins">
+                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
+                </pre>
               </button>
             );
           } else {
@@ -376,6 +378,8 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   function removeDuplicateIds(data: any): any {
     const uniqueIds = new Set();
     return data.filter((item: any) => {
+      console.log(item);
+
       if (!uniqueIds.has(item.id)) {
         uniqueIds.add(item.id);
         return true;
@@ -448,7 +452,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
           });
         } else if (el?.includes('-asset') === true) {
           await getAssetById(el?.replace('-asset', '')).then((res: any) => {
-            tempThumbnailList.push({ thumbnailType: 'asset', ...res });
+            tempThumbnailList.push({
+              thumbnailType: 'asset',
+              ...res.marketAsset
+            });
           });
         }
         await Promise.resolve();
@@ -497,11 +504,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router
-        .push(`/homepage/assets/${item.marketAsset.id as string}`)
-        .catch(err => {
-          console.error(err);
-        });
+      router.push(`/homepage/assets/${item.id as string}`).catch(err => {
+        console.error(err);
+      });
     }
   }, []);
 
@@ -588,8 +593,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   };
 
   const pinPost = async (type: string): Promise<void> => {
-    console.log(dataPost);
-
     try {
       const response = await postPinCirclePost(type, dataPost.id);
       if (response.status === 200) {
@@ -876,7 +879,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 <PieCirclePost data={dataPost} chartData={chartData} />
               ) : null}
             </div>
-            <div className="flex justify-start gap-4">
+            <div className="flex justify-start gap-4 flex-wrap">
               {thumbnailList.length > 0 &&
                 thumbnailList.map((item: any, index: number) => {
                   return (
@@ -953,15 +956,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           <img
                             src={
                               item?.thumbnailType === 'asset'
-                                ? item?.marketAsset?.logo
+                                ? item?.logo
                                 : item?.logo !== undefined
                                 ? item.logo
                                 : item?.avatar
                             }
                             alt="image"
-                            className="rounded-full object-cover"
-                            width={60}
-                            height={60}
+                            className={`${
+                              item?.thumbnailType === 'asset'
+                                ? 'object-contain'
+                                : 'object-cover'
+                            } rounded-full w-14 h-14 max-w-[60px] max-h-[60px] min-h-[50px] min-w-[50px]`}
                           />
                         </div>
                       )}
@@ -970,13 +975,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           {item?.name?.length > 10
                             ? (item?.name.substring(0, 15) as string) + '...'
                             : item?.name}
-                          {item?.thumbnailType === 'asset' &&
-                            (item?.marketAsset?.name?.length > 10
-                              ? (item?.marketAsset?.name.substring(
-                                  0,
-                                  15
-                                ) as string) + '...'
-                              : item?.marketAsset?.name)}
                         </Typography>
                       </div>
                       {item?.thumbnailType === 'play' ? (
@@ -987,13 +985,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                       {item?.thumbnailType === 'asset' ? (
                         <div className="flex justify-center">
                           <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
-                            {item?.marketAsset?.exchangeCurrency === 'IDR'
-                              ? `IDR ${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close
-                                )}`
+                            {item?.exchangeCurrency === 'IDR'
+                              ? `IDR ${formatCurrency(item?.lastPrice?.close)}`
                               : `$${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close /
-                                    item?.marketAsset?.exchangeRate
+                                  item?.lastPrice?.close / item?.exchangeRate
                                 )}`}
                           </Typography>
                         </div>

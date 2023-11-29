@@ -224,10 +224,10 @@ const CopyPie: React.FC<props> = ({ handleOpen, isOpen, form }) => {
     payload.pie_amount = stringToNumberCurrency(formPie?.pie_amount);
 
     updatePost(payload, form.id)
-      .then(resData => {
+      .then((resData: any) => {
         window.location.reload();
       })
-      .catch(err => {
+      .catch((err: any) => {
         console.error(err);
       });
   };

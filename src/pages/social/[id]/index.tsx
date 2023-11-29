@@ -8,7 +8,7 @@ import { getCircle } from '@/repository/circle.repository';
 import { getExpUserData } from '@/repository/exp.repository';
 import { getPlayJoined } from '@/repository/play.repository';
 import { getListPostByUserId } from '@/repository/post.repository';
-import { getOtherUser } from '@/repository/profile.repository';
+import { blockOtherUser, getOtherUser } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -50,18 +50,45 @@ function UserProfile(): JSX.Element {
   };
 
   const [userData, setUserData] = useState<Record<string, any>>();
-
+  const [isBlock, setBlock] = useState<boolean>();
   const [expUserData, setExpUserData] = useState<any>();
   const [circleData, setCircleData] = useState<any[]>([]);
   const [playData, setPlayData] = useState<any[]>([]);
   const [postData, setPostData] = useState<any[]>([]);
+  const [formDataBlock] = useState({ user_id: id });
 
+  console.log(isBlock);
+
+  const handleBlock = (data: boolean): void => {
+    setBlock(data);
+  };
+
+  const handleSubmitBlockUser = async (event: any): Promise<any> => {
+    event.preventDefault();
+    try {
+      await blockOtherUser(formDataBlock);
+      handleBlock(userData?.status_blocked);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const userData = await getOtherUser(id);
         setUserData(userData);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
 
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, [id, isBlock]);
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
         const expUserData = await getExpUserData(id);
         setExpUserData(expUserData);
 
@@ -71,10 +98,8 @@ function UserProfile(): JSX.Element {
         const playResponse = await getPlayJoined(play);
         setPlayData(playResponse);
 
-        if (userData !== '') {
-          const postResponse = await getListPostByUserId(userData.id, post);
-          setPostData(postResponse);
-        }
+        const postResponse = await getListPostByUserId(id, post);
+        setPostData(postResponse);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -84,11 +109,17 @@ function UserProfile(): JSX.Element {
       .then()
       .catch(() => {});
   }, [id]);
+
   return (
     <PageGradient defaultGradient className="w-full">
       {/* New Card */}
       <CCard className="p-4 md:p-5">
-        <ProfileSection profileData={userData} expData={expUserData} id={id} />
+        <ProfileSection
+          profileData={userData}
+          expData={expUserData}
+          id={id}
+          handleSubmitBlockUser={handleSubmitBlockUser}
+        />
       </CCard>
       <CCard className="py-5 md:rounded-lg my-4">
         <UnderLineTab
@@ -97,6 +128,7 @@ function UserProfile(): JSX.Element {
           playData={playData}
           postData={postData}
           setPostData={setPostData}
+          handleSubmitBlockUser={handleSubmitBlockUser}
         />
       </CCard>
     </PageGradient>

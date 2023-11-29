@@ -34,6 +34,7 @@ interface Params {
   playData: any;
   postData: any;
   setPostData: any;
+  handleSubmitBlockUser?: any;
 }
 
 interface Item {
@@ -59,7 +60,8 @@ const UnderLineTab = ({
   circleData,
   playData,
   postData,
-  setPostData
+  setPostData,
+  handleSubmitBlockUser
 }: Params): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -127,6 +129,7 @@ const UnderLineTab = ({
                   dataPost={el}
                   setData={setPostData}
                   userInfo={profileData}
+                  handleSubmitBlockUser={handleSubmitBlockUser}
                 />
               </div>
             );

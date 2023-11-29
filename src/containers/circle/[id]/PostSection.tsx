@@ -47,6 +47,7 @@ interface props {
   dataPost: any;
   setData: any;
   userInfo: UserData;
+  handleSubmitBlockUser?: any;
 }
 
 interface ChartData {
@@ -69,7 +70,7 @@ interface UserData {
   phone: string;
   _pin: string;
 }
-        
+
 interface ShareData {
   name: string;
   image: any;
@@ -144,7 +145,12 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
+const PostSection: React.FC<props> = ({
+  dataPost,
+  setData,
+  userInfo,
+  handleSubmitBlockUser
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [docModal, setDocModal]: any = useState<boolean>(false);
@@ -821,7 +827,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           )
                         : null}
                     </div>
-                    <MoreOption dataPost={dataPost} />
+                    <MoreOption
+                      dataPost={dataPost}
+                      handleSubmitBlockUser={handleSubmitBlockUser}
+                    />
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">
                     <Typography className="text-xs md:text-sm">

@@ -92,7 +92,7 @@ const Icon = (): any => {
   );
 };
 
-const MoreOption = ({ dataPost }: any): any => {
+const MoreOption = ({ dataPost, handleSubmitBlockUser }: any): any => {
   const [formDataPost, setFormPost] = React.useState({
     target_post_id: dataPost.id,
     type_report: '',
@@ -103,8 +103,6 @@ const MoreOption = ({ dataPost }: any): any => {
     type_report: '',
     question_report_id: ''
   });
-  const [formDataBlock] = React.useState({ user_id: dataPost.user_id });
-
   const handleChangePost = (id: string, value: string): any => {
     setFormPost({
       ...formDataPost,
@@ -223,31 +221,6 @@ const MoreOption = ({ dataPost }: any): any => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(formDataUser)
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-  const handleSubmitBlockUser = async (event: any): Promise<any> => {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
-        }/user/v1/block`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${
-              localStorage.getItem('accessToken') ?? ''
-            }`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataBlock)
         }
       );
       const data = await response.json();

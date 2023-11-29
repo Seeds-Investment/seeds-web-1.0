@@ -1,21 +1,26 @@
 'use client';
 import message from '@/assets/profile/message.svg';
-import optionHorizontal from '@/assets/profile/optionHorizontal.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
+import MoreOptionHorizontal from '../MoreOptionHorizontal';
 
 interface Params {
   profileData: any;
   expData: any;
   id?: any;
+  handleSubmitBlockUser?: any;
 }
 
-const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
-  console.log(profileData);
+const Profile = ({
+  profileData,
+  expData,
+  id,
+  handleSubmitBlockUser
+}: Params): JSX.Element => {
   const router = useRouter();
   const _handleReferalCode = (): any => {
     return router.push({
@@ -31,7 +36,7 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
     <>
       <div className="flex md:gap-5">
         <div className="shrink-0">
-          <Image
+          <img
             src={profileData?.avatar}
             alt="AVATAR"
             width={128}
@@ -112,14 +117,14 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
                   <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
                     <Image src={message} alt="Message" width={20} height={20} />
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
-                    <Image
-                      src={optionHorizontal}
-                      alt="optionHorizontal"
-                      width={20}
-                      height={20}
-                    />
-                  </div>
+                  {profileData === true ? (
+                    <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center items-center">
+                      <MoreOptionHorizontal
+                        profileData={profileData}
+                        handleSubmitBlockUser={handleSubmitBlockUser}
+                      />
+                    </div>
+                  ) : null}
                 </>
               )}
             </div>
@@ -223,21 +228,30 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
         ) : (
           <>
             <div className="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-8 self-center cursor-pointer">
-              <Typography className="text-[#FFFFFF] text-base font-semibold font-poppins">
-                Follow
-              </Typography>
+              {profileData?.status_blocked === true ? (
+                <Typography
+                  className="text-[#FFFFFF] text-base font-semibold font-poppins"
+                  onClick={handleSubmitBlockUser}
+                >
+                  Unblock
+                </Typography>
+              ) : (
+                <Typography className="text-[#FFFFFF] text-base font-semibold font-poppins">
+                  Follow
+                </Typography>
+              )}
             </div>
             <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
               <Image src={message} alt="Message" width={20} height={20} />
             </div>
-            <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
-              <Image
-                src={optionHorizontal}
-                alt="optionHorizontal"
-                width={20}
-                height={20}
-              />
-            </div>
+            {profileData === true ? (
+              <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center items-center">
+                <MoreOptionHorizontal
+                  profileData={profileData}
+                  handleSubmitBlockUser={handleSubmitBlockUser}
+                />
+              </div>
+            ) : null}
           </>
         )}
       </div>

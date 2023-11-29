@@ -755,13 +755,13 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
       >
         <div className="flex gap-4 md:gap-8">
           <div className="hidden md:flex">
-            <div>
+            <div className="shrink-0">
               <img
                 src={
                   dataPost.owner !== undefined ? dataPost.owner.avatar : null
                 }
                 alt="AVATAR"
-                className="rounded-full w-12 h-12 cursor-pointer"
+                className="rounded-full w-12 h-12 object-cover cursor-pointer"
                 onClick={async () => {
                   dataPost.user_id === userInfo.id
                     ? await router.push('/my-profile')
@@ -776,7 +776,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
             <div className="mb-4">
               <div className="flex gap-5 pb-4">
                 <div className="md:hidden flex">
-                  <div>
+                  <div className="shrink-0">
                     <img
                       src={
                         dataPost.owner !== undefined
@@ -784,7 +784,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           : null
                       }
                       alt="AVATAR"
-                      className="rounded-full w-12 h-12 cursor-pointer"
+                      className="rounded-full w-12 h-12 object-cover cursor-pointer"
                       onClick={async () => {
                         dataPost.user_id === userInfo.id
                           ? await router.push('/my-profile')

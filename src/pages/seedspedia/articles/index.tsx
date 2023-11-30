@@ -356,7 +356,13 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
           {articles.map(article => {
-            return <ArticleCard key={article.id} articleId={article.id} />;
+            return (
+              <ArticleCard
+                key={article.id}
+                articleId={article.id}
+                articleName={article.title}
+              />
+            );
           })}
         </div>
 

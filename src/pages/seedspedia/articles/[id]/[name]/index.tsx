@@ -18,7 +18,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import author from '../../../../public/assets/author.png';
+import author from '../../../../../../public/assets/author.png';
 
 interface UserData {
   name: string;

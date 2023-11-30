@@ -51,7 +51,6 @@ function UserProfile(): JSX.Element {
   const [userData, setUserData] = useState<Record<string, any>>();
 
   const [expUserData, setExpUserData] = useState<any>();
-  console.log(expUserData);
   const [circleData, setCircleData] = useState<any[]>([]);
   const [playData, setPlayData] = useState<any[]>([]);
   const [postData, setPostData] = useState<any[]>([]);

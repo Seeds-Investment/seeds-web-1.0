@@ -3,10 +3,13 @@ import message from '@/assets/profile/message.svg';
 import optionHorizontal from '@/assets/profile/optionHorizontal.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
-import { Typography } from '@material-tailwind/react';
+import { updateBlockUser } from '@/repository/user.repository';
+import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
+import { useState } from 'react';
+import FollowButton from '../FollowButton';
 
 interface Params {
   profileData: any;
@@ -15,12 +18,26 @@ interface Params {
 }
 
 const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const router = useRouter();
   const _handleReferalCode = (): any => {
     return router.push({
       pathname: `/my-profile/referralCode`,
       query: { refCode: profileData.refCode, referralHistory: 'true' }
     });
+  };
+
+  const onBlock = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const result = await updateBlockUser(profileData?.id);
+      setIsBlock(result.status);
+    } catch (error: any) {
+      console.error('Error follow user:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const _handleEditProfile = (): any => {
@@ -101,11 +118,25 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
                 </>
               ) : (
                 <>
-                  <div className="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center cursor-pointer">
-                    <Typography className="text-[#FFFFFF] text-base font-semibold font-poppins">
-                      Follow
-                    </Typography>
-                  </div>
+                  {(
+                    isBlock !== undefined
+                      ? isBlock
+                      : profileData?.status_blocked === true
+                  ) ? (
+                    <Button
+                      disabled={isLoading}
+                      onClick={onBlock}
+                      className="bg-[#FF3838] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    >
+                      Unblock
+                    </Button>
+                  ) : (
+                    <FollowButton
+                      userId={profileData?.id}
+                      isFollowed={profileData?.status_followed}
+                      customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    />
+                  )}
                   <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
                     <Image src={message} alt="Message" width={20} height={20} />
                   </div>
@@ -219,11 +250,25 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
           </>
         ) : (
           <>
-            <div className="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-8 self-center cursor-pointer">
-              <Typography className="text-[#FFFFFF] text-base font-semibold font-poppins">
-                Follow
-              </Typography>
-            </div>
+            {(
+              isBlock !== undefined
+                ? isBlock
+                : profileData?.status_blocked === true
+            ) ? (
+              <Button
+                disabled={isLoading}
+                onClick={onBlock}
+                className="bg-[#FF3838] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+              >
+                Unblock
+              </Button>
+            ) : (
+              <FollowButton
+                userId={profileData?.id}
+                isFollowed={profileData?.status_followed}
+                customClass="flex gap-2 items-center justify-center rounded-full w-[147px] h-8 self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+              />
+            )}
             <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
               <Image src={message} alt="Message" width={20} height={20} />
             </div>

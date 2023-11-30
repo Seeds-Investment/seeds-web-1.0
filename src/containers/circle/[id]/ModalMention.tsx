@@ -330,7 +330,7 @@ const ModalMention: React.FC<props> = ({
     } else if (totalChar > 500 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
-      setErrorMessage('Your thread is exceeding the maximum character limit');
+      setErrorMessage('The thread maximum 500 characters');
     } else {
       setIsDisable(false);
     }
@@ -1179,7 +1179,14 @@ const ModalMention: React.FC<props> = ({
         />
       );
     } else if (pages === 'poll') {
-      return <PollInput setPages={setPages} form={form} />;
+      return (
+        <PollInput
+          setPages={setPages}
+          form={form}
+          setIsError={setIsError}
+          setErrorMessage={setErrorMessage}
+        />
+      );
     }
   };
 

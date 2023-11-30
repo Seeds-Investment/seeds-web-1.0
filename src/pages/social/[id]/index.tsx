@@ -49,6 +49,7 @@ function UserProfile(): JSX.Element {
   };
 
   const [userData, setUserData] = useState<Record<string, any>>();
+  console.log(userData);
 
   const [expUserData, setExpUserData] = useState<any>();
   console.log(expUserData);

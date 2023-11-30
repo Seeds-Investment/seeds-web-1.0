@@ -58,7 +58,9 @@ const Toast: React.FC<ToastProps> = ({ message, show, onClose }) => {
               </div>
             </div>
             <div className="flex items-center">
-              <Typography className="text-black">{message}</Typography>
+              <Typography className="text-black font-poppins text-sm">
+                {message}
+              </Typography>
             </div>
           </div>
         </div>

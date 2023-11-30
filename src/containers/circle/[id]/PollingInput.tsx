@@ -4,7 +4,7 @@ import {
   Checkbox as MTCheckbox,
   Typography
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useTranslation } from 'react-i18next';
 
@@ -13,11 +13,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 interface props {
   setPages: any;
   form: any;
+  setIsError: any;
+  setErrorMessage: any;
 }
 
-export const PollInput: React.FC<props> = ({ setPages, form }) => {
+export const PollInput: React.FC<props> = ({
+  setPages,
+  form,
+  setErrorMessage,
+  setIsError
+}) => {
   const { t } = useTranslation();
   const [options, setOptions] = useState<string[]>([]);
+  const [isDisable, setIsDisable] = useState<boolean>(false);
   const [isMultiVote, setIsMultiVote] = useState(false);
   const [hasEndDate, setHasEndDate] = useState(false);
   const [endDate, setEndDate] = useState<Date>();
@@ -77,6 +85,9 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
             onButtonClick={newOption => {
               setOptions([...options, newOption]);
             }}
+            setErrorMessage={setErrorMessage}
+            setIsDisable={setIsDisable}
+            setIsError={setIsError}
           />
         )}
       </div>
@@ -115,7 +126,7 @@ export const PollInput: React.FC<props> = ({ setPages, form }) => {
         </button>
         <button
           onClick={onDone}
-          disabled={options.length < 1}
+          disabled={options.length < 1 || isDisable}
           type="button"
           className={`flex w-40 mx-2 justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
             options.length < 1
@@ -196,7 +207,7 @@ interface OptionProps {
 
 const Option: React.FC<OptionProps> = ({ onChange, onButtonClick, value }) => {
   return (
-    <div className="relative flex w-full max-w-[24rem] h-8 h-fit">
+    <div className="relative flex w-full max-w-[24rem] h-fit">
       <Input
         variant="static"
         className="h-8"
@@ -204,7 +215,6 @@ const Option: React.FC<OptionProps> = ({ onChange, onButtonClick, value }) => {
         onChange={e => {
           onChange(e.target.value);
         }}
-        maxLength={255}
       />
       <IconButton
         size="sm"
@@ -232,13 +242,32 @@ const Option: React.FC<OptionProps> = ({ onChange, onButtonClick, value }) => {
 interface OptionInputProps {
   onButtonClick: (value: string) => void;
   label: string;
+  setIsError: any;
+  setIsDisable: any;
+  setErrorMessage: any;
 }
 
-const OptionInput: React.FC<OptionInputProps> = ({ onButtonClick, label }) => {
+const OptionInput: React.FC<OptionInputProps> = ({
+  onButtonClick,
+  label,
+  setErrorMessage,
+  setIsDisable,
+  setIsError
+}) => {
   const [value, setValue] = useState('');
-
+  useEffect(() => {
+    if (value.length > 250) {
+      setIsError(true);
+      setIsDisable(true);
+      setErrorMessage(
+        'Your question is exceeding the maximum character limit. Please rewrite the questions'
+      );
+    } else {
+      setIsDisable(false);
+    }
+  }, [value]);
   return (
-    <div className="relative flex w-full max-w-[24rem] h-8 h-fit">
+    <div className="relative flex w-full max-w-[24rem] h-fit">
       <Input
         variant="static"
         placeholder={label}
@@ -247,7 +276,6 @@ const OptionInput: React.FC<OptionInputProps> = ({ onButtonClick, label }) => {
         onChange={e => {
           setValue(e.target.value);
         }}
-        maxLength={255}
       />
       <IconButton
         size="sm"

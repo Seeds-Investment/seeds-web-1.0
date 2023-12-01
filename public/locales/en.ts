@@ -161,7 +161,8 @@ export default {
     editImage: 'Edit Image',
     linkedAccount: 'Linked Account',
     changePin: 'Change PIN',
-    telephoneNumber: 'Telephone Number'
+    telephoneNumber: 'Telephone Number',
+    email: 'Email'
   },
   input: {
     label: {

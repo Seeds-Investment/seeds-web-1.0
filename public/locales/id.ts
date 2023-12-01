@@ -156,7 +156,8 @@ export default {
     editImage: 'Ubah Foto',
     linkedAccount: 'Akun Tertaut',
     changePin: 'Ganti PIN',
-    telephoneNumber: 'Nomor Telepon'
+    telephoneNumber: 'Nomor Telepon',
+    email: 'Email'
   },
   input: {
     label: {

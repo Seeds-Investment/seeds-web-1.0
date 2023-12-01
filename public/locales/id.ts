@@ -1025,5 +1025,12 @@ export default {
       listMembers: 'Anggota',
       about: 'Tentang'
     }
+  },
+  partner: {
+    section1: {
+      title: 'Berkolaborasi dengan Seeds',
+      text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
+      button: 'Hubungi Kami'
+    }
   }
 };

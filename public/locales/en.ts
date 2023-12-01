@@ -1104,5 +1104,12 @@ export default {
       listMembers: 'Members',
       about: 'About'
     }
+  },
+  partner: {
+    section1: {
+      title: 'Partner with Seeds',
+      text: 'Seeds engages a large audience of eager Millennials and Gen Z looking to boost their financial skills. Collaborate with us to reach this growing crowd. Enjoy exclusive trading competitions, cash sponsorships, exciting prizes, and certificates.',
+      button: 'Contact Us'
+    }
   }
 };

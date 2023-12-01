@@ -77,6 +77,11 @@ export const KopKen: AssetsInterface = {
   alt: 'kopken'
 };
 
+export const SectionOneImageOne: AssetsInterface = {
+  src: '/assets/partner/section-one/image-1.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -92,7 +97,8 @@ const Images: Record<string, AssetsInterface> = {
   GoldMedal,
   Logout,
   EarnXP,
-  KopKen
+  KopKen,
+  SectionOneImageOne
 };
 
 export default Images;

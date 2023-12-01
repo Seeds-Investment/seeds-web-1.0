@@ -18,7 +18,7 @@ export const formRegisterPersonalInfoSchema: any = Yup.object<
   phoneNumber: Yup.string()
     .required('required')
     .matches(phoneNumber, 'invalid Phone Number')
-    .min(10, 'Email must have at least 10 characters length')
+    .min(7, 'Email must have at least 10 characters length')
     .max(20, 'Email must have at most 20 characters length'),
   email: Yup.string().required().matches(email, 'Invalid Email'),
   birthdate: Yup.string()

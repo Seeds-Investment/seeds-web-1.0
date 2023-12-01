@@ -52,7 +52,7 @@ const CardAssetSlider: React.FC<props> = ({
             {data.pricebar === undefined ? (
               <>
                 <Typography className="font-semibold text-base text-[#262626]">
-                  Rp {new Intl.NumberFormat().format(data.price)}
+                  Rp {new Intl.NumberFormat().format(data.priceBar.open)}
                 </Typography>
                 <Typography className="flex font-normal text-sm text-[#3AC4A0]">
                   <ArrowTrendingUpIcon

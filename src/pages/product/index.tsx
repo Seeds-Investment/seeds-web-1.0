@@ -1,4 +1,4 @@
-import Section6 from '@/containers/landing/Section6';
+import Footer from '@/components/layouts/Footer';
 import Section7 from '@/containers/temporary/Section1';
 import Section1 from './components/Section1';
 import Section2 from './components/Section2';
@@ -11,7 +11,7 @@ const Product = (): React.ReactElement => {
       <Section2 />
       <Section3 />
       <Section7 />
-      <Section6 />
+      <Footer />
     </div>
   );
 };

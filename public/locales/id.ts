@@ -1031,6 +1031,11 @@ export default {
       title: 'Berkolaborasi dengan Seeds',
       text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
       button: 'Hubungi Kami'
+    },
+    section2: {
+      option1: 'Komunitas dan Universitas',
+      option2: 'Pendaftar',
+      option3: 'Acara Diselenggarakan'
     }
   }
 };

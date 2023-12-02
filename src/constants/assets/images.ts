@@ -77,8 +77,30 @@ export const KopKen: AssetsInterface = {
   alt: 'kopken'
 };
 
+// Partner
+
 export const SectionOneImageOne: AssetsInterface = {
   src: '/assets/partner/section-one/image-1.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconCap: AssetsInterface = {
+  src: '/assets/partner/section-two/academic-cap.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconUser: AssetsInterface = {
+  src: '/assets/partner/section-two/people.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconCalendar: AssetsInterface = {
+  src: '/assets/partner/section-two/calendar.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoImagePartnership: AssetsInterface = {
+  src: '/assets/partner/section-two/partnership.svg',
   alt: 'bg'
 };
 
@@ -98,7 +120,10 @@ const Images: Record<string, AssetsInterface> = {
   Logout,
   EarnXP,
   KopKen,
-  SectionOneImageOne
+  SectionOneImageOne,
+  SectionTwoIconCap,
+  SectionTwoIconUser,
+  SectionTwoIconCalendar
 };
 
 export default Images;

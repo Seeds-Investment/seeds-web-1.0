@@ -12,7 +12,7 @@ const Section3: React.FC = () => {
           {t('partner.section3.title')}
         </p>
 
-        {/* TODO Carousel Image */}
+        {/* TODO Carousel Image Collaborate to Solve Problems */}
       </div>
     </div>
   );

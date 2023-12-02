@@ -3,6 +3,7 @@ import Section1 from '@/containers/partner/Section1';
 import Section2 from '@/containers/partner/Section2';
 import Section3 from '@/containers/partner/Section3';
 import Section4 from '@/containers/partner/Section4';
+import Section5 from '@/containers/partner/Section5';
 
 const Partner: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const Partner: React.FC = () => {
       <Section2 />
       <Section3 />
       <Section4 />
+      <Section5 />
     </PageGradient>
   );
 };

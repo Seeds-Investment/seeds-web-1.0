@@ -45,7 +45,7 @@ const Section4: React.FC = () => {
           {data.map((data, idx) => (
             <Card
               key={idx}
-              className="flex flex-col items-center w-full md:w-1/3 mb-5 p-5 text-center rounded-3xl"
+              className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl"
             >
               <Image
                 src={data.image}

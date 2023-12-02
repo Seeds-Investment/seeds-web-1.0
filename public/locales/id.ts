@@ -1036,6 +1036,9 @@ export default {
       option1: 'Komunitas dan Universitas',
       option2: 'Pendaftar',
       option3: 'Acara Diselenggarakan'
+    },
+    section3: {
+      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
     }
   }
 };

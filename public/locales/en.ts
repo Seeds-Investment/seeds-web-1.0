@@ -1115,6 +1115,9 @@ export default {
       option1: 'Communities and University',
       option2: 'Registration',
       option3: 'Event Hosted'
+    },
+    section3: {
+      title: 'Collaborate to Solve Problems'
     }
   }
 };

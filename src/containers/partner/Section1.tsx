@@ -13,7 +13,7 @@ const Section1: React.FC = () => {
           <p className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
             {t('partner.section1.title')}
           </p>
-          <p className="text-xl font-normal text-[#262626] mt-6">
+          <p className="text-base md:text-xl font-normal text-[#262626] mt-6">
             {t('partner.section1.text')}
           </p>
           <Button className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible">

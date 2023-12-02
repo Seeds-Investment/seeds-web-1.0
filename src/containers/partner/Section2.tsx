@@ -11,7 +11,7 @@ const Section2: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white mb-10 min-w-full font-poppins">
+    <div className="bg-white min-w-full font-poppins">
       <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:p-20 md:flex-row">
         <div className="flex flex-row items-center w-full justify-start mb-5">
           <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
@@ -33,7 +33,7 @@ const Section2: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center w-full justify-center mb-5">
+        <div className="flex flex-row items-center w-full md:justify-center mb-5">
           <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
             <Image
               src={SectionTwoIconUser.src}
@@ -53,7 +53,7 @@ const Section2: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center w-full justify-end mb-5">
+        <div className="flex flex-row items-center w-full md:justify-end mb-5">
           <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
             <Image
               src={SectionTwoIconCalendar.src}
@@ -74,7 +74,7 @@ const Section2: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col w-full items-center font-poppins mt-10">
-        <p className="text-4xl text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
+        <p className="text-3xl md:text-4xl text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
           Our Partnership
         </p>
         <div className="relative w-full h-[450px] md:h-[600px] overflow-hidden">

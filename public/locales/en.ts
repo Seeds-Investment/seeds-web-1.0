@@ -1118,6 +1118,26 @@ export default {
     },
     section3: {
       title: 'Collaborate to Solve Problems'
+    },
+    section4: {
+      title: 'Empowering The Next Generation Together',
+      subtitle:
+        'Join our mission to make financial education fun and accessible in Indonesia',
+      option1: {
+        title: 'Community',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Networking Opportunities, Exclusive Training, and Monthly Incentives.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Brand',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
+        button: 'Contact Us'
+      }
     }
   }
 };

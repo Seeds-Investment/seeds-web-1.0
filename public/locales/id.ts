@@ -1039,6 +1039,26 @@ export default {
     },
     section3: {
       title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+    },
+    section4: {
+      title: 'Memberdayakan Generasi Mendatang Bersama',
+      subtitle:
+        'Bergabunglah dengan misi kami untuk membuat pendidikan keuangan menyenangkan dan dapat diakses di Indonesia',
+      option1: {
+        title: 'Komunitas',
+        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Merek',
+        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus.',
+        button: 'Contact Us'
+      }
     }
   }
 };

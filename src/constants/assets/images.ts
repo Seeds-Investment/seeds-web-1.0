@@ -104,6 +104,21 @@ export const SectionTwoImagePartnership: AssetsInterface = {
   alt: 'bg'
 };
 
+export const SectionFourKolOptionOne: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-1.svg',
+  alt: 'bg'
+};
+
+export const SectionFourKolOptionTwo: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-2.svg',
+  alt: 'bg'
+};
+
+export const SectionFourKolOptionThree: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-3.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -123,7 +138,10 @@ const Images: Record<string, AssetsInterface> = {
   SectionOneImageOne,
   SectionTwoIconCap,
   SectionTwoIconUser,
-  SectionTwoIconCalendar
+  SectionTwoIconCalendar,
+  SectionFourKolOptionOne,
+  SectionFourKolOptionTwo,
+  SectionFourKolOptionThree
 };
 
 export default Images;

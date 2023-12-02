@@ -4,7 +4,7 @@ const Section3: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="relative mb-10 min-w-full font-poppins h-[400px]">
+    <div className="relative min-w-full font-poppins h-[400px]">
       <div className="absolute inset-0 bg-gradient-to-r from-[#8FFFD6] to-[#D6C7FF]"></div>
       <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-white"></div>
       <div className="flex flex-col w-full items-center font-poppins">

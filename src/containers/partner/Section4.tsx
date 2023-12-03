@@ -34,10 +34,10 @@ const Section4: React.FC = () => {
   return (
     <div className="min-w-full font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
       <div className="flex flex-col w-full items-center font-poppins">
-        <p className="text-3xl md:text-4xl mt-10 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
+        <p className="text-3xl md:text-4xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
           {t('partner.section4.title')}
         </p>
-        <p className="text-2xl mt-5 font-normal text-center text-[#262626]">
+        <p className="text-base md:text-2xl p-5 mt-1 md:mt-5 font-normal text-center text-[#262626]">
           {t('partner.section4.subtitle')}
         </p>
 

@@ -7,7 +7,7 @@ const Section1: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="mb-10 min-w-full font-poppins">
+    <div className="md:mb-10 min-w-full font-poppins">
       <div className="flex flex-col md:flex-row w-full items-center font-poppins">
         <div className="w-full text-center md:text-left md:w-1/2 md:mt-[7rem] p-5 md:p-20 order-2 md:order-1">
           <p className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">

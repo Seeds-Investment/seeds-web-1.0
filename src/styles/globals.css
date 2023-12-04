@@ -236,3 +236,11 @@ code {
 .no-scroll::-webkit-scrollbar {
   display: none;
 }
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.height-modal {
+  height: calc(100vh - 71px);
+}

@@ -102,6 +102,11 @@ const Social: React.FC = () => {
   const [isIncrease, setIsIncrease] = useState(false);
 
   const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
     setIsOpen(!isOpen);
   };
 

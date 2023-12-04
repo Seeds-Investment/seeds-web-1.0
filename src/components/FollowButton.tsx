@@ -11,13 +11,13 @@ interface Props {
 }
 
 export default function FollowButton({
-  isFollowed: isFollowedProp,
+  isFollowed,
   userId,
   customClass
 }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(isFollowedProp);
+  const [isFollowedd, setIsFollowed] = useState<boolean>(isFollowed);
 
   const onFollow = async (): Promise<void> => {
     try {
@@ -38,10 +38,14 @@ export default function FollowButton({
       disabled={isLoading}
       onClick={onFollow}
       className={`${customClass === undefined ? defaultClass : customClass}  ${
-        isFollowed || isLoading ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
+        (isFollowedd === undefined ? isFollowed : isFollowedd) || isLoading
+          ? 'bg-[#BDBDBD]'
+          : 'bg-[#3AC4A0]'
       }`}
     >
-      {isFollowed ? t('followButton.following') : t('followButton.follow')}
+      {(isFollowedd === undefined ? isFollowed : isFollowedd)
+        ? t('followButton.following')
+        : t('followButton.follow')}
     </Button>
   );
 }

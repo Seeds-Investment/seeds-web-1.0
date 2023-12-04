@@ -7,10 +7,12 @@ import Gif_Post from '@/containers/circle/[id]/GifPost';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import { countWords } from '@/helpers/text';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   UseUploadMedia,
   createPostCircleDetail,
-  getUserTagList
+  getUserTagList,
+  updatePostSocialAndCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -34,6 +36,8 @@ interface props {
   handleOpen: () => void;
   setIsLoading: any;
   setIsLoadingPost?: any;
+  dataPost?: any;
+  setDataPost?: any;
   setFilter?: any;
   setData?: any;
   setGolId: any;
@@ -182,7 +186,9 @@ const ModalMention: React.FC<props> = ({
   setIsLoadingPost,
   setFilter,
   setData,
-  setGolId
+  setGolId,
+  dataPost,
+  setDataPost
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -241,6 +247,7 @@ const ModalMention: React.FC<props> = ({
     pie: [],
     premium_fee: ''
   });
+  const width = useWindowInnerWidth();
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
   };
@@ -257,6 +264,28 @@ const ModalMention: React.FC<props> = ({
 
     void fetchData();
   }, []);
+  useEffect(() => {
+    if (dataPost !== undefined) {
+      setForm(prevState => ({
+        ...prevState,
+        content_text: dataPost.content_text,
+        privacy: dataPost.privacy,
+        media_urls: dataPost.media_urls?.length > 0 ? dataPost.media_urls : [],
+        polling: {
+          options: dataPost.pollings !== undefined ? dataPost.pollings : [],
+          isMultiVote: dataPost.polling_multiple,
+          canAddNewOption: dataPost.polling_new_option,
+          endDate:
+            dataPost.polling_date === '0001-01-01T00:00:00Z'
+              ? ''
+              : dataPost.polling_date
+        },
+        pie: dataPost.pie,
+        pie_amount: dataPost.pie_amount,
+        pie_title: dataPost.pie_title
+      }));
+    }
+  }, [dataPost]);
 
   useEffect(() => {
     const findCircle = form.content_text.split('@');
@@ -292,10 +321,18 @@ const ModalMention: React.FC<props> = ({
   }, [form.media_urls.length, media.length]);
 
   useEffect(() => {
-    if (form.content_text.length > 250) {
+    const regexPattern = /@\[.*?\]\(.*?\)/g;
+    const cleanedString = form.content_text.replace(regexPattern, '');
+    const totalChar = cleanedString.length;
+
+    if (totalChar > 255 && form.privacy !== 'premium') {
       setIsError(true);
       setIsDisable(true);
       setErrorMessage('Your thread is exceeding the maximum character limit');
+    } else if (totalChar > 500 && form.privacy === 'premium') {
+      setIsError(true);
+      setIsDisable(true);
+      setErrorMessage('The thread maximum 500 characters');
     } else {
       setIsDisable(false);
     }
@@ -714,7 +751,32 @@ const ModalMention: React.FC<props> = ({
         payload.premium_fee = parseInt(form.premium_fee);
       }
 
-      await createPostCircleDetail(payload);
+      if (dataPost !== undefined) {
+        const res = await updatePostSocialAndCircle(payload, dataPost.id);
+        if (res.status === 200) {
+          setDataPost((prevState: any) => {
+            if (Array.isArray(prevState)) {
+              const newData = prevState.map((el: any) => {
+                el.content_text = form.content_text;
+                el.privacy = form.privacy;
+                el.media_urls = form.media_urls;
+                el.pollings = form.polling.options;
+                el.polling_multiple = form.polling.isMultiVote;
+                el.canAddNewOption = form.polling.canAddNewOption;
+                el.endDate = form.polling.endDate;
+                el.pie = form.pie;
+                el.pie_amount = form.pie_amount;
+                el.pie_title = form.pie_title;
+                return el;
+              });
+              return newData;
+            }
+            return prevState;
+          });
+        }
+      } else {
+        await createPostCircleDetail(payload);
+      }
 
       setForm({
         content_text: '',
@@ -756,7 +818,7 @@ const ModalMention: React.FC<props> = ({
       setHashtags([]);
       // window.location.reload();
     } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+      console.error('Error posting or editing:', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -1061,7 +1123,7 @@ const ModalMention: React.FC<props> = ({
             allowSpaceInQuery
             placeholder={`${t('circleDetail.textAreaPlaceholder')}`}
             style={{ outline: 'none' }}
-            className="w-[100%] focus:outline-black text-xs min-h-[100px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins sm:text-base placeholder:text-neutral-soft placeholder:text-base"
+            className="w-[100%] focus:outline-black min-h-[100px] MentionInputTextArea bg-transparent font-poppins placeholder:font-poppins text-base placeholder:text-neutral-soft placeholder:text-base"
             a11ySuggestionsListLabel={'Suggested mentions'}
           >
             <Mention
@@ -1119,7 +1181,14 @@ const ModalMention: React.FC<props> = ({
         />
       );
     } else if (pages === 'poll') {
-      return <PollInput setPages={setPages} form={form} />;
+      return (
+        <PollInput
+          setPages={setPages}
+          form={form}
+          setIsError={setIsError}
+          setErrorMessage={setErrorMessage}
+        />
+      );
     }
   };
 
@@ -1170,312 +1239,679 @@ const ModalMention: React.FC<props> = ({
   };
 
   return (
-    <Dialog
-      open={open}
-      handler={() => {
-        handleOpen();
-        setForm({
-          content_text: '',
-          privacy: dropVal.type.toLowerCase(),
-          media_urls: [],
-          polling: {
-            options: [],
-            isMultiVote: false,
-            canAddNewOption: false,
-            endDate: ''
-          },
-          pie_title: '',
-          pie_amount: 0,
-          pie: [],
-          premium_fee: ''
-        });
-        setAudio(null);
-        setMedia([]);
-        setDocument(null);
-        setHashtags([]);
-        setSelectedAsset([]);
-        setChartData(initialChartData);
-        setOtherTagList({
-          peopleList: [],
-          circleList: [],
-          playList: []
-        });
-        setDollarLists([]);
-        setHashtags([]);
-      }}
-      size="lg"
-      className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
-    >
-      <div className="block bg-white w-full rounded-xl">
-        <ModalChoosePricePremium
-          isOpen={isOpenPremiumPrice}
-          setIsOpen={setIsOpenPremiumPrice}
-          changeForm={handleFormChange}
-          form={form}
-        />
-        <div className="flex flex-col px-14 pt-8">
-          <Toast
-            message={errorMessage}
-            show={isError}
-            onClose={(): void => {
-              setIsError(false);
-            }}
-          />
-          {pages !== 'gif' && (
-            <div className="flex justify-between">
-              <div
-                onClick={() => {
-                  setPages('text');
+    <>
+      {width !== undefined && width > 640 ? (
+        <Dialog
+          open={open}
+          handler={() => {
+            handleOpen();
+            setForm({
+              content_text: '',
+              privacy: dropVal.type.toLowerCase(),
+              media_urls: [],
+              polling: {
+                options: [],
+                isMultiVote: false,
+                canAddNewOption: false,
+                endDate: ''
+              },
+              pie_title: '',
+              pie_amount: 0,
+              pie: [],
+              premium_fee: ''
+            });
+            setAudio(null);
+            setMedia([]);
+            setDocument(null);
+            setHashtags([]);
+            setSelectedAsset([]);
+            setChartData(initialChartData);
+            setOtherTagList({
+              peopleList: [],
+              circleList: [],
+              playList: []
+            });
+            setDollarLists([]);
+            setHashtags([]);
+          }}
+          size="lg"
+          className="max-w-full w-[90%] md:w-[50%] lg:w-[40%]"
+        >
+          <div className="block bg-white w-full rounded-xl">
+            <ModalChoosePricePremium
+              isOpen={isOpenPremiumPrice}
+              setIsOpen={setIsOpenPremiumPrice}
+              changeForm={handleFormChange}
+              form={form}
+            />
+            <div className="flex flex-col px-14 pt-8">
+              <Toast
+                message={errorMessage}
+                show={isError}
+                onClose={(): void => {
+                  setIsError(false);
                 }}
-                className="cursor-pointer"
-              >
-                <ProfilePost
-                  handleDropDown={handleDropDown}
-                  dropVal={dropVal}
-                  drop={drop}
-                  dataSelection={dataSelection}
-                  handleInputChange={handleInputChange}
+              />
+              {pages !== 'gif' && (
+                <div className="flex justify-between">
+                  <div
+                    onClick={() => {
+                      setPages('text');
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <ProfilePost
+                      handleDropDown={handleDropDown}
+                      dropVal={dropVal}
+                      drop={drop}
+                      dataSelection={dataSelection}
+                      handleInputChange={handleInputChange}
+                    />
+                  </div>
+                  <div
+                    className="flex flex-col justify-start cursor-pointer"
+                    onClick={() => {
+                      handleOpen();
+                      setForm({
+                        content_text: '',
+                        privacy: dropVal.type.toLowerCase(),
+                        media_urls: [],
+                        polling: {
+                          options: [],
+                          isMultiVote: false,
+                          canAddNewOption: false,
+                          endDate: ''
+                        },
+                        pie_title: '',
+                        pie_amount: 0,
+                        pie: [],
+                        premium_fee: ''
+                      });
+                      setAudio(null);
+                      setMedia([]);
+                      setDocument(null);
+                      setHashtags([]);
+                      setSelectedAsset([]);
+                      setChartData(initialChartData);
+                      setOtherTagList({
+                        peopleList: [],
+                        circleList: [],
+                        playList: []
+                      });
+                      setDollarLists([]);
+                      setHashtags([]);
+                    }}
+                  >
+                    <Image src={XIcon} alt="close" width={30} height={30} />
+                  </div>
+                </div>
+              )}
+              {/* form text section */}
+              <form onSubmit={handlePostCircle}>
+                {handlePages()}
+                <div className="flex justify-center pb-4 z-0">
+                  {audio !== null && pages !== 'gif' && (
+                    <audio controls>
+                      <source
+                        src={URL?.createObjectURL(audio)}
+                        type="audio/wav"
+                        className="w-full"
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
+                </div>
+                <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
+                  <div className="flex justify-center">
+                    {document !== undefined &&
+                      document !== null &&
+                      pages !== 'gif' && <PDFViewer file={document} />}
+                  </div>
+                  <div className="flex items-center">
+                    <div className="flex flex-wrap gap-4">
+                      {media.length > 0 &&
+                        pages !== 'gif' &&
+                        media.map((el: File, i: number) => (
+                          <div
+                            className="flex flex-col gap-4"
+                            key={`${i} this is file`}
+                          >
+                            {el.type.includes('image') ? (
+                              <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                                <div className="flex justify-end">
+                                  <div
+                                    className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                    onClick={() => {
+                                      const newMedia = media.filter(
+                                        (element, index) => {
+                                          if (index !== i) {
+                                            return element;
+                                          }
+                                          return null;
+                                        }
+                                      );
+                                      if (media.length > 1) {
+                                        setMedia(newMedia);
+                                      } else {
+                                        setMedia([]);
+                                      }
+                                    }}
+                                  >
+                                    <Image
+                                      src={XIcon}
+                                      alt="close"
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </div>
+                                </div>
+                                <img
+                                  src={URL?.createObjectURL(el)}
+                                  alt="Preview Image"
+                                  className="object-fit max-h-[30vh] max-w-[30vw]"
+                                />
+                              </div>
+                            ) : (
+                              <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                                <div className="flex justify-end">
+                                  <div
+                                    className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                    onClick={() => {
+                                      const newMedia = media.filter(
+                                        (element, index) => {
+                                          if (index !== i) {
+                                            return element;
+                                          }
+                                          return null;
+                                        }
+                                      );
+                                      if (media.length > 1) {
+                                        setMedia(newMedia);
+                                      } else {
+                                        setMedia([]);
+                                      }
+                                    }}
+                                  >
+                                    <Image
+                                      src={XIcon}
+                                      alt="close"
+                                      width={20}
+                                      height={20}
+                                    />
+                                  </div>
+                                </div>
+                                <video
+                                  controls
+                                  className="max-w-[30vw] max-h-[30vh] object-fit"
+                                  key={el.name}
+                                >
+                                  <source
+                                    src={URL?.createObjectURL(el)}
+                                    type="video/mp4"
+                                  />
+                                </video>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      {form.media_urls.length > 0 &&
+                        pages !== 'gif' &&
+                        form.media_urls.map((el: any, i: number) => {
+                          return (
+                            <div
+                              className="max-h-[230px] max-w-[230px] relative -top-6"
+                              key={`${i} + 'MEDIA_URL'`}
+                            >
+                              <div className="flex justify-end">
+                                <div
+                                  className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                  onClick={() => {
+                                    const newMedia = form.media_urls.filter(
+                                      (element, index) => {
+                                        if (index !== i) {
+                                          return element;
+                                        }
+                                        return null;
+                                      }
+                                    );
+                                    if (form.media_urls.length > 1) {
+                                      setForm(prevState => ({
+                                        ...prevState,
+                                        media_urls: newMedia
+                                      }));
+                                    } else {
+                                      setForm(prevState => ({
+                                        ...prevState,
+                                        media_urls: []
+                                      }));
+                                    }
+                                  }}
+                                >
+                                  <Image
+                                    src={XIcon}
+                                    alt="close"
+                                    width={20}
+                                    height={20}
+                                  />
+                                </div>
+                              </div>
+                              <img
+                                src={el}
+                                alt="gif"
+                                className="h-[230px] w-[230px] object-cover"
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+
+                  {form.polling?.options.length > 0 && pages === 'text' ? (
+                    form.polling?.options.map((el: any, i: number) => {
+                      return (
+                        <div
+                          className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                          key={`${i} + 'Polling'`}
+                        >
+                          {el.content_text}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                  {form.pie_title !== '' ? (
+                    <PiePreviewPost
+                      form={form}
+                      userData={userInfo}
+                      chartData={chartData}
+                      data={selectedAsset}
+                    />
+                  ) : null}
+                </div>
+
+                {pages !== 'gif' && (
+                  <UniqueInputButton
+                    setIsError={setIsError}
+                    setErrorMessage={setErrorMessage}
+                    setPages={setPages}
+                    setMedia={setMedia}
+                    openPieModal={openPieModal}
+                    setDocument={setDocument}
+                    isEmpty={isDisable}
+                    isError={isEmpty}
+                    isTooMuch={isTooMuch}
+                  />
+                )}
+              </form>
+            </div>
+          </div>
+        </Dialog>
+      ) : (
+        <>
+          {open && (
+            <div className="flex fixed z-[1000] flex-col bg-white height-modal w-screen">
+              <div className="block bg-white w-full rounded-xl h-full ">
+                <ModalChoosePricePremium
+                  isOpen={isOpenPremiumPrice}
+                  setIsOpen={setIsOpenPremiumPrice}
+                  changeForm={handleFormChange}
+                  form={form}
                 />
-              </div>
-              <div
-                className="flex flex-col justify-start cursor-pointer"
-                onClick={() => {
-                  handleOpen();
-                  setForm({
-                    content_text: '',
-                    privacy: dropVal.type.toLowerCase(),
-                    media_urls: [],
-                    polling: {
-                      options: [],
-                      isMultiVote: false,
-                      canAddNewOption: false,
-                      endDate: ''
-                    },
-                    pie_title: '',
-                    pie_amount: 0,
-                    pie: [],
-                    premium_fee: ''
-                  });
-                  setAudio(null);
-                  setMedia([]);
-                  setDocument(null);
-                  setHashtags([]);
-                  setSelectedAsset([]);
-                  setChartData(initialChartData);
-                  setOtherTagList({
-                    peopleList: [],
-                    circleList: [],
-                    playList: []
-                  });
-                  setDollarLists([]);
-                  setHashtags([]);
-                }}
-              >
-                <Image src={XIcon} alt="close" width={30} height={30} />
+                <div className="flex flex-col px-6 pt-8 h-full">
+                  <Toast
+                    message={errorMessage}
+                    show={isError}
+                    onClose={(): void => {
+                      setIsError(false);
+                    }}
+                  />
+                  {pages !== 'gif' && (
+                    <div className="flex justify-between">
+                      <div
+                        onClick={() => {
+                          setPages('text');
+                        }}
+                        className="cursor-pointer"
+                      >
+                        <ProfilePost
+                          handleDropDown={handleDropDown}
+                          dropVal={dropVal}
+                          drop={drop}
+                          dataSelection={dataSelection}
+                          handleInputChange={handleInputChange}
+                        />
+                      </div>
+                      <div
+                        className="flex flex-col justify-start cursor-pointer"
+                        onClick={() => {
+                          handleOpen();
+                          setForm({
+                            content_text: '',
+                            privacy: dropVal.type.toLowerCase(),
+                            media_urls: [],
+                            polling: {
+                              options: [],
+                              isMultiVote: false,
+                              canAddNewOption: false,
+                              endDate: ''
+                            },
+                            pie_title: '',
+                            pie_amount: 0,
+                            pie: [],
+                            premium_fee: ''
+                          });
+                          setAudio(null);
+                          setMedia([]);
+                          setDocument(null);
+                          setHashtags([]);
+                          setSelectedAsset([]);
+                          setChartData(initialChartData);
+                          setOtherTagList({
+                            peopleList: [],
+                            circleList: [],
+                            playList: []
+                          });
+                          setDollarLists([]);
+                          setHashtags([]);
+                        }}
+                      >
+                        <Image src={XIcon} alt="close" width={30} height={30} />
+                      </div>
+                    </div>
+                  )}
+                  {/* form text section */}
+                  <form onSubmit={handlePostCircle} className="h-full">
+                    {handlePages()}
+                    <div className="flex justify-center pb-4 z-0">
+                      {audio !== null && pages !== 'gif' && (
+                        <audio controls>
+                          <source
+                            src={URL?.createObjectURL(audio)}
+                            type="audio/wav"
+                            className="w-full"
+                          />
+                          Your browser does not support the audio element.
+                        </audio>
+                      )}
+                    </div>
+                    <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
+                      <div className="flex justify-center">
+                        {document !== undefined &&
+                          document !== null &&
+                          pages !== 'gif' && <PDFViewer file={document} />}
+                      </div>
+                      <div className="flex items-center">
+                        <div className="flex flex-wrap gap-4">
+                          {media.length > 0 &&
+                            pages !== 'gif' &&
+                            media.map((el: File, i: number) => (
+                              <div
+                                className="flex flex-col gap-4"
+                                key={`${i} this is file`}
+                              >
+                                {el.type.includes('image') ? (
+                                  <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                                    <div className="flex justify-end">
+                                      <div
+                                        className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                        onClick={() => {
+                                          const newMedia = media.filter(
+                                            (element, index) => {
+                                              if (index !== i) {
+                                                return element;
+                                              }
+                                              return null;
+                                            }
+                                          );
+                                          if (media.length > 1) {
+                                            setMedia(newMedia);
+                                          } else {
+                                            setMedia([]);
+                                          }
+                                        }}
+                                      >
+                                        <Image
+                                          src={XIcon}
+                                          alt="close"
+                                          width={20}
+                                          height={20}
+                                        />
+                                      </div>
+                                    </div>
+                                    <img
+                                      src={URL?.createObjectURL(el)}
+                                      alt="Preview Image"
+                                      className="object-fit max-h-[30vh] max-w-[30vw]"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
+                                    <div className="flex justify-end">
+                                      <div
+                                        className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                        onClick={() => {
+                                          const newMedia = media.filter(
+                                            (element, index) => {
+                                              if (index !== i) {
+                                                return element;
+                                              }
+                                              return null;
+                                            }
+                                          );
+                                          if (media.length > 1) {
+                                            setMedia(newMedia);
+                                          } else {
+                                            setMedia([]);
+                                          }
+                                        }}
+                                      >
+                                        <Image
+                                          src={XIcon}
+                                          alt="close"
+                                          width={20}
+                                          height={20}
+                                        />
+                                      </div>
+                                    </div>
+                                    <video
+                                      controls
+                                      className="max-w-[30vw] max-h-[30vh] object-fit"
+                                      key={el.name}
+                                    >
+                                      <source
+                                        src={URL?.createObjectURL(el)}
+                                        type="video/mp4"
+                                      />
+                                    </video>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          {form.media_urls.length > 0 &&
+                            pages !== 'gif' &&
+                            form.media_urls.map((el: any, i: number) => {
+                              return (
+                                <div
+                                  className="max-h-[230px] max-w-[230px] relative -top-6"
+                                  key={`${i} + 'MEDIA_URL'`}
+                                >
+                                  <div className="flex justify-end">
+                                    <div
+                                      className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
+                                      onClick={() => {
+                                        const newMedia = form.media_urls.filter(
+                                          (element, index) => {
+                                            if (index !== i) {
+                                              return element;
+                                            }
+                                            return null;
+                                          }
+                                        );
+                                        if (form.media_urls.length > 1) {
+                                          setForm(prevState => ({
+                                            ...prevState,
+                                            media_urls: newMedia
+                                          }));
+                                        } else {
+                                          setForm(prevState => ({
+                                            ...prevState,
+                                            media_urls: []
+                                          }));
+                                        }
+                                      }}
+                                    >
+                                      <Image
+                                        src={XIcon}
+                                        alt="close"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    </div>
+                                  </div>
+                                  <img
+                                    src={el}
+                                    alt="gif"
+                                    className="h-[230px] w-[230px] object-cover"
+                                  />
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+
+                      {form.polling?.options.length > 0 && pages === 'text' ? (
+                        form.polling?.options.map((el: any, i: number) => {
+                          return (
+                            <div
+                              className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
+                              key={`${i} + 'Polling'`}
+                            >
+                              {el.content_text}
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <></>
+                      )}
+                      {form.pie_title !== '' ? (
+                        <PiePreviewPost
+                          form={form}
+                          userData={userInfo}
+                          chartData={chartData}
+                          data={selectedAsset}
+                        />
+                      ) : null}
+                    </div>
+
+                    {pages !== 'gif' && (
+                      <div className={`flex flex-col absolute bottom-4`}>
+                        <div className="sm:hidden flex-col justify-center pl-3 flex">
+                          {drop && (
+                            <div className="bg-white mb-[40vh] absolute z-[10] rounded-2xl border border-neutral-soft w-[300px] flex flex-col justify-center items-center transition">
+                              {dataSelection.map((el: typeOfSelection, i) => {
+                                return (
+                                  <label
+                                    className="cursor-default"
+                                    key={`${i}radioSelection`}
+                                  >
+                                    <input
+                                      type="radio"
+                                      className="peer sr-only"
+                                      name="type"
+                                      onChange={handleInputChange}
+                                      value={el.name}
+                                    />
+                                    <div className="w-[270px] my-3 cursor-pointer z-50 rounded-md bg-white p-2 text-gray-600 ring-1 ring-[#7C7C7C] transition-all hover:shadow hover:text-seeds-green hover:ring-seeds-green hover:ring-offset-1">
+                                      <div className="flex gap-2">
+                                        <div className="flex flex-col justify-center">
+                                          <Image
+                                            alt="public"
+                                            src={el.svg}
+                                            className="h-[22px] w-[22px] object-cover"
+                                          />
+                                        </div>
+                                        <div className="flex justify-between w-full gap-5 ">
+                                          <div className="flex flex-col justify-start">
+                                            <p className="text-xs font-semibold font-poppins text-[#262626]">
+                                              {el.name}
+                                            </p>
+                                            <p className="text-xs font-poppins text-[#7C7C7C]">
+                                              {el.message}
+                                            </p>
+                                          </div>
+                                          <div className="flex flex-col justify-center">
+                                            <svg
+                                              width="16"
+                                              height="16"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                fill="currentColor"
+                                                d="m10.6 13.8l-2.175-2.175q-.275-.275-.675-.275t-.7.3q-.275.275-.275.7q0 .425.275.7L9.9 15.9q.275.275.7.275q.425 0 .7-.275l5.675-5.675q.275-.275.275-.675t-.3-.7q-.275-.275-.7-.275q-.425 0-.7.275ZM12 22q-2.075 0-3.9-.788q-1.825-.787-3.175-2.137q-1.35-1.35-2.137-3.175Q2 14.075 2 12t.788-3.9q.787-1.825 2.137-3.175q1.35-1.35 3.175-2.138Q9.925 2 12 2t3.9.787q1.825.788 3.175 2.138q1.35 1.35 2.137 3.175Q22 9.925 22 12t-.788 3.9q-.787 1.825-2.137 3.175q-1.35 1.35-3.175 2.137Q14.075 22 12 22Z"
+                                              />
+                                            </svg>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          )}
+                          <button
+                            className="font-poppins text-xs mb-4"
+                            type="button"
+                            onClick={handleDropDown}
+                          >
+                            <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
+                              <div className="flex items-center">
+                                <Image
+                                  alt="type"
+                                  src={dropVal.svg}
+                                  className="h-3 w-3 rounded-full"
+                                />
+                              </div>
+                              <Typography className="text-black text-xs font-poppins">
+                                {dropVal.type}
+                              </Typography>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                              >
+                                <path
+                                  d="M4.16516 6.61704L5.60796 8.30893C5.82521 8.56369 6.17616 8.56369 6.39342 8.30893L7.83622 6.61704C8.18717 6.2055 7.93649 5.5 7.4407 5.5H4.5551C4.05931 5.5 3.81421 6.2055 4.16516 6.61704Z"
+                                  fill="#262626"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                        </div>
+                        <UniqueInputButton
+                          setIsError={setIsError}
+                          setErrorMessage={setErrorMessage}
+                          setPages={setPages}
+                          setMedia={setMedia}
+                          openPieModal={openPieModal}
+                          setDocument={setDocument}
+                          isEmpty={isDisable}
+                          isError={isEmpty}
+                          isTooMuch={isTooMuch}
+                        />
+                      </div>
+                    )}
+                  </form>
+                </div>
               </div>
             </div>
           )}
-          {/* form text section */}
-          <form onSubmit={handlePostCircle}>
-            {handlePages()}
-            <div className="flex justify-center pb-4 z-0">
-              {audio !== null && pages !== 'gif' && (
-                <audio controls>
-                  <source
-                    src={URL?.createObjectURL(audio)}
-                    type="audio/wav"
-                    className="w-full"
-                  />
-                  Your browser does not support the audio element.
-                </audio>
-              )}
-            </div>
-            <div className="flex flex-col max-h-[300px] overflow-auto pb-2">
-              <div className="flex justify-center">
-                {document !== undefined &&
-                  document !== null &&
-                  pages !== 'gif' && <PDFViewer file={document} />}
-              </div>
-              <div className="flex items-center">
-                <div className="flex flex-wrap gap-4">
-                  {media.length > 0 &&
-                    pages !== 'gif' &&
-                    media.map((el: File, i: number) => (
-                      <div
-                        className="flex flex-col gap-4"
-                        key={`${i} this is file`}
-                      >
-                        {el.type.includes('image') ? (
-                          <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                            <div className="flex justify-end">
-                              <div
-                                className="relative bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
-                                onClick={() => {
-                                  const newMedia = media.filter(
-                                    (element, index) => {
-                                      if (index !== i) {
-                                        return element;
-                                      }
-                                      return null;
-                                    }
-                                  );
-                                  if (media.length > 1) {
-                                    setMedia(newMedia);
-                                  } else {
-                                    setMedia([]);
-                                  }
-                                }}
-                              >
-                                <Image
-                                  src={XIcon}
-                                  alt="close"
-                                  width={20}
-                                  height={20}
-                                />
-                              </div>
-                            </div>
-                            <img
-                              src={URL?.createObjectURL(el)}
-                              alt="Preview Image"
-                              className="object-fit max-h-[30vh] max-w-[30vw]"
-                            />
-                          </div>
-                        ) : (
-                          <div className="max-h-[30vh] max-w-[30vw] relative -top-6">
-                            <div className="flex justify-end">
-                              <div
-                                className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
-                                onClick={() => {
-                                  const newMedia = media.filter(
-                                    (element, index) => {
-                                      if (index !== i) {
-                                        return element;
-                                      }
-                                      return null;
-                                    }
-                                  );
-                                  if (media.length > 1) {
-                                    setMedia(newMedia);
-                                  } else {
-                                    setMedia([]);
-                                  }
-                                }}
-                              >
-                                <Image
-                                  src={XIcon}
-                                  alt="close"
-                                  width={20}
-                                  height={20}
-                                />
-                              </div>
-                            </div>
-                            <video
-                              controls
-                              className="max-w-[30vw] max-h-[30vh] object-fit"
-                              key={el.name}
-                            >
-                              <source
-                                src={URL?.createObjectURL(el)}
-                                type="video/mp4"
-                              />
-                            </video>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  {form.media_urls.length > 0 &&
-                    pages !== 'gif' &&
-                    form.media_urls.map((el: any, i: number) => {
-                      return (
-                        <div
-                          className="max-h-[230px] max-w-[230px] relative -top-6"
-                          key={`${i} + 'MEDIA_URL'`}
-                        >
-                          <div className="flex justify-end">
-                            <div
-                              className="relative z-10 bg-neutral-ultrasoft rounded-full right-2 top-9 p-1 cursor-pointer"
-                              onClick={() => {
-                                const newMedia = form.media_urls.filter(
-                                  (element, index) => {
-                                    if (index !== i) {
-                                      return element;
-                                    }
-                                    return null;
-                                  }
-                                );
-                                if (form.media_urls.length > 1) {
-                                  setForm(prevState => ({
-                                    ...prevState,
-                                    media_urls: newMedia
-                                  }));
-                                } else {
-                                  setForm(prevState => ({
-                                    ...prevState,
-                                    media_urls: []
-                                  }));
-                                }
-                              }}
-                            >
-                              <Image
-                                src={XIcon}
-                                alt="close"
-                                width={20}
-                                height={20}
-                              />
-                            </div>
-                          </div>
-                          <img
-                            src={el}
-                            alt="gif"
-                            className="h-[230px] w-[230px] object-cover"
-                          />
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-
-              {form.polling?.options.length > 0 && pages === 'text' ? (
-                form.polling?.options.map((el: any, i: number) => {
-                  return (
-                    <div
-                      className="max-h-[230px] max-w-[230px] ml-16 mb-2 py-3 px-6 border border-[#BDBDBD] rounded-lg w-80"
-                      key={`${i} + 'Polling'`}
-                    >
-                      {el.content_text}
-                    </div>
-                  );
-                })
-              ) : (
-                <></>
-              )}
-              {form.pie_title !== '' ? (
-                <PiePreviewPost
-                  form={form}
-                  userData={userInfo}
-                  chartData={chartData}
-                  data={selectedAsset}
-                />
-              ) : null}
-            </div>
-
-            {pages !== 'gif' && (
-              <UniqueInputButton
-                setIsError={setIsError}
-                setErrorMessage={setErrorMessage}
-                setPages={setPages}
-                setMedia={setMedia}
-                openPieModal={openPieModal}
-                setDocument={setDocument}
-                isEmpty={isDisable}
-                isError={isEmpty}
-                isTooMuch={isTooMuch}
-              />
-            )}
-          </form>
-        </div>
-      </div>
-    </Dialog>
+        </>
+      )}
+    </>
   );
 };
 

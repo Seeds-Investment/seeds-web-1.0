@@ -102,15 +102,27 @@ const PROMO_DUMMY = [
 
 const Search: React.FC = () => {
   const router = useRouter();
-  console.log(router.query);
-
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
-  console.log(data);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [userInfo, setUserInfo] = useState<any>();
+
+  const removeQuery = (): void => {
+    if (router.query.hashtags !== undefined) {
+      const urlWithoutQuery = '/social/search';
+      router
+        .replace(urlWithoutQuery, undefined, { shallow: true })
+        .catch(err => {
+          console.log(err);
+        });
+      setFilter(prevState => ({
+        ...prevState,
+        search: ''
+      }));
+    }
+  };
 
   useEffect(() => {
     if (router.query.hashtags !== undefined) {
@@ -124,7 +136,7 @@ const Search: React.FC = () => {
 
   const handleChangeTab = (value: string): void => {
     setActiveTab(value);
-
+    removeQuery();
     if (value === 'people') {
       if (filter.search !== '') {
         void fetchDataSearchPeople();
@@ -361,8 +373,11 @@ const Search: React.FC = () => {
           <TabsHeader
             className="bg-transparent flex justify-between w-full rounded-none border-b border-blue-gray-50"
             indicatorProps={{
-              className:
-                'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
+              className: `${
+                router.query.hashtags !== undefined
+                  ? 'bg-transparent shadow-none'
+                  : 'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
+              }`
             }}
           >
             {dataTab.map(({ label, value }) => (

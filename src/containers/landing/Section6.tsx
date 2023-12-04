@@ -1,6 +1,6 @@
 'use client';
-import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
+import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';

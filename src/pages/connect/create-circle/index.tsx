@@ -2,6 +2,7 @@ import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { failedCircle } from '@/constants/assets/icons';
+import Toast from '@/containers/circle/[id]/Toast';
 import CirclePremiumChoicePage from '@/containers/circle/create-circle/circlePremiumChoicePage';
 import CreateCirclePage from '@/containers/circle/create-circle/createCirclePage';
 import MembershipPage from '@/containers/circle/create-circle/membershipPage';
@@ -45,6 +46,8 @@ const initialFormRequest = {
 const CreateCircle = (): React.ReactElement => {
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [step, setStep] = useState('');
   const [isLoadingSubmit, setIsloadingSubmit] = useState(false);
   const [error, setError] = useState({
@@ -69,7 +72,8 @@ const CreateCircle = (): React.ReactElement => {
 
     if (sizeFileOnMB > maxFileMediaSize) {
       target.value = null;
-      console.error('Your image is exceeding the 5MB size limit');
+      setIsError(true);
+      setErrorMessage('Your image is exceeding the 5MB size limit');
       return null;
     }
 
@@ -215,6 +219,14 @@ const CreateCircle = (): React.ReactElement => {
       defaultGradient
       className="relative overflow-hidden flex flex-col items-center sm:p-0 sm:pb-16 w-full"
     >
+      <Toast
+        message={errorMessage}
+        show={isError}
+        type="errorFixed"
+        onClose={(): void => {
+          setIsError(false);
+        }}
+      />
       <CardGradient
         defaultGradient
         className={`relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${

@@ -1,6 +1,5 @@
 'use client';
 import MoreOption from '@/components/MoreOption';
-import Modal from '@/components/ui/modal/Modal';
 import {
   Bookmark,
   ChatBubble,
@@ -27,7 +26,7 @@ import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
+import { PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -42,12 +41,14 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PDFViewer from './PDFViewer';
 
 interface props {
   dataPost: any;
   setData: any;
   userInfo: UserData;
   handleSubmitBlockUser?: any;
+  myInfo?: any;
 }
 
 interface ChartData {
@@ -149,11 +150,11 @@ const PostSection: React.FC<props> = ({
   dataPost,
   setData,
   userInfo,
-  handleSubmitBlockUser
+  handleSubmitBlockUser,
+  myInfo
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
   // const [userInfo, setUserInfo] = useState<UserData | null>(null);
@@ -202,12 +203,12 @@ const PostSection: React.FC<props> = ({
   }
 
   const toUserProfile = (id: any): void => {
-    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
-      router.push('MyProfileScreen').catch(err => {
+    if (dataPost?.user_id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('/my-profile').catch(err => {
         console.error(err);
       });
     } else if (id !== undefined) {
-      router.push('ProfileUserScreen').catch(err => {
+      router.push(`/social/${id as string}`).catch(err => {
         console.error(err);
       });
     } else {
@@ -308,7 +309,9 @@ const PostSection: React.FC<props> = ({
                   });
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <pre className="text-blue-500 font-poppins">
+                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
+                </pre>
               </button>
             );
           } else {
@@ -383,6 +386,8 @@ const PostSection: React.FC<props> = ({
   function removeDuplicateIds(data: any): any {
     const uniqueIds = new Set();
     return data.filter((item: any) => {
+      console.log(item);
+
       if (!uniqueIds.has(item.id)) {
         uniqueIds.add(item.id);
         return true;
@@ -455,7 +460,10 @@ const PostSection: React.FC<props> = ({
           });
         } else if (el?.includes('-asset') === true) {
           await getAssetById(el?.replace('-asset', '')).then((res: any) => {
-            tempThumbnailList.push({ thumbnailType: 'asset', ...res });
+            tempThumbnailList.push({
+              thumbnailType: 'asset',
+              ...res.marketAsset
+            });
           });
         }
         await Promise.resolve();
@@ -478,15 +486,17 @@ const PostSection: React.FC<props> = ({
     } else if (content?.includes('-circle') === true) {
       toCircleDetail(content?.replace('-circle', ''));
     } else if (content?.includes('-asset') === true) {
-      router.push('').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${content?.replace('-asset', '') as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     } else if (content?.includes('-play') === true) {
       router.push('').catch(err => {
         console.error(err);
       });
     } else {
-      router.push('').catch(err => {
+      router.push(`/social/search?hashtags=${content as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -502,7 +512,7 @@ const PostSection: React.FC<props> = ({
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router.push('OverviewAsset').catch(err => {
+      router.push(`/homepage/assets/${item.id as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -550,8 +560,9 @@ const PostSection: React.FC<props> = ({
   const likePost = async (type: number): Promise<void> => {
     try {
       const response = await postLikeCirclePost(type, dataPost.id);
-
+      console.log('sukses');
       if (response.status === 200) {
+        console.log('200');
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
             if (Array.isArray(prevDataPost)) {
@@ -591,8 +602,6 @@ const PostSection: React.FC<props> = ({
   };
 
   const pinPost = async (type: string): Promise<void> => {
-    console.log(dataPost);
-
     try {
       const response = await postPinCirclePost(type, dataPost.id);
       if (response.status === 200) {
@@ -721,14 +730,17 @@ const PostSection: React.FC<props> = ({
   const handleSeeMore = (text: string, maxWords: number): any => {
     const words = text.split(' ');
 
-    const displayText = expanded
-      ? redirectToPaymentPostPremium()
-      : words.slice(0, maxWords).join(' ');
+    const displayText =
+      dataPost.status_payment === true
+        ? text
+        : expanded
+        ? redirectToPaymentPostPremium()
+        : words.slice(0, maxWords).join(' ');
 
     return (
       <div>
         <p>{displayText}</p>
-        {words.length > maxWords && (
+        {words.length > maxWords && dataPost.status_payment === false ? (
           <button
             className="text-blue-600"
             onClick={() => {
@@ -737,7 +749,7 @@ const PostSection: React.FC<props> = ({
           >
             See More
           </button>
-        )}
+        ) : null}
       </div>
     );
   };
@@ -752,13 +764,13 @@ const PostSection: React.FC<props> = ({
       >
         <div className="flex gap-4 md:gap-8">
           <div className="hidden md:flex">
-            <div>
+            <div className="shrink-0">
               <img
                 src={
                   dataPost.owner !== undefined ? dataPost.owner.avatar : null
                 }
                 alt="AVATAR"
-                className="rounded-full w-12 h-12 cursor-pointer"
+                className="rounded-full w-12 h-12 object-cover cursor-pointer"
                 onClick={async () => {
                   dataPost.user_id === userInfo.id
                     ? await router.push('/my-profile')
@@ -773,7 +785,7 @@ const PostSection: React.FC<props> = ({
             <div className="mb-4">
               <div className="flex gap-5 pb-4">
                 <div className="md:hidden flex">
-                  <div>
+                  <div className="shrink-0">
                     <img
                       src={
                         dataPost.owner !== undefined
@@ -781,7 +793,7 @@ const PostSection: React.FC<props> = ({
                           : null
                       }
                       alt="AVATAR"
-                      className="rounded-full w-12 h-12 cursor-pointer"
+                      className="rounded-full w-12 h-12 object-cover cursor-pointer"
                       onClick={async () => {
                         dataPost.user_id === userInfo.id
                           ? await router.push('/my-profile')
@@ -828,7 +840,10 @@ const PostSection: React.FC<props> = ({
                         : null}
                     </div>
                     <MoreOption
+                      myInfo={myInfo}
+                      setDataPost={setData}
                       dataPost={dataPost}
+                      userInfo={userInfo}
                       handleSubmitBlockUser={handleSubmitBlockUser}
                     />
                   </div>
@@ -861,59 +876,7 @@ const PostSection: React.FC<props> = ({
                   Your browser does not support the audio element.
                 </audio>
               )}
-              {document.length > 0 && (
-                <div className="flex justify-start md:pl-0 pl-14 mb-4">
-                  <div className="flex flex-col">
-                    <div
-                      className="flex justify-start cursor-pointer"
-                      onClick={() => {
-                        setDocModal(true);
-                      }}
-                    >
-                      <Image
-                        src={PDFViewer}
-                        alt="pdf"
-                        className="w-[100px] h-[100px]"
-                      />
-                    </div>
-                  </div>
-                  {docModal === true && (
-                    <Modal
-                      onClose={() => {
-                        setDocModal(false);
-                      }}
-                      modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
-                    >
-                      <embed
-                        src={document[0]}
-                        type="application/pdf"
-                        className="widthPDF h-screen"
-                      />
-                      <button
-                        className="z-50 fixed text-white top-3 -right-14"
-                        onClick={() => {
-                          setDocModal(false);
-                        }}
-                      >
-                        <svg
-                          className="h-8 w-8 text-white bg-black/20 rounded-full"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {' '}
-                          <circle cx="12" cy="12" r="10" />{' '}
-                          <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                          <line x1="9" y1="9" x2="15" y2="15" />
-                        </svg>
-                      </button>
-                    </Modal>
-                  )}
-                </div>
-              )}
+              {document.length > 0 && <PDFViewer file={document[0]} />}
               {media.length > 0 && <ImageCarousel images={media} />}
               {dataPost.pollings?.length > 0 && (
                 <PollingView
@@ -927,7 +890,7 @@ const PostSection: React.FC<props> = ({
                 <PieCirclePost data={dataPost} chartData={chartData} />
               ) : null}
             </div>
-            <div className="flex justify-start gap-4">
+            <div className="flex justify-start gap-4 flex-wrap">
               {thumbnailList.length > 0 &&
                 thumbnailList.map((item: any, index: number) => {
                   return (
@@ -1004,15 +967,17 @@ const PostSection: React.FC<props> = ({
                           <img
                             src={
                               item?.thumbnailType === 'asset'
-                                ? item?.marketAsset?.logo
+                                ? item?.logo
                                 : item?.logo !== undefined
                                 ? item.logo
                                 : item?.avatar
                             }
                             alt="image"
-                            className="rounded-full object-cover"
-                            width={60}
-                            height={60}
+                            className={`${
+                              item?.thumbnailType === 'asset'
+                                ? 'object-contain'
+                                : 'object-cover'
+                            } rounded-full w-14 h-14 max-w-[60px] max-h-[60px] min-h-[50px] min-w-[50px]`}
                           />
                         </div>
                       )}
@@ -1021,13 +986,6 @@ const PostSection: React.FC<props> = ({
                           {item?.name?.length > 10
                             ? (item?.name.substring(0, 15) as string) + '...'
                             : item?.name}
-                          {item?.thumbnailType === 'asset' &&
-                            (item?.marketAsset?.name?.length > 10
-                              ? (item?.marketAsset?.name.substring(
-                                  0,
-                                  15
-                                ) as string) + '...'
-                              : item?.marketAsset?.name)}
                         </Typography>
                       </div>
                       {item?.thumbnailType === 'play' ? (
@@ -1038,13 +996,10 @@ const PostSection: React.FC<props> = ({
                       {item?.thumbnailType === 'asset' ? (
                         <div className="flex justify-center">
                           <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
-                            {item?.marketAsset?.exchangeCurrency === 'IDR'
-                              ? `IDR ${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close
-                                )}`
+                            {item?.exchangeCurrency === 'IDR'
+                              ? `IDR ${formatCurrency(item?.lastPrice?.close)}`
                               : `$${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close /
-                                    item?.marketAsset?.exchangeRate
+                                  item?.lastPrice?.close / item?.exchangeRate
                                 )}`}
                           </Typography>
                         </div>

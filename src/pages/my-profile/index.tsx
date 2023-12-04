@@ -47,6 +47,7 @@ const ProfilePage = (): JSX.Element => {
   const [circleData, setCircleData] = useState<any[]>([]);
   const [playData, setPlayData] = useState<any[]>([]);
   const [postData, setPostData] = useState<any[]>([]);
+  console.log(postData);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -89,7 +90,7 @@ const ProfilePage = (): JSX.Element => {
           circleData={circleData}
           playData={playData}
           postData={postData}
-          setPostData={setPostData}
+          setData={setPostData}
         />
       </Card>
     </PageGradient>

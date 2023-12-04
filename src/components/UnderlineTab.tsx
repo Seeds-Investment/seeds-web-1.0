@@ -5,6 +5,7 @@ import postCircle from '@/assets/my-profile/circle/postCircle.svg';
 import info from '@/assets/my-profile/play/info.svg';
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import PostSection from '@/containers/circle/[id]/PostSection';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
   Card,
@@ -19,7 +20,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface DataItem {
@@ -33,7 +34,7 @@ interface Params {
   circleData: any;
   playData: any;
   postData: any;
-  setPostData: any;
+  setData: any;
   handleSubmitBlockUser?: any;
 }
 
@@ -60,9 +61,10 @@ const UnderLineTab = ({
   circleData,
   playData,
   postData,
-  setPostData,
+  setData,
   handleSubmitBlockUser
 }: Params): JSX.Element => {
+  const [myInfo, setMyInfo] = useState();
   const { t } = useTranslation();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('post');
@@ -127,9 +129,10 @@ const UnderLineTab = ({
                 )}
                 <PostSection
                   dataPost={el}
-                  setData={setPostData}
+                  setData={setData}
                   userInfo={profileData}
                   handleSubmitBlockUser={handleSubmitBlockUser}
+                  myInfo={myInfo}
                 />
               </div>
             );
@@ -310,6 +313,20 @@ const UnderLineTab = ({
       )
     }
   ];
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const myData = await getUserInfo();
+        setMyInfo(myData);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
   return (
     <Tabs value={activeTab}>
       <TabsHeader

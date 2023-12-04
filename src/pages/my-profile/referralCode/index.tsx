@@ -17,7 +17,14 @@ import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getExpData } from '@/repository/exp.repository';
 import { getReferralHistory } from '@/repository/profile.repository';
-import { Button, Card, Typography } from '@material-tailwind/react';
+import {
+  Button,
+  Card,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Typography
+} from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -27,10 +34,8 @@ const ReferalCode = (): JSX.Element => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { refCode, referralHistory } = router.query;
-  console.log(refCode);
   const [expData, setExpData] = useState<any>();
   const [refHistory, setRefHistory] = useState<any>();
-  console.log(refHistory);
   const { t } = useTranslation();
 
   const customGradient = (
@@ -75,27 +80,37 @@ const ReferalCode = (): JSX.Element => {
           </Typography>
           <CCard className="flex w-[471.41px] h-[111px] p-[21.93px] gap-[15.07px]">
             <div className="flex items-center justify-between">
-              <Button className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer">
-                <Typography className="text-white text-[19.19px] leading-[27.41px] font-poppins font-normal">
-                  {refCode}
-                </Typography>
-                <div
-                  className="flex gap-1"
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(refCode as string);
-                  }}
-                >
-                  <Image
-                    src={Copy.src}
-                    alt={Copy.alt}
-                    width={27.41}
-                    height={27.41}
-                  />
-                  <Typography className="text-[19.19px] leading-[27.41px] font-semibold font-poppins text-white">
-                    Copy
-                  </Typography>
-                </div>
-              </Button>
+              <Popover placement="top">
+                <PopoverHandler>
+                  <Button className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer">
+                    <Typography className="text-white text-[19.19px] leading-[27.41px] font-poppins font-normal">
+                      {refCode}
+                    </Typography>
+                    <div
+                      className="flex gap-1"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(refCode as string);
+                      }}
+                    >
+                      <Image
+                        src={Copy.src}
+                        alt={Copy.alt}
+                        width={27.41}
+                        height={27.41}
+                      />
+                      <Typography className="text-[19.19px] leading-[27.41px] font-semibold font-poppins text-white">
+                        Copy
+                      </Typography>
+                    </div>
+                  </Button>
+                </PopoverHandler>
+                <PopoverContent>
+                  <span className="font-poppins">
+                    Referral code has been copied!
+                  </span>
+                </PopoverContent>
+              </Popover>
+
               <Image
                 src={ShareSquare.src}
                 alt={ShareSquare.alt}
@@ -194,26 +209,37 @@ const ReferalCode = (): JSX.Element => {
         <Typography className="text-[#7C7C7C] text-xs font-normal font-poppins">
           Referral Code
         </Typography>
-        <div
-          className="flex items-center gap-3"
-          onClick={async () => {
-            await navigator.clipboard.writeText(refCode as string);
-          }}
-        >
-          <Card
-            shadow={false}
-            className="w-full h-11 p-3 bg-white border border-[#BDBDBD] flex flex-row justify-between items-center cursor-pointer"
-          >
-            <Typography className="text-[#262626] text-sm font-poppins font-normal">
-              {refCode}
-            </Typography>
-            <div className="flex items-center gap-1">
-              <Image src={copyGreen} alt="copyGreen" width={20} height={20} />
-              <Typography className="text-sm font-semibold font-poppins text-[#27A590]">
-                Copy
-              </Typography>
-            </div>
-          </Card>
+        <div className="flex items-center gap-3">
+          <Popover placement="top">
+            <PopoverHandler>
+              <Button
+                className="w-full h-11 p-3 bg-white border border-[#BDBDBD] flex flex-row justify-between items-center cursor-pointer"
+                onClick={async () => {
+                  await navigator.clipboard.writeText(refCode as string);
+                }}
+              >
+                <Typography className="text-[#262626] text-sm font-poppins font-normal">
+                  {refCode}
+                </Typography>
+                <div className="flex items-center gap-1">
+                  <Image
+                    src={copyGreen}
+                    alt="copyGreen"
+                    width={20}
+                    height={20}
+                  />
+                  <Typography className="text-sm font-semibold font-poppins text-[#27A590]">
+                    Copy
+                  </Typography>
+                </div>
+              </Button>
+            </PopoverHandler>
+            <PopoverContent>
+              <span className="font-poppins">
+                Referral code has been copied!
+              </span>
+            </PopoverContent>
+          </Popover>
           <Image
             src={shareGreen}
             alt="shareGreen"

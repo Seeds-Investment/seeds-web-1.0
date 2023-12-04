@@ -1,3 +1,4 @@
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import 'slick-carousel/slick/slick.css';
 
 const Section3: React.FC = () => {
   const { t } = useTranslation();
+  const width = useWindowInnerWidth();
 
   const [banner, setBanner] = useState<any[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -52,7 +54,9 @@ const Section3: React.FC = () => {
     speed: 500,
     autoplay: true,
     autoplaySpeed: 3000,
-    centerPadding: '27%',
+    centerPadding: `${
+      width !== undefined ? (width > 700 ? '27%' : '1%') : '1%'
+    }`,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     beforeChange: (current: number, next: number) => {
@@ -60,10 +64,27 @@ const Section3: React.FC = () => {
     },
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          centerMode: true
+          slidesToScroll: 1
         }
       }
     ]
@@ -97,7 +118,7 @@ const Section3: React.FC = () => {
                       alt="Body 2"
                       width={600}
                       height={300}
-                      className="w-[650px] h-[350px]"
+                      className="w-[400px] h-[200px] md:w-[650px] md:h-[350px]"
                     />
                   </div>
                 ))

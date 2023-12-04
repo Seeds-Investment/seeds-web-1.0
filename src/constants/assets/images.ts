@@ -139,6 +139,17 @@ export const SectionSixImageEvent3: AssetsInterface = {
   alt: 'bg'
 };
 
+// About Us
+export const AboutUsSectionOneImage1: AssetsInterface = {
+  src: '/assets/about-us/section-one/image-1.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionOneImage2: AssetsInterface = {
+  src: '/assets/about-us/section-one/image-2.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -165,7 +176,9 @@ const Images: Record<string, AssetsInterface> = {
   SectionSixImageOval,
   SectionSixImageEvent1,
   SectionSixImageEvent2,
-  SectionSixImageEvent3
+  SectionSixImageEvent3,
+  AboutUsSectionOneImage1,
+  AboutUsSectionOneImage2
 };
 
 export default Images;

@@ -1063,5 +1063,11 @@ export default {
     section6: {
       title: 'Acara Seeds'
     }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds adalah platform Social Gaming yang berfokus di Asia Tenggara. Jelajahi dunia investasi melalui Play Arena kami—capai puncak peringkat, raih hadiah menarik, dan tingkatkan strategi investasi kamu tanpa risiko. Terhubunglah dengan ahli keuangan dan teman lainnya di dalam komunitas kami yang interaktif.'
+    }
   }
 };

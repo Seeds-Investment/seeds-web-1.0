@@ -69,6 +69,7 @@ const Section6: React.FC = () => {
         />
 
         <div className="w-full mt-6 mb-14 md:mt-16 md:px-14">
+          {/* TODO arrow next prev */}
           <Slider {...settings}>
             {events?.length !== 0
               ? events?.map((data, idx) => (

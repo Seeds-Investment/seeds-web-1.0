@@ -1142,5 +1142,11 @@ export default {
     section6: {
       title: 'Seeds Events'
     }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds is a Social Gaming platform focused on Southeast Asia. Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community.'
+    }
   }
 };

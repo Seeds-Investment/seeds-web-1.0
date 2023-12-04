@@ -57,7 +57,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -355,7 +355,7 @@ export default function ArticleList(): React.ReactElement {
           </button>
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-          {articles.map(article => {
+          {articles?.map(article => {
             return <ArticleCard key={article.id} articleId={article.id} />;
           })}
         </div>

@@ -63,7 +63,7 @@ const ProfilePost: React.FC<props> = ({
           <h1 className="text-[#262626] font-semibold font-poppins text-base">
             {userInfo?.name}
           </h1>
-          <div className="flex flex-col justify-center pl-3">
+          <div className="hidden flex-col justify-center pl-3 sm:flex">
             <button className="font-poppins text-xs" onClick={handleDropDown}>
               <div className="flex w-fit px-2 rounded-full bg-neutral-ultrasoft gap-1">
                 <div className="flex items-center">

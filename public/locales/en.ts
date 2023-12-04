@@ -1147,6 +1147,31 @@ export default {
     section1: {
       title: 'Seeds, Where Gaming Meets Investing!',
       text: 'Seeds is a Social Gaming platform focused on Southeast Asia. Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community.'
+    },
+    section2: {
+      title: 'Vision and Mission',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Tap into Indonesia's booming millennial and Gen Z market, universities, schools, communities, financial influencers, and medias. That's a lot of eyes on your community, event, or brand!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Help boost financial know-how and save folks from bad investment choices. Dive into the exciting world of virtual trading games and make learning fun.'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Earn together as we grow. Between Play Arena, Premium Circle, and more, there's a sea of opportunity for mutual financial growth.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `With an average of 4k monthly users and a 5% engagement rate, in Seeds Finance, your message won't just be seen, it'll resonate.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Partner with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
+      }
     }
   }
 };

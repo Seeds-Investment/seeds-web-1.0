@@ -1059,6 +1059,9 @@ export default {
         text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus.',
         button: 'Contact Us'
       }
+    },
+    section6: {
+      title: 'Acara Seeds'
     }
   }
 };

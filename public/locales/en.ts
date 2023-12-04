@@ -1138,6 +1138,9 @@ export default {
         text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
         button: 'Contact Us'
       }
+    },
+    section6: {
+      title: 'Seeds Events'
     }
   }
 };

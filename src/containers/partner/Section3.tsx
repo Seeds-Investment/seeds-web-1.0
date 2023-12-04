@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 const Section3: React.FC = () => {
   const { t } = useTranslation();
@@ -19,6 +21,28 @@ const Section3: React.FC = () => {
     }
   };
 
+  const SampleNextArrow = (props: any): any => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', background: 'black' }}
+        onClick={onClick}
+      />
+    );
+  };
+
+  const SamplePrevArrow = (props: any): any => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: 'block', background: 'black' }}
+        onClick={onClick}
+      />
+    );
+  };
+
   const settings = {
     className: 'center',
     centerMode: true,
@@ -29,6 +53,8 @@ const Section3: React.FC = () => {
     autoplay: true,
     autoplaySpeed: 3000,
     centerPadding: '27%',
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
     beforeChange: (current: number, next: number) => {
       setCurrentSlide(next);
     },

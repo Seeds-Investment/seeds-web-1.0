@@ -119,6 +119,26 @@ export const SectionFourKolOptionThree: AssetsInterface = {
   alt: 'bg'
 };
 
+export const SectionSixImageOval: AssetsInterface = {
+  src: '/assets/partner/section-six/image-oval.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent1: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-1.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent2: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-2.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent3: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-3.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -141,7 +161,11 @@ const Images: Record<string, AssetsInterface> = {
   SectionTwoIconCalendar,
   SectionFourKolOptionOne,
   SectionFourKolOptionTwo,
-  SectionFourKolOptionThree
+  SectionFourKolOptionThree,
+  SectionSixImageOval,
+  SectionSixImageEvent1,
+  SectionSixImageEvent2,
+  SectionSixImageEvent3
 };
 
 export default Images;

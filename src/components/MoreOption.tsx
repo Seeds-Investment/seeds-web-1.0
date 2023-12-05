@@ -23,6 +23,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Loading from './popup/Loading';
 
 interface props {
@@ -111,6 +112,7 @@ const MoreOption = ({
   setDataPost,
   handleSubmitBlockUser
 }: props): any => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formDataPost, setFormPost] = React.useState({
     target_post_id: dataPost.id,
@@ -185,6 +187,8 @@ const MoreOption = ({
   const handleDisableUser = (option: any): void => {
     setSelectedUser(option);
   };
+  console.log(listUser);
+
   const isDisabledPost = selectedPost === null;
   const isDisabledUser = selectedUser === null;
 
@@ -323,7 +327,7 @@ const MoreOption = ({
                   }}
                 >
                   <Image src={flag} alt="reportPost" />
-                  Report Post
+                  {`${t('social.reportPost.text1')}`}
                 </MenuItem>
                 <MenuItem
                   className={`${
@@ -338,7 +342,7 @@ const MoreOption = ({
                   }}
                 >
                   <Image src={report_user} alt="reportUser" />
-                  Report User
+                  {`${t('social.reportUser.text1')}`}
                 </MenuItem>
                 <MenuItem
                   className={`${
@@ -353,7 +357,8 @@ const MoreOption = ({
                   }}
                 >
                   <Image src={block} alt="blockUser" />
-                  Block User
+                  {`${t('social.blockUser.block')}`}
+                  User
                 </MenuItem>
                 <MenuItem
                   className={`${
@@ -402,10 +407,10 @@ const MoreOption = ({
               <div className="min-w-full flex items-center justify-between border-b">
                 <div className="flex gap-2 flex-col">
                   <p className="text-lg font-semibold text-[#262626]">
-                    Report Post
+                    {`${t('social.reportPost.text1')}`}
                   </p>
                   <p className="text-sm font-normal text-[#7C7C7C] mb-4">
-                    This post will be reported
+                    {`${t('social.reportPost.text2')}`}
                   </p>
                 </div>
                 <div className="mb-4">
@@ -425,7 +430,7 @@ const MoreOption = ({
             <form onSubmit={handleSubmitReportPost}>
               <DialogBody className="p-0 my-4 font-poppins">
                 <p className="text-base font-semibold text-[#262626]">
-                  Why are you reporting this post?
+                  {`${t('social.reportPost.text3')}`}
                 </p>
                 <div className="flex flex-col text-[#262626] text-base font-normal">
                   {listPost?.map((item, index) => {
@@ -438,7 +443,20 @@ const MoreOption = ({
                           htmlFor={item.id}
                           className="cursor-pointer w-full"
                         >
-                          {item.title}
+                          {item.title === 'Spam' &&
+                            `${t('social.reportPost.option1')}`}
+                          {item.title === 'Nudity or sexual Activity' &&
+                            `${t('social.reportPost.option2')}`}
+                          {item.title === 'Hate speech or symbols' &&
+                            `${t('social.reportPost.option3')}`}
+                          {item.title === 'Bullying or harassment' &&
+                            `${t('social.reportPost.option4')}`}
+                          {item.title === 'I do not like it' &&
+                            `${t('social.reportPost.option5')}`}
+                          {item.title === 'Scam or fraud' &&
+                            `${t('social.reportPost.option6')}`}
+                          {item.title === 'Something else' &&
+                            `${t('social.reportPost.option7')}`}
                         </label>
                         <Radio
                           crossOrigin={undefined}
@@ -485,10 +503,10 @@ const MoreOption = ({
             <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
               <Image src={post_report_photo} alt="reportPostFigure" />
               <p className="mt-6 text-base font-semibold text-[#262626]">
-                Report has been submitted
+                {`${t('social.reportPost.success1')}`}
               </p>
               <p className="mt-2 text-base font-normal text-[#7C7C7C]">
-                Thank you for helping us
+                {`${t('social.reportPost.success2')}`}
               </p>
             </DialogBody>
             <DialogFooter className="p-0">
@@ -517,10 +535,10 @@ const MoreOption = ({
               <div className="min-w-full flex items-center justify-between border-b">
                 <div className="flex gap-2 flex-col">
                   <p className="text-lg font-semibold text-[#262626]">
-                    Report User
+                    {`${t('social.reportUser.text1')}`}
                   </p>
                   <p className="text-sm font-normal text-[#7C7C7C] mb-4">
-                    This account will be reported
+                    {`${t('social.reportUser.text2')}`}
                   </p>
                 </div>
                 <div className="mb-4">
@@ -539,7 +557,7 @@ const MoreOption = ({
             </DialogHeader>
             <DialogBody className="p-0 my-4 font-poppins">
               <p className="text-base font-semibold text-[#262626]">
-                Why are you reporting this account?
+                {`${t('social.reportUser.text3')}`}
               </p>
               <div className="flex flex-col text-[#262626] text-base font-normal">
                 {listUser.map((item, index) => {
@@ -552,7 +570,11 @@ const MoreOption = ({
                         htmlFor={item.id}
                         className="cursor-pointer w-full"
                       >
-                        {item.title}
+                        {item.title ===
+                          'A specific post that should not be on Seeds' &&
+                          `${t('social.reportUser.text4')}`}
+                        {item.title === 'Something about this account' &&
+                          `${t('social.reportUser.text5')}`}
                       </label>
                       <Radio
                         crossOrigin={undefined}
@@ -598,8 +620,7 @@ const MoreOption = ({
               <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
                 <Image src={user_report_photo} alt="reportUserFigure" />
                 <p className="mt-4 font-normal text-sm">
-                  Are you sure you want to report this account? You will no
-                  longer see statuses or threads posted by this profile.
+                  {`${t('social.reportUser.text6')}`}
                 </p>
               </DialogBody>
               <DialogFooter className="p-0">
@@ -646,8 +667,7 @@ const MoreOption = ({
                   }`}
                 </p>
                 <p className="font-normal text-sm">
-                  They won’t be able to message you or find your profile, posts
-                  or story on Seeds.
+                  {`${t('social.blockUser.text')}`}
                 </p>
               </DialogBody>
               <DialogFooter className="p-0">

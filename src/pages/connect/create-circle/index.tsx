@@ -11,6 +11,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { createCircle } from '@/repository/circle.repository';
 import { uploadCloud } from '@/repository/storage';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CircleMembershipFeePage from '../../../containers/circle/create-circle/circleMembershipFeePage';
 import SuccessPage from '../../../containers/circle/create-circle/successPage';
 import TermConditionPage from '../../../containers/circle/create-circle/termConditionPage';
@@ -44,6 +45,7 @@ const initialFormRequest = {
 };
 
 const CreateCircle = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
   const [isError, setIsError] = useState<boolean>(false);
@@ -73,7 +75,7 @@ const CreateCircle = (): React.ReactElement => {
     if (sizeFileOnMB > maxFileMediaSize) {
       target.value = null;
       setIsError(true);
-      setErrorMessage('Your image is exceeding the 5MB size limit');
+      setErrorMessage(`${t('social.errorState.image1')}`);
       return null;
     }
 

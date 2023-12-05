@@ -135,33 +135,6 @@ const initialChartData = {
   ]
 };
 
-const dataSelection: typeOfSelection[] = [
-  {
-    name: 'Public',
-    svg: globe,
-    message: 'Everyone can see your post',
-    type: 'PUBLIC'
-  },
-  {
-    name: 'Private',
-    svg: privat,
-    message: 'Only you can see your post',
-    type: 'PRIVATE'
-  },
-  {
-    name: 'Friends Only',
-    svg: friends,
-    message: 'Followers that you followback',
-    type: 'FRIENDS'
-  },
-  {
-    name: 'Premium',
-    svg: star,
-    message: 'Followers that you followback',
-    type: 'PREMIUM'
-  }
-];
-
 const tagOption = [
   {
     id: 1,
@@ -220,7 +193,7 @@ const ModalMention: React.FC<props> = ({
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [dropVal, setDropVal] = useState<typeOfPost>({
-    type: 'Public',
+    type: t('social.postSetting.publicTitle'),
     svg: globe
   });
   const [tagLists, setTagLists] = useState<any>([]);
@@ -252,6 +225,32 @@ const ModalMention: React.FC<props> = ({
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
   };
+  const dataSelection: typeOfSelection[] = [
+    {
+      name: t('social.postSetting.publicTitle'),
+      svg: globe,
+      message: t('social.postSetting.publicDesc'),
+      type: 'PUBLIC'
+    },
+    {
+      name: t('social.postSetting.privateTitle'),
+      svg: privat,
+      message: t('social.postSetting.privateDesc'),
+      type: 'PRIVATE'
+    },
+    {
+      name: t('social.postSetting.friendsTitle'),
+      svg: friends,
+      message: t('social.postSetting.friendsDesc'),
+      type: 'FRIENDS'
+    },
+    {
+      name: t('social.postSetting.premiumTitle'),
+      svg: star,
+      message: t('social.postSetting.premiumDesc'),
+      type: 'PREMIUM'
+    }
+  ];
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -329,11 +328,11 @@ const ModalMention: React.FC<props> = ({
     if (totalChar > 255 && form.privacy !== 'premium') {
       setIsError(true);
       setIsDisable(true);
-      setErrorMessage('Your thread is exceeding the maximum character limit');
+      setErrorMessage(`${t('social.errorState.thread3')}`);
     } else if (totalChar > 500 && form.privacy === 'premium') {
       setIsError(true);
       setIsDisable(true);
-      setErrorMessage('The thread maximum 500 characters');
+      setErrorMessage(`${t('social.errorState.thread1')}`);
     } else {
       setIsDisable(false);
     }
@@ -633,28 +632,28 @@ const ModalMention: React.FC<props> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ): any => {
     const { value } = event.target;
-    if (value === 'Public') {
+    if (value === t('social.postSetting.publicTitle')) {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
         svg: globe
       }));
-    } else if (value === 'Private') {
+    } else if (value === t('social.postSetting.privateTitle')) {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
         svg: privat
       }));
-    } else if (value === 'Friends Only') {
+    } else if (value === t('social.postSetting.friendsTitle')) {
       setForm(prevForm => ({ ...prevForm, privacy: 'friends' }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
         svg: friends
       }));
-    } else if (value === 'Premium') {
+    } else if (value === t('social.postSetting.premiumTitle')) {
       setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
       setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: star }));
       setIsOpenPremiumPrice(true);

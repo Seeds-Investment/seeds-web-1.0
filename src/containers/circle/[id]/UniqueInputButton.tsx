@@ -5,6 +5,7 @@ import pie from '@/assets/circle-page/pie.svg';
 import poll from '@/assets/circle-page/poll.svg';
 import talk from '@/assets/circle-page/talk.svg';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   setPages: any;
@@ -28,6 +29,7 @@ const UniqueInputButton: React.FC<props> = ({
   isError,
   isTooMuch
 }) => {
+  const { t } = useTranslation();
   const handlePages = (page: string): any => {
     return setPages(page);
   };
@@ -58,9 +60,7 @@ const UniqueInputButton: React.FC<props> = ({
       if (validation) {
         fileMediaEle.value = null;
         setIsError(true);
-        setErrorMessage(
-          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
-        );
+        setErrorMessage(`${t('social.errorState.video1')}`);
         return new Error(
           'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
         );
@@ -68,7 +68,7 @@ const UniqueInputButton: React.FC<props> = ({
       if (sizeFileOnMB > maxFileMediaSize) {
         fileMediaEle.value = null;
         setIsError(true);
-        setErrorMessage('Your image is exceeding the 20MB size limit');
+        setErrorMessage(`${t('social.errorState.video3')}`);
         return new Error('Your image is exceeding the 20MB size limit');
       } else {
         return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);
@@ -88,9 +88,7 @@ const UniqueInputButton: React.FC<props> = ({
     if (validation) {
       fileMediaEle.value = null;
       setIsError(true);
-      setErrorMessage(
-        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
-      );
+      setErrorMessage(`${t('social.errorState.image2')}`);
       return new Error(
         'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
       );
@@ -98,7 +96,7 @@ const UniqueInputButton: React.FC<props> = ({
     if (sizeFileOnMB > maxFileMediaSize) {
       fileMediaEle.value = null;
       setIsError(true);
-      setErrorMessage('Your image is exceeding the 5MB size limit');
+      setErrorMessage(`${t('social.errorState.image1')}`);
       return new Error('Your image is exceeding the 5MB size limit');
     } else {
       return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);

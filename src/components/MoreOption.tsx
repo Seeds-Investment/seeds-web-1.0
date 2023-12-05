@@ -639,7 +639,11 @@ const MoreOption = ({
             <form onSubmit={handleSubmitBlockUser}>
               <DialogBody className="p-0 mb-6 font-poppins">
                 <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
-                  {`Block ${dataPost.owner.name as string}`}
+                  {`Block ${
+                    dataPost.owner !== undefined
+                      ? (dataPost.owner?.name as string)
+                      : ''
+                  }`}
                 </p>
                 <p className="font-normal text-sm">
                   They won’t be able to message you or find your profile, posts

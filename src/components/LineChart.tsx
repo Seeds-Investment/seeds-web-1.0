@@ -59,8 +59,8 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
         ticks: {
           font: {
             family: 'Arial',
-            size: 15,
-            weight: 'bold'
+            size: 15
+            // weight: 'bold'
           },
           color: '#7C7C7C',
           backgroundColor: '#7C7C7C',

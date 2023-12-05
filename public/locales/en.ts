@@ -161,7 +161,8 @@ export default {
     editImage: 'Edit Image',
     linkedAccount: 'Linked Account',
     changePin: 'Change PIN',
-    telephoneNumber: 'Telephone Number'
+    telephoneNumber: 'Telephone Number',
+    email: 'Email'
   },
   input: {
     label: {
@@ -1103,6 +1104,75 @@ export default {
       recomend: 'Recommended',
       listMembers: 'Members',
       about: 'About'
+    }
+  },
+  partner: {
+    section1: {
+      title: 'Partner with Seeds',
+      text: 'Seeds engages a large audience of eager Millennials and Gen Z looking to boost their financial skills. Collaborate with us to reach this growing crowd. Enjoy exclusive trading competitions, cash sponsorships, exciting prizes, and certificates.',
+      button: 'Contact Us'
+    },
+    section2: {
+      option1: 'Communities and University',
+      option2: 'Registration',
+      option3: 'Event Hosted'
+    },
+    section3: {
+      title: 'Collaborate to Solve Problems'
+    },
+    section4: {
+      title: 'Empowering The Next Generation Together',
+      subtitle:
+        'Join our mission to make financial education fun and accessible in Indonesia',
+      option1: {
+        title: 'Community',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Networking Opportunities, Exclusive Training, and Monthly Incentives.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Brand',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Seeds Events'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds is a Social Gaming platform focused on Southeast Asia. Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community.'
+    },
+    section2: {
+      title: 'Vision and Mission',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Tap into Indonesia's booming millennial and Gen Z market, universities, schools, communities, financial influencers, and medias. That's a lot of eyes on your community, event, or brand!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Help boost financial know-how and save folks from bad investment choices. Dive into the exciting world of virtual trading games and make learning fun.'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Earn together as we grow. Between Play Arena, Premium Circle, and more, there's a sea of opportunity for mutual financial growth.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `With an average of 4k monthly users and a 5% engagement rate, in Seeds Finance, your message won't just be seen, it'll resonate.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Partner with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
+      }
     }
   }
 };

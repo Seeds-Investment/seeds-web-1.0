@@ -90,7 +90,7 @@ const ProfilePage = (): JSX.Element => {
           circleData={circleData}
           playData={playData}
           postData={postData}
-          setPostData={setPostData}
+          setData={setPostData}
         />
       </Card>
     </PageGradient>

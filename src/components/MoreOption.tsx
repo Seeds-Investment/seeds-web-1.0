@@ -29,6 +29,8 @@ interface props {
   dataPost: any;
   userInfo: any;
   setDataPost: any;
+  handleSubmitBlockUser?: any;
+  myInfo?: any;
 }
 
 const listReportPost = async (): Promise<any> => {
@@ -102,7 +104,13 @@ const Icon = (): any => {
   );
 };
 
-const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
+const MoreOption = ({
+  myInfo,
+  dataPost,
+  userInfo,
+  setDataPost,
+  handleSubmitBlockUser
+}: props): any => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formDataPost, setFormPost] = React.useState({
     target_post_id: dataPost.id,
@@ -114,8 +122,6 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
     type_report: '',
     question_report_id: ''
   });
-  const [formDataBlock] = React.useState({ user_id: dataPost.user_id });
-
   const handleChangePost = (id: string, value: string): any => {
     setFormPost({
       ...formDataPost,
@@ -250,30 +256,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
       console.error('Error:', error);
     }
   };
-  const handleSubmitBlockUser = async (event: any): Promise<any> => {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
-        }/user/v1/block`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${
-              localStorage.getItem('accessToken') ?? ''
-            }`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataBlock)
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+
   const handleSubmitDeletePost = async (
     event: any,
     postId: string
@@ -291,8 +274,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               localStorage.getItem('accessToken') ?? ''
             }`,
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataBlock)
+          }
         }
       );
       const data = await response.json();
@@ -307,6 +289,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
         <Loading />
       ) : (
         <>
+          {/* TODO: EDIT POST MODAL */}
           <div>
             {isOpen && (
               <ModalMention
@@ -329,7 +312,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   } py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -342,7 +327,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -355,7 +342,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -368,7 +357,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'flex'
+                      : 'hidden'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#000000' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
@@ -381,7 +372,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'flex'
+                      : 'hidden'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -677,8 +670,6 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               </DialogFooter>
             </form>
           </Dialog>
-          {/* TODO: EDIT POST MODAL */}
-
           {/* TODO: DELETE POST MODAL */}
           <Dialog
             dismiss={{

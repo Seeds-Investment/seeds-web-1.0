@@ -1,12 +1,13 @@
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
+import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
+
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/landing/Section1';
 import Section2 from '@/containers/landing/Section2';
 import Section3 from '@/containers/landing/Section3';
 import Section4 from '@/containers/landing/Section4';
 import Section5 from '@/containers/landing/Section5';
-import Section6 from '@/containers/landing/Section6';
 import Section7 from '@/containers/temporary/Section1';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -46,7 +47,7 @@ export default function Home(): React.ReactElement {
         <Section4 />
         <Section5 />
         <Section7 />
-        <Section6 />
+        <Footer />
       </PageGradient>
     </>
   );

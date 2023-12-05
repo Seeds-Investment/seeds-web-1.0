@@ -4,6 +4,7 @@ import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CardAsset from './CardAsset';
 
 interface props {
@@ -24,21 +25,6 @@ interface AssetInterface {
   regularPercentage: number;
 }
 
-const tabValue = [
-  {
-    label: 'Overview',
-    value: 'ALL'
-  },
-  {
-    label: 'Stocks',
-    value: 'STOCK'
-  },
-  {
-    label: 'Cryptos',
-    value: 'CRYPTO'
-  }
-];
-
 const initialFilterMarket = {
   page: 1,
   limit: 10,
@@ -55,10 +41,24 @@ const PieAssets: React.FC<props> = ({
   removeSelectedAsset,
   setPages
 }) => {
+  const { t } = useTranslation();
   const [asset, setAsset] = useState<any[]>();
   const [filterAsset, setFilterAsset] = useState(initialFilterMarket);
   const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(false);
-
+  const tabValue = [
+    {
+      label: t('social.pieSection.overview'),
+      value: 'ALL'
+    },
+    {
+      label: t('social.pieSection.stocks'),
+      value: 'STOCK'
+    },
+    {
+      label: t('social.pieSection.crypto'),
+      value: 'CRYPTO'
+    }
+  ];
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
     const value = target.value;
@@ -106,7 +106,9 @@ const PieAssets: React.FC<props> = ({
   return (
     <div>
       <div>
-        <h1 className="font-bold text-xl text-black">Select Asset</h1>
+        <h1 className="font-bold text-xl text-black">
+          {t('social.pieSection.selectAsset')}
+        </h1>
       </div>
       <button
         className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"

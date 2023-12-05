@@ -77,6 +77,119 @@ export const KopKen: AssetsInterface = {
   alt: 'kopken'
 };
 
+// Partner
+
+export const SectionOneImageOne: AssetsInterface = {
+  src: '/assets/partner/section-one/image-1.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconCap: AssetsInterface = {
+  src: '/assets/partner/section-two/academic-cap.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconUser: AssetsInterface = {
+  src: '/assets/partner/section-two/people.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoIconCalendar: AssetsInterface = {
+  src: '/assets/partner/section-two/calendar.svg',
+  alt: 'bg'
+};
+
+export const SectionTwoImagePartnership: AssetsInterface = {
+  src: '/assets/partner/section-two/partnership.svg',
+  alt: 'bg'
+};
+
+export const SectionFourKolOptionOne: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-1.svg',
+  alt: 'bg'
+};
+
+export const SectionFourKolOptionTwo: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-2.svg',
+  alt: 'bg'
+};
+
+export const SectionFourKolOptionThree: AssetsInterface = {
+  src: '/assets/partner/section-four/kol-option-3.svg',
+  alt: 'bg'
+};
+
+export const SectionFiveImageProblemSolution: AssetsInterface = {
+  src: '/assets/partner/section-five/image-problem-solution.png',
+  alt: 'bg'
+};
+
+export const SectionSixImageOval: AssetsInterface = {
+  src: '/assets/partner/section-six/image-oval.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent1: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-1.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent2: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-2.svg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent3: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-3.svg',
+  alt: 'bg'
+};
+
+// About Us
+export const AboutUsSectionOneImage1: AssetsInterface = {
+  src: '/assets/about-us/section-one/image-1.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionOneImage2: AssetsInterface = {
+  src: '/assets/about-us/section-one/image-2.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionTwoIcon1: AssetsInterface = {
+  src: '/assets/about-us/section-two/icon-1.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionTwoIcon2: AssetsInterface = {
+  src: '/assets/about-us/section-two/Icon-2.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionTwoIcon3: AssetsInterface = {
+  src: '/assets/about-us/section-two/Icon-3.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionTwoIcon4: AssetsInterface = {
+  src: '/assets/about-us/section-two/Icon-4.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionThreeIcon1: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-1.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionThreeIcon2: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-2.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionThreeIcon3: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-3.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -92,7 +205,24 @@ const Images: Record<string, AssetsInterface> = {
   GoldMedal,
   Logout,
   EarnXP,
-  KopKen
+  KopKen,
+  SectionOneImageOne,
+  SectionTwoIconCap,
+  SectionTwoIconUser,
+  SectionTwoIconCalendar,
+  SectionFourKolOptionOne,
+  SectionFourKolOptionTwo,
+  SectionFourKolOptionThree,
+  SectionSixImageOval,
+  SectionSixImageEvent1,
+  SectionSixImageEvent2,
+  SectionSixImageEvent3,
+  AboutUsSectionOneImage1,
+  AboutUsSectionOneImage2,
+  SectionFiveImageProblemSolution,
+  AboutUsSectionThreeIcon1,
+  AboutUsSectionThreeIcon2,
+  AboutUsSectionThreeIcon3
 };
 
 export default Images;

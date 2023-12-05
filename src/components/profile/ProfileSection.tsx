@@ -24,7 +24,6 @@ const Profile = ({
   id,
   handleSubmitBlockUser
 }: Params): JSX.Element => {
-  console.log(profileData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const router = useRouter();

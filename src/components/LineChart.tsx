@@ -60,7 +60,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
           font: {
             family: 'Arial',
             size: 15,
-            weight: '900'
+            weight: 'bold'
           },
           color: '#7C7C7C',
           backgroundColor: '#7C7C7C',

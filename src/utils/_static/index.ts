@@ -29,7 +29,7 @@ export const socialMedia = [
   },
   {
     icon: facebook,
-    url: 'https://www.facebook.com'
+    url: 'https://facebook.com/seeds.finance'
   },
   {
     icon: twitter,
@@ -41,7 +41,7 @@ export const socialMedia = [
   },
   {
     icon: youtube,
-    url: 'https://youtube.com/@seeds1234'
+    url: 'https://www.youtube.com/@seeds_id'
   }
 ];
 

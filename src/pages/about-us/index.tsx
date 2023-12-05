@@ -8,8 +8,8 @@ import line2 from '@/assets/about-us/line2.svg';
 import meet from '@/assets/about-us/meet.svg';
 import play from '@/assets/about-us/play.svg';
 import vectorAbout from '@/assets/about-us/vector-about-us.png';
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import Section1 from '@/containers/temporary/Section1';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Button, Typography } from '@material-tailwind/react';
@@ -280,7 +280,7 @@ export default function AboutUsPage(): React.ReactElement {
           </div>
           <Section1 />
         </div>
-        <Section6 />
+        <Footer />
       </div>
     </PageGradient>
   );

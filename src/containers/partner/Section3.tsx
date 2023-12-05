@@ -104,7 +104,7 @@ const Section3: React.FC = () => {
         </p>
 
         <div className="relative w-full my-12 overflow-hidden">
-          {/* TODO arrow left right and responsive */}
+          {/* TODO arrow left right */}
           <Slider {...settings}>
             {banner?.length !== 0
               ? banner?.map((data, idx) => (

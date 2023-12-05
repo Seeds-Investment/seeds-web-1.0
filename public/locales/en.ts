@@ -1173,6 +1173,22 @@ export default {
         subtitle:
           'Partner with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
       }
+    },
+    section3: {
+      title: 'What Makes Us Different',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle: 'More about investing and finance from the Pro'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'And chat with like-minded people'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'The tournaments and win cash rewards!'
+      }
     }
   },
   social: {

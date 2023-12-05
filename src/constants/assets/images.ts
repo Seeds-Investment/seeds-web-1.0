@@ -175,6 +175,21 @@ export const AboutUsSectionTwoIcon4: AssetsInterface = {
   alt: 'bg'
 };
 
+export const AboutUsSectionThreeIcon1: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-1.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionThreeIcon2: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-2.svg',
+  alt: 'bg'
+};
+
+export const AboutUsSectionThreeIcon3: AssetsInterface = {
+  src: '/assets/about-us/section-three/icon-3.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -204,7 +219,10 @@ const Images: Record<string, AssetsInterface> = {
   SectionSixImageEvent3,
   AboutUsSectionOneImage1,
   AboutUsSectionOneImage2,
-  SectionFiveImageProblemSolution
+  SectionFiveImageProblemSolution,
+  AboutUsSectionThreeIcon1,
+  AboutUsSectionThreeIcon2,
+  AboutUsSectionThreeIcon3
 };
 
 export default Images;

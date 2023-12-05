@@ -34,6 +34,18 @@ const Profile = ({
       query: { refCode: profileData.refCode, referralHistory: 'true' }
     });
   };
+  const _handleFollowers = (): any => {
+    return router.push({
+      pathname: `/my-profile/follow-list`,
+      query: { type: 'followers' }
+    });
+  };
+  const _handleFollowing = (): any => {
+    return router.push({
+      pathname: `/my-profile/follow-list`,
+      query: { type: 'following' }
+    });
+  };
 
   const onBlock = async (): Promise<void> => {
     try {
@@ -166,7 +178,10 @@ const Profile = ({
                 Post
               </p>
             </div>
-            <div className="w-14 md:w-20 flex flex-col items-center justify-center">
+            <div
+              onClick={() => _handleFollowers()}
+              className="w-14 md:w-20 flex flex-col items-center justify-center cursor-pointer"
+            >
               <p className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
                 {profileData?.followers}
               </p>
@@ -174,7 +189,10 @@ const Profile = ({
                 Followers
               </p>
             </div>
-            <div className="w-14 md:w-20 flex flex-col items-center justify-center">
+            <div
+              onClick={() => _handleFollowing()}
+              className="w-14 md:w-20 flex flex-col items-center justify-center cursor-pointer"
+            >
               <div className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
                 {profileData?.following}
               </div>

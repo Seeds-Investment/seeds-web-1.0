@@ -56,7 +56,7 @@ export default function NewsPage(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -77,7 +77,7 @@ export default function NewsPage(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setHotNews(response.news);
+        setHotNews(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }

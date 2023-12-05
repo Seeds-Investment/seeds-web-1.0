@@ -4,6 +4,8 @@ import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
 import WinRateProduct from '@/assets/product/WinRateProduct.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useInView } from 'react-intersection-observer';
+
 const winner = [
   { id: 1, name: 'winner1', winrate: '50%' },
   { id: 2, name: 'winner2', winrate: '45%' },
@@ -12,9 +14,19 @@ const winner = [
 ];
 
 const NewSection2: React.FC = () => {
+  const { ref, inView } = useInView({
+    threshold: 0.2
+  });
   return (
-    <section className="flex flex-col items-center bg-[#F9F9F9] justify-center h-[1001px]">
-      <div className="flex flex-col items-center">
+    <section
+      ref={ref}
+      className="flex flex-col items-center bg-[#F9F9F9] justify-center h-[1001px]"
+    >
+      <div
+        className={`flex flex-col items-center ${
+          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+        }`}
+      >
         <Image
           src={LeaderboardLine}
           alt="LeaderboardLine"
@@ -24,7 +36,11 @@ const NewSection2: React.FC = () => {
           Leaderboard
         </Typography>
       </div>
-      <div className="flex flex-col gap-6 mt-[41.5px] mb-10">
+      <div
+        className={`flex flex-col gap-6 mt-[41.5px] mb-10 ${
+          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+        }`}
+      >
         <Typography className="font-poppins font-normal text-2xl text-[#262626]">
           Reach the top of the leaderboard and win prizes.
         </Typography>
@@ -37,7 +53,11 @@ const NewSection2: React.FC = () => {
           </Typography>
         </div>
       </div>
-      <div>
+      <div
+        className={`${
+          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+        }`}
+      >
         <div className="flex mx-6 justify-between items-end -mb-[7.55px]">
           <div className="flex flex-col items-center gap-[14.32px] -mb-[60.85px]">
             <div className="w-[231.06px] h-[231.06px] bg-black rounded-full"></div>

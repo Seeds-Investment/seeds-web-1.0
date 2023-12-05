@@ -2,6 +2,7 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/about-us/Section1';
 import Section2 from '@/containers/about-us/Section2';
+import Section3 from '@/containers/about-us/Section3';
 import React from 'react';
 
 export default function AboutUsPage(): React.ReactElement {
@@ -9,6 +10,7 @@ export default function AboutUsPage(): React.ReactElement {
     <PageGradient defaultGradient className="absolute overflow-hidden w-full">
       <Section1 />
       <Section2 />
+      <Section3 />
     </PageGradient>
   );
 }

@@ -56,8 +56,6 @@ function UserProfile(): JSX.Element {
   const [postData, setPostData] = useState<any[]>([]);
   const [formDataBlock] = useState({ user_id: id });
 
-  console.log(isBlock);
-
   const handleBlock = (data: boolean): void => {
     setBlock(data);
   };

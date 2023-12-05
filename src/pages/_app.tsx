@@ -9,6 +9,7 @@ import SuccessProvider from '@/store/success/SuccessProvider';
 import '@/styles/globals.css';
 import '@/utils/common/i18n';
 import { ThemeProvider } from '@material-tailwind/react';
+import { TrackingHeadScript } from '@phntms/next-gtm';
 import type { NextPage } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
@@ -43,6 +44,8 @@ function App({
   pageProps,
   router
 }: AppPropsWithLayout): JSX.Element {
+  const GA_TRACKING_ID =
+    process.env.NEXT_PUBLIC_GA_TRACKING_ID ?? 'GTM-MZMFZB8D';
   const getLayout = Component.getLayout ?? (page => page);
 
   const path = useRouter().pathname.split('/')[1];
@@ -60,6 +63,7 @@ function App({
   if (loginLayouts) {
     return (
       <Provider store={store}>
+        <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
         <LanguageProvider>
           <LoadingProvider>
             <ErrorBEProvider>
@@ -75,6 +79,7 @@ function App({
 
   return (
     <Provider store={store}>
+      <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
       <LanguageProvider>
         <LoadingProvider>
           <ErrorBEProvider>

@@ -40,6 +40,7 @@ export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [hotNews, setHotNews] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
+  console.log(articles, 'sdnjndjfdhs');
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -61,7 +62,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -428,7 +429,7 @@ export default function ArticleList(): React.ReactElement {
             }
           ]}
         >
-          {hotNews.map((data, key) => (
+          {hotNews?.map((data, key) => (
             <div
               key={key}
               className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
@@ -459,7 +460,7 @@ export default function ArticleList(): React.ReactElement {
         </Slider>
 
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-          {articles.map(article => {
+          {articles?.map(article => {
             return <NewsCard key={article.id} articleId={article.id} />;
           })}
         </div>

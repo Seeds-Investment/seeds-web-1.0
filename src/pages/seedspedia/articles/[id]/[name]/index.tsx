@@ -2,6 +2,7 @@
 import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import MetaPage from '@/containers/circle/[id]/MetaComponent';
 import {
   getArticle,
   getArticleById,
@@ -52,6 +53,8 @@ interface Article {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  meta_description: string;
+  meta_title: string;
   assets: any[];
   circles: any[];
   peoples: any[];
@@ -88,6 +91,8 @@ interface ArticleDetail {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  meta_description: string;
+  meta_title: string;
   assets: any[];
   circles: any[];
   peoples: any[];
@@ -136,7 +141,7 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -345,6 +350,13 @@ export default function ArticleDetailPage(): JSX.Element {
   );
   return (
     <>
+      {articleDetail.meta_description.length > 0 &&
+        articleDetail.meta_title.length > 0 && (
+          <MetaPage
+            pageDescription={articleDetail.meta_description}
+            pageTitle={articleDetail.meta_title}
+          />
+        )}
       <PageGradient customGradient={customGradient} className="z-0">
         <div className="z-20 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           {open && (
@@ -613,7 +625,7 @@ export default function ArticleDetailPage(): JSX.Element {
             </Link>
           </div>
           <div className="grid z-10 lg:grid-cols-6 gap-4 rounded-2xl py-10">
-            {articles.slice(0, 3).map(article => (
+            {articles?.slice(0, 3).map(article => (
               <div
                 key={article.id}
                 className="p-4 border bg-[#F9F9F9] gap-[16px] lg:col-span-2 border-gray-300 rounded-3xl w-full"

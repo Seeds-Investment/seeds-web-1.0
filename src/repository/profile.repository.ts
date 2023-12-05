@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { isUndefindOrNull } from '@/utils/common/utils';
 
 const profileService = baseAxios(
   `${
@@ -40,6 +41,33 @@ export const getOtherUser = async (userId: string): Promise<any> => {
       Authorization: `Bearer ${accessToken ?? ''}`
     }
   });
+};
+
+export const blockOtherUser = async (formDataBlock: {
+  user_id: string;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (isUndefindOrNull(formDataBlock.user_id)) {
+      return await Promise.resolve(null);
+    }
+
+    const body = JSON.stringify(formDataBlock);
+
+    const response = await profileService.post('block', body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return { ...response, status: 200 };
+  } catch (error) {
+    return error;
+  }
 };
 
 export const getReferralHistory = async (refCode: string): Promise<any> => {

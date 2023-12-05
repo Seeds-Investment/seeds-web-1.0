@@ -156,7 +156,8 @@ export default {
     editImage: 'Ubah Foto',
     linkedAccount: 'Akun Tertaut',
     changePin: 'Ganti PIN',
-    telephoneNumber: 'Nomor Telepon'
+    telephoneNumber: 'Nomor Telepon',
+    email: 'Email'
   },
   input: {
     label: {
@@ -1024,6 +1025,92 @@ export default {
       recomend: 'Rekomendasi',
       listMembers: 'Anggota',
       about: 'Tentang'
+    }
+  },
+  partner: {
+    section1: {
+      title: 'Berkolaborasi dengan Seeds',
+      text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
+      button: 'Hubungi Kami'
+    },
+    section2: {
+      option1: 'Komunitas dan Universitas',
+      option2: 'Pendaftar',
+      option3: 'Acara Diselenggarakan'
+    },
+    section3: {
+      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+    },
+    section4: {
+      title: 'Memberdayakan Generasi Mendatang Bersama',
+      subtitle:
+        'Bergabunglah dengan misi kami untuk membuat pendidikan keuangan menyenangkan dan dapat diakses di Indonesia',
+      option1: {
+        title: 'Komunitas',
+        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Merek',
+        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus.',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Acara Seeds'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds adalah platform Social Gaming yang berfokus di Asia Tenggara. Jelajahi dunia investasi melalui Play Arena kami—capai puncak peringkat, raih hadiah menarik, dan tingkatkan strategi investasi kamu tanpa risiko. Terhubunglah dengan ahli keuangan dan teman lainnya di dalam komunitas kami yang interaktif.'
+    },
+    section2: {
+      title: 'Visi dan Misi',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Manfaatkan pertumbuhan pesat pasar milenial dan Gen Z di Indonesia, termasuk di universitas, sekolah, komunitas, influencer keuangan, dan media. Dapatkan perhatian mereka untuk komunitas, acara, dan event kalian!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Membantu meningkatkan pemahaman keuangan dan menyelamatkan orang dari pilihan investasi yang buruk. Cobalah dunia permainan virtual trading yang menarik dan menjadikan pembelajaran lebih menyenangkan'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Bersama-sama kita tumbuh dan meraih keuntungan bersama. Dari Play Arena hingga Premium Circle, terdapat peluang pertumbuhan finansial yang melimpah.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `Dengan rata-rata 4.000 pengguna per bulan dan engagement rate 5%, di Seeds Finance, pesan kamu tidak hanya akan terlihat, tetapi juga akan beresonansi.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Berkolaborasi dengan influencer keuangan terkemuka dan berada di garis terdepan pendidikan keuangan dan tren di Indonesia.'
+      }
+    },
+    section3: {
+      title: 'Apa yang Membuat Kami Berbeda',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle:
+          'Belajar lebih banyak tentang investasi dan keuangan dari para Profesional'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pandangan serupa'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
+      }
     }
   }
 };

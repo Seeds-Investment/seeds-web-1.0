@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 
 interface ArticleCardProps {
   articleId: string;
+  articleName?: string;
 }
 
 interface ArticleDetail {
@@ -35,7 +36,10 @@ const initialFormRequest = {
   comment: ''
 };
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({
+  articleId,
+  articleName
+}) => {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
@@ -153,7 +157,9 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
   }
 
   function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}`;
+    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}/${
+      articleName?.split(' ').join('-') as string
+    }`;
 
     const textArea = document.createElement('textarea');
     textArea.value = textToCopy;
@@ -207,13 +213,19 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           </h1>
           <Link
             className="text-sm"
-            href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}
+            href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
+              articleName?.split(' ').join('-') as string
+            }`}
           >
             <LimitString text={cleanedContent} limit={80} />
           </Link>
         </div>
         <div className="lg:px-4 lg:py-4 py-3 px-1 flex flex-col ">
-          <Link href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}>
+          <Link
+            href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
+              articleName?.split(' ').join('-') as string
+            }`}
+          >
             {isImageValid ? (
               <img
                 src={imageUrl}

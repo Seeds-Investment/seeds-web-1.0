@@ -1094,6 +1094,23 @@ export default {
         subtitle:
           'Berkolaborasi dengan influencer keuangan terkemuka dan berada di garis terdepan pendidikan keuangan dan tren di Indonesia.'
       }
+    },
+    section3: {
+      title: 'Apa yang Membuat Kami Berbeda',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle:
+          'Belajar lebih banyak tentang investasi dan keuangan dari para Profesional'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pandangan serupa'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
+      }
     }
   }
 };

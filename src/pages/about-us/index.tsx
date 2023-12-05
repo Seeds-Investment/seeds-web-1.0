@@ -9,6 +9,7 @@ export default function AboutUsPage(): React.ReactElement {
     <PageGradient defaultGradient className="absolute overflow-hidden w-full">
       <Section1 />
       <Section2 />
+      {/* <Section3 /> */}
     </PageGradient>
   );
 }

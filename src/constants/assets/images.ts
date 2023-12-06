@@ -77,6 +77,11 @@ export const KopKen: AssetsInterface = {
   alt: 'kopken'
 };
 
+export const PromoIcon: AssetsInterface = {
+  src: '/assets/social/promo.svg',
+  alt: 'promo'
+};
+
 // Partner
 
 export const SectionOneImageOne: AssetsInterface = {
@@ -228,7 +233,8 @@ const Images: Record<string, AssetsInterface> = {
   AboutUsSectionThreeIcon1,
   AboutUsSectionThreeIcon2,
   AboutUsSectionThreeIcon3,
-  AboutUsSectionFourBG
+  AboutUsSectionFourBG,
+  PromoIcon
 };
 
 export default Images;

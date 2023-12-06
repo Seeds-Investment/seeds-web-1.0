@@ -1,6 +1,4 @@
 import faq from '@/assets/landing-page/faq.png';
-import vector2 from '@/assets/landing-page/vector-faq-2.png';
-import vector1 from '@/assets/landing-page/vector-faq.png';
 import {
   Accordion,
   AccordionBody,
@@ -47,21 +45,11 @@ const Section5: React.FC = () => {
   return (
     <div className="mt-20">
       <Image
-        src={vector1}
-        alt="faq"
-        className="absolute left-0 xl:block hidden"
-      />
-      <Image
-        src={vector2}
-        alt="faq"
-        className="absolute right-0 xl:block hidden"
-      />
-      <Image
         src={faq}
         alt="faq"
         className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
       />
-      <div className="flex flex-col w-full justify-center text-center">
+      <div className="flex flex-col w-full justify-center text-center relative mb-32">
         <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl pb-4">
           {t('faq.title')}
         </span>

@@ -72,7 +72,7 @@ const CirclePostSection1: React.FC<props> = ({
   return (
     <div className="flex flex-col bg-white rounded-xl">
       {isLoading && <Loading />}
-      <div className="flex flex-col rounded-b-3xl md:px-14 py-8">
+      <div className="flex flex-col rounded-b-3xl md:px-14 pt-4">
         <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
           <Image alt="pencil-edit" src={pencil} className="h-[13px] w-[14px]" />
         </button>
@@ -163,7 +163,7 @@ const CirclePostSection1: React.FC<props> = ({
               </h1>
             </div>
             {/* avatar and members section */}
-            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-8">
+            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-4">
               <div className="flex justify-start">
                 <img
                   alt="bg-avatar-sm"

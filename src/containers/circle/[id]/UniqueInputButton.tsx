@@ -5,6 +5,7 @@ import pie from '@/assets/circle-page/pie.svg';
 import poll from '@/assets/circle-page/poll.svg';
 import talk from '@/assets/circle-page/talk.svg';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   setPages: any;
@@ -28,6 +29,7 @@ const UniqueInputButton: React.FC<props> = ({
   isError,
   isTooMuch
 }) => {
+  const { t } = useTranslation();
   const handlePages = (page: string): any => {
     return setPages(page);
   };
@@ -58,9 +60,7 @@ const UniqueInputButton: React.FC<props> = ({
       if (validation) {
         fileMediaEle.value = null;
         setIsError(true);
-        setErrorMessage(
-          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
-        );
+        setErrorMessage(`${t('social.errorState.video1')}`);
         return new Error(
           'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
         );
@@ -68,7 +68,7 @@ const UniqueInputButton: React.FC<props> = ({
       if (sizeFileOnMB > maxFileMediaSize) {
         fileMediaEle.value = null;
         setIsError(true);
-        setErrorMessage('Your image is exceeding the 20MB size limit');
+        setErrorMessage(`${t('social.errorState.video3')}`);
         return new Error('Your image is exceeding the 20MB size limit');
       } else {
         return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);
@@ -88,9 +88,7 @@ const UniqueInputButton: React.FC<props> = ({
     if (validation) {
       fileMediaEle.value = null;
       setIsError(true);
-      setErrorMessage(
-        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
-      );
+      setErrorMessage(`${t('social.errorState.image2')}`);
       return new Error(
         'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
       );
@@ -98,7 +96,7 @@ const UniqueInputButton: React.FC<props> = ({
     if (sizeFileOnMB > maxFileMediaSize) {
       fileMediaEle.value = null;
       setIsError(true);
-      setErrorMessage('Your image is exceeding the 5MB size limit');
+      setErrorMessage(`${t('social.errorState.image1')}`);
       return new Error('Your image is exceeding the 5MB size limit');
     } else {
       return setMedia((prevState: [] | File[]) => [...prevState, fileMedia]);
@@ -124,7 +122,7 @@ const UniqueInputButton: React.FC<props> = ({
 
   return (
     <>
-      <div className="flex justify-between pb-10 border-t border-neutral-ultrasoft">
+      <div className="sm:flex justify-between pb-10 border-t border-neutral-ultrasoft hidden">
         <input
           type="file"
           id="MediaUpload"
@@ -259,7 +257,128 @@ const UniqueInputButton: React.FC<props> = ({
           </button>
         </div>
       </div>
-      <div className="flex sm:hidden items-center">
+      <div className="flex flex-col sm:hidden items-center">
+        <input
+          type="file"
+          id="MediaUpload"
+          onChange={handleImage}
+          className="hidden"
+          accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+        />
+        <div className="grid grid-cols-6 gap-4">
+          {/* gallery */}
+          <div className="flex flex-col items-center">
+            <button type="button" onClick={handleGallery} className="p-2">
+              <Image
+                alt="unique_post"
+                src={gallery}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Gallery
+            </h1>
+          </div>
+          {/* GIF */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => {
+                handlePages('gif');
+              }}
+              className="p-2"
+            >
+              <Image
+                alt="unique_post"
+                src={gif}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              GIF
+            </h1>
+          </div>
+          {/* Poll */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              className="p-2"
+              onClick={() => {
+                handlePages('poll');
+              }}
+            >
+              <Image
+                alt="unique_post"
+                src={poll}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Poll
+            </h1>
+          </div>
+          {/* Pie */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              className="p-2"
+              onClick={() => {
+                handlePages('pie');
+                openPieModal();
+              }}
+            >
+              <Image
+                alt="unique_post"
+                src={pie}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Pie
+            </h1>
+          </div>
+          {/* Voice */}
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => {
+                handlePages('talk');
+              }}
+              className="p-2"
+            >
+              <Image
+                alt="unique_post"
+                src={talk}
+                className="h-5 w-5 object-cover"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              Talk
+            </h1>
+          </div>
+          {/* PDF */}
+          <div className="flex flex-col items-center">
+            <button type="button" onClick={handleDocument} className="p-2">
+              <Image
+                alt="unique_post"
+                src={pdf}
+                className="h-5 w-5 object-cover"
+              />
+              <input
+                type="file"
+                id="dokumenFile"
+                onChange={handlePDF}
+                className="hidden"
+                accept=".pdf"
+              />
+            </button>
+            <h1 className="font-poppins font-semibold text-xs text-center">
+              PDF
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div className="sm:hidden flex justify-end mt-4">
         <button
           type="submit"
           disabled={isEmpty || isError}

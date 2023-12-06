@@ -273,6 +273,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               }}
             />
             <Input
+              disabled
               required
               type="seedsTag"
               label="SeedsTag"
@@ -304,6 +305,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               }}
             />
             <Input
+              disabled
               required
               type="date"
               label={t('input.label.dateOfBirth')}
@@ -356,6 +358,7 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               }}
             />
             <Input
+              disabled
               required
               isRedirectButton
               type="isSelectPhoneNumber"
@@ -375,9 +378,10 @@ const ConfirmNewPinPage: React.FC<ConfirmNewPinProps> = ({ router }) => {
               }}
             />
             <Input
+              disabled
               required
               isRedirectButton
-              label="Email"
+              label={t('editProfile.email')}
               redirectUrl="/change-email-address"
               placeholder={
                 languageCtx.language === 'EN'

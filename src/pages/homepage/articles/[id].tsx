@@ -134,7 +134,7 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }

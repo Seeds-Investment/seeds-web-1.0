@@ -56,7 +56,7 @@ export default function NewsPage(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -77,7 +77,7 @@ export default function NewsPage(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setHotNews(response.news);
+        setHotNews(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -149,8 +149,8 @@ export default function NewsPage(): React.ReactElement {
               key={key}
               className={`${categoryItemClass} ${
                 activeCategory === category
-                  ? 'bg-[#3AC4A0] text-white'
-                  : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                  ? 'bg-[#3AC4A0] text-white text-xs'
+                  : 'text-[#3AC4A0] bg-[#F9F9F9] text-xs'
               }`}
               onClick={() => {
                 updateCategory(category);
@@ -163,7 +163,7 @@ export default function NewsPage(): React.ReactElement {
       </div>
       <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
         <button
-          className={`py-1 rounded-full text-md px-4 ${
+          className={`py-1 rounded-full text-xs px-4 ${
             activeCategory === 'All'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -175,7 +175,7 @@ export default function NewsPage(): React.ReactElement {
           All
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'business'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -187,7 +187,7 @@ export default function NewsPage(): React.ReactElement {
           Business
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'entertainment'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -200,7 +200,7 @@ export default function NewsPage(): React.ReactElement {
         </button>
 
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'health'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -212,7 +212,7 @@ export default function NewsPage(): React.ReactElement {
           Health
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'politics'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -224,7 +224,7 @@ export default function NewsPage(): React.ReactElement {
           Politics
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'science'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -236,7 +236,7 @@ export default function NewsPage(): React.ReactElement {
           Science
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'sports'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -248,7 +248,7 @@ export default function NewsPage(): React.ReactElement {
           Sports
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'technology'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -260,7 +260,7 @@ export default function NewsPage(): React.ReactElement {
           Technology
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'top'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -272,7 +272,7 @@ export default function NewsPage(): React.ReactElement {
           Top
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'world'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'

@@ -1,6 +1,7 @@
 import DoughnutChart from '@/components/DoughnutChart';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 import CardAssetSlider from './CardAssetSlider';
 
 interface props {
@@ -32,10 +33,13 @@ const PieMain: React.FC<props> = ({
   isEdit = false,
   submitEditPie
 }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <div>
-        <h1 className="font-bold text-xl text-black">Title</h1>
+        <h1 className="font-bold text-xl text-black">
+          {t('social.pieSection.title')}
+        </h1>
       </div>
       <button
         className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
@@ -48,7 +52,7 @@ const PieMain: React.FC<props> = ({
         <input
           type="text"
           className="ml-2 border-none outline-none"
-          placeholder="Create your title Pie"
+          placeholder={`${t('social.pieSection.placeholder')}`}
           name="pie_title"
           value={form.pie_title}
           onChange={changeForm}
@@ -67,14 +71,17 @@ const PieMain: React.FC<props> = ({
         />
       </div>
       <div>
-        <h1 className="font-semibold text-md text-black">Amount</h1>
+        <h1 className="font-semibold text-md text-black">
+          {t('social.pieSection.amount')}
+        </h1>
       </div>
       <div className="flex items-center border-b border-gray-400 py-2">
         <h1 className="font-bold text-sm items-start text-black">IDR</h1>
         <input
           type="text"
-          className="ml-2 border-none outline-none text-xl font-bold"
+          className="ml-2 border-none outline-none text-black text-xl font-bold placeholder:text-base placeholder:font-medium"
           name="pie_amount"
+          placeholder={`${t('social.pieSection.amountError')}`}
           value={form.pie_amount}
           onChange={changeForm}
         />

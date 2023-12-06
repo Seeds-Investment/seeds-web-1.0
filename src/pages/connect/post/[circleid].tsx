@@ -31,6 +31,11 @@ const CirclePost = (): JSX.Element => {
   const circleId: string | any = router.query.circleid;
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
     setIsOpen(!isOpen);
   };
   const [isLoading, setIsLoading] = useState(false);
@@ -149,7 +154,7 @@ const CirclePost = (): JSX.Element => {
       {isLoading && <Loading />}
       {/* posting section */}
       <div className="bg-white mt-8 w-full rounded-xl">
-        <div className="flex flex-col md:px-14 pt-8">
+        <div className="flex flex-col md:px-14">
           {isEdit ? (
             <EditCircle dataCircle={dataCircle} circleId={circleId} />
           ) : (

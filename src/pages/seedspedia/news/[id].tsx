@@ -1,7 +1,7 @@
 'use-client';
+import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import {
   getArticle,
   getArticleById,
@@ -540,7 +540,7 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

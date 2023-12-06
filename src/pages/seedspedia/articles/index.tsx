@@ -1,7 +1,7 @@
 import ArtPagination from '@/components/ArtPagination';
+import Footer from '@/components/layouts/Footer';
 import ArticleCard from '@/components/seedsPedia/articleCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,7 +57,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -356,7 +356,13 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
           {articles.map(article => {
-            return <ArticleCard key={article.id} articleId={article.id} />;
+            return (
+              <ArticleCard
+                key={article.id}
+                articleId={article.id}
+                articleName={article.title}
+              />
+            );
           })}
         </div>
 
@@ -370,7 +376,7 @@ export default function ArticleList(): React.ReactElement {
           />
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

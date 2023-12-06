@@ -422,50 +422,40 @@ const CirclePostSection2: React.FC<props> = ({
             </TabsHeader>
             <TabsBody className="pb-4">
               <TabPanel value="post">
-                {dataPost !== undefined &&
-                  dataPost !== null &&
-                  dataPost.length > 0 &&
-                  dataPost?.map((el: any) => {
-                    return (
-                      <PostSection
-                        dataPost={el}
-                        key={el.id}
-                        setData={setDataPost}
-                        userInfo={userInfo}
-                      />
-                    );
-                  })}
-                {!isLoadingPost && dataPost.length === 0 && (
-                  <div className="flex justify-center">
-                    <Typography className="text-black font-poppins text-base">
-                      Data not found
-                    </Typography>
-                  </div>
-                )}
+                <div className="border-t border-neutral-ultrasoft">
+                  {dataPost !== undefined &&
+                    dataPost !== null &&
+                    dataPost.length > 0 &&
+                    dataPost?.map((el: any) => {
+                      return (
+                        <PostSection
+                          dataPost={el}
+                          key={el.id}
+                          setData={setDataPost}
+                          userInfo={userInfo}
+                        />
+                      );
+                    })}
+                </div>
 
                 {isLoadingPost && renderLoading()}
               </TabPanel>
               <TabPanel value="recommended">
-                {dataRecommend !== undefined &&
-                  dataRecommend !== null &&
-                  dataRecommend.length > 0 &&
-                  dataRecommend?.map((el: any) => {
-                    return (
-                      <PostSection
-                        dataPost={el}
-                        key={el.id}
-                        setData={setDataRecommend}
-                        userInfo={userInfo}
-                      />
-                    );
-                  })}
-                {!isLoadingPost && dataRecommend.length === 0 && (
-                  <div className="flex justify-center">
-                    <Typography className="text-black font-poppins text-base">
-                      Data not found
-                    </Typography>
-                  </div>
-                )}
+                <div className="border-t border-neutral-ultrasoft">
+                  {dataRecommend !== undefined &&
+                    dataRecommend !== null &&
+                    dataRecommend.length > 0 &&
+                    dataRecommend?.map((el: any) => {
+                      return (
+                        <PostSection
+                          dataPost={el}
+                          key={el.id}
+                          setData={setDataRecommend}
+                          userInfo={userInfo}
+                        />
+                      );
+                    })}
+                </div>
                 {isLoadingPost && renderLoading()}
               </TabPanel>
               <TabPanel value="members">

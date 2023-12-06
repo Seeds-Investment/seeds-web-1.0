@@ -4,9 +4,9 @@ const NewSection5: React.FC = () => {
   return (
     <section className="flex m-20 gap-10 items-center">
       <iframe
-        width="686"
-        height="418"
-        src="https://www.youtube.com/embed/IfFJdZxpyKA?si=6YAuxYQsMlmFQbkY"
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/bdPIT9Y2THs?si=jbD5c6wSrUqZqYYY"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

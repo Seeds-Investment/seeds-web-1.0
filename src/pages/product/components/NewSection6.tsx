@@ -4,6 +4,7 @@ import MockiPhone from '@/assets/product/MockiPhone.png';
 import StarRating from '@/assets/product/StarRating.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const NewSection6: React.FC = () => {
   return (
@@ -21,8 +22,22 @@ const NewSection6: React.FC = () => {
           together with Seeds.
         </Typography>
         <div className="flex gap-8">
-          <Image src={AppStore} alt="AppStore" />
-          <Image src={GooglePlay} alt="GooglePlay" />
+          <Link
+            target="blank"
+            href={
+              'https://apps.apple.com/id/app/seeds-investing-together/id6443659980'
+            }
+          >
+            <Image src={AppStore} alt="AppStore" />
+          </Link>
+          <Link
+            target="blank"
+            href={
+              'https://play.google.com/store/apps/details?id=com.seeds.investment'
+            }
+          >
+            <Image src={GooglePlay} alt="GooglePlay" />
+          </Link>
         </div>
         <div className="flex gap-[38px]">
           <div className="flex gap-5">

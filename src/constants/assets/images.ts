@@ -190,6 +190,11 @@ export const AboutUsSectionThreeIcon3: AssetsInterface = {
   alt: 'bg'
 };
 
+export const AboutUsSectionFourBG: AssetsInterface = {
+  src: '/assets/about-us/section-four/bg.svg',
+  alt: 'bg'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -222,7 +227,8 @@ const Images: Record<string, AssetsInterface> = {
   SectionFiveImageProblemSolution,
   AboutUsSectionThreeIcon1,
   AboutUsSectionThreeIcon2,
-  AboutUsSectionThreeIcon3
+  AboutUsSectionThreeIcon3,
+  AboutUsSectionFourBG
 };
 
 export default Images;

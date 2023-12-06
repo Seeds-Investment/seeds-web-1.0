@@ -129,3 +129,18 @@ export const createPin = async (formRequest: any): Promise<any> => {
     }
   });
 };
+
+export const getFollowList = async (userId: any, type: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.get(`${userId as string}/${type as string}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

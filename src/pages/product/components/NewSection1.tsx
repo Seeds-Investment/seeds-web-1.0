@@ -2,11 +2,22 @@ import MockupPlayAndWin from '@/assets/product/MockupPlayAndWin.png';
 import PlayWinLine from '@/assets/product/Play&WinLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useInView } from 'react-intersection-observer';
 
 const NewSection1: React.FC = () => {
+  const { ref, inView } = useInView({
+    threshold: 0
+  });
   return (
-    <section className="flex lg:flex-row flex-col-reverse items-center xl:ml-[140px] w-fit h-[702px] bg-blue-gray-400">
-      <div className="flex flex-col gap-5 xl:w-[712px] h-fit bg-red-600 lg:-mr-[82px]">
+    <section
+      ref={ref}
+      className="flex lg:flex-row flex-col-reverse items-center xl:ml-[140px] w-fit h-[702px]"
+    >
+      <div
+        className={`flex flex-col gap-5 xl:w-[712px] h-fit ${
+          inView ? 'animate-fade-in-slide' : ''
+        }`}
+      >
         <Image
           src={PlayWinLine}
           alt="PlayWinLine"
@@ -25,7 +36,11 @@ const NewSection1: React.FC = () => {
           prizes worth millions of rupiah.
         </Typography>
       </div>
-      <Image src={MockupPlayAndWin} alt="MockupPlayAndWin" className="-mr-11" />
+      <Image
+        src={MockupPlayAndWin}
+        alt="MockupPlayAndWin"
+        className={`ml-[20px] ${inView ? 'animate-fade-in-slide' : ''}`}
+      />
     </section>
   );
 };

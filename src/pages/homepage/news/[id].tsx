@@ -1,7 +1,7 @@
 'use-client';
+import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import {
   getArticle,
   getArticleById,
@@ -127,7 +127,7 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -540,7 +540,7 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />{' '}
     </>
   );
 }

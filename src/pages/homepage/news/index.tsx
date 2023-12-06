@@ -1,7 +1,7 @@
 import ArtPagination from '@/components/ArtPagination';
+import Footer from '@/components/layouts/Footer';
 import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -61,7 +61,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -473,7 +473,7 @@ export default function ArticleList(): React.ReactElement {
           />
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

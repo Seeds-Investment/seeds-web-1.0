@@ -7,6 +7,7 @@ import kominfo from '@/assets/landing-page/kominfo.svg';
 import linkedin from '@/assets/landing-page/linkedin.svg';
 import playstore from '@/assets/landing-page/playstore.svg';
 // import telegram from '@/assets/landing-page/telegram.png';
+import telegram from '@/assets/landing-page/telegram.svg';
 import tiktok from '@/assets/landing-page/tiktok.svg';
 import twitter from '@/assets/landing-page/twitter.svg';
 import whatsapp from '@/assets/landing-page/whatsapp.svg';
@@ -15,24 +16,20 @@ import type { ISeedsInformationList } from '../interfaces/data.interfaces';
 
 export const socialMedia = [
   {
-    icon: facebook,
-    url: 'https://www.facebook.com'
-  },
-  {
     icon: linkedin,
     url: 'https://www.linkedin.com/company/finance-seeds/'
   },
-  // {
-  //   icon: telegram,
-  //   url: ''
-  // },
   {
-    icon: whatsapp,
-    url: 'https://wa.me/08118883519'
+    icon: telegram,
+    url: '/'
   },
   {
     icon: instagram,
     url: 'https://instagram.com/seeds_finance'
+  },
+  {
+    icon: facebook,
+    url: 'https://facebook.com/seeds.finance'
   },
   {
     icon: twitter,
@@ -44,7 +41,7 @@ export const socialMedia = [
   },
   {
     icon: youtube,
-    url: 'https://youtube.com/@seeds1234'
+    url: 'https://www.youtube.com/@seeds_id'
   }
 ];
 
@@ -53,6 +50,10 @@ export const seedsInformation: ISeedsInformationList = {
     {
       name: 'About Us',
       url: '/about-us'
+    },
+    {
+      name: 'Career',
+      url: '/'
     }
     // {
     //   name: 'Refferal Program',
@@ -82,10 +83,10 @@ export const seedsInformation: ISeedsInformationList = {
     }
   ],
   Support: [
-    {
-      name: 'Ask Seeds',
-      url: ''
-    },
+    // {
+    //   name: 'Ask Seeds',
+    //   url: ''
+    // },
     {
       name: 'FAQs',
       url: '/faq'
@@ -119,7 +120,7 @@ export const downloadOurApp = [
     reviews: '2k+'
   },
   {
-    url: '',
+    url: 'https://pse.kominfo.go.id/tdpse-detail/3709',
     icon: kominfo
   },
   {

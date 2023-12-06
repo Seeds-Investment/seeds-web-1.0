@@ -156,7 +156,8 @@ export default {
     editImage: 'Ubah Foto',
     linkedAccount: 'Akun Tertaut',
     changePin: 'Ganti PIN',
-    telephoneNumber: 'Nomor Telepon'
+    telephoneNumber: 'Nomor Telepon',
+    email: 'Email'
   },
   input: {
     label: {
@@ -187,10 +188,10 @@ export default {
       optional: '(tidak wajib)'
     },
     poll: {
-      optionPlaceholder: '{{index}}. Enter an option',
-      endDateLabel: 'Set ending date',
+      optionPlaceholder: '{{index}}. Masukkan opsi',
+      endDateLabel: 'Tentukan tanggal akhir',
       multivoteLabel: 'Multivote',
-      allowNewOptionLabel: 'Allow new options'
+      allowNewOptionLabel: 'Izinkan opsi baru'
     }
   },
   button: {
@@ -1111,5 +1112,80 @@ export default {
         subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
       }
     }
+  },
+  social: {
+    postSetting: {
+      publicTitle: 'Publik',
+      publicDesc: 'Semua orang bisa melihat postinganmu',
+      privateTitle: 'Pribadi',
+      privateDesc: 'Hanya kamu yang bisa melihat postinganmu',
+      friendsTitle: 'Hanya Teman',
+      friendsDesc: 'Pengikut yang kamu ikuti balik',
+      premiumTitle: 'Premium',
+      premiumDesc:
+        'Hanya pembeli konten premium yang bisa melihat detail postingan'
+    },
+    pieSection: {
+      title: 'Judul',
+      detail: 'Tambahkan judul berdasarkan tujuan keuanganmu',
+      placeholder: 'Buat judul Pie kamu',
+      amount: 'Jumlah',
+      amountError: 'Masukkan jumlah alokasi kamu',
+      selectAsset: 'Pilih Asset',
+      overview: 'Ringkasan',
+      stocks: 'Saham',
+      crypto: 'kripto'
+    },
+    errorState: {
+      image1: 'Gambar kamu melebihi batas ukuran 5MB.',
+      image2:
+        'Kamu hanya bisa memasukan gambar dalam format JPG, JPEG, PNG, .HEIC, .HEIF',
+      video1: 'Kamu hanya bisa memasukan video dalam format .MOV dan .MP4.',
+      video2:
+        'Kamu hanya bisa memasukan video dengan durasi maksimum 60 detik.',
+      video3: 'Video kamu melebihi batas ukuran 20MB.',
+      thread1: 'Teks melebihi 500 karakter.',
+      thread2:
+        'Maaf, kami tidak bisa menemukan URL kamu. Silakan masukkan URL yang benar.',
+      thread3: 'Thread kamu melebihi batas karakter maksimum.',
+      poll1:
+        'Pertanyaan kamu melebihi batas karakter maksimum. Mohon ketik ulang pertanyaan kamu.',
+      poll2: 'Tanggal akhir tidak boleh kurang dari tanggal hari ini.'
+    },
+    reportUser: {
+      text1: 'Laporkan Pengguna',
+      text2: 'Akun ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan akun ini?',
+      text4: 'Posting tertentu yang seharusnya tidak ada di Seeds.',
+      text5: 'Ada sesuatu yang aneh tentang akun ini.',
+      text6:
+        'Apakah kamu yakin ingin melaporkan akun ini? Setelah itu, kamu tidak akan lagi melihat status atau thread yang diposting oleh profil ini.',
+      text7:
+        'Kamu telah melaporkan akun ini. Kamu tidak akan melihat status atau thread yang diposting oleh profil ini lagi.'
+    },
+    reportPost: {
+      text1: 'Laporkan Posting',
+      text2: 'Posting ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan posting ini?',
+      option1: 'Spam',
+      option2: 'Konten dewasa atau aktivitas seksual',
+      option3: 'Ujaran kebencian atau simbol kebencian',
+      option4: 'Pengejaran atau pelecehan',
+      option5: 'Saya tidak suka ini',
+      option6: 'Penipuan atau kecurangan',
+      option7: 'Lainnya',
+      success1: 'Laporan telah diajukan.',
+      success2: 'Terima kasih telah membantu kami.'
+    },
+    blockUser: {
+      block: 'Blokir',
+      text: 'Mereka tidak akan dapat mengirim pesan kepada kamu atau menemukan profil, posting, atau cerita kamu di Seeds'
+    },
+    gif: 'GIF',
+    pdf: 'PDF',
+    gallery: 'Gallery',
+    talk: 'Talk',
+    pie: 'Pie',
+    poll: 'Poll'
   }
 };

@@ -1,6 +1,6 @@
 import forkoma from '@/assets/event-highlight/image-20230828-074549.png';
+import Footer from '@/components/layouts/Footer';
 import Section2Card from '@/containers/landing/Section2Card';
-import Section6 from '@/containers/landing/Section6';
 import { eventHighlightLandingPage } from '@/utils/_static/dummy';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -187,7 +187,7 @@ export default function EventHighlight(): React.ReactElement {
       </div>
 
       {/* Footer */}
-      <Section6 />
+      <Footer />
     </div>
   );
 }

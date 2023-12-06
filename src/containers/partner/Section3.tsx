@@ -4,8 +4,6 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 
 const Section3: React.FC = () => {
   const { t } = useTranslation();
@@ -23,27 +21,31 @@ const Section3: React.FC = () => {
     }
   };
 
-  const SampleNextArrow = (props: any): any => {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block', background: 'black' }}
-        onClick={onClick}
-      />
-    );
-  };
+  // const NextBtn = (props: any): any => {
+  //   const {onClick} = props;
+  //   return (
+  //     <div className='flex flex-row w-full justify-center mt-7'>
+  //       <button
+  //         className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
+  //         onClick={onClick}
+  //       >
+  //         <Image src={next} alt="Next" className="cursor-pointer" />
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
-  const SamplePrevArrow = (props: any): any => {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: 'block', background: 'black' }}
-        onClick={onClick}
-      />
-    );
-  };
+  // const PrevBtn = (props: any): any => {
+  //   const {onClick} = props;
+  //   return (
+  //     <button
+  //       className="rounded-full lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
+  //       onClick={onClick}
+  //     >
+  //       <Image src={prev} alt="Next" className="cursor-pointer" />
+  //     </button>
+  //   );
+  // };
 
   const settings = {
     className: 'center',
@@ -53,12 +55,12 @@ const Section3: React.FC = () => {
     slidesToShow: 1,
     speed: 500,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 9000,
+    // nextArrow: <NextBtn />,
+    // prevArrow: <PrevBtn />,
     centerPadding: `${
       width !== undefined ? (width > 700 ? '27%' : '1%') : '1%'
     }`,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
     beforeChange: (current: number, next: number) => {
       setCurrentSlide(next);
     },
@@ -104,8 +106,7 @@ const Section3: React.FC = () => {
         </p>
 
         <div className="relative w-full my-12 overflow-hidden">
-          {/* TODO arrow left right */}
-          <Slider {...settings}>
+          <Slider {...settings} initialSlide={currentSlide}>
             {banner?.length !== 0
               ? banner?.map((data, idx) => (
                   <div

@@ -3,11 +3,13 @@ import {
   AboutUsSectionThreeIcon2,
   AboutUsSectionThreeIcon3
 } from '@/constants/assets/images';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 const Section3: React.FC = () => {
   const { t } = useTranslation();
+  const width = useWindowInnerWidth();
 
   return (
     <div className="min-w-full font-poppins bg-gradient-to-r from-[#EDF2F700] to-[#E2E8F0] relative p-5">
@@ -15,6 +17,15 @@ const Section3: React.FC = () => {
         <p className="text-3xl md:text-4xl text-center mt-10 font-semibold z-10 bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
           {t('aboutUsV3.section3.title')}
         </p>
+
+        {width !== undefined ? (
+          width > 700 ? (
+            <>
+              <div className="absolute bg-[#7F64D8] blur-[100px] w-[200px] h-[200px] left-0 bottom-44 rounded-full"></div>
+              <div className="absolute bg-[#7F64D8] blur-[150px] w-[200px] h-[200px] right-0 bottom-44 rounded-full"></div>
+            </>
+          ) : null
+        ) : null}
 
         <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:px-20 md:flex-row">
           <div className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl">

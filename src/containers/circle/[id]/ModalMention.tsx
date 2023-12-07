@@ -470,7 +470,7 @@ const ModalMention: React.FC<props> = ({
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
     } else if (name === 'premium_fee') {
-      setForm(prevForm => ({ ...prevForm, premium_fee: value }));
+      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value) }));
     } else if (name === 'pie_title') {
       setForm(prevForm => ({ ...prevForm, pie_title: value }));
     } else {

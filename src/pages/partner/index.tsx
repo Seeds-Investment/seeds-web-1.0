@@ -1,3 +1,4 @@
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/partner/Section1';
 import Section2 from '@/containers/partner/Section2';
@@ -15,6 +16,7 @@ const Partner: React.FC = () => {
       <Section4 />
       <Section5 />
       <Section6 />
+      <Footer />
     </PageGradient>
   );
 };

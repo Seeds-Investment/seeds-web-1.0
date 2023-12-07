@@ -1,7 +1,7 @@
 import SearchIcon from '@/assets/SearchIcon.svg';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getFollowList, getUserInfo } from '@/repository/profile.repository';
-import { follow, removeFollower } from '@/repository/user.repository';
+import { follow } from '@/repository/user.repository';
 import {
   Button,
   Card,
@@ -18,9 +18,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const Follow: React.FC = () => {
-  const [search, setSearch] = useState('');
   const router = useRouter();
-  const { type } = router.query;
+  const { type, id } = router.query;
+  const [search, setSearch] = useState('');
+  const [dataInfo, setDataInfo] = useState<any>([]);
   const [followData, setFollowData] = useState<any>([]);
   console.log(followData);
   const [change, setChange] = useState(false);
@@ -36,11 +37,9 @@ const Follow: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-
-        if (dataInfo !== '') {
-          const followResponse = await getFollowList(dataInfo.id, type);
-          setFollowData(followResponse);
-        }
+        setDataInfo(dataInfo);
+        const followResponse = await getFollowList(id, type);
+        setFollowData(followResponse);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -103,7 +102,8 @@ const Follow: React.FC = () => {
                         </div>
                       </Link>
 
-                      {item.is_followed === true ? null : (
+                      {item.is_followed === true ? null : item.id ===
+                        dataInfo.id ? null : (
                         <Button
                           ripple={false}
                           className="bg-transparent shadow-none hover:shadow-none py-[4.78px] px-[7.17px] h-fit font-semibold font-poppins text-[10px] text-[#7B8BFC] leading-[9.56px] capitalize z-10"
@@ -116,17 +116,6 @@ const Follow: React.FC = () => {
                         </Button>
                       )}
                     </div>
-
-                    <Button
-                      ripple={false}
-                      className="bg-[#FFEBEB] shadow-none hover:shadow-none py-2 px-3 h-fit font-semibold font-poppins text-xs text-[#DD2525] rounded-full capitalize z-10"
-                      onClick={async () => {
-                        await removeFollower(item.id);
-                        _handleChange();
-                      }}
-                    >
-                      Remove
-                    </Button>
                   </div>
                 );
               })}
@@ -185,18 +174,20 @@ const Follow: React.FC = () => {
                           </Typography>
                         </div>
                       </Link>
+                      {item.is_followed === true ? null : item.id ===
+                        dataInfo.id ? null : (
+                        <Button
+                          ripple={false}
+                          className="bg-transparent shadow-none hover:shadow-none py-[4.78px] px-[7.17px] h-fit font-semibold font-poppins text-[10px] text-[#7B8BFC] leading-[9.56px] capitalize z-10"
+                          onClick={async () => {
+                            await follow(item.id);
+                            _handleChange();
+                          }}
+                        >
+                          Follow
+                        </Button>
+                      )}
                     </div>
-
-                    <Button
-                      ripple={false}
-                      className="bg-[#DCFCE4] shadow-none hover:shadow-none py-2 px-3 h-fit font-semibold font-poppins text-xs text-[#3AC4A0] rounded-full capitalize z-10"
-                      onClick={async () => {
-                        await follow(item.id);
-                        _handleChange();
-                      }}
-                    >
-                      Following
-                    </Button>
                   </div>
                 );
               })}
@@ -223,7 +214,7 @@ const Follow: React.FC = () => {
                 value={value}
                 onClick={async () => {
                   await router.push({
-                    pathname: `/my-profile/follow-list`,
+                    pathname: `/social/${id as string}/follow-list`,
                     query: {
                       type: `${
                         value === 'followers' ? 'followers' : 'followings'

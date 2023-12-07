@@ -4,6 +4,7 @@ import PostSection from '@/containers/circle/[id]/PostSection';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getSocialPostHashtag } from '@/repository/social.respository';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -73,11 +74,29 @@ const PostHashtag: React.FC = () => {
     }
   }, [id]);
 
-  console.log('ini ID', id);
-
   return (
     <PageGradient defaultGradient className="w-full">
-      <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
+      <CCard className="flex p-3 md:mt-5 md:rounded-lg border-none rounded-none">
+        <div className="flex flex-row items-center justify-center w-full mb-2">
+          <div className="mr-2 w-1/2">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={`# ${id as string}`}
+                readOnly={false}
+                disabled={false}
+                value={`# ${id as string}`}
+                className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 rounded-lg border border-[#BDBDBD]"
+              />
+
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </CCard>
+      <CCard className="flex p-8 md:mt-9 md:rounded-lg border-none rounded-none pb-10">
         {dataPost.length > 0 &&
           dataPost.map((el: any, idx: number) => {
             return (

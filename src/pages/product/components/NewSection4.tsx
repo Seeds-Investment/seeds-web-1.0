@@ -1,3 +1,12 @@
+const NewSection4: React.FC = () => {
+  return (
+    <div>
+      <br />
+    </div>
+  );
+};
+
+export default NewSection4;
 // import likeCircle from '@/assets/my-profile/circle/likeCircle.svg';
 // import memberCircle from '@/assets/my-profile/circle/memberCircle.svg';
 // import postCircle from '@/assets/my-profile/circle/postCircle.svg';

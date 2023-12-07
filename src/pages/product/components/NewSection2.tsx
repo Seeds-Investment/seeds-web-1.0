@@ -4,6 +4,7 @@ import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
 import WinRateProduct from '@/assets/product/WinRateProduct.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const winner = [
@@ -14,9 +15,16 @@ const winner = [
 ];
 
 const NewSection2: React.FC = () => {
-  const { ref, inView } = useInView({
+  const measurement = 1400;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
     threshold: 0.2
   });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    console.log(bottom);
+    setBottom(bottom);
+  }, [entry]);
   return (
     <section
       ref={ref}
@@ -24,7 +32,11 @@ const NewSection2: React.FC = () => {
     >
       <div
         className={`flex flex-col items-center ${
-          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
         }`}
       >
         <Image
@@ -38,7 +50,11 @@ const NewSection2: React.FC = () => {
       </div>
       <div
         className={`flex flex-col gap-6 mt-[41.5px] mb-10 ${
-          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
         }`}
       >
         <Typography className="font-poppins font-normal text-2xl text-[#262626]">
@@ -55,7 +71,11 @@ const NewSection2: React.FC = () => {
       </div>
       <div
         className={`${
-          inView ? 'animate-fade-in-slide' : 'animate-fade-out-slide'
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
         }`}
       >
         <div className="flex mx-6 justify-between items-end -mb-[7.55px]">

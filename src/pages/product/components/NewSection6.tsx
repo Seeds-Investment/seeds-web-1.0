@@ -5,11 +5,31 @@ import StarRating from '@/assets/product/StarRating.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const NewSection6: React.FC = () => {
+  const measurement = 1100;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    console.log(bottom);
+    setBottom(bottom);
+  }, [entry]);
   return (
-    <section className="flex justify-center items-center m-20">
-      <div className="flex flex-col gap-10">
+    <section ref={ref} className="flex justify-center items-center m-20">
+      <div
+        className={`flex flex-col gap-10 ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <Typography className="font-semibold font-poppins text-[64px] text-[#262626] leading-[64px]">
           <span className="bg-clip-text text-transparent bg-gradient-to-tr to-[#7555DA] from-[#4FE6AF]">
             Download Now!
@@ -64,7 +84,17 @@ const NewSection6: React.FC = () => {
           </div>
         </div>
       </div>
-      <Image src={MockiPhone} alt="MockiPhone" />
+      <Image
+        src={MockiPhone}
+        alt="MockiPhone"
+        className={`${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      />
     </section>
   );
 };

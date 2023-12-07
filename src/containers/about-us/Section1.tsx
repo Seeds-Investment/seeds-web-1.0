@@ -51,9 +51,7 @@ const Section1: React.FC = () => {
   };
 
   return (
-    <div className="min-w-full font-poppins">
-      {/* <div className="absolute inset-0 bg-gradient-to-r from-[#EDF2F700] to-[#E2E8F0]"></div> */}
-      {/* <div className="absolute bottom-0 left-0 right-0 h-[200px] md:h-[300px] bg-gradient-to-r from-[#D8FFF1CC] to-[#CFBDFFCC]"></div> */}
+    <div className="md:mb-10 min-w-full font-poppins relative bg-[#F9F9F9]">
       <div className="flex flex-col w-full items-center font-poppins">
         <p className="text-3xl md:text-4xl text-center mt-10 font-semibold z-10 bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
           {t('aboutUsV3.section1.title')}
@@ -63,6 +61,10 @@ const Section1: React.FC = () => {
         </p>
       </div>
       {/* TODO Arrow */}
+
+      <div className="absolute inset-0 bg-gradient-to-r from-[#EDF2F700] to-[#E2E8F0]"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-[200px] md:h-[300px] bg-gradient-to-r from-[#CFBDFFCC] to-[#D8FFF1CC]"></div>
+
       <div className="w-full mt-6 mb-14 md:mt-16 md:px-14">
         <Slider {...settings}>
           {images?.length !== 0

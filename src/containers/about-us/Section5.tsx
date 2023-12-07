@@ -1,4 +1,5 @@
 import faq from '@/assets/landing-page/faq.png';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   Accordion,
   AccordionBody,
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 const Section5: React.FC = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(1);
+  const width = useWindowInnerWidth();
 
   interface iconProps {
     id: number;
@@ -56,6 +58,16 @@ const Section5: React.FC = () => {
         <span className="text-2xl font-normal text-[#201B1C] xl:mt-5 px-5">
           {t('faq.subTitle')}
         </span>
+
+        {width !== undefined ? (
+          width > 700 ? (
+            <>
+              <div className="absolute bg-[#3AC4A0BF] blur-[100px] w-[200px] h-[200px] left-0 bottom-44 rounded-full"></div>
+              <div className="absolute bg-[#7F64D8] blur-[150px] w-[200px] h-[200px] right-0 bottom-44 rounded-full"></div>
+            </>
+          ) : null
+        ) : null}
+
         <div className="xl:w-2/3 w-[90%] mx-auto xl:mt-7 mt-5 text-start font-poppins">
           <Accordion
             icon={<Icon id={1} open={open} />}

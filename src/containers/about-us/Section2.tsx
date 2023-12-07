@@ -5,11 +5,13 @@ import {
   AboutUsSectionTwoIcon4,
   SectionSixImageOval
 } from '@/constants/assets/images';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 const Section2: React.FC = () => {
   const { t } = useTranslation();
+  const width = useWindowInnerWidth();
 
   return (
     <div className="min-w-full font-poppins bg-white relative p-5">
@@ -24,6 +26,16 @@ const Section2: React.FC = () => {
           height={100}
           className="w-[400px] h-[120px] top-5 md:w-[600px] md:top-7 relative z-1"
         />
+
+        {width !== undefined ? (
+          width > 700 ? (
+            <>
+              <div className="absolute bg-[#3AC4A0BF] blur-[150px] w-[200px] h-[200px] left-0 top-[9rem] rounded-full"></div>
+              <div className="absolute bg-[#7F64D8] blur-[150px] w-[200px] h-[200px] right-0 top-[28rem] rounded-full"></div>
+              <div className="absolute bg-[#3AC4A0BF] blur-[150px] w-[200px] h-[200px] left-0 bottom-[4rem] rounded-full"></div>
+            </>
+          ) : null
+        ) : null}
 
         <div className="flex flex-col mt-10">
           <div className="flex flex-row w-full items-center md:px-6 mb-5">

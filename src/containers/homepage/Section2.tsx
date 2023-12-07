@@ -156,8 +156,8 @@ const Section2 = (): React.ReactElement => {
         </button>
       </div>
       <div className="w-full lg:w-1/2 p-3">
-        <div className="justify-end text-end">
-          <h1 className="text-sm font-normal text-[#262626]">
+        <div className="justify-end text-center lg:text-end">
+          <h1 className="text-sm font-normal text-[#262626] mb-3">
             Win Reward every Month{' '}
             <span className="font-semibold">{'"Now in December"'}</span>
           </h1>
@@ -167,37 +167,37 @@ const Section2 = (): React.ReactElement => {
                 <Image src={bestReward} alt="Next" width={72} height={72} />
               </div>
               <div className="px-5 pb-3 mt-[-50px]">
-                <h1 className="text-lg mb-2 font-semibold text-[#FFFFFF]">
+                <h1 className="text-[35px] lg:text-lg mb-2 font-semibold text-[#FFFFFF]">
                   1st Rank
                 </h1>
-                <h1 className="text-xs mb-2 font-normal text-[#FFFFFF]">
-                  Total Prize
+                <h1 className="text-[23px] lg:text-xs mb-2 font-normal text-[#FFFFFF]">
+                  💰Total Prize
                 </h1>
-                <h1 className="text-base border-2 border-dashed p-2 border-[#FFFFFF] font-semibold text-[#FFFFFF]">
+                <h1 className="text-[31px] lg:text-base border-2 border-dashed p-2 border-[#FFFFFF] font-semibold text-[#FFFFFF]">
                   Rp 150.000
                 </h1>
               </div>
             </div>
             <div className="flex w-full lg:w-1/2 justify-end ">
               <div className="w-1/2  border py-2 px-3 me-3 mt-2 justify-center text-center border-1 rounded-lg">
-                <h1 className="text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
+                <h1 className="text-[22px] lg:text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
                   2nd Rank
                 </h1>
-                <h1 className="text-xs mb-2 font-normal text-[#7C7C7C]">
-                  Total Prize
+                <h1 className="text-[16.46px] lg:text-xs mb-2 font-normal text-[#7C7C7C]">
+                  💰Total Prize
                 </h1>
-                <h1 className="text-sm font-semibold text-[#262626]">
+                <h1 className="text-[19px] lg:text-sm font-semibold text-[#262626]">
                   Rp 100.000
                 </h1>
               </div>
               <div className="border w-1/2 py-2 px-3 mt-2 justify-center text-center border-1 rounded-lg">
-                <h1 className="text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
+                <h1 className="text-[22px] lg:text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
                   3rd Rank
                 </h1>
-                <h1 className="text-xs mb-2 font-normal text-[#7C7C7C]">
-                  Total Prize
+                <h1 className="text-[16.46px] lg:text-xs mb-2 font-normal text-[#7C7C7C]">
+                  💰Total Prize
                 </h1>
-                <h1 className="text-sm font-semibold text-[#262626]">
+                <h1 className="text-[19px] lg:text-sm font-semibold text-[#262626]">
                   Rp 50.000
                 </h1>
               </div>

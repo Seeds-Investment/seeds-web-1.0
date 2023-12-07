@@ -50,7 +50,7 @@ const BannerCircleList = (): JSX.Element => {
           alt={CircleLineLight.alt}
           height={0}
           width={0}
-          className="absolute bottom-0 left-0 w-[8rem] h-[8rem]
+          className="absolute bottom-0 left-0 w-[6rem] h-[6rem]
                             md:w-[9rem] md:h-[9rem]"
         />
 

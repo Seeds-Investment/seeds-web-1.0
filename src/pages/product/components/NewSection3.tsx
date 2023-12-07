@@ -3,11 +3,34 @@ import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenc
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const NewSection3: React.FC = () => {
+  const measurement = 1200;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    console.log(bottom);
+    setBottom(bottom);
+  }, [entry]);
   return (
-    <section className="flex flex-col items-center h-[770px] justify-end">
-      <div className="flex flex-col gap-5 w-[964px]">
+    <section
+      ref={ref}
+      className="flex flex-col items-center h-[770px] justify-end"
+    >
+      <div
+        className={`flex flex-col gap-5 w-[964px] ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <div className="flex flex-col items-center">
           <Image
             src={ShareAndInfluenceLine}
@@ -33,12 +56,24 @@ const NewSection3: React.FC = () => {
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"
-          className="w-fit h-fit mt-5 -mr-[192px] z-10"
+          className={`w-fit h-fit mt-5 -mr-[192px] z-10 ${
+            inView && isBottom >= measurement
+              ? 'animate-fade-in-slide'
+              : isBottom >= measurement
+              ? 'animate-fade-out-slide'
+              : ''
+          }`}
         />
         <Image
           src={IlustShareAndInfluenceMobile}
           alt="IlustShareAndInfluenceMobile"
-          className="z-10"
+          className={`z-10 ${
+            inView && isBottom >= measurement
+              ? 'animate-fade-in-slide'
+              : isBottom >= measurement
+              ? 'animate-fade-out-slide'
+              : ''
+          }`}
         />
       </div>
     </section>

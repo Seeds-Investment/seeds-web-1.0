@@ -23,7 +23,7 @@ const Section5: React.FC = () => {
       <div className=" text-sm mt-3 font-light text-[#262626]">
         Your all-in-one source for financial updates
       </div>
-      <div className="flex items-center justify-center h-full">
+      <div className="h-auto">
         <Tabs value={activeTab}>
           <TabsHeader
             className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
@@ -39,7 +39,7 @@ const Section5: React.FC = () => {
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'article'
                   ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                  : 'text-[#7C7C7C] text-xl font-normal'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
               }`}
             >
               Article
@@ -52,13 +52,13 @@ const Section5: React.FC = () => {
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'news'
                   ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                  : 'text-[#7C7C7C] text-xl font-normal'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
               }`}
             >
               News
             </Tab>
           </TabsHeader>
-          <TabsBody>
+          <TabsBody className="w-full">
             <TabPanel value="article">
               <ArticlePage />
             </TabPanel>

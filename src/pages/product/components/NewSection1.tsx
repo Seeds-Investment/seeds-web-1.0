@@ -2,12 +2,20 @@ import MockupPlayAndWin from '@/assets/product/MockupPlayAndWin.png';
 import PlayWinLine from '@/assets/product/Play&WinLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const NewSection1: React.FC = () => {
-  const { ref, inView } = useInView({
+  const measurement = 700;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
     threshold: 0
   });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    console.log(bottom);
+    setBottom(bottom);
+  }, [entry]);
   return (
     <section
       ref={ref}
@@ -15,7 +23,11 @@ const NewSection1: React.FC = () => {
     >
       <div
         className={`flex flex-col gap-5 xl:w-[712px] h-fit ${
-          inView ? 'animate-fade-in-slide' : ''
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
         }`}
       >
         <Image
@@ -39,7 +51,13 @@ const NewSection1: React.FC = () => {
       <Image
         src={MockupPlayAndWin}
         alt="MockupPlayAndWin"
-        className={`ml-[20px] ${inView ? 'animate-fade-in-slide' : ''}`}
+        className={`ml-[20px] ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
       />
     </section>
   );

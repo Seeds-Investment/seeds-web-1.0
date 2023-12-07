@@ -1,8 +1,20 @@
 import { Typography } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const NewSection5: React.FC = () => {
+  const measurement = 900;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    console.log(bottom);
+    setBottom(bottom);
+  }, [entry]);
   return (
-    <section className="flex m-20 gap-10 items-center">
+    <section ref={ref} className="flex m-20 gap-10 items-center">
       <iframe
         width="560"
         height="315"
@@ -11,8 +23,23 @@ const NewSection5: React.FC = () => {
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
+        className={`aspect-video ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
       ></iframe>
-      <div className="w-[554px]">
+      <div
+        className={`w-[554px] ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <Typography className="font-poppins font-bold text-[64px] text-[#201B1C] leading-[77.45px]">
           How to Play <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-tr to-[#7555DA] from-[#4FE6AF]">

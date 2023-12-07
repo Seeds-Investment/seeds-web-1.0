@@ -1,4 +1,5 @@
 'use client';
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/about-us/Section1';
 import Section2 from '@/containers/about-us/Section2';
@@ -15,6 +16,7 @@ export default function AboutUsPage(): React.ReactElement {
       <Section3 />
       <Section4 />
       <Section5 />
+      <Footer />
     </PageGradient>
   );
 }

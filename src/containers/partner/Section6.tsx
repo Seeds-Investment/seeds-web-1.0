@@ -5,11 +5,15 @@ import {
   SectionSixImageOval
 } from '@/constants/assets/images';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 const Section6: React.FC = () => {
   const { t } = useTranslation();
+  const [sliderIndex, setSliderIndex] = useState(0);
 
   const events = [
     { image: SectionSixImageEvent1.src },
@@ -22,6 +26,9 @@ const Section6: React.FC = () => {
     centerPadding: '10%',
     dots: true,
     infinite: false,
+    beforeChange: (current: number, next: number) => {
+      setSliderIndex(next);
+    },
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
@@ -70,7 +77,7 @@ const Section6: React.FC = () => {
 
         <div className="w-full mt-6 mb-14 md:mt-16 md:px-14">
           {/* TODO arrow next prev */}
-          <Slider {...settings}>
+          <Slider {...settings} initialSlide={sliderIndex}>
             {events?.length !== 0
               ? events?.map((data, idx) => (
                   <div key={idx} className="mr-3">

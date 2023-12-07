@@ -1,4 +1,5 @@
 import CCard from '@/components/CCard';
+import { PromoIcon } from '@/constants/assets/images';
 import { standartCurrency } from '@/helpers/currency';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -25,7 +26,21 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
           Get access to this content by purchasing premium
         </h1>
       </div>
-      <div className="flex justify-center mt-8">
+
+      <div className="flex justify-center">
+        <form className="w-[400px] p-2 mt-5 rounded-lg border border-black flex items-center">
+          <button type="submit" className="rounded-full">
+            <Image src={PromoIcon.src} height={30} width={30} alt="promo" />
+          </button>
+          <input
+            type="text"
+            className="border-none focus:outline-none flex-grow px-4"
+            placeholder="Input Promo Code"
+          />
+        </form>
+      </div>
+
+      <div className="flex justify-center mt-5">
         <div className="w-[400px] mt-2 rounded-2xl border border-seeds-purple">
           <div className="bg-seeds-purple w-full p-2 rounded-t-xl pl-2 text-white">
             <h1 className="font-poppins text-xs font-medium">

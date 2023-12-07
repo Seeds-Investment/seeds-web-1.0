@@ -187,7 +187,6 @@ const MoreOption = ({
   const handleDisableUser = (option: any): void => {
     setSelectedUser(option);
   };
-  console.log(listUser);
 
   const isDisabledPost = selectedPost === null;
   const isDisabledUser = selectedUser === null;
@@ -302,7 +301,7 @@ const MoreOption = ({
                 setIsLoading={setIsLoading}
                 setDataPost={setDataPost}
                 dataPost={dataPost}
-                setGolId={1}
+                setGolId={() => {}}
               />
             )}
             <Menu placement="left-start">
@@ -357,8 +356,7 @@ const MoreOption = ({
                   }}
                 >
                   <Image src={block} alt="blockUser" />
-                  {`${t('social.blockUser.block')}`}
-                  User
+                  {`${t('social.blockUser.block')}`} User
                 </MenuItem>
                 <MenuItem
                   className={`${
@@ -679,7 +677,7 @@ const MoreOption = ({
                     handleOpenBlock(null);
                   }}
                 >
-                  Block
+                  {`${t('social.blockUser.block')}`}
                 </button>
                 <Button
                   variant="text"

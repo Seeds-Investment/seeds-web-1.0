@@ -33,7 +33,10 @@ const languageList = [
 
 function clearLocalStorageAndRefreshPage(): void {
   // Remove specific items from local storage
-  localStorage.clear();
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('expiresAt');
+  localStorage.removeItem('keepMeLoggedIn');
 
   // Refresh the page
   window.location.reload();
@@ -53,7 +56,8 @@ const Header: React.FC = () => {
     clearLocalStorageAndRefreshPage();
   };
 
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
+  console.log(token);
   useEffect(() => {
     const storedToken: any = localStorage.getItem('accessToken');
     setToken(storedToken);
@@ -84,20 +88,20 @@ const Header: React.FC = () => {
           })}
         </section>
         <section className="flex items-center gap-8">
-          {token !== null ? (
-            <div
-              onClick={logout}
-              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
-            >
-              Logout
-            </div>
-          ) : (
+          {token === null ? (
             <Link
               href="/auth/login"
               className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#3AC4A0] rounded-full"
             >
               Login
             </Link>
+          ) : (
+            <div
+              onClick={logout}
+              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
+            >
+              Logout
+            </div>
           )}
 
           <Menu>

@@ -22,6 +22,10 @@ const PaymentContent: React.FC = () => {
   const [data, setData] = useState<any>({});
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [promo, setPromo] = useState<any>({
+    final_price: 0,
+    promo_code: ''
+  });
   const [params, setParams] = useState<paramsValidatePromo>({
     promo_code: '',
     item_price: '',
@@ -58,7 +62,7 @@ const PaymentContent: React.FC = () => {
   const fetchValidatePromo = async (): Promise<void> => {
     try {
       const response = await promoValidate(params);
-      console.log('ini response => ', response);
+      setPromo(response);
       setErrorMessage('');
     } catch (error) {
       setErrorMessage('Invalid Promo Code');
@@ -109,7 +113,7 @@ const PaymentContent: React.FC = () => {
           />
         </div>
       ) : step === 'payment' ? (
-        <PaymentMethod data={data} />
+        <PaymentMethod data={data} promo={promo} />
       ) : null}
     </PageGradient>
   );

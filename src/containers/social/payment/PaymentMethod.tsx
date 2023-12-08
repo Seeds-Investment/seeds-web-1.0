@@ -20,9 +20,10 @@ interface Payment {
 
 interface props {
   data: any;
+  promo: any;
 }
 
-const PaymentMethod: React.FC<props> = ({ data }) => {
+const PaymentMethod: React.FC<props> = ({ data, promo }) => {
   const [loading, setLoading] = useState(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [qRisList, setQRisList] = useState([]);
@@ -161,7 +162,12 @@ const PaymentMethod: React.FC<props> = ({ data }) => {
           setOpenDialog(false);
         }}
       >
-        <ModalEWallet payment={option} handlePay={handlePay} dataPost={data} />
+        <ModalEWallet
+          payment={option}
+          handlePay={handlePay}
+          dataPost={data}
+          promo={promo}
+        />
       </Dialog>
     </CCard>
   );

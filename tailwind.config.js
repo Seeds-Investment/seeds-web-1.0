@@ -100,21 +100,21 @@ module.exports = withMT({
         'fade-in-slide': {
           from: {
             opacity: 0,
-            transform: 'translateY(0)'
+            transform: 'translateY(100px)'
           },
           to: {
             opacity: 1,
-            transform: 'translateY(-100px)'
+            transform: 'translateY(0)'
           }
         },
         'fade-out-slide': {
           from: {
             opacity: 1,
-            transform: 'translateY(-100px)'
+            transform: 'translateY(0)'
           },
           to: {
             opacity: 0,
-            transform: 'translateY(0)'
+            transform: 'translateY(100px)'
           }
         }
       }

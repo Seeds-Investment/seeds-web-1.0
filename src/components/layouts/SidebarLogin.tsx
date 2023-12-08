@@ -40,12 +40,12 @@ const SidebarLogin: React.FC = () => {
         />
       )}
 
-      <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
+      <div className="mb-[30px] px-[60px]">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
           height={width !== undefined && width <= 640 ? '23.58' : undefined}
         />
-      </Link>
+      </div>
       <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
           <Link className={isLinkActive(data.url)} href={data.url} key={idx}>

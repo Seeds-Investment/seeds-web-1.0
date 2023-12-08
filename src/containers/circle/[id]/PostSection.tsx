@@ -304,9 +304,7 @@ const PostSection: React.FC<props> = ({
                 key={index}
                 onDoubleClick={() => {}}
                 onClick={() => {
-                  router.push(link).catch(err => {
-                    console.error(err);
-                  });
+                  handleItemClick(link);
                 }}
               >
                 <pre className="text-blue-500 font-poppins">

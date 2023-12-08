@@ -135,7 +135,15 @@ const UserSetting: React.FC = () => {
       label: languageCtx.language === 'EN' ? 'Rate Apps' : 'Nilai Aplikasi',
       altStartAdornment: 'rate apps',
       startAdornment: StarIcon,
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await router.push(
+            'https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en-ID'
+          );
+        } catch (error) {
+          console.error('Error navigating to FAQ:', error);
+        }
+      },
       extraClasses: submenuClasses
     }
   ];

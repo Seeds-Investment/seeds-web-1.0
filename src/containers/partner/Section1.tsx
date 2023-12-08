@@ -1,14 +1,16 @@
 import { SectionOneImageOne } from '@/constants/assets/images';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 const Section1: React.FC = () => {
   const { t } = useTranslation();
+  const width = useWindowInnerWidth();
 
   return (
-    <div className="md:mb-10 min-w-full font-poppins">
-      <div className="flex flex-col md:flex-row w-full items-center font-poppins">
+    <div className="md:mb-10 min-w-full font-poppins bg-[#F9F9F9]">
+      <div className="flex flex-col md:flex-row w-full items-center font-poppins relative">
         <div className="w-full text-center md:text-left md:w-1/2 md:mt-[7rem] p-5 md:p-20 order-2 md:order-1">
           <p className="text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
             {t('partner.section1.title')}
@@ -20,6 +22,15 @@ const Section1: React.FC = () => {
             {t('partner.section1.button')}
           </Button>
         </div>
+
+        {width !== undefined ? (
+          width > 700 ? (
+            <>
+              <div className="absolute bg-[#3AC4A0BF] blur-[150px] w-[200px] h-[200px] right-0 top-0 rounded-full"></div>
+              <div className="absolute bg-[#7F64D8] blur-[150px] w-[200px] h-[200px] left-0 bottom-44 rounded-full"></div>
+            </>
+          ) : null
+        ) : null}
 
         <div className="w-full p-5 md:w-1/2 mt-0 md:mt-[7rem] order-1 md:order-2 flex items-center justify-center">
           <Image

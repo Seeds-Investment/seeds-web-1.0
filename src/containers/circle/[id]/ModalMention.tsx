@@ -470,7 +470,7 @@ const ModalMention: React.FC<props> = ({
       const formattedValue = formatCurrency(value);
       setForm(prevForm => ({ ...prevForm, [name]: formattedValue }));
     } else if (name === 'premium_fee') {
-      setForm(prevForm => ({ ...prevForm, premium_fee: value }));
+      setForm(prevForm => ({ ...prevForm, premium_fee: parseInt(value) }));
     } else if (name === 'pie_title') {
       setForm(prevForm => ({ ...prevForm, pie_title: value }));
     } else {
@@ -755,21 +755,42 @@ const ModalMention: React.FC<props> = ({
         const res = await updatePostSocialAndCircle(payload, dataPost.id);
         if (res.status === 200) {
           setDataPost((prevState: any) => {
+            console.log(prevState, 'afnasjfa');
+
             if (Array.isArray(prevState)) {
               const newData = prevState.map((el: any) => {
-                el.content_text = form.content_text;
-                el.privacy = form.privacy;
-                el.media_urls = form.media_urls;
-                el.pollings = form.polling.options;
-                el.polling_multiple = form.polling.isMultiVote;
-                el.canAddNewOption = form.polling.canAddNewOption;
-                el.endDate = form.polling.endDate;
-                el.pie = form.pie;
-                el.pie_amount = form.pie_amount;
-                el.pie_title = form.pie_title;
+                if (el.id === dataPost.id) {
+                  el.content_text = form.content_text;
+                  el.privacy = form.privacy;
+                  el.media_urls = form.media_urls;
+                  el.pollings = form.polling.options;
+                  el.polling_multiple = form.polling.isMultiVote;
+                  el.canAddNewOption = form.polling.canAddNewOption;
+                  el.endDate = form.polling.endDate;
+                  el.pie = form.pie;
+                  el.pie_amount = form.pie_amount;
+                  el.pie_title = form.pie_title;
+                }
                 return el;
               });
               return newData;
+            } else if (prevState.data !== undefined) {
+              const newData = prevState.data.map((el: any) => {
+                if (el.id === dataPost.id) {
+                  el.content_text = form.content_text;
+                  el.privacy = form.privacy;
+                  el.media_urls = form.media_urls;
+                  el.pollings = form.polling.options;
+                  el.polling_multiple = form.polling.isMultiVote;
+                  el.canAddNewOption = form.polling.canAddNewOption;
+                  el.endDate = form.polling.endDate;
+                  el.pie = form.pie;
+                  el.pie_amount = form.pie_amount;
+                  el.pie_title = form.pie_title;
+                }
+                return el;
+              });
+              return { data: newData, metadata: prevState.metadata };
             }
             return prevState;
           });

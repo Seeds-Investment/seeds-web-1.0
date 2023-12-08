@@ -54,7 +54,7 @@ const TrendingSection: React.FC = () => {
                 className={`text-center z-0 text-xl bg-transparent mt-3 xl:mt-5 ${
                   activeTab === el.value
                     ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
+                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
                 }`}
               >
                 {el.name}

@@ -1,31 +1,46 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { getBlocklist } from '@/repository/user.repository';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import blockImage from '../../../assets/block.svg';
 
-// Buat komponen Card untuk menampilkan data blocklist
-const BlockListCard: React.FC<{ data: any }> = ({ data }) => {
-  return (
-    <div className="border rounded-md p-4 mb-4">
-      <h2 className="text-lg font-semibold">User Information</h2>
-      <p>Name: {data.name}</p>
-      <p>Email: {data.email}</p>
-      {/* Tambahkan informasi lain dari data blocklist sesuai kebutuhan */}
-    </div>
-  );
-};
+interface DataPlayer {
+  avatar: string;
+  badge: string;
+  bio: string;
+  birthDate: string;
+  city: string;
+  community: string;
+  email: string;
+  email_verification: boolean;
+  followers: number;
+  following: number;
+  id: string;
+  isBlocked: boolean;
+  isFollowed: boolean;
+  last_login_at: string;
+  name: string;
+  phoneNumber: string;
+  preferredCurrency: string;
+  preferredLanguage: string;
+  refCode: string;
+  role: string;
+  seedsTag: string;
+  userRole: string;
+  verified: boolean;
+}
 
 const BlockList: React.FC = () => {
-  const [blocklistData, setBlocklistData] = useState<any>(null);
+  const [blocklistData, setBlocklistData] = useState<DataPlayer[]>([]);
 
   useEffect(() => {
-    // Memanggil fungsi getBlocklist saat komponen dimount
     const fetchData = async (): Promise<void> => {
       try {
         const response = await getBlocklist();
-        console.log(response, 'kf');
+        console.log(response.data, 'kf');
 
-        setBlocklistData(response.data); // Mengatur data blocklist ke state
+        setBlocklistData(response.data);
       } catch (error) {
         console.error('Error fetching blocklist:', error);
       }
@@ -36,12 +51,12 @@ const BlockList: React.FC = () => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="w-full justify-center items-center text-center cursor-default">
-        <h1 className="text-center text-lg font-semibold">Block List</h1>
-        <div className="w-full mx-auto lg:w-[70%] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between">
+      <div className="w-full justify-center items-center text-center p-2 bg-[#FFFFFF] rounded-2xl  cursor-default">
+        <h1 className="text-center text-lg font-semibold mb-5">Block List</h1>
+        <div className="w-full mx-auto lg:w-[70%] bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between">
           <input
             type="search"
-            className="text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px]"
+            className="text-[#7C7C7C] w-full border-none rounded-3xl px-[8px] focus:outline-none "
             placeholder="Search"
             aria-label="Search"
             aria-describedby="button-addon2"
@@ -61,15 +76,46 @@ const BlockList: React.FC = () => {
             />
           </svg>
         </div>
-
-        {/* Menampilkan data blocklist menggunakan Card */}
-        {blocklistData.length > 0 && (
-          <div className="mt-8">
-            {blocklistData.map((item: any, index: number) => (
-              <BlockListCard key={index} data={item} />
-            ))}
+        {blocklistData.map((data, index) => (
+          <div
+            key={index}
+            className={`w-full p-3 mb-2 bg-[#FFFFFF] mt-2 rounded-2xl border border-1`}
+          >
+            <div className="flex justify-between">
+              <div className="flex w-full">
+                <Image
+                  src={data.avatar}
+                  alt={data.name}
+                  width={24}
+                  height={24}
+                  className="w-10 h-10 rounded-full"
+                />
+                <div className="">
+                  <div className="flex">
+                    <h2 className="font-bold ms-5 text-sm font-poppins text-[#262626]">
+                      {data.name}
+                    </h2>
+                    <Image
+                      src={blockImage}
+                      alt="medal"
+                      width={12}
+                      height={12}
+                      className="w-5 ms-2 h-5 rounded-full"
+                    />
+                  </div>
+                  <h1 className="text-[#7C7C7C] mt-2  text-xs font-light font-poppins">
+                    @{data.seedsTag}
+                  </h1>
+                </div>
+              </div>
+              <div className="mt-2">
+                <button className=" bg-[#3AC4A0] text-white text-xs font-semibold px-4 py-2 border rounded-full border-[#3AC4A0]">
+                  Unblock
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </PageGradient>
   );

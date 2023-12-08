@@ -166,17 +166,17 @@ export const AboutUsSectionTwoIcon1: AssetsInterface = {
 };
 
 export const AboutUsSectionTwoIcon2: AssetsInterface = {
-  src: '/assets/about-us/section-two/Icon-2.svg',
+  src: '/assets/about-us/section-two/icon-2.svg',
   alt: 'bg'
 };
 
 export const AboutUsSectionTwoIcon3: AssetsInterface = {
-  src: '/assets/about-us/section-two/Icon-3.svg',
+  src: '/assets/about-us/section-two/icon-3.svg',
   alt: 'bg'
 };
 
 export const AboutUsSectionTwoIcon4: AssetsInterface = {
-  src: '/assets/about-us/section-two/Icon-4.svg',
+  src: '/assets/about-us/section-two/icon-4.svg',
   alt: 'bg'
 };
 

@@ -2,20 +2,24 @@
 import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import MetaPage from '@/containers/circle/[id]/MetaComponent';
 import {
-  getArticle,
-  getArticleById,
-  getArticleComment,
-  postComment
+    getArticle,
+    getArticleById,
+    getArticleComment,
+    postComment,
+    postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Input } from '@material-tailwind/react';
 import { format, parseISO } from 'date-fns';
 import { id as ID } from 'date-fns/locale';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import author from '../../../../public/assets/author.png';
 
 interface UserData {
   name: string;
@@ -49,6 +53,11 @@ interface Article {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  meta_description: string;
+  meta_title: string;
+  assets: any[];
+  circles: any[];
+  peoples: any[];
 }
 
 interface FormRequestInterface {
@@ -82,6 +91,11 @@ interface ArticleDetail {
   total_comments: number;
   total_shares: number;
   is_liked: boolean;
+  meta_description: string;
+  meta_title: string;
+  assets: any[];
+  circles: any[];
+  peoples: any[];
 }
 
 interface ArticleComment {
@@ -95,11 +109,11 @@ interface ArticleComment {
 const params = {
   page: 1,
   limit: 8,
-  order_by: 'scheduled_at,DESC',
-  source: 'news',
-  language: '',
   search: '',
-  category: 'all'
+  language: '',
+  source: 'news',
+  order_by: 'scheduled_at,DESC',
+  category: 'All'
 };
 
 export default function ArticleDetailPage(): JSX.Element {
@@ -167,6 +181,7 @@ export default function ArticleDetailPage(): JSX.Element {
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
+              console.log(response.news);
             }
           })
           .catch(error => {
@@ -190,7 +205,7 @@ export default function ArticleDetailPage(): JSX.Element {
   }, [id]);
 
   function copyValueWithUrl(valueToCopy: number): boolean {
-    const textToCopy = `${baseUrl}/seedspedia/news/${valueToCopy}`;
+    const textToCopy = `${baseUrl}/seedspedia/articles/${valueToCopy}`;
 
     const textArea = document.createElement('textarea');
     textArea.value = textToCopy;
@@ -221,12 +236,12 @@ export default function ArticleDetailPage(): JSX.Element {
       const parsedDate = parseISO(dateStr);
       const formattedDate = format(parsedDate, 'd MMMM yyyy', {
         locale: ID
-      });
+      }); // id adalah kode bahasa Indonesia
 
       return formattedDate;
     } catch (error) {
       console.error('Error parsing or formatting date:', error);
-      return '';
+      return ''; // Mengembalikan string kosong jika terjadi kesalahan
     }
   }
 
@@ -263,35 +278,42 @@ export default function ArticleDetailPage(): JSX.Element {
     }
   };
 
-  function splitContentIntoParagraphs(content: any): string[] {
-    const MAX_PARAGRAPH_LENGTH = 400;
-    const paragraphs = [];
-    let currentParagraph = '';
-
-    for (const char of content) {
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      currentParagraph += char;
-
-      if (currentParagraph.length >= MAX_PARAGRAPH_LENGTH && char === '.') {
-        paragraphs.push(currentParagraph);
-        currentParagraph = '';
+  const likeArticle = async (articleId: number): Promise<void> => {
+    try {
+      const response = await postLike(formRequest, articleId);
+      if (response.status === 200) {
+        if (response.is_liked === true) {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes + 1,
+                is_liked: true
+              };
+            }
+            return prevArticleDetail;
+          });
+        } else {
+          setArticleDetail(prevArticleDetail => {
+            if (prevArticleDetail !== null) {
+              return {
+                ...prevArticleDetail,
+                total_likes: prevArticleDetail?.total_likes - 1,
+                is_liked: false
+              };
+            }
+            return prevArticleDetail;
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
-
-    if (currentParagraph !== undefined) {
-      paragraphs.push(currentParagraph);
-    }
-
-    return paragraphs;
-  }
-
-  const contentParagraphs = splitContentIntoParagraphs(
-    articleDetail?.content ?? ''
-  );
+  };
 
   function formatDate(inputDate: string): string {
     const date = new Date(inputDate);
-
+    // Remove milliseconds to avoid precision issues
     date.setMilliseconds(0);
 
     const options: Intl.DateTimeFormatOptions = {
@@ -312,6 +334,11 @@ export default function ArticleDetailPage(): JSX.Element {
     return <p>Loading...</p>;
   }
 
+  const defaultNews = '/assets/default-news.png';
+  const imageUrl = articleDetail?.imageUrl;
+
+  const isImageValid = isImageUrlValid(imageUrl);
+
   const customGradient = (
     <>
       <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
@@ -321,14 +348,17 @@ export default function ArticleDetailPage(): JSX.Element {
       <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
     </>
   );
-
-  const defaultNews = '/assets/default-news.png';
-  const imageUrl = articleDetail?.imageUrl;
-  const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
+      {articleDetail.meta_description.length > 0 &&
+        articleDetail.meta_title.length > 0 && (
+          <MetaPage
+            pageDescription={articleDetail.meta_description}
+            pageTitle={articleDetail.meta_title}
+          />
+        )}
       <PageGradient customGradient={customGradient} className="z-0">
-        <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
+        <div className="z-20 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           {open && (
             <div
               id="myToast"
@@ -346,15 +376,77 @@ export default function ArticleDetailPage(): JSX.Element {
             {articleDetail.title}
           </h1>
           <div className="flex flex-row justify-between my-4">
-            <div className="flex flex-col">
-              <h4 className="text-xl font-semibold text-[#262626]">
-                {articleDetail.author}
-              </h4>
-              <p className="text-sm font-semibold text-[#8A8A8A]">
-                {formatDateToIndonesian(articleDetail?.publicationDate)}
-              </p>
+            <div className="flex gap-3">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                <Image
+                  src={author}
+                  alt="Author"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <h4 className="text-xl font-semibold text-[#262626] mt-2">
+                  {articleDetail.author}
+                </h4>
+                <p className="text-sm font-semibold text-[#8A8A8A]">
+                  {formatDateToIndonesian(articleDetail?.publicationDate)}
+                </p>
+              </div>
             </div>
             <div className="flex flex-row gap-3">
+              {articleDetail?.is_liked !== undefined &&
+              articleDetail.is_liked ? (
+                <div
+                  className="rounded-full p-1 w-8 h-8 bg-green-500 cursor-pointer"
+                  onClick={async () => {
+                    await likeArticle(articleDetail?.id ?? 0);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                      stroke="white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              ) : (
+                <div
+                  className={`rounded-full p-1 w-8 h-8 cursor-pointer ${
+                    articleDetail.is_liked ? 'bg-green-500' : 'bg-[#BDBDBD]'
+                  }`}
+                  onClick={async () => {
+                    await likeArticle(articleDetail?.id ?? 0);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M7 11L11 2C11.7956 2 12.5587 2.31607 13.1213 2.87868C13.6839 3.44129 14 4.20435 14 5V9H19.66C19.9499 8.99672 20.2371 9.0565 20.5016 9.17522C20.7661 9.29393 21.0016 9.46873 21.1919 9.68751C21.3821 9.90629 21.5225 10.1638 21.6033 10.4423C21.6842 10.7207 21.7035 11.0134 21.66 11.3L20.28 20.3C20.2077 20.7769 19.9654 21.2116 19.5979 21.524C19.2304 21.8364 18.7623 22.0055 18.28 22H7M7 11V22M7 11H4C3.46957 11 2.96086 11.2107 2.58579 11.5858C2.21071 11.9609 2 12.4696 2 13V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H7"
+                      stroke="white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              )}
+              <p className="align-middle mx-2 mt-1">
+                {' '}
+                +{articleDetail?.total_likes}
+              </p>
               <svg
                 width="32"
                 height="32"
@@ -388,12 +480,56 @@ export default function ArticleDetailPage(): JSX.Element {
               />
             )}
           </div>
-          <div className="flex flex-col border-b-4 pb-5 border-[#E9E9E9]">
-            {contentParagraphs.map((paragraph, index) => (
-              <div key={index} className=" py-4">
-                <p className="w-full">{paragraph}</p>
+          <div className="z-10 flex flex-col border-b-4 pb-5 border-[#E9E9E9]">
+            <p
+              className="w-full mt-8 border-r pr-3 border-[#DBC8FF]"
+              dangerouslySetInnerHTML={{ __html: `${articleDetail?.content}` }}
+            ></p>
+            <div className="z-10 my-4">
+              <div>
+                <p className="font-bold text-md">People </p>
+                <div className="flex flex-row gap-3">
+                  {articleDetail?.peoples.map(people => (
+                    <p
+                      key={people.id}
+                      className="text-md flex underline text-[#3AC4A0]"
+                    >
+                      {people.name}
+                    </p>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
+            <div className="my-4">
+              <div>
+                <p className="font-bold text-md">Circle </p>
+                <div className="flex flex-row gap-3">
+                  {articleDetail?.circles.map(circle => (
+                    <p
+                      key={circle.id}
+                      className="text-md flex flex-row underline text-[#3AC4A0]"
+                    >
+                      {circle.name}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="my-4">
+              <div>
+                <p className="font-bold text-md">Assets </p>
+                <div className="flex flex-row gap-3">
+                  {articleDetail?.assets.map(assets => (
+                    <p
+                      key={assets.id}
+                      className="text-md flex underline text-[#3AC4A0]"
+                    >
+                      {assets.name}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col px-2">
             {accessToken !== null && userInfo !== null ? (
@@ -466,7 +602,7 @@ export default function ArticleDetailPage(): JSX.Element {
               <></>
             )}
           </div>
-          <div className="mt-12 flex justify-between">
+          <div className="mt-12 flex z-10 justify-between">
             <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
             <Link href={'/seedspedia'}>
               <p className="flex text-md border border-1 p-2 font-semibold">
@@ -496,8 +632,8 @@ export default function ArticleDetailPage(): JSX.Element {
               </p>
             </Link>
           </div>
-          <div className="grid lg:grid-cols-6 gap-4 rounded-2xl py-10">
-            {articles.slice(0, 3).map(article => (
+          <div className="grid z-10 lg:grid-cols-6 gap-4 rounded-2xl py-10">
+            {articles?.slice(0, 3).map(article => (
               <div
                 key={article.id}
                 className="p-4 border bg-[#F9F9F9] gap-[16px] lg:col-span-2 border-gray-300 rounded-3xl w-full"
@@ -519,13 +655,16 @@ export default function ArticleDetailPage(): JSX.Element {
                                 articleDetail?.publicationDate
                               )}
                             </p>
+                            {/* <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
+                          12-maret
+                        </p> */}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div>
                       <div className="mt-1 w-[100px] h-[100px]">
-                        {isImageValid ? (
+                        {isImageUrlValid(article.imageUrl) ? (
                           <img
                             src={article?.imageUrl}
                             alt=""

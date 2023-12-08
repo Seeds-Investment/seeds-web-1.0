@@ -39,7 +39,7 @@ const Section5: React.FC = () => {
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'article'
                   ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                  : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
               }`}
             >
               Article
@@ -52,7 +52,7 @@ const Section5: React.FC = () => {
               className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
                 activeTab === 'news'
                   ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                  : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
               }`}
             >
               News

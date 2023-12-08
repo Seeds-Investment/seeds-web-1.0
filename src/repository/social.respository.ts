@@ -126,3 +126,28 @@ export const postPaymentPremiumContent = async (
     }
   });
 };
+
+export const getSocialPostHashtag = async (id: any): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+  const params = {
+    page: 1,
+    limit: 0,
+    hashtag: id
+  };
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  if (isUndefindOrNull(params) || isEmptyString(params)) {
+    return await Promise.resolve(null);
+  }
+
+  return await socialService.get(`v2/list/hashtag-post`, {
+    params,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

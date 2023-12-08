@@ -254,14 +254,13 @@ const OptionInput: React.FC<OptionInputProps> = ({
   setIsDisable,
   setIsError
 }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState('');
   useEffect(() => {
     if (value.length > 250) {
       setIsError(true);
       setIsDisable(true);
-      setErrorMessage(
-        'Your question is exceeding the maximum character limit. Please rewrite the questions'
-      );
+      setErrorMessage(`${t('social.errorState.poll1')}`);
     } else {
       setIsDisable(false);
     }

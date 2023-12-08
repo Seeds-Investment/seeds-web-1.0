@@ -1,4 +1,3 @@
-import { formatCurrency } from '@/helpers/currency';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
   Button,
@@ -10,6 +9,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { PremiumContent } from 'public/assets/circle';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface props {
@@ -26,6 +26,16 @@ const ModalChoosePricePremium: React.FC<props> = ({
   form
 }) => {
   const { t } = useTranslation();
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    console.log(form.premium_fee);
+    if (form.premium_fee < 2000) {
+      setError('Minimum Fee is 2.000');
+    } else {
+      setError('');
+    }
+  }, [form.premium_fee]);
 
   return (
     <Dialog open={isOpen} handler={() => {}} className="overflow-y-auto">
@@ -119,12 +129,14 @@ const ModalChoosePricePremium: React.FC<props> = ({
           type="number"
           onChange={changeForm}
           name="premium_fee"
-          value={formatCurrency(form.premium_fee)}
+          value={form.premium_fee}
           variant="outlined"
         />
+        <p className="text-red-500">{error}</p>
 
         <Button
           className="w-full mt-16 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
+          disabled={error !== ''}
           onClick={() => {
             setIsOpen(false);
           }}

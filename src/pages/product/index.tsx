@@ -1,18 +1,20 @@
-import Section6 from '@/containers/landing/Section6';
-import Section7 from '@/containers/temporary/Section1';
-import Section1 from './components/Section1';
-import Section2 from './components/Section2';
-import Section3 from './components/Section3';
+import Footer from '@/components/layouts/Footer';
+import NewSection1 from './components/NewSection1';
+import NewSection2 from './components/NewSection2';
+import NewSection3 from './components/NewSection3';
+import NewSection5 from './components/NewSection5';
+import NewSection6 from './components/NewSection6';
 
 const Product = (): React.ReactElement => {
   return (
-    <div className="pb-[10] h-screen font-poppins">
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Section7 />
-      <Section6 />
-    </div>
+    <>
+      <NewSection1 />
+      <NewSection2 />
+      <NewSection3 />
+      <NewSection5 />
+      <NewSection6 />
+      <Footer />
+    </>
   );
 };
 

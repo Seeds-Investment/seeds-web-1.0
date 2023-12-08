@@ -5,7 +5,7 @@ import Card1 from '@/containers/homepage/asset/Card1';
 import Card2 from '@/containers/homepage/asset/Card2';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
-import { Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -88,6 +88,36 @@ const AssetDetailPage: React.FC = () => {
             ))}
           </TabsHeader>
         </Tabs>
+      </CCard>
+      <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
+        <div className="flex justify-between gap-2">
+          <Button
+            variant="outlined"
+            className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
+            onClick={() => {
+              router
+                .push(`/homepage/order/${id as string}?transaction=sell`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
+            Sell
+          </Button>
+          <Button
+            variant="filled"
+            className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
+            onClick={() => {
+              router
+                .push(`/homepage/order/${id as string}?transaction=buy`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
+            Buy
+          </Button>
+        </div>
       </CCard>
     </PageGradient>
   );

@@ -1,7 +1,7 @@
 import ArtPagination from '@/components/ArtPagination';
+import Footer from '@/components/layouts/Footer';
 import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -474,7 +474,7 @@ export default function ArticleList(): React.ReactElement {
           />
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

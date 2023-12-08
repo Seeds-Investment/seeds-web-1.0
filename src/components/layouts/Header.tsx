@@ -1,6 +1,7 @@
 import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
 import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
+import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   MenuList,
   Typography
 } from '@material-tailwind/react';
+import { trackEvent } from '@phntms/next-gtm';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -40,6 +42,7 @@ function clearLocalStorageAndRefreshPage(): void {
 }
 
 const Header: React.FC = () => {
+  const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
   const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
@@ -57,6 +60,21 @@ const Header: React.FC = () => {
   useEffect(() => {
     const storedToken: any = localStorage.getItem('accessToken');
     setToken(storedToken);
+    const user = navigator.userAgent;
+    console.log(user);
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        console.log(dataInfo);
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
   }, []);
 
   return (
@@ -77,6 +95,16 @@ const Header: React.FC = () => {
                 } px-3`}
                 href={`${item.url}`}
                 key={item.id}
+                onClick={() => {
+                  trackEvent({
+                    event: 'Seeds_view_home_page_web',
+                    data: {
+                      user_id: userInfo?.id,
+                      page_name: item.name,
+                      created_at: new Date().toString()
+                    }
+                  });
+                }}
               >
                 {item.name}
               </Link>
@@ -86,7 +114,9 @@ const Header: React.FC = () => {
         <section className="flex items-center gap-8">
           {token !== null ? (
             <div
-              onClick={logout}
+              onClick={() => {
+                logout();
+              }}
               className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
             >
               Logout

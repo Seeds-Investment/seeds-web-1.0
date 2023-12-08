@@ -1,5 +1,6 @@
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
+import ModalAddPost from '@/components/social/ModalAddPost';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
 import PostSection from '@/containers/circle/[id]/PostSection';
@@ -12,6 +13,7 @@ import {
   getSocialPostForYou,
   getSocialPostMySpace
 } from '@/repository/social.respository';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import {
   Menu,
   MenuHandler,
@@ -100,6 +102,7 @@ const Social: React.FC = () => {
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [isOpen, setIsOpen] = useState(false);
   const [isIncrease, setIsIncrease] = useState(false);
+  const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false);
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -321,12 +324,33 @@ const Social: React.FC = () => {
         setData={setDataPost}
         setGolId={setGolId}
       />
+      <ModalAddPost
+        isOpen={isOpenModalAdd}
+        handleOpen={() => {
+          setIsOpenModalAdd(false);
+        }}
+        openModalPost={handleOpen}
+      />
+
       <Card1
         activeTab={activeTab}
         setActiveTab={handleChangeTab}
         changeFilter={handleChangeFilter}
         filter={filter}
       />
+
+      <div className="fixed bottom-10 right-10 z-20">
+        <div className="bg-[#3AC4A0] p-2 rounded-full">
+          <PlusIcon
+            width={50}
+            height={50}
+            className="text-white"
+            onClick={() => {
+              setIsOpenModalAdd(true);
+            }}
+          />
+        </div>
+      </div>
 
       <Card2 userData={userInfo} handleOpen={handleOpen} />
 

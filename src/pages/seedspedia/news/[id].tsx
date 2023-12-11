@@ -127,7 +127,7 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -167,7 +167,6 @@ export default function ArticleDetailPage(): JSX.Element {
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
-              console.log(response.news);
             }
           })
           .catch(error => {
@@ -376,12 +375,20 @@ export default function ArticleDetailPage(): JSX.Element {
 
           <div className="w-full">
             {isImageValid ? (
-              <img src={imageUrl} alt="Image" className="w-full" />
+              <img
+                src={imageUrl}
+                alt="Image"
+                className="w-full object-cover rounded-2xl w-full lg:h-[400px]"
+              />
             ) : (
-              <img src={defaultNews} alt="Image" className="w-full" />
+              <img
+                src={defaultNews}
+                alt="Image"
+                className="w-full object-cover rounded-2xl w-full lg:h-[400px]"
+              />
             )}
           </div>
-          <div className="flex flex-col border-b-4 pb-5 border-[#7555DA]">
+          <div className="flex flex-col border-b-4 pb-5 border-[#E9E9E9]">
             {contentParagraphs.map((paragraph, index) => (
               <div key={index} className=" py-4">
                 <p className="w-full">{paragraph}</p>
@@ -400,9 +407,10 @@ export default function ArticleDetailPage(): JSX.Element {
                   <h1 className="text-[#201B1C] text-lg font-semibold">
                     {userInfo.name}
                   </h1>
-                  <div className="w-full">
+                  <div className="w-full rounded-lg border-1 border border-[#3AC4A0]">
                     <Input
-                      label="Type your comment.."
+                      placeholder="Type your comment.."
+                      className="focus:outline-none "
                       onChange={e => {
                         updateComment(e.target.value);
                       }}
@@ -412,9 +420,8 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div className="pt-7">
                   <Button
                     disabled={comment === '' && loading}
-                    variant="purple"
                     label="Comment"
-                    containerClasses="xl:w-[196px] h-full p-1 rounded-full"
+                    containerClasses="xl:w-[196px] h-full p-1 rounded-full bg-[#3AC4A0]"
                     onClick={async () => {
                       await submitComment(articleDetail.id);
                     }}

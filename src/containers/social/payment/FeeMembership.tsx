@@ -8,9 +8,16 @@ import { PaymentSVG } from 'public/assets/circle';
 interface props {
   setStep: any;
   detailPost: any;
+  changeValue: any;
+  errorMessage: string;
 }
 
-const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
+const FeeMembership: React.FC<props> = ({
+  setStep,
+  detailPost,
+  changeValue,
+  errorMessage
+}) => {
   return (
     <CCard className="flex p-8 mx-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-col justify-center pt-4">
@@ -34,10 +41,15 @@ const FeeMembership: React.FC<props> = ({ setStep, detailPost }) => {
           </button>
           <input
             type="text"
+            name="promo_code"
+            onChange={changeValue}
             className="border-none focus:outline-none flex-grow px-4"
             placeholder="Input Promo Code"
           />
         </form>
+      </div>
+      <div className="flex justify-center">
+        <p className="text-red-500 w-[400px]">{errorMessage}</p>
       </div>
 
       <div className="flex justify-center mt-5">

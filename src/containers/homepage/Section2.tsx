@@ -1,9 +1,15 @@
-import { getPlaySimulation } from '@/repository/play.repository';
+import {
+  getPlaySimulation,
+  getPlaySimulationDetail
+} from '@/repository/play.repository';
+import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import bestReward from '../../../public/assets/images/bestReward.svg';
 import goldHome from '../../../public/assets/images/goldHome.svg';
+import rectangle from '../../assets/RectangleHome.png';
 
 interface DataPlayer {
   name: string;
@@ -14,9 +20,34 @@ interface DataPlayer {
   medal: string;
   prize: number;
 }
-
+interface DataPlay {
+  play_id: string;
+  user_detail: {
+    portofolio: number;
+    return: number;
+  };
+  prize: number[];
+}
 const Section2 = (): React.ReactElement => {
+  const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
+  const [playDetail, setPlayDetail] = useState<DataPlay>({
+    play_id: '08e1bdf9-d618-408b-8a2e-9fe98f66de8e',
+    user_detail: {
+      portofolio: 0,
+      return: 0
+    },
+    prize: [450000000, 300000000, 150000000]
+  });
+
+  const fetchPlaySimulationDetail = async (): Promise<void> => {
+    try {
+      const res = await getPlaySimulationDetail();
+      setPlayDetail(res.data);
+    } catch (error) {
+      console.error('Error fetching play simulation detail:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchPlaySimulation = async (): Promise<void> => {
@@ -40,6 +71,7 @@ const Section2 = (): React.ReactElement => {
     };
 
     void fetchPlaySimulation();
+    void fetchPlaySimulationDetail();
   }, []);
 
   return (
@@ -140,27 +172,49 @@ const Section2 = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
-          <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
-            Seeds Coins
-          </h1>
-          <div className="flex">
-            <Image src={goldHome} alt="Next" width={24} height={24} />
-            <h1 className="text-sm ms-2 font-bold text-[#000000]">
-              {playerData?.prize}
+        <Link href={'/homepage/seedscoin'}>
+          <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
+            <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
+              Seeds Coins
             </h1>
+            <div className="flex">
+              <Image src={goldHome} alt="Next" width={24} height={24} />
+              <h1 className="text-sm ms-2 font-bold text-[#000000]">
+                {playerData?.prize}
+              </h1>
+            </div>
           </div>
-        </div>
-        <button className="border border-1 rounded-full justify-center text-center py-2 mt-2 w-full bg-[#3AC4A0] text-white text-base font-semibold">
+        </Link>
+        <Button
+          className="border border-1 rounded-full justify-center text-center py-2 mt-2 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
+          onClick={() => {
+            router
+              .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
+              .catch(err => {
+                console.log(err);
+              });
+          }}
+        >
           Play
-        </button>
+        </Button>
       </div>
       <div className="w-full lg:w-1/2 p-3">
+        <Image
+          src={rectangle}
+          alt="image"
+          height={0}
+          width={0}
+          className="absolute z-0 bottom-0 right-0 w-[50%] h-fulls"
+        />
         <div className="justify-end text-center lg:text-end">
-          <h1 className="text-sm font-normal text-[#262626] mb-3">
-            Win Reward every Month{' '}
-            <span className="font-semibold">{'"Now in December"'}</span>
-          </h1>
+          <div className="justify-end lg:flex text-center lg:text-end">
+            <h1 className="text-sm font-normal text-[#262626] mb-1">
+              Win Reward every Month{' '}
+            </h1>
+            <h1 className="font-semibold text-sm text-[#262626] mb-3">
+              {'"Now in December"'}
+            </h1>
+          </div>
           <div className="lg:flex flex-row justify-end">
             <div className="border lg:w-1/3 w-full  justify-center text-center border-1 me-3 rounded-lg bg-[#7555DA]">
               <div className="">

@@ -1,6 +1,7 @@
 import ArtPagination from '@/components/ArtPagination';
 import CardCircle from '@/components/circle/CardCircle';
 import { getCircle } from '@/repository/circle.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,6 +71,7 @@ export default function ListCircle(): React.ReactElement {
   const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [userInfo, setUserInfo] = useState<any>([]);
 
   const fetchDataCircle = async (): Promise<void> => {
     try {
@@ -111,6 +113,20 @@ export default function ListCircle(): React.ReactElement {
       void fetchDataCircle();
     }
   }, [searchInput.length]);
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   return (
     <>
@@ -201,7 +217,11 @@ export default function ListCircle(): React.ReactElement {
             circle.map((data: Circle, idx: number) => {
               return (
                 <div key={idx} className="w-full md:w-1/2 mb-5">
-                  <CardCircle data={data} cover={data.cover} />
+                  <CardCircle
+                    data={data}
+                    cover={data.cover}
+                    userInfo={userInfo}
+                  />
                 </div>
               );
             })

@@ -15,6 +15,7 @@ const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
   const [modalCopyPie, setModalCopyPie] = useState<boolean>(false);
 
   const sumValueAsset = (assets: any[]): string => {
+    console.log(assets, 'skfshag');
     const sumAsset = assets.reduce(
       (acc: number, current: any) => acc + parseInt(current.allocation),
       0

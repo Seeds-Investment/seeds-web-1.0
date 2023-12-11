@@ -416,7 +416,11 @@ const Search: React.FC = () => {
                         <>
                           {activeTab === 'circle' ? (
                             <div key={idx} className="w-full md:w-1/2 mb-5">
-                              <CardCircle data={data} cover={data.cover} />
+                              <CardCircle
+                                data={data}
+                                cover={data.cover}
+                                userInfo={userInfo}
+                              />
                             </div>
                           ) : activeTab === 'asset' ? (
                             <div key={idx} className="w-full">

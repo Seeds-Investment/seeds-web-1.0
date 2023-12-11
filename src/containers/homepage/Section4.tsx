@@ -46,12 +46,16 @@ const Section4 = (): React.ReactElement => {
     void fetchBannerAsset();
   }, []);
 
+  const hotNewsItemClass = 'mb-2 me-20';
+
   const sliderSettings = {
+    className: 'rounded-2xl center',
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
+
     responsive: [
       {
         breakpoint: 1024,
@@ -89,9 +93,12 @@ const Section4 = (): React.ReactElement => {
         <Slider {...sliderSettings}>
           {bannerData?.map(data => (
             <Link key={data.id} href={`/homepage/exclusive/${data?.id ?? 0}`}>
-              <div key={data.id} className="w-full">
+              <div
+                key={data.id}
+                className={`w-full lg:pe-5  flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
+              >
                 <Image
-                  className="object-cover "
+                  className="object-cover rounded-2xl "
                   src={data.image_url}
                   alt={data.name}
                   width={1420}

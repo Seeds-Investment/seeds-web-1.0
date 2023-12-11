@@ -147,20 +147,20 @@ export default function ArticleList(): React.ReactElement {
         customGradient={customGradient}
         className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
       >
-        <div className="flex z-10 flex-col lg:flex-row justify-between">
+        <div className="flex z-10 flex-col lg:flex-col justify-center text-center">
           <div className="flex flex-col">
             <div className="text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text1')}
             </div>
-            <div className=" text-md font-normal text-gray-500">
+            <div className=" text-base font-normal text-gray-500">
               {t('articleList.text2')}
             </div>
           </div>
-          <div className="lg:flex-col  justify-end mt-4  ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
+          <div className="lg:flex-col mb-2 justify-center items-center mt-4">
+            <div className="w-full lg:w-[50%] lg:mx-auto  bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between ">
               <input
                 type="search"
-                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
+                className=" text-[#7C7C7C] border-none rounded-3xl  px-[8px] focus:outline-none  "
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
@@ -169,7 +169,7 @@ export default function ArticleList(): React.ReactElement {
                 }}
               />
               <svg
-                className="mt-2 me-3"
+                className="mt-1 me-3"
                 width="18"
                 height="18"
                 viewBox="0 0 18 18"
@@ -182,33 +182,8 @@ export default function ArticleList(): React.ReactElement {
                 />
               </svg>
             </div>
-            <div className="lg:flex  justify-end mt-4 ">
-              <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')}
-              </div>
-              <select
-                className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-                aria-label="All"
-              >
-                <option value="option1">All</option>
-                <option value="option2">All</option>
-              </select>
-            </div>
           </div>
         </div>
-        <div className="lg:hidden z-10 flex justify-end mt-5">
-          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')}
-          </div>
-          <select
-            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-            aria-label="All"
-          >
-            <option value="option1">All</option>
-            <option value="option2">All</option>
-          </select>
-        </div>
-
         <div className="lg:hidden mt-4 ">
           <Slider
             slidesToShow={4}
@@ -245,7 +220,7 @@ export default function ArticleList(): React.ReactElement {
 
         <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md px-4 ${
+            className={`py-1 rounded-full text-md mx-1 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -257,7 +232,7 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'general'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -269,7 +244,7 @@ export default function ArticleList(): React.ReactElement {
             General
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'crypto'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -282,7 +257,7 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'usstocks'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -294,7 +269,7 @@ export default function ArticleList(): React.ReactElement {
             Us Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'indostocks'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -306,7 +281,7 @@ export default function ArticleList(): React.ReactElement {
             Indo Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'commodities'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -318,7 +293,7 @@ export default function ArticleList(): React.ReactElement {
             Commodities
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'indices'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -330,7 +305,7 @@ export default function ArticleList(): React.ReactElement {
             Indices
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'forex'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -342,7 +317,7 @@ export default function ArticleList(): React.ReactElement {
             Forex
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-md mx-1 px-2 ${
               activeCategory === 'finance'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#F9F9F9]'

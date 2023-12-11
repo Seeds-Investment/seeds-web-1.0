@@ -23,7 +23,7 @@ const NewSection2: React.FC = () => {
   const [Lead, setLead] = useState<any[]>([]);
   const [isChange, setChange] = useState('arena');
   const [isBottom, setBottom] = useState(0);
-  const measurement = 1400;
+  const measurement = 1200;
 
   const { ref, inView, entry } = useInView({
     threshold: 0.2
@@ -57,7 +57,7 @@ const NewSection2: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="flex flex-col items-center bg-[#F9F9F9] justify-center h-fit 2xl:h-[1001px] w-full"
+      className="flex flex-col items-center bg-[#F9F9F9] justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
       <div
         className={`flex flex-col items-center ${
@@ -86,7 +86,7 @@ const NewSection2: React.FC = () => {
             : ''
         }`}
       >
-        <Typography className="font-poppins font-normal lg:text-2xl text-base text-[#262626]">
+        <Typography className="font-poppins font-normal xl:text-2xl md:text-lg text-base text-[#262626] text-center">
           Reach the top of the leaderboard and win prizes.
         </Typography>
         <div className="flex justify-center gap-6">
@@ -94,13 +94,17 @@ const NewSection2: React.FC = () => {
             onClick={() => {
               setChange('arena');
             }}
-            className={`${
+            className={`bg-transparent ${
               isChange === 'arena'
                 ? 'bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF]'
                 : 'bg-white'
             } p-3 rounded-2xl`}
           >
-            <Typography className="font-poppins font-semibold lg:text-lg text-xs text-[#FFFFFF] capitalize">
+            <Typography
+              className={`font-poppins font-semibold md:text-lg text-xs capitalize  ${
+                isChange === 'arena' ? 'text-[#FFFFFF]' : 'text-[#7C7C7C]'
+              }`}
+            >
               Play Arena
             </Typography>
           </Button>
@@ -108,20 +112,24 @@ const NewSection2: React.FC = () => {
             onClick={() => {
               setChange('quiz');
             }}
-            className={`${
+            className={`bg-transparent ${
               isChange === 'quiz'
                 ? 'bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF]'
                 : 'bg-white'
             } p-3 rounded-2xl`}
           >
-            <Typography className="font-poppins font-semibold lg:text-lg text-xs text-[#7C7C7C] capitalize">
+            <Typography
+              className={`font-poppins font-semibold md:text-lg text-xs capitalize  ${
+                isChange === 'quiz' ? 'text-[#FFFFFF]' : 'text-[#7C7C7C]'
+              }`}
+            >
               Quiz
             </Typography>
           </Button>
         </div>
       </div>
       <div
-        className={` ${
+        className={` flex flex-col items-center ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -129,70 +137,90 @@ const NewSection2: React.FC = () => {
             : ''
         }`}
       >
-        <div className="flex mx-6 gap-[101px] items-end -mb-[7.55px]">
-          <div className="flex flex-col items-center gap-[14.32px] -mb-[60.85px]">
+        <div className="flex mx-6 gap-[24px] md:gap-[101px] items-end -mb-[5.29px] md:-mb-[7.55px]">
+          <div className="flex flex-col items-center gap-[5.2px] md:gap-[14.32px] -mb-[28.2px] md:-mb-[60.85px]">
             <Image
               src={Lead[1]?.avatar_url ?? Lead[1]?.avatar}
               alt="Avatar"
               width={231.06}
               height={231.06}
-              className="rounded-full"
+              className="rounded-full w-[83.56px] md:w-[231.06px]"
             />
-            <div className="flex justify-center items-center gap-1.5 bg-[#DCFCE4] w-[141.51px] h-[35.18px] rounded-md">
-              <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
+            <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
+              <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
               </Typography>
-              <div className="flex gap-0.5">
-                <Image src={WinRateProduct} alt="WinRateProduct" />
-                <Typography className="font-poppins font-semibold text-[9.59px] leading-[12.79px] text-[#3AC4A0]">
-                  ({Lead[1]?.win_rate}%)
+              <div className="flex gap-[1.4px] md:gap-[3.2px]">
+                <Image
+                  src={WinRateProduct}
+                  alt="WinRateProduct"
+                  className="w-[4.86px] md:w-[11.19px]"
+                />
+                <Typography className="font-poppins font-semibold text-[4.18px] md:text-[9.59px] leading-[5.57px] md:leading-[12.79px] text-[#3AC4A0]">
+                  ({Math.round(Lead[1]?.win_rate)}%)
                 </Typography>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-[14.32px]">
-            <Image src={CrownIlust} alt="CrownIlust" />
+          <div className="flex flex-col items-center gap-[5.2px] md:gap-[14.32px]">
+            <Image
+              src={CrownIlust}
+              alt="CrownIlust"
+              className="w-[32.49px] md:w-[91px]"
+            />
             <Image
               src={Lead[0]?.avatar_url ?? Lead[0]?.avatar}
               alt="Avatar"
               width={231.06}
               height={231.06}
-              className="rounded-full"
+              className="rounded-full w-[83.56px] md:w-[231.06px]"
             />
-            <div className="flex justify-center items-center gap-1.5 bg-[#DCFCE4] w-[141.51px] h-[35.18px] rounded-md">
-              <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
+            <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
+              <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
               </Typography>
-              <div className="flex gap-0.5">
-                <Image src={WinRateProduct} alt="WinRateProduct" />
-                <Typography className="font-poppins font-semibold text-[9.59px] leading-[12.79px] text-[#3AC4A0]">
-                  ({Lead[0]?.win_rate}%)
+              <div className="flex gap-[1.4px] md:gap-[3.2px]">
+                <Image
+                  src={WinRateProduct}
+                  alt="WinRateProduct"
+                  className="w-[4.86px] md:w-[11.19px]"
+                />
+                <Typography className="font-poppins font-semibold text-[4.18px] md:text-[9.59px] leading-[5.57px] md:leading-[12.79px] text-[#3AC4A0]">
+                  ({Math.round(Lead[0]?.win_rate)}%)
                 </Typography>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-[14.32px] -mb-[99.34px]">
+          <div className="flex flex-col items-center gap-[5.2px] md:gap-[14.32px] -mb-[44.17px] md:-mb-[99.34px]">
             <Image
               src={Lead[2]?.avatar_url ?? Lead[2]?.avatar}
               alt="Avatar"
               width={231.06}
               height={231.06}
-              className="rounded-full"
+              className="rounded-full w-[83.56px] md:w-[231.06px]"
             />
-            <div className="flex justify-center items-center gap-1.5 bg-[#DCFCE4] w-[141.51px] h-[35.18px] rounded-md">
-              <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
+            <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
+              <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
               </Typography>
-              <div className="flex gap-0.5">
-                <Image src={WinRateProduct} alt="WinRateProduct" />
-                <Typography className="font-poppins font-semibold text-[9.59px] leading-[12.79px] text-[#3AC4A0]">
-                  ({Lead[2]?.win_rate}%)
+              <div className="flex gap-[1.4px] md:gap-[3.2px]">
+                <Image
+                  src={WinRateProduct}
+                  alt="WinRateProduct"
+                  className="w-[4.86px] md:w-[11.19px]"
+                />
+                <Typography className="font-poppins font-semibold text-[4.18px] md:text-[9.59px] leading-[5.57px] md:leading-[12.79px] text-[#3AC4A0]">
+                  ({Math.round(Lead[2]?.win_rate)}%)
                 </Typography>
               </div>
             </div>
           </div>
         </div>
-        <Image src={LeaderboardRank} alt="LeaderboardRank" />
+        <Image
+          src={LeaderboardRank}
+          alt="LeaderboardRank"
+          className="w-[343px] md:w-[945px]"
+        />
       </div>
     </section>
   );

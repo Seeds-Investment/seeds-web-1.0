@@ -11,3 +11,15 @@ export const getQuizLeaderboard = async (params: any): Promise<any> => {
     params
   });
 };
+
+export const getQuizTrending = async (): Promise<any> => {
+  try {
+    return await quizService.get(`/top`, {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};

@@ -23,14 +23,13 @@ const NewSection2: React.FC = () => {
   const [Lead, setLead] = useState<any[]>([]);
   const [isChange, setChange] = useState('arena');
   const [isBottom, setBottom] = useState(0);
-  const measurement = 1200;
+  const measurement = 900;
 
   const { ref, inView, entry } = useInView({
     threshold: 0.2
   });
   useEffect(() => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
-    console.log(bottom);
     setBottom(bottom);
   }, [entry]);
   useEffect(() => {
@@ -57,8 +56,11 @@ const NewSection2: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="flex flex-col items-center bg-[#F9F9F9] justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
+      className="relative flex flex-col items-center md:bg-[#F9F9F9] justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
+      <div className="absolute hidden md:flex bg-[#79F0B8] rotate-[63.22deg] w-[442.55px] h-[442.55px] -ml-[263px] top-0 blur-[321px] self-start  rounded-full"></div>
+      <div className="absolute hidden md:flex bg-[#B798FF] w-[442.55px] h-[442.55px] bottom-0 blur-[321px] self-start right-0  rounded-full"></div>
+
       <div
         className={`flex flex-col items-center ${
           inView && isBottom >= measurement

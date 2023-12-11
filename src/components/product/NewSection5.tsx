@@ -5,14 +5,13 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const NewSection5: React.FC = () => {
-  const measurement = 900;
+  const measurement = 800;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
     threshold: 0.2
   });
   useEffect(() => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
-    console.log(bottom);
     setBottom(bottom);
   }, [entry]);
   return (

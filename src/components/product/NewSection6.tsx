@@ -14,20 +14,19 @@ import SplashProductMobile from '@/assets/product/SplashProductMobile.svg';
 import { downloadOurApp } from '@/utils/_static';
 
 const NewSection6: React.FC = () => {
-  const measurement = 1100;
+  const measurement = 900;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
     threshold: 0.2
   });
   useEffect(() => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
-    console.log(bottom);
     setBottom(bottom);
   }, [entry]);
   return (
     <section
       ref={ref}
-      className="flex flex-col xl:flex-row justify-between items-center xl:pl-20 py-10"
+      className="flex flex-col xl:flex-row justify-between items-center xl:pl-20 py-10 md:bg-[#F9F9F9]"
     >
       <div className={`flex flex-col xl:gap-[60px] gap-6 px-4 xl:px-0`}>
         <Typography
@@ -143,7 +142,7 @@ const NewSection6: React.FC = () => {
         <Image
           src={MockiPhone}
           alt="MockiPhone"
-          className="self-center flex xl:hidden z-10 w-[235.07px] lg:w-[310px]"
+          className="self-center flex xl:hidden z-10 w-[235.07px] lg:w-[310px] shadow-2xl  shadow-[#272827] rounded-[48px]"
         />
       </div>
       <div className="relative flex self-end">

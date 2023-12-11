@@ -3,6 +3,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
 import { Sprout } from 'public/assets/images';
+import { useTranslation } from 'react-i18next';
 
 interface UserData {
   name: string;
@@ -24,6 +25,7 @@ interface props {
 }
 
 const Card2: React.FC<props> = ({ userData, handleOpen }) => {
+  const { t } = useTranslation();
   return (
     <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row">
@@ -53,8 +55,8 @@ const Card2: React.FC<props> = ({ userData, handleOpen }) => {
               handleOpen();
             }}
           >
-            <p>What do you want to discuss? </p>
-            <p>Start a post</p>
+            <p>{t('social.placeholder1')}</p>
+            <p>{t('social.placeholder2')}</p>
           </div>
         </div>
       </div>

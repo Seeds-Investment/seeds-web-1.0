@@ -4,7 +4,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CardLimitOrder from '@/containers/homepage/order/CardLimitOrder';
 import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
-import { formatCurrency, standartCurrency } from '@/helpers/currency';
+import { standartCurrency } from '@/helpers/currency';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
   Avatar,
@@ -20,6 +20,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
 
+export interface typeLimitOrder {
+  type: string;
+  profit: string;
+  loss: string;
+}
+
 const AssetDetailPage: React.FC = () => {
   const number = '0123456789.';
   const router = useRouter();
@@ -31,12 +37,12 @@ const AssetDetailPage: React.FC = () => {
   const [assetAmount, setAssetsAmount] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
   const [price, setPrice] = useState<string>('');
-  const [orderType, setOrderType] = useState<string>('market');
+  const [orderType] = useState<string>('market');
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
   const [modalConfirmation, setModalConfirmation] = useState<boolean>(false);
-  const [limitOrder, setLimitOrder] = useState({
+  const [limitOrder, setLimitOrder] = useState<typeLimitOrder>({
     type: '',
     profit: '',
     loss: ''
@@ -67,9 +73,9 @@ const AssetDetailPage: React.FC = () => {
     setIsActive(!isActive);
   };
 
-  const handleChangeOrder = (val: string): void => {
-    setOrderType(val);
-  };
+  // const handleChangeOrder = (val: string): void => {
+  //   setOrderType(val);
+  // };
 
   const [params] = useState({
     tf: 'daily',
@@ -213,7 +219,7 @@ const AssetDetailPage: React.FC = () => {
               Rp. 100.000.000
             </Typography>
           </div>
-          <div className="flex justify-start mt-4 gap-2">
+          {/* <div className="flex justify-start mt-4 gap-2">
             <Button
               variant={orderType === 'market' ? 'outlined' : 'filled'}
               className={`normal-case rounded-lg py-2 px-3 ${
@@ -240,7 +246,7 @@ const AssetDetailPage: React.FC = () => {
             >
               Pending Order
             </Button>
-          </div>
+          </div> */}
           {orderType === 'pending' && (
             <div className="flex flex-col mt-4 gap-4">
               <Typography className="font-poppins text-base font-semibold text-black">
@@ -293,7 +299,7 @@ const AssetDetailPage: React.FC = () => {
           )}
           {isActive && (
             <div className="flex flex-col mt-4">
-              <CardLimitOrder />
+              <CardLimitOrder setLimitOrder={setLimitOrder} />
             </div>
           )}
           <div className="flex flex-col mt-4 gap-4">
@@ -393,14 +399,19 @@ const AssetDetailPage: React.FC = () => {
                     </Typography>
                   </div>
                   {router.query.transaction !== undefined &&
-                    router.query.transaction === 'buy' && (
+                    router.query.transaction === 'buy' &&
+                    isActive && (
                       <>
                         <div className="flex justify-between mt-2">
                           <Typography className="text-[#7C7C7C] font-normal text-xs">
                             Take Profit
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.profit}
+                            {limitOrder.type === 'percent'
+                              ? `${parseFloat(limitOrder.profit) * 100} %`
+                              : `IDR ${standartCurrency(
+                                  limitOrder.profit
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                         <div className="flex justify-between mt-2">
@@ -408,7 +419,11 @@ const AssetDetailPage: React.FC = () => {
                             Stop Loss
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.loss}
+                            {limitOrder.type === 'percent'
+                              ? `${parseFloat(limitOrder.loss) * 100} %`
+                              : `IDR ${standartCurrency(
+                                  limitOrder.loss
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                       </>
@@ -603,12 +618,43 @@ const AssetDetailPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Market Price
+                          Cash Amount
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          IDR {formatCurrency(amount)}
+                          IDR
+                          {standartCurrency(amount).replace('Rp', '')}
                         </Typography>
                       </div>
+                      {router.query.transaction !== undefined &&
+                        router.query.transaction === 'buy' &&
+                        isActive && (
+                          <>
+                            <div className="flex justify-between mt-4">
+                              <Typography className="text-[#7C7C7C] font-normal text-xs">
+                                Take Profit
+                              </Typography>
+                              <Typography className="text-[#262626] font-semibold text-xs">
+                                {limitOrder.type === 'percent'
+                                  ? `${parseFloat(limitOrder.profit) * 100} %`
+                                  : `IDR ${standartCurrency(
+                                      limitOrder.profit
+                                    ).replace('Rp', '')}`}
+                              </Typography>
+                            </div>
+                            <div className="flex justify-between mt-4">
+                              <Typography className="text-[#7C7C7C] font-normal text-xs">
+                                Stop Loss
+                              </Typography>
+                              <Typography className="text-[#262626] font-semibold text-xs">
+                                {limitOrder.type === 'percent'
+                                  ? `${parseFloat(limitOrder.loss) * 100} %`
+                                  : `IDR ${standartCurrency(
+                                      limitOrder.loss
+                                    ).replace('Rp', '')}`}
+                              </Typography>
+                            </div>
+                          </>
+                        )}
                       <div className="flex justify-between py-4 border-b border-[#BDBDBD]">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           Transaction Fee

@@ -12,6 +12,8 @@ interface props {
   chartData: any;
 }
 const PieCirclePost: React.FC<props> = ({ data, chartData }): JSX.Element => {
+  console.log(chartData, 'xdzszsz');
+
   const [modalCopyPie, setModalCopyPie] = useState<boolean>(false);
 
   const sumValueAsset = (assets: any[]): string => {

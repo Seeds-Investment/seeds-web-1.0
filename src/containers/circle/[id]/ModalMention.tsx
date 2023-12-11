@@ -221,6 +221,13 @@ const ModalMention: React.FC<props> = ({
     pie: [],
     premium_fee: ''
   });
+  const newDataPie = selectedAsset.map(item => ({
+    asset_id: item.id,
+    price: item.price,
+    allocation: item.value
+  }));
+  console.log(selectedAsset, 'dsdsd', newDataPie);
+
   const width = useWindowInnerWidth();
   const openPieModal: any = () => {
     setIsPieModalOpen(true);

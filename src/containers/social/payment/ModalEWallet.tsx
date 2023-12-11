@@ -2,6 +2,7 @@
 import SubmitButton from '@/components/SubmitButton';
 import InlineText from '@/containers/play/payment/components/InlineText';
 import { standartCurrency } from '@/helpers/currency';
+import { TicketIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Input, Typography } from '@material-tailwind/react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,12 +17,14 @@ interface WalletFormProps {
     phoneNumber?: string | undefined
   ) => Promise<void>;
   dataPost: any;
+  promo: any;
 }
 
 const ModalEWallet = ({
   payment,
   handlePay,
-  dataPost
+  dataPost,
+  promo
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
@@ -63,6 +66,26 @@ const ModalEWallet = ({
         value={standartCurrency(dataPost?.premium_fee)}
         className="mb-2"
       />
+      {promo.promo_code !== null ? (
+        <>
+          <InlineText
+            label="Promo Code"
+            value={standartCurrency(promo.final_price)}
+            className="mb-4"
+          />
+          <div className="bg-[#DCFCE4] flex flex-row items-center py-1 px-3 rounded-lg mb-4 border border-[#96F7C1] w-fit">
+            <TicketIcon
+              width={20}
+              height={20}
+              className="mr-1 text-[#3AC4A0]"
+            />
+            <p className="text-xs font-semibold text-[#3AC4A0]">
+              {promo.promo_code}
+            </p>
+            <XMarkIcon width={17} height={17} className="ml-2 text-black" />
+          </div>
+        </>
+      ) : null}
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
         value={`Rp 0`}

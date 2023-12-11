@@ -4,11 +4,11 @@ import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import MetaPage from '@/containers/circle/[id]/MetaComponent';
 import {
-    getArticle,
-    getArticleById,
-    getArticleComment,
-    postComment,
-    postLike
+  getArticle,
+  getArticleById,
+  getArticleComment,
+  postComment,
+  postLike
 } from '@/repository/article.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Input } from '@material-tailwind/react';

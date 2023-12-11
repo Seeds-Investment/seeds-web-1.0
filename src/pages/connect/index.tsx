@@ -9,6 +9,7 @@ import {
   getCircle,
   getCircleLeaderBoard
 } from '@/repository/circle.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Button,
@@ -25,7 +26,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
-
 export interface CircleInterface {
   id: string;
   name: string;
@@ -118,6 +118,7 @@ const Circle = (): React.ReactElement => {
   const [circle, setCircle] = useState<CircleInterface[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [activeTab, setActiveTab] = useState<string>('my_circle');
+  const [userInfo, setUserInfo] = useState<any>([]);
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -246,6 +247,20 @@ const Circle = (): React.ReactElement => {
       .then()
       .catch(() => {});
   }, []);
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (hasMore) {
@@ -280,7 +295,11 @@ const Circle = (): React.ReactElement => {
             <Slider {...settings}>
               {leaderBoards?.map((data, idx) => (
                 <div key={idx} className="w-full lg:w-1/4">
-                  <CardCircle data={data} cover={data.cover} />
+                  <CardCircle
+                    data={data}
+                    cover={data.cover}
+                    userInfo={userInfo}
+                  />
                 </div>
               ))}
             </Slider>
@@ -381,7 +400,11 @@ const Circle = (): React.ReactElement => {
                             } mb-3 md:w-1/4`}
                             key={idx}
                           >
-                            <CardCircle data={data} cover={data.cover} />
+                            <CardCircle
+                              data={data}
+                              cover={data.cover}
+                              userInfo={userInfo}
+                            />
                           </div>
                         ))
                       ) : (

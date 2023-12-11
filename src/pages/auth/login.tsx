@@ -99,10 +99,18 @@ const LoginPage = (): JSX.Element => {
           trackEvent({
             event: 'login_web',
             data: {
-              userId: responseUser.id
+              user_id: responseUser.id
             }
           });
           await router.push('/homepage'); // Added await keyword here
+          trackEvent({
+            event: `Seeds_view_login_homepage_web`,
+            data: {
+              user_id: responseUser.id,
+              page_name: 'Homepage',
+              created_at: new Date().toString()
+            }
+          });
         } else {
           setErrorResponse('Invalid Phone Number or Password');
         }

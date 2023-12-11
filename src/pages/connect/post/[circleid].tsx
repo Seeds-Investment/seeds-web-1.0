@@ -150,6 +150,7 @@ const CirclePost = (): JSX.Element => {
       isJoined={isJoined}
       setIsJoined={setIsJoined}
       setIsLoading={setIsLoading}
+      userInfo={userInfo}
     >
       {isLoading && <Loading />}
       {/* posting section */}

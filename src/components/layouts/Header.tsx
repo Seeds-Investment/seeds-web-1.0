@@ -65,7 +65,6 @@ const Header: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        console.log(dataInfo);
         setUserInfo(dataInfo);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
@@ -97,7 +96,7 @@ const Header: React.FC = () => {
                 key={item.id}
                 onClick={() => {
                   trackEvent({
-                    event: 'Seeds_view_home_page_web',
+                    event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
                     data: {
                       user_id: userInfo?.id,
                       page_name: item.name,

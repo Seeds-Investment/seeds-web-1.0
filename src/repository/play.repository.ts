@@ -12,6 +12,10 @@ const playService = baseAxios(
   }/play/v1`
 );
 
+export const getPlayLeaderboard = async (): Promise<any> => {
+  return await playService.get(`/leaderboard`);
+};
+
 export const getLeaderboardDetail = async (userId: string): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 

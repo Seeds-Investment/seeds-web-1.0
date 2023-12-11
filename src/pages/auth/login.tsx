@@ -2,8 +2,8 @@
 'use client';
 import CButton from '@/components/CButton';
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
-import AuthLayout from '@/components/layouts/AuthLayout';
 import PhoneInput from '@/components/PhoneInput';
+import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import {
   AppleBrand,
@@ -11,14 +11,15 @@ import {
   GoogleBrand
 } from '@/constants/assets/logo';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
+import { trackEvent } from '@phntms/react-gtm';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 interface FormData {
   phoneNumber: string;
   password: string;
@@ -93,7 +94,23 @@ const LoginPage = (): JSX.Element => {
             password: '',
             keepMeLoggedIn: false
           });
+          const responseUser = await getUserInfo();
+          console.log(responseUser);
+          trackEvent({
+            event: 'login_web',
+            data: {
+              user_id: responseUser.id
+            }
+          });
           await router.push('/homepage'); // Added await keyword here
+          trackEvent({
+            event: `Seeds_view_login_homepage_web`,
+            data: {
+              user_id: responseUser.id,
+              page_name: 'Homepage',
+              created_at: new Date().toString()
+            }
+          });
         } else {
           setErrorResponse('Invalid Phone Number or Password');
         }

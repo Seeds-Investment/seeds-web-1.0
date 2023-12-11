@@ -1,17 +1,11 @@
 'use client';
 import ReferralCircle from '@/assets/referralIcon/ReferralCircle.svg';
 import copyGreen from '@/assets/referralIcon/copyGreen.svg';
-import shareGreen from '@/assets/referralIcon/shareGreen.svg';
 import smReferralCircle from '@/assets/referralIcon/smReferralCircle.svg';
 import CCard from '@/components/CCard';
 import ExpInfo from '@/components/ExpInfo';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import {
-  Copy,
-  ReferalOption1,
-  ReferalOption3,
-  ShareSquare
-} from '@/constants/assets/icons';
+import { Copy, ReferalOption1, ReferalOption3 } from '@/constants/assets/icons';
 import { EarnXP } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -110,14 +104,6 @@ const ReferalCode = (): JSX.Element => {
                   </span>
                 </PopoverContent>
               </Popover>
-
-              <Image
-                src={ShareSquare.src}
-                alt={ShareSquare.alt}
-                width={67.15}
-                height={67.15}
-                className="cursor-pointer"
-              />
             </div>
           </CCard>
           <Typography className="text-2xl text-white font-normal font-poppins">
@@ -240,13 +226,6 @@ const ReferalCode = (): JSX.Element => {
               </span>
             </PopoverContent>
           </Popover>
-          <Image
-            src={shareGreen}
-            alt="shareGreen"
-            width={44}
-            height={44}
-            className="cursor-pointer"
-          />
         </div>
         <Typography className="text-xs text-[#7C7C7C] font-normal font-poppins">
           {t('ReferralCode.total')}

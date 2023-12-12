@@ -92,7 +92,10 @@ const Card1: React.FC<props> = ({
                   filter.type === data.value ? 'bg-[#DCFCE4]' : ''
                 }`}
                 onClick={() => {
-                  changeFilter('type', data.value);
+                  if (filter.type !== data.value) {
+                    changeFilter('type', data.value);
+                    changeFilter('page', 1);
+                  }
                 }}
               >
                 <h1 className="font-semibold">{data.title}</h1>

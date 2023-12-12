@@ -23,3 +23,15 @@ export const getQuizTrending = async (): Promise<any> => {
     console.error('Error fetching trending play list:', error);
   }
 };
+
+export const getAllQuiz = async (): Promise<any> => {
+  try {
+    return await quizService.get(`/all`, {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};

@@ -38,7 +38,12 @@ const ModalChoosePricePremium: React.FC<props> = ({
   }, [form.premium_fee]);
 
   return (
-    <Dialog open={isOpen} handler={() => {}} className="overflow-y-auto">
+    <Dialog
+      open={isOpen}
+      handler={() => {}}
+      className="overflow-y-scroll"
+      size="sm"
+    >
       <DialogHeader className="flex justify-between items-center p-2 sm:p-4">
         <p></p>
         <XMarkIcon
@@ -50,7 +55,7 @@ const ModalChoosePricePremium: React.FC<props> = ({
           height={30}
         />
       </DialogHeader>
-      <DialogBody className="p-4 sm:p-8">
+      <DialogBody className="p-4">
         <div className="flex justify-center">
           <h1 className="font-poppins font-semibold text-black text-xl text-center">
             Set Fee Premium Content
@@ -61,12 +66,12 @@ const ModalChoosePricePremium: React.FC<props> = ({
             <Image
               src={PremiumContent}
               alt="image"
-              className="w-[250px] h-[250px]"
+              className="w-[200px] h-[200px]"
             />
           </div>
         </div>
 
-        <div className="grid grid-rows-3 grid-flow-col gap-2 mb-2">
+        <div className="grid grid-rows-3 grid-flow-col gap-2 mb-1">
           <Button
             className="w-full border-2 font-normal text-sm bg-transparent rounded-full shadow-none text-black"
             value={2000}
@@ -135,7 +140,7 @@ const ModalChoosePricePremium: React.FC<props> = ({
         <p className="text-red-500">{error}</p>
 
         <Button
-          className="w-full mt-16 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
+          className="w-full mt-9 font-semibold text-sm bg-seeds-button-green rounded-full capitalize"
           disabled={error !== ''}
           onClick={() => {
             setIsOpen(false);

@@ -21,7 +21,10 @@ const dataTab: typeOfTab[] = [
   { name: 'People', value: 'people' },
   { name: 'Play', value: 'play' }
 ];
-const TrendingSection: React.FC = () => {
+interface props {
+  userInfo: any;
+}
+const TrendingSection: React.FC<props> = ({ userInfo }) => {
   const [activeTab, setActiveTab] = useState('circle');
 
   const handleTabChange = (tab: string): void => {
@@ -67,7 +70,7 @@ const TrendingSection: React.FC = () => {
             <CirclePage />
           </TabPanel>
           <TabPanel value="asset">
-            <AssetsPage />
+            <AssetsPage userInfo={userInfo} />
           </TabPanel>
           <TabPanel value="people">
             <PeoplePage />

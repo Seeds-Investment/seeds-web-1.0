@@ -221,6 +221,7 @@ const ModalMention: React.FC<props> = ({
     pie: [],
     premium_fee: ''
   });
+
   const width = useWindowInnerWidth();
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -435,7 +436,6 @@ const ModalMention: React.FC<props> = ({
         }
         if (form.content_text.includes('#')) {
           const newActualTag = `#[${selectedValue.tag}]() `;
-          console.log(newActualTag, selectedValue.tag);
 
           setForm(prevForm => ({
             ...prevForm,
@@ -755,8 +755,6 @@ const ModalMention: React.FC<props> = ({
         const res = await updatePostSocialAndCircle(payload, dataPost.id);
         if (res.status === 200) {
           setDataPost((prevState: any) => {
-            console.log(prevState, 'afnasjfa');
-
             if (Array.isArray(prevState)) {
               const newData = prevState.map((el: any) => {
                 if (el.id === dataPost.id) {

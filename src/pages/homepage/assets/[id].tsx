@@ -20,6 +20,7 @@ const dataTab = [
 const AssetDetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { playId } = router.query;
   const [data, setData] = useState<any>();
   const [params, setParams] = useState({
     tf: 'daily',
@@ -89,36 +90,46 @@ const AssetDetailPage: React.FC = () => {
           </TabsHeader>
         </Tabs>
       </CCard>
-      <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
-        <div className="flex justify-between gap-2">
-          <Button
-            variant="outlined"
-            className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
-            onClick={() => {
-              router
-                .push(`/homepage/order/${id as string}?transaction=sell`)
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            Sell
-          </Button>
-          <Button
-            variant="filled"
-            className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
-            onClick={() => {
-              router
-                .push(`/homepage/order/${id as string}?transaction=buy`)
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            Buy
-          </Button>
-        </div>
-      </CCard>
+      {playId !== undefined && (
+        <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
+          <div className="flex justify-between gap-2">
+            <Button
+              variant="outlined"
+              className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
+              onClick={() => {
+                router
+                  .push(
+                    `/homepage/order/${id as string}?transaction=sell&playId=${
+                      playId as string
+                    }`
+                  )
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              Sell
+            </Button>
+            <Button
+              variant="filled"
+              className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
+              onClick={() => {
+                router
+                  .push(
+                    `/homepage/order/${id as string}?transaction=buy&playId=${
+                      playId as string
+                    }`
+                  )
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              Buy
+            </Button>
+          </div>
+        </CCard>
+      )}
     </PageGradient>
   );
 };

@@ -70,7 +70,7 @@ const ModalEWallet = ({
         <>
           <InlineText
             label="Promo Code"
-            value={standartCurrency(promo.final_price)}
+            value={`- ${standartCurrency(promo.total_discount)}`}
             className="mb-4"
           />
           <div className="bg-[#DCFCE4] flex flex-row items-center py-1 px-3 rounded-lg mb-4 border border-[#96F7C1] w-fit">
@@ -96,9 +96,15 @@ const ModalEWallet = ({
         <Typography className="text-xl text-black font-semibold text-right my-5">
           Total Cost
         </Typography>
-        <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
-          {standartCurrency(dataPost?.premium_fee)}
-        </Typography>
+        {promo.promo_code !== null ? (
+          <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
+            {standartCurrency(promo?.final_price)}
+          </Typography>
+        ) : (
+          <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
+            {standartCurrency(dataPost?.premium_fee)}
+          </Typography>
+        )}
       </div>
       <Typography className="text-center text-base font-normal text-[#7C7C7C]">
         This is a risk-free investment because you are using virtual balance for

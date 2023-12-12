@@ -84,7 +84,6 @@ const SlideCircle: React.FC = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: '0px',
     infinite: true,
     focusOnSelect: true,
     variableWidth: true,
@@ -154,9 +153,7 @@ const SlideCircle: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardBody className="p-0 relative flex flex-col items-center my-auto gap-1.5">
-                  {item.image?.startsWith(
-                    'https://seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
-                  ) !== null ? (
+                  {item.image?.split('.')[0] === 'https://seeds-bucket-new' ? (
                     <Avatar
                       alt="circleAvatar"
                       className="border-[1.68px] border-white w-16 h-16 bg-cover"

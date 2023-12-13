@@ -2,7 +2,7 @@
 import Button from '@/components/ui/button/Button';
 import {
   getArticle,
-  getArticleById,
+  getArticleByIdHome,
   getArticleComment,
   postComment,
   postLike
@@ -170,7 +170,7 @@ export default function ArticleDetailPage(): JSX.Element {
     if (typeof id === 'string') {
       // Check if id is a valid string
       const fetchArticleDetail = (): void => {
-        getArticleById(id)
+        getArticleByIdHome(id)
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);

@@ -203,7 +203,7 @@ const Section2 = (): React.ReactElement => {
           alt="image"
           height={0}
           width={0}
-          className="absolute z-0 bottom-0 right-0 w-[50%] h-full"
+          className="absolute z-0 bottom-0 right-0 w-[50%] hidden lg:block h-full"
         />
         <div className="justify-end text-center lg:text-end">
           <div className="justify-end lg:flex text-center lg:text-end">

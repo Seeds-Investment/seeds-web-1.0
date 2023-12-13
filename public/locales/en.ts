@@ -1290,5 +1290,60 @@ export default {
     placeholder1: 'What do you want to discuss? ...',
     placeholder2:
       'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
+      text6: 'Play Now!'
+    },
+    section3: {
+      text1: 'How Seeds Enhance',
+      text2: 'Your Financial Journey',
+      text3: 'Lacks financial literacy, vulnerable to scams',
+      text4: 'Questions finances and seeks basic knowledge.',
+      text5: 'Ready to adopt financial strategies.',
+      text6: 'Gaining confidence in making informed financial decisions.',
+      text7: 'Achieving advanced financial literacy'
+    },
+    section5: {
+      text1: 'Total Rewards Claimed by Users'
+    },
+    section6: {
+      text1: 'Seeds Events'
+    },
+    section7: {
+      text1: 'Meet Our Expert',
+      text2: 'Unlock Financial Success Together'
+    },
+    section8: {
+      text1: 'Stay Informed with',
+      text2: 'Our Curated Financial Updates'
+    },
+    section9: {
+      text1: 'What They Say About'
+    },
+    section10: {
+      text1: 'Over 1000+ people trust us',
+      text2: 'Professionals, universities, many more do!'
+    },
+    section11: {
+      text1: 'Want to Collaborate with Seeds?',
+      text2:
+        "Calling on all communities, brands, and KOL looking to be part of our mission to make finance enjoyable and accessible for Indonesia's young and vibrant market.",
+      text3:
+        "Join us, get involved, and together let's shape the future of investing!",
+      text4: 'Contact Us'
+    },
+    section12: {
+      text1: 'Our Communities',
+      text2:
+        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
+      text3: 'Partnership Program'
+    }
   }
 };

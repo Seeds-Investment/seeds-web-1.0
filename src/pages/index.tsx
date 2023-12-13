@@ -1,14 +1,19 @@
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
-
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section1 from '@/containers/landing/Section1';
-import Section2 from '@/containers/landing/Section2';
-import Section3 from '@/containers/landing/Section3';
-import Section4 from '@/containers/landing/Section4';
-import Section5 from '@/containers/landing/Section5';
-import Section7 from '@/containers/temporary/Section1';
+import Section1 from '@/containers/landing-page/Section1';
+import Section10 from '@/containers/landing-page/Section10';
+import Section11 from '@/containers/landing-page/Section11';
+import Section12 from '@/containers/landing-page/Section12';
+import Section2 from '@/containers/landing-page/Section2';
+import Section3 from '@/containers/landing-page/Section3';
+import Section4 from '@/containers/landing-page/Section4';
+import Section5 from '@/containers/landing-page/Section5';
+import Section6 from '@/containers/landing-page/Section6';
+import Section7 from '@/containers/landing-page/Section7';
+import Section8 from '@/containers/landing-page/Section8';
+import Section9 from '@/containers/landing-page/Section9';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
@@ -46,7 +51,13 @@ export default function Home(): React.ReactElement {
         <Section3 />
         <Section4 />
         <Section5 />
+        <Section6 />
         <Section7 />
+        <Section8 />
+        <Section9 />
+        <Section10 />
+        <Section11 />
+        <Section12 />
         <Footer />
       </PageGradient>
     </>

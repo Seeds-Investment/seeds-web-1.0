@@ -4,9 +4,12 @@ import ImageBackground from '@/components/ImageBackground';
 import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
 import AssetTrendingCard from '@/containers/homepage/trending/AssetsTrendingCard';
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
+import { standartCurrency } from '@/helpers/currency';
 import { getTrendingAssets } from '@/repository/asset.repository';
+import { getPlayBallance } from '@/repository/play.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SearchMember } from 'public/assets/circle';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +18,13 @@ export interface AssetsListRoot {
   metadata: Metadata;
 }
 
+export interface Ballance {
+  balance: number;
+  portfolio: number;
+  total_sell: number;
+  total_buy: number;
+  currency: string;
+}
 interface Metadata {
   current_page: number;
   limit: number;
@@ -51,14 +61,23 @@ const optionSortBy = [
 ];
 
 export default function ListAssets(): React.ReactElement {
+  const router = useRouter();
   const { t } = useTranslation();
+  const { playId } = router.query;
   const [circle, setAssets] = useState<AssetsInterface[]>([]);
+  const [ballance, setBallance] = useState<Ballance>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    currency: 'IDR'
+  });
   const [searchInput, setSearchInput] = useState('');
   const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>(initialFilter);
 
-  const fetchDataCircle = async (): Promise<void> => {
+  const fetchDataAssets = async (): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await getTrendingAssets(filter);
@@ -75,9 +94,24 @@ export default function ListAssets(): React.ReactElement {
     }
   };
 
+  const fetchPlayBallance = async (): Promise<void> => {
+    try {
+      const response = await getPlayBallance(playId as string);
+      setBallance(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (playId !== undefined) {
+      void fetchPlayBallance();
+    }
+  }, [playId]);
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      await fetchDataCircle();
+      await fetchDataAssets();
     };
 
     fetchData().catch(error => {
@@ -95,7 +129,7 @@ export default function ListAssets(): React.ReactElement {
 
   useEffect(() => {
     if (searchInput.length === 0) {
-      void fetchDataCircle();
+      void fetchDataAssets();
     }
   }, [searchInput.length]);
 
@@ -114,7 +148,10 @@ export default function ListAssets(): React.ReactElement {
             Seeds Cash
           </Typography>
           <Typography className="text-white font-poppins text-xl font-semibold">
-            IDR 5.000.000
+            {`${ballance.currency} ${standartCurrency(ballance.balance).replace(
+              'Rp',
+              ''
+            )}`}
           </Typography>
         </div>
       </ImageBackground>
@@ -125,7 +162,9 @@ export default function ListAssets(): React.ReactElement {
           </Typography>
           <div className="flex gap-4 items-center">
             <Typography className="text-black font-poppins text-base font-semibold">
-              IDR 5.000.000
+              {`${ballance.currency} ${standartCurrency(
+                ballance.balance
+              ).replace('Rp', '')}`}
             </Typography>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +188,9 @@ export default function ListAssets(): React.ReactElement {
           </Typography>
           <div className="flex gap-4 items-center">
             <Typography className="text-black font-poppins text-base font-semibold">
-              IDR 5.000.000
+              {`${ballance.currency} ${standartCurrency(
+                ballance.portfolio
+              ).replace('Rp', '')}`}
             </Typography>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -238,7 +279,11 @@ export default function ListAssets(): React.ReactElement {
             circle.map((data: AssetsInterface, idx: number) => {
               return (
                 <div key={idx} className="w-full mb-5">
-                  <AssetTrendingCard data={data} isClick={true} />
+                  <AssetTrendingCard
+                    data={data}
+                    isClick={true}
+                    playId={playId as string}
+                  />
                 </div>
               );
             })

@@ -12,12 +12,7 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-
-const dataTab = [
-  { label: 'Following', value: 'following' },
-  { label: 'For You', value: 'for_you' },
-  { label: 'Space', value: 'space' }
-];
+import { useTranslation } from 'react-i18next';
 
 interface props {
   activeTab: string;
@@ -26,16 +21,6 @@ interface props {
   filter: any;
 }
 
-const optionsFilter = [
-  { title: 'All', subtitle: 'Everyone', value: 'all' },
-  { title: 'Personal', subtitle: 'Your only friend', value: 'personal' },
-  {
-    title: 'Post by Circle',
-    subtitle: 'Create a post in circle',
-    value: 'circle'
-  }
-];
-
 const Card1: React.FC<props> = ({
   activeTab,
   setActiveTab,
@@ -43,6 +28,30 @@ const Card1: React.FC<props> = ({
   filter
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const dataTab = [
+    { label: t('social.navbar.following'), value: 'following' },
+    { label: t('social.navbar.foryou'), value: 'for_you' },
+    { label: t('social.navbar.space'), value: 'space' }
+  ];
+
+  const optionsFilter = [
+    {
+      title: t('social.filterType.all'),
+      subtitle: t('social.filterType.allDesc'),
+      value: 'all'
+    },
+    {
+      title: t('social.filterType.personal'),
+      subtitle: t('social.filterType.personalDesc'),
+      value: 'personal'
+    },
+    {
+      title: t('social.filterType.circle'),
+      subtitle: t('social.filterType.circleDesc'),
+      value: 'circle'
+    }
+  ];
 
   return (
     <CCard className="flex p-2 md:mt-5 md:rounded-lg border-none rounded-none">
@@ -83,7 +92,10 @@ const Card1: React.FC<props> = ({
                   filter.type === data.value ? 'bg-[#DCFCE4]' : ''
                 }`}
                 onClick={() => {
-                  changeFilter('type', data.value);
+                  if (filter.type !== data.value) {
+                    changeFilter('type', data.value);
+                    changeFilter('page', 1);
+                  }
                 }}
               >
                 <h1 className="font-semibold">{data.title}</h1>

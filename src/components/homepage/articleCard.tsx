@@ -1,5 +1,5 @@
 'use-client';
-import { getArticleById, postLike } from '@/repository/article.repository';
+import { getArticleByIdHome, postLike } from '@/repository/article.repository';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
@@ -79,7 +79,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
     if (typeof articleId !== 'string') {
       // Check if articleId is a valid non-empty string
       const fetchArticleDetail = (): void => {
-        getArticleById(articleId)
+        getArticleByIdHome(articleId)
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);

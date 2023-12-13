@@ -24,7 +24,7 @@ const RankPage: React.FC = () => {
         <TabsHeader
           className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
           indicatorProps={{
-            className: 'shadow-none rounded-none'
+            className: 'shadow-none rounded-none bg-transparent'
           }}
         >
           <Tab
@@ -34,8 +34,8 @@ const RankPage: React.FC = () => {
             }}
             className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'current'
-                ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal'
+                ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
             Current
@@ -47,8 +47,8 @@ const RankPage: React.FC = () => {
             }}
             className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'lastMonth'
-                ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal'
+                ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
             Last Month

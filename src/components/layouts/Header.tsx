@@ -23,7 +23,7 @@ const pathUrl = [
   { id: 1, name: 'Home', url: '/' },
   { id: 2, name: 'Product', url: '/product' },
   { id: 3, name: 'Seedspedia', url: '/seedspedia' },
-  { id: 4, name: 'Market', url: '/market' },
+  // { id: 4, name: 'Market', url: '/market' },
   { id: 5, name: 'Partner', url: '/partner' },
   { id: 6, name: 'About Us', url: '/about-us' }
 ];

@@ -930,32 +930,30 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        title1: 'Main & Menangkan',
+        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
         subtitle:
-          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+          'Uji pengetahuan keuangan dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk berkesempatan memenangkan hadiah senilai jutaan rupiah.'
       },
       section2: {
         title1: 'Leaderboard',
-        title2: 'Tiga pemain bintang yang mendominasi Play.'
+        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Keuangan Mereka',
+        subtitle:
+          'Buat thread dan berinteraksi dengan komunitas Seeds. Temui teman sepanjang perjalanan finansialmu dan dorong orang lain untuk memulai perjalanan mereka sendiri.'
       },
       section5: {
-        title1: 'Bagaimana Cara Bermain',
-        title2: 'Turnamen',
+        title1: 'Bagaimana Bermain',
+        title2: 'Turnamen?',
         title3:
-          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan banyak hadiah. Pelajari segalanya tentang perdagangan virtual di sini!'
       },
       section6: {
-        title1: 'Unggah Sekarang!',
-        title2: 'Mulai perjalanan investasimu sekarang.',
+        title1: 'Unduh Sekarang!',
+        title2: 'Mulai Perjalanan Investasimu.',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }

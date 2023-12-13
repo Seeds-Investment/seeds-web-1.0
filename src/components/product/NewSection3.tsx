@@ -1,4 +1,4 @@
-import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
+import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.svg';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
 import { Typography } from '@material-tailwind/react';
@@ -66,7 +66,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={IlustShareAndInfluenceMobile}
           alt="IlustShareAndInfluenceMobile"
-          className={`z-10 w-[319.85px] md:w-[548.125px] lg:w-[776.4px] md:pt-[58px] pt-[35px] lg:pt-0 ${
+          className={`z-10 md:pt-[58px] pt-[35px] lg:pt-0 ${
             inView && isBottom >= measurement
               ? 'animate-fade-in-slide'
               : isBottom >= measurement
@@ -74,6 +74,9 @@ const NewSection3: React.FC = () => {
               : ''
           }`}
         />
+        {/* <Image src={SocialPostTop} alt="SocialPostTop" className="z-10" />
+<Image src={SocialPostBottom} alt="SocialPostBottom" className="z-10" /> 
+w-[319.85px] md:w-[548.125px] lg:w-[776.4px] */}
       </div>
     </section>
   );

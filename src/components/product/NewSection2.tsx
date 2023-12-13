@@ -58,8 +58,8 @@ const NewSection2: React.FC = () => {
       ref={ref}
       className="relative flex flex-col items-center md:bg-[#F9F9F9] justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
-      <div className="absolute hidden md:flex bg-[#79F0B8] rotate-[63.22deg] w-[442.55px] h-[442.55px] -ml-[263px] top-0 blur-[321px] self-start  rounded-full"></div>
-      <div className="absolute hidden md:flex bg-[#B798FF] w-[442.55px] h-[442.55px] bottom-0 blur-[321px] self-start right-0  rounded-full"></div>
+      {/* <div className="absolute hidden md:flex bg-[#79F0B8] rotate-[63.22deg] w-[442.55px] h-[442.55px] -ml-[263px] top-0 blur-[321px] self-start  rounded-full"></div>
+      <div className="absolute hidden md:flex bg-[#B798FF] w-[442.55px] h-[442.55px] bottom-0 blur-[321px] self-start right-0  rounded-full"></div> */}
 
       <div
         className={`flex flex-col items-center ${
@@ -144,9 +144,9 @@ const NewSection2: React.FC = () => {
             <Image
               src={Lead[1]?.avatar_url ?? Lead[1]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
@@ -173,9 +173,9 @@ const NewSection2: React.FC = () => {
             <Image
               src={Lead[0]?.avatar_url ?? Lead[0]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
@@ -197,9 +197,9 @@ const NewSection2: React.FC = () => {
             <Image
               src={Lead[2]?.avatar_url ?? Lead[2]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
@@ -221,7 +221,7 @@ const NewSection2: React.FC = () => {
         <Image
           src={LeaderboardRank}
           alt="LeaderboardRank"
-          className="w-[343px] md:w-[945px]"
+          className="w-[343px] md:w-[900px]"
         />
       </div>
     </section>

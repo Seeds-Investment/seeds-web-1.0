@@ -54,7 +54,7 @@ const NewSection5: React.FC = () => {
             Tournament?
           </span>
         </Typography>
-        <Typography className="font-normal font-poppins text-base lg:text-2xl text-[#7C7C7C] 2xl:pr-[45px] xl:text-justify text-center">
+        <Typography className="font-normal font-poppins text-base lg:text-2xl text-[#262626] 2xl:pr-[45px] xl:text-justify text-center">
           Watch a quick video about how to play a tournament. Listen and watch
           so you can challenge other people and win a lot of prizes. Learn
           everything about virtual trading here!

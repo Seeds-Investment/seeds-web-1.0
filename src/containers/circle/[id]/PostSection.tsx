@@ -616,8 +616,24 @@ const PostSection: React.FC<props> = ({
                 }
                 return el;
               });
+              const filteredTrue = newData.filter(el => el.is_pinned === true);
+              const filterPin = filteredTrue.filter(
+                el => el.id !== dataPost.id
+              );
+              const findPin = filteredTrue.find(el => el.id === dataPost.id);
+              const filteredFalse = newData.filter(
+                el => el.is_pinned === false
+              );
 
-              return newData;
+              let arrangedPinPost = [];
+              if (findPin === undefined) {
+                arrangedPinPost = [...filterPin];
+              } else {
+                arrangedPinPost = [findPin, ...filterPin];
+              }
+
+              const newArrPinnedPost = [...arrangedPinPost, ...filteredFalse];
+              return newArrPinnedPost;
             } else {
               const updatedDataPost = { ...prevDataPost };
               if (dataPost.is_pinned === true) {

@@ -1,16 +1,19 @@
-import {
-  Nominal,
-  NominalActive,
-  Percent,
-  PercentActive
-} from '@/assets/order-page';
+import { type typeLimitOrder } from '@/pages/homepage/order/[id]';
 import { Button, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type Dispatch,
+  type SetStateAction
+} from 'react';
 
-const CardLimitOrder: React.FC = () => {
+interface props {
+  setLimitOrder: Dispatch<SetStateAction<typeLimitOrder>>;
+}
+const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
   const number = '0123456789.';
-  const [activeTab, setActiveTab] = useState<string>('percent');
+  const [activeTab] = useState<string>('percent');
   const [loss, setLoss] = useState<string>('0');
   const [profit, setProfit] = useState<string>('0');
 
@@ -24,9 +27,17 @@ const CardLimitOrder: React.FC = () => {
     }
   }, [activeTab]);
 
-  const handleActiveTab = (value: string): void => {
-    setActiveTab(value);
-  };
+  useEffect(() => {
+    setLimitOrder({
+      type: activeTab,
+      profit: profit,
+      loss: loss
+    });
+  }, [activeTab, profit, loss]);
+
+  // const handleActiveTab = (value: string): void => {
+  //   setActiveTab(value);
+  // };
 
   const handleChangeNumber = (
     e: ChangeEvent<HTMLInputElement>,
@@ -56,7 +67,7 @@ const CardLimitOrder: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <Button
           type="button"
           variant="outlined"
@@ -105,7 +116,7 @@ const CardLimitOrder: React.FC = () => {
             Nominal
           </Typography>
         </Button>
-      </div>
+      </div> */}
       <div className="mt-4">
         <div className="flex justify-between py-3 px-4">
           <Typography className="font-poppins text-sm font-medium text-black">

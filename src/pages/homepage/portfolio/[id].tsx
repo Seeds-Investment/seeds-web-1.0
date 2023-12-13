@@ -69,7 +69,7 @@ const initialChartData = {
   ]
 };
 
-const AssetDetailPage: React.FC = () => {
+const PortfolioPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
@@ -243,9 +243,11 @@ const AssetDetailPage: React.FC = () => {
             {portfolio !== null && (
               <PortfolioChart
                 data={chartData}
-                centerText={`${ballance.currency} ${formatNumber(
-                  portfolio?.summary?.gnl
-                )}`}
+                centerText={`${ballance.currency} ${
+                  portfolio?.summary?.gnl >= 0
+                    ? formatNumber(portfolio?.summary?.gnl)
+                    : 0
+                }`}
               />
             )}
           </div>
@@ -291,6 +293,8 @@ const AssetDetailPage: React.FC = () => {
             <AssetTrendingCardSkeleton />
           ) : (
             filterAssetsList()?.map((el: any) => {
+              console.log(el);
+
               return <AssetPortfolioCard id={el.id} key={el.id} />;
             })
           )}
@@ -300,4 +304,4 @@ const AssetDetailPage: React.FC = () => {
   );
 };
 
-export default AssetDetailPage;
+export default PortfolioPage;

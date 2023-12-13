@@ -1,5 +1,12 @@
-import { standartCurrency } from '@/helpers/currency';
+import {
+  calculatePercentageDifference,
+  standartCurrency
+} from '@/helpers/currency';
 import { getDetailAsset } from '@/repository/asset.repository';
+import {
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
 import {
   Avatar,
   Card,
@@ -27,13 +34,13 @@ const AssetPortfolioCard: React.FC<props> = ({
   const [data, setData] = useState<any>();
 
   const router = useRouter();
-  // const handleArrow = (value: number): boolean => {
-  //   if (value > 0) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  const handleArrow = (value: number): boolean => {
+    if (value > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const [params] = useState({
     tf: 'daily',
     currency: 'IDR'
@@ -102,14 +109,24 @@ const AssetPortfolioCard: React.FC<props> = ({
               {standartCurrency(data?.lastPrice?.open)}
             </Typography>
             <div className="flex justify-end">
-              {/* <Typography
+              <Typography
                 className={`flex font-normal text-sm ${
-                  handleArrow(data?.regularPercentage)
+                  handleArrow(
+                    calculatePercentageDifference(
+                      data?.lastPrice?.open,
+                      data?.lastPrice?.close
+                    )?.value
+                  )
                     ? 'text-[#3AC4A0]'
                     : 'text-red-500'
                 }`}
               >
-                {handleArrow(data?.regularPercentage) ? (
+                {handleArrow(
+                  calculatePercentageDifference(
+                    data?.lastPrice?.open,
+                    data?.lastPrice?.close
+                  )?.value
+                ) ? (
                   <ArrowTrendingUpIcon
                     height={20}
                     width={20}
@@ -122,8 +139,15 @@ const AssetPortfolioCard: React.FC<props> = ({
                     className="mr-2"
                   />
                 )}
-                {`(${data?.regularPercentage.toFixed(2).replace('-', '')}%)`}
-              </Typography> */}
+                (
+                {
+                  calculatePercentageDifference(
+                    data?.lastPrice?.open,
+                    data?.lastPrice?.close
+                  )?.value
+                }{' '}
+                %)
+              </Typography>
             </div>
           </div>
           {handleSelectedAsset !== undefined ? (

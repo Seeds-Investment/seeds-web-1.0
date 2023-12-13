@@ -7,6 +7,7 @@ import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
 import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
 import { standartCurrency } from '@/helpers/currency';
+import withAuth from '@/helpers/withAuth';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
   createOrderPlay,
@@ -55,7 +56,7 @@ interface AssetPortfolio {
   total_lot: number;
 }
 
-const AssetDetailPage: React.FC = () => {
+const OrderPage: React.FC = () => {
   const number = '0123456789.';
   const router = useRouter();
   const { id } = router.query;
@@ -351,6 +352,7 @@ const AssetDetailPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+  console.log(ballance);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -861,4 +863,4 @@ const AssetDetailPage: React.FC = () => {
   );
 };
 
-export default AssetDetailPage;
+export default withAuth(OrderPage);

@@ -97,14 +97,14 @@ const LoginPage = (): JSX.Element => {
           const responseUser = await getUserInfo();
           console.log(responseUser);
           trackEvent({
-            event: 'login_web',
+            event: 'Seeds_login_web',
             data: {
               user_id: responseUser.id
             }
           });
           await router.push('/homepage'); // Added await keyword here
           trackEvent({
-            event: `Seeds_view_login_homepage_web`,
+            event: `Seeds_view_homepage_page_web`,
             data: {
               user_id: responseUser.id,
               page_name: 'Homepage',

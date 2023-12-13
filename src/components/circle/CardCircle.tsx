@@ -49,10 +49,10 @@ export default function CardCircle({
               console.log(error);
             });
             trackEvent({
-              event: `Seeds_view_circle_page_web`,
+              event: `Seeds_view_circle_detail_page_web`,
               data: {
                 user_id: userInfo?.id,
-                page_name: 'circle_detail',
+                page_name: 'circle_detail_web',
                 circle_id: data.id,
                 created_at: new Date().toString()
               }

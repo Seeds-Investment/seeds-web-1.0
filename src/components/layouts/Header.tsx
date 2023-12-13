@@ -211,6 +211,16 @@ const Header: React.FC = () => {
                         ? 'text-[#3AC4A0]'
                         : 'text-[#7C7C7C]'
                     }`}
+                    onClick={() => {
+                      trackEvent({
+                        event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
+                        data: {
+                          user_id: userInfo?.id,
+                          page_name: item.name,
+                          created_at: new Date().toString()
+                        }
+                      });
+                    }}
                   >
                     {item.name}
                   </Link>

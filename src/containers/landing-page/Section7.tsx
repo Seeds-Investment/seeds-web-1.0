@@ -3,11 +3,14 @@ import Willy from '@/assets/landing-page/Willy.jpg';
 import arvin from '@/assets/landing-page/arvin.jpg';
 import syanne from '@/assets/landing-page/syanne.jpg';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 export default function Section6(): React.ReactElement {
+  const { t } = useTranslation();
+
   const settings = {
     className: 'lg:mx-12 my-12',
     dots: true,
@@ -45,10 +48,10 @@ export default function Section6(): React.ReactElement {
       <div className="justify-center items-center text-center">
         <div className=" w-full z-10 mt-5">
           <h1 className="font-poppins font-semibold text-3xl lg:text-6xl mt-5 bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-            Meet Our Expert
+            {t('landingV2.section7.text1')}
           </h1>
           <h1 className="lg:text-2xl text-base font-normal mt-5 font-poppins text-[#262626]">
-            Unlock Financial Success Together
+            {t('landingV2.section6.text2')}
           </h1>
         </div>
       </div>
@@ -66,7 +69,7 @@ export default function Section6(): React.ReactElement {
               Syanne
             </h1>
             <h1 className="font-poppins font-normal text-[#FFFFFF]">
-              Ui Ux Lead
+              Investment Analyst & Journalist TBA
             </h1>
           </div>
         </div>
@@ -80,9 +83,7 @@ export default function Section6(): React.ReactElement {
           />
           <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
             <h1 className="font-poppins font-semibold text-[#FFFFFF]">Willy</h1>
-            <h1 className="font-poppins font-normal text-[#FFFFFF]">
-              Ui Ux Lead
-            </h1>
+            <h1 className="font-poppins font-normal text-[#FFFFFF]">CEO</h1>
           </div>
         </div>
         <div className="border rounded-2xl bg-[#FFFFFF] mx-5">
@@ -98,7 +99,7 @@ export default function Section6(): React.ReactElement {
               Johnny
             </h1>
             <h1 className="font-poppins font-normal text-[#FFFFFF]">
-              Ui Ux Lead
+              CEO of Ringan, Seeds Strategic Advisor
             </h1>
           </div>
         </div>
@@ -113,7 +114,7 @@ export default function Section6(): React.ReactElement {
           <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
             <h1 className="font-poppins font-semibold text-[#FFFFFF]">Arvin</h1>
             <h1 className="font-poppins font-normal text-[#FFFFFF]">
-              Ui Ux Lead
+              Investment Journalist
             </h1>
           </div>
         </div>

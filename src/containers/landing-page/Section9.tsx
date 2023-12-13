@@ -46,7 +46,9 @@ export default function Section9(): React.ReactElement {
     <div className="mb-10 min-w-full cursor-default font-poppins">
       <div className="flex flex-col xl:flex-row xl:gap-[80px] items-center justify-center mx-auto xl:px-[100px] px-6 mt-10 xl:mt-[100px]">
         <h1 className="text-3xl lg:text-5xl font-semibold font-poppins text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-          {t('landing.section3.text4')}
+          {t('landingV2.section9.text1')}
+          <br />
+          Seeds?
         </h1>
       </div>
       <div className="w-full h-full lg:mb-16 mt-10 mx-3 md:mx-20 lg:mx-6">

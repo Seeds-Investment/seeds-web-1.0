@@ -236,3 +236,25 @@ export const createOrderPlay = async (
     return error;
   }
 };
+
+export const getHistoryTransaction = async (
+  id: string,
+  params: { limit: number; page: number }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/${id}/history`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};

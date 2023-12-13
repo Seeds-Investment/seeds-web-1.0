@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import bestReward from '../../../public/assets/images/bestReward.svg';
-import goldHome from '../../../public/assets/images/goldHome.svg';
 import rectangle from '../../assets/RectangleHome.png';
 
 interface DataPlayer {
@@ -172,7 +171,7 @@ const Section2 = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <Link href={'/homepage/seedscoin'}>
+        {/* <Link href={'/homepage/seedscoin'}>
           <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
             <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
               Seeds Coins
@@ -184,9 +183,9 @@ const Section2 = (): React.ReactElement => {
               </h1>
             </div>
           </div>
-        </Link>
+        </Link> */}
         <Button
-          className="border border-1 rounded-full justify-center text-center py-2 mt-2 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
+          className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
           onClick={() => {
             router
               .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
@@ -204,7 +203,7 @@ const Section2 = (): React.ReactElement => {
           alt="image"
           height={0}
           width={0}
-          className="absolute z-0 bottom-0 right-0 w-[50%] h-fulls"
+          className="absolute z-0 bottom-0 right-0 w-[50%] h-full"
         />
         <div className="justify-end text-center lg:text-end">
           <div className="justify-end lg:flex text-center lg:text-end">

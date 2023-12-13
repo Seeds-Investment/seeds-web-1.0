@@ -17,40 +17,64 @@ export default function Section2(): React.ReactElement {
 
   return (
     <div className="h-auto min-w-full mt-20 cursor-default">
-      <div className="lg:flex justify-between flex-row mx-12 gap-5 mb-12">
-        <div className="w-full flex lg:w-1/2">
-          <div className="rounded-full items-center text-center justify-center lg:p-5 p-3 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Community} />
+      <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:p-20 md:flex-row">
+        <div className="flex flex-row items-center w-full justify-start mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Community}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">
-              Communities and University
-            </h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option1')}
+            </p>
           </div>
         </div>
-        <div className="w-full flex lg:w-1/3">
-          <div className="rounded-full items-center text-center justify-center p-5 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Register} />
+
+        <div className="flex flex-row items-center w-full md:justify-center mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Event}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">Registration</h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option2')}
+            </p>
           </div>
         </div>
-        <div className="w-full flex lg:w-1/3">
-          <div className="rounded-full items-center text-center justify-center p-5 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Event} />
+
+        <div className="flex flex-row items-center w-full md:justify-end mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Register}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">Event Hosted</h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option3')}
+            </p>
           </div>
         </div>
       </div>

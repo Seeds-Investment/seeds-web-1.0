@@ -1187,5 +1187,62 @@ export default {
     talk: 'Talk',
     pie: 'Pie',
     poll: 'Poll'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
+      text6: 'Main Sekarang!'
+    },
+    section3: {
+      text1: 'Bagaimana Seeds Meningkatkan',
+      text2: 'Perjalanan Keuangan Kamu',
+      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text4:
+        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+      text5: 'Siap untuk mengadopsi strategi keuangan.',
+      text6:
+        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
+      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+    },
+    section5: {
+      text1: 'Total Hadiah yang Telah Diklaim'
+    },
+    section6: {
+      text1: 'Acara Seeds'
+    },
+    section7: {
+      text1: 'Temui Ahli Kami',
+      text2: 'Capai Sukses Keuangan Bersama'
+    },
+    section8: {
+      text1: 'Tetap Terinformasi dengan',
+      text2: 'Berita Finansial Terkurasi'
+    },
+    section9: {
+      text1: 'Apa Kata Mereka Tentang Seeds?'
+    },
+    section10: {
+      text1: 'Lebih dari 1000+ orang mempercayai kami',
+      text2: 'Profesional, universitas, dan banyak lagi juga!'
+    },
+    section11: {
+      text1: 'Ingin Berkolaborasi dengan Seeds?',
+      text2:
+        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+      text3:
+        'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
+      text4: 'Hubungi Kami'
+    },
+    section12: {
+      text1: 'Komunitas Kami',
+      text2:
+        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+      text3: 'Program Mitra'
+    }
   }
 };

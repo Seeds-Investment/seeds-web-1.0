@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import FollowButton from '../../../components/FollowButton';
 import { getTrendingPeople } from '../../../repository/asset.repository';
-
 export interface PeopleInterface {
   avatar: string;
   followers: number;
@@ -75,7 +75,7 @@ export default function PeopleList(): React.ReactElement {
         <div className="lg:flex-col  justify-end mt-4  ">
           <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
             <input
-              type="search"
+              type="text"
               className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
               placeholder="Search"
               aria-label="Search"
@@ -170,9 +170,11 @@ export default function PeopleList(): React.ReactElement {
                     </div>
                   </div>
                   <div>
-                    <button className="flex mt-3 font-semibold text-xs text-white px-6 py-2 rounded-full bg-[#3AC4A0]">
-                      Follow
-                    </button>
+                    <FollowButton
+                      userId={data.id}
+                      isFollowed={data.isFollowed}
+                      customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    />
                   </div>
                 </div>
               </Link>

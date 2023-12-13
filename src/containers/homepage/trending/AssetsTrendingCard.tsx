@@ -28,13 +28,15 @@ interface props {
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
   isClick?: boolean;
+  playId?: string;
 }
 
 const AssetTrendingCard: React.FC<props> = ({
   data,
   handleSelectedAsset,
   isDefaultChecked,
-  isClick = false
+  isClick = false,
+  playId
 }) => {
   const router = useRouter();
   const handleArrow = (value: number): boolean => {
@@ -52,9 +54,17 @@ const AssetTrendingCard: React.FC<props> = ({
       onClick={
         isClick
           ? () => {
-              router.push(`/homepage/assets/${data.id}`).catch(error => {
-                console.log(error);
-              });
+              router
+                .push(
+                  `${
+                    playId !== undefined
+                      ? `/homepage/assets/${data.id}?playId=${playId}`
+                      : `/homepage/assets/${data.id}`
+                  }`
+                )
+                .catch(error => {
+                  console.log(error);
+                });
             }
           : () => {}
       }

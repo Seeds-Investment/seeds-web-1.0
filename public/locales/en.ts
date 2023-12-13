@@ -1261,7 +1261,35 @@ export default {
     gallery: 'Gallery',
     talk: 'Talk',
     pie: 'Pie',
-    poll: 'Poll'
+    poll: 'Poll',
+    navbar: {
+      following: 'Following',
+      foryou: 'For You',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'All',
+      allDesc: 'Everyone',
+      circle: 'Circle',
+      circleDesc: 'Create a post in circle',
+      personal: 'Personal',
+      personalDesc: 'Your Only Friend'
+    },
+    fiterSortBy: {
+      all: 'All',
+      allDesc: 'All posts',
+      recent: 'Most Recent',
+      recentDesc: 'Based on time posted',
+      relevant: 'Most Relevant',
+      relevantDesc: 'Based on users preferences',
+      like: 'Most Like',
+      likeDesc: 'Based on most liked',
+      trending: 'Most Trending',
+      trendingDesc: 'Based on highest engagement'
+    },
+    placeholder1: 'What do you want to discuss? ...',
+    placeholder2:
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
   },
   landingV2: {
     section1: {

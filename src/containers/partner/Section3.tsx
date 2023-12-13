@@ -1,5 +1,6 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getBanner } from '@/repository/discover.repository';
+import { ArrowRightCircleIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,31 +22,24 @@ const Section3: React.FC = () => {
     }
   };
 
-  // const NextBtn = (props: any): any => {
-  //   const {onClick} = props;
-  //   return (
-  //     <div className='flex flex-row w-full justify-center mt-7'>
-  //       <button
-  //         className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
-  //         onClick={onClick}
-  //       >
-  //         <Image src={next} alt="Next" className="cursor-pointer" />
-  //       </button>
-  //     </div>
-  //   );
-  // };
-
-  // const PrevBtn = (props: any): any => {
-  //   const {onClick} = props;
-  //   return (
-  //     <button
-  //       className="rounded-full lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
-  //       onClick={onClick}
-  //     >
-  //       <Image src={prev} alt="Next" className="cursor-pointer" />
-  //     </button>
-  //   );
-  // };
+  const NextBtn = (props: any): any => {
+    const { onClick } = props;
+    return (
+      <div className="absolute right-0 top-[10rem] z-30">
+        <button
+          className="rounded-full justify-center lg:p-2 p-1 bg-white"
+          onClick={onClick}
+        >
+          <ArrowRightCircleIcon
+            width={30}
+            height={30}
+            onClick={onClick}
+            color="#3AC4A0"
+          />
+        </button>
+      </div>
+    );
+  };
 
   const settings = {
     className: 'center',
@@ -56,8 +50,7 @@ const Section3: React.FC = () => {
     speed: 500,
     autoplay: true,
     autoplaySpeed: 9000,
-    // nextArrow: <NextBtn />,
-    // prevArrow: <PrevBtn />,
+    nextArrow: <NextBtn />,
     centerPadding: `${
       width !== undefined ? (width > 700 ? '27%' : '1%') : '1%'
     }`,

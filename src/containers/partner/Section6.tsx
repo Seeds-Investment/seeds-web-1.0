@@ -1,3 +1,5 @@
+import next from '@/assets/landing-page/next.svg';
+import prev from '@/assets/landing-page/prev.svg';
 import {
   SectionSixImageEvent1,
   SectionSixImageEvent2,
@@ -20,13 +22,49 @@ const Section6: React.FC = () => {
   const events = [
     { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent2.src },
+    { image: SectionSixImageEvent3.src },
+    { image: SectionSixImageEvent3.src },
+    { image: SectionSixImageEvent2.src },
+    { image: SectionSixImageEvent1.src },
+    { image: SectionSixImageEvent1.src },
+    { image: SectionSixImageEvent2.src },
     { image: SectionSixImageEvent3.src }
   ];
+
+  const PrevBtn = (props: any): any => {
+    const { onClick } = props;
+    return (
+      <div className="absolute bottom-0 right-1/2 -mb-16 z-20">
+        <button
+          className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
+          onClick={onClick}
+        >
+          <Image src={prev} alt="Next" className="cursor-pointer" />
+        </button>
+      </div>
+    );
+  };
+
+  const NextBtn = (props: any): any => {
+    const { onClick } = props;
+    return (
+      <div className="absolute bottom-0 left-1/2 -mb-16 mx-auto z-20">
+        <button
+          className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
+          onClick={onClick}
+        >
+          <Image src={next} alt="Next" className="cursor-pointer" />
+        </button>
+      </div>
+    );
+  };
 
   const settings = {
     classname: 'center',
     centerPadding: '27%',
-    infinite: false,
+    infinite: true,
+    prevArrow: <PrevBtn />,
+    nextArrow: <NextBtn />,
     beforeChange: (current: number, next: number) => {
       setSliderIndex(next);
     },
@@ -63,8 +101,8 @@ const Section6: React.FC = () => {
   };
 
   return (
-    <div className="min-w-full font-poppins bg-[#F9F9F9]">
-      <div className="flex flex-col w-full items-center font-poppins relative">
+    <div className="relative min-w-full font-poppins bg-[#F9F9F9]">
+      <div className="flex flex-col w-full items-center">
         <p className="text-3xl md:text-4xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold absolute z-10">
           {t('partner.section6.title')}
         </p>
@@ -84,8 +122,7 @@ const Section6: React.FC = () => {
           ) : null
         ) : null}
 
-        <div className="w-full mt-6 mb-14 md:mt-16 md:px-20">
-          {/* TODO arrow next prev */}
+        <div className="relative w-full mt-6 mb-20 md:mt-16 md:px-20">
           <Slider {...settings} initialSlide={sliderIndex}>
             {events?.length !== 0
               ? events?.map((data, idx) => (

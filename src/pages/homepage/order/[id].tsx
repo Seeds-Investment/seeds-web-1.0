@@ -1,11 +1,19 @@
 import close from '@/assets/more-option/close.svg';
 import CCard from '@/components/CCard';
+import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CardLimitOrder from '@/containers/homepage/order/CardLimitOrder';
 import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
-import { formatCurrency, standartCurrency } from '@/helpers/currency';
+import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
+import { standartCurrency } from '@/helpers/currency';
+import withAuth from '@/helpers/withAuth';
 import { getDetailAsset } from '@/repository/asset.repository';
+import {
+  createOrderPlay,
+  getPlayAssets,
+  getPlayBallance
+} from '@/repository/play.repository';
 import {
   Avatar,
   Button,
@@ -19,28 +27,134 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
+import { type Ballance } from '../play-assets';
 
-const AssetDetailPage: React.FC = () => {
+export interface typeLimitOrder {
+  type: string;
+  profit: string;
+  loss: string;
+}
+
+export interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: any;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface AssetPortfolio {
+  asset_id: string;
+  play_id: string;
+  user_id: string;
+  total_lot: number;
+}
+
+const OrderPage: React.FC = () => {
   const number = '0123456789.';
   const router = useRouter();
   const { id } = router.query;
+  const { playId } = router.query;
   const [data, setData] = useState<any>();
+  const [ballance, setBallance] = useState<Ballance>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    currency: 'IDR'
+  });
+  const [portfolio, setPortfolio] = useState<AssetPortfolio>({
+    asset_id: '',
+    play_id: '',
+    user_id: '',
+    total_lot: 0
+  });
+  const [succesData, setSuccessData] = useState<SuccessOrderData>({
+    id: '',
+    play_id: '',
+    user_id: '',
+    asset: {},
+    type: 'BUY',
+    lot: 0,
+    bid_price: 0,
+    stop_loss: 0,
+    pnl: 0,
+    created_at: '',
+    updated_at: ''
+  });
   const [sellPercent, setSellPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [assetAmount, setAssetsAmount] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
   const [price, setPrice] = useState<string>('');
-  const [orderType, setOrderType] = useState<string>('market');
+  const [orderType] = useState<string>('market');
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<
     typeof setTimeout
   > | null>(null);
   const [modalConfirmation, setModalConfirmation] = useState<boolean>(false);
-  const [limitOrder, setLimitOrder] = useState({
+  const [modalSuccess, setModalSuccess] = useState<boolean>(false);
+  const [limitOrder, setLimitOrder] = useState<typeLimitOrder>({
     type: '',
     profit: '',
     loss: ''
   });
+
+  useEffect(() => {
+    if (sellPercent !== 0) {
+      setAmount(
+        `${(portfolio.total_lot * data?.lastPrice?.open * sellPercent) / 100}`
+      );
+      setAssetsAmount(`${(portfolio.total_lot * sellPercent) / 100}`);
+    }
+  }, [sellPercent]);
+
+  useEffect(() => {
+    if (
+      amount !==
+      `${(portfolio.total_lot * data?.lastPrice?.open * sellPercent) / 100}`
+    ) {
+      setSellPercent(0);
+    }
+    if (assetAmount !== `${(portfolio.total_lot * sellPercent) / 100}`) {
+      setSellPercent(0);
+    }
+  }, [amount, assetAmount]);
+
+  const fetchPlayBallance = async (): Promise<void> => {
+    try {
+      const response = await getPlayBallance(playId as string);
+      setBallance(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPlayPortfolio = async (): Promise<void> => {
+    try {
+      const response = await getPlayAssets(playId as string, id as string);
+      setPortfolio(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (playId !== undefined && router.query?.transaction !== 'sell') {
+      void fetchPlayBallance();
+    }
+    if (playId !== undefined && router.query?.transaction !== 'buy') {
+      void fetchPlayPortfolio();
+    }
+  }, [playId]);
+
   const sellPercentArr = [
     {
       value: 25,
@@ -67,9 +181,13 @@ const AssetDetailPage: React.FC = () => {
     setIsActive(!isActive);
   };
 
-  const handleChangeOrder = (val: string): void => {
-    setOrderType(val);
+  const handleModalSuccess = (): void => {
+    setModalSuccess(!modalSuccess);
   };
+
+  // const handleChangeOrder = (val: string): void => {
+  //   setOrderType(val);
+  // };
 
   const [params] = useState({
     tf: 'daily',
@@ -77,12 +195,22 @@ const AssetDetailPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (assetAmount.length > 0 && amount.length > 0) {
-      setIsDisable(false);
-    } else {
+    if (assetAmount.length === 0 && amount.length === 0) {
       setIsDisable(true);
+    } else if (
+      parseFloat(amount) > ballance.balance &&
+      router.query?.transaction === 'buy'
+    ) {
+      setIsDisable(true);
+    } else if (
+      parseFloat(amount) > portfolio.total_lot * data?.lastPrice?.open &&
+      router.query?.transaction === 'sell'
+    ) {
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
     }
-  }, [assetAmount, amount]);
+  }, [assetAmount, amount, ballance.balance]);
 
   useEffect(() => {
     if (!isActive) {
@@ -187,6 +315,7 @@ const AssetDetailPage: React.FC = () => {
       }
     }
   };
+
   useEffect(() => {
     if (router.query.transaction !== undefined) {
       if (
@@ -200,20 +329,54 @@ const AssetDetailPage: React.FC = () => {
     }
   }, [router.query]);
 
+  const submitOrder = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      handleModal();
+      const response = await createOrderPlay(
+        {
+          asset_id: id as string,
+          amount: parseFloat(assetAmount),
+          type: (router.query?.transaction as string).toUpperCase()
+        },
+        playId as string
+      );
+
+      setTimeout(() => {
+        handleModalSuccess();
+      }, 500);
+      setSuccessData(response);
+    } catch (error) {
+      console.log('error create order :', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  console.log(ballance);
+
   return (
     <PageGradient defaultGradient className="w-full">
+      {isLoading && <Loading />}
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
         <CardPrice data={data} />
         <div className="flex flex-col mt-4">
           <div className="flex flex-col gap-3 pb-3 border-b border-neutral-ultrasoft">
             <Typography className="text-base font-poppins font-semibold text-black">
-              Balance
+              {router.query?.transaction === 'buy' && 'Balance'}
+              {router.query?.transaction === 'sell' && 'Portfolio'}
             </Typography>
             <Typography className="text-base font-poppins font-base text-black">
-              Rp. 100.000.000
+              {`${standartCurrency(
+                router.query?.transaction === 'buy'
+                  ? ballance?.balance
+                  : portfolio.total_lot * data?.lastPrice?.open
+              )}`}{' '}
+              {router.query?.transaction === 'sell' &&
+                `= ${portfolio.total_lot} ${data?.realTicker as string}`}
             </Typography>
           </div>
-          <div className="flex justify-start mt-4 gap-2">
+
+          {/* <div className="flex justify-start mt-4 gap-2">
             <Button
               variant={orderType === 'market' ? 'outlined' : 'filled'}
               className={`normal-case rounded-lg py-2 px-3 ${
@@ -240,7 +403,7 @@ const AssetDetailPage: React.FC = () => {
             >
               Pending Order
             </Button>
-          </div>
+          </div> */}
           {orderType === 'pending' && (
             <div className="flex flex-col mt-4 gap-4">
               <Typography className="font-poppins text-base font-semibold text-black">
@@ -293,7 +456,7 @@ const AssetDetailPage: React.FC = () => {
           )}
           {isActive && (
             <div className="flex flex-col mt-4">
-              <CardLimitOrder />
+              <CardLimitOrder setLimitOrder={setLimitOrder} />
             </div>
           )}
           <div className="flex flex-col mt-4 gap-4">
@@ -393,14 +556,19 @@ const AssetDetailPage: React.FC = () => {
                     </Typography>
                   </div>
                   {router.query.transaction !== undefined &&
-                    router.query.transaction === 'buy' && (
+                    router.query.transaction === 'buy' &&
+                    isActive && (
                       <>
                         <div className="flex justify-between mt-2">
                           <Typography className="text-[#7C7C7C] font-normal text-xs">
                             Take Profit
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.profit}
+                            {limitOrder.type === 'percent'
+                              ? `${parseFloat(limitOrder.profit) * 100} %`
+                              : `IDR ${standartCurrency(
+                                  limitOrder.profit
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                         <div className="flex justify-between mt-2">
@@ -408,7 +576,11 @@ const AssetDetailPage: React.FC = () => {
                             Stop Loss
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.loss}
+                            {limitOrder.type === 'percent'
+                              ? `${parseFloat(limitOrder.loss) * 100} %`
+                              : `IDR ${standartCurrency(
+                                  limitOrder.loss
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                       </>
@@ -603,12 +775,43 @@ const AssetDetailPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Market Price
+                          Cash Amount
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          IDR {formatCurrency(amount)}
+                          IDR
+                          {standartCurrency(amount).replace('Rp', '')}
                         </Typography>
                       </div>
+                      {router.query.transaction !== undefined &&
+                        router.query.transaction === 'buy' &&
+                        isActive && (
+                          <>
+                            <div className="flex justify-between mt-4">
+                              <Typography className="text-[#7C7C7C] font-normal text-xs">
+                                Take Profit
+                              </Typography>
+                              <Typography className="text-[#262626] font-semibold text-xs">
+                                {limitOrder.type === 'percent'
+                                  ? `${parseFloat(limitOrder.profit) * 100} %`
+                                  : `IDR ${standartCurrency(
+                                      limitOrder.profit
+                                    ).replace('Rp', '')}`}
+                              </Typography>
+                            </div>
+                            <div className="flex justify-between mt-4">
+                              <Typography className="text-[#7C7C7C] font-normal text-xs">
+                                Stop Loss
+                              </Typography>
+                              <Typography className="text-[#262626] font-semibold text-xs">
+                                {limitOrder.type === 'percent'
+                                  ? `${parseFloat(limitOrder.loss) * 100} %`
+                                  : `IDR ${standartCurrency(
+                                      limitOrder.loss
+                                    ).replace('Rp', '')}`}
+                              </Typography>
+                            </div>
+                          </>
+                        )}
                       <div className="flex justify-between py-4 border-b border-[#BDBDBD]">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           Transaction Fee
@@ -635,12 +838,24 @@ const AssetDetailPage: React.FC = () => {
                     <span className="text-[#3AC4A0]">disclosure</span> for more
                     information
                   </Typography>
-                  <Button className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4">
+                  <Button
+                    className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
+                    onClick={() => {
+                      submitOrder().catch(err => {
+                        console.log(err);
+                      });
+                    }}
+                  >
                     Confirm
                   </Button>
                 </DialogFooter>
               </form>
             </Dialog>
+            <SuccessOrderModal
+              handleModal={handleModalSuccess}
+              open={modalSuccess}
+              successData={succesData}
+            />
           </div>
         </div>
       </CCard>
@@ -648,4 +863,4 @@ const AssetDetailPage: React.FC = () => {
   );
 };
 
-export default AssetDetailPage;
+export default withAuth(OrderPage);

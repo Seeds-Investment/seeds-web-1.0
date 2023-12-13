@@ -1,7 +1,8 @@
+import FollowButton from '@/components/FollowButton';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import FollowButton from '../../../components/FollowButton';
 import { getTrendingPeople } from '../../../repository/asset.repository';
 export interface PeopleInterface {
   avatar: string;
@@ -18,6 +19,7 @@ export interface PeopleInterface {
 
 export default function PeopleList(): React.ReactElement {
   const { t } = useTranslation();
+  const router = useRouter();
   const [people, setPeople] = useState<PeopleInterface[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [params, setParams] = useState({
@@ -119,7 +121,12 @@ export default function PeopleList(): React.ReactElement {
             >
               <Link href={`/social/${data.id}`}>
                 <div className="flex justify-between">
-                  <div className="flex w-full items-center">
+                  <div
+                    className="flex w-full items-center cursor-pointer"
+                    onClick={() => {
+                      void router.push(`/social/${data.id}`);
+                    }}
+                  >
                     <img
                       src={data.avatar}
                       alt={data.name}

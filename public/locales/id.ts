@@ -1186,7 +1186,35 @@ export default {
     gallery: 'Gallery',
     talk: 'Talk',
     pie: 'Pie',
-    poll: 'Poll'
+    poll: 'Poll',
+    navbar: {
+      following: 'Mengikuti',
+      foryou: 'Untukmu',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'Semua',
+      allDesc: 'Semua Orang',
+      circle: 'Circle',
+      circleDesc: 'Berdasarkan Circle',
+      personal: 'Teman',
+      personalDesc: 'Hanya Teman'
+    },
+    fiterSortBy: {
+      all: 'Semua',
+      allDesc: 'Seluruh postingan',
+      recent: 'Terbaru',
+      recentDesc: 'Berdasarkan waktu di posting',
+      relevant: 'Paling Relevan',
+      relevantDesc: 'Berdasarkan preferensi pengguna',
+      like: 'Paling disukai',
+      likeDesc: 'Berdasarkan yang paling disukai',
+      trending: 'Paling Tren',
+      trendingDesc: 'Berdasarkan keterlibatan tertinggi'
+    },
+    placeholder1: 'Apa yang ingin kamu diskusikan? ...',
+    placeholder2:
+      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
   },
   landingV2: {
     section1: {

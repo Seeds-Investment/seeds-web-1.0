@@ -1,6 +1,7 @@
 import { getPlaySimulation } from '@/repository/play.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import rank1Medal from '../../../public/assets/images/rank1Medal.svg';
 import rank2Medal from '../../../public/assets/images/rank2Medal.svg';
 import rank3Medal from '../../../public/assets/images/rank3Medal.svg';
@@ -30,6 +31,7 @@ interface LeaderData {
 }
 
 const CurrentPage = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
 
@@ -93,7 +95,9 @@ const CurrentPage = (): React.ReactElement => {
               <div className="ml-3">
                 <h2 className="font-bold">{playerData?.name}</h2>
                 <p>{playerData?.seeds_tag}</p>
-                <p className="text-[#3AC4A0]">Return ({playerData?.gain}%)</p>
+                <p className="text-[#3AC4A0]">
+                  {t('homepage.section2.text2')} ({playerData?.gain}%)
+                </p>
               </div>
             </div>
           </div>
@@ -103,7 +107,7 @@ const CurrentPage = (): React.ReactElement => {
             key={index}
             className={`w-full p-3 mb-2 ${
               leader.rank === 1 || leader.rank === 2 || leader.rank === 3
-                ? 'rounded-xl border border-[#3AC4A0]'
+                ? 'rounded-xl border border-[#4d4e4d]'
                 : ''
             }`}
           >
@@ -166,7 +170,7 @@ const CurrentPage = (): React.ReactElement => {
                   leader.rank !== 2 &&
                   leader.rank !== 3 ? (
                     <div className="text-[#3AC4A0] flex text-xs font-semibold">
-                      <p className="me-2">Return</p>
+                      <p className="me-2"> {t('homepage.section2.text2')}</p>
                       <svg
                         width="12"
                         height="12"
@@ -193,7 +197,7 @@ const CurrentPage = (): React.ReactElement => {
               {leader.rank === 1 || leader.rank === 2 || leader.rank === 3 ? (
                 <div>
                   <button className="hidden lg:flex text-[#3AC4A0] text-xs font-semibold px-3 py-2 border rounded-xl border-[#3AC4A0]">
-                    <p className="me-2">Return</p>
+                    <p className="me-2"> {t('homepage.section2.text2')}</p>
                     <svg
                       width="12"
                       height="12"

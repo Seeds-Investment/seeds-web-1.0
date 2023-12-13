@@ -1343,5 +1343,31 @@ export default {
         "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
       text3: 'Partnership Program'
     }
+  },
+  homepage: {
+    section2: {
+      text1: 'Virtual Cash',
+      text2: 'Return',
+      text3: 'Seeds Coin',
+      text4: 'Referral Code',
+      text5: 'No recommended people to share with',
+      text6: 'Exclusive Offers',
+      text7: 'Enjoy a variety of special promotions just for you! ',
+      text8: 'Trending Today',
+      text9: "Check out what's popular right now",
+      text10: 'SeedsPedia',
+      text11: 'Your Rank',
+      text12: 'Win Reward every Month',
+      text13: '"Now in December"',
+      text14: 'See More'
+    },
+    section3: {
+      text1: 'Your all-in-one source for financial updates',
+      text2: 'Current',
+      text3: 'Last Month',
+      text4: 'Current Rank',
+      text5: 'Find and follow interesting profiles.',
+      text6: 'People List'
+    }
   }
 };

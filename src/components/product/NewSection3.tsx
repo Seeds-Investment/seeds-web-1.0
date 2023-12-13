@@ -4,9 +4,12 @@ import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 const NewSection3: React.FC = () => {
+  const { t } = useTranslation();
+
   const measurement = 900;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -34,19 +37,18 @@ const NewSection3: React.FC = () => {
           <Image
             src={ShareAndInfluenceLine}
             alt="ShareAndInfluenceLine"
-            className="-mb-[44px] lg:-mb-[70px] w-[324px] lg:w-[516.33px]"
+            className="-mb-[49px] lg:-mb-[75px] w-[424px] lg:w-[616.33px]"
           />
           <Typography className="font-poppins font-semibold text-3xl lg:text-5xl lg:leading-[57.6px] text-[#222222] text-center">
             <span className="bg-gradient-to-tr from-[#7555DA] to-[#4FE6AF] bg-clip-text text-transparent">
-              Share & Influence
+              {`${t('landingPageV2.product.section3.title1')}`}
             </span>
             <br />
-            Others to Start Their Financial Journey
+            {`${t('landingPageV2.product.section3.title2')}`}
           </Typography>
         </div>
         <Typography className="font-poppins font-normal text-[#262626] text-base md:text-lg lg:text-2xl text-center">
-          Create threads and socialize with the Seeds community. Make friends
-          along your finance journey and Influence others to start their own.
+          {`${t('landingPageV2.product.section3.subtitle')}`}
         </Typography>
       </div>
 

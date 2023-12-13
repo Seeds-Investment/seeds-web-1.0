@@ -60,7 +60,7 @@ const optionSortBy = [
   { label: 'Most Trades', value: 'most trades' }
 ];
 
-export default function ListAssets(): React.ReactElement {
+export default function PlayAssetsPage(): React.ReactElement {
   const router = useRouter();
   const { t } = useTranslation();
   const { playId } = router.query;
@@ -160,7 +160,16 @@ export default function ListAssets(): React.ReactElement {
           <Typography className="text-[#27A590] font-poppins font-semibold">
             Seeds Cash
           </Typography>
-          <div className="flex gap-4 items-center">
+          <div
+            className="flex gap-4 items-center cursor-pointer"
+            onClick={() => {
+              router
+                .push(`/homepage/cash-balance/${playId as string}`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
             <Typography className="text-black font-poppins text-base font-semibold">
               {`${ballance.currency} ${standartCurrency(
                 ballance.balance
@@ -186,7 +195,16 @@ export default function ListAssets(): React.ReactElement {
           <Typography className="text-[#27A590] font-poppins font-semibold">
             Portfolio
           </Typography>
-          <div className="flex gap-4 items-center">
+          <div
+            className="flex gap-4 items-center cursor-pointer"
+            onClick={() => {
+              router
+                .push(`/homepage/portfolio/${playId as string}`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
             <Typography className="text-black font-poppins text-base font-semibold">
               {`${ballance.currency} ${standartCurrency(
                 ballance.portfolio

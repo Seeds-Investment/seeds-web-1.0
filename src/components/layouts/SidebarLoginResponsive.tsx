@@ -1,4 +1,5 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,7 +14,7 @@ import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -36,12 +37,28 @@ const menu = [
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   return (
     <aside className="absolute z-20 left-0 w-2/3 h-[50rem] py-6 bg-white">
@@ -50,6 +67,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
+          userInfo={userInfo}
         />
       )}
       <div className="flex flex-col items-center gap-3">

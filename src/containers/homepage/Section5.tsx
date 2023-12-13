@@ -6,10 +6,12 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArticlePage from './article/ArticlePage';
 import NewsPage from './news/NewsPage';
 
 const Section5: React.FC = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('article');
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -21,7 +23,7 @@ const Section5: React.FC = () => {
     <div className="w-full h-auto cursor-default">
       <div className="text-3xl font-semibold text-[#262626]">SeedsPedia</div>
       <div className=" text-sm mt-3 font-light text-[#262626]">
-        Your all-in-one source for financial updates
+        {t('homepage.section3.text1')}
       </div>
       <div className="h-auto">
         <Tabs value={activeTab}>

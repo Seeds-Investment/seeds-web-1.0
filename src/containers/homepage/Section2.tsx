@@ -7,8 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import bestReward from '../../../public/assets/images/bestReward.svg';
-import goldHome from '../../../public/assets/images/goldHome.svg';
 import rectangle from '../../assets/RectangleHome.png';
 
 interface DataPlayer {
@@ -29,6 +29,7 @@ interface DataPlay {
   prize: number[];
 }
 const Section2 = (): React.ReactElement => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [playDetail, setPlayDetail] = useState<DataPlay>({
@@ -80,7 +81,9 @@ const Section2 = (): React.ReactElement => {
         <div className="flex justify-between">
           <div className="flex-row">
             <div className="flex">
-              <h3 className="text-xs me-2 text-[#7C7C7C]">Virtual Cash</h3>
+              <h3 className="text-xs me-2 text-[#7C7C7C]">
+                {t('homepage.section2.text1')}
+              </h3>
               <svg
                 width="20"
                 height="20"
@@ -98,13 +101,15 @@ const Section2 = (): React.ReactElement => {
               IDR {playerData?.asset ?? 0}
             </h1>
             <h3 className="text-xs mt-2 text-[#7C7C7C]">
-              Return {playerData?.gain ?? 0}
+              {t('homepage.section2.text2')} {playerData?.gain ?? 0}
             </h3>
           </div>
           <div className="flex-row">
             <div className="flex">
               <Link className="flex" href={'/homepage/rank'}>
-                <h3 className="text-xs text-[#7C7C7C]">Your Rank</h3>
+                <h3 className="text-xs text-[#7C7C7C]">
+                  {t('homepage.section2.text11')}
+                </h3>
                 <svg
                   width="20"
                   height="20"
@@ -172,7 +177,7 @@ const Section2 = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <Link href={'/homepage/seedscoin'}>
+        {/* <Link href={'/homepage/seedscoin'}>
           <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
             <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
               Seeds Coins
@@ -184,9 +189,9 @@ const Section2 = (): React.ReactElement => {
               </h1>
             </div>
           </div>
-        </Link>
+        </Link> */}
         <Button
-          className="border border-1 rounded-full justify-center text-center py-2 mt-2 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
+          className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
           onClick={() => {
             router
               .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
@@ -204,15 +209,15 @@ const Section2 = (): React.ReactElement => {
           alt="image"
           height={0}
           width={0}
-          className="absolute z-0 bottom-0 right-0 w-[50%] h-fulls"
+          className="absolute z-0 bottom-0 right-0 w-[50%] hidden lg:block h-full"
         />
         <div className="justify-end text-center lg:text-end">
           <div className="justify-end lg:flex text-center lg:text-end">
-            <h1 className="text-sm font-normal text-[#262626] mb-1">
-              Win Reward every Month{' '}
+            <h1 className="text-sm font-normal me-2 text-[#262626] mb-1">
+              {t('homepage.section2.text12')}{' '}
             </h1>
             <h1 className="font-semibold text-sm text-[#262626] mb-3">
-              {'"Now in December"'}
+              {t('homepage.section2.text13')}
             </h1>
           </div>
           <div className="lg:flex flex-row justify-end">

@@ -3,9 +3,11 @@ import PlayWinLine from '@/assets/product/Play&WinLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 const NewSection1: React.FC = () => {
+  const { t } = useTranslation();
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -39,12 +41,10 @@ const NewSection1: React.FC = () => {
             Play & Win
           </span>
           <br />
-          Real Prizes while Enhancing Your Financial Knowledge
+          {`${t('landingPageV2.product.section1.title2')}`}
         </Typography>
         <Typography className="text-[#262626] xl:text-2xl text-base font-poppins font-normal md:text-left text-center px-4 xl:px-0">
-          Challenge your financial and investment knowledge, compete with
-          others, and be at the top of the leaderboard for a chance to win
-          prizes worth millions of rupiah.
+          {`${t('landingPageV2.product.section1.subtitle')}`}
         </Typography>
       </div>
       <Image

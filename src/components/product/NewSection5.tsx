@@ -2,9 +2,11 @@ import TrapezoidIconProduct from '@/assets/product/TrapezoidIconProduct.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 const NewSection5: React.FC = () => {
+  const { t } = useTranslation();
   const measurement = 800;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -49,15 +51,13 @@ const NewSection5: React.FC = () => {
         }`}
       >
         <Typography className="font-poppins font-semibold lg:font-bold text-3xl lg:text-[64px] text-[#201B1C] lg:leading-[77.45px] text-center 2xl:text-left">
-          How to Play <br />
+          {`${t('landingPageV2.product.section5.title1')}`} <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-tr to-[#7555DA] from-[#4FE6AF]">
-            Tournament?
+            {`${t('landingPageV2.product.section5.title2')}`}
           </span>
         </Typography>
-        <Typography className="font-normal font-poppins text-base lg:text-2xl text-[#7C7C7C] 2xl:pr-[45px] xl:text-justify text-center">
-          Watch a quick video about how to play a tournament. Listen and watch
-          so you can challenge other people and win a lot of prizes. Learn
-          everything about virtual trading here!
+        <Typography className="font-normal font-poppins text-base lg:text-2xl text-[#262626] 2xl:pr-[45px] xl:text-justify text-center">
+          {`${t('landingPageV2.product.section5.title3')}`}
         </Typography>
       </div>
     </section>

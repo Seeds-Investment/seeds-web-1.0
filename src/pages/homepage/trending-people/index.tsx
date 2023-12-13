@@ -1,8 +1,9 @@
+import FollowButton from '@/components/FollowButton';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTrendingPeople } from '../../../repository/asset.repository';
-
 export interface PeopleInterface {
   avatar: string;
   followers: number;
@@ -18,6 +19,7 @@ export interface PeopleInterface {
 
 export default function PeopleList(): React.ReactElement {
   const { t } = useTranslation();
+  const router = useRouter();
   const [people, setPeople] = useState<PeopleInterface[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [params, setParams] = useState({
@@ -66,16 +68,16 @@ export default function PeopleList(): React.ReactElement {
       <div className="flex justify-between flex-wrap w-full">
         <div className="flex flex-col">
           <div className="text-3xl font-semibold bg-clip-text text-black">
-            People List
+            {t('homepage.section3.text6')}
           </div>
           <div className=" text-md font-normal text-gray-500">
-            Find and follow interesting profiles.
+            {t('homepage.section3.text5')}
           </div>
         </div>
         <div className="lg:flex-col  justify-end mt-4  ">
           <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
             <input
-              type="search"
+              type="text"
               className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
               placeholder="Search"
               aria-label="Search"
@@ -119,7 +121,12 @@ export default function PeopleList(): React.ReactElement {
             >
               <Link href={`/social/${data.id}`}>
                 <div className="flex justify-between">
-                  <div className="flex w-full items-center">
+                  <div
+                    className="flex w-full items-center cursor-pointer"
+                    onClick={() => {
+                      void router.push(`/social/${data.id}`);
+                    }}
+                  >
                     <img
                       src={data.avatar}
                       alt={data.name}
@@ -170,9 +177,11 @@ export default function PeopleList(): React.ReactElement {
                     </div>
                   </div>
                   <div>
-                    <button className="flex mt-3 font-semibold text-xs text-white px-6 py-2 rounded-full bg-[#3AC4A0]">
-                      Follow
-                    </button>
+                    <FollowButton
+                      userId={data.id}
+                      isFollowed={data.isFollowed}
+                      customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    />
                   </div>
                 </div>
               </Link>

@@ -96,7 +96,7 @@ function UserProfile(): JSX.Element {
         setPlayData(playResponse);
 
         const postResponse = await getListPostByUserId(id, post);
-        setPostData(postResponse);
+        setPostData(postResponse.data);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }

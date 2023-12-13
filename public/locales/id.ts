@@ -930,32 +930,30 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        title1: 'Main & Menangkan',
+        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
         subtitle:
-          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+          'Uji pengetahuan keuangan dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk berkesempatan memenangkan hadiah senilai jutaan rupiah.'
       },
       section2: {
         title1: 'Leaderboard',
-        title2: 'Tiga pemain bintang yang mendominasi Play.'
+        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Keuangan Mereka',
+        subtitle:
+          'Buat thread dan berinteraksi dengan komunitas Seeds. Temui teman sepanjang perjalanan finansialmu dan dorong orang lain untuk memulai perjalanan mereka sendiri.'
       },
       section5: {
-        title1: 'Bagaimana Cara Bermain',
-        title2: 'Turnamen',
+        title1: 'Bagaimana Bermain',
+        title2: 'Turnamen?',
         title3:
-          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan banyak hadiah. Pelajari segalanya tentang perdagangan virtual di sini!'
       },
       section6: {
-        title1: 'Unggah Sekarang!',
-        title2: 'Mulai perjalanan investasimu sekarang.',
+        title1: 'Unduh Sekarang!',
+        title2: 'Mulai Perjalanan Investasimu.',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -1215,5 +1213,88 @@ export default {
     placeholder1: 'Apa yang ingin kamu diskusikan? ...',
     placeholder2:
       'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
+      text6: 'Main Sekarang!'
+    },
+    section3: {
+      text1: 'Bagaimana Seeds Meningkatkan',
+      text2: 'Perjalanan Keuangan Kamu',
+      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text4:
+        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+      text5: 'Siap untuk mengadopsi strategi keuangan.',
+      text6:
+        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
+      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+    },
+    section5: {
+      text1: 'Total Hadiah yang Telah Diklaim'
+    },
+    section6: {
+      text1: 'Acara Seeds'
+    },
+    section7: {
+      text1: 'Temui Ahli Kami',
+      text2: 'Capai Sukses Keuangan Bersama'
+    },
+    section8: {
+      text1: 'Tetap Terinformasi dengan',
+      text2: 'Berita Finansial Terkurasi'
+    },
+    section9: {
+      text1: 'Apa Kata Mereka Tentang Seeds?'
+    },
+    section10: {
+      text1: 'Lebih dari 1000+ orang mempercayai kami',
+      text2: 'Profesional, universitas, dan banyak lagi juga!'
+    },
+    section11: {
+      text1: 'Ingin Berkolaborasi dengan Seeds?',
+      text2:
+        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+      text3:
+        'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
+      text4: 'Hubungi Kami'
+    },
+    section12: {
+      text1: 'Komunitas Kami',
+      text2:
+        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+      text3: 'Program Mitra'
+    }
+  },
+  homepage: {
+    section2: {
+      text1: 'Dana Virtual',
+      text2: 'Keuntungan',
+      text3: 'Koin Seeds',
+      text4: 'Kode Referral',
+      text5: 'Tidak ada rekomendasi profil untuk dibagikan',
+      text6: 'Penawaran Eksklusif',
+      text7: 'Nikmati berbagai promosi khusus hanya untuk kamu! ',
+      text8: 'Trending hari ini',
+      text9: 'Cek apa yang sedang populer sekarang',
+      text10: 'SeedsPedia',
+      text11: 'Peringkat Kamu',
+      text12: 'Menangkan Hadiah setiap Bulan',
+      text13: '"Sekarang di Desember"',
+      text14: 'Lihat lebih banyak'
+    },
+    section3: {
+      text1: 'Sumber semua utama berita keuangan terbaru',
+      text2: 'Saat Ini',
+      text3: 'Bulan Lalu',
+      text4: 'Peringkatmu Saat Ini',
+      text5: 'Cari dan ikuti profil yang menarik.',
+      text6: 'Daftar Profile'
+    }
   }
 };

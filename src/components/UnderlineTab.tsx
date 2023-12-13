@@ -74,7 +74,7 @@ const UnderLineTab = ({
       value: 'post',
       content: (
         <div className="bg-white w-full mx-5">
-          {postData?.data?.map((el: any, idx: number) => {
+          {postData?.map((el: any, idx: number) => {
             return (
               <div className="flex flex-col" key={`${el.id as string} ${idx}`}>
                 {el.circle !== undefined && (

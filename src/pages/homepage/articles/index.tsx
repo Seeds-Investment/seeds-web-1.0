@@ -1,6 +1,6 @@
 import ArtPagination from '@/components/ArtPagination';
 import ArticleCard from '@/components/homepage/articleCard';
-import { getArticle } from '@/repository/article.repository';
+import { getArticleHome } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
@@ -48,7 +48,7 @@ export default function ArticleList(): React.ReactElement {
   });
   async function fetchArticles(): Promise<void> {
     try {
-      const response = await getArticle({
+      const response = await getArticleHome({
         ...params,
         source: params.source,
         category: params.category

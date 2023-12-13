@@ -5,6 +5,7 @@ import GrayArrow from '@/assets/product/GrayArrow.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import { getTrendingCircle } from '@/repository/circle.repository';
+import { getAllQuiz } from '@/repository/quiz.repository';
 import {
   Avatar,
   Button,
@@ -34,7 +35,7 @@ interface MyStyle extends React.CSSProperties {
   '--image-url': string;
 }
 interface Item {
-  banner?: string;
+  banner?: any;
   type?: string;
   image?: string;
   name?: string;
@@ -45,6 +46,8 @@ interface Item {
   logo?: any;
   ticker?: any;
   exchange?: any;
+  admission_fee?: any;
+  participants?: number;
 }
 
 const SlideCircle: React.FC = () => {
@@ -81,7 +84,6 @@ const SlideCircle: React.FC = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: '0px',
     infinite: true,
     focusOnSelect: true,
     variableWidth: true,
@@ -99,7 +101,12 @@ const SlideCircle: React.FC = () => {
       <Slider {...settings} ref={sliderRef} className=" flex items-center">
         {circleData?.result?.map((item: Item, index: any) => {
           const myStyle: MyStyle = {
-            '--image-url': `url(${item.banner ?? ''})`
+            '--image-url': `url(${
+              (item.banner.split('.')[0] as string) ===
+              'https://seeds-bucket-new'
+                ? 'https://res.cloudinary.com/dafjb9vn7/image/upload/v1702374211/defaultBannerCircle_kp04b9.svg'
+                : (item.banner as string)
+            })`
           };
           return (
             <div
@@ -114,7 +121,7 @@ const SlideCircle: React.FC = () => {
                   activeSlide === index
                     ? 'lg:w-[615.73px] lg:h-[355px] w-[343px] h-[177px]'
                     : 'lg:w-[343px] lg:h-[177px] w-[142.13px] h-[81.94px]'
-                } mx-[13.2px]`}
+                } mx-[13.2px] rounded-full`}
                 key={index}
               >
                 <CardHeader
@@ -146,11 +153,19 @@ const SlideCircle: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardBody className="p-0 relative flex flex-col items-center my-auto gap-1.5">
-                  <Avatar
-                    alt="circleAvatar"
-                    className="border-[1.68px] border-white w-16 h-16 bg-cover"
-                    src={`${item.image ?? ''}`}
-                  />
+                  {item.image?.split('.')[0] === 'https://seeds-bucket-new' ? (
+                    <Avatar
+                      alt="circleAvatar"
+                      className="border-[1.68px] border-white w-16 h-16 bg-cover"
+                      src="https://res.cloudinary.com/dafjb9vn7/image/upload/v1702375269/defaultAvatarCircle_rp78vk.svg"
+                    />
+                  ) : (
+                    <Avatar
+                      alt="circleAvatar"
+                      className="border-[1.68px] border-white w-16 h-16 bg-cover"
+                      src={`${item.image ?? ''}`}
+                    />
+                  )}
                   <Typography className="text-white text-sm font-poppins font-semibold">
                     {item.name}
                   </Typography>
@@ -240,7 +255,7 @@ const SlideQuiz: React.FC = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const quizResponse = await getTrendingCircle();
+        const quizResponse = await getAllQuiz();
         setQuizData(quizResponse);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
@@ -254,7 +269,6 @@ const SlideQuiz: React.FC = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: '0px',
     infinite: true,
     focusOnSelect: true,
     variableWidth: true,
@@ -270,7 +284,7 @@ const SlideQuiz: React.FC = () => {
   return (
     <div className="w-fit lg:h-[411px] flex flex-col gap-10 justify-center items-center">
       <Slider {...settings} ref={sliderRef} className=" flex items-center">
-        {quizData?.result?.map((item: Item, index: any) => {
+        {quizData?.data?.map((item: Item, index: any) => {
           return (
             <div
               key={index}
@@ -294,8 +308,9 @@ const SlideQuiz: React.FC = () => {
                   className={`absolute m-0 lg:h-[154.55px] h-[97.41px] rounded-b-none w-full`}
                 >
                   <img
-                    src="https://asset.kompas.com/crops/AWXtnkYHOrbSxSggVuTs3EzQprM=/10x36:890x623/750x500/data/photo/2023/03/25/641e5ef63dea4.jpg"
+                    src={item.banner?.image_url}
                     alt="banner"
+                    className="w-full"
                   />
                 </CardHeader>
                 <CardBody className="absolute bottom-0 w-full lg:h-[125.27px] h-[78.95px] p-0 bg-gradient-to-tr from-[#106B6E] to-[#96F7C1]">
@@ -307,7 +322,7 @@ const SlideQuiz: React.FC = () => {
                           : 'lg:text-lg text-xs'
                       }`}
                     >
-                      Who wants to be a Milionaire
+                      {item.name}
                     </Typography>
                   </div>
                   <div className="flex w-full lg:p-[11px] p-[7.18px] justify-between items-center">
@@ -329,7 +344,9 @@ const SlideQuiz: React.FC = () => {
                               : 'lg:text-sm text-[10px]'
                           } font-poppins font-semibold text-white`}
                         >
-                          Rp 10.000
+                          {item.admission_fee === 0
+                            ? 'Free'
+                            : `Rp.${item.admission_fee as number}`}
                         </Typography>
                       </div>
                       <div className="flex flex-col lg:gap-1.5 gap-[3.6px]">
@@ -349,7 +366,7 @@ const SlideQuiz: React.FC = () => {
                               : 'lg:text-sm text-[10px]'
                           } font-poppins font-semibold text-white`}
                         >
-                          10 days
+                          10 Days
                         </Typography>
                       </div>
                       <div className="flex flex-col lg:gap-1.5 gap-[3.6px]">
@@ -369,7 +386,7 @@ const SlideQuiz: React.FC = () => {
                               : 'lg:text-sm text-[10px]'
                           } font-poppins font-semibold text-white`}
                         >
-                          100
+                          {item.participants}
                         </Typography>
                       </div>
                     </div>

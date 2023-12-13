@@ -55,6 +55,7 @@ const SidebarLogin: React.FC = () => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
+          userInfo={userInfo}
         />
       )}
 

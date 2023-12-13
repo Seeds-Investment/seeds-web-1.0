@@ -8,8 +8,11 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const RankPage: React.FC = () => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('current');
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -19,7 +22,9 @@ const RankPage: React.FC = () => {
 
   return (
     <div className="w-full h-auto cursor-default">
-      <div className="text-3xl font-semibold text-[#262626]">Your Rank</div>
+      <div className="text-3xl font-semibold text-[#262626]">
+        {t('homepage.section2.text11')}
+      </div>
       <Tabs value={activeTab}>
         <TabsHeader
           className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
@@ -38,7 +43,7 @@ const RankPage: React.FC = () => {
                 : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
-            Current
+            {t('homepage.section3.text2')}
           </Tab>
           <Tab
             value="lastMonth"
@@ -51,7 +56,7 @@ const RankPage: React.FC = () => {
                 : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
-            Last Month
+            {t('homepage.section3.text3')}
           </Tab>
         </TabsHeader>
         <TabsBody>

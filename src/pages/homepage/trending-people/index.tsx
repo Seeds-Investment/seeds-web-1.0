@@ -68,10 +68,10 @@ export default function PeopleList(): React.ReactElement {
       <div className="flex justify-between flex-wrap w-full">
         <div className="flex flex-col">
           <div className="text-3xl font-semibold bg-clip-text text-black">
-            People List
+            {t('homepage.section3.text6')}
           </div>
           <div className=" text-md font-normal text-gray-500">
-            Find and follow interesting profiles.
+            {t('homepage.section3.text5')}
           </div>
         </div>
         <div className="lg:flex-col  justify-end mt-4  ">

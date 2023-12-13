@@ -53,7 +53,6 @@ export const getTrendingCircle = async (params: {
 export const getTrendingPeople = async (params: {
   page: number;
   limit: number;
-  search: string;
 }): Promise<any> => {
   try {
     let response = await authPeople.get('/trending', {

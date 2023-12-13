@@ -197,7 +197,7 @@ const Header: React.FC = () => {
               className="cursor-pointer z-20"
             />
           </MenuHandler>
-          <MenuList className="pb-12 shadow-none border-none lg:hidden flex flex-col">
+          <MenuList className="pb-12 shadow-none border-none xl:hidden flex flex-col">
             {pathUrl.map((item, index) => {
               return (
                 <MenuItem

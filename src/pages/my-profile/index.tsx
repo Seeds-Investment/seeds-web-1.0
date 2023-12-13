@@ -66,7 +66,7 @@ const ProfilePage = (): JSX.Element => {
 
         if (dataInfo !== '') {
           const postResponse = await getListPostByUserId(dataInfo.id, post);
-          setPostData(postResponse);
+          setPostData(postResponse.data);
         }
       } catch (error: any) {
         console.error('Error fetching data:', error.message);

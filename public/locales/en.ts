@@ -1009,26 +1009,24 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Share & Influence ',
+        title1: 'Play & Win',
+        title2: 'Real Prizes while Enhancing Your Financial Knowledge',
+        subtitle:
+          'Challenge your financial and investment knowledge, compete with others, and be at the top of the leaderboard for a chance to win prizes worth millions of rupiah.'
+      },
+      section2: {
+        title1: 'Leaderboard',
+        title2: 'Reach the top of the leaderboard and win prizes.'
+      },
+      section3: {
+        title1: 'Share & Influence',
         title2: 'Others to Start Their Financial Journey',
         subtitle:
           'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
       },
-      section2: {
-        title1: 'Leaderboard',
-        title2: 'The top three star players who have dominated in Play.'
-      },
-      section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
-      },
       section5: {
         title1: 'How to Play',
-        title2: 'Tournament',
+        title2: 'Tournament?',
         title3:
           'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
       },

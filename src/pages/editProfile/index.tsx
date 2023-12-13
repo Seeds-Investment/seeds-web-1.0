@@ -14,15 +14,18 @@ import { useState } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
 const EditProfile: React.FC = () => {
+  const maxLengthBio = 50;
+  const valueBio = 'something';
   const [country, setCountry] = useState(0);
   const { name, flags, countryCallingCode } = countriesRepository[country];
   return (
     <Card className="flex flex-col justify-center items-center gap-4 w-[600px]">
       <div className="flex flex-col justify-center items-center">
         <Avatar className="bg-black" />
-        <Typography className="text-[#3AC4A0] text-xs font-semibold font-poppins border-b border-[#3AC4A0]">
-          Edit image
-        </Typography>
+        <Input
+          type="file"
+          className="text-[#3AC4A0] text-xs font-semibold font-poppins border-b border-[#3AC4A0]"
+        />
       </div>
       <Input
         label="Name"
@@ -53,16 +56,23 @@ const EditProfile: React.FC = () => {
         required
         style={{ backgroundColor: 'transparent' }}
       />
-      <Input
-        label="Bio"
-        variant="static"
-        labelProps={{
-          className: 'text-base text-[#262626] font-semibold font-poppins'
-        }}
-        className="text-[#7C7C7C] text-base font-poppins font-normal"
-        required
-        maxLength={50}
-      />
+      <div className="self-start w-full">
+        <Input
+          label="Bio"
+          variant="static"
+          value={valueBio}
+          labelProps={{
+            className: 'text-base text-[#262626] font-semibold font-poppins'
+          }}
+          className="text-[#7C7C7C] text-base font-poppins font-normal"
+          required
+          maxLength={maxLengthBio}
+        />
+        <Typography>
+          {valueBio.length}/{maxLengthBio}
+        </Typography>
+      </div>
+
       <Input
         label="Phone Number"
         variant="static"

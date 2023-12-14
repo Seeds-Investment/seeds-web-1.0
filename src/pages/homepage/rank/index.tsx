@@ -8,8 +8,11 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const RankPage: React.FC = () => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('current');
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -19,12 +22,14 @@ const RankPage: React.FC = () => {
 
   return (
     <div className="w-full h-auto cursor-default">
-      <div className="text-3xl font-semibold text-[#262626]">Your Rank</div>
+      <div className="text-3xl font-semibold text-[#262626]">
+        {t('homepage.section2.text11')}
+      </div>
       <Tabs value={activeTab}>
         <TabsHeader
           className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
           indicatorProps={{
-            className: 'shadow-none rounded-none'
+            className: 'shadow-none rounded-none bg-transparent'
           }}
         >
           <Tab
@@ -34,11 +39,11 @@ const RankPage: React.FC = () => {
             }}
             className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'current'
-                ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal'
+                ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
-            Current
+            {t('homepage.section3.text2')}
           </Tab>
           <Tab
             value="lastMonth"
@@ -47,11 +52,11 @@ const RankPage: React.FC = () => {
             }}
             className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'lastMonth'
-                ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal'
+                ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
-            Last Month
+            {t('homepage.section3.text3')}
           </Tab>
         </TabsHeader>
         <TabsBody>

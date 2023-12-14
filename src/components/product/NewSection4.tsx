@@ -84,7 +84,6 @@ const SlideCircle: React.FC = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: '0px',
     infinite: true,
     focusOnSelect: true,
     variableWidth: true,
@@ -122,7 +121,7 @@ const SlideCircle: React.FC = () => {
                   activeSlide === index
                     ? 'lg:w-[615.73px] lg:h-[355px] w-[343px] h-[177px]'
                     : 'lg:w-[343px] lg:h-[177px] w-[142.13px] h-[81.94px]'
-                } mx-[13.2px]`}
+                } mx-[13.2px] rounded-full`}
                 key={index}
               >
                 <CardHeader
@@ -154,9 +153,7 @@ const SlideCircle: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardBody className="p-0 relative flex flex-col items-center my-auto gap-1.5">
-                  {item.image?.startsWith(
-                    'https://seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
-                  ) !== null ? (
+                  {item.image?.split('.')[0] === 'https://seeds-bucket-new' ? (
                     <Avatar
                       alt="circleAvatar"
                       className="border-[1.68px] border-white w-16 h-16 bg-cover"
@@ -272,7 +269,6 @@ const SlideQuiz: React.FC = () => {
 
   const settings = {
     centerMode: true,
-    centerPadding: '0px',
     infinite: true,
     focusOnSelect: true,
     variableWidth: true,

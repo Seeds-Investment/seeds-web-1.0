@@ -141,8 +141,11 @@ const NewsCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </Link>
         <div className="p-4">
           <Link href={`/seedspedia/news/${articleDetail?.id ?? 0}`}>
-            <h1 className="text-xl font-semibold text-[#000]">
-              {articleDetail?.title}
+            <h1 className="text-xl text-justify font-semibold text-[#000]">
+              {articleDetail?.title !== undefined &&
+              articleDetail?.title.length > 60
+                ? `${articleDetail?.title.substring(0, 60)}...`
+                : articleDetail?.title}
             </h1>
           </Link>
         </div>

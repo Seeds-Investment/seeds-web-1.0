@@ -101,10 +101,10 @@ const Section2: React.FC = () => {
           <div className="flex flex-row w-full items-center px-6 mb-5">
             <div className="w-2/3 text-left">
               <p className="text-xl text-black md:text-3xl font-semibold mb-2">
-                {t('aboutUsV3.section2.option2.title')}
+                {t('aboutUsV3.section2.option5.title')}
               </p>
               <p className="text-sm text-[#7C7C7C] md:text-xl font-normal">
-                {t('aboutUsV3.section2.option2.subtitle')}
+                {t('aboutUsV3.section2.option5.subtitle')}
               </p>
             </div>
             <div className="w-1/3 ml-3 flex justify-center">

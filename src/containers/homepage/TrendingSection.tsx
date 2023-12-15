@@ -6,6 +6,7 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AssetsPage from './trending/AssetsPage';
 import CirclePage from './trending/CirclePage';
 import PeoplePage from './trending/PeoplePage';
@@ -25,6 +26,8 @@ interface props {
   userInfo: any;
 }
 const TrendingSection: React.FC<props> = ({ userInfo }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('circle');
 
   const handleTabChange = (tab: string): void => {
@@ -34,10 +37,10 @@ const TrendingSection: React.FC<props> = ({ userInfo }) => {
   return (
     <div className="w-full h-auto cursor-default">
       <div className="text-3xl font-semibold text-[#262626]">
-        Trending Today
+        {t('homepage.section2.text8')}
       </div>
       <div className="text-sm mt-3 font-light text-[#262626]">
-        {`Check out what's popular right now`}
+        {t('homepage.section2.text9')}
       </div>
       <Tabs value={activeTab}>
         <TabsHeader

@@ -1,5 +1,6 @@
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface UserData {
   name: string;
@@ -15,6 +16,7 @@ interface UserData {
 }
 
 const Section3 = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -73,7 +75,9 @@ const Section3 = (): React.ReactElement => {
           </p>
         </div>
       )}
-      <h1 className="text-3xl font-semibold text-[#262626]">Referral Code</h1>
+      <h1 className="text-3xl font-semibold text-[#262626]">
+        {t('homepage.section2.text4')}
+      </h1>
       <div className="mt-4 flex">
         <div className="flex justify-between border w-full border-gray-300 px-4 py-2 rounded-md">
           <input

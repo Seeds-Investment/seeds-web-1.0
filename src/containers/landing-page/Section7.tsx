@@ -51,7 +51,7 @@ export default function Section6(): React.ReactElement {
             {t('landingV2.section7.text1')}
           </h1>
           <h1 className="lg:text-2xl text-base font-normal mt-5 font-poppins text-[#262626]">
-            {t('landingV2.section6.text2')}
+            {t('landingV2.section7.text2')}
           </h1>
         </div>
       </div>

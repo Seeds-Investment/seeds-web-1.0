@@ -14,12 +14,14 @@ import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
 import { trackEvent } from '@phntms/react-gtm';
+import DeviceDetector from 'device-detector-js';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 interface FormData {
   phoneNumber: string;
   password: string;
@@ -30,7 +32,7 @@ const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const { data: session }: any = useSession();
-
+  const deviceDetector = new DeviceDetector();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
@@ -99,7 +101,9 @@ const LoginPage = (): JSX.Element => {
           trackEvent({
             event: 'Seeds_login_web',
             data: {
-              user_id: responseUser.id
+              user_id: responseUser.id,
+              user_device: deviceDetector.parse(navigator.userAgent).device
+                ?.type
             }
           });
           await router.push('/homepage'); // Added await keyword here
@@ -108,7 +112,9 @@ const LoginPage = (): JSX.Element => {
             data: {
               user_id: responseUser.id,
               page_name: 'Homepage',
-              created_at: new Date().toString()
+              created_at: new Date().toString(),
+              user_device: deviceDetector.parse(navigator.userAgent).device
+                ?.type
             }
           });
         } else {

@@ -97,7 +97,7 @@ const SlideCircle: React.FC = () => {
     }
   };
   return (
-    <div className="w-fit lg:h-[447px] flex flex-col gap-10 justify-center items-center">
+    <div className="w-fit flex flex-col gap-10 justify-center items-center">
       <Slider {...settings} ref={sliderRef} className=" flex items-center">
         {circleData?.result?.map((item: Item, index: any) => {
           const myStyle: MyStyle = {
@@ -109,26 +109,19 @@ const SlideCircle: React.FC = () => {
             })`
           };
           return (
-            <div
-              key={index}
-              className={`${
-                activeSlide === index ? '' : 'lg:my-[100px] my-[40px]'
-              }`}
-            >
+            <div key={index}>
               <Card
                 shadow={false}
                 className={`${
-                  activeSlide === index
-                    ? 'lg:w-[615.73px] lg:h-[355px] w-[343px] h-[177px]'
-                    : 'lg:w-[343px] lg:h-[177px] w-[142.13px] h-[81.94px]'
-                } mx-[13.2px] rounded-full`}
+                  activeSlide === index ? 'scale-[1]' : 'scale-[0.8]'
+                } rounded-full lg:w-[466.9px] lg:h-[269px] w-[294.28px] h-[169.31px]`}
                 key={index}
               >
                 <CardHeader
                   shadow={false}
                   color="transparent"
                   style={myStyle}
-                  className={`absolute m-0 h-full w-full bg-cover bg-center bg-[image:var(--image-url)] py-[13.46px] px-[16.87px]`}
+                  className={`absolute m-0 h-full w-full bg-cover bg-center bg-[image:var(--image-url)]`}
                 >
                   <div
                     className={`${
@@ -138,53 +131,64 @@ const SlideCircle: React.FC = () => {
                     }`}
                   >
                     {item.type !== 'free' ? (
-                      <div className="flex w-[65.63px] h-[19.35px] absolute top-0 right-0 mr-[16.87px] mt-[13.46px] bg-white rounded-full gap-[3.37px] items-center justify-center">
-                        <Image
+                      <div className="flex lg:w-[98.54px] lg:h-[29px] w-[46.66px] h-[13.76px] absolute top-0 right-0 lg:mr-[20.22px] lg:mt-[20.22px] mr-[9.56px] mt-[9.56px] bg-white rounded-full lg:gap-[5px] gap-[2.39px] items-center justify-center">
+                        <img
                           src={chrownCirclePremium.src}
                           alt="crown"
-                          width={10}
-                          height={10}
+                          className="lg:w-[15.1px] lg:h-[15.1px] w-[7.17px] h-[7.17px]"
                         />
-                        <Typography className="text-[6.73px] leading-[13.46px] text-[#3AC4A0] font-semibold font-poppins">
+                        <Typography className="lg:text-[10.10px] lg:leading-[20.22px] text-[4.79px] leading-[9.56px] text-[#3AC4A0] font-semibold font-poppins">
                           Premium
                         </Typography>
                       </div>
                     ) : null}
                   </div>
                 </CardHeader>
-                <CardBody className="p-0 relative flex flex-col items-center my-auto gap-1.5">
+                <CardBody className="p-0 relative flex flex-col items-center my-auto gap-2.5">
                   {item.image?.split('.')[0] === 'https://seeds-bucket-new' ? (
                     <Avatar
                       alt="circleAvatar"
-                      className="border-[1.68px] border-white w-16 h-16 bg-cover"
+                      className="lg:border-[2.53px] border-[1.20px] border-white lg:w-[94.70px] lg:h-[94.70px] w-[44.86px] h-[44.86px] bg-cover"
                       src="https://res.cloudinary.com/dafjb9vn7/image/upload/v1702375269/defaultAvatarCircle_rp78vk.svg"
                     />
                   ) : (
                     <Avatar
                       alt="circleAvatar"
-                      className="border-[1.68px] border-white w-16 h-16 bg-cover"
+                      className="lg:border-[2.53px] border-[1.20px] border-white lg:w-[94.70px] lg:h-[94.70px] w-[44.86px] h-[44.86px] bg-cover"
                       src={`${item.image ?? ''}`}
                     />
                   )}
-                  <Typography className="text-white text-sm font-poppins font-semibold">
+                  <Typography className="text-white lg:text-xl text-[9.56px] leading-[14.36px] font-poppins font-semibold">
                     {item.name}
                   </Typography>
-                  <div className="flex gap-3">
-                    <div className="flex items-center gap-[1.68px]">
-                      <Image src={likeCircle} alt="likeCircle" />
-                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                  <div className="flex lg:gap-[18px] gap-[8.36px]">
+                    <div className="flex items-center lg:gap-[2.5px] gap-[1.20px]">
+                      <Image
+                        src={likeCircle}
+                        alt="likeCircle"
+                        className="lg:w-[25.29px] lg:h-[25.29px] w-[11.96px] h-[11.96px]"
+                      />
+                      <Typography className="text-white lg:text-base text-xs font-poppins font-normal ">
                         {item.total_like}
                       </Typography>
                     </div>
-                    <div className="flex items-center gap-[1.68px]">
-                      <Image src={memberCircle} alt="memberCircle" />
-                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                    <div className="flex items-center lg:gap-[2.5px] gap-[1.20px]">
+                      <Image
+                        src={memberCircle}
+                        alt="memberCircle"
+                        className="lg:w-[25.29px] lg:h-[25.29px] w-[11.96px] h-[11.96px]"
+                      />
+                      <Typography className="text-white lg:text-base text-xs font-poppins font-normal ">
                         {item.totalMember}
                       </Typography>
                     </div>
-                    <div className="flex items-center gap-[1.68px]">
-                      <Image src={postCircle} alt="postCircle" />
-                      <Typography className="text-white text-[10px] font-poppins font-normal leading-[13.46px]">
+                    <div className="flex items-center lg:gap-[2.5px] gap-[1.20px]">
+                      <Image
+                        src={postCircle}
+                        alt="postCircle"
+                        className="lg:w-[25.29px] lg:h-[25.29px] w-[11.96px] h-[11.96px]"
+                      />
+                      <Typography className="text-white lg:text-base text-xs font-poppins font-normal ">
                         {item.totalPost}
                       </Typography>
                     </div>
@@ -286,19 +290,12 @@ const SlideQuiz: React.FC = () => {
       <Slider {...settings} ref={sliderRef} className=" flex items-center">
         {quizData?.data?.map((item: Item, index: any) => {
           return (
-            <div
-              key={index}
-              className={`${
-                activeSlide === index ? '' : 'lg:my-[31px] my-[20px]'
-              }`}
-            >
+            <div key={index}>
               <Card
                 shadow={false}
                 className={`${
-                  activeSlide === index
-                    ? 'lg:w-[466.9px] lg:h-[279px] w-[294.28px] h-[175.85px]'
-                    : 'lg:w-[363.64px] lg:h-[217.3px] w-[229.2px] h-[136.96px]'
-                } lg:mx-[19px] mx-3`}
+                  activeSlide === index ? 'scale-[1]' : 'scale-[0.8]'
+                } lg:w-[466.9px] lg:h-[279px] w-[294.28px] h-[175.85px]`}
                 key={index}
               >
                 <CardHeader
@@ -472,7 +469,7 @@ const NewSection4: React.FC = () => {
   return (
     <section ref={ref} className="md:bg-[#F9F9F9]">
       <div
-        className={`lg:pt-20 lg:pb-[59px] py-10 sm:mx-20 ${
+        className={`lg:pt-20 lg:pb-[59px] py-10 sm:mx-10 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

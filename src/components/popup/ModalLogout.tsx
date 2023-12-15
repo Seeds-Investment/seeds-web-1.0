@@ -2,6 +2,7 @@
 import { Logout } from '@/constants/assets/images';
 import { Typography } from '@material-tailwind/react';
 import { trackEvent } from '@phntms/next-gtm';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
@@ -16,7 +17,7 @@ interface Props {
 const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
+  const deviceDetector = new DeviceDetector();
   const _handleLogout = async (): Promise<void> => {
     window.localStorage.removeItem('accessToken');
     window.localStorage.removeItem('keepMeLoggedIn');
@@ -26,7 +27,8 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
       event: `Seeds_logout_web`,
       data: {
         user_id: userInfo?.id,
-        created_at: new Date().toString()
+        created_at: new Date().toString(),
+        user_device: deviceDetector.parse(navigator.userAgent).device?.type
       }
     });
     await router.push('/');

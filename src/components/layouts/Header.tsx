@@ -60,7 +60,6 @@ const Header: React.FC = () => {
   };
 
   const [token, setToken] = useState(null);
-  console.log(token);
   useEffect(() => {
     const storedToken: any = localStorage.getItem('accessToken');
     setToken(storedToken);

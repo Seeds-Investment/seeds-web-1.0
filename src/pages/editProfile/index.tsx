@@ -1,4 +1,6 @@
+import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalender';
 import countriesRepository from '@/repository/countries.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
   Button,
@@ -10,14 +12,47 @@ import {
   MenuList,
   Typography
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import 'react-datepicker/dist/react-datepicker.css';
 const EditProfile: React.FC = () => {
   const maxLengthBio = 50;
-  const valueBio = 'something';
   const [country, setCountry] = useState(0);
+  const [form, setForm] = useState<any>({
+    name: '',
+    seedsTag: '',
+    email: '',
+    avatar: '',
+    bio: '',
+    birthDate: '',
+    phone: ''
+  });
   const { name, flags, countryCallingCode } = countriesRepository[country];
+  const changeData = (e: any): void => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        console.log(dataInfo);
+        setForm({
+          name: dataInfo.name,
+          seedsTag: dataInfo.seedsTag,
+          email: dataInfo.email,
+          avatar: dataInfo.avatar,
+          bio: dataInfo.bio,
+          birthDate: dataInfo.birthDate,
+          phone: dataInfo.phoneNumber
+        });
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
   return (
     <Card className="flex flex-col justify-center items-center gap-4 w-[600px]">
       <div className="flex flex-col justify-center items-center">
@@ -29,6 +64,9 @@ const EditProfile: React.FC = () => {
       </div>
       <Input
         label="Name"
+        name="name"
+        value={form?.name}
+        onChange={changeData}
         variant="static"
         labelProps={{
           className: 'text-base text-[#262626] font-semibold font-poppins'
@@ -38,6 +76,9 @@ const EditProfile: React.FC = () => {
       />
       <Input
         label="SeedsTag"
+        name="seedsTag"
+        value={form?.seedsTag}
+        onChange={changeData}
         variant="static"
         labelProps={{
           className: 'text-base text-[#262626] font-semibold font-poppins'
@@ -46,21 +87,15 @@ const EditProfile: React.FC = () => {
         required
       />
 
-      <Input
-        label="Date of Birth"
-        variant="static"
-        labelProps={{
-          className: 'text-base text-[#262626] font-semibold font-poppins'
-        }}
-        className="text-[#7C7C7C] text-base font-poppins font-normal"
-        required
-        style={{ backgroundColor: 'transparent' }}
-      />
-      <div className="self-start w-full">
+      <BirthDateCalender wrapperClassName={`w-full`} className={``} />
+
+      <div className="w-full">
         <Input
           label="Bio"
+          name="bio"
+          value={form?.bio}
+          onChange={changeData}
           variant="static"
-          value={valueBio}
           labelProps={{
             className: 'text-base text-[#262626] font-semibold font-poppins'
           }}
@@ -69,12 +104,15 @@ const EditProfile: React.FC = () => {
           maxLength={maxLengthBio}
         />
         <Typography>
-          {valueBio.length}/{maxLengthBio}
+          {form.bio.length}/{maxLengthBio}
         </Typography>
       </div>
 
       <Input
         label="Phone Number"
+        name="phone"
+        value={form?.phone}
+        onChange={changeData}
         variant="static"
         labelProps={{
           className: 'text-base text-[#262626] font-semibold font-poppins'
@@ -137,6 +175,9 @@ const EditProfile: React.FC = () => {
       </div>
       <Input
         label="Email"
+        name="email"
+        value={form?.email}
+        onChange={changeData}
         variant="static"
         labelProps={{
           className: 'text-base text-[#262626] font-semibold font-poppins'

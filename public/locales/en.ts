@@ -255,7 +255,7 @@ export default {
       title: {
         1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
-        3: 'How can I access seeds?',
+        3: 'How can I access Seeds?',
         4: 'How safe is it to invest in Seeds?',
         5: 'I want to ask more about Seeds products and services'
       },

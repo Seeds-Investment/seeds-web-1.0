@@ -82,10 +82,10 @@ const Section5: React.FC = () => {
                 open === 1 ? 'text-blue-500 hover:!text-blue-700' : ''
               }`}
             >
-              {t('faq.faq.title.1')}
+              {t('faq.faq.title.5')}
             </AccordionHeader>
             <AccordionBody className="pt-0 text-base font-normal">
-              {t('faq.faq.desc.1')}
+              {t('faq.faq.desc.5')}
             </AccordionBody>
           </Accordion>
           <Accordion
@@ -101,10 +101,10 @@ const Section5: React.FC = () => {
                 open === 2 ? 'text-blue-500 hover:!text-blue-700' : ''
               }`}
             >
-              {t('faq.faq.title.2')}
+              {t('faq.faq.title.4')}
             </AccordionHeader>
             <AccordionBody className="pt-0 text-base font-normal">
-              {t('faq.faq.desc.2')}
+              {t('faq.faq.desc.4')}
             </AccordionBody>
           </Accordion>
           <Accordion
@@ -139,10 +139,10 @@ const Section5: React.FC = () => {
                 open === 4 ? 'text-blue-500 hover:!text-blue-700' : ''
               }`}
             >
-              {t('faq.faq.title.4')}
+              {t('faq.faq.title.2')}
             </AccordionHeader>
             <AccordionBody className="pt-0 text-base font-normal">
-              {t('faq.faq.desc.4')}
+              {t('faq.faq.desc.2')}
             </AccordionBody>
           </Accordion>
           <Accordion
@@ -158,10 +158,10 @@ const Section5: React.FC = () => {
                 open === 5 ? 'text-blue-500 hover:!text-blue-700' : ''
               }`}
             >
-              {t('faq.faq.title.5')}
+              {t('faq.faq.title.1')}
             </AccordionHeader>
             <AccordionBody className="pt-0 text-base font-normal">
-              {t('faq.faq.desc.5')}
+              {t('faq.faq.desc.1')}
             </AccordionBody>
           </Accordion>
         </div>

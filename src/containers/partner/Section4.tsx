@@ -5,10 +5,12 @@ import {
 } from '@/constants/assets/images';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 const Section4: React.FC = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const data = [
     {
@@ -59,7 +61,12 @@ const Section4: React.FC = () => {
                 {data.title}
               </p>
               <p className="text-lg font-normal text-black mt-5">{data.text}</p>
-              <Button className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible">
+              <Button
+                className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible"
+                onClick={() => {
+                  void router.push('https://linktr.ee/seeds.finance');
+                }}
+              >
                 {data.button}
               </Button>
             </Card>

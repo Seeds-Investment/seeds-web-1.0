@@ -1299,9 +1299,10 @@ export default {
         'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now!'
     },
-    section2:{
+    section2: {
       text1: 'Social',
-      text2: 'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
     },
     section3: {
       text1: 'How Seeds Enhance',

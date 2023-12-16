@@ -1,12 +1,12 @@
 'use client';
-import chat from '@/assets/landing-page/chat-us.png';
+// import chat from '@/assets/landing-page/chat-us.png';
 import Community from '@/assets/landing-page/community.svg';
 import Event from '@/assets/landing-page/event.svg';
 import learn from '@/assets/landing-page/learn.png';
 import play from '@/assets/landing-page/play.png';
 import Register from '@/assets/landing-page/register.svg';
 import earth from '@/assets/landing-page/s2-earth.png';
-import vector3 from '@/assets/landing-page/vector-faq-3.png';
+// import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -90,7 +90,7 @@ export default function Section2(): React.ReactElement {
             {t('landing.section2.text1c')}
           </span>
 
-          <Image
+          {/* <Image
             alt="img"
             className="fixed w-[30%] z-[99] translate-y-[15rem] translate-x-[8rem]
                 2xl:w-[15%] 2xl:-translate-y-[20rem] 2xl:translate-x-[35rem]
@@ -98,7 +98,7 @@ export default function Section2(): React.ReactElement {
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
                 sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
             src={chat}
-          />
+          /> */}
           <Image
             alt="img"
             className="absolute w-[30%] translate-y-[8rem]  translate-x-[10rem]
@@ -130,7 +130,7 @@ export default function Section2(): React.ReactElement {
                 {t('landing.section2.text3b')}
               </p>
             </section>
-            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[356px] text-center font-poppins rounded-[45px] xl:mt-0 mt-20 shadow-lg shadow-[#5e44ff66]">
+            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[356px] text-center font-poppins rounded-[45px] xl:mt-5 mt-20 shadow-lg shadow-[#5e44ff66]">
               <Image
                 alt="image"
                 src={learn}
@@ -138,20 +138,20 @@ export default function Section2(): React.ReactElement {
                 className="absolute translate-x-[15%] -translate-y-[52%]"
               />
               <h1 className="text-[#182430] text-4xl font-semibold  mt-[100px]">
-                {t('landing.section2.text3c')}
+                {t('landingV2.section2.text1')}
               </h1>
               <p className="text-[#182430] leading-[30px] text-base font-normal mt-6">
-                {t('landing.section2.text3d')}
+                {t('landingV2.section2.text2')}
               </p>
             </section>
           </div>
         </div>
       </div>
-      <Image
+      {/* <Image
         alt="img"
         className="absolute right-0 -z-10 top-[1100px] xl:block hidden"
         src={vector3}
-      />
+      /> */}
     </div>
   );
 }

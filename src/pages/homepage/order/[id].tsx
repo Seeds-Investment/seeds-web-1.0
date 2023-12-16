@@ -27,6 +27,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type Ballance } from '../play-assets';
 
 export interface typeLimitOrder {
@@ -61,6 +62,7 @@ const OrderPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const { playId } = router.query;
+  const { t } = useTranslation();
   const [data, setData] = useState<any>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
@@ -352,7 +354,6 @@ const OrderPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-  console.log(ballance);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -362,8 +363,10 @@ const OrderPage: React.FC = () => {
         <div className="flex flex-col mt-4">
           <div className="flex flex-col gap-3 pb-3 border-b border-neutral-ultrasoft">
             <Typography className="text-base font-poppins font-semibold text-black">
-              {router.query?.transaction === 'buy' && 'Balance'}
-              {router.query?.transaction === 'sell' && 'Portfolio'}
+              {router.query?.transaction === 'buy' &&
+                t('playSimulation.balance')}
+              {router.query?.transaction === 'sell' &&
+                t('playSimulation.portfolio')}
             </Typography>
             <Typography className="text-base font-poppins font-base text-black">
               {`${standartCurrency(
@@ -430,7 +433,7 @@ const OrderPage: React.FC = () => {
           {router.query?.transaction === 'sell' && (
             <div className="mt-4">
               <Typography className="font-poppins text-base font-semibold text-black mb-4">
-                You can choose the amount of the asset to sell
+                {t('playSimulation.sellAssetText1')}
               </Typography>
               <div className="flex gap-2">
                 {sellPercentArr.map((el, i: number) => {
@@ -461,7 +464,7 @@ const OrderPage: React.FC = () => {
           )}
           <div className="flex flex-col mt-4 gap-4">
             <Typography className="font-poppins text-base font-semibold text-black">
-              Amount
+              {t('playSimulation.amount')}
             </Typography>
             <div className="flex">
               <input
@@ -489,7 +492,7 @@ const OrderPage: React.FC = () => {
             </div>
 
             <Typography className="font-poppins text-base font-semibold text-black">
-              Cash Amount
+              {t('playSimulation.cashAmount')}
             </Typography>
 
             <input
@@ -626,7 +629,7 @@ const OrderPage: React.FC = () => {
                   isDisable ? 'text-[#7C7C7C]' : 'text-white'
                 }`}
               >
-                Confirm
+                {t('button.label.confirm')}
               </Typography>
             </Button>
             <Dialog
@@ -642,7 +645,7 @@ const OrderPage: React.FC = () => {
                 <div className="min-w-full flex items-center justify-between">
                   <div className="flex flex-col">
                     <p className="text-lg font-semibold text-[#262626]">
-                      Confirmation
+                      {t('playSimulation.purchaseConfirmation')}
                     </p>
                   </div>
                   <div className="flex items-center">
@@ -660,7 +663,7 @@ const OrderPage: React.FC = () => {
                   <div className="flex flex-col md:my-8 my-5">
                     <div className="flex flex-col mb-4">
                       <Typography className="text-[#262626] font-semibold">
-                        Order Review
+                        {t('playSimulation.orderReview')}
                       </Typography>
                       <Typography className="text-[#3C49D6] font-normal">
                         #41683983
@@ -692,13 +695,13 @@ const OrderPage: React.FC = () => {
                     </div>
                     <div className="flex flex-col md:my-8 my-0 mb-4">
                       <Typography className="text-[#262626] font-semibold">
-                        Transaction Details
+                        {t('playSimulation.transactionDetail')}
                       </Typography>
                     </div>
                     <CCard className="flex w-full p-3 md:p-5 border-none rounded-xl shadow-none bg-[#F9F9F9]">
                       <div className="flex justify-between">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Order Type
+                          {t('playSimulation.orderType')}
                         </Typography>
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-end">
@@ -708,14 +711,14 @@ const OrderPage: React.FC = () => {
                                 `${
                                   orderType === 'pending'
                                     ? 'Pending Order - Buy Limit'
-                                    : 'Buy - Market Order'
+                                    : t('playSimulation.buyMarketOrder')
                                 }`}
                               {router.query.transaction !== undefined &&
                                 router.query.transaction === 'sell' &&
                                 `${
                                   orderType === 'pending'
                                     ? 'Pending Order - Sell Limit'
-                                    : 'Sell - Market Order'
+                                    : t('playSimulation.sellMarketOrder')
                                 }`}
                             </Typography>
                           </div>
@@ -750,7 +753,7 @@ const OrderPage: React.FC = () => {
                         limitOrder.profit.length === 0 && (
                           <div className="flex justify-between mt-4">
                             <Typography className="text-[#7C7C7C] font-normal text-xs">
-                              Market Price
+                              {t('playSimulation.marketPrice')}
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
                               IDR
@@ -763,7 +766,7 @@ const OrderPage: React.FC = () => {
                         )}
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Amount
+                          {t('playSimulation.amount')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
                           {`${
@@ -775,7 +778,7 @@ const OrderPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Cash Amount
+                          {t('playSimulation.cashAmount')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
                           IDR
@@ -814,7 +817,7 @@ const OrderPage: React.FC = () => {
                         )}
                       <div className="flex justify-between py-4 border-b border-[#BDBDBD]">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
-                          Transaction Fee
+                          {t('playSimulation.transactionFee')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
                           0
@@ -822,7 +825,7 @@ const OrderPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          Total Cost
+                          {t('playSimulation.totalCost')}
                         </Typography>
                         <Typography className="text-[#3AC4A0] font-semibold text-xs">
                           {standartCurrency(amount)}
@@ -833,10 +836,18 @@ const OrderPage: React.FC = () => {
                 </DialogBody>
                 <DialogFooter className="p-0">
                   <Typography className="text-[#7C7C7C] font-poppins text-center text-sm md:text-base">
-                    This is a risk-free investment because you are using virtual
-                    balance for the transaction. Please refer to this{' '}
-                    <span className="text-[#3AC4A0]">disclosure</span> for more
-                    information
+                    {t('playSimulation.footerOrderDetail1')}{' '}
+                    <span
+                      className="text-[#3AC4A0] cursor-pointer"
+                      onClick={() => {
+                        router.push('/faq-submenu/disclosure').catch(err => {
+                          console.log(err);
+                        });
+                      }}
+                    >
+                      {t('playSimulation.disclosure')}
+                    </span>{' '}
+                    {t('playSimulation.footerOrderDetail2')}
                   </Typography>
                   <Button
                     className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
@@ -846,7 +857,7 @@ const OrderPage: React.FC = () => {
                       });
                     }}
                   >
-                    Confirm
+                    {t('button.label.confirm')}
                   </Button>
                 </DialogFooter>
               </form>

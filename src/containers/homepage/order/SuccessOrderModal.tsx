@@ -10,6 +10,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   handleModal: () => void;
@@ -24,6 +25,7 @@ const SuccessOrderModal: React.FC<props> = ({
 }) => {
   const router = useRouter();
   const { playId } = router.query;
+  const { t } = useTranslation();
   return (
     <Dialog
       className="p-4 py-5 md:py-0 md:p-8 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
@@ -49,13 +51,14 @@ const SuccessOrderModal: React.FC<props> = ({
         <div className="flex flex-col">
           <div className="flex justify-center">
             <Typography className="text-[#262626] font-semibold text-lg">
-              Order Completed
+              {t('playSimulation.orderCompleted')}
             </Typography>
           </div>
           <div className="flex justify-center">
             <Typography className="text-[#7C7C7C] font-normal text-base">
-              You{' '}
-              {successData?.type === 'BUY' ? 'purchased' : 'successfully sold '}{' '}
+              {successData?.type === 'BUY'
+                ? t('playSimulation.orderCompletedBuy')
+                : t('playSimulation.orderCompletedSell')}{' '}
               {`${successData?.lot} ${
                 successData?.asset?.asset_name as string
               }`}

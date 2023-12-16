@@ -255,7 +255,7 @@ export default {
       title: {
         1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
-        3: 'How can I access seeds?',
+        3: 'How can I access Seeds?',
         4: 'How safe is it to invest in Seeds?',
         5: 'I want to ask more about Seeds products and services'
       },
@@ -1299,6 +1299,11 @@ export default {
         'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now!'
     },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
     section3: {
       text1: 'How Seeds Enhance',
       text2: 'Your Financial Journey',
@@ -1343,6 +1348,54 @@ export default {
         "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
       text3: 'Partnership Program'
     }
+  },
+  playSimulation: {
+    assetList: 'Asset List',
+    seedsCash: 'Seeds Cash',
+    cashBalance: 'Cash Balance',
+    portfolio: 'Portfolio',
+    assetDetail: 'Asset Details',
+    today: 'Today',
+    remainingTime: 'Remaining Time',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Sell',
+    buy: 'Buy',
+    balance: 'Balance',
+    takeProfit1: 'Activate Take Profit and Stop Loss',
+    takeProfit2: 'Advance your strategy and win the Arena.',
+    purchaseAmount: 'Purchase Amount',
+    cashAmount: 'Cash Amount',
+    purchaseConfirmation: 'Purchase Confirmation',
+    confirmation: 'Confirmation',
+    orderReview: 'Order Review',
+    orderType: 'Order Type',
+    buyMarketOrder: 'Buy - Market Order',
+    sellMarketOrder: 'Sell - Market Order',
+    marketPrice: 'Market Price',
+    amount: 'Amount',
+    transactionFee: 'Transaction Fee',
+    totalCost: 'Total Cost',
+    footerOrderDetail1:
+      'This is a risk-free investment because you are using virtual balance for the transaction. Please refer to this',
+    footerOrderDetail2: 'for more information',
+    disclosure: 'disclosure',
+    orderCompleted: 'Order Completed',
+    orderCompletedBuy: 'You purchased',
+    orderCompletedSell: 'You have successfully sold',
+    investmentValue: 'Investment Value',
+    totalPortfolio: 'Total Portfolio',
+    yourAssetsPortfolio: 'Your assets portfolio',
+    joinArena1: 'Are you ready to join Arena?',
+    joinArena2:
+      'Get ready for trading challenges to test your skills and win prizes.',
+    sellAssetText1: 'You can choose the amount of the asset to sell',
+    sellAmount: 'Sell Amount',
+    cashAvailable: 'Cash Available',
+    cashUsed: 'Cash Used',
+    historyTransaction: 'History Transaction',
+    transactionDetail: 'Transaction Details'
   },
   homepage: {
     section2: {

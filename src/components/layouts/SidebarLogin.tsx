@@ -1,6 +1,7 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { trackEvent } from '@phntms/next-gtm';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -25,6 +26,7 @@ const menu = [
 ];
 
 const SidebarLogin: React.FC = () => {
+  const deviceDetector = new DeviceDetector();
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
@@ -74,7 +76,9 @@ const SidebarLogin: React.FC = () => {
                 data: {
                   user_id: userInfo?.id,
                   page_name: data.title,
-                  created_at: new Date().toString()
+                  created_at: new Date().toString(),
+                  user_device: deviceDetector.parse(navigator.userAgent).device
+                    ?.type
                 }
               });
             }}

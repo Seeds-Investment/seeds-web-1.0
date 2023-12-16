@@ -1224,6 +1224,11 @@ export default {
         'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
       text6: 'Main Sekarang!'
     },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
       text2: 'Perjalanan Keuangan Kamu',
@@ -1270,6 +1275,54 @@ export default {
         'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
       text3: 'Program Mitra'
     }
+  },
+  playSimulation: {
+    assetList: 'Daftar Aset',
+    seedsCash: 'Dana Seeds',
+    cashBalance: 'Saldo Kas',
+    portfolio: 'Portofolio',
+    assetDetail: 'Detail Aset',
+    today: 'Hari Ini',
+    remainingTime: 'Waktu yang tersisa',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Jual',
+    buy: 'Beli',
+    balance: 'Saldo',
+    takeProfit1: 'Aktifkan Take Profit dan Stop Loss',
+    takeProfit2: 'Tingkatkan strategimu dan menangkan Arena.',
+    purchaseAmount: 'Jumlah Pembelian',
+    cashAmount: 'Jumlah Uang',
+    purchaseConfirmation: 'Konfirmasi Pembelian',
+    confirmation: 'Konfirmasi',
+    orderReview: 'Tinjauan Pembelian',
+    orderType: 'Tipe Order',
+    buyMarketOrder: 'Pembelian - Market Order',
+    sellMarketOrder: 'Penjualan - Market Order',
+    marketPrice: 'Harga Pasar',
+    amount: 'Jumlah',
+    transactionFee: 'Biaya Transaksi',
+    totalCost: 'Total Biaya',
+    footerOrderDetail1:
+      'Investasi ini bebas risiko karena kamu menggunakan saldo virtual untuk transaksi ini. Silakan lihat informasi',
+    footerOrderDetail2: 'pada pemberitahuan ini.',
+    disclosure: 'selengkapnya',
+    orderCompleted: 'Pesanan Selesai',
+    orderCompletedBuy: 'Kamu membeli',
+    orderCompletedSell: 'Anda telah berhasil menjual ',
+    investmentValue: 'Nilai Investasi',
+    totalPortfolio: 'Total Portofolio',
+    yourAssetsPortfolio: 'Portofolio aset kamu',
+    joinArena1: 'Apakah kamu siap untuk bergabung dalam Arena?',
+    joinArena2:
+      'Bersiaplah bertanding untuk menguji keterampilan trading-mu dan memenangkan hadiahnya.',
+    sellAssetText1: 'Kamu bisa memilih jumlah aset yang akan dijual.',
+    sellAmount: 'Jumlah Penjualan',
+    cashAvailable: 'Dana Tersedia',
+    cashUsed: 'Dana Digunakan',
+    historyTransaction: 'Riwayat Transaksi',
+    transactionDetail: 'Detail Transaksi'
   },
   homepage: {
     section2: {

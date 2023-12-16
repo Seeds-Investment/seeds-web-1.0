@@ -22,12 +22,6 @@ const Section6: React.FC = () => {
   const events = [
     { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent3.src },
-    { image: SectionSixImageEvent3.src },
-    { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent1.src },
-    { image: SectionSixImageEvent1.src },
-    { image: SectionSixImageEvent2.src },
     { image: SectionSixImageEvent3.src }
   ];
 

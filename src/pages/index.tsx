@@ -58,7 +58,9 @@ export default function Home(): React.ReactElement {
         <Section10 />
         <Section11 />
         <Section12 />
-        <Footer />
+        <div className="lg:relative z-30 lg:mt-[-18px]">
+          <Footer />
+        </div>
       </PageGradient>
     </>
   );

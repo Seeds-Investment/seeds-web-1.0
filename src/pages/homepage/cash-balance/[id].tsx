@@ -13,6 +13,7 @@ import {
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type Ballance } from '../play-assets';
 
 interface ChartData {
@@ -64,6 +65,7 @@ const initialChartData = {
 const CashBalancePage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { t } = useTranslation();
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
@@ -90,7 +92,7 @@ const CashBalancePage: React.FC = () => {
 
   const handleSetChartData = (): void => {
     const convertedData: ChartData = {
-      labels: ['Cash Available', 'Cash Use'],
+      labels: [t('playSimulation.cashAvailable'), t('playSimulation.cashUsed')],
       datasets: [
         {
           label: ' Percentage',
@@ -193,7 +195,7 @@ const CashBalancePage: React.FC = () => {
         <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
           <div className="flex flex-col">
             <div className="sm:text-3xl text-lg font-semibold bg-clip-text text-black font-poppins">
-              Cash Balance
+              {t('playSimulation.cashBalance')}
             </div>
           </div>
         </div>
@@ -219,7 +221,7 @@ const CashBalancePage: React.FC = () => {
                 />
               </svg>
               <Typography className="text-[#27A590] font-poppins font-semibold">
-                Cash Available
+                {t('playSimulation.cashAvailable')}
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
@@ -254,7 +256,7 @@ const CashBalancePage: React.FC = () => {
                 />
               </svg>
               <Typography className="text-[#27A590] font-poppins font-semibold">
-                Cash Used
+                {t('playSimulation.cashUsed')}
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
@@ -266,7 +268,7 @@ const CashBalancePage: React.FC = () => {
             </div>
           </div>
           <Typography className="text-black font-poppins text-base sm:text-lg font-semibold my-4">
-            History Transaction
+            {t('playSimulation.historyTransaction')}
           </Typography>
           <div className="flex flex-col gap-3">
             {!isLoading ? (

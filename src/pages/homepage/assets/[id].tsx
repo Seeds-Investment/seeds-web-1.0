@@ -8,6 +8,7 @@ import { getDetailAsset } from '@/repository/asset.repository';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const dataTab = [
   { label: '1d', value: 'daily' },
@@ -21,6 +22,7 @@ const AssetDetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const { playId } = router.query;
+  const { t } = useTranslation();
   const [data, setData] = useState<any>();
   const [params, setParams] = useState({
     tf: 'daily',
@@ -108,7 +110,7 @@ const AssetDetailPage: React.FC = () => {
                   });
               }}
             >
-              Sell
+              {t('playSimulation.sell')}
             </Button>
             <Button
               variant="filled"
@@ -125,7 +127,7 @@ const AssetDetailPage: React.FC = () => {
                   });
               }}
             >
-              Buy
+              {t('playSimulation.buy')}
             </Button>
           </div>
         </CCard>

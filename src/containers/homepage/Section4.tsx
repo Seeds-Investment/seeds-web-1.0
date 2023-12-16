@@ -25,7 +25,7 @@ interface Banner {
 }
 
 const Section4 = (): React.ReactElement => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   //   const router = useRouter();
   const [bannerData, setBannerData] = useState<Banner[]>([]);
 

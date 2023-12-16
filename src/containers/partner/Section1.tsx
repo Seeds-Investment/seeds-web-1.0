@@ -2,11 +2,13 @@ import { SectionOneImageOne } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 const Section1: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
+  const router = useRouter();
 
   return (
     <div className="md:mb-10 min-w-full font-poppins bg-[#F9F9F9]">
@@ -18,7 +20,12 @@ const Section1: React.FC = () => {
           <p className="text-base md:text-xl font-normal text-[#262626] mt-6">
             {t('partner.section1.text')}
           </p>
-          <Button className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible">
+          <Button
+            className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible"
+            onClick={() => {
+              void router.push('https://linktr.ee/seeds.finance');
+            }}
+          >
             {t('partner.section1.button')}
           </Button>
         </div>

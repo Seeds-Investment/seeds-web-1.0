@@ -255,7 +255,7 @@ export default {
       title: {
         1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
-        3: 'How can I access seeds?',
+        3: 'How can I access Seeds?',
         4: 'How safe is it to invest in Seeds?',
         5: 'I want to ask more about Seeds products and services'
       },
@@ -1298,6 +1298,10 @@ export default {
       text5:
         'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now!'
+    },
+    section2:{
+      text1: 'Social',
+      text2: 'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
     },
     section3: {
       text1: 'How Seeds Enhance',

@@ -837,7 +837,14 @@ const OrderPage: React.FC = () => {
                 <DialogFooter className="p-0">
                   <Typography className="text-[#7C7C7C] font-poppins text-center text-sm md:text-base">
                     {t('playSimulation.footerOrderDetail1')}{' '}
-                    <span className="text-[#3AC4A0] cursor-pointer">
+                    <span
+                      className="text-[#3AC4A0] cursor-pointer"
+                      onClick={() => {
+                        router.push('/faq-submenu/disclosure').catch(err => {
+                          console.log(err);
+                        });
+                      }}
+                    >
                       {t('playSimulation.disclosure')}
                     </span>{' '}
                     {t('playSimulation.footerOrderDetail2')}

@@ -22,6 +22,7 @@ export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlideMobile, setCurrentSlideMobile] = useState(0);
 
   useEffect(() => {
     void fetch();
@@ -67,7 +68,7 @@ export default function Section1(): React.ReactElement {
     autoplaySpeed: 3000,
     centerPadding: '33%',
     beforeChange: (current: number, next: number) => {
-      setCurrentSlide(next);
+      setCurrentSlideMobile(next);
     },
     responsive: [
       {
@@ -87,7 +88,7 @@ export default function Section1(): React.ReactElement {
           <Slider {...settingsMobile}>
             <div>
               <div
-                className={currentSlide === 0 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 0 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body1} alt="Body 1" width={200} height={100} />
@@ -95,7 +96,7 @@ export default function Section1(): React.ReactElement {
             </div>
             <div>
               <div
-                className={currentSlide === 1 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 1 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body2} alt="Body 2" width={200} height={100} />
@@ -103,7 +104,7 @@ export default function Section1(): React.ReactElement {
             </div>
             <div>
               <div
-                className={currentSlide === 2 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 2 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body3} alt="Body 3" width={200} height={100} />

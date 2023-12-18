@@ -1224,6 +1224,11 @@ export default {
         'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
       text6: 'Main Sekarang!'
     },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
       text2: 'Perjalanan Keuangan Kamu',

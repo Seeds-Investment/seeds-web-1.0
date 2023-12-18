@@ -20,12 +20,12 @@ import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
 
 const pathUrl = [
-  { id: 1, name: 'Home', url: '/' },
-  { id: 2, name: 'Product', url: '/product' },
-  { id: 3, name: 'Seedspedia', url: '/seedspedia' },
-  // { id: 4, name: 'Market', url: '/market' },
-  { id: 5, name: 'Partner', url: '/partner' },
-  { id: 6, name: 'About Us', url: '/about-us' }
+  { id: 1, name: 'Home', nama: 'Beranda', url: '/' },
+  { id: 2, name: 'Product', nama: 'Produk', url: '/product' },
+  { id: 3, name: 'Seedspedia', nama: 'Seedspedia', url: '/seedspedia' },
+  // { id: 4, name: 'Market', nama:'Pasar', url: '/market' },
+  { id: 5, name: 'Partner', nama: 'Mitra', url: '/partner' },
+  { id: 6, name: 'About Us', nama: 'Tentang Kami', url: '/about-us' }
 ];
 
 const languageList = [
@@ -104,7 +104,7 @@ const Header: React.FC = () => {
                   });
                 }}
               >
-                {item.name}
+                {selectedLanguage === 'EN' ? item.name : item.nama}
               </Link>
             );
           })}
@@ -219,7 +219,7 @@ const Header: React.FC = () => {
                       });
                     }}
                   >
-                    {item.name}
+                    {selectedLanguage === 'EN' ? item.name : item.nama}
                   </Link>
                 </MenuItem>
               );

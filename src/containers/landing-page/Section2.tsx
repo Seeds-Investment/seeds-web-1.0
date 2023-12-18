@@ -138,7 +138,7 @@ export default function Section2(): React.ReactElement {
                 className="absolute translate-x-[15%] -translate-y-[52%]"
               />
               <h1 className="text-[#182430] text-4xl font-semibold  mt-[100px]">
-                  {t('landingV2.section2.text1')}
+                {t('landingV2.section2.text1')}
               </h1>
               <p className="text-[#182430] leading-[30px] text-base font-normal mt-6">
                 {t('landingV2.section2.text2')}

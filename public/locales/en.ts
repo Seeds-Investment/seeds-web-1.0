@@ -15,7 +15,7 @@ export default {
       text2: 'Learn everything about Finance with friends',
       text3a: 'Play',
       text3b:
-        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+        'Trade virtually with a friend using risk-free virtual money and test your financial knowledge with our exciting quizzes.',
       text3c: 'Learn',
       text3d:
         'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
@@ -1299,9 +1299,10 @@ export default {
         'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now!'
     },
-    section2:{
+    section2: {
       text1: 'Social',
-      text2: 'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
     },
     section3: {
       text1: 'How Seeds Enhance',

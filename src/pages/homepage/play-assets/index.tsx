@@ -60,7 +60,7 @@ const optionSortBy = [
   { label: 'Most Trades', value: 'most trades' }
 ];
 
-export default function ListAssets(): React.ReactElement {
+export default function PlayAssetsPage(): React.ReactElement {
   const router = useRouter();
   const { t } = useTranslation();
   const { playId } = router.query;
@@ -138,29 +138,37 @@ export default function ListAssets(): React.ReactElement {
       <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
         <div className="flex flex-col">
           <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black">
-            Asset List
+            {t('playSimulation.assetList')}
           </div>
         </div>
       </div>
       <ImageBackground className="rounded-2xl" imageUrl={BallanceImage.src}>
         <div className="p-5">
           <Typography className="text-white font-poppins mb-2">
-            Seeds Cash
+            {t('playSimulation.seedsCash')}
           </Typography>
           <Typography className="text-white font-poppins text-xl font-semibold">
-            {`${ballance.currency} ${standartCurrency(ballance.balance).replace(
-              'Rp',
-              ''
-            )}`}
+            {`${ballance.currency} ${standartCurrency(
+              ballance.balance + ballance.portfolio
+            ).replace('Rp', '')}`}
           </Typography>
         </div>
       </ImageBackground>
       <div className="flex flex-col pt-4">
         <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
           <Typography className="text-[#27A590] font-poppins font-semibold">
-            Seeds Cash
+            {t('playSimulation.balance')}
           </Typography>
-          <div className="flex gap-4 items-center">
+          <div
+            className="flex gap-4 items-center cursor-pointer"
+            onClick={() => {
+              router
+                .push(`/homepage/cash-balance/${playId as string}`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
             <Typography className="text-black font-poppins text-base font-semibold">
               {`${ballance.currency} ${standartCurrency(
                 ballance.balance
@@ -184,9 +192,18 @@ export default function ListAssets(): React.ReactElement {
         </div>
         <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
           <Typography className="text-[#27A590] font-poppins font-semibold">
-            Portfolio
+            {t('playSimulation.portfolio')}
           </Typography>
-          <div className="flex gap-4 items-center">
+          <div
+            className="flex gap-4 items-center cursor-pointer"
+            onClick={() => {
+              router
+                .push(`/homepage/portfolio/${playId as string}`)
+                .catch(err => {
+                  console.log(err);
+                });
+            }}
+          >
             <Typography className="text-black font-poppins text-base font-semibold">
               {`${ballance.currency} ${standartCurrency(
                 ballance.portfolio

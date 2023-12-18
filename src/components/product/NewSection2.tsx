@@ -7,6 +7,7 @@ import { getQuizLeaderboard } from '@/repository/quiz.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 interface Quiz {
@@ -20,6 +21,7 @@ const quiz: Quiz = {
 };
 
 const NewSection2: React.FC = () => {
+  const { t } = useTranslation();
   const [Lead, setLead] = useState<any[]>([]);
   const [isChange, setChange] = useState('arena');
   const [isBottom, setBottom] = useState(0);
@@ -76,7 +78,7 @@ const NewSection2: React.FC = () => {
           className="xl:-mb-[65px] -mb-[40px] xl:w-[520px] w-[290px]"
         />
         <Typography className="font-poppins font-semibold xl:text-5xl text-3xl bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] inline-block bg-clip-text text-transparent">
-          Leaderboard
+          {`${t('landingPageV2.product.section2.title1')}`}
         </Typography>
       </div>
       <div
@@ -89,7 +91,7 @@ const NewSection2: React.FC = () => {
         }`}
       >
         <Typography className="font-poppins font-normal xl:text-2xl md:text-lg text-base text-[#262626] text-center">
-          Reach the top of the leaderboard and win prizes.
+          {`${t('landingPageV2.product.section2.title2')}`}
         </Typography>
         <div className="flex justify-center gap-6">
           <Button

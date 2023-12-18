@@ -1,10 +1,10 @@
 'use client';
 import Reward from '@/assets/landing-page/totalReward.svg';
-
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export default function Section5(): React.ReactElement {
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
   //   const width = useWindowInnerWidth();
 
   return (
@@ -12,7 +12,7 @@ export default function Section5(): React.ReactElement {
       <div className="justify-center text-center ">
         <div className=" w-full z-10 mt-5">
           <h1 className="font-poppins font-normal text-2xl lg:text-4xl mb-4">
-            Total Rewards Claimed
+            {t('landingV2.section5.text1')}
           </h1>
           <h1
             className="lg:h-[110px] font-poppins  font-semibold text-4xl lg:text-[100px] lg:pt-12 bg-clip-text text-transparent bg-gradient-to-r 

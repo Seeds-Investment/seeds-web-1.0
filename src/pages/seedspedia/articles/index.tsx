@@ -66,7 +66,8 @@ export default function ArticleList(): React.ReactElement {
     }
   }
 
-  const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
+  const categoryItemClass =
+    'py-1 rounded-full text-center w-full text-base font-semibold px-2';
 
   const categories = [
     'All',
@@ -159,11 +160,9 @@ export default function ArticleList(): React.ReactElement {
           <div className="lg:flex-col mb-2 justify-center items-center mt-4">
             <div className="w-full lg:w-[50%] lg:mx-auto  bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between ">
               <input
-                type="search"
+                type="text"
                 className=" text-[#7C7C7C] border-none rounded-3xl  px-[8px] focus:outline-none  "
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}
@@ -206,7 +205,7 @@ export default function ArticleList(): React.ReactElement {
                 className={`${categoryItemClass} ${
                   activeCategory === category
                     ? 'bg-[#3AC4A0] text-white'
-                    : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                    : 'text-[#3AC4A0] bg-[#DCFCE4]'
                 }`}
                 onClick={() => {
                   updateCategory(category);
@@ -220,10 +219,10 @@ export default function ArticleList(): React.ReactElement {
 
         <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md mx-1 px-4 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('All');
@@ -232,10 +231,10 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'general'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('general');
@@ -244,10 +243,10 @@ export default function ArticleList(): React.ReactElement {
             General
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'crypto'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('crypto');
@@ -257,10 +256,10 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'usstocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('usstocks');
@@ -269,10 +268,10 @@ export default function ArticleList(): React.ReactElement {
             Us Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'indostocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('indostocks');
@@ -281,10 +280,10 @@ export default function ArticleList(): React.ReactElement {
             Indo Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'commodities'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('commodities');
@@ -293,10 +292,10 @@ export default function ArticleList(): React.ReactElement {
             Commodities
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'indices'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('indices');
@@ -305,10 +304,10 @@ export default function ArticleList(): React.ReactElement {
             Indices
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'forex'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('forex');
@@ -317,10 +316,10 @@ export default function ArticleList(): React.ReactElement {
             Forex
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
               activeCategory === 'finance'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('finance');

@@ -36,7 +36,10 @@ const initialFormRequest = {
   comment: ''
 };
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({
+  articleId,
+  articleName
+}) => {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
@@ -182,7 +185,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
         </div>
       )}
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
-        <Link href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}>
+        <Link
+          href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
+            articleName?.split(' ').join('-') as string
+          }`}
+        >
           {isImageValid ? (
             <img
               src={imageUrl}
@@ -198,9 +205,16 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ articleId }) => {
           )}
         </Link>
         <div className="p-4">
-          <Link href={`/seedspedia/articles/${articleDetail?.id ?? 0}`}>
-            <h1 className="text-xl font-semibold text-[#000]">
-              {articleDetail?.title}
+          <Link
+            href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
+              articleName?.split(' ').join('-') as string
+            }`}
+          >
+            <h1 className="text-xl text-justify font-semibold text-[#000]">
+              {articleDetail?.title !== undefined &&
+              articleDetail?.title.length > 60
+                ? `${articleDetail?.title.substring(0, 60)}...`
+                : articleDetail?.title}
             </h1>
           </Link>
         </div>

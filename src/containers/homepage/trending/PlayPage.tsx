@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 // import moment from 'moment';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export interface PlayInterface {
   id: string;
@@ -44,6 +45,7 @@ export interface PlayInterface {
 
 export default function PlayPage(): React.ReactElement {
   const [play, setPlay] = useState<PlayInterface[]>([]);
+  const { t } = useTranslation();
 
   const width = useWindowInnerWidth();
 
@@ -220,7 +222,7 @@ export default function PlayPage(): React.ReactElement {
           href={'/play'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
-          See More
+          {t('homepage.section2.text14')}
         </Link>
       </div>
     </>

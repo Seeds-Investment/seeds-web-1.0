@@ -4,12 +4,15 @@ import {
   AboutUsSectionThreeIcon3
 } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 const Section3: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
+  const router = useRouter();
 
   return (
     <div className="min-w-full font-poppins bg-gradient-to-r from-[#EDF2F700] to-[#E2E8F0] relative p-5">
@@ -28,7 +31,7 @@ const Section3: React.FC = () => {
         ) : null}
 
         <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:px-20 md:flex-row">
-          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl">
+          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 md:mb-0 p-5 text-center rounded-3xl">
             <Image
               src={AboutUsSectionThreeIcon1.src}
               alt={AboutUsSectionThreeIcon1.alt}
@@ -44,7 +47,7 @@ const Section3: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl">
+          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 md:mb-0 p-5 text-center rounded-3xl">
             <Image
               src={AboutUsSectionThreeIcon2.src}
               alt={AboutUsSectionThreeIcon2.alt}
@@ -60,7 +63,7 @@ const Section3: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl">
+          <div className="flex flex-col items-center w-full md:w-1/3 mb-14 md:mb-0 p-5 text-center rounded-3xl">
             <Image
               src={AboutUsSectionThreeIcon3.src}
               alt={AboutUsSectionThreeIcon3.alt}
@@ -76,6 +79,14 @@ const Section3: React.FC = () => {
             </p>
           </div>
         </div>
+        <Button
+          className="text-xs px-12 font-semibold capitalize text-md bg-[#7555DA] rounded-full mb-10"
+          onClick={() => {
+            void router.push('auth/register');
+          }}
+        >
+          Join Now
+        </Button>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import Users from '@/assets/product/Users.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import { getTrendingCircle } from '@/repository/circle.repository';
-import { getPlayAll } from '@/repository/play.repository';
+import { getTrendingPlayList } from '@/repository/play.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import {
   Avatar,
@@ -30,16 +30,6 @@ import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-
-interface Play {
-  limit: number;
-  page: number;
-}
-
-const play: Play = {
-  limit: 5,
-  page: 1
-};
 
 interface DataItem {
   label: string;
@@ -278,9 +268,9 @@ const SlidePlay: React.FC = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const playResponse = await getPlayAll(play);
+        const playResponse = await getTrendingPlayList();
         console.log(playResponse);
-        setPlayData(playResponse);
+        setPlayData(playResponse.data);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -308,7 +298,7 @@ const SlidePlay: React.FC = () => {
   return (
     <div className="w-[1000px] lg:h-[411px] flex flex-col gap-10 justify-center items-center">
       <Slider {...settings} ref={sliderRef} className=" flex items-center">
-        {playData?.playList?.map((item: Item, index: any) => {
+        {playData?.map((item: Item, index: any) => {
           const playTimeObject = new Date(item.play_time);
           const playTimeDay = playTimeObject.getDate();
           const playTimeMonth = playTimeObject.toLocaleString('default', {

@@ -497,7 +497,7 @@ export default function ArticleDetailPage(): JSX.Element {
             </Link>
           </div>
           <div className="grid lg:grid-cols-6 gap-4 rounded-2xl py-10">
-            {articles.slice(0, 2).map(article => (
+            {articles.slice(0, 3).map(article => (
               <div
                 key={article.id}
                 className="p-4 border bg-[#F9F9F9] gap-[16px] lg:col-span-2 border-gray-300 rounded-3xl w-full"

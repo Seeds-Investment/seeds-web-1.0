@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
 
 interface UserData {
   name: string;
@@ -135,6 +136,8 @@ export default function ArticleDetailPage(): JSX.Element {
       console.error('Error fetching articles:', error);
     }
   }
+
+  const hotNewsItemClass = 'mb-2 me-12';
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -461,82 +464,89 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
           <div className="mt-12 flex justify-between">
             <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
-            <Link href={'/homepage'}>
-              <p className="flex text-md border border-1 p-2 font-semibold">
-                {t('articleList.text8')}
-                <span className="mt-1">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4.16602 10H15.8327"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10 4.16675L15.8333 10.0001L10 15.8334"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </span>
-              </p>
-            </Link>
           </div>
-          <div className="grid lg:grid-cols-6 gap-4 rounded-2xl py-10">
-            {articles.slice(0, 3).map(article => (
-              <div
-                key={article.id}
-                className="p-4 border bg-[#F9F9F9] gap-[16px] lg:col-span-2 border-gray-300 rounded-3xl w-full"
-              >
-                <Link href={`/homepage/news/${article.id}`}>
-                  <div className="flex justify-between">
-                    <div className="flex-row">
-                      <div className="flex justify-between flex-col">
-                        <div className="mb-auto">
-                          <p className="mt-2 font-bold text-base">
-                            {article.title}
-                          </p>
-                        </div>
-
-                        <div>
-                          <div className="flex mt-2 justify-between">
-                            <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
-                              {formatDateToIndonesian(
-                                articleDetail?.publicationDate
-                              )}
+          <div className="">
+            <Slider
+              slidesToShow={2.5}
+              speed={500}
+              className="my-12"
+              initialSlide={0}
+              centerPadding="30%"
+              // slidesToScroll={1}
+              responsive={[
+                {
+                  breakpoint: 1024,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 2.5,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 768,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 2.4,
+                    slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 480,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 1
+                  }
+                }
+              ]}
+            >
+              {articles.map(article => (
+                <div
+                  key={article.id}
+                  className={` lg:pe-5 w-[200px] flex flex-col items-start   cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
+                >
+                  <Link href={`/homepage/news/${article.id}`}>
+                    <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">
+                      <div className="flex-row">
+                        <div className="flex justify-between flex-col">
+                          <div className="mb-auto">
+                            <p className="mt-2 font-bold text-base">
+                              {article.title}
                             </p>
+                          </div>
+
+                          <div>
+                            <div className="flex mt-2 justify-between">
+                              <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
+                                {formatDateToIndonesian(
+                                  articleDetail?.publicationDate
+                                )}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="mt-1 w-[100px] h-[100px]">
-                        {isImageValid ? (
-                          <img
-                            src={article?.imageUrl}
-                            alt=""
-                            className="w-[75px] h-full rounded-2xl"
-                          />
-                        ) : (
-                          <img
-                            src={defaultNews}
-                            alt=""
-                            className="w-[75px] h-full rounded-2xl"
-                          />
-                        )}
+                      <div>
+                        <div className="mt-1 w-[100px] h-[100px]">
+                          {isImageUrlValid(article.imageUrl) ? (
+                            <img
+                              src={article?.imageUrl}
+                              alt=""
+                              className="w-[75px] h-full object-cover rounded-2xl"
+                            />
+                          ) : (
+                            <img
+                              src={defaultNews}
+                              alt=""
+                              className="w-[75px] h-full object-cover rounded-2xl"
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                </div>
+              ))}
+            </Slider>
           </div>
         </div>
       </PageGradient>

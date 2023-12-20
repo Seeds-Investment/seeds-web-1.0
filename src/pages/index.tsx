@@ -14,11 +14,22 @@ import Section6 from '@/containers/landing-page/Section6';
 import Section7 from '@/containers/landing-page/Section7';
 import Section8 from '@/containers/landing-page/Section8';
 import Section9 from '@/containers/landing-page/Section9';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 export default function Home(): React.ReactElement {
+  const router = useRouter();
   // const { t } = useTranslation();
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken != null) {
+      // Jika access token ada, navigasikan pengguna ke halaman '/homepage'
+      void router.push('/homepage');
+    }
+  }, []);
   const customGradient = (
     <>
       <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />

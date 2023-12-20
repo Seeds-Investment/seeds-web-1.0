@@ -1,6 +1,8 @@
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -60,6 +62,22 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
+  }, []);
+
   return (
     <aside className="absolute z-20 left-0 w-2/3 h-[50rem] py-6 bg-white">
       {isLogoutModal && (
@@ -101,6 +119,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   }`}
                   onClick={() => {
                     languageCtx.languageHandler('ID');
+                    setTranslationToLocalStorage('ID').catch(err => {
+                      console.log(err);
+                    });
                   }}
                 >
                   <span
@@ -132,6 +153,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   }`}
                   onClick={() => {
                     languageCtx.languageHandler('EN');
+                    setTranslationToLocalStorage('EN').catch(err => {
+                      console.log(err);
+                    });
                   }}
                 >
                   <span

@@ -1,5 +1,7 @@
 import close from '@/assets/more-option/close.svg';
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
   Dialog,
@@ -38,6 +40,21 @@ const ChooselanguagePopup: React.FC<props> = ({ open, handleOpen }) => {
   useEffect(() => {
     setValue(languageCtx.language);
   }, [languageCtx]);
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
+  }, []);
   return (
     <Dialog
       dismiss={{
@@ -93,6 +110,9 @@ const ChooselanguagePopup: React.FC<props> = ({ open, handleOpen }) => {
             handleOpen();
             setTimeout(() => {
               languageCtx.languageHandler(value as 'EN' | 'ID');
+              setTranslationToLocalStorage(value as 'EN' | 'ID').catch(err => {
+                console.log(err);
+              });
             }, 500);
           }}
         >

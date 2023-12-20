@@ -1,9 +1,11 @@
 import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
 import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import TrackerEvent from '@/repository/GTM.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
   Menu,
@@ -54,6 +56,9 @@ const Header: React.FC = () => {
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
+    setTranslationToLocalStorage(language).catch(err => {
+      console.log(err);
+    });
   };
 
   const logout = (): void => {
@@ -76,6 +81,23 @@ const Header: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+          setSelectedLanguage(translation);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
   }, []);
 
   return (

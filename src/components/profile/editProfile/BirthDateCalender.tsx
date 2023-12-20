@@ -7,13 +7,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 interface BirthDate {
   wrapperClassName?: string;
   className?: string;
+  birthDate: any;
 }
 
 const BirthDateCalender: React.FC<BirthDate> = ({
   wrapperClassName,
-  className
+  className,
+  birthDate
 }: BirthDate) => {
-  const [finalDate, setDate] = useState(new Date());
+  const [finalDate, setDate] = useState(new Date(birthDate));
   console.log(finalDate);
   const [showMonth, setMonth] = useState(false);
   const [showYear, setYear] = useState(true);

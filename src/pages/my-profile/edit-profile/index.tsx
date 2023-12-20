@@ -29,6 +29,7 @@ const EditProfile: React.FC = () => {
   const [country, setCountry] = useState(0);
   const { name, flags } = countriesRepository[country];
   const [updateAvatar, setAvatar] = useState();
+  const [birthDate, setDate] = useState();
   const [error, setError] = useState(false);
   const [form, setForm] = useState<any>({
     name: '',
@@ -100,6 +101,7 @@ const EditProfile: React.FC = () => {
           birthDate: dataInfo.birthDate,
           phone: dataInfo.phoneNumber
         });
+        setDate(dataInfo.birthDate);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -166,9 +168,10 @@ const EditProfile: React.FC = () => {
               onChange={changeData}
               variant="static"
               labelProps={{
-                className: 'text-base text-[#262626] font-semibold font-poppins'
+                className:
+                  '!text-base !text-[#262626] !font-semibold !font-poppins'
               }}
-              className="text-[#7C7C7C] text-base font-poppins font-normal"
+              className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
               required
             />
             <div className="relative flex flex-col w-full">
@@ -187,11 +190,11 @@ const EditProfile: React.FC = () => {
                 variant="static"
                 labelProps={{
                   className:
-                    'text-base text-[#262626] font-semibold font-poppins'
+                    '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
                 className={`${
-                  error ? 'text-red-600' : 'text-[#7C7C7C]'
-                } text-base font-poppins font-normal pl-[20px]`}
+                  error ? 'text-red-600' : '!text-[#7C7C7C]'
+                } !text-base !font-poppins !font-normal pl-[20px]`}
                 required
                 error={error}
               />
@@ -203,8 +206,12 @@ const EditProfile: React.FC = () => {
                 SeedsTag cannot contain spaces or symbols, please delete!
               </Typography>
             </div>
-
-            <BirthDateCalender wrapperClassName={`w-full`} />
+            {birthDate === true && (
+              <BirthDateCalender
+                wrapperClassName={`w-full`}
+                birthDate={birthDate}
+              />
+            )}
 
             <div className="w-full">
               <Input
@@ -215,13 +222,13 @@ const EditProfile: React.FC = () => {
                 variant="static"
                 labelProps={{
                   className:
-                    'text-base text-[#262626] font-semibold font-poppins'
+                    '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
-                className="text-[#7C7C7C] text-base font-poppins font-normal"
+                className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
                 required
                 maxLength={maxLengthBio}
               />
-              <Typography>
+              <Typography className="font-light font-poppins text-base text-[#3C49D6]">
                 {form.bio.length}/{maxLengthBio}
               </Typography>
             </div>
@@ -277,9 +284,9 @@ const EditProfile: React.FC = () => {
                 variant="static"
                 labelProps={{
                   className:
-                    'text-base text-[#262626] font-semibold font-poppins'
+                    '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
-                className="text-[#7C7C7C] text-base font-poppins font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[72px] cursor-pointer"
+                className="!text-[#7C7C7C] !text-base !font-poppins !font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[72px] cursor-pointer"
                 required
                 readOnly
               />
@@ -291,9 +298,10 @@ const EditProfile: React.FC = () => {
               onClick={handleOpen}
               variant="static"
               labelProps={{
-                className: 'text-base text-[#262626] font-semibold font-poppins'
+                className:
+                  '!text-base !text-[#262626] !font-semibold !font-poppins'
               }}
-              className="text-[#7C7C7C] text-base font-poppins font-normal cursor-pointer"
+              className="!text-[#7C7C7C] !text-base !font-poppins !font-normal cursor-pointer"
               required
               readOnly
             />
@@ -307,9 +315,10 @@ const EditProfile: React.FC = () => {
               label="Linked Account"
               variant="static"
               labelProps={{
-                className: 'text-base text-[#262626] font-semibold font-poppins'
+                className:
+                  '!text-base !text-[#262626] !font-semibold !font-poppins'
               }}
-              className="text-[#7C7C7C] text-base font-poppins font-normal"
+              className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
               style={{ backgroundColor: 'transparent' }}
               disabled
             />

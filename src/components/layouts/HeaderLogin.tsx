@@ -62,7 +62,7 @@ const HeaderLogin: React.FC = () => {
       {width !== undefined ? (
         width < 768 ? (
           <div className="flex flex-row justify-between">
-            <Link href="https://seeds.finance" className="items-start">
+            <Link href={`/homepage`} className="items-start">
               <Logo
                 width={
                   width !== undefined && width <= 640 ? '62.22' : undefined

@@ -58,12 +58,12 @@ const SidebarLogin: React.FC = () => {
         />
       )}
 
-      <div className="mb-[30px] px-[60px]">
+      <Link href={`/homepage`} className="mb-[30px] px-[60px]">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
           height={width !== undefined && width <= 640 ? '23.58' : undefined}
         />
-      </div>
+      </Link>
       <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
           <Link

@@ -54,7 +54,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
       )}
       <div className="flex flex-col items-center gap-3">
         <div className="flex flex-col items-center gap-3">
-          <Link href="https://seeds.finance" className="mb-[30px] px-[60px]">
+          <Link href={`/homepage`} className="mb-[30px] px-[60px]">
             <Logo
               width={width !== undefined && width <= 640 ? '62.22' : undefined}
               height={width !== undefined && width <= 640 ? '23.58' : undefined}

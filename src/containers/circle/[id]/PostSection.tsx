@@ -11,6 +11,7 @@ import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
+import TrackerEvent from '@/repository/GTM.repository';
 import { getAssetById } from '@/repository/asset.repository';
 import {
   getDetailCircle,
@@ -161,6 +162,9 @@ const PostSection: React.FC<props> = ({
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
+  console.log(dataPost);
+  console.log(userInfo);
+  console.log(myInfo);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
@@ -565,13 +569,28 @@ const PostSection: React.FC<props> = ({
           if (prevDataPost !== null) {
             if (Array.isArray(prevDataPost)) {
               const newData = prevDataPost.map((el: any) => {
+                console.log(el);
                 if (el.id === dataPost.id) {
                   if (dataPost.status_like === true) {
                     el.total_upvote -= 1;
                     el.status_like = false;
+                    TrackerEvent({
+                      event: `Seeds_unliked_post_web`,
+                      postId: el.id,
+                      statusLike: el.status_like,
+                      userId: userInfo?.id,
+                      personId: el.user_id
+                    });
                   } else {
                     el.total_upvote++;
                     el.status_like = true;
+                    TrackerEvent({
+                      event: `Seeds_liked_post_web`,
+                      postId: el.id,
+                      statusLike: el.status_like,
+                      userId: userInfo?.id,
+                      personId: el.user_id
+                    });
                   }
                 }
                 return el;

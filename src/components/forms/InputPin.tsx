@@ -34,7 +34,7 @@ const InputPin: React.FC<props> = ({
 }) => {
   const width = useWindowInnerWidth();
 
-  const pin = formRequest.pin;
+  const pin = formRequest.new_pin;
 
   const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
     error !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'

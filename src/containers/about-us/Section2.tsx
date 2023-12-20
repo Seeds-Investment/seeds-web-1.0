@@ -7,15 +7,35 @@ import {
 } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 
 const Section2: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
+  const measurement = 400;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.3
+  });
+
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   return (
-    <div className="min-w-full font-poppins bg-white relative p-5">
-      <div className="flex flex-col w-full items-center font-poppins relative">
+    <div className="min-w-full font-poppins bg-white relative p-5" ref={ref}>
+      <div
+        className={`flex flex-col w-full items-center font-poppins relative ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <p className="text-3xl md:text-4xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold absolute z-10">
           {t('aboutUsV3.section2.title')}
         </p>

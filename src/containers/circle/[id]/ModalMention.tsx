@@ -221,6 +221,7 @@ const ModalMention: React.FC<props> = ({
     pie: [],
     premium_fee: ''
   });
+
   const width = useWindowInnerWidth();
   const openPieModal: any = () => {
     setIsPieModalOpen(true);
@@ -435,7 +436,6 @@ const ModalMention: React.FC<props> = ({
         }
         if (form.content_text.includes('#')) {
           const newActualTag = `#[${selectedValue.tag}]() `;
-          console.log(newActualTag, selectedValue.tag);
 
           setForm(prevForm => ({
             ...prevForm,
@@ -757,19 +757,38 @@ const ModalMention: React.FC<props> = ({
           setDataPost((prevState: any) => {
             if (Array.isArray(prevState)) {
               const newData = prevState.map((el: any) => {
-                el.content_text = form.content_text;
-                el.privacy = form.privacy;
-                el.media_urls = form.media_urls;
-                el.pollings = form.polling.options;
-                el.polling_multiple = form.polling.isMultiVote;
-                el.canAddNewOption = form.polling.canAddNewOption;
-                el.endDate = form.polling.endDate;
-                el.pie = form.pie;
-                el.pie_amount = form.pie_amount;
-                el.pie_title = form.pie_title;
+                if (el.id === dataPost.id) {
+                  el.content_text = form.content_text;
+                  el.privacy = form.privacy;
+                  el.media_urls = form.media_urls;
+                  el.pollings = form.polling.options;
+                  el.polling_multiple = form.polling.isMultiVote;
+                  el.canAddNewOption = form.polling.canAddNewOption;
+                  el.endDate = form.polling.endDate;
+                  el.pie = form.pie;
+                  el.pie_amount = form.pie_amount;
+                  el.pie_title = form.pie_title;
+                }
                 return el;
               });
               return newData;
+            } else if (prevState.data !== undefined) {
+              const newData = prevState.data.map((el: any) => {
+                if (el.id === dataPost.id) {
+                  el.content_text = form.content_text;
+                  el.privacy = form.privacy;
+                  el.media_urls = form.media_urls;
+                  el.pollings = form.polling.options;
+                  el.polling_multiple = form.polling.isMultiVote;
+                  el.canAddNewOption = form.polling.canAddNewOption;
+                  el.endDate = form.polling.endDate;
+                  el.pie = form.pie;
+                  el.pie_amount = form.pie_amount;
+                  el.pie_title = form.pie_title;
+                }
+                return el;
+              });
+              return { data: newData, metadata: prevState.metadata };
             }
             return prevState;
           });

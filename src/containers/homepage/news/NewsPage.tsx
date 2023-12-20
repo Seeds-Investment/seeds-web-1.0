@@ -2,7 +2,9 @@ import NewsCard from '@/components/homepage/newsCard';
 import { getArticle } from '@/repository/article.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -35,7 +37,7 @@ export interface Metadata {
 export default function NewsPage(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [hotNews, setHotNews] = useState<Article[]>([]);
-
+  const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
     page: 1,
@@ -355,7 +357,7 @@ export default function NewsPage(): React.ReactElement {
           href={'/homepage/articles'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
-          See More
+          {t('homepage.section2.text14')}
         </Link>
       </div>
     </>

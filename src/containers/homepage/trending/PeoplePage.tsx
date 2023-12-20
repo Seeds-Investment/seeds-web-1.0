@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getTrendingPeople } from '../../../repository/asset.repository';
-
 export interface PeopleInterface {
   avatar: string;
   followers: number;
@@ -16,6 +16,8 @@ export interface PeopleInterface {
 }
 
 export default function PeoplePage(): React.ReactElement {
+  const { t } = useTranslation();
+
   const [people, setPeople] = useState<PeopleInterface[]>([]);
   async function fetchArticles(): Promise<void> {
     try {
@@ -119,7 +121,7 @@ export default function PeoplePage(): React.ReactElement {
           href={'/homepage/trending-people'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
-          See More
+          {t('homepage.section2.text14')}
         </Link>
       </div>
     </>

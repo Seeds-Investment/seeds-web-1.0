@@ -75,20 +75,6 @@ const initialFilter = {
   sort_by: ''
 };
 
-const optionsFilter: optionSortBy[] = [
-  { title: 'All', subtitle: 'In descending order', value: '' },
-  {
-    title: 'Most Relevant',
-    subtitle: 'In descending order',
-    value: 'relevant'
-  },
-  {
-    title: 'Most Recent',
-    subtitle: 'In descending order',
-    value: 'recent'
-  }
-];
-
 const Social: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -103,6 +89,33 @@ const Social: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isIncrease, setIsIncrease] = useState(false);
   const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false);
+  const optionsFilter: optionSortBy[] = [
+    {
+      title: t('social.fiterSortBy.all'),
+      subtitle: t('social.fiterSortBy.allDesc'),
+      value: ''
+    },
+    {
+      title: t('social.fiterSortBy.recent'),
+      subtitle: t('social.fiterSortBy.recentDesc'),
+      value: 'recent'
+    },
+    {
+      title: t('social.fiterSortBy.relevant'),
+      subtitle: t('social.fiterSortBy.relevantDesc'),
+      value: 'relevant'
+    },
+    {
+      title: t('social.fiterSortBy.like'),
+      subtitle: t('social.fiterSortBy.likeDesc'),
+      value: 'liked'
+    },
+    {
+      title: t('social.fiterSortBy.trending'),
+      subtitle: t('social.fiterSortBy.trendingDesc'),
+      value: 'trending'
+    }
+  ];
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -119,7 +132,7 @@ const Social: React.FC = () => {
     setHasMore(true);
     setFilter(prevState => ({
       ...prevState,
-      type: value,
+      type: 'all',
       page: 1
     }));
     if (value === 'following') {
@@ -135,7 +148,7 @@ const Social: React.FC = () => {
     }
   };
 
-  const handleChangeFilter = (name: string, value: string): void => {
+  const handleChangeFilter = (name: string, value: string | number): void => {
     setDataPost([]);
     setHasMore(true);
     setFilter(prevState => ({
@@ -397,13 +410,16 @@ const Social: React.FC = () => {
                       filter.sort_by === data.value ? 'bg-[#DCFCE4]' : ''
                     }`}
                     onClick={() => {
-                      handleChangeFilter('sort_by', data.value);
+                      if (filter.sort_by !== data.value) {
+                        handleChangeFilter('sort_by', data.value);
+                        handleChangeFilter('page', 1);
+                      }
                     }}
                   >
-                    <h1 className="font-semibold font-montserrat">
+                    <h1 className="font-semibold font-montserrat text-xs">
                       {data.title}
                     </h1>
-                    <p className="font-normal font-montserrat">
+                    <p className="font-normal font-montserrat text-xs">
                       {data.subtitle}
                     </p>
                   </MenuItem>

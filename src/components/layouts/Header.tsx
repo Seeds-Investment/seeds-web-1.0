@@ -1,7 +1,11 @@
 import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
 import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
+import { setTranslationToLocalStorage } from '@/helpers/translation';
+import TrackerEvent from '@/repository/GTM.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
   Menu,
@@ -18,12 +22,12 @@ import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
 
 const pathUrl = [
-  { id: 1, name: 'Home', url: '/' },
-  { id: 2, name: 'Product', url: '/product' },
-  { id: 3, name: 'Seedspedia', url: '/seedspedia' },
-  { id: 4, name: 'Market', url: '/market' },
-  { id: 5, name: 'Partner', url: '/partner' },
-  { id: 6, name: 'About Us', url: '/about-us' }
+  { id: 1, name: 'Home', nama: 'Beranda', url: '/' },
+  { id: 2, name: 'Product', nama: 'Produk', url: '/product' },
+  { id: 3, name: 'Seedspedia', nama: 'Seedspedia', url: '/seedspedia' },
+  // { id: 4, name: 'Market', nama:'Pasar', url: '/market' },
+  { id: 5, name: 'Partner', nama: 'Mitra', url: '/partner' },
+  { id: 6, name: 'About Us', nama: 'Tentang Kami', url: '/about-us' }
 ];
 
 const languageList = [
@@ -33,13 +37,18 @@ const languageList = [
 
 function clearLocalStorageAndRefreshPage(): void {
   // Remove specific items from local storage
-  localStorage.clear();
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('expiresAt');
+  localStorage.removeItem('keepMeLoggedIn');
 
   // Refresh the page
   window.location.reload();
 }
 
 const Header: React.FC = () => {
+  const [userInfo, setUserInfo] = useState<any>([]);
+  const [openMenu, setOpenMenu] = useState(false);
   const languageCtx = useContext(LanguageContext);
   const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
@@ -47,16 +56,48 @@ const Header: React.FC = () => {
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
+    setTranslationToLocalStorage(language).catch(err => {
+      console.log(err);
+    });
   };
 
   const logout = (): void => {
     clearLocalStorageAndRefreshPage();
   };
 
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
   useEffect(() => {
     const storedToken: any = localStorage.getItem('accessToken');
     setToken(storedToken);
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+          setSelectedLanguage(translation);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
   }, []);
 
   return (
@@ -77,27 +118,34 @@ const Header: React.FC = () => {
                 } px-3`}
                 href={`${item.url}`}
                 key={item.id}
+                onClick={() => {
+                  TrackerEvent({
+                    event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
+                    userId: userInfo?.id,
+                    pageName: item.name
+                  });
+                }}
               >
-                {item.name}
+                {selectedLanguage === 'EN' ? item.name : item.nama}
               </Link>
             );
           })}
         </section>
         <section className="flex items-center gap-8">
-          {token !== null ? (
-            <div
-              onClick={logout}
-              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
-            >
-              Logout
-            </div>
-          ) : (
+          {token === null ? (
             <Link
               href="/auth/login"
               className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#3AC4A0] rounded-full"
             >
               Login
             </Link>
+          ) : (
+            <div
+              onClick={logout}
+              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
+            >
+              Logout
+            </div>
           )}
 
           <Menu>
@@ -157,7 +205,11 @@ const Header: React.FC = () => {
         <Menu
           placement="left-start"
           offset={-24}
-          dismiss={{ ancestorScroll: true }}
+          dismiss={{
+            ancestorScroll: true
+          }}
+          open={openMenu}
+          handler={setOpenMenu}
         >
           <MenuHandler>
             <Image
@@ -166,7 +218,7 @@ const Header: React.FC = () => {
               className="cursor-pointer z-20"
             />
           </MenuHandler>
-          <MenuList className="pb-12 shadow-none border-none">
+          <MenuList className="pb-12 shadow-none border-none xl:hidden flex flex-col">
             {pathUrl.map((item, index) => {
               return (
                 <MenuItem
@@ -180,8 +232,16 @@ const Header: React.FC = () => {
                         ? 'text-[#3AC4A0]'
                         : 'text-[#7C7C7C]'
                     }`}
+                    onClick={() => {
+                      setOpenMenu(false);
+                      TrackerEvent({
+                        event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
+                        userId: userInfo?.id,
+                        pageName: item.name
+                      });
+                    }}
                   >
-                    {item.name}
+                    {selectedLanguage === 'EN' ? item.name : item.nama}
                   </Link>
                 </MenuItem>
               );

@@ -26,7 +26,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
-
 export interface CircleInterface {
   id: string;
   name: string;
@@ -122,6 +121,7 @@ const Circle = (): React.ReactElement => {
   const [circleCategory, setCircleCategory] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [activeTab, setActiveTab] = useState<string>('my_circle');
+  const [userInfo, setUserInfo] = useState<any>([]);
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -271,6 +271,8 @@ const Circle = (): React.ReactElement => {
     };
   }, [handleScroll]);
 
+  console.log(setUserInfo);
+
   return (
     <PageGradient defaultGradient className="w-full">
       <BannerCircleList />
@@ -296,7 +298,7 @@ const Circle = (): React.ReactElement => {
             <Slider {...settings}>
               {leaderBoards?.map((data, idx) => (
                 <div key={idx} className="w-full lg:w-1/3">
-                  <CardCircle data={data} cover={data.cover} />
+                  <CardCircle data={data} cover={data.cover} userInfo={null} />
                 </div>
               ))}
             </Slider>
@@ -445,7 +447,11 @@ const Circle = (): React.ReactElement => {
                             } mb-3 md:w-1/3`}
                             key={idx}
                           >
-                            <CardCircle data={data} cover={data.cover} />
+                            <CardCircle
+                              data={data}
+                              cover={data.cover}
+                              userInfo={userInfo}
+                            />
                           </div>
                         ))
                       ) : (

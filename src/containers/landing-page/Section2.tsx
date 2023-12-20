@@ -1,12 +1,12 @@
 'use client';
-import chat from '@/assets/landing-page/chat-us.png';
+// import chat from '@/assets/landing-page/chat-us.png';
 import Community from '@/assets/landing-page/community.svg';
 import Event from '@/assets/landing-page/event.svg';
 import learn from '@/assets/landing-page/learn.png';
 import play from '@/assets/landing-page/play.png';
 import Register from '@/assets/landing-page/register.svg';
 import earth from '@/assets/landing-page/s2-earth.png';
-import vector3 from '@/assets/landing-page/vector-faq-3.png';
+// import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -17,40 +17,64 @@ export default function Section2(): React.ReactElement {
 
   return (
     <div className="h-auto min-w-full mt-20 cursor-default">
-      <div className="lg:flex justify-between flex-row mx-12 gap-5 mb-12">
-        <div className="w-full flex lg:w-1/2">
-          <div className="rounded-full items-center text-center justify-center lg:p-5 p-3 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Community} />
+      <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:p-20 md:flex-row">
+        <div className="flex flex-row items-center w-full justify-start mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Community}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">
-              Communities and University
-            </h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option1')}
+            </p>
           </div>
         </div>
-        <div className="w-full flex lg:w-1/3">
-          <div className="rounded-full items-center text-center justify-center p-5 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Register} />
+
+        <div className="flex flex-row items-center w-full md:justify-center mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Event}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">Registration</h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option2')}
+            </p>
           </div>
         </div>
-        <div className="w-full flex lg:w-1/3">
-          <div className="rounded-full items-center text-center justify-center p-5 bg-[#DCFCE4]">
-            <Image alt="img" className="" src={Event} />
+
+        <div className="flex flex-row items-center w-full md:justify-end mb-5">
+          <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <Image
+              src={Register}
+              alt="trophy"
+              className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-full"
+              width={100}
+              height={100}
+            />
           </div>
-          <div className="ms-5 mt-5 flex-row">
-            <h1 className="font-poppins font-semibold text-2xl lg:text-[50px] bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
+          <div className="flex flex-col ml-4">
+            <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
               100+
-            </h1>
-            <h1 className="font-poppins text-base lg:text-xl">Event Hosted</h1>
+            </p>
+            <p className="text-base md:text-xl font-normal">
+              {t('partner.section2.option3')}
+            </p>
           </div>
         </div>
       </div>
@@ -66,7 +90,7 @@ export default function Section2(): React.ReactElement {
             {t('landing.section2.text1c')}
           </span>
 
-          <Image
+          {/* <Image
             alt="img"
             className="fixed w-[30%] z-[99] translate-y-[15rem] translate-x-[8rem]
                 2xl:w-[15%] 2xl:-translate-y-[20rem] 2xl:translate-x-[35rem]
@@ -74,7 +98,7 @@ export default function Section2(): React.ReactElement {
                 md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
                 sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
             src={chat}
-          />
+          /> */}
           <Image
             alt="img"
             className="absolute w-[30%] translate-y-[8rem]  translate-x-[10rem]
@@ -106,7 +130,7 @@ export default function Section2(): React.ReactElement {
                 {t('landing.section2.text3b')}
               </p>
             </section>
-            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[356px] text-center font-poppins rounded-[45px] xl:mt-0 mt-20 shadow-lg shadow-[#5e44ff66]">
+            <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] w-[331px] h-[356px] text-center font-poppins rounded-[45px] xl:mt-5 mt-20 shadow-lg shadow-[#5e44ff66]">
               <Image
                 alt="image"
                 src={learn}
@@ -114,20 +138,20 @@ export default function Section2(): React.ReactElement {
                 className="absolute translate-x-[15%] -translate-y-[52%]"
               />
               <h1 className="text-[#182430] text-4xl font-semibold  mt-[100px]">
-                {t('landing.section2.text3c')}
+                {t('landingV2.section2.text1')}
               </h1>
               <p className="text-[#182430] leading-[30px] text-base font-normal mt-6">
-                {t('landing.section2.text3d')}
+                {t('landingV2.section2.text2')}
               </p>
             </section>
           </div>
         </div>
       </div>
-      <Image
+      {/* <Image
         alt="img"
         className="absolute right-0 -z-10 top-[1100px] xl:block hidden"
         src={vector3}
-      />
+      /> */}
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function Section9Card({
 }): React.ReactElement {
   return (
     <div className="relative max-w-sm overflow-hidden mr-5">
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-[#F3F3F3] rounded-lg shadow-md p-6">
         <div className="flex">
           {/* Profile Picture */}
           <div className=" w-1/4  rounded-full overflow-hidden">

@@ -6,6 +6,7 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AssetsPage from './trending/AssetsPage';
 import CirclePage from './trending/CirclePage';
 import PeoplePage from './trending/PeoplePage';
@@ -21,7 +22,12 @@ const dataTab: typeOfTab[] = [
   { name: 'People', value: 'people' },
   { name: 'Play', value: 'play' }
 ];
-const TrendingSection: React.FC = () => {
+interface props {
+  userInfo: any;
+}
+const TrendingSection: React.FC<props> = ({ userInfo }) => {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState('circle');
 
   const handleTabChange = (tab: string): void => {
@@ -31,10 +37,10 @@ const TrendingSection: React.FC = () => {
   return (
     <div className="w-full h-auto cursor-default">
       <div className="text-3xl font-semibold text-[#262626]">
-        Trending Today
+        {t('homepage.section2.text8')}
       </div>
       <div className="text-sm mt-3 font-light text-[#262626]">
-        {`Check out what's popular right now`}
+        {t('homepage.section2.text9')}
       </div>
       <Tabs value={activeTab}>
         <TabsHeader
@@ -54,7 +60,7 @@ const TrendingSection: React.FC = () => {
                 className={`text-center z-0 text-xl bg-transparent mt-3 xl:mt-5 ${
                   activeTab === el.value
                     ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-4 border-b-[#BDBDBD]'
+                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
                 }`}
               >
                 {el.name}
@@ -67,7 +73,7 @@ const TrendingSection: React.FC = () => {
             <CirclePage />
           </TabPanel>
           <TabPanel value="asset">
-            <AssetsPage />
+            <AssetsPage userInfo={userInfo} />
           </TabPanel>
           <TabPanel value="people">
             <PeoplePage />

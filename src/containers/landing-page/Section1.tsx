@@ -22,6 +22,7 @@ export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlideMobile, setCurrentSlideMobile] = useState(0);
 
   useEffect(() => {
     void fetch();
@@ -67,7 +68,7 @@ export default function Section1(): React.ReactElement {
     autoplaySpeed: 3000,
     centerPadding: '33%',
     beforeChange: (current: number, next: number) => {
-      setCurrentSlide(next);
+      setCurrentSlideMobile(next);
     },
     responsive: [
       {
@@ -87,7 +88,7 @@ export default function Section1(): React.ReactElement {
           <Slider {...settingsMobile}>
             <div>
               <div
-                className={currentSlide === 0 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 0 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body1} alt="Body 1" width={200} height={100} />
@@ -95,7 +96,7 @@ export default function Section1(): React.ReactElement {
             </div>
             <div>
               <div
-                className={currentSlide === 1 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 1 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body2} alt="Body 2" width={200} height={100} />
@@ -103,7 +104,7 @@ export default function Section1(): React.ReactElement {
             </div>
             <div>
               <div
-                className={currentSlide === 2 ? 'scale-100' : 'scale-75'}
+                className={currentSlideMobile === 2 ? 'scale-100' : 'scale-75'}
                 style={{ marginRight: '-25px', marginLeft: '-25px' }}
               >
                 <Image src={body3} alt="Body 3" width={200} height={100} />
@@ -113,21 +114,20 @@ export default function Section1(): React.ReactElement {
         </div>
         <div className="lg:w-1/2 lg:text-left text-center">
           <p className="font-poppins text-3xl lg:text-[48px] font-semibold xl:mb-3 md:mb-8">
-            Where{' '}
+            {t('landingV2.section1.text1')}{' '}
             <span className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:pb-4">
-              Gaming
+              {t('landingV2.section1.text2')}{' '}
             </span>{' '}
-            Meets{' '}
+            {t('landingV2.section1.text3')}{' '}
             <span className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:pb-4">
-              Investing
+              {t('landingV2.section1.text4')}
             </span>{' '}
           </p>
           <h1 className="font-poppins text-xl lg:text-4xl mb-3 font-semibold text-[#3AC4A0]">
             {titles[currentSlide]}
           </h1>
           <p className="font-poppins font-normal mb-3 text-base lg:text-2xl md:mb-7">
-            Seeds: Build a risk-free portfolio, compete for prizes, interact
-            with finance pros, and enhance financial knowledge through quizzes
+            {t('landingV2.section1.text5')}
           </p>
           <Button
             className="text-xs px-20 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
@@ -135,7 +135,7 @@ export default function Section1(): React.ReactElement {
               void router.push('/auth/register');
             }}
           >
-            {t('button.joinNow')}
+            {t('landingV2.section1.text6')}
           </Button>
           <div className="flex mt-5 justify-around md:justify-start">
             {downloadOurApp

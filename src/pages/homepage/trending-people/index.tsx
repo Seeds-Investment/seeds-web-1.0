@@ -1,9 +1,9 @@
 import FollowButton from '@/components/FollowButton';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTrendingPeople } from '../../../repository/asset.repository';
-
 export interface PeopleInterface {
   avatar: string;
   followers: number;
@@ -68,16 +68,16 @@ export default function PeopleList(): React.ReactElement {
       <div className="flex justify-between flex-wrap w-full">
         <div className="flex flex-col">
           <div className="text-3xl font-semibold bg-clip-text text-black">
-            People List
+            {t('homepage.section3.text6')}
           </div>
           <div className=" text-md font-normal text-gray-500">
-            Find and follow interesting profiles.
+            {t('homepage.section3.text5')}
           </div>
         </div>
         <div className="lg:flex-col  justify-end mt-4  ">
           <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
             <input
-              type="search"
+              type="text"
               className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
               placeholder="Search"
               aria-label="Search"
@@ -119,75 +119,72 @@ export default function PeopleList(): React.ReactElement {
               key={idx}
               className={'w-full p-3 my-2 rounded-xl border border-[#E9E9E9]'}
             >
-              {/* <Link href={`/social/${data.id}`}> */}
-              <div className="flex justify-between">
-                <div
-                  className="flex w-full items-center cursor-pointer"
-                  onClick={() => {
-                    void router.push(`/social/${data.id}`);
-                  }}
-                >
-                  <img
-                    src={data.avatar}
-                    alt={data.name}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div className="ml-3">
-                    <div className="flex">
-                      <h2 className="font-bold me-2">{data.name}</h2>
-                      <div className="mt-[7px] ">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g clipPath="url(#clip0_2012_74470)">
-                            <path
-                              d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
-                              fill="#5E44FF"
-                            />
-                            <path
-                              d="M3 6L5 8L9 4"
-                              stroke="white"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_2012_74470">
-                              <rect width="12" height="12" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>
+              <Link href={`/social/${data.id}`}>
+                <div className="flex justify-between">
+                  <div
+                    className="flex w-full items-center cursor-pointer"
+                    onClick={() => {
+                      void router.push(`/social/${data.id}`);
+                    }}
+                  >
+                    <img
+                      src={data.avatar}
+                      alt={data.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div className="ml-3">
+                      <div className="flex">
+                        <h2 className="font-bold me-2">{data.name}</h2>
+                        <div className="mt-[7px] ">
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_2012_74470)">
+                              <path
+                                d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
+                                fill="#5E44FF"
+                              />
+                              <path
+                                d="M3 6L5 8L9 4"
+                                stroke="white"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_2012_74470">
+                                <rect width="12" height="12" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+                        <div className="text-[#1A857D] text-sm ms-2 px-1 bg-[#DCFCE4] rounded-full py-1">
+                          Investor
+                        </div>
                       </div>
-                      <div className="text-[#1A857D] text-sm ms-2 px-1 bg-[#DCFCE4] rounded-full py-1">
-                        Investor
-                      </div>
-                    </div>
-                    <p className="font-light text-xs text-[#7C7C7C]">
-                      @{data.seedsTag}
-                    </p>
+                      <p className="font-light text-xs text-[#7C7C7C]">
+                        @{data.seedsTag}
+                      </p>
 
-                    <p className="font-normal text-xs text-[#262626]">
-                      {data.followers} Follower
-                    </p>
+                      <p className="font-normal text-xs text-[#262626]">
+                        {data.followers} Follower
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <FollowButton
+                      userId={data.id}
+                      isFollowed={data.isFollowed}
+                      customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    />
                   </div>
                 </div>
-                <div>
-                  {/* <button className="flex mt-3 font-semibold text-xs text-white px-6 py-2 rounded-full bg-[#3AC4A0]">
-                      Follow
-                    </button> */}
-                  <FollowButton
-                    userId={data.id}
-                    isFollowed={data.isFollowed ?? false}
-                    customClass="mt-3 font-semibold text-xs rounded-2xl text-white py-3"
-                  />
-                </div>
-              </div>
-              {/* </Link> */}
+              </Link>
             </div>
           ))}
       </div>

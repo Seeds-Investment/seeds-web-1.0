@@ -140,7 +140,9 @@ export default function Footer(): React.ReactElement {
                     target="_blank"
                     key={key}
                     href={data.url}
-                    className="mx-[35.5px] self-end"
+                    className={`${
+                      data.url === '' ? 'pointer-events-none' : ''
+                    } mx-[35.5px] self-end`}
                   >
                     <Image alt="icon" src={data.icon} />
                   </Link>

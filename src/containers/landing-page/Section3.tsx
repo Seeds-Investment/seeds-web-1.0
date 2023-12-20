@@ -5,17 +5,38 @@ import Seeds from '@/assets/landing-page/seeds.svg';
 import Sprout from '@/assets/landing-page/sprout.svg';
 import Tree from '@/assets/landing-page/tree.svg';
 import { SectionSixImageOval } from '@/constants/assets/images';
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 
 export default function Section3(): React.ReactElement {
   const { t } = useTranslation();
-  const width = useWindowInnerWidth();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   return (
-    <div className="h-auto min-w-full mt-20 cursor-default relative text-center">
-      <div className="flex flex-col w-full items-center font-poppins relative">
+    <section
+      ref={ref}
+      className="h-auto min-w-full mt-20 cursor-default relative font-poppins text-center"
+    >
+      <div
+        className={`flex flex-col w-full items-center font-poppins relative ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <p className=" text-2xl lg:text-5xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold absolute z-10">
           {t('landingV2.section3.text1')} <br /> {t('landingV2.section3.text2')}
         </p>
@@ -26,14 +47,6 @@ export default function Section3(): React.ReactElement {
           height={100}
           className="w-[375px] h-[157px] top-5 lg:w-[836px] lg:h-[167px] md:top-5 relative z-1"
         />
-        {width !== undefined ? (
-          width > 700 ? (
-            <>
-              <div className="absolute bg-[#3AC4A0BF] blur-[150px] w-[300px] h-[300px] left-0 top-[10rem] rounded-full"></div>
-              <div className="absolute bg-[#7F64D8] blur-[150px] w-[300px] h-[300px] right-0 top-[10rem] rounded-full"></div>
-            </>
-          ) : null
-        ) : null}
       </div>
       <div className="lg:flex text-center items-center flex-row gap-5 mx-20 lg:my-12">
         <div className="w-full justify-center lg:w-1/5">
@@ -72,6 +85,6 @@ export default function Section3(): React.ReactElement {
           </h1>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

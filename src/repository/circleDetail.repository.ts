@@ -694,3 +694,55 @@ export const searchHashtag = async (params: any): Promise<any> => {
     return error.response;
   }
 };
+export const getUnjoinedUsers = async ({
+  circleId
+}: getDataCircleType): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    if (isUndefindOrNull(circleId)) {
+      return await Promise.resolve(null);
+    }
+
+    return await baseUrl.get(
+      `/circle/v2/list/member/${circleId}/friends?page=1&limit=9999`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const inviteUserMembership = async (
+  circleId: string,
+  invitee: string,
+  issuer: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.post(
+      `/circle/v2/user/invite`,
+      {
+        circle_id: circleId,
+        invitee,
+        issuer
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

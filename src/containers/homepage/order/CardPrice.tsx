@@ -1,5 +1,4 @@
 import CCard from '@/components/CCard';
-import { standartCurrency } from '@/helpers/currency';
 import { Avatar } from '@material-tailwind/react';
 
 interface props {
@@ -31,7 +30,7 @@ const CardPrice: React.FC<props> = ({ data }) => {
         </div>
         <div className="flex items-center">
           <p className="text-xl font-semibold text-black my-2">
-            {standartCurrency(data?.lastPrice?.open)}
+            {new Intl.NumberFormat().format(data?.lastPrice?.open)}
           </p>
         </div>
       </div>

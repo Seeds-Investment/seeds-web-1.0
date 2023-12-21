@@ -3,14 +3,74 @@ import vector2 from '@/assets/landing-page/vector-faq-2.png';
 import vector1 from '@/assets/landing-page/vector-faq.png';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
+import type { Settings } from 'react-slick';
+import Slider from 'react-slick';
 
 export default function Section12(): React.ReactElement {
   const { t } = useTranslation();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
+
+  const settings: Settings = {
+    centerMode: true,
+    slidesToShow: 1,
+    speed: 15000,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 500,
+    infinite: true,
+    dots: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          dots: false,
+          slidesToShow: 1
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          dots: false,
+          slidesToShow: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          dots: false,
+          slidesToShow: 1
+        }
+      }
+    ]
+  };
 
   return (
-    <div>
-      <div className="min-w-full h-auto cursor-default lg:mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
+    <section
+      ref={ref}
+      className="h-auto min-w-full cursor-default relative font-poppins text-center"
+    >
+      <div
+        className={`min-w-full h-auto cursor-default lg:mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0] ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <div className="lg:mt-[150px] mt-12 flex flex-col">
           <div className="flex flex-col w-full items-center text-center px-10 justify-center mb-6 md:mb-8 lg:mb-6 xl:mb-4 sm:mb-20 font-poppins">
             <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-4xl lg:text-5xl text-center pb-4">
@@ -27,11 +87,42 @@ export default function Section12(): React.ReactElement {
             </Button>
           </div>
           <div>
-            <img
+            <div className="w-full hidden lg:block h-full mt-10 mx-3 md:mx-20 lg:mx-6">
+              <Slider {...settings}>
+                <div className="z-10 w-full">
+                  <Image
+                    src="/assets/images/IlustCommunities.png"
+                    alt={`comunity`}
+                    width={1440}
+                    height={557}
+                    className="w-auto h-auto xl:block hidden"
+                  />
+                </div>
+                <div className="z-10 w-full">
+                  <Image
+                    src="/assets/images/IlustCommunities.png"
+                    alt={`comunity`}
+                    width={1440}
+                    height={557}
+                    className="w-auto h-auto xl:block hidden"
+                  />
+                </div>
+                <div className="z-10 w-full">
+                  <Image
+                    src="/assets/images/IlustCommunities.png"
+                    alt={`comunity`}
+                    width={1440}
+                    height={557}
+                    className="w-auto h-auto xl:block hidden"
+                  />
+                </div>
+              </Slider>
+            </div>
+            {/* <img
               src="/assets/images/communities.png"
               alt=""
               className="-mt-[300px] xl:block hidden w-full h-full"
-            />
+            /> */}
             <img
               src="/assets/images/community.png"
               alt=""
@@ -57,6 +148,6 @@ export default function Section12(): React.ReactElement {
           className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
         />
       </div>
-    </div>
+    </section>
   );
 }

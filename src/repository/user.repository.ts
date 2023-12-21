@@ -127,3 +127,23 @@ export const updateBlockUser = async (id: string): Promise<any> => {
     }
   );
 };
+
+export const updatePreferredCurrency = async (
+  currency: string
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  return await authService.patch(
+    '/preferred-currency',
+    { preferred_currency: currency },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};

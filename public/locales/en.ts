@@ -15,7 +15,7 @@ export default {
       text2: 'Learn everything about Finance with friends',
       text3a: 'Play',
       text3b:
-        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+        'Trade virtually with a friend using risk-free virtual money and test your financial knowledge with our exciting quizzes.',
       text3c: 'Learn',
       text3d:
         'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
@@ -222,6 +222,7 @@ export default {
       confirm: 'Confirm',
       tryAgain: 'Try Again',
       next: 'Next',
+      save: 'Save',
       done: 'Done',
       deleteAccount: 'Delete Account'
     }
@@ -1422,5 +1423,22 @@ export default {
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
     }
+  },
+  chooseCurrency: {
+    header: 'Choose your currency',
+    body: 'Your chosen currency will be be used for all transactions on Seeds.',
+    successHeader: 'Your currency is',
+    successBody1: "Great job! You've chosen",
+    successBody2:
+      'as your currency preference. From now on, all your transactions on Seeds will be in',
+    successBody3: ', you can change it whenever you want in the settings.',
+    defaultHeader: 'Your default currency is USD',
+    defaultBody:
+      "USD is currently your default currency, but don't worry, you can change it whenever you want in the settings.",
+    button: 'Save',
+    buttonSuccess: 'OK',
+    yourCurrencyIs: 'Your currency is',
+    successChangeCurrency:
+      "Great job! You've chosen ## as your currency preference. From now on, all your transactions on Seeds will be in ##, you can change it whenever you want in the settings."
   }
 };

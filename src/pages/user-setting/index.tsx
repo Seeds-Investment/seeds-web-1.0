@@ -10,6 +10,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import router from 'next/router';
+import { CurrencySVG } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
   BronzeMedalIcon,
@@ -82,9 +83,25 @@ const UserSetting: React.FC = () => {
       onClick: () => {
         setModalChooseLang(true);
       },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
         width !== undefined && width < 370 ? 'h-9' : ''
       } bg-white`
+    },
+    {
+      label: languageCtx.language === 'EN' ? 'Currency' : 'Mata Uang',
+      altStartAdornment: 'Currency',
+      startAdornment: CurrencySVG,
+      onClick: async () => {
+        try {
+          await router.push('/user-setting/change-currency');
+        } catch (error) {
+          console.error('Error navigating to Change Currency:', error);
+        }
+      },
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 justify-between ${
+        width !== undefined && width < 370 ? 'h-9' : ''
+      } bg-white`,
+      currencyLabel: userData?.preferredCurrency as string
     },
     {
       label: languageCtx.language === 'EN' ? 'Create Pin' : 'Buat Pin',
@@ -275,6 +292,7 @@ const UserSetting: React.FC = () => {
               label={menu.label}
               altStartAdornment={menu.altStartAdornment}
               extraClasses={menu.extraClasses}
+              currencyLabel={menu?.currencyLabel}
             />
           ))}
         </div>

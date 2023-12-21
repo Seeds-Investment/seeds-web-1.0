@@ -33,8 +33,8 @@ interface FormCheckPassword {
 }
 
 interface FormCreatePin {
-  pin: any;
-  old_pin: '';
+  new_pin: any;
+  password: '';
 }
 
 const initialFormCheckPassword = {
@@ -52,10 +52,11 @@ const CreatePin = (): JSX.Element => {
     initialFormCheckPassword
   );
   const [formCreatePin, setFormCreatePin] = useState<FormCreatePin>({
-    pin: [],
-    old_pin: ''
+    new_pin: [],
+    password: ''
   });
   const [errorPassword, setErrorPassword] = useState<string>('');
+  const [errorPin, setErrorPin] = useState<string>('');
   const [step, setStep] = useState<string>('password');
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -71,19 +72,24 @@ const CreatePin = (): JSX.Element => {
       ...prevState,
       password: value
     }));
+
+    setFormCreatePin(prevState => ({
+      ...prevState,
+      password: value
+    }));
   };
 
   const handleAddPin = (value: string): void => {
     setFormCreatePin(prevState => ({
       ...prevState,
-      pin: [...prevState.pin, value]
+      new_pin: [...prevState.new_pin, value]
     }));
   };
 
   const handleRemovePin = (): void => {
     setFormCreatePin(prevState => ({
       ...prevState,
-      pin: prevState.pin.slice(0, formCreatePin.pin.length - 1)
+      new_pin: prevState.new_pin.slice(0, formCreatePin.new_pin.length - 1)
     }));
   };
 
@@ -130,18 +136,20 @@ const CreatePin = (): JSX.Element => {
 
   const SubmitCreatePin = async (): Promise<void> => {
     try {
-      formCreatePin.pin = formCreatePin.pin.join('');
+      formCreatePin.new_pin = formCreatePin.new_pin.join('');
 
       createPin(formCreatePin)
         .then(res => {
           if (res.status === 401) {
             setErrorPassword('Wrong Password');
           } else {
+            setErrorPin('');
             setIsSuccess(true);
           }
         })
         .catch(err => {
           console.log(err);
+          setErrorPin(err.response.data.message);
         });
     } catch (error: any) {
       console.error('Error submit pin:', error.message);
@@ -153,10 +161,10 @@ const CreatePin = (): JSX.Element => {
       .then()
       .catch(() => {});
 
-    if (formCreatePin.pin.length === 6) {
+    if (formCreatePin.new_pin.length === 6) {
       void SubmitCreatePin();
     }
-  }, [formCreatePin.pin]);
+  }, [formCreatePin.new_pin]);
 
   return (
     <>
@@ -265,6 +273,7 @@ const CreatePin = (): JSX.Element => {
           deletePinHandler={handleRemovePin}
           title="Create Your Pin"
           subtitle="Please enter your PIN number correctly"
+          error={errorPin}
         />
       ) : null}
 

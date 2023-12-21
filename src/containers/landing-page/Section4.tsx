@@ -63,7 +63,7 @@ const Section1 = (): React.ReactElement => {
   return (
     <section
       ref={ref}
-      className={`h-auto min-w-full cursor-default relative font-poppins text-center ${
+      className={`h-auto min-w-full cursor-default relative mt-5 lg:mt-20 font-poppins text-center ${
         inView && isBottom >= measurement
           ? 'animate-fade-in-slide'
           : isBottom >= measurement

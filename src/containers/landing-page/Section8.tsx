@@ -136,7 +136,7 @@ export default function Section3(): React.ReactElement {
             width > 700 ? (
               <>
                 <div className="absolute z-0 bg-[#3AC4A0BF] blur-[150px] w-[300px] h-[300px] right-[10rem] top-[10rem] rounded-full"></div>
-                <div className="absolute z-0 bg-[#7F64D8] blur-[150px] w-[300px] h-[300px] right-[25rem] top-[20rem] rounded-full"></div>
+                <div className="absolute z-0 bg-[#7F64D8] blur-[250px] w-[300px] h-[300px] right-[25rem] top-[20rem] rounded-full"></div>
               </>
             ) : null
           ) : null}

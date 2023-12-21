@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
+import type { Settings } from 'react-slick';
+import Slider from 'react-slick';
 
 const Section2: React.FC = () => {
   const { t } = useTranslation();
@@ -22,6 +24,24 @@ const Section2: React.FC = () => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
+
+  const images = [
+    SectionTwoImagePartnership.src,
+    SectionTwoImagePartnership.src,
+    SectionTwoImagePartnership.src,
+    SectionTwoImagePartnership.src
+  ];
+
+  const settings: Settings = {
+    centerMode: true,
+    slidesToShow: 1,
+    speed: 15000,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 500,
+    infinite: true,
+    dots: false
+  };
 
   return (
     <div className="bg-white min-w-full font-poppins" ref={ref}>
@@ -76,11 +96,11 @@ const Section2: React.FC = () => {
           </div>
 
           <div className="flex flex-row items-center w-full md:justify-end mb-5">
-            <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
+            <div className="bg-[#DCFCE4] rounded-full p-3 md:p-5">
               <Image
                 src={SectionTwoIconCalendar.src}
                 alt="trophy"
-                className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-2xl"
+                className="w-[40px] h-[40px] md:w-[66px] md:h-[66px] rounded-sm md:rounded-2xl"
                 width={100}
                 height={100}
               />
@@ -99,7 +119,25 @@ const Section2: React.FC = () => {
           <p className="text-3xl md:text-4xl text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
             Our Partnership
           </p>
-          <div className="relative w-full h-[450px] md:h-[400px] overflow-hidden">
+          <div className="relative w-full h-[450px] md:h-[270px] lg:h-[350px] xl:h-[450px] overflow-hidden">
+            <Slider {...settings}>
+              {images?.length !== 0
+                ? images?.map((data, idx) => (
+                    <div key={idx}>
+                      <Image
+                        src={data}
+                        alt="trophy"
+                        width={100}
+                        height={100}
+                        className="w-full h-[30rem] md:h-full object-cover"
+                      />
+                    </div>
+                  ))
+                : null}
+            </Slider>
+            <div className="absolute bottom-0 w-full h-[25%] bg-gradient-to-t from-white to-transparent"></div>
+          </div>
+          {/* <div className="relative w-full h-[450px] md:h-[400px] overflow-hidden">
             <div className="w-full h-full object-cover">
               <Image
                 src={SectionTwoImagePartnership.src}
@@ -110,7 +148,7 @@ const Section2: React.FC = () => {
               />
             </div>
             <div className="absolute bottom-0 w-full h-[25%] bg-gradient-to-t from-white to-transparent"></div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

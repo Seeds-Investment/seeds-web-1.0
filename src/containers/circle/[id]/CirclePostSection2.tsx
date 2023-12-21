@@ -11,6 +11,7 @@ import {
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
 import {
+  Button,
   Menu,
   MenuHandler,
   MenuItem,
@@ -23,6 +24,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SearchMember } from 'public/assets/circle';
 import { TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -161,6 +163,7 @@ const CirclePostSection2: React.FC<props> = ({
   isJoined
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
   const [searchMember, setSearchMember] = useState<string>('');
@@ -489,7 +492,17 @@ const CirclePostSection2: React.FC<props> = ({
                     </div>
                     {role.role !== 'member' && (
                       <div className="flex justify-end pt-4">
-                        <div className="flex items-center gap-2 bg-seeds-green/20 px-4 py-2 rounded-full border cursor-pointer border-seeds-button-green">
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            router
+                              .push(`/connect/add-member/${circleId}`)
+                              .catch(err => {
+                                console.log(err);
+                              });
+                          }}
+                          className="flex items-center gap-2 bg-seeds-green/20 px-4 py-2 rounded-full border cursor-pointer border-seeds-button-green"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -525,7 +538,7 @@ const CirclePostSection2: React.FC<props> = ({
                           <Typography className="font-poppins font-semibold text-xs text-seeds-button-green">
                             Add
                           </Typography>
-                        </div>
+                        </Button>
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-4 pt-4">

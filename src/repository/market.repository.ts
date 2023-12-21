@@ -26,3 +26,18 @@ export const getMarketList = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const getMarketCurrency = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await marketService.get(`/currency`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

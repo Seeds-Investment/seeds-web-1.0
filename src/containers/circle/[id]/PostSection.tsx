@@ -710,7 +710,7 @@ const PostSection: React.FC<props> = ({
   };
 
   useEffect(() => {
-    if (dataPost.pie_title !== '') {
+    if (dataPost.pie.length > 0) {
       handleSetChartData();
     }
   }, []);
@@ -900,7 +900,7 @@ const PostSection: React.FC<props> = ({
                 />
               )}
 
-              {dataPost.pie_title !== '' ? (
+              {dataPost.pie.length > 0 ? (
                 <PieCirclePost data={dataPost} chartData={chartData} />
               ) : null}
             </div>

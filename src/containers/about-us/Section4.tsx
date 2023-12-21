@@ -1,37 +1,60 @@
 import { AboutUsSectionFourBG } from '@/constants/assets/images';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const Section4: React.FC = () => {
-  return (
-    <div className="min-w-full font-poppins relative bg-white">
-      <Image
-        src={AboutUsSectionFourBG.src}
-        alt="faq"
-        width={100}
-        height={100}
-        className="absolute right-0 left-0 mx-auto -mt-5 block w-full z-0"
-      />
+  const measurement = 400;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.3
+  });
 
-      <div className="flex flex-col w-full font-poppins relative z-1">
-        <p className="text-3xl text-center md:text-left md:text-4xl mt-10 font-semibold text-white xl:font-bold md:pl-20">
-          #SeedsTalk
-        </p>
-        <p className="text-base text-center md:text-left md:text-xl font-normal text-[#262626] mt-6 md:px-20">
-          {`The podcast where money talk gets interesting! We're here to share the
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
+
+  return (
+    <div className="min-w-full font-poppins relative bg-white" ref={ref}>
+      <div
+        className={`${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
+        <Image
+          src={AboutUsSectionFourBG.src}
+          alt="faq"
+          width={100}
+          height={100}
+          className="absolute right-0 left-0 mx-auto -mt-5 block w-full z-0"
+        />
+
+        <div className="flex flex-col w-full font-poppins relative z-1">
+          <p className="text-3xl text-center md:text-left md:text-4xl mt-10 font-semibold text-white xl:font-bold md:pl-20">
+            #SeedsTalk
+          </p>
+          <p className="text-base text-center md:text-left md:text-xl font-normal text-[#262626] mt-6 md:px-20">
+            {`The podcast where money talk gets interesting! We're here to share the
           coolest tips, latest news, and some eye-opening insights about money
           and investing.`}
-        </p>
+          </p>
 
-        <div className="flex flex-row w-full my-10 text-center items-center justify-center">
-          <iframe
-            width="100%"
-            height="500"
-            src="https://www.youtube.com/embed/7nAPJbLWxWM?si=iAOAIl0JU43dOUhP"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            className="mx-2 py-2 w-full md:w-[70%]"
-            style={{ zIndex: 2 }}
-          ></iframe>
+          <div className="flex flex-row w-full my-10 text-center items-center justify-center">
+            <iframe
+              width="100%"
+              height="500"
+              src="https://www.youtube.com/embed/7nAPJbLWxWM?si=iAOAIl0JU43dOUhP"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="mx-2 py-2 w-full md:w-[70%]"
+              style={{ zIndex: 2 }}
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>

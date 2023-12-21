@@ -6,11 +6,23 @@ import {
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 
 const Section4: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const measurement = 400;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.3
+  });
+
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   const data = [
     {
@@ -34,20 +46,31 @@ const Section4: React.FC = () => {
   ];
 
   return (
-    <div className="min-w-full font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]">
-      <div className="flex flex-col w-full items-center font-poppins">
-        <p className="text-3xl md:text-4xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
+    <div
+      className="min-w-full font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0]"
+      ref={ref}
+    >
+      <div
+        className={`flex flex-col w-full items-center font-poppins ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
+        <p className="text-3xl md:text-4xl mt-10 p-2 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
           {t('partner.section4.title')}
         </p>
-        <p className="text-base md:text-2xl p-5 mt-1 md:mt-5 font-normal text-center text-[#262626]">
+        <p className="text-base md:text-2xl p-2 mt-1 font-normal text-center text-[#262626]">
           {t('partner.section4.subtitle')}
         </p>
 
-        <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:px-20 md:flex-row">
+        <div className="flex flex-col w-full items-center justify-center gap-28 font-poppins p-5 md:px-20 md:flex-row">
           {data.map((data, idx) => (
             <Card
               key={idx}
-              className="flex flex-col items-center w-full md:w-1/3 mb-14 p-5 text-center rounded-3xl"
+              className="flex flex-col items-center w-full md:w-1/4 mb-14 p-5 text-center rounded-3xl"
             >
               <Image
                 src={data.image}

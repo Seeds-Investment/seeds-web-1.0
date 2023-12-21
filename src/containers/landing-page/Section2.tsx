@@ -9,6 +9,7 @@ import earth from '@/assets/landing-page/s2-earth.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import CountUp from 'react-countup';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
@@ -27,9 +28,9 @@ export default function Section2(): React.ReactElement {
   }, [entry]);
 
   return (
-    <section
+    <div
       ref={ref}
-      className="relative flex flex-col items-center justify-center md:pb-[54px] px-4 w-full"
+      className=" bg-white items-center justify-center px-4 w-full relative overflow-hidden"
     >
       <div
         className={`h-auto min-w-full mt-8 cursor-default font-poppins ${
@@ -40,10 +41,10 @@ export default function Section2(): React.ReactElement {
             : ''
         }`}
       >
-        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[100px] w-[580px] h-[580px] left-[-28rem] top-[20rem] rounded-full z-0"></div>
-        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[100px] w-[580px] h-[489px] right-[-25rem] top-[40rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[580px] left-[-28rem] top-[20rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[489px] right-[-25rem] top-[40rem] rounded-full z-0"></div>
 
-        <div className="flex flex-col w-full items-center justify-center gap-7 font-poppins p-5 md:p-20 md:flex-row">
+        <div className="flex flex-col w-full items-center justify-center font-poppins p-5 md:flex-row">
           <div className="flex flex-row items-center w-full justify-start mb-5">
             <div className="bg-[#DCFCE4] rounded-full p-2 md:p-5">
               <Image
@@ -56,7 +57,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                100+
+                <CountUp end={100} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option1')}
@@ -76,7 +77,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                100+
+                <CountUp end={100} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option2')}
@@ -96,7 +97,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                100+
+                <CountUp end={100} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option3')}
@@ -106,13 +107,13 @@ export default function Section2(): React.ReactElement {
         </div>
         <div className="flex flex-col lg:p-5 items-center justify-center">
           <div className="flex flex-row w-full items-center justify-center md:mb-8 lg:mb-6 xl:mb-4 mb-5 sm:mb-20 font-poppins">
-            <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
+            <span className="xl:text-[72px] text-[30px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
               {t('landing.section2.text1a')}
             </span>
-            <span className="xl:text-[72px] text-[30px] font-poppins font-bold text-[#262626] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
+            <span className="xl:text-[72px] text-[30px] font-poppins font-semibold text-[#262626] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
               {t('landing.section2.text1b')}
             </span>
-            <span className="xl:text-[72px] text-[30px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl xl:pb-4">
+            <span className="xl:text-[72px] text-[30px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl xl:pb-4">
               {t('landing.section2.text1c')}
             </span>
 
@@ -174,6 +175,6 @@ export default function Section2(): React.ReactElement {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

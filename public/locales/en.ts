@@ -1298,7 +1298,10 @@ export default {
       text4: 'Investing',
       text5:
         'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
-      text6: 'Play Now!'
+      text6: 'Play Now',
+      text7: 'Build Portfolio & Claim Rewards ',
+      text8: 'Social Interaction',
+      text9: 'Challenge, Learn, Earn'
     },
     section2: {
       text1: 'Social',

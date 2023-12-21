@@ -2,7 +2,9 @@ import ArticleCard from '@/components/homepage/articleCard';
 import { getArticle } from '@/repository/article.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -33,6 +35,7 @@ export interface Metadata {
 }
 
 export default function ArticlePage(): React.ReactElement {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -53,7 +56,7 @@ export default function ArticlePage(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -62,7 +65,7 @@ export default function ArticlePage(): React.ReactElement {
     }
   }
 
-  const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
+  const categoryItemClass = 'py-1 rounded-full text-center w-full text-xs px-2';
 
   const categories = [
     'All',
@@ -96,7 +99,7 @@ export default function ArticlePage(): React.ReactElement {
   };
 
   return (
-    <>
+    <div className="w-full">
       <div className="lg:hidden mt-4 ">
         <Slider
           slidesToShow={4}
@@ -118,8 +121,8 @@ export default function ArticlePage(): React.ReactElement {
               key={key}
               className={`${categoryItemClass} ${
                 activeCategory === category
-                  ? 'bg-[#3AC4A0] text-white'
-                  : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                  ? 'bg-[#3AC4A0] text-white text-xs'
+                  : 'text-[#3AC4A0] bg-[#F9F9F9] text-xs'
               }`}
               onClick={() => {
                 updateCategory(category);
@@ -133,7 +136,7 @@ export default function ArticlePage(): React.ReactElement {
 
       <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
         <button
-          className={`py-1 rounded-full text-md px-4 ${
+          className={`py-1 rounded-full text-xs px-4 ${
             activeCategory === 'All'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -145,7 +148,7 @@ export default function ArticlePage(): React.ReactElement {
           All
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'general'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -157,7 +160,7 @@ export default function ArticlePage(): React.ReactElement {
           General
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'crypto'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -170,7 +173,7 @@ export default function ArticlePage(): React.ReactElement {
         </button>
 
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'usstocks'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -182,7 +185,7 @@ export default function ArticlePage(): React.ReactElement {
           Us Stocks
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'indostocks'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -194,7 +197,7 @@ export default function ArticlePage(): React.ReactElement {
           Indo Stocks
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'commodities'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -206,7 +209,7 @@ export default function ArticlePage(): React.ReactElement {
           Commodities
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'indices'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -218,7 +221,7 @@ export default function ArticlePage(): React.ReactElement {
           Indices
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'forex'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -230,7 +233,7 @@ export default function ArticlePage(): React.ReactElement {
           Forex
         </button>
         <button
-          className={`py-1 rounded-full text-md px-2 ${
+          className={`py-1 rounded-full text-xs px-2 ${
             activeCategory === 'finance'
               ? 'bg-[#3AC4A0] text-white'
               : 'text-[#3AC4A0] bg-[#F9F9F9]'
@@ -252,9 +255,9 @@ export default function ArticlePage(): React.ReactElement {
           href={'/homepage/articles'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
-          See More
+          {t('homepage.section2.text14')}
         </Link>
       </div>
-    </>
+    </div>
   );
 }

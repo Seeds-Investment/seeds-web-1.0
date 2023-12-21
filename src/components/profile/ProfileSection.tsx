@@ -1,6 +1,5 @@
 'use client';
 import message from '@/assets/profile/message.svg';
-import optionHorizontal from '@/assets/profile/optionHorizontal.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
 import { updateBlockUser } from '@/repository/user.repository';
@@ -10,14 +9,22 @@ import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import { useState } from 'react';
 import FollowButton from '../FollowButton';
+import MoreOptionHorizontal from '../MoreOptionHorizontal';
+import PostFollowSection from './PostFollowSection';
 
 interface Params {
   profileData: any;
   expData: any;
   id?: any;
+  handleSubmitBlockUser?: any;
 }
 
-const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
+const Profile = ({
+  profileData,
+  expData,
+  id,
+  handleSubmitBlockUser
+}: Params): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const router = useRouter();
@@ -140,44 +147,17 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
                   <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
                     <Image src={message} alt="Message" width={20} height={20} />
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
-                    <Image
-                      src={optionHorizontal}
-                      alt="optionHorizontal"
-                      width={20}
-                      height={20}
+                  <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center items-center">
+                    <MoreOptionHorizontal
+                      profileData={profileData}
+                      handleSubmitBlockUser={handleSubmitBlockUser}
                     />
                   </div>
                 </>
               )}
             </div>
           </div>
-          <div className="flex gap-10 h-[36px] md:h-11 justify-center md:justify-normal">
-            <div className="w-[26px] md:w-20 flex flex-col items-center justify-center">
-              <p className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
-                {profileData?.posts}
-              </p>
-              <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
-                Post
-              </p>
-            </div>
-            <div className="w-14 md:w-20 flex flex-col items-center justify-center">
-              <p className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
-                {profileData?.followers}
-              </p>
-              <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
-                Followers
-              </p>
-            </div>
-            <div className="w-14 md:w-20 flex flex-col items-center justify-center">
-              <div className="text-black md:text-[#201B1C] text-sm md:text-lg font-semibold font-poppins">
-                {profileData?.following}
-              </div>
-              <p className="text-black/50 md:text-[#7C7C7C] text-xs font-normal font-poppins">
-                Following
-              </p>
-            </div>
-          </div>
+          <PostFollowSection profileData={profileData} id={id} />
           <div className="xl:flex hidden">
             <Typography className="text-[#201B1C] text-base font-normal font-poppins">
               {profileData?.bio}
@@ -272,12 +252,10 @@ const Profile = ({ profileData, expData, id }: Params): JSX.Element => {
             <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
               <Image src={message} alt="Message" width={20} height={20} />
             </div>
-            <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center">
-              <Image
-                src={optionHorizontal}
-                alt="optionHorizontal"
-                width={20}
-                height={20}
+            <div className="w-9 h-9 rounded-full bg-[#F2FDF9] flex justify-center items-center">
+              <MoreOptionHorizontal
+                profileData={profileData}
+                handleSubmitBlockUser={handleSubmitBlockUser}
               />
             </div>
           </>

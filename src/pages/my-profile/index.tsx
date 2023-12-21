@@ -66,7 +66,7 @@ const ProfilePage = (): JSX.Element => {
 
         if (dataInfo !== '') {
           const postResponse = await getListPostByUserId(dataInfo.id, post);
-          setPostData(postResponse);
+          setPostData(postResponse.data);
         }
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
@@ -90,7 +90,7 @@ const ProfilePage = (): JSX.Element => {
           circleData={circleData}
           playData={playData}
           postData={postData}
-          setPostData={setPostData}
+          setData={setPostData}
         />
       </Card>
     </PageGradient>

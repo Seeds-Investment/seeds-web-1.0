@@ -5,6 +5,8 @@ import {
   UsersIcon
 } from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
+import { trackEvent } from '@phntms/next-gtm';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -28,12 +30,15 @@ interface Circle {
 
 export default function CardCircle({
   data,
-  cover
+  cover,
+  userInfo
 }: {
   data: Circle;
   cover: string;
+  userInfo: any;
 }): React.ReactElement {
   const router = useRouter();
+  const deviceDetector = new DeviceDetector();
   return (
     <Card
       shadow={false}
@@ -44,6 +49,18 @@ export default function CardCircle({
           onClick={() => {
             router.push(`/connect/post/${data.id}`).catch(error => {
               console.log(error);
+            });
+            trackEvent({
+              event: `Seeds_view_circle_detail_page_web`,
+              data: {
+                user_id: userInfo?.id,
+                page_name: 'circle_detail_web',
+                circle_id: data.id,
+                created_at: new Date().toString(),
+
+                user_device: deviceDetector.parse(navigator.userAgent).device
+                  ?.type
+              }
             });
           }}
           className="cursor-pointer"

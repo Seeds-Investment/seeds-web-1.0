@@ -11,6 +11,7 @@ import {
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
 import {
+  Button,
   Menu,
   MenuHandler,
   MenuItem,
@@ -23,6 +24,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { SearchMember } from 'public/assets/circle';
 import { TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -161,6 +163,7 @@ const CirclePostSection2: React.FC<props> = ({
   isJoined
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [tabs, setTabs] = useState<string>('post');
   const [member, setMember] = useState<any[]>([]);
   const [searchMember, setSearchMember] = useState<string>('');
@@ -406,8 +409,8 @@ const CirclePostSection2: React.FC<props> = ({
                     }}
                     className={`text-center z-0 text-sm md:text-lg bg-transparent font-poppins ${
                       tabs === el.value
-                        ? 'text-[#4FE6AF] font-semibold border-b-4 border-b-[#4FE6AF]'
-                        : 'text-[#7C7C7C] text-sm font-normal'
+                        ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier  font-semibold border-b-4 border-b-[#4FE6AF]'
+                        : 'text-[#7C7C7C] text-sm font-normal border-b-[#BDBDBD] border-b-2'
                     }`}
                   >
                     {el.name === 'Post' && t('circleDetail.navigator.post')}
@@ -422,57 +425,47 @@ const CirclePostSection2: React.FC<props> = ({
             </TabsHeader>
             <TabsBody className="pb-4">
               <TabPanel value="post">
-                {dataPost !== undefined &&
-                  dataPost !== null &&
-                  dataPost.length > 0 &&
-                  dataPost?.map((el: any) => {
-                    return (
-                      <PostSection
-                        dataPost={el}
-                        key={el.id}
-                        setData={setDataPost}
-                        userInfo={userInfo}
-                      />
-                    );
-                  })}
-                {!isLoadingPost && dataPost.length === 0 && (
-                  <div className="flex justify-center">
-                    <Typography className="text-black font-poppins text-base">
-                      Data not found
-                    </Typography>
-                  </div>
-                )}
+                <div className="">
+                  {dataPost !== undefined &&
+                    dataPost !== null &&
+                    dataPost.length > 0 &&
+                    dataPost?.map((el: any) => {
+                      return (
+                        <PostSection
+                          dataPost={el}
+                          key={el.id}
+                          setData={setDataPost}
+                          userInfo={userInfo}
+                        />
+                      );
+                    })}
+                </div>
 
                 {isLoadingPost && renderLoading()}
               </TabPanel>
               <TabPanel value="recommended">
-                {dataRecommend !== undefined &&
-                  dataRecommend !== null &&
-                  dataRecommend.length > 0 &&
-                  dataRecommend?.map((el: any) => {
-                    return (
-                      <PostSection
-                        dataPost={el}
-                        key={el.id}
-                        setData={setDataRecommend}
-                        userInfo={userInfo}
-                      />
-                    );
-                  })}
-                {!isLoadingPost && dataRecommend.length === 0 && (
-                  <div className="flex justify-center">
-                    <Typography className="text-black font-poppins text-base">
-                      Data not found
-                    </Typography>
-                  </div>
-                )}
+                <div className="">
+                  {dataRecommend !== undefined &&
+                    dataRecommend !== null &&
+                    dataRecommend.length > 0 &&
+                    dataRecommend?.map((el: any) => {
+                      return (
+                        <PostSection
+                          dataPost={el}
+                          key={el.id}
+                          setData={setDataRecommend}
+                          userInfo={userInfo}
+                        />
+                      );
+                    })}
+                </div>
                 {isLoadingPost && renderLoading()}
               </TabPanel>
               <TabPanel value="members">
                 {isLoadingMember ? (
                   renderLoading()
                 ) : (
-                  <div className="flex flex-col border-t border-neutral-ultrasoft">
+                  <div className="flex flex-col ">
                     <div className="flex justify-between w-full pt-2">
                       <Typography className="text-black font-semibold font-poppins">
                         Participants
@@ -499,7 +492,17 @@ const CirclePostSection2: React.FC<props> = ({
                     </div>
                     {role.role !== 'member' && (
                       <div className="flex justify-end pt-4">
-                        <div className="flex items-center gap-2 bg-seeds-green/20 px-4 py-2 rounded-full border cursor-pointer border-seeds-button-green">
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            router
+                              .push(`/connect/add-member/${circleId}`)
+                              .catch(err => {
+                                console.log(err);
+                              });
+                          }}
+                          className="flex items-center gap-2 bg-seeds-green/20 px-4 py-2 rounded-full border cursor-pointer border-seeds-button-green"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -535,7 +538,7 @@ const CirclePostSection2: React.FC<props> = ({
                           <Typography className="font-poppins font-semibold text-xs text-seeds-button-green">
                             Add
                           </Typography>
-                        </div>
+                        </Button>
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-4 pt-4">
@@ -766,7 +769,7 @@ const CirclePostSection2: React.FC<props> = ({
                 )}
               </TabPanel>
               <TabPanel value="about">
-                <div className="space-y-6 border-t border-neutral-ultrasoft pt-4">
+                <div className="space-y-6  pt-4">
                   <div className="space-y-4 w-full border-b-2 border-neutral-ultrasoft pb-5">
                     <h1 className="text-base font-semibold font-poppins">
                       About this Circle

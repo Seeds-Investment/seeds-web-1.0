@@ -61,7 +61,7 @@ const ExclusiveList = (): React.ReactElement => {
           <div key={data.id} className="w-full">
             <Link href={`/homepage/exclusive/${data?.id ?? 0}`}>
               <Image
-                className="object-cover "
+                className="object-cover rounded-2xl "
                 src={data.image_url}
                 alt={data.name}
                 width={1420}

@@ -22,9 +22,47 @@ export const getArticle = async (params: {
     return error.response;
   }
 };
+export const getArticleHome = async (params: {
+  page: number;
+  limit: number;
+  search: string;
+  language: string;
+  source: string;
+  category: string;
+}): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  try {
+    const response = await articleService.get('/news/v1/all', {
+      params,
+      headers: {
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
 export const getArticleById = async (id: string): Promise<any> => {
   try {
     const response = await articleService.get(`/news/v1/${id}`);
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getArticleByIdHome = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  try {
+    const response = await articleService.get(`/news/v1/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
     return { ...response, status: 200 };
   } catch (error: any) {
     return error.response;

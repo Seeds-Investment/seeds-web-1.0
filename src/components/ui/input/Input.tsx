@@ -114,7 +114,7 @@ const Input: React.FC<InputProps> = ({
             } ${extraInputClasses}`}
           />
           <label
-            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:after:scale-x-100 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium ${
+            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:after:scale-x-100 peer-disabled:peer-placeholder-shown:text-neutral-medium ${
               isRedirectButton
                 ? ''
                 : 'after:border-seeds-button-green/80 peer-focus:text-seeds-button-green/80 peer-focus:after:border-seeds-button-green/80'
@@ -350,7 +350,7 @@ const Input: React.FC<InputProps> = ({
             } ${extraInputClasses}`}
           />
           <label
-            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:after:scale-x-100 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-neutral-medium ${
+            className={`after:content[' '] pointer-events-none absolute left-0 -top-6 flex h-full w-full select-none font-poppins font-semibold leading-6 text-neutral-medium transition-all after:absolute after:-bottom-6 after:block after:w-full after:scale-x-0 after:border-b-2 after:transition-transform after:duration-300 peer-placeholder-shown:leading-6 peer-placeholder-shown:text-neutral-medium peer-focus:text-base peer-focus:leading-6 peer-focus:after:scale-x-100 peer-disabled:peer-placeholder-shown:text-neutral-medium ${
               isRedirectButton
                 ? ''
                 : 'after:border-seeds-button-green/80 peer-focus:text-seeds-button-green/80 peer-focus:after:border-seeds-button-green/80'

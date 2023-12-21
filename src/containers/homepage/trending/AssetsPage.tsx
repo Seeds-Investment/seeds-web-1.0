@@ -1,4 +1,6 @@
 import { getTrendingAssets } from '@/repository/asset.repository';
+import { trackEvent } from '@phntms/next-gtm';
+import DeviceDetector from 'device-detector-js';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import AssetTrendingCard from './AssetsTrendingCard';
@@ -15,7 +17,8 @@ export interface AssetsInterface {
   assetType: string;
 }
 
-export default function AssetsPage(): React.ReactElement {
+export default function AssetsPage({ userInfo }: any): React.ReactElement {
+  const deviceDetector = new DeviceDetector();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [assets, setAssets] = useState<AssetsInterface[]>([]);
   async function fetchArticles(): Promise<void> {
@@ -65,6 +68,18 @@ export default function AssetsPage(): React.ReactElement {
         <Link
           href={'/homepage/trending-assets'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
+          onClick={() => {
+            trackEvent({
+              event: `Seeds_view_asset_list_web`,
+              data: {
+                user_id: userInfo?.id,
+                page_name: 'Asset List',
+                created_at: new Date().toString(),
+                user_device: deviceDetector.parse(navigator.userAgent).device
+                  ?.type
+              }
+            });
+          }}
         >
           See More
         </Link>

@@ -1,18 +1,35 @@
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
+import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section1 from '@/containers/landing/Section1';
-import Section2 from '@/containers/landing/Section2';
-import Section3 from '@/containers/landing/Section3';
-import Section4 from '@/containers/landing/Section4';
-import Section5 from '@/containers/landing/Section5';
-import Section6 from '@/containers/landing/Section6';
-import Section7 from '@/containers/temporary/Section1';
+import Section1 from '@/containers/landing-page/Section1';
+import Section10 from '@/containers/landing-page/Section10';
+import Section11 from '@/containers/landing-page/Section11';
+import Section12 from '@/containers/landing-page/Section12';
+import Section2 from '@/containers/landing-page/Section2';
+import Section3 from '@/containers/landing-page/Section3';
+import Section4 from '@/containers/landing-page/Section4';
+import Section5 from '@/containers/landing-page/Section5';
+import Section6 from '@/containers/landing-page/Section6';
+import Section7 from '@/containers/landing-page/Section7';
+import Section8 from '@/containers/landing-page/Section8';
+import Section9 from '@/containers/landing-page/Section9';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 export default function Home(): React.ReactElement {
+  const router = useRouter();
   // const { t } = useTranslation();
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken != null) {
+      // Jika access token ada, navigasikan pengguna ke halaman '/homepage'
+      void router.push('/homepage');
+    }
+  }, []);
   const customGradient = (
     <>
       <span className="-z-10 absolute bottom-10 -left-10 w-60 h-48 bg-seeds-green-2 blur-[90px] rotate-45" />
@@ -45,8 +62,16 @@ export default function Home(): React.ReactElement {
         <Section3 />
         <Section4 />
         <Section5 />
-        <Section7 />
         <Section6 />
+        <Section7 />
+        <Section8 />
+        <Section9 />
+        <Section10 />
+        <Section11 />
+        <Section12 />
+        <div className="lg:relative z-30 lg:mt-[-18px]">
+          <Footer />
+        </div>
       </PageGradient>
     </>
   );

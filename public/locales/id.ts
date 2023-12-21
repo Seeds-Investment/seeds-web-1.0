@@ -156,7 +156,8 @@ export default {
     editImage: 'Ubah Foto',
     linkedAccount: 'Akun Tertaut',
     changePin: 'Ganti PIN',
-    telephoneNumber: 'Nomor Telepon'
+    telephoneNumber: 'Nomor Telepon',
+    email: 'Email'
   },
   input: {
     label: {
@@ -187,10 +188,10 @@ export default {
       optional: '(tidak wajib)'
     },
     poll: {
-      optionPlaceholder: '{{index}}. Enter an option',
-      endDateLabel: 'Set ending date',
+      optionPlaceholder: '{{index}}. Masukkan opsi',
+      endDateLabel: 'Tentukan tanggal akhir',
       multivoteLabel: 'Multivote',
-      allowNewOptionLabel: 'Allow new options'
+      allowNewOptionLabel: 'Izinkan opsi baru'
     }
   },
   button: {
@@ -929,32 +930,30 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        title1: 'Main & Menangkan',
+        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
         subtitle:
-          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+          'Uji pengetahuan keuangan dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk berkesempatan memenangkan hadiah senilai jutaan rupiah.'
       },
       section2: {
         title1: 'Leaderboard',
-        title2: 'Tiga pemain bintang yang mendominasi Play.'
+        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Keuangan Mereka',
+        subtitle:
+          'Buat thread dan berinteraksi dengan komunitas Seeds. Temui teman sepanjang perjalanan finansialmu dan dorong orang lain untuk memulai perjalanan mereka sendiri.'
       },
       section5: {
-        title1: 'Bagaimana Cara Bermain',
-        title2: 'Turnamen',
+        title1: 'Bagaimana Bermain',
+        title2: 'Turnamen?',
         title3:
-          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan banyak hadiah. Pelajari segalanya tentang perdagangan virtual di sini!'
       },
       section6: {
-        title1: 'Unggah Sekarang!',
-        title2: 'Mulai perjalanan investasimu sekarang.',
+        title1: 'Unduh Sekarang!',
+        title2: 'Mulai Perjalanan Investasimu.',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -1024,6 +1023,331 @@ export default {
       recomend: 'Rekomendasi',
       listMembers: 'Anggota',
       about: 'Tentang'
+    }
+  },
+  partner: {
+    section1: {
+      title: 'Berkolaborasi dengan Seeds',
+      text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
+      button: 'Hubungi Kami'
+    },
+    section2: {
+      option1: 'Komunitas dan Universitas',
+      option2: 'Pendaftar',
+      option3: 'Acara Diselenggarakan'
+    },
+    section3: {
+      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+    },
+    section4: {
+      title: 'Memberdayakan Generasi Mendatang Bersama',
+      subtitle:
+        'Bergabunglah dengan misi kami untuk membuat pendidikan keuangan menyenangkan dan dapat diakses di Indonesia',
+      option1: {
+        title: 'Komunitas',
+        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Merek',
+        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus.',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Acara Seeds'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds adalah platform Social Gaming yang berfokus di Asia Tenggara. Jelajahi dunia investasi melalui Play Arena kami—capai puncak peringkat, raih hadiah menarik, dan tingkatkan strategi investasi kamu tanpa risiko. Terhubunglah dengan ahli keuangan dan teman lainnya di dalam komunitas kami yang interaktif.'
+    },
+    section2: {
+      title: 'Visi dan Misi',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Manfaatkan pertumbuhan pesat pasar milenial dan Gen Z di Indonesia, termasuk di universitas, sekolah, komunitas, influencer keuangan, dan media. Dapatkan perhatian mereka untuk komunitas, acara, dan event kalian!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Membantu meningkatkan pemahaman keuangan dan menyelamatkan orang dari pilihan investasi yang buruk. Cobalah dunia permainan virtual trading yang menarik dan menjadikan pembelajaran lebih menyenangkan'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Bersama-sama kita tumbuh dan meraih keuntungan bersama. Dari Play Arena hingga Premium Circle, terdapat peluang pertumbuhan finansial yang melimpah.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `Dengan rata-rata 4.000 pengguna per bulan dan engagement rate 5%, di Seeds Finance, pesan kamu tidak hanya akan terlihat, tetapi juga akan beresonansi.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Berkolaborasi dengan influencer keuangan terkemuka dan berada di garis terdepan pendidikan keuangan dan tren di Indonesia.'
+      }
+    },
+    section3: {
+      title: 'Apa yang Membuat Kami Berbeda',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle:
+          'Belajar lebih banyak tentang investasi dan keuangan dari para Profesional'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pandangan serupa'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
+      }
+    }
+  },
+  social: {
+    postSetting: {
+      publicTitle: 'Publik',
+      publicDesc: 'Semua orang bisa melihat postinganmu',
+      privateTitle: 'Pribadi',
+      privateDesc: 'Hanya kamu yang bisa melihat postinganmu',
+      friendsTitle: 'Hanya Teman',
+      friendsDesc: 'Pengikut yang kamu ikuti balik',
+      premiumTitle: 'Premium',
+      premiumDesc:
+        'Hanya pembeli konten premium yang bisa melihat detail postingan'
+    },
+    pieSection: {
+      title: 'Judul',
+      detail: 'Tambahkan judul berdasarkan tujuan keuanganmu',
+      placeholder: 'Buat judul Pie kamu',
+      amount: 'Jumlah',
+      amountError: 'Masukkan jumlah alokasi kamu',
+      selectAsset: 'Pilih Asset',
+      overview: 'Ringkasan',
+      stocks: 'Saham',
+      crypto: 'kripto'
+    },
+    errorState: {
+      image1: 'Gambar kamu melebihi batas ukuran 5MB.',
+      image2:
+        'Kamu hanya bisa memasukan gambar dalam format JPG, JPEG, PNG, .HEIC, .HEIF',
+      video1: 'Kamu hanya bisa memasukan video dalam format .MOV dan .MP4.',
+      video2:
+        'Kamu hanya bisa memasukan video dengan durasi maksimum 60 detik.',
+      video3: 'Video kamu melebihi batas ukuran 20MB.',
+      thread1: 'Teks melebihi 500 karakter.',
+      thread2:
+        'Maaf, kami tidak bisa menemukan URL kamu. Silakan masukkan URL yang benar.',
+      thread3: 'Thread kamu melebihi batas karakter maksimum.',
+      poll1:
+        'Pertanyaan kamu melebihi batas karakter maksimum. Mohon ketik ulang pertanyaan kamu.',
+      poll2: 'Tanggal akhir tidak boleh kurang dari tanggal hari ini.'
+    },
+    reportUser: {
+      text1: 'Laporkan Pengguna',
+      text2: 'Akun ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan akun ini?',
+      text4: 'Posting tertentu yang seharusnya tidak ada di Seeds.',
+      text5: 'Ada sesuatu yang aneh tentang akun ini.',
+      text6:
+        'Apakah kamu yakin ingin melaporkan akun ini? Setelah itu, kamu tidak akan lagi melihat status atau thread yang diposting oleh profil ini.',
+      text7:
+        'Kamu telah melaporkan akun ini. Kamu tidak akan melihat status atau thread yang diposting oleh profil ini lagi.'
+    },
+    reportPost: {
+      text1: 'Laporkan Posting',
+      text2: 'Posting ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan posting ini?',
+      option1: 'Spam',
+      option2: 'Konten dewasa atau aktivitas seksual',
+      option3: 'Ujaran kebencian atau simbol kebencian',
+      option4: 'Pengejaran atau pelecehan',
+      option5: 'Saya tidak suka ini',
+      option6: 'Penipuan atau kecurangan',
+      option7: 'Lainnya',
+      success1: 'Laporan telah diajukan.',
+      success2: 'Terima kasih telah membantu kami.'
+    },
+    blockUser: {
+      block: 'Blokir',
+      text: 'Mereka tidak akan dapat mengirim pesan kepada kamu atau menemukan profil, posting, atau cerita kamu di Seeds'
+    },
+    gif: 'GIF',
+    pdf: 'PDF',
+    gallery: 'Gallery',
+    talk: 'Talk',
+    pie: 'Pie',
+    poll: 'Poll',
+    navbar: {
+      following: 'Mengikuti',
+      foryou: 'Untukmu',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'Semua',
+      allDesc: 'Semua Orang',
+      circle: 'Circle',
+      circleDesc: 'Berdasarkan Circle',
+      personal: 'Teman',
+      personalDesc: 'Hanya Teman'
+    },
+    fiterSortBy: {
+      all: 'Semua',
+      allDesc: 'Seluruh postingan',
+      recent: 'Terbaru',
+      recentDesc: 'Berdasarkan waktu di posting',
+      relevant: 'Paling Relevan',
+      relevantDesc: 'Berdasarkan preferensi pengguna',
+      like: 'Paling disukai',
+      likeDesc: 'Berdasarkan yang paling disukai',
+      trending: 'Paling Tren',
+      trendingDesc: 'Berdasarkan keterlibatan tertinggi'
+    },
+    placeholder1: 'Apa yang ingin kamu diskusikan? ...',
+    placeholder2:
+      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
+      text6: 'Main Sekarang!'
+    },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
+    section3: {
+      text1: 'Bagaimana Seeds Meningkatkan',
+      text2: 'Perjalanan Keuangan Kamu',
+      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text4:
+        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+      text5: 'Siap untuk mengadopsi strategi keuangan.',
+      text6:
+        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
+      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+    },
+    section5: {
+      text1: 'Total Hadiah yang Telah Diklaim'
+    },
+    section6: {
+      text1: 'Acara Seeds'
+    },
+    section7: {
+      text1: 'Temui Ahli Kami',
+      text2: 'Capai Sukses Keuangan Bersama'
+    },
+    section8: {
+      text1: 'Tetap Terinformasi dengan',
+      text2: 'Berita Finansial Terkurasi'
+    },
+    section9: {
+      text1: 'Apa Kata Mereka Tentang Seeds?'
+    },
+    section10: {
+      text1: 'Lebih dari 1000+ orang mempercayai kami',
+      text2: 'Profesional, universitas, dan banyak lagi juga!'
+    },
+    section11: {
+      text1: 'Ingin Berkolaborasi dengan Seeds?',
+      text2:
+        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+      text3:
+        'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
+      text4: 'Hubungi Kami'
+    },
+    section12: {
+      text1: 'Komunitas Kami',
+      text2:
+        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+      text3: 'Program Mitra'
+    }
+  },
+  playSimulation: {
+    assetList: 'Daftar Aset',
+    seedsCash: 'Dana Seeds',
+    cashBalance: 'Saldo Kas',
+    portfolio: 'Portofolio',
+    assetDetail: 'Detail Aset',
+    today: 'Hari Ini',
+    remainingTime: 'Waktu yang tersisa',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Jual',
+    buy: 'Beli',
+    balance: 'Saldo',
+    takeProfit1: 'Aktifkan Take Profit dan Stop Loss',
+    takeProfit2: 'Tingkatkan strategimu dan menangkan Arena.',
+    purchaseAmount: 'Jumlah Pembelian',
+    cashAmount: 'Jumlah Uang',
+    purchaseConfirmation: 'Konfirmasi Pembelian',
+    confirmation: 'Konfirmasi',
+    orderReview: 'Tinjauan Pembelian',
+    orderType: 'Tipe Order',
+    buyMarketOrder: 'Pembelian - Market Order',
+    sellMarketOrder: 'Penjualan - Market Order',
+    marketPrice: 'Harga Pasar',
+    amount: 'Jumlah',
+    transactionFee: 'Biaya Transaksi',
+    totalCost: 'Total Biaya',
+    footerOrderDetail1:
+      'Investasi ini bebas risiko karena kamu menggunakan saldo virtual untuk transaksi ini. Silakan lihat informasi',
+    footerOrderDetail2: 'pada pemberitahuan ini.',
+    disclosure: 'selengkapnya',
+    orderCompleted: 'Pesanan Selesai',
+    orderCompletedBuy: 'Kamu membeli',
+    orderCompletedSell: 'Anda telah berhasil menjual ',
+    investmentValue: 'Nilai Investasi',
+    totalPortfolio: 'Total Portofolio',
+    yourAssetsPortfolio: 'Portofolio aset kamu',
+    joinArena1: 'Apakah kamu siap untuk bergabung dalam Arena?',
+    joinArena2:
+      'Bersiaplah bertanding untuk menguji keterampilan trading-mu dan memenangkan hadiahnya.',
+    sellAssetText1: 'Kamu bisa memilih jumlah aset yang akan dijual.',
+    sellAmount: 'Jumlah Penjualan',
+    cashAvailable: 'Dana Tersedia',
+    cashUsed: 'Dana Digunakan',
+    historyTransaction: 'Riwayat Transaksi',
+    transactionDetail: 'Detail Transaksi'
+  },
+  homepage: {
+    section2: {
+      text1: 'Dana Virtual',
+      text2: 'Keuntungan',
+      text3: 'Koin Seeds',
+      text4: 'Kode Referral',
+      text5: 'Tidak ada rekomendasi profil untuk dibagikan',
+      text6: 'Penawaran Eksklusif',
+      text7: 'Nikmati berbagai promosi khusus hanya untuk kamu! ',
+      text8: 'Trending hari ini',
+      text9: 'Cek apa yang sedang populer sekarang',
+      text10: 'SeedsPedia',
+      text11: 'Peringkat Kamu',
+      text12: 'Menangkan Hadiah setiap Bulan',
+      text13: '"Sekarang di Desember"',
+      text14: 'Lihat lebih banyak'
+    },
+    section3: {
+      text1: 'Sumber semua utama berita keuangan terbaru',
+      text2: 'Saat Ini',
+      text3: 'Bulan Lalu',
+      text4: 'Peringkatmu Saat Ini',
+      text5: 'Cari dan ikuti profil yang menarik.',
+      text6: 'Daftar Profile'
     }
   }
 };

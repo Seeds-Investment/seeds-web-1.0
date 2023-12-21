@@ -47,6 +47,8 @@ interface props {
   dataPost: any;
   setData: any;
   userInfo: UserData;
+  handleSubmitBlockUser?: any;
+  myInfo?: any;
 }
 
 interface ChartData {
@@ -144,7 +146,13 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
+const PostSection: React.FC<props> = ({
+  dataPost,
+  setData,
+  userInfo,
+  handleSubmitBlockUser,
+  myInfo
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
@@ -296,9 +304,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 key={index}
                 onDoubleClick={() => {}}
                 onClick={() => {
-                  router.push(link).catch(err => {
-                    console.error(err);
-                  });
+                  handleItemClick(link);
                 }}
               >
                 <pre className="text-blue-500 font-poppins">
@@ -552,8 +558,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const likePost = async (type: number): Promise<void> => {
     try {
       const response = await postLikeCirclePost(type, dataPost.id);
-
+      console.log('sukses');
       if (response.status === 200) {
+        console.log('200');
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
             if (Array.isArray(prevDataPost)) {
@@ -609,8 +616,24 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 }
                 return el;
               });
+              const filteredTrue = newData.filter(el => el.is_pinned === true);
+              const filterPin = filteredTrue.filter(
+                el => el.id !== dataPost.id
+              );
+              const findPin = filteredTrue.find(el => el.id === dataPost.id);
+              const filteredFalse = newData.filter(
+                el => el.is_pinned === false
+              );
 
-              return newData;
+              let arrangedPinPost = [];
+              if (findPin === undefined) {
+                arrangedPinPost = [...filterPin];
+              } else {
+                arrangedPinPost = [findPin, ...filterPin];
+              }
+
+              const newArrPinnedPost = [...arrangedPinPost, ...filteredFalse];
+              return newArrPinnedPost;
             } else {
               const updatedDataPost = { ...prevDataPost };
               if (dataPost.is_pinned === true) {
@@ -831,9 +854,11 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                         : null}
                     </div>
                     <MoreOption
+                      myInfo={myInfo}
                       setDataPost={setData}
                       dataPost={dataPost}
                       userInfo={userInfo}
+                      handleSubmitBlockUser={handleSubmitBlockUser}
                     />
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">

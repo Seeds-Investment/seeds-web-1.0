@@ -15,7 +15,7 @@ export default {
       text2: 'Learn everything about Finance with friends',
       text3a: 'Play',
       text3b:
-        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+        'Trade virtually with a friend using risk-free virtual money and test your financial knowledge with our exciting quizzes.',
       text3c: 'Learn',
       text3d:
         'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
@@ -161,7 +161,8 @@ export default {
     editImage: 'Edit Image',
     linkedAccount: 'Linked Account',
     changePin: 'Change PIN',
-    telephoneNumber: 'Telephone Number'
+    telephoneNumber: 'Telephone Number',
+    email: 'Email'
   },
   input: {
     label: {
@@ -254,7 +255,7 @@ export default {
       title: {
         1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
-        3: 'How can I access seeds?',
+        3: 'How can I access Seeds?',
         4: 'How safe is it to invest in Seeds?',
         5: 'I want to ask more about Seeds products and services'
       },
@@ -1008,26 +1009,24 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Share & Influence ',
+        title1: 'Play & Win',
+        title2: 'Real Prizes while Enhancing Your Financial Knowledge',
+        subtitle:
+          'Challenge your financial and investment knowledge, compete with others, and be at the top of the leaderboard for a chance to win prizes worth millions of rupiah.'
+      },
+      section2: {
+        title1: 'Leaderboard',
+        title2: 'Reach the top of the leaderboard and win prizes.'
+      },
+      section3: {
+        title1: 'Share & Influence',
         title2: 'Others to Start Their Financial Journey',
         subtitle:
           'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
       },
-      section2: {
-        title1: 'Leaderboard',
-        title2: 'The top three star players who have dominated in Play.'
-      },
-      section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
-      },
       section5: {
         title1: 'How to Play',
-        title2: 'Tournament',
+        title2: 'Tournament?',
         title3:
           'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
       },
@@ -1103,6 +1102,325 @@ export default {
       recomend: 'Recommended',
       listMembers: 'Members',
       about: 'About'
+    }
+  },
+  partner: {
+    section1: {
+      title: 'Partner with Seeds',
+      text: 'Seeds engages a large audience of eager Millennials and Gen Z looking to boost their financial skills. Collaborate with us to reach this growing crowd. Enjoy exclusive trading competitions, cash sponsorships, exciting prizes, and certificates.',
+      button: 'Contact Us'
+    },
+    section2: {
+      option1: 'Communities and University',
+      option2: 'Registration',
+      option3: 'Event Hosted'
+    },
+    section3: {
+      title: 'Collaborate to Solve Problems'
+    },
+    section4: {
+      title: 'Empowering The Next Generation Together',
+      subtitle:
+        'Join our mission to make financial education fun and accessible in Indonesia',
+      option1: {
+        title: 'Community',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Networking Opportunities, Exclusive Training, and Monthly Incentives.',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Brand',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Seeds Events'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Seeds is a Social Gaming platform focused on Southeast Asia. Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community.'
+    },
+    section2: {
+      title: 'Vision and Mission',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Tap into Indonesia's booming millennial and Gen Z market, universities, schools, communities, financial influencers, and medias. That's a lot of eyes on your community, event, or brand!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Help boost financial know-how and save folks from bad investment choices. Dive into the exciting world of virtual trading games and make learning fun.'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Earn together as we grow. Between Play Arena, Premium Circle, and more, there's a sea of opportunity for mutual financial growth.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `With an average of 4k monthly users and a 5% engagement rate, in Seeds Finance, your message won't just be seen, it'll resonate.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Partner with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
+      }
+    },
+    section3: {
+      title: 'What Makes Us Different',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle: 'More about investing and finance from the Pro'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'And chat with like-minded people'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'The tournaments and win cash rewards!'
+      }
+    }
+  },
+  social: {
+    postSetting: {
+      publicTitle: 'Public',
+      publicDesc: 'Everyone can see your post',
+      privateTitle: 'Private',
+      privateDesc: 'Only you can see your post',
+      friendsTitle: 'Friends Only',
+      friendsDesc: 'Followers that you followback',
+      premiumTitle: 'Premium',
+      premiumDesc: 'Only premium content buyers can view post details'
+    },
+    pieSection: {
+      title: 'Title',
+      detail: 'Add a title based on your financial goal',
+      placeholder: 'Create your title Pie',
+      amount: 'Amount',
+      amountError: 'Enter your allocation amount',
+      selectAsset: 'Select Assets',
+      overview: 'Overview',
+      stocks: 'Stocks',
+      crypto: 'Cryptos'
+    },
+    errorState: {
+      image1: 'Your image is exceeding the 5MB size limit',
+      image2:
+        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.',
+      video1: 'You can only insert video in .MOV and .MP4 format.',
+      video2: 'You can only insert video with maximum durations of 60 seconds',
+      video3: 'Your video is exceeding the 20MB size limit.',
+      thread1: 'Text exceed 500 characters',
+      thread2: 'Sorry, we can not find your URL. Please insert the correct URL',
+      thread3: 'Your thread is exceeding the maximum character limit',
+      poll1:
+        'Your question is exceeding the maximum character limit. Please rewrite the questions',
+      poll2: "The ending date can not be less than today's date"
+    },
+    reportUser: {
+      text1: 'Report User',
+      text2: 'This account will be reported',
+      text3: 'Why are you reporting this account?',
+      text4: 'A specific post that should not be on Seeds',
+      text5: 'Something about this account',
+      text6:
+        'Are you sure you want to report this account? You will no longer see statuses or threads posted by this profile.',
+      text7:
+        "You have reported this account. You won't see the status or thread posted by this profile anymore."
+    },
+    reportPost: {
+      text1: 'Report Post',
+      text2: 'This post will be reported.',
+      text3: 'Why are you reporting this post?',
+      option1: 'Spam',
+      option2: 'Nudity or sexual Activity',
+      option3: 'Hate speech or symbols',
+      option4: 'Bullying or harassment',
+      option5: 'I do not like it',
+      option6: 'Scam or fraud',
+      option7: 'Something else',
+      success1: 'Report has been submitted',
+      success2: 'Thank you for helping us'
+    },
+    blockUser: {
+      block: 'Block',
+      text: 'They won’t be able to message you or find your profile, posts or story on Seeds.'
+    },
+    gif: 'GIF',
+    pdf: 'PDF',
+    gallery: 'Gallery',
+    talk: 'Talk',
+    pie: 'Pie',
+    poll: 'Poll',
+    navbar: {
+      following: 'Following',
+      foryou: 'For You',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'All',
+      allDesc: 'Everyone',
+      circle: 'Circle',
+      circleDesc: 'Create a post in circle',
+      personal: 'Personal',
+      personalDesc: 'Your Only Friend'
+    },
+    fiterSortBy: {
+      all: 'All',
+      allDesc: 'All posts',
+      recent: 'Most Recent',
+      recentDesc: 'Based on time posted',
+      relevant: 'Most Relevant',
+      relevantDesc: 'Based on users preferences',
+      like: 'Most Like',
+      likeDesc: 'Based on most liked',
+      trending: 'Most Trending',
+      trendingDesc: 'Based on highest engagement'
+    },
+    placeholder1: 'What do you want to discuss? ...',
+    placeholder2:
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
+      text6: 'Play Now!'
+    },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
+    section3: {
+      text1: 'How Seeds Enhance',
+      text2: 'Your Financial Journey',
+      text3: 'Lacks financial literacy, vulnerable to scams',
+      text4: 'Questions finances and seeks basic knowledge.',
+      text5: 'Ready to adopt financial strategies.',
+      text6: 'Gaining confidence in making informed financial decisions.',
+      text7: 'Achieving advanced financial literacy'
+    },
+    section5: {
+      text1: 'Total Rewards Claimed by Users'
+    },
+    section6: {
+      text1: 'Seeds Events'
+    },
+    section7: {
+      text1: 'Meet Our Expert',
+      text2: 'Unlock Financial Success Together'
+    },
+    section8: {
+      text1: 'Stay Informed with',
+      text2: 'Our Curated Financial Updates'
+    },
+    section9: {
+      text1: 'What They Say About'
+    },
+    section10: {
+      text1: 'Over 1000+ people trust us',
+      text2: 'Professionals, universities, many more do!'
+    },
+    section11: {
+      text1: 'Want to Collaborate with Seeds?',
+      text2:
+        "Calling on all communities, brands, and KOL looking to be part of our mission to make finance enjoyable and accessible for Indonesia's young and vibrant market.",
+      text3:
+        "Join us, get involved, and together let's shape the future of investing!",
+      text4: 'Contact Us'
+    },
+    section12: {
+      text1: 'Our Communities',
+      text2:
+        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
+      text3: 'Partnership Program'
+    }
+  },
+  playSimulation: {
+    assetList: 'Asset List',
+    seedsCash: 'Seeds Cash',
+    cashBalance: 'Cash Balance',
+    portfolio: 'Portfolio',
+    assetDetail: 'Asset Details',
+    today: 'Today',
+    remainingTime: 'Remaining Time',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Sell',
+    buy: 'Buy',
+    balance: 'Balance',
+    takeProfit1: 'Activate Take Profit and Stop Loss',
+    takeProfit2: 'Advance your strategy and win the Arena.',
+    purchaseAmount: 'Purchase Amount',
+    cashAmount: 'Cash Amount',
+    purchaseConfirmation: 'Purchase Confirmation',
+    confirmation: 'Confirmation',
+    orderReview: 'Order Review',
+    orderType: 'Order Type',
+    buyMarketOrder: 'Buy - Market Order',
+    sellMarketOrder: 'Sell - Market Order',
+    marketPrice: 'Market Price',
+    amount: 'Amount',
+    transactionFee: 'Transaction Fee',
+    totalCost: 'Total Cost',
+    footerOrderDetail1:
+      'This is a risk-free investment because you are using virtual balance for the transaction. Please refer to this',
+    footerOrderDetail2: 'for more information',
+    disclosure: 'disclosure',
+    orderCompleted: 'Order Completed',
+    orderCompletedBuy: 'You purchased',
+    orderCompletedSell: 'You have successfully sold',
+    investmentValue: 'Investment Value',
+    totalPortfolio: 'Total Portfolio',
+    yourAssetsPortfolio: 'Your assets portfolio',
+    joinArena1: 'Are you ready to join Arena?',
+    joinArena2:
+      'Get ready for trading challenges to test your skills and win prizes.',
+    sellAssetText1: 'You can choose the amount of the asset to sell',
+    sellAmount: 'Sell Amount',
+    cashAvailable: 'Cash Available',
+    cashUsed: 'Cash Used',
+    historyTransaction: 'History Transaction',
+    transactionDetail: 'Transaction Details'
+  },
+  homepage: {
+    section2: {
+      text1: 'Virtual Cash',
+      text2: 'Return',
+      text3: 'Seeds Coin',
+      text4: 'Referral Code',
+      text5: 'No recommended people to share with',
+      text6: 'Exclusive Offers',
+      text7: 'Enjoy a variety of special promotions just for you! ',
+      text8: 'Trending Today',
+      text9: "Check out what's popular right now",
+      text10: 'SeedsPedia',
+      text11: 'Your Rank',
+      text12: 'Win Reward every Month',
+      text13: '"Now in December"',
+      text14: 'See More'
+    },
+    section3: {
+      text1: 'Your all-in-one source for financial updates',
+      text2: 'Current',
+      text3: 'Last Month',
+      text4: 'Current Rank',
+      text5: 'Find and follow interesting profiles.',
+      text6: 'People List'
     }
   }
 };

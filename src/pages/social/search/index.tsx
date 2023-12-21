@@ -102,6 +102,7 @@ const PROMO_DUMMY = [
 
 const Search: React.FC = () => {
   const router = useRouter();
+
   const [activeTab, setActiveTab] = useState<string>('people');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<any[]>([]);
@@ -415,7 +416,11 @@ const Search: React.FC = () => {
                         <>
                           {activeTab === 'circle' ? (
                             <div key={idx} className="w-full md:w-1/2 mb-5">
-                              <CardCircle data={data} cover={data.cover} />
+                              <CardCircle
+                                data={data}
+                                cover={data.cover}
+                                userInfo={userInfo}
+                              />
                             </div>
                           ) : activeTab === 'asset' ? (
                             <div key={idx} className="w-full">

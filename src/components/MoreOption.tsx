@@ -23,12 +23,15 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Loading from './popup/Loading';
 
 interface props {
   dataPost: any;
   userInfo: any;
   setDataPost: any;
+  handleSubmitBlockUser?: any;
+  myInfo?: any;
 }
 
 const listReportPost = async (): Promise<any> => {
@@ -102,7 +105,14 @@ const Icon = (): any => {
   );
 };
 
-const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
+const MoreOption = ({
+  myInfo,
+  dataPost,
+  userInfo,
+  setDataPost,
+  handleSubmitBlockUser
+}: props): any => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formDataPost, setFormPost] = React.useState({
     target_post_id: dataPost.id,
@@ -114,8 +124,6 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
     type_report: '',
     question_report_id: ''
   });
-  const [formDataBlock] = React.useState({ user_id: dataPost.user_id });
-
   const handleChangePost = (id: string, value: string): any => {
     setFormPost({
       ...formDataPost,
@@ -179,6 +187,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
   const handleDisableUser = (option: any): void => {
     setSelectedUser(option);
   };
+
   const isDisabledPost = selectedPost === null;
   const isDisabledUser = selectedUser === null;
 
@@ -250,30 +259,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
       console.error('Error:', error);
     }
   };
-  const handleSubmitBlockUser = async (event: any): Promise<any> => {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
-        }/user/v1/block`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${
-              localStorage.getItem('accessToken') ?? ''
-            }`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataBlock)
-        }
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+
   const handleSubmitDeletePost = async (
     event: any,
     postId: string
@@ -291,8 +277,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               localStorage.getItem('accessToken') ?? ''
             }`,
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formDataBlock)
+          }
         }
       );
       const data = await response.json();
@@ -307,6 +292,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
         <Loading />
       ) : (
         <>
+          {/* TODO: EDIT POST MODAL */}
           <div>
             {isOpen && (
               <ModalMention
@@ -315,7 +301,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 setIsLoading={setIsLoading}
                 setDataPost={setDataPost}
                 dataPost={dataPost}
-                setGolId={1}
+                setGolId={() => {}}
               />
             )}
             <Menu placement="left-start">
@@ -329,7 +315,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   } py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -338,11 +326,13 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                   }}
                 >
                   <Image src={flag} alt="reportPost" />
-                  Report Post
+                  {`${t('social.reportPost.text1')}`}
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -351,11 +341,13 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                   }}
                 >
                   <Image src={report_user} alt="reportUser" />
-                  Report User
+                  {`${t('social.reportUser.text1')}`}
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'hidden' : 'flex'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'hidden'
+                      : 'flex'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -364,11 +356,13 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                   }}
                 >
                   <Image src={block} alt="blockUser" />
-                  Block User
+                  {`${t('social.blockUser.block')}`} User
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'flex'
+                      : 'hidden'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#000000' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
@@ -381,7 +375,9 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                 </MenuItem>
                 <MenuItem
                   className={`${
-                    dataPost.user_id === userInfo.id ? 'flex' : 'hidden'
+                    dataPost.user_id === (myInfo?.id ?? userInfo.id)
+                      ? 'flex'
+                      : 'hidden'
                   }  py-2 gap-2 cursor-pointer`}
                   style={{ color: '#FF3838' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
@@ -409,10 +405,10 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               <div className="min-w-full flex items-center justify-between border-b">
                 <div className="flex gap-2 flex-col">
                   <p className="text-lg font-semibold text-[#262626]">
-                    Report Post
+                    {`${t('social.reportPost.text1')}`}
                   </p>
                   <p className="text-sm font-normal text-[#7C7C7C] mb-4">
-                    This post will be reported
+                    {`${t('social.reportPost.text2')}`}
                   </p>
                 </div>
                 <div className="mb-4">
@@ -432,7 +428,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
             <form onSubmit={handleSubmitReportPost}>
               <DialogBody className="p-0 my-4 font-poppins">
                 <p className="text-base font-semibold text-[#262626]">
-                  Why are you reporting this post?
+                  {`${t('social.reportPost.text3')}`}
                 </p>
                 <div className="flex flex-col text-[#262626] text-base font-normal">
                   {listPost?.map((item, index) => {
@@ -445,7 +441,20 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                           htmlFor={item.id}
                           className="cursor-pointer w-full"
                         >
-                          {item.title}
+                          {item.title === 'Spam' &&
+                            `${t('social.reportPost.option1')}`}
+                          {item.title === 'Nudity or sexual Activity' &&
+                            `${t('social.reportPost.option2')}`}
+                          {item.title === 'Hate speech or symbols' &&
+                            `${t('social.reportPost.option3')}`}
+                          {item.title === 'Bullying or harassment' &&
+                            `${t('social.reportPost.option4')}`}
+                          {item.title === 'I do not like it' &&
+                            `${t('social.reportPost.option5')}`}
+                          {item.title === 'Scam or fraud' &&
+                            `${t('social.reportPost.option6')}`}
+                          {item.title === 'Something else' &&
+                            `${t('social.reportPost.option7')}`}
                         </label>
                         <Radio
                           crossOrigin={undefined}
@@ -492,10 +501,10 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
             <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
               <Image src={post_report_photo} alt="reportPostFigure" />
               <p className="mt-6 text-base font-semibold text-[#262626]">
-                Report has been submitted
+                {`${t('social.reportPost.success1')}`}
               </p>
               <p className="mt-2 text-base font-normal text-[#7C7C7C]">
-                Thank you for helping us
+                {`${t('social.reportPost.success2')}`}
               </p>
             </DialogBody>
             <DialogFooter className="p-0">
@@ -524,10 +533,10 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               <div className="min-w-full flex items-center justify-between border-b">
                 <div className="flex gap-2 flex-col">
                   <p className="text-lg font-semibold text-[#262626]">
-                    Report User
+                    {`${t('social.reportUser.text1')}`}
                   </p>
                   <p className="text-sm font-normal text-[#7C7C7C] mb-4">
-                    This account will be reported
+                    {`${t('social.reportUser.text2')}`}
                   </p>
                 </div>
                 <div className="mb-4">
@@ -546,7 +555,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
             </DialogHeader>
             <DialogBody className="p-0 my-4 font-poppins">
               <p className="text-base font-semibold text-[#262626]">
-                Why are you reporting this account?
+                {`${t('social.reportUser.text3')}`}
               </p>
               <div className="flex flex-col text-[#262626] text-base font-normal">
                 {listUser.map((item, index) => {
@@ -559,7 +568,11 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                         htmlFor={item.id}
                         className="cursor-pointer w-full"
                       >
-                        {item.title}
+                        {item.title ===
+                          'A specific post that should not be on Seeds' &&
+                          `${t('social.reportUser.text4')}`}
+                        {item.title === 'Something about this account' &&
+                          `${t('social.reportUser.text5')}`}
                       </label>
                       <Radio
                         crossOrigin={undefined}
@@ -605,8 +618,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               <DialogBody className="flex flex-col items-center p-0 mb-6 font-poppins">
                 <Image src={user_report_photo} alt="reportUserFigure" />
                 <p className="mt-4 font-normal text-sm">
-                  Are you sure you want to report this account? You will no
-                  longer see statuses or threads posted by this profile.
+                  {`${t('social.reportUser.text6')}`}
                 </p>
               </DialogBody>
               <DialogFooter className="p-0">
@@ -646,11 +658,14 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
             <form onSubmit={handleSubmitBlockUser}>
               <DialogBody className="p-0 mb-6 font-poppins">
                 <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
-                  {`Block ${dataPost.owner.name as string}`}
+                  {`Block ${
+                    dataPost.owner !== undefined
+                      ? (dataPost.owner?.name as string)
+                      : ''
+                  }`}
                 </p>
                 <p className="font-normal text-sm">
-                  They won’t be able to message you or find your profile, posts
-                  or story on Seeds.
+                  {`${t('social.blockUser.text')}`}
                 </p>
               </DialogBody>
               <DialogFooter className="p-0">
@@ -662,7 +677,7 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
                     handleOpenBlock(null);
                   }}
                 >
-                  Block
+                  {`${t('social.blockUser.block')}`}
                 </button>
                 <Button
                   variant="text"
@@ -677,8 +692,6 @@ const MoreOption = ({ dataPost, userInfo, setDataPost }: props): any => {
               </DialogFooter>
             </form>
           </Dialog>
-          {/* TODO: EDIT POST MODAL */}
-
           {/* TODO: DELETE POST MODAL */}
           <Dialog
             dismiss={{

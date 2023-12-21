@@ -3,8 +3,8 @@ import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalende
 import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalEmail from '@/components/profile/editProfile/ModalEmail';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
+import countries from '@/constants/countries.json';
 import { postCloud } from '@/repository/cloud.repository';
-import countriesRepository from '@/repository/countries.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
 import {
   Button,
@@ -19,7 +19,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const EditProfile: React.FC = () => {
@@ -27,9 +27,9 @@ const EditProfile: React.FC = () => {
   const { t } = useTranslation();
   const maxLengthBio = 50;
   const [country, setCountry] = useState(0);
-  const { name, flags } = countriesRepository[country];
+  const { name, code } = countries[country];
   const [updateAvatar, setAvatar] = useState();
-  const [birthDate, setDate] = useState();
+  const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
   const [form, setForm] = useState<any>({
     name: '',
@@ -40,6 +40,13 @@ const EditProfile: React.FC = () => {
     birthDate: '',
     phone: ''
   });
+  console.log(form);
+  const getCountryCodeFromNumber = (text: string): string | undefined =>
+    countries.find(code => {
+      const dialCode = code?.dialCode.replace('+', '');
+      return text.replace('+', '').slice(0, dialCode.length) === dialCode;
+    })?.dialCode;
+  console.log(getCountryCodeFromNumber('6282180881420'));
 
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
@@ -64,6 +71,7 @@ const EditProfile: React.FC = () => {
     }
     setOpenImage(!openImage);
   };
+
   const changeData = (e: any): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
     const regex = /[^a-zA-Z0-9]/g;
@@ -78,8 +86,15 @@ const EditProfile: React.FC = () => {
           file: updateAvatar,
           type: 'OTHER_URL'
         });
-        updatedForm = { ...form, avatar: cloudResponse };
+        updatedForm = {
+          ...form,
+          avatar: cloudResponse
+        };
       }
+      updatedForm = {
+        ...form,
+        birthDate: new Date(birthDate).toISOString()
+      };
       console.log(updatedForm);
       await editUserInfo(updatedForm);
       await router.push('/my-profile');
@@ -101,7 +116,7 @@ const EditProfile: React.FC = () => {
           birthDate: dataInfo.birthDate,
           phone: dataInfo.phoneNumber
         });
-        setDate(dataInfo.birthDate);
+        setBirthDate(dataInfo.birthDate);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }
@@ -206,12 +221,11 @@ const EditProfile: React.FC = () => {
                 SeedsTag cannot contain spaces or symbols, please delete!
               </Typography>
             </div>
-            {birthDate === true && (
-              <BirthDateCalender
-                wrapperClassName={`w-full`}
-                birthDate={birthDate}
-              />
-            )}
+            <BirthDateCalender
+              wrapperClassName={`w-full`}
+              birthDate={birthDate}
+              setBirthDate={setBirthDate}
+            />
 
             <div className="w-full">
               <Input
@@ -241,7 +255,7 @@ const EditProfile: React.FC = () => {
                     className="absolute z-10 flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-4 rounded-none hover:bg-transparent"
                   >
                     <img
-                      src={flags.svg}
+                      src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
                       alt={name}
                       className="h-4 w-7 object-cover"
                     />
@@ -249,9 +263,9 @@ const EditProfile: React.FC = () => {
                   </Button>
                 </MenuHandler>
                 <MenuList className="max-h-[20rem] max-w-[18rem]">
-                  {countriesRepository
+                  {countries
                     .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(({ name, flags, countryCallingCode }, index) => {
+                    .map(({ name, code, dialCode }, index) => {
                       return (
                         <MenuItem
                           key={name}
@@ -262,12 +276,11 @@ const EditProfile: React.FC = () => {
                           }}
                         >
                           <img
-                            src={flags.svg}
+                            src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
                             alt={name}
                             className="h-5 w-5 object-cover"
                           />
-                          {name}{' '}
-                          <span className="ml-auto">{countryCallingCode}</span>
+                          {name} <span className="ml-auto">{dialCode}</span>
                         </MenuItem>
                       );
                     })}
@@ -279,7 +292,7 @@ const EditProfile: React.FC = () => {
                 type="number"
                 value={form?.phone}
                 onClick={async () => {
-                  await router.push('editProfile/change-phone-number');
+                  await router.push('edit-profile/change-phone-number');
                 }}
                 variant="static"
                 labelProps={{

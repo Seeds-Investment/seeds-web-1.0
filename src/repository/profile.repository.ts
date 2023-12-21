@@ -130,6 +130,21 @@ export const createPin = async (formRequest: any): Promise<any> => {
   });
 };
 
+export const deleteAccount = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.delete('', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const getFollowList = async (userId: any, type: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 

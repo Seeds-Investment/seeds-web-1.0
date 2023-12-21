@@ -8,15 +8,15 @@ interface BirthDate {
   wrapperClassName?: string;
   className?: string;
   birthDate: any;
+  setBirthDate: any;
 }
 
 const BirthDateCalender: React.FC<BirthDate> = ({
   wrapperClassName,
   className,
-  birthDate
+  birthDate,
+  setBirthDate
 }: BirthDate) => {
-  const [finalDate, setDate] = useState(new Date(birthDate));
-  console.log(finalDate);
   const [showMonth, setMonth] = useState(false);
   const [showYear, setYear] = useState(true);
   const [shouldClose, setClose] = useState(false);
@@ -35,9 +35,9 @@ const BirthDateCalender: React.FC<BirthDate> = ({
   };
   return (
     <DatePicker
-      selected={finalDate}
+      selected={new Date(birthDate)}
       onChange={(date: Date) => {
-        setDate(date);
+        setBirthDate(date);
       }}
       showYearPicker={showYear}
       showMonthYearPicker={showMonth}
@@ -56,9 +56,9 @@ const BirthDateCalender: React.FC<BirthDate> = ({
           name="birthDate"
           variant="static"
           labelProps={{
-            className: 'text-base text-[#262626] font-semibold font-poppins'
+            className: '!text-base !text-[#262626] !font-semibold !font-poppins'
           }}
-          className="text-[#7C7C7C] text-base font-poppins font-normal"
+          className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
           style={{ backgroundColor: 'transparent' }}
         />
       }

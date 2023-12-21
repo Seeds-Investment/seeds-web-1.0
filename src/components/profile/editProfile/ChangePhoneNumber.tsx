@@ -1,6 +1,8 @@
 import ChangePhoneNumberEdit from '@/assets/my-profile/editProfile/ChangePhoneNumberEdit.svg';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import countriesRepository from '@/repository/countries.repository';
+import countriesRepository from '@/constants/countries.json';
+import { getOtp, verifyOtp } from '@/repository/auth.repository';
+import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
 import {
   Button,
   Card,
@@ -19,16 +21,64 @@ interface Form {
   setForm: any;
 }
 
+const getOTP = {
+  method: 'sms',
+  phoneNumber: '6281318099457'
+};
+
 const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
+  const [OTP, setOTP] = useState('');
+  console.log(OTP);
+  const verifyOTP = {
+    method: 'sms',
+    msisdn: '6281318099457',
+    otp: OTP
+  };
   const [country, setCountry] = useState(0);
-  const { name, flags } = countriesRepository[country];
+  const { name, code } = countriesRepository[country];
   const changeData = (e: any): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  const changeOTP = (e: any): void => {
+    setOTP(e.target.value);
+  };
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    try {
+      let updatedForm: any = { ...form };
+
+      updatedForm = {
+        ...form,
+        phone: form.phone
+      };
+      console.log(updatedForm);
+      const edit = await editUserInfo(updatedForm);
+      console.log(edit);
+      await getOtp(getOTP);
+
+      console.log('a');
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
+  };
+  const handleOTP = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    try {
+      const respone = await verifyOtp(verifyOTP);
+      const user = await getUserInfo();
+      console.log(user);
+      console.log(respone);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
   };
   return (
     <div className="flex justify-center">
       <Card className="flex items-center w-[947px] h-[721px] py-5">
-        <div className="flex flex-col justify-between items-center w-[600px] h-full p-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-between items-center w-[600px] h-full p-4"
+        >
           <div className="flex flex-col items-center gap-8 w-full">
             <Typography className="font-poppins font-semibold text-[#262626] text-base text-center">
               Change Phone Number
@@ -48,7 +98,7 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
                     className="absolute z-10 flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-4 rounded-none hover:bg-transparent"
                   >
                     <img
-                      src={flags.svg}
+                      src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
                       alt={name}
                       className="h-4 w-7 object-cover"
                     />
@@ -58,7 +108,7 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
                 <MenuList className="max-h-[20rem] max-w-[18rem]">
                   {countriesRepository
                     .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(({ name, flags, countryCallingCode }, index) => {
+                    .map(({ name, code, dialCode }, index) => {
                       return (
                         <MenuItem
                           key={name}
@@ -69,12 +119,11 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
                           }}
                         >
                           <img
-                            src={flags.svg}
+                            src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
                             alt={name}
                             className="h-5 w-5 object-cover"
                           />
-                          {name}{' '}
-                          <span className="ml-auto">{countryCallingCode}</span>
+                          {name} <span className="ml-auto">{code}</span>
                         </MenuItem>
                       );
                     })}
@@ -96,10 +145,17 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
               />
             </div>
           </div>
-          <Button className="capitalize w-full rounded-full font-poppins font-semibold text-sm bg-[#3AC4A0]">
+          <Button
+            type="submit"
+            className="capitalize w-full rounded-full font-poppins font-semibold text-sm bg-[#3AC4A0]"
+          >
             Change
           </Button>
-        </div>
+        </form>
+        <form onSubmit={handleOTP}>
+          <Input type="text" value={OTP} onChange={changeOTP} />{' '}
+          <Button type="submit">Submit</Button>
+        </form>
       </Card>
     </div>
   );

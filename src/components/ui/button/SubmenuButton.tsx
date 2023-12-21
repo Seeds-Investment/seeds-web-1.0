@@ -11,6 +11,7 @@ interface SubmenuButtonProps {
   className?: string;
   style?: object;
   onClick: () => void;
+  currencyLabel?: string;
 }
 
 const animationClasses =
@@ -25,7 +26,8 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
   extraClasses = 'lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6',
   className,
   style,
-  onClick
+  onClick,
+  currencyLabel
 }) => {
   const defaultButtonClasses = `z-10 group flex items-center text-sm text-neutral-medium hover:bg-gray-200 active:bg-gray-300 rounded-md ${extraClasses}`;
 
@@ -37,6 +39,11 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
     >
       <Image src={startAdornment} alt={altStartAdornment} className="mr-4" />
       <span className="font-poppins">{label}</span>
+      {currencyLabel !== undefined && (
+        <div className="flex justify-end w-full items-center pr-2">
+          <span className="font-poppins text-[#BDBDBD]">{currencyLabel}</span>
+        </div>
+      )}
       <Image
         src={endAdornment}
         alt={altEndAdornment}

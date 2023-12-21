@@ -73,7 +73,7 @@ const AddCircleMember: React.FC = () => {
       {isLoading && <Loading />}
       <CCard className="flex flec-col p-4 md:p-5 mt-5 md:rounded-lg border-none rounded-none">
         <div className="flex justify-start md:justify-center">
-          <Typography className="font-semibold font-poppins">
+          <Typography className="font-semibold font-poppins text-[#262626]">
             Add your members
           </Typography>
         </div>

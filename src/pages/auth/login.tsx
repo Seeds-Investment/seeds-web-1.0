@@ -1,21 +1,21 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 'use client';
-import CButton from '@/components/CButton';
+// import CButton from '@/components/CButton';
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
-import {
-  AppleBrand,
-  FacebookBrand,
-  GoogleBrand
-} from '@/constants/assets/logo';
+// import {
+//   AppleBrand,
+//   FacebookBrand,
+//   GoogleBrand
+// } from '@/constants/assets/logo';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
 import { trackEvent } from '@phntms/react-gtm';
 import DeviceDetector from 'device-detector-js';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -133,19 +133,19 @@ const LoginPage = (): JSX.Element => {
     submitData().catch(() => {});
   };
 
-  const handleLoginProvider = (provider: string): void => {
-    signIn(provider)
-      .then(result => {
-        if (result?.error != null) {
-          console.error(result.error);
-        } else if (provider !== '') {
-          localStorage.setItem('provider', provider);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+  // const handleLoginProvider = (provider: string): void => {
+  //   signIn(provider)
+  //     .then(result => {
+  //       if (result?.error != null) {
+  //         console.error(result.error);
+  //       } else if (provider !== '') {
+  //         localStorage.setItem('provider', provider);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
 
   useEffect(() => {
     const fetchAccessToken = async (): Promise<void> => {
@@ -172,20 +172,20 @@ const LoginPage = (): JSX.Element => {
     });
   }, [session?.access_token, router]);
 
-  const thirdParty = [
-    {
-      name: 'Apple',
-      img: AppleBrand
-    },
-    {
-      name: 'Google',
-      img: GoogleBrand
-    },
-    {
-      name: 'Facebook',
-      img: FacebookBrand
-    }
-  ];
+  // const thirdParty = [
+  //   {
+  //     name: 'Apple',
+  //     img: AppleBrand
+  //   },
+  //   {
+  //     name: 'Google',
+  //     img: GoogleBrand
+  //   },
+  //   {
+  //     name: 'Facebook',
+  //     img: FacebookBrand
+  //   }
+  // ];
 
   return (
     <>
@@ -292,10 +292,10 @@ const LoginPage = (): JSX.Element => {
           >
             {t('authPage.register')}
           </Button>
-          <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
+          {/* <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
             {t('or')}
-          </small>
-          <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly md:mb-0 mb-5 lg:mt-10">
+          </small> */}
+          {/* <div className="flex lg:flex-row flex-col gap-2 lg:justify-evenly md:mb-0 mb-5 lg:mt-10">
             {thirdParty.map((el, i) => {
               return (
                 <CButton
@@ -321,7 +321,7 @@ const LoginPage = (): JSX.Element => {
                 </CButton>
               );
             })}
-          </div>
+          </div> */}
         </form>
       </div>
     </>

@@ -98,7 +98,7 @@ const UserSetting: React.FC = () => {
           console.error('Error navigating to Change Currency:', error);
         }
       },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 justify-between ${
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
         width !== undefined && width < 370 ? 'h-9' : ''
       } bg-white`,
       currencyLabel: userData?.preferredCurrency as string

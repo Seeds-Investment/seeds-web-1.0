@@ -23,10 +23,10 @@ export default function Section11(): React.ReactElement {
   return (
     <section
       ref={ref}
-      className="h-auto lg:mt-[-190px]  min-w-full cursor-default relative font-poppins text-center bg-gradient-to-r from-[#4FE6AF29] to-[#9A76FE29] "
+      className="h-auto mt-[-80px] lg:mt-[-200px]  min-w-full cursor-default relative font-poppins text-center bg-gradient-to-r from-[#4FE6AF29] to-[#9A76FE29] "
     >
       <div
-        className={`w-full lg:px-12 lg:py-32 font-poppins h-auto cursor-default bg-gradient-to-r from-[#4FE6AF29] to-[#9A76FE29]  ${
+        className={`w-full lg:px-12 lg:py-32 py-12 font-poppins h-auto cursor-default bg-gradient-to-r from-[#4FE6AF29] to-[#9A76FE29]  ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

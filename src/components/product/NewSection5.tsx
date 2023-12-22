@@ -19,7 +19,7 @@ const NewSection5: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="flex flex-col-reverse xl:flex-row gap-10 xl:pt-20 xl:pb-[35px] pt-10 pb-[21.85px] 2xl:items-start items-center justify-start"
+      className="flex flex-col-reverse xl:flex-row gap-10 xl:pt-20 xl:pb-[35px] pt-10 pb-[21.85px] 2xl:items-start items-center justify-start md:bg-[#F9F9F9]"
     >
       <Image
         src={TrapezoidIconProduct}

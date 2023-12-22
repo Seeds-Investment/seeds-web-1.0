@@ -1,3 +1,5 @@
+import BlurLeadBottom from '@/assets/product/BlurLeadBottom.svg';
+import BlurLeadTop from '@/assets/product/BlurLeadTop.svg';
 import CrownIlust from '@/assets/product/CrownIlust.png';
 import LeaderboardLine from '@/assets/product/LeaderboardLine.svg';
 import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
@@ -60,9 +62,16 @@ const NewSection2: React.FC = () => {
       ref={ref}
       className="relative flex flex-col items-center justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
-      {/* <div className="absolute hidden md:flex bg-[#79F0B8] rotate-[63.22deg] w-[442.55px] h-[442.55px] -ml-[263px] top-0 blur-[321px] self-start  rounded-full"></div>
-      <div className="absolute hidden md:flex bg-[#B798FF] w-[442.55px] h-[442.55px] bottom-0 blur-[321px] self-start right-0  rounded-full"></div> */}
-
+      <Image
+        src={BlurLeadTop}
+        alt="BlurLeadTop"
+        className="absolute top-0 left-0"
+      />
+      <Image
+        src={BlurLeadBottom}
+        alt="BlurLeadBottom"
+        className="absolute bottom-0 right-0"
+      />
       <div
         className={`flex flex-col items-center ${
           inView && isBottom >= measurement

@@ -68,7 +68,11 @@ export default function Footer(): React.ReactElement {
                           ''
                         );
                       return (
-                        <Link key={key} href={data.url}>
+                        <Link
+                          key={key}
+                          href={data.url}
+                          target={data.name === 'Career' ? '_blank' : ''}
+                        >
                           <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
                             {dataIcon}
                             {data.name}

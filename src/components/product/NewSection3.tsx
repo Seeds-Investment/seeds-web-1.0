@@ -1,3 +1,4 @@
+import BlurInfluence from '@/assets/product/BlurInfluence.svg';
 import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
@@ -24,8 +25,13 @@ const NewSection3: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
+      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
     >
+      <Image
+        src={BlurInfluence}
+        alt="BlurInfluence"
+        className="absolute bottom-0"
+      />
       <div
         className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 ${
           inView && isBottom >= measurement
@@ -54,7 +60,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div className="relative flex flex-row justify-center items-center">
-        <div className="hidden md:flex absolute bg-[#3AC4A0BF] blur-[229px] w-[360px] h-[360px] lg:w-[458px] lg:h-[458px] rounded-full"></div>
+        {/* <div className="hidden md:flex absolute bg-[#3AC4A0BF] blur-[229px] w-[360px] h-[360px] lg:w-[458px] lg:h-[458px] rounded-full"></div> */}
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"

@@ -28,8 +28,8 @@ const AssetOrderCard: React.FC<props> = ({ data, isClick = false, playId }) => {
                 .push(
                   `${
                     playId !== undefined
-                      ? `/homepage/assets/${data.id}?playId=${playId}`
-                      : `/homepage/assets/${data.id}`
+                      ? `/homepage/assets/${data.asset.asset_id}?playId=${playId}`
+                      : `/homepage/assets/${data.asset.asset_id}`
                   }`
                 )
                 .catch(error => {

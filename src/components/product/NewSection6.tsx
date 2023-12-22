@@ -120,7 +120,7 @@ const NewSection6: React.FC = () => {
                 className="lg:w-[116px] w-[79.57px]"
               />
               <Typography className="font-normal font-poppins lg:text-base text-[10.98px] leading-[16.46px] text-[#262626]">
-                250+ reviews
+                328+ reviews
               </Typography>
             </div>
           </div>
@@ -135,7 +135,7 @@ const NewSection6: React.FC = () => {
                 className="lg:w-[116px] w-[79.57px]"
               />
               <Typography className="font-normal font-poppins lg:text-base text-[10.98px] leading-[16.46px] text-[#262626]">
-                1000k+ reviews
+                2k+ reviews
               </Typography>
             </div>
           </div>

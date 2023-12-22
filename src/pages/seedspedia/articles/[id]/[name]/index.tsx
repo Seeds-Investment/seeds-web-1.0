@@ -339,15 +339,15 @@ export default function ArticleDetailPage(): JSX.Element {
 
   const isImageValid = isImageUrlValid(imageUrl);
 
-  const customGradient = (
-    <>
-      <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
+  //     <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
+  //     {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
+  //     <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+  //   </>
+  // );
   return (
     <>
       {articleDetail.meta_description.length > 0 &&
@@ -357,7 +357,7 @@ export default function ArticleDetailPage(): JSX.Element {
             pageTitle={articleDetail.meta_title}
           />
         )}
-      <PageGradient customGradient={customGradient} className="z-0">
+      <PageGradient className="z-0">
         <div className="z-20 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           {open && (
             <div

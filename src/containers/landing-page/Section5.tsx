@@ -22,7 +22,7 @@ export default function Section5(): React.ReactElement {
   return (
     <section
       ref={ref}
-      className="h-auto min-w-full cursor-default relative lg:pb-20 font-poppins text-center"
+      className="h-auto min-w-full cursor-default relative font-poppins text-center"
     >
       <div
         className={`h-auto min-w-full my-20 cursor-default font-poppins text-center z-10 ${
@@ -58,7 +58,7 @@ export default function Section5(): React.ReactElement {
           </div>
         </div>
         <div className="lg:flex justify-center flex-row">
-          <Image alt="img" className="mx-8 lg:mx-0 lg:mt-20" src={Reward} />
+          <Image alt="img" className="mt-5 lg:mx-0 lg:mt-20" src={Reward} />
         </div>
       </div>
     </section>

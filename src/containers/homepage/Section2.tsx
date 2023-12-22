@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import bestReward from '../../../public/assets/images/bestReward.svg';
+import goldHome from '../../../public/assets/images/goldHome.svg';
 import rectangle from '../../assets/RectangleHome.png';
 
 interface DataPlayer {
@@ -177,19 +178,19 @@ const Section2 = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        {/* <Link href={'/homepage/seedscoin'}>
-          <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
-            <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
-              Seeds Coins
+        {/* <Link href={'/homepage/seedscoin'}> */}
+        <div className="border border-1 py-2 px-5 mt-3 flex justify-between rounded-xl w-full">
+          <h1 className="text-sm ms-2 font-semi-bold text-[#7C7C7C]">
+            Seeds Coins
+          </h1>
+          <div className="flex">
+            <Image src={goldHome} alt="Next" width={24} height={24} />
+            <h1 className="text-sm ms-2 font-bold text-[#000000]">
+              {playerData?.prize}
             </h1>
-            <div className="flex">
-              <Image src={goldHome} alt="Next" width={24} height={24} />
-              <h1 className="text-sm ms-2 font-bold text-[#000000]">
-                {playerData?.prize}
-              </h1>
-            </div>
           </div>
-        </Link> */}
+        </div>
+        {/* </Link> */}
         <Button
           className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
           onClick={() => {

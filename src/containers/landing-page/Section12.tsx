@@ -1,8 +1,9 @@
-import faq from '@/assets/landing-page/faq.png';
-import vector2 from '@/assets/landing-page/vector-faq-2.png';
-import vector1 from '@/assets/landing-page/vector-faq.png';
+// import faq from '@/assets/landing-page/faq.png';
+// import vector2 from '@/assets/landing-page/vector-faq-2.png';
+// import vector1 from '@/assets/landing-page/vector-faq.png';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
@@ -63,7 +64,7 @@ export default function Section12(): React.ReactElement {
       className="h-auto min-w-full cursor-default relative font-poppins text-center"
     >
       <div
-        className={`min-w-full h-auto cursor-default lg:mt-7 md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0] ${
+        className={`min-w-full h-auto cursor-default  md:mt-4 text-start xl:text-center lg:mb-10 font-poppins bg-gradient-to-b from-[#EDF2F700]  to-[#E2E8F0] ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -71,7 +72,7 @@ export default function Section12(): React.ReactElement {
             : ''
         }`}
       >
-        <div className="lg:mt-[150px] mt-12 flex flex-col">
+        <div className=" mt-12 flex flex-col">
           <div className="flex flex-col w-full items-center text-center px-10 justify-center mb-6 md:mb-8 lg:mb-6 xl:mb-4 sm:mb-20 font-poppins">
             <span className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-4xl lg:text-5xl text-center pb-4">
               {t('landingV2.section12.text1')}
@@ -79,15 +80,21 @@ export default function Section12(): React.ReactElement {
             <p className="text-base lg:text-2xl text-center font-normal text-[#262626] mt-3">
               {t('landingV2.section12.text2')}
             </p>
-            <Button
-              className="text-lg mt-5 px-20 font-semibold capitalize text-md bg-[#9739c9] rounded-full"
-              onClick={() => {}}
+            <Link
+              href={
+                'https://docs.google.com/forms/d/1-RI9IYyaO-5aPfS4BsTd2umTewQbh_kXVthWbys2Qdk/viewform?edit_requested=true'
+              }
             >
-              {t('landingV2.section12.text3')}
-            </Button>
+              <Button
+                className="text-lg mt-5 px-20 font-semibold capitalize text-md bg-[#9739c9] rounded-full"
+                onClick={() => {}}
+              >
+                {t('landingV2.section12.text3')}
+              </Button>
+            </Link>
           </div>
           <div>
-            <div className="w-full hidden lg:block h-full mt-10 mx-3 md:mx-20 lg:mx-6">
+            <div className="w-full hidden lg:block h-full">
               <Slider {...settings}>
                 <div className="z-10 w-full">
                   <Image
@@ -95,7 +102,7 @@ export default function Section12(): React.ReactElement {
                     alt={`comunity`}
                     width={1440}
                     height={557}
-                    className="w-auto h-auto xl:block hidden"
+                    className="w-full h-auto xl:block hidden"
                   />
                 </div>
                 <div className="z-10 w-full">
@@ -104,7 +111,7 @@ export default function Section12(): React.ReactElement {
                     alt={`comunity`}
                     width={1440}
                     height={557}
-                    className="w-auto h-auto xl:block hidden"
+                    className="w-full h-auto xl:block hidden"
                   />
                 </div>
                 <div className="z-10 w-full">
@@ -113,10 +120,11 @@ export default function Section12(): React.ReactElement {
                     alt={`comunity`}
                     width={1440}
                     height={557}
-                    className="w-auto h-auto xl:block hidden"
+                    className="w-full h-auto xl:block hidden"
                   />
                 </div>
               </Slider>
+              <div className="absolute bottom-0 w-full h-[25%] blur-md bg-gradient-to-t from-white to-transparent"></div>
             </div>
             {/* <img
               src="/assets/images/communities.png"
@@ -131,7 +139,7 @@ export default function Section12(): React.ReactElement {
           </div>
         </div>
       </div>
-      <div className="mt-20">
+      {/* <div className="mt-20">
         <Image
           src={vector1}
           alt="faq"
@@ -147,7 +155,7 @@ export default function Section12(): React.ReactElement {
           alt="faq"
           className="absolute right-0 left-0 mx-auto -mt-5 xl:block hidden"
         />
-      </div>
+      </div> */}
     </section>
   );
 }

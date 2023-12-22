@@ -1,8 +1,8 @@
 import ChangePhoneNumberEdit from '@/assets/my-profile/editProfile/ChangePhoneNumberEdit.svg';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import countriesRepository from '@/constants/countries.json';
-import { getOtp, verifyOtp } from '@/repository/auth.repository';
-import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
+import { editVerifyOtp, getOtp } from '@/repository/auth.repository';
+import { editUserInfo } from '@/repository/profile.repository';
 import {
   Button,
   Card,
@@ -21,23 +21,25 @@ interface Form {
   setForm: any;
 }
 
-const getOTP = {
-  method: 'sms',
-  phoneNumber: '6281318099457'
-};
-
 const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
+  const [number, setNumber] = useState('');
   const [OTP, setOTP] = useState('');
   console.log(OTP);
   const verifyOTP = {
     method: 'sms',
-    msisdn: '6281318099457',
+    msisdn: number,
     otp: OTP
   };
+  const getOTP = {
+    method: 'sms',
+    phoneNumber: number
+  };
+
   const [country, setCountry] = useState(0);
   const { name, code } = countriesRepository[country];
   const changeData = (e: any): void => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setNumber(e.target.value);
   };
   const changeOTP = (e: any): void => {
     setOTP(e.target.value);
@@ -64,9 +66,7 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
   const handleOTP = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     try {
-      const respone = await verifyOtp(verifyOTP);
-      const user = await getUserInfo();
-      console.log(user);
+      const respone = await editVerifyOtp(verifyOTP);
       console.log(respone);
     } catch (error: any) {
       console.error(error.response.data.message);

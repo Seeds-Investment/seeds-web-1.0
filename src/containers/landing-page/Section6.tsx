@@ -81,7 +81,7 @@ export default function Section6(): React.ReactElement {
       className="h-auto min-w-full cursor-default relative font-poppins text-center"
     >
       <div
-        className={`h-auto min-w-full lg:mt-20 cursor-default relative font-poppins items-center text-center ${
+        className={`h-auto min-w-full mt-5 cursor-default relative font-poppins items-center text-center ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -98,10 +98,10 @@ export default function Section6(): React.ReactElement {
             alt={SectionSixImageOval.alt}
             width={400}
             height={100}
-            className="w-[300px] h-[100px] top-7 md:w-[500px] md:top-7 relative z-1"
+            className="w-[300px] h-[117px] top-7 md:w-[629px] md:top-7 relative z-1"
           />
         </div>
-        <div className="justify-center items-center mx-5 mt-5 lg:mx-16 lg:mt-12 text-center">
+        <div className="justify-center items-center mx-auto mt-5 lg:mx-16 lg:mt-12 text-center">
           <Slider {...settings} initialSlide={sliderIndex}>
             {eventsImages.map((image, index) => (
               <div

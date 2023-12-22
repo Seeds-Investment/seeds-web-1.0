@@ -1,7 +1,6 @@
 import iphone1 from '@/assets/landing-page/iphone1.svg';
 import iphone2 from '@/assets/landing-page/iphone2.svg';
 import iphone3 from '@/assets/landing-page/iphone3.svg';
-
 import { getTrendingAssets } from '@/repository/asset.repository';
 import { downloadOurApp } from '@/utils/_static';
 import { Button } from '@material-tailwind/react';
@@ -40,9 +39,9 @@ export default function Section1(): React.ReactElement {
   }, []);
 
   const titles = [
-    'Build Portfolio & Claim Rewards',
-    'Challenge, Learn, Earn',
-    'Social Interaction'
+    t('landingV2.section1.text7'),
+    t('landingV2.section1.text9'),
+    t('landingV2.section1.text8')
   ];
 
   const settings = {
@@ -69,7 +68,7 @@ export default function Section1(): React.ReactElement {
     ]
   };
   const settingsMobile = {
-    className: 'center mx-[15px] mt-12 mb-5',
+    className: 'center mx-20 mt-5 mb-5',
     centerMode: true,
     infinite: true,
     focusOnSelect: true,
@@ -95,7 +94,7 @@ export default function Section1(): React.ReactElement {
   return (
     <section
       ref={ref}
-      className="flex md:flex-row items-center w-full justify-end sm:justify-center 2xl:justify-between pb-[50px]"
+      className="flex md:flex-row w-full justify-end sm:justify-center 2xl:justify-between"
     >
       <div
         className={`w-full lg:m-12 h-auto font-poppins cursor-default ${
@@ -106,10 +105,10 @@ export default function Section1(): React.ReactElement {
             : ''
         }`}
       >
-        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[80px] w-[350px] h-[350px] left-[-15rem] top-[20rem] rounded-full z-0"></div>
-        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[80px] w-[650px] h-[650px] right-[-20rem] top-[-15rem] rounded-full z-0"></div>
-        <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[350px] w-[750px] h-[750px] left-[-18rem] top-[-15rem] rounded-full z-0"></div>
-        <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[150px] w-[350px] h-[350px] right-[-10rem] top-[22rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[350px] h-[350px] left-[-10rem] top-[14rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[180px] w-[650px] h-[650px] right-[-20rem] top-[-15rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[450px] w-[750px] h-[750px] left-[-18rem] top-[-15rem] rounded-full z-0"></div>
+        <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[150px] w-[350px] h-[350px] right-[-10rem] top-[14rem] rounded-full z-0"></div>
 
         <div className="flex flex-col md:flex-row">
           <div className="lg:hidden  ">
@@ -119,7 +118,7 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlideMobile === 0 ? 'scale-100' : 'scale-75'
                   }
-                  style={{ marginRight: '-25px', marginLeft: '-25px' }}
+                  style={{ marginRight: '-35px', marginLeft: '-35px' }}
                 >
                   <Image src={iphone1} alt="Body 1" width={200} height={100} />
                 </div>
@@ -129,7 +128,7 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlideMobile === 1 ? 'scale-100' : 'scale-75'
                   }
-                  style={{ marginRight: '-25px', marginLeft: '-25px' }}
+                  style={{ marginRight: '-35px', marginLeft: '-35px' }}
                 >
                   <Image src={iphone2} alt="Body 2" width={200} height={100} />
                 </div>
@@ -139,7 +138,7 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlideMobile === 2 ? 'scale-100' : 'scale-75'
                   }
-                  style={{ marginRight: '-25px', marginLeft: '-25px' }}
+                  style={{ marginRight: '-35px', marginLeft: '-35px' }}
                 >
                   <Image src={iphone3} alt="Body 3" width={200} height={100} />
                 </div>
@@ -190,14 +189,14 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlide === 0 ? 'scale-150 z-10' : 'scale-125 '
                   }
-                  style={{ marginRight: '-15px', marginLeft: '-15px' }}
+                  style={{ marginRight: '-12px', marginLeft: '-12px' }}
                 >
                   <Image
                     src={iphone1}
                     alt="Body 1"
                     width={200}
-                    height={400}
-                    className="w-[202px] h-[410.86px] "
+                    height={500}
+                    className="w-[202px] h-[400px] "
                   />
                 </div>
               </div>
@@ -206,14 +205,14 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlide === 1 ? 'scale-150 z-10' : 'scale-125'
                   }
-                  style={{ marginRight: '-15px', marginLeft: '-15px' }}
+                  style={{ marginRight: '-12px', marginLeft: '-12px' }}
                 >
                   <Image
                     src={iphone2}
                     alt="Body 2"
                     width={200}
-                    height={400}
-                    className="w-[202px] h-[410.86px] "
+                    height={500}
+                    className="w-[202px] h-[400px] "
                   />
                 </div>
               </div>
@@ -222,14 +221,14 @@ export default function Section1(): React.ReactElement {
                   className={
                     currentSlide === 2 ? 'scale-150 z-10' : 'scale-125'
                   }
-                  style={{ marginRight: '-15px', marginLeft: '-15px' }}
+                  style={{ marginRight: '-12px', marginLeft: '-12px' }}
                 >
                   <Image
                     src={iphone3}
                     alt="Body 3"
                     width={200}
-                    height={400}
-                    className="w-[202px] h-[410.86px] "
+                    height={500}
+                    className="w-[202px] h-[400px] "
                   />
                 </div>
               </div>

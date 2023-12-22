@@ -26,10 +26,12 @@ export default function Section3(): React.ReactElement {
   return (
     <section
       ref={ref}
-      className="h-auto min-w-full mt-20 cursor-default relative font-poppins text-center"
+      className="h-auto min-w-full cursor-default font-poppins text-center relative overflow-hidden"
     >
+      <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[489px] right-[-25rem] top-[-10rem] rounded-full z-0"></div>
+
       <div
-        className={`flex flex-col w-full items-center font-poppins relative ${
+        className={`flex flex-col w-full items-center mt-5 lg:mt-20 font-poppins relative ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

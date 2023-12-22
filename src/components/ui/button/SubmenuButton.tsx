@@ -38,7 +38,7 @@ const SubmenuButton: React.FC<SubmenuButtonProps> = ({
       onClick={onClick}
     >
       <Image src={startAdornment} alt={altStartAdornment} className="mr-4" />
-      <span className="font-poppins">{label}</span>
+      <span className="font-poppins min-w-fit">{label}</span>
       {currencyLabel !== undefined && (
         <div className="flex justify-end w-full items-center pr-2">
           <span className="font-poppins text-[#BDBDBD]">{currencyLabel}</span>

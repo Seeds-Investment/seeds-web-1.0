@@ -1,19 +1,19 @@
 'use client';
 import CErrorMessage from '@/components/CErrorMessage';
 import PhoneInput from '@/components/PhoneInput';
-import {
-  AppleBrand,
-  FacebookBrand,
-  GoogleBrand
-} from '@/constants/assets/logo';
+// import {
+//   AppleBrand,
+//   FacebookBrand,
+//   GoogleBrand
+// } from '@/constants/assets/logo';
 import type { IRegisterPaging } from '@/pages/auth/register';
 import { checkEmail, checkPhoneNumber } from '@/repository/auth.repository';
 import { fieldValidity } from '@/utils/common/utils';
 import { formRegisterPersonalInfoSchema } from '@/utils/validations/register.schema';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { useFormik } from 'formik';
-import { signIn, useSession } from 'next-auth/react';
-import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+// import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,20 +28,20 @@ const PersonalInfoPage = ({
 
   const { data: session }: any = useSession();
 
-  const thirdParty = [
-    {
-      name: 'Apple',
-      img: AppleBrand
-    },
-    {
-      name: 'Google',
-      img: GoogleBrand
-    },
-    {
-      name: 'Facebook',
-      img: FacebookBrand
-    }
-  ];
+  // const thirdParty = [
+  //   {
+  //     name: 'Apple',
+  //     img: AppleBrand
+  //   },
+  //   {
+  //     name: 'Google',
+  //     img: GoogleBrand
+  //   },
+  //   {
+  //     name: 'Facebook',
+  //     img: FacebookBrand
+  //   }
+  // ];
 
   const formik = useFormik({
     initialValues: formdata,
@@ -130,22 +130,22 @@ const PersonalInfoPage = ({
     errorBirthDate
   ]);
 
-  const handleLoginProvider = (provider: string): void => {
-    signIn(provider)
-      .then(result => {
-        if (result?.error != null) {
-          console.log(result.error);
-        } else if (provider !== '') {
-          localStorage.setItem('provider', provider);
-          if (provider === 'apple') {
-            localStorage.setItem('isRegistering', 'true');
-          }
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
+  // const handleLoginProvider = (provider: string): void => {
+  //   signIn(provider)
+  //     .then(result => {
+  //       if (result?.error != null) {
+  //         console.log(result.error);
+  //       } else if (provider !== '') {
+  //         localStorage.setItem('provider', provider);
+  //         if (provider === 'apple') {
+  //           localStorage.setItem('isRegistering', 'true');
+  //         }
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
 
   const setFormdataCallback = useCallback(
     (newFormdata: any) => {
@@ -275,7 +275,7 @@ const PersonalInfoPage = ({
           {t('authPage.login')}
         </Button>
       </div>
-      <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
+      {/* <small className="flex justify-center md:mt-5 my-5 text-opacity-50">
         {t('or')}
       </small>
       <div className="flex lg:flex-row flex-col mt-5 mb-5 md:mb-0 md:pb-5 gap-2 lg:justify-evenly lg:mt-5">
@@ -304,7 +304,7 @@ const PersonalInfoPage = ({
             </Button>
           );
         })}
-      </div>
+      </div> */}
     </form>
   );
 };

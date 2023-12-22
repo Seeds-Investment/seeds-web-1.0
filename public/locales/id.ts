@@ -954,7 +954,7 @@ export default {
       },
       section6: {
         title1: 'Unduh Sekarang!',
-        title2: 'Mulai Perjalanan Investasimu.',
+        title2: 'Mulai Perjalanan Investasimu',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }

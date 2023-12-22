@@ -85,13 +85,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostTop}
           alt="SocialPostTop"
-          className={`absolute z-20 left-[340px] top-[52px] animate-bounce-horizontal-reverse ${
-            inView && isBottom >= measurement
-              ? 'animate-fade-in-slide'
-              : isBottom >= measurement
-              ? 'animate-fade-out-slide'
-              : ''
-          }`}
+          className={`absolute z-20 left-[340px] top-[52px] animate-bounce-reverse`}
         />
       </div>
     </section>

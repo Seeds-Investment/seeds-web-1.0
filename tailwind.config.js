@@ -60,7 +60,7 @@ module.exports = withMT({
         'fade-in': 'fade-in 300ms ease-out forwards',
         spinner: 'spinner 800ms ease-in-out infinite',
         'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
-        'bounce-horizontal-reverse': 'bounce-horizontal-reverse 2000ms infinite'
+        'bounce-reverse': 'bounce-reverse 2000ms infinite'
       },
       keyframes: {
         'slide-down': {
@@ -133,7 +133,7 @@ module.exports = withMT({
             'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
           }
         },
-        'bounce-horizontal-reverse': {
+        'bounce-reverse': {
           '0%': {
             transform: 'translateX(25%)',
             'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'

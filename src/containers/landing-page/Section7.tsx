@@ -79,9 +79,9 @@ export default function Section6(): React.ReactElement {
             </h1>
           </div>
         </div>
-        <div className="lg:ms-24 lg:mt-12 mt-5">
+        <div className="mx-auto lg:mx-16 justify-center items-center lg:mt-12 mt-5">
           <Slider {...settings}>
-            <div className="lg:pe-20 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
+            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
               <Image
                 src={syanne}
                 alt={`Event`}
@@ -98,7 +98,7 @@ export default function Section6(): React.ReactElement {
                 </h1>
               </div>
             </div>
-            <div className="lg:pe-20 mx-5 pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70  ">
+            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70  ">
               <Image
                 src={Willy}
                 alt={`Event`}
@@ -113,7 +113,7 @@ export default function Section6(): React.ReactElement {
                 <h1 className="font-poppins font-normal text-[#FFFFFF]">CEO</h1>
               </div>
             </div>
-            <div className="lg:pe-20 mx-5 pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
+            <div className="lg:pe-20  w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
               <Image
                 src={Johnny}
                 alt={`Event`}
@@ -130,7 +130,7 @@ export default function Section6(): React.ReactElement {
                 </h1>
               </div>
             </div>
-            <div className="lg:pe-20 mx-5 pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
+            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
               <Image
                 src={arvin}
                 alt={`Event`}

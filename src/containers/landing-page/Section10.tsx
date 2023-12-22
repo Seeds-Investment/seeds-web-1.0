@@ -37,7 +37,7 @@ export default function Section10(): React.ReactElement {
   return (
     <section
       ref={ref}
-      className="h-auto min-w-full cursor-default relative font-poppins text-center"
+      className=" h-auto min-w-full cursor-default relative font-poppins text-center"
     >
       <div
         className={`h-auto min-w-full font-poppins cursor-default xl:mt-[200px] mt-16 lg:mt-10 sm:mt-10 ${

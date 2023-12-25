@@ -40,12 +40,14 @@ const ModalEmailEdit: React.FC<ModalEmail> = ({
             We&apos;ll give you some information through email.
           </span>
         </Typography>
-        <Button
-          onClick={handleOpen}
-          className="capitalize rounded-full w-full font-poppins font-semibold text-sm bg-[#3AC4A0]"
-        >
-          <Link href={`edit-profile/change-email`}>Change Email</Link>
-        </Button>
+        <Link href={`edit-profile/change-email`}>
+          <Button
+            onClick={handleOpen}
+            className="capitalize rounded-full w-full font-poppins font-semibold text-sm bg-[#3AC4A0]"
+          >
+            Change Email
+          </Button>
+        </Link>
       </DialogBody>
     </Dialog>
   );

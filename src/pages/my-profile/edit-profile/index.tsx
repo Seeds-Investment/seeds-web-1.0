@@ -3,6 +3,7 @@ import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalende
 import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalEmail from '@/components/profile/editProfile/ModalEmail';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
@@ -73,9 +74,10 @@ const EditProfile: React.FC = () => {
   };
 
   const changeData = (e: any): void => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const updatedForm = { ...form, [e.target.name]: e.target.value };
+    setForm(updatedForm);
     const regex = /[^a-zA-Z0-9]/g;
-    setError(regex.test(form.seedsTag));
+    setError(regex.test(updatedForm.seedsTag));
   };
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -127,17 +129,22 @@ const EditProfile: React.FC = () => {
       .catch(() => {});
   }, []);
   return (
-    <div className="w-full flex justify-center">
-      <Card className="w-[947px] p-5 ">
+    <PageGradient defaultGradient className="w-full flex justify-center">
+      <Card className="w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md">
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
-            <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+            <Image
+              src={ArrowBackwardIcon}
+              alt="arrow-backward-icon"
+              className="mr-[18px]"
+            />
             <Typography className="font-montserrat font-bold text-[#262626] text-base">
               {t('editProfile.title')}
             </Typography>
             <Button
               type="submit"
-              className="font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize"
+              className="font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
+              disabled={error}
             >
               {t('button.label.done')}
             </Button>
@@ -175,7 +182,7 @@ const EditProfile: React.FC = () => {
               />
             )}
           </div>
-          <div className="flex flex-col justify-center items-center gap-4 w-full ">
+          <Card className="flex flex-col justify-center items-center gap-4 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:p-0 ">
             <Input
               label="Name"
               name="name"
@@ -239,7 +246,6 @@ const EditProfile: React.FC = () => {
                     '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
                 className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-                required
                 maxLength={maxLengthBio}
               />
               <Typography className="font-light font-poppins text-base text-[#3C49D6]">
@@ -335,13 +341,13 @@ const EditProfile: React.FC = () => {
               style={{ backgroundColor: 'transparent' }}
               disabled
             />
-            <Button className=" bg-white font-poppins font-semibold text-[#DD2525] text-sm border border-[#DD2525] rounded-full w-full mx-[153.5px]">
+            <Button className=" bg-white font-poppins font-semibold text-[#DD2525] text-sm border border-[#DD2525] rounded-full w-2/3 ">
               Delete Account
             </Button>
-          </div>
+          </Card>
         </form>
       </Card>
-    </div>
+    </PageGradient>
   );
 };
 

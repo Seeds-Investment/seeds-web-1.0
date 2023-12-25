@@ -3,6 +3,22 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  footer: {
+    description:
+      "Nothing on this site is a recommendation to invest. Seeds does not offer financial consulting. If you are still unsure about investing, we recommend you to start communicating with a financial consultant. Because you'\re capital at risk",
+    download: 'Download Our App',
+    regist: 'Registered in',
+    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
+
+    support: { title: 'Support' },
+    legal: {
+      title: 'Legal',
+      list1: 'Terms & Conditions',
+      list2: 'Privacy Policy',
+      list3: 'Social Guidelines'
+    },
+    contactUs: { title: 'Contact Us' }
+  },
   landing: {
     section1: {
       text1: '#PlaywithSeeds',

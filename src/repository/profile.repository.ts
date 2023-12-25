@@ -122,7 +122,7 @@ export const createPin = async (formRequest: any): Promise<any> => {
     return await Promise.resolve('Access token not found');
   }
 
-  return await profileService.patch(`/pin`, formRequest, {
+  return await profileService.post(`/pin/create`, formRequest, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

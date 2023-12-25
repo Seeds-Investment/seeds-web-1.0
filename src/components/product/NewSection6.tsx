@@ -12,8 +12,10 @@ import { useInView } from 'react-intersection-observer';
 import SplashProduct from '@/assets/product/SplashProduct.svg';
 import SplashProductMobile from '@/assets/product/SplashProductMobile.svg';
 import { downloadOurApp } from '@/utils/_static';
+import { useTranslation } from 'react-i18next';
 
 const NewSection6: React.FC = () => {
+  const { t } = useTranslation();
   const measurement = 900;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -39,10 +41,10 @@ const NewSection6: React.FC = () => {
           }`}
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-tr to-[#7555DA] from-[#4FE6AF]">
-            Download Now!
+            {`${t('landingPageV2.product.section6.title1')}`}
           </span>
           <br />
-          Start Your Investing Journey
+          {`${t('landingPageV2.product.section6.title2')}`}
         </Typography>
         <Typography
           className={`font-normal font-poppins text-base lg:text-2xl text-[#262626] xl:w-[693px] text-center xl:text-left ${
@@ -53,8 +55,7 @@ const NewSection6: React.FC = () => {
               : ''
           }`}
         >
-          Expand your connection, learn about finance and grow your portfolio
-          together with Seeds.
+          {`${t('landingPageV2.product.section6.title3')}`}
         </Typography>
         <div
           className={`lg:flex hidden gap-8 justify-center xl:justify-start ${
@@ -119,7 +120,7 @@ const NewSection6: React.FC = () => {
                 className="lg:w-[116px] w-[79.57px]"
               />
               <Typography className="font-normal font-poppins lg:text-base text-[10.98px] leading-[16.46px] text-[#262626]">
-                250+ reviews
+                328+ reviews
               </Typography>
             </div>
           </div>
@@ -134,7 +135,7 @@ const NewSection6: React.FC = () => {
                 className="lg:w-[116px] w-[79.57px]"
               />
               <Typography className="font-normal font-poppins lg:text-base text-[10.98px] leading-[16.46px] text-[#262626]">
-                1000k+ reviews
+                2k+ reviews
               </Typography>
             </div>
           </div>

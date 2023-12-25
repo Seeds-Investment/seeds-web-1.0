@@ -1,6 +1,8 @@
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import { Bars4Icon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,7 +51,21 @@ const HeaderLogin: React.FC = () => {
   useEffect(() => {
     void handleGetUserInfo();
   }, []);
-
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
+  }, []);
   return (
     <div>
       {openSidebarResponsive ? (
@@ -92,6 +108,9 @@ const HeaderLogin: React.FC = () => {
                 }`}
                 onClick={() => {
                   languageCtx.languageHandler('ID');
+                  setTranslationToLocalStorage('ID').catch(err => {
+                    console.log(err);
+                  });
                 }}
               >
                 <span
@@ -123,6 +142,9 @@ const HeaderLogin: React.FC = () => {
                 }`}
                 onClick={() => {
                   languageCtx.languageHandler('EN');
+                  setTranslationToLocalStorage('EN').catch(err => {
+                    console.log(err);
+                  });
                 }}
               >
                 <span

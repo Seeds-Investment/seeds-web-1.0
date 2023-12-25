@@ -8,8 +8,9 @@ import {
 } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -18,14 +19,18 @@ const Section6: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const [sliderIndex, setSliderIndex] = useState(0);
+  const measurement = 400;
+  const [isBottom, setBottom] = useState(0);
+  const { ref, inView, entry } = useInView({
+    threshold: 0.3
+  });
+
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   const events = [
-    { image: SectionSixImageEvent1.src },
-    { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent3.src },
-    { image: SectionSixImageEvent3.src },
-    { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent2.src },
     { image: SectionSixImageEvent3.src }
@@ -101,8 +106,16 @@ const Section6: React.FC = () => {
   };
 
   return (
-    <div className="relative min-w-full font-poppins bg-[#F9F9F9]">
-      <div className="flex flex-col w-full items-center">
+    <div className="relative min-w-full font-poppins bg-[#F9F9F9]" ref={ref}>
+      <div
+        className={`flex flex-col w-full items-center ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <p className="text-3xl md:text-4xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold absolute z-10">
           {t('partner.section6.title')}
         </p>

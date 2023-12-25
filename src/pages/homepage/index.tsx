@@ -1,4 +1,5 @@
 import CCard from '@/components/CCard';
+import ChooseCurrencyPopup from '@/components/popup/ChooseCurrency';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/homepage/Section1';
 import Section2 from '@/containers/homepage/Section2';
@@ -12,7 +13,7 @@ import { useEffect, useState } from 'react';
 
 const Homepage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any>([]);
-
+  const [popUpCurrency, setPopupCurrency] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -27,8 +28,20 @@ const Homepage: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (userInfo?.preferredCurrency?.length === 0) {
+      setPopupCurrency(true);
+    }
+  }, [userInfo]);
+
+  const handleOpen = (): void => {
+    setPopupCurrency(!popUpCurrency);
+  };
+
   return (
     <PageGradient defaultGradient className="w-full">
+      <ChooseCurrencyPopup handleOpen={handleOpen} open={popUpCurrency} />
       <CCard className="p-3 mb-5">
         <Section1 />
       </CCard>

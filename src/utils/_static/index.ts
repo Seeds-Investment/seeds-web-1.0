@@ -7,7 +7,6 @@ import kominfo from '@/assets/landing-page/kominfo.svg';
 import linkedin from '@/assets/landing-page/linkedin.svg';
 import playstore from '@/assets/landing-page/playstore.svg';
 // import telegram from '@/assets/landing-page/telegram.png';
-import telegram from '@/assets/landing-page/telegram.svg';
 import tiktok from '@/assets/landing-page/tiktok.svg';
 import twitter from '@/assets/landing-page/twitter.svg';
 import whatsapp from '@/assets/landing-page/whatsapp.svg';
@@ -19,10 +18,10 @@ export const socialMedia = [
     icon: linkedin,
     url: 'https://www.linkedin.com/company/finance-seeds/'
   },
-  {
-    icon: telegram,
-    url: '/'
-  },
+  // {
+  //   icon: telegram,
+  //   url: '/'
+  // },
   {
     icon: instagram,
     url: 'https://instagram.com/seeds_finance'
@@ -53,7 +52,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'Career',
-      url: '/'
+      url: 'https://bit.ly/CareerSeeds'
     }
     // {
     //   name: 'Refferal Program',

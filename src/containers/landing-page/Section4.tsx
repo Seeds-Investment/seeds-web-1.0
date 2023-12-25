@@ -4,6 +4,7 @@ import Image from 'next/image';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -26,6 +27,17 @@ interface Banner {
 const Section1 = (): React.ReactElement => {
   //   const { t } = useTranslation();
   //   const router = useRouter();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
   const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
 
   useEffect(() => {
@@ -49,22 +61,33 @@ const Section1 = (): React.ReactElement => {
   };
 
   return (
-    <div className="w-full h-auto cursor-default">
-      <Slider {...sliderSettings}>
-        {bannerAsset.map(asset => (
-          <div key={asset.id} className="w-full relative">
-            <Image
-              className="object-cover w-full"
-              src={asset.image_url}
-              alt={asset.name}
-              width={1420}
-              height={420}
-              layout="responsive"
-            />
-          </div>
-        ))}
-      </Slider>
-    </div>
+    <section
+      ref={ref}
+      className={`h-auto min-w-full cursor-default relative mt-5 lg:mt-20 font-poppins text-center ${
+        inView && isBottom >= measurement
+          ? 'animate-fade-in-slide'
+          : isBottom >= measurement
+          ? 'animate-fade-out-slide'
+          : ''
+      }`}
+    >
+      <div className="w-full h-auto font-poppins cursor-default">
+        <Slider {...sliderSettings}>
+          {bannerAsset.map(asset => (
+            <div key={asset.id} className="w-full relative">
+              <Image
+                className="object-cover w-full"
+                src={asset.image_url}
+                alt={asset.name}
+                width={1420}
+                height={420}
+                layout="responsive"
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </section>
   );
 };
 

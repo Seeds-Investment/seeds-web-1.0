@@ -1,7 +1,17 @@
 'use client';
+import { SectionSixImageOval } from '@/constants/assets/images';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getArticle } from '@/repository/article.repository';
+import LanguageContext from '@/store/language/language-context';
+import { Button } from '@material-tailwind/react';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { id } from 'date-fns/locale';
+import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 
 interface Article {
@@ -24,6 +34,51 @@ interface Article {
 
 export default function Section3(): React.ReactElement {
   const [hotNews, setHotNews] = useState<Article[]>([]);
+  const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
+  const width = useWindowInnerWidth();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+  const router = useRouter();
+
+  let languageValue = '';
+
+  if (languageCtx.language === 'EN') {
+    languageValue = 'english';
+  } else {
+    languageValue = 'indonesian';
+  }
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
+
+  function formatDateToIndonesian(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const formattedDate = format(parsedDate, 'd MMMM ', { locale: id });
+
+      return formattedDate;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
+
+  function formatDateToIndonesianAgo(dateStr: string): string {
+    try {
+      const parsedDate = parseISO(dateStr);
+      const distance = formatDistanceToNow(parsedDate, { locale: id });
+      return `.  ${distance}`;
+    } catch (error) {
+      console.error('Error parsing or formatting date:', error);
+      return '';
+    }
+  }
 
   async function fetchHotNews(): Promise<void> {
     try {
@@ -31,7 +86,7 @@ export default function Section3(): React.ReactElement {
         page: 1,
         limit: 9,
         source: 'news',
-        language: '',
+        language: languageValue,
         search: '',
         category: 'All'
       });
@@ -52,7 +107,7 @@ export default function Section3(): React.ReactElement {
     fetchData().catch(error => {
       console.error('Error in fetchData:', error);
     });
-  }, []);
+  }, [languageCtx]);
 
   const defaultHotNewsImage = '/assets/default-news.png';
   function isImageUrlValid(url: string): boolean {
@@ -62,136 +117,136 @@ export default function Section3(): React.ReactElement {
   //   const width = useWindowInnerWidth();
 
   return (
-    <div className="h-auto min-w-full lg:mt-20 lg:mx-12 cursor-default relative text-center">
-      <div className="justify-center items-center text-center">
-        <div className="absolute top-0 left-0 w-full z-10 mt-5">
-          <h1 className="font-poppins font-semibold text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] lg:mb-4">
-            Stay Informed with
-          </h1>
-          <h1 className="font-poppins font-semibold text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-            Our Curated Financial Updates
-          </h1>
+    <section
+      ref={ref}
+      className="h-auto min-w-full cursor-default relative font-poppins text-center"
+    >
+      <div
+        className={`h-auto min-w-full lg:mt-20 lg:mx-12 font-poppins cursor-default relative text-center ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
+        <div className="flex flex-col w-full items-center font-poppins relative">
+          <p className=" text-2xl lg:text-5xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-semibold absolute z-10">
+            {t('landingV2.section8.text1')} <br />{' '}
+            {t('landingV2.section8.text2')}
+          </p>
+          <Image
+            src={SectionSixImageOval.src}
+            alt={SectionSixImageOval.alt}
+            width={400}
+            height={100}
+            className="w-[375px] h-[157px] top-5 lg:w-[836px] lg:h-[167px] md:top-5 relative z-1"
+          />
+          {width !== undefined ? (
+            width > 700 ? (
+              <>
+                <div className="absolute z-0 bg-[#3AC4A0BF] blur-[150px] w-[300px] h-[300px] right-[10rem] top-[10rem] rounded-full"></div>
+                <div className="absolute z-0 bg-[#7F64D8] blur-[250px] w-[300px] h-[300px] right-[25rem] top-[20rem] rounded-full"></div>
+              </>
+            ) : null
+          ) : null}
         </div>
-        <div className="ms-[8%] lg:hidden relative z-0">
-          <svg
-            width="375"
-            height="121"
-            viewBox="0 0 375 121"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div>
+          <Slider
+            slidesToShow={3}
+            speed={500}
+            className="my-12"
+            initialSlide={0}
+            // slidesToScroll={1}
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: {
+                  dots: true,
+                  slidesToShow: 3,
+                  slidesToScroll: 1
+                }
+              },
+              {
+                breakpoint: 768,
+                settings: {
+                  dots: true,
+                  slidesToShow: 2,
+                  slidesToScroll: 1
+                }
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  dots: true,
+                  slidesToShow: 1
+                }
+              }
+            ]}
           >
-            <path
-              d="M37.9735 78.5318C86.6332 103.536 216.368 122.795 337.983 81.9899C490.002 30.9839 99.3853 -43.3638 15.1544 35.3065C-56.757 102.47 144.354 132.996 259.793 114.841C339.146 102.362 413.114 75.0737 353.085 45.6805C293.056 16.2874 185.929 8.04605 111.13 16.2874"
-              stroke="url(#paint0_linear_310_4684)"
-              stroke-width="0.601911"
-              stroke-linecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_310_4684"
-                x1="330.348"
-                y1="14.7715"
-                x2="177.307"
-                y2="227.414"
-                gradientUnits="userSpaceOnUse"
+            {hotNews?.map((data, key) => (
+              <div
+                key={key}
+                className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
               >
-                <stop stop-color="#4FE6AF" />
-                <stop offset="1" stop-color="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div className="lg:ms-[20%] hidden lg:block lg:w-full relative z-0">
-          <svg
-            width="838"
-            height="159"
-            viewBox="0 0 838 159"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M85.6556 103.29C194.134 136.279 483.357 161.687 754.477 107.852C1093.38 40.5586 222.563 -57.5304 34.7841 46.2615C-125.53 134.873 322.813 175.146 580.165 151.194C757.069 134.729 921.968 98.7275 788.144 59.9483C654.319 21.1691 415.498 10.2961 248.746 21.1691"
-              stroke="url(#paint0_linear_213_3314)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_213_3314"
-                x1="737.456"
-                y1="19.1691"
-                x2="583.922"
-                y2="379.638"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4FE6AF" />
-                <stop offset="1" stopColor="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </div>
-      <div>
-        <Slider
-          slidesToShow={3}
-          speed={500}
-          className="my-12"
-          initialSlide={0}
-          // slidesToScroll={1}
-          responsive={[
-            {
-              breakpoint: 1024,
-              settings: {
-                dots: true,
-                slidesToShow: 3,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                dots: true,
-                slidesToShow: 2,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                dots: true,
-                slidesToShow: 1
-              }
-            }
-          ]}
-        >
-          {hotNews?.map((data, key) => (
-            <div
-              key={key}
-              className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
-            >
-              <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
-                {isImageUrlValid(data.imageUrl) ? (
-                  <img
-                    src={data.imageUrl}
-                    alt={data.title}
-                    className="w-full rounded-xl h-[240px]"
-                  />
-                ) : (
-                  <img
-                    src={defaultHotNewsImage}
-                    alt={data.title}
-                    className="w-full rounded-xl h-[240px]"
-                  />
-                )}
-              </Link>
+                <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
+                  {isImageUrlValid(data.imageUrl) ? (
+                    <img
+                      src={data.imageUrl}
+                      alt={data.title}
+                      className="w-full rounded-xl h-[240px]"
+                    />
+                  ) : (
+                    <img
+                      src={defaultHotNewsImage}
+                      alt={data.title}
+                      className="w-full rounded-xl h-[240px]"
+                    />
+                  )}
 
-              <h3 className="text-xl font-poppins font-semibold p-2 text-left">
-                {data.title}
-              </h3>
+                  <h3 className="text-xl font-poppins font-semibold p-2 text-left">
+                    {data.title}
+                  </h3>
+                  <div className="flex flex-row mx-2">
+                    <p className="text-xs font-normal text-[#8A8A8A]">
+                      {formatDateToIndonesian(data?.publicationDate ?? '')}
+                    </p>
+                    <p className="text-xs font-normal text-[#7C7C7C]">
+                      {formatDateToIndonesianAgo(data?.publicationDate ?? '')}
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </Slider>
+        </div>
+        <div className="justify-center text-center">
+          <Button
+            className="text-xs px-5 font-normal capitalize bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] rounded-full"
+            onClick={() => {
+              void router.push('/seedspedia');
+            }}
+          >
+            <div className="flex">
+              <h1 className="me-3 mt-1">Show All</h1>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18 9L12 15L6 9"
+                  stroke="white"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
-          ))}
-        </Slider>
+          </Button>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

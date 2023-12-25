@@ -125,7 +125,7 @@ export const SectionFourKolOptionThree: AssetsInterface = {
 };
 
 export const SectionFiveImageProblemSolution: AssetsInterface = {
-  src: '/assets/partner/section-five/image-problem-solution.png',
+  src: '/assets/partner/section-five/prob-solution.svg',
   alt: 'bg'
 };
 

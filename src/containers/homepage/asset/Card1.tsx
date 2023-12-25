@@ -5,12 +5,14 @@ import {
 } from '@/helpers/currency';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar } from '@material-tailwind/react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   data: any;
 }
 
 const Card1: React.FC<props> = ({ data }) => {
+  const { t } = useTranslation();
   return (
     <CCard className="flex w-full md:w-1/3 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
       <div className="flex flex-row justify-between">
@@ -48,7 +50,7 @@ const Card1: React.FC<props> = ({ data }) => {
             data?.lastPrice?.close
           )?.value
         }{' '}
-        %) - today
+        %) - {t('playSimulation.today')}
       </p>
     </CCard>
   );

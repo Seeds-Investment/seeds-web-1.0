@@ -16,6 +16,7 @@ import {
   MenuList
 } from '@material-tailwind/react';
 import { trackEvent } from '@phntms/next-gtm';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -48,6 +49,7 @@ const CirclePostSection1: React.FC<props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const deviceDetector = new DeviceDetector();
 
   const handleJoin = async (): Promise<void> => {
     setIsLoading(true);
@@ -239,7 +241,9 @@ const CirclePostSection1: React.FC<props> = ({
                           user_id: userInfo?.id,
                           page_name: 'circle_detail_join',
                           circle_id: circleId,
-                          created_at: new Date().toString()
+                          created_at: new Date().toString(),
+                          user_device: deviceDetector.parse(navigator.userAgent)
+                            .device?.type
                         }
                       });
                     }}

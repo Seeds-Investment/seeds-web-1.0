@@ -130,16 +130,9 @@ export const getPlaySimulationDetail = async (): Promise<any> => {
 
 export const getTrendingPlayList = async (): Promise<any> => {
   try {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
-
     return await playService.get(`/trending`, {
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Accept: 'application/json'
       }
     });
   } catch (error) {
@@ -234,5 +227,27 @@ export const createOrderPlay = async (
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const getHistoryTransaction = async (
+  id: string,
+  params: { limit: number; page: number }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/${id}/history`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
   }
 };

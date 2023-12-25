@@ -1,4 +1,5 @@
 import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
+import ChooselanguagePopup from '@/components/popup/ChooseLanguage';
 import LevelButton from '@/components/ui/button/LevelButton';
 import SubmenuButton from '@/components/ui/button/SubmenuButton';
 import CardGradient from '@/components/ui/card/CardGradient';
@@ -9,6 +10,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import Image from 'next/image';
 import router from 'next/router';
+import { CurrencySVG } from 'public/assets/images';
 import {
   ArrowRightCollapseIcon,
   BronzeMedalIcon,
@@ -35,6 +37,10 @@ const UserSetting: React.FC = () => {
     width !== undefined && width < 370 ? 'h-9' : ''
   } px-6 bg-white`;
   const [userData, setUserData] = useState<Record<string, any>>();
+  const [modalChooseLang, setModalChooseLang] = useState<boolean>(false);
+  const handleOpenModal = (): void => {
+    setModalChooseLang(!modalChooseLang);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async (): Promise<void> => {
@@ -74,10 +80,28 @@ const UserSetting: React.FC = () => {
       label: languageCtx.language === 'EN' ? 'Language' : 'Bahasa',
       altStartAdornment: 'language',
       startAdornment: GlobalIcon,
-      onClick: () => {},
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+      onClick: () => {
+        setModalChooseLang(true);
+      },
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
         width !== undefined && width < 370 ? 'h-9' : ''
       } bg-white`
+    },
+    {
+      label: languageCtx.language === 'EN' ? 'Currency' : 'Mata Uang',
+      altStartAdornment: 'Currency',
+      startAdornment: CurrencySVG,
+      onClick: async () => {
+        try {
+          await router.push('/user-setting/change-currency');
+        } catch (error) {
+          console.error('Error navigating to Change Currency:', error);
+        }
+      },
+      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
+        width !== undefined && width < 370 ? 'h-9' : ''
+      } bg-white`,
+      currencyLabel: userData?.preferredCurrency as string
     },
     {
       label: languageCtx.language === 'EN' ? 'Create Pin' : 'Buat Pin',
@@ -184,6 +208,10 @@ const UserSetting: React.FC = () => {
           : ''
       } bg-white`}
     >
+      <ChooselanguagePopup
+        open={modalChooseLang}
+        handleOpen={handleOpenModal}
+      />
       <CardGradient
         defaultGradient
         className={`relative flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
@@ -277,6 +305,7 @@ const UserSetting: React.FC = () => {
               label={menu.label}
               altStartAdornment={menu.altStartAdornment}
               extraClasses={menu.extraClasses}
+              currencyLabel={menu?.currencyLabel}
             />
           ))}
         </div>

@@ -1,5 +1,6 @@
 import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 // import Header from '@/components/layouts/Header';
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/landing-page/Section1';
 import Section10 from '@/containers/landing-page/Section10';
@@ -58,6 +59,7 @@ export default function Landing(): React.ReactElement {
         <Section10 />
         <Section11 />
         <Section12 />
+        <Footer />
       </PageGradient>
     </>
   );

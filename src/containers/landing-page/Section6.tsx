@@ -4,14 +4,29 @@ import events3 from '@/assets/landing-page/events3.jpg';
 import events4 from '@/assets/landing-page/events4.jpg';
 import next from '@/assets/landing-page/next.svg';
 import prev from '@/assets/landing-page/prev.svg';
+import { SectionSixImageOval } from '@/constants/assets/images';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 export default function Section6(): React.ReactElement {
   const [sliderIndex, setSliderIndex] = useState(0);
+
+  const { t } = useTranslation();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   const settings = {
     dots: false,
@@ -40,7 +55,7 @@ export default function Section6(): React.ReactElement {
       {
         breakpoint: 480,
         settings: {
-          dots: true,
+          dots: false,
           slidesToShow: 1
         }
       }
@@ -61,99 +76,64 @@ export default function Section6(): React.ReactElement {
     );
   };
   return (
-    <div className="h-auto min-w-full mt-20 cursor-default relative text-center">
-      <div className="justify-center items-center text-center mb-5">
-        <div className="absolute top-0 left-0 w-full  z-10 lg:mt-5">
-          <h1 className="font-poppins font-semibold text-3xl lg:text-6xl lg:mt-5 mt-2 bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-            Seeds Events
-          </h1>
+    <section
+      ref={ref}
+      className="h-auto min-w-full cursor-default relative font-poppins text-center"
+    >
+      <div
+        className={`h-auto min-w-full mt-5 cursor-default relative font-poppins items-center text-center ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
+        <div className="flex flex-col w-full items-center font-poppins relative">
+          <p className="text-3xl md:text-[64px] mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-semibold absolute z-10">
+            {t('landingV2.section6.text1')}
+          </p>
+          <Image
+            src={SectionSixImageOval.src}
+            alt={SectionSixImageOval.alt}
+            width={400}
+            height={100}
+            className="w-[300px] h-[117px] top-7 md:w-[629px] md:top-7 relative z-1"
+          />
         </div>
-        <div className="ms-[13%] lg:hidden relative z-0">
-          <svg
-            width="289"
-            height="49"
-            viewBox="0 0 289 49"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M30.0624 31.6218C67.3033 41.4974 166.594 49.1038 259.67 32.9876C376.015 12.8424 77.0629 -16.5218 12.5981 14.5496C-42.4381 41.0766 111.479 53.1328 199.828 45.9625C260.559 41.0336 317.17 30.256 271.228 18.6469C225.285 7.03788 143.298 3.78289 86.0517 7.03788"
-              stroke="url(#paint0_linear_314_4968)"
-              stroke-width="0.601911"
-              stroke-linecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_314_4968"
-                x1="253.826"
-                y1="6.43916"
-                x2="212.216"
-                y2="118.472"
-                gradientUnits="userSpaceOnUse"
+        <div className="justify-center items-center mx-auto mt-5 lg:mx-16 lg:mt-12 text-center">
+          <Slider {...settings} initialSlide={sliderIndex}>
+            {eventsImages.map((image, index) => (
+              <div
+                key={index}
+                className="w-full  mx-5 lg:w-1/3  justify-center items-center "
               >
-                <stop stop-color="#4FE6AF" />
-                <stop offset="1" stop-color="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
+                <Image
+                  src={image}
+                  alt={`Event ${index + 1}`}
+                  width={300}
+                  height={300}
+                  className="w-[350px] h-[350px]"
+                />
+              </div>
+            ))}
+          </Slider>
         </div>
-        <div className="lg:ms-[20%] hidden lg:block lg:w-full relative z-0">
-          <svg
-            width="838"
-            height="159"
-            viewBox="0 0 838 159"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="flex lg:hidden justify-end lg:justify-center lg:mt-2 mt-5 mx-3">
+          <button
+            className="rounded-full lg:p-2 border lg:mx-6 mx-2 p-1 border-1 border-[#4FE6AF]"
+            onClick={handlePrevious}
           >
-            <path
-              d="M85.6556 103.29C194.134 136.279 483.357 161.687 754.477 107.852C1093.38 40.5586 222.563 -57.5304 34.7841 46.2615C-125.53 134.873 322.813 175.146 580.165 151.194C757.069 134.729 921.968 98.7275 788.144 59.9483C654.319 21.1691 415.498 10.2961 248.746 21.1691"
-              stroke="url(#paint0_linear_213_3314)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_213_3314"
-                x1="737.456"
-                y1="19.1691"
-                x2="583.922"
-                y2="379.638"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4FE6AF" />
-                <stop offset="1" stopColor="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
+            <Image src={prev} alt="Previous" className="cursor-pointer" />
+          </button>
+          <button
+            className="rounded-full lg:p-2 lg:mx-6 border mx-2 p-1 border-1 border-[#4FE6AF]"
+            onClick={handleNext}
+          >
+            <Image src={next} alt="Next" className="cursor-pointer" />
+          </button>
         </div>
       </div>
-      <Slider {...settings} initialSlide={sliderIndex}>
-        {eventsImages.map((image, index) => (
-          <div key={index} className="w-1/3 lg:m-12">
-            <Image
-              src={image}
-              alt={`Event ${index + 1}`}
-              width={300}
-              height={300}
-              className="w-[350px] h-[350px] object-cover"
-            />
-          </div>
-        ))}
-      </Slider>
-      <div className="flex justify-end lg:justify-center lg:mt-2 mt-5 mx-3">
-        <button
-          className="rounded-full lg:p-2 border lg:mx-6 mx-3 p-1 border-1 border-[#4FE6AF]"
-          onClick={handlePrevious}
-        >
-          <Image src={prev} alt="Previous" className="cursor-pointer" />
-        </button>
-        <button
-          className="rounded-full lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
-          onClick={handleNext}
-        >
-          <Image src={next} alt="Next" className="cursor-pointer" />
-        </button>
-      </div>
-    </div>
+    </section>
   );
 }

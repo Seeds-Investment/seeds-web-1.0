@@ -14,6 +14,7 @@ import AssetPortfolioCard from '@/containers/homepage/trending/AssetsPortfolioCa
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
 import { formatNumber, standartCurrency } from '@/helpers/currency';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
+import withAuth from '@/helpers/withAuth';
 import {
   getPlayBallance,
   getPlayPortfolio
@@ -22,6 +23,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { type Ballance } from '../play-assets';
 
 interface ChartData {
@@ -69,8 +71,9 @@ const initialChartData = {
   ]
 };
 
-const AssetDetailPage: React.FC = () => {
+const PortfolioPage: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { id } = router.query;
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [ballance, setBallance] = useState<Ballance>({
@@ -85,19 +88,19 @@ const AssetDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const tabData = [
     {
-      name: 'Overview',
+      name: t('social.pieSection.overview'),
       value: 'overview',
       svg: Overview,
       svgActive: OverviewActive
     },
     {
-      name: 'Stocks',
+      name: t('social.pieSection.stocks'),
       value: 'STOCK',
       svg: Stock,
       svgActive: StockActive
     },
     {
-      name: 'Cryptos',
+      name: t('social.pieSection.crypto'),
       value: 'CRYPTO',
       svg: Stock,
       svgActive: StockActive
@@ -201,17 +204,17 @@ const AssetDetailPage: React.FC = () => {
         <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
           <div className="flex flex-col">
             <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black font-poppins">
-              Portfolio
+              {t('playSimulation.portfolio')}
             </div>
           </div>
         </div>
         <ImageBackground className="rounded-2xl" imageUrl={BallanceImage.src}>
           <div className="p-5">
             <Typography className="text-white font-poppins mb-2">
-              Investment Value
+              {t('playSimulation.investmentValue')}
             </Typography>
             <Typography className="text-white font-poppins text-xl font-semibold mb-2">
-              {`${ballance.currency} ${standartCurrency(
+              {`${ballance?.currency} ${standartCurrency(
                 portfolio?.summary?.value
               ).replace('Rp', '')}`}
             </Typography>
@@ -221,7 +224,7 @@ const AssetDetailPage: React.FC = () => {
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
                 } font-poppins text-xs font-light`}
               >
-                {`${ballance.currency} ${standartCurrency(
+                {`${ballance?.currency} ${standartCurrency(
                   portfolio?.summary?.gnl
                 ).replace('Rp', '')}`}
               </Typography>
@@ -233,7 +236,8 @@ const AssetDetailPage: React.FC = () => {
                 {`(${isUptrend.summary ? '+' : '-'}${
                   portfolio?.summary?.gnl_percentage.toFixed(2) as string
                 })`}
-                % <span className="text-white">Today</span>
+                %{' '}
+                <span className="text-white">{t('playSimulation.today')}</span>
               </Typography>
             </div>
           </div>
@@ -243,9 +247,11 @@ const AssetDetailPage: React.FC = () => {
             {portfolio !== null && (
               <PortfolioChart
                 data={chartData}
-                centerText={`${ballance.currency} ${formatNumber(
-                  portfolio?.summary?.gnl
-                )}`}
+                centerText={`${ballance?.currency} ${
+                  portfolio?.summary?.gnl >= 0
+                    ? formatNumber(portfolio?.summary?.gnl)
+                    : 0
+                }`}
               />
             )}
           </div>
@@ -253,10 +259,10 @@ const AssetDetailPage: React.FC = () => {
         <div className="flex flex-col">
           <div className="mt-4">
             <Typography className="text-black font-poppins mb-1 text-lg font-semibold bg-clip-text">
-              Portfolio
+              {t('playSimulation.portfolio')}
             </Typography>
             <Typography className="text-black font-poppins text-base font-light bg-clip-text">
-              Your assets Portfolio.
+              {t('playSimulation.yourAssetsPortfolio')}
             </Typography>
           </div>
           <div className="my-4 w-full">
@@ -291,6 +297,8 @@ const AssetDetailPage: React.FC = () => {
             <AssetTrendingCardSkeleton />
           ) : (
             filterAssetsList()?.map((el: any) => {
+              console.log(el);
+
               return <AssetPortfolioCard id={el.id} key={el.id} />;
             })
           )}
@@ -300,4 +308,4 @@ const AssetDetailPage: React.FC = () => {
   );
 };
 
-export default AssetDetailPage;
+export default withAuth(PortfolioPage);

@@ -339,15 +339,15 @@ export default function ArticleDetailPage(): JSX.Element {
 
   const isImageValid = isImageUrlValid(imageUrl);
 
-  const customGradient = (
-    <>
-      <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
+  //     <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
+  //     {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
+  //     <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+  //   </>
+  // );
   return (
     <>
       {articleDetail.meta_description.length > 0 &&
@@ -357,7 +357,7 @@ export default function ArticleDetailPage(): JSX.Element {
             pageTitle={articleDetail.meta_title}
           />
         )}
-      <PageGradient customGradient={customGradient} className="z-0">
+      <PageGradient className="z-0">
         <div className="z-20 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           {open && (
             <div
@@ -467,12 +467,20 @@ export default function ArticleDetailPage(): JSX.Element {
 
           <div className="w-full">
             {isImageValid ? (
-              <img src={imageUrl} alt="Image" className="w-full" />
+              <img
+                src={imageUrl}
+                alt="Image"
+                className=" object-cover rounded-2xl w-full lg:h-[400px]"
+              />
             ) : (
-              <img src={defaultNews} alt="Image" className="w-full" />
+              <img
+                src={defaultNews}
+                alt="Image"
+                className=" object-cover rounded-2xl w-full lg:h-[400px]"
+              />
             )}
           </div>
-          <div className="z-10 flex flex-col border-b-4 pb-5 border-[#7555DA]">
+          <div className="z-10 flex flex-col border-b-4 pb-5 border-[#E9E9E9]">
             <p
               className="w-full mt-8 border-r pr-3 border-[#DBC8FF]"
               dangerouslySetInnerHTML={{ __html: `${articleDetail?.content}` }}
@@ -535,9 +543,10 @@ export default function ArticleDetailPage(): JSX.Element {
                   <h1 className="text-[#201B1C] text-lg font-semibold">
                     {userInfo.name}
                   </h1>
-                  <div className="w-full">
+                  <div className="w-full rounded-lg border-1 border border-[#3AC4A0]">
                     <Input
-                      label="Type your comment.."
+                      placeholder="Type your comment.."
+                      className="focus:outline-none "
                       onChange={e => {
                         updateComment(e.target.value);
                       }}
@@ -547,9 +556,8 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div className="pt-7">
                   <Button
                     disabled={comment === '' && loading}
-                    variant="purple"
                     label="Comment"
-                    containerClasses="xl:w-[196px] h-full p-1 rounded-full"
+                    containerClasses="xl:w-[196px] h-full p-1 rounded-full bg-[#3AC4A0]"
                     onClick={async () => {
                       await submitComment(articleDetail.id);
                     }}

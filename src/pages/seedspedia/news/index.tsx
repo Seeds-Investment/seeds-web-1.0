@@ -120,7 +120,8 @@ export default function ArticleList(): React.ReactElement {
   //   }
   // };
 
-  const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
+  const categoryItemClass =
+    'py-1 rounded-full text-center w-full text-base font-poppins font-semibold px-2';
 
   const categories = [
     'All',
@@ -135,20 +136,20 @@ export default function ArticleList(): React.ReactElement {
     'World'
   ];
 
-  const customGradient = (
-    <>
-      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+  //     {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
+  //   </>
+  // );
 
   return (
     <>
       <PageGradient
-        customGradient={customGradient}
+        // customGradient={customGradient}
         className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
       >
         <div className="flex z-10 flex-col lg:flex-col justify-center text-center">
@@ -163,11 +164,9 @@ export default function ArticleList(): React.ReactElement {
           <div className="lg:flex-col mb-2 justify-center items-center mt-4">
             <div className="w-full lg:w-[50%] lg:mx-auto  bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between ">
               <input
-                type="search"
+                type="text"
                 className=" text-[#7C7C7C] border-none rounded-3xl  px-[8px] focus:outline-none  "
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}
@@ -210,7 +209,7 @@ export default function ArticleList(): React.ReactElement {
                 className={`${categoryItemClass} ${
                   activeCategory === category
                     ? 'bg-[#3AC4A0] text-white'
-                    : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                    : 'text-[#3AC4A0] bg-[#DCFCE4]'
                 }`}
                 onClick={() => {
                   updateCategory(category);
@@ -223,10 +222,10 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md mx-1 px-4 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('All');
@@ -235,10 +234,10 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'business'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('business');
@@ -247,10 +246,10 @@ export default function ArticleList(): React.ReactElement {
             Business
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'entertainment'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('entertainment');
@@ -260,10 +259,10 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'health'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('health');
@@ -272,10 +271,10 @@ export default function ArticleList(): React.ReactElement {
             Health
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'politics'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('politics');
@@ -284,10 +283,10 @@ export default function ArticleList(): React.ReactElement {
             Politics
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'science'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('science');
@@ -296,10 +295,10 @@ export default function ArticleList(): React.ReactElement {
             Science
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'sports'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('sports');
@@ -308,10 +307,10 @@ export default function ArticleList(): React.ReactElement {
             Sports
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'technology'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('technology');
@@ -320,10 +319,10 @@ export default function ArticleList(): React.ReactElement {
             Technology
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'top'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('top');
@@ -332,10 +331,10 @@ export default function ArticleList(): React.ReactElement {
             Top
           </button>
           <button
-            className={`py-1 rounded-full text-md mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
               activeCategory === 'world'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('world');

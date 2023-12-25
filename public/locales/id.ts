@@ -205,6 +205,7 @@ export default {
       confirm: 'Konfirmasi',
       tryAgain: 'Coba Lagi',
       next: 'Lanjut',
+      save: 'Simpan',
       done: 'Selesai',
       deleteAccount: 'Hapus Akun'
     }
@@ -930,32 +931,30 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        title1: 'Main & Menangkan',
+        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
         subtitle:
-          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+          'Uji pengetahuan keuangan dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk berkesempatan memenangkan hadiah senilai jutaan rupiah.'
       },
       section2: {
         title1: 'Leaderboard',
-        title2: 'Tiga pemain bintang yang mendominasi Play.'
+        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Bagikan & Pengaruhi',
+        title2: 'Orang Lain untuk Memulai Perjalanan Keuangan Mereka',
+        subtitle:
+          'Buat thread dan berinteraksi dengan komunitas Seeds. Temui teman sepanjang perjalanan finansialmu dan dorong orang lain untuk memulai perjalanan mereka sendiri.'
       },
       section5: {
-        title1: 'Bagaimana Cara Bermain',
-        title2: 'Turnamen',
+        title1: 'Bagaimana Bermain',
+        title2: 'Turnamen?',
         title3:
-          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan banyak hadiah. Pelajari segalanya tentang perdagangan virtual di sini!'
       },
       section6: {
-        title1: 'Unggah Sekarang!',
-        title2: 'Mulai perjalanan investasimu sekarang.',
+        title1: 'Unduh Sekarang!',
+        title2: 'Mulai Perjalanan Investasimu',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -1215,5 +1214,161 @@ export default {
     placeholder1: 'Apa yang ingin kamu diskusikan? ...',
     placeholder2:
       'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text5:
+        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
+      text6: 'Main Sekarang',
+      text7: 'Bangun Portofolio & Klaim Hadiah',
+      text8: 'Interaksi Sosial',
+      text9: 'Tantang, Pelajari, Raih'
+    },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Berdiskusi dan berkoneksi dengan seorang ahli keuangan untuk memulai perjalanan keuangan yang sukses.'
+    },
+    section3: {
+      text1: 'Bagaimana Seeds Meningkatkan',
+      text2: 'Perjalanan Keuangan Kamu',
+      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text4:
+        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+      text5: 'Siap untuk mengadopsi strategi keuangan.',
+      text6:
+        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
+      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+    },
+    section5: {
+      text1: 'Total Hadiah yang Telah Diklaim'
+    },
+    section6: {
+      text1: 'Acara Seeds'
+    },
+    section7: {
+      text1: 'Temui Ahli Kami',
+      text2: 'Capai Sukses Keuangan Bersama'
+    },
+    section8: {
+      text1: 'Tetap Terinformasi dengan',
+      text2: 'Berita Finansial Terkurasi'
+    },
+    section9: {
+      text1: 'Apa Kata Mereka Tentang Seeds?'
+    },
+    section10: {
+      text1: 'Lebih dari 1000+ orang mempercayai kami',
+      text2: 'Profesional, universitas, dan banyak lagi juga!'
+    },
+    section11: {
+      text1: 'Ingin Berkolaborasi dengan Seeds?',
+      text2:
+        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+      text3:
+        'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
+      text4: 'Hubungi Kami'
+    },
+    section12: {
+      text1: 'Komunitas Kami',
+      text2:
+        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+      text3: 'Program Mitra'
+    }
+  },
+  playSimulation: {
+    assetList: 'Daftar Aset',
+    seedsCash: 'Dana Seeds',
+    cashBalance: 'Saldo Kas',
+    portfolio: 'Portofolio',
+    assetDetail: 'Detail Aset',
+    today: 'Hari Ini',
+    remainingTime: 'Waktu yang tersisa',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Jual',
+    buy: 'Beli',
+    balance: 'Saldo',
+    takeProfit1: 'Aktifkan Take Profit dan Stop Loss',
+    takeProfit2: 'Tingkatkan strategimu dan menangkan Arena.',
+    purchaseAmount: 'Jumlah Pembelian',
+    cashAmount: 'Jumlah Uang',
+    purchaseConfirmation: 'Konfirmasi Pembelian',
+    confirmation: 'Konfirmasi',
+    orderReview: 'Tinjauan Pembelian',
+    orderType: 'Tipe Order',
+    buyMarketOrder: 'Pembelian - Market Order',
+    sellMarketOrder: 'Penjualan - Market Order',
+    marketPrice: 'Harga Pasar',
+    amount: 'Jumlah',
+    transactionFee: 'Biaya Transaksi',
+    totalCost: 'Total Biaya',
+    footerOrderDetail1:
+      'Investasi ini bebas risiko karena kamu menggunakan saldo virtual untuk transaksi ini. Silakan lihat informasi',
+    footerOrderDetail2: 'pada pemberitahuan ini.',
+    disclosure: 'selengkapnya',
+    orderCompleted: 'Pesanan Selesai',
+    orderCompletedBuy: 'Kamu membeli',
+    orderCompletedSell: 'Anda telah berhasil menjual ',
+    investmentValue: 'Nilai Investasi',
+    totalPortfolio: 'Total Portofolio',
+    yourAssetsPortfolio: 'Portofolio aset kamu',
+    joinArena1: 'Apakah kamu siap untuk bergabung dalam Arena?',
+    joinArena2:
+      'Bersiaplah bertanding untuk menguji keterampilan trading-mu dan memenangkan hadiahnya.',
+    sellAssetText1: 'Kamu bisa memilih jumlah aset yang akan dijual.',
+    sellAmount: 'Jumlah Penjualan',
+    cashAvailable: 'Dana Tersedia',
+    cashUsed: 'Dana Digunakan',
+    historyTransaction: 'Riwayat Transaksi',
+    transactionDetail: 'Detail Transaksi'
+  },
+  homepage: {
+    section2: {
+      text1: 'Dana Virtual',
+      text2: 'Keuntungan',
+      text3: 'Koin Seeds',
+      text4: 'Kode Referral',
+      text5: 'Tidak ada rekomendasi profil untuk dibagikan',
+      text6: 'Penawaran Eksklusif',
+      text7: 'Nikmati berbagai promosi khusus hanya untuk kamu! ',
+      text8: 'Trending hari ini',
+      text9: 'Cek apa yang sedang populer sekarang',
+      text10: 'SeedsPedia',
+      text11: 'Peringkat Kamu',
+      text12: 'Menangkan Hadiah setiap Bulan',
+      text13: '"Sekarang di Desember"',
+      text14: 'Lihat lebih banyak'
+    },
+    section3: {
+      text1: 'Sumber semua utama berita keuangan terbaru',
+      text2: 'Saat Ini',
+      text3: 'Bulan Lalu',
+      text4: 'Peringkatmu Saat Ini',
+      text5: 'Cari dan ikuti profil yang menarik.',
+      text6: 'Daftar Profile'
+    }
+  },
+  chooseCurrency: {
+    header: 'Pilih mata uangmu',
+    body: 'Mata uang pilihanmu akan digunakan untuk semua transaksi di Seeds',
+    successHeader: 'Mata uangmu adalah',
+    successBody1: 'Selamat! Kamu telah memilih',
+    successBody2:
+      'sebagai preferensi mata uangmu. Mulai sekarang, semua transaksi kamu di Seeds akan dalam',
+    successBody3: ', kamu bisa mengubahnya kapan pun di pengaturan.',
+    defaultHeader: 'Mata uang bawaan kamu adalah USD',
+    defaultBody:
+      'Saat ini mata uang bawaan kamu adalah USD, tapi jangan khawatir, kamu bisa mengubahnya kapan pun di pengaturan.',
+    button: 'Simpan',
+    buttonSuccess: 'OK',
+    yourCurrencyIs: 'Kurs mata uang Anda adalah',
+    successChangeCurrency:
+      'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
   }
 };

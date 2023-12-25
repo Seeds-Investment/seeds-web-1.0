@@ -1,8 +1,11 @@
 import ArticleCard from '@/components/homepage/articleCard';
 import { getArticle } from '@/repository/article.repository';
+import LanguageContext from '@/store/language/language-context';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -33,13 +36,23 @@ export interface Metadata {
 }
 
 export default function ArticlePage(): React.ReactElement {
+  const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const [articles, setArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState('All');
+
+  let languageValue = '';
+
+  if (languageCtx.language === 'EN') {
+    languageValue = 'english';
+  } else {
+    languageValue = 'indonesian';
+  }
   const [params, setParams] = useState({
     page: 1,
     limit: 4,
     source: 'articles',
-    language: '',
+    language: languageValue,
     search: '',
     category: 'All',
     totalPage: 9
@@ -252,7 +265,7 @@ export default function ArticlePage(): React.ReactElement {
           href={'/homepage/articles'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
-          See More
+          {t('homepage.section2.text14')}
         </Link>
       </div>
     </div>

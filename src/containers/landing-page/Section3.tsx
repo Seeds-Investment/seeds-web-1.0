@@ -4,118 +4,89 @@ import Seedling from '@/assets/landing-page/seedling.svg';
 import Seeds from '@/assets/landing-page/seeds.svg';
 import Sprout from '@/assets/landing-page/sprout.svg';
 import Tree from '@/assets/landing-page/tree.svg';
+import { SectionSixImageOval } from '@/constants/assets/images';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useInView } from 'react-intersection-observer';
+
 export default function Section3(): React.ReactElement {
-  //   const { t } = useTranslation();
-  //   const width = useWindowInnerWidth();
+  const { t } = useTranslation();
+  const [isBottom, setBottom] = useState(0);
+  const measurement = 900;
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.2
+  });
+  useEffect(() => {
+    const bottom = entry?.boundingClientRect.bottom ?? 0;
+    setBottom(bottom);
+  }, [entry]);
 
   return (
-    <div className="h-auto min-w-full mt-20 cursor-default relative text-center">
-      <div className="justify-center items-center text-center">
-        <div className="absolute top-0 left-0 w-full z-10 mt-5">
-          <h1 className="font-poppins font-semibold text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] lg:mb-4">
-            How Seeds Enhance
-          </h1>
-          <h1 className="font-poppins font-semibold text-3xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-            Your Financial Journey
-          </h1>
-        </div>
-        <div className="ms-[8%] lg:hidden relative z-0">
-          <svg
-            width="375"
-            height="121"
-            viewBox="0 0 375 121"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M37.9735 78.5318C86.6332 103.536 216.368 122.795 337.983 81.9899C490.002 30.9839 99.3853 -43.3638 15.1544 35.3065C-56.757 102.47 144.354 132.996 259.793 114.841C339.146 102.362 413.114 75.0737 353.085 45.6805C293.056 16.2874 185.929 8.04605 111.13 16.2874"
-              stroke="url(#paint0_linear_310_4684)"
-              stroke-width="0.601911"
-              stroke-linecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_310_4684"
-                x1="330.348"
-                y1="14.7715"
-                x2="177.307"
-                y2="227.414"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stop-color="#4FE6AF" />
-                <stop offset="1" stop-color="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div className="lg:ms-[20%] hidden lg:block lg:w-full relative z-0">
-          <svg
-            width="838"
-            height="159"
-            viewBox="0 0 838 159"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M85.6556 103.29C194.134 136.279 483.357 161.687 754.477 107.852C1093.38 40.5586 222.563 -57.5304 34.7841 46.2615C-125.53 134.873 322.813 175.146 580.165 151.194C757.069 134.729 921.968 98.7275 788.144 59.9483C654.319 21.1691 415.498 10.2961 248.746 21.1691"
-              stroke="url(#paint0_linear_213_3314)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <defs>
-              <linearGradient
-                id="paint0_linear_213_3314"
-                x1="737.456"
-                y1="19.1691"
-                x2="583.922"
-                y2="379.638"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#4FE6AF" />
-                <stop offset="1" stopColor="#9A76FE" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+    <section
+      ref={ref}
+      className="h-auto min-w-full cursor-default font-poppins text-center relative overflow-hidden"
+    >
+      <div className="hidden lg:block absolute bg-[#BAFBD0] blur-[150px] w-[580px] h-[489px] right-[-25rem] top-[-10rem] rounded-full z-0"></div>
+
+      <div
+        className={`flex flex-col w-full items-center mt-5 lg:mt-20 font-poppins relative ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
+        <p className=" text-2xl lg:text-5xl mt-10 p-5 text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold absolute z-10">
+          {t('landingV2.section3.text1')} <br /> {t('landingV2.section3.text2')}
+        </p>
+        <Image
+          src={SectionSixImageOval.src}
+          alt={SectionSixImageOval.alt}
+          width={400}
+          height={100}
+          className="w-[375px] h-[157px] top-5 lg:w-[836px] lg:h-[167px] md:top-5 relative z-1"
+        />
       </div>
       <div className="lg:flex text-center items-center flex-row gap-5 mx-20 lg:my-12">
         <div className="w-full justify-center lg:w-1/5">
           <Image alt="img" className="justify-center" src={Seeds} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seeds</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
-            Lacks financial literacy, vulnerable to scams
+            {t('landingV2.section3.text3')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5">
           <Image alt="img" className="justify-center" src={Sprout} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Sprout</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
-            Questions finances and seeks basic knowledge.
+            {t('landingV2.section3.text4')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5">
           <Image alt="img" className="justify-center" src={Seedling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seedling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
-            Ready to adopt financial strategies.
+            {t('landingV2.section3.text5')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5">
           <Image alt="img" className="justify-center" src={Sapling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Sapling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
-            Gaining confidence in making informed financial decisions.
+            {t('landingV2.section3.text6')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5">
           <Image alt="img" className="justify-center" src={Tree} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Tree</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
-            Achieving advanced financial literacy
+            {t('landingV2.section3.text7')}
           </h1>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

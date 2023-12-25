@@ -1,130 +1,134 @@
-import PlayerAchievement from '@/components/popup/PlayerAchievement';
-import axios from 'axios';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import FilterIcon from '../../components/svgs/filterIcon';
-import GoldRank from '../../components/svgs/rank1';
-import SilverRank from '../../components/svgs/rank2';
-import BronzeRank from '../../components/svgs/rank3';
-import TopIcon from '../../components/svgs/topIcon';
+// import PlayerAchievement from '@/components/popup/PlayerAchievement';
+// import axios from 'axios';
+// import Image from 'next/image';
+// import { useEffect, useState } from 'react';
+// import FilterIcon from '../../components/svgs/filterIcon';
+// import GoldRank from '../../components/svgs/rank1';
+// import SilverRank from '../../components/svgs/rank2';
+// import BronzeRank from '../../components/svgs/rank3';
+// import TopIcon from '../../components/svgs/topIcon';
+import ComingSoon from '@/components/coming-soon';
 
-interface LeaderboardData {
-  user_id: string;
-  points: number;
-  avatar_url: string;
-  user_full_name: string;
-  user_seeds_tag: string;
-  current_rank: number;
-}
-interface playList {
-  id: string;
-  play_id: string;
-  name: string;
-  gain_percentage: number;
-  status: string;
-  prize_fix_amount: number;
-  prize_fix_percentages: [number];
-  prize_pool_amount: number;
-  prize_pool_percentages: [number];
-  admission_fee: number;
-  play_time: string;
-  end_time: string;
-  is_joined: true;
-  type: string;
-  participants: [
-    {
-      photo_url: string;
-      id: string;
-    }
-  ];
-  min_participant: number;
-  max_participant: number;
-  tnc: string;
-  created_by: {
-    photo_url: string;
-    name: string;
-  };
-}
+// interface LeaderboardData {
+//   user_id: string;
+//   points: number;
+//   avatar_url: string;
+//   user_full_name: string;
+//   user_seeds_tag: string;
+//   current_rank: number;
+// }
+// interface playList {
+//   id: string;
+//   play_id: string;
+//   name: string;
+//   gain_percentage: number;
+//   status: string;
+//   prize_fix_amount: number;
+//   prize_fix_percentages: [number];
+//   prize_pool_amount: number;
+//   prize_pool_percentages: [number];
+//   admission_fee: number;
+//   play_time: string;
+//   end_time: string;
+//   is_joined: true;
+//   type: string;
+//   participants: [
+//     {
+//       photo_url: string;
+//       id: string;
+//     }
+//   ];
+//   min_participant: number;
+//   max_participant: number;
+//   tnc: string;
+//   created_by: {
+//     photo_url: string;
+//     name: string;
+//   };
+// }
 
-interface PlayerData {
-  id?: string;
-  rank?: number;
-}
+// interface PlayerData {
+//   id?: string;
+//   rank?: number;
+// }
 
-const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
+// const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
 
 const Player = (): React.ReactElement => {
-  const [leader, setLeader] = useState<LeaderboardData[]>([]);
-  const [playList, setPlayList] = useState<playList[]>([]);
-  const [showAchievementModal, setShowAchievementModal] =
-    useState<boolean>(false);
-  const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
+  // const [leader, setLeader] = useState<LeaderboardData[]>([]);
+  // const [playList, setPlayList] = useState<playList[]>([]);
+  // const [showAchievementModal, setShowAchievementModal] =
+  //   useState<boolean>(false);
+  // const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
 
-  useEffect(() => {
-    fetchLeaderboardData()
-      .then()
-      .catch(() => {});
-    fetchPlayList()
-      .then()
-      .catch(() => {});
-  }, []);
+  // useEffect(() => {
+  //   fetchLeaderboardData()
+  //     .then()
+  //     .catch(() => {});
+  //   fetchPlayList()
+  //     .then()
+  //     .catch(() => {});
+  // }, []);
 
-  const fetchPlayList = async (): Promise<void> => {
-    try {
-      const response = await axios.get(`${baseUrl}/play/v1/list`);
-      const playList: playList[] = response.data.playList;
-      setPlayList(playList);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // const fetchPlayList = async (): Promise<void> => {
+  //   try {
+  //     const response = await axios.get(`${baseUrl}/play/v1/list`);
+  //     const playList: playList[] = response.data.playList;
+  //     setPlayList(playList);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
-  const fetchLeaderboardData = async (): Promise<void> => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}/play/v1/leaderboard?type=ARENA`
-      );
-      const leaderboardData: LeaderboardData[] = response.data.playLeaderboards;
-      setLeader(leaderboardData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // const fetchLeaderboardData = async (): Promise<void> => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${baseUrl}/play/v1/leaderboard?type=ARENA`
+  //     );
+  //     const leaderboardData: LeaderboardData[] = response.data.playLeaderboards;
+  //     setLeader(leaderboardData);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
-  function getFormattedDate(day: string): string {
-    const today = new Date(day);
-    const date = String(today.getDate()).padStart(2, '0');
-    const monthIndex = today.getMonth();
-    const year = String(today.getFullYear());
+  // function getFormattedDate(day: string): string {
+  //   const today = new Date(day);
+  //   const date = String(today.getDate()).padStart(2, '0');
+  //   const monthIndex = today.getMonth();
+  //   const year = String(today.getFullYear());
 
-    const monthNames = [
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
-    ];
-    const month = monthNames[monthIndex];
+  //   const monthNames = [
+  //     'Januari',
+  //     'Februari',
+  //     'Maret',
+  //     'April',
+  //     'Mei',
+  //     'Juni',
+  //     'Juli',
+  //     'Agustus',
+  //     'September',
+  //     'Oktober',
+  //     'November',
+  //     'Desember'
+  //   ];
+  //   const month = monthNames[monthIndex];
 
-    return date + ' ' + month + ' ' + year;
-  }
-  const filteredLeader = leader.filter(player => player.current_rank < 4);
-  const filteredAllCompetition = playList.filter((competition, i) => i < 3);
-  const filteredStatusCompetition = playList.filter(
-    (competition, i) => competition.status === 'ACTIVE' && i < 3
-  );
-  // const filteredAllCompetition = playList.filter((competition, i) => i < 4);
+  //   return date + ' ' + month + ' ' + year;
+  // }
+  // const filteredLeader = leader.filter(player => player.current_rank < 4);
+  // const filteredAllCompetition = playList.filter((competition, i) => i < 3);
+  // const filteredStatusCompetition = playList.filter(
+  //   (competition, i) => competition.status === 'ACTIVE' && i < 3
+  // );
+  // // const filteredAllCompetition = playList.filter((competition, i) => i < 4);
 
   return (
-    <div className="grid lg:grid-cols-7 mx-5 gap-2">
-      <div className="rounded-2xl p-3 lg:col-span-5  border">
+    <>
+      <ComingSoon />
+    </>
+    // <div className="grid lg:grid-cols-7 mx-5 gap-2">
+    /* <div className="rounded-2xl p-3 lg:col-span-5  border">
         <div className="grid lg:grid-cols-7 gap-2">
           <div className="rounded-2xl lg:col-span-3 ">
             <div className="relative mb-4 lg:flex">
@@ -522,8 +526,8 @@ const Player = (): React.ReactElement => {
             ))}
           </ul>
         </div>
-      </div>
-    </div>
+      </div> */
+    // </div>
   );
 };
 

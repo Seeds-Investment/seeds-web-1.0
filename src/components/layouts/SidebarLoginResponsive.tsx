@@ -1,5 +1,8 @@
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,7 +16,7 @@ import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -36,12 +39,44 @@ const menu = [
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
   };
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const getLastTranslation = async (): Promise<void> => {
+      try {
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <aside className="absolute z-20 left-0 w-2/3 h-[50rem] py-6 bg-white">
@@ -50,6 +85,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
           onClose={() => {
             setIsLogoutModal(prev => !prev);
           }}
+          userInfo={userInfo}
         />
       )}
       <div className="flex flex-col items-center gap-3">
@@ -83,6 +119,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   }`}
                   onClick={() => {
                     languageCtx.languageHandler('ID');
+                    setTranslationToLocalStorage('ID').catch(err => {
+                      console.log(err);
+                    });
                   }}
                 >
                   <span
@@ -114,6 +153,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   }`}
                   onClick={() => {
                     languageCtx.languageHandler('EN');
+                    setTranslationToLocalStorage('EN').catch(err => {
+                      console.log(err);
+                    });
                   }}
                 >
                   <span

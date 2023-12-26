@@ -103,7 +103,7 @@ const Section3: React.FC = () => {
                   ))
                 : null}
             </Slider>
-            <div className="absolute right-0 top-[10rem] z-30">
+            <div className="absolute right-0 top-[5rem] md:top-[10rem] z-30">
               <button
                 className="rounded-full justify-center lg:p-2 p-1 bg-white"
                 onClick={() => {

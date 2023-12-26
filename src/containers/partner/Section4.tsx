@@ -67,11 +67,11 @@ const Section4: React.FC = () => {
           {t('partner.section4.subtitle')}
         </p>
 
-        <div className="flex flex-col w-full items-center justify-center gap-28 font-poppins p-5 md:px-20 md:flex-row">
+        <div className="flex flex-col w-full items-center justify-center gap-5 md:gap-28 font-poppins p-5 md:px-20 md:flex-row">
           {data.map((data, idx) => (
             <Card
               key={idx}
-              className="flex flex-col items-center w-full md:w-1/4 md:mb-14 p-5 text-center rounded-3xl"
+              className="flex flex-col items-center md:h-[30rem] w-full md:w-1/4 md:mb-14 p-5 text-center rounded-3xl"
             >
               <Image
                 src={data.image}

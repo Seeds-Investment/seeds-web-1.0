@@ -5,14 +5,12 @@ import {
 } from '@/constants/assets/images';
 import { Button, Card } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 const Section4: React.FC = () => {
   const { t } = useTranslation();
-  const router = useRouter();
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -29,19 +27,22 @@ const Section4: React.FC = () => {
       image: SectionFourKolOptionOne.src,
       title: `${t('partner.section4.option1.title')}`,
       text: `${t('partner.section4.option1.text')}`,
-      button: `${t('partner.section4.option1.button')}`
+      button: `${t('partner.section4.option1.button')}`,
+      link: 'https://docs.google.com/forms/d/e/1FAIpQLSdvwGEZG_2rtRHJz9lJloF3sQd-l9I4kCe9Mh0EOOZfpPFIOA/viewform'
     },
     {
       image: SectionFourKolOptionTwo.src,
       title: `${t('partner.section4.option2.title')}`,
       text: `${t('partner.section4.option2.text')}`,
-      button: `${t('partner.section4.option2.button')}`
+      button: `${t('partner.section4.option2.button')}`,
+      link: 'https://docs.google.com/forms/d/e/1FAIpQLSeGD35xu4iT7hkuM6PJLuI66vsqGx-oREAtmgWIiodpxgdFaQ/viewform'
     },
     {
       image: SectionFourKolOptionThree.src,
       title: `${t('partner.section4.option3.title')}`,
       text: `${t('partner.section4.option3.text')}`,
-      button: `${t('partner.section4.option3.button')}`
+      button: `${t('partner.section4.option3.button')}`,
+      link: 'https://docs.google.com/forms/d/e/1FAIpQLSdRJA5QIs16tTJHdjtWWMMeIfEvGteJwINZJV6IHIBIBbM8ZA/viewform'
     }
   ];
 
@@ -70,7 +71,7 @@ const Section4: React.FC = () => {
           {data.map((data, idx) => (
             <Card
               key={idx}
-              className="flex flex-col items-center w-full md:w-1/4 mb-14 p-5 text-center rounded-3xl"
+              className="flex flex-col items-center w-full md:w-1/4 md:mb-14 p-5 text-center rounded-3xl"
             >
               <Image
                 src={data.image}
@@ -87,7 +88,7 @@ const Section4: React.FC = () => {
               <Button
                 className="invisible text-xs px-12 md:mt-8 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full md:visible"
                 onClick={() => {
-                  void router.push('https://linktr.ee/seeds.finance');
+                  window.open(data.link, '_blank', 'noopener noreferrer');
                 }}
               >
                 {data.button}

@@ -4,6 +4,7 @@ import {
   SectionTwoIconUser,
   SectionTwoImagePartnership
 } from '@/constants/assets/images';
+import { webCounter } from '@/repository/web.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
@@ -14,6 +15,9 @@ import Slider from 'react-slick';
 
 const Section2: React.FC = () => {
   const { t } = useTranslation();
+  const [totalEvent, setTotalEvent] = useState<number>(0);
+  const [totalRegister, setTotalRegister] = useState<number>(0);
+  const [totalCircle, setTotalCircle] = useState<number>(0);
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -43,6 +47,21 @@ const Section2: React.FC = () => {
     dots: false
   };
 
+  const fetchCounter = async (): Promise<void> => {
+    try {
+      const response = await webCounter();
+      setTotalEvent(response.total_event);
+      setTotalCircle(response.total_circle);
+      setTotalRegister(response.total_user);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    void fetchCounter();
+  }, []);
+
   return (
     <div className="bg-white min-w-full font-poppins" ref={ref}>
       <div
@@ -67,7 +86,7 @@ const Section2: React.FC = () => {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalCircle} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option1')}
@@ -87,7 +106,7 @@ const Section2: React.FC = () => {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalRegister} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option2')}
@@ -107,7 +126,7 @@ const Section2: React.FC = () => {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalEvent} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option3')}

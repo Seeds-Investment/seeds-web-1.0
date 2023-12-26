@@ -2,8 +2,15 @@ import next from '@/assets/landing-page/next.svg';
 import prev from '@/assets/landing-page/prev.svg';
 import {
   SectionSixImageEvent1,
+  SectionSixImageEvent10,
   SectionSixImageEvent2,
   SectionSixImageEvent3,
+  SectionSixImageEvent4,
+  SectionSixImageEvent5,
+  SectionSixImageEvent6,
+  SectionSixImageEvent7,
+  SectionSixImageEvent8,
+  SectionSixImageEvent9,
   SectionSixImageOval
 } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
@@ -18,7 +25,6 @@ import 'slick-carousel/slick/slick.css';
 const Section6: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
-  const [sliderIndex, setSliderIndex] = useState(0);
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -33,7 +39,14 @@ const Section6: React.FC = () => {
   const events = [
     { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent3.src }
+    { image: SectionSixImageEvent3.src },
+    { image: SectionSixImageEvent4.src },
+    { image: SectionSixImageEvent5.src },
+    { image: SectionSixImageEvent6.src },
+    { image: SectionSixImageEvent7.src },
+    { image: SectionSixImageEvent8.src },
+    { image: SectionSixImageEvent9.src },
+    { image: SectionSixImageEvent10.src }
   ];
 
   const PrevBtn = (props: any): any => {
@@ -65,18 +78,16 @@ const Section6: React.FC = () => {
   };
 
   const settings = {
-    classname: 'center',
-    centerPadding: '27%',
-    infinite: true,
-    prevArrow: <PrevBtn />,
-    nextArrow: <NextBtn />,
-    beforeChange: (current: number, next: number) => {
-      setSliderIndex(next);
-    },
-    speed: 500,
+    // centerMode: true,
     slidesToShow: 3,
-    slidesToScroll: 3,
-    initialSlide: 0,
+    speed: 1000,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    infinite: true,
+    dots: false,
+    nextArrow: <NextBtn />,
+    prevArrow: <PrevBtn />,
     responsive: [
       {
         breakpoint: 1024,
@@ -135,11 +146,11 @@ const Section6: React.FC = () => {
           ) : null
         ) : null}
 
-        <div className="relative w-full mt-6 mb-20 md:mt-16 md:px-20">
-          <Slider {...settings} initialSlide={sliderIndex}>
+        <div className="w-full mt-6 mb-20 md:mt-16 md:px-20">
+          <Slider {...settings}>
             {events?.length !== 0
               ? events?.map((data, idx) => (
-                  <div key={idx} className="mr-3">
+                  <div key={idx} className="w-full lg:w-1/3">
                     <Image
                       src={data.image}
                       alt="event"

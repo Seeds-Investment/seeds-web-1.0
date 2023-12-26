@@ -52,7 +52,7 @@ export const seedsInformation: ISeedsInformationList = {
     },
     {
       name: 'Career',
-      url: '/'
+      url: 'https://bit.ly/CareerSeeds'
     }
     // {
     //   name: 'Refferal Program',

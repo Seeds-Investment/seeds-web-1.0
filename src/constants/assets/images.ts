@@ -149,6 +149,41 @@ export const SectionSixImageEvent3: AssetsInterface = {
   alt: 'bg'
 };
 
+export const SectionSixImageEvent4: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-4.png',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent5: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-5.jpeg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent6: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-6.jpeg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent7: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-7.png',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent8: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-8.jpg',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent9: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-9.png',
+  alt: 'bg'
+};
+
+export const SectionSixImageEvent10: AssetsInterface = {
+  src: '/assets/partner/section-six/seeds-event-10.jpg',
+  alt: 'bg'
+};
+
 // About Us
 export const AboutUsSectionOneImage1: AssetsInterface = {
   src: '/assets/about-us/section-one/image-1.svg',
@@ -227,6 +262,13 @@ const Images: Record<string, AssetsInterface> = {
   SectionSixImageEvent1,
   SectionSixImageEvent2,
   SectionSixImageEvent3,
+  SectionSixImageEvent4,
+  SectionSixImageEvent5,
+  SectionSixImageEvent6,
+  SectionSixImageEvent7,
+  SectionSixImageEvent8,
+  SectionSixImageEvent9,
+  SectionSixImageEvent10,
   AboutUsSectionOneImage1,
   AboutUsSectionOneImage2,
   SectionFiveImageProblemSolution,

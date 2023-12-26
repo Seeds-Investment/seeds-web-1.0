@@ -205,6 +205,7 @@ export default {
       confirm: 'Konfirmasi',
       tryAgain: 'Coba Lagi',
       next: 'Lanjut',
+      save: 'Simpan',
       done: 'Selesai',
       deleteAccount: 'Hapus Akun'
     }
@@ -953,7 +954,7 @@ export default {
       },
       section6: {
         title1: 'Unduh Sekarang!',
-        title2: 'Mulai Perjalanan Investasimu.',
+        title2: 'Mulai Perjalanan Investasimu',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -1222,12 +1223,15 @@ export default {
       text4: 'Investing',
       text5:
         'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
-      text6: 'Main Sekarang!'
+      text6: 'Main Sekarang',
+      text7: 'Bangun Portofolio & Klaim Hadiah',
+      text8: 'Interaksi Sosial',
+      text9: 'Tantang, Pelajari, Raih'
     },
     section2: {
       text1: 'Social',
       text2:
-        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+        'Berdiskusi dan berkoneksi dengan seorang ahli keuangan untuk memulai perjalanan keuangan yang sukses.'
     },
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
@@ -1349,5 +1353,22 @@ export default {
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
     }
+  },
+  chooseCurrency: {
+    header: 'Pilih mata uangmu',
+    body: 'Mata uang pilihanmu akan digunakan untuk semua transaksi di Seeds',
+    successHeader: 'Mata uangmu adalah',
+    successBody1: 'Selamat! Kamu telah memilih',
+    successBody2:
+      'sebagai preferensi mata uangmu. Mulai sekarang, semua transaksi kamu di Seeds akan dalam',
+    successBody3: ', kamu bisa mengubahnya kapan pun di pengaturan.',
+    defaultHeader: 'Mata uang bawaan kamu adalah USD',
+    defaultBody:
+      'Saat ini mata uang bawaan kamu adalah USD, tapi jangan khawatir, kamu bisa mengubahnya kapan pun di pengaturan.',
+    button: 'Simpan',
+    buttonSuccess: 'OK',
+    yourCurrencyIs: 'Kurs mata uang Anda adalah',
+    successChangeCurrency:
+      'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
   }
 };

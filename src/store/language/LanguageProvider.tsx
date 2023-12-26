@@ -13,8 +13,6 @@ const LanguageProvider: React.FC<LanguageProps> = ({ children }) => {
   const [language, setLanguage] = useState(i18n.language.toUpperCase());
 
   const languageHandler = (lang: 'EN' | 'ID'): void => {
-    console.log(lang, 'ini di provider');
-
     setLanguage(lang);
   };
 

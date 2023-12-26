@@ -26,7 +26,6 @@ export default function Home(): React.ReactElement {
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken != null) {
-      // Jika access token ada, navigasikan pengguna ke halaman '/homepage'
       void router.push('/homepage');
     }
   }, []);

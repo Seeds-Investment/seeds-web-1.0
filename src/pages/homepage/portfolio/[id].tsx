@@ -14,6 +14,7 @@ import AssetPortfolioCard from '@/containers/homepage/trending/AssetsPortfolioCa
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
 import { formatNumber, standartCurrency } from '@/helpers/currency';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
+import withAuth from '@/helpers/withAuth';
 import {
   getPlayBallance,
   getPlayPortfolio
@@ -213,7 +214,7 @@ const PortfolioPage: React.FC = () => {
               {t('playSimulation.investmentValue')}
             </Typography>
             <Typography className="text-white font-poppins text-xl font-semibold mb-2">
-              {`${ballance.currency} ${standartCurrency(
+              {`${ballance?.currency} ${standartCurrency(
                 portfolio?.summary?.value
               ).replace('Rp', '')}`}
             </Typography>
@@ -223,7 +224,7 @@ const PortfolioPage: React.FC = () => {
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
                 } font-poppins text-xs font-light`}
               >
-                {`${ballance.currency} ${standartCurrency(
+                {`${ballance?.currency} ${standartCurrency(
                   portfolio?.summary?.gnl
                 ).replace('Rp', '')}`}
               </Typography>
@@ -246,7 +247,7 @@ const PortfolioPage: React.FC = () => {
             {portfolio !== null && (
               <PortfolioChart
                 data={chartData}
-                centerText={`${ballance.currency} ${
+                centerText={`${ballance?.currency} ${
                   portfolio?.summary?.gnl >= 0
                     ? formatNumber(portfolio?.summary?.gnl)
                     : 0
@@ -307,4 +308,4 @@ const PortfolioPage: React.FC = () => {
   );
 };
 
-export default PortfolioPage;
+export default withAuth(PortfolioPage);

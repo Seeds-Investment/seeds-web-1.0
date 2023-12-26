@@ -2,13 +2,14 @@
 import { SectionSixImageOval } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getArticle } from '@/repository/article.repository';
+import LanguageContext from '@/store/language/language-context';
 import { Button } from '@material-tailwind/react';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
@@ -34,10 +35,19 @@ interface Article {
 export default function Section3(): React.ReactElement {
   const [hotNews, setHotNews] = useState<Article[]>([]);
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const width = useWindowInnerWidth();
   const [isBottom, setBottom] = useState(0);
   const measurement = 900;
   const router = useRouter();
+
+  let languageValue = '';
+
+  if (languageCtx.language === 'EN') {
+    languageValue = 'english';
+  } else {
+    languageValue = 'indonesian';
+  }
 
   const { ref, inView, entry } = useInView({
     threshold: 0.2
@@ -76,7 +86,7 @@ export default function Section3(): React.ReactElement {
         page: 1,
         limit: 9,
         source: 'news',
-        language: '',
+        language: languageValue,
         search: '',
         category: 'All'
       });
@@ -97,7 +107,7 @@ export default function Section3(): React.ReactElement {
     fetchData().catch(error => {
       console.error('Error in fetchData:', error);
     });
-  }, []);
+  }, [languageCtx]);
 
   const defaultHotNewsImage = '/assets/default-news.png';
   function isImageUrlValid(url: string): boolean {
@@ -136,7 +146,7 @@ export default function Section3(): React.ReactElement {
             width > 700 ? (
               <>
                 <div className="absolute z-0 bg-[#3AC4A0BF] blur-[150px] w-[300px] h-[300px] right-[10rem] top-[10rem] rounded-full"></div>
-                <div className="absolute z-0 bg-[#7F64D8] blur-[150px] w-[300px] h-[300px] right-[25rem] top-[20rem] rounded-full"></div>
+                <div className="absolute z-0 bg-[#7F64D8] blur-[250px] w-[300px] h-[300px] right-[25rem] top-[20rem] rounded-full"></div>
               </>
             ) : null
           ) : null}

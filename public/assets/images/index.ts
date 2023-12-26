@@ -1,8 +1,10 @@
 export { default as LegalSubmenu } from 'public/assets/faq-submenu/LegalMenu.png';
+export { default as ChooseCurrencyModal } from 'public/assets/images/ChooseCurrencyModal.png';
 export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';
 export { default as AppleBrand } from 'public/assets/images/apple.svg';
+export { default as CurrencySVG } from 'public/assets/images/currency.svg';
 export { default as DummyAvatar } from 'public/assets/images/dummy-avatar.png';
 export { default as FacebookBrand } from 'public/assets/images/facebook.svg';
 export { default as Flags } from 'public/assets/images/flags';

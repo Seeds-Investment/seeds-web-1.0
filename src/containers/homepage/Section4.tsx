@@ -37,7 +37,11 @@ const Section4 = (): React.ReactElement => {
           limit: 10,
           type: 'exclusive'
         });
-        setBannerData(res.data);
+        if (res.data.length === 1) {
+          setBannerData([...res.data, ...res.data]);
+        } else {
+          setBannerData(res.data);
+        }
       } catch (error) {
         console.error('Error fetching trending assets:', error);
       }
@@ -46,10 +50,10 @@ const Section4 = (): React.ReactElement => {
     void fetchBannerAsset();
   }, []);
 
-  const hotNewsItemClass = 'mb-2 me-20';
+  const hotNewsItemClass = 'mb-2';
 
   const sliderSettings = {
-    className: 'rounded-2xl center',
+    className: 'rounded-2xl ',
     dots: true,
     infinite: true,
     speed: 500,
@@ -95,7 +99,7 @@ const Section4 = (): React.ReactElement => {
             <Link key={data.id} href={`/homepage/exclusive/${data?.id ?? 0}`}>
               <div
                 key={data.id}
-                className={`w-full lg:pe-5  flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
+                className={`lg:pe-5  flex   cursor-pointer hover:shadow-lg transition-all ${hotNewsItemClass}`}
               >
                 <Image
                   className="object-cover rounded-2xl "

@@ -107,7 +107,7 @@ const LastMonthPage = (): React.ReactElement => {
             key={index}
             className={`w-full p-3 mb-2 ${
               leader.rank === 1 || leader.rank === 2 || leader.rank === 3
-                ? 'rounded-xl border border-[#4d4e4d]'
+                ? 'rounded-xl border border-[#E9E9E9]'
                 : ''
             }`}
           >

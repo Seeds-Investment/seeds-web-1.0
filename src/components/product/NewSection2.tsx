@@ -1,5 +1,3 @@
-import BlurLeadBottom from '@/assets/product/BlurLeadBottom.svg';
-import BlurLeadTop from '@/assets/product/BlurLeadTop.svg';
 import CrownIlust from '@/assets/product/CrownIlust.png';
 import LeaderboardLine from '@/assets/product/LeaderboardLine.svg';
 import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
@@ -62,7 +60,7 @@ const NewSection2: React.FC = () => {
       ref={ref}
       className="relative flex flex-col items-center justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
-      <Image
+      {/* <Image
         src={BlurLeadTop}
         alt="BlurLeadTop"
         className="absolute top-0 left-0"
@@ -71,7 +69,7 @@ const NewSection2: React.FC = () => {
         src={BlurLeadBottom}
         alt="BlurLeadBottom"
         className="absolute bottom-0 right-0"
-      />
+      /> */}
       <div
         className={`flex flex-col items-center ${
           inView && isBottom >= measurement
@@ -159,7 +157,7 @@ const NewSection2: React.FC = () => {
               height={200.23}
               className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
-            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+            <Typography className="font-poppins font-semibold text-xs md:text-xl text-[#201B1C] capitalize">
               {(Lead[1]?.user_full_name?.length > 17
                 ? `${Lead[1]?.user_full_name.substring(0, 17) as string}...`
                 : Lead[1]?.user_full_name) ??
@@ -183,28 +181,28 @@ const NewSection2: React.FC = () => {
               </div>
             </div>
             <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
-              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg md:p-3 p-1">
                 <div className="flex flex-col justify-between text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
-                    Total play
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
+                    Play
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[1]?.total_play}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Win
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[1]?.total_win}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Lose
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[1]?.total_lose}
                   </Typography>
                 </div>
@@ -224,7 +222,7 @@ const NewSection2: React.FC = () => {
               height={200.23}
               className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
-            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+            <Typography className="font-poppins font-semibold text-xs md:text-xl text-[#201B1C] capitalize">
               {(Lead[0]?.user_full_name?.length > 17
                 ? `${Lead[0]?.user_full_name.substring(0, 17) as string}...`
                 : Lead[0]?.user_full_name) ??
@@ -248,28 +246,28 @@ const NewSection2: React.FC = () => {
               </div>
             </div>
             <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
-              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg md:p-3 p-1">
                 <div className="flex flex-col justify-between text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
-                    Total play
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
+                    Play
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[0]?.total_play}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Win
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[0]?.total_win}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Lose
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[0]?.total_lose}
                   </Typography>
                 </div>
@@ -284,7 +282,7 @@ const NewSection2: React.FC = () => {
               height={200.23}
               className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
-            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+            <Typography className="font-poppins font-semibold text-xs md:text-xl text-[#201B1C] capitalize">
               {(Lead[2]?.user_full_name?.length > 17
                 ? `${Lead[2]?.user_full_name.substring(0, 17) as string}...`
                 : Lead[2]?.user_full_name) ??
@@ -308,28 +306,28 @@ const NewSection2: React.FC = () => {
               </div>
             </div>
             <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
-              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg md:p-3 p-1">
                 <div className="flex flex-col justify-between text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
-                    Total play
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
+                    Play
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[2]?.total_play}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Win
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[2]?.total_win}
                   </Typography>
                 </div>
                 <div className="text-center">
-                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                  <Typography className="font-poppins font-medium text-[5px] leading-[12px] md:text-sm text-[#BDBDBD]">
                     Lose
                   </Typography>
-                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                  <Typography className="font-poppins font-semibold text-xs md:text-lg text-[#201B1C]">
                     {Lead[2]?.total_lose}
                   </Typography>
                 </div>

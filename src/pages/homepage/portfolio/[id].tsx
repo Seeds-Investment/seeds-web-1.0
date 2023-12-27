@@ -19,6 +19,7 @@ import {
   getPlayBallance,
   getPlayPortfolio
 } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -165,19 +166,36 @@ const PortfolioPage: React.FC = () => {
     }
   }, [portfolio]);
 
-  const fetchPlayBallance = async (): Promise<void> => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayBallance(id as string);
+      const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchPlayPortfolio = async (): Promise<void> => {
+  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getPlayPortfolio(id as string);
+      const response = await getPlayPortfolio(id as string, currency);
       setPortfolio(response);
     } catch (error) {
       console.log(error);
@@ -187,11 +205,11 @@ const PortfolioPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id !== undefined) {
-      void fetchPlayBallance();
-      void fetchPlayPortfolio();
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency as string);
+      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
     }
-  }, [id]);
+  }, [id, userInfo]);
 
   const handleActiveTab = (val: string): void => {
     setActiveTab(val);
@@ -248,7 +266,7 @@ const PortfolioPage: React.FC = () => {
               <PortfolioChart
                 data={chartData}
                 centerText={`${ballance?.currency} ${
-                  portfolio?.summary?.gnl >= 0
+                  portfolio?.summary?.gnl > 0
                     ? formatNumber(portfolio?.summary?.gnl)
                     : 0
                 }`}
@@ -297,9 +315,15 @@ const PortfolioPage: React.FC = () => {
             <AssetTrendingCardSkeleton />
           ) : (
             filterAssetsList()?.map((el: any) => {
-              console.log(el);
-
-              return <AssetPortfolioCard id={el.id} key={el.id} />;
+              return (
+                <AssetPortfolioCard
+                  id={el.id}
+                  userInfo={userInfo}
+                  key={el.id}
+                  isClick
+                  playId={id as string}
+                />
+              );
             })
           )}
         </div>

@@ -305,8 +305,11 @@ const Circle = (): React.ReactElement => {
           )}
         </div>
       </CCard>
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
-        <div className="absolute bg-[#9A76FE] blur-[130px] w-[200px] h-[200px] left-0 top-0 rounded-full"></div>
+      <CCard className="p-1 md:p-5 md:mt-5 md:rounded-lg border-none rounded-none">
+        {width !== undefined && width >= 768 ? (
+          <div className="absolute bg-[#9A76FE] blur-[130px] w-[200px] h-[200px] left-0 top-0 rounded-full"></div>
+        ) : null}
+
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.list.title')}
         </Typography>
@@ -314,7 +317,7 @@ const Circle = (): React.ReactElement => {
           {t('circle.list.description')}
         </Typography>
 
-        {width !== undefined && width < 768 ? (
+        {/* {width !== undefined && width < 768 ? (
           <SearchCircle
             name="search"
             type="outline"
@@ -325,13 +328,13 @@ const Circle = (): React.ReactElement => {
             placeholder="Search"
             value={filter.search}
           />
-        ) : null}
+        ) : null} */}
         <div className="">
           <Tabs value={activeTab}>
             {/* Tab */}
             <div className="w-full justify-center">
               <TabsHeader
-                className="bg-transparent w-1/2 mx-auto rounded-none border-b border-blue-gray-50"
+                className="bg-transparent w-full md:w-1/2 mx-auto rounded-none border-b border-blue-gray-50"
                 indicatorProps={{
                   className:
                     'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
@@ -355,7 +358,7 @@ const Circle = (): React.ReactElement => {
             </div>
 
             {/* Searchbar */}
-            <div className="w-3/4 justify-center mx-auto mt-5">
+            <div className="w-full md:w-3/4 justify-center mx-auto mt-5">
               <SearchCircle
                 name="search"
                 type="outline"

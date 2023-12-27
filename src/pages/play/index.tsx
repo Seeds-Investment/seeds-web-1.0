@@ -8,6 +8,7 @@
 // import BronzeRank from '../../components/svgs/rank3';
 // import TopIcon from '../../components/svgs/topIcon';
 import ComingSoon from '@/components/coming-soon';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 
 // interface LeaderboardData {
 //   user_id: string;
@@ -125,7 +126,9 @@ const Player = (): React.ReactElement => {
 
   return (
     <>
-      <ComingSoon />
+      <PageGradient defaultGradient className="w-full">
+        <ComingSoon />
+      </PageGradient>
     </>
     // <div className="grid lg:grid-cols-7 mx-5 gap-2">
     /* <div className="rounded-2xl p-3 lg:col-span-5  border">

@@ -1,16 +1,17 @@
 import { AboutUsSectionFourBG } from '@/constants/assets/images';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 
 const Section4: React.FC = () => {
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
-  // const [activeSlide, setActiveSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
   const { ref, inView, entry } = useInView({
     threshold: 0.3
   });
+  const sliderRef = useRef<Slider>(null);
 
   const youtubeLink = [
     'https://www.youtube.com/embed/A7TaLvtSJtk?si=Sw7NgzPuCzRuyBSB',
@@ -37,19 +38,27 @@ const Section4: React.FC = () => {
     autoplaySpeed: 3000,
     infinite: true,
     dots: true,
-    // beforeChange: (prev: any, next: any) => {
-    //   setActiveSlide(next);
-    // },
+    beforeChange: (prev: any, next: any) => {
+      setActiveSlide(next);
+    },
     customPaging: (i: any) => (
-      // <>
-      //   {activeSlide === i ? (
-      //     <div className='bg-gradient-to-r from-[#4FE6AF] to-[#9A76FE] rounded-2xl p-2'></div>
-      //   ): (
-      //     <div className='bg-gray-400 rounded-2xl p-1'></div>
-      //   )}
-      // </>
-      <div className="bg-gradient-to-r from-[#4FE6AF] to-[#9A76FE] rounded-2xl p-2"></div>
+      <>
+        {activeSlide === i ? (
+          <div className="bg-gradient-to-r from-[#4FE6AF] to-[#9A76FE] rounded-2xl p-2"></div>
+        ) : (
+          <div
+            className="bg-gray-400 rounded-2xl p-1"
+            onClick={() => {
+              handleDotClick(i);
+            }}
+          ></div>
+        )}
+      </>
     )
+  };
+
+  const handleDotClick = (index: number): void => {
+    sliderRef?.current?.slickGoTo(index);
   };
 
   return (
@@ -82,7 +91,7 @@ const Section4: React.FC = () => {
           </p>
 
           <div className="flex-row w-full my-10 md:px-[20%] text-center items-center justify-center">
-            <Slider {...settings}>
+            <Slider ref={sliderRef} {...settings}>
               {youtubeLink?.length !== 0
                 ? youtubeLink?.map((data, idx) => (
                     <iframe

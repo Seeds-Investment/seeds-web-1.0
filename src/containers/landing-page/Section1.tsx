@@ -1,7 +1,6 @@
 import iphone1 from '@/assets/landing-page/iphone1.svg';
 import iphone2 from '@/assets/landing-page/iphone2.svg';
 import iphone3 from '@/assets/landing-page/iphone3.svg';
-import { getTrendingAssets } from '@/repository/asset.repository';
 import { downloadOurApp } from '@/utils/_static';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -13,11 +12,6 @@ import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-
-const fetch = async (): Promise<void> => {
-  const res = await getTrendingAssets({ page: 1, limit: 10 });
-  console.log(res);
-};
 
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
@@ -33,10 +27,6 @@ export default function Section1(): React.ReactElement {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
-
-  useEffect(() => {
-    void fetch();
-  }, []);
 
   const titles = [
     t('landingV2.section1.text7'),

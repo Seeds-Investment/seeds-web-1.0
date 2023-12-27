@@ -19,12 +19,15 @@ export interface AssetsInterface {
 export default function AssetsPage({ userInfo }: any): React.ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [assets, setAssets] = useState<AssetsInterface[]>([]);
-  async function fetchArticles(): Promise<void> {
+
+  async function fetchAssets(): Promise<void> {
     try {
       setIsLoading(true);
       const response = await getTrendingAssets({
         page: 1,
-        limit: 3
+        limit: 3,
+        search: '',
+        sortBy: ''
       });
       if (response.status === 200) {
         setAssets(response.result);
@@ -40,7 +43,7 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      await fetchArticles();
+      await fetchAssets();
     };
 
     fetchData().catch(error => {

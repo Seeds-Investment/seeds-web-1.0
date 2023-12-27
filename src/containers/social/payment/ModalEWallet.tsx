@@ -96,9 +96,9 @@ const ModalEWallet = ({
         <Typography className="text-xl text-black font-semibold text-right my-5">
           Total Cost
         </Typography>
-        {promo.promo_code !== null ? (
+        {promo.total_discount !== null ? (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
-            {standartCurrency(promo?.final_price)}
+            {standartCurrency(dataPost?.premium_fee - promo?.total_discount)}
           </Typography>
         ) : (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
@@ -119,7 +119,9 @@ const ModalEWallet = ({
             payment?.payment_type,
             payment?.payment_gateway,
             payment?.payment_method,
-            dataPost?.premium_fee,
+            promo.total_discount !== null
+              ? dataPost?.premium_fee - promo.total_discount
+              : dataPost?.premium_fee,
             phone
           );
         }}

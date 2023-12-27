@@ -2,7 +2,6 @@ import ChangeEmailEdit from '@/assets/my-profile/editProfile/ChangeEmailEdit.svg
 import CloseEditProfile from '@/assets/my-profile/editProfile/CloseEditProfile.svg';
 import FailedEmail from '@/assets/my-profile/editProfile/FailedEmail.svg';
 import VerifyEmail from '@/assets/my-profile/editProfile/VerifyEmail.svg';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { checkEmail } from '@/repository/auth.repository';
 import { editUserInfo } from '@/repository/profile.repository';
 import {
@@ -23,9 +22,10 @@ import { useState } from 'react';
 interface Form {
   form: any;
   setForm: any;
+  select: any;
 }
 
-const ChangeEmail: React.FC<Form> = ({ form, setForm }: Form) => {
+const ChangeEmail: React.FC<Form> = ({ form, setForm, select }: Form) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(false);
   const handleOpen = (): void => {
@@ -50,7 +50,7 @@ const ChangeEmail: React.FC<Form> = ({ form, setForm }: Form) => {
     }
   };
   return (
-    <PageGradient defaultGradient className="flex justify-center">
+    <div className={`${select === 1 ? 'flex' : 'hidden'} justify-center`}>
       <Card className="flex items-center w-[947px] h-[721px] py-5">
         <form
           onSubmit={handleSubmit}
@@ -157,7 +157,7 @@ const ChangeEmail: React.FC<Form> = ({ form, setForm }: Form) => {
           </Button>
         </DialogFooter>
       </Dialog>
-    </PageGradient>
+    </div>
   );
 };
 

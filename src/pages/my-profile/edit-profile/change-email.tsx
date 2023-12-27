@@ -1,8 +1,11 @@
+import ValidatePin from '@/components/forms/ValidatePin';
 import ChangeEmail from '@/components/profile/editProfile/ChangeEmail';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 const MainEmail: React.FC = () => {
+  const [select, setSelect] = useState(0);
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -36,7 +39,12 @@ const MainEmail: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  return <ChangeEmail form={form} setForm={setForm} />;
+  return (
+    <PageGradient defaultGradient className="z-0">
+      <ValidatePin setSelect={setSelect} select={select} />
+      <ChangeEmail form={form} setForm={setForm} select={select} />
+    </PageGradient>
+  );
 };
 
 export default MainEmail;

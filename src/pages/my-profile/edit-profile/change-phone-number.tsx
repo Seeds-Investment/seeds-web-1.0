@@ -1,8 +1,12 @@
+import ValidateOTP from '@/components/forms/ValidateOTP';
+import ValidatePin from '@/components/forms/ValidatePin';
 import ChangePhoneNumber from '@/components/profile/editProfile/ChangePhoneNumber';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
 
 const MainPhoneNumber: React.FC = () => {
+  const [select, setSelect] = useState(2);
   const [form, setForm] = useState<any>({
     name: '',
     seedsTag: '',
@@ -36,7 +40,18 @@ const MainPhoneNumber: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  return <ChangePhoneNumber form={form} setForm={setForm} />;
+  return (
+    <PageGradient defaultGradient className="z-0">
+      <ValidatePin setSelect={setSelect} select={select} />
+      <ChangePhoneNumber
+        form={form}
+        setForm={setForm}
+        setSelect={setSelect}
+        select={select}
+      />
+      <ValidateOTP select={select} />
+    </PageGradient>
+  );
 };
 
 export default MainPhoneNumber;

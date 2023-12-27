@@ -14,14 +14,23 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useState } from 'react';
 
 interface Form {
   form: any;
   setForm: any;
+  select: any;
+  setSelect: any;
 }
 
-const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
+const ChangePhoneNumber: React.FC<Form> = ({
+  form,
+  setForm,
+  select,
+  setSelect
+}: Form) => {
   const [number, setNumber] = useState('');
   const [OTP, setOTP] = useState('');
   console.log(OTP);
@@ -57,8 +66,7 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
       const edit = await editUserInfo(updatedForm);
       console.log(edit);
       await getOtp(getOTP);
-
-      console.log('a');
+      setSelect(2);
     } catch (error: any) {
       console.error(error.response.data.message);
     }
@@ -73,12 +81,18 @@ const ChangePhoneNumber: React.FC<Form> = ({ form, setForm }: Form) => {
     }
   };
   return (
-    <div className="flex justify-center">
+    <div className={`${select === 1 ? 'flex' : 'hidden'} justify-center`}>
       <Card className="flex items-center w-[947px] h-[721px] py-5">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-between items-center w-[600px] h-full p-4"
         >
+          <Link
+            href="/my-profile/edit-profile"
+            className="absolute left-8 cursor-pointer"
+          >
+            <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
+          </Link>
           <div className="flex flex-col items-center gap-8 w-full">
             <Typography className="font-poppins font-semibold text-[#262626] text-base text-center">
               Change Phone Number

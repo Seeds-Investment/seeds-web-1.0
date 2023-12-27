@@ -3,7 +3,7 @@ import DeviceDetector from 'device-detector-js';
 
 interface Tracker {
   event: string;
-  userId: string;
+  userId?: string;
   postId?: string;
   statusLike?: boolean;
   circleId?: string;

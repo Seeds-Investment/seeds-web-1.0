@@ -1,5 +1,6 @@
 'use client';
 import type { IRegisterPaging } from '@/pages/auth/register';
+import TrackerEvent from '@/repository/GTM.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -37,7 +38,15 @@ const SuccessRegisterPage = ({
         </div>
       </div>
       <div className="my-8">
-        <Link href={'/auth/login'}>
+        <Link
+          href={'/auth/login'}
+          onClick={() => {
+            TrackerEvent({
+              event: `Seeds_register_page_web`,
+              pageName: window.location.pathname.split('/')[2]
+            });
+          }}
+        >
           <Button
             fullWidth
             className="border bg-[#3AC4A0] rounded-full border-[#3AC4A0]"

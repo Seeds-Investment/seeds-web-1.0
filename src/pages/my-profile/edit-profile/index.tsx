@@ -83,6 +83,10 @@ const EditProfile: React.FC = () => {
     e.preventDefault();
     try {
       let updatedForm: any = { ...form };
+      updatedForm = {
+        ...form,
+        birthDate: new Date(birthDate).toISOString()
+      };
       if (updateAvatar !== undefined && updateAvatar !== null) {
         const { path: cloudResponse } = await postCloud({
           file: updateAvatar,
@@ -93,10 +97,6 @@ const EditProfile: React.FC = () => {
           avatar: cloudResponse
         };
       }
-      updatedForm = {
-        ...form,
-        birthDate: new Date(birthDate).toISOString()
-      };
       console.log(updatedForm);
       await editUserInfo(updatedForm);
       await router.push('/my-profile');
@@ -339,6 +339,9 @@ const EditProfile: React.FC = () => {
               }}
               className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
               style={{ backgroundColor: 'transparent' }}
+              onClick={async () =>
+                await router.push('edit-profile/linked-account')
+              }
               disabled
             />
             <Button className=" bg-white font-poppins font-semibold text-[#DD2525] text-sm border border-[#DD2525] rounded-full w-2/3 ">

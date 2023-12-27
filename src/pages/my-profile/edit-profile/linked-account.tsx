@@ -1,5 +1,12 @@
+import { Typography } from '@material-tailwind/react';
+
 const LinkedAccount: React.FC = () => {
-  return <div>LinkedAccount</div>;
+  return (
+    <>
+      <Typography>FB</Typography>
+      <Typography>Google</Typography>
+    </>
+  );
 };
 
 export default LinkedAccount;

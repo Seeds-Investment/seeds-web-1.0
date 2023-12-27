@@ -7,6 +7,7 @@ import play from '@/assets/landing-page/play.png';
 import Register from '@/assets/landing-page/register.svg';
 import earth from '@/assets/landing-page/s2-earth.png';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { webCounter } from '@/repository/web.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
@@ -18,6 +19,9 @@ export default function Section2(): React.ReactElement {
   const width = useWindowInnerWidth();
   const [isBottom, setBottom] = useState(0);
   const measurement = 900;
+  const [totalEvent, setTotalEvent] = useState<number>(0);
+  const [totalRegister, setTotalRegister] = useState<number>(0);
+  const [totalCircle, setTotalCircle] = useState<number>(0);
 
   const { ref, inView, entry } = useInView({
     threshold: 0.2
@@ -26,6 +30,20 @@ export default function Section2(): React.ReactElement {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
+
+  const fetchCounter = async (): Promise<void> => {
+    try {
+      const response = await webCounter();
+      setTotalEvent(response.total_event);
+      setTotalCircle(response.total_circle);
+      setTotalRegister(response.total_user);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    void fetchCounter();
+  }, []);
 
   return (
     <div
@@ -57,7 +75,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalCircle} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option1')}
@@ -77,7 +95,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalRegister} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option2')}
@@ -97,7 +115,7 @@ export default function Section2(): React.ReactElement {
             </div>
             <div className="flex flex-col ml-4">
               <p className="text-2xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <CountUp end={100} duration={3} />+
+                <CountUp end={totalEvent} duration={3} />+
               </p>
               <p className="text-base md:text-xl font-normal">
                 {t('partner.section2.option3')}

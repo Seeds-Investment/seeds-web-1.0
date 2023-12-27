@@ -2,17 +2,41 @@ import BallanceImage from '@/assets/ballanceCardBackground.png';
 import ArtPagination from '@/components/ArtPagination';
 import ImageBackground from '@/components/ImageBackground';
 import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
-import AssetTrendingCard from '@/containers/homepage/trending/AssetsTrendingCard';
+import AssetPlayCard from '@/containers/homepage/trending/AssetsPlayCard';
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
 import { standartCurrency } from '@/helpers/currency';
-import { getTrendingAssets } from '@/repository/asset.repository';
+import { getMarketList } from '@/repository/market.repository';
 import { getPlayBallance } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { SearchMember } from 'public/assets/circle';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+export interface AssetItemType {
+  id: string;
+  seedsTicker: string;
+  realTicker: string;
+  logo: string;
+  name: string;
+  exchange: string;
+  exchangeCurrency: string;
+  listedCountry: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  assetType: string;
+  priceBar: {
+    timestamp: Date | string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    vwap: number;
+    volume: number;
+  };
+}
 export interface AssetsListRoot {
   AssetList: AssetsInterface[];
   metadata: Metadata;
@@ -28,43 +52,44 @@ export interface Ballance {
 interface Metadata {
   current_page: number;
   limit: number;
-  total_page: number;
-  total_row: number;
+  totalPage: number;
+  totalRow: number;
 }
 
 interface Filter {
   search: string;
   limit: number;
   page: number;
-  sortBy: string;
+  currency: string;
+  type: string;
 }
 
 const initialFilter: Filter = {
   search: '',
   limit: 10,
   page: 1,
-  sortBy: 'rating'
+  type: 'ALL',
+  currency: ''
 };
 
 const initialMetadata: Metadata = {
   current_page: 1,
   limit: 10,
-  total_page: 1,
-  total_row: 10
+  totalPage: 1,
+  totalRow: 10
 };
 
 const optionSortBy = [
-  { label: 'All', value: '' },
-  { label: 'Top Gainers', value: 'top gainers' },
-  { label: 'Top Lowest', value: 'top lowest' },
-  { label: 'Most Trades', value: 'most trades' }
+  { label: 'ALL', value: 'ALL' },
+  { label: 'STOCK', value: 'STOCK' },
+  { label: 'CRYPTO', value: 'CRYPTO' }
 ];
 
 export default function PlayAssetsPage(): React.ReactElement {
   const router = useRouter();
   const { t } = useTranslation();
   const { playId } = router.query;
-  const [circle, setAssets] = useState<AssetsInterface[]>([]);
+  const [assets, setAssets] = useState<AssetItemType[]>([]);
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -80,11 +105,13 @@ export default function PlayAssetsPage(): React.ReactElement {
   const fetchDataAssets = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getTrendingAssets(filter);
+      console.log(filter);
+
+      const response = await getMarketList(filter);
       if (response.result === null) {
         setAssets([]);
       } else {
-        setAssets(response.result);
+        setAssets(response.marketAssetList);
         setMetadata(response.metadata);
       }
       setIsLoading(false);
@@ -93,10 +120,26 @@ export default function PlayAssetsPage(): React.ReactElement {
       setIsLoading(false);
     }
   };
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
-  const fetchPlayBallance = async (): Promise<void> => {
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayBallance(playId as string);
+      const response = await getPlayBallance(playId as string, { currency });
       setBallance(response);
     } catch (error) {
       console.log(error);
@@ -104,20 +147,31 @@ export default function PlayAssetsPage(): React.ReactElement {
   };
 
   useEffect(() => {
-    if (playId !== undefined) {
-      void fetchPlayBallance();
+    if (playId !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
     }
-  }, [playId]);
+  }, [playId, userInfo]);
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchDataAssets();
-    };
+    if (userInfo !== undefined) {
+      setFilter(prevState => ({
+        ...prevState,
+        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
+      }));
+    }
+  }, [userInfo]);
 
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, [filter]);
+  useEffect(() => {
+    if (userInfo !== undefined && filter.currency !== '') {
+      const fetchData = async (): Promise<void> => {
+        await fetchDataAssets();
+      };
+
+      fetchData().catch(error => {
+        console.error('Error in fetchData:', error);
+      });
+    }
+  }, [filter, userInfo]);
 
   useEffect(() => {
     setFilter(prevParams => ({
@@ -128,7 +182,7 @@ export default function PlayAssetsPage(): React.ReactElement {
   }, [searchInput]);
 
   useEffect(() => {
-    if (searchInput.length === 0) {
+    if (searchInput.length === 0 && filter.currency !== '') {
       void fetchDataAssets();
     }
   }, [searchInput.length]);
@@ -257,7 +311,7 @@ export default function PlayAssetsPage(): React.ReactElement {
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             setFilter(prevState => ({
               ...prevState,
-              sortBy: e.target.value
+              type: e.target.value
             }));
           }}
         >
@@ -278,7 +332,7 @@ export default function PlayAssetsPage(): React.ReactElement {
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
             setFilter(prevState => ({
               ...prevState,
-              sort_by: e.target.value
+              type: e.target.value
             }));
           }}
         >
@@ -292,12 +346,13 @@ export default function PlayAssetsPage(): React.ReactElement {
 
       <div className="flex flex-wrap mt-6">
         {!isLoading ? (
-          circle.length !== 0 ? (
-            circle.map((data: AssetsInterface, idx: number) => {
+          assets?.length !== 0 ? (
+            assets?.map((data: AssetItemType, idx: number) => {
               return (
                 <div key={idx} className="w-full mb-5">
-                  <AssetTrendingCard
+                  <AssetPlayCard
                     data={data}
+                    currency={userInfo?.preferredCurrency}
                     isClick={true}
                     playId={playId as string}
                   />
@@ -319,7 +374,7 @@ export default function PlayAssetsPage(): React.ReactElement {
       <div className="flex justify-center mx-auto my-4">
         <ArtPagination
           currentPage={filter.page}
-          totalPages={metadata.total_page}
+          totalPages={metadata.totalPage}
           onPageChange={page => {
             setFilter({ ...filter, page });
           }}

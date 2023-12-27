@@ -8,13 +8,19 @@ import React from 'react';
 
 interface props {
   data: HistoryTransactionDTO;
+  currency: string;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
   isClick?: boolean;
   playId?: string;
 }
 
-const AssetOrderCard: React.FC<props> = ({ data, isClick = false, playId }) => {
+const AssetOrderCard: React.FC<props> = ({
+  data,
+  isClick = false,
+  playId,
+  currency
+}) => {
   const router = useRouter();
 
   return (
@@ -75,7 +81,7 @@ const AssetOrderCard: React.FC<props> = ({ data, isClick = false, playId }) => {
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm text-[#262626]">
-                IDR{' '}
+                {currency}{' '}
                 {`${standartCurrency(data.bid_price * data.lot).replace(
                   'Rp',
                   ''

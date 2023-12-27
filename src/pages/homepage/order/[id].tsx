@@ -14,6 +14,7 @@ import {
   getPlayAssets,
   getPlayBallance
 } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
   Button,
@@ -93,6 +94,7 @@ const OrderPage: React.FC = () => {
   const [sellPercent, setSellPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(true);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [assetAmount, setAssetsAmount] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
@@ -130,9 +132,26 @@ const OrderPage: React.FC = () => {
     }
   }, [amount, assetAmount]);
 
-  const fetchPlayBallance = async (): Promise<void> => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayBallance(playId as string);
+      const response = await getPlayBallance(playId as string, { currency });
       setBallance(response);
     } catch (error) {
       console.log(error);
@@ -149,13 +168,17 @@ const OrderPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (playId !== undefined && router.query?.transaction !== 'sell') {
-      void fetchPlayBallance();
+    if (
+      playId !== undefined &&
+      router.query?.transaction !== 'sell' &&
+      userInfo !== undefined
+    ) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
     }
     if (playId !== undefined && router.query?.transaction !== 'buy') {
       void fetchPlayPortfolio();
     }
-  }, [playId]);
+  }, [playId, userInfo]);
 
   const sellPercentArr = [
     {
@@ -192,8 +215,7 @@ const OrderPage: React.FC = () => {
   // };
 
   const [params] = useState({
-    tf: 'daily',
-    currency: 'IDR'
+    tf: 'daily'
   });
 
   useEffect(() => {
@@ -205,7 +227,7 @@ const OrderPage: React.FC = () => {
     ) {
       setIsDisable(true);
     } else if (
-      parseFloat(amount) > portfolio.total_lot * data?.lastPrice?.open &&
+      parseFloat(assetAmount) > portfolio.total_lot &&
       router.query?.transaction === 'sell'
     ) {
       setIsDisable(true);
@@ -224,22 +246,25 @@ const OrderPage: React.FC = () => {
     }
   }, [isActive]);
 
-  const fetchDetailAsset = async (): Promise<void> => {
+  const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {
+      setIsLoadingAsset(true);
       if (typeof id === 'string') {
-        const response = await getDetailAsset(id, params);
+        const response = await getDetailAsset(id, { ...params, currency });
         setData(response.marketAsset);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoadingAsset(false);
     }
   };
 
   useEffect(() => {
-    if (id !== null) {
-      void fetchDetailAsset();
+    if (id !== null && userInfo !== undefined) {
+      void fetchDetailAsset(userInfo.preferredCurrency);
     }
-  }, [id, params]);
+  }, [id, userInfo]);
 
   const handleChangeNumber = (
     e: ChangeEvent<HTMLInputElement>,
@@ -359,7 +384,7 @@ const OrderPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
-        <CardPrice data={data} />
+        <CardPrice data={data} loading={isLoadingAsset} />
         <div className="flex flex-col mt-4">
           <div className="flex flex-col gap-3 pb-3 border-b border-neutral-ultrasoft">
             <Typography className="text-base font-poppins font-semibold text-black">
@@ -373,7 +398,7 @@ const OrderPage: React.FC = () => {
                 router.query?.transaction === 'buy'
                   ? ballance?.balance
                   : portfolio.total_lot * data?.lastPrice?.open
-              )}`}{' '}
+              ).replace('Rp', userInfo?.preferredCurrency)}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot} ${data?.realTicker as string}`}
             </Typography>
@@ -569,9 +594,12 @@ const OrderPage: React.FC = () => {
                           <Typography className="text-[#7555DA] font-normal text-xs">
                             {limitOrder.type === 'percent'
                               ? `${parseFloat(limitOrder.profit) * 100} %`
-                              : `IDR ${standartCurrency(
-                                  limitOrder.profit
-                                ).replace('Rp', '')}`}
+                              : `${
+                                  userInfo?.preferredCurrency as string
+                                } ${standartCurrency(limitOrder.profit).replace(
+                                  'Rp',
+                                  ''
+                                )}`}
                           </Typography>
                         </div>
                         <div className="flex justify-between mt-2">
@@ -581,9 +609,12 @@ const OrderPage: React.FC = () => {
                           <Typography className="text-[#7555DA] font-normal text-xs">
                             {limitOrder.type === 'percent'
                               ? `${parseFloat(limitOrder.loss) * 100} %`
-                              : `IDR ${standartCurrency(
-                                  limitOrder.loss
-                                ).replace('Rp', '')}`}
+                              : `${
+                                  userInfo?.preferredCurrency as string
+                                } ${standartCurrency(limitOrder.loss).replace(
+                                  'Rp',
+                                  ''
+                                )}`}
                           </Typography>
                         </div>
                       </>
@@ -743,7 +774,7 @@ const OrderPage: React.FC = () => {
                             Set Price
                           </Typography>
                           <Typography className="text-[#262626] font-semibold text-xs">
-                            IDR
+                            {userInfo?.preferredCurrency}
                             {standartCurrency(price).replace('Rp', '')}
                           </Typography>
                         </div>
@@ -756,7 +787,7 @@ const OrderPage: React.FC = () => {
                               {t('playSimulation.marketPrice')}
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
-                              IDR
+                              {userInfo?.preferredCurrency}
                               {standartCurrency(data?.lastPrice?.open).replace(
                                 'Rp',
                                 ''
@@ -781,7 +812,7 @@ const OrderPage: React.FC = () => {
                           {t('playSimulation.cashAmount')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          IDR
+                          {userInfo?.preferredCurrency}
                           {standartCurrency(amount).replace('Rp', '')}
                         </Typography>
                       </div>
@@ -796,7 +827,9 @@ const OrderPage: React.FC = () => {
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.profit) * 100} %`
-                                  : `IDR ${standartCurrency(
+                                  : `${
+                                      userInfo.preferredCurrency as string
+                                    } ${standartCurrency(
                                       limitOrder.profit
                                     ).replace('Rp', '')}`}
                               </Typography>
@@ -808,7 +841,9 @@ const OrderPage: React.FC = () => {
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.loss) * 100} %`
-                                  : `IDR ${standartCurrency(
+                                  : `${
+                                      userInfo.preferredCurrency as string
+                                    } ${standartCurrency(
                                       limitOrder.loss
                                     ).replace('Rp', '')}`}
                               </Typography>

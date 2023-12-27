@@ -162,9 +162,6 @@ const PostSection: React.FC<props> = ({
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
-  console.log(dataPost);
-  console.log(userInfo);
-  console.log(myInfo);
   if (isCopied) {
     console.log('success', additionalPostData);
   }
@@ -187,9 +184,11 @@ const PostSection: React.FC<props> = ({
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
-
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
   const handleCopyClick = async (text: string): Promise<void> => {
-    await navigator.clipboard.writeText(text).then(() => {
+    const textToCopy = `${baseUrl}/connect/comment/${text}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
       setTimeout((): void => {
         setIsCopied(false);
@@ -729,7 +728,7 @@ const PostSection: React.FC<props> = ({
   };
 
   useEffect(() => {
-    if (dataPost.pie.length > 0) {
+    if (dataPost?.pie?.length > 0) {
       handleSetChartData();
     }
   }, []);
@@ -919,7 +918,7 @@ const PostSection: React.FC<props> = ({
                 />
               )}
 
-              {dataPost.pie.length > 0 ? (
+              {dataPost?.pie?.length > 0 ? (
                 <PieCirclePost data={dataPost} chartData={chartData} />
               ) : null}
             </div>
@@ -1089,8 +1088,14 @@ const PostSection: React.FC<props> = ({
                       </svg>
                     )}
                   </div>
-                  <Typography className="text-[#50E6AF] text-sm">
-                    +{dataPost.total_upvote}
+                  <Typography
+                    className={`${
+                      dataPost.status_like === true
+                        ? 'text-[#50E6AF]'
+                        : 'text-black'
+                    } text-sm`}
+                  >
+                    {dataPost.total_upvote}
                   </Typography>
                 </div>
                 <div className="flex items-center gap-1">
@@ -1117,7 +1122,9 @@ const PostSection: React.FC<props> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      handleOpen();
+                      handleCopyClick(`${dataPost.id as string}`).catch(err => {
+                        console.log(err);
+                      });
                     }}
                   >
                     <Image

@@ -1,8 +1,5 @@
-import {
-  calculatePercentageDifference,
-  standartCurrency
-} from '@/helpers/currency';
-import { getDetailAsset } from '@/repository/asset.repository';
+import { calculatePercentageDifference } from '@/helpers/currency';
+import { type AssetItemType } from '@/pages/homepage/play-assets';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -15,26 +12,25 @@ import {
   Typography
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
 interface props {
-  id: string;
-  userInfo: any;
+  data: AssetItemType;
+  currency: string;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
   isClick?: boolean;
   playId?: string;
 }
 
-const AssetPortfolioCard: React.FC<props> = ({
-  id,
+const AssetPlayCard: React.FC<props> = ({
+  data,
+  currency,
   handleSelectedAsset,
-  userInfo,
   isDefaultChecked,
   isClick = false,
   playId
 }) => {
-  const [data, setData] = useState<any>();
-
   const router = useRouter();
   const handleArrow = (value: number): boolean => {
     if (value > 0) {
@@ -43,26 +39,6 @@ const AssetPortfolioCard: React.FC<props> = ({
       return false;
     }
   };
-  const [params] = useState({
-    tf: 'daily'
-  });
-
-  const fetchDetailAsset = async (currency: string): Promise<void> => {
-    try {
-      if (typeof id === 'string') {
-        const response = await getDetailAsset(id, { ...params, currency });
-        setData(response.marketAsset);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
-      void fetchDetailAsset(userInfo.preferredCurrency);
-    }
-  }, [id, userInfo]);
 
   return (
     <Card
@@ -75,10 +51,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 .push(
                   `${
                     playId !== undefined
-                      ? `/homepage/assets/${
-                          data?.id as string
-                        }?playId=${playId}`
-                      : `/homepage/assets/${data?.id as string}`
+                      ? `/homepage/assets/${data.id}?playId=${playId}`
+                      : `/homepage/assets/${data.id}`
                   }`
                 )
                 .catch(error => {
@@ -90,30 +64,29 @@ const AssetPortfolioCard: React.FC<props> = ({
     >
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
-          <Avatar size="md" variant="circular" src={data?.logo} alt="logo" />
+          <Avatar size="md" variant="circular" src={data.logo} alt="logo" />
 
           <div className="flex ml-5 w-1/2 flex-col gap-0.5">
             <div className="flex flex-row">
               <Typography className="font-semibold text-base text-[#262626]">
-                {data?.realTicker} /
+                {data.seedsTicker} /
               </Typography>
-              <Typography className="font-normal ml-1 text-base text-[#262626]">
-                {data?.assetType === 'CRYPTO' && 'B'}
-                {userInfo?.preferredCurrency}
-              </Typography>
+              {data?.assetType !== 'FOREX' ? (
+                <Typography className="font-normal ml-1 text-base text-[#262626]">
+                  {data?.assetType === 'CRYPTO' && 'B'}
+                  {currency}
+                </Typography>
+              ) : null}
             </div>
             <Typography className="font-normal text-sm text-[#7C7C7C]">
-              {data?.name}
+              {data.name}
             </Typography>
           </div>
 
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm text-[#262626]">
-                {standartCurrency(data?.lastPrice?.close).replace(
-                  'Rp',
-                  userInfo?.preferredCurrency
-                )}
+                {currency} {new Intl.NumberFormat().format(data.priceBar.close)}
               </Typography>
             </div>
             <div className="flex justify-end">
@@ -121,9 +94,9 @@ const AssetPortfolioCard: React.FC<props> = ({
                 className={`flex font-normal text-sm ${
                   handleArrow(
                     calculatePercentageDifference(
-                      data?.lastPrice?.open,
-                      data?.lastPrice?.close
-                    )?.value
+                      data?.priceBar?.open,
+                      data?.priceBar?.close
+                    ).value
                   )
                     ? 'text-[#3AC4A0]'
                     : 'text-red-500'
@@ -131,9 +104,9 @@ const AssetPortfolioCard: React.FC<props> = ({
               >
                 {handleArrow(
                   calculatePercentageDifference(
-                    data?.lastPrice?.open,
-                    data?.lastPrice?.close
-                  )?.value
+                    data?.priceBar?.open,
+                    data?.priceBar?.close
+                  ).value
                 ) ? (
                   <ArrowTrendingUpIcon
                     height={20}
@@ -150,8 +123,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 (
                 {
                   calculatePercentageDifference(
-                    data?.lastPrice?.open,
-                    data?.lastPrice?.close
+                    data?.priceBar?.open,
+                    data?.priceBar?.close
                   )?.value
                 }{' '}
                 %)
@@ -175,4 +148,4 @@ const AssetPortfolioCard: React.FC<props> = ({
   );
 };
 
-export default AssetPortfolioCard;
+export default AssetPlayCard;

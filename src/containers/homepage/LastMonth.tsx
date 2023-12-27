@@ -1,4 +1,5 @@
 import { getPlaySimulation } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,31 +35,47 @@ const LastMonthPage = (): React.ReactElement => {
   const { t } = useTranslation();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
-
+  const [userInfo, setUserInfo] = useState<any>([]);
   useEffect(() => {
-    const fetchPlaySimulation = async (): Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       try {
-        const currentDate = new Date();
-
-        const formattedDate = `${currentDate.getFullYear()}-${(
-          currentDate.getMonth() + 1
-        )
-          .toString()
-          .padStart(2, '0')}-${currentDate
-          .getDate()
-          .toString()
-          .padStart(2, '0')}`;
-
-        const res = await getPlaySimulation(formattedDate);
-        setPlayerData(res.user_rank);
-        setLeaderBoard(res.leaderboard);
-      } catch (error) {
-        console.error('Error fetching play simulation:', error);
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
       }
     };
 
-    void fetchPlaySimulation();
+    fetchData()
+      .then()
+      .catch(() => {});
   }, []);
+
+  const fetchPlaySimulation = async (currency: string): Promise<void> => {
+    try {
+      const currentDate = new Date();
+
+      const formattedDate = `${currentDate.getFullYear()}-${(
+        currentDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${currentDate
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
+
+      const res = await getPlaySimulation(formattedDate, currency);
+      setPlayerData(res.user_rank);
+      setLeaderBoard(res.leaderboard);
+    } catch (error) {
+      console.error('Error fetching play simulation:', error);
+    }
+  };
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      void fetchPlaySimulation(userInfo.preferredCurrency);
+    }
+  }, [userInfo]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getBanner } from '@/repository/discover.repository';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
@@ -17,7 +17,8 @@ const Section3: React.FC = () => {
   });
 
   const [banner, setBanner] = useState<any[]>([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const sliderRef = useRef<Slider>(null);
 
   const fetchBanner = async (): Promise<void> => {
     try {
@@ -33,23 +34,10 @@ const Section3: React.FC = () => {
     setBottom(bottom);
   }, [entry]);
 
-  const NextBtn = (props: any): any => {
-    const { onClick } = props;
-    return (
-      <div className="absolute right-0 top-[10rem] z-30">
-        <button
-          className="rounded-full justify-center lg:p-2 p-1 bg-white"
-          onClick={onClick}
-        >
-          <ArrowRightCircleIcon
-            width={30}
-            height={30}
-            onClick={onClick}
-            color="#3AC4A0"
-          />
-        </button>
-      </div>
-    );
+  const next = (): void => {
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickNext();
+    }
   };
 
   const settings = {
@@ -61,39 +49,14 @@ const Section3: React.FC = () => {
     speed: 500,
     autoplay: true,
     autoplaySpeed: 9000,
-    nextArrow: <NextBtn />,
     centerPadding: `${
       width !== undefined ? (width > 700 ? '27%' : '1%') : '1%'
     }`,
-    beforeChange: (current: number, next: number) => {
-      setCurrentSlide(next);
-    },
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+    beforeChange: (current: any, next: any) => {
+      setTimeout(() => {
+        setActiveSlide(next);
+      }, 600);
+    }
   };
 
   useEffect(() => {
@@ -119,13 +82,13 @@ const Section3: React.FC = () => {
           </p>
 
           <div className="relative w-full my-12 overflow-hidden">
-            <Slider {...settings} initialSlide={currentSlide}>
+            <Slider ref={sliderRef} {...settings} initialSlide={activeSlide}>
               {banner?.length !== 0
-                ? banner?.map((data, idx) => (
+                ? banner?.map((data: any, idx: any) => (
                     <div
                       key={idx}
                       className={
-                        currentSlide === idx ? 'scale-110' : 'scale-75'
+                        activeSlide === idx ? 'scale-[1]' : 'scale-[0.8]'
                       }
                       style={{ marginRight: '-25px', marginLeft: '-25px' }}
                     >
@@ -140,6 +103,23 @@ const Section3: React.FC = () => {
                   ))
                 : null}
             </Slider>
+            <div className="absolute right-0 top-[5rem] md:top-[10rem] z-30">
+              <button
+                className="rounded-full justify-center lg:p-2 p-1 bg-white"
+                onClick={() => {
+                  next();
+                }}
+              >
+                <ArrowRightCircleIcon
+                  width={30}
+                  height={30}
+                  onClick={() => {
+                    next();
+                  }}
+                  color="#3AC4A0"
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>

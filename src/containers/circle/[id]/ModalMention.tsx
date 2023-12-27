@@ -633,14 +633,14 @@ const ModalMention: React.FC<props> = ({
   ): any => {
     const { value } = event.target;
     if (value === t('social.postSetting.publicTitle')) {
-      setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
+      setForm(prevForm => ({ ...prevForm, privacy: 'public' }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
         svg: globe
       }));
     } else if (value === t('social.postSetting.privateTitle')) {
-      setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
+      setForm(prevForm => ({ ...prevForm, privacy: 'private' }));
       setDropVal(prevDropVal => ({
         ...prevDropVal,
         type: value,
@@ -654,7 +654,7 @@ const ModalMention: React.FC<props> = ({
         svg: friends
       }));
     } else if (value === t('social.postSetting.premiumTitle')) {
-      setForm(prevForm => ({ ...prevForm, privacy: value.toLowerCase() }));
+      setForm(prevForm => ({ ...prevForm, privacy: 'premium' }));
       setDropVal(prevDropVal => ({ ...prevDropVal, type: value, svg: star }));
       setIsOpenPremiumPrice(true);
     }

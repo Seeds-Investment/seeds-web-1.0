@@ -184,9 +184,11 @@ const PostSection: React.FC<props> = ({
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
-
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
   const handleCopyClick = async (text: string): Promise<void> => {
-    await navigator.clipboard.writeText(text).then(() => {
+    const textToCopy = `${baseUrl}/connect/comment/${text}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
       setTimeout((): void => {
         setIsCopied(false);
@@ -1120,7 +1122,9 @@ const PostSection: React.FC<props> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      handleOpen();
+                      handleCopyClick(`${dataPost.id as string}`).catch(err => {
+                        console.log(err);
+                      });
                     }}
                   >
                     <Image

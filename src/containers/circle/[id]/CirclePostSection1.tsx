@@ -2,6 +2,7 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Loading from '@/components/popup/Loading';
+import TrackerEvent from '@/repository/GTM.repository';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,
@@ -15,8 +16,6 @@ import {
   MenuItem,
   MenuList
 } from '@material-tailwind/react';
-import { trackEvent } from '@phntms/next-gtm';
-import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -49,7 +48,6 @@ const CirclePostSection1: React.FC<props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const deviceDetector = new DeviceDetector();
 
   const handleJoin = async (): Promise<void> => {
     setIsLoading(true);
@@ -235,16 +233,11 @@ const CirclePostSection1: React.FC<props> = ({
                   <button
                     onClick={async () => {
                       await handleJoin();
-                      trackEvent({
+                      TrackerEvent({
                         event: `Seeds_btn_join_circle_web`,
-                        data: {
-                          user_id: userInfo?.id,
-                          page_name: 'circle_detail_join',
-                          circle_id: circleId,
-                          created_at: new Date().toString(),
-                          user_device: deviceDetector.parse(navigator.userAgent)
-                            .device?.type
-                        }
+                        userId: userInfo?.id,
+                        pageName: 'circle_detail_join',
+                        circleId: circleId
                       });
                     }}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"

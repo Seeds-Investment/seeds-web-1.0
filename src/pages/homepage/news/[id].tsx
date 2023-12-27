@@ -342,7 +342,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
                   i
                 </span>
-                You have successfully created a comment
+                Link copied to clipboard
               </p>
             </div>
           )}

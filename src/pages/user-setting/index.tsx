@@ -186,28 +186,7 @@ const UserSetting: React.FC = () => {
   ];
 
   return (
-    <PageGradient
-      defaultGradient
-      className={`z-0 sm:relative sm:pb-20 overflow-hidden flex flex-col items-center w-full bottom-0  ${
-        width !== undefined && width < 370
-          ? 'w-full'
-          : width !== undefined && width < 500
-          ? 'w-[90%]'
-          : width !== undefined && width < 400
-          ? 'w-[40%]'
-          : width !== undefined && width > 600
-          ? 'w-[600px]'
-          : ''
-      } ${
-        width !== undefined && width < 370
-          ? 'h-[50rem]'
-          : width !== undefined && width < 400
-          ? 'h-[50rem]'
-          : width !== undefined && width < 415
-          ? 'h-[48rem]'
-          : ''
-      } bg-white`}
-    >
+    <PageGradient defaultGradient className="w-full">
       <ChooselanguagePopup
         open={modalChooseLang}
         handleOpen={handleOpenModal}

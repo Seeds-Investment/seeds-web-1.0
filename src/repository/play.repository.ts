@@ -89,13 +89,17 @@ export const getPlayJoined = async (params: any): Promise<any> => {
   });
 };
 
-export const getPlaySimulation = async (datePeriod: string): Promise<any> => {
+export const getPlaySimulation = async (
+  datePeriod: string,
+  currency: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
     const response = await playService.get('/simulation/user-achievement', {
       params: {
-        date_period: datePeriod
+        date_period: datePeriod,
+        currency
       },
       headers: {
         Accept: 'application/json',
@@ -109,7 +113,9 @@ export const getPlaySimulation = async (datePeriod: string): Promise<any> => {
   }
 };
 
-export const getPlaySimulationDetail = async (): Promise<any> => {
+export const getPlaySimulationDetail = async (
+  currency: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -118,6 +124,9 @@ export const getPlaySimulationDetail = async (): Promise<any> => {
     }
 
     return await playService.get('/simulation/detail', {
+      params: {
+        currency
+      },
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
@@ -140,7 +149,10 @@ export const getTrendingPlayList = async (): Promise<any> => {
   }
 };
 
-export const getPlayBallance = async (id: string): Promise<any> => {
+export const getPlayBallance = async (
+  id: string,
+  params: { currency: string }
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -148,6 +160,7 @@ export const getPlayBallance = async (id: string): Promise<any> => {
       return await Promise.resolve('Access token not found');
     }
     return await playService(`/${id}/balance`, {
+      params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
@@ -158,7 +171,10 @@ export const getPlayBallance = async (id: string): Promise<any> => {
   }
 };
 
-export const getPlayPortfolio = async (id: string): Promise<any> => {
+export const getPlayPortfolio = async (
+  id: string,
+  currency: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -167,7 +183,7 @@ export const getPlayPortfolio = async (id: string): Promise<any> => {
     }
     return await playService(`/${id}/portfolio-summary`, {
       params: {
-        currency: 'IDR'
+        currency
       },
       headers: {
         Accept: 'application/json',
@@ -232,7 +248,7 @@ export const createOrderPlay = async (
 
 export const getHistoryTransaction = async (
   id: string,
-  params: { limit: number; page: number }
+  params: { limit: number; page: number; currency: string }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

@@ -25,6 +25,8 @@ const marketService = baseAxios(
 export const getTrendingAssets = async (params: {
   page: number;
   limit: number;
+  sortBy: string;
+  search: string;
 }): Promise<any> => {
   try {
     let response = await authService.get('/trending', {

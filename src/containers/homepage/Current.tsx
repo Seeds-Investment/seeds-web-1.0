@@ -1,4 +1,5 @@
 import { getPlaySimulation } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,30 +36,47 @@ const CurrentPage = (): React.ReactElement => {
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
 
+  const [userInfo, setUserInfo] = useState<any>([]);
   useEffect(() => {
-    const fetchPlaySimulation = async (): Promise<void> => {
+    const fetchData = async (): Promise<void> => {
       try {
-        const currentDate = new Date();
-
-        const formattedDate = `${currentDate.getFullYear()}-${(
-          currentDate.getMonth() + 1
-        )
-          .toString()
-          .padStart(2, '0')}-${currentDate
-          .getDate()
-          .toString()
-          .padStart(2, '0')}`;
-
-        const res = await getPlaySimulation(formattedDate);
-        setPlayerData(res.user_rank);
-        setLeaderBoard(res.leaderboard);
-      } catch (error) {
-        console.error('Error fetching play simulation:', error);
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
       }
     };
 
-    void fetchPlaySimulation();
+    fetchData()
+      .then()
+      .catch(() => {});
   }, []);
+
+  const fetchPlaySimulation = async (currency: string): Promise<void> => {
+    try {
+      const currentDate = new Date();
+
+      const formattedDate = `${currentDate.getFullYear()}-${(
+        currentDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, '0')}-${currentDate
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
+
+      const res = await getPlaySimulation(formattedDate, currency);
+      setPlayerData(res.user_rank);
+      setLeaderBoard(res.leaderboard);
+    } catch (error) {
+      console.error('Error fetching play simulation:', error);
+    }
+  };
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      void fetchPlaySimulation(userInfo.preferredCurrency);
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -107,7 +125,7 @@ const CurrentPage = (): React.ReactElement => {
             key={index}
             className={`w-full p-3 mb-2 ${
               leader.rank === 1 || leader.rank === 2 || leader.rank === 3
-                ? 'rounded-xl border border-[#4d4e4d]'
+                ? 'rounded-xl border border-[#E9E9E9]'
                 : ''
             }`}
           >

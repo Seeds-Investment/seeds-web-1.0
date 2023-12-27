@@ -1,6 +1,22 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // greeting: 'Hello, {{name}}',
+  footer: {
+    description:
+      'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan  jasa konsultasi keuangan. Jika masih ragu untuk berinvestasi, kamu dapat berkomunikasi dengan konsultan keuangan. Tetep waspada sebelum mulai berinvetasi!',
+    download: 'Unduh Aplikasi Kami',
+    regist: 'Terdaftar di',
+    company: { title: 'Perusahaan', list1: 'Tentang Kami', list2: 'Karir' },
+
+    support: { title: 'Dukungan' },
+    legal: {
+      title: 'Hukum',
+      list1: 'Syarat & Ketentuan',
+      list2: 'Kebijakan Privasi',
+      list3: 'Panduan Sosial'
+    },
+    contactUs: { title: 'Hubungi Kami' }
+  },
   landing: {
     section1: {
       text1: '#MainbarengSeeds',

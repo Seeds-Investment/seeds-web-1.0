@@ -1,14 +1,68 @@
 'use client';
+import email from '@/assets/landing-page/email.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
-import { downloadOurApp, seedsInformation, socialMedia } from '@/utils/_static';
-import type { ISeedsInformationItem } from '@/utils/interfaces/data.interfaces';
+import whatsapp from '@/assets/landing-page/whatsapp.svg';
+import { downloadOurApp, socialMedia } from '@/utils/_static';
+import type {
+  ISeedsInformationItem,
+  ISeedsInformationList
+} from '@/utils/interfaces/data.interfaces';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+
 export default function Footer(): React.ReactElement {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
+  const seedsInformation: ISeedsInformationList = {
+    Company: [
+      { name: `${t('footer.company.title')}`, url: '' },
+      {
+        name: `${t('footer.company.list1')}`,
+        url: '/about-us'
+      },
+      {
+        name: `${t('footer.company.list2')}`,
+        url: 'https://bit.ly/CareerSeeds'
+      }
+    ],
+    Legal: [
+      { name: `${t('footer.legal.title')}`, url: '' },
+      {
+        name: `${t('footer.legal.list1')}`,
+        url: '/faq-submenu/terms-condition'
+      },
+      {
+        name: `${t('footer.legal.list2')}`,
+        url: '/faq-submenu/privacy-policy'
+      },
+      {
+        name: `${t('footer.legal.list3')}`,
+        url: '/faq-submenu/social-media-guide'
+      }
+    ],
+    Support: [
+      { name: `${t('footer.support.title')}`, url: '' },
+      {
+        name: 'FAQs',
+        url: '/faq'
+      }
+    ],
+    'Contact Us': [
+      { name: `${t('footer.contactUs.title')}`, url: '' },
+      {
+        icon: email,
+        name: 'info@seeds.finance',
+        url: 'mailto:info@seeds.finance'
+      },
+      {
+        icon: whatsapp,
+        name: '08118883519',
+        url: 'https://api.whatsapp.com/send?phone=628118883519'
+      }
+    ]
+  };
   return (
     <section className="flex 2xl:flex-row flex-col gap-10 justify-center items-center pt-10 pb-[42px] lg:pt-20 bg-white px-4">
       <div className="flex gap-6 lg:gap-10 md:flex-row flex-col 2xl:justify-between 2xl:w-full">
@@ -28,10 +82,7 @@ export default function Footer(): React.ReactElement {
               PT. Benih Investasi Teknologi
             </Typography>
             <Typography className="font-normal font-poppins text-sm lg:text-base text-[#7C7C7C]">
-              Nothing on this site is a recommendation to invest. Seeds does not
-              offer financial advice. If you are unsure about investing we
-              encourage you to speak to a financial advisor. Your capital is at
-              risk.
+              {t('footer.description')}
             </Typography>
           </div>
           <div className="flex gap-4">
@@ -54,33 +105,39 @@ export default function Footer(): React.ReactElement {
               .map(([key, value]) => (
                 <div key={key} className="flex flex-col lg:gap-4 gap-3">
                   <Typography className="font-semibold font-poppins text-lg lg:text-xl text-[#106B6E]">
-                    {key}
+                    {value[0].name}
                   </Typography>
-                  {value.map(
-                    (
-                      data: ISeedsInformationItem,
-                      key: number
-                    ): React.ReactElement => {
-                      const dataIcon =
-                        data?.icon != null ? (
-                          <Image alt="icon" src={data.icon} />
-                        ) : (
-                          ''
+                  {value
+                    .slice(1)
+                    .map(
+                      (
+                        data: ISeedsInformationItem,
+                        key: number
+                      ): React.ReactElement => {
+                        const dataIcon =
+                          data?.icon != null ? (
+                            <Image alt="icon" src={data.icon} />
+                          ) : (
+                            ''
+                          );
+                        return (
+                          <Link
+                            key={key}
+                            href={data.url}
+                            target={
+                              data.name === 'Career' || data.name === 'Karir'
+                                ? '_blank'
+                                : ''
+                            }
+                          >
+                            <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
+                              {dataIcon}
+                              {data.name}
+                            </Typography>
+                          </Link>
                         );
-                      return (
-                        <Link
-                          key={key}
-                          href={data.url}
-                          target={data.name === 'Career' ? '_blank' : ''}
-                        >
-                          <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
-                            {dataIcon}
-                            {data.name}
-                          </Typography>
-                        </Link>
-                      );
-                    }
-                  )}
+                      }
+                    )}
                 </div>
               ))}
           </div>
@@ -90,29 +147,31 @@ export default function Footer(): React.ReactElement {
               .map(([key, value]) => (
                 <div key={key} className="flex flex-col lg:gap-4 gap-3">
                   <Typography className="font-semibold font-poppins text-lg lg:text-xl text-[#106B6E]">
-                    {key}
+                    {value[0].name}
                   </Typography>
-                  {value.map(
-                    (
-                      data: ISeedsInformationItem,
-                      key: number
-                    ): React.ReactElement => {
-                      const dataIcon =
-                        data?.icon != null ? (
-                          <Image alt="icon" src={data.icon} />
-                        ) : (
-                          ''
+                  {value
+                    .slice(1)
+                    .map(
+                      (
+                        data: ISeedsInformationItem,
+                        key: number
+                      ): React.ReactElement => {
+                        const dataIcon =
+                          data?.icon != null ? (
+                            <Image alt="icon" src={data.icon} />
+                          ) : (
+                            ''
+                          );
+                        return (
+                          <Link key={key} href={data.url}>
+                            <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
+                              {dataIcon}
+                              {data.name}
+                            </Typography>
+                          </Link>
                         );
-                      return (
-                        <Link key={key} href={data.url}>
-                          <Typography className="font-normal font-poppins text-base lg:text-lg text-[#262626] flex gap-2">
-                            {dataIcon}
-                            {data.name}
-                          </Typography>
-                        </Link>
-                      );
-                    }
-                  )}
+                      }
+                    )}
                 </div>
               ))}
           </div>
@@ -120,7 +179,7 @@ export default function Footer(): React.ReactElement {
         <div className="flex flex-col gap-6 lg:gap-10">
           <div className="flex flex-col gap-2.5">
             <Typography className="font-semibold font-poppins text-lg lg:text-xl text-[#106B6E]">
-              Download Our App
+              {t('footer.download')}
             </Typography>
             <div className="flex gap-4">
               {downloadOurApp
@@ -132,9 +191,9 @@ export default function Footer(): React.ReactElement {
                 ))}
             </div>
           </div>
-          <div className="flex flex-col lg:gap-4">
-            <Typography className="hidden lg:flex font-semibold font-poppins text-xl text-[#106B6E]">
-              Registered in
+          <div className="flex flex-col gap-4">
+            <Typography className="flex font-semibold font-poppins text-xl text-[#106B6E]">
+              {t('footer.regist')}
             </Typography>
             <div className="flex gap-4">
               {downloadOurApp
@@ -162,29 +221,39 @@ export default function Footer(): React.ReactElement {
             .map(([key, value]) => (
               <div key={key} className="flex flex-col gap-3">
                 <Typography className="font-semibold font-poppins text-lg text-[#106B6E]">
-                  {key}
+                  {value[0].name}
                 </Typography>
-                {value.map(
-                  (
-                    data: ISeedsInformationItem,
-                    key: number
-                  ): React.ReactElement => {
-                    const dataIcon =
-                      data?.icon != null ? (
-                        <Image alt="icon" src={data.icon} />
-                      ) : (
-                        ''
+                {value
+                  .slice(1)
+                  .map(
+                    (
+                      data: ISeedsInformationItem,
+                      key: number
+                    ): React.ReactElement => {
+                      const dataIcon =
+                        data?.icon != null ? (
+                          <Image alt="icon" src={data.icon} />
+                        ) : (
+                          ''
+                        );
+                      return (
+                        <Link
+                          key={key}
+                          href={data.url}
+                          target={
+                            data.name === 'Career' || data.name === 'Karir'
+                              ? '_blank'
+                              : ''
+                          }
+                        >
+                          <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
+                            {dataIcon}
+                            {data.name}
+                          </Typography>
+                        </Link>
                       );
-                    return (
-                      <Link key={key} href={data.url}>
-                        <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
-                          {dataIcon}
-                          {data.name}
-                        </Typography>
-                      </Link>
-                    );
-                  }
-                )}
+                    }
+                  )}
               </div>
             ))}
         </div>
@@ -194,29 +263,31 @@ export default function Footer(): React.ReactElement {
             .map(([key, value]) => (
               <div key={key} className="flex flex-col gap-3">
                 <Typography className="font-semibold font-poppins text-lg text-[#106B6E]">
-                  {key}
+                  {value[0].name}
                 </Typography>
-                {value.map(
-                  (
-                    data: ISeedsInformationItem,
-                    key: number
-                  ): React.ReactElement => {
-                    const dataIcon =
-                      data?.icon != null ? (
-                        <Image alt="icon" src={data.icon} />
-                      ) : (
-                        ''
+                {value
+                  .slice(1)
+                  .map(
+                    (
+                      data: ISeedsInformationItem,
+                      key: number
+                    ): React.ReactElement => {
+                      const dataIcon =
+                        data?.icon != null ? (
+                          <Image alt="icon" src={data.icon} />
+                        ) : (
+                          ''
+                        );
+                      return (
+                        <Link key={key} href={data.url}>
+                          <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
+                            {dataIcon}
+                            {data.name}
+                          </Typography>
+                        </Link>
                       );
-                    return (
-                      <Link key={key} href={data.url}>
-                        <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
-                          {dataIcon}
-                          {data.name}
-                        </Typography>
-                      </Link>
-                    );
-                  }
-                )}
+                    }
+                  )}
               </div>
             ))}
         </div>
@@ -226,29 +297,31 @@ export default function Footer(): React.ReactElement {
             .map(([key, value]) => (
               <div key={key} className="flex flex-col gap-3">
                 <Typography className="font-semibold font-poppins text-lg text-[#106B6E]">
-                  {key}
+                  {value[0].name}
                 </Typography>
-                {value.map(
-                  (
-                    data: ISeedsInformationItem,
-                    key: number
-                  ): React.ReactElement => {
-                    const dataIcon =
-                      data?.icon != null ? (
-                        <Image alt="icon" src={data.icon} />
-                      ) : (
-                        ''
+                {value
+                  .slice(1)
+                  .map(
+                    (
+                      data: ISeedsInformationItem,
+                      key: number
+                    ): React.ReactElement => {
+                      const dataIcon =
+                        data?.icon != null ? (
+                          <Image alt="icon" src={data.icon} />
+                        ) : (
+                          ''
+                        );
+                      return (
+                        <Link key={key} href={data.url}>
+                          <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
+                            {dataIcon}
+                            {data.name}
+                          </Typography>
+                        </Link>
                       );
-                    return (
-                      <Link key={key} href={data.url}>
-                        <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
-                          {dataIcon}
-                          {data.name}
-                        </Typography>
-                      </Link>
-                    );
-                  }
-                )}
+                    }
+                  )}
               </div>
             ))}
         </div>
@@ -258,29 +331,31 @@ export default function Footer(): React.ReactElement {
             .map(([key, value]) => (
               <div key={key} className="flex flex-col gap-3">
                 <Typography className="font-semibold font-poppins text-lg text-[#106B6E]">
-                  {key}
+                  {value[0].name}
                 </Typography>
-                {value.map(
-                  (
-                    data: ISeedsInformationItem,
-                    key: number
-                  ): React.ReactElement => {
-                    const dataIcon =
-                      data?.icon != null ? (
-                        <Image alt="icon" src={data.icon} />
-                      ) : (
-                        ''
+                {value
+                  .slice(1)
+                  .map(
+                    (
+                      data: ISeedsInformationItem,
+                      key: number
+                    ): React.ReactElement => {
+                      const dataIcon =
+                        data?.icon != null ? (
+                          <Image alt="icon" src={data.icon} />
+                        ) : (
+                          ''
+                        );
+                      return (
+                        <Link key={key} href={data.url}>
+                          <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
+                            {dataIcon}
+                            {data.name}
+                          </Typography>
+                        </Link>
                       );
-                    return (
-                      <Link key={key} href={data.url}>
-                        <Typography className="font-normal font-poppins text-base text-[#262626] flex gap-2">
-                          {dataIcon}
-                          {data.name}
-                        </Typography>
-                      </Link>
-                    );
-                  }
-                )}
+                    }
+                  )}
               </div>
             ))}
         </div>

@@ -1,3 +1,4 @@
+import FollowButton from '@/components/FollowButton';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -108,9 +109,11 @@ export default function PeoplePage(): React.ReactElement {
                   </div>
                 </div>
                 <div>
-                  <button className="flex mt-3 font-semibold text-xs text-white px-3 py-2 rounded-full bg-[#3AC4A0]">
-                    Follow
-                  </button>
+                  <FollowButton
+                    userId={data.id}
+                    isFollowed={data.isFollowed}
+                    customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                  />
                 </div>
               </div>
             </div>

@@ -138,7 +138,7 @@ const Section2: React.FC = () => {
           <p className="text-3xl md:text-4xl text-center font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] xl:font-bold">
             Our Partnership
           </p>
-          <div className="relative w-full h-[450px] md:h-[270px] lg:h-[350px] xl:h-[450px] overflow-hidden">
+          <div className="relative w-full h-[450px] md:h-[270px] lg:h-[350px] xl:h-[420px] overflow-hidden">
             <Slider {...settings}>
               {images?.length !== 0
                 ? images?.map((data, idx) => (

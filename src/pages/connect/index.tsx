@@ -334,7 +334,7 @@ const Circle = (): React.ReactElement => {
             {/* Tab */}
             <div className="w-full justify-center">
               <TabsHeader
-                className="bg-transparent w-full md:w-1/2 mx-auto rounded-none border-b border-blue-gray-50"
+                className="bg-transparent w-full md:w-1/2 mx-auto p-0 rounded-none border-b border-blue-gray-50"
                 indicatorProps={{
                   className:
                     'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'

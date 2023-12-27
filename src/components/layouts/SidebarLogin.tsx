@@ -1,7 +1,6 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import TrackerEvent from '@/repository/GTM.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { trackEvent } from '@phntms/next-gtm';
-import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -26,7 +25,6 @@ const menu = [
 ];
 
 const SidebarLogin: React.FC = () => {
-  const deviceDetector = new DeviceDetector();
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
@@ -71,15 +69,10 @@ const SidebarLogin: React.FC = () => {
         {menu.map((data, idx) => (
           <Link
             onClick={() => {
-              trackEvent({
+              TrackerEvent({
                 event: `Seeds_view_${data.title.toLowerCase()}_page_web`,
-                data: {
-                  user_id: userInfo?.id,
-                  page_name: data.title,
-                  created_at: new Date().toString(),
-                  user_device: deviceDetector.parse(navigator.userAgent).device
-                    ?.type
-                }
+                userId: userInfo?.id,
+                pageName: data.title
               });
             }}
             className={isLinkActive(data.url)}

@@ -3,6 +3,7 @@
 // import vector1 from '@/assets/landing-page/vector-faq.png';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
@@ -79,12 +80,18 @@ export default function Section12(): React.ReactElement {
             <p className="text-base lg:text-2xl text-center font-normal text-[#262626] mt-3">
               {t('landingV2.section12.text2')}
             </p>
-            <Button
-              className="text-lg mt-5 px-20 font-semibold capitalize text-md bg-[#9739c9] rounded-full"
-              onClick={() => {}}
+            <Link
+              href={
+                'https://docs.google.com/forms/d/1-RI9IYyaO-5aPfS4BsTd2umTewQbh_kXVthWbys2Qdk/viewform?edit_requested=true'
+              }
             >
-              {t('landingV2.section12.text3')}
-            </Button>
+              <Button
+                className="text-lg mt-5 px-20 font-semibold capitalize text-md bg-[#9739c9] rounded-full"
+                onClick={() => {}}
+              >
+                {t('landingV2.section12.text3')}
+              </Button>
+            </Link>
           </div>
           <div>
             <div className="w-full hidden lg:block h-full">

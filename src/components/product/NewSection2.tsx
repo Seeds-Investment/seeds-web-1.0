@@ -1,3 +1,5 @@
+import BlurLeadBottom from '@/assets/product/BlurLeadBottom.svg';
+import BlurLeadTop from '@/assets/product/BlurLeadTop.svg';
 import CrownIlust from '@/assets/product/CrownIlust.png';
 import LeaderboardLine from '@/assets/product/LeaderboardLine.svg';
 import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
@@ -58,11 +60,18 @@ const NewSection2: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center md:bg-[#F9F9F9] justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
+      className="relative flex flex-col items-center justify-center md:pt-[43px] md:pb-[54px] py-[40px] px-4 w-full"
     >
-      {/* <div className="absolute hidden md:flex bg-[#79F0B8] rotate-[63.22deg] w-[442.55px] h-[442.55px] -ml-[263px] top-0 blur-[321px] self-start  rounded-full"></div>
-      <div className="absolute hidden md:flex bg-[#B798FF] w-[442.55px] h-[442.55px] bottom-0 blur-[321px] self-start right-0  rounded-full"></div> */}
-
+      <Image
+        src={BlurLeadTop}
+        alt="BlurLeadTop"
+        className="absolute top-0 left-0"
+      />
+      <Image
+        src={BlurLeadBottom}
+        alt="BlurLeadBottom"
+        className="absolute bottom-0 right-0"
+      />
       <div
         className={`flex flex-col items-center ${
           inView && isBottom >= measurement
@@ -146,10 +155,18 @@ const NewSection2: React.FC = () => {
             <Image
               src={Lead[1]?.avatar_url ?? Lead[1]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
+            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+              {(Lead[1]?.user_full_name?.length > 17
+                ? `${Lead[1]?.user_full_name.substring(0, 17) as string}...`
+                : Lead[1]?.user_full_name) ??
+                (Lead[1]?.name?.length > 17
+                  ? `${Lead[1]?.name.substring(0, 17) as string}...`
+                  : Lead[1]?.name)}
+            </Typography>
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
@@ -165,6 +182,34 @@ const NewSection2: React.FC = () => {
                 </Typography>
               </div>
             </div>
+            <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+                <div className="flex flex-col justify-between text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Total play
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[1]?.total_play}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Win
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[1]?.total_win}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Lose
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[1]?.total_lose}
+                  </Typography>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col items-center gap-[5.2px] md:gap-[14.32px]">
             <Image
@@ -175,10 +220,18 @@ const NewSection2: React.FC = () => {
             <Image
               src={Lead[0]?.avatar_url ?? Lead[0]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
+            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+              {(Lead[0]?.user_full_name?.length > 17
+                ? `${Lead[0]?.user_full_name.substring(0, 17) as string}...`
+                : Lead[0]?.user_full_name) ??
+                (Lead[0]?.name?.length > 17
+                  ? `${Lead[0]?.name.substring(0, 17) as string}...`
+                  : Lead[0]?.name)}
+            </Typography>
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
@@ -194,15 +247,51 @@ const NewSection2: React.FC = () => {
                 </Typography>
               </div>
             </div>
+            <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+                <div className="flex flex-col justify-between text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Total play
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[0]?.total_play}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Win
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[0]?.total_win}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Lose
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[0]?.total_lose}
+                  </Typography>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="flex flex-col items-center gap-[5.2px] md:gap-[14.32px] -mb-[44.17px] md:-mb-[99.34px]">
             <Image
               src={Lead[2]?.avatar_url ?? Lead[2]?.avatar}
               alt="Avatar"
-              width={231.06}
-              height={231.06}
-              className="rounded-full w-[83.56px] md:w-[231.06px]"
+              width={200.23}
+              height={200.23}
+              className="rounded-full w-[83.56px] md:w-[200.23px]"
             />
+            <Typography className="font-poppins font-semibold text-xl text-[#201B1C] capitalize">
+              {(Lead[2]?.user_full_name?.length > 17
+                ? `${Lead[2]?.user_full_name.substring(0, 17) as string}...`
+                : Lead[2]?.user_full_name) ??
+                (Lead[2]?.name?.length > 17
+                  ? `${Lead[2]?.name.substring(0, 17) as string}...`
+                  : Lead[2]?.name)}
+            </Typography>
             <div className="flex justify-center items-center gap-[2.78px] md:gap-[6.4px] bg-[#DCFCE4] w-[61.42px] md:w-[141.51px] h-[15.27px] md:h-[35.18px] md:rounded-md rounded-sm">
               <Typography className="font-poppins font-semibold md:text-base text-[6.94px] leading-[9.72px] text-[#3AC4A0]">
                 Win Rate
@@ -218,12 +307,40 @@ const NewSection2: React.FC = () => {
                 </Typography>
               </div>
             </div>
+            <div className=" p-[1px] bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] w-full rounded-lg">
+              <div className="flex justify-between h-full w-full bg-white rounded-lg p-3">
+                <div className="flex flex-col justify-between text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Total play
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[2]?.total_play}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Win
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[2]?.total_win}
+                  </Typography>
+                </div>
+                <div className="text-center">
+                  <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
+                    Lose
+                  </Typography>
+                  <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+                    {Lead[2]?.total_lose}
+                  </Typography>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <Image
           src={LeaderboardRank}
           alt="LeaderboardRank"
-          className="w-[343px] md:w-[945px]"
+          className="w-[343px] md:w-[900px]"
         />
       </div>
     </section>

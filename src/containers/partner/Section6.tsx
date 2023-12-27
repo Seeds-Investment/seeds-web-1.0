@@ -2,13 +2,17 @@ import next from '@/assets/landing-page/next.svg';
 import prev from '@/assets/landing-page/prev.svg';
 import {
   SectionSixImageEvent1,
+  SectionSixImageEvent10,
   SectionSixImageEvent2,
   SectionSixImageEvent3,
+  SectionSixImageEvent7,
+  SectionSixImageEvent8,
+  SectionSixImageEvent9,
   SectionSixImageOval
 } from '@/constants/assets/images';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
@@ -18,7 +22,7 @@ import 'slick-carousel/slick/slick.css';
 const Section6: React.FC = () => {
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
-  const [sliderIndex, setSliderIndex] = useState(0);
+  const sliderRef = useRef<Slider>(null);
   const measurement = 400;
   const [isBottom, setBottom] = useState(0);
   const { ref, inView, entry } = useInView({
@@ -33,50 +37,27 @@ const Section6: React.FC = () => {
   const events = [
     { image: SectionSixImageEvent1.src },
     { image: SectionSixImageEvent2.src },
-    { image: SectionSixImageEvent3.src }
+    { image: SectionSixImageEvent3.src },
+    // { image: SectionSixImageEvent4.src },
+    // { image: SectionSixImageEvent5.src },
+    // { image: SectionSixImageEvent6.src },
+    { image: SectionSixImageEvent7.src },
+    { image: SectionSixImageEvent8.src },
+    { image: SectionSixImageEvent9.src },
+    { image: SectionSixImageEvent10.src }
   ];
 
-  const PrevBtn = (props: any): any => {
-    const { onClick } = props;
-    return (
-      <div className="absolute bottom-0 right-1/2 -mb-16 z-20">
-        <button
-          className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
-          onClick={onClick}
-        >
-          <Image src={prev} alt="Next" className="cursor-pointer" />
-        </button>
-      </div>
-    );
-  };
-
-  const NextBtn = (props: any): any => {
-    const { onClick } = props;
-    return (
-      <div className="absolute bottom-0 left-1/2 -mb-16 mx-auto z-20">
-        <button
-          className="rounded-full justify-center lg:p-2 lg:mx-6 border mx-3 p-1 border-1 border-[#4FE6AF]"
-          onClick={onClick}
-        >
-          <Image src={next} alt="Next" className="cursor-pointer" />
-        </button>
-      </div>
-    );
-  };
-
   const settings = {
-    classname: 'center',
-    centerPadding: '27%',
-    infinite: true,
-    prevArrow: <PrevBtn />,
-    nextArrow: <NextBtn />,
-    beforeChange: (current: number, next: number) => {
-      setSliderIndex(next);
-    },
-    speed: 500,
+    // centerMode: true,
     slidesToShow: 3,
-    slidesToScroll: 3,
-    initialSlide: 0,
+    speed: 1000,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    infinite: true,
+    dots: false,
+    // nextArrow: <NextBtn />,
+    // prevArrow: <PrevBtn />,
     responsive: [
       {
         breakpoint: 1024,
@@ -103,6 +84,18 @@ const Section6: React.FC = () => {
         }
       }
     ]
+  };
+
+  const handlePrevious = (): void => {
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickPrev();
+    }
+  };
+
+  const handleNext = (): void => {
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickNext();
+    }
   };
 
   return (
@@ -135,14 +128,17 @@ const Section6: React.FC = () => {
           ) : null
         ) : null}
 
-        <div className="relative w-full mt-6 mb-20 md:mt-16 md:px-20">
-          <Slider {...settings} initialSlide={sliderIndex}>
+        <div className="w-full mt-6 mb-20 md:mt-16 md:px-20">
+          <Slider ref={sliderRef} {...settings}>
             {events?.length !== 0
               ? events?.map((data, idx) => (
-                  <div key={idx} className="mr-3">
+                  <div
+                    key={idx}
+                    className="w-full  mx-5 lg:w-1/3  justify-center items-center "
+                  >
                     <Image
                       src={data.image}
-                      alt="event"
+                      alt={`Event ${idx + 1}`}
                       width={350}
                       height={350}
                       className="w-[350px] h-[350px]"
@@ -151,6 +147,20 @@ const Section6: React.FC = () => {
                 ))
               : null}
           </Slider>
+          <div className="flex justify-end lg:justify-center mt-3 lg:mt-2 mx-3">
+            <button
+              className="rounded-full lg:p-2 border lg:mx-6 mx-2 p-1 border-1 border-[#4FE6AF]"
+              onClick={handlePrevious}
+            >
+              <Image src={prev} alt="Previous" className="cursor-pointer" />
+            </button>
+            <button
+              className="rounded-full lg:p-2 lg:mx-6 border mx-2 p-1 border-1 border-[#4FE6AF]"
+              onClick={handleNext}
+            >
+              <Image src={next} alt="Next" className="cursor-pointer" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

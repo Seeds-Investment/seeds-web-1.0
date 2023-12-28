@@ -153,6 +153,11 @@ const MoreOption = ({
   const [selectedUser, setSelectedUser] = React.useState(null);
 
   const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
     setIsOpen(!isOpen);
   };
 

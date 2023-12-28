@@ -22,7 +22,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="flex justify-start w-full md:pl-0">
+    <div className="flex justify-start w-full mb-20 md:pl-0">
       <div className="w-fit">
         <div className="max-w-full w-fit h-[300px] bg-transparent">
           <div className="relative bg-black max-w-full px-2 py-2">

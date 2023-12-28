@@ -1,12 +1,17 @@
-import events1 from '@/assets/landing-page/events1.jpg';
-import events2 from '@/assets/landing-page/events2.jpg';
-import events3 from '@/assets/landing-page/events3.jpg';
-import events4 from '@/assets/landing-page/events4.jpg';
 import next from '@/assets/landing-page/next.svg';
 import prev from '@/assets/landing-page/prev.svg';
-import { SectionSixImageOval } from '@/constants/assets/images';
+import {
+  SectionSixImageEvent1,
+  SectionSixImageEvent10,
+  SectionSixImageEvent2,
+  SectionSixImageEvent3,
+  SectionSixImageEvent7,
+  SectionSixImageEvent8,
+  SectionSixImageEvent9,
+  SectionSixImageOval
+} from '@/constants/assets/images';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
@@ -14,7 +19,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 export default function Section6(): React.ReactElement {
-  const [sliderIndex, setSliderIndex] = useState(0);
+  const sliderRef = useRef<Slider>(null);
 
   const { t } = useTranslation();
   const [isBottom, setBottom] = useState(0);
@@ -28,52 +33,68 @@ export default function Section6(): React.ReactElement {
     setBottom(bottom);
   }, [entry]);
 
+  const events = [
+    { image: SectionSixImageEvent1.src },
+    { image: SectionSixImageEvent2.src },
+    { image: SectionSixImageEvent3.src },
+    // { image: SectionSixImageEvent4.src },
+    // { image: SectionSixImageEvent5.src },
+    // { image: SectionSixImageEvent6.src },
+    { image: SectionSixImageEvent7.src },
+    { image: SectionSixImageEvent8.src },
+    { image: SectionSixImageEvent9.src },
+    { image: SectionSixImageEvent10.src }
+  ];
+
   const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
+    // centerMode: true,
     slidesToShow: 3,
+    speed: 1000,
     slidesToScroll: 1,
-    beforeChange: (current: number, next: number) => {
-      setSliderIndex(next);
-    },
+    autoplay: true,
+    autoplaySpeed: 3000,
+    infinite: true,
+    dots: false,
+    // nextArrow: <NextBtn />,
+    // prevArrow: <PrevBtn />,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          dots: false,
-          slidesToShow: 3
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 600,
         settings: {
-          dots: false,
-          slidesToShow: 2
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
         }
       },
       {
         breakpoint: 480,
         settings: {
-          dots: false,
-          slidesToShow: 1
+          slidesToShow: 1,
+          slidesToScroll: 1
         }
       }
     ]
   };
 
-  const eventsImages = [events1, events2, events3, events4];
-
   const handlePrevious = (): void => {
-    setSliderIndex(prevIndex =>
-      prevIndex > 0 ? prevIndex - 1 : eventsImages.length - 1
-    );
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickPrev();
+    }
   };
 
   const handleNext = (): void => {
-    setSliderIndex(prevIndex =>
-      prevIndex < eventsImages.length - 1 ? prevIndex + 1 : 0
-    );
+    if (sliderRef.current !== null) {
+      sliderRef.current.slickNext();
+    }
   };
   return (
     <section
@@ -101,37 +122,39 @@ export default function Section6(): React.ReactElement {
             className="w-[300px] h-[117px] top-7 md:w-[629px] md:top-7 relative z-1"
           />
         </div>
-        <div className="justify-center items-center mx-auto mt-5 lg:mx-16 lg:mt-12 text-center">
-          <Slider {...settings} initialSlide={sliderIndex}>
-            {eventsImages.map((image, index) => (
-              <div
-                key={index}
-                className="w-full  mx-5 lg:w-1/3  justify-center items-center "
-              >
-                <Image
-                  src={image}
-                  alt={`Event ${index + 1}`}
-                  width={300}
-                  height={300}
-                  className="w-[350px] h-[350px]"
-                />
-              </div>
-            ))}
+        <div className="w-full mt-6 mb-20 md:mt-16 md:px-20">
+          <Slider ref={sliderRef} {...settings}>
+            {events?.length !== 0
+              ? events?.map((data, idx) => (
+                  <div
+                    key={idx}
+                    className="w-full  mx-5 lg:w-1/3  justify-center items-center "
+                  >
+                    <Image
+                      src={data.image}
+                      alt={`Event ${idx + 1}`}
+                      width={350}
+                      height={350}
+                      className="w-[350px] h-[350px]"
+                    />
+                  </div>
+                ))
+              : null}
           </Slider>
-        </div>
-        <div className="flex lg:hidden justify-end lg:justify-center lg:mt-2 mt-5 mx-3">
-          <button
-            className="rounded-full lg:p-2 border lg:mx-6 mx-2 p-1 border-1 border-[#4FE6AF]"
-            onClick={handlePrevious}
-          >
-            <Image src={prev} alt="Previous" className="cursor-pointer" />
-          </button>
-          <button
-            className="rounded-full lg:p-2 lg:mx-6 border mx-2 p-1 border-1 border-[#4FE6AF]"
-            onClick={handleNext}
-          >
-            <Image src={next} alt="Next" className="cursor-pointer" />
-          </button>
+          <div className="flex justify-end lg:justify-center mt-3 lg:mt-5 mx-3">
+            <button
+              className="rounded-full lg:p-2 border lg:mx-6 mx-2 p-1 border-1 border-[#4FE6AF]"
+              onClick={handlePrevious}
+            >
+              <Image src={prev} alt="Previous" className="cursor-pointer" />
+            </button>
+            <button
+              className="rounded-full lg:p-2 lg:mx-6 border mx-2 p-1 border-1 border-[#4FE6AF]"
+              onClick={handleNext}
+            >
+              <Image src={next} alt="Next" className="cursor-pointer" />
+            </button>
+          </div>
         </div>
       </div>
     </section>

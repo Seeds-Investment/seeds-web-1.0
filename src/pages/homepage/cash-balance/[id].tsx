@@ -10,6 +10,7 @@ import {
   getHistoryTransaction,
   getPlayBallance
 } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -111,19 +112,36 @@ const CashBalancePage: React.FC = () => {
     }
   }, [ballance]);
 
-  const fetchPlayBallance = async (): Promise<void> => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayBallance(id as string);
+      const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchHistorytransaction = async (): Promise<void> => {
+  const fetchHistorytransaction = async (currency: string): Promise<void> => {
     try {
       setIsLoading(true);
-      getHistoryTransaction(id as string, params)
+      getHistoryTransaction(id as string, { ...params, currency })
         .then(res => {
           const data: any[] = res.playOrders;
           const total = res.metadata.total;
@@ -153,10 +171,10 @@ const CashBalancePage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id !== undefined) {
-      void fetchPlayBallance();
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
     }
-  }, [id]);
+  }, [id, userInfo]);
 
   const handleScroll = (): void => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
@@ -183,10 +201,10 @@ const CashBalancePage: React.FC = () => {
   }, [handleScroll]);
 
   useEffect(() => {
-    if (hasMore) {
-      void fetchHistorytransaction();
+    if (hasMore && userInfo !== undefined) {
+      void fetchHistorytransaction(userInfo.preferredCurrency);
     }
-  }, [params.page]);
+  }, [params.page, userInfo]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -277,6 +295,7 @@ const CashBalancePage: React.FC = () => {
                   return (
                     <div key={idx} className="w-full">
                       <AssetOrderCard
+                        currency={userInfo?.preferredCurrency}
                         data={data}
                         isClick={true}
                         playId={id as string}

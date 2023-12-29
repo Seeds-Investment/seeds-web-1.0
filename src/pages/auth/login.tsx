@@ -5,6 +5,7 @@ import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
+import TrackerEvent from '@/repository/GTM.repository';
 // import {
 //   AppleBrand,
 //   FacebookBrand,
@@ -13,8 +14,6 @@ import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
-import { trackEvent } from '@phntms/react-gtm';
-import DeviceDetector from 'device-detector-js';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,13 +31,12 @@ const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const { data: session }: any = useSession();
-  const deviceDetector = new DeviceDetector();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
   const [errorPhone, setErrorPhone] = useState<any>('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
-  const [errorResponse, setErrorResponse] = useState<string>('');
+  const [errorResponse, setErrorResponse] = useState<any>('');
   const [errorPassword, setErrorPassword] = useState<any>('');
 
   const [formData, setFormData] = useState<FormData>({
@@ -98,27 +96,18 @@ const LoginPage = (): JSX.Element => {
           });
           const responseUser = await getUserInfo();
           console.log(responseUser);
-          trackEvent({
+          TrackerEvent({
             event: 'Seeds_login_web',
-            data: {
-              user_id: responseUser.id,
-              user_device: deviceDetector.parse(navigator.userAgent).device
-                ?.type
-            }
+            userId: responseUser.id
           });
           await router.push('/homepage'); // Added await keyword here
-          trackEvent({
+          TrackerEvent({
             event: `Seeds_view_homepage_page_web`,
-            data: {
-              user_id: responseUser.id,
-              page_name: 'Homepage',
-              created_at: new Date().toString(),
-              user_device: deviceDetector.parse(navigator.userAgent).device
-                ?.type
-            }
+            userId: responseUser.id,
+            pageName: 'Homepage'
           });
         } else {
-          setErrorResponse('Invalid Phone Number or Password');
+          setErrorResponse(t('validation.invalid'));
         }
       }
     } catch (error: any) {

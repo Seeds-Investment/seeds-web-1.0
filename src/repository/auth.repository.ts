@@ -90,6 +90,37 @@ export const verifyOtp = async (payload: IVerifyOtp): Promise<any> => {
   }
 };
 
+export const editVerifyOtp = async (payload: IVerifyOtp): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (
+      payload?.method?.length === 0 ||
+      payload?.msisdn?.length === 0 ||
+      payload?.otp?.length === 0
+    ) {
+      return await Promise.resolve(null);
+    }
+    return await authService.post(
+      `/otp/verify/${payload.method}`,
+      {
+        ...payload
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
 export const loginProvider = async (
   identifier: string,
   provider: string

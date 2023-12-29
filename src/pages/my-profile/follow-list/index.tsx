@@ -22,7 +22,6 @@ const Follow: React.FC = () => {
   const router = useRouter();
   const { type } = router.query;
   const [followData, setFollowData] = useState<any>([]);
-  console.log(followData);
   const [change, setChange] = useState(false);
 
   const _handleChange = (): void => {

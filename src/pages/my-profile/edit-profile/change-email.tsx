@@ -15,6 +15,25 @@ const MainEmail: React.FC = () => {
     birthDate: '',
     phone: ''
   });
+
+  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
+  const [error, setError] = useState(false);
+  const emptyPinIndex = pin.findIndex(number => number === '');
+  const joinPin = pin.join('');
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      setSelect(1);
+    } catch (error: any) {
+      console.error(error.response?.data?.message);
+    }
+  };
+  if (joinPin !== '' && emptyPinIndex === -1) {
+    setPin(['', '', '', '', '', '']);
+    handleSubmit()
+      .then(() => {})
+      .catch(() => {});
+  }
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -41,7 +60,14 @@ const MainEmail: React.FC = () => {
 
   return (
     <PageGradient defaultGradient className="z-0">
-      <ValidatePin setSelect={setSelect} select={select} />
+      <ValidatePin
+        pin={pin}
+        setPin={setPin}
+        emptyPinIndex={emptyPinIndex}
+        error={error}
+        setError={setError}
+        className={select === 0 ? 'flex' : 'hidden'}
+      />
       <ChangeEmail form={form} setForm={setForm} select={select} />
     </PageGradient>
   );

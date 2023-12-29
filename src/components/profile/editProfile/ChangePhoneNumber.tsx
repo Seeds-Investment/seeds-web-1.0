@@ -1,11 +1,7 @@
 import ChangePhoneNumberEdit from '@/assets/my-profile/editProfile/ChangePhoneNumberEdit.svg';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import countriesRepository from '@/constants/countries.json';
-import {
-  checkPhoneNumber,
-  editVerifyOtp,
-  getOtp
-} from '@/repository/auth.repository';
+import countries from '@/constants/countries.json';
+import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { editUserInfo } from '@/repository/profile.repository';
 import {
   Button,
@@ -19,121 +15,76 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import otpSms from 'public/assets/otpSms.png';
-import otpWhatsapp from 'public/assets/otpWhatsapp.png';
+
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 interface Form {
   form: any;
   setForm: any;
   select: any;
   setSelect: any;
+  setNumber: any;
+  getOTP: any;
+  setCountdown: any;
+}
+
+interface CountryCodeInfo {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
 }
 
 const ChangePhoneNumber: React.FC<Form> = ({
   form,
   setForm,
   select,
-  setSelect
+  setSelect,
+  setNumber,
+  getOTP,
+  setCountdown
 }: Form) => {
-  const router = useRouter();
-  // TODO: Number Page System
-
-  const [number, setNumber] = useState('');
   const [country, setCountry] = useState(0);
-  const { name, code } = countriesRepository[country];
 
   const changeData = (e: any): void => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setNumber(e.target.value);
+    const value = e.target.value;
+    if (value === '0') {
+      setNumber(value.slice(1));
+    } else if (
+      value.slice(countries[country].dialCode.replace('+', '')) ===
+      countries[country].dialCode
+    ) {
+      setNumber(
+        value.slice(countries[country].dialCode.replace('+', '').length)
+      );
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+      setNumber(e.target.value);
+    }
   };
+  const getCountry = (text: string): CountryCodeInfo | undefined =>
+    countries.find(code => {
+      const dialCode = code?.dialCode.replace('+', '');
+      return text.replace('+', '').slice(0, dialCode.length) === dialCode;
+    });
+
   const handleSubmitNumber = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     try {
       let updatedForm: any = { ...form };
       updatedForm = {
-        ...form,
+        ...updatedForm,
         phone: form.phone
       };
       await checkPhoneNumber(form.phone);
       await editUserInfo(updatedForm);
       await getOtp(getOTP);
+      setCountdown(30);
       setSelect(2);
     } catch (error: any) {
       console.error(error.response.data.message);
     }
   };
-
-  // TODO: OTP System
-  const [input, setInput] = useState(['', '', '', '']);
-  const [method, setMethod] = useState('whatsapp');
-  const [seconds, setSeconds] = useState(10);
-  const inputRefs = useRef<any[]>([]);
-  const OTP = input.join('');
-  const verifyOTP = {
-    method,
-    msisdn: number,
-    otp: OTP
-  };
-  const getOTP = {
-    method,
-    phoneNumber: number
-  };
-
-  const handleChangeOTP = (index: number, value: string): void => {
-    const newInput = [...input];
-    newInput[index] = value;
-    setInput(newInput);
-
-    if (newInput[index] !== '') {
-      inputRefs.current[index + 1]?.focus();
-    } else if (newInput[index] === '') {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleSubmitOTP = async (event: any): Promise<void> => {
-    event.preventDefault();
-    try {
-      await editVerifyOtp(verifyOTP);
-      await router.push('/my-profile/edit-profile');
-    } catch (error: any) {
-      console.error(error.response.data.message);
-    }
-  };
-
-  useEffect(() => {
-    inputRefs.current[0]?.focus();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        await getOtp(getOTP);
-      } catch (error) {
-        console.error('Error fetching OTP:', error);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, [method]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [seconds]);
 
   return (
     <>
@@ -164,20 +115,25 @@ const ChangePhoneNumber: React.FC<Form> = ({
                     <Button
                       ripple={false}
                       variant="text"
-                      className="absolute z-10 flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-4 rounded-none hover:bg-transparent"
+                      className="absolute z-10 flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-[15px] rounded-none hover:bg-transparent focus:border-none"
                     >
                       <img
-                        src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
-                        alt={name}
+                        src={`https://flagcdn.com/${
+                          getCountry(form.phone)?.code.toLowerCase() as string
+                        }.svg`}
+                        alt={getCountry.name}
                         className="h-4 w-7 object-cover"
                       />
                       <Image src={DropdownPhone} alt="DropdownPhone" />
+                      <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
+                        {getCountry(form?.phone)?.dialCode.replace('+', '')}
+                      </Typography>
                     </Button>
                   </MenuHandler>
-                  <MenuList className="max-h-[20rem] max-w-[18rem]">
-                    {countriesRepository
+                  <MenuList className="max-h-[20rem] max-w-[18rem] ">
+                    {countries
                       .sort((a, b) => a.name.localeCompare(b.name))
-                      .map(({ name, code, dialCode }, index) => {
+                      .map(({ name, code }, index) => {
                         return (
                           <MenuItem
                             key={name}
@@ -192,7 +148,7 @@ const ChangePhoneNumber: React.FC<Form> = ({
                               alt={name}
                               className="h-5 w-5 object-cover"
                             />
-                            {name} <span className="ml-auto">{code}</span>
+                            {name}
                           </MenuItem>
                         );
                       })}
@@ -207,9 +163,9 @@ const ChangePhoneNumber: React.FC<Form> = ({
                   variant="static"
                   labelProps={{
                     className:
-                      'text-base text-[#262626] font-semibold font-poppins'
+                      '!text-base !text-[#262626] !font-semibold !font-poppins'
                   }}
-                  className="text-[#7C7C7C] text-base font-poppins font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[72px]"
+                  className="!text-[#7C7C7C] !text-base !font-poppins !font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[110px]"
                   required
                 />
               </div>
@@ -220,85 +176,6 @@ const ChangePhoneNumber: React.FC<Form> = ({
             >
               Change
             </Button>
-          </form>
-        </Card>
-      </div>
-      <div className={`${select === 2 ? 'flex' : 'hidden'} justify-center`}>
-        <Card className="flex items-center w-[947px] h-fit py-5">
-          <form
-            onSubmit={handleSubmitOTP}
-            className="flex flex-col justify-between items-center w-[600px] h-full p-4"
-          >
-            <div className="flex flex-col items-center gap-4">
-              <div className="flex flex-col gap-2">
-                <Typography className="font-poppins font-semibold text-2xl text-[#262626] text-center">
-                  Verification Code
-                </Typography>
-                <Typography className="font-poppins font-light text-sm text-[#262626] text-center">
-                  Enter the OTP code we sent to your WhatsApp.
-                </Typography>
-              </div>
-              <Image
-                src={method === 'whatsapp' ? otpWhatsapp : otpSms}
-                alt="methodOTP"
-              />
-              <div className="flex flex-col gap-[60px]">
-                <div className="flex flex-col gap-8">
-                  <Typography className="font-poppins font-semibold text-base text-[#262626] text-center">
-                    OTP Code
-                  </Typography>
-                  <div className="flex gap-8">
-                    {input.map((value, index) => (
-                      <input
-                        type="number"
-                        key={index}
-                        ref={el => (inputRefs.current[index] = el)}
-                        value={value}
-                        maxLength={1}
-                        onChange={e => {
-                          handleChangeOTP(index, e.target.value);
-                        }}
-                        className="focus:outline-none border-b border-[#CCCCCC] w-1/4 text-center text-[#262626] text-base font-semibold font-poppins pb-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      />
-                    ))}
-                  </div>
-                  <div className="flex justify-between">
-                    <Typography>{`${seconds} second${
-                      seconds >= 1 ? 's' : ''
-                    }`}</Typography>
-                    <Button
-                      onClick={async () => {
-                        await getOtp(getOTP);
-                        setSeconds(10);
-                      }}
-                      disabled={seconds > 0}
-                      className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-normal font-poppins"
-                    >
-                      Resend OTP
-                    </Button>
-                  </div>
-                </div>
-                <Button
-                  className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-normal font-poppins"
-                  onClick={() => {
-                    setMethod(prev =>
-                      prev === 'whatsapp' ? 'sms' : 'whatsapp'
-                    );
-                    setSeconds(10);
-                  }}
-                  disabled={seconds > 0}
-                >
-                  Another way? Send via
-                  {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
-                </Button>
-                <Button
-                  className="w-full rounded-full bg-[#3AC4A0]"
-                  type="submit"
-                >
-                  Continue
-                </Button>
-              </div>
-            </div>
           </form>
         </Card>
       </div>

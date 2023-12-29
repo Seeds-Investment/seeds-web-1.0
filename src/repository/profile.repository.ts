@@ -95,6 +95,16 @@ interface EditForm {
   phone: string;
 }
 
+interface EditPinForm {
+  pin: string;
+  old_pin: string;
+}
+
+interface ForgotPinForm {
+  password: string;
+  new_pin: string;
+}
+
 export const editUserInfo = async (formData: EditForm): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -123,6 +133,41 @@ export const createPin = async (formRequest: any): Promise<any> => {
   }
 
   return await profileService.post(`/pin/create`, formRequest, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const changePin = async (formData: EditPinForm): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    let response = await profileService.patch('pin', formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const forgotPin = async (formData: ForgotPinForm): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.post(`pin/forgot`, formData, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

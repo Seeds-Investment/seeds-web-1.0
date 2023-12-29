@@ -1,4 +1,5 @@
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
+import AvatarList from '@/components/profile/editProfile/AvatarList';
 import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalender';
 import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalEmail from '@/components/profile/editProfile/ModalEmail';
@@ -7,28 +8,26 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
-import {
-  Button,
-  Card,
-  Input,
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Typography
-} from '@material-tailwind/react';
+import { Button, Card, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+interface CountryCodeInfo {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
 const EditProfile: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const maxLengthBio = 50;
-  const [country, setCountry] = useState(0);
-  const { name, code } = countries[country];
+  const [select, setSelect] = useState(0);
   const [updateAvatar, setAvatar] = useState();
   const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
@@ -42,12 +41,11 @@ const EditProfile: React.FC = () => {
     phone: ''
   });
   console.log(form);
-  const getCountryCodeFromNumber = (text: string): string | undefined =>
+  const getCountry = (text: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
-      return text.replace('+', '').slice(0, dialCode.length) === dialCode;
-    })?.dialCode;
-  console.log(getCountryCodeFromNumber('6282180881420'));
+      return text?.replace('+', '').slice(0, dialCode?.length) === dialCode;
+    });
 
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
@@ -72,6 +70,10 @@ const EditProfile: React.FC = () => {
     }
     setOpenImage(!openImage);
   };
+  const handleAvatar = (selectedAvatar: any): void => {
+    setForm({ ...form, avatar: selectedAvatar });
+    setSelect(0);
+  };
 
   const changeData = (e: any): void => {
     const updatedForm = { ...form, [e.target.name]: e.target.value };
@@ -83,20 +85,21 @@ const EditProfile: React.FC = () => {
     e.preventDefault();
     try {
       let updatedForm: any = { ...form };
-      updatedForm = {
-        ...form,
-        birthDate: new Date(birthDate).toISOString()
-      };
+
       if (updateAvatar !== undefined && updateAvatar !== null) {
         const { path: cloudResponse } = await postCloud({
           file: updateAvatar,
           type: 'OTHER_URL'
         });
         updatedForm = {
-          ...form,
+          ...updatedForm,
           avatar: cloudResponse
         };
       }
+      updatedForm = {
+        ...updatedForm,
+        birthDate: new Date(birthDate).toISOString()
+      };
       console.log(updatedForm);
       await editUserInfo(updatedForm);
       await router.push('/my-profile');
@@ -130,7 +133,11 @@ const EditProfile: React.FC = () => {
   }, []);
   return (
     <PageGradient defaultGradient className="w-full flex justify-center">
-      <Card className="w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md">
+      <Card
+        className={`${
+          select === 0 ? 'flex' : 'hidden'
+        } w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md`}
+      >
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <Image
@@ -173,6 +180,7 @@ const EditProfile: React.FC = () => {
               openImage={openImage}
               handleOpenImage={handleOpenImage}
               handleFileChange={handleFileChange}
+              setSelect={setSelect}
             />
             {updateAvatar !== undefined && (
               <ModalCrop
@@ -200,7 +208,7 @@ const EditProfile: React.FC = () => {
               <Typography
                 className={`${
                   error ? 'text-red-600' : 'text-[#7C7C7C]'
-                } absolute z-10  p-0 pb-[7px] pt-[15px] text-base font-poppins font-normal cursor-default`}
+                } absolute  p-0 pb-[7px] pt-[15px] text-base font-poppins font-normal cursor-default`}
               >
                 @
               </Typography>
@@ -229,7 +237,7 @@ const EditProfile: React.FC = () => {
               </Typography>
             </div>
             <BirthDateCalender
-              wrapperClassName={`w-full`}
+              wrapperClassName="w-full"
               birthDate={birthDate}
               setBirthDate={setBirthDate}
             />
@@ -252,64 +260,38 @@ const EditProfile: React.FC = () => {
                 {form.bio.length}/{maxLengthBio}
               </Typography>
             </div>
-            <div className="relative flex w-full">
-              <Menu placement="top-start">
-                <MenuHandler>
-                  <Button
-                    ripple={false}
-                    variant="text"
-                    className="absolute z-10 flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-4 rounded-none hover:bg-transparent"
-                  >
-                    <img
-                      src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
-                      alt={name}
-                      className="h-4 w-7 object-cover"
-                    />
-                    <Image src={DropdownPhone} alt="DropdownPhone" />
-                  </Button>
-                </MenuHandler>
-                <MenuList className="max-h-[20rem] max-w-[18rem]">
-                  {countries
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(({ name, code, dialCode }, index) => {
-                      return (
-                        <MenuItem
-                          key={name}
-                          value={name}
-                          className="flex items-center gap-2"
-                          onClick={() => {
-                            setCountry(index);
-                          }}
-                        >
-                          <img
-                            src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
-                            alt={name}
-                            className="h-5 w-5 object-cover"
-                          />
-                          {name} <span className="ml-auto">{dialCode}</span>
-                        </MenuItem>
-                      );
-                    })}
-                </MenuList>
-              </Menu>
+            <Link
+              href={'edit-profile/change-phone-number'}
+              className="relative flex w-full"
+            >
+              <div className="absolute flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-[15px]">
+                <img
+                  src={`https://flagcdn.com/${
+                    getCountry(form.phone)?.code.toLowerCase() as string
+                  }.svg`}
+                  alt={getCountry.name}
+                  className="h-4 w-7 object-cover"
+                />
+                <Image src={DropdownPhone} alt="DropdownPhone" />
+                <Typography className="text-[#7C7C7C] text-base font-poppins font-normal">
+                  {getCountry(form.phone)?.dialCode.replace('+', '')}
+                </Typography>
+              </div>
               <Input
                 label="Phone Number"
                 name="phone"
                 type="number"
                 value={form?.phone}
-                onClick={async () => {
-                  await router.push('edit-profile/change-phone-number');
-                }}
                 variant="static"
                 labelProps={{
                   className:
                     '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
-                className="!text-[#7C7C7C] !text-base !font-poppins !font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[72px] cursor-pointer"
+                className="!text-[#7C7C7C] !text-base !font-poppins !font-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none pl-[110px] cursor-pointer"
                 required
                 readOnly
               />
-            </div>
+            </Link>
             <Input
               label="Email"
               name="email"
@@ -329,27 +311,20 @@ const EditProfile: React.FC = () => {
               handleOpen={handleOpen}
               email={form.email}
             />
-
-            <Input
-              label="Linked Account"
-              variant="static"
-              labelProps={{
-                className:
-                  '!text-base !text-[#262626] !font-semibold !font-poppins'
-              }}
-              className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-              style={{ backgroundColor: 'transparent' }}
-              onClick={async () =>
-                await router.push('edit-profile/linked-account')
-              }
-              disabled
-            />
+            <Button className="text-base text-[#262626] font-semibold font-poppins self-start bg-transparent shadow-none p-0 capitalize">
+              Linked Account
+            </Button>
             <Button className=" bg-white font-poppins font-semibold text-[#DD2525] text-sm border border-[#DD2525] rounded-full w-2/3 ">
               Delete Account
             </Button>
           </Card>
         </form>
       </Card>
+      <AvatarList
+        setSelect={setSelect}
+        className={select === 2 ? 'flex' : 'hidden'}
+        handleAvatar={handleAvatar}
+      />
     </PageGradient>
   );
 };

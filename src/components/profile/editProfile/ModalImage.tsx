@@ -9,12 +9,14 @@ interface ModalImage {
   openImage: boolean;
   handleOpenImage: any;
   handleFileChange: any;
+  setSelect: any;
 }
 
 const ModalImageEdit: React.FC<ModalImage> = ({
   openImage,
   handleOpenImage,
-  handleFileChange
+  handleFileChange,
+  setSelect
 }: ModalImage) => {
   return (
     <Dialog open={openImage} handler={handleOpenImage} size="xs">
@@ -36,7 +38,10 @@ const ModalImageEdit: React.FC<ModalImage> = ({
           onChange={handleFileChange}
         />
         <Button
-          onClick={handleOpenImage}
+          onClick={() => {
+            handleOpenImage();
+            setSelect(2);
+          }}
           className="w-full text-left capitalize font-poppins font-bold text-xs text-[#262626] bg-[#E9E9E9] rounded-full"
         >
           Choose Avatar

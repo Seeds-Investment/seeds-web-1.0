@@ -47,9 +47,8 @@ const BirthDateCalender: React.FC<BirthDate> = ({
       dateFormat="dd/MM/yyyy"
       required
       wrapperClassName={`${wrapperClassName as string}`}
-      className={`${className as string}`}
       showPopperArrow={false}
-      popperPlacement="top"
+      popperPlacement="top-start"
       customInput={
         <Input
           label="Date of Birth"

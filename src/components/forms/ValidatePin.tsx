@@ -3,42 +3,30 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowBackwardIcon, DeleteIcon } from 'public/assets/vector';
-import { useState } from 'react';
 
 interface VariablePin {
-  setSelect: any;
-  select: any;
+  pin: any;
+  setPin: any;
+  error: any;
+  setError: any;
+  emptyPinIndex: any;
+  className: string;
 }
-
-const temporaryPin = '111111';
 
 const ColNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
 const ValidatePin: React.FC<VariablePin> = ({
-  setSelect,
-  select
+  pin,
+  setPin,
+  emptyPinIndex,
+  error,
+  setError,
+  className
 }: VariablePin) => {
-  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
-  const [error, setError] = useState(false);
-  const emptyPinIndex = pin.findIndex(number => number === '');
-  if (emptyPinIndex === -1) {
-    const joinPin = pin.join('');
-    try {
-      if (joinPin === temporaryPin) {
-        setPin(['', '', '', '', '', '']);
-        setSelect(1);
-      } else {
-        setError(true);
-        setPin(['', '', '', '', '', '']);
-      }
-    } catch {
-      console.log('Something');
-    }
-  }
   return (
-    <div className={`${select === 0 ? 'flex' : 'hidden'} justify-center`}>
+    <div className={`${className} justify-center`}>
       <Card className="flex items-center w-[947px] h-[721px] py-5">
-        <form className="flex flex-col justify-between items-center w-[600px] h-full p-4">
+        <form className="flex flex-col items-center w-[600px] h-full p-4">
           <Link
             href="/my-profile/edit-profile"
             className="absolute left-8 cursor-pointer"
@@ -56,7 +44,7 @@ const ValidatePin: React.FC<VariablePin> = ({
               </Typography>
             </div>
             <div className="flex w-full justify-evenly">
-              {pin?.map((value, index) => {
+              {pin?.map((value: any, index: any) => {
                 return (
                   <span
                     key={index}
@@ -64,7 +52,9 @@ const ValidatePin: React.FC<VariablePin> = ({
                       value !== ''
                         ? 'bg-[#3AC4A0]'
                         : 'border-[#CCDCDC] border-4'
-                    } ${error ? 'border-[#DD2525] border-4' : ''} rounded-full`}
+                    } ${
+                      error === true ? 'border-[#DD2525] border-4' : ''
+                    } rounded-full`}
                   ></span>
                 );
               })}
@@ -93,6 +83,12 @@ const ValidatePin: React.FC<VariablePin> = ({
               })}
             </div>
           </div>
+          <Link
+            href={`/user-setting/forgot-pin`}
+            className="font-poppins font-semibold text-xs text-[#3AC4A0] self-end"
+          >
+            Forgot PIN?
+          </Link>
           <Image
             src={DeleteIcon}
             alt="DeleteIcon"

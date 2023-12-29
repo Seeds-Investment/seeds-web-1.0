@@ -634,7 +634,8 @@ export default {
     wrongPhoneNumber:
       'The phone number you entered is incorrect. Please try again',
     passwordEmpty: 'The password is required, please enter your password!',
-    wrongPassword: 'The password is incorrect'
+    wrongPassword: 'The password is incorrect',
+    invalid: 'Invalid Phone Number or Password'
   },
   or: 'or',
   registerPage: {

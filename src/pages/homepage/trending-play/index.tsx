@@ -52,7 +52,6 @@ export default function PlayList(): React.ReactElement {
       console.log(response, 'play');
 
       setPlay(response.data);
-      
     } catch (error) {
       console.error('Error fetching circles:', error);
     }

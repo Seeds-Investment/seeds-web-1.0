@@ -38,7 +38,6 @@ const MainEmail: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        console.log(dataInfo);
         setForm({
           name: dataInfo.name,
           seedsTag: dataInfo.seedsTag,

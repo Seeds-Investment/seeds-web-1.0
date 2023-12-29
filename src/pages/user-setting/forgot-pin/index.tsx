@@ -6,15 +6,13 @@ import { useState } from 'react';
 const ForgotPin: React.FC = () => {
   const [select, setSelect] = useState(0);
   const [form, setForm] = useState({ password: '', new_pin: '' });
-  console.log(form);
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState(false);
   const emptyPinIndex = pin.findIndex(number => number === '');
   const joinPin = pin.join('');
   const handleSubmit = async (): Promise<void> => {
     try {
-      const response = await forgotPin(form);
-      console.log(response);
+      await forgotPin(form);
     } catch (error: any) {
       console.error(error);
     }

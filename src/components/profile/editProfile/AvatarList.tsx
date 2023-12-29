@@ -22,7 +22,6 @@ const SectionAvatar: React.FC<VariableAvatar> = ({
     const fetchData = async (): Promise<void> => {
       try {
         const response = await avatarList(gender);
-        console.log(response);
         setAvatars(response.avatars);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);

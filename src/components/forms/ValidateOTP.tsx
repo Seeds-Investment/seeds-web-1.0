@@ -36,7 +36,6 @@ const ValidateOTP: React.FC<VariableOTP> = ({
   };
 
   const handleChangeOTP = (index: number, value: string): void => {
-    console.log('tes');
     const newInput = [...input];
     newInput[index] = value;
     setInput(newInput);
@@ -58,7 +57,6 @@ const ValidateOTP: React.FC<VariableOTP> = ({
   };
   useEffect(() => {
     inputRefs.current[0]?.focus();
-    console.log('a');
   }, [select === 2]);
 
   useEffect(() => {

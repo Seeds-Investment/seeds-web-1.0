@@ -40,7 +40,6 @@ const EditProfile: React.FC = () => {
     birthDate: '',
     phone: ''
   });
-  console.log(form);
   const getCountry = (text: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
@@ -63,7 +62,6 @@ const EditProfile: React.FC = () => {
 
   const handleFileChange = (e: any): void => {
     const file = e.target.files[0];
-    console.log(URL.createObjectURL(file));
     setAvatar(file);
     if (file !== null && file !== undefined) {
       setForm({ ...form, avatar: URL.createObjectURL(file) });
@@ -100,7 +98,6 @@ const EditProfile: React.FC = () => {
         ...updatedForm,
         birthDate: new Date(birthDate).toISOString()
       };
-      console.log(updatedForm);
       await editUserInfo(updatedForm);
       await router.push('/my-profile');
     } catch (error: any) {
@@ -111,7 +108,6 @@ const EditProfile: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        console.log(dataInfo);
         setForm({
           name: dataInfo.name,
           seedsTag: dataInfo.seedsTag,

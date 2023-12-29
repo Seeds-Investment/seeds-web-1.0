@@ -14,7 +14,6 @@ const ChangePin: React.FC = () => {
   const handleSubmit = async (): Promise<void> => {
     try {
       const response = await changePin(form);
-      console.log(response);
       if (response.status === 200) {
         await router.push('/my-profile');
       } else if (response.data.message === 'pin/invalid') {

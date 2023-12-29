@@ -36,7 +36,7 @@ const LoginPage = (): JSX.Element => {
   const [disable, setDisable] = useState<boolean>(false);
   const [errorPhone, setErrorPhone] = useState<any>('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
-  const [errorResponse, setErrorResponse] = useState<string>('');
+  const [errorResponse, setErrorResponse] = useState<any>('');
   const [errorPassword, setErrorPassword] = useState<any>('');
 
   const [formData, setFormData] = useState<FormData>({
@@ -107,7 +107,7 @@ const LoginPage = (): JSX.Element => {
             pageName: 'Homepage'
           });
         } else {
-          setErrorResponse('Invalid Phone Number or Password');
+          setErrorResponse(t('validation.invalid'));
         }
       }
     } catch (error: any) {

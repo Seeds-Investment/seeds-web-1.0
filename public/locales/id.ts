@@ -24,13 +24,13 @@ export default {
     },
     section2: {
       text1a: 'Bersama',
-      text1b: '',
+      text1b: 'Dengan',
       text1c: 'Seeds',
       text2:
         'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
       text3a: 'Play',
       text3b:
-        'Tanding jual beli saham bersama temanmu. Belajar apapun tentang jual beli saham, kripto, dan komoditas tanpa takut resiko! ',
+        'Bertransaksi secara online bersama teman menggunakan uang virtual tanpa risiko dan uji pengetahuan finansial kamu dengan kuis-kuis menarik kami',
       text3c: 'Learn',
       text3d:
         'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
@@ -551,7 +551,8 @@ export default {
     wrongPhoneNumber:
       'Nomor telepon yang Anda masukkan salah. Silakan coba lagi',
     passwordEmpty: 'Kata sandi diperlukan, silakan masukkan kata sandi Anda!',
-    wrongPassword: 'Kata sandi salah'
+    wrongPassword: 'Kata sandi salah',
+    invalid: 'Nomor Telepon atau password salah'
   },
   or: 'atau',
   registerPage: {
@@ -1275,11 +1276,11 @@ export default {
       text2: 'Berita Finansial Terkurasi'
     },
     section9: {
-      text1: 'Apa Kata Mereka Tentang Seeds?'
+      text1: 'Apa Kata Mereka Tentang '
     },
     section10: {
       text1: 'Lebih dari 1000+ orang mempercayai kami',
-      text2: 'Profesional, universitas, dan banyak lagi juga!'
+      text2: 'Profesional, universitas, dan masih banyak lagi!'
     },
     section11: {
       text1: 'Ingin Berkolaborasi dengan Seeds?',

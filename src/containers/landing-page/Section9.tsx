@@ -14,7 +14,6 @@ export default function Section9(): React.ReactElement {
   const { t } = useTranslation();
   const [isBottom, setBottom] = useState(0);
   const measurement = 900;
-  const [isHovered, setIsHovered] = useState(false);
 
   const { ref, inView, entry } = useInView({
     threshold: 0.2
@@ -29,7 +28,7 @@ export default function Section9(): React.ReactElement {
     slidesToShow: 4,
     speed: 3500,
     slidesToScroll: 1,
-    autoplay: !isHovered,
+    autoplay: true,
     autoplaySpeed: 0,
     infinite: true,
     dots: false,
@@ -56,10 +55,6 @@ export default function Section9(): React.ReactElement {
         }
       }
     ]
-  };
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleSliderHover = (hovered: boolean) => {
-    setIsHovered(hovered);
   };
 
   return (
@@ -88,19 +83,7 @@ export default function Section9(): React.ReactElement {
           alt=""
           className="absolute z-0 hidden lg:block w-full h-[75%]"
         />
-        <div
-          onMouseEnter={() => {
-            handleSliderHover(true);
-          }}
-          onMouseLeave={() => {
-            handleSliderHover(false);
-          }}
-          className="relative z-10 w-full h-full lg:mb-16 mt-10 mx-3 md:mx-20 lg:mx-6"
-          style={{
-            transform: isHovered ? 'scale(1)' : 'scale(1.2)',
-            transition: 'transform 0.3s ease-in-out'
-          }}
-        >
+        <div className="z-10 w-full h-full lg:mb-16 mt-10 mx-3 md:mx-20 lg:mx-6">
           <Slider {...settings}>
             {eventHighlightLandingPage.map((data, key) => (
               <Section9Card key={key} data={data} />

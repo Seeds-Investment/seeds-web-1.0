@@ -49,9 +49,10 @@ export default function PlayList(): React.ReactElement {
   async function fetchPlays(): Promise<void> {
     try {
       const response = await getTrendingPlayList();
-      console.log(response.data, 'play');
+      console.log(response, 'play');
 
       setPlay(response.data);
+      
     } catch (error) {
       console.error('Error fetching circles:', error);
     }

@@ -58,6 +58,8 @@ const ModalEWallet = ({
     </div>
   );
 
+  console.log(promo);
+
   return (
     <div className="">
       {renderPhoneInput()}
@@ -66,7 +68,7 @@ const ModalEWallet = ({
         value={standartCurrency(dataPost?.premium_fee)}
         className="mb-2"
       />
-      {promo.promo_code !== null ? (
+      {promo.promo_code !== '' ? (
         <>
           <InlineText
             label="Promo Code"
@@ -96,7 +98,7 @@ const ModalEWallet = ({
         <Typography className="text-xl text-black font-semibold text-right my-5">
           Total Cost
         </Typography>
-        {promo.total_discount !== null ? (
+        {promo.final_price !== 0 ? (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
             {standartCurrency(dataPost?.premium_fee - promo?.total_discount)}
           </Typography>

@@ -708,10 +708,14 @@ const OrderPage: React.FC = () => {
                         <Typography className="text-[#7C7C7C] font-normal">
                           {router.query.transaction !== undefined &&
                             router.query.transaction === 'buy' &&
-                            `Buy ${assetAmount} ${data?.realTicker as string}`}
+                            `${t('playSimulation.buy')} ${assetAmount} ${
+                              data?.realTicker as string
+                            }`}
                           {router.query.transaction !== undefined &&
                             router.query.transaction === 'sell' &&
-                            `Sell ${assetAmount} ${data?.realTicker as string}`}
+                            `${t('playSimulation.sell')} ${assetAmount} ${
+                              data?.realTicker as string
+                            }`}
                         </Typography>
                       </div>
                       <div className="flex items-center">
@@ -863,7 +867,10 @@ const OrderPage: React.FC = () => {
                           {t('playSimulation.totalCost')}
                         </Typography>
                         <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                          {standartCurrency(amount)}
+                          {standartCurrency(amount).replace(
+                            'Rp',
+                            userInfo?.preferredCurrency
+                          )}
                         </Typography>
                       </div>
                     </CCard>

@@ -1,7 +1,4 @@
-import {
-  calculatePercentageDifference,
-  standartCurrency
-} from '@/helpers/currency';
+import { calculatePercentageDifference } from '@/helpers/currency';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
   ArrowTrendingDownIcon,
@@ -110,10 +107,8 @@ const AssetPortfolioCard: React.FC<props> = ({
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm text-[#262626]">
-                {standartCurrency(data?.lastPrice?.close).replace(
-                  'Rp',
-                  userInfo?.preferredCurrency
-                )}
+                {userInfo?.preferredCurrency}{' '}
+                {new Intl.NumberFormat().format(data?.lastPrice?.open)}
               </Typography>
             </div>
             <div className="flex justify-end">

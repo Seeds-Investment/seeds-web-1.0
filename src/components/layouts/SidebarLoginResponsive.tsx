@@ -3,15 +3,14 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
+import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
-import notification from 'public/assets/social/notification.svg';
 import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
@@ -31,8 +30,8 @@ const menu = [
   { title: 'Connect', url: '/connect', image: connect },
   { title: 'Play', url: '/play', image: play },
   { title: 'Setting', url: '/user-setting', image: setting },
-  { title: 'Notification', url: '/setting', image: notification },
-  { title: 'Chat', url: '/setting', image: chat },
+  // { title: 'Notification', url: '/setting', image: notification },
+  // { title: 'Chat', url: '/setting', image: chat },
   { title: 'Profile', url: '/my-profile', image: profile }
 ];
 
@@ -79,7 +78,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   }, []);
 
   return (
-    <aside className="absolute z-20 left-0 w-2/3 h-[50rem] py-6 bg-white">
+    <aside className="absolute z-40 right-0 w-2/3 h-[50rem] py-6 bg-white">
       {isLogoutModal && (
         <ModalLogout
           onClose={() => {
@@ -88,6 +87,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
           userInfo={userInfo}
         />
       )}
+      <div className="absolute -left-4 bg-white border-[#E9E9E9] border-2 w-fit px-2 py-1 rounded-xl">
+        <ChevronDoubleRightIcon width={20} height={20} onClick={handleOpen} />
+      </div>
       <div className="flex flex-col items-center gap-3">
         <div className="flex flex-col items-center gap-3">
           <Link href={`/homepage`} className="mb-[30px] px-[60px]">
@@ -102,6 +104,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                 className={isLinkActive(data.url)}
                 href={data.url}
                 key={idx}
+                onClick={handleOpen}
               >
                 <Image width={20} height={20} src={data.image} alt="" />
                 <h1>{data.title}</h1>

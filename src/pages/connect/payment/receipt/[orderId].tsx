@@ -55,8 +55,10 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [virtualAccountInfo, setVirtualAccountInfo] = useState<any>();
+  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
+  const [qRisList, setQRisList] = useState<any>([]);
+  console.log(_);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -75,6 +77,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(true);
       const data = await getPaymentList();
       setVirtualAccountList(data.type_va);
+      setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
       console.error('Error fetching Payment List', error.message);
@@ -95,31 +98,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(false);
     }
   };
-
-  function formatDateString(dateString: string): string {
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-    const hour = dateString.substring(8, 10);
-    const minute = dateString.substring(10, 12);
-
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    const formattedMonth = months[parseInt(month, 10) - 1];
-
-    return `${day} ${formattedMonth},${hour}:${minute}`;
-  }
 
   function parseStrongText(text: string): any {
     const regex = /"(.*?)"/g;
@@ -190,7 +168,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.vaNumber !== undefined ? (
+                {orderDetail?.transactionStatus === 'PENDING' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -211,24 +189,20 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.vaNumber !== undefined
+                {orderDetail?.transactionStatus === 'PENDING'
                   ? 'Pending Paid Membership'
                   : 'Successful'}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.vaNumber !== undefined
+                {orderDetail?.transactionStatus === 'PENDING'
                   ? `${orderDetail?.currency} ${formatCurrency(
                       orderDetail?.grossAmount
                     )}`
                   : 'Successful'}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.vaNumber !== undefined &&
-                virtualAccountInfo !== undefined
-                  ? `Pay before ${formatDateString(
-                      virtualAccountInfo.expired_date
-                    )}`
-                  : 'Your recurring has been saved!'}
+                {orderDetail?.transactionStatus !== 'PENDING' &&
+                  'Your recurring has been saved!'}
               </Typography>
 
               <Card className="p-5 mt-8 bg-white w-full">
@@ -237,6 +211,16 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     ? 'Your Virtual Account Number'
                     : 'Payment Method'}
                 </Typography>
+                {orderDetail?.paymentMethod === 'OTHER_QRIS' && (
+                  <div className="flex items-center justify-center mb-9 mt-3">
+                    <Image
+                      src={qRisList[0]?.logo_url}
+                      alt="AVATAR"
+                      width={90}
+                      height={90}
+                    />
+                  </div>
+                )}
                 {paymentSelectedEWallet.length > 0 && (
                   <div className="flex items-center justify-center mb-9 mt-3">
                     <Image

@@ -91,7 +91,7 @@ const Section1: React.FC = () => {
 
   return (
     <div
-      className="md:mb-10 min-w-full font-poppins relative bg-[#F9F9F9]"
+      className="md:mb-10 min-w-full font-poppins relative bg-[#F9F9F9] mt-20"
       ref={ref}
     >
       <div

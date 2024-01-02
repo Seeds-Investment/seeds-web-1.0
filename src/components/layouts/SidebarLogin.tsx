@@ -1,5 +1,5 @@
+import TrackerEvent from '@/helpers/GTM';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import TrackerEvent from '@/repository/GTM.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';

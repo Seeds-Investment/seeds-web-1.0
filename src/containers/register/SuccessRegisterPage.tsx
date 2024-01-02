@@ -1,6 +1,6 @@
 'use client';
+import TrackerEvent from '@/helpers/GTM';
 import type { IRegisterPaging } from '@/pages/auth/register';
-import TrackerEvent from '@/repository/GTM.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';

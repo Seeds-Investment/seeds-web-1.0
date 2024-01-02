@@ -1,8 +1,8 @@
 import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
 import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
+import TrackerEvent from '@/helpers/GTM';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
-import TrackerEvent from '@/repository/GTM.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
@@ -120,7 +120,7 @@ const Header: React.FC = () => {
                 key={item.id}
                 onClick={() => {
                   TrackerEvent({
-                    event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
+                    event: `Seeds_view_landing_page_web`,
                     userId: userInfo?.id,
                     pageName: item.name
                   });
@@ -235,7 +235,7 @@ const Header: React.FC = () => {
                     onClick={() => {
                       setOpenMenu(false);
                       TrackerEvent({
-                        event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
+                        event: `Seeds_view_landing_page_web`,
                         userId: userInfo?.id,
                         pageName: item.name
                       });

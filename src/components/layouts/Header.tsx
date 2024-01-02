@@ -3,7 +3,6 @@ import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
 import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import TrackerEvent from '@/repository/GTM.repository';
-import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import {
@@ -20,6 +19,11 @@ import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface VariableHeader {
+  className?: any;
+}
 
 const pathUrl = [
   { id: 1, name: 'Home', nama: 'Beranda', url: '/' },
@@ -35,19 +39,8 @@ const languageList = [
   { id: 2, language: 'EN', flag: US }
 ];
 
-function clearLocalStorageAndRefreshPage(): void {
-  // Remove specific items from local storage
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('expiresAt');
-  localStorage.removeItem('keepMeLoggedIn');
-
-  // Refresh the page
-  window.location.reload();
-}
-
-const Header: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<any>([]);
+const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
+  const { t } = useTranslation();
   const [openMenu, setOpenMenu] = useState(false);
   const languageCtx = useContext(LanguageContext);
   const router = useRouter();
@@ -60,28 +53,6 @@ const Header: React.FC = () => {
       console.log(err);
     });
   };
-
-  const logout = (): void => {
-    clearLocalStorageAndRefreshPage();
-  };
-
-  const [token, setToken] = useState(null);
-  useEffect(() => {
-    const storedToken: any = localStorage.getItem('accessToken');
-    setToken(storedToken);
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     const getLastTranslation = async (): Promise<void> => {
@@ -101,7 +72,7 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <nav>
+    <nav className={`fixed z-50 ${className as string} w-full bg-white`}>
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
         <Link href="https://seeds.finance">
@@ -121,7 +92,6 @@ const Header: React.FC = () => {
                 onClick={() => {
                   TrackerEvent({
                     event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
-                    userId: userInfo?.id,
                     pageName: item.name
                   });
                 }}
@@ -132,21 +102,12 @@ const Header: React.FC = () => {
           })}
         </section>
         <section className="flex items-center gap-8">
-          {token === null ? (
-            <Link
-              href="/auth/login"
-              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#3AC4A0] rounded-full"
-            >
-              Login
-            </Link>
-          ) : (
-            <div
-              onClick={logout}
-              className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
-            >
-              Logout
-            </div>
-          )}
+          <Link
+            href="/auth/login"
+            className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
+          >
+            {t('header.join')}
+          </Link>
 
           <Menu>
             <MenuHandler>
@@ -236,7 +197,6 @@ const Header: React.FC = () => {
                       setOpenMenu(false);
                       TrackerEvent({
                         event: `Seeds_view_${item.name.toLowerCase()}_page_web`,
-                        userId: userInfo?.id,
                         pageName: item.name
                       });
                     }}
@@ -247,21 +207,12 @@ const Header: React.FC = () => {
               );
             })}
             <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
-              {token !== null ? (
-                <div
-                  onClick={logout}
-                  className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#DD2525] rounded-full"
-                >
-                  Logout
-                </div>
-              ) : (
-                <Link
-                  href="/auth/login"
-                  className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[108px] h-[42px] bg-[#3AC4A0] rounded-full"
-                >
-                  Login
-                </Link>
-              )}
+              <Link
+                href="/auth/login"
+                className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
+              >
+                {t('header.join')}
+              </Link>
             </MenuItem>
             <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
               <Menu>

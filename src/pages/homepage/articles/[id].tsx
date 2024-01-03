@@ -118,6 +118,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
+  const [showAllComments, setShowAllComments] = useState(false);
   // const [liked, setLiked] = useState(false);
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
@@ -332,6 +333,14 @@ export default function ArticleDetailPage(): JSX.Element {
   const imageUrl = articleDetail?.imageUrl;
 
   const isImageValid = isImageUrlValid(imageUrl);
+  const displayedComments = showAllComments
+    ? articleComment
+    : articleComment?.slice(0, 3);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleSeeAllComments = () => {
+    setShowAllComments(true);
+  };
 
   return (
     <div className="z-20 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
@@ -521,13 +530,13 @@ export default function ArticleDetailPage(): JSX.Element {
           <></>
         )}
         <h1 className="text-3xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] w-max">
-          {articleDetail.total_comments} Comments
+          {articleDetail?.total_comments} Comments
         </h1>
-        {articleDetail.total_comments !== 0 ? (
+        {articleDetail?.total_comments !== 0 ? (
           <div className="flex flex-col">
-            {articleComment.map(article => (
+            {displayedComments?.map((article, index) => (
               <div
-                key={article?.id}
+                key={article?.id ?? index}
                 className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
               >
                 <div className="flex flex-row">
@@ -550,6 +559,30 @@ export default function ArticleDetailPage(): JSX.Element {
                 </p>
               </div>
             ))}
+            {articleDetail?.total_comments > 3 && !showAllComments && (
+              <button
+                className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
+                onClick={handleSeeAllComments}
+              >
+                See All{' '}
+                <span className="ms-2">
+                  <svg
+                    width="13"
+                    height="8"
+                    viewBox="0 0 13 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12.5 0.999999L6.5 7L0.5 1"
+                      stroke="white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+            )}
           </div>
         ) : (
           <></>

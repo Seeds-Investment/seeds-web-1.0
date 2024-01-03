@@ -1,5 +1,5 @@
+import TrackerEvent from '@/helpers/GTM';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import TrackerEvent from '@/repository/GTM.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -59,18 +59,22 @@ const SidebarLogin: React.FC = () => {
         />
       )}
 
-      <div className="mb-[30px] px-[60px]">
+      <Link href={`/homepage`} className="mb-[30px] px-[60px]">
         <Logo
           width={width !== undefined && width <= 640 ? '62.22' : undefined}
           height={width !== undefined && width <= 640 ? '23.58' : undefined}
         />
-      </div>
+      </Link>
       <ul className="flex flex-col items-start w-full social-sidebar-list flex-grow">
         {menu.map((data, idx) => (
           <Link
             onClick={() => {
               TrackerEvent({
-                event: `Seeds_view_${data.title.toLowerCase()}_page_web`,
+                event: `Seeds_view_${
+                  data.title.toLowerCase() === 'homepage'
+                    ? data.title.toLowerCase().substring(0, 4)
+                    : data.title.toLowerCase()
+                }_page_web`,
                 userId: userInfo?.id,
                 pageName: data.title
               });

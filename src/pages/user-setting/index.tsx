@@ -117,6 +117,19 @@ const UserSetting: React.FC = () => {
       extraClasses: submenuClasses
     },
     {
+      label: languageCtx.language === 'EN' ? 'Change Pin' : 'Ubah Pin',
+      altStartAdornment: 'change pin',
+      startAdornment: CreatePinIcon,
+      onClick: async () => {
+        try {
+          await router.push('/user-setting/change-pin');
+        } catch (error) {
+          console.error('Error navigating to Change Pin:', error);
+        }
+      },
+      extraClasses: submenuClasses
+    },
+    {
       label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
       altStartAdornment: 'block list',
       startAdornment: CloseCircleIcon,

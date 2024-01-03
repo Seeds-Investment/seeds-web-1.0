@@ -351,7 +351,11 @@ const CirclePostSection2: React.FC<props> = ({
           .catch(() => {});
       }
     }
-  }, [tabs, filter.page, golId]);
+  }, [tabs, filter.page, hasMore]);
+
+  useEffect(() => {
+    setHasMore(true);
+  }, [golId]);
 
   const renderLoading = (): JSX.Element => (
     <div className="flex justify-center h-10 pt-2">

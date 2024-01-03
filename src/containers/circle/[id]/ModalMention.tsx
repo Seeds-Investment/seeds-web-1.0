@@ -208,7 +208,7 @@ const ModalMention: React.FC<props> = ({
   });
   const [form, setForm] = useState<form>({
     content_text: '',
-    privacy: dropVal.type.toLowerCase(),
+    privacy: 'public',
     media_urls: [],
     polling: {
       options: [],
@@ -799,7 +799,7 @@ const ModalMention: React.FC<props> = ({
 
       setForm({
         content_text: '',
-        privacy: dropVal.type.toLowerCase(),
+        privacy: 'public',
         media_urls: [],
         polling: {
           options: [],
@@ -1266,7 +1266,7 @@ const ModalMention: React.FC<props> = ({
             handleOpen();
             setForm({
               content_text: '',
-              privacy: dropVal.type.toLowerCase(),
+              privacy: 'public',
               media_urls: [],
               polling: {
                 options: [],
@@ -1333,7 +1333,7 @@ const ModalMention: React.FC<props> = ({
                       handleOpen();
                       setForm({
                         content_text: '',
-                        privacy: dropVal.type.toLowerCase(),
+                        privacy: 'public',
                         media_urls: [],
                         polling: {
                           options: [],
@@ -1525,7 +1525,7 @@ const ModalMention: React.FC<props> = ({
                     </div>
                   </div>
 
-                  {form.polling?.options.length > 0 && pages === 'text' ? (
+                  {form.polling?.options?.length > 0 && pages === 'text' ? (
                     form.polling?.options.map((el: any, i: number) => {
                       return (
                         <div
@@ -1569,7 +1569,7 @@ const ModalMention: React.FC<props> = ({
       ) : (
         <>
           {open && (
-            <div className="flex fixed top-[0px] z-[1000] flex-col bg-white h-screen w-screen">
+            <div className="flex fixed top-0 left-0 z-[1000] flex-col bg-white h-screen w-screen">
               <header className={`bg-white border-b p-5 rounded-xl md:mx-14`}>
                 <HeaderLogin />
               </header>
@@ -1611,7 +1611,7 @@ const ModalMention: React.FC<props> = ({
                             handleOpen();
                             setForm({
                               content_text: '',
-                              privacy: dropVal.type.toLowerCase(),
+                              privacy: 'public',
                               media_urls: [],
                               polling: {
                                 options: [],
@@ -1809,7 +1809,7 @@ const ModalMention: React.FC<props> = ({
                           </div>
                         </div>
 
-                        {form.polling?.options.length > 0 &&
+                        {form.polling?.options?.length > 0 &&
                         pages === 'text' ? (
                           form.polling?.options.map((el: any, i: number) => {
                             return (

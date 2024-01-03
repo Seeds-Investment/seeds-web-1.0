@@ -39,11 +39,9 @@ const NewSection2: React.FC = () => {
       try {
         if (isChange === 'arena') {
           const playLeadResponse = await getPlayLeaderboard();
-          console.log(playLeadResponse.playLeaderboards);
           setLead(playLeadResponse.playLeaderboards);
         } else if (isChange === 'quiz') {
           const quizLeadResponse = await getQuizLeaderboard(quiz);
-          console.log(quizLeadResponse.data);
           setLead(quizLeadResponse.data);
         }
       } catch (error: any) {

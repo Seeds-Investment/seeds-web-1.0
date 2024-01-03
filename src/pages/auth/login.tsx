@@ -5,7 +5,7 @@ import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 // import {
 //   AppleBrand,
 //   FacebookBrand,
@@ -36,7 +36,7 @@ const LoginPage = (): JSX.Element => {
   const [disable, setDisable] = useState<boolean>(false);
   const [errorPhone, setErrorPhone] = useState<any>('');
   const [selectedCode, setSelectedCode] = useState<string>('+62');
-  const [errorResponse, setErrorResponse] = useState<string>('');
+  const [errorResponse, setErrorResponse] = useState<any>('');
   const [errorPassword, setErrorPassword] = useState<any>('');
 
   const [formData, setFormData] = useState<FormData>({
@@ -102,12 +102,12 @@ const LoginPage = (): JSX.Element => {
           });
           await router.push('/homepage'); // Added await keyword here
           TrackerEvent({
-            event: `Seeds_view_homepage_page_web`,
+            event: `Seeds_view_home_page_web`,
             userId: responseUser.id,
-            pageName: 'Homepage'
+            pageName: 'homepage'
           });
         } else {
-          setErrorResponse('Invalid Phone Number or Password');
+          setErrorResponse(t('validation.invalid'));
         }
       }
     } catch (error: any) {

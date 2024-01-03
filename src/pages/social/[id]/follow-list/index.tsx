@@ -23,7 +23,6 @@ const Follow: React.FC = () => {
   const [search, setSearch] = useState('');
   const [dataInfo, setDataInfo] = useState<any>([]);
   const [followData, setFollowData] = useState<any>([]);
-  console.log(followData);
   const [change, setChange] = useState(false);
 
   const _handleChange = (): void => {

@@ -3,9 +3,10 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  header: { join: 'Join Us' },
   footer: {
     description:
-      "Nothing on this site is a recommendation to invest. Seeds does not offer financial consulting. If you are still unsure about investing, we recommend you to start communicating with a financial consultant. Because you'\re capital at risk",
+      'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
     company: { title: 'Company', list1: 'About Us', list2: 'Career' },
@@ -634,7 +635,8 @@ export default {
     wrongPhoneNumber:
       'The phone number you entered is incorrect. Please try again',
     passwordEmpty: 'The password is required, please enter your password!',
-    wrongPassword: 'The password is incorrect'
+    wrongPassword: 'The password is incorrect',
+    invalid: 'Invalid Phone Number or Password'
   },
   or: 'or',
   registerPage: {
@@ -1043,7 +1045,7 @@ export default {
       },
       section5: {
         title1: 'How to Play',
-        title2: 'Tournament?',
+        title2: 'Tournament',
         title3:
           'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
       },

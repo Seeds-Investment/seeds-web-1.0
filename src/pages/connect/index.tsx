@@ -273,6 +273,20 @@ const Circle = (): React.ReactElement => {
 
   console.log(setUserInfo);
 
+  const categories = [
+    'All',
+    'General',
+    'Crypto',
+    'Us Stocks',
+    'Indo Stocks',
+    'Commodities',
+    'Indices',
+    'Forex',
+    'Finance'
+  ];
+
+  console.log(circleCategory);
+
   return (
     <PageGradient defaultGradient className="w-full">
       <BannerCircleList />
@@ -402,14 +416,22 @@ const Circle = (): React.ReactElement => {
             <div className="mt-4">
               <Slider
                 slidesToShow={5}
-                slidesToScroll={4}
+                slidesToScroll={2}
                 speed={500}
                 infinite={false}
                 className="center"
-                initialSlide={1}
+                // initialSlide={1}
                 responsive={[
                   {
                     breakpoint: 768,
+                    settings: {
+                      dots: false,
+                      slidesToShow: 2,
+                      slidesToScroll: 2
+                    }
+                  },
+                  {
+                    breakpoint: 480,
                     settings: {
                       dots: false,
                       slidesToShow: 2,
@@ -418,22 +440,24 @@ const Circle = (): React.ReactElement => {
                   }
                 ]}
               >
-                {circleCategory.map((data, key) => (
-                  <div
-                    key={key}
-                    style={{ marginRight: '-25px', marginLeft: '-25px' }}
-                    className={`${categoryItemClass} ${
-                      activeCategory === data.category
-                        ? 'bg-[#3AC4A0] text-white'
-                        : 'text-[#3AC4A0] bg-[#F9F9F9]'
-                    }`}
-                    onClick={() => {
-                      updateCategory(data.category);
-                    }}
-                  >
-                    {data.category}
-                  </div>
-                ))}
+                {categories.length !== 0
+                  ? categories.map((data, key) => (
+                      <div
+                        key={key}
+                        style={{ marginRight: '-25px', marginLeft: '-25px' }}
+                        className={`${categoryItemClass} ${
+                          activeCategory === data
+                            ? 'bg-[#3AC4A0] text-white'
+                            : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                        }`}
+                        onClick={() => {
+                          updateCategory(data);
+                        }}
+                      >
+                        {data}
+                      </div>
+                    ))
+                  : null}
               </Slider>
             </div>
 

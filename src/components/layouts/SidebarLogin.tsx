@@ -70,7 +70,11 @@ const SidebarLogin: React.FC = () => {
           <Link
             onClick={() => {
               TrackerEvent({
-                event: `Seeds_view_${data.title.toLowerCase()}_page_web`,
+                event: `Seeds_view_${
+                  data.title.toLowerCase() === 'homepage'
+                    ? data.title.toLowerCase().substring(0, 4)
+                    : data.title.toLowerCase()
+                }_page_web`,
                 userId: userInfo?.id,
                 pageName: data.title
               });

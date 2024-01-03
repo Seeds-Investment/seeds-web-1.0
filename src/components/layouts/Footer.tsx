@@ -81,7 +81,7 @@ export default function Footer(): React.ReactElement {
             <Typography className="font-semibold font-poppins text-base lg:text-lg text-[#201B1C]">
               PT. Benih Investasi Teknologi
             </Typography>
-            <Typography className="font-normal font-poppins text-sm lg:text-base text-[#7C7C7C]">
+            <Typography className="font-normal font-poppins text-sm lg:text-base text-[#7C7C7C] text-justify">
               {t('footer.description')}
             </Typography>
           </div>

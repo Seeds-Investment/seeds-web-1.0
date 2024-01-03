@@ -1,4 +1,4 @@
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';

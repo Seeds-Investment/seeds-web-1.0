@@ -68,7 +68,7 @@ const AssetDetailPage: React.FC = () => {
     if (id !== null && userInfo !== undefined) {
       void fetchDetailAsset(userInfo.preferredCurrency);
     }
-  }, [id, userInfo]);
+  }, [id, userInfo, params]);
 
   return (
     <PageGradient defaultGradient className="w-full">

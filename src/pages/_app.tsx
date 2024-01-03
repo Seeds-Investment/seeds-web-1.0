@@ -59,7 +59,8 @@ function App({
     router.pathname.startsWith('/connect') ||
     router.pathname.startsWith('/play') ||
     router.pathname.startsWith('/user-setting') ||
-    router.pathname.startsWith('/my-profile');
+    router.pathname.startsWith('/my-profile') ||
+    router.pathname.startsWith('/faq');
   if (loginLayouts) {
     return (
       <Provider store={store}>
@@ -85,7 +86,7 @@ function App({
           <ErrorBEProvider>
             <SuccessProvider>
               <SessionProvider session={pageProps.session}>
-                {renderHeader && <Header />}
+                {renderHeader && <Header className={`-mt-20`} />}
                 <ThemeProvider>
                   {getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>

@@ -1,5 +1,5 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 import {
   DocumentTextIcon,
   HandThumbUpIcon,

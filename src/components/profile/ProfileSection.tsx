@@ -48,7 +48,7 @@ const Profile = ({
   };
 
   const _handleEditProfile = (): any => {
-    return router.push('/edit-profile');
+    return router.push('/my-profile/edit-profile');
   };
   return (
     <>

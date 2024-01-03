@@ -2,7 +2,7 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Loading from '@/components/popup/Loading';
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,

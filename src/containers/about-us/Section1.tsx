@@ -53,7 +53,7 @@ const Section1: React.FC = () => {
 
   const settings = {
     slidesToShow: 2,
-    speed: 1000,
+    speed: 2000,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -91,7 +91,7 @@ const Section1: React.FC = () => {
 
   return (
     <div
-      className="md:mb-10 min-w-full font-poppins relative bg-[#F9F9F9]"
+      className="md:mb-10 min-w-full font-poppins relative bg-[#F9F9F9] mt-20"
       ref={ref}
     >
       <div

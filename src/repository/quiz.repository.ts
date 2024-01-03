@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { type QuizStatus } from '@/utils/interfaces/quiz.interfaces';
 
 const quizService = baseAxios(
   `${
@@ -24,9 +25,41 @@ export const getQuizTrending = async (): Promise<any> => {
   }
 };
 
-export const getAllQuiz = async (): Promise<any> => {
+export const getAllQuiz = async ({
+  search = '',
+  status = '',
+  page = 1,
+  limit = 10,
+  currency = ''
+}: {
+  search?: string;
+  status: QuizStatus | '';
+  page?: number;
+  limit?: number;
+  currency?: string;
+}): Promise<any> => {
   try {
-    return await quizService.get(`/all`, {
+    const path = `/all?search=${search}&status=${status}&page=${page}&limit=${limit}&currency=${currency}`;
+    return await quizService.get(path, {
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};
+
+export const getQuizById = async ({
+  id,
+  currency
+}: {
+  id: string;
+  currency: string;
+}): Promise<any> => {
+  try {
+    const path = `/${id}?currency=${currency}`;
+    return await quizService.get(path, {
       headers: {
         Accept: 'application/json'
       }

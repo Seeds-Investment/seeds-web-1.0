@@ -1387,5 +1387,27 @@ export default {
     yourCurrencyIs: 'Kurs mata uang Anda adalah',
     successChangeCurrency:
       'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
+  },
+  quiz: {
+    myQuiz: 'My Quiz',
+    open: 'Terbuka',
+    active: 'Berjalan',
+    ended: 'Berakhir',
+    canceled: 'Batal',
+    free: 'Gratis',
+    dayDuration: '{{amount}} hari',
+    players: 'Pemain',
+    entryFee: 'Tiket Kuis',
+    duration: 'Durasi',
+    question: 'Pertanyaan',
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    play: 'Main',
+    leaderboard: 'Klasemen',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Tantang pengetahuan finansial Kamu dengan quiz ini.'
   }
 };

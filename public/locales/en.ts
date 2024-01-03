@@ -1460,5 +1460,27 @@ export default {
     yourCurrencyIs: 'Your currency is',
     successChangeCurrency:
       "Great job! You've chosen ## as your currency preference. From now on, all your transactions on Seeds will be in ##, you can change it whenever you want in the settings."
+  },
+  quiz: {
+    myQuiz: 'My Quiz',
+    open: 'Open',
+    active: 'Active',
+    ended: 'Ended',
+    canceled: 'Cancel',
+    free: 'Free',
+    dayDuration: '{{amount}} days',
+    players: 'Players',
+    entryFee: 'Entry Fee',
+    duration: 'Duration',
+    question: 'Questions',
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    play: 'Play',
+    leaderboard: 'Leaderboard',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Check out the latest rankings for top quizzes!',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Challenge your finance knowledge with these quizzes.'
   }
 };

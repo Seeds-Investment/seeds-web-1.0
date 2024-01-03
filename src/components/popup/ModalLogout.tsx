@@ -1,6 +1,6 @@
 'use client';
 import { Logout } from '@/constants/assets/images';
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';

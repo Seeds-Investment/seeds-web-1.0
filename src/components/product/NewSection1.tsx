@@ -20,7 +20,7 @@ const NewSection1: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="flex md:flex-row flex-col-reverse items-center w-full justify-end sm:justify-center 2xl:justify-between pb-[50px] xl:pr-[88.5px]"
+      className="flex md:flex-row flex-col-reverse items-center w-full justify-end sm:justify-center 2xl:justify-between pb-[50px] xl:pr-[88.5px] mt-20"
     >
       <div
         className={`flex flex-col gap-5 lg:w-[852px] xl:pl-[140px] h-fit ${
@@ -34,11 +34,15 @@ const NewSection1: React.FC = () => {
         <Image
           src={PlayWinLine}
           alt="PlayWinLine"
-          className="xl:-mb-[89px] -mb-[56px] xl:-ml-[82px] w-[211px] xl:w-[434.3px]"
+          className={`${
+            t('landingPageV2.product.section1.title1').length > 10
+              ? 'w-[331px] xl:w-[634.3px] xl:-mb-[100px] -mb-[69px] 2xl:-ml-[82px] xl:-ml-[52px]'
+              : 'w-[211px] xl:w-[434.3px] xl:-mb-[89px] -mb-[56px] xl:-ml-[82px]'
+          }`}
         />
         <Typography className="px-4 xl:px-0 text-3xl xl:text-[48px] xl:leading-[57.6px] text-[#222222] font-semibold font-poppins">
           <span className="bg-gradient-to-tr from-[#7555DA] to-[#4FE6AF] bg-clip-text text-transparent">
-            Play & Win
+            {`${t('landingPageV2.product.section1.title1')}`}
           </span>
           <br />
           {`${t('landingPageV2.product.section1.title2')}`}

@@ -1,4 +1,3 @@
-import BlurInfluence from '@/assets/product/BlurInfluence.svg';
 import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
@@ -27,11 +26,6 @@ const NewSection3: React.FC = () => {
       ref={ref}
       className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
     >
-      <Image
-        src={BlurInfluence}
-        alt="BlurInfluence"
-        className="absolute bottom-0"
-      />
       <div
         className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 ${
           inView && isBottom >= measurement

@@ -25,7 +25,7 @@ const NewSection3: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
+      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4"
     >
       {/* <Image
         src={BlurInfluence}
@@ -60,7 +60,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`relative flex flex-row justify-center items-center ${
+        className={`relative flex flex-row justify-center items-center xl:pt-9 lg:pt-32 pt-16 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

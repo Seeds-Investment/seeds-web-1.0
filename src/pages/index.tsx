@@ -54,7 +54,7 @@ export default function Home(): React.ReactElement {
       <Header />
       <PageGradient
         customGradient={customGradient}
-        className="absolute overflow-hidden w-full"
+        className="absolute overflow-hidden w-full mt-20"
       >
         <Section1 />
         <Section2 />

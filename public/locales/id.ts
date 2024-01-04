@@ -1,9 +1,10 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  header: { join: 'Yuk! Gabung' },
   // greeting: 'Hello, {{name}}',
   footer: {
     description:
-      'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan  jasa konsultasi keuangan. Jika masih ragu untuk berinvestasi, kamu dapat berkomunikasi dengan konsultan keuangan. Tetep waspada sebelum mulai berinvetasi!',
+      'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan konsultasi keuangan untuk kamu. Jika kamu masih ragu untuk  berinvestasi, mulailah berkomunikasi dengan konsultan keuangan. Tetap waspada sebelum mulai berinvetasi!',
     download: 'Unduh Aplikasi Kami',
     regist: 'Terdaftar di',
     company: { title: 'Perusahaan', list1: 'Tentang Kami', list2: 'Karir' },
@@ -951,23 +952,23 @@ export default {
         title1: 'Main & Menangkan',
         title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
         subtitle:
-          'Uji pengetahuan keuangan dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk berkesempatan memenangkan hadiah senilai jutaan rupiah.'
+          'Uji pengetahuan finansial dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk memenangkan hadiah hingga jutaan rupiah.'
       },
       section2: {
         title1: 'Leaderboard',
         title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
       },
       section3: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Keuangan Mereka',
+        title1: 'Bagikan & Ajak',
+        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
         subtitle:
-          'Buat thread dan berinteraksi dengan komunitas Seeds. Temui teman sepanjang perjalanan finansialmu dan dorong orang lain untuk memulai perjalanan mereka sendiri.'
+          'Buat thread dan berinteraksi dengan komunitas Seeds. Temukan teman baru di perjalanan finansialmu dan ajak orang lain untuk memulai perjalanan mereka sendiri.'
       },
       section5: {
-        title1: 'Bagaimana Bermain',
-        title2: 'Turnamen?',
+        title1: 'Cara Bermain',
+        title2: 'Turnamen',
         title3:
-          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan banyak hadiah. Pelajari segalanya tentang perdagangan virtual di sini!'
+          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan hadiahnya. Pelajari berbagai hal tentang trading virtual di sini!'
       },
       section6: {
         title1: 'Unduh Sekarang!',

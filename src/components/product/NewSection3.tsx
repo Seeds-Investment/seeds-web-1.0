@@ -86,7 +86,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostTop}
           alt="SocialPostTop"
-          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] bottom-[160px] lg:bottom-[300px] animate-bounce-reverse`}
+          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] animate-bounce-reverse`}
         />
       </div>
     </section>

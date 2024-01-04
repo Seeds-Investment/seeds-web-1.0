@@ -1044,8 +1044,8 @@ export default {
   },
   partner: {
     section1: {
-      title: 'Berkolaborasi dengan Seeds',
-      text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
+      title: 'Berkolaborasi dengan Seeds & Bentuk Masa Depan Edukasi Investasi',
+      text: 'Gelar turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik.',
       button: 'Hubungi Kami'
     },
     section2: {
@@ -1054,12 +1054,12 @@ export default {
       option3: 'Acara Diselenggarakan'
     },
     section3: {
-      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+      title: 'Berkolaborasi untuk Mengatasi Masalah Investasi'
     },
     section4: {
-      title: 'Memberdayakan Generasi Mendatang Bersama',
+      title: 'Bangun Generasi Mendatang Bersama',
       subtitle:
-        'Bergabunglah dengan misi kami untuk membuat pendidikan keuangan menyenangkan dan dapat diakses di Indonesia',
+        'Bergabunglah dengan misi kami untuk membuat pengetahuan finansial menjadi lebih menyenangkan dan dapat diakses untuk semua orang',
       option1: {
         title: 'Komunitas',
         text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
@@ -1083,18 +1083,18 @@ export default {
   aboutUsV3: {
     section1: {
       title: 'Seeds, Where Gaming Meets Investing!',
-      text: 'Seeds adalah platform Social Gaming yang berfokus di Asia Tenggara. Jelajahi dunia investasi melalui Play Arena kami—capai puncak peringkat, raih hadiah menarik, dan tingkatkan strategi investasi kamu tanpa risiko. Terhubunglah dengan ahli keuangan dan teman lainnya di dalam komunitas kami yang interaktif.'
+      text: 'Masuki dunia investasi lewat Play Arena yang kami miliki. Capai peringkat tertinggi, menangkan hadiah menarik, dan sempurnakan strategi investasi Kamu dengan ZERO RISK. Yuk, berinterkasi dengan para ahli finansial dan individu yang berpikiran sama di komunitas interaktif kami.'
     },
     section2: {
       title: 'Visi dan Misi',
       option1: {
         title: 'Ride the Wave',
-        subtitle: `Manfaatkan pertumbuhan pesat pasar milenial dan Gen Z di Indonesia, termasuk di universitas, sekolah, komunitas, influencer keuangan, dan media. Dapatkan perhatian mereka untuk komunitas, acara, dan event kalian!`
+        subtitle: `Capai pasar milenial dan Gen Z yang berkembang pesat di Indonesia, seperti universitas, sekolah, komunitas, influencer keuangan, dan media. Semua perhatian tertuju pada komunitas, acara, atau merek Kamu!`
       },
       option2: {
         title: 'Game On and Make a Difference!',
         subtitle:
-          'Membantu meningkatkan pemahaman keuangan dan menyelamatkan orang dari pilihan investasi yang buruk. Cobalah dunia permainan virtual trading yang menarik dan menjadikan pembelajaran lebih menyenangkan'
+          'Dapatkan keuntungan saat tumbuh bersama, mulai dari Play Arena, Premium Circle, dan masih banyak lagi. Ada berbagai peluang untuk pertumbuhan finansial bersama.'
       },
       option3: {
         title: 'Monetize & Prosper',
@@ -1107,7 +1107,7 @@ export default {
       option5: {
         title: 'Learn & Lead',
         subtitle:
-          'Berkolaborasi dengan influencer keuangan terkemuka dan berada di garis terdepan pendidikan keuangan dan tren di Indonesia.'
+          'Berkolaborasi dengan para influencer keuangan terkemuka dan menjadi yang terdepan dalam edukasi dan tren keuangan di Indonesia.'
       }
     },
     section3: {
@@ -1126,6 +1126,9 @@ export default {
         title: 'Play',
         subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
       }
+    },
+    section4: {
+      subtitle: `Podcast dimana obrolan tentang keuangan jadi menyenangkan! Kami di sini berbagi tips keren, berita terbaru, hingga wawasan yang bisa membuka mata tentang uang dan investasi.`
     }
   },
   social: {

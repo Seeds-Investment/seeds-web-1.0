@@ -60,7 +60,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`relative flex justify-center xl:pt-9 lg:pt-32 pt-16 ${
+        className={`relative flex justify-center ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

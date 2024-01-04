@@ -87,7 +87,7 @@ const NewSection2: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`flex flex-col gap-6 xl:mt-[41.5px] xl:mb-10 my-6 ${
+        className={`flex flex-col xl:mt-[41.5px] xl:mb-10 my-6 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -95,9 +95,6 @@ const NewSection2: React.FC = () => {
             : ''
         }`}
       >
-        <Typography className="font-poppins font-normal xl:text-2xl md:text-lg text-base text-[#262626] text-center">
-          {`${t('landingPageV2.product.section2.title2')}`}
-        </Typography>
         <div className="flex justify-center gap-6">
           <Button
             onClick={() => {

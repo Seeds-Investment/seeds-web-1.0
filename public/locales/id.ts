@@ -949,30 +949,28 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Main & Menangkan',
-        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
+        title1: 'Mainkan & Menangkan',
+        title2: 'Hadiah Nyata Sambil Belajar',
         subtitle:
-          'Uji pengetahuan finansial dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk memenangkan hadiah hingga jutaan rupiah.'
+          'Tantang pengetahuan finansialmu dengan permainan menarik dan menangkan uang tunai'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
+        title1: 'Raih Posisi Puncak & Jadilah Juara!'
       },
       section3: {
-        title1: 'Bagikan & Ajak',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
-        subtitle:
-          'Buat thread dan berinteraksi dengan komunitas Seeds. Temukan teman baru di perjalanan finansialmu dan ajak orang lain untuk memulai perjalanan mereka sendiri.'
+        title1: 'Berinvestasi Dalam Pengetahuan',
+        title2: 'Berinvestasi Dalam Kesuksesan',
+        subtitle: 'Perluas Kemampuan Investasi Melalui Pembelajaran'
       },
       section5: {
         title1: 'Cara Bermain',
         title2: 'Turnamen',
         title3:
-          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan hadiahnya. Pelajari berbagai hal tentang trading virtual di sini!'
+          'Yuk, Tonton untuk mempelajari semua tentang turnamen dan trading virtual di sini!'
       },
       section6: {
         title1: 'Unduh Sekarang!',
-        title2: 'Mulai Perjalanan Investasimu',
+        title2: 'Mulai Perjalanan Investasimu!',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }

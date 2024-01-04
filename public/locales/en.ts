@@ -1029,25 +1029,23 @@ export default {
     product: {
       section1: {
         title1: 'Play & Win',
-        title2: 'Real Prizes while Enhancing Your Financial Knowledge',
+        title2: 'Real Prizes While Learning',
         subtitle:
-          'Challenge your financial and investment knowledge, compete with others, and be at the top of the leaderboard for a chance to win prizes worth millions of rupiah.'
+          'Challenge your financial knowledge with exciting games and win real money'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'Reach the top of the leaderboard and win prizes.'
+        title1: 'Climb the Leaderboard & Be a Champion!'
       },
       section3: {
-        title1: 'Share & Influence',
-        title2: 'Others to Start Their Financial Journey',
-        subtitle:
-          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+        title1: 'Invest In Knowledge',
+        title2: 'Invest In Success',
+        subtitle: 'Grow your investment journey by learn and explore on Seeds'
       },
       section5: {
         title1: 'How to Play',
         title2: 'Tournament',
         title3:
-          'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
+          'Let’s Watch to learn everything about tournament and virtual trading here!'
       },
       section6: {
         title1: 'Download Now!',

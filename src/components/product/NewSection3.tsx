@@ -1,8 +1,9 @@
+// import BlurInfluence from '@/assets/product/BlurInfluence.svg';
 import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
-import SocialPostBottom from '@/assets/product/SocialPostBottom.svg';
-import SocialPostTop from '@/assets/product/SocialPostTop.svg';
+import SocialPostBottom from '@/assets/product/SocialPostBottom.png';
+import SocialPostTop from '@/assets/product/SocialPostTop.png';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -26,6 +27,11 @@ const NewSection3: React.FC = () => {
       ref={ref}
       className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
     >
+      {/* <Image
+        src={BlurInfluence}
+        alt="BlurInfluence"
+        className="absolute bottom-0"
+      /> */}
       <div
         className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 ${
           inView && isBottom >= measurement
@@ -53,17 +59,19 @@ const NewSection3: React.FC = () => {
           {`${t('landingPageV2.product.section3.subtitle')}`}
         </Typography>
       </div>
-      <div className="relative flex flex-row justify-center items-center">
+      <div
+        className={`relative flex flex-row justify-center items-center ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"
-          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] top-0 w-1/2 lg:w-full z-10 ${
-            inView && isBottom >= measurement
-              ? 'animate-fade-in-slide'
-              : isBottom >= measurement
-              ? 'animate-fade-out-slide'
-              : ''
-          }`}
+          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] top-0 w-1/2 lg:w-full z-10`}
         />
         <Image
           src={SocialPostBottom}
@@ -73,13 +81,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={IlustShareAndInfluenceMobile}
           alt="IlustShareAndInfluenceMobile"
-          className={`z-0 pt-[60px] lg:pt-[140px] xl:pt-[24px] w-1/2 lg:w-full ${
-            inView && isBottom >= measurement
-              ? 'animate-fade-in-slide'
-              : isBottom >= measurement
-              ? 'animate-fade-out-slide'
-              : ''
-          }`}
+          className={`z-0 w-1/2 lg:w-full`}
         />
         <Image
           src={SocialPostTop}

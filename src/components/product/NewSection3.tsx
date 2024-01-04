@@ -33,7 +33,7 @@ const NewSection3: React.FC = () => {
         className="absolute bottom-0"
       /> */}
       <div
-        className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 ${
+        className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 xl:pb-9 lg:pb-32 pb-16 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -60,7 +60,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`relative flex justify-center xl:pt-9 lg:pt-32 pt-16 bg-red-700 ${
+        className={`relative flex justify-center bg-red-700 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -71,7 +71,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"
-          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] top-0 w-1/2 lg:w-full z-10`}
+          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] xl:-top-9 lg:-top-32 -top-16 w-1/2 lg:w-full z-10`}
         />
         <Image
           src={SocialPostBottom}

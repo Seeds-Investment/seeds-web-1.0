@@ -60,7 +60,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`relative flex flex-row justify-center items-center xl:pt-9 lg:pt-32 pt-16 ${
+        className={`relative flex justify-center xl:pt-9 lg:pt-32 pt-16 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -76,7 +76,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostBottom}
           alt="SocialPostBottom"
-          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] animate-bounce-horizontal"
+          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] top-1/2 animate-bounce-horizontal"
         />
         <Image
           src={IlustShareAndInfluenceMobile}
@@ -86,7 +86,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostTop}
           alt="SocialPostTop"
-          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] animate-bounce-reverse`}
+          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] top-1/4 animate-bounce-reverse`}
         />
       </div>
     </section>

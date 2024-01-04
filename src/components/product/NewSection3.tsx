@@ -76,7 +76,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostBottom}
           alt="SocialPostBottom"
-          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] bottom-[50px] lg:bottom-[45px] animate-bounce-horizontal"
+          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] animate-bounce-horizontal"
         />
         <Image
           src={IlustShareAndInfluenceMobile}

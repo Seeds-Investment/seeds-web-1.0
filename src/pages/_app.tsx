@@ -86,7 +86,7 @@ function App({
           <ErrorBEProvider>
             <SuccessProvider>
               <SessionProvider session={pageProps.session}>
-                {renderHeader && <Header />}
+                {renderHeader && <Header className={`-mt-20`} />}
                 <ThemeProvider>
                   {getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>

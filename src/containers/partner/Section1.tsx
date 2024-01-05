@@ -21,7 +21,10 @@ const Section1: React.FC = () => {
   }, [entry]);
 
   return (
-    <div className="md:mb-10 min-w-full font-poppins bg-[#F9F9F9]" ref={ref}>
+    <div
+      className="md:mb-10 min-w-full font-poppins bg-[#F9F9F9] mt-20"
+      ref={ref}
+    >
       <div
         className={`flex flex-col md:flex-row w-full items-center font-poppins relative ${
           inView && isBottom >= measurement

@@ -50,7 +50,7 @@ const Section6: React.FC = () => {
   const settings = {
     // centerMode: true,
     slidesToShow: 3,
-    speed: 1000,
+    speed: 2000,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,

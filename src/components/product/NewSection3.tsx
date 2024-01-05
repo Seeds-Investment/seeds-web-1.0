@@ -1,9 +1,9 @@
-import BlurInfluence from '@/assets/product/BlurInfluence.svg';
+// import BlurInfluence from '@/assets/product/BlurInfluence.svg';
 import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
 import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
-import SocialPostBottom from '@/assets/product/SocialPostBottom.svg';
-import SocialPostTop from '@/assets/product/SocialPostTop.svg';
+import SocialPostBottom from '@/assets/product/SocialPostBottom.png';
+import SocialPostTop from '@/assets/product/SocialPostTop.png';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -25,13 +25,13 @@ const NewSection3: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 gap-16"
+      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 xl:gap-9 lg:gap-32 gap-16"
     >
-      <Image
+      {/* <Image
         src={BlurInfluence}
         alt="BlurInfluence"
         className="absolute bottom-0"
-      />
+      /> */}
       <div
         className={`flex flex-col md:w-[583px] lg:w-[964px] gap-5 ${
           inView && isBottom >= measurement
@@ -59,38 +59,34 @@ const NewSection3: React.FC = () => {
           {`${t('landingPageV2.product.section3.subtitle')}`}
         </Typography>
       </div>
-      <div className="relative flex flex-row justify-center items-center">
+      <div
+        className={`relative flex justify-center bg-red-700 ${
+          inView && isBottom >= measurement
+            ? 'animate-fade-in-slide'
+            : isBottom >= measurement
+            ? 'animate-fade-out-slide'
+            : ''
+        }`}
+      >
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"
-          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] top-0 w-1/2 lg:w-full z-10 ${
-            inView && isBottom >= measurement
-              ? 'animate-fade-in-slide'
-              : isBottom >= measurement
-              ? 'animate-fade-out-slide'
-              : ''
-          }`}
+          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] xl:-top-9 lg:-top-32 -top-16 w-1/2 lg:w-full z-10`}
         />
         <Image
           src={SocialPostBottom}
           alt="SocialPostBottom"
-          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] bottom-[50px] lg:bottom-[45px] animate-bounce-horizontal"
+          className="absolute lg:w-2/3 w-1/4 z-10 left-[30px] lg:-left-[210px] top-1/2 animate-bounce-horizontal"
         />
         <Image
           src={IlustShareAndInfluenceMobile}
           alt="IlustShareAndInfluenceMobile"
-          className={`z-0 pt-[60px] lg:pt-[140px] xl:pt-[24px] w-1/2 lg:w-full ${
-            inView && isBottom >= measurement
-              ? 'animate-fade-in-slide'
-              : isBottom >= measurement
-              ? 'animate-fade-out-slide'
-              : ''
-          }`}
+          className={`z-0 w-1/2 lg:w-full`}
         />
         <Image
           src={SocialPostTop}
           alt="SocialPostTop"
-          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] bottom-[160px] lg:bottom-[300px] animate-bounce-reverse`}
+          className={`absolute lg:w-2/3 w-1/4 z-10 right-[20px] lg:-right-[210px] top-1/4 animate-bounce-reverse`}
         />
       </div>
     </section>

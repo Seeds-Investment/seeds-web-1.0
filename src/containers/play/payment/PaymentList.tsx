@@ -41,8 +41,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+  const [qRisList, setQRisList] = useState([]);
   const [option, setOption] = useState<Payment>({});
-  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
@@ -50,7 +50,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
     try {
       setLoading(true);
       const data = await getPaymentList();
-      setVirtualAccountList(data.type_va);
+      setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
       console.error('Error fetching Payment List', error.message);
@@ -144,8 +144,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
-          label={t('PlayPayment.virtualAccountLabel')}
-          options={virtualAccountList}
+          label="QRIS"
+          options={qRisList}
           onChange={setOption}
           currentValue={option}
         />

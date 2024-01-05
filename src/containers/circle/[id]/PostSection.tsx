@@ -10,8 +10,8 @@ import {
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
+import TrackerEvent from '@/helpers/GTM';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
-import TrackerEvent from '@/repository/GTM.repository';
 import { getAssetById } from '@/repository/asset.repository';
 import {
   getDetailCircle,

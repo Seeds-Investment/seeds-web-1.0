@@ -5,7 +5,7 @@ import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import PhoneInput from '@/components/PhoneInput';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import { Eye, EyeSlash, Loader } from '@/constants/assets/icons';
-import TrackerEvent from '@/repository/GTM.repository';
+import TrackerEvent from '@/helpers/GTM';
 // import {
 //   AppleBrand,
 //   FacebookBrand,
@@ -102,9 +102,9 @@ const LoginPage = (): JSX.Element => {
           });
           await router.push('/homepage'); // Added await keyword here
           TrackerEvent({
-            event: `Seeds_view_homepage_page_web`,
+            event: `Seeds_view_home_page_web`,
             userId: responseUser.id,
-            pageName: 'Homepage'
+            pageName: 'homepage'
           });
         } else {
           setErrorResponse(t('validation.invalid'));

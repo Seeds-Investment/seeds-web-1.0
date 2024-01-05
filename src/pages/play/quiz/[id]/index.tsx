@@ -10,14 +10,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ThirdMedal from '../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../assets/play/quiz/gold-medal.png';
-import ListQuizEmpty from '../../../assets/play/quiz/list-quiz-empty.jpg';
-import SecondMedal from '../../../assets/play/quiz/silver-medal.png';
+import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
+import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
+import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
+import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
-  const id: string | any = router.query.id;
+  const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
@@ -83,7 +83,7 @@ const QuizDetail = (): React.ReactElement => {
               <div className="flex flex-col justify-center items-center p-4">
                 <div className="text-xl font-semibold">
                   {t('quiz.dayDuration', {
-                    amount: Math.floor(
+                    duration: Math.floor(
                       moment(detailQuiz?.ended_at).diff(
                         moment(detailQuiz?.started_at),
                         'days',
@@ -175,20 +175,31 @@ const QuizDetail = (): React.ReactElement => {
             <div className="text-2xl font-semibold">{detailQuiz?.name}</div>
             <ShareIcon width={24} height={24} />
           </div>
-          <div className="text-sm text-[#7C7C7C] mt-2.5">Entrance Fee</div>
+          <div className="text-sm text-[#7C7C7C] mt-2.5">
+            {t('quiz.entranceFee')}
+          </div>
           <div className="font-semibold text-xl">
-            {detailQuiz?.admission_fee.toLocaleString('id-ID', {
-              currency: 'IDR',
-              style: 'currency'
-            })}
+            {detailQuiz?.admission_fee === 0
+              ? t('quiz.free')
+              : detailQuiz?.admission_fee.toLocaleString('id-ID', {
+                  currency: 'IDR',
+                  style: 'currency'
+                })}
           </div>
           <button
             onClick={() => {
-              // TODO: navigate to select help options
+              if (detailQuiz?.participant_status === 'JOINED') {
+                // TODO: navigate to Start quiz
+              } else {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                router.push(`/play/quiz/${id}/welcome`);
+              }
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
           >
-            {t('quiz.play')}
+            {detailQuiz?.participant_status === 'JOINED'
+              ? t('quiz.start')
+              : t('quiz.join')}
           </button>
         </div>
       </div>

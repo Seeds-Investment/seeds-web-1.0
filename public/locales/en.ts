@@ -1463,25 +1463,123 @@ export default {
       "Great job! You've chosen ## as your currency preference. From now on, all your transactions on Seeds will be in ##, you can change it whenever you want in the settings."
   },
   quiz: {
-    myQuiz: 'My Quiz',
-    open: 'Open',
-    active: 'Active',
-    ended: 'Ended',
-    canceled: 'Cancel',
-    free: 'Free',
-    dayDuration: '{{amount}} days',
-    players: 'Players',
-    entryFee: 'Entry Fee',
+    invitationCodePlaceholder: 'Input your invitation code',
+    enter: 'Enter',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Check out the latest rankings for top quizzes!',
+    play: 'Play',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Challenge your finance knowledge with these quizzes.',
+    search: 'Search',
+    qs: '{{amount}} Qs',
+    durationInDays: 'Duration {{days}} days',
+    playersJoined: '{{players}} Players Joined',
+    questionsAmount: '{{questions}} Questions',
+    questions: 'Questions',
+    quiz: 'Quiz',
+    entranceFee: 'Entrance Fee',
+    played: 'Played',
     duration: 'Duration',
-    question: 'Questions',
+    quizPeriod: 'Quiz Period',
+    tnc: 'Terms & Conditions',
+    quizPrize: 'Quiz Prize',
     first: '1st',
     second: '2nd',
     third: '3rd',
-    play: 'Play',
+    sponsors: 'Sponsor(s)',
+    community: 'Community',
+    join: 'Join',
+    reviewQuiz: 'Review Quiz',
+    continue: 'Continue',
+    start: 'start',
+    startTheGame: 'Start the Game!',
+    yourCurrentlyRank: 'Your Currently Rank',
+    cancel: 'Cancel',
+    notification: 'Notification',
+    extraCash:
+      "Oops, if you want an extra assist, you'll need an extra IDR {{amount}} cash",
+    select: 'Select',
+    quizCompanion: 'Meet Your Quiz Companion',
+    chooseOptions:
+      'Choose your assistance options, and of course you can even choose more than one!',
+    fiftyfifty: 'This option will eliminate two wrong answers.',
+    phone:
+      "It's like calling a friend for help, and they are always ready to help you.",
+    vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    incorrect: 'Incorrect',
+    correct: 'Correct',
+    anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
-    topQuiz: 'Top Quiz',
-    topQuizDesc: 'Check out the latest rankings for top quizzes!',
-    listQuiz: 'List Quiz',
-    listQuizDesc: 'Challenge your finance knowledge with these quizzes.'
+    remainingTime: 'Your remaining time',
+    currentRank: 'Your Current Rank',
+    currentScore: 'Your Current Score',
+    submit: 'Submit',
+    finish: 'Finish',
+    sureSubmit: 'Are you sure to submit this Quiz?',
+    sureSubmitDesc:
+      "After submitting, you won't be able to change the answers.",
+    yes: 'Yes',
+    theQuestion: 'The Question',
+    understand: 'Understand',
+    payAttention:
+      "Pay attention to Seedy's response, you can't revisit it after tapping Understand.",
+    beMindful:
+      "Be mindful of the vote from Seedy's friends, you won't be able to view it again after clicking OK.",
+    sureNeedHelp: 'Are you sure you need this help?',
+    description: 'Description',
+    wantLeave: 'Are you sure you want to leave?',
+    dontGiveUp: "Please don't give up, you're better than this.",
+    quizInformation:
+      "We will provide a series of questions related to cryptocurrency topics. Answer all the questions correctly to earn points, and you can also use Seedy's help.",
+    playAgain: 'Play Again',
+    admissionFee: 'IDR {{amount}}',
+    dayDuration: '{{duration}} days',
+    quizCategory: {
+      all: 'All',
+      allDesc:
+        "Welcome to General Financial & Investment Quiz! Explore your financial savvy with questions on everyday investments like Mutual Funds, US Stocks, ID Stocks, Financial Bonds, Gold, Crypto, Forex, and P2P investments. It's a fun way to test your money knowledge and learn more about the world of finance! Ready to dive in?",
+      mutualFunds: 'Mutual Funds',
+      mutualFundsDesc:
+        'Test your knowledge of mutual funds with this quiz! Learn about the basics of mutual fund investing, types of mutual funds, and how they can help you achieve your financial goals.',
+      investment: 'Investment',
+      investmentDesc:
+        'Test your knowledge of investing and learn how to choose the best products for your financial goals. This quiz covers topics such as risk, return, diversification, evaluation, and regulation.',
+      stock: 'STOCK',
+      stockDesc:
+        'How well do you know the stock market and investing? Take this quiz and find out! This quiz will help you improve your financial literacy and your skills in analyzing stock market data.',
+      usStock: 'US Stock',
+      usStockDesc:
+        'Challenge yourself with questions about the history, performance, and regulation of the US stock market. Learn how the NYSE and NASDAQ evolved, how stock indexes are calculated, and what factors affect stock prices.',
+      idStock: 'ID Stock',
+      idStockDesc:
+        'Test your knowledge of the Indonesia Stock Exchange and its listed companies. Learn how the Jakarta Stock Price Index is calculated…',
+      financial: 'Financial',
+      financialDesc:
+        'Test your financial literacy and improve your money management skills. Learn how to budget, save, use credit, and plan for your future.',
+      gold: 'Gold',
+      goldDesc:
+        'Test your knowledge of gold, the most precious metal on Earth. Learn about its properties, uses, history, and sources.',
+      crypto: 'Crypto',
+      cryptoDesc:
+        'Test your knowledge of cryptocurrencies, the digital assets that are revolutionizing the world of finance. Learn about their history, technology, regulation, and trends.',
+      forex: 'Forex',
+      forexDesc:
+        'Learn about the foreign exchange market, the largest and most liquid market in the world. This quiz covers topics such as currency pairs, exchange rates, trading strategies, central banks, and forex risks.',
+      p2p: 'P2P (Peer-to-Peer)',
+      p2pDesc:
+        'Jump into the world of Peer-to-Peer Lending with our quiz! Explore how P2P platforms work, the risks and benefits, and the ins and outs of lending and borrowing directly from individuals. Test your P2P lending knowledge and discover if this innovative approach to finance is right.',
+      financialBonds: 'Financial Bonds',
+      financialBondsDesc:
+        'Learn about the different types of bonds, the debt instruments that allow entities to borrow money from investors. This quiz covers topics such as bond characteristics, valuation, risks, and strategies.'
+    },
+    free: 'Free',
+    lifeline: 'Extra Lifeline',
+    tryInfo:
+      'Free quiz is only available for one attempt, try another challenges!',
+    day: '{{days}} days',
+    players: 'Players',
+    entryFee: 'Entry Fee',
+    entFee: 'Entrance Fee',
+    myQuiz: 'My Quiz'
   }
 };

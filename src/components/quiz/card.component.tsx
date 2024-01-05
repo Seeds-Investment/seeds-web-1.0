@@ -48,7 +48,7 @@ const QuizCard = ({ item }: { item: IQuiz }) => {
               <div>{t('quiz.duration')}</div>
               <div className="font-semibold">
                 {t('quiz.dayDuration', {
-                  amount: Math.floor(
+                  duration: Math.floor(
                     moment(item.ended_at).diff(
                       moment(item.started_at),
                       'days',

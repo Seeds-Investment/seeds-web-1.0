@@ -2,7 +2,10 @@ export { default as LegalSubmenu } from 'public/assets/faq-submenu/LegalMenu.png
 export { default as ChooseCurrencyModal } from 'public/assets/images/ChooseCurrencyModal.png';
 export { default as WelcomeOnboarding } from 'public/assets/images/Congrats-Onboarding.svg';
 export { default as Hello } from 'public/assets/images/Hello.png';
+export { default as InformationLogo } from 'public/assets/images/InformationNotifLogo.png';
+export { default as PromotionLogo } from 'public/assets/images/PromotionNotifLogo.png';
 export { default as SeedsLogo } from 'public/assets/images/SeedsTypo.png';
+export { default as SocialNotifLogo } from 'public/assets/images/SocialNotifLogo.png';
 export { default as AppleBrand } from 'public/assets/images/apple.svg';
 export { default as CurrencySVG } from 'public/assets/images/currency.svg';
 export { default as DummyAvatar } from 'public/assets/images/dummy-avatar.png';

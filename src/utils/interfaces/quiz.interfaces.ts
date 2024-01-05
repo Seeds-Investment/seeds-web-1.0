@@ -1,0 +1,195 @@
+export interface JoinQuizI {
+  quiz_id: string;
+  lifelines: string[];
+  language: string;
+  payment_gateway: string;
+  payment_method: string;
+  phone_number: string;
+  promo_code: string;
+  invitation_code: string;
+}
+
+export enum QuizStatus {
+  MYQUIZ = 'MYQUIZ',
+  PUBLISHED = 'PUBLISHED',
+  STARTED = 'STARTED',
+  ENDED = 'ENDED',
+  CANCELED = 'CANCELED'
+}
+
+export interface QuizListParamsDTO {
+  search?: string;
+  limit: number;
+  page: number;
+  status: QuizStatus | '';
+  currency: string;
+}
+
+export interface LifelinesI {
+  name: LifelinesEnum;
+  price: number;
+}
+
+export interface ParticipantLifeline {
+  name: LifelinesEnum;
+  price: number;
+  is_used: boolean;
+}
+
+export interface IDetailQuiz {
+  id: string;
+  circle_category_id: string;
+  name: string;
+  tnc: string;
+  status: string;
+  min_participant: number;
+  max_participant: number;
+  duration_in_minute: number;
+  published_at: Date;
+  started_at: Date;
+  ended_at: Date;
+  admission_fee: number;
+  category: string;
+  prizes: number[];
+  winners: string[];
+  sponsors: any;
+  communities: any;
+  banner: any;
+  participant_lifelines: ParticipantLifeline[] | null;
+  lifelines: LifelinesI[];
+  total_played: number;
+  total_questions: number;
+  is_joined: boolean;
+  participant_status: string;
+  created_at: Date;
+}
+
+export const initialDetailQuiz = {
+  id: '',
+  circle_category_id: '',
+  name: '',
+  tnc: '',
+  status: '',
+  min_participant: 0,
+  max_participant: 0,
+  duration_in_minute: 0,
+  published_at: new Date(),
+  started_at: new Date(),
+  ended_at: new Date(),
+  admission_fee: 0,
+  category: '',
+  prizes: [],
+  winners: [],
+  sponsors: [],
+  communities: [],
+  banner: '',
+  participant_lifelines: [],
+  participant_status: '',
+  total_played: 0,
+  total_questions: 0,
+  is_joined: false,
+  created_at: new Date(),
+  lifelines: []
+};
+
+export interface ITopQuiz {
+  id: string;
+  name: string;
+  banner: any;
+  questions: number;
+}
+
+export interface IQuiz {
+  id: string;
+  name: string;
+  banner: any;
+  questions: number;
+  participants: number;
+  started_at: Date;
+  ended_at: Date;
+  admission_fee: number;
+  is_played: boolean;
+}
+
+export interface IQuizSettings {
+  soundEffect: boolean;
+  vibrateEffect: boolean;
+}
+
+export enum LifelinesEnum {
+  '50_50' = '50_50',
+  'PHONE' = 'PHONE',
+  'VOTE' = 'VOTE'
+}
+
+export interface SubmitAnswerI {
+  quiz_id: string;
+  question_id: string;
+  answer_id: number;
+}
+
+export interface QuestionI {
+  id: string;
+  quiz_participant_id: string;
+  quiz_question_id: string;
+  answer_id: number;
+  is_correct: boolean;
+  data: QuestionDataI;
+}
+
+export interface QuestionDataI {
+  en: Answer;
+  id: Answer;
+}
+
+export interface Answer {
+  question: string;
+  options: Options;
+  description?: string;
+}
+
+export interface Options {
+  option_1: Option;
+  option_2: Option;
+  option_3: Option;
+  option_4: Option;
+}
+
+export interface Option {
+  id: number;
+  option: string;
+  is_correct?: boolean;
+}
+
+export interface LifelineRespI {
+  option_id: number;
+  percentage: number;
+  question_id: string;
+}
+
+export interface LifelineReqI {
+  quiz_id: string;
+  lifeline_name: LifelinesEnum;
+  question_id: string;
+}
+
+export interface UseLifelineState {
+  lifeline: LifelinesEnum;
+  res: LifelineRespI[];
+}
+
+export interface CircleTrendingI {
+  id: string;
+  image: string;
+  banner: string;
+  name: string;
+  totalMember: number;
+  totalRating: number;
+}
+
+export interface ScoreI {
+  score: number;
+  rank: number;
+  started_at: Date;
+  ended_at: Date;
+}

@@ -25,7 +25,7 @@ const NewSection3: React.FC = () => {
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4"
+      className="relative flex flex-col items-center pt-[80px] md:pt-[60px] justify-end w-full px-4 xl:gap-9 lg:gap-32 gap-16"
     >
       {/* <Image
         src={BlurInfluence}
@@ -71,12 +71,12 @@ const NewSection3: React.FC = () => {
         <Image
           src={IlustShareAndInfluenceArrow}
           alt="IlustShareAndInfluenceArrow"
-          className={`absolute -left-[100px] lg:-left-[400px] top-0 w-1/2 lg:w-full z-10`}
+          className={`absolute left-0 lg:-left-[200px] xl:-left-[400px] xl:-top-9 lg:-top-32 -top-16 w-1/2 lg:w-full z-10`}
         />
         <Image
           src={SocialPostBottom}
           alt="SocialPostBottom"
-          className="absolute lg:w-2/3 w-1/4 z-20 left-[30px] lg:-left-[210px] top-1/2 animate-bounce-horizontal"
+          className="absolute lg:w-2/3 w-1/4 z-10 left-[30px] lg:-left-[210px] top-1/2 animate-bounce-horizontal"
         />
         <Image
           src={IlustShareAndInfluenceMobile}
@@ -86,7 +86,7 @@ const NewSection3: React.FC = () => {
         <Image
           src={SocialPostTop}
           alt="SocialPostTop"
-          className={`absolute lg:w-2/3 w-1/4 z-20 right-[20px] lg:-right-[210px] top-1/4 animate-bounce-reverse`}
+          className={`absolute lg:w-2/3 w-1/4 z-10 right-[20px] lg:-right-[210px] top-1/4 animate-bounce-reverse`}
         />
       </div>
     </section>

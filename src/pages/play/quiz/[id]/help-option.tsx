@@ -91,7 +91,7 @@ const HelpOption = () => {
       } else {
         setLifelines(item => [...item, value]);
       }
-      // optionsModalRef?.current?.close();
+      setShowLifelineDesc(false);
     }
   };
 
@@ -124,7 +124,7 @@ const HelpOption = () => {
             <HelpBox
               title="Phone Seedy"
               icon={Phone}
-              selected={true}
+              selected={lifelines.includes(LifelinesEnum.PHONE)}
               onClick={() => {
                 handleTapOption(LifelinesEnum.PHONE);
               }}
@@ -132,7 +132,7 @@ const HelpOption = () => {
             <HelpBox
               title="50:50"
               icon={Fifty}
-              selected={false}
+              selected={lifelines.includes(LifelinesEnum['50_50'])}
               onClick={() => {
                 handleTapOption(LifelinesEnum['50_50']);
               }}
@@ -140,7 +140,7 @@ const HelpOption = () => {
             <HelpBox
               title="Vote"
               icon={Vote}
-              selected={false}
+              selected={lifelines.includes(LifelinesEnum.VOTE)}
               onClick={() => {
                 handleTapOption(LifelinesEnum.VOTE);
               }}

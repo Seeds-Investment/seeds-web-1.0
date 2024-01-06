@@ -13,7 +13,7 @@ const QuizLayout: React.FC<Props> = ({ children, withButton = true }) => {
   return (
     <div
       style={{ backgroundImage: "url('/assets/quiz/bg-quiz.png')" }}
-      className="w-full h-screen md:h-auto md:aspect-[947/685] bg-center bg-cover bg-no-repeat"
+      className="w-full h-screen lg:h-auto lg:aspect-[947/685] bg-center bg-cover bg-no-repeat"
     >
       <div className="w-full h-full max-h-full overflow-y-auto no-scrollbar p-3 md:p-8">
         {withButton ? (

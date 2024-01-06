@@ -1504,6 +1504,10 @@ export default {
     players: 'Pemain',
     entryFee: 'Tiket Kuis',
     entFee: 'Tiket masuk',
-    myQuiz: 'My Quiz'
+    myQuiz: 'My Quiz',
+    open: 'Terbuka',
+    active: 'Berjalan',
+    ended: 'Berakhir',
+    canceled: 'Dibatalkan'
   }
 };

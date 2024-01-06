@@ -1580,6 +1580,10 @@ export default {
     players: 'Players',
     entryFee: 'Entry Fee',
     entFee: 'Entrance Fee',
-    myQuiz: 'My Quiz'
+    myQuiz: 'My Quiz',
+    open: 'Open',
+    active: 'Active',
+    ended: 'Ended',
+    canceled: 'Cancelled'
   }
 };

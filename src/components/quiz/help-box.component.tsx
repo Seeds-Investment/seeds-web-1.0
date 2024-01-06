@@ -26,7 +26,7 @@ const HelpBox = memo<Props>(({ icon, title, selected, onClick }) => {
           className="object-contain w-12 h-12"
         />
       </button>
-      {title && <div className="text-sm">{title}</div>}
+      {title && <div className="text-xs lg:text-sm">{title}</div>}
     </div>
   );
 });

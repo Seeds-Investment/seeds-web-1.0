@@ -21,7 +21,7 @@ const QuizCard = ({ item }: { item: IQuiz }) => {
           }
           width={1000}
           height={500}
-          className="object-cover max-h-48"
+          className="object-cover h-28 bg-blue-gray-50 rounded-t-lg"
         />
       </div>
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">

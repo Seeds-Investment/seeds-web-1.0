@@ -93,10 +93,10 @@ const Player = (): React.ReactElement => {
       </div>
 
       {/* Filter Section */}
-      <div className="flex flex-row items-center gap-3 mt-4">
+      <div className="flex flex-row items-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
         {statusQuiz.map(item => (
           <button
-            className={`border px-4 py-2 font-poppins rounded-lg text-sm ${
+            className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
               item.status === activeTab
                 ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
                 : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
@@ -121,7 +121,7 @@ const Player = (): React.ReactElement => {
           Challenge your finance knowledge with these quizzes.
         </p>
       </div>
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {listQuiz.length === 0 && !loading ? (
           <div className="col-span-3">
             <Image src={ListQuizEmpty} width={500} alt="Top Quiz Empty" />

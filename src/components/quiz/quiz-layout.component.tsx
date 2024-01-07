@@ -7,30 +7,44 @@ import SettingsButton from '../../assets/play/quiz/settings.svg';
 interface Props {
   children: ReactNode;
   withButton?: boolean;
+  hideBackButton?: boolean;
+  centerContent?: ReactNode;
+  enableScroll?: boolean;
 }
-const QuizLayout: React.FC<Props> = ({ children, withButton = true }) => {
+const QuizLayout: React.FC<Props> = ({
+  children,
+  withButton = true,
+  hideBackButton = false,
+  centerContent,
+  enableScroll = false
+}) => {
   const router = useRouter();
   return (
     <div
       style={{ backgroundImage: "url('/assets/quiz/bg-quiz.png')" }}
       className="w-full h-screen lg:h-auto lg:aspect-[947/685] bg-center bg-cover bg-no-repeat"
     >
-      <div className="w-full h-full max-h-full overflow-y-auto no-scrollbar p-3 md:p-8">
+      <div className="w-full h-full max-h-full flex flex-col">
         {withButton ? (
-          <div className="flex flex-row justify-between items-center">
-            <button
-              onClick={() => {
-                router.back();
-              }}
-            >
-              <Image
-                src={BackButton}
-                alt="quiz-back-button"
-                width={100}
-                height={100}
-                className="object-contain h-10 md:h-12 w-10 md:w-12"
-              />
-            </button>
+          <div className="flex flex-row justify-between items-center p-3 md:p-8">
+            {!hideBackButton ? (
+              <button
+                onClick={() => {
+                  router.back();
+                }}
+              >
+                <Image
+                  src={BackButton}
+                  alt="quiz-back-button"
+                  width={100}
+                  height={100}
+                  className="object-contain h-10 md:h-12 w-10 md:w-12"
+                />
+              </button>
+            ) : (
+              <div />
+            )}
+            {centerContent}
             <button>
               <Image
                 src={SettingsButton}
@@ -42,7 +56,9 @@ const QuizLayout: React.FC<Props> = ({ children, withButton = true }) => {
             </button>
           </div>
         ) : null}
-        {children}
+        <div className={`${enableScroll ? 'h-full' : 'flex-grow'} w-full"`}>
+          {children}
+        </div>
       </div>
     </div>
   );

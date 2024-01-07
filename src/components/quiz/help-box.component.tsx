@@ -13,7 +13,7 @@ const HelpBox = memo<Props>(({ icon, title, selected, onClick }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-4">
       <button
-        className={`bg-white bg-opacity-20 rounded-3xl p-6 ${
+        className={`bg-white bg-opacity-20 rounded-xl lg:rounded-3xl p-4 lg:p-6 ${
           selected ? 'border border-white' : ''
         }`}
         onClick={onClick}
@@ -23,7 +23,7 @@ const HelpBox = memo<Props>(({ icon, title, selected, onClick }) => {
           alt={title}
           width={100}
           height={100}
-          className="object-contain w-12 h-12"
+          className="object-contain w-6 h-6 lg:w-12 lg:h-12"
         />
       </button>
       {title && <div className="text-xs lg:text-sm">{title}</div>}

@@ -20,13 +20,13 @@ const HelpBox = memo<Props>(({ icon, title, selected, onClick }) => {
       >
         <Image
           src={icon}
-          alt={title}
+          alt={title as string}
           width={100}
           height={100}
           className="object-contain w-6 h-6 lg:w-12 lg:h-12"
         />
       </button>
-      {title && <div className="text-xs lg:text-sm">{title}</div>}
+      {title !== undefined && <div className="text-xs lg:text-sm">{title}</div>}
     </div>
   );
 });

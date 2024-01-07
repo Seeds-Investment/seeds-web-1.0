@@ -25,7 +25,10 @@ const QuizDetail = (): React.ReactElement => {
   const getDetail = useCallback(async () => {
     try {
       setLoading(true);
-      const resp: IDetailQuiz = await getQuizById({ id, currency: 'IDR' });
+      const resp: IDetailQuiz = await getQuizById({
+        id: id as string,
+        currency: 'IDR'
+      });
       setDetailQuiz(resp);
     } catch (error) {
       console.log(error);
@@ -109,7 +112,7 @@ const QuizDetail = (): React.ReactElement => {
             <div className="text-lg font-semibold">Terms & Conditions</div>
             <div
               className="text-lg text-[#7C7C7C]"
-              dangerouslySetInnerHTML={{ __html: detailQuiz?.tnc }}
+              dangerouslySetInnerHTML={{ __html: detailQuiz?.tnc as string }}
             />
           </div>
           <div className="mt-4">
@@ -151,6 +154,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
                 <Image
                   src={detailQuiz?.sponsors?.image_url}
+                  alt=""
                   width={200}
                   height={200}
                   className="object-contain max-h-16 max-w-16"
@@ -162,6 +166,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-lg font-semibold">{'Community'}</div>
                 <Image
                   src={detailQuiz?.communities?.image_url}
+                  alt=""
                   width={200}
                   height={200}
                   className="object-contain max-h-16 max-w-16"

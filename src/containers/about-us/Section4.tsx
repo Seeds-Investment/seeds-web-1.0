@@ -1,6 +1,7 @@
 import { AboutUsSectionFourBG } from '@/constants/assets/images';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 
@@ -12,6 +13,7 @@ const Section4: React.FC = () => {
     threshold: 0.3
   });
   const sliderRef = useRef<Slider>(null);
+  const { t } = useTranslation();
 
   const youtubeLink = [
     'https://www.youtube.com/embed/A7TaLvtSJtk?si=Sw7NgzPuCzRuyBSB',
@@ -85,9 +87,7 @@ const Section4: React.FC = () => {
             #SeedsTalk
           </p>
           <p className="text-base text-center md:text-left md:text-xl font-normal text-[#262626] mt-6 md:px-20">
-            {`The podcast where money talk gets interesting! We're here to share the
-          coolest tips, latest news, and some eye-opening insights about money
-          and investing.`}
+            {t('aboutUsV3.section4.subtitle')}
           </p>
 
           <div className="flex-row w-full my-10 md:px-[20%] text-center items-center justify-center">

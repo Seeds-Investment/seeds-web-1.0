@@ -38,7 +38,7 @@ const Player = (): React.ReactElement => {
     try {
       setLoading(true);
       const res = await getAllQuiz({ ...params, status: activeTab });
-      if (res.data) {
+      if (res.data !== undefined) {
         const list: IQuiz[] = res.data;
         setListQuiz(list);
       }
@@ -50,7 +50,7 @@ const Player = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    getListQuiz();
+    void getListQuiz();
   }, [activeTab]);
 
   const statusQuiz: StatusQuizI[] = [

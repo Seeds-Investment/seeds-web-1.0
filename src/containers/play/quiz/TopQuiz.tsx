@@ -15,7 +15,7 @@ const TopQuiz = (): JSX.Element => {
     try {
       setLoading(true);
       const resp = await getQuizTrending();
-      if (resp.data) {
+      if (resp.data !== undefined) {
         const resTopQuiz: IQuiz[] = resp.data;
         setTopQuizes(resTopQuiz);
       }
@@ -27,7 +27,7 @@ const TopQuiz = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    getTopQuiz();
+    void getTopQuiz();
   }, [getTopQuiz]);
 
   console.log('topQuizes', topQuizes);

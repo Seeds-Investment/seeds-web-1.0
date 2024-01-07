@@ -14,6 +14,8 @@ const authService = baseAxios(
 interface LoginForm {
   phoneNumber: string;
   password: string;
+  platform?: string;
+  os_name?: string;
 }
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {

@@ -14,6 +14,7 @@ import TrackerEvent from '@/helpers/GTM';
 import { loginPhoneNumber, loginProvider } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Checkbox, Input, Typography } from '@material-tailwind/react';
+import DeviceDetector from 'device-detector-js';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,6 +30,7 @@ interface FormData {
 
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
+  const deviceDetector = new DeviceDetector();
   const router = useRouter();
   const { data: session }: any = useSession();
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,6 +40,8 @@ const LoginPage = (): JSX.Element => {
   const [selectedCode, setSelectedCode] = useState<string>('+62');
   const [errorResponse, setErrorResponse] = useState<any>('');
   const [errorPassword, setErrorPassword] = useState<any>('');
+  const [osName, setOs] = useState<any>('');
+  const [platform, setPlatform] = useState<any>('');
 
   const [formData, setFormData] = useState<FormData>({
     phoneNumber: '',
@@ -77,7 +81,9 @@ const LoginPage = (): JSX.Element => {
 
         const response = await loginPhoneNumber({
           phoneNumber: formattedPhone,
-          password: formData.password
+          password: formData.password,
+          platform: platform,
+          os_name: osName
         });
 
         if (response.status === 200) {
@@ -160,6 +166,13 @@ const LoginPage = (): JSX.Element => {
       console.error(error);
     });
   }, [session?.access_token, router]);
+
+  useEffect(() => {
+    setPlatform(
+      `${deviceDetector.parse(navigator.userAgent).device?.type as string}_web`
+    );
+    setOs(deviceDetector.parse(navigator.userAgent).os?.name);
+  }, []);
 
   // const thirdParty = [
   //   {

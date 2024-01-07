@@ -29,6 +29,7 @@ const EditProfile: React.FC = () => {
   const maxLengthBio = 50;
   const [select, setSelect] = useState(0);
   const [updateAvatar, setAvatar] = useState();
+  const [country, setCountry] = useState<CountryCodeInfo | undefined>();
   const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
   const [form, setForm] = useState<any>({
@@ -40,10 +41,10 @@ const EditProfile: React.FC = () => {
     birthDate: '',
     phone: ''
   });
-  const getCountry = (text: string): CountryCodeInfo | undefined =>
+  const getCountry = (phone: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
-      return text?.replace('+', '').slice(0, dialCode?.length) === dialCode;
+      return phone?.replace('+', '').slice(0, dialCode?.length) === dialCode;
     });
 
   const [open, setOpen] = useState(false);
@@ -117,6 +118,7 @@ const EditProfile: React.FC = () => {
           birthDate: dataInfo.birthDate,
           phone: dataInfo.phoneNumber
         });
+        setCountry(getCountry(dataInfo.phoneNumber));
         setBirthDate(dataInfo.birthDate);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
@@ -263,21 +265,23 @@ const EditProfile: React.FC = () => {
               <div className="absolute flex p-0 gap-[19px] items-center pr-[18px] pb-[7px] pt-[15px]">
                 <img
                   src={`https://flagcdn.com/${
-                    getCountry(form.phone)?.code.toLowerCase() as string
+                    country?.code.toLowerCase() as string
                   }.svg`}
-                  alt={getCountry.name}
+                  alt={country?.name}
                   className="h-4 w-7 object-cover"
                 />
                 <Image src={DropdownPhone} alt="DropdownPhone" />
                 <Typography className="text-[#7C7C7C] text-base font-poppins font-normal">
-                  {getCountry(form.phone)?.dialCode.replace('+', '')}
+                  {country?.dialCode.replace('+', '')}
                 </Typography>
               </div>
               <Input
                 label="Phone Number"
                 name="phone"
                 type="number"
-                value={form?.phone}
+                value={form?.phone.slice(
+                  country?.dialCode.replace('+', '').length
+                )}
                 variant="static"
                 labelProps={{
                   className:

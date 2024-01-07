@@ -193,3 +193,11 @@ export interface ScoreI {
   started_at: Date;
   ended_at: Date;
 }
+
+export interface QuizReviewDTO {
+  data: any[];
+  score: number;
+  rank: number;
+  started_at: string;
+  ended_at: string;
+}

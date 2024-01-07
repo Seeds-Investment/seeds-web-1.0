@@ -58,10 +58,36 @@ export const getQuizById = async ({
   currency: string;
 }): Promise<any> => {
   try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
     const path = `/${id}?currency=${currency}`;
     return await quizService.get(path, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching trending play list:', error);
+  }
+};
+
+export const getQuizReview = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    const path = `/${id}/reviews`;
+    return await quizService.get(path, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {

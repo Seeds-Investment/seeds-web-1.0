@@ -6,7 +6,6 @@ import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import { type LifelinesEnum } from '@/utils/interfaces/quiz.interfaces';
-import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Fifty from '../../../../assets/play/quiz/fifty.svg';
@@ -15,7 +14,6 @@ import Vote from '../../../../assets/play/quiz/vote.svg';
 
 const HelpOption = () => {
   const { t } = useTranslation();
-  const router = useRouter();
   useOnLeavePageConfirmation(false);
   const [lifelines, setLifelines] = useState<LifelinesEnum[]>([]);
   const [selectedLL, setSelectedLL] = useState<LifelinesEnum>();

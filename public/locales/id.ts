@@ -1240,12 +1240,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
       text6: 'Main Sekarang',
-      text7: 'Bangun Portofolio & Klaim Hadiah',
-      text8: 'Interaksi Sosial',
-      text9: 'Tantang, Pelajari, Raih'
+      text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!'
     },
     section2: {
       text1: 'Social',
@@ -1255,13 +1252,12 @@ export default {
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
       text2: 'Perjalanan Keuangan Kamu',
-      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text3: 'Belajar keuangan untuk mencapai investasi yang sukses',
       text4:
-        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+        'Cari informasi dasar tentang keuangan dan miliki pertanyaan terkait keuangan.',
       text5: 'Siap untuk mengadopsi strategi keuangan.',
-      text6:
-        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
-      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+      text6: 'Tingkatkan kepercayaan diri dalam membuat keputusan keuangan.',
+      text7: 'Capai level tertinggi dari literasi keuangan'
     },
     section5: {
       text1: 'Total Hadiah yang Telah Diklaim'

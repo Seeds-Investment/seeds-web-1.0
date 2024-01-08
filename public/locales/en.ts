@@ -1315,12 +1315,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now',
-      text7: 'Build Portfolio & Claim Rewards ',
-      text8: 'Social Interaction',
-      text9: 'Challenge, Learn, Earn'
+      text7: 'Improve Investing Skills From Experts',
+      text8: 'Play Games & Win Real Money!'
     },
     section2: {
       text1: 'Social',
@@ -1330,11 +1327,11 @@ export default {
     section3: {
       text1: 'How Seeds Enhance',
       text2: 'Your Financial Journey',
-      text3: 'Lacks financial literacy, vulnerable to scams',
-      text4: 'Questions finances and seeks basic knowledge.',
+      text3: 'Learning finance to achive succesfull investment',
+      text4: 'Questioning finance and seeking basic knowledge.',
       text5: 'Ready to adopt financial strategies.',
-      text6: 'Gaining confidence in making informed financial decisions.',
-      text7: 'Achieving advanced financial literacy'
+      text6: 'Gain confidence in financial decision',
+      text7: 'Achieve a higher level of financial literacy'
     },
     section5: {
       text1: 'Total Rewards Claimed by Users'

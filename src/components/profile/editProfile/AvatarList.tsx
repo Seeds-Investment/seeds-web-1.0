@@ -59,7 +59,11 @@ const SectionAvatar: React.FC<VariableAvatar> = ({
                     onClick={() => {
                       setGender('male');
                     }}
-                    className="rounded-full capitalize font-poppins font-bold text-base text-[#7C7C7C] bg-white focus:text-white focus:bg-[#3AC4A0] w-full py-1"
+                    className={`rounded-full capitalize font-poppins font-bold text-base ${
+                      gender === 'male'
+                        ? 'text-white bg-[#3AC4A0]'
+                        : 'text-[#7C7C7C] bg-white'
+                    } w-full py-1`}
                   >
                     Male
                   </Button>
@@ -67,7 +71,11 @@ const SectionAvatar: React.FC<VariableAvatar> = ({
                     onClick={() => {
                       setGender('female');
                     }}
-                    className="rounded-full capitalize font-poppins font-bold text-base text-[#7C7C7C] bg-white focus:text-white focus:bg-[#3AC4A0] w-full py-1"
+                    className={`rounded-full capitalize font-poppins font-bold text-base ${
+                      gender === 'female'
+                        ? 'text-white bg-[#3AC4A0]'
+                        : 'text-[#7C7C7C] bg-white'
+                    } w-full py-1`}
                   >
                     Female
                   </Button>

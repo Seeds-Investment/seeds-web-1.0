@@ -1,5 +1,4 @@
 import CrownIlust from '@/assets/product/CrownIlust.png';
-import LeaderboardLine from '@/assets/product/LeaderboardLine.svg';
 import LeaderboardRank from '@/assets/product/LeaderboardRank.png';
 import WinRateProduct from '@/assets/product/WinRateProduct.svg';
 import { getPlayLeaderboard } from '@/repository/play.repository';
@@ -77,17 +76,17 @@ const NewSection2: React.FC = () => {
             : ''
         }`}
       >
-        <Image
+        {/* <Image
           src={LeaderboardLine}
           alt="LeaderboardLine"
           className="xl:-mb-[65px] -mb-[40px] xl:w-[520px] w-[290px]"
-        />
+        /> */}
         <Typography className="font-poppins font-semibold xl:text-5xl text-3xl bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] inline-block bg-clip-text text-transparent">
           {`${t('landingPageV2.product.section2.title1')}`}
         </Typography>
       </div>
       <div
-        className={`flex flex-col gap-6 xl:mt-[41.5px] xl:mb-10 my-6 ${
+        className={`flex flex-col xl:mt-[41.5px] xl:mb-10 my-6 ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement
@@ -95,9 +94,6 @@ const NewSection2: React.FC = () => {
             : ''
         }`}
       >
-        <Typography className="font-poppins font-normal xl:text-2xl md:text-lg text-base text-[#262626] text-center">
-          {`${t('landingPageV2.product.section2.title2')}`}
-        </Typography>
         <div className="flex justify-center gap-6">
           <Button
             onClick={() => {

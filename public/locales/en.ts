@@ -1029,25 +1029,23 @@ export default {
     product: {
       section1: {
         title1: 'Play & Win',
-        title2: 'Real Prizes while Enhancing Your Financial Knowledge',
+        title2: 'Real Prizes While Learning',
         subtitle:
-          'Challenge your financial and investment knowledge, compete with others, and be at the top of the leaderboard for a chance to win prizes worth millions of rupiah.'
+          'Challenge your financial knowledge with exciting games and win real money'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'Reach the top of the leaderboard and win prizes.'
+        title1: 'Climb the Leaderboard & Be a Champion!'
       },
       section3: {
-        title1: 'Share & Influence',
-        title2: 'Others to Start Their Financial Journey',
-        subtitle:
-          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+        title1: 'Invest In Knowledge',
+        title2: 'Invest In Success',
+        subtitle: 'Grow your investment journey by learn and explore on Seeds'
       },
       section5: {
         title1: 'How to Play',
         title2: 'Tournament',
         title3:
-          'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
+          'Let’s Watch to learn everything about tournament and virtual trading here!'
       },
       section6: {
         title1: 'Download Now!',
@@ -1125,8 +1123,8 @@ export default {
   },
   partner: {
     section1: {
-      title: 'Partner with Seeds',
-      text: 'Seeds engages a large audience of eager Millennials and Gen Z looking to boost their financial skills. Collaborate with us to reach this growing crowd. Enjoy exclusive trading competitions, cash sponsorships, exciting prizes, and certificates.',
+      title: 'Partner with Seeds & Shape the Future of Investment Education',
+      text: 'Host exclusive investment tournaments, win prizes, and promote risk-free investment education with Seeds for a better investment world. Grow with us!',
       button: 'Contact Us'
     },
     section2: {
@@ -1135,12 +1133,12 @@ export default {
       option3: 'Event Hosted'
     },
     section3: {
-      title: 'Collaborate to Solve Problems'
+      title: 'Collaborate to Solve Investment Problems'
     },
     section4: {
       title: 'Empowering The Next Generation Together',
       subtitle:
-        'Join our mission to make financial education fun and accessible in Indonesia',
+        'Join us in making financial education more exciting and accessible for everyone',
       option1: {
         title: 'Community',
         text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
@@ -1164,18 +1162,18 @@ export default {
   aboutUsV3: {
     section1: {
       title: 'Seeds, Where Gaming Meets Investing!',
-      text: 'Seeds is a Social Gaming platform focused on Southeast Asia. Step into the world of investing through our Play Arena—climb the leaderboard, win exciting prizes, and refine your investment strategies with ZERO RISK. You can also connect with financial experts and like-minded individuals in our strong and interactive community.'
+      text: 'Step in the world of investing through our Play Arena-climb the leaderboards, win exciting prizes, and perfect your investment strategy with ZERO RISK. Connect with financial experts and like-minded individuals in our strong and interactive community.'
     },
     section2: {
       title: 'Vision and Mission',
       option1: {
         title: 'Ride the Wave',
-        subtitle: `Tap into Indonesia's booming millennial and Gen Z market, universities, schools, communities, financial influencers, and medias. That's a lot of eyes on your community, event, or brand!`
+        subtitle: `To reach Indonesia's fast-growing millennial and Gen Z market, as well as universities, schools, communities, financial influencers, and media. All eyes on your community, event or brand!`
       },
       option2: {
         title: 'Game On and Make a Difference!',
         subtitle:
-          'Help boost financial know-how and save folks from bad investment choices. Dive into the exciting world of virtual trading games and make learning fun.'
+          'Help improve financial knowledge and save people from wrong investment choices. Dive into the exciting world of virtual trading games and make investment learning more enjoyable.'
       },
       option3: {
         title: 'Monetize & Prosper',
@@ -1188,7 +1186,7 @@ export default {
       option5: {
         title: 'Learn & Lead',
         subtitle:
-          'Partner with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
+          'Collaborate with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
       }
     },
     section3: {
@@ -1196,7 +1194,7 @@ export default {
       button: 'Join Now',
       option1: {
         title: 'Learn',
-        subtitle: 'More about investing and finance from the Pro'
+        subtitle: 'more about investing and finance from the experts'
       },
       option2: {
         title: 'Meet',
@@ -1206,6 +1204,9 @@ export default {
         title: 'Play',
         subtitle: 'The tournaments and win cash rewards!'
       }
+    },
+    section4: {
+      subtitle: `The podcast where money talks get interesting! We're here to share the coolest tips, latest news, and some interesting insights on money and investing.`
     }
   },
   social: {
@@ -1314,12 +1315,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now',
-      text7: 'Build Portfolio & Claim Rewards ',
-      text8: 'Social Interaction',
-      text9: 'Challenge, Learn, Earn'
+      text7: 'Improve Investing Skills From Experts',
+      text8: 'Play Games & Win Real Money!'
     },
     section2: {
       text1: 'Social',
@@ -1329,11 +1327,11 @@ export default {
     section3: {
       text1: 'How Seeds Enhance',
       text2: 'Your Financial Journey',
-      text3: 'Lacks financial literacy, vulnerable to scams',
-      text4: 'Questions finances and seeks basic knowledge.',
+      text3: 'Learning finance to achive succesfull investment',
+      text4: 'Questioning finance and seeking basic knowledge.',
       text5: 'Ready to adopt financial strategies.',
-      text6: 'Gaining confidence in making informed financial decisions.',
-      text7: 'Achieving advanced financial literacy'
+      text6: 'Gain confidence in financial decision',
+      text7: 'Achieve a higher level of financial literacy'
     },
     section5: {
       text1: 'Total Rewards Claimed by Users'
@@ -1359,7 +1357,7 @@ export default {
     section11: {
       text1: 'Want to Collaborate with Seeds?',
       text2:
-        "Calling on all communities, brands, and KOL looking to be part of our mission to make finance enjoyable and accessible for Indonesia's young and vibrant market.",
+        'Make finance fun, empower the future. Join the Seeds revolution now!',
       text3:
         "Join us, get involved, and together let's shape the future of investing!",
       text4: 'Contact Us'

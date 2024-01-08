@@ -949,30 +949,28 @@ export default {
   landingPageV2: {
     product: {
       section1: {
-        title1: 'Main & Menangkan',
-        title2: 'Hadiah sambil Tingkatkan Pengetahuan Keuanganmu',
+        title1: 'Mainkan & Menangkan',
+        title2: 'Hadiah Nyata Sambil Belajar',
         subtitle:
-          'Uji pengetahuan finansial dan investasimu, bersaing dengan yang lain, dan raih peringkat tertinggi untuk memenangkan hadiah hingga jutaan rupiah.'
+          'Tantang pengetahuan finansialmu dengan permainan menarik dan menangkan uang tunai'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'Capai peringkat tertinggi dan menangkan hadiah.'
+        title1: 'Raih Posisi Puncak & Jadilah Juara!'
       },
       section3: {
-        title1: 'Bagikan & Ajak',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
-        subtitle:
-          'Buat thread dan berinteraksi dengan komunitas Seeds. Temukan teman baru di perjalanan finansialmu dan ajak orang lain untuk memulai perjalanan mereka sendiri.'
+        title1: 'Berinvestasi Dalam Pengetahuan',
+        title2: 'Berinvestasi Dalam Kesuksesan',
+        subtitle: 'Perluas Kemampuan Investasi Melalui Pembelajaran'
       },
       section5: {
         title1: 'Cara Bermain',
         title2: 'Turnamen',
         title3:
-          'Tonton video singkat tentang cara bermain turnamen. Simak dengan seksama agar kamu dapat menantang orang lain dan memenangkan hadiahnya. Pelajari berbagai hal tentang trading virtual di sini!'
+          'Yuk, Tonton untuk mempelajari semua tentang turnamen dan trading virtual di sini!'
       },
       section6: {
         title1: 'Unduh Sekarang!',
-        title2: 'Mulai Perjalanan Investasimu',
+        title2: 'Mulai Perjalanan Investasimu!',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -1046,8 +1044,8 @@ export default {
   },
   partner: {
     section1: {
-      title: 'Berkolaborasi dengan Seeds',
-      text: 'Seeds melibatkan audiens besar milenial dan Generasi Z yang antusias untuk meningkatkan keterampilan keuangan mereka. Bergabunglah dengan kami untuk menjadi bagian dari komunitas yang terus berkembang ini. Nikmati kompetisi trading eksklusif, sponsor tunai, hadiah yang menarik, dan sertifikat.',
+      title: 'Berkolaborasi dengan Seeds & Bentuk Masa Depan Edukasi Investasi',
+      text: 'Gelar turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik.',
       button: 'Hubungi Kami'
     },
     section2: {
@@ -1056,12 +1054,12 @@ export default {
       option3: 'Acara Diselenggarakan'
     },
     section3: {
-      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+      title: 'Berkolaborasi untuk Mengatasi Masalah Investasi'
     },
     section4: {
-      title: 'Memberdayakan Generasi Mendatang Bersama',
+      title: 'Bangun Generasi Mendatang Bersama',
       subtitle:
-        'Bergabunglah dengan misi kami untuk membuat pendidikan keuangan menyenangkan dan dapat diakses di Indonesia',
+        'Bergabunglah dengan misi kami untuk membuat pengetahuan finansial menjadi lebih menyenangkan dan dapat diakses untuk semua orang',
       option1: {
         title: 'Komunitas',
         text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
@@ -1085,18 +1083,18 @@ export default {
   aboutUsV3: {
     section1: {
       title: 'Seeds, Where Gaming Meets Investing!',
-      text: 'Seeds adalah platform Social Gaming yang berfokus di Asia Tenggara. Jelajahi dunia investasi melalui Play Arena kami—capai puncak peringkat, raih hadiah menarik, dan tingkatkan strategi investasi kamu tanpa risiko. Terhubunglah dengan ahli keuangan dan teman lainnya di dalam komunitas kami yang interaktif.'
+      text: 'Masuki dunia investasi lewat Play Arena yang kami miliki. Capai peringkat tertinggi, menangkan hadiah menarik, dan sempurnakan strategi investasi Kamu dengan ZERO RISK. Yuk, berinterkasi dengan para ahli finansial dan individu yang berpikiran sama di komunitas interaktif kami.'
     },
     section2: {
       title: 'Visi dan Misi',
       option1: {
         title: 'Ride the Wave',
-        subtitle: `Manfaatkan pertumbuhan pesat pasar milenial dan Gen Z di Indonesia, termasuk di universitas, sekolah, komunitas, influencer keuangan, dan media. Dapatkan perhatian mereka untuk komunitas, acara, dan event kalian!`
+        subtitle: `Capai pasar milenial dan Gen Z yang berkembang pesat di Indonesia, seperti universitas, sekolah, komunitas, influencer keuangan, dan media. Semua perhatian tertuju pada komunitas, acara, atau merek Kamu!`
       },
       option2: {
         title: 'Game On and Make a Difference!',
         subtitle:
-          'Membantu meningkatkan pemahaman keuangan dan menyelamatkan orang dari pilihan investasi yang buruk. Cobalah dunia permainan virtual trading yang menarik dan menjadikan pembelajaran lebih menyenangkan'
+          'Dapatkan keuntungan saat tumbuh bersama, mulai dari Play Arena, Premium Circle, dan masih banyak lagi. Ada berbagai peluang untuk pertumbuhan finansial bersama.'
       },
       option3: {
         title: 'Monetize & Prosper',
@@ -1109,7 +1107,7 @@ export default {
       option5: {
         title: 'Learn & Lead',
         subtitle:
-          'Berkolaborasi dengan influencer keuangan terkemuka dan berada di garis terdepan pendidikan keuangan dan tren di Indonesia.'
+          'Berkolaborasi dengan para influencer keuangan terkemuka dan menjadi yang terdepan dalam edukasi dan tren keuangan di Indonesia.'
       }
     },
     section3: {
@@ -1128,6 +1126,9 @@ export default {
         title: 'Play',
         subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
       }
+    },
+    section4: {
+      subtitle: `Podcast dimana obrolan tentang keuangan jadi menyenangkan! Kami di sini berbagi tips keren, berita terbaru, hingga wawasan yang bisa membuka mata tentang uang dan investasi.`
     }
   },
   social: {
@@ -1239,12 +1240,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
       text6: 'Main Sekarang',
-      text7: 'Bangun Portofolio & Klaim Hadiah',
-      text8: 'Interaksi Sosial',
-      text9: 'Tantang, Pelajari, Raih'
+      text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!'
     },
     section2: {
       text1: 'Social',
@@ -1254,13 +1252,12 @@ export default {
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
       text2: 'Perjalanan Keuangan Kamu',
-      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text3: 'Belajar keuangan untuk mencapai investasi yang sukses',
       text4:
-        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+        'Cari informasi dasar tentang keuangan dan miliki pertanyaan terkait keuangan.',
       text5: 'Siap untuk mengadopsi strategi keuangan.',
-      text6:
-        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
-      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+      text6: 'Tingkatkan kepercayaan diri dalam membuat keputusan keuangan.',
+      text7: 'Capai level tertinggi dari literasi keuangan'
     },
     section5: {
       text1: 'Total Hadiah yang Telah Diklaim'
@@ -1286,7 +1283,7 @@ export default {
     section11: {
       text1: 'Ingin Berkolaborasi dengan Seeds?',
       text2:
-        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+        'Buat investasi jadi  menyenangkan, untuk masa depan. Bergabunglah dengan perkembangan Seeds sekarang!',
       text3:
         'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
       text4: 'Hubungi Kami'

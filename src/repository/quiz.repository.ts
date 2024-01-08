@@ -13,11 +13,17 @@ export const getQuizLeaderboard = async (params: any): Promise<any> => {
   });
 };
 
-export const getQuizTrending = async (): Promise<any> => {
+export const getQuizTrending = async (currency: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
   try {
-    return await quizService.get(`/top`, {
+    return await quizService.get(`/top?currency=${currency}`, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {
@@ -39,10 +45,17 @@ export const getAllQuiz = async ({
   currency?: string;
 }): Promise<any> => {
   try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
     const path = `/all?search=${search}&status=${status}&page=${page}&limit=${limit}&currency=${currency}`;
     return await quizService.get(path, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {

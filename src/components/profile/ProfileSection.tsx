@@ -98,21 +98,20 @@ const Profile = ({
               {id == null ? (
                 <>
                   <div
-                    className="bg-[#DCFCE480] flex gap-2 items-center justify-center rounded-full w-[170px] h-[42px] border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
+                    className="bg-[#DCFCE480] flex gap-2 items-center justify-center rounded-full px-4 py-2 border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
                     onClick={() => _handleReferalCode()}
                   >
                     <Typography className="text-[#27A590] text-sm font-normal font-poppins">
                       Ref.Code:{' '}
                       {profileData?.ref_code ?? profileData?.claims?.refCode}
                     </Typography>
-                    <div className="bg-[#27A590] rounded-full w-[14px] h-[14px] flex justify-center">
-                      <Image
-                        src={Share.src}
-                        alt={Share.alt}
-                        width={8}
-                        height={8}
-                      />
-                    </div>
+                    <Image
+                      src={Share.src}
+                      alt={Share.alt}
+                      width={14}
+                      height={14}
+                      className="bg-[#27A590] rounded-full p-[3px]"
+                    />
                   </div>
                   <div
                     className="border border-[#262626] w-[94px] h-[42px] flex items-center justify-center rounded-full self-center cursor-pointer"
@@ -208,16 +207,20 @@ const Profile = ({
         {id == null ? (
           <>
             <div
-              className="bg-[#DCFCE480] flex gap-[37.5px] items-center justify-center rounded-full w-[166.5px] h-8 border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
+              className="bg-[#DCFCE480] flex gap-[37.5px] items-center justify-center rounded-full border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer px-4 py-2"
               onClick={() => _handleReferalCode()}
             >
               <Typography className="text-[#27A590] text-xs font-normal font-poppins">
                 Ref.Code:{' '}
                 {profileData?.ref_code ?? profileData?.claims?.refCode}
               </Typography>
-              <div className="bg-[#27A590] rounded-full w-[14px] h-[14px] flex justify-center">
-                <Image src={Share.src} alt={Share.alt} width={8} height={8} />
-              </div>
+              <Image
+                src={Share.src}
+                alt={Share.alt}
+                width={14}
+                height={14}
+                className="bg-[#27A590] rounded-full p-[3px]"
+              />
             </div>
             <div
               className="border border-[#262626] w-[166.5px] h-8 flex items-center justify-center rounded-full self-center cursor-pointer"

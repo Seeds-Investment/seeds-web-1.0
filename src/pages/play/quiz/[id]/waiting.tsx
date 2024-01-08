@@ -7,13 +7,13 @@ import SeedyLoading from '../../../../assets/play/quiz/seedy-loading.png';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const QuizWaiting = () => {
   const router = useRouter();
-  const id: string = router.query.id;
+  const id = router.query.id;
   const [fakeLoading, setFakeLoading] = useState(0);
   const [intervalState, setIntervalState] = useState<NodeJS.Timer>();
 
   useEffect(() => {
     setTimeout(() => {
-      void router.replace(`/play/quiz/${id}/playing`);
+      void router.replace(`/play/quiz/${id as string}/playing`);
     }, 2000);
 
     const interval = setInterval(() => {

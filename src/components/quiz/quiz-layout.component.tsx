@@ -26,7 +26,7 @@ const QuizLayout: React.FC<Props> = ({
     >
       <div className="w-full h-full max-h-full flex flex-col">
         {withButton ? (
-          <div className="flex flex-row justify-between items-center p-3 md:p-8">
+          <div className="flex flex-row justify-between items-center p-3 md:p-8 z-50">
             {!hideBackButton ? (
               <button
                 onClick={() => {
@@ -56,7 +56,7 @@ const QuizLayout: React.FC<Props> = ({
             </button>
           </div>
         ) : null}
-        <div className={`${enableScroll ? 'h-full' : 'flex-grow'} w-full"`}>
+        <div className={`${enableScroll ? 'h-full' : 'flex-grow'} w-full`}>
           {children}
         </div>
       </div>

@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use-client';
-import { QuizDone, YourScore } from '@/assets/play/quiz';
+import { QuizDone, YourScore, YourScoreMobile } from '@/assets/play/quiz';
 import CCard from '@/components/CCard';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
+import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getQuizReview } from '@/repository/quiz.repository';
 import { type QuizReviewDTO } from '@/utils/interfaces/quiz.interfaces';
 import { Typography } from '@material-tailwind/react';
@@ -15,6 +16,7 @@ const DoneQuiz: React.FC = () => {
   useOnLeavePageConfirmation(false);
   const router = useRouter();
   const id = router.query.id;
+  const width = useWindowInnerWidth();
 
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const fetchQuizReview = async (): Promise<void> => {
@@ -34,8 +36,8 @@ const DoneQuiz: React.FC = () => {
   const answerFilter = (
     data: any[]
   ): { correct: number; inCorrect: number } => {
-    const correct = data.filter(el => el.is_correct === true);
-    const inCorrect = data.filter(el => el.is_correct === false);
+    const correct = data?.filter(el => el.is_correct === true);
+    const inCorrect = data?.filter(el => el.is_correct === false);
     return {
       correct: correct === undefined ? 0 : correct?.length,
       inCorrect: inCorrect === undefined ? 0 : inCorrect?.length
@@ -43,9 +45,9 @@ const DoneQuiz: React.FC = () => {
   };
 
   return (
-    <QuizLayoutComponent>
-      <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center">
-        <div className="flex flex-col w-full items-center">
+    <QuizLayoutComponent enableScroll>
+      <div className="w-full h-fit font-poppins text-white text-center lg:relative lg:bottom-20">
+        <div className="flex flex-col w-full px-6 items-center">
           <div className="flex justify-center">
             <Image
               src={QuizDone}
@@ -54,11 +56,13 @@ const DoneQuiz: React.FC = () => {
             />
           </div>
           <Image
-            src={YourScore}
+            src={
+              width !== undefined && width > 720 ? YourScore : YourScoreMobile
+            }
             alt="quiz done"
             className="w-[500px] h-[100px] relative bottom-10 z-10"
           />
-          <CCard className="flex w-full h-fit flex-col px-4 pt-4 md:px-5 md:pt-5 md:rounded-lg border-none bg-white relative bottom-[90px] rounded-xl max-w-[450px]">
+          <CCard className="flex w-full h-fit flex-col md:mx-0 px-4 pt-4 md:px-5 md:pt-5 md:rounded-lg border-none bg-white relative bottom-[90px] rounded-xl max-w-[450px]">
             <div className="border border-[#FDBA22] w-full relative bottom-8 pb-10 rounded-xl">
               <div className="flex justify-center mt-10">
                 <div className="border-y border-l rounded-full border-[#10A8AD]">

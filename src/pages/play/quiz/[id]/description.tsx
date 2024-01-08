@@ -8,7 +8,7 @@ import Wallet from '../../../../assets/play/quiz/category-detail.png';
 
 const DescriptionQuiz = () => {
   const router = useRouter();
-  const id: string = router.query.id;
+  const id = router.query.id;
   const { t } = useTranslation();
   return (
     <QuizLayoutComponent>
@@ -31,7 +31,7 @@ const DescriptionQuiz = () => {
               background="#C286FF"
               darkBackground="#A75CF4"
               onClick={() => {
-                void router.replace(`/play/quiz/${id}/waiting`);
+                void router.replace(`/play/quiz/${id as string}/waiting`);
               }}
             />
           </div>

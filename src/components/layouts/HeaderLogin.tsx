@@ -6,6 +6,7 @@ import { getLocalStorage } from '@/utils/common/localStorage';
 import { Bars4Icon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
 import { useContext, useEffect, useState } from 'react';
@@ -31,6 +32,7 @@ const HeaderLogin: React.FC = () => {
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const width = useWindowInnerWidth();
+  const router = useRouter();
   const [openSidebarResponsive, setOpenSidebarResponsive] =
     useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
@@ -164,7 +166,16 @@ const HeaderLogin: React.FC = () => {
               </button>
             </section>
             <section>
-              <NotificationIcon />
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push('/social/notification').catch(err => {
+                    console.log(err);
+                  });
+                }}
+              >
+                <NotificationIcon />
+              </div>
             </section>
             <section>
               <ChatIcon />

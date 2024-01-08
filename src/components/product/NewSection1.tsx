@@ -1,5 +1,4 @@
 import MockupPlayAndWin from '@/assets/product/MockupPlayAndWin.png';
-import PlayWinLine from '@/assets/product/Play&WinLine.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -31,7 +30,7 @@ const NewSection1: React.FC = () => {
             : ''
         }`}
       >
-        <Image
+        {/* <Image
           src={PlayWinLine}
           alt="PlayWinLine"
           className={`${
@@ -39,7 +38,7 @@ const NewSection1: React.FC = () => {
               ? 'w-[331px] xl:w-[634.3px] xl:-mb-[100px] -mb-[69px] 2xl:-ml-[82px] xl:-ml-[52px]'
               : 'w-[211px] xl:w-[434.3px] xl:-mb-[89px] -mb-[56px] xl:-ml-[82px]'
           }`}
-        />
+        /> */}
         <Typography className="px-4 xl:px-0 text-3xl xl:text-[48px] xl:leading-[57.6px] text-[#222222] font-semibold font-poppins">
           <span className="bg-gradient-to-tr from-[#7555DA] to-[#4FE6AF] bg-clip-text text-transparent">
             {`${t('landingPageV2.product.section1.title1')}`}

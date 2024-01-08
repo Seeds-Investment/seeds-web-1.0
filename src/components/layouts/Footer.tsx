@@ -71,7 +71,7 @@ export default function Footer(): React.ReactElement {
             <Image
               src={SeedLogo}
               alt="SeedLogo"
-              className="lg:h-[56px] h-[44px]"
+              className="lg:h-[56px] h-[44px] lg:w-[147.72px] w-[116.07px]"
             />
             <Typography className="font-semibold font-poppins text-2xl lg:text-3xl text-[#106B6E]">
               Investing, together

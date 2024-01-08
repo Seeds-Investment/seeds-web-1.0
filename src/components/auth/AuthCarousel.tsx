@@ -1,0 +1,68 @@
+import AuthCarousel1 from '@/assets/auth/AuthCarousel1.png';
+import AuthCarousel2 from '@/assets/auth/AuthCarousel2.png';
+import AuthCarousel3 from '@/assets/auth/AuthCarousel3.png';
+import AuthCarousel4 from '@/assets/auth/AuthCarousel4.png';
+import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
+
+const carousel = [
+  { name: 'AuthCarousel1', image: AuthCarousel1 },
+  { name: 'AuthCarousel2', image: AuthCarousel2 },
+  { name: 'AuthCarousel3', image: AuthCarousel3 },
+  { name: 'AuthCarousel4', image: AuthCarousel4 }
+];
+
+const AuthCarousel: React.FC = () => {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const { t } = useTranslation();
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    fade: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 1000,
+    autoplaySpeed: 3000,
+    beforeChange: (current: any, next: any) => {
+      setActiveSlide(next);
+    },
+    customPaging: (i: any) => (
+      <div
+        className={`h-2.5 rounded-full ${
+          activeSlide === i ? 'bg-[#B798FF] w-[18px]' : 'bg-[#E9E9E9] w-2.5'
+        }`}
+      ></div>
+    )
+  };
+
+  return (
+    <div className="flex justify-center items-center md:h-screen h-fit">
+      <Slider {...settings} className="w-3/4">
+        {carousel.map((value, index) => {
+          return (
+            <div key={index}>
+              <div className="flex flex-col items-center gap-10">
+                <div className="flex flex-col gap-3 text-center">
+                  <Typography className="font-semibold font-poppins xl:text-4xl text-xl text-white">
+                    {t(`authCarousel.title.${index + 1}`)}
+                  </Typography>
+                  <Typography className="font-normal font-poppins xl:text-xl text-sm text-white">
+                    {t(`authCarousel.subtitle.${index + 1}`)}
+                  </Typography>
+                </div>
+                <Image src={value.image} alt={value.name} />
+              </div>
+            </div>
+          );
+        })}
+      </Slider>
+    </div>
+  );
+};
+
+export default AuthCarousel;

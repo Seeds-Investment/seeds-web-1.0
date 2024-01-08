@@ -629,6 +629,15 @@ export default {
     keepMeLoggedIn: 'Keep me logged in',
     forgotPassword: 'Forgot Password'
   },
+  authCarousel: {
+    title: { 1: 'Hi! Welcome to Seeds', 2: 'Learn more', 3: 'Play', 4: 'Meet' },
+    subtitle: {
+      1: 'Start and grow your investment journey with friends',
+      2: 'About investing and finance from experts',
+      3: 'Tournaments and win cash',
+      4: 'and chat with your compatible people.'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',

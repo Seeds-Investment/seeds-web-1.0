@@ -76,7 +76,13 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
         <Link href="https://seeds.finance">
-          <Image alt="SeedsLogo" src={SeedLogo} width={133} height={46} />
+          <Image
+            alt="SeedsLogo"
+            src={SeedLogo}
+            width={97}
+            height={36.77}
+            className="mr-9"
+          />
         </Link>
         <section className="flex flex-row font-poppins text-xl font-semibold gap-4 items-center">
           {pathUrl.map((item, index) => {

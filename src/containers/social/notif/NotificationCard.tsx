@@ -3,6 +3,7 @@ import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { PlayLogo } from 'public/assets/circle';
+import { ExpNotif, SuccessNotif } from 'public/assets/images';
 import { useEffect, useState } from 'react';
 
 interface props {
@@ -38,12 +39,19 @@ const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
         {(variant === 'normal' ||
           variant === 'social' ||
           variant === 'circle_send_invitation') && (
-          <Image src={logo} alt="Currency" className="cursor-pointer w-7 h-7" />
+          <Image src={logo} alt="Logo" className="cursor-pointer w-7 h-7" />
         )}
-        {variant === 'play_joined' && (
+        {(variant === 'play_joined' ||
+          variant === 'play_winner_simulation') && (
+          <Image src={PlayLogo} alt="Logo" className="cursor-pointer w-7 h-7" />
+        )}
+        {variant === 'discover_earn' && (
+          <Image src={ExpNotif} alt="Logo" className="cursor-pointer w-7 h-7" />
+        )}
+        {(variant === 'play_sell_asset' || variant === 'play_buy_asset') && (
           <Image
-            src={PlayLogo}
-            alt="Currency"
+            src={SuccessNotif}
+            alt="Logo"
             className="cursor-pointer w-7 h-7"
           />
         )}
@@ -68,7 +76,7 @@ const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
         </div>
       </div>
       <div className="flex items-center">
-        {(variant === 'normal' || variant === 'social') && (
+        {variant !== 'circle_send_invitation' && (
           <Typography className="font-normal text-xs font-poppins text-[#7C7C7C] normal-case">
             {moment(data.created_at).fromNow()}
           </Typography>

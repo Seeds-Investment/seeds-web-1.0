@@ -1357,7 +1357,7 @@ export default {
     section11: {
       text1: 'Want to Collaborate with Seeds?',
       text2:
-        "Calling on all communities, brands, and KOL looking to be part of our mission to make finance enjoyable and accessible for Indonesia's young and vibrant market.",
+        'Make finance fun, empower the future. Join the Seeds revolution now!',
       text3:
         "Join us, get involved, and together let's shape the future of investing!",
       text4: 'Contact Us'

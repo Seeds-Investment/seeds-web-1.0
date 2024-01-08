@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use-client';
 import QuizButton from '@/components/quiz/button.component';
@@ -111,7 +112,7 @@ const HelpOption = () => {
   return (
     <>
       <QuizLayoutComponent>
-        <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12">
+        <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12 px-3 md:p-8">
           <div>
             <div className="text-3xl lg:text-4xl font-semibold">
               {t('quiz.quizCompanion')}
@@ -148,10 +149,13 @@ const HelpOption = () => {
           </div>
           <div className="mt-24 w-full lg:w-1/3">
             <QuizButton
+              disabled={lifelines.length === 0}
               title={t('quiz.continue')}
               background="#BDBDBD"
               darkBackground="#7C7C7C"
-              onClick={() => {}}
+              onClick={() => {
+                void router.replace(`/play/quiz/${id}/start`);
+              }}
             />
           </div>
         </div>

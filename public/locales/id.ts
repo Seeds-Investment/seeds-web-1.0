@@ -1287,7 +1287,7 @@ export default {
     section11: {
       text1: 'Ingin Berkolaborasi dengan Seeds?',
       text2:
-        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+        'Buat investasi jadi  menyenangkan, untuk masa depan. Bergabunglah dengan perkembangan Seeds sekarang!',
       text3:
         'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
       text4: 'Hubungi Kami'

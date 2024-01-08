@@ -3,6 +3,7 @@ import QuizCard from '@/components/quiz/card.component';
 import Button from '@/components/ui/button/Button';
 import TopQuiz from '@/containers/play/quiz/TopQuiz';
 import withAuth from '@/helpers/withAuth';
+import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
@@ -25,19 +26,34 @@ const Player = (): React.ReactElement => {
     search: '',
     status: activeTab,
     page: 1,
-    limit: 12,
-    currency: 'IDR'
+    limit: 12
   });
   const [meta, setMeta] = useState({
     page: 1,
     perPage: 12,
     total: 0
   });
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
-  const getListQuiz = async (): Promise<void> => {
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const getListQuiz = async (currency: string): Promise<void> => {
     try {
       setLoading(true);
-      const res = await getAllQuiz({ ...params, status: activeTab });
+      const res = await getAllQuiz({ ...params, status: activeTab, currency });
       if (res.data !== undefined) {
         const list: IQuiz[] = res.data;
         setListQuiz(list);
@@ -50,8 +66,10 @@ const Player = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    void getListQuiz();
-  }, [activeTab]);
+    if (userInfo !== undefined) {
+      void getListQuiz(userInfo.preferredCurrency);
+    }
+  }, [userInfo, params]);
 
   const statusQuiz: StatusQuizI[] = [
     {
@@ -80,6 +98,7 @@ const Player = (): React.ReactElement => {
       title: t('quiz.canceled')
     }
   ];
+  console.log(meta, setParams, setMeta);
 
   return (
     <div className="bg-white rounded-lg p-5">
@@ -122,7 +141,7 @@ const Player = (): React.ReactElement => {
         </p>
       </div>
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {listQuiz.length === 0 && !loading ? (
+        {listQuiz?.length === 0 && !loading ? (
           <div className="col-span-3">
             <Image src={ListQuizEmpty} width={500} alt="Top Quiz Empty" />
           </div>
@@ -132,7 +151,13 @@ const Player = (): React.ReactElement => {
             <div className="animate-spinner w-5 h-5" />
           </div>
         ) : (
-          listQuiz.map(item => <QuizCard item={item} key={item.id} />)
+          listQuiz?.map(item => (
+            <QuizCard
+              item={item}
+              key={item.id}
+              currency={userInfo?.preferredCurrency}
+            />
+          ))
         )}
       </div>
     </div>

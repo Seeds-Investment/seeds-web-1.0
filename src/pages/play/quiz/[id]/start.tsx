@@ -8,7 +8,7 @@ import StartAnimation from '../../../../assets/play/quiz/Start.json';
 
 const StartQuiz = () => {
   const router = useRouter();
-  const id: string = router.query.id;
+  const id = router.query.id;
   const { t } = useTranslation();
   return (
     <QuizLayoutComponent hideBackButton>
@@ -28,7 +28,7 @@ const StartQuiz = () => {
             background="#67EB00"
             darkBackground="#4EC307"
             onClick={() => {
-              void router.replace(`/play/quiz/${id}/description`);
+              void router.replace(`/play/quiz/${id as string}/description`);
             }}
           />
         </div>

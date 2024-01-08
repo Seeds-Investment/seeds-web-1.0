@@ -215,7 +215,11 @@ const NotificationPage: React.FC = () => {
                 {listNotification.map((el: any) => {
                   if (
                     el?.type === 'play_joined' ||
-                    el?.type === 'circle_send_invitation'
+                    el?.type === 'circle_send_invitation' ||
+                    el?.type === 'discover_earn' ||
+                    el?.type === 'play_sell_asset' ||
+                    el?.type === 'play_buy_asset' ||
+                    el?.type === 'play_winner_simulation'
                   ) {
                     return (
                       <NotificationCard

@@ -68,3 +68,26 @@ export const getQuizById = async ({
     console.error('Error fetching trending play list:', error);
   }
 };
+
+export const getLeaderBoardGlobal = async ({
+  page = 1,
+  limit = 10
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<any> => {
+  try {
+    const params = {
+      page,
+      limit
+    };
+    return await quizService.get(`/leaderboard`, {
+      params,
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching global leaderboard:', error);
+  }
+};

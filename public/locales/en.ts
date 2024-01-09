@@ -1141,17 +1141,17 @@ export default {
         'Join us in making financial education more exciting and accessible for everyone',
       option1: {
         title: 'Community',
-        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities',
         button: 'Contact Us'
       },
       option2: {
         title: 'KOL',
-        text: 'Networking Opportunities, Exclusive Training, and Monthly Incentives.',
+        text: 'Networking Opportunities, Exclusive Training, and Monetary Incentives',
         button: 'Contact Us'
       },
       option3: {
         title: 'Brand',
-        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations',
         button: 'Contact Us'
       }
     },

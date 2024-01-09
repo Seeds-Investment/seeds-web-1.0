@@ -1045,8 +1045,8 @@ export default {
   partner: {
     section1: {
       title: 'Berkolaborasi dengan Seeds & Bentuk Masa Depan Edukasi Investasi',
-      text: 'Adakan turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik',
-      button: 'Yuk, berkembang bersama kami!'
+      text: 'Adakan turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik. Yuk, berkembang bersama kami!',
+      button: 'Hubungi Kami'
     },
     section2: {
       option1: 'Komunitas dan Universitas',

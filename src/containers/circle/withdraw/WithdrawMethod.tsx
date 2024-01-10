@@ -130,18 +130,18 @@ const WithdrawMethod: React.FC<props> = ({
                 name="method"
               >
                 <Option value="bank">
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.title1')}
                   </Typography>
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.subtitle1')}
                   </Typography>
                 </Option>
                 <Option value="e-wallet">
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.title2')}
                   </Typography>
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.subtitle2')}
                   </Typography>
                 </Option>
@@ -165,12 +165,16 @@ const WithdrawMethod: React.FC<props> = ({
                 {formRequest.method === 'bank'
                   ? bankOptions.map((data, idx) => (
                       <Option value={data} key={idx}>
-                        {data}
+                        <Typography className="text-[#262626]">
+                          {data}
+                        </Typography>
                       </Option>
                     ))
                   : eWalletOptions.map((data, idx) => (
                       <Option value={data} key={idx}>
-                        {data}
+                        <Typography className="text-[#262626]">
+                          {data}
+                        </Typography>
                       </Option>
                     ))}
               </Select>

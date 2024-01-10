@@ -19,7 +19,7 @@ const AnswerButton = ({
   rightAnswer?: boolean;
   spillAnswer?: boolean;
   disabled?: boolean;
-}) => {
+}): React.ReactElement => {
   const [bgColor, setBgColor] = useState<string>('bg-white');
   const [borderColor, setBorderColor] = useState<string>('border-[#E9E9E9]');
 

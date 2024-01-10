@@ -32,17 +32,11 @@ const Player = (): React.ReactElement => {
   const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeNavbar, setActiveNavbar] = useState('quiz');
-  const [params, setParams] = useState({
+  const [params] = useState({
     search: '',
     status: activeTab,
     page: 1,
-    limit: 12,
-    currency: 'IDR'
-  });
-  const [meta, setMeta] = useState({
-    page: 1,
-    perPage: 12,
-    total: 0
+    limit: 12
   });
 
   const handleTabChange = (tab: string): void => {
@@ -68,8 +62,8 @@ const Player = (): React.ReactElement => {
   const getListQuiz = async (currency: string): Promise<void> => {
     try {
       setLoading(true);
-      const res = await getAllQuiz({ ...params, status: activeTab });
-      if (res.data) {
+      const res = await getAllQuiz({ ...params, status: activeTab, currency });
+      if (res.data !== undefined) {
         const list: IQuiz[] = res.data;
         setListQuiz(list);
       }
@@ -81,8 +75,10 @@ const Player = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    getListQuiz();
-  }, [activeTab, activeTab]);
+    if (userInfo !== undefined) {
+      void getListQuiz(userInfo.preferredCurrency);
+    }
+  }, [userInfo]);
 
   const statusQuiz: StatusQuizI[] = [
     {
@@ -224,12 +220,12 @@ const Player = (): React.ReactElement => {
                     </div>
                   ) : (
                     listQuiz?.map(item => (
-            <QuizCard
-              item={item}
-              key={item.id}
-              currency={userInfo?.preferredCurrency}
-            />
-          ))
+                      <QuizCard
+                        item={item}
+                        key={item.id}
+                        currency={userInfo?.preferredCurrency}
+                      />
+                    ))
                   )}
                 </div>
               </div>

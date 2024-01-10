@@ -245,3 +245,11 @@ body.modal-open {
 .height-modal {
   height: calc(100vh - 71px);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #3ac4a0 !important;
+}

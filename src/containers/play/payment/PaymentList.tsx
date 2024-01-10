@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { joinQuiz } from '@/repository/quiz.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
 import WalletForm from './WalletForm';
@@ -53,7 +57,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
-      console.error('Error fetching Payment List', error.message);
+      toast(`Error fetching Payment List: ${error.message as string}`);
     } finally {
       setLoading(false);
     }
@@ -63,7 +67,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       const response = await getUserInfo();
       setUserInfo(response);
     } catch (error) {
-      console.log(error);
+      toast(`ERROR fetch user info ${error as string}`);
     }
   };
 
@@ -95,38 +99,64 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       ) {
         console.error('Please fill the phone number');
       }
-
-      const response = await joinCirclePost({
-        circle_id: dataPost?.id,
-        duration: numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
-        payment_request: {
-          amount: totalAmount,
+      const replaceDataPost: PaymentData = dataPost;
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      if (replaceDataPost.quiz) {
+        const response = await joinQuiz({
+          quiz_id: replaceDataPost?.payment?.quiz_id,
+          lifelines: replaceDataPost?.payment?.lifelines,
+          language: replaceDataPost?.payment?.language,
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
-          item_id: dataPost?.id,
-          item_name: dataPost?.name,
-          quantity: 1,
-          name: userInfo?.name,
-          email: userInfo?.email,
           promo_code: '',
-          spot_type: 'Join Circle Premium'
-        }
-      });
+          invitation_code: ''
+        });
 
-      if (response.success === true) {
-        if (response.data.Response.payment_url !== undefined) {
-          window.open(response.data.Response.payment_url as string, '_blank');
+        if (response) {
+          if (response.payment_url !== '') {
+            window.open(response.payment_url as string, '_blank');
+          }
+          await router
+            .replace(`/play/payment/receipt/${response.order_id as string}`)
+            .catch(error => {
+              console.log(error);
+            });
         }
-        await router
-          .push(
-            `/connect/payment/receipt/${
-              response.data.Response.order_id as string
-            }`
-          )
-          .catch(error => {
-            console.log(error);
-          });
+      } else {
+        const response = await joinCirclePost({
+          circle_id: dataPost?.id,
+          duration:
+            numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
+          payment_request: {
+            amount: totalAmount,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            item_id: dataPost?.id,
+            item_name: dataPost?.name,
+            quantity: 1,
+            name: userInfo?.name,
+            email: userInfo?.email,
+            promo_code: '',
+            spot_type: 'Join Circle Premium'
+          }
+        });
+
+        if (response.success === true) {
+          if (response.data.Response.payment_url !== undefined) {
+            window.open(response.data.Response.payment_url as string, '_blank');
+          }
+          await router
+            .push(
+              `/connect/payment/receipt/${
+                response.data.Response.order_id as string
+              }`
+            )
+            .catch(error => {
+              console.log(error);
+            });
+        }
       }
     } catch (error) {
       console.log(error);

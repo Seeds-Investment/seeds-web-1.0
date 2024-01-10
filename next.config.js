@@ -62,7 +62,8 @@ const nextConfig = {
     domains: [
       'dev-assets.seeds.finance',
       'assets.seeds.finance',
-      'cdn06.pramborsfm.com'
+      'cdn06.pramborsfm.com',
+      'i.pravatar.cc'
     ],
     remotePatterns: [
       {

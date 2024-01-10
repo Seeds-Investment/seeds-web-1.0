@@ -1385,5 +1385,127 @@ export default {
     yourCurrencyIs: 'Kurs mata uang Anda adalah',
     successChangeCurrency:
       'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
+  },
+  quiz: {
+    explanation: 'Penjelasan',
+    invitationCodePlaceholder: 'Input your invitation code',
+    enter: 'Enter',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
+    play: 'Main',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Tantang pengetahuan finansial Kamu dengan quiz ini.',
+    search: 'Cari',
+    qs: '{{amount}} Qs',
+    durationInDays: 'Durasi {{days}} hari',
+    playersJoined: '{{players}} Pemain Bergabung',
+    questionsAmount: '{{questions}} Pertanyaan',
+    questions: 'Pertanyaan',
+    quiz: 'Quiz',
+    entranceFee: 'Biaya Pendaftaran',
+    played: 'Main',
+    duration: 'Durasi',
+    quizPeriod: 'Periode Quiz',
+    tnc: 'Syarat & Ketentuan',
+    quizPrize: 'Hadiah Quiz',
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    sponsors: 'Sponsor(s)',
+    community: 'Community',
+    join: 'Join',
+    reviewQuiz: 'Review Quiz',
+    continue: 'Lanjutkan',
+    start: 'Mulai',
+    startTheGame: 'Mulai Permainan!',
+    yourCurrentlyRank: 'Peringkat Anda Saat Ini',
+    cancel: 'Batal',
+    notification: 'Pemberitahuan',
+    extraCash:
+      'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
+    select: 'Pilih',
+    quizCompanion: 'Meet Your Quiz Companion',
+    chooseOptions: 'Pilih bantuan kamu, dan bisa lebih dari satu!',
+    fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
+    phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
+    vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
+    incorrect: 'Salah',
+    correct: 'Benar',
+    anotherQuiz: 'Quiz Lainnya',
+    leaderboard: 'Klasemen',
+    remainingTime: 'Sisa waktumu',
+    currentRank: 'Peringkatmu sekarang',
+    currentScore: 'Skor Kamu Sekarang',
+    submit: 'Kirim',
+    finish: 'Selesai',
+    sureSubmit: 'Kamu yakin akan kirim Quiz ini?',
+    sureSubmitDesc: 'Setelah kirim, Kamu tidak bisa ganti jawaban.',
+    yes: 'Ya',
+    theQuestion: 'Pertanyaan',
+    understand: 'Mengerti',
+    payAttention:
+      'Perhatikan response Seedy, Kamu tidak bisa melihatnya lagi setelah menekan Mengerti.',
+    beMindful:
+      "Harap perhatikan vote dari Seedy's friends, Kamu tidak bisa melihatnya lagi setelah menekan Mengerti.",
+    sureNeedHelp: 'Kamu yakin ingin menggunakan bantuan ini?',
+    description: 'Penjelasan',
+    wantLeave: 'Kamu yakin mau keluar?',
+    dontGiveUp: 'Jangan menyerah! Kamu lebih baik dari ini.',
+    quizInformation:
+      'Kami akan memberikan serangkaian pertanyaan terkait cryptocurrency. Jawab semua pertanyaan dengan benar untuk mendapatkan poin, dan Kamu juga dapat menggunakan bantuan Seedy.',
+    playAgain: 'Main Lagi',
+    admissionFee: 'Rp {{amount}}',
+    dayDuration: '{{duration}} hari',
+    quizCategory: {
+      all: 'Semua',
+      allDesc:
+        'Selamat datang di Kuis Keuangan & Investasi Umum! Coba pengetahuan keuanganmu dengan pertanyaan seputar investasi sehari-hari kayak Reksa Dana, Saham Amerika, Saham Indonesia, Obligasi Keuangan, Emas, Kripto, Forex, dan investasi P2P. Cara yang seru buat ngetes pengetahuan finansialmu sambil belajar lebih banyak tentang dunia keuangan! Siap buat mencoba?',
+      mutualFunds: 'Reksadana',
+      mutualFundsDesc:
+        'Uji pengetahuanmu tentang reksadana dengan kuis ini! Pelajari dasar-dasar investasi reksadana, jenis-jenis reksadana, dan bagaimana mereka dapat membantu kamu mencapai tujuan keuanganmu.',
+      investment: 'Investasi',
+      investmentDesc:
+        'Uji pengetahuanmu tentang berinvestasi dan pelajari cara memilih produk terbaik untuk tujuan keuanganmu. Kuis ini mencakup topik seperti risiko, hasil, diversifikasi, evaluasi, dan regulasi.',
+      stock: 'Saham',
+      stockDesc:
+        'Seberapa baik Anda mengetahui pasar saham dan investasi? Ikuti kuis ini dan cari tahu! Kuis ini akan membantu Anda meningkatkan literasi keuangan dan keterampilan Anda dalam menganalisis data pasar saham',
+      usStock: 'Saham AS',
+      usStockDesc:
+        'Tantang dirimu sendiri dengan pertanyaan tentang sejarah, kinerja, dan regulasi pasar saham AS. Pelajari bagaimana NYSE dan NASDAQ berkembang, bagaimana indeks saham dihitung, dan faktor-faktor apa yang memengaruhi harga saham.',
+      idStock: 'Saham ID',
+      idStockDesc:
+        'Uji pengetahuanmu tentang Bursa Efek Indonesia dan perusahaan yang terdaftar di dalamnya. Pelajari bagaimana Indeks Harga Saham Jakarta dihitung, sektor dan industri apa yang mendominasi perekonomian, dan faktor-faktor apa yang memengaruhi harga saham.',
+      financial: 'Keuangan',
+      financialDesc:
+        'Uji literasi keuangan kamu dan tingkatkan keterampilan pengelolaan uangmu. Pelajari cara membuat anggaran, menabung, menggunakan kredit, dan merencanakan masa depanmu.',
+      gold: 'Logam Mulia',
+      goldDesc:
+        'Uji pengetahuanmu tentang logam-logam mulia paling berharga di Bumi. Pelajari tentang sifat-sifatnya, penggunaan, sejarah, dan sumber-sumbernya.',
+      crypto: 'Kripto',
+      cryptoDesc:
+        'Uji pengetahuanmu tentang mata uang kripto, aset digital yang sedang merevolusi dunia keuangan. Pelajari tentang sejarah, teknologi, regulasi, dan trennya.',
+      forex: 'Forex',
+      forexDesc:
+        'Pelajari tentang pasar valuta asing, pasar terbesar dan paling likuid di dunia. Kuis ini mencakup topik seperti pasangan mata uang, nilai tukar, strategi perdagangan, bank sentral, dan risiko forex.',
+      p2p: 'P2P (Peer-to-Peer)',
+      p2pDesc:
+        'Masuki dunia Peer-to-Peer Lending dengan kuis kami! Jelajahi bagaimana platform P2P bekerja, risiko dan manfaatnya, serta seluk-beluk meminjam dan meminjam langsung dari individu. Uji pengetahuanmu tentang P2P lending dan temukan apakah pendekatan inovatif keuangan ini cocok untukmu.',
+      financialBonds: 'Obligasi Keuangan',
+      financialBondsDesc:
+        'Pelajari tentang berbagai jenis obligasi, instrumen utang yang memungkinkan entitas untuk meminjam uang dari investor. Kuis ini mencakup topik seperti karakteristik obligasi, penilaian, risiko, dan strategi.'
+    },
+    free: 'Gratis',
+    lifeline: 'Bantuan Tambahan',
+    tryInfo:
+      'Oopss, kesempatan kamu bermain quiz gratis cuma bisa 1 kali aja nih. Cobain quiz menarik lainnya yuk!',
+    day: '{{days}} hari',
+    players: 'Pemain',
+    entryFee: 'Tiket Kuis',
+    entFee: 'Tiket masuk',
+    myQuiz: 'My Quiz',
+    open: 'Terbuka',
+    active: 'Berjalan',
+    ended: 'Berakhir',
+    canceled: 'Dibatalkan'
   }
 };

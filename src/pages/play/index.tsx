@@ -1,537 +1,247 @@
-// import PlayerAchievement from '@/components/popup/PlayerAchievement';
-// import axios from 'axios';
-// import Image from 'next/image';
-// import { useEffect, useState } from 'react';
-// import FilterIcon from '../../components/svgs/filterIcon';
-// import GoldRank from '../../components/svgs/rank1';
-// import SilverRank from '../../components/svgs/rank2';
-// import BronzeRank from '../../components/svgs/rank3';
-// import TopIcon from '../../components/svgs/topIcon';
-import ComingSoon from '@/components/coming-soon';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
+'use-client';
+import QuizCard from '@/components/quiz/card.component';
+import Button from '@/components/ui/button/Button';
+import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
+import TopQuiz from '@/containers/play/quiz/TopQuiz';
+import withAuth from '@/helpers/withAuth';
+import { getUserInfo } from '@/repository/profile.repository';
+import { getAllQuiz } from '@/repository/quiz.repository';
+import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
+import {
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader
+} from '@material-tailwind/react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
 
-// interface LeaderboardData {
-//   user_id: string;
-//   points: number;
-//   avatar_url: string;
-//   user_full_name: string;
-//   user_seeds_tag: string;
-//   current_rank: number;
-// }
-// interface playList {
-//   id: string;
-//   play_id: string;
-//   name: string;
-//   gain_percentage: number;
-//   status: string;
-//   prize_fix_amount: number;
-//   prize_fix_percentages: [number];
-//   prize_pool_amount: number;
-//   prize_pool_percentages: [number];
-//   admission_fee: number;
-//   play_time: string;
-//   end_time: string;
-//   is_joined: true;
-//   type: string;
-//   participants: [
-//     {
-//       photo_url: string;
-//       id: string;
-//     }
-//   ];
-//   min_participant: number;
-//   max_participant: number;
-//   tnc: string;
-//   created_by: {
-//     photo_url: string;
-//     name: string;
-//   };
-// }
-
-// interface PlayerData {
-//   id?: string;
-//   rank?: number;
-// }
-
-// const baseUrl = 'https://seeds-dev-gcp.seeds.finance';
+interface StatusQuizI {
+  id: number;
+  status: QuizStatus;
+  title: string;
+}
 
 const Player = (): React.ReactElement => {
-  // const [leader, setLeader] = useState<LeaderboardData[]>([]);
-  // const [playList, setPlayList] = useState<playList[]>([]);
-  // const [showAchievementModal, setShowAchievementModal] =
-  //   useState<boolean>(false);
-  // const [selectedPlayer, setSelectedPlayer] = useState<PlayerData>({});
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState(QuizStatus.STARTED);
+  const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [activeNavbar, setActiveNavbar] = useState('quiz');
+  const [params, setParams] = useState({
+    search: '',
+    status: activeTab,
+    page: 1,
+    limit: 12,
+    currency: 'IDR'
+  });
+  const [meta, setMeta] = useState({
+    page: 1,
+    perPage: 12,
+    total: 0
+  });
 
-  // useEffect(() => {
-  //   fetchLeaderboardData()
-  //     .then()
-  //     .catch(() => {});
-  //   fetchPlayList()
-  //     .then()
-  //     .catch(() => {});
-  // }, []);
+  const handleTabChange = (tab: string): void => {
+    setActiveNavbar(tab);
+  };
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
-  // const fetchPlayList = async (): Promise<void> => {
-  //   try {
-  //     const response = await axios.get(`${baseUrl}/play/v1/list`);
-  //     const playList: playList[] = response.data.playList;
-  //     setPlayList(playList);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
 
-  // const fetchLeaderboardData = async (): Promise<void> => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${baseUrl}/play/v1/leaderboard?type=ARENA`
-  //     );
-  //     const leaderboardData: LeaderboardData[] = response.data.playLeaderboards;
-  //     setLeader(leaderboardData);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
-  // function getFormattedDate(day: string): string {
-  //   const today = new Date(day);
-  //   const date = String(today.getDate()).padStart(2, '0');
-  //   const monthIndex = today.getMonth();
-  //   const year = String(today.getFullYear());
+  const getListQuiz = async (currency: string): Promise<void> => {
+    try {
+      setLoading(true);
+      const res = await getAllQuiz({ ...params, status: activeTab });
+      if (res.data) {
+        const list: IQuiz[] = res.data;
+        setListQuiz(list);
+      }
+    } catch (error) {
+      toast(`ERROR fetch list quiz ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //   const monthNames = [
-  //     'Januari',
-  //     'Februari',
-  //     'Maret',
-  //     'April',
-  //     'Mei',
-  //     'Juni',
-  //     'Juli',
-  //     'Agustus',
-  //     'September',
-  //     'Oktober',
-  //     'November',
-  //     'Desember'
-  //   ];
-  //   const month = monthNames[monthIndex];
+  useEffect(() => {
+    getListQuiz();
+  }, [activeTab, activeTab]);
 
-  //   return date + ' ' + month + ' ' + year;
-  // }
-  // const filteredLeader = leader.filter(player => player.current_rank < 4);
-  // const filteredAllCompetition = playList.filter((competition, i) => i < 3);
-  // const filteredStatusCompetition = playList.filter(
-  //   (competition, i) => competition.status === 'ACTIVE' && i < 3
-  // );
-  // // const filteredAllCompetition = playList.filter((competition, i) => i < 4);
+  const statusQuiz: StatusQuizI[] = [
+    {
+      id: 0,
+      status: QuizStatus.MYQUIZ,
+      title: t('quiz.myQuiz')
+    },
+    {
+      id: 1,
+      status: QuizStatus.PUBLISHED,
+      title: t('quiz.open')
+    },
+    {
+      id: 2,
+      status: QuizStatus.STARTED,
+      title: t('quiz.active')
+    },
+    {
+      id: 3,
+      status: QuizStatus.ENDED,
+      title: t('quiz.ended')
+    },
+    {
+      id: 4,
+      status: QuizStatus.CANCELED,
+      title: t('quiz.canceled')
+    }
+  ];
 
   return (
-    <>
-      <PageGradient defaultGradient className="w-full">
-        <ComingSoon />
-      </PageGradient>
-    </>
-    // <div className="grid lg:grid-cols-7 mx-5 gap-2">
-    /* <div className="rounded-2xl p-3 lg:col-span-5  border">
-        <div className="grid lg:grid-cols-7 gap-2">
-          <div className="rounded-2xl lg:col-span-3 ">
-            <div className="relative mb-4 lg:flex">
-              <input
-                type="search"
-                className="relative m-0 block min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary w-full flex-wrap"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
-              />
-            </div>
-          </div>
-          <div className="rounded-2xl lg:col-span-4 lg:ms-auto ">
-            <div className="lg:flex gap-1">
-              <div className="mb-2">
-                <button
-                  type="button"
-                  className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                >
-                  <div className="mt-1 me-3">
-                    <FilterIcon />
-                  </div>
-                  Filter
-                </button>
-              </div>
-              <div className="mb-2">
-                <button
-                  type="button"
-                  className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                >
-                  Kompetisi Sedang Aktif
-                </button>
-              </div>
-              <div className="mb-2">
-                <button
-                  type="button"
-                  className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                >
-                  Kompetisi sebelumnya
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-between mx-2">
-          <div className="font-bold my-3">Daftar Kompetisi</div>
-          <a className="my-3 text-seeds-green" href="#">
-            Lihat Semua
-          </a>
-        </div>
-        <div className="rounded-2xl p-3 grid lg:grid-cols-6 gap-2">
-          {filteredAllCompetition.map(play => (
-            <div
-              className="border p-3 rounded-3xl shadow-md lg:col-span-2 sm:col-span-1"
-              key={play.id}
-            >
-              <div className="flex justify-between my-3 font-bold">
-                <div>{play.name}</div>
-                <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <Image
-                    className="me-3 w-auto h-auto"
-                    src="/assets/vector/suprise.svg"
-                    alt="img"
-                    height={0}
-                    width={0}
-                  />
-                  Rp {play.prize_fix_amount}
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/userPlay.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.min_participant} peserta</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/clock.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">
-                      {getFormattedDate(play.play_time)}
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/dolar.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">Rp {play.admission_fee}</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/warning.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.type}</div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="border flex shadow-lg border-gray-200 bg-seeds-green text-white rounded-full mt-5 px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                    >
-                      Dapatkan Tiket
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <Image
-                    src="/assets/images/listimage.png"
-                    alt="img"
-                    height={120}
-                    width={120}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-between mx-2">
-          <div className="font-bold my-3">Kompetisi Sedang Aktif</div>
-          <a className="my-3 text-seeds-green" href="#">
-            Lihat Semua
-          </a>
-        </div>
-        <div className="rounded-2xl p-3 grid lg:grid-cols-6 gap-2">
-          {filteredStatusCompetition.map(play => (
-            <div
-              className="border p-3 rounded-3xl shadow-md col-span-2 "
-              key={play.id}
-            >
-              <div className="flex justify-between my-3 font-bold">
-                <div>{play.name}</div>
-                <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <Image
-                    className="me-3 w-auto h-auto"
-                    src="/assets/vector/suprise.svg"
-                    alt="img"
-                    height={0}
-                    width={0}
-                  />
-                  Rp {play.prize_fix_amount}
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/userPlay.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.min_participant} peserta</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/clock.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">
-                      {getFormattedDate(play.play_time)}
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/dolar.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">Rp {play.admission_fee}</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/warning.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.type}</div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="border flex shadow-lg border-gray-200 bg-seeds-green text-white rounded-full mt-5 px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                    >
-                      Dapatkan Tiket
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <Image
-                    src="/assets/images/listimage.png"
-                    alt="img"
-                    height={120}
-                    width={120}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-between mx-2">
-          <div className="font-bold my-3">Kompetisi Sebelumnya</div>
-          <a className="my-3 text-seeds-green" href="#">
-            Lihat Semua
-          </a>
-        </div>
-        <div className="rounded-2xl p-3 grid lg:grid-cols-6 gap-2">
-          {filteredStatusCompetition.map(play => (
-            <div
-              className="border p-3 rounded-3xl shadow-md col-span-2"
-              key={play.id}
-            >
-              <div className="flex justify-between my-3 font-bold">
-                <div>{play.name}</div>
-                <div className="border flex shadow-lg border-seeds-green-2 bg-seeds-green-2 text-seeds-green rounded-full px-3 ">
-                  <Image
-                    className="me-3 w-auto h-auto"
-                    src="/assets/vector/suprise.svg"
-                    alt="img"
-                    height={0}
-                    width={0}
-                  />
-                  Rp {play.prize_fix_amount}
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/userPlay.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.min_participant} peserta</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/clock.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">
-                      {getFormattedDate(play.play_time)}
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/dolar.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">Rp {play.admission_fee}</div>
-                  </div>
-                  <div className="flex">
-                    <Image
-                      src="/assets/vector/warning.svg"
-                      alt="img"
-                      height={0}
-                      width={0}
-                      className="w-auto h-auto"
-                    />
-                    <div className="mx-3">{play.type}</div>
-                  </div>
-                  <div>
-                    <button
-                      type="button"
-                      className="border flex shadow-lg border-gray-200 bg-seeds-green text-white rounded-full mt-5 px-4 py-2  transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-                    >
-                      Dapatkan Tiket
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <Image
-                    src="/assets/images/listimage.png"
-                    alt="img"
-                    height={120}
-                    width={120}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="col-span-2 h-auto border rounded-2xl p-3">
-        <div className="flex justify-between m-10">
-          <div className="font-bold text-lg">Peringkat Pemain</div>
-          <div className="text-blue-500">
-            <a href="#">Lihat Detail</a>
-          </div>
-        </div>
-        <div className="m-10">
-          <button
-            type="button"
-            className="border flex shadow-lg border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
+    <div className="w-full h-auto cursor-default">
+      <div className="h-auto">
+        <Tabs value={activeNavbar}>
+          <TabsHeader
+            className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
+            indicatorProps={{
+              className: 'shadow-none rounded-none bg-transparent'
+            }}
           >
-            <div className="mt-1 me-3">
-              <FilterIcon />
-            </div>
-            Filter
-          </button>
-        </div>
-        <div>
-          {showAchievementModal && (
-            <PlayerAchievement
-              onClose={() => {
-                setShowAchievementModal(false);
-                setSelectedPlayer({});
+            <Tab
+              value="tournament"
+              onClick={() => {
+                handleTabChange('tournament');
               }}
-              rank={selectedPlayer.rank ?? 0}
-              playerId={selectedPlayer.id ?? ''}
-            />
-          )}
-          <ul>
-            {filteredLeader.map((player, i) => (
-              <div
-                className="flex mx-7 my-10 hover:cursor-pointer"
-                key={player.user_id}
-                onClick={() => {
-                  setSelectedPlayer({
-                    id: player.user_id,
-                    rank: player.current_rank
-                  });
-                  setShowAchievementModal(true);
-                }}
-              >
-                <div>
-                  <div className="text-2xl mx-2">{i + 1}</div>
-                  <div className="ms-3 mt-2">
-                    <TopIcon />
-                  </div>
+              className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                activeNavbar === 'tournament'
+                  ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+              }`}
+            >
+              Tournament
+            </Tab>
+            <Tab
+              value="quiz"
+              onClick={() => {
+                handleTabChange('quiz');
+              }}
+              className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                activeNavbar === 'quiz'
+                  ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+              }`}
+            >
+              Quiz
+            </Tab>
+            <Tab
+              value="leaderboard"
+              onClick={() => {
+                handleTabChange('leaderboard');
+              }}
+              className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+                activeNavbar === 'leaderboard'
+                  ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
+                  : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+              }`}
+            >
+              Leaderboard
+            </Tab>
+          </TabsHeader>
+          <TabsBody className="w-full">
+            <TabPanel value="tournament">
+              <div>tournament</div>
+            </TabPanel>
+            <TabPanel value="quiz">
+              <div className="bg-white rounded-lg p-5">
+                <div className="flex justify-center items-center gap-2">
+                  <input
+                    type="text"
+                    className="rounded-full border border-neutral-soft py-1.5 px-3 w-80"
+                    placeholder="Input your invitation code"
+                  />
+                  <Button variant="dark" label="Enter" />
                 </div>
-                <div className="flex justify-between w-full">
-                  <div className="flex">
-                    <div>
+
+                {/* Filter Section */}
+                <div className="flex flex-row items-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
+                  {statusQuiz.map(item => (
+                    <button
+                      className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
+                        item.status === activeTab
+                          ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
+                          : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
+                      }`}
+                      key={item.id}
+                      onClick={() => {
+                        setActiveTab(item.status);
+                      }}
+                    >
+                      {item.title}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Top Quiz Section */}
+                <TopQuiz />
+
+                {/* List Quiz Section */}
+                <div className="mt-4">
+                  <h1 className="text-3xl font-semibold font-poppins">
+                    List Quiz
+                  </h1>
+                  <p className="text-sm font-poppins">
+                    Challenge your finance knowledge with these quizzes.
+                  </p>
+                </div>
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {listQuiz?.length === 0 && !loading ? (
+                    <div className="col-span-3">
                       <Image
-                        className="h-[3rem] w-[3rem] rounded-full mx-2"
-                        src={player.avatar_url}
-                        alt="img"
-                        height={20}
-                        width={20}
+                        src={ListQuizEmpty}
+                        width={500}
+                        alt="Top Quiz Empty"
                       />
                     </div>
-                    <div>
-                      <div className="mx-2">{player.user_full_name}</div>
-                      <div className="mx-2 text-gray-600 ">
-                        @{player.user_seeds_tag}
-                      </div>
+                  ) : null}
+                  {loading ? (
+                    <div className="col-span-3 flex items-center justify-center">
+                      <div className="animate-spinner w-5 h-5" />
                     </div>
-                  </div>
-                  <div>
-                    <div className="ms-auto">
-                      {i + 1 === 1 ? <GoldRank /> : null}
-                    </div>
-                    <div className="ms-auto">
-                      {i + 1 === 2 ? <SilverRank /> : null}
-                    </div>
-                    <div className="ms-auto">
-                      {i + 1 === 3 ? <BronzeRank /> : null}
-                    </div>
-                  </div>
+                  ) : (
+                    listQuiz?.map(item => (
+            <QuizCard
+              item={item}
+              key={item.id}
+              currency={userInfo?.preferredCurrency}
+            />
+          ))
+                  )}
                 </div>
               </div>
-            ))}
-          </ul>
-        </div>
-      </div> */
-    // </div>
+            </TabPanel>
+            <TabPanel value="leaderboard">
+              <LeaderBoardGlobalPage />
+            </TabPanel>
+          </TabsBody>
+        </Tabs>
+      </div>
+    </div>
   );
 };
 
-export default Player;
+export default withAuth(Player);

@@ -11,7 +11,7 @@ const LoginLayout: React.FC<props> = ({ children }) => {
   const width = useWindowInnerWidth();
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen md:bg-[url('/assets/vector/quiz-bg.svg')] md:bg-cover md:bg-no-repeat">
       <aside
         className={`w-1/5 h-screen py-6 social-sidebar ${
           width !== undefined ? (width >= 768 ? '' : 'hidden') : ''
@@ -20,8 +20,10 @@ const LoginLayout: React.FC<props> = ({ children }) => {
         <SidebarLogin />
       </aside>
 
-      <div className="w-4/5 flex-1 flex flex-col">
-        <header className={`bg-white border-b p-5 rounded-xl md:mx-14`}>
+      <div className="w-4/5 flex-1 flex flex-col md:max-h-full md:overflow-y-auto">
+        <header
+          className={`bg-white border-b p-5 rounded-xl md:mx-14 md:mt-10`}
+        >
           <HeaderLogin />
         </header>
 

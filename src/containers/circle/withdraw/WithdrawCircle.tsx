@@ -140,7 +140,6 @@ const WithdrawCircle: React.FC<props> = ({
               <Input
                 variant="static"
                 color="green"
-                type="number"
                 name="amount"
                 onChange={changeValue}
                 value={formRequest.amount}

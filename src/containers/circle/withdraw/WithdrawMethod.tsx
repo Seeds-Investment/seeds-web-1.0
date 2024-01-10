@@ -2,7 +2,6 @@ import CCard from '@/components/CCard';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getPaymentList } from '@/repository/payment.repository';
 import {
   Button,
   Card,
@@ -14,7 +13,6 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface FormRequest {
@@ -56,8 +54,11 @@ const WithdrawMethod: React.FC<props> = ({
 }) => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
-  const [eWalletOptions, setEWalletOptions] = useState<any[]>([]);
-  const [bankOptions, setBankOptions] = useState<any[]>([]);
+  // const [eWalletOptions, setEWalletOptions] = useState<any[]>([]);
+  // const [bankOptions, setBankOptions] = useState<any[]>([]);
+
+  const eWalletOptions = ['GOPAY', 'OVO'];
+  const bankOptions = ['BANK BRI', 'BANK BCA', 'BANK BNI', 'BANK MANDIRI'];
 
   const placeholderMethod = (): string => {
     if (formRequest.method === 'bank') {
@@ -75,24 +76,6 @@ const WithdrawMethod: React.FC<props> = ({
     }
 
     return formRequest.account_name;
-  };
-
-  const fetchPaymentList = async (): Promise<void> => {
-    try {
-      const data = await getPaymentList();
-      setBankOptions(data.type_va);
-      setEWalletOptions(data.type_ewallet);
-    } catch (error: any) {
-      console.error('Error fetching Payment List', error.message);
-    }
-  };
-
-  useEffect(() => {
-    void fetchPaymentList();
-  }, []);
-
-  const handleBankValue = (value: string): string => {
-    return value.substr(0, value.indexOf('_'));
   };
 
   return (
@@ -147,18 +130,18 @@ const WithdrawMethod: React.FC<props> = ({
                 name="method"
               >
                 <Option value="bank">
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.title1')}
                   </Typography>
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.subtitle1')}
                   </Typography>
                 </Option>
                 <Option value="e-wallet">
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.title2')}
                   </Typography>
-                  <Typography>
+                  <Typography className="text-[#262626]">
                     {t('circle.withdraw.method.popUp.subtitle2')}
                   </Typography>
                 </Option>
@@ -182,12 +165,16 @@ const WithdrawMethod: React.FC<props> = ({
                 {formRequest.method === 'bank'
                   ? bankOptions.map((data, idx) => (
                       <Option value={data} key={idx}>
-                        {handleBankValue(data.payment_method)}
+                        <Typography className="text-[#262626]">
+                          {data}
+                        </Typography>
                       </Option>
                     ))
                   : eWalletOptions.map((data, idx) => (
                       <Option value={data} key={idx}>
-                        {data.payment_method}
+                        <Typography className="text-[#262626]">
+                          {data}
+                        </Typography>
                       </Option>
                     ))}
               </Select>
@@ -204,7 +191,6 @@ const WithdrawMethod: React.FC<props> = ({
               <Input
                 variant="static"
                 color="green"
-                type="number"
                 name="account_number"
                 onChange={changeValue}
                 value={formRequest.account_number}

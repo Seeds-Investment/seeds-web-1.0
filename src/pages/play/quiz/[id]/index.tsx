@@ -71,6 +71,17 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+  const handleCopyClick = async (): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const textToCopy = `${baseUrl}play/quiz/${detailQuiz?.id}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
+      toast('Quiz link copied!');
+    });
+  };
+
   return (
     <>
       <Image
@@ -84,16 +95,16 @@ const QuizDetail = (): React.ReactElement => {
         width={1000}
         className="object-cover w-full max-h-[250px] rounded-3xl"
       />
-      <div className="grid grid-cols-3 gap-4 mt-4 font-poppins">
+      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
           <div className="flex items-center justify-center">
-            <div className="grid grid-cols-3 w-1/2 border border-[#E9E9E9] rounded-xl">
+            <div className="grid grid-cols-3 w-full lg:w-1/2 border border-[#E9E9E9] rounded-xl">
               <div className="flex flex-col justify-center items-center p-4 border-r border-[#E9E9E9]">
                 <div className="text-xl font-semibold">
                   {detailQuiz?.total_questions}
                 </div>
                 <div className="text-sm text-[#7C7C7C]">
-                  {t('quiz.question')}
+                  {t('quiz.questions')}
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center p-4 border-r border-[#E9E9E9]">
@@ -199,7 +210,9 @@ const QuizDetail = (): React.ReactElement => {
         <div className="w-full h-[300px] bg-white rounded-xl p-6">
           <div className="flex flex-row justify-between items-start gap-2">
             <div className="text-2xl font-semibold">{detailQuiz?.name}</div>
-            <ShareIcon width={24} height={24} />
+            <button onClick={handleCopyClick}>
+              <ShareIcon width={24} height={24} />
+            </button>
           </div>
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}

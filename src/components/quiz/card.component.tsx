@@ -4,12 +4,22 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import TopQuizEmpty from '../../assets/play/quiz/top-quiz-empty.jpg';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   const { t } = useTranslation();
   const router = useRouter();
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+  const handleCopyClick = async (): Promise<void> => {
+    const textToCopy = `${baseUrl}play/quiz/${item.id}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
+      toast('Quiz link copied!');
+    });
+  };
 
   return (
     <div key={item.id} className="rounded-t-lg">
@@ -28,7 +38,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">
         <div className="flex flex-row justify-between px-4 py-2 border-b border-dashed border-white">
           <div className="text-white text-sm font-semibold">{item.name}</div>
-          <button>
+          <button onClick={handleCopyClick}>
             <ShareIcon width={20} height={20} className="text-white" />
           </button>
         </div>

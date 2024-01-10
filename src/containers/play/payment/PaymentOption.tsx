@@ -19,7 +19,10 @@ const PaymentOption = ({
   onChange,
   currentValue
 }: IPaymentOption): JSX.Element => (
-  <div className="flex justify-between rounded-xl border items-center pl-4">
+  <label
+    htmlFor={option.id}
+    className="flex justify-between rounded-xl border items-center pl-4"
+  >
     <Image
       src={option.logo_url}
       width={200}
@@ -38,7 +41,7 @@ const PaymentOption = ({
         onChange(option);
       }}
     />
-  </div>
+  </label>
 );
 
 export default PaymentOption;

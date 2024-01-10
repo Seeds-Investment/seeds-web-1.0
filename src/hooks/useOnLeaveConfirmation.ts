@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Router from 'next/router';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const useOnLeavePageConfirmation = (unsavedChanges: boolean) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     // For reloading.
     window.onbeforeunload = () => {
+      console.log('test 1');
       if (unsavedChanges) {
         return 'You have unsaved changes. Do you really want to leave?';
       }
@@ -14,13 +20,9 @@ export const useOnLeavePageConfirmation = (unsavedChanges: boolean) => {
     // For changing in-app route.
     if (unsavedChanges) {
       const routeChangeStart = () => {
-        const ok = confirm(
-          'You have unsaved changes. Do you really want to leave?'
-        );
+        const ok = confirm(t('quiz.wantLeave') ?? 'Are you sure want to quit?');
         if (!ok) {
           Router.events.emit('routeChangeError');
-          // eslint-disable-next-line @typescript-eslint/no-throw-literal
-          throw 'Abort route change. Please ignore this error.';
         }
       };
 

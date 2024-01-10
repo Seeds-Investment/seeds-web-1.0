@@ -62,10 +62,10 @@ const ChangePhoneNumber: React.FC<Form> = ({
       setNumber(e.target.value);
     }
   };
-  const getCountry = (text: string): CountryCodeInfo | undefined =>
+  const getCountry = (phone: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
-      return text.replace('+', '').slice(0, dialCode.length) === dialCode;
+      return phone.replace('+', '').slice(0, dialCode.length) === dialCode;
     });
 
   const handleSubmitNumber = async (e: React.FormEvent): Promise<void> => {

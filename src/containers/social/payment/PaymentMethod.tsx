@@ -86,7 +86,7 @@ const PaymentMethod: React.FC<props> = ({ data, promo }) => {
         window.open(response.payment_url as string, '_blank');
       }
       await router
-        .push(`/connect/payment/receipt/${response.order_id as string}`)
+        .push(`/social/payment/receipt/${response.order_id as string}`)
         .catch(error => {
           console.log(error);
         });

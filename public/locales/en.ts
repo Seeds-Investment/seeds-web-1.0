@@ -1583,6 +1583,9 @@ export default {
     open: 'Open',
     active: 'Active',
     ended: 'Ended',
-    canceled: 'Cancelled'
+    canceled: 'Cancelled',
+    quizDone1: 'One Step Closer to the Win.',
+    quizDone2:
+      'Our recommended circle that will boost your performance in tournament!'
   }
 };

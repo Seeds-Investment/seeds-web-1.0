@@ -9,13 +9,16 @@ export { default as SocialNotifLogo } from 'public/assets/images/SocialNotifLogo
 export { default as SuccessNotif } from 'public/assets/images/SuccessNotif.png';
 export { default as AppleBrand } from 'public/assets/images/apple.svg';
 export { default as CurrencySVG } from 'public/assets/images/currency.svg';
+export { default as DocumentSVG } from 'public/assets/images/document.svg';
 export { default as DummyAvatar } from 'public/assets/images/dummy-avatar.png';
 export { default as ExpNotif } from 'public/assets/images/expnotif.png';
 export { default as FacebookBrand } from 'public/assets/images/facebook.svg';
 export { default as Flags } from 'public/assets/images/flags';
 export { default as GoldMedal } from 'public/assets/images/gold-medal-1.png';
 export { default as GoogleBrand } from 'public/assets/images/google.svg';
+export { default as LikeSVG } from 'public/assets/images/like.svg';
 export { default as Maintenance } from 'public/assets/images/maintenance.svg';
+export { default as MemberSVG } from 'public/assets/images/member.svg';
 export { default as Sapling } from 'public/assets/images/sapling.svg';
 export { default as Sadling } from 'public/assets/images/seedling.svg';
 export { default as Seeds } from 'public/assets/images/seeds.svg';

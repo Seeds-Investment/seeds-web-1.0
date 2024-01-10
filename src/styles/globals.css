@@ -249,3 +249,7 @@ body.modal-open {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.slick-dots li.slick-active button:before {
+  color: #3ac4a0 !important;
+}

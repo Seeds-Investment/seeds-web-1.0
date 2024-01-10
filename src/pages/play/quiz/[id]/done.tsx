@@ -47,7 +47,9 @@ const DoneQuiz: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 2000);
   }, []);
 
   const [userInfo, setUserInfo] = useState<any>();
@@ -102,6 +104,17 @@ const DoneQuiz: React.FC = () => {
     };
   };
 
+  function calculateTimeDifference(startTime: string, endTime: string): string {
+    const start = new Date(startTime).getTime();
+    const end = new Date(endTime).getTime();
+
+    const diff = end - start;
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
   return (
     <PageGradient
       defaultGradient
@@ -109,7 +122,7 @@ const DoneQuiz: React.FC = () => {
     >
       {detailQuiz === undefined && loading && <Loading />}
       <ReccomendationCirclePopup open={isOpen} handleOpen={handleOpen} />
-      <QuizLayoutComponent enableScroll>
+      <QuizLayoutComponent enableScroll cancelButton>
         <div className="w-full h-fit font-poppins text-white text-center lg:relative lg:bottom-20">
           <div className="flex flex-col w-full px-6 items-center">
             <div className="flex justify-center">
@@ -147,7 +160,11 @@ const DoneQuiz: React.FC = () => {
                 </div>
                 <div className="flex justify-center mt-2">
                   <Typography className="text-xs font-poppins font-normal text-[#3C49D6]">
-                    Your remaining time 15:00
+                    Your remaining time{' '}
+                    {calculateTimeDifference(
+                      QuizReview?.started_at as string,
+                      QuizReview?.ended_at as string
+                    )}
                   </Typography>
                 </div>
                 <div className="flex justify-center mt-2 gap-1">

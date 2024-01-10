@@ -135,6 +135,7 @@ export interface QuestionI {
   answer_id: number;
   is_correct: boolean;
   data: QuestionDataI;
+  difficulty: string;
 }
 
 export interface QuestionDataI {

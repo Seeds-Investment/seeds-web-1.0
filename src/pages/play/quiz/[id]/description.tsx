@@ -3,6 +3,7 @@
 'use-client';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
@@ -172,4 +173,4 @@ const DescriptionQuiz = () => {
   );
 };
 
-export default DescriptionQuiz;
+export default withAuth(DescriptionQuiz);

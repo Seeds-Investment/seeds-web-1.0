@@ -1,4 +1,5 @@
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import withAuth from '@/helpers/withAuth';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -66,4 +67,4 @@ const QuizWaiting = () => {
   );
 };
 
-export default QuizWaiting;
+export default withAuth(QuizWaiting);

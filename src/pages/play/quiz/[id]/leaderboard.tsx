@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
+import withAuth from '@/helpers/withAuth';
 import rank1Box from '../../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../../public/assets/images/rank3Box.svg';
@@ -309,4 +310,4 @@ const LeaderBoardPage = (): React.ReactElement => {
   );
 };
 
-export default LeaderBoardPage;
+export default withAuth(LeaderBoardPage);

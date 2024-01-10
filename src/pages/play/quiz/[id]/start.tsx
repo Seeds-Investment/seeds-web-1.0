@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import withAuth from '@/helpers/withAuth';
 import { startQuiz } from '@/repository/quiz.repository';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
@@ -43,4 +44,4 @@ const StartQuiz = () => {
   );
 };
 
-export default StartQuiz;
+export default withAuth(StartQuiz);

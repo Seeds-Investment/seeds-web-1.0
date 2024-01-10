@@ -6,6 +6,7 @@ import Loading from '@/components/popup/Loading';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import ReccomendationCirclePopup from '@/components/quiz/recommendation-component';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -264,4 +265,4 @@ const DoneQuiz: React.FC = () => {
   );
 };
 
-export default DoneQuiz;
+export default withAuth(DoneQuiz);

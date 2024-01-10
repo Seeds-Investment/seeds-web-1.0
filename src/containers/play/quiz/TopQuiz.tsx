@@ -5,6 +5,7 @@ import type { IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import TopQuizEmpty from '../../../assets/play/quiz/top-quiz-empty.jpg';
 
 const TopQuiz = (): JSX.Element => {
@@ -37,7 +38,7 @@ const TopQuiz = (): JSX.Element => {
         setTopQuizes(resTopQuiz);
       }
     } catch (error) {
-      console.log(error);
+      toast(`ERROR fetch quiz ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,7 @@ const TopQuiz = (): JSX.Element => {
         </h1>
         <p className="text-sm font-poppins">{t('quiz.topQuizDesc')}</p>
       </div>
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {topQuizes.length === 0 && !loading ? (
           <div className="col-span-3">
             <Image src={TopQuizEmpty} width={500} alt="Top Quiz Empty" />

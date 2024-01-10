@@ -29,7 +29,7 @@ const QuizLayout: React.FC<Props> = ({
     >
       <div className="w-full h-full max-h-full flex flex-col">
         {withButton ? (
-          <div className="flex flex-row justify-between items-center p-3 md:p-8 z-20">
+          <div className="flex flex-row justify-between items-center p-3 md:p-8 z-10">
             {!hideBackButton ? (
               <button
                 onClick={() => {

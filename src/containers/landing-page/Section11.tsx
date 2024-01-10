@@ -51,9 +51,9 @@ export default function Section11(): React.ReactElement {
             <h1 className="mt-3 mx-5 lg:mx-0 font-poppins text-base lg:text-2xl font-normal text-[#262626]">
               {t('landingV2.section11.text2')}
             </h1>
-            <h1 className="mt-3 mx-5 lg:mx-0 font-poppins text-base lg:text-2xl font-normal text-[#262626]">
+            {/* <h1 className="mt-3 mx-5 lg:mx-0 font-poppins text-base lg:text-2xl font-normal text-[#262626]">
               {t('landingV2.section11.text3')}
-            </h1>
+            </h1> */}
             <Link
               href={
                 'https://linktr.ee/Seedsmarketing?utm_source=linktree_admin_share'

@@ -1141,17 +1141,17 @@ export default {
         'Join us in making financial education more exciting and accessible for everyone',
       option1: {
         title: 'Community',
-        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities.',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities',
         button: 'Contact Us'
       },
       option2: {
         title: 'KOL',
-        text: 'Networking Opportunities, Exclusive Training, and Monthly Incentives.',
+        text: 'Networking Opportunities, Exclusive Training, and Monetary Incentives',
         button: 'Contact Us'
       },
       option3: {
         title: 'Brand',
-        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations.',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations',
         button: 'Contact Us'
       }
     },
@@ -1315,12 +1315,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Build a risk-free portfolio, compete for prizes, interact with finance pros, and enhance financial knowledge through quizzes',
       text6: 'Play Now',
-      text7: 'Build Portfolio & Claim Rewards ',
-      text8: 'Social Interaction',
-      text9: 'Challenge, Learn, Earn'
+      text7: 'Improve Investing Skills From Experts',
+      text8: 'Play Games & Win Real Money!'
     },
     section2: {
       text1: 'Social',
@@ -1330,11 +1327,11 @@ export default {
     section3: {
       text1: 'How Seeds Enhance',
       text2: 'Your Financial Journey',
-      text3: 'Lacks financial literacy, vulnerable to scams',
-      text4: 'Questions finances and seeks basic knowledge.',
+      text3: 'Learning finance to achive succesfull investment',
+      text4: 'Questioning finance and seeking basic knowledge.',
       text5: 'Ready to adopt financial strategies.',
-      text6: 'Gaining confidence in making informed financial decisions.',
-      text7: 'Achieving advanced financial literacy'
+      text6: 'Gain confidence in financial decision',
+      text7: 'Achieve a higher level of financial literacy'
     },
     section5: {
       text1: 'Total Rewards Claimed by Users'
@@ -1360,7 +1357,7 @@ export default {
     section11: {
       text1: 'Want to Collaborate with Seeds?',
       text2:
-        "Calling on all communities, brands, and KOL looking to be part of our mission to make finance enjoyable and accessible for Indonesia's young and vibrant market.",
+        'Make finance fun, empower the future. Join the Seeds revolution now!',
       text3:
         "Join us, get involved, and together let's shape the future of investing!",
       text4: 'Contact Us'

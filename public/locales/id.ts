@@ -1045,7 +1045,7 @@ export default {
   partner: {
     section1: {
       title: 'Berkolaborasi dengan Seeds & Bentuk Masa Depan Edukasi Investasi',
-      text: 'Gelar turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik.',
+      text: 'Adakan turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik. Yuk, berkembang bersama kami!',
       button: 'Hubungi Kami'
     },
     section2: {
@@ -1054,7 +1054,7 @@ export default {
       option3: 'Acara Diselenggarakan'
     },
     section3: {
-      title: 'Berkolaborasi untuk Mengatasi Masalah Investasi'
+      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
     },
     section4: {
       title: 'Bangun Generasi Mendatang Bersama',
@@ -1062,17 +1062,17 @@ export default {
         'Bergabunglah dengan misi kami untuk membuat pengetahuan finansial menjadi lebih menyenangkan dan dapat diakses untuk semua orang',
       option1: {
         title: 'Komunitas',
-        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan.',
+        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan',
         button: 'Contact Us'
       },
       option2: {
         title: 'KOL',
-        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan.',
+        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan',
         button: 'Contact Us'
       },
       option3: {
         title: 'Merek',
-        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus.',
+        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus',
         button: 'Contact Us'
       }
     },
@@ -1240,12 +1240,9 @@ export default {
       text2: 'Gaming',
       text3: 'Meets',
       text4: 'Investing',
-      text5:
-        'Seeds: Bangun portofolio tanpa risiko, bersaing untuk hadiah, berinteraksi dengan para profesional keuangan, dan tingkatkan pengetahuan keuangan melalui kuis',
       text6: 'Main Sekarang',
-      text7: 'Bangun Portofolio & Klaim Hadiah',
-      text8: 'Interaksi Sosial',
-      text9: 'Tantang, Pelajari, Raih'
+      text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!'
     },
     section2: {
       text1: 'Social',
@@ -1255,13 +1252,12 @@ export default {
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
       text2: 'Perjalanan Keuangan Kamu',
-      text3: 'Kurang literasi keuangan, rentan terhadap penipuan.',
+      text3: 'Belajar keuangan untuk mencapai investasi yang sukses',
       text4:
-        'Mencari informasi dasar tentang keuangan dan memiliki pertanyaan terkait keuangan.',
+        'Cari informasi dasar tentang keuangan dan miliki pertanyaan terkait keuangan.',
       text5: 'Siap untuk mengadopsi strategi keuangan.',
-      text6:
-        'Mendapatkan kepercayaan diri dalam membuat keputusan keuangan yang terinformasi.',
-      text7: 'Mencapai literasi keuangan tingkat lanjutan.'
+      text6: 'Tingkatkan kepercayaan diri dalam membuat keputusan keuangan.',
+      text7: 'Capai level tertinggi dari literasi keuangan'
     },
     section5: {
       text1: 'Total Hadiah yang Telah Diklaim'
@@ -1287,7 +1283,7 @@ export default {
     section11: {
       text1: 'Ingin Berkolaborasi dengan Seeds?',
       text2:
-        'Memanggil semua komunitas, brand, dan KOL yang ingin menjadi bagian dari misi kami untuk membuat belajar finansial jadi lebih menyenangkan dan dapat diakses bagi anak muda di Indonesia.',
+        'Buat investasi jadi  menyenangkan, untuk masa depan. Bergabunglah dengan perkembangan Seeds sekarang!',
       text3:
         'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
       text4: 'Hubungi Kami'

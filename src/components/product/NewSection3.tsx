@@ -1,7 +1,6 @@
 // import BlurInfluence from '@/assets/product/BlurInfluence.svg';
 import IlustShareAndInfluenceArrow from '@/assets/product/IlustShareAndInfluenceArrow.png';
 import IlustShareAndInfluenceMobile from '@/assets/product/IlustShareAndInfluenceMobile.png';
-import ShareAndInfluenceLine from '@/assets/product/ShareAndInfluenceLine.svg';
 import SocialPostBottom from '@/assets/product/SocialPostBottom.png';
 import SocialPostTop from '@/assets/product/SocialPostTop.png';
 import { Typography } from '@material-tailwind/react';
@@ -42,11 +41,11 @@ const NewSection3: React.FC = () => {
         }`}
       >
         <div className="flex flex-col items-center">
-          <Image
+          {/* <Image
             src={ShareAndInfluenceLine}
             alt="ShareAndInfluenceLine"
             className="-mb-[49px] lg:-mb-[75px] w-[424px] lg:w-[616.33px]"
-          />
+          /> */}
           <Typography className="font-poppins font-semibold text-3xl lg:text-5xl lg:leading-[57.6px] text-[#222222] text-center">
             <span className="bg-gradient-to-tr from-[#7555DA] to-[#4FE6AF] bg-clip-text text-transparent">
               {`${t('landingPageV2.product.section3.title1')}`}
@@ -60,7 +59,7 @@ const NewSection3: React.FC = () => {
         </Typography>
       </div>
       <div
-        className={`relative flex justify-center bg-red-700 ${
+        className={`relative flex justify-center ${
           inView && isBottom >= measurement
             ? 'animate-fade-in-slide'
             : isBottom >= measurement

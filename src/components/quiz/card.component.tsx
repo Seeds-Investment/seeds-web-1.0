@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import TopQuizEmpty from '../../assets/play/quiz/top-quiz-empty.jpg';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-const QuizCard = ({ item }: { item: IQuiz }) => {
+const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -19,9 +19,10 @@ const QuizCard = ({ item }: { item: IQuiz }) => {
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             item.banner?.image_url ? item.banner?.image_url : TopQuizEmpty
           }
+          alt="banner"
           width={1000}
           height={500}
-          className="object-cover max-h-48"
+          className="object-cover h-28 bg-blue-gray-50 rounded-t-lg"
         />
       </div>
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">
@@ -39,7 +40,7 @@ const QuizCard = ({ item }: { item: IQuiz }) => {
                 {item.admission_fee === 0
                   ? t('quiz.free')
                   : item.admission_fee.toLocaleString('id-ID', {
-                      currency: 'IDR',
+                      currency: currency,
                       style: 'currency'
                     })}
               </div>
@@ -68,6 +69,9 @@ const QuizCard = ({ item }: { item: IQuiz }) => {
               onClick={() => {
                 if (item.is_played) {
                   // TODO: navigate to quiz score page
+                  router.push(`/play/quiz/${item.id}/done`).catch(error => {
+                    console.log(error);
+                  });
                 } else {
                   router.push(`/play/quiz/${item.id}`).catch(error => {
                     console.log(error);

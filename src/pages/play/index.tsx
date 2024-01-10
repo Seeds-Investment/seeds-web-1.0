@@ -4,6 +4,7 @@ import Button from '@/components/ui/button/Button';
 import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
 import TopQuiz from '@/containers/play/quiz/TopQuiz';
 import withAuth from '@/helpers/withAuth';
+import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import {
@@ -46,8 +47,24 @@ const Player = (): React.ReactElement => {
   const handleTabChange = (tab: string): void => {
     setActiveNavbar(tab);
   };
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
-  const getListQuiz = async (): Promise<void> => {
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const getListQuiz = async (currency: string): Promise<void> => {
     try {
       setLoading(true);
       const res = await getAllQuiz({ ...params, status: activeTab });
@@ -160,10 +177,10 @@ const Player = (): React.ReactElement => {
                 </div>
 
                 {/* Filter Section */}
-                <div className="flex flex-row items-center gap-3 mt-4">
+                <div className="flex flex-row items-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
                   {statusQuiz.map(item => (
                     <button
-                      className={`border px-4 py-2 font-poppins rounded-lg text-sm ${
+                      className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
                         item.status === activeTab
                           ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
                           : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
@@ -190,8 +207,8 @@ const Player = (): React.ReactElement => {
                     Challenge your finance knowledge with these quizzes.
                   </p>
                 </div>
-                <div className="w-full grid grid-cols-3 gap-4">
-                  {listQuiz.length === 0 && !loading ? (
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {listQuiz?.length === 0 && !loading ? (
                     <div className="col-span-3">
                       <Image
                         src={ListQuizEmpty}
@@ -205,7 +222,13 @@ const Player = (): React.ReactElement => {
                       <div className="animate-spinner w-5 h-5" />
                     </div>
                   ) : (
-                    listQuiz.map(item => <QuizCard item={item} key={item.id} />)
+                    listQuiz?.map(item => (
+            <QuizCard
+              item={item}
+              key={item.id}
+              currency={userInfo?.preferredCurrency}
+            />
+          ))
                   )}
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import QuizCard from '@/components/quiz/card.component';
+import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizTrending } from '@/repository/quiz.repository';
 import type { IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
@@ -10,12 +11,28 @@ const TopQuiz = (): JSX.Element => {
   const { t } = useTranslation();
   const [topQuizes, setTopQuizes] = useState<IQuiz[]>([]);
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   const getTopQuiz = useCallback(async () => {
     try {
       setLoading(true);
-      const resp = await getQuizTrending();
-      if (resp.data) {
+      const resp = await getQuizTrending(userInfo?.preferredCurrency);
+      if (resp.data !== undefined) {
         const resTopQuiz: IQuiz[] = resp.data;
         setTopQuizes(resTopQuiz);
       }
@@ -24,13 +41,13 @@ const TopQuiz = (): JSX.Element => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
-    getTopQuiz();
+    if (userInfo !== undefined) {
+      void getTopQuiz();
+    }
   }, [getTopQuiz]);
-
-  console.log('topQuizes', topQuizes);
 
   return (
     <div className="w-full">
@@ -51,7 +68,13 @@ const TopQuiz = (): JSX.Element => {
             <div className="animate-spinner w-5 h-5" />
           </div>
         ) : (
-          topQuizes.map(item => <QuizCard item={item} key={item.id} />)
+          topQuizes.map(item => (
+            <QuizCard
+              item={item}
+              key={item.id}
+              currency={userInfo?.preferredCurrency}
+            />
+          ))
         )}
       </div>
     </div>

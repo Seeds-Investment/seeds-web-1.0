@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
@@ -21,24 +22,46 @@ const QuizDetail = (): React.ReactElement => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
-  const getDetail = useCallback(async () => {
-    try {
-      setLoading(true);
-      const resp: IDetailQuiz = await getQuizById({ id, currency: 'IDR' });
-      setDetailQuiz(resp);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const getDetail = useCallback(
+    async (currency: string) => {
+      try {
+        setLoading(true);
+        const resp: IDetailQuiz = await getQuizById({
+          id: id as string,
+          currency
+        });
+        setDetailQuiz(resp);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [id]
+  );
 
   useEffect(() => {
-    if (id) {
-      getDetail();
+    if (id !== null && userInfo !== undefined) {
+      getDetail(userInfo.preferredCurrency);
     }
-  }, [id]);
+  }, [id, userInfo]);
 
   if (detailQuiz === undefined && loading) {
     return (
@@ -109,7 +132,7 @@ const QuizDetail = (): React.ReactElement => {
             <div className="text-lg font-semibold">Terms & Conditions</div>
             <div
               className="text-lg text-[#7C7C7C]"
-              dangerouslySetInnerHTML={{ __html: detailQuiz?.tnc }}
+              dangerouslySetInnerHTML={{ __html: detailQuiz?.tnc as string }}
             />
           </div>
           <div className="mt-4">
@@ -137,7 +160,7 @@ const QuizDetail = (): React.ReactElement => {
                   </td>
                   <td className="border p-3 w-full">
                     {item.toLocaleString('id-ID', {
-                      currency: 'IDR',
+                      currency: userInfo?.preferredCurrency,
                       style: 'currency'
                     })}
                   </td>
@@ -151,6 +174,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
                 <Image
                   src={detailQuiz?.sponsors?.image_url}
+                  alt=""
                   width={200}
                   height={200}
                   className="object-contain max-h-16 max-w-16"
@@ -162,6 +186,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-lg font-semibold">{'Community'}</div>
                 <Image
                   src={detailQuiz?.communities?.image_url}
+                  alt=""
                   width={200}
                   height={200}
                   className="object-contain max-h-16 max-w-16"
@@ -182,7 +207,7 @@ const QuizDetail = (): React.ReactElement => {
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee.toLocaleString('id-ID', {
-                  currency: 'IDR',
+                  currency: userInfo?.preferredCurrency,
                   style: 'currency'
                 })}
           </div>

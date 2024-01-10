@@ -51,35 +51,37 @@ export default function Section3(): React.ReactElement {
         />
       </div>
       <div className="lg:flex text-center items-center flex-row gap-5 mx-20 lg:my-12">
-        <div className="w-full justify-center lg:w-1/5">
+        <div className="w-full justify-center lg:w-1/5 mt-auto">
           <Image alt="img" className="justify-center" src={Seeds} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seeds</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text3')}
           </h1>
         </div>
-        <div className="w-full justify-center lg:w-1/5">
+        <div className="w-full justify-center lg:w-1/5 mt-auto">
           <Image alt="img" className="justify-center" src={Sprout} />
-          <h1 className="font-poppins font-semibold text-lg mt-5 ">Sprout</h1>
+          <h1 className="font-poppins font-semibold text-lg mt- mt-auto5 ">
+            Sprout
+          </h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text4')}
           </h1>
         </div>
-        <div className="w-full justify-center lg:w-1/5">
+        <div className="w-full justify-center lg:w-1/5 mt-auto">
           <Image alt="img" className="justify-center" src={Seedling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seedling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text5')}
           </h1>
         </div>
-        <div className="w-full justify-center lg:w-1/5">
+        <div className="w-full justify-center lg:w-1/5 mt-auto">
           <Image alt="img" className="justify-center" src={Sapling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Sapling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text6')}
           </h1>
         </div>
-        <div className="w-full justify-center lg:w-1/5">
+        <div className="w-full justify-center lg:w-1/5 mt-auto">
           <Image alt="img" className="justify-center" src={Tree} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Tree</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">

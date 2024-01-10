@@ -1242,7 +1242,8 @@ export default {
       text4: 'Investing',
       text6: 'Main Sekarang',
       text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
-      text8: 'Mainkan Gamenya & Dapatkan Uangnya!'
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!',
+      text9: 'Tingkatkan Pengetahuanmu & Jadilah Yang Terbaik!'
     },
     section2: {
       text1: 'Social',

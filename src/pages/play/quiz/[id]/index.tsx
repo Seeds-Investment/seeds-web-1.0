@@ -73,10 +73,10 @@ const QuizDetail = (): React.ReactElement => {
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${baseUrl}play/quiz/${detailQuiz?.id}`;
+    const textToCopy = `${baseUrl}/play/quiz/${detailQuiz?.id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Quiz link copied!');
     });

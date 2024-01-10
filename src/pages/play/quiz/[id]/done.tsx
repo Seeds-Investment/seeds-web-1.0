@@ -249,7 +249,7 @@ const DoneQuiz: React.FC = () => {
                           className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                         />
                         <div className="z-10 text-center text-xl font-semibold text-white">
-                          {'Plat Again'}
+                          {'Play Again'}
                         </div>
                       </button>
                     )}

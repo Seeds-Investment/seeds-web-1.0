@@ -13,9 +13,9 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   const router = useRouter();
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
-    const textToCopy = `${baseUrl}play/quiz/${item.id}`;
+    const textToCopy = `${baseUrl}/play/quiz/${item.id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Quiz link copied!');
     });

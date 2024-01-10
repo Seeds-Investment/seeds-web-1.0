@@ -215,12 +215,8 @@ const QuizPlay = ({
       <QuizLayoutComponent
         centerContent={
           <div className="flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
-            <div className="text-base lg:text-2xl font-semibold">
-              {currentPage + 1 <= 5
-                ? 'Easy'
-                : currentPage + 1 <= 10
-                ? 'Medium'
-                : 'Hard'}
+            <div className="text-base lg:text-2xl font-semibold capitalize">
+              {quizQuestions?.[currentPage]?.difficulty}
             </div>
             <div className="text-sm lg:text-xl">
               {currentPage + 1}/{quizQuestions.length}

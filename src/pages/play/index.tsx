@@ -17,6 +17,7 @@ import {
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
 
 interface StatusQuizI {
@@ -73,7 +74,7 @@ const Player = (): React.ReactElement => {
         setListQuiz(list);
       }
     } catch (error) {
-      console.log(error);
+      toast(`ERROR fetch list quiz ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -81,7 +82,7 @@ const Player = (): React.ReactElement => {
 
   useEffect(() => {
     getListQuiz();
-  }, [activeTab]);
+  }, [activeTab, activeTab]);
 
   const statusQuiz: StatusQuizI[] = [
     {

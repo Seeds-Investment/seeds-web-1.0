@@ -593,9 +593,9 @@ export default function ArticleDetailPage(): JSX.Element {
       </div>
       <div className="">
         <Slider
-          slidesToShow={2.5}
+          slidesToShow={2.8}
           speed={500}
-          className="my-12 justify-items-start"
+          className="my-12 "
           initialSlide={1}
           // slidesToScroll={1}
           responsive={[
@@ -603,16 +603,16 @@ export default function ArticleDetailPage(): JSX.Element {
               breakpoint: 1024,
               settings: {
                 dots: true,
-                slidesToShow: 2.5,
-                slidesToScroll: 1
+                slidesToShow: 2.8
+                // slidesToScroll: 1
               }
             },
             {
               breakpoint: 768,
               settings: {
                 dots: true,
-                slidesToShow: 2,
-                slidesToScroll: 1
+                slidesToShow: 2
+                // slidesToScroll: 1
               }
             },
             {
@@ -627,7 +627,7 @@ export default function ArticleDetailPage(): JSX.Element {
           {articles.map(article => (
             <div
               key={article.id}
-              className={` lg:pe-5 w-[200px] flex flex-col items-start   cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
+              className={` lg:pe-5 w-[200px] flex flex-col   cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
             >
               <Link href={`/homepage/news/${article.id}`}>
                 <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">

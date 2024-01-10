@@ -250,7 +250,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {orderDetail?.currency !== undefined &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                          orderDetail.grossAmount
+                          orderDetail.grossAmount ?? 0
                         )}`
                       : ''}
                   </Typography>

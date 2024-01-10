@@ -1506,6 +1506,9 @@ export default {
     open: 'Terbuka',
     active: 'Berjalan',
     ended: 'Berakhir',
-    canceled: 'Dibatalkan'
+    canceled: 'Dibatalkan',
+    quizDone1: 'Selangkah lagi menuju kemenangan.',
+    quizDone2:
+      'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!'
   }
 };

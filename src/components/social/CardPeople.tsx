@@ -1,4 +1,3 @@
-import { CheckBadgeIcon } from '@heroicons/react/24/solid';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import FollowButton from '../FollowButton';
@@ -32,7 +31,7 @@ const CardPeople: React.FC<props> = ({ data }) => {
             >
               {data.name}
             </Typography>
-            <CheckBadgeIcon width={20} height={20} color="#5E44FF" />
+            {/* <CheckBadgeIcon width={20} height={20} color="#5E44FF" /> */}
           </div>
           <Typography className="font-normal text-sm text-[#7C7C7C]">
             @{data.seedsTag}

@@ -30,7 +30,7 @@ import Vote from '../../../assets/play/quiz/vote.svg';
 const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const id: string = router.query.id;
+  const id = router.query.id;
   useOnLeavePageConfirmation(false);
   const [lifelines, setLifelines] = useState<LifelinesEnum[]>([]);
   const [selectedLL, setSelectedLL] = useState<LifelinesEnum>();
@@ -63,8 +63,11 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
       const dataInfo = await getUserInfo();
       setPhoneNumber(dataInfo.phoneNumber);
       const resp: IDetailQuiz = await getQuizById({
-        id,
-        currency: 'IDR'
+        id: id as string,
+        currency:
+          dataInfo.preferredCurrency !== undefined
+            ? dataInfo.preferredCurrency
+            : 'IDR'
       });
       setDetailQuiz(resp);
     } catch (error) {
@@ -93,7 +96,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     if (total + (detailQuiz?.admission_fee ?? 0) !== 0) {
       onPay({
         payment: {
-          quiz_id: id,
+          quiz_id: id as string,
           lifelines,
           language: i18n.language,
           payment_gateway: '',
@@ -142,7 +145,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     } else {
       try {
         await joinQuiz({
-          quiz_id: id,
+          quiz_id: id as string,
           lifelines,
           language: i18n.language,
           payment_gateway: '',

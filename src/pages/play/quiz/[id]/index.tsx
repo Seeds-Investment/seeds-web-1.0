@@ -232,7 +232,9 @@ const QuizDetail = (): React.ReactElement => {
                 router.push(`/play/quiz/${id}/start`);
               } else {
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                router.push(`/play/quiz/${id}/welcome`);
+                router.push(`/play/quiz/${id}/welcome`).catch(err => {
+                  console.log(err);
+                });
               }
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"

@@ -17,13 +17,13 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 const Review = () => {
   const router = useRouter();
-  const id: string = router.query.id;
+  const id = router.query.id;
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const fetchQuizReview = async (): Promise<void> => {
     try {
-      const response = await getQuizReview(id);
+      const response = await getQuizReview(id as string);
       setQuizReview(response);
     } catch (error) {
       toast(`ERROR fetch quiz review ${error as string}`);
@@ -96,7 +96,7 @@ const Review = () => {
                       <div
                         className="text-sm text-[#7C7C7C]"
                         dangerouslySetInnerHTML={{
-                          __html: selectedData.description
+                          __html: selectedData.description as string
                         }}
                       />
                     </div>

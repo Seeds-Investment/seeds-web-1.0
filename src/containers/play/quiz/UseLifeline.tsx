@@ -36,7 +36,10 @@ const UseLifeline = ({
   expiryInSecond?: number;
   detailQuiz?: IDetailQuiz;
   currentPage: number;
-  finishUseLifeline: (callbackData?: LifelineRespI[], currentPage?: number) => void;
+  finishUseLifeline: (
+    callbackData?: LifelineRespI[],
+    currentPage?: number
+  ) => void;
 }) => {
   const { t } = useTranslation();
   const [showAnimation, setShowAnimation] = useState(true);
@@ -139,6 +142,7 @@ const Phone = ({
   quizQuestions?: QuestionI[];
   currentPage: number;
 }) => {
+  const { t } = useTranslation();
   const generateDescriptionText = (): string => {
     const desc =
       quizQuestions?.[currentPage]?.data?.[i18n.language === 'id' ? 'id' : 'en']

@@ -319,7 +319,7 @@ const Circle = (): React.ReactElement => {
           )}
         </div>
       </CCard>
-      <CCard className="p-1 md:p-5 md:mt-5 md:rounded-lg border-none rounded-none">
+      <CCard className="p-5 md:p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         {width !== undefined && width >= 768 ? (
           <div className="absolute bg-[#9A76FE] blur-[130px] w-[200px] h-[200px] left-0 top-0 rounded-full"></div>
         ) : null}

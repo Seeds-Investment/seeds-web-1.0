@@ -71,6 +71,9 @@ const QuizPlay = ({
   const [confirmUseLifeline, setConfirmUseLifeline] = useState(false);
   const [loading, setLoading] = useState(false);
   const { submitQuizAnswer, submitLoading, score, quitQuiz } = useQuiz();
+  if (id === undefined) {
+    console.log(useLifelineState, quitQuiz);
+  }
 
   const lifelinesDesc = new Map<LifelinesEnum, string>([
     [LifelinesEnum['50_50'], t('quiz.fiftyfifty')],

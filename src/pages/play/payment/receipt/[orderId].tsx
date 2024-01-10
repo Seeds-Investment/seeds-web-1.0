@@ -187,8 +187,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT'
-                  ? `${orderDetail?.currency} ${formatCurrency(
-                      orderDetail?.grossAmount
+                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
                     )}`
                   : 'Successful'}
               </Typography>

@@ -36,15 +36,13 @@ const Player = (): React.ReactElement => {
     search: '',
     status: activeTab,
     page: 1,
-    limit: 12,
-    currency: 'IDR'
+    limit: 12
   });
   // const [meta, setMeta] = useState({
   //   page: 1,
   //   perPage: 12,
   //   total: 0
   // });
-
   const handleTabChange = (tab: string): void => {
     setActiveNavbar(tab);
   };
@@ -65,12 +63,14 @@ const Player = (): React.ReactElement => {
       .catch(() => {});
   }, []);
 
-  const getListQuiz = async (): Promise<void> => {
+  const getListQuiz = async (currency: string): Promise<void> => {
     try {
       setLoading(true);
-      const res = await getAllQuiz({ ...params, status: activeTab });
-      const list: IQuiz[] = res.data;
-      setListQuiz(list);
+      const res = await getAllQuiz({ ...params, status: activeTab, currency });
+      if (res.data !== undefined) {
+        const list: IQuiz[] = res.data;
+        setListQuiz(list);
+      }
     } catch (error) {
       toast(`ERROR fetch list quiz ${error as string}`);
     } finally {
@@ -79,8 +79,10 @@ const Player = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    void getListQuiz();
-  }, [activeTab, activeTab]);
+    if (userInfo !== undefined) {
+      void getListQuiz(userInfo.preferredCurrency);
+    }
+  }, [userInfo]);
 
   const statusQuiz: StatusQuizI[] = [
     {

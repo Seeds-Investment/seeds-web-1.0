@@ -746,3 +746,31 @@ export const inviteUserMembership = async (
     return error.response;
   }
 };
+
+export const acceptOrRejectJoinCircle = async (
+  circleId: string,
+  isAccept: boolean
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  try {
+    let response = await baseUrl.post(
+      `/circle/v2/invite/accept-or-reject`,
+      {
+        circle_id: circleId,
+        is_accept: isAccept
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};

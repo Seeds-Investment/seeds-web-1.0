@@ -1,4 +1,5 @@
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import withAuth from '@/helpers/withAuth';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
 import Welcome from '../../../../assets/play/quiz/Welcome.json';
@@ -32,4 +33,4 @@ const WelcomeQuiz = () => {
   );
 };
 
-export default WelcomeQuiz;
+export default withAuth(WelcomeQuiz);

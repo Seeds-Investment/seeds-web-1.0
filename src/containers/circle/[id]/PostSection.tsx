@@ -387,8 +387,6 @@ const PostSection: React.FC<props> = ({
   function removeDuplicateIds(data: any): any {
     const uniqueIds = new Set();
     return data.filter((item: any) => {
-      console.log(item);
-
       if (!uniqueIds.has(item.id)) {
         uniqueIds.add(item.id);
         return true;

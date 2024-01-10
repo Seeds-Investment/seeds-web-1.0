@@ -226,3 +226,42 @@ export const fetchUseLifeline = async (payload: LifelineReqI): Promise<any> => {
     }
   });
 };
+
+export const getLeaderBoardGlobal = async ({
+  page = 1,
+  limit = 10
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<any> => {
+  try {
+    const params = {
+      page,
+      limit
+    };
+    return await quizService.get(`/leaderboard`, {
+      params,
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching global leaderboard:', error);
+  }
+};
+
+export const getLeaderBoardByQuizId = async (quizId: any): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    return await quizService.get(`/leaderboard/${quizId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching leaderboard by quiz id:', error);
+  }
+};

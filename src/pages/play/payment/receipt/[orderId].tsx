@@ -248,9 +248,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount
-                      )}`}
+                    orderDetail.grossAmount !== undefined
+                      ? `${orderDetail.currency} ${formatCurrency(
+                          orderDetail.grossAmount
+                        )}`
+                      : ''}
                   </Typography>
                 </div>
                 <div className="flex flex-row justify-between mb-5">

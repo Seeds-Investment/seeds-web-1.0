@@ -4,6 +4,7 @@
 import AnswerButtonComponent from '@/components/quiz/answer-button.component';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import withAuth from '@/helpers/withAuth';
 import { getQuizReview } from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
 import { type QuizReviewDTO } from '@/utils/interfaces/quiz.interfaces';
@@ -159,4 +160,4 @@ const Paging = () => {
   );
 };
 
-export default Review;
+export default withAuth(Review);

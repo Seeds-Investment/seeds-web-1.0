@@ -30,8 +30,8 @@ export default function Section1(): React.ReactElement {
 
   const titles = [
     t('landingV2.section1.text7'),
-    t('landingV2.section1.text9'),
-    t('landingV2.section1.text8')
+    t('landingV2.section1.text8'),
+    t('landingV2.section1.text7')
   ];
 
   const settings = {
@@ -149,9 +149,6 @@ export default function Section1(): React.ReactElement {
             <h1 className="font-poppins text-xl lg:text-4xl mb-3 font-semibold text-[#3AC4A0]">
               {titles[currentSlide]}
             </h1>
-            <p className="font-poppins font-normal mb-3 text-base lg:text-2xl md:mb-7">
-              {t('landingV2.section1.text5')}
-            </p>
             <Button
               className="text-xs lg:absolute z-10 lg:mb-20 px-20 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
               onClick={() => {

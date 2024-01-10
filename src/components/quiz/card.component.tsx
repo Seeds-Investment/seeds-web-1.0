@@ -40,7 +40,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                 {item.admission_fee === 0
                   ? t('quiz.free')
                   : item.admission_fee.toLocaleString('id-ID', {
-                      currency: currency,
+                      currency,
                       style: 'currency'
                     })}
               </div>
@@ -78,7 +78,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                   });
                 }
               }}
-              className="bg-white text-seeds-button-green px-10 py-2 rounded-full font-semibold"
+              className="bg-white text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
             >
               {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
             </button>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import { startQuiz } from '@/repository/quiz.repository';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,13 @@ const StartQuiz = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+
+  const handleContinue = async () => {
+    const start = await startQuiz(id as string);
+    if (start) {
+      void router.replace(`/play/quiz/${id as string}/description`);
+    }
+  };
   return (
     <QuizLayoutComponent hideBackButton>
       <div className="flex flex-col h-full justify-center items-center gap-4 lg:gap-6 px-3 md:p-8">
@@ -27,9 +35,7 @@ const StartQuiz = () => {
             title={t('quiz.startTheGame')}
             background="#67EB00"
             darkBackground="#4EC307"
-            onClick={() => {
-              void router.replace(`/play/quiz/${id as string}/description`);
-            }}
+            onClick={handleContinue}
           />
         </div>
       </div>

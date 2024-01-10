@@ -11,6 +11,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const DoneQuiz: React.FC = () => {
   useOnLeavePageConfirmation(false);
@@ -24,7 +25,7 @@ const DoneQuiz: React.FC = () => {
       const response = await getQuizReview(id as string);
       setQuizReview(response);
     } catch (error) {
-      console.log(`ERROR fetch quiz review ${error as string}`);
+      toast(`ERROR fetch quiz review ${error as string}`);
     }
   };
   useEffect(() => {

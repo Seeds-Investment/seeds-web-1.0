@@ -1464,6 +1464,7 @@ export default {
       "Great job! You've chosen ## as your currency preference. From now on, all your transactions on Seeds will be in ##, you can change it whenever you want in the settings."
   },
   quiz: {
+    explanation: 'Explanation',
     invitationCodePlaceholder: 'Input your invitation code',
     enter: 'Enter',
     topQuiz: 'Top Quiz',

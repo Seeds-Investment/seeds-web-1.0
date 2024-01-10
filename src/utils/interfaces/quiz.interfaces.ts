@@ -195,9 +195,20 @@ export interface ScoreI {
 }
 
 export interface QuizReviewDTO {
-  data: any[];
+  data: QuizReviewDataI[];
   score: number;
   rank: number;
+  started_at: string;
+  ended_at: string;
+}
+
+export interface QuizReviewDataI {
+  id: string;
+  quiz_participant_id: string;
+  quiz_question_id: string;
+  answer_id: number;
+  is_correct: boolean;
+  data: QuestionDataI;
   started_at: string;
   ended_at: string;
 }

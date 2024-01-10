@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
@@ -49,7 +50,7 @@ const QuizDetail = (): React.ReactElement => {
         });
         setDetailQuiz(resp);
       } catch (error) {
-        console.log(error);
+        toast(`ERROR fetch quiz ${error as string}`);
       } finally {
         setLoading(false);
       }
@@ -58,7 +59,7 @@ const QuizDetail = (): React.ReactElement => {
   );
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id && userInfo !== undefined) {
       getDetail(userInfo.preferredCurrency);
     }
   }, [id, userInfo]);
@@ -159,7 +160,7 @@ const QuizDetail = (): React.ReactElement => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {item.toLocaleString('id-ID', {
+                    {item?.toLocaleString('id-ID', {
                       currency: userInfo?.preferredCurrency,
                       style: 'currency'
                     })}
@@ -214,7 +215,8 @@ const QuizDetail = (): React.ReactElement => {
           <button
             onClick={() => {
               if (detailQuiz?.participant_status === 'JOINED') {
-                // TODO: navigate to Start quiz
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                router.push(`/play/quiz/${id}/start`);
               } else {
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 router.push(`/play/quiz/${id}/welcome`);

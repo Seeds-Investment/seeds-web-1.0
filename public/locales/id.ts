@@ -1391,6 +1391,7 @@ export default {
       'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
   },
   quiz: {
+    explanation: 'Penjelasan',
     invitationCodePlaceholder: 'Input your invitation code',
     enter: 'Enter',
     topQuiz: 'Top Quiz',

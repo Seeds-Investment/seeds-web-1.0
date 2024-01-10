@@ -8,6 +8,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 interface MemberDTO {
   id: string;
   name: string;
@@ -17,6 +18,7 @@ interface MemberDTO {
 }
 
 const AddCircleMember: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const circleId: string | any = router.query.circleId;
   const [searchMember, setSearchMember] = useState<string>('');
@@ -74,13 +76,12 @@ const AddCircleMember: React.FC = () => {
       <CCard className="flex flec-col p-4 md:p-5 mt-5 md:rounded-lg border-none rounded-none">
         <div className="flex justify-start md:justify-center">
           <Typography className="font-semibold font-poppins text-[#262626]">
-            Add your members
+            {t('circle.settingMember.add')}
           </Typography>
         </div>
         <div className="flex justify-start md:justify-center mt-1">
-          <Typography className="font-normal text-sm font-poppins text-[#7C7C7C]">
-            You can add members by searching for the name or using the share
-            link later.
+          <Typography className="font-normal text-sm font-poppins text-[#7C7C7C] text-center">
+            {t('circle.settingMember.subtitle')}
           </Typography>
         </div>
         <div className="flex justify-start mt-4">

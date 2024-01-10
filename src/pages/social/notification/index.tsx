@@ -10,7 +10,8 @@ import {
   TabPanel,
   Tabs,
   TabsBody,
-  TabsHeader
+  TabsHeader,
+  Typography
 } from '@material-tailwind/react';
 import {
   InformationLogo,
@@ -22,7 +23,14 @@ interface typeOfTab {
   name: string;
   value: string;
 }
-
+interface DataItem {
+  id: string;
+  data: any;
+  type: string;
+  readed_at: string;
+  created_at: string;
+  updated_at: string;
+}
 interface Filter {
   limit: number;
   page: number;
@@ -44,7 +52,7 @@ const dataTab: typeOfTab[] = [
 const NotificationPage: React.FC = () => {
   const [tabs, setTabs] = useState<string>('promotion');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [listNotification, setListNotification] = useState<any[]>([]);
+  const [listNotification, setListNotification] = useState<DataItem[]>([]);
   const [isIncrease, setIsIncrease] = useState(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [filter, setFilter] = useState<Filter>(initialFilter);
@@ -143,6 +151,31 @@ const NotificationPage: React.FC = () => {
     }
   }, [tabs, filter.page, hasMore]);
 
+  function filterDataByDate(items: DataItem[]): {
+    today: DataItem[];
+    older: DataItem[];
+  } {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate());
+
+    const todayData: DataItem[] = [];
+    const olderData: DataItem[] = [];
+
+    items.forEach(item => {
+      const createdAt = new Date(item.created_at);
+      if (createdAt > yesterday) {
+        todayData.push(item);
+      } else {
+        olderData.push(item);
+      }
+    });
+
+    return { today: todayData, older: olderData };
+  }
+
   return (
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
@@ -183,63 +216,176 @@ const NotificationPage: React.FC = () => {
           </div>
           <TabsBody className="pb-4">
             <TabPanel value="promotion">
-              <div className="flex flex-col gap-4">
-                {listNotification?.map((el: any) => {
-                  return (
-                    <NotificationCard
-                      data={el}
-                      logo={PromotionLogo}
-                      variant="normal"
-                      key={el?.id}
-                    />
-                  );
-                })}
-              </div>
+              {tabs === 'promotion' && (
+                <div className="flex flex-col gap-4">
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    Today
+                  </Typography>
+                  {filterDataByDate(listNotification).today?.map(
+                    (el: DataItem) => {
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={PromotionLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).today.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center w-full font-poppins text-black normal-case">
+                      {"There's no notification today"}
+                    </Typography>
+                  )}
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    This Week
+                  </Typography>
+                  {filterDataByDate(listNotification).older?.map(
+                    (el: DataItem) => {
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={PromotionLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).older.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center font-poppins text-black normal-case">
+                      {"There's no notification this week"}
+                    </Typography>
+                  )}
+                </div>
+              )}
             </TabPanel>
             <TabPanel value="social">
-              <div className="flex flex-col gap-4">
-                {listNotification.map((el: any) => {
-                  return (
-                    <NotificationCard
-                      data={el}
-                      logo={SocialNotifLogo}
-                      variant="social"
-                      key={el?.id}
-                    />
-                  );
-                })}
-              </div>
+              {tabs === 'social' && (
+                <div className="flex flex-col gap-4">
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    Today
+                  </Typography>
+                  {filterDataByDate(listNotification).today?.map(
+                    (el: DataItem) => {
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={SocialNotifLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).today.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center w-full font-poppins text-black normal-case">
+                      {"There's no notification today"}
+                    </Typography>
+                  )}
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    This Week
+                  </Typography>
+                  {filterDataByDate(listNotification).older?.map(
+                    (el: DataItem) => {
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={SocialNotifLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).older.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center font-poppins text-black normal-case">
+                      {"There's no notification this week"}
+                    </Typography>
+                  )}
+                </div>
+              )}
             </TabPanel>
             <TabPanel value="information">
-              <div className="flex flex-col gap-4">
-                {listNotification.map((el: any) => {
-                  if (
-                    el?.type === 'play_joined' ||
-                    el?.type === 'circle_send_invitation' ||
-                    el?.type === 'discover_earn' ||
-                    el?.type === 'play_sell_asset' ||
-                    el?.type === 'play_buy_asset' ||
-                    el?.type === 'play_winner_simulation'
-                  ) {
-                    return (
-                      <NotificationCard
-                        data={el}
-                        logo={InformationLogo}
-                        variant={el?.type}
-                        key={el?.id}
-                      />
-                    );
-                  }
-                  return (
-                    <NotificationCard
-                      data={el}
-                      logo={InformationLogo}
-                      variant="normal"
-                      key={el?.id}
-                    />
-                  );
-                })}
-              </div>
+              {tabs === 'information' && (
+                <div className="flex flex-col gap-4">
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    Today
+                  </Typography>
+                  {filterDataByDate(listNotification).today?.map(
+                    (el: DataItem) => {
+                      if (
+                        el?.type === 'play_joined' ||
+                        el?.type === 'circle_send_invitation' ||
+                        el?.type === 'discover_earn' ||
+                        el?.type === 'play_sell_asset' ||
+                        el?.type === 'play_buy_asset' ||
+                        el?.type === 'play_winner_simulation'
+                      ) {
+                        return (
+                          <NotificationCard
+                            data={el}
+                            logo={InformationLogo}
+                            variant={el?.type}
+                            key={el?.id}
+                          />
+                        );
+                      }
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={InformationLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).today.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center w-full font-poppins text-black normal-case">
+                      {"There's no notification today"}
+                    </Typography>
+                  )}
+                  <Typography className="font-semibold text-base font-poppins text-black normal-case">
+                    This Week
+                  </Typography>
+                  {filterDataByDate(listNotification).older?.map(
+                    (el: DataItem) => {
+                      if (
+                        el?.type === 'play_joined' ||
+                        el?.type === 'circle_send_invitation' ||
+                        el?.type === 'discover_earn' ||
+                        el?.type === 'play_sell_asset' ||
+                        el?.type === 'play_buy_asset' ||
+                        el?.type === 'play_winner_simulation'
+                      ) {
+                        return (
+                          <NotificationCard
+                            data={el}
+                            logo={InformationLogo}
+                            variant={el?.type}
+                            key={el?.id}
+                          />
+                        );
+                      }
+                      return (
+                        <NotificationCard
+                          data={el}
+                          logo={InformationLogo}
+                          variant="normal"
+                          key={el?.id}
+                        />
+                      );
+                    }
+                  )}
+                  {filterDataByDate(listNotification).older.length === 0 && (
+                    <Typography className="font-semibold text-sm text-center font-poppins text-black normal-case">
+                      {"There's no notification this week"}
+                    </Typography>
+                  )}
+                </div>
+              )}
             </TabPanel>
           </TabsBody>
         </Tabs>

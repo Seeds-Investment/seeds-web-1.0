@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 'use-client';
 // import QuizCard from '@/components/quiz/card.component';
 // import Button from '@/components/ui/button/Button';
@@ -7,6 +8,7 @@ import withAuth from '@/helpers/withAuth';
 // import { getUserInfo } from '@/repository/profile.repository';
 // import { getAllQuiz } from '@/repository/quiz.repository';
 // import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
+// import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 // import {
 //   Tab,
 //   TabPanel,
@@ -34,7 +36,7 @@ const Player = (): React.ReactElement => {
   // const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
   // const [loading, setLoading] = useState(false);
   // const [activeNavbar, setActiveNavbar] = useState('quiz');
-  // const [params] = useState({
+  // const [params, setParams] = useState({
   //   search: '',
   //   status: activeTab,
   //   page: 1,
@@ -82,9 +84,13 @@ const Player = (): React.ReactElement => {
 
   // useEffect(() => {
   //   if (userInfo !== undefined) {
-  //     void getListQuiz(userInfo.preferredCurrency);
+  //     const getData = setTimeout(() => {
+  //       void getListQuiz(userInfo.preferredCurrency);
+  //     }, 2000);
+
+  //     return () => clearTimeout(getData);
   //   }
-  // }, [userInfo]);
+  // }, [userInfo, activeTab, params]);
 
   // const statusQuiz: StatusQuizI[] = [
   //   {
@@ -205,13 +211,39 @@ const Player = (): React.ReactElement => {
     //             <TopQuiz />
 
     //             {/* List Quiz Section */}
-    //             <div className="mt-4">
-    //               <h1 className="text-3xl font-semibold font-poppins">
-    //                 List Quiz
-    //               </h1>
-    //               <p className="text-sm font-poppins">
-    //                 Challenge your finance knowledge with these quizzes.
-    //               </p>
+    //             <div className="mt-4 flex flex-row justify-between items-center">
+    //               <div>
+    //                 <h1 className="text-3xl font-semibold font-poppins">
+    //                   List Quiz
+    //                 </h1>
+    //                 <p className="text-sm font-poppins">
+    //                   Challenge your finance knowledge with these quizzes.
+    //                 </p>
+    //               </div>
+    //               <div className="relative">
+    //                 <input
+    //                   id="search"
+    //                   type="text"
+    //                   name="search"
+    //                   value={params.search}
+    //                   onChange={e => {
+    //                     setParams(prev => ({
+    //                       ...prev,
+    //                       search: e.target.value
+    //                     }));
+    //                   }}
+    //                   placeholder="Search"
+    //                   readOnly={false}
+    //                   disabled={false}
+    //                   className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
+    //                 />
+    //                 <label
+    //                   htmlFor="search"
+    //                   className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+    //                 >
+    //                   <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
+    //                 </label>
+    //               </div>
     //             </div>
     //             <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
     //               {listQuiz?.length === 0 && !loading ? (

@@ -9,6 +9,7 @@ import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
+import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useQuiz from '@/hooks/useQuiz';
 import {
   fetchUseLifeline,
@@ -74,6 +75,8 @@ const QuizPlay = ({
   if (id === undefined) {
     console.log(useLifelineState, quitQuiz);
   }
+
+  useOnLeavePageConfirmation(currentPage + 1 === quizQuestions.length);
 
   const lifelinesDesc = new Map<LifelinesEnum, string>([
     [LifelinesEnum['50_50'], t('quiz.fiftyfifty')],

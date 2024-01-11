@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
@@ -165,6 +166,31 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
     }
   };
 
+  const onSubmit = () => {
+    let _admissionFee = 0;
+    let _adminFee = 0;
+    let _totalFee = 0;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (dataPost.quiz) {
+      _admissionFee = dataPost?.quiz?.admission_fee;
+      _adminFee = 0;
+      _totalFee =
+        Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
+    } else {
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
+      _adminFee = dataPost?.admin_fee as number;
+      _totalFee = _admissionFee + _adminFee;
+      console.log(_admissionFee, _adminFee, _totalFee);
+    }
+
+    if (option.payment_type === 'qris') {
+      void handlePay(option.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else {
+      setOpenDialog(true);
+    }
+  };
+
   const renderLoading = (): JSX.Element => <Loading />;
 
   const renderContent = (): JSX.Element => (
@@ -185,13 +211,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           onChange={setOption}
           currentValue={option}
         />
-        <SubmitButton
-          disabled={option.id == null}
-          fullWidth
-          onClick={() => {
-            setOpenDialog(true);
-          }}
-        >
+        <SubmitButton disabled={option.id == null} fullWidth onClick={onSubmit}>
           {t('PlayPayment.button')}
         </SubmitButton>
       </div>

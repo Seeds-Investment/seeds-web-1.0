@@ -160,7 +160,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus === 'PENDING' ? (
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -181,19 +181,19 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'PENDING'
-                  ? 'Pending Paid Membership'
+                {orderDetail?.transactionStatus !== 'SETTLEMENT'
+                  ? 'Pending Paid Quiz'
                   : 'Successful'}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'PENDING'
-                  ? `${orderDetail?.currency} ${formatCurrency(
-                      orderDetail?.grossAmount
+                {orderDetail?.transactionStatus !== 'SETTLEMENT'
+                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
                     )}`
                   : 'Successful'}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus !== 'PENDING' &&
+                {orderDetail?.transactionStatus === 'SETTLEMENT' &&
                   'Your recurring has been saved!'}
               </Typography>
 
@@ -248,9 +248,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount
-                      )}`}
+                    orderDetail.grossAmount !== undefined
+                      ? `${orderDetail.currency} ${formatCurrency(
+                          orderDetail.grossAmount ?? 0
+                        )}`
+                      : ''}
                   </Typography>
                 </div>
                 <div className="flex flex-row justify-between mb-5">

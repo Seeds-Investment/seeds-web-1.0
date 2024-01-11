@@ -3,18 +3,15 @@
 import PlayQuiz from '@/containers/play/quiz/PlayQuiz';
 import UseLifeline from '@/containers/play/quiz/UseLifeline';
 import withAuth from '@/helpers/withAuth';
-import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import {
   type IDetailQuiz,
   type LifelinesEnum,
   type QuestionI,
   type UseLifelineState
 } from '@/utils/interfaces/quiz.interfaces';
-import Router from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const QuizPlayScreen = () => {
-  useOnLeavePageConfirmation(true);
   const [usingLifeline, setUsingLifeline] = useState<{
     show: boolean;
     lifeline?: LifelinesEnum;
@@ -24,28 +21,6 @@ const QuizPlayScreen = () => {
   const [expiryInSecond, setexpiryInSecond] = useState<number>();
   const [detailQuiz, setdetailQuiz] = useState<IDetailQuiz>();
   const [currentPage, setcurrentPage] = useState<number>(0);
-
-  useEffect(() => {
-    // For reloading.
-    window.onbeforeunload = () => {
-      return 'You have unsaved changes. Do you really want to leave?';
-    };
-
-    // For changing in-app route.
-    const routeChangeStart = () => {
-      const ok = confirm(
-        'You have unsaved changes. Do you really want to leave?'
-      );
-      if (!ok) {
-        Router.events.emit('routeChangeError');
-      }
-    };
-
-    Router.events.on('routeChangeStart', routeChangeStart);
-    return () => {
-      Router.events.off('routeChangeStart', routeChangeStart);
-    };
-  }, []);
 
   return (
     <>

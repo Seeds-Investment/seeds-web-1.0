@@ -32,7 +32,7 @@ const DoneQuiz: React.FC = () => {
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
   };
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const fetchQuizReview = async (): Promise<void> => {
@@ -252,7 +252,7 @@ const DoneQuiz: React.FC = () => {
                           className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                         />
                         <div className="z-10 text-center text-xl font-semibold text-white">
-                          {t('quiz.playAgain')}
+                          {loading ? 'Loading...' : t('quiz.playAgain')}
                         </div>
                       </button>
                     )}

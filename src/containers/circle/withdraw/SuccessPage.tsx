@@ -1,3 +1,4 @@
+'use-client';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
@@ -6,6 +7,7 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   data: Data;
@@ -21,6 +23,7 @@ interface Data {
 }
 
 const SuccessPage: React.FC<props> = ({ data }) => {
+  const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
   const date = new Date(data.created_at);
@@ -91,7 +94,7 @@ const SuccessPage: React.FC<props> = ({ data }) => {
                   Admin
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  IDR {new Intl.NumberFormat().format(20000)}
+                  {t('quiz.free')}
                 </Typography>
               </div>
               <hr />

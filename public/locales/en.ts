@@ -1317,7 +1317,8 @@ export default {
       text4: 'Investing',
       text6: 'Play Now',
       text7: 'Improve Investing Skills From Experts',
-      text8: 'Play Games & Win Real Money!'
+      text8: 'Play Games & Win Real Money!',
+      text9: 'Level Up Your Knowledge & Be the Best!'
     },
     section2: {
       text1: 'Social',

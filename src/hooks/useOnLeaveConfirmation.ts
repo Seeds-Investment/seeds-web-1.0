@@ -11,7 +11,6 @@ export const useOnLeavePageConfirmation = (unsavedChanges: boolean) => {
   useEffect(() => {
     // For reloading.
     window.onbeforeunload = () => {
-      console.log('test 1');
       if (unsavedChanges) {
         return 'You have unsaved changes. Do you really want to leave?';
       }

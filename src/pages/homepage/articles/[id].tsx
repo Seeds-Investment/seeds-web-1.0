@@ -118,7 +118,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
-  const [showAllComments, setShowAllComments] = useState(false);
+  const [seeAllClicked, setSeeAllClicked] = useState(false);
   // const [liked, setLiked] = useState(false);
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
@@ -168,6 +168,35 @@ export default function ArticleDetailPage(): JSX.Element {
     void fetchData();
   }, []);
   const hotNewsItemClass = 'mb-2 me-12';
+
+  function LimitString({
+    text,
+    limit
+  }: {
+    text: string;
+    limit: number;
+  }): JSX.Element {
+    const [showFullText] = useState(false);
+
+    const truncatedText = showFullText ? text : text.slice(0, limit);
+
+    return (
+      <div>
+        <p className="text-sm font-normal text-[#7C7C7C] my-2">
+          {truncatedText}...
+        </p>
+        {!showFullText && text.length > limit && (
+          <button className="text-[#7555DA] text-base font-normal underline"></button>
+        )}
+      </div>
+    );
+  }
+
+  const stripHtmlTags = (html: any): string => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
+  };
 
   useEffect(() => {
     if (typeof id === 'string') {
@@ -333,13 +362,13 @@ export default function ArticleDetailPage(): JSX.Element {
   const imageUrl = articleDetail?.imageUrl;
 
   const isImageValid = isImageUrlValid(imageUrl);
-  const displayedComments = showAllComments
+  const displayedComments = seeAllClicked
     ? articleComment
     : articleComment?.slice(0, 3);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleSeeAllComments = () => {
-    setShowAllComments(true);
+    setSeeAllClicked(prevSeeAllClicked => !prevSeeAllClicked);
   };
 
   return (
@@ -559,12 +588,12 @@ export default function ArticleDetailPage(): JSX.Element {
                 </p>
               </div>
             ))}
-            {articleDetail?.total_comments > 3 && !showAllComments && (
+            {articleDetail?.total_comments > 3 && (
               <button
                 className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
                 onClick={handleSeeAllComments}
               >
-                See All{' '}
+                {seeAllClicked ? 'close' : 'see all'}{' '}
                 <span className="ms-2">
                   <svg
                     width="13"
@@ -593,7 +622,8 @@ export default function ArticleDetailPage(): JSX.Element {
       </div>
       <div className="">
         <Slider
-          slidesToShow={2.8}
+          slidesToShow={2}
+          slidesToScroll={1}
           speed={500}
           className="my-12 "
           initialSlide={1}
@@ -603,7 +633,7 @@ export default function ArticleDetailPage(): JSX.Element {
               breakpoint: 1024,
               settings: {
                 dots: true,
-                slidesToShow: 2.8
+                slidesToShow: 2
                 // slidesToScroll: 1
               }
             },
@@ -627,21 +657,36 @@ export default function ArticleDetailPage(): JSX.Element {
           {articles.map(article => (
             <div
               key={article.id}
-              className={` lg:pe-5 w-[200px] flex flex-col   cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
+              className={` lg:pe-5 w-[200px] flex  cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
             >
               <Link href={`/homepage/news/${article.id}`}>
                 <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">
                   <div className="flex-row">
                     <div className="flex justify-between flex-col">
-                      <div className="mb-auto">
-                        <p className="mt-2 font-bold text-base">
-                          {article.title}
-                        </p>
+                      <div className="p-2">
+                        <h1 className="bg-[#DCFCE4] text-xs font-semibold w-[65px] text-center text-[#3AC4A0] p-1 rounded-full">
+                          {article?.category}
+                        </h1>
+                        <h1 className="text-base font-semibold text-[#000] my-1">
+                          {article?.title !== undefined &&
+                          article.title.length > 45
+                            ? `${article.title.slice(0, 45)}...`
+                            : article?.title}
+                        </h1>
+                        <Link
+                          className="text-sm"
+                          href={`/homepage/articles/${article?.id ?? 0}`}
+                        >
+                          <LimitString
+                            text={stripHtmlTags(article?.content ?? '')}
+                            limit={80}
+                          />
+                        </Link>
                       </div>
 
                       <div>
-                        <div className="flex mt-2 justify-between">
-                          <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
+                        <div className="flex  justify-between">
+                          <p className="font-normal text-sm text-[#8A8A8A]">
                             {formatDateToIndonesian(
                               articleDetail?.publicationDate
                             )}
@@ -651,18 +696,18 @@ export default function ArticleDetailPage(): JSX.Element {
                     </div>
                   </div>
                   <div>
-                    <div className="mt-1 w-[100px] h-[100px]">
+                    <div className="mt-1 w-[120px] h-[120px]">
                       {isImageUrlValid(article.imageUrl) ? (
                         <img
                           src={article?.imageUrl}
                           alt=""
-                          className="w-[75px] h-full object-cover rounded-2xl"
+                          className="w-[100px] h-full object-cover rounded-2xl"
                         />
                       ) : (
                         <img
                           src={defaultNews}
                           alt=""
-                          className="w-[75px] h-full object-cover rounded-2xl"
+                          className="w-[100px] h-full object-cover rounded-2xl"
                         />
                       )}
                     </div>

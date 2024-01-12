@@ -378,13 +378,13 @@ export default function ArticleDetailPage(): JSX.Element {
               <img
                 src={imageUrl}
                 alt="Image"
-                className="w-full object-cover rounded-2xl w-full lg:h-[400px]"
+                className="w-full object-cover rounded-2xl lg:h-[400px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt="Image"
-                className="w-full object-cover rounded-2xl w-full lg:h-[400px]"
+                className="w-full object-cover rounded-2xl lg:h-[400px]"
               />
             )}
           </div>
@@ -482,14 +482,14 @@ export default function ArticleDetailPage(): JSX.Element {
                     <path
                       d="M4.16602 10H15.8327"
                       stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M10 4.16675L15.8333 10.0001L10 15.8334"
                       stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </span>

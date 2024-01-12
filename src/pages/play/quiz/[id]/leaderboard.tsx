@@ -254,7 +254,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     </h2>
                     <p>{userInfo?.seeds_tag}</p>
                     <p className="text-[#3AC4A0]">
-                      IDR {leaderBoard[myRank - 1]?.score}
+                      {leaderBoard[myRank - 1]?.score}
                     </p>
                   </div>
                 </>
@@ -299,7 +299,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                   </div>
                 </td>
                 <td className="px-4 py-5 text-center text-base font-normal font-poppins">
-                  {leader?.rank}
+                  {leader?.score}
                 </td>
               </tr>
             ))}

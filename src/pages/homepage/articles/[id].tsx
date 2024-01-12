@@ -527,7 +527,7 @@ export default function ArticleDetailPage(): JSX.Element {
           <div className="flex flex-row gap-3 my-6 w-full">
             <img
               src={userInfo.avatar}
-              className="xl:w-[75px] h-full rounded-full"
+              className="xl:w-[75px] w-[48px] h-[48px] xl:h-full rounded-full"
               alt=""
             />
             <div className="flex flex-col gap-2 w-full">
@@ -568,11 +568,11 @@ export default function ArticleDetailPage(): JSX.Element {
                 key={article?.id ?? index}
                 className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
               >
-                <div className="flex flex-row">
+                <div className="flex flex-row ">
                   <img
                     src={article?.avatar}
                     alt=""
-                    className="xl:w-[48px] xl:h-[48px] rounded-full"
+                    className="xl:w-[48px] xl:h-[48px] w-[48px] h-[48px] rounded-full"
                   />
                   <div className="xl:ml-4">
                     <h1 className="text-[#201B1C] text-lg font-semibold">

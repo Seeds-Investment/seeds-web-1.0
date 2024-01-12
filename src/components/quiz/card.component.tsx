@@ -50,7 +50,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                 {item.admission_fee === 0
                   ? t('quiz.free')
                   : item.admission_fee.toLocaleString('id-ID', {
-                      currency,
+                      currency: currency?.length > 0 ? currency : 'IDR',
                       style: 'currency'
                     })}
               </div>

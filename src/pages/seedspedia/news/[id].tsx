@@ -378,13 +378,13 @@ export default function ArticleDetailPage(): JSX.Element {
               <img
                 src={imageUrl}
                 alt="Image"
-                className="w-full object-cover rounded-2xl lg:h-[400px]"
+                className="w-full object-cover rounded-2xl lg:h-[676px]"
               />
             ) : (
               <img
                 src={defaultNews}
                 alt="Image"
-                className="w-full object-cover rounded-2xl lg:h-[400px]"
+                className="w-full object-cover rounded-2xl lg:h-[676px]"
               />
             )}
           </div>

@@ -118,7 +118,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [comment, setComment] = useState('');
-  const [showAllComments, setShowAllComments] = useState(false);
+  const [seeAllClicked, setSeeAllClicked] = useState(false);
   // const [liked, setLiked] = useState(false);
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
@@ -168,6 +168,35 @@ export default function ArticleDetailPage(): JSX.Element {
     void fetchData();
   }, []);
   const hotNewsItemClass = 'mb-2 me-12';
+
+  function LimitString({
+    text,
+    limit
+  }: {
+    text: string;
+    limit: number;
+  }): JSX.Element {
+    const [showFullText] = useState(false);
+
+    const truncatedText = showFullText ? text : text.slice(0, limit);
+
+    return (
+      <div>
+        <p className="text-sm font-normal text-[#7C7C7C] my-2">
+          {truncatedText}...
+        </p>
+        {!showFullText && text.length > limit && (
+          <button className="text-[#7555DA] text-base font-normal underline"></button>
+        )}
+      </div>
+    );
+  }
+
+  const stripHtmlTags = (html: any): string => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
+  };
 
   useEffect(() => {
     if (typeof id === 'string') {
@@ -333,13 +362,13 @@ export default function ArticleDetailPage(): JSX.Element {
   const imageUrl = articleDetail?.imageUrl;
 
   const isImageValid = isImageUrlValid(imageUrl);
-  const displayedComments = showAllComments
+  const displayedComments = seeAllClicked
     ? articleComment
     : articleComment?.slice(0, 3);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleSeeAllComments = () => {
-    setShowAllComments(true);
+    setSeeAllClicked(prevSeeAllClicked => !prevSeeAllClicked);
   };
 
   return (
@@ -390,8 +419,8 @@ export default function ArticleDetailPage(): JSX.Element {
               <path
                 d="M7.00293 11.0779L11.0029 2.07788C11.7986 2.07788 12.5616 2.39395 13.1243 2.95656C13.6869 3.51917 14.0029 4.28223 14.0029 5.07788V9.07788H19.6629C19.9528 9.0746 20.24 9.13438 20.5045 9.2531C20.769 9.37181 21.0045 9.54661 21.1948 9.76539C21.385 9.98417 21.5254 10.2417 21.6063 10.5201C21.6871 10.7986 21.7064 11.0912 21.6629 11.3779L20.2829 20.3779C20.2106 20.8548 19.9684 21.2895 19.6008 21.6019C19.2333 21.9143 18.7653 22.0833 18.2829 22.0779H7.00293M7.00293 11.0779V22.0779M7.00293 11.0779H4.00293C3.4725 11.0779 2.96379 11.2886 2.58872 11.6637C2.21364 12.0387 2.00293 12.5474 2.00293 13.0779V20.0779C2.00293 20.6083 2.21364 21.117 2.58872 21.4921C2.96379 21.8672 3.4725 22.0779 4.00293 22.0779H7.00293"
                 stroke="#3AC4A0"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           ) : (
@@ -409,8 +438,8 @@ export default function ArticleDetailPage(): JSX.Element {
               <path
                 d="M7.00293 11.0779L11.0029 2.07788C11.7986 2.07788 12.5616 2.39395 13.1243 2.95656C13.6869 3.51917 14.0029 4.28223 14.0029 5.07788V9.07788H19.6629C19.9528 9.0746 20.24 9.13438 20.5045 9.2531C20.769 9.37181 21.0045 9.54661 21.1948 9.76539C21.385 9.98417 21.5254 10.2417 21.6063 10.5201C21.6871 10.7986 21.7064 11.0912 21.6629 11.3779L20.2829 20.3779C20.2106 20.8548 19.9684 21.2895 19.6008 21.6019C19.2333 21.9143 18.7653 22.0833 18.2829 22.0779H7.00293M7.00293 11.0779V22.0779M7.00293 11.0779H4.00293C3.4725 11.0779 2.96379 11.2886 2.58872 11.6637C2.21364 12.0387 2.00293 12.5474 2.00293 13.0779V20.0779C2.00293 20.6083 2.21364 21.117 2.58872 21.4921C2.96379 21.8672 3.4725 22.0779 4.00293 22.0779H7.00293"
                 stroke="#262626"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           )}
@@ -498,7 +527,7 @@ export default function ArticleDetailPage(): JSX.Element {
           <div className="flex flex-row gap-3 my-6 w-full">
             <img
               src={userInfo.avatar}
-              className="xl:w-[75px] h-full rounded-full"
+              className="xl:w-[75px] w-[48px] h-[48px] xl:h-full rounded-full"
               alt=""
             />
             <div className="flex flex-col gap-2 w-full">
@@ -539,11 +568,11 @@ export default function ArticleDetailPage(): JSX.Element {
                 key={article?.id ?? index}
                 className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
               >
-                <div className="flex flex-row">
+                <div className="flex flex-row ">
                   <img
                     src={article?.avatar}
                     alt=""
-                    className="xl:w-[48px] xl:h-[48px] rounded-full"
+                    className="xl:w-[48px] xl:h-[48px] w-[48px] h-[48px] rounded-full"
                   />
                   <div className="xl:ml-4">
                     <h1 className="text-[#201B1C] text-lg font-semibold">
@@ -559,12 +588,12 @@ export default function ArticleDetailPage(): JSX.Element {
                 </p>
               </div>
             ))}
-            {articleDetail?.total_comments > 3 && !showAllComments && (
+            {articleDetail?.total_comments > 3 && (
               <button
                 className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
                 onClick={handleSeeAllComments}
               >
-                See All{' '}
+                {seeAllClicked ? 'close' : 'see all'}{' '}
                 <span className="ms-2">
                   <svg
                     width="13"
@@ -576,8 +605,8 @@ export default function ArticleDetailPage(): JSX.Element {
                     <path
                       d="M12.5 0.999999L6.5 7L0.5 1"
                       stroke="white"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </span>
@@ -593,7 +622,8 @@ export default function ArticleDetailPage(): JSX.Element {
       </div>
       <div className="">
         <Slider
-          slidesToShow={2.8}
+          slidesToShow={2}
+          slidesToScroll={1}
           speed={500}
           className="my-12 "
           initialSlide={1}
@@ -603,7 +633,7 @@ export default function ArticleDetailPage(): JSX.Element {
               breakpoint: 1024,
               settings: {
                 dots: true,
-                slidesToShow: 2.8
+                slidesToShow: 2
                 // slidesToScroll: 1
               }
             },
@@ -627,21 +657,36 @@ export default function ArticleDetailPage(): JSX.Element {
           {articles.map(article => (
             <div
               key={article.id}
-              className={` lg:pe-5 w-[200px] flex flex-col   cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
+              className={` lg:pe-5 w-[200px] flex  cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
             >
               <Link href={`/homepage/news/${article.id}`}>
                 <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">
                   <div className="flex-row">
                     <div className="flex justify-between flex-col">
-                      <div className="mb-auto">
-                        <p className="mt-2 font-bold text-base">
-                          {article.title}
-                        </p>
+                      <div className="p-2">
+                        <h1 className="bg-[#DCFCE4] text-xs font-semibold w-[65px] text-center text-[#3AC4A0] p-1 rounded-full">
+                          {article?.category}
+                        </h1>
+                        <h1 className="text-base font-semibold text-[#000] my-1">
+                          {article?.title !== undefined &&
+                          article.title.length > 45
+                            ? `${article.title.slice(0, 45)}...`
+                            : article?.title}
+                        </h1>
+                        <Link
+                          className="text-sm"
+                          href={`/homepage/articles/${article?.id ?? 0}`}
+                        >
+                          <LimitString
+                            text={stripHtmlTags(article?.content ?? '')}
+                            limit={80}
+                          />
+                        </Link>
                       </div>
 
                       <div>
-                        <div className="flex mt-2 justify-between">
-                          <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
+                        <div className="flex  justify-between">
+                          <p className="font-normal text-sm text-[#8A8A8A]">
                             {formatDateToIndonesian(
                               articleDetail?.publicationDate
                             )}
@@ -651,18 +696,18 @@ export default function ArticleDetailPage(): JSX.Element {
                     </div>
                   </div>
                   <div>
-                    <div className="mt-1 w-[100px] h-[100px]">
+                    <div className="mt-1 w-[120px] h-[120px]">
                       {isImageUrlValid(article.imageUrl) ? (
                         <img
                           src={article?.imageUrl}
                           alt=""
-                          className="w-[75px] h-full object-cover rounded-2xl"
+                          className="w-[100px] h-full object-cover rounded-2xl"
                         />
                       ) : (
                         <img
                           src={defaultNews}
                           alt=""
-                          className="w-[75px] h-full object-cover rounded-2xl"
+                          className="w-[100px] h-full object-cover rounded-2xl"
                         />
                       )}
                     </div>

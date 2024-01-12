@@ -32,7 +32,7 @@ const DoneQuiz: React.FC = () => {
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
   };
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const fetchQuizReview = async (): Promise<void> => {
@@ -211,7 +211,13 @@ const DoneQuiz: React.FC = () => {
                 <div className="flex justify-center mt-4">
                   <div className="w-2/3 gap-4 flex flex-col">
                     <button
-                      onClick={() => {}}
+                      onClick={() => {
+                        router
+                          .push(`/play/quiz/${id as string}/leaderboard`)
+                          .catch(err => {
+                            console.log(err);
+                          });
+                      }}
                       className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                     >
                       <div
@@ -252,7 +258,7 @@ const DoneQuiz: React.FC = () => {
                           className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                         />
                         <div className="z-10 text-center text-xl font-semibold text-white">
-                          {t('quiz.playAgain')}
+                          {loading ? 'Loading...' : t('quiz.playAgain')}
                         </div>
                       </button>
                     )}

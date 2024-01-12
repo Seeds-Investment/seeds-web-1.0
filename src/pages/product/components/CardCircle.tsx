@@ -105,7 +105,7 @@ export default function CardCircle(): React.ReactElement {
                           <path
                             d="M7.96338 9.87622V19.0782"
                             stroke="#3AC4A0"
-                            stroke-width="2.20847"
+                            strokeWidth="2.20847"
                           />
                         </svg>
                         <h1 className="text-lg font-semibold text-white text-center">

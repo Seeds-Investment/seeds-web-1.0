@@ -173,7 +173,10 @@ const QuizDetail = (): React.ReactElement => {
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency,
+                      currency:
+                        userInfo?.preferredCurrency?.length > 0
+                          ? userInfo?.preferredCurrency
+                          : 'IDR',
                       style: 'currency'
                     })}
                   </td>
@@ -222,7 +225,10 @@ const QuizDetail = (): React.ReactElement => {
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee.toLocaleString('id-ID', {
-                  currency: userInfo?.preferredCurrency,
+                  currency:
+                    userInfo?.preferredCurrency?.length > 0
+                      ? userInfo?.preferredCurrency
+                      : 'IDR',
                   style: 'currency'
                 })}
           </div>

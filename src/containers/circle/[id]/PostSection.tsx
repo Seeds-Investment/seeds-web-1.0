@@ -163,7 +163,9 @@ const PostSection: React.FC<props> = ({
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
-    console.log('success', additionalPostData);
+    if (isShare) {
+      console.log('success', additionalPostData);
+    }
   }
   // useEffect(() => {
   //   const fetchData = async (): Promise<void> => {
@@ -186,7 +188,9 @@ const PostSection: React.FC<props> = ({
   };
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+
   const handleCopyClick = async (text: string): Promise<void> => {
+    console.log(process.env.NEXT_PUBLIC_DOMAIN);
     const textToCopy = `${baseUrl}/connect/comment/${text}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
@@ -364,10 +368,13 @@ const PostSection: React.FC<props> = ({
         .filter(Boolean);
 
       return (
-        <div className="flex justify-start flex-col" key={10000}>
-          <p className="flex break-words overflow-hidden flex-wrap">
+        <div
+          className="flex justify-start flex-col"
+          key={Math.floor(Math.random() * 100000000)}
+        >
+          <div className="flex break-words overflow-hidden flex-wrap">
             {renderedParts}
-          </p>
+          </div>
         </div>
       );
     });
@@ -1002,7 +1009,7 @@ const PostSection: React.FC<props> = ({
                                 ? item.logo
                                 : item?.avatar
                             }
-                            alt="image"
+                            alt="image thumbnail"
                             className={`${
                               item?.thumbnailType === 'asset'
                                 ? 'object-contain'

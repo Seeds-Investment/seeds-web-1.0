@@ -114,8 +114,8 @@ const ChooseCurrencyPopup: React.FC<props> = ({ open, handleOpen }) => {
                 <path
                   d="M5 7.5L10 12.5L15 7.5"
                   stroke="#262626"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>

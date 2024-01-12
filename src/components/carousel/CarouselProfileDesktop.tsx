@@ -65,9 +65,9 @@ const CarouselProfileDesktop: React.FC = () => {
           <path
             d="M4 8.00004L6.66667 10.6667L12 5.33337"
             stroke="white"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </g>
         <defs>

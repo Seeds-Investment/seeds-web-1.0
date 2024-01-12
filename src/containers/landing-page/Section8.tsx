@@ -239,8 +239,8 @@ export default function Section3(): React.ReactElement {
                 <path
                   d="M18 9L12 15L6 9"
                   stroke="white"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>

@@ -211,7 +211,13 @@ const DoneQuiz: React.FC = () => {
                 <div className="flex justify-center mt-4">
                   <div className="w-2/3 gap-4 flex flex-col">
                     <button
-                      onClick={() => {}}
+                      onClick={() => {
+                        router
+                          .push(`/play/quiz/${id as string}/leaderboard`)
+                          .catch(err => {
+                            console.log(err);
+                          });
+                      }}
                       className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                     >
                       <div

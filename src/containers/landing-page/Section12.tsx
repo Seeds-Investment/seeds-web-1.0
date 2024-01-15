@@ -132,9 +132,9 @@ export default function Section12(): React.ReactElement {
               className="-mt-[300px] xl:block hidden w-full h-full"
             /> */}
             <img
-              src="/assets/images/community.png"
+              src="/assets/images/IlustCommunities.png"
               alt=""
-              className="-mt-[200px] xl:hidden block w-full h-full"
+              className=" xl:hidden block w-full h-full"
             />
           </div>
         </div>

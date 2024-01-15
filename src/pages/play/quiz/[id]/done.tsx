@@ -112,10 +112,13 @@ const DoneQuiz: React.FC = () => {
     const end = new Date(endTime).getTime();
 
     const diff = end - start;
-    const minutes = Math.floor(diff / 60000);
-    const seconds = Math.floor((diff % 60000) / 1000);
-
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const minutes =
+      (detailQuiz?.duration_in_minute ?? 6000) -
+      Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return `${Math.abs(minutes) < 10 ? `0${minutes}` : minutes}:${
+      Math.abs(seconds) < 10 ? `0${seconds}` : seconds
+    }`;
   }
 
   return (
@@ -125,7 +128,7 @@ const DoneQuiz: React.FC = () => {
     >
       {detailQuiz === undefined && loading && <Loading />}
       <ReccomendationCirclePopup open={isOpen} handleOpen={handleOpen} />
-      <QuizLayoutComponent enableScroll cancelButton>
+      <QuizLayoutComponent enableScroll={false} cancelButton>
         <div className="w-full h-fit font-poppins text-white text-center lg:relative lg:bottom-20">
           <div className="flex flex-col w-full px-6 items-center">
             <div className="flex justify-center">

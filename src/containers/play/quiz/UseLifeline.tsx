@@ -105,7 +105,7 @@ const UseLifeline = ({
             </div>
           </div>
         </div>
-        <div className="lg:w-[325px] w-full h-[538px] flex items-center justify-center">
+        <div className="lg:w-[325px] w-full h-[560px] flex items-center justify-center">
           {useLifelineState?.lifeline === LifelinesEnum.PHONE ? (
             <Phone
               useLifelineState={useLifelineState}
@@ -181,7 +181,7 @@ const Phone = ({
     return `${prefix}. ${option?.option}`;
   };
   return (
-    <div className="lg:w-[325px] w-full h-[538px] flex items-center justify-center relative bg-white rounded-2xl p-3.5 mt-10">
+    <div className="lg:w-[325px] w-full h-[560px] flex items-center justify-center relative bg-white rounded-2xl p-3.5 mt-14">
       <div className="w-[380px] absolute -top-14">
         <Image
           src={TheAnswer}

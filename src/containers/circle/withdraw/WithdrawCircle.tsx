@@ -5,6 +5,7 @@ import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getCircleIncome } from '@/repository/circle.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Button,
@@ -62,6 +63,22 @@ const WithdrawCircle: React.FC<props> = ({
   changeValue,
   requiredForm
 }) => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
   const width = useWindowInnerWidth();
   const [isLoading, setIsLoading] = useState(false);
   const [incomes, setIncomes] = useState<Income[]>();
@@ -129,7 +146,11 @@ const WithdrawCircle: React.FC<props> = ({
                   {t('circle.banner.title3')}
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
-                  {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
+                  {isLoadingBalance
+                    ? 'Loading...'
+                    : `${
+                        userInfo?.preferredCurrency as string
+                      } ${balance.toFixed(2)}`}
                 </Typography>
               </CardBody>
             </Card>
@@ -143,7 +164,7 @@ const WithdrawCircle: React.FC<props> = ({
                 name="amount"
                 onChange={changeValue}
                 value={formRequest.amount}
-                placeholder="IDR 0"
+                placeholder={`${userInfo?.preferredCurrency as string} 0`}
               />
               <hr />
               {requiredForm.nominal !== '' && (

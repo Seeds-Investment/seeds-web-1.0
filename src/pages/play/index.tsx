@@ -71,7 +71,7 @@ const Player = (): React.ReactElement => {
     try {
       setLoading(true);
       const res = await getAllQuiz({ ...params, status: activeTab, currency });
-      if (res.data !== undefined) {
+      if (res.data !== null) {
         const list: IQuiz[] = res.data;
         setListQuiz(list);
       }
@@ -245,7 +245,7 @@ const Player = (): React.ReactElement => {
                     </label>
                   </div>
                 </div>
-                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
                   {listQuiz?.length === 0 && !loading ? (
                     <div className="col-span-3">
                       <Image

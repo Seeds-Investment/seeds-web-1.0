@@ -63,10 +63,18 @@ function App({
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/faq');
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   if (loginLayouts) {
     return (
       <Provider store={store}>
         <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+        <iframe
+          src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
+          allow="autoplay"
+          id="audio"
+          style={{ display: 'none' }}
+        ></iframe>
         <LanguageProvider>
           <LoadingProvider>
             <ErrorBEProvider>

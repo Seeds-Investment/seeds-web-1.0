@@ -5,6 +5,7 @@ import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, joinQuiz } from '@/repository/quiz.repository';
@@ -38,6 +39,21 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [showAlertPrice, setShowAlertPrice] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_welcome_entry_signatures.mp3',
+        isAutoPlay: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
+
   const lifelinesDesc = new Map<LifelinesEnum, { text: string; title: string }>(
     [
       [LifelinesEnum['50_50'], { text: t('quiz.fiftyfifty'), title: '50:50' }],

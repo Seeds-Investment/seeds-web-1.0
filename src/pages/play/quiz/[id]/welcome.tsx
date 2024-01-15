@@ -1,5 +1,7 @@
+'use client';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
 import Welcome from '../../../../assets/play/quiz/Welcome.json';
@@ -16,6 +18,20 @@ const WelcomeQuiz = () => {
       });
     }, 2000);
   };
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_welcome_entry_signatures.mp3',
+        isAutoPlay: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
 
   timeOut();
 

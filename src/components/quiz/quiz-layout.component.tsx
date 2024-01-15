@@ -75,7 +75,11 @@ const QuizLayout: React.FC<Props> = ({
             )}
           </div>
         ) : null}
-        <div className={`${enableScroll ? 'h-full' : 'flex-grow'} w-full`}>
+        <div
+          className={`${
+            enableScroll ? 'h-full overflow-auto scroll-hidden' : 'flex-grow'
+          } w-full`}
+        >
           {children}
         </div>
       </div>

@@ -30,7 +30,7 @@ const VirtualAccountGuide = ({
   const userName = 'Jeri';
   const admissionFee = dataPost?.premium_fee * numberMonth;
   const adminFee = dataPost?.admin_fee as number;
-  const totalFee = admissionFee + adminFee;
+  const totalFee = parseInt(`${admissionFee + adminFee}`);
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const bankName = payment?.payment_method?.split('_')[0];
   return (

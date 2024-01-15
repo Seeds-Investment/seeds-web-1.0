@@ -9,6 +9,7 @@ import {
   getCircleTransactionIn,
   getCircleTransactionOut
 } from '@/repository/circle.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Card,
   CardBody,
@@ -64,7 +65,22 @@ const TransactionHistory = (): JSX.Element => {
     { label: `${t('circle.withdraw.history.tab1')}`, value: 'income' },
     { label: `${t('circle.withdraw.history.tab2')}`, value: 'outcome' }
   ];
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
 
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
   const handleSortBy = (event: any): void => {
     setFilterOutcome(prevState => ({
       ...prevState,
@@ -173,7 +189,11 @@ const TransactionHistory = (): JSX.Element => {
                   {t('circle.banner.title3')}
                 </Typography>
                 <Typography color="white" className="text-2xl font-semibold">
-                  {isLoadingBalance ? 'Loading...' : `IDR ${balance}`}
+                  {isLoadingBalance
+                    ? 'Loading...'
+                    : `${
+                        userInfo?.preferredCurrency as string
+                      } ${balance.toFixed(2)}`}
                 </Typography>
               </CardBody>
             </Card>
@@ -209,7 +229,11 @@ const TransactionHistory = (): JSX.Element => {
                           {!isLoadingTransaction ? (
                             transactionIn?.length !== 0 ? (
                               transactionIn?.map((data, idx) => (
-                                <CardTransaction data={data} key={idx} />
+                                <CardTransaction
+                                  data={data}
+                                  key={idx}
+                                  userInfo={userInfo}
+                                />
                               ))
                             ) : (
                               <div className="flex flex-row items-center justify-center w-full p-4 rounded-none bg-[#F9F9F9]">
@@ -249,7 +273,11 @@ const TransactionHistory = (): JSX.Element => {
                             transactionOut?.length !== 0 ? (
                               transactionOut?.map((data, idx) => (
                                 <>
-                                  <CardTransaction data={data} key={idx} />
+                                  <CardTransaction
+                                    data={data}
+                                    userInfo={userInfo}
+                                    key={idx}
+                                  />
                                 </>
                               ))
                             ) : (

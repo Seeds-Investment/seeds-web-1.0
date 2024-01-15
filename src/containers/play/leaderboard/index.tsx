@@ -109,9 +109,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             Quiz
           </button>
         </div>
-        <div
-          className="relative flex justify-center bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl"
-        >
+        <div className="relative flex justify-center bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl">
           <div className="flex justify-center pt-3">
             <div className="justify-center mt-auto items-center text-center">
               <div className="w-full justify-center">

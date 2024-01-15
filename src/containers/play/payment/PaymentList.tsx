@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
@@ -130,7 +131,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           duration:
             numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
           payment_request: {
-            amount: totalAmount,
+            amount: parseInt(`${totalAmount}`),
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
@@ -180,8 +181,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       _admissionFee =
         dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
       _adminFee = dataPost?.admin_fee as number;
-      _totalFee = _admissionFee + _adminFee;
-      console.log(_admissionFee, _adminFee, _totalFee);
+      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
 
     if (option.payment_type === 'qris') {
@@ -243,6 +243,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
+            userInfo={userInfo}
           />
         ) : (
           <VirtualAccountGuide

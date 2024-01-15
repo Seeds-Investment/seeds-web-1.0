@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { Input, Typography } from '@material-tailwind/react';
@@ -17,13 +18,15 @@ interface WalletFormProps {
   ) => Promise<void>;
   dataPost: any;
   numberMonth?: number;
+  userInfo: any;
 }
 
 const WalletForm = ({
   payment,
   handlePay,
   dataPost,
-  numberMonth
+  numberMonth,
+  userInfo
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ const WalletForm = ({
     } else {
       _admissionFee = dataPost?.premium_fee * (numberMonth ?? 1);
       _adminFee = dataPost?.admin_fee as number;
-      _totalFee = _admissionFee + _adminFee;
+      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
@@ -92,24 +95,26 @@ const WalletForm = ({
             ? 'Circle Membership'
             : t(`${translationId}.admissionFeeLabel`)
         }
-        value={`IDR ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency as string} ${admissionFee}`}
         className="mb-2"
       />
       {dataPost.quiz ? (
         <InlineText
           label={t('quiz.lifeline')}
-          value={`IDR ${Number(dataPost?.quiz?.fee)}`}
+          value={`${userInfo?.preferredCurrency as string} ${Number(
+            dataPost?.quiz?.fee
+          )}`}
           className="mb-2"
         />
       ) : null}
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`IDR ${adminFee}`}
+        value={`${userInfo?.preferredCurrency as string} ${adminFee}`}
         className="mb-4"
       />
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-5">
-        {`IDR ${totalFee}`}
+        {`${userInfo?.preferredCurrency as string} ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton

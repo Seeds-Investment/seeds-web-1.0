@@ -188,7 +188,7 @@ export default function PlayAssetsPage(): React.ReactElement {
   }, [searchInput.length]);
 
   return (
-    <div className="sm:mx-0 mx-4">
+    <div className="sm:mx-0 mx-4 bg-white p-5 rounded-xl">
       <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
         <div className="flex flex-col">
           <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black">
@@ -282,7 +282,7 @@ export default function PlayAssetsPage(): React.ReactElement {
       </div>
       <div className="flex justify-center pt-4">
         <div className="flex justify-start">
-          <div className="flex justify-center flex-col absolute pl-2 pt-2">
+          <div className="flex justify-center flex-col relative left-8">
             <Image
               alt="Search"
               src={SearchMember}

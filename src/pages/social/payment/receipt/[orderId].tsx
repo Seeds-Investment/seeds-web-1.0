@@ -13,7 +13,7 @@ import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Pending, receiptXIcon } from 'public/assets/circle';
+import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 
 interface props {
@@ -57,9 +57,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<any>([]);
-  console.log(_, orderDetail?.transactionStatus);
-  const bigText = 'text-2xl font-semibold text-white text-center';
-  const normalText = 'text-sm font-normal text-white text-center';
+  console.log(_);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -116,11 +114,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     });
   }
 
-  const validationError: boolean =
-    orderDetail?.transactionStatus !== 'PENDING' &&
-    orderDetail?.transactionStatus !== 'CREATED' &&
-    orderDetail?.transactionStatus !== 'SUCCEEDED';
-
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
@@ -167,8 +160,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') && (
+                {orderDetail?.transactionStatus === 'PENDING' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -179,8 +171,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       />
                     </div>
                   </div>
-                )}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' && (
+                ) : (
                   <Image
                     src={CeklisCircle.src}
                     alt="AVATAR"
@@ -188,53 +179,25 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     height={80}
                   />
                 )}
-                {validationError && (
-                  <Image
-                    src={receiptXIcon.src}
-                    alt="AVATAR"
-                    width={80}
-                    height={80}
-                  />
-                )}
               </div>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? normalText
-                    : bigText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  'Pending Paid Membership'}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' && 'Successful'}
-                {validationError && 'Payment Failed'}
+              <Typography className="text-sm font-normal text-white text-center">
+                {orderDetail?.transactionStatus === 'PENDING'
+                  ? 'Pending Paid Membership'
+                  : 'Successful'}
               </Typography>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? bigText
-                    : normalText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  `${orderDetail?.currency} ${formatCurrency(
-                    orderDetail?.grossAmount
-                  )}`}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  'Your premium circle payment has been successfully processed'}
-                {validationError &&
-                  'We can’t process your payment, Check your internet connection and try again.'}
+              <Typography className="text-2xl font-semibold text-white text-center">
+                {orderDetail?.transactionStatus === 'PENDING'
+                  ? `${orderDetail?.currency} ${formatCurrency(
+                      orderDetail?.grossAmount
+                    )}`
+                  : 'Successful'}
               </Typography>
+              <Typography className="text-sm font-normal text-white text-center">
+                {orderDetail?.transactionStatus !== 'PENDING' &&
+                  'Your recurring has been saved!'}
+              </Typography>
+
               <Card className="p-5 mt-8 bg-white w-full">
-                {validationError && (
-                  <Typography className="text-xs font-semibold text-[#FF3838] text-center">
-                    Failed payment circle premium
-                  </Typography>
-                )}
                 <Typography className="text-sm font-semibold text-[#BDBDBD] text-center">
                   {orderDetail?.vaNumber !== undefined
                     ? 'Your Virtual Account Number'
@@ -281,7 +244,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 </div>
                 <div className="flex flex-row justify-between my-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    Circle Membership
+                    Content Premium
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
@@ -367,9 +330,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
-                    void router.push(
-                      `/connect/post/${orderDetail?.itemId as string}`
-                    );
+                    void router.push(`/social`);
                   }}
                 >
                   Close

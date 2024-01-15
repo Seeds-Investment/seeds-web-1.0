@@ -1317,7 +1317,8 @@ export default {
       text4: 'Investing',
       text6: 'Play Now',
       text7: 'Improve Investing Skills From Experts',
-      text8: 'Play Games & Win Real Money!'
+      text8: 'Play Games & Win Real Money!',
+      text9: 'Level Up Your Knowledge & Be the Best!'
     },
     section2: {
       text1: 'Social',
@@ -1583,6 +1584,9 @@ export default {
     open: 'Open',
     active: 'Active',
     ended: 'Ended',
-    canceled: 'Cancelled'
+    canceled: 'Cancelled',
+    quizDone1: 'One Step Closer to the Win.',
+    quizDone2:
+      'Our recommended circle that will boost your performance in tournament!'
   }
 };

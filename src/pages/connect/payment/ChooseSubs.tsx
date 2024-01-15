@@ -1,9 +1,11 @@
 import Button from '@/components/ui/button/Button';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
+import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
+import { useEffect, useState } from 'react';
 
 interface props {
   dataPost: any;
@@ -18,6 +20,23 @@ const ChooseSubs: React.FC<props> = ({
   monthVal,
   setMonthVal
 }) => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
   const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
   const height = useWindowInnerHeight();
   const handleInputChange = (
@@ -111,7 +130,8 @@ const ChooseSubs: React.FC<props> = ({
             <div className="flex justify-center">
               <div className="flex flex-col pb-2">
                 <h1 className="pt-4 text-center font-poppins text-base font-semibold">
-                  Rp {formatCurrency(dataPost?.premium_fee * numberMonth())}
+                  {userInfo?.preferredCurrency}{' '}
+                  {formatCurrency(dataPost?.premium_fee * numberMonth())}
                 </h1>
                 <h1 className="pt-2 text-center font-poppins text-base font-light">
                   Get full access according to your subscription time

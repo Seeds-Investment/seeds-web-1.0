@@ -22,7 +22,6 @@ import {
 import { getPlayById } from '@/repository/play.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
-import { Transition } from '@headlessui/react';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -163,7 +162,9 @@ const PostSection: React.FC<props> = ({
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
-    console.log('success', additionalPostData);
+    if (isShare) {
+      console.log('success', additionalPostData);
+    }
   }
   // useEffect(() => {
   //   const fetchData = async (): Promise<void> => {
@@ -186,7 +187,9 @@ const PostSection: React.FC<props> = ({
   };
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+
   const handleCopyClick = async (text: string): Promise<void> => {
+    console.log(process.env.NEXT_PUBLIC_DOMAIN);
     const textToCopy = `${baseUrl}/connect/comment/${text}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
@@ -364,10 +367,13 @@ const PostSection: React.FC<props> = ({
         .filter(Boolean);
 
       return (
-        <div className="flex justify-start flex-col" key={10000}>
-          <p className="flex break-words overflow-hidden flex-wrap">
+        <div
+          className="flex justify-start flex-col"
+          key={Math.floor(Math.random() * 100000000)}
+        >
+          <div className="flex break-words overflow-hidden flex-wrap">
             {renderedParts}
-          </p>
+          </div>
         </div>
       );
     });
@@ -731,26 +737,6 @@ const PostSection: React.FC<props> = ({
     }
   }, []);
 
-  const renderIsCopied = (): JSX.Element => {
-    return (
-      <Transition
-        show={isCopied}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="z-[100000] fixed left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-[0 2px 8px bg-black/20 rounded-xl">
-          <Typography className="font-poppins text-black p-1">
-            Copied!
-          </Typography>
-        </div>
-      </Transition>
-    );
-  };
-
   const [expanded, setExpanded] = useState(false);
   const redirectToPaymentPostPremium = (): any => {
     router.push(`/social/payment/${dataPost.id as number}`).catch(error => {
@@ -786,8 +772,6 @@ const PostSection: React.FC<props> = ({
 
   return (
     <>
-      {isCopied && renderIsCopied()}
-
       <div
         className="w-full pb-5 mt-5 border-b border-neutral-ultrasoft"
         key={`${dataPost.id as string}${Math.floor(Math.random() * 100000000)}`}
@@ -1002,7 +986,7 @@ const PostSection: React.FC<props> = ({
                                 ? item.logo
                                 : item?.avatar
                             }
-                            alt="image"
+                            alt="image thumbnail"
                             className={`${
                               item?.thumbnailType === 'asset'
                                 ? 'object-contain'
@@ -1261,6 +1245,44 @@ const PostSection: React.FC<props> = ({
                     </div>
                   )}
                 </div>
+                {isCopied && (
+                  <div className="flex items-center">
+                    <div className="flex gap-2 px-2 py-3 bg-white border border-[#E9E9E9] rounded-lg shadow-md absolute">
+                      <Typography className="font-poppins font-normal text-base text-black">
+                        {'Copied'}
+                      </Typography>
+                      <div className="flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <g clipPath="url(#clip0_5900_68690)">
+                            <path
+                              d="M14.6667 7.38668V8.00001C14.6658 9.43763 14.2003 10.8365 13.3395 11.9879C12.4788 13.1393 11.2688 13.9817 9.89022 14.3893C8.5116 14.7969 7.03815 14.7479 5.68963 14.2497C4.3411 13.7515 3.18975 12.8307 2.40729 11.6247C1.62482 10.4187 1.25317 8.99205 1.34776 7.55755C1.44235 6.12305 1.99812 4.75756 2.93217 3.66473C3.86621 2.57189 5.1285 1.81027 6.53077 1.49344C7.93304 1.17662 9.40016 1.32157 10.7133 1.90668"
+                              stroke="#3AC4A0"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M14.6667 2.66666L8 9.33999L6 7.33999"
+                              stroke="#3AC4A0"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_5900_68690">
+                              <rect width="16" height="16" fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="flex gap-5">
                 <div className="flex items-center gap-1">

@@ -31,7 +31,7 @@ export default function Section1(): React.ReactElement {
   const titles = [
     t('landingV2.section1.text7'),
     t('landingV2.section1.text8'),
-    t('landingV2.section1.text7')
+    t('landingV2.section1.text9')
   ];
 
   const settings = {

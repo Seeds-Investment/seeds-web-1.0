@@ -9,6 +9,7 @@ import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
+import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useQuiz from '@/hooks/useQuiz';
 import {
   fetchUseLifeline,
@@ -74,6 +75,8 @@ const QuizPlay = ({
   if (id === undefined) {
     console.log(useLifelineState, quitQuiz);
   }
+
+  useOnLeavePageConfirmation(currentPage + 1 === quizQuestions.length);
 
   const lifelinesDesc = new Map<LifelinesEnum, string>([
     [LifelinesEnum['50_50'], t('quiz.fiftyfifty')],
@@ -215,12 +218,8 @@ const QuizPlay = ({
       <QuizLayoutComponent
         centerContent={
           <div className="flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
-            <div className="text-base lg:text-2xl font-semibold">
-              {currentPage + 1 <= 5
-                ? 'Easy'
-                : currentPage + 1 <= 10
-                ? 'Medium'
-                : 'Hard'}
+            <div className="text-base lg:text-2xl font-semibold capitalize">
+              {quizQuestions?.[currentPage]?.difficulty}
             </div>
             <div className="text-sm lg:text-xl">
               {currentPage + 1}/{quizQuestions.length}

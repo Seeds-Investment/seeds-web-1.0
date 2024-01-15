@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
@@ -73,10 +74,10 @@ const QuizDetail = (): React.ReactElement => {
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${baseUrl}play/quiz/${detailQuiz?.id}`;
+    const textToCopy = `${baseUrl}/play/quiz/${detailQuiz?.id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Quiz link copied!');
     });
@@ -172,7 +173,10 @@ const QuizDetail = (): React.ReactElement => {
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency,
+                      currency:
+                        userInfo?.preferredCurrency?.length > 0
+                          ? userInfo?.preferredCurrency
+                          : 'IDR',
                       style: 'currency'
                     })}
                   </td>
@@ -221,7 +225,10 @@ const QuizDetail = (): React.ReactElement => {
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee.toLocaleString('id-ID', {
-                  currency: userInfo?.preferredCurrency,
+                  currency:
+                    userInfo?.preferredCurrency?.length > 0
+                      ? userInfo?.preferredCurrency
+                      : 'IDR',
                   style: 'currency'
                 })}
           </div>
@@ -249,4 +256,4 @@ const QuizDetail = (): React.ReactElement => {
   );
 };
 
-export default QuizDetail;
+export default withAuth(QuizDetail);

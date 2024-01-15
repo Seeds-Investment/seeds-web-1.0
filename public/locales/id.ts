@@ -1242,7 +1242,8 @@ export default {
       text4: 'Investing',
       text6: 'Main Sekarang',
       text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
-      text8: 'Mainkan Gamenya & Dapatkan Uangnya!'
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!',
+      text9: 'Tingkatkan Pengetahuanmu & Jadilah Yang Terbaik!'
     },
     section2: {
       text1: 'Social',
@@ -1506,6 +1507,9 @@ export default {
     open: 'Terbuka',
     active: 'Berjalan',
     ended: 'Berakhir',
-    canceled: 'Dibatalkan'
+    canceled: 'Dibatalkan',
+    quizDone1: 'Selangkah lagi menuju kemenangan.',
+    quizDone2:
+      'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!'
   }
 };

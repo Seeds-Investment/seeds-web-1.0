@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
@@ -129,7 +131,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           duration:
             numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
           payment_request: {
-            amount: totalAmount,
+            amount: parseInt(`${totalAmount}`),
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
@@ -165,6 +167,30 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
     }
   };
 
+  const onSubmit = () => {
+    let _admissionFee = 0;
+    let _adminFee = 0;
+    let _totalFee = 0;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (dataPost.quiz) {
+      _admissionFee = dataPost?.quiz?.admission_fee;
+      _adminFee = 0;
+      _totalFee =
+        Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
+    } else {
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
+      _adminFee = dataPost?.admin_fee as number;
+      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
+    }
+
+    if (option.payment_type === 'qris') {
+      void handlePay(option.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else {
+      setOpenDialog(true);
+    }
+  };
+
   const renderLoading = (): JSX.Element => <Loading />;
 
   const renderContent = (): JSX.Element => (
@@ -185,13 +211,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           onChange={setOption}
           currentValue={option}
         />
-        <SubmitButton
-          disabled={option.id == null}
-          fullWidth
-          onClick={() => {
-            setOpenDialog(true);
-          }}
-        >
+        <SubmitButton disabled={option.id == null} fullWidth onClick={onSubmit}>
           {t('PlayPayment.button')}
         </SubmitButton>
       </div>
@@ -223,6 +243,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
+            userInfo={userInfo}
           />
         ) : (
           <VirtualAccountGuide

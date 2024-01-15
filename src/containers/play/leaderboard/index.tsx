@@ -3,6 +3,7 @@ import { getLeaderBoardGlobal } from '@/repository/quiz.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+// import bgleaderboard from '../../../../public/assets/images/bgleaderboard.png';
 import rank1Box from '../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../public/assets/images/rank3Box.svg';
@@ -210,7 +211,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
         </div>
         <div
           className={
-            'border-2 rounded-xl border-[#3AC4A0] w-full p-3 mt-5 mb-2 '
+            'hidden border-2 rounded-xl border-[#3AC4A0] w-full p-3 mt-5 mb-2 '
           }
         >
           <div className="flex justify-between">

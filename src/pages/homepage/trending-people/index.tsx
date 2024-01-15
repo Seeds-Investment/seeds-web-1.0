@@ -151,9 +151,9 @@ export default function PeopleList(): React.ReactElement {
                               <path
                                 d="M3 6L5 8L9 4"
                                 stroke="white"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </g>
                             <defs>

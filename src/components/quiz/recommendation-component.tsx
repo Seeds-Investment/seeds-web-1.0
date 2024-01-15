@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { DocumentSVG, LikeSVG, MemberSVG } from 'public/assets/images';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import CCard from '../CCard';
 interface props {
@@ -19,6 +20,7 @@ interface props {
   handleOpen: () => void;
 }
 const ReccomendationCirclePopup: React.FC<props> = ({ open, handleOpen }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const width = useWindowInnerWidth();
   const [circle, setCircle] = useState<any[]>([]);
@@ -87,8 +89,8 @@ const ReccomendationCirclePopup: React.FC<props> = ({ open, handleOpen }) => {
       <DialogHeader className="p-0 font-poppins my-4">
         <div className="flex flex-col w-full gap-1">
           <div className="flex justify-between w-full">
-            <Typography className="text-lg font-poppins font-semibold text-black">
-              One Step Closer to the Win!
+            <Typography className="text-lg text-start font-poppins font-semibold text-black">
+              {t('quiz.quizDone1')}
             </Typography>
             <div className="flex items-center">
               <Image
@@ -103,8 +105,7 @@ const ReccomendationCirclePopup: React.FC<props> = ({ open, handleOpen }) => {
           </div>
           <div className="flex justify-start">
             <Typography className="text-sm text-start font-poppins font-normal text-[#7C7C7C">
-              Our recommended circle that will boost your performance in your
-              tournament!
+              {t('quiz.quizDone2')}
             </Typography>
           </div>
         </div>
@@ -195,7 +196,7 @@ const ReccomendationCirclePopup: React.FC<props> = ({ open, handleOpen }) => {
                                 });
                             }}
                           >
-                            Join Circle +
+                            {t('quiz.join')} Circle +
                           </Button>
                         </div>
                       </div>

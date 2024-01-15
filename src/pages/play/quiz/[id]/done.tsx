@@ -6,6 +6,7 @@ import Loading from '@/components/popup/Loading';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import ReccomendationCirclePopup from '@/components/quiz/recommendation-component';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -18,10 +19,12 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const DoneQuiz: React.FC = () => {
   useOnLeavePageConfirmation(false);
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const router = useRouter();
   const id = router.query.id;
@@ -29,7 +32,7 @@ const DoneQuiz: React.FC = () => {
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
   };
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const fetchQuizReview = async (): Promise<void> => {
@@ -155,12 +158,12 @@ const DoneQuiz: React.FC = () => {
                 </div>
                 <div className="flex justify-center mt-2">
                   <Typography className="text-base font-poppins font-normal text-[#3AC4A0]">
-                    Your Current Rank : #{QuizReview?.rank}
+                    {t('quiz.currentRank')} : #{QuizReview?.rank}
                   </Typography>
                 </div>
                 <div className="flex justify-center mt-2">
                   <Typography className="text-xs font-poppins font-normal text-[#3C49D6]">
-                    Your remaining time{' '}
+                    {t('quiz.remainingTime')}{' '}
                     {calculateTimeDifference(
                       QuizReview?.started_at as string,
                       QuizReview?.ended_at as string
@@ -176,7 +179,7 @@ const DoneQuiz: React.FC = () => {
                     </div>
                     <div className="flex justify-center">
                       <Typography className="text-xs font-poppins font-normal text-white">
-                        Question
+                        {t('quiz.questions')}
                       </Typography>
                     </div>
                   </CCard>
@@ -188,7 +191,7 @@ const DoneQuiz: React.FC = () => {
                     </div>
                     <div className="flex justify-center">
                       <Typography className="text-xs font-poppins font-normal text-white">
-                        Correct
+                        {t('quiz.correct')}
                       </Typography>
                     </div>
                   </CCard>
@@ -200,7 +203,7 @@ const DoneQuiz: React.FC = () => {
                     </div>
                     <div className="flex justify-center">
                       <Typography className="text-xs font-poppins font-normal text-white">
-                        Incorrect
+                        {t('quiz.incorrect')}
                       </Typography>
                     </div>
                   </CCard>
@@ -208,14 +211,20 @@ const DoneQuiz: React.FC = () => {
                 <div className="flex justify-center mt-4">
                   <div className="w-2/3 gap-4 flex flex-col">
                     <button
-                      onClick={() => {}}
+                      onClick={() => {
+                        router
+                          .push(`/play/quiz/${id as string}/leaderboard`)
+                          .catch(err => {
+                            console.log(err);
+                          });
+                      }}
                       className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                     >
                       <div
                         className={`h-12 w-full bg-[#67EB00] rounded-full absolute inset-0`}
                       />
                       <div className="z-10 text-center text-xl font-semibold text-white">
-                        {'Leaderboard'}
+                        {t('quiz.leaderboard')}
                       </div>
                     </button>
                     {detailQuiz?.admission_fee === 0 ? (
@@ -231,7 +240,7 @@ const DoneQuiz: React.FC = () => {
                           className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                         />
                         <div className="z-10 text-center text-xl font-semibold text-white">
-                          {'Another Quiz'}
+                          {t('quiz.anotherQuiz')}
                         </div>
                       </button>
                     ) : (
@@ -249,7 +258,7 @@ const DoneQuiz: React.FC = () => {
                           className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                         />
                         <div className="z-10 text-center text-xl font-semibold text-white">
-                          {'Plat Again'}
+                          {loading ? 'Loading...' : t('quiz.playAgain')}
                         </div>
                       </button>
                     )}
@@ -264,4 +273,4 @@ const DoneQuiz: React.FC = () => {
   );
 };
 
-export default DoneQuiz;
+export default withAuth(DoneQuiz);

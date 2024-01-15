@@ -219,7 +219,7 @@ const CirclePostSection1: React.FC<props> = ({
                       </h1>
                     </div>
                     <h1 className="font-poppins text-seeds-purple">
-                      IDR {dataCircle.premium_fee}
+                      {userInfo?.preferredCurrency} {dataCircle.premium_fee}
                     </h1>
                   </div>
                 </div>

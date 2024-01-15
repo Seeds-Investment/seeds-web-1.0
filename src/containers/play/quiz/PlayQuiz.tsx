@@ -226,7 +226,7 @@ const QuizPlay = ({
             </div>
           </div>
         }
-        enableScroll={true}
+        enableScroll={false}
       >
         {loading && quizQuestions.length === 0 ? (
           <div className="h-full w-full flex items-center justify-center">

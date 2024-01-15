@@ -147,7 +147,7 @@ const QuizDetail = (): React.ReactElement => {
               className="text-lg text-[#7C7C7C]"
               dangerouslySetInnerHTML={{
                 __html: detailQuiz?.tnc
-                  ? detailQuiz?.tnc.replace(/\\n/g, '<br />')
+                  ? detailQuiz?.tnc.replace(/\n/g, '<br />')
                   : '-'
               }}
             />

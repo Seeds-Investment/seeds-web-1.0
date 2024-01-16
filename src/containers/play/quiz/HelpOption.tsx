@@ -251,8 +251,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
             <QuizButton
               disabled={lifelines.length === 0}
               title={t('quiz.continue')}
-              background="#BDBDBD"
-              darkBackground="#7C7C7C"
+              background="#67EB00"
+              darkBackground="#4EC307"
               onClick={submitHandler}
             />
           </div>

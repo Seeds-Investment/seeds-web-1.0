@@ -5,6 +5,7 @@ import AnswerButtonComponent from '@/components/quiz/answer-button.component';
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import { getQuizReview } from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
 import { type QuizReviewDTO } from '@/utils/interfaces/quiz.interfaces';
@@ -30,6 +31,21 @@ const Review = () => {
       toast(`ERROR fetch quiz review ${error as string}`);
     }
   };
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/Quiz_answer_review.mp3',
+        isAutoPlay: true,
+        isLoop: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
 
   useEffect(() => {
     if (typeof id === 'string') {

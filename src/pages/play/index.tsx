@@ -178,7 +178,7 @@ const Player = (): React.ReactElement => {
               <div>tournament</div>
             </TabPanel>
             <TabPanel value="quiz">
-              <div className="bg-white rounded-lg p-5">
+              <div className="bg-white rounded-lg p-0 lg:p-5">
                 <div className="flex justify-center items-center gap-2">
                   <input
                     type="text"
@@ -211,7 +211,7 @@ const Player = (): React.ReactElement => {
                 <TopQuiz />
 
                 {/* List Quiz Section */}
-                <div className="mt-4 flex flex-row justify-between items-center">
+                <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center">
                   <div>
                     <h1 className="text-3xl font-semibold font-poppins">
                       List Quiz

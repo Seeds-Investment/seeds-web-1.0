@@ -4,6 +4,7 @@
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
@@ -35,6 +36,21 @@ const DescriptionQuiz = () => {
       .then()
       .catch(() => {});
   }, []);
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
+        isAutoPlay: false,
+        isLoop: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
 
   const details = new Map<string, { title: string; desc: string }>([
     [

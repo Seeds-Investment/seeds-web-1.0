@@ -11,6 +11,7 @@ import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useQuiz from '@/hooks/useQuiz';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import {
   fetchUseLifeline,
   getQuizById,
@@ -67,14 +68,56 @@ const QuizPlay = ({
   const [spillAnswer, setSpillAnswer] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState<string>();
   const [selectedAnswer, setSelectedAnswer] = useState<number>();
-  const [useLifelineState, setUseLifelineState] = useState<UseLifelineState>();
   const [confirmSubmit, setConfirmSubmit] = useState(false);
   const [confirmUseLifeline, setConfirmUseLifeline] = useState(false);
   const [loading, setLoading] = useState(false);
   const { submitQuizAnswer, submitLoading, score, quitQuiz } = useQuiz();
   if (id === undefined) {
-    console.log(useLifelineState, quitQuiz);
+    console.log(quitQuiz);
   }
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
+        isAutoPlay: false,
+        isLoop: true
+      },
+      {
+        name: baseUrl + '/assets/quiz/sound/answer_correct.mp3'
+      },
+      {
+        name: baseUrl + '/assets/quiz/sound/answer_wrong.mp3'
+      }
+    ]
+  };
+
+  const { playAudio } = useSoundEffect(audioConfig);
+
+  const handleWrongAnswerAudio = () => {
+    playAudio({ name: baseUrl + '/assets/quiz/sound/answer_wrong.mp3' });
+  };
+
+  const handleCorrectAnswerAudio = () => {
+    playAudio({ name: baseUrl + '/assets/quiz/sound/answer_correct.mp3' });
+  };
+
+  const handleReductedAnswerAudio = () => {
+    playAudio({
+      name: baseUrl + '/assets/quiz/sound/Answer_reducted_effect.mp3'
+    });
+  };
+
+  useEffect(() => {
+    if (
+      fromLifeline?.lifeline?.lifeline === LifelinesEnum['50_50'] &&
+      fromLifeline?.page === currentPage
+    ) {
+      handleReductedAnswerAudio();
+    }
+  }, [fromLifeline, currentPage]);
 
   useOnLeavePageConfirmation(currentPage + 1 === quizQuestions.length);
 
@@ -181,7 +224,7 @@ const QuizPlay = ({
         }
       }
 
-      // res.is_correct ? handleCorrectAnswerAudio() : handleWrongAnswerAudio();
+      res.is_correct ? handleCorrectAnswerAudio() : handleWrongAnswerAudio();
       setConfirmSubmit(false);
     }
   };
@@ -206,7 +249,6 @@ const QuizPlay = ({
   };
 
   const handleContinue = () => {
-    setUseLifelineState(undefined);
     setCurrentPage(prev => prev + 1);
     setSpillAnswer(false);
     setCorrectAnswer(undefined);

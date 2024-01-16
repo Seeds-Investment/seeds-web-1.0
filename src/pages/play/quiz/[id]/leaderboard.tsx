@@ -47,7 +47,6 @@ const LeaderBoardPage = (): React.ReactElement => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        console.log(dataInfo, 'abc');
 
         setUserInfo(dataInfo);
       } catch (error: any) {

@@ -46,7 +46,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/quiz_welcome_entry_signatures.mp3',
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
         isAutoPlay: true
       }
     ]

@@ -43,7 +43,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
           </button>
         </div>
         <div className="flex flex-row justify-between items-center px-4 py-2 pb-4">
-          <div className="flex flex-row items-center gap-3 text-white text-sm">
+          <div className="flex flex-row items-center gap-3 text-white text-xs lg:text-sm">
             <div>
               <div>{t('quiz.entryFee')}</div>
               <div className="font-semibold">
@@ -88,7 +88,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                   });
                 }
               }}
-              className="bg-white text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
+              className="bg-white text-sm md:text-base text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
             >
               {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
             </button>

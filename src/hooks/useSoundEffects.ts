@@ -27,27 +27,31 @@ const useSoundEffect = (audioConfig: AudioConfig) => {
   >(new Map());
 
   const play = (audioFileConfig: AudioFileConfig) => {
-    // if (!settingsQuiz.soundActive) return;
+    if (!settingsQuiz.soundActive) return;
 
     const { name } = audioFileConfig;
 
-    setSoundEffectRefs(prev => prev.set(name, new Audio(name)));
-    const audioRef = soundEffectRefs.get(name);
-    if (audioRef) {
-      audioRef.loop = true;
-      void audioRef.play();
-    }
+    setSoundEffectRefs(prev => {
+      const newAudio = new Audio(name);
+      newAudio.loop = true;
+      void newAudio.play();
+      console.info('playing audio:', newAudio);
+      return prev.set(name, newAudio);
+    });
   };
 
-  const stop = (name: string) => {
+  const stop = (name: string, cleanup: boolean = false) => {
     const audioRef = soundEffectRefs.get(name);
     if (audioRef) {
       audioRef.pause();
-      setSoundEffectRefs(prev => {
-        const newData = prev;
-        newData.delete(name);
-        return newData;
-      });
+      console.info('stop audio:', name);
+      if (!cleanup) {
+        setSoundEffectRefs(prev => {
+          const newData = prev;
+          newData.delete(name);
+          return newData;
+        });
+      }
     }
   };
 
@@ -55,11 +59,10 @@ const useSoundEffect = (audioConfig: AudioConfig) => {
     const currentRouteName = router.pathname;
 
     if (
-      // settingsQuiz.soundActive &&
+      settingsQuiz.soundActive &&
       currentRouteName === audioConfig.routeName
     ) {
       audioConfig.audioFiles.forEach(audioFileConfig => {
-        console.log(audioFileConfig);
         if (audioFileConfig.isAutoPlay) {
           play(audioFileConfig);
         }
@@ -69,14 +72,17 @@ const useSoundEffect = (audioConfig: AudioConfig) => {
         stop(audioFileConfig.name);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settingsQuiz.soundActive]);
 
+  useEffect(() => {
     return () => {
       audioConfig.audioFiles.forEach(audioFileConfig => {
-        stop(audioFileConfig.name);
+        stop(audioFileConfig.name, true);
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settingsQuiz.soundActive]);
+  }, []);
 
   return {
     playAudio: (audioFileConfig: AudioFileConfig) => {

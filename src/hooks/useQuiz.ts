@@ -30,7 +30,7 @@ const useQuiz = () => {
         });
       }
       setScore(answer.score);
-      return answer.data.data;
+      return { ...answer.data.data, is_correct: answer.data.is_correct };
     } catch (error) {
       const err = error as AxiosError;
       if (err.message === '') {

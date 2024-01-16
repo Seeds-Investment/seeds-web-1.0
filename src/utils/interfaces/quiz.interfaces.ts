@@ -141,6 +141,7 @@ export interface QuestionI {
 export interface QuestionDataI {
   en: Answer;
   id: Answer;
+  is_correct?: boolean;
 }
 
 export interface Answer {

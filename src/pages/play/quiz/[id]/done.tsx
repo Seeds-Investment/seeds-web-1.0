@@ -8,6 +8,7 @@ import ReccomendationCirclePopup from '@/components/quiz/recommendation-componen
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, getQuizReview } from '@/repository/quiz.repository';
@@ -35,14 +36,35 @@ const DoneQuiz: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        isAutoPlay: true,
+        isLoop: true
+      }
+    ]
+  };
+  const { playAudio } = useSoundEffect(audioConfig);
+
   const fetchQuizReview = async (): Promise<void> => {
     try {
       const response = await getQuizReview(id as string);
+      if (response.rank > 4) {
+        playAudio({ name: baseUrl + '/assets/quiz/sound/you_lose.mp3' });
+      } else {
+        playAudio({ name: baseUrl + '/assets/quiz/sound/You_win.mp3' });
+      }
       setQuizReview(response);
     } catch (error) {
       toast(`ERROR fetch quiz review ${error as string}`);
     }
   };
+
   useEffect(() => {
     if (typeof id === 'string') {
       void fetchQuizReview();

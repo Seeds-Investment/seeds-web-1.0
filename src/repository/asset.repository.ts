@@ -27,6 +27,7 @@ export const getTrendingAssets = async (params: {
   limit: number;
   sortBy: string;
   search: string;
+  currency: string;
 }): Promise<any> => {
   try {
     let response = await authService.get('/trending', {

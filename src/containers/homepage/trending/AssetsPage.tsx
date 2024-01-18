@@ -27,7 +27,8 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
         page: 1,
         limit: 3,
         search: '',
-        sortBy: ''
+        sortBy: '',
+        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
       });
       if (response.status === 200) {
         setAssets(response.result);
@@ -42,14 +43,16 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
   }
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchAssets();
-    };
+    if (userInfo !== undefined) {
+      const fetchData = async (): Promise<void> => {
+        await fetchAssets();
+      };
 
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
-  }, []);
+      fetchData().catch(error => {
+        console.error('Error in fetchData:', error);
+      });
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -58,7 +61,11 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
           ? assets.length !== 0 &&
             assets?.map((data, idx) => (
               <div key={idx} className="w-full">
-                <AssetTrendingCard data={data} isClick={true} />
+                <AssetTrendingCard
+                  data={data}
+                  isClick={true}
+                  currency={userInfo?.preferredCurrency}
+                />
               </div>
             ))
           : Array.from({ length: 3 }, (_, idx) => (

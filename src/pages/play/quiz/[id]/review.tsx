@@ -97,11 +97,17 @@ const Review = () => {
                           <AnswerButtonComponent
                             key={j.toString()}
                             title={`${prefix[j]}. ${opt?.option}`}
-                            selected={j + 1 === item?.answer_id}
+                            selected={
+                              item?.answer_id === 0
+                                ? true
+                                : j + 1 === item?.answer_id
+                            }
                             onClick={() => {}}
                             spillAnswer={true}
                             disabled={true}
-                            rightAnswer={opt?.is_correct}
+                            rightAnswer={
+                              item?.answer_id === 0 ? false : opt?.is_correct
+                            }
                           />
                         );
                       })}

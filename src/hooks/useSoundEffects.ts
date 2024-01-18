@@ -29,11 +29,11 @@ const useSoundEffect = (audioConfig: AudioConfig) => {
   const play = (audioFileConfig: AudioFileConfig) => {
     if (!settingsQuiz.soundActive) return;
 
-    const { name } = audioFileConfig;
+    const { name, isLoop } = audioFileConfig;
 
     setSoundEffectRefs(prev => {
       const newAudio = new Audio(name);
-      newAudio.loop = true;
+      newAudio.loop = isLoop ?? false;
       void newAudio.play();
       console.info('playing audio:', newAudio);
       return prev.set(name, newAudio);
@@ -77,8 +77,8 @@ const useSoundEffect = (audioConfig: AudioConfig) => {
 
   useEffect(() => {
     return () => {
-      audioConfig.audioFiles.forEach(audioFileConfig => {
-        stop(audioFileConfig.name, true);
+      soundEffectRefs.forEach((item, key) => {
+        stop(key, true);
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

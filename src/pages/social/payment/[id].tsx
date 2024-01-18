@@ -24,7 +24,8 @@ const PaymentContent: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [promo, setPromo] = useState<any>({
     final_price: 0,
-    promo_code: ''
+    promo_code: '',
+    total_discount: 0
   });
   const [params, setParams] = useState<paramsValidatePromo>({
     promo_code: '',

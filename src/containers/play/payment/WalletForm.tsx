@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { Input, Typography } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import InlineText from './components/InlineText';
 
@@ -15,21 +17,44 @@ interface WalletFormProps {
     phoneNumber?: string | undefined
   ) => Promise<void>;
   dataPost: any;
-  numberMonth: number;
+  numberMonth?: number;
+  userInfo: any;
 }
 
 const WalletForm = ({
   payment,
   handlePay,
   dataPost,
-  numberMonth
+  numberMonth,
+  userInfo
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
   const [phone, setPhone] = useState('');
-  const admissionFee = dataPost?.premium_fee * numberMonth;
-  const adminFee = dataPost?.admin_fee as number;
-  const totalFee = admissionFee + adminFee;
+  const [admissionFee, setAdmissionFee] = useState(0);
+  const [adminFee, setAdminFee] = useState(0);
+  const [totalFee, setTotalFee] = useState(0);
+
+  useEffect(() => {
+    let _admissionFee = 0;
+    let _adminFee = 0;
+    let _totalFee = 0;
+
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (dataPost.quiz) {
+      _admissionFee = dataPost?.quiz?.admission_fee;
+      _adminFee = 0;
+      _totalFee =
+        Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
+    } else {
+      _admissionFee = dataPost?.premium_fee * (numberMonth ?? 1);
+      _adminFee = dataPost?.admin_fee as number;
+      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
+    }
+    setAdmissionFee(_admissionFee);
+    setAdminFee(_adminFee);
+    setTotalFee(_totalFee);
+  }, [dataPost, numberMonth]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -64,21 +89,32 @@ const WalletForm = ({
       {renderPhoneInput()}
       <InlineText
         label={
-          dataPost !== undefined
+          dataPost.quiz
+            ? 'Join Quiz'
+            : dataPost !== undefined
             ? 'Circle Membership'
             : t(`${translationId}.admissionFeeLabel`)
         }
-        value={`IDR ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency as string} ${admissionFee}`}
         className="mb-2"
       />
+      {dataPost.quiz ? (
+        <InlineText
+          label={t('quiz.lifeline')}
+          value={`${userInfo?.preferredCurrency as string} ${Number(
+            dataPost?.quiz?.fee
+          )}`}
+          className="mb-2"
+        />
+      ) : null}
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`IDR ${adminFee}`}
+        value={`${userInfo?.preferredCurrency as string} ${adminFee}`}
         className="mb-4"
       />
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-5">
-        {`IDR ${totalFee}`}
+        {`${userInfo?.preferredCurrency as string} ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton

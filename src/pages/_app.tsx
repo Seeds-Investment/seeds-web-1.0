@@ -17,6 +17,8 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
@@ -62,15 +64,24 @@ function App({
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/faq');
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   if (loginLayouts) {
     return (
       <Provider store={store}>
         <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+        <iframe
+          src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
+          allow="autoplay"
+          id="audio"
+          style={{ display: 'none' }}
+        ></iframe>
         <LanguageProvider>
           <LoadingProvider>
             <ErrorBEProvider>
               <LoginLayout>
                 {getLayout(<Component {...pageProps} />)}
+                <ToastContainer />
               </LoginLayout>
             </ErrorBEProvider>
           </LoadingProvider>
@@ -96,6 +107,7 @@ function App({
           </ErrorBEProvider>
         </LoadingProvider>
       </LanguageProvider>
+      <ToastContainer />
     </Provider>
   );
 }

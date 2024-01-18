@@ -149,8 +149,8 @@ export default function CardTournament(): React.ReactElement {
                       <path
                         d="M12.5 15L7.5 10L12.5 5"
                         stroke="#7C7C7C"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>
@@ -168,8 +168,8 @@ export default function CardTournament(): React.ReactElement {
                       <path
                         d="M7.5 15L12.5 10L7.5 5"
                         stroke="white"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>

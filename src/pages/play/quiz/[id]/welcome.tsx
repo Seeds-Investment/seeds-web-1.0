@@ -28,7 +28,7 @@ const WelcomeQuiz = () => {
     audioFiles: [
       {
         name: baseUrl + '/assets/quiz/sound/quiz_welcome_entry_signatures.mp3',
-        isAutoPlay: false
+        isAutoPlay: true
       }
     ]
   };

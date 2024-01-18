@@ -40,9 +40,7 @@ const StartQuiz = () => {
       <div className="flex flex-col h-full justify-center items-center gap-4 lg:gap-6 px-3 md:p-8">
         <div className="font-poppins text-white text-center flex flex-col gap-1 lg:gap-2">
           <div className="text-3xl lg:text-4xl font-semibold">Seeds Quiz</div>
-          <div className="text-xl lg:text-2xl">
-            Test your investment knowledge and win real money!
-          </div>
+          <div className="text-xl lg:text-2xl">{t('quiz.testInvestment')}</div>
         </div>
         <div className="w-[200px] md:w-[400px]">
           <Lottie animationData={StartAnimation} loop={true} width={400} />

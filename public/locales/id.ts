@@ -1448,7 +1448,7 @@ export default {
     extraCash:
       'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
     select: 'Pilih',
-    quizCompanion: 'Meet Your Quiz Companion',
+    quizCompanion: 'Temui Teman Kuis Kamu',
     chooseOptions: 'Pilih bantuan kamu, dan bisa lebih dari satu!',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
@@ -1533,6 +1533,13 @@ export default {
     canceled: 'Dibatalkan',
     quizDone1: 'Selangkah lagi menuju kemenangan.',
     quizDone2:
-      'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!'
+      'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!',
+    testInvestment:
+      'Test pengetahuan investasimu dan menangkan hadiah uang tunainya!',
+    welcome: 'Selamat datang di Seeds Quiz',
+    areYouReady: 'Kamu siap?',
+    millionaire: 'Siapa yang mau jadi miliarder Seeds!',
+    incorrectWord: 'Belum tepat, fyuhh sedikit lagi',
+    correctWord: 'Benar, kamu dapat {{point}} poin'
   }
 };

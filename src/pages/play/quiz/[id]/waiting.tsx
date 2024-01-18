@@ -3,10 +3,12 @@ import withAuth from '@/helpers/withAuth';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import SeedyLoading from '../../../../assets/play/quiz/seedy-loading.png';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const QuizWaiting = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const id = router.query.id;
   const [fakeLoading, setFakeLoading] = useState(0);
@@ -38,11 +40,9 @@ const QuizWaiting = () => {
       <div className="flex flex-col h-full box-border items-center gap-6 p-3 md:p-8">
         <div className="font-poppins text-white text-center">
           <div className="text-3xl lg:text-4xl font-semibold">
-            Are You Ready?
+            {t('quiz.areYouReady')}
           </div>
-          <div className="text-xl lg:text-2xl">
-            Who wants to be Seeds Millionaire!
-          </div>
+          <div className="text-xl lg:text-2xl">{t('quiz.millionaire')}</div>
         </div>
         <div className="w-[300px] lg:w-[400px]">
           <Image

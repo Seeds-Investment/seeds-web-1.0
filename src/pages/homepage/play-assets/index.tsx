@@ -1,6 +1,7 @@
 import BallanceImage from '@/assets/ballanceCardBackground.png';
 import ArtPagination from '@/components/ArtPagination';
 import ImageBackground from '@/components/ImageBackground';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
 import AssetPlayCard from '@/containers/homepage/trending/AssetsPlayCard';
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
@@ -101,11 +102,12 @@ export default function PlayAssetsPage(): React.ReactElement {
   const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filter, setFilter] = useState<Filter>(initialFilter);
-
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const fetchDataAssets = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      console.log(filter);
 
       const response = await getMarketList(filter);
       if (response.result === null) {
@@ -174,11 +176,16 @@ export default function PlayAssetsPage(): React.ReactElement {
   }, [filter, userInfo]);
 
   useEffect(() => {
-    setFilter(prevParams => ({
-      ...prevParams,
-      search: searchInput,
-      page: 1
-    }));
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
+    setDebounceTimer(
+      setTimeout((): void => {
+        setFilter(prevParams => ({
+          ...prevParams,
+          search: searchInput,
+          page: 1
+        }));
+      }, 500)
+    );
   }, [searchInput]);
 
   useEffect(() => {
@@ -188,198 +195,201 @@ export default function PlayAssetsPage(): React.ReactElement {
   }, [searchInput.length]);
 
   return (
-    <div className="sm:mx-0 mx-4 bg-white p-5 rounded-xl">
-      <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
-        <div className="flex flex-col">
-          <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black">
-            {t('playSimulation.assetList')}
+    <PageGradient defaultGradient className="w-full">
+      <div className="sm:mx-0 mx-4 bg-white p-5 rounded-xl">
+        <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
+          <div className="flex flex-col">
+            <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black">
+              {t('playSimulation.assetList')}
+            </div>
           </div>
         </div>
-      </div>
-      <ImageBackground className="rounded-2xl" imageUrl={BallanceImage.src}>
-        <div className="p-5">
-          <Typography className="text-white font-poppins mb-2">
-            {t('playSimulation.seedsCash')}
-          </Typography>
-          <Typography className="text-white font-poppins text-xl font-semibold">
-            {`${ballance.currency} ${standartCurrency(
-              ballance.balance + ballance.portfolio
-            ).replace('Rp', '')}`}
-          </Typography>
-        </div>
-      </ImageBackground>
-      <div className="flex flex-col pt-4">
-        <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
-          <Typography className="text-[#27A590] font-poppins font-semibold">
-            {t('playSimulation.balance')}
-          </Typography>
-          <div
-            className="flex gap-4 items-center cursor-pointer"
-            onClick={() => {
-              router
-                .push(`/homepage/cash-balance/${playId as string}`)
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            <Typography className="text-black font-poppins text-base font-semibold">
+        <ImageBackground className="rounded-2xl" imageUrl={BallanceImage.src}>
+          <div className="p-5">
+            <Typography className="text-white font-poppins mb-2">
+              {t('playSimulation.seedsCash')}
+            </Typography>
+            <Typography className="text-white font-poppins text-xl font-semibold">
               {`${ballance.currency} ${standartCurrency(
-                ballance.balance
+                ballance.balance + ballance.portfolio
               ).replace('Rp', '')}`}
             </Typography>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
-                fill="#27A590"
-              />
-            </svg>
           </div>
-        </div>
-        <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
-          <Typography className="text-[#27A590] font-poppins font-semibold">
-            {t('playSimulation.portfolio')}
-          </Typography>
-          <div
-            className="flex gap-4 items-center cursor-pointer"
-            onClick={() => {
-              router
-                .push(`/homepage/portfolio/${playId as string}`)
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
-          >
-            <Typography className="text-black font-poppins text-base font-semibold">
-              {`${ballance.currency} ${standartCurrency(
-                ballance.portfolio
-              ).replace('Rp', '')}`}
+        </ImageBackground>
+        <div className="flex flex-col pt-4">
+          <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
+            <Typography className="text-[#27A590] font-poppins font-semibold">
+              {t('playSimulation.balance')}
             </Typography>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
+            <div
+              className="flex gap-4 items-center cursor-pointer"
+              onClick={() => {
+                router
+                  .push(`/homepage/cash-balance/${playId as string}`)
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
             >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
-                fill="#27A590"
-              />
-            </svg>
+              <Typography className="text-black font-poppins text-base font-semibold">
+                {`${ballance.currency} ${standartCurrency(
+                  ballance.balance
+                ).replace('Rp', '')}`}
+              </Typography>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
+                  fill="#27A590"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
+            <Typography className="text-[#27A590] font-poppins font-semibold">
+              {t('playSimulation.portfolio')}
+            </Typography>
+            <div
+              className="flex gap-4 items-center cursor-pointer"
+              onClick={() => {
+                router
+                  .push(`/homepage/portfolio/${playId as string}`)
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              <Typography className="text-black font-poppins text-base font-semibold">
+                {`${ballance.currency} ${standartCurrency(
+                  ballance.portfolio
+                ).replace('Rp', '')}`}
+              </Typography>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
+                  fill="#27A590"
+                />
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center pt-4">
-        <div className="flex justify-start">
-          <div className="flex justify-center flex-col relative left-8">
-            <Image
-              alt="Search"
-              src={SearchMember}
-              className="h-6 w-6 object-cover"
+        <div className="flex justify-center pt-4">
+          <div className="flex justify-start">
+            <div className="flex justify-center flex-col relative left-8">
+              <Image
+                alt="Search"
+                src={SearchMember}
+                className="h-6 w-6 object-cover"
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="button-addon2"
+              onChange={e => {
+                setSearchInput(e.target.value);
+              }}
+              className="h-10 pl-10 w-full xl:min-w-[400px] focus:outline-none focus:outline focus:outline-seeds-green placeholder:text-neutral-soft rounded-xl border border-neutral-ultrasoft"
             />
           </div>
-          <input
-            type="text"
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="button-addon2"
-            onChange={e => {
-              setSearchInput(e.target.value);
+        </div>
+        <div className="lg:flex  justify-end mt-4 ">
+          <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+            {t('articleList.text3')}
+          </div>
+          <select
+            className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
+            aria-label="All"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setFilter(prevState => ({
+                ...prevState,
+                type: e.target.value
+              }));
             }}
-            className="h-10 pl-10 w-full xl:min-w-[400px] focus:outline-none focus:outline focus:outline-seeds-green placeholder:text-neutral-soft rounded-xl border border-neutral-ultrasoft"
+          >
+            {optionSortBy?.map((data, idx) => (
+              <option key={idx} value={data.value}>
+                {data.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="lg:hidden z-10 flex justify-end mt-5">
+          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+            {t('articleList.text3')}
+          </div>
+          <select
+            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
+            aria-label="All"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setFilter(prevState => ({
+                ...prevState,
+                type: e.target.value
+              }));
+            }}
+          >
+            {optionSortBy?.map((data, idx) => (
+              <option key={idx} value={data.value}>
+                {data.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-wrap mt-6">
+          {!isLoading ? (
+            assets?.length !== 0 ? (
+              assets?.map((data: AssetItemType, idx: number) => {
+                return (
+                  <div key={idx} className="w-full mb-5">
+                    <AssetPlayCard
+                      data={data}
+                      currency={userInfo?.preferredCurrency}
+                      isClick={true}
+                      playId={playId as string}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
+                Data Not Found
+              </Typography>
+            )
+          ) : (
+            Array.from(
+              { length: metadata.totalRow === 0 ? 1 : metadata.totalRow },
+              (_, idx) => <AssetTrendingCardSkeleton key={idx} />
+            )
+          )}
+        </div>
+
+        <div className="flex justify-center mx-auto my-4">
+          <ArtPagination
+            currentPage={filter.page}
+            totalPages={metadata.totalPage}
+            onPageChange={page => {
+              setFilter({ ...filter, page });
+            }}
           />
         </div>
       </div>
-      <div className="lg:flex  justify-end mt-4 ">
-        <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-          {t('articleList.text3')}
-        </div>
-        <select
-          className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-          aria-label="All"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setFilter(prevState => ({
-              ...prevState,
-              type: e.target.value
-            }));
-          }}
-        >
-          {optionSortBy?.map((data, idx) => (
-            <option key={idx} value={data.value}>
-              {data.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="lg:hidden z-10 flex justify-end mt-5">
-        <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-          {t('articleList.text3')}
-        </div>
-        <select
-          className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-          aria-label="All"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setFilter(prevState => ({
-              ...prevState,
-              type: e.target.value
-            }));
-          }}
-        >
-          {optionSortBy?.map((data, idx) => (
-            <option key={idx} value={data.value}>
-              {data.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="flex flex-wrap mt-6">
-        {!isLoading ? (
-          assets?.length !== 0 ? (
-            assets?.map((data: AssetItemType, idx: number) => {
-              return (
-                <div key={idx} className="w-full mb-5">
-                  <AssetPlayCard
-                    data={data}
-                    currency={userInfo?.preferredCurrency}
-                    isClick={true}
-                    playId={playId as string}
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-              Data Not Found
-            </Typography>
-          )
-        ) : (
-          Array.from({ length: 10 }, (_, idx) => (
-            <AssetTrendingCardSkeleton key={idx} />
-          ))
-        )}
-      </div>
-
-      <div className="flex justify-center mx-auto my-4">
-        <ArtPagination
-          currentPage={filter.page}
-          totalPages={metadata.totalPage}
-          onPageChange={page => {
-            setFilter({ ...filter, page });
-          }}
-        />
-      </div>
-    </div>
+    </PageGradient>
   );
 }

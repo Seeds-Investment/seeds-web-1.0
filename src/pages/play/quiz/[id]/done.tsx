@@ -55,9 +55,15 @@ const DoneQuiz: React.FC = () => {
     try {
       const response = await getQuizReview(id as string);
       if (response.rank > 4) {
-        playAudio({ name: baseUrl + '/assets/quiz/sound/you_lose.mp3' });
+        playAudio({
+          name: baseUrl + '/assets/quiz/sound/you_lose.mp3',
+          isLoop: true
+        });
       } else {
-        playAudio({ name: baseUrl + '/assets/quiz/sound/You_win.mp3' });
+        playAudio({
+          name: baseUrl + '/assets/quiz/sound/You_win.mp3',
+          isLoop: true
+        });
       }
       setQuizReview(response);
     } catch (error) {

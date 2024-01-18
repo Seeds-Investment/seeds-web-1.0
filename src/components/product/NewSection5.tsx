@@ -24,7 +24,7 @@ const NewSection5: React.FC = () => {
       <Image
         src={TrapezoidIconProduct}
         alt="TrapezoidIconProduct"
-        className=" xl:-mr-[534px] xl:pt-[45px] -mt-[270px] sm:-mt-[380px] md:-mt-[449px] xl:mt-0 self-start"
+        className=" xl:-mr-[534px] xl:pt-6 -mt-[270px] sm:-mt-[380px] md:-mt-[449px] xl:mt-0 self-start"
       />
       <iframe
         style={{ padding: 0 }}

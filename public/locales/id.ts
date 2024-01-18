@@ -546,6 +546,29 @@ export default {
     keepMeLoggedIn: 'Biarkan saya tetap masuk',
     forgotPassword: 'Lupa Kata Sandi'
   },
+  authCarousel: {
+    title: {
+      1: 'Hai! Selamat Datang di Seeds',
+      2: 'Yuk, belajar lebih banyak',
+      3: 'Mainkan',
+      4: 'Bertemu'
+    },
+    subtitle: {
+      1: 'Mulai dan perluas perjalanan investasimu dengan teman-teman',
+      2: 'Tentang investasi dan finansial dari ahlinya',
+      3: 'Turnamennya dan menangkan hadiah uang tunai',
+      4: 'dan mengobrol dengan orang-orang yang cocok dengan kamu'
+    }
+  },
+  authBoarding: {
+    guest1: 'Masuk',
+    guest2: ' sebagai ',
+    guest3: 'Tamu',
+    term: 'Dengan mengklik daftar, Kamu menyetujui',
+    term2: 'Syarat dan Ketentuan di Seeds',
+    login: 'Masuk',
+    signup: 'Daftar'
+  },
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',

@@ -36,6 +36,7 @@ type AppPropsWithLayout = AppProps & {
 const pathsWithoutHeader = [
   '',
   'auth',
+  'auth2',
   'story-boarding',
   'term-condition',
   'social'

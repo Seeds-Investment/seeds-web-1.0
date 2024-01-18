@@ -9,6 +9,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { PlayLogo } from 'public/assets/circle';
@@ -53,48 +54,6 @@ interface props {
   setParent: any;
   isParent?: boolean;
   golId: number;
-}
-
-interface TimeDifference {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-function timeDifference(current: Date, previous: Date): TimeDifference {
-  const msPerMinute = 60 * 1000;
-  const msPerHour = msPerMinute * 60;
-  const msPerDay = msPerHour * 24;
-  const msPerMonth = msPerDay * 30;
-
-  const elapsed = current.getTime() - previous.getTime();
-
-  return {
-    days: Math.floor(elapsed / msPerMonth),
-    hours: Math.floor((elapsed % msPerDay) / msPerHour),
-    minutes: Math.floor((elapsed % msPerHour) / msPerMinute),
-    seconds: Math.floor((elapsed % msPerMinute) / 1000)
-  };
-}
-
-function timeConverter(timestamp: string): string {
-  const current = new Date();
-  const previous = new Date(timestamp);
-  const diff = timeDifference(current, previous);
-
-  if (diff.days > 30) {
-    const months = Math.floor(diff.days / 30);
-    return `${months} month${months === 1 ? ' ago' : "'s ago"}`;
-  } else if (diff.days > 0) {
-    return `${diff.days} day${diff.days === 1 ? ' ago' : "'s ago"}`;
-  } else if (diff.hours > 0) {
-    return `${diff.hours} hour${diff.hours === 1 ? ' ago' : "'s ago"}`;
-  } else if (diff.minutes > 0) {
-    return `${diff.minutes} minute${diff.minutes === 1 ? ' ago' : "'s ago"}`;
-  } else {
-    return 'just now';
-  }
 }
 
 const CommentSection: React.FC<props> = ({
@@ -512,7 +471,7 @@ const CommentSection: React.FC<props> = ({
                   @{dataPost.user_name}
                 </Typography>
                 <Typography className="text-xs md:text-sm text-neutral-soft font-poppins items-center flex">
-                  {timeConverter(dataPost.created_at)}
+                  {moment(dataPost.created_at).fromNow()}
                 </Typography>
               </div>
               <div className="flex items-center pt-[5px]">

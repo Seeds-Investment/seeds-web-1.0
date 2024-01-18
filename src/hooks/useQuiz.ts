@@ -7,9 +7,11 @@ import {
 } from '@/utils/interfaces/quiz.interfaces';
 import { type AxiosError } from 'axios';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const useQuiz = () => {
+  const { t } = useTranslation();
   const [submitLoading, setSubmitLoading] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -20,17 +22,17 @@ const useQuiz = () => {
       setSubmitLoading(true);
       const answer = await submitAnswer(payload);
       if (answer.data.is_correct) {
-        toast(`Correct, you got ${Number(answer.score) - score} points`, {
+        toast(t('quiz.correctWord', { point: Number(answer.score) - score }), {
           position: 'top-center'
         });
       } else {
-        toast('Incorrect, fyuhh that was close', {
+        toast(t('quiz.incorrectWord'), {
           type: 'error',
           position: 'top-center'
         });
       }
       setScore(answer.score);
-      return answer.data.data;
+      return { ...answer.data.data, is_correct: answer.data.is_correct };
     } catch (error) {
       const err = error as AxiosError;
       if (err.message === '') {

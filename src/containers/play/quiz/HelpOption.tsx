@@ -5,6 +5,7 @@ import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, joinQuiz } from '@/repository/quiz.repository';
@@ -38,6 +39,21 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [showAlertPrice, setShowAlertPrice] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        isAutoPlay: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
+
   const lifelinesDesc = new Map<LifelinesEnum, { text: string; title: string }>(
     [
       [LifelinesEnum['50_50'], { text: t('quiz.fiftyfifty'), title: '50:50' }],
@@ -235,8 +251,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
             <QuizButton
               disabled={lifelines.length === 0}
               title={t('quiz.continue')}
-              background="#BDBDBD"
-              darkBackground="#7C7C7C"
+              background="#67EB00"
+              darkBackground="#4EC307"
               onClick={submitHandler}
             />
           </div>

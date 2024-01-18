@@ -67,37 +67,36 @@ export default function PeoplePage(): React.ReactElement {
                   <div className="ml-3">
                     <div className="flex">
                       <h2 className="font-bold me-2">{data.name}</h2>
-                      <div className="mt-[7px] ">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g clipPath="url(#clip0_2012_74470)">
-                            <path
-                              d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
-                              fill="#5E44FF"
-                            />
-                            <path
-                              d="M3 6L5 8L9 4"
-                              stroke="white"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_2012_74470">
-                              <rect width="12" height="12" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>
-                      </div>
-                      <div className="text-[#1A857D] text-sm ms-2 px-1 bg-[#DCFCE4] rounded-full py-1">
-                        Investor
-                      </div>
+                      {data?.verified && (
+                        <div className="mt-[7px] ">
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_2012_74470)">
+                              <path
+                                d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
+                                fill="#5E44FF"
+                              />
+                              <path
+                                d="M3 6L5 8L9 4"
+                                stroke="white"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_2012_74470">
+                                <rect width="12" height="12" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        </div>
+                      )}
                     </div>
                     <p className="font-light text-xs text-[#7C7C7C]">
                       @{data.seedsTag}

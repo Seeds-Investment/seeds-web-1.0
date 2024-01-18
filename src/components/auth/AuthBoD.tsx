@@ -1,0 +1,243 @@
+import {
+  Button,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  Input,
+  Typography
+} from '@material-tailwind/react';
+import { useState } from 'react';
+
+interface IAuthBoD {
+  error: boolean;
+  day: number;
+  setDay: any;
+  month: number;
+  setMonth: any;
+  year: number;
+  setYear: any;
+}
+
+const AuthBoD: React.FC<IAuthBoD> = ({
+  error,
+  day,
+  setDay,
+  month,
+  setMonth,
+  year,
+  setYear
+}: IAuthBoD) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
+  const days = [];
+  for (let i = 0; i <= 30; i++) {
+    days[i] = i + 1;
+  }
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const years = [];
+  for (let i = 0; i <= 100; i++) {
+    years[i] = i + 1924;
+  }
+
+  return (
+    <>
+      <div
+        onClick={handleOpen}
+        className={`rounded-xl p-[2px] h-full w-full cursor-pointer ${
+          error
+            ? 'bg-[#FF3838]'
+            : 'bg-gradient-to-l from-[#97A4E7] to-[#47C0AA]'
+        }`}
+      >
+        <div className="relative flex bg-white border-none w-full rounded-[10px] h-full">
+          <Input
+            label="Date of Birth"
+            type="number"
+            variant="static"
+            placeholder="DD"
+            name=""
+            value={day}
+            readOnly
+            required
+            labelProps={{
+              className:
+                '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'
+            }}
+            containerProps={{ className: '!min-w-[70px] !w-[70px]' }}
+            className="!border-none focus:!border-none !p-1.5 !ps-4 !font-poppins !font-normal !text-base !text-[#262626] !rounded-[10px] [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 !cursor-pointer"
+          />
+          <Input
+            type="number"
+            variant="static"
+            placeholder="MM"
+            name=""
+            value={month + 1}
+            readOnly
+            labelProps={{
+              className:
+                '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'
+            }}
+            containerProps={{ className: '!min-w-[75px] !w-[75px]' }}
+            className="!border-none focus:!border-none !p-1.5 !ps-4 !font-poppins !font-normal !text-base !text-[#262626] !rounded-[10px] [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 !cursor-pointer"
+          />
+          <Input
+            type="number"
+            variant="static"
+            placeholder="YYYY"
+            name=""
+            value={year}
+            readOnly
+            labelProps={{
+              className:
+                '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'
+            }}
+            containerProps={{ className: '!min-w-[85px] !w-[85px]' }}
+            className="!border-none focus:!border-none !p-1.5 !ps-4 !font-poppins !font-normal !text-base !text-[#262626] !rounded-[10px] [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 !cursor-pointer"
+          />
+        </div>
+      </div>
+      {/* TODO: Dialog BoD */}
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        size="xs"
+        className="flex flex-col items-center"
+      >
+        <DialogBody className="flex gap-8">
+          <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-scroll cursor-pointer no-scroll">
+            {(month % 2 === 0 && month < 8) ||
+            ((month + 1) % 2 === 0 && month >= 8)
+              ? days.map((value, index) => {
+                  return (
+                    <Typography
+                      onClick={() => setDay(value)}
+                      className={`font-poppins text-base text-center ${
+                        day === value
+                          ? 'text-[#3AC4A0] font-semibold'
+                          : 'text-[#BDBDBD] font-normal'
+                      }`}
+                      key={index}
+                    >
+                      {value}
+                    </Typography>
+                  );
+                })
+              : (month % 2 === 0 && month >= 8) ||
+                ((month + 1) % 2 === 0 && month < 8 && month !== 1)
+              ? days
+                  .filter(number => number < 31)
+                  .map((value, index) => {
+                    return (
+                      <Typography
+                        onClick={() => setDay(value)}
+                        className={`font-poppins text-base text-center ${
+                          day === value
+                            ? 'text-[#3AC4A0] font-semibold'
+                            : 'text-[#BDBDBD] font-normal'
+                        }`}
+                        key={index}
+                      >
+                        {value}
+                      </Typography>
+                    );
+                  })
+              : month === 1 && year % 4 === 0
+              ? days
+                  .filter(number => number < 30)
+                  .map((value, index) => {
+                    return (
+                      <Typography
+                        onClick={() => setDay(value)}
+                        className={`font-poppins text-base text-center ${
+                          day === value
+                            ? 'text-[#3AC4A0] font-semibold'
+                            : 'text-[#BDBDBD] font-normal'
+                        }`}
+                        key={index}
+                      >
+                        {value}
+                      </Typography>
+                    );
+                  })
+              : days
+                  .filter(number => number < 29)
+                  .map((value, index) => {
+                    return (
+                      <Typography
+                        onClick={() => setDay(value)}
+                        className={`font-poppins text-base text-center ${
+                          day === value
+                            ? 'text-[#3AC4A0] font-semibold'
+                            : 'text-[#BDBDBD] font-normal'
+                        }`}
+                        key={index}
+                      >
+                        {value}
+                      </Typography>
+                    );
+                  })}
+          </div>
+          <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-scroll cursor-pointer no-scroll">
+            {months.map((value, index) => {
+              return (
+                <Typography
+                  onClick={() => setMonth(index)}
+                  className={`font-poppins text-base text-center ${
+                    month === index
+                      ? 'text-[#3AC4A0] font-semibold'
+                      : 'text-[#BDBDBD] font-normal'
+                  }`}
+                  key={index}
+                >
+                  {value}
+                </Typography>
+              );
+            })}
+          </div>
+          <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-scroll cursor-pointer no-scroll">
+            {years.map((value, index) => {
+              return (
+                <Typography
+                  onClick={() => setYear(value)}
+                  className={`font-poppins text-base text-center ${
+                    year === value
+                      ? 'text-[#3AC4A0] font-semibold'
+                      : 'text-[#BDBDBD] font-normal'
+                  }`}
+                  key={index}
+                >
+                  {value}
+                </Typography>
+              );
+            })}
+          </div>
+        </DialogBody>
+        <DialogFooter className="w-full">
+          <Button
+            onClick={handleOpen}
+            className="capitalize font-poppins font-semibold text-sm text-white w-full bg-[#3AC4A0] rounded-full"
+          >
+            Confirm
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </>
+  );
+};
+
+export default AuthBoD;

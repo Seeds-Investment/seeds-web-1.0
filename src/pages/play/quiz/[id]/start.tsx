@@ -2,6 +2,7 @@
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import { startQuiz } from '@/repository/quiz.repository';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
@@ -12,6 +13,21 @@ const StartQuiz = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
+        isAutoPlay: true,
+        isLoop: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
 
   const handleContinue = async () => {
     const start = await startQuiz(id as string);
@@ -24,9 +40,7 @@ const StartQuiz = () => {
       <div className="flex flex-col h-full justify-center items-center gap-4 lg:gap-6 px-3 md:p-8">
         <div className="font-poppins text-white text-center flex flex-col gap-1 lg:gap-2">
           <div className="text-3xl lg:text-4xl font-semibold">Seeds Quiz</div>
-          <div className="text-xl lg:text-2xl">
-            Test your investment knowledge and win real money!
-          </div>
+          <div className="text-xl lg:text-2xl">{t('quiz.testInvestment')}</div>
         </div>
         <div className="w-[200px] md:w-[400px]">
           <Lottie animationData={StartAnimation} loop={true} width={400} />

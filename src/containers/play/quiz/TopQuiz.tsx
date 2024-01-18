@@ -34,8 +34,11 @@ const TopQuiz = (): JSX.Element => {
       setLoading(true);
       const resp = await getQuizTrending(userInfo?.preferredCurrency);
       if (resp.data !== undefined) {
-        const resTopQuiz: IQuiz[] = resp.data;
-        setTopQuizes(resTopQuiz);
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        if (resp.data) {
+          const resTopQuiz: IQuiz[] = resp.data;
+          setTopQuizes(resTopQuiz);
+        }
       }
     } catch (error) {
       toast(`ERROR fetch quiz ${error as string}`);
@@ -58,8 +61,8 @@ const TopQuiz = (): JSX.Element => {
         </h1>
         <p className="text-sm font-poppins">{t('quiz.topQuizDesc')}</p>
       </div>
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {topQuizes.length === 0 && !loading ? (
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+        {topQuizes?.length === 0 && !loading ? (
           <div className="col-span-3">
             <Image src={TopQuizEmpty} width={500} alt="Top Quiz Empty" />
           </div>
@@ -69,7 +72,7 @@ const TopQuiz = (): JSX.Element => {
             <div className="animate-spinner w-5 h-5" />
           </div>
         ) : (
-          topQuizes.map(item => (
+          topQuizes?.map(item => (
             <QuizCard
               item={item}
               key={item.id}

@@ -86,7 +86,10 @@ const AssetPlayCard: React.FC<props> = ({
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm text-[#262626]">
-                {currency} {new Intl.NumberFormat().format(data.priceBar.close)}
+                {currency}{' '}
+                {data.priceBar.close > 0.01
+                  ? new Intl.NumberFormat().format(data.priceBar.close)
+                  : data.priceBar.close}
               </Typography>
             </div>
             <div className="flex justify-end">

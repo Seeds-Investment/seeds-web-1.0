@@ -18,12 +18,35 @@ interface LoginForm {
   os_name?: string;
 }
 
+interface RegistForm {
+  phoneNumber: string;
+  birthDate: string;
+  name: string;
+  seedsTag: string;
+  refCode: string;
+  password: string;
+  provider: {
+    provider: string;
+    identifer: string;
+  };
+}
+
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('login/phone-number', formData);
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
+  }
+};
+
+export const register = async (formData: RegistForm): Promise<any> => {
+  try {
+    let response = await authService.post('create', formData);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    console.log(error);
+    return await Promise.resolve(null);
   }
 };
 export const checkEmail = async (email: string): Promise<any> => {
@@ -33,6 +56,12 @@ export const checkEmail = async (email: string): Promise<any> => {
 
 export const checkPhoneNumber = async (phoneNumber: string): Promise<any> => {
   const response = await authService.get(`validate/phone?phone=${phoneNumber}`);
+  return response.data;
+};
+export const checkSeedsTag = async (seedsTag: string): Promise<any> => {
+  const response = await authService.get(
+    `validate/seeds-tag?seeds-tag=${seedsTag}`
+  );
   return response.data;
 };
 export const getRefreshToken = async (): Promise<any> => {
@@ -146,13 +175,13 @@ export const avatarList = async (gender: string = 'male'): Promise<any> => {
 
 export const registerNewUser = async (formData: {
   phoneNumber: string;
-  email: string;
+  email?: string;
   birthDate: string;
   name: string;
   seedsTag: string;
   refCode: string;
   password: string;
-  avatar: string;
+  avatar?: string;
   provider: {
     provider: string;
     identifer: string;

@@ -1,11 +1,15 @@
+'use client';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import Welcome from '../../../../assets/play/quiz/Welcome.json';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const WelcomeQuiz = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const id = router.query.id;
   const timeOut = () => {
@@ -17,13 +21,27 @@ const WelcomeQuiz = () => {
     }, 2000);
   };
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/quiz_welcome_entry_signatures.mp3',
+        isAutoPlay: true
+      }
+    ]
+  };
+
+  useSoundEffect(audioConfig);
+
   timeOut();
 
   return (
     <QuizLayoutComponent withButton={false}>
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="text-5xl font-semibold text-white text-center w-72">
-          Wellcome to Seeds Quiz
+          {t('quiz.welcome')}
         </div>
         <div className="w-[400px]">
           <Lottie animationData={Welcome} loop={true} width={400} />

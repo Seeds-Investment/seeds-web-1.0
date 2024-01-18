@@ -8,6 +8,7 @@ import ReccomendationCirclePopup from '@/components/quiz/recommendation-componen
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, getQuizReview } from '@/repository/quiz.repository';
@@ -35,14 +36,41 @@ const DoneQuiz: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        isAutoPlay: true,
+        isLoop: true
+      }
+    ]
+  };
+  const { playAudio } = useSoundEffect(audioConfig);
+
   const fetchQuizReview = async (): Promise<void> => {
     try {
       const response = await getQuizReview(id as string);
+      if (response.rank > 4) {
+        playAudio({
+          name: baseUrl + '/assets/quiz/sound/you_lose.mp3',
+          isLoop: false
+        });
+      } else {
+        playAudio({
+          name: baseUrl + '/assets/quiz/sound/You_win.mp3',
+          isLoop: false
+        });
+      }
       setQuizReview(response);
     } catch (error) {
       toast(`ERROR fetch quiz review ${error as string}`);
     }
   };
+
   useEffect(() => {
     if (typeof id === 'string') {
       void fetchQuizReview();
@@ -112,10 +140,13 @@ const DoneQuiz: React.FC = () => {
     const end = new Date(endTime).getTime();
 
     const diff = end - start;
-    const minutes = Math.floor(diff / 60000);
-    const seconds = Math.floor((diff % 60000) / 1000);
-
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    const minutes =
+      (detailQuiz?.duration_in_minute ?? 6000) -
+      Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return `${Math.abs(minutes) < 10 ? `0${minutes}` : minutes}:${
+      Math.abs(seconds) < 10 ? `0${seconds}` : seconds
+    }`;
   }
 
   return (
@@ -125,7 +156,7 @@ const DoneQuiz: React.FC = () => {
     >
       {detailQuiz === undefined && loading && <Loading />}
       <ReccomendationCirclePopup open={isOpen} handleOpen={handleOpen} />
-      <QuizLayoutComponent enableScroll cancelButton>
+      <QuizLayoutComponent enableScroll={false} cancelButton>
         <div className="w-full h-fit font-poppins text-white text-center lg:relative lg:bottom-20">
           <div className="flex flex-col w-full px-6 items-center">
             <div className="flex justify-center">

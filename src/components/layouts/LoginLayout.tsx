@@ -13,14 +13,19 @@ const LoginLayout: React.FC<props> = ({ children }) => {
   return (
     <div className="flex h-screen md:bg-[url('/assets/vector/quiz-bg.svg')] md:bg-cover md:bg-no-repeat">
       <aside
-        className={`w-1/5 h-screen py-6 social-sidebar ${
+        className={`w-1/5 h-screen py-6 social-sidebar fixed ${
           width !== undefined ? (width >= 768 ? '' : 'hidden') : ''
         }`}
       >
         <SidebarLogin />
       </aside>
+      <div
+        className={`w-1/5 ${
+          width !== undefined ? (width >= 768 ? '' : 'hidden') : ''
+        }`}
+      />
 
-      <div className="w-4/5 flex-1 flex flex-col md:max-h-full md:overflow-y-auto">
+      <div className="w-4/5 flex-1 flex flex-col">
         <header
           className={`bg-white border-b p-5 rounded-xl md:mx-14 md:mt-10`}
         >

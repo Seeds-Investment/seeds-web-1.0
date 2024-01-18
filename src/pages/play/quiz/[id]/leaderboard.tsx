@@ -47,7 +47,6 @@ const LeaderBoardPage = (): React.ReactElement => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        console.log(dataInfo, 'abc');
 
         setUserInfo(dataInfo);
       } catch (error: any) {
@@ -128,7 +127,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                   2
                 </div>
               </div>
-              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
+              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF] max-w-[120px] text-center">
                 {leaderBoard[1]?.name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
@@ -170,7 +169,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                   1
                 </div>
               </div>
-              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
+              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF] max-w-[120px] text-center">
                 {leaderBoard[0]?.name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
@@ -197,7 +196,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                   3
                 </div>
               </div>
-              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
+              <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF] max-w-[120px] text-center">
                 {leaderBoard[2]?.name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">

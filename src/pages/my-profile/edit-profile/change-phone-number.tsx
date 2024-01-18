@@ -87,6 +87,7 @@ const MainPhoneNumber: React.FC = () => {
         error={error}
         setError={setError}
         className={select === 0 ? 'flex' : 'hidden'}
+        title="Enter Your PIN"
       />
       <ChangePhoneNumber
         form={form}

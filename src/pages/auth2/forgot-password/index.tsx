@@ -1,0 +1,81 @@
+import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
+import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
+import AuthForgotPassNew from '@/components/auth/AuthForgotPassNew';
+import AuthForgotPassNumber from '@/components/auth/AuthForgotPassNumber';
+import AuthOTP from '@/components/auth/AuthOTP';
+import countries from '@/constants/countries.json';
+import AuthLayout from '@/containers/auth/AuthLayout';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+const ForgotPassword: React.FC = () => {
+  const [select, setSelect] = useState(2);
+  const [formData, setFormData] = useState({
+    phoneNumber: '',
+    birthDate: '',
+    name: '',
+    seedsTag: '',
+    refCode: '',
+    password: ''
+  });
+  const [method, setMethod] = useState('whatsapp');
+  const [countdown, setCountdown] = useState(0);
+  const getOTP = {
+    method,
+    phoneNumber: formData.phoneNumber
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdown]);
+  const element = (
+    <Image
+      src={SeedyAuthLogin}
+      alt="SeedyAuthLogin"
+      className="md:hidden flex self-center w-1/2"
+    />
+  );
+  const form = (
+    <>
+      <AuthForgotPassNumber
+        setSelect={setSelect}
+        className={select === 0 ? 'flex' : 'hidden'}
+        formData={formData}
+        setFormData={setFormData}
+        setCountdown={setCountdown}
+        countries={countries}
+      />
+      <AuthOTP
+        select={select}
+        number={formData.phoneNumber}
+        method={method}
+        setMethod={setMethod}
+        countdown={countdown}
+        setCountdown={setCountdown}
+        getOTP={getOTP}
+        setSelect={setSelect}
+        image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
+        formData={formData}
+      />
+      <AuthForgotPassNew
+        setSelect={setSelect}
+        className={select === 2 ? 'flex' : 'hidden'}
+        formData={formData}
+        setFormData={setFormData}
+      />
+    </>
+  );
+  return <AuthLayout elementChild={element} formChild={form} />;
+};
+
+export default ForgotPassword;

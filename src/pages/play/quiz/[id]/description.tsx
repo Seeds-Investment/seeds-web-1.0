@@ -44,7 +44,7 @@ const DescriptionQuiz = () => {
     audioFiles: [
       {
         name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
-        isAutoPlay: false,
+        isAutoPlay: true,
         isLoop: true
       }
     ]

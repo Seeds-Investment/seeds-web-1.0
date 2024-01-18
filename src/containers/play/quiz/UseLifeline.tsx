@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import QuizButton from '@/components/quiz/button.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import useSoundEffect from '@/hooks/useSoundEffects';
 import i18n from '@/utils/common/i18n';
 import {
   LifelinesEnum,
@@ -16,6 +17,7 @@ import {
 } from '@/utils/interfaces/quiz.interfaces';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Helping from '../../../assets/play/quiz/Helping.json';
@@ -41,14 +43,32 @@ const UseLifeline = ({
     currentPage?: number
   ) => void;
 }) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const [showAnimation, setShowAnimation] = useState(true);
   const [countDown, setCountDown] = useState<number>(60000);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
+  const audioConfig = {
+    routeName: router.pathname,
+    audioFiles: [
+      {
+        name: baseUrl + '/assets/quiz/sound/answer_correct.mp3'
+      },
+      {
+        name: baseUrl + '/assets/quiz/sound/answer_wrong.mp3'
+      }
+    ]
+  };
+
+  const { playAudio } = useSoundEffect(audioConfig);
 
   const timeOut = useCallback(() => {
+    playAudio({ name: baseUrl + '/assets/quiz/sound/answer_coming.mp3' });
     setTimeout(() => {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       setShowAnimation(false);
+      playAudio({ name: baseUrl + '/assets/quiz/sound/answer_correct.mp3' });
       if (useLifelineState?.lifeline === LifelinesEnum['50_50']) {
         finishUseLifeline(useLifelineState.res, currentPage);
       }

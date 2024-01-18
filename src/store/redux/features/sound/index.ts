@@ -5,7 +5,7 @@ export interface ParkingStateI {
 }
 
 const initialState: ParkingStateI = {
-  soundActive: false
+  soundActive: true
 };
 
 interface DefaultVehiclePayload {

@@ -629,6 +629,24 @@ export default {
     keepMeLoggedIn: 'Keep me logged in',
     forgotPassword: 'Forgot Password'
   },
+  authCarousel: {
+    title: { 1: 'Hi! Welcome to Seeds', 2: 'Learn more', 3: 'Play', 4: 'Meet' },
+    subtitle: {
+      1: 'Start and grow your investment journey with friends',
+      2: 'About investing and finance from experts',
+      3: 'Tournaments and win cash',
+      4: 'and chat with your compatible people.'
+    }
+  },
+  authBoarding: {
+    guest1: 'Login',
+    guest2: ' as ',
+    guest3: 'Guest',
+    term: 'By clicking sign up, you agree to Seeds',
+    term2: 'Terms and Conditions',
+    login: 'Login',
+    signup: 'Sign up'
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',
@@ -1587,6 +1605,12 @@ export default {
     canceled: 'Cancelled',
     quizDone1: 'One Step Closer to the Win.',
     quizDone2:
-      'Our recommended circle that will boost your performance in tournament!'
+      'Our recommended circle that will boost your performance in tournament!',
+    testInvestment: 'Test your investment knowledge and win real money!',
+    welcome: 'Welcome to Seeds Quiz',
+    areYouReady: 'Are You Ready?',
+    millionaire: 'Who wants to be Seeds Millionaire!',
+    incorrectWord: 'Incorrect, fyuhh that was close',
+    correctWord: 'Correct, you got {{point}} points'
   }
 };

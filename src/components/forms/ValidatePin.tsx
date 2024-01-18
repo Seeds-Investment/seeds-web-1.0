@@ -11,6 +11,7 @@ interface VariablePin {
   setError: any;
   emptyPinIndex: any;
   className: string;
+  title: string;
 }
 
 const ColNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -21,7 +22,8 @@ const ValidatePin: React.FC<VariablePin> = ({
   emptyPinIndex,
   error,
   setError,
-  className
+  className,
+  title
 }: VariablePin) => {
   return (
     <div className={`${className} justify-center`}>
@@ -37,7 +39,7 @@ const ValidatePin: React.FC<VariablePin> = ({
             <Image src={SeedsPin} alt="SeedsPin" />
             <div className="flex flex-col gap-2">
               <Typography className="font-poppins font-semibold text-3xl text-[#262626] text-center">
-                Enter Your PIN
+                {title}
               </Typography>
               <Typography className="font-poppins font-normal text-base text-[#7C7C7C] text-center">
                 Please enter your PIN number correctly

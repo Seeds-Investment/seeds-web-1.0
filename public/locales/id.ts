@@ -560,6 +560,15 @@ export default {
       4: 'dan mengobrol dengan orang-orang yang cocok dengan kamu'
     }
   },
+  authBoarding: {
+    guest1: 'Masuk',
+    guest2: ' sebagai ',
+    guest3: 'Tamu',
+    term: 'Dengan mengklik daftar, Kamu menyetujui',
+    term2: 'Syarat dan Ketentuan di Seeds',
+    login: 'Masuk',
+    signup: 'Daftar'
+  },
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',

@@ -26,6 +26,7 @@ interface ILogoLanguage {
   selectedLanguage: any;
   handleLanguageChange: any;
   className: string;
+  menuClassName: string;
 }
 
 const languageList = [
@@ -38,7 +39,8 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
   setOpen,
   selectedLanguage,
   handleLanguageChange,
-  className
+  className,
+  menuClassName
 }: ILogoLanguage) => {
   return (
     <div className={`${className}`}>
@@ -69,7 +71,9 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
             />
           </Button>
         </MenuHandler>
-        <MenuList className="flex flex-col items-center p-0 bg-transparent border-none shadow-none">
+        <MenuList
+          className={`${menuClassName} min-w-fit flex-col items-center p-0 bg-transparent border-none shadow-none`}
+        >
           {languageList
             .filter(item => item.language !== selectedLanguage)
             .map((item, index) => {
@@ -112,7 +116,6 @@ const AuthLayout: React.FC<IAuthLayout> = ({
   const languageCtx = useContext(LanguageContext);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
   const [open, setOpen] = useState(false);
-  console.log(open);
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
@@ -122,19 +125,29 @@ const AuthLayout: React.FC<IAuthLayout> = ({
     setOpen(!open);
   };
   return (
-    <div className="flex">
-      <div className="flex flex-col gap-4 md:gap-0 md:w-[37%] w-full h-screen bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2]">
-        <LogoLanguage
-          open={open}
-          setOpen={setOpen}
-          selectedLanguage={selectedLanguage}
-          handleLanguageChange={handleLanguageChange}
-          className="flex justify-between mt-4 md:hidden"
-        />
-        <AuthCarousel />
-        <div className="bg-red-700 w-full md:hidden">a</div>
+    <div className="flex items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2]">
+      <div className="flex flex-col justify-between md:w-[37%] w-full">
+        <div className="flex flex-col gap-4 md:gap-0">
+          <LogoLanguage
+            open={open}
+            setOpen={setOpen}
+            selectedLanguage={selectedLanguage}
+            handleLanguageChange={handleLanguageChange}
+            className="flex justify-between m-4 md:hidden"
+            menuClassName="flex md:hidden"
+          />
+          <AuthCarousel className="md:flex hidden" />
+          {elementChild}
+        </div>
+        <div className="bg-white w-full h-fit md:hidden p-[18px] rounded-t-[35px]">
+          <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] h-full">
+            <div className="flex justify-center items-center bg-white w-full rounded-[19px] h-full">
+              {formChild}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="w-full md:flex justify-center items-center hidden">
+      <div className="w-full md:flex justify-center items-center hidden bg-white py-[90px]">
         <div className="w-4/5 flex flex-col gap-16">
           <LogoLanguage
             open={open}
@@ -142,9 +155,12 @@ const AuthLayout: React.FC<IAuthLayout> = ({
             selectedLanguage={selectedLanguage}
             handleLanguageChange={handleLanguageChange}
             className="md:flex justify-between hidden"
+            menuClassName="md:flex hidden"
           />
           <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px]">
-            <div className="bg-white w-full rounded-[19px]">{formChild}</div>
+            <div className="flex justify-center items-center bg-white w-full rounded-[19px]">
+              {formChild}
+            </div>
           </div>
         </div>
       </div>

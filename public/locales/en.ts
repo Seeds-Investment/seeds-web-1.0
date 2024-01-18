@@ -638,6 +638,15 @@ export default {
       4: 'and chat with your compatible people.'
     }
   },
+  authBoarding: {
+    guest1: 'Login',
+    guest2: ' as ',
+    guest3: 'Guest',
+    term: 'By clicking sign up, you agree to Seeds',
+    term2: 'Terms and Conditions',
+    login: 'Login',
+    signup: 'Sign up'
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',

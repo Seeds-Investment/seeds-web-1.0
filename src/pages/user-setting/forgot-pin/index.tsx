@@ -1,5 +1,6 @@
 import ValidatePass from '@/components/forms/ValidatePass';
 import ValidatePin from '@/components/forms/ValidatePin';
+import PINModal from '@/components/popup/PINModal';
 import { forgotPin } from '@/repository/profile.repository';
 import { useState } from 'react';
 
@@ -8,11 +9,18 @@ const ForgotPin: React.FC = () => {
   const [form, setForm] = useState({ password: '', new_pin: '' });
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
   const emptyPinIndex = pin.findIndex(number => number === '');
   const joinPin = pin.join('');
+
+  const handleOpen = (): void => {
+    setOpen(prev => !prev);
+  };
   const handleSubmit = async (): Promise<void> => {
     try {
       await forgotPin(form);
+      handleOpen();
+      setForm({ password: '', new_pin: '' });
     } catch (error: any) {
       console.error(error);
     }
@@ -41,7 +49,9 @@ const ForgotPin: React.FC = () => {
         setError={setError}
         emptyPinIndex={emptyPinIndex}
         className={select === 1 ? 'flex' : 'hidden'}
+        title="Create Your New PIN"
       />
+      <PINModal open={open} handleOpen={handleOpen} />
     </>
   );
 };

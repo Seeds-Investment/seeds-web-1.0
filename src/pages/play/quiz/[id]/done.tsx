@@ -57,12 +57,12 @@ const DoneQuiz: React.FC = () => {
       if (response.rank > 4) {
         playAudio({
           name: baseUrl + '/assets/quiz/sound/you_lose.mp3',
-          isLoop: true
+          isLoop: false
         });
       } else {
         playAudio({
           name: baseUrl + '/assets/quiz/sound/You_win.mp3',
-          isLoop: true
+          isLoop: false
         });
       }
       setQuizReview(response);

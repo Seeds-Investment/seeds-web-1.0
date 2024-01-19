@@ -42,7 +42,7 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
             {t(`authBoarding.login`)}
           </Button>
         </Link>
-        <Link href={'/register'}>
+        <Link href={'/auth2/register'}>
           <Button className="font-semibold font-poppins text-white text-sm bg-[#3AC4A0] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
             {t(`authBoarding.signup`).split(' ')[0]}{' '}
             <span className="lowercase">

@@ -64,6 +64,12 @@ export const checkSeedsTag = async (seedsTag: string): Promise<any> => {
   );
   return response.data;
 };
+export const checkRefCode = async (refCode: string): Promise<any> => {
+  const response = await authService.get(
+    `validate//ref-code?ref-code=${refCode}`
+  );
+  return response.data;
+};
 export const getRefreshToken = async (): Promise<any> => {
   const refreshToken = localStorage.getItem('refreshToken');
   const keepMeLoggedIn = localStorage.getItem('keepMeLoggedIn');

@@ -123,7 +123,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           countries={countries}
           error={error}
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error && blank ? (
             'You must fill in this field'
           ) : error ? (
@@ -138,8 +138,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           handleChange={handleChangePass}
           formData={formData.password}
           error={errorPass}
+          name="password"
+          label="Password"
+          placeholder="Please input your password"
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass && blankPass ? (
             'You must fill in this field'
           ) : errorPass ? (

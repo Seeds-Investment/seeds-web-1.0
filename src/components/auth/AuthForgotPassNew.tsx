@@ -1,6 +1,7 @@
 import Info from '@/assets/auth/Info.png';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthPassword from '@/components/auth/AuthPassword';
+import { forgotPassword } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -36,11 +37,12 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       const passTest = regex.test(formData.password);
       if (!passTest) {
         setErrorPass(true);
-      }
-      if (formData.password !== formData.repassword) {
+      } else if (formData.password !== formData.old_password) {
         setErrorRepass(true);
+      } else {
+        await forgotPassword(formData);
+        handleOpen();
       }
-      handleOpen();
     } catch (error: any) {
       console.log(error);
     }
@@ -82,9 +84,9 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handleRepass}
-          formData={formData.repassword}
+          formData={formData.old_password}
           error={errorRepass}
-          name="repassword"
+          name="old_password"
           label="Confirm New Password"
           placeholder="Please confirm your password"
         />
@@ -102,7 +104,7 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <Button
         onClick={handleNext}
         disabled={
-          formData.password.length === 0 || formData.repassword.length === 0
+          formData.password.length === 0 || formData.old_password.length === 0
         }
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
       >

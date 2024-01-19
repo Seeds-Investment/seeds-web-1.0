@@ -8,6 +8,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthSSO from './AuthSSO';
@@ -130,9 +131,11 @@ const AuthLogin: React.FC = () => {
           {error ? 'Your phone number or password is wrong' : <br />}
         </Typography>
       </div>
-      <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] self-end">
-        Forgot Password?
-      </Typography>
+      <Link href={'/auth2/forgot-password'} className="self-end">
+        <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+          Forgot Password?
+        </Typography>
+      </Link>
       <Button
         disabled={loading}
         onClick={handleSubmit}
@@ -140,9 +143,12 @@ const AuthLogin: React.FC = () => {
       >
         {loading ? <Spinner className=" h-6 w-6" /> : 'Login'}
       </Button>
-      <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] self-end">
-        Forgot Password?
-      </Typography>
+      <Link href={'/auth2/forgot-password'} className="self-end">
+        <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+          Forgot Password?
+        </Typography>
+      </Link>
+
       <AuthSSO />
     </div>
   );

@@ -1,3 +1,4 @@
+import Info from '@/assets/auth/Info.png';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthPassword from '@/components/auth/AuthPassword';
 import { Button, Typography } from '@material-tailwind/react';
@@ -9,18 +10,24 @@ interface IAuthForgotPassNew {
   setSelect: any;
   formData: any;
   setFormData: any;
+  handleOpen: any;
 }
 
 const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
   className,
-  setSelect,
   formData,
-  setFormData
+  setFormData,
+  handleOpen
 }: IAuthForgotPassNew) => {
   const [errorPass, setErrorPass] = useState(false);
+  const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   const handlePass = (e: any): void => {
     setErrorPass(false);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleRepass = (e: any): void => {
+    setErrorRepass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -30,6 +37,10 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       if (!passTest) {
         setErrorPass(true);
       }
+      if (formData.password !== formData.repassword) {
+        setErrorRepass(true);
+      }
+      handleOpen();
     } catch (error: any) {
       console.log(error);
     }
@@ -56,8 +67,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           handleChange={handlePass}
           formData={formData.password}
           error={errorPass}
+          name="password"
+          label="Create a New Password"
+          placeholder="Please create your password"
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass ? (
             'Password must contain 8 digit with upper case and lower case'
           ) : (
@@ -67,20 +81,29 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       </div>
       <div className="w-full">
         <AuthPassword
-          handleChange={handlePass}
-          formData={formData.password}
-          error={errorPass}
+          handleChange={handleRepass}
+          formData={formData.repassword}
+          error={errorRepass}
+          name="repassword"
+          label="Confirm New Password"
+          placeholder="Please confirm your password"
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
-          {errorPass ? (
-            'Password must contain 8 digit with upper case and lower case'
-          ) : (
-            <br />
-          )}
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+          {errorRepass ? 'Oops,  password doesn’t match' : <br />}
+        </Typography>
+      </div>
+      <div className="flex gap-3">
+        <Image src={Info} alt="Info" className="w-5 h-5" />
+        <Typography className="font-poppins font-light text-sm text-[#3AC4A0]">
+          Password must be 8 characters long and have both uppercase and
+          lowercase letters.
         </Typography>
       </div>
       <Button
         onClick={handleNext}
+        disabled={
+          formData.password.length === 0 || formData.repassword.length === 0
+        }
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
       >
         Next

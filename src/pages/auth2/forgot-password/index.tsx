@@ -3,6 +3,7 @@ import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
 import AuthForgotPassNew from '@/components/auth/AuthForgotPassNew';
 import AuthForgotPassNumber from '@/components/auth/AuthForgotPassNumber';
+import AuthModalPass from '@/components/auth/AuthModalPass';
 import AuthOTP from '@/components/auth/AuthOTP';
 import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
@@ -17,10 +18,15 @@ const ForgotPassword: React.FC = () => {
     name: '',
     seedsTag: '',
     refCode: '',
-    password: ''
+    password: '',
+    repassword: ''
   });
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);
+  const [open, setOpen] = useState(false);
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
   const getOTP = {
     method,
     phoneNumber: formData.phoneNumber
@@ -54,6 +60,7 @@ const ForgotPassword: React.FC = () => {
         setFormData={setFormData}
         setCountdown={setCountdown}
         countries={countries}
+        method={method}
       />
       <AuthOTP
         select={select}
@@ -72,7 +79,9 @@ const ForgotPassword: React.FC = () => {
         className={select === 2 ? 'flex' : 'hidden'}
         formData={formData}
         setFormData={setFormData}
+        handleOpen={handleOpen}
       />
+      <AuthModalPass formData={formData} handleOpen={handleOpen} open={open} />
     </>
   );
   return <AuthLayout elementChild={element} formChild={form} />;

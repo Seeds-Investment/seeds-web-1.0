@@ -1,5 +1,5 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
-import { register } from '@/repository/auth.repository';
+import { checkRefCode, register } from '@/repository/auth.repository';
 import {
   Button,
   Dialog,
@@ -7,6 +7,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
 import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRef {
@@ -23,7 +24,8 @@ const AuthRef: React.FC<IAuthRef> = ({
   formData
 }: IAuthRef) => {
   //   const [loading, setLoading] = useState(false);
-  const handleSubmit = async (): Promise<void> => {
+  const [error, setError] = useState(false);
+  const handleSkip = async (): Promise<void> => {
     try {
       await register(formData);
       handleOpen();
@@ -31,6 +33,18 @@ const AuthRef: React.FC<IAuthRef> = ({
       console.error(error);
     }
   };
+
+  const handleConfirm = async (): Promise<void> => {
+    try {
+      await checkRefCode(formData.refCode);
+      await register(formData);
+      handleOpen();
+    } catch (error: any) {
+      console.error(error);
+      setError(true);
+    }
+  };
+
   const handleChange = (e: any): void => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -46,25 +60,30 @@ const AuthRef: React.FC<IAuthRef> = ({
             To get exciting prizes
           </Typography>
         </div>
-        <AuthCommonInput
-          handleChange={handleChange}
-          name="refCode"
-          formData={formData.refCode}
-          placeholder="Input referral code"
-          label="Referral Code"
-          error={false}
-          required={false}
-        />
+        <div className="w-full">
+          <AuthCommonInput
+            handleChange={handleChange}
+            name="refCode"
+            formData={formData.refCode}
+            placeholder="Input referral code"
+            label="Referral Code"
+            error={error}
+            required={false}
+          />
+          <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+            {error ? `Referral code doesn't exists` : <br />}
+          </Typography>
+        </div>
         <div className="flex gap-4 w-full">
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
-            onClick={handleSubmit}
+            onClick={handleSkip}
           >
             Skip
           </Button>
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
-            onClick={handleOpen}
+            onClick={handleConfirm}
           >
             Confirm
           </Button>

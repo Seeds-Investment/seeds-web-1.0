@@ -20,6 +20,7 @@ const PINModal: React.FC<IPINModal> = ({ open, handleOpen }: IPINModal) => {
       handler={handleOpen}
       size="lg"
       className="bg-[#3AC4A0] flex justify-center"
+      dismiss={{ enabled: false }}
     >
       <DialogBody className="flex flex-col gap-8 items-center w-[48%]">
         <div className="flex flex-col gap-4 items-center">
@@ -27,7 +28,7 @@ const PINModal: React.FC<IPINModal> = ({ open, handleOpen }: IPINModal) => {
             You have successfully changed your PIN
           </Typography>
           <Typography className="font-normal font-poppins text-base text-white">
-            Don`&apos;`t forget your PIN, OK?
+            Don&apos;t forget your PIN, OK?
           </Typography>
           <Image
             src={SeedyPINModal}

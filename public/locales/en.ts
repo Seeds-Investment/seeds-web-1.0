@@ -1605,6 +1605,12 @@ export default {
     canceled: 'Cancelled',
     quizDone1: 'One Step Closer to the Win.',
     quizDone2:
-      'Our recommended circle that will boost your performance in tournament!'
+      'Our recommended circle that will boost your performance in tournament!',
+    testInvestment: 'Test your investment knowledge and win real money!',
+    welcome: 'Welcome to Seeds Quiz',
+    areYouReady: 'Are You Ready?',
+    millionaire: 'Who wants to be Seeds Millionaire!',
+    incorrectWord: 'Incorrect, fyuhh that was close',
+    correctWord: 'Correct, you got {{point}} points'
   }
 };

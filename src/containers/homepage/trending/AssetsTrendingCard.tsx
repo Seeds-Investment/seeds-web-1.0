@@ -25,6 +25,7 @@ interface IassetsData {
 
 interface props {
   data: IassetsData;
+  currency: string;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
   isClick?: boolean;
@@ -33,6 +34,7 @@ interface props {
 
 const AssetTrendingCard: React.FC<props> = ({
   data,
+  currency,
   handleSelectedAsset,
   isDefaultChecked,
   isClick = false,
@@ -72,7 +74,6 @@ const AssetTrendingCard: React.FC<props> = ({
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
           <Avatar size="md" variant="circular" src={data.image} alt="logo" />
-
           <div className="flex ml-5 w-1/2 flex-col gap-0.5">
             <div className="flex flex-row">
               <Typography className="font-semibold text-base text-[#262626]">
@@ -88,9 +89,11 @@ const AssetTrendingCard: React.FC<props> = ({
           </div>
 
           <div className="ml-auto flex flex-col gap-0.5">
-            <Typography className="font-semibold text-base text-[#262626]">
-              Rp {new Intl.NumberFormat().format(data.price)}
-            </Typography>
+            <div className="flex justify-end">
+              <Typography className="font-semibold text-base text-[#262626]">
+                {currency} {new Intl.NumberFormat().format(data.price)}
+              </Typography>
+            </div>
             <div className="flex justify-end">
               <Typography
                 className={`flex font-normal text-sm ${

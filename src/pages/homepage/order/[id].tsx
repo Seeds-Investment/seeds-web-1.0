@@ -8,6 +8,7 @@ import CardSwitch from '@/containers/homepage/order/CardSwitch';
 import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
+import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getDetailAsset } from '@/repository/asset.repository';
 import {
   createOrderPlay,
@@ -64,6 +65,9 @@ const OrderPage: React.FC = () => {
   const { id } = router.query;
   const { playId } = router.query;
   const { t } = useTranslation();
+  const height = useWindowInnerHeight();
+  console.log(height, 'asas');
+
   const [data, setData] = useState<any>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
@@ -691,7 +695,13 @@ const OrderPage: React.FC = () => {
               </DialogHeader>
               <form onSubmit={() => {}}>
                 <DialogBody className="p-0 font-poppins">
-                  <div className="flex flex-col md:my-8 my-5">
+                  <div
+                    className={`flex flex-col md:my-8 my-5 ${
+                      height !== undefined && height < 760
+                        ? 'max-h-[300px] overflow-auto'
+                        : ''
+                    }`}
+                  >
                     <div className="flex flex-col mb-4">
                       <Typography className="text-[#262626] font-semibold">
                         {t('playSimulation.orderReview')}

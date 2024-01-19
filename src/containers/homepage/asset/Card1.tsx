@@ -39,7 +39,10 @@ const Card1: React.FC<props> = ({ data, currency }) => {
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
-        {currency} {new Intl.NumberFormat().format(data?.lastPrice?.open)}
+        {currency}{' '}
+        {data?.lastPrice?.open > 0.01
+          ? new Intl.NumberFormat().format(data?.lastPrice?.open)
+          : data?.lastPrice?.open}
       </p>
       <p className="text-sm font-normal text-[#5E44FF]">
         {data?.lastPrice?.vwap} (

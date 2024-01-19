@@ -56,10 +56,21 @@ export const getTrendingCircle = async (params: {
 export const getTrendingPeople = async (params: {
   page: number;
   limit: number;
+  is_cache_enabled: boolean;
 }): Promise<any> => {
   try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
     let response = await authPeople.get('/trending', {
-      params
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
     });
     return (response = { ...response, status: 200 });
   } catch (error: any) {

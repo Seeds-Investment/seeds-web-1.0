@@ -1,6 +1,6 @@
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth/AuthNumber';
-import { checkPhoneNumber } from '@/repository/auth.repository';
+import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -12,6 +12,7 @@ interface IAuthForgotPassNumber {
   setFormData: any;
   setCountdown: any;
   countries: any;
+  method: string;
 }
 
 const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
@@ -20,7 +21,8 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   formData,
   setFormData,
   setCountdown,
-  countries
+  countries,
+  method
 }: IAuthForgotPassNumber) => {
   const [error, setError] = useState(false);
   const [country, setCountry] = useState(101);
@@ -42,27 +44,34 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   };
 
   const handleNext = async (): Promise<void> => {
+    const formattedPhone = {
+      ...formData,
+      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
+        formData.phoneNumber as string
+      }`
+    };
     try {
-      const formattedPhone = {
-        ...formData,
-        phoneNumber: `${
-          countries[country].dialCode.replace('+', '') as string
-        }${formData.phoneNumber as string}`
-      };
       const response = await checkPhoneNumber(formattedPhone.phoneNumber);
       if (response === undefined) {
-        setCountdown(30);
-        setSelect(1);
+        setError(true);
       }
     } catch (error: any) {
       console.log(error);
+      const getOTP = {
+        method,
+        phoneNumber: formattedPhone.phoneNumber
+      };
       if (
         error.response.data.message === 'requested phone number already exists'
       ) {
-        setError(true);
+        await getOtp(getOTP);
+        setCountdown(30);
+        setSelect(1);
+        setFormData(formattedPhone);
       }
     }
   };
+  console.log(formData);
 
   return (
     <div
@@ -73,12 +82,12 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
-        <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
-          Let’s Input!
+      <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
+        <span className="font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+          Input Phone Number
         </span>
         <br />
-        Phone number & password
+        To get OPT Code
       </Typography>
       <div className="w-full">
         <AuthNumber
@@ -89,13 +98,14 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
           countries={countries}
           error={error}
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
-          {error ? 'Oops, Your number already registered' : <br />}
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+          {error ? 'Oops, your phone number not registered' : <br />}
         </Typography>
       </div>
       <Button
         onClick={handleNext}
-        className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
+        disabled={formData.phoneNumber.length === 0}
+        className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] disabled:bg-[#BDBDBD] rounded-full w-full"
       >
         Next
       </Button>

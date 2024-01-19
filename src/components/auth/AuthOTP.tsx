@@ -163,12 +163,6 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           </Typography>
         </div>
         <Button
-          onClick={handleSubmitOTP}
-          className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
-        >
-          Next
-        </Button>
-        <Button
           className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-semibold font-poppins"
           onClick={handleMethodChange}
           disabled={countdown > 0}
@@ -178,6 +172,12 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           </span>
           Try <span className="lowercase">sending it by</span>{' '}
           {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
+        </Button>
+        <Button
+          onClick={handleSubmitOTP}
+          className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
+        >
+          Next
         </Button>
       </div>
     </>

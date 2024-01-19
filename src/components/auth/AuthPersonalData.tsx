@@ -20,6 +20,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
 }: IAuthPersonalData) => {
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
+  // const [errorDoB, setErrorDoB] = useState(false);
   const [blank, setBlank] = useState(false);
   const [blankTag, setBlankTag] = useState(false);
   const [day, setDay] = useState<number>(new Date().getDate());
@@ -104,7 +105,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           error={blank}
           required={true}
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blank ? 'You must fill in this field' : <br />}
         </Typography>
       </div>
@@ -118,7 +119,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           error={errorTag}
           required={true}
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankTag && errorTag ? (
             'You must fill in this field'
           ) : errorTag ? (

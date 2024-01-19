@@ -122,8 +122,11 @@ const AuthLogin: React.FC = () => {
           handleChange={handleChange}
           formData={formData.password}
           error={error}
+          name="password"
+          label="Password"
+          placeholder="Please input your password"
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error ? 'Your phone number or password is wrong' : <br />}
         </Typography>
       </div>

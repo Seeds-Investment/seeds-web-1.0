@@ -7,6 +7,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import AuthCommonInput from './AuthCommonInput';
 
@@ -24,11 +25,17 @@ const AuthRef: React.FC<IAuthRef> = ({
   formData
 }: IAuthRef) => {
   //   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [error, setError] = useState(false);
   const handleSkip = async (): Promise<void> => {
     try {
-      await register(formData);
+      const response = await register(formData);
+      if (response === null) {
+        throw new Error(response);
+      }
       handleOpen();
+      setError(false);
+      await router.push('login');
     } catch (error: any) {
       console.error(error);
     }
@@ -37,8 +44,13 @@ const AuthRef: React.FC<IAuthRef> = ({
   const handleConfirm = async (): Promise<void> => {
     try {
       await checkRefCode(formData.refCode);
-      await register(formData);
+      const response = await register(formData);
+      if (response === null) {
+        throw new Error(response);
+      }
       handleOpen();
+      setError(false);
+      await router.push('login');
     } catch (error: any) {
       console.error(error);
       setError(true);
@@ -46,6 +58,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   };
 
   const handleChange = (e: any): void => {
+    setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (

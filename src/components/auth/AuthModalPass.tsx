@@ -6,6 +6,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface IAuthModalPass {
   open: boolean;
@@ -38,12 +39,14 @@ const AuthModalPass: React.FC<IAuthModalPass> = ({
             The new password has been successfully created.
           </Typography>
         </div>
-        <Button
-          className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
-          onClick={handleSubmit}
-        >
-          Confirm
-        </Button>
+        <Link href={'login'} className="w-full">
+          <Button
+            className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
+            onClick={handleSubmit}
+          >
+            Confirm
+          </Button>
+        </Link>
       </DialogBody>
     </Dialog>
   );

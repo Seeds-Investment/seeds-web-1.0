@@ -63,6 +63,7 @@ function App({
     router.pathname.startsWith('/play') ||
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
+    router.pathname.startsWith('/chat') ||
     router.pathname.startsWith('/faq');
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';

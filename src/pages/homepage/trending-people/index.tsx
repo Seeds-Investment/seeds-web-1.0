@@ -5,6 +5,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { getTrendingPeople } from '../../../repository/asset.repository';
 export interface PeopleInterface {
   avatar: string;
@@ -31,21 +32,19 @@ export default function PeopleList(): React.ReactElement {
     is_cache_enabled: false
   });
   const [userInfo, setUserInfo] = useState<any>();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast('Error fetching user data');
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
+    void fetchData();
   }, []);
+
   async function fetchPeople(): Promise<void> {
     try {
       const response = await getTrendingPeople({
@@ -58,7 +57,7 @@ export default function PeopleList(): React.ReactElement {
         console.error('Failed to fetch circles:', response);
       }
     } catch (error) {
-      console.error('Error fetching circles:', error);
+      toast('Error fetching circles');
     }
   }
 

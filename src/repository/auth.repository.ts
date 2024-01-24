@@ -11,6 +11,12 @@ const authService = baseAxios(
   }/auth/v1/`
 );
 
+const userService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/user/v1/`
+);
+
 interface LoginForm {
   phoneNumber: string;
   password: string;
@@ -31,6 +37,12 @@ interface RegistForm {
   };
 }
 
+interface IChangePassword {
+  phoneNumber: string;
+  old_password: string;
+  password: string;
+}
+
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('login/phone-number', formData);
@@ -49,6 +61,18 @@ export const register = async (formData: RegistForm): Promise<any> => {
     return await Promise.resolve(null);
   }
 };
+
+export const forgotPassword = async (
+  formData: IChangePassword
+): Promise<any> => {
+  try {
+    let response = await userService.patch('change-password', formData);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const checkEmail = async (email: string): Promise<any> => {
   const response = await authService.get(`validate/email?email=${email}`);
   return response.data;

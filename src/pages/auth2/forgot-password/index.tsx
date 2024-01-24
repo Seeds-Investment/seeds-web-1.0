@@ -11,15 +11,11 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const ForgotPassword: React.FC = () => {
-  const [select, setSelect] = useState(2);
+  const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
     phoneNumber: '',
-    birthDate: '',
-    name: '',
-    seedsTag: '',
-    refCode: '',
     password: '',
-    repassword: ''
+    old_password: ''
   });
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);

@@ -5,7 +5,6 @@ import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
-import AuthSSO from './AuthSSO';
 
 interface IAuthRegister {
   className: string;
@@ -96,7 +95,6 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       setErrorPass(true);
     }
   };
-  console.log(formData);
 
   return (
     <div
@@ -158,7 +156,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       >
         Next
       </Button>
-      <AuthSSO />
+      {/* <AuthSSO /> */}
     </div>
   );
 };

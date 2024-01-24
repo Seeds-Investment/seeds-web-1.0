@@ -1,14 +1,22 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
-import { checkRefCode, register } from '@/repository/auth.repository';
+import TrackerEvent from '@/helpers/GTM';
+import {
+  checkRefCode,
+  loginPhoneNumber,
+  register
+} from '@/repository/auth.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Button,
   Dialog,
   DialogBody,
+  Spinner,
   Typography
 } from '@material-tailwind/react';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRef {
@@ -18,24 +26,69 @@ interface IAuthRef {
   formData: any;
 }
 
+interface LoginFormData {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
+}
+
 const AuthRef: React.FC<IAuthRef> = ({
   open,
   handleOpen,
   setFormData,
   formData
 }: IAuthRef) => {
-  //   const [loading, setLoading] = useState(false);
+  const deviceDetector = new DeviceDetector();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(false);
+  const [loginForm, setLoginForm] = useState<LoginFormData>({
+    phoneNumber: formData.phoneNumber,
+    password: formData.password,
+    platform: '',
+    os_name: ''
+  });
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await loginPhoneNumber(loginForm);
+      if (response.status === 200) {
+        window.localStorage.setItem('accessToken', response.accessToken);
+        window.localStorage.setItem('refreshToken', response.refreshToken);
+        window.localStorage.setItem('expiresAt', response.expiresAt);
+
+        setFormData({ ...formData, phoneNumber: '', password: '' });
+        const responseUser = await getUserInfo();
+        TrackerEvent({
+          event: 'Seeds_login_web',
+          userId: responseUser.id
+        });
+        handleOpen();
+        await router.push('/homepage');
+        TrackerEvent({
+          event: `Seeds_view_home_page_web`,
+          userId: responseUser.id,
+          pageName: 'homepage'
+        });
+      } else if (response.data.message === 'wrong phone number or password') {
+        setLoading(false);
+        setError(true);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
   const handleSkip = async (): Promise<void> => {
     try {
       const response = await register(formData);
       if (response === null) {
         throw new Error(response);
       }
-      handleOpen();
+      await handleSubmit();
       setError(false);
-      await router.push('login');
     } catch (error: any) {
       console.error(error);
     }
@@ -48,9 +101,8 @@ const AuthRef: React.FC<IAuthRef> = ({
       if (response === null) {
         throw new Error(response);
       }
-      handleOpen();
+      await handleSubmit();
       setError(false);
-      await router.push('login');
     } catch (error: any) {
       console.error(error);
       setError(true);
@@ -61,6 +113,16 @@ const AuthRef: React.FC<IAuthRef> = ({
     setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    setLoginForm({
+      ...loginForm,
+      platform: `${
+        deviceDetector.parse(navigator.userAgent).device?.type as string
+      }_web`,
+      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
+    });
+  }, []);
   return (
     <Dialog open={open} handler={handleOpen} size="sm">
       <DialogBody className="flex flex-col gap-4 p-10 items-center">
@@ -92,13 +154,13 @@ const AuthRef: React.FC<IAuthRef> = ({
             className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
           >
-            Skip
+            {loading ? <Spinner className=" h-6 w-6" /> : 'Skip'}
           </Button>
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
           >
-            Confirm
+            {loading ? <Spinner className=" h-6 w-6" /> : 'Confirm'}
           </Button>
         </div>
       </DialogBody>

@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import AuthSSO from './AuthSSO';
 
 interface FormData {
   phoneNumber: string;
@@ -149,7 +148,7 @@ const AuthLogin: React.FC = () => {
         </Typography>
       </Link>
 
-      <AuthSSO />
+      {/* <AuthSSO /> */}
     </div>
   );
 };

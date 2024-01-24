@@ -10,12 +10,13 @@ import { useState } from 'react';
 
 interface IAuthBoD {
   error: boolean;
-  day: number;
+  day: number | undefined;
   setDay: any;
-  month: number;
+  month: number | undefined;
   setMonth: any;
-  year: number;
+  year: number | undefined;
   setYear: any;
+  handleChangeDoB: any;
 }
 
 const AuthBoD: React.FC<IAuthBoD> = ({
@@ -25,7 +26,8 @@ const AuthBoD: React.FC<IAuthBoD> = ({
   month,
   setMonth,
   year,
-  setYear
+  setYear,
+  handleChangeDoB
 }: IAuthBoD) => {
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
@@ -86,7 +88,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
             variant="static"
             placeholder="MM"
             name=""
-            value={month + 1}
+            value={month !== undefined ? month + 1 : undefined}
             readOnly
             labelProps={{
               className:
@@ -120,8 +122,24 @@ const AuthBoD: React.FC<IAuthBoD> = ({
       >
         <DialogBody className="flex gap-8">
           <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-scroll cursor-pointer no-scroll">
-            {(month % 2 === 0 && month < 8) ||
-            ((month + 1) % 2 === 0 && month >= 8)
+            {month === undefined || year === undefined
+              ? days.map((value, index) => {
+                  return (
+                    <Typography
+                      onClick={() => setDay(value)}
+                      className={`font-poppins text-base text-center ${
+                        day === value
+                          ? 'text-[#3AC4A0] font-semibold'
+                          : 'text-[#BDBDBD] font-normal'
+                      }`}
+                      key={index}
+                    >
+                      {value}
+                    </Typography>
+                  );
+                })
+              : (month % 2 === 0 && month < 8) ||
+                ((month + 1) % 2 === 0 && month >= 8)
               ? days.map((value, index) => {
                   return (
                     <Typography
@@ -229,7 +247,13 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         </DialogBody>
         <DialogFooter className="w-full">
           <Button
-            onClick={handleOpen}
+            onClick={() => {
+              handleChangeDoB();
+              handleOpen();
+            }}
+            disabled={
+              day === undefined || month === undefined || year === undefined
+            }
             className="capitalize font-poppins font-semibold text-sm text-white w-full bg-[#3AC4A0] rounded-full"
           >
             Confirm

@@ -20,26 +20,53 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
 }: IAuthPersonalData) => {
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
-  // const [errorDoB, setErrorDoB] = useState(false);
+  const [errorDoB, setErrorDoB] = useState(false);
   const [blank, setBlank] = useState(false);
   const [blankTag, setBlankTag] = useState(false);
-  const [day, setDay] = useState<number>(new Date().getDate());
-  const [month, setMonth] = useState<number>(new Date().getMonth());
-  const [year, setYear] = useState<number>(new Date().getFullYear() - 17);
+  const [blankDoB, setBlankDoB] = useState(false);
+  const [day, setDay] = useState<number | undefined>();
+  const [month, setMonth] = useState<number | undefined>();
+  const [year, setYear] = useState<number | undefined>();
   const timezoneOffset = new Date().getTimezoneOffset();
-  const utcDate = new Date(year, month, day);
+  const utcDate = new Date(
+    `${typeof year === 'number' ? year : ''}/${
+      typeof month === 'number' ? month : ''
+    }/${typeof day === 'number' ? day : ''}`
+  );
+  const birthLimit =
+    (new Date().getTime() -
+      new Date(
+        `${typeof year === 'number' ? year : ''}/${
+          typeof month === 'number' ? month : ''
+        }/${typeof day === 'number' ? day : ''}`
+      ).getTime()) /
+    (1000 * 60 * 60 * 24 * 365.25);
   const handleOpen = (): void => {
     setOpen(!open);
   };
   const handleNext = async (): Promise<void> => {
     try {
-      if (formData.name.length === 0 || formData.seedsTag.length === 0) {
+      if (
+        formData.name.length === 0 ||
+        formData.seedsTag.length === 0 ||
+        birthLimit < 12 ||
+        day === undefined ||
+        month === undefined ||
+        year === undefined
+      ) {
         if (formData.name.length === 0) {
           setBlank(true);
         }
         if (formData.seedsTag.length === 0) {
           setErrorTag(true);
           setBlankTag(true);
+        }
+        if (birthLimit < 12) {
+          setErrorDoB(true);
+        }
+        if (day === undefined || month === undefined || year === undefined) {
+          setErrorDoB(true);
+          setBlankDoB(true);
         }
         throw new Error('something error');
       }
@@ -57,24 +84,29 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
 
   const handleChange = (e: any): void => {
     setBlank(false);
-    const date = new Date(
-      utcDate.getTime() - (timezoneOffset - 20) * 60 * 1000
-    ).toISOString();
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
-      birthDate: date
+      [e.target.name]: e.target.value
     });
   };
   const handleChangeTag = (e: any): void => {
     setErrorTag(false);
     setBlankTag(false);
+
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleChangeDoB = (e: any): void => {
     const date = new Date(
       utcDate.getTime() - (timezoneOffset - 20) * 60 * 1000
     ).toISOString();
+    setErrorDoB(false);
+    setBlankDoB(false);
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
       birthDate: date
     });
   };
@@ -129,16 +161,27 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           )}
         </Typography>
       </div>
-
-      <AuthBoD
-        error={false}
-        day={day}
-        setDay={setDay}
-        month={month}
-        setMonth={setMonth}
-        year={year}
-        setYear={setYear}
-      />
+      <div className="w-full">
+        <AuthBoD
+          error={errorDoB}
+          day={day}
+          setDay={setDay}
+          month={month}
+          setMonth={setMonth}
+          year={year}
+          setYear={setYear}
+          handleChangeDoB={handleChangeDoB}
+        />
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+          {blankDoB && errorDoB ? (
+            'You must fill in this field'
+          ) : errorDoB ? (
+            'Minimun age 12 Years old'
+          ) : (
+            <br />
+          )}
+        </Typography>
+      </div>
       <AuthRef
         open={open}
         handleOpen={handleOpen}

@@ -33,7 +33,6 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<any[]>([]);
   const OTP = input.join('');
-  console.log(OTP.length);
   const verifyOTP = {
     method,
     msisdn: number,
@@ -108,26 +107,26 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           {method === 'whatsapp' ? 'Whatsapp' : 'SMS'} to +
           {formData.phoneNumber}.
         </Typography>
-        <div className="w-2/3 flex justify-between">
-          <Button
-            onClick={async () => {
-              setBlank(false);
-              setError(false);
-              setInput(['', '', '', '']);
-              inputRefs.current[0]?.focus();
-              await getOtp(getOTP);
-              setCountdown(30);
-            }}
-            disabled={countdown > 0}
-            className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#7C7C7C] font-normal font-poppins"
-          >
-            Resend OTP Code
-          </Button>
-          <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">{`00:${
-            countdown < 10 ? '0' : ''
-          }${countdown as string}`}</Typography>
-        </div>
         <div className="w-full">
+          <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
+            <Button
+              onClick={async () => {
+                setBlank(false);
+                setError(false);
+                setInput(['', '', '', '']);
+                inputRefs.current[0]?.focus();
+                await getOtp(getOTP);
+                setCountdown(30);
+              }}
+              disabled={countdown > 0}
+              className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#7C7C7C] font-normal font-poppins"
+            >
+              Resend OTP Code
+            </Button>
+            <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">{`00:${
+              countdown < 10 ? '0' : ''
+            }${countdown as string}`}</Typography>
+          </div>
           <div className="flex justify-center w-full gap-6">
             {input.map((value, index) => (
               <div
@@ -168,7 +167,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           disabled={countdown > 0}
         >
           <span className="font-medium text-[#BDBDBD]">
-            Didn`&apos;`t <span className="lowercase">get the code?</span>{' '}
+            Didn&apos;t <span className="lowercase">get the code?</span>{' '}
           </span>
           Try <span className="lowercase">sending it by</span>{' '}
           {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}

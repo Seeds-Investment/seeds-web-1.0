@@ -71,7 +71,6 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
       }
     }
   };
-  console.log(formData);
 
   return (
     <div

@@ -9,7 +9,7 @@ import { Button, Card, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface IForm {
@@ -93,25 +93,24 @@ const AccountInformation: React.FC = () => {
       console.error(error.response.data.message);
     }
   };
+  const fetchData = useCallback(async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setForm({
+        name: dataInfo.name,
+        seedsTag: dataInfo.seedsTag,
+        email: dataInfo.email,
+        avatar: dataInfo.avatar,
+        bio: dataInfo.bio,
+        birthDate: dataInfo.birthDate,
+        phone: dataInfo.phoneNumber
+      });
+      setBirthDate(dataInfo.birthDate);
+    } catch (error: any) {
+      console.error('Error fetching data:', error.message);
+    }
+  }, []);
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setForm({
-          name: dataInfo.name,
-          seedsTag: dataInfo.seedsTag,
-          email: dataInfo.email,
-          avatar: dataInfo.avatar,
-          bio: dataInfo.bio,
-          birthDate: dataInfo.birthDate,
-          phone: dataInfo.phoneNumber
-        });
-        setBirthDate(dataInfo.birthDate);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});

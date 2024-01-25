@@ -66,7 +66,6 @@ const AuthLogin: React.FC = () => {
         throw new Error(response.data.message);
       }
     } catch (error: any) {
-      console.error(error);
       toast(error, { type: 'error' });
       setLoading(false);
       setError(true);

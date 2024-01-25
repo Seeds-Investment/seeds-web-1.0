@@ -3,6 +3,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IAuthOTP {
   select: number;
@@ -72,13 +73,15 @@ const AuthOTP: React.FC<IAuthOTP> = ({
         setError(true);
         setInput(['', '', '', '']);
         inputRefs.current[0]?.focus();
+        throw new Error(`${t('authLogin.validation.blank')}`);
       } else {
         await verifyOtp(verifyOTP);
         setSelect(2);
         setCountdown(0);
       }
     } catch (error: any) {
-      console.error(error.response.data.message);
+      toast(error ?? error.response.data.message, { type: 'error' });
+
       setError(true);
       setInput(['', '', '', '']);
       inputRefs.current[0]?.focus();

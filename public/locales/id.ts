@@ -569,6 +569,58 @@ export default {
     login: 'Masuk',
     signup: 'Daftar'
   },
+  authLogin: {
+    title1: 'Yuk, Masukan!',
+    title2: 'Nomor telepon & kata sandi',
+    phone: 'Nomor Telepon',
+    password: 'Kata Sandi',
+    passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
+    forgotPass: 'Lupa kata sandi?',
+    login: 'Masuk',
+    validation: {
+      login: 'Nomor telepon atau kata sandimu salah',
+      blank: 'Kamu harus mengisi kolom ini',
+      number: 'Oops, nomormu sudah dipakai nih',
+      password:
+        'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+    },
+    next: 'Selanjutnya'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Yuk, Masukan Kode OTP',
+      title2: 'Kode-nya kami kirim ke ',
+      title3: '',
+      resend: 'Kirim ulang kode OTP',
+      otherMethod1: 'Belum',
+      otherMethod2: ' dapet kodenya? ',
+      otherMethod3: 'Coba',
+      otherMethod4: ' lewat',
+      validation: 'Yah, OTPmu salah, yuk coba lagi'
+    },
+    authPersonalData: {
+      title: 'Data Diri Kamu',
+      name: 'Nama Kamu',
+      namePlaceholder: 'Tuliskan nama kamu',
+      dob: 'Tanggal Lahir',
+      day: 'HH',
+      month: 'BB',
+      year: 'TTTT',
+      validation: {
+        seedsTag: 'Seeds Tag sudah dipakai, nih',
+        dob: 'Kamu harus berusia minimal 12 tahun'
+      }
+    },
+    authRef: {
+      title1: 'Masukan Kode Referralnya',
+      title2: 'Dan dapetin hadiah menarik',
+      referral: 'Kode Referral',
+      referralPlaceholder: 'Masukan kode referralnya',
+      skip: 'Lewati',
+      confirm: 'Konfirmasi',
+      validation: 'Kode referralmu nggak valid, nih'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',

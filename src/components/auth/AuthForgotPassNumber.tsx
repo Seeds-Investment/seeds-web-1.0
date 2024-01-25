@@ -4,6 +4,8 @@ import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IAuthForgotPassNumber {
   className: string;
@@ -24,6 +26,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   countries,
   method
 }: IAuthForgotPassNumber) => {
+  const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [country, setCountry] = useState(101);
   const handleChange = (e: any, dialCode: any): void => {
@@ -56,7 +59,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         setError(true);
       }
     } catch (error: any) {
-      console.log(error);
+      toast(error, { type: 'error' });
       const getOTP = {
         method,
         phoneNumber: formattedPhone.phoneNumber
@@ -83,10 +86,10 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
       />
       <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
         <span className="font-poppins font-semibold md:text-2xl text-base text-[#050522]">
-          Input Phone Number
+          {t('authForgotPass.title1')}
         </span>
         <br />
-        To get OPT Code
+        {t('authForgotPass.title2')}
       </Typography>
       <div className="w-full">
         <AuthNumber
@@ -98,7 +101,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
           error={error}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-          {error ? 'Oops, your phone number not registered' : <br />}
+          {error ? t('authForgotPass.validation.number') : <br />}
         </Typography>
       </div>
       <Button
@@ -106,7 +109,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         disabled={formData.phoneNumber.length === 0}
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] disabled:bg-[#BDBDBD] rounded-full w-full"
       >
-        Next
+        {t('authLogin.next')}
       </Button>
     </div>
   );

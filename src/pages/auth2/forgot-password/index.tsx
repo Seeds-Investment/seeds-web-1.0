@@ -77,7 +77,7 @@ const ForgotPassword: React.FC = () => {
         setFormData={setFormData}
         handleOpen={handleOpen}
       />
-      <AuthModalPass formData={formData} handleOpen={handleOpen} open={open} />
+      <AuthModalPass handleOpen={handleOpen} open={open} />
     </>
   );
   return <AuthLayout elementChild={element} formChild={form} />;

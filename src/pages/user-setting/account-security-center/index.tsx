@@ -2,14 +2,14 @@ import AuthFacebook2 from '@/assets/auth/AuthFacebook2.png';
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import ModalEmail from '@/components/profile/editProfile/ModalEmail';
-import AssociatedAccountButton from '@/components/setting/AssociatedAccountButton';
-import SecuritySettingForm from '@/components/setting/SecuritySettingForm';
+import AssociatedAccountButton from '@/components/setting/accountSecurityCenter/AssociatedAccountButton';
+import SecuritySettingForm from '@/components/setting/accountSecurityCenter/SecuritySettingForm';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 interface CountryCodeInfo {
   name: string;
@@ -49,30 +49,28 @@ const AccountSecurityCenter: React.FC = () => {
   const handleOpen = (): void => {
     setOpen(!open);
   };
-
+  const fetchData = useCallback(async () => {
+    try {
+      const dataInfo = await getUserInfo();
+      setForm({
+        name: dataInfo.name,
+        seedsTag: dataInfo.seedsTag,
+        email: dataInfo.email,
+        avatar: dataInfo.avatar,
+        bio: dataInfo.bio,
+        birthDate: dataInfo.birthDate,
+        phone: dataInfo.phoneNumber
+      });
+      setCountry(getCountry(dataInfo.phoneNumber));
+    } catch (error: any) {
+      console.error('Error fetching data:', error.message);
+    }
+  }, []);
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setForm({
-          name: dataInfo.name,
-          seedsTag: dataInfo.seedsTag,
-          email: dataInfo.email,
-          avatar: dataInfo.avatar,
-          bio: dataInfo.bio,
-          birthDate: dataInfo.birthDate,
-          phone: dataInfo.phoneNumber
-        });
-        setCountry(getCountry(dataInfo.phoneNumber));
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
-  }, []);
+  }, [fetchData]);
   return (
     <PageGradient
       defaultGradient

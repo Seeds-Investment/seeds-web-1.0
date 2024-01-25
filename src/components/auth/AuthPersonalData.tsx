@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import AuthBoD from './AuthBoD';
 import AuthCommonInput from './AuthCommonInput';
 import AuthRef from './AuthRef';
@@ -76,7 +77,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       await checkSeedsTag(formData.seedsTag);
       handleOpen();
     } catch (error: any) {
-      console.log(error);
+      toast(error, { type: 'error' });
       if (
         error.response?.data?.message === 'requested seeds tag already exists'
       ) {

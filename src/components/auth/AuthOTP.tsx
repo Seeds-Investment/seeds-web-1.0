@@ -2,6 +2,7 @@ import { getOtp, verifyOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IAuthOTP {
   select: number;
@@ -28,6 +29,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   image,
   formData
 }: IAuthOTP) => {
+  const { t } = useTranslation();
   const [input, setInput] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
   const [blank, setBlank] = useState(false);
@@ -100,12 +102,12 @@ const AuthOTP: React.FC<IAuthOTP> = ({
         />
         <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           <span className="font-poppins font-semibold md:text-2xl text-base text-[#050522]">
-            Input OTP Code
+            {t('authRegister.authOTP.title1')}
           </span>
           <br />
-          We have sent the OTP code via{' '}
-          {method === 'whatsapp' ? 'Whatsapp' : 'SMS'} to +
-          {formData.phoneNumber}.
+          {t('authRegister.authOTP.title2')}
+          {method === 'whatsapp' ? 'Whatsapp' : 'SMS'}
+          {t('authRegister.authOTP.title3')} +{formData.phoneNumber}.
         </Typography>
         <div className="w-full">
           <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
@@ -121,7 +123,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
               disabled={countdown > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#7C7C7C] font-normal font-poppins"
             >
-              Resend OTP Code
+              {t('authRegister.authOTP.resend')}
             </Button>
             <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">{`00:${
               countdown < 10 ? '0' : ''
@@ -151,11 +153,11 @@ const AuthOTP: React.FC<IAuthOTP> = ({
               </div>
             ))}
           </div>
-          <Typography className="font-poppins font-light text-sm text-[#DD2525] text-center">
+          <Typography className="font-poppins font-light text-sm text-[#DD2525] text-center mt-2">
             {error && blank ? (
-              'You must fill in this field'
+              t('authLogin.validation.blank')
             ) : error ? (
-              'Incorrect OTP. Please Try again.'
+              t('authRegister.authOTP.validation')
             ) : (
               <br />
             )}
@@ -167,16 +169,22 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           disabled={countdown > 0}
         >
           <span className="font-medium text-[#BDBDBD]">
-            Didn&apos;t <span className="lowercase">get the code?</span>{' '}
+            {t('authRegister.authOTP.otherMethod1')}
+            <span className="lowercase">
+              {t('authRegister.authOTP.otherMethod2')}
+            </span>
           </span>
-          Try <span className="lowercase">sending it by</span>{' '}
+          {t('authRegister.authOTP.otherMethod3')}
+          <span className="lowercase">
+            {t('authRegister.authOTP.otherMethod4')}
+          </span>
           {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
         </Button>
         <Button
           onClick={handleSubmitOTP}
           className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
         >
-          Next
+          {t('authLogin.next')}
         </Button>
       </div>
     </>

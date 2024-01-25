@@ -7,6 +7,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IAuthBoD {
   error: boolean;
@@ -16,7 +17,7 @@ interface IAuthBoD {
   setMonth: any;
   year: number | undefined;
   setYear: any;
-  handleChangeDoB: any;
+  handleChangeDoB: (e: any) => void;
 }
 
 const AuthBoD: React.FC<IAuthBoD> = ({
@@ -29,6 +30,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
   setYear,
   handleChangeDoB
 }: IAuthBoD) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
     setOpen(!open);
@@ -68,10 +70,10 @@ const AuthBoD: React.FC<IAuthBoD> = ({
       >
         <div className="relative flex bg-white border-none w-full rounded-[10px] h-full">
           <Input
-            label="Date of Birth"
+            label={`${t('authRegister.authPersonalData.dob')}`}
             type="number"
             variant="static"
-            placeholder="DD"
+            placeholder={`${t('authRegister.authPersonalData.day')}`}
             name=""
             value={day}
             readOnly
@@ -86,7 +88,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
           <Input
             type="number"
             variant="static"
-            placeholder="MM"
+            placeholder={`${t('authRegister.authPersonalData.month')}`}
             name=""
             value={month !== undefined ? month + 1 : undefined}
             readOnly
@@ -100,7 +102,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
           <Input
             type="number"
             variant="static"
-            placeholder="YYYY"
+            placeholder={`${t('authRegister.authPersonalData.year')}`}
             name=""
             value={year}
             readOnly
@@ -248,7 +250,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         <DialogFooter className="w-full">
           <Button
             onClick={() => {
-              handleChangeDoB();
+              handleChangeDoB(event);
               handleOpen();
             }}
             disabled={

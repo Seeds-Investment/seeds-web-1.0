@@ -17,6 +17,8 @@ import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRef {
@@ -40,6 +42,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   formData
 }: IAuthRef) => {
   const deviceDetector = new DeviceDetector();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(false);
@@ -78,6 +81,7 @@ const AuthRef: React.FC<IAuthRef> = ({
       }
     } catch (error: any) {
       console.error(error);
+      toast(error, { type: 'error' });
     }
   };
 
@@ -91,6 +95,7 @@ const AuthRef: React.FC<IAuthRef> = ({
       setError(false);
     } catch (error: any) {
       console.error(error);
+      toast(error, { type: 'error' });
     }
   };
 
@@ -105,6 +110,8 @@ const AuthRef: React.FC<IAuthRef> = ({
       setError(false);
     } catch (error: any) {
       console.error(error);
+      toast(error, { type: 'error' });
+
       setError(true);
     }
   };
@@ -129,10 +136,10 @@ const AuthRef: React.FC<IAuthRef> = ({
         <Image src={SeedyAuthRef} alt="SeedyAuthRef" className="w-[242px]" />
         <div className="flex flex-col gap-2">
           <Typography className="text-center font-poppins font-semibold text-xl text-[#262626]">
-            Input Referral Code
+            {t('authRegister.authRef.title1')}
           </Typography>
           <Typography className="text-center font-poppins font-light text-base text-[#7C7C7C]">
-            To get exciting prizes
+            {t('authRegister.authRef.title2')}
           </Typography>
         </div>
         <div className="w-full">
@@ -140,13 +147,13 @@ const AuthRef: React.FC<IAuthRef> = ({
             handleChange={handleChange}
             name="refCode"
             formData={formData.refCode}
-            placeholder="Input referral code"
-            label="Referral Code"
+            placeholder={t('authRegister.authRef.referralPlaceholder')}
+            label={t('authRegister.authRef.referral')}
             error={error}
             required={false}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {error ? `Referral code doesn't exists` : <br />}
+            {error ? t('authRegister.authRef.validation') : <br />}
           </Typography>
         </div>
         <div className="flex gap-4 w-full">
@@ -154,13 +161,21 @@ const AuthRef: React.FC<IAuthRef> = ({
             className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
           >
-            {loading ? <Spinner className=" h-6 w-6" /> : 'Skip'}
+            {loading ? (
+              <Spinner className=" h-6 w-6" />
+            ) : (
+              t('authRegister.authRef.skip')
+            )}
           </Button>
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
           >
-            {loading ? <Spinner className=" h-6 w-6" /> : 'Confirm'}
+            {loading ? (
+              <Spinner className=" h-6 w-6" />
+            ) : (
+              t('authRegister.authRef.confirm')
+            )}
           </Button>
         </div>
       </DialogBody>

@@ -12,15 +12,25 @@ import { ArrowBackwardIcon } from 'public/assets/vector';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+interface IForm {
+  name: string;
+  seedsTag: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+}
+
 const AccountInformation: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const maxLengthBio = 50;
   const [select, setSelect] = useState(0);
-  const [updateAvatar, setAvatar] = useState();
+  const [updateAvatar, setAvatar] = useState<File | null>(null);
   const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
-  const [form, setForm] = useState<any>({
+  const [form, setForm] = useState<IForm>({
     name: '',
     seedsTag: '',
     email: '',

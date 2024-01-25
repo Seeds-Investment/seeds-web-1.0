@@ -5,6 +5,8 @@ import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IAuthRegister {
   className: string;
@@ -25,6 +27,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   countries,
   method
 }: IAuthRegister) => {
+  const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
   const [blank, setBlank] = useState(false);
@@ -75,7 +78,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         setFormData(formattedPhone);
       }
     } catch (error: any) {
-      console.log(error);
+      toast(error.response.data.message, { type: 'error' });
       if (
         formattedPhone.phoneNumber.length ===
         countries[country].dialCode.replace('+', '').length
@@ -107,10 +110,10 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       />
       <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
-          Let’s Input!
+          {t('authLogin.title1')}
         </span>
         <br />
-        Phone number & password
+        {t('authLogin.title2')}
       </Typography>
       <div className="w-full">
         <AuthNumber
@@ -123,9 +126,9 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error && blank ? (
-            'You must fill in this field'
+            t('authLogin.validation.blank')
           ) : error ? (
-            'Oops, Your number already registered'
+            t('authLogin.validation.number')
           ) : (
             <br />
           )}
@@ -137,14 +140,14 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           formData={formData.password}
           error={errorPass}
           name="password"
-          label="Password"
-          placeholder="Please input your password"
+          label={t('authLogin.password').toString()}
+          placeholder={t('authLogin.passwordPlaceholder').toString()}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass && blankPass ? (
-            'You must fill in this field'
+            t('authLogin.validation.blank')
           ) : errorPass ? (
-            'Password must contain 8 digit with upper case and lower case'
+            t('authLogin.validation.password')
           ) : (
             <br />
           )}
@@ -154,7 +157,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         onClick={handleNext}
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
       >
-        Next
+        {t('authLogin.next')}
       </Button>
       {/* <AuthSSO /> */}
     </div>

@@ -18,9 +18,19 @@ interface CountryCodeInfo {
   dialCode: string;
 }
 
-const EditProfile: React.FC = () => {
+interface IForm {
+  name: string;
+  seedsTag: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+}
+
+const AccountSecurityCenter: React.FC = () => {
   const [country, setCountry] = useState<CountryCodeInfo | undefined>();
-  const [form, setForm] = useState<any>({
+  const [form, setForm] = useState<IForm>({
     name: '',
     seedsTag: '',
     email: '',
@@ -141,4 +151,4 @@ const EditProfile: React.FC = () => {
   );
 };
 
-export default EditProfile;
+export default AccountSecurityCenter;

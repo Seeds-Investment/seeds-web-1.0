@@ -69,7 +69,7 @@ const UserSetting: React.FC = () => {
         try {
           await router.push('/user-setting/account-information');
         } catch (error) {
-          console.error('Error navigating to Edit Profile:', error);
+          console.error('Error navigating to Account Information:', error);
         }
       },
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
@@ -84,7 +84,7 @@ const UserSetting: React.FC = () => {
         try {
           await router.push('/user-setting/account-security-center');
         } catch (error) {
-          console.error('Error navigating to Edit Profile:', error);
+          console.error('Error navigating to Account Security Center:', error);
         }
       },
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${

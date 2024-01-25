@@ -647,6 +647,57 @@ export default {
     login: 'Login',
     signup: 'Sign up'
   },
+  authLogin: {
+    title1: 'Let’s Input!',
+    title2: 'Phone number & password',
+    phone: 'Phone Number',
+    password: 'Password',
+    passwordPlaceholder: 'Please input your password',
+    forgotPass: 'Forgot Password?',
+    login: 'Login',
+    validation: {
+      login: 'Your phone number or password is wrong',
+      blank: 'You must fill in this field',
+      number: 'Oops, Your number already registered',
+      password: 'Password must contain 8 digit with upper case and lower case'
+    },
+    next: 'Next'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Input OTP Code',
+      title2: 'We have sent the OTP code via ',
+      title3: ' to',
+      resend: 'Resend OTP Code',
+      otherMethod1: `Didn't`,
+      otherMethod2: ' get the code? ',
+      otherMethod3: 'Try',
+      otherMethod4: ' sending it by',
+      validation: 'Incorrect OTP. Please Try again.'
+    },
+    authPersonalData: {
+      title: 'Your Personal Data',
+      name: 'Your Name',
+      namePlaceholder: 'Enter your name',
+      dob: 'Date of Birth',
+      day: 'DD',
+      month: 'MM',
+      year: 'YYYY',
+      validation: {
+        seedsTag: 'Seeds Tag alredy used',
+        dob: 'Minimun  age 12 Years old'
+      }
+    },
+    authRef: {
+      title1: 'Input Referral Code',
+      title2: 'To get exciting prizes',
+      referral: 'Referral Code',
+      referralPlaceholder: 'Input referral code',
+      skip: 'Skip',
+      confirm: 'Confirm',
+      validation: 'Invalid referral code'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',

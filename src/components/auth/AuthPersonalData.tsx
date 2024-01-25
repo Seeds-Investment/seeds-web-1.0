@@ -3,6 +3,7 @@ import { checkSeedsTag } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AuthBoD from './AuthBoD';
 import AuthCommonInput from './AuthCommonInput';
 import AuthRef from './AuthRef';
@@ -18,6 +19,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   setFormData,
   formData
 }: IAuthPersonalData) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
   const [errorDoB, setErrorDoB] = useState(false);
@@ -68,6 +70,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           setErrorDoB(true);
           setBlankDoB(true);
         }
+        await checkSeedsTag(formData.seedsTag);
         throw new Error('something error');
       }
       await checkSeedsTag(formData.seedsTag);
@@ -122,23 +125,23 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       />
       <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
-          Let’s Input!
+          {t('authLogin.title1')}
         </span>
         <br />
-        Your Personal Data
+        {t('authRegister.authPersonalData.title')}
       </Typography>
       <div className="w-full">
         <AuthCommonInput
           handleChange={handleChange}
           name="name"
           formData={formData.name}
-          placeholder="Enter your name"
-          label="Your Name"
+          placeholder={t('authRegister.authPersonalData.namePlaceholder')}
+          label={t('authRegister.authPersonalData.name')}
           error={blank}
           required={true}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-          {blank ? 'You must fill in this field' : <br />}
+          {blank ? t('authLogin.validation.blank') : <br />}
         </Typography>
       </div>
       <div className="w-full">
@@ -153,9 +156,9 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankTag && errorTag ? (
-            'You must fill in this field'
+            t('authLogin.validation.blank')
           ) : errorTag ? (
-            'Requested Seeds Tag already exists'
+            t('authRegister.authPersonalData.validation.seedsTag')
           ) : (
             <br />
           )}
@@ -174,9 +177,9 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankDoB && errorDoB ? (
-            'You must fill in this field'
+            t('authLogin.validation.blank')
           ) : errorDoB ? (
-            'Minimun age 12 Years old'
+            t('authRegister.authPersonalData.validation.dob')
           ) : (
             <br />
           )}
@@ -193,7 +196,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         onClick={handleNext}
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
       >
-        Next
+        {t('authLogin.next')}
       </Button>
     </div>
   );

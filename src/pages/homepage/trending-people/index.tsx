@@ -57,7 +57,7 @@ export default function PeopleList(): React.ReactElement {
         console.error('Failed to fetch circles:', response);
       }
     } catch (error) {
-      toast('Error fetching circles');
+      toast('Error fetching peoples');
     }
   }
 

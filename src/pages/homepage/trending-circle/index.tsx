@@ -7,6 +7,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface CircleListRoot {
   CircleList: Circle[];
@@ -87,19 +88,13 @@ export default function ListCircle(): React.ReactElement {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      toast('Error fetching circles');
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchDataCircle();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
+    void fetchDataCircle();
   }, [filter]);
 
   useEffect(() => {
@@ -121,7 +116,7 @@ export default function ListCircle(): React.ReactElement {
       const dataInfo = await getUserInfo();
       setUserInfo(dataInfo);
     } catch (error: any) {
-      console.error('Error fetching data:', error.message);
+      toast('Error fetching user data');
     }
   };
 

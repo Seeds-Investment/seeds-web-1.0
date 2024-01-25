@@ -1,9 +1,11 @@
 import CCard from '@/components/CCard';
 import FollowButton from '@/components/FollowButton';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getUserInfo } from '@/repository/profile.repository';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { getTrendingPeople } from '../../../repository/asset.repository';
 export interface PeopleInterface {
   avatar: string;
@@ -26,8 +28,23 @@ export default function PeopleList(): React.ReactElement {
   const [params, setParams] = useState({
     page: 1,
     limit: 15,
-    search: ''
+    search: '',
+    is_cache_enabled: false
   });
+  const [userInfo, setUserInfo] = useState<any>();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast('Error fetching user data');
+    }
+  };
+
+  useEffect(() => {
+    void fetchData();
+  }, []);
+
   async function fetchPeople(): Promise<void> {
     try {
       const response = await getTrendingPeople({
@@ -40,7 +57,7 @@ export default function PeopleList(): React.ReactElement {
         console.error('Failed to fetch circles:', response);
       }
     } catch (error) {
-      console.error('Error fetching circles:', error);
+      toast('Error fetching peoples');
     }
   }
 
@@ -63,7 +80,7 @@ export default function PeopleList(): React.ReactElement {
   }, [searchInput]);
 
   useEffect(() => {
-    if (searchInput.length === 0) {
+    if (searchInput.length === 0 && userInfo !== undefined) {
       void fetchPeople();
     }
   }, [searchInput.length]);

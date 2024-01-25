@@ -8,9 +8,11 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import AuthSSO from './AuthSSO';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface FormData {
   phoneNumber: string;
@@ -21,6 +23,7 @@ interface FormData {
 
 const AuthLogin: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,11 +63,12 @@ const AuthLogin: React.FC = () => {
           pageName: 'homepage'
         });
       } else if (response.data.message === 'wrong phone number or password') {
-        setLoading(false);
-        setError(true);
+        throw new Error(response.data.message);
       }
     } catch (error: any) {
-      console.error(error);
+      toast(error, { type: 'error' });
+      setLoading(false);
+      setError(true);
     }
   };
 
@@ -104,10 +108,10 @@ const AuthLogin: React.FC = () => {
       />
       <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
-          Let’s Input!
+          {t('authLogin.title1')}
         </span>
         <br />
-        Phone number & password
+        {t('authLogin.title2')}
       </Typography>
       <AuthNumber
         handleChange={handleChange}
@@ -122,25 +126,33 @@ const AuthLogin: React.FC = () => {
           handleChange={handleChange}
           formData={formData.password}
           error={error}
+          name="password"
+          label={t('authLogin.password').toString()}
+          placeholder={t('authLogin.passwordPlaceholder').toString()}
         />
-        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start">
-          {error ? 'Your phone number or password is wrong' : <br />}
+        <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
+          {error ? t('authLogin.validation.login') : <br />}
         </Typography>
       </div>
-      <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] self-end">
-        Forgot Password?
-      </Typography>
+      <Link href={'/auth2/forgot-password'} className="self-end">
+        <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+          {t('authLogin.forgotPass')}
+        </Typography>
+      </Link>
       <Button
         disabled={loading}
         onClick={handleSubmit}
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
       >
-        {loading ? <Spinner className=" h-6 w-6" /> : 'Login'}
+        {loading ? <Spinner className=" h-6 w-6" /> : t('authLogin.login')}
       </Button>
-      <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] self-end">
-        Forgot Password?
-      </Typography>
-      <AuthSSO />
+      <Link href={'/auth2/forgot-password'} className="self-end">
+        <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+          {t('authLogin.forgotPass')}
+        </Typography>
+      </Link>
+
+      {/* <AuthSSO /> */}
     </div>
   );
 };

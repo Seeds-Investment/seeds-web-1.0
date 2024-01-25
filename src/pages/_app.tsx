@@ -101,6 +101,7 @@ function App({
                 {renderHeader && <Header className={`-mt-20`} />}
                 <ThemeProvider>
                   {getLayout(<Component {...pageProps} />)}
+                  <ToastContainer />
                 </ThemeProvider>
               </SessionProvider>
             </SuccessProvider>

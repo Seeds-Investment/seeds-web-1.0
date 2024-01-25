@@ -24,7 +24,8 @@ export default function PeoplePage(): React.ReactElement {
     try {
       const response = await getTrendingPeople({
         page: 1,
-        limit: 3
+        limit: 3,
+        is_cache_enabled: false
       });
       console.log(response, 'k');
 

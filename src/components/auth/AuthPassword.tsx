@@ -8,12 +8,18 @@ interface IAuthPassword {
   handleChange: any;
   formData: string;
   error: boolean;
+  name: string;
+  label: string;
+  placeholder: string;
 }
 
 const AuthPassword: React.FC<IAuthPassword> = ({
   handleChange,
   formData,
-  error
+  error,
+  name,
+  label,
+  placeholder
 }: IAuthPassword) => {
   const [open, setOpen] = useState(false);
   return (
@@ -24,11 +30,11 @@ const AuthPassword: React.FC<IAuthPassword> = ({
     >
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
         <Input
-          label="Password"
+          label={label}
           type={open ? 'text' : 'password'}
           variant="static"
-          placeholder="Please input your password"
-          name="password"
+          placeholder={placeholder}
+          name={name}
           value={formData}
           onChange={handleChange}
           required

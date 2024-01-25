@@ -9,6 +9,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 interface IAuthNumber {
   handleChange: any;
@@ -27,6 +28,7 @@ const AuthNumber: React.FC<IAuthNumber> = ({
   setCountry,
   error
 }: IAuthNumber) => {
+  const { t } = useTranslation();
   return (
     <div
       className={`rounded-xl p-[2px] h-full w-full ${
@@ -82,7 +84,7 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           </MenuList>
         </Menu>
         <Input
-          label="Phone Number"
+          label={t('authLogin.phone').toString()}
           type="number"
           variant="static"
           placeholder="85XXX"

@@ -24,6 +24,11 @@ interface LoginForm {
   os_name?: string;
 }
 
+interface LoginSSOForm {
+  identifier: string;
+  provider: string;
+}
+
 interface RegistForm {
   phoneNumber: string;
   birthDate: string;
@@ -46,6 +51,18 @@ interface IChangePassword {
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('login/phone-number', formData);
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const loginSSO = async ({
+  identifier,
+  provider
+}: LoginSSOForm): Promise<any> => {
+  try {
+    let response = await authService.post(`login/${provider}`, { identifier });
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;

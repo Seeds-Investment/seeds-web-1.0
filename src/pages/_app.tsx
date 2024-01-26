@@ -79,10 +79,12 @@ function App({
         <LanguageProvider>
           <LoadingProvider>
             <ErrorBEProvider>
-              <LoginLayout>
-                {getLayout(<Component {...pageProps} />)}
-                <ToastContainer />
-              </LoginLayout>
+              <SessionProvider session={pageProps.session}>
+                <LoginLayout>
+                  {getLayout(<Component {...pageProps} />)}
+                  <ToastContainer />
+                </LoginLayout>
+              </SessionProvider>
             </ErrorBEProvider>
           </LoadingProvider>
         </LanguageProvider>

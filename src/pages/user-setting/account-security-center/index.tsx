@@ -1,15 +1,17 @@
 import AuthFacebook2 from '@/assets/auth/AuthFacebook2.png';
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import ModalEmail from '@/components/profile/editProfile/ModalEmail';
 import AssociatedAccountButton from '@/components/setting/accountSecurityCenter/AssociatedAccountButton';
+import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
+import FormModalNumber from '@/components/setting/accountSecurityCenter/FormModalNumber';
 import SecuritySettingForm from '@/components/setting/accountSecurityCenter/SecuritySettingForm';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
-import { getUserInfo } from '@/repository/profile.repository';
+import { useAppSelector } from '@/store/redux/store';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 interface CountryCodeInfo {
   name: string;
@@ -18,103 +20,103 @@ interface CountryCodeInfo {
   dialCode: string;
 }
 
-interface IForm {
-  name: string;
-  seedsTag: string;
-  email: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-}
-
 const AccountSecurityCenter: React.FC = () => {
-  const [country, setCountry] = useState<CountryCodeInfo | undefined>();
-  const [form, setForm] = useState<IForm>({
-    name: '',
-    seedsTag: '',
-    email: '',
-    avatar: '',
-    bio: '',
-    birthDate: '',
-    phone: ''
-  });
+  const router = useRouter();
+  const { dataUser } = useAppSelector(state => state.user);
+  console.log(dataUser);
+  const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
+  const [country, setCountry] = useState(101);
+  const [openMail, setOpenMail] = useState(false);
+  const [openNumber, setOpenNumber] = useState(false);
   const getCountry = (phone: string): CountryCodeInfo | undefined =>
     countries.find(code => {
       const dialCode = code?.dialCode.replace('+', '');
       return phone?.replace('+', '').slice(0, dialCode?.length) === dialCode;
     });
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = (): void => {
-    setOpen(!open);
+  const handleOpenMail = (): void => {
+    setOpenMail(!openMail);
   };
-  const fetchData = useCallback(async () => {
-    try {
-      const dataInfo = await getUserInfo();
-      setForm({
-        name: dataInfo.name,
-        seedsTag: dataInfo.seedsTag,
-        email: dataInfo.email,
-        avatar: dataInfo.avatar,
-        bio: dataInfo.bio,
-        birthDate: dataInfo.birthDate,
-        phone: dataInfo.phoneNumber
-      });
-      setCountry(getCountry(dataInfo.phoneNumber));
-    } catch (error: any) {
-      console.error('Error fetching data:', error.message);
-    }
-  }, []);
+  const handleOpenNumber = (): void => {
+    setOpenNumber(!openNumber);
+  };
   useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, [fetchData]);
+    setCountryInfo(getCountry(dataUser.phoneNumber));
+  }, []);
   return (
     <PageGradient
       defaultGradient
       className="w-full flex flex-col justify-center gap-4"
     >
+      <FormModalMail
+        open={openMail}
+        handleOpen={handleOpenMail}
+        emailData={dataUser.email}
+      />
+      <FormModalNumber
+        open={openNumber}
+        handleOpen={handleOpenNumber}
+        phoneData={dataUser.phoneNumber}
+        country={country}
+        setCountry={setCountry}
+      />
       <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:py-10 md:px-32">
         <Typography className="font-poppins font-semibold text-base text-[#262626] self-start">
           Security Setting
         </Typography>
         <SecuritySettingForm
-          form={form.phone}
+          onClick={handleOpenMail}
+          form={dataUser.email}
+          textBlank="add your email"
+          label="Email"
+          extraChildren={<></>}
+        />
+        <SecuritySettingForm
+          onClick={handleOpenNumber}
+          form={dataUser.phoneNumber}
           textBlank="add your phone number"
           label="Phone Number"
           extraChildren={
             <>
               <img
                 src={`https://flagcdn.com/${
-                  country?.code.toLowerCase() as string
+                  countryInfo?.code.toLowerCase() as string
                 }.svg`}
-                alt={country?.name}
+                alt={countryInfo?.name}
                 className="h-4 w-7 object-cover"
               />
               <Typography className="text-[#7C7C7C] text-base font-poppins font-normal">
-                {country?.dialCode}
+                {countryInfo?.dialCode}
               </Typography>
               <Image src={DropdownPhone} alt="DropdownPhone" />
             </>
           }
         />
+
         <SecuritySettingForm
-          form={form.email}
-          textBlank="add your email"
-          label="Email"
-          extraChildren={<></>}
-        />
-        <SecuritySettingForm
-          form={form.email}
+          onClick={async () => {
+            dataUser.isPasswordExists
+              ? await router.push('/auth2/change-password')
+              : await router.push('/auth2/create-password');
+          }}
+          form={
+            dataUser.isPasswordExists ? (
+              <div className="flex gap-2 pt-2">
+                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+              </div>
+            ) : (
+              ''
+            )
+          }
           textBlank="Create a new password"
           label="Password"
           extraChildren={<></>}
         />
-        <ModalEmail open={open} handleOpen={handleOpen} email={form.email} />
       </Card>
-
       <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:py-10 md:px-32">
         <Typography className="font-poppins font-semibold text-base text-[#262626] self-start">
           Associated Account

@@ -12,7 +12,7 @@ const authOptions = {
     GoogleProvider({
       clientId:
         process.env.GOOGLE_CLIENT_ID ??
-        // '14526331056-r1qjs9l9vlkgt48hqc8eit81dag3paip.apps.googleusercontent.com',
+        // '414526331056-r1qjs9l9vlkgt48hqc8eit81dag3paip.apps.googleusercontent.com',
         '1017054068936-3lhdtcmqaebjgtuk04htpj7bo5rqaufr.apps.googleusercontent.com',
       clientSecret:
         process.env.GOOGLE_CLIENT_SECRET ??
@@ -30,14 +30,13 @@ const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }: any) {
-      if (user === true) {
+      if (user !== undefined) {
         token.id = user.id;
       }
-      if (account === true) {
+      if (account !== undefined) {
         token.accessToken = account.access_token;
         token.provider = account.provider;
       }
-      console.log(token);
       return token;
     },
     async session({ session, user, token }: any) {

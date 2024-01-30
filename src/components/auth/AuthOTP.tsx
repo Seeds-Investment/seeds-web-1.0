@@ -1,3 +1,4 @@
+import Backward from '@/assets/auth/Backward.svg';
 import { getOtp, verifyOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -96,8 +97,16 @@ const AuthOTP: React.FC<IAuthOTP> = ({
       <div
         className={`${
           select === 1 ? 'flex' : 'hidden'
-        } flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+        } relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
       >
+        <Image
+          src={Backward}
+          alt="Backward"
+          className="absolute left-0 cursor-pointer"
+          onClick={() => {
+            setSelect(0);
+          }}
+        />
         <Image
           src={image}
           alt="SeedyAuthLogin"

@@ -1,10 +1,13 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth/AuthNumber';
 import AuthPassword from '@/components/auth/AuthPassword';
 import countries from '@/constants/countries.json';
 import TrackerEvent from '@/helpers/GTM';
 import { loginPhoneNumber } from '@/repository/auth.repository';
-import { getUserInfo } from '@/repository/profile.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch, useAppSelector } from '@/store/redux/store';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
@@ -13,6 +16,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import AuthSSO from './AuthSSO';
 
 interface FormData {
   phoneNumber: string;
@@ -23,6 +27,9 @@ interface FormData {
 
 const AuthLogin: React.FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const dataUser = useAppSelector(state => state.user);
+  console.log(dataUser);
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
   const [error, setError] = useState(false);
@@ -51,15 +58,16 @@ const AuthLogin: React.FC = () => {
         window.localStorage.setItem('expiresAt', response.expiresAt);
 
         setFormData({ ...formData, phoneNumber: '', password: '' });
-        const responseUser = await getUserInfo();
+        await dispatch(fetchUserData());
+        await dispatch(fetchExpData());
         TrackerEvent({
           event: 'Seeds_login_web',
-          userId: responseUser.id
+          userId: ''
         });
         await router.push('/homepage');
         TrackerEvent({
           event: `Seeds_view_home_page_web`,
-          userId: responseUser.id,
+          userId: '',
           pageName: 'homepage'
         });
       } else if (response.data.message === 'wrong phone number or password') {
@@ -100,7 +108,15 @@ const AuthLogin: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
+    <div className="flex relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
+      <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-0 cursor-pointer"
+        onClick={async () => {
+          await router.push('/auth2');
+        }}
+      />
       <Image
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
@@ -116,6 +132,7 @@ const AuthLogin: React.FC = () => {
       <AuthNumber
         handleChange={handleChange}
         formData={formData.phoneNumber}
+        name="phoneNumber"
         country={country}
         setCountry={setCountry}
         countries={countries}
@@ -151,8 +168,7 @@ const AuthLogin: React.FC = () => {
           {t('authLogin.forgotPass')}
         </Typography>
       </Link>
-
-      {/* <AuthSSO /> */}
+      <AuthSSO />
     </div>
   );
 };

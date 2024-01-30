@@ -95,6 +95,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         <AuthNumber
           handleChange={handleChange}
           formData={formData.phoneNumber}
+          name="phoneNumber"
           country={country}
           setCountry={setCountry}
           countries={countries}

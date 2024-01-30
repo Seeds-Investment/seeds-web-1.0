@@ -9,16 +9,18 @@ interface ISecuritySettingForm {
   label: string;
   textBlank: string;
   extraChildren: any;
+  onClick: () => void;
 }
 
 const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
   form,
   label,
   textBlank,
-  extraChildren
+  extraChildren,
+  onClick
 }: ISecuritySettingForm) => {
   return (
-    <div className="relative flex w-full p-0 bg-transparent">
+    <div onClick={onClick} className="relative flex w-full p-0 bg-transparent">
       <div className="absolute flex p-0 gap-2 items-center pr-[18px] pb-[7px] pt-[15px]">
         {extraChildren}
         <Typography
@@ -28,14 +30,16 @@ const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
         >
           {form === '' ? textBlank : form}
         </Typography>
-        <Image
-          src={
-            form === ''
-              ? NoneInputSecuritySetting
-              : ChecklistInputSecuritySetting
-          }
-          alt="InformationInputIcon"
-        />
+        {label !== 'Password' ? (
+          <Image
+            src={
+              form === ''
+                ? NoneInputSecuritySetting
+                : ChecklistInputSecuritySetting
+            }
+            alt="InformationInputIcon"
+          />
+        ) : null}
       </div>
       <Input
         label={label}

@@ -1,323 +1,200 @@
-import ChooseBadgePopUp from '@/components/popup/ChooseBadge';
+import Verified from '@/assets/setting/Verified.svg';
 import ChooselanguagePopup from '@/components/popup/ChooseLanguage';
-import LevelButton from '@/components/ui/button/LevelButton';
-import SubmenuButton from '@/components/ui/button/SubmenuButton';
-import CardGradient from '@/components/ui/card/CardGradient';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import withAuth from '@/helpers/withAuth';
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
-import LanguageContext from '@/store/language/language-context';
+import MenuCard from '@/components/setting/MenuCard';
+import { useAppSelector } from '@/store/redux/store';
+import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { CurrencySVG } from 'public/assets/images';
+
 import {
-  ArrowRightCollapseIcon,
-  BronzeMedalIcon,
   CloseCircleIcon,
   CreatePinIcon,
+  EarphoneIcon,
   FileTextIcon,
   GlobalIcon,
-  GoldMedalIcon,
   HelpCircleIcon,
-  SilverMedalIcon,
+  LogoutIcon,
   StarIcon,
   UserIcon
 } from 'public/assets/vector';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const UserSetting: React.FC = () => {
-  const width = useWindowInnerWidth();
-  const languageCtx = useContext(LanguageContext);
-
-  const [chooseBadgeModalShown, setChooseBadgeModalShown] =
-    useState<boolean>(false);
-
-  const submenuClasses = `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 ${
-    width !== undefined && width < 370 ? 'h-9' : ''
-  } px-6 bg-white`;
-  const [userData, setUserData] = useState<Record<string, any>>();
-  const [modalChooseLang, setModalChooseLang] = useState<boolean>(false);
-  const handleOpenModal = (): void => {
-    setModalChooseLang(!modalChooseLang);
+  const router = useRouter();
+  const { t } = useTranslation();
+  const [open, setOpen] = useState<boolean>(false);
+  const { dataUser } = useAppSelector(state => state.user);
+  const { dataExp } = useAppSelector(state => state.exp);
+  console.log(dataUser);
+  const handleOpen = (): void => {
+    setOpen(!open);
   };
-
-  useEffect(() => {
-    const fetchUserProfile = async (): Promise<void> => {
-      try {
-        const userInfo = await getUserInfo();
-        console.log(userInfo, 'ASFSAF');
-
-        setUserData(userInfo);
-      } catch (error: any) {
-        console.error('Error fetching user profile:', error.message);
+  const accountMenu = [
+    {
+      name: t('setting.setting.accountInfo.title'),
+      src: UserIcon,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/account-information');
       }
-    };
-
-    Promise.all([fetchUserProfile()])
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const [selectedMedal, setSelectedMedal] = useState<string>('gold');
-  const menus = [
-    {
-      label: 'Account Information',
-      altStartAdornment: 'account information',
-      startAdornment: UserIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/account-information');
-        } catch (error) {
-          console.error('Error navigating to Account Information:', error);
-        }
-      },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
-        width !== undefined && width < 370 ? 'h-9' : ''
-      } bg-white`
     },
     {
-      label: 'Account Security Center',
-      altStartAdornment: 'edit profile',
-      startAdornment: CreatePinIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/account-security-center');
-        } catch (error) {
-          console.error('Error navigating to Account Security Center:', error);
-        }
-      },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
-        width !== undefined && width < 370 ? 'h-9' : ''
-      } bg-white`
-    },
-    // {
-    //   label: 'Edit Profile',
-    //   altStartAdornment: 'edit profile',
-    //   startAdornment: UserIcon,
-    //   onClick: async () => {
-    //     try {
-    //       await router.push('/edit-profile');
-    //     } catch (error) {
-    //       console.error('Error navigating to Edit Profile:', error);
-    //     }
-    //   },
-    //   extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
-    //     width !== undefined && width < 370 ? 'h-9' : ''
-    //   } bg-white`
-    // },
-    {
-      label: languageCtx.language === 'EN' ? 'Language' : 'Bahasa',
-      altStartAdornment: 'language',
-      startAdornment: GlobalIcon,
-      onClick: () => {
-        setModalChooseLang(true);
-      },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
-        width !== undefined && width < 370 ? 'h-9' : ''
-      } bg-white`
+      name: t('setting.setting.accountSecure.title'),
+      src: CreatePinIcon,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/account-security-center');
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'Currency' : 'Mata Uang',
-      altStartAdornment: 'Currency',
-      startAdornment: CurrencySVG,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/change-currency');
-        } catch (error) {
-          console.error('Error navigating to Change Currency:', error);
-        }
-      },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
-        width !== undefined && width < 370 ? 'h-9' : ''
-      } bg-white`,
-      currencyLabel: userData?.preferredCurrency as string
+      name: t('setting.setting.createPin.title'),
+      src: CreatePinIcon,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/create-pin');
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'Create Pin' : 'Buat Pin',
-      altStartAdornment: 'create pin',
-      startAdornment: CreatePinIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/create-pin');
-        } catch (error) {
-          console.error('Error navigating to Create Pin:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.changePin.title'),
+      src: CreatePinIcon,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/change-pin');
+      }
+    }
+  ];
+  const languageCurrencyMenu = [
+    {
+      name: t('setting.setting.language.title'),
+      src: GlobalIcon,
+      extra: '',
+      link: handleOpen
     },
     {
-      label: languageCtx.language === 'EN' ? 'Change Pin' : 'Ubah Pin',
-      altStartAdornment: 'change pin',
-      startAdornment: CreatePinIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/change-pin');
-        } catch (error) {
-          console.error('Error navigating to Change Pin:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.currency.title'),
+      src: CurrencySVG,
+      extra: `${dataUser.preferredCurrency}`,
+      link: async () => {
+        await router.push('user-setting/change-currency');
+      }
+    }
+  ];
+  const otherMenu = [
+    {
+      name: t('setting.setting.block.title'),
+      src: CloseCircleIcon,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/block-list');
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'Block List' : 'Daftar Blokir',
-      altStartAdornment: 'block list',
-      startAdornment: CloseCircleIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/block-list');
-        } catch (error) {
-          console.error('Error navigating to Edit Profile:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.legal.title'),
+      src: FileTextIcon,
+      extra: '',
+      link: async () => {
+        await router.push('/faq-submenu/terms-condition');
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'Legal' : 'Hukum',
-      altStartAdornment: 'legal',
-      startAdornment: FileTextIcon,
-      onClick: async () => {
-        try {
-          await router.push('/faq-submenu/terms-condition');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.faq.title'),
+      src: HelpCircleIcon,
+      extra: '',
+      link: async () => {
+        await router.push('/faq');
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'FAQ & Help' : 'FAQ & Bantuan',
-      altStartAdornment: 'faq & help',
-      startAdornment: HelpCircleIcon,
-      onClick: async () => {
-        try {
-          await router.push('/faq');
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.rate.title'),
+      src: StarIcon,
+      extra: '',
+      link: () => {
+        window.open(
+          'https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en-ID',
+          '_blank'
+        );
+      }
     },
     {
-      label: languageCtx.language === 'EN' ? 'Rate Apps' : 'Nilai Aplikasi',
-      altStartAdornment: 'rate apps',
-      startAdornment: StarIcon,
-      onClick: async () => {
-        try {
-          await router.push(
-            'https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en-ID'
-          );
-        } catch (error) {
-          console.error('Error navigating to FAQ:', error);
-        }
-      },
-      extraClasses: submenuClasses
+      name: t('setting.setting.chat.title'),
+      src: EarphoneIcon,
+      extra: '',
+      link: async () => {
+        await router.push('');
+      }
+    },
+    {
+      name: t('setting.setting.logout.title'),
+      src: LogoutIcon,
+      extra: '',
+      link: async () => {
+        await router.push('');
+      }
     }
   ];
 
   return (
-    <PageGradient defaultGradient className="w-full">
-      <ChooselanguagePopup
-        open={modalChooseLang}
-        handleOpen={handleOpenModal}
-      />
-      <CardGradient
-        defaultGradient
-        className={`relative flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
-          width !== undefined && width < 370
-            ? 'h-full'
-            : width !== undefined && width < 400
-            ? 'h-[45rem]'
-            : width !== undefined && width < 415
-            ? 'h-[48rem]'
-            : ''
-        } bg-white`}
+    <div className="flex flex-col gap-4">
+      <ChooselanguagePopup open={open} handleOpen={handleOpen} />
+      <Card
+        className="flex items-center px-4 py-6 md:p-10 gap-7 md:gap-10 rounded-xl"
+        shadow={false}
       >
-        {/* -----Title----- */}
-        <h6 className="mb-4 text-center text-lg font-poppins font-semibold">
-          {languageCtx.language === 'EN' ? 'Settings' : 'Pengaturan'}
-        </h6>
-
-        {/* -----Header----- */}
-        <div className="z-10 lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-52 sm:px-0 px-6 mb-4">
-          <div
-            className={`flex flex-col  justify-center items-center ${
-              width !== undefined && width < 370 ? 'py-4' : ''
-            } w-full h-full bg-white`}
-          >
-            {/* -----Image Container----- */}
-            <div
-              className={`overflow-hidden mb-3 rounded-full ${
-                width !== undefined && width < 370 ? 'h-12 w-12' : 'h-16 w-16'
-              }`}
-            >
-              <Image
-                alt="avatar"
-                src={userData?.avatar}
-                width={100}
-                height={100}
-                className="w-full h-full object-center object-cover"
-              />
+        <Typography className="font-poppins font-semibold text-lg text-[#201B1C]">
+          {t('setting.setting.title')}
+        </Typography>
+        <div className="flex md:flex-col flex-row gap-4 md:items-center self-start md:self-auto">
+          <Image
+            src={dataUser.avatar}
+            alt="avatar"
+            width={60}
+            height={60}
+            className="object-cover w-[60px] h-[60px] rounded-full"
+          />
+          <div className="flex flex-col gap-2 md:items-center">
+            <div className="flex flex-col gap-1 md:items-center">
+              <div className="flex gap-2">
+                <Typography className="font-poppins font-semibold text-sm text-[#222222]">
+                  {dataUser.name}
+                </Typography>
+                <Image src={Verified} alt="Verified" />
+              </div>
+              <Typography className="font-poppins font-normal text-xs text-[#262626]">
+                @{dataUser.seedsTag}
+              </Typography>
             </div>
-
-            {/* -----User Data----- */}
-            <div className="flex items-center gap-2">
-              <h6 className="text-lg font-montserrat font-semibold text-neutral-500">
-                {userData?.name}
-              </h6>
-              <Image
-                src={
-                  selectedMedal === 'gold'
-                    ? GoldMedalIcon
-                    : selectedMedal === 'silver'
-                    ? SilverMedalIcon
-                    : BronzeMedalIcon
-                }
-                alt="medal-icon"
-                width={20}
-                onClick={() => {
-                  setChooseBadgeModalShown(prev => !prev);
-                }}
-                height={20}
-                className="hover:bg-gray-200 cursor-pointer hover:scale-150 transition ease-in-out rounded-full"
-              />
-              {chooseBadgeModalShown && (
-                <ChooseBadgePopUp
-                  onChangeMedalHandle={medal => {
-                    setSelectedMedal(medal);
-                  }}
-                  onClose={() => {
-                    setChooseBadgeModalShown(prev => !prev);
-                  }}
-                  selectedMedal={selectedMedal}
-                />
-              )}
-            </div>
-            <span className="mb-1 font-poppins text-xs text-neutral-500">
-              @{userData?.seedsTag}
-            </span>
-            <LevelButton type="Sprout" />
+            {dataExp.tierList
+              .filter(state => state.name === dataExp.currentTier)
+              .map((value, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex bg-[#4FE6AF] p-1 items-center gap-0.5 rounded-full"
+                  >
+                    <Image
+                      src={value.image}
+                      alt={value.name}
+                      width={12}
+                      height={12}
+                      className="bg-[#BAFBD0] p-1 rounded-full w-5 h-5"
+                    />
+                    <Typography className="font-poppins font-semibold text-xs text-white">
+                      {value.name}
+                    </Typography>
+                  </div>
+                );
+              })}
           </div>
         </div>
+      </Card>
 
-        {/* -----Submenus----- */}
-        <div className="z-10 flex flex-col items-center w-full sm:px-0 px-6">
-          {menus.map(menu => (
-            <SubmenuButton
-              key={menu.label}
-              onClick={menu.onClick}
-              startAdornment={menu.startAdornment}
-              endAdornment={ArrowRightCollapseIcon}
-              label={menu.label}
-              altStartAdornment={menu.altStartAdornment}
-              extraClasses={menu.extraClasses}
-              currencyLabel={menu?.currencyLabel}
-            />
-          ))}
-        </div>
-      </CardGradient>
-    </PageGradient>
+      <MenuCard menuList={accountMenu} />
+      <MenuCard menuList={languageCurrencyMenu} />
+      <MenuCard menuList={otherMenu} />
+    </div>
   );
 };
 
-export default withAuth(UserSetting);
+export default UserSetting;

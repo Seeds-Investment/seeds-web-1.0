@@ -1,9 +1,11 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth/AuthNumber';
 import AuthPassword from '@/components/auth/AuthPassword';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -27,6 +29,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   countries,
   method
 }: IAuthRegister) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
@@ -101,8 +104,16 @@ const AuthRegister: React.FC<IAuthRegister> = ({
 
   return (
     <div
-      className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+      className={`${className} relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
+      <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-0 cursor-pointer"
+        onClick={async () => {
+          await router.push('/auth2');
+        }}
+      />
       <Image
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
@@ -119,6 +130,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         <AuthNumber
           handleChange={handleChange}
           formData={formData.phoneNumber}
+          name="phoneNumber"
           country={country}
           setCountry={setCountry}
           countries={countries}

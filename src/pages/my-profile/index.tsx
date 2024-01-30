@@ -56,6 +56,7 @@ const ProfilePage = (): JSX.Element => {
 
         const expData = await getExpData();
         setExpData(expData);
+        console.log(expData);
 
         const circleResponse = await getCircle(circle);
         setCircleData(circleResponse);

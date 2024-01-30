@@ -9,9 +9,12 @@ import Section5 from '@/containers/homepage/Section5';
 import TrendingSection from '@/containers/homepage/TrendingSection';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
+import { useAppSelector } from '@/store/redux/store';
 import { useEffect, useState } from 'react';
 
 const Homepage: React.FC = () => {
+  const { dataUser } = useAppSelector(state => state.user);
+  console.log(dataUser);
   const [userInfo, setUserInfo] = useState<any>([]);
   const [popUpCurrency, setPopupCurrency] = useState<boolean>(false);
   useEffect(() => {

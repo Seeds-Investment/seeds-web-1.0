@@ -90,6 +90,26 @@ export const forgotPassword = async (
   }
 };
 
+export const changePassword = async (
+  formData: IChangePassword
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await userService.post(`change-password`, formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
 export const checkEmail = async (email: string): Promise<any> => {
   const response = await authService.get(`validate/email?email=${email}`);
   return response.data;

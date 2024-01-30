@@ -5,6 +5,8 @@ import { forgotPassword } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IAuthForgotPassNew {
   className: string;
@@ -20,6 +22,7 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
   setFormData,
   handleOpen
 }: IAuthForgotPassNew) => {
+  const { t } = useTranslation();
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
@@ -37,14 +40,18 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       const passTest = regex.test(formData.password);
       if (!passTest) {
         setErrorPass(true);
-      } else if (formData.password !== formData.old_password) {
+        throw new Error(`${t('authForgotPass.validation.password')}`);
+      }
+      if (formData.password !== formData.old_password) {
         setErrorRepass(true);
-      } else {
+        throw new Error(`${t('authForgotPass.validation.match')}`);
+      }
+      if (passTest && formData.password === formData.old_password) {
         await forgotPassword(formData);
         handleOpen();
       }
     } catch (error: any) {
-      console.log(error);
+      toast(error, { type: 'error' });
     }
   };
 
@@ -59,10 +66,10 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       />
       <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
-          Let’s Input!
+          {t('authForgotPass.title3')}
         </span>
         <br />
-        Phone number & password
+        {t('authForgotPass.title4')}
       </Typography>
       <div className="w-full">
         <AuthPassword
@@ -70,15 +77,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           formData={formData.password}
           error={errorPass}
           name="password"
-          label="Create a New Password"
-          placeholder="Please create your password"
+          label={t('authForgotPass.newPassword.label')}
+          placeholder={t('authForgotPass.newPassword.placeholder')}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-          {errorPass ? (
-            'Password must contain 8 digit with upper case and lower case'
-          ) : (
-            <br />
-          )}
+          {errorPass ? t('authForgotPass.validation.password') : <br />}
         </Typography>
       </div>
       <div className="w-full">
@@ -87,18 +90,17 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           formData={formData.old_password}
           error={errorRepass}
           name="old_password"
-          label="Confirm New Password"
-          placeholder="Please confirm your password"
+          label={t('authForgotPass.matchPassword.label')}
+          placeholder={t('authForgotPass.matchPassword.placeholder')}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-          {errorRepass ? 'Oops,  password doesn’t match' : <br />}
+          {errorRepass ? t('authForgotPass.validation.match') : <br />}
         </Typography>
       </div>
       <div className="flex gap-3">
         <Image src={Info} alt="Info" className="w-5 h-5" />
         <Typography className="font-poppins font-light text-sm text-[#3AC4A0]">
-          Password must be 8 characters long and have both uppercase and
-          lowercase letters.
+          {t('authForgotPass.information')}
         </Typography>
       </div>
       <Button
@@ -106,9 +108,9 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
         disabled={
           formData.password.length === 0 || formData.old_password.length === 0
         }
-        className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
+        className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] disabled:bg-[#BDBDBD] rounded-full w-full"
       >
-        Next
+        {t('authLogin.next')}
       </Button>
     </div>
   );

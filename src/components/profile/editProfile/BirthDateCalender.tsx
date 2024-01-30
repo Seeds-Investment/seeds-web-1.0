@@ -45,7 +45,6 @@ const BirthDateCalender: React.FC<BirthDate> = ({
       onInputClick={handleResetCalender}
       shouldCloseOnSelect={shouldClose}
       dateFormat="dd/MM/yyyy"
-      required
       wrapperClassName={`${wrapperClassName as string}`}
       showPopperArrow={false}
       popperPlacement="top-start"

@@ -569,6 +569,82 @@ export default {
     login: 'Masuk',
     signup: 'Daftar'
   },
+  authLogin: {
+    title1: 'Yuk, Masukan!',
+    title2: 'Nomor telepon & kata sandi',
+    phone: 'Nomor Telepon',
+    password: 'Kata Sandi',
+    passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
+    forgotPass: 'Lupa kata sandi?',
+    login: 'Masuk',
+    validation: {
+      login: 'Nomor telepon atau kata sandimu salah',
+      blank: 'Kamu harus mengisi kolom ini',
+      number: 'Oops, nomormu sudah dipakai nih',
+      password:
+        'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+    },
+    next: 'Selanjutnya'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Yuk, Masukan Kode OTP',
+      title2: 'Kode-nya kami kirim ke ',
+      title3: '',
+      resend: 'Kirim ulang kode OTP',
+      otherMethod1: 'Belum',
+      otherMethod2: ' dapet kodenya? ',
+      otherMethod3: 'Coba',
+      otherMethod4: ' lewat',
+      validation: 'Yah, OTPmu salah, yuk coba lagi'
+    },
+    authPersonalData: {
+      title: 'Data Diri Kamu',
+      name: 'Nama Kamu',
+      namePlaceholder: 'Tuliskan nama kamu',
+      dob: 'Tanggal Lahir',
+      day: 'HH',
+      month: 'BB',
+      year: 'TTTT',
+      validation: {
+        seedsTag: 'Seeds Tag sudah dipakai, nih',
+        dob: 'Kamu harus berusia minimal 12 tahun'
+      }
+    },
+    authRef: {
+      title1: 'Masukan Kode Referralnya',
+      title2: 'Dan dapetin hadiah menarik',
+      referral: 'Kode Referral',
+      referralPlaceholder: 'Masukan kode referralnya',
+      skip: 'Lewati',
+      confirm: 'Konfirmasi',
+      validation: 'Kode referralmu nggak valid, nih'
+    }
+  },
+  authForgotPass: {
+    title1: 'Masukkan Nomor Telepon',
+    title2: 'Untuk dapat kode OTP',
+    title3: 'Buat Kata Sandi Baru',
+    title4: 'Yuk, buat kata sandi yang aman',
+    validation: {
+      number: 'Ups, nomor telepon kamu tidak terdaftar',
+      password:
+        'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+      match: 'Ups, kata sandi tidak cocok'
+    },
+    newPassword: {
+      label: 'Buat Kata Sandi Baru',
+      placeholder: 'Tolong buat kata sandimu'
+    },
+    matchPassword: {
+      label: 'Konfirmasi Kata Sandi Baru',
+      placeholder: 'Tolong konfirmasi kata sandimu'
+    },
+    information:
+      'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+    modal: { title1: 'Yeay, sukses', title2: 'Password barumu sudah dibuat' }
+  },
+
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',
@@ -1541,5 +1617,30 @@ export default {
     millionaire: 'Siapa yang mau jadi miliarder Seeds!',
     incorrectWord: 'Belum tepat, fyuhh sedikit lagi',
     correctWord: 'Benar, kamu dapat {{point}} poin'
+  },
+  discover: {
+    hotNews: 'Hot News',
+    newsList: 'News',
+    findMoreYouMighLike: 'Find more news you might like.',
+    youMayLike: 'You May Like',
+    seeAll: 'Semua',
+    trendingToday: 'Sedang Tren Hari Ini',
+    whatIsTrendingToday: 'Apa yang sedang tren hari ini?',
+    circleList: 'Daftar Circle',
+    exploreCircleList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    assetList: 'Daftar Asset',
+    exploreAssetList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    merchantBannerText: 'Nikmati berbagai promo spesial hanya untuk Anda!',
+    playList: 'Daftar Permainan',
+    explorePlayList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    clearHistory: 'Hapuskan Histori',
+    search: 'Cari',
+    recentSearch: 'Pencarian Terbaru',
+    peopleList: 'Daftar Orang',
+    explorePeopleList: 'Temukan pengguna yang cocok dengan Anda',
+    dataNotFound: 'Data Tidak Ditemukan'
   }
 };

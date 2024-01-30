@@ -647,6 +647,83 @@ export default {
     login: 'Login',
     signup: 'Sign up'
   },
+  authLogin: {
+    title1: 'Let’s Input!',
+    title2: 'Phone number & password',
+    phone: 'Phone Number',
+    password: 'Password',
+    passwordPlaceholder: 'Please input your password',
+    forgotPass: 'Forgot Password?',
+    login: 'Login',
+    validation: {
+      login: 'Your phone number or password is wrong',
+      blank: 'You must fill in this field',
+      number: 'Oops, Your number already registered',
+      password: 'Password must contain 8 digit with upper case and lower case'
+    },
+    next: 'Next'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Input OTP Code',
+      title2: 'We have sent the OTP code via ',
+      title3: ' to',
+      resend: 'Resend OTP Code',
+      otherMethod1: `Didn't`,
+      otherMethod2: ' get the code? ',
+      otherMethod3: 'Try',
+      otherMethod4: ' sending it by',
+      validation: 'Incorrect OTP. Please Try again.'
+    },
+    authPersonalData: {
+      title: 'Your Personal Data',
+      name: 'Your Name',
+      namePlaceholder: 'Enter your name',
+      dob: 'Date of Birth',
+      day: 'DD',
+      month: 'MM',
+      year: 'YYYY',
+      validation: {
+        seedsTag: 'Seeds Tag alredy used',
+        dob: 'Minimun  age 12 Years old'
+      }
+    },
+    authRef: {
+      title1: 'Input Referral Code',
+      title2: 'To get exciting prizes',
+      referral: 'Referral Code',
+      referralPlaceholder: 'Input referral code',
+      skip: 'Skip',
+      confirm: 'Confirm',
+      validation: 'Invalid referral code'
+    }
+  },
+  authForgotPass: {
+    title1: 'Input Phone Number',
+    title2: 'To get OTP Code',
+    title3: 'Create New Password',
+    title4: 'Let’s create a secure password',
+    validation: {
+      number: 'Oops, your phone number not registered',
+      password:
+        'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
+      match: 'Oops, password doesn’t match'
+    },
+    newPassword: {
+      label: 'Create a New Password',
+      placeholder: 'Please create your password'
+    },
+    matchPassword: {
+      label: 'Confirm New Password',
+      placeholder: 'Please confirm your password'
+    },
+    information:
+      'Password must be 8 characters long and have both uppercase and lowercase letters.',
+    modal: {
+      title1: 'Success',
+      title2: 'The new password has been successfully created.'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',
@@ -1612,5 +1689,30 @@ export default {
     millionaire: 'Who wants to be Seeds Millionaire!',
     incorrectWord: 'Incorrect, fyuhh that was close',
     correctWord: 'Correct, you got {{point}} points'
+  },
+  discover: {
+    hotNews: 'Hot News',
+    newsList: 'News',
+    findMoreYouMighLike: 'Find more news you might like.',
+    youMayLike: 'You May Like',
+    seeAll: 'See All',
+    trendingToday: 'Trending Today',
+    whatIsTrendingToday: "What's trending today?",
+    circleList: 'Circle List',
+    exploreCircleList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    assetList: 'Asset List',
+    exploreAssetList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    merchantBannerText: 'Enjoy a variety of special promotions just for you!',
+    explorePlayList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    playList: 'Play List',
+    clearHistory: 'Clear History',
+    search: 'Search',
+    recentSearch: 'Recent Search',
+    peopleList: 'People List',
+    explorePeopleList: 'Find a User that suits you.',
+    dataNotFound: 'Data Not Found'
   }
 };

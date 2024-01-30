@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const Register: React.FC = () => {
-  const [select, setSelect] = useState(0);
+  const [select, setSelect] = useState(1);
   const [formData, setFormData] = useState({
     phoneNumber: '',
     birthDate: '',

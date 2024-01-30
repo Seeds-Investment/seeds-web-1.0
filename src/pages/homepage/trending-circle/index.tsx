@@ -7,6 +7,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface CircleListRoot {
   CircleList: Circle[];
@@ -87,19 +88,13 @@ export default function ListCircle(): React.ReactElement {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      toast('Error fetching circles');
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      await fetchDataCircle();
-    };
-
-    fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
-    });
+    void fetchDataCircle();
   }, [filter]);
 
   useEffect(() => {
@@ -115,19 +110,18 @@ export default function ListCircle(): React.ReactElement {
       void fetchDataCircle();
     }
   }, [searchInput.length]);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
 
-    fetchData()
-      .then()
-      .catch(() => {});
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast('Error fetching user data');
+    }
+  };
+
+  useEffect(() => {
+    void fetchData();
   }, []);
 
   return (
@@ -136,11 +130,10 @@ export default function ListCircle(): React.ReactElement {
         <div className="flex z-10 flex-col lg:flex-row justify-between">
           <div className="flex flex-col">
             <div className="text-3xl font-semibold bg-clip-text text-black">
-              Circle List
+              {t('discover.circleList')}
             </div>
             <div className=" text-md font-normal text-gray-500">
-              Explore our list of communities, find the ones that match with
-              your interest, or create one.
+              {t('discover.exploreCircleList')}
             </div>
           </div>
           <div className="lg:flex-col justify-end mt-4  ">
@@ -230,7 +223,7 @@ export default function ListCircle(): React.ReactElement {
               })
             ) : (
               <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                Data Not Found
+                {t('discover.dataNotFound')}
               </Typography>
             )
           ) : (

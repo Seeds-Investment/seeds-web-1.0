@@ -1,14 +1,24 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
-import { checkRefCode, register } from '@/repository/auth.repository';
+import TrackerEvent from '@/helpers/GTM';
+import {
+  checkRefCode,
+  loginPhoneNumber,
+  register
+} from '@/repository/auth.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import {
   Button,
   Dialog,
   DialogBody,
+  Spinner,
   Typography
 } from '@material-tailwind/react';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRef {
@@ -18,26 +28,72 @@ interface IAuthRef {
   formData: any;
 }
 
+interface LoginFormData {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
+}
+
 const AuthRef: React.FC<IAuthRef> = ({
   open,
   handleOpen,
   setFormData,
   formData
 }: IAuthRef) => {
-  //   const [loading, setLoading] = useState(false);
+  const deviceDetector = new DeviceDetector();
+  const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(false);
+  const [loginForm, setLoginForm] = useState<LoginFormData>({
+    phoneNumber: formData.phoneNumber,
+    password: formData.password,
+    platform: '',
+    os_name: ''
+  });
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await loginPhoneNumber(loginForm);
+      if (response.status === 200) {
+        window.localStorage.setItem('accessToken', response.accessToken);
+        window.localStorage.setItem('refreshToken', response.refreshToken);
+        window.localStorage.setItem('expiresAt', response.expiresAt);
+
+        setFormData({ ...formData, phoneNumber: '', password: '' });
+        const responseUser = await getUserInfo();
+        TrackerEvent({
+          event: 'Seeds_login_web',
+          userId: responseUser.id
+        });
+        handleOpen();
+        await router.push('/homepage');
+        TrackerEvent({
+          event: `Seeds_view_home_page_web`,
+          userId: responseUser.id,
+          pageName: 'homepage'
+        });
+      } else if (response.data.message === 'wrong phone number or password') {
+        setLoading(false);
+        setError(true);
+      }
+    } catch (error: any) {
+      toast(error, { type: 'error' });
+    }
+  };
+
   const handleSkip = async (): Promise<void> => {
     try {
       const response = await register(formData);
       if (response === null) {
         throw new Error(response);
       }
-      handleOpen();
+      await handleSubmit();
       setError(false);
-      await router.push('login');
     } catch (error: any) {
-      console.error(error);
+      toast(error, { type: 'error' });
     }
   };
 
@@ -48,11 +104,10 @@ const AuthRef: React.FC<IAuthRef> = ({
       if (response === null) {
         throw new Error(response);
       }
-      handleOpen();
+      await handleSubmit();
       setError(false);
-      await router.push('login');
     } catch (error: any) {
-      console.error(error);
+      toast(error, { type: 'error' });
       setError(true);
     }
   };
@@ -61,16 +116,31 @@ const AuthRef: React.FC<IAuthRef> = ({
     setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    setLoginForm({
+      ...loginForm,
+      platform: `${
+        deviceDetector.parse(navigator.userAgent).device?.type as string
+      }_web`,
+      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
+    });
+  }, []);
   return (
-    <Dialog open={open} handler={handleOpen} size="sm">
+    <Dialog
+      open={open}
+      handler={handleOpen}
+      size="sm"
+      className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
+    >
       <DialogBody className="flex flex-col gap-4 p-10 items-center">
         <Image src={SeedyAuthRef} alt="SeedyAuthRef" className="w-[242px]" />
         <div className="flex flex-col gap-2">
           <Typography className="text-center font-poppins font-semibold text-xl text-[#262626]">
-            Input Referral Code
+            {t('authRegister.authRef.title1')}
           </Typography>
           <Typography className="text-center font-poppins font-light text-base text-[#7C7C7C]">
-            To get exciting prizes
+            {t('authRegister.authRef.title2')}
           </Typography>
         </div>
         <div className="w-full">
@@ -78,13 +148,13 @@ const AuthRef: React.FC<IAuthRef> = ({
             handleChange={handleChange}
             name="refCode"
             formData={formData.refCode}
-            placeholder="Input referral code"
-            label="Referral Code"
+            placeholder={t('authRegister.authRef.referralPlaceholder')}
+            label={t('authRegister.authRef.referral')}
             error={error}
             required={false}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-            {error ? `Referral code doesn't exists` : <br />}
+            {error ? t('authRegister.authRef.validation') : <br />}
           </Typography>
         </div>
         <div className="flex gap-4 w-full">
@@ -92,13 +162,21 @@ const AuthRef: React.FC<IAuthRef> = ({
             className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
           >
-            Skip
+            {loading ? (
+              <Spinner className=" h-6 w-6" />
+            ) : (
+              t('authRegister.authRef.skip')
+            )}
           </Button>
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
           >
-            Confirm
+            {loading ? (
+              <Spinner className=" h-6 w-6" />
+            ) : (
+              t('authRegister.authRef.confirm')
+            )}
           </Button>
         </div>
       </DialogBody>

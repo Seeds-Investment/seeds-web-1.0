@@ -7,15 +7,17 @@ import {
   Typography
 } from '@material-tailwind/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface IAuthBoD {
   error: boolean;
-  day: number;
+  day: number | undefined;
   setDay: any;
-  month: number;
+  month: number | undefined;
   setMonth: any;
-  year: number;
+  year: number | undefined;
   setYear: any;
+  handleChangeDoB: (e: any) => void;
 }
 
 const AuthBoD: React.FC<IAuthBoD> = ({
@@ -25,8 +27,10 @@ const AuthBoD: React.FC<IAuthBoD> = ({
   month,
   setMonth,
   year,
-  setYear
+  setYear,
+  handleChangeDoB
 }: IAuthBoD) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
     setOpen(!open);
@@ -66,10 +70,10 @@ const AuthBoD: React.FC<IAuthBoD> = ({
       >
         <div className="relative flex bg-white border-none w-full rounded-[10px] h-full">
           <Input
-            label="Date of Birth"
+            label={`${t('authRegister.authPersonalData.dob')}`}
             type="number"
             variant="static"
-            placeholder="DD"
+            placeholder={`${t('authRegister.authPersonalData.day')}`}
             name=""
             value={day}
             readOnly
@@ -84,9 +88,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
           <Input
             type="number"
             variant="static"
-            placeholder="MM"
+            placeholder={`${t('authRegister.authPersonalData.month')}`}
             name=""
-            value={month + 1}
+            value={month !== undefined ? month + 1 : undefined}
             readOnly
             labelProps={{
               className:
@@ -98,7 +102,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
           <Input
             type="number"
             variant="static"
-            placeholder="YYYY"
+            placeholder={`${t('authRegister.authPersonalData.year')}`}
             name=""
             value={year}
             readOnly
@@ -115,13 +119,29 @@ const AuthBoD: React.FC<IAuthBoD> = ({
       <Dialog
         open={open}
         handler={handleOpen}
-        size="xs"
-        className="flex flex-col items-center"
+        size="sm"
+        className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
       >
         <DialogBody className="flex gap-8">
           <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-scroll cursor-pointer no-scroll">
-            {(month % 2 === 0 && month < 8) ||
-            ((month + 1) % 2 === 0 && month >= 8)
+            {month === undefined || year === undefined
+              ? days.map((value, index) => {
+                  return (
+                    <Typography
+                      onClick={() => setDay(value)}
+                      className={`font-poppins text-base text-center ${
+                        day === value
+                          ? 'text-[#3AC4A0] font-semibold'
+                          : 'text-[#BDBDBD] font-normal'
+                      }`}
+                      key={index}
+                    >
+                      {value}
+                    </Typography>
+                  );
+                })
+              : (month % 2 === 0 && month < 8) ||
+                ((month + 1) % 2 === 0 && month >= 8)
               ? days.map((value, index) => {
                   return (
                     <Typography
@@ -229,7 +249,13 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         </DialogBody>
         <DialogFooter className="w-full">
           <Button
-            onClick={handleOpen}
+            onClick={() => {
+              handleChangeDoB(event);
+              handleOpen();
+            }}
+            disabled={
+              day === undefined || month === undefined || year === undefined
+            }
             className="capitalize font-poppins font-semibold text-sm text-white w-full bg-[#3AC4A0] rounded-full"
           >
             Confirm

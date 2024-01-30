@@ -150,6 +150,7 @@ const AuthRef: React.FC<IAuthRef> = ({
             formData={formData.refCode}
             placeholder={t('authRegister.authRef.referralPlaceholder')}
             label={t('authRegister.authRef.referral')}
+            type="text"
             error={error}
             required={false}
           />

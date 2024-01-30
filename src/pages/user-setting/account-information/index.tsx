@@ -4,12 +4,13 @@ import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { postCloud } from '@/repository/cloud.repository';
-import { editUserInfo, getUserInfo } from '@/repository/profile.repository';
+import { editUserInfo } from '@/repository/profile.repository';
+import { useAppSelector } from '@/store/redux/store';
 import { Button, Card, Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface IForm {
@@ -25,19 +26,20 @@ interface IForm {
 const AccountInformation: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const { dataUser } = useAppSelector(state => state.user);
   const maxLengthBio = 50;
   const [select, setSelect] = useState(0);
   const [updateAvatar, setAvatar] = useState<File | null>(null);
   const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
   const [form, setForm] = useState<IForm>({
-    name: '',
-    seedsTag: '',
-    email: '',
-    avatar: '',
-    bio: '',
-    birthDate: '',
-    phone: ''
+    name: dataUser.name,
+    seedsTag: dataUser.seedsTag,
+    email: dataUser.email,
+    avatar: dataUser.avatar,
+    bio: dataUser.bio,
+    birthDate: dataUser.birthDate,
+    phone: dataUser.phoneNumber
   });
 
   const [openImage, setOpenImage] = useState(false);
@@ -93,28 +95,6 @@ const AccountInformation: React.FC = () => {
       console.error(error.response.data.message);
     }
   };
-  const fetchData = useCallback(async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setForm({
-        name: dataInfo.name,
-        seedsTag: dataInfo.seedsTag,
-        email: dataInfo.email,
-        avatar: dataInfo.avatar,
-        bio: dataInfo.bio,
-        birthDate: dataInfo.birthDate,
-        phone: dataInfo.phoneNumber
-      });
-      setBirthDate(dataInfo.birthDate);
-    } catch (error: any) {
-      console.error('Error fetching data:', error.message);
-    }
-  }, []);
-  useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
   return (
     <PageGradient defaultGradient className="w-full flex justify-center">
       <Card
@@ -181,6 +161,7 @@ const AccountInformation: React.FC = () => {
               value={form?.name}
               onChange={changeData}
               variant="static"
+              maxLength={maxLengthBio}
               labelProps={{
                 className:
                   '!text-base !text-[#262626] !font-semibold !font-poppins'

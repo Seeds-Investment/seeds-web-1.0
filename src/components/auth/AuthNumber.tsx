@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 interface IAuthNumber {
   handleChange: any;
   formData: string;
+  name: string;
   country: number;
   setCountry: any;
   countries: any;
@@ -23,6 +24,7 @@ interface IAuthNumber {
 const AuthNumber: React.FC<IAuthNumber> = ({
   handleChange,
   formData,
+  name,
   country,
   countries,
   setCountry,
@@ -88,7 +90,7 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           type="number"
           variant="static"
           placeholder="85XXX"
-          name="phoneNumber"
+          name={name}
           pattern="[0-9]"
           value={formData}
           onChange={() =>

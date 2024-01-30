@@ -5,6 +5,7 @@ interface IAuthCommonInput {
   formData: string;
   placeholder: string;
   label: string;
+  type: string;
   name: string;
   error: boolean;
   required: boolean;
@@ -15,6 +16,7 @@ const AuthCommonInput: React.FC<IAuthCommonInput> = ({
   formData,
   placeholder,
   label,
+  type,
   name,
   error,
   required
@@ -28,7 +30,7 @@ const AuthCommonInput: React.FC<IAuthCommonInput> = ({
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
         <Input
           label={label}
-          type="text"
+          type={type}
           variant="static"
           placeholder={placeholder}
           name={name}

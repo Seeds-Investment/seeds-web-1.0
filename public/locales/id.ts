@@ -592,8 +592,7 @@ export default {
       title2: 'Kode-nya kami kirim ke ',
       title3: '',
       resend: 'Kirim ulang kode OTP',
-      otherMethod1: 'Belum',
-      otherMethod2: ' dapet kodenya? ',
+      otherMethod1: 'Belum dapet kodenya? ',
       otherMethod3: 'Coba',
       otherMethod4: ' lewat',
       validation: 'Yah, OTPmu salah, yuk coba lagi'
@@ -695,6 +694,43 @@ export default {
     cancelButton: 'Batal'
   },
   setting: {
+    setting: {
+      title: 'Pengaturan',
+      accountInfo: { title: 'Informasi Akun' },
+      accountSecure: {
+        title: 'Pusat Keamanan Akun',
+        confirm: 'Konfirmasi',
+        titleMail1: 'Yuk, tambahin Emailmu!',
+        titleMail2:
+          'Untuk keamanan verifikasi, tambahkan email Kamu terlebih dahulu',
+        titleChangeMail1: 'Yuk, ganti Email kamu!',
+        titleChangeMail2: 'Masukan email barumu',
+        placeholderMail: 'Masukan email kamu',
+        titleNumber1: 'Yuk, tambahin nomor telepon',
+        titleNumber2: 'Masukan nomor teleponmu',
+        titleChangeNumber1: 'Yuk, ganti nomor teleponmu',
+        titleChangeNumber2: 'Masukin nomor telepon barumu',
+        createPass: {
+          title1: '',
+          title2: '',
+          label1: '',
+          label2: '',
+          placeholder1: '',
+          placeholder2: ''
+        },
+        changePass: {}
+      },
+      createPin: { title: 'Buat PIN' },
+      changePin: { title: 'Ganti PIN' },
+      language: { title: 'Bahasa' },
+      currency: { title: 'Mata Uang' },
+      block: { title: 'Daftar Blokir' },
+      legal: { title: 'Hukum' },
+      faq: { title: 'FAQ & Bantuan' },
+      rate: { title: 'Nilai Aplikasi' },
+      chat: { title: 'Berbincang Dengan Seedy' },
+      logout: { title: 'Keluar' }
+    },
     changeAvatar: {
       title: 'Galeri',
       content: {

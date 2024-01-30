@@ -1,11 +1,54 @@
-import AuthFacebook from '@/assets/auth/AuthFacebook.png';
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
+import { loginSSO } from '@/repository/auth.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-const AuthSSO: React.FC = () => {
-  // const { data } = useSession();
+interface IAuthSSO {
+  setSelect: (value: number) => void;
+}
+
+const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { data } = useSession();
+
+  const handleLoginSSO = async (): Promise<void> => {
+    try {
+      if (data !== null) {
+        const response = await loginSSO({
+          identifier: data.accessToken,
+          provider: data.provider
+        });
+        if (response.status === 200) {
+          window.localStorage.setItem('accessToken', response.accessToken);
+          window.localStorage.setItem('refreshToken', response.refreshToken);
+          window.localStorage.setItem('expiresAt', response.expiresAt);
+
+          await dispatch(fetchUserData());
+          await dispatch(fetchExpData());
+          await router.push('/homepage');
+        }
+        if (response.data.message === 'link-account/not-found') {
+          setSelect(2);
+          await router.push('register');
+        }
+      }
+    } catch (error: any) {
+      toast(error.response.data.message, { type: 'error' });
+    }
+  };
+  useEffect(() => {
+    handleLoginSSO()
+      .then()
+      .catch(() => {});
+  }, [data]);
   return (
     <>
       <div className="flex justify-center border-t w-full border-[#E9E9E9]">
@@ -19,10 +62,9 @@ const AuthSSO: React.FC = () => {
           alt="AuthGoogle"
           className="w-9 cursor-pointer"
           onClick={async () => {
-            await signIn('github');
+            await signIn('google');
           }}
         />
-        <Image src={AuthFacebook} alt="AuthFacebook" className="w-9" />
       </div>
     </>
   );

@@ -4,7 +4,7 @@ import LoginLayout from '@/components/layouts/LoginLayout';
 import ErrorBEProvider from '@/store/error-be/ErrorBEProvider';
 import LanguageProvider from '@/store/language/LanguageProvider';
 import LoadingProvider from '@/store/loading/LoadingProvider';
-import { store } from '@/store/redux/store';
+import { persistor, store } from '@/store/redux/store';
 import SuccessProvider from '@/store/success/SuccessProvider';
 import '@/styles/globals.css';
 import '@/utils/common/i18n';
@@ -19,6 +19,7 @@ import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PersistGate } from 'redux-persist/integration/react';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
@@ -70,46 +71,52 @@ function App({
   if (loginLayouts) {
     return (
       <Provider store={store}>
-        <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
-        <iframe
-          src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
-          allow="autoplay"
-          id="audio"
-          style={{ display: 'none' }}
-        ></iframe>
-        <LanguageProvider>
-          <LoadingProvider>
-            <ErrorBEProvider>
-              <LoginLayout>
-                {getLayout(<Component {...pageProps} />)}
-                <ToastContainer />
-              </LoginLayout>
-            </ErrorBEProvider>
-          </LoadingProvider>
-        </LanguageProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+          <iframe
+            src={`${baseUrl}/assets/quiz/sound/silent.mp3`}
+            allow="autoplay"
+            id="audio"
+            style={{ display: 'none' }}
+          ></iframe>
+          <LanguageProvider>
+            <LoadingProvider>
+              <ErrorBEProvider>
+                <SessionProvider session={pageProps.session}>
+                  <LoginLayout>
+                    {getLayout(<Component {...pageProps} />)}
+                    <ToastContainer />
+                  </LoginLayout>
+                </SessionProvider>
+              </ErrorBEProvider>
+            </LoadingProvider>
+          </LanguageProvider>
+        </PersistGate>
       </Provider>
     );
   }
 
   return (
     <Provider store={store}>
-      <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
-      <LanguageProvider>
-        <LoadingProvider>
-          <ErrorBEProvider>
-            <SuccessProvider>
-              <SessionProvider session={pageProps.session}>
-                {renderHeader && <Header className={`-mt-20`} />}
-                <ThemeProvider>
-                  {getLayout(<Component {...pageProps} />)}
-                  <ToastContainer />
-                </ThemeProvider>
-              </SessionProvider>
-            </SuccessProvider>
-          </ErrorBEProvider>
-        </LoadingProvider>
-      </LanguageProvider>
-      <ToastContainer />
+      <PersistGate loading={null} persistor={persistor}>
+        <TrackingHeadScript id={GA_TRACKING_ID} isGTM={true} />
+        <LanguageProvider>
+          <LoadingProvider>
+            <ErrorBEProvider>
+              <SuccessProvider>
+                <SessionProvider session={pageProps.session}>
+                  {renderHeader && <Header className={`-mt-20`} />}
+                  <ThemeProvider>
+                    {getLayout(<Component {...pageProps} />)}
+                    <ToastContainer />
+                  </ThemeProvider>
+                </SessionProvider>
+              </SuccessProvider>
+            </ErrorBEProvider>
+          </LoadingProvider>
+        </LanguageProvider>
+        <ToastContainer />
+      </PersistGate>
     </Provider>
   );
 }

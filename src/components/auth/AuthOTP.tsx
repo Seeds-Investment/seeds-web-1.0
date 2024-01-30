@@ -1,3 +1,4 @@
+import Backward from '@/assets/auth/Backward.svg';
 import { getOtp, verifyOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -96,8 +97,16 @@ const AuthOTP: React.FC<IAuthOTP> = ({
       <div
         className={`${
           select === 1 ? 'flex' : 'hidden'
-        } flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+        } relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
       >
+        <Image
+          src={Backward}
+          alt="Backward"
+          className="absolute left-0 cursor-pointer"
+          onClick={() => {
+            setSelect(0);
+          }}
+        />
         <Image
           src={image}
           alt="SeedyAuthLogin"
@@ -124,7 +133,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 setCountdown(30);
               }}
               disabled={countdown > 0}
-              className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#7C7C7C] font-normal font-poppins"
+              className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
@@ -166,23 +175,23 @@ const AuthOTP: React.FC<IAuthOTP> = ({
             )}
           </Typography>
         </div>
-        <Button
-          className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-semibold font-poppins"
-          onClick={handleMethodChange}
-          disabled={countdown > 0}
-        >
-          <span className="font-medium text-[#BDBDBD]">
+        <div className="flex flex-col items-center">
+          <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
             {t('authRegister.authOTP.otherMethod1')}
+          </Typography>
+          <Button
+            className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
+            onClick={handleMethodChange}
+            disabled={countdown > 0}
+          >
+            {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">
-              {t('authRegister.authOTP.otherMethod2')}
+              {t('authRegister.authOTP.otherMethod4')}
             </span>
-          </span>
-          {t('authRegister.authOTP.otherMethod3')}
-          <span className="lowercase">
-            {t('authRegister.authOTP.otherMethod4')}
-          </span>
-          {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
-        </Button>
+            {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
+          </Button>
+        </div>
+
         <Button
           onClick={handleSubmitOTP}
           className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"

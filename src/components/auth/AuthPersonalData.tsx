@@ -1,7 +1,10 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import { checkSeedsTag } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -13,13 +16,17 @@ interface IAuthPersonalData {
   className: string;
   setFormData: any;
   formData: any;
+  setSelect: (value: number) => void;
 }
 
 const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   className,
   setFormData,
-  formData
+  formData,
+  setSelect
 }: IAuthPersonalData) => {
+  const router = useRouter();
+  const { data } = useSession();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
@@ -27,13 +34,21 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const [blank, setBlank] = useState(false);
   const [blankTag, setBlankTag] = useState(false);
   const [blankDoB, setBlankDoB] = useState(false);
-  const [day, setDay] = useState<number | undefined>();
-  const [month, setMonth] = useState<number | undefined>();
-  const [year, setYear] = useState<number | undefined>();
+  const [day, setDay] = useState<number | undefined>(
+    data !== null ? new Date().getDate() : undefined
+  );
+  const [month, setMonth] = useState<number | undefined>(
+    data !== null ? new Date().getMonth() : undefined
+  );
+
+  const [year, setYear] = useState<number | undefined>(
+    data !== null ? new Date().getFullYear() - 17 : undefined
+  );
+
   const timezoneOffset = new Date().getTimezoneOffset();
   const utcDate = new Date(
     `${typeof year === 'number' ? year : ''}/${
-      typeof month === 'number' ? month : ''
+      typeof month === 'number' ? month + 1 : ''
     }/${typeof day === 'number' ? day : ''}`
   );
   const birthLimit =
@@ -49,6 +64,9 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   };
   const handleNext = async (): Promise<void> => {
     try {
+      if (data !== null) {
+        setFormData({ ...formData, password: '' });
+      }
       if (
         formData.name.length === 0 ||
         formData.seedsTag.length === 0 ||
@@ -117,8 +135,21 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
 
   return (
     <div
-      className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+      className={`${className} relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
+      <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-0 cursor-pointer"
+        onClick={async () => {
+          if (data !== null) {
+            await router.push('/auth');
+            await signOut();
+          } else {
+            setSelect(0);
+          }
+        }}
+      />
       <Image
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
@@ -138,6 +169,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           formData={formData.name}
           placeholder={t('authRegister.authPersonalData.namePlaceholder')}
           label={t('authRegister.authPersonalData.name')}
+          type="text"
           error={blank}
           required={true}
         />
@@ -152,6 +184,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           formData={formData.seedsTag}
           placeholder="Ex: Seeds123"
           label="Seeds Tag"
+          type="text"
           error={errorTag}
           required={true}
         />

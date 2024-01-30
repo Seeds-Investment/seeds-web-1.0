@@ -669,8 +669,7 @@ export default {
       title2: 'We have sent the OTP code via ',
       title3: ' to',
       resend: 'Resend OTP Code',
-      otherMethod1: `Didn't`,
-      otherMethod2: ' get the code? ',
+      otherMethod1: `Didn't get the code? `,
       otherMethod3: 'Try',
       otherMethod4: ' sending it by',
       validation: 'Incorrect OTP. Please Try again.'
@@ -781,6 +780,33 @@ export default {
     cancelButton: 'Cancel'
   },
   setting: {
+    setting: {
+      title: 'Settings',
+      accountInfo: { title: 'Account Information' },
+      accountSecure: {
+        title: 'Account Security Center',
+        confirm: 'Confirm',
+        titleMail1: `Let's, add your Email!`,
+        titleMail2: 'For security purposes verify add your email first',
+        titleChangeMail1: `Let's, Change your Email!`,
+        titleChangeMail2: 'Enter your new email',
+        placeholderMail: 'Input your email',
+        titleNumber1: `Let's, Add Phone Number!`,
+        titleNumber2: 'Enter your new phone number',
+        titleChangeNumber1: `Let's, Change Phone Number!`,
+        titleChangeNumber2: 'Enter your new phone number'
+      },
+      createPin: { title: 'Create PIN' },
+      changePin: { title: 'Change PIN' },
+      language: { title: 'Language' },
+      currency: { title: 'Currency' },
+      block: { title: 'Block List' },
+      legal: { title: 'Legal' },
+      faq: { title: 'FAQ & Help' },
+      rate: { title: 'Rate Apps' },
+      chat: { title: 'Chat With Seedy' },
+      logout: { title: 'Log Out' }
+    },
     changeAvatar: {
       title: 'Gallery',
       content: {

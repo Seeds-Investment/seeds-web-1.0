@@ -3,6 +3,7 @@ import { getArticleById, postLike } from '@/repository/article.repository';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 interface ArticleCardProps {
@@ -89,9 +90,16 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       fetchArticleDetail();
     }
   }, [articleId]);
+  const router = useRouter();
 
   const likeArticle = async (articleId: number): Promise<void> => {
     try {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (accessToken === null) {
+        void router.push('/auth/login');
+        return;
+      }
       const response = await postLike(formRequest, articleId);
       if (response.status === 200) {
         if (response.is_liked === true) {

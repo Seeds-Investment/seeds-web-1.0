@@ -217,9 +217,9 @@ export default function ArticleList(): React.ReactElement {
           </Slider>
         </div>
 
-        <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
+        <div className="hidden lg:flex  justify-center mt-4 gap-4 ">
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-4 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -231,7 +231,7 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'general'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -243,7 +243,7 @@ export default function ArticleList(): React.ReactElement {
             General
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'crypto'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -256,7 +256,7 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'usstocks'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -268,7 +268,7 @@ export default function ArticleList(): React.ReactElement {
             Us Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'indostocks'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -280,7 +280,7 @@ export default function ArticleList(): React.ReactElement {
             Indo Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'commodities'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -292,7 +292,7 @@ export default function ArticleList(): React.ReactElement {
             Commodities
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'indices'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -304,7 +304,7 @@ export default function ArticleList(): React.ReactElement {
             Indices
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'forex'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -316,7 +316,7 @@ export default function ArticleList(): React.ReactElement {
             Forex
           </button>
           <button
-            className={`py-1 rounded-full text-base font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'finance'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'

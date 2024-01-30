@@ -1488,7 +1488,7 @@ export default {
     section12: {
       text1: 'Our Communities',
       text2:
-        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
+        "We're committed in improving financial literacy for Gen-Z and millennials in Southeast Asia.",
       text3: 'Partnership Program'
     }
   },

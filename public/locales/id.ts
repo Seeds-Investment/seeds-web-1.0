@@ -1234,7 +1234,7 @@ export default {
       },
       option3: {
         title: 'Monetize & Prosper',
-        subtitle: `Bersama-sama kita tumbuh dan meraih keuntungan bersama. Dari Play Arena hingga Premium Circle, terdapat peluang pertumbuhan finansial yang melimpah.`
+        subtitle: `Hasilkan keuntungan bersama ketika berkembang. Di antara Play Arena, Premium Circle, dan banyak lagi, ada banyak peluang untuk pertumbuhan finansial bersama.`
       },
       option4: {
         title: 'Community Powerhouse',
@@ -1256,7 +1256,7 @@ export default {
       },
       option2: {
         title: 'Meet',
-        subtitle: 'Berbicara dengan orang-orang yang memiliki pandangan serupa'
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pemikiran sama'
       },
       option3: {
         title: 'Play',
@@ -1384,7 +1384,7 @@ export default {
     section2: {
       text1: 'Social',
       text2:
-        'Berdiskusi dan berkoneksi dengan seorang ahli keuangan untuk memulai perjalanan keuangan yang sukses.'
+        'Berdiskusi dan berkoneksi dengan berbagai ahli keuangan untuk memulai perjalanan finansial yang sukses.'
     },
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
@@ -1403,12 +1403,12 @@ export default {
       text1: 'Acara Seeds'
     },
     section7: {
-      text1: 'Temui Ahli Kami',
-      text2: 'Capai Sukses Keuangan Bersama'
+      text1: 'Berkenalan dengan Ahli Keuangan Kami!',
+      text2: 'Capai Kesuksesan Finansial Bersama'
     },
     section8: {
-      text1: 'Tetap Terinformasi dengan',
-      text2: 'Berita Finansial Terkurasi'
+      text1: 'Tetap Update dengan Informasi',
+      text2: 'Keuangan Pilihan Kami'
     },
     section9: {
       text1: 'Apa Kata Mereka Tentang '
@@ -1428,7 +1428,7 @@ export default {
     section12: {
       text1: 'Komunitas Kami',
       text2:
-        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+        'Kami berkomitmen untuk meningkatkan literasi finansial Generasi Z dan milenial di Asia Tenggara.',
       text3: 'Program Mitra'
     }
   },

@@ -35,6 +35,7 @@ const LastMonthPage = (): React.ReactElement => {
   const { t } = useTranslation();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
+
   const [userInfo, setUserInfo] = useState<any>([]);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -79,7 +80,7 @@ const LastMonthPage = (): React.ReactElement => {
 
   return (
     <>
-      <div className="w-full h-auto cursor-default">
+      <div className="w-full h-auto z-20 bg-white cursor-default">
         <div
           className={'border-2 rounded-xl border-[#3AC4A0] w-full p-3 mb-2 '}
         >
@@ -212,8 +213,8 @@ const LastMonthPage = (): React.ReactElement => {
                 </div>
               </div>
               {leader.rank === 1 || leader.rank === 2 || leader.rank === 3 ? (
-                <div>
-                  <button className="hidden lg:flex text-[#3AC4A0] text-xs font-semibold px-3 py-2 border rounded-xl border-[#3AC4A0]">
+                <div className="my-auto">
+                  <button className="hidden lg:flex  text-[#3AC4A0] text-xs font-semibold px-3 py-2 border rounded-xl border-[#3AC4A0]">
                     <p className="me-2"> {t('homepage.section2.text2')}</p>
                     <svg
                       width="12"

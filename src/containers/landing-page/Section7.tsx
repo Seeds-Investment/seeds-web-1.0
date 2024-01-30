@@ -81,7 +81,7 @@ export default function Section6(): React.ReactElement {
         </div>
         <div className="mx-auto lg:mx-16 justify-center items-center lg:mt-12 mt-5">
           <Slider {...settings}>
-            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
+            <div className="lg:pe-20 mx-12 w-[180px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
               <Image
                 src={syanne}
                 alt={`Event`}

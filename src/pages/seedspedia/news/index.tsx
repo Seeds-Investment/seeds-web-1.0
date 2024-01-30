@@ -222,7 +222,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-4 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -234,7 +234,7 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'business'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -246,7 +246,7 @@ export default function ArticleList(): React.ReactElement {
             Business
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'entertainment'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -259,7 +259,7 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'health'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -271,7 +271,7 @@ export default function ArticleList(): React.ReactElement {
             Health
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'politics'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -283,7 +283,7 @@ export default function ArticleList(): React.ReactElement {
             Politics
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'science'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -295,7 +295,7 @@ export default function ArticleList(): React.ReactElement {
             Science
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'sports'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -307,7 +307,7 @@ export default function ArticleList(): React.ReactElement {
             Sports
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'technology'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -319,7 +319,7 @@ export default function ArticleList(): React.ReactElement {
             Technology
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'top'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'
@@ -331,7 +331,7 @@ export default function ArticleList(): React.ReactElement {
             Top
           </button>
           <button
-            className={`py-1 rounded-full text-base font-poppins font-semibold mx-1 px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'world'
                 ? 'bg-[#3AC4A0] text-white'
                 : 'text-[#3AC4A0] bg-[#DCFCE4]'

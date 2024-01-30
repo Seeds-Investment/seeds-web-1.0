@@ -7,7 +7,7 @@ import TrackerEvent from '@/helpers/GTM';
 import { loginPhoneNumber } from '@/repository/auth.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
-import { useAppDispatch, useAppSelector } from '@/store/redux/store';
+import { useAppDispatch } from '@/store/redux/store';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
@@ -26,10 +26,11 @@ interface FormData {
 }
 
 const AuthLogin: React.FC = () => {
+  const setSelect = (): number => {
+    return 2;
+  };
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const dataUser = useAppSelector(state => state.user);
-  console.log(dataUser);
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
   const [error, setError] = useState(false);
@@ -168,7 +169,7 @@ const AuthLogin: React.FC = () => {
           {t('authLogin.forgotPass')}
         </Typography>
       </Link>
-      <AuthSSO />
+      <AuthSSO setSelect={setSelect} />
     </div>
   );
 };

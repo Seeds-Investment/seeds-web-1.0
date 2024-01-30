@@ -23,7 +23,6 @@ interface CountryCodeInfo {
 const AccountSecurityCenter: React.FC = () => {
   const router = useRouter();
   const { dataUser } = useAppSelector(state => state.user);
-  console.log(dataUser);
   const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
   const [country, setCountry] = useState(101);
   const [openMail, setOpenMail] = useState(false);
@@ -42,7 +41,7 @@ const AccountSecurityCenter: React.FC = () => {
   };
   useEffect(() => {
     setCountryInfo(getCountry(dataUser.phoneNumber));
-  }, []);
+  }, [dataUser.phoneNumber]);
   return (
     <PageGradient
       defaultGradient

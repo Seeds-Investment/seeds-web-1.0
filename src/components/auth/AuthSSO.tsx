@@ -8,13 +8,17 @@ import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-const AuthSSO: React.FC = () => {
+interface IAuthSSO {
+  setSelect: (value: number) => void;
+}
+
+const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data } = useSession();
 
-  console.log(data);
   const handleLoginSSO = async (): Promise<void> => {
     try {
       if (data !== null) {
@@ -32,14 +36,12 @@ const AuthSSO: React.FC = () => {
           await router.push('/homepage');
         }
         if (response.data.message === 'link-account/not-found') {
-          await router.push({
-            pathname: 'register',
-            query: { SSORegistration: 2 }
-          });
+          setSelect(2);
+          await router.push('register');
         }
       }
     } catch (error: any) {
-      console.error(error.response.data.message);
+      toast(error.response.data.message, { type: 'error' });
     }
   };
   useEffect(() => {

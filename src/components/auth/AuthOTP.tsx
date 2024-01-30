@@ -133,7 +133,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 setCountdown(30);
               }}
               disabled={countdown > 0}
-              className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#7C7C7C] font-normal font-poppins"
+              className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
@@ -175,23 +175,23 @@ const AuthOTP: React.FC<IAuthOTP> = ({
             )}
           </Typography>
         </div>
-        <Button
-          className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-semibold font-poppins"
-          onClick={handleMethodChange}
-          disabled={countdown > 0}
-        >
-          <span className="font-medium text-[#BDBDBD]">
+        <div className="flex flex-col items-center">
+          <Typography className="font-poppins font-medium text-sm text-[#BDBDBD]">
             {t('authRegister.authOTP.otherMethod1')}
+          </Typography>
+          <Button
+            className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
+            onClick={handleMethodChange}
+            disabled={countdown > 0}
+          >
+            {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">
-              {t('authRegister.authOTP.otherMethod2')}
+              {t('authRegister.authOTP.otherMethod4')}
             </span>
-          </span>
-          {t('authRegister.authOTP.otherMethod3')}
-          <span className="lowercase">
-            {t('authRegister.authOTP.otherMethod4')}
-          </span>
-          {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
-        </Button>
+            {`${method === 'whatsapp' ? ' SMS' : ' Whatsapp'}`}
+          </Button>
+        </div>
+
         <Button
           onClick={handleSubmitOTP}
           className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"

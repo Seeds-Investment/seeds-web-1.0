@@ -27,7 +27,6 @@ const UserSetting: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { dataUser } = useAppSelector(state => state.user);
   const { dataExp } = useAppSelector(state => state.exp);
-  console.log(dataUser);
   const handleOpen = (): void => {
     setOpen(!open);
   };

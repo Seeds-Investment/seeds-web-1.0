@@ -14,16 +14,16 @@ import {
 import Image from 'next/image';
 import { useContext, useState } from 'react';
 
-interface IPassLayout {
-  elementChild: any;
-  formChild: any;
+interface IPassLayout<T, U> {
+  elementChild: T;
+  formChild: U;
 }
 
 interface ILogoLanguage {
   open: boolean;
-  setOpen: any;
-  selectedLanguage: any;
-  handleLanguageChange: any;
+  setOpen: (value: boolean) => void;
+  selectedLanguage: 'EN' | 'ID';
+  handleLanguageChange: (language: 'EN' | 'ID') => void;
   className: string;
   menuClassName: string;
 }
@@ -108,10 +108,10 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
   );
 };
 
-const PassLayout: React.FC<IPassLayout> = ({
+const PassLayout: React.FC<IPassLayout<React.ReactNode, React.ReactNode>> = ({
   elementChild,
   formChild
-}: IPassLayout) => {
+}: IPassLayout<React.ReactNode, React.ReactNode>) => {
   const languageCtx = useContext(LanguageContext);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
   const [open, setOpen] = useState(false);

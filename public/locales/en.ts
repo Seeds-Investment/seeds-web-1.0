@@ -669,8 +669,7 @@ export default {
       title2: 'We have sent the OTP code via ',
       title3: ' to',
       resend: 'Resend OTP Code',
-      otherMethod1: `Didn't`,
-      otherMethod2: ' get the code? ',
+      otherMethod1: `Didn't get the code? `,
       otherMethod3: 'Try',
       otherMethod4: ' sending it by',
       validation: 'Incorrect OTP. Please Try again.'

@@ -13,14 +13,11 @@ import { useEffect, useState } from 'react';
 
 const Register: React.FC = () => {
   const { data } = useSession();
-  console.log(data);
   const { SSORegistration } = useRouter().query;
   const SSOInt = parseInt(SSORegistration as string, 10);
-  console.log(typeof SSOInt);
   const [select, setSelect] = useState(
     typeof SSOInt === 'number' && !isNaN(SSOInt) ? SSOInt : 0
   );
-  console.log(select);
   const [formData, setFormData] = useState({
     phoneNumber: '',
     birthDate: `${
@@ -45,7 +42,6 @@ const Register: React.FC = () => {
       identifier: data?.accessToken ?? ''
     }
   });
-  console.log(formData);
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);
   const getOTP = {
@@ -65,6 +61,32 @@ const Register: React.FC = () => {
       clearInterval(interval);
     };
   }, [countdown]);
+  useEffect(() => {
+    if (data !== null) {
+      setFormData({
+        ...formData,
+        birthDate: `${
+          data !== null
+            ? `${new Date(
+                new Date().getFullYear() - 17,
+                new Date().getMonth(),
+                new Date().getDate()
+              ).toISOString()}`
+            : ''
+        }`,
+        name: data?.user?.name ?? '',
+        seedsTag: `${
+          data !== null
+            ? `${data?.user?.name as string}${Math.round(Math.random() * 1000)}`
+            : ''
+        }`,
+        provider: {
+          provider: data?.provider ?? '',
+          identifier: data?.accessToken ?? ''
+        }
+      });
+    }
+  }, [data]);
   const element = (
     <>
       <Image

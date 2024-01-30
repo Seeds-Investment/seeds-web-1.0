@@ -592,8 +592,7 @@ export default {
       title2: 'Kode-nya kami kirim ke ',
       title3: '',
       resend: 'Kirim ulang kode OTP',
-      otherMethod1: 'Belum',
-      otherMethod2: ' dapet kodenya? ',
+      otherMethod1: 'Belum dapet kodenya? ',
       otherMethod3: 'Coba',
       otherMethod4: ' lewat',
       validation: 'Yah, OTPmu salah, yuk coba lagi'

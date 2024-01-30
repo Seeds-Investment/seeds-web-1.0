@@ -16,7 +16,7 @@ interface IAuthPersonalData {
   className: string;
   setFormData: any;
   formData: any;
-  setSelect: any;
+  setSelect: (value: number) => void;
 }
 
 const AuthPersonalData: React.FC<IAuthPersonalData> = ({
@@ -37,16 +37,13 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const [day, setDay] = useState<number | undefined>(
     data !== null ? new Date().getDate() : undefined
   );
-  console.log(day);
   const [month, setMonth] = useState<number | undefined>(
     data !== null ? new Date().getMonth() : undefined
   );
-  console.log(month);
 
   const [year, setYear] = useState<number | undefined>(
     data !== null ? new Date().getFullYear() - 17 : undefined
   );
-  console.log(year);
 
   const timezoneOffset = new Date().getTimezoneOffset();
   const utcDate = new Date(
@@ -146,7 +143,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         className="absolute left-0 cursor-pointer"
         onClick={async () => {
           if (data !== null) {
-            await router.push('login');
+            await router.push('/auth');
             await signOut();
           } else {
             setSelect(0);

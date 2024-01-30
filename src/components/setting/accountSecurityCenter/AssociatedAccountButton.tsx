@@ -18,16 +18,13 @@ const AssociatedAccountButton: React.FC<IAssociatedAccountButton> = ({
   imageClassName
 }: IAssociatedAccountButton) => {
   const { data } = useSession();
-  console.log(data?.accessToken);
-  console.log(data?.provider);
   const handleLoginSSO = async (): Promise<void> => {
     try {
       if (data !== null) {
-        const response = await loginSSO({
+        await loginSSO({
           identifier: data?.accessToken,
           provider: data?.provider
         });
-        console.log(response);
       }
     } catch (error: any) {
       console.error(error.response.data.message);

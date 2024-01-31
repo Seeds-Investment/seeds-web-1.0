@@ -141,7 +141,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
         </div>
         <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px]">
           <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
-            <div className="flex justify-center items-center bg-white w-full rounded-[19px] ">
+            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px] ">
               {formChild}
             </div>
           </div>
@@ -158,7 +158,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
             menuClassName="md:flex hidden"
           />
           <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] h-[728px]">
-            <div className="flex justify-center items-center bg-white w-full rounded-[19px] h-[726px]">
+            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px] h-[726px]">
               {formChild}
             </div>
           </div>

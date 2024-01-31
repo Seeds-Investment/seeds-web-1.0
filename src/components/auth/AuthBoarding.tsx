@@ -37,12 +37,12 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
         </Link>
       </Typography>
       <div className="flex gap-4 justify-center">
-        <Link href={'/auth2/login'}>
+        <Link href={'/auth/login'}>
           <Button className="font-semibold font-poppins text-[#6750A3] text-sm bg-[#E0E0E091] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
             {t(`authBoarding.login`)}
           </Button>
         </Link>
-        <Link href={'/auth2/register'}>
+        <Link href={'/auth/register'}>
           <Button className="font-semibold font-poppins text-white text-sm bg-[#3AC4A0] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
             {t(`authBoarding.signup`).split(' ')[0]}{' '}
             <span className="lowercase">

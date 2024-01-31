@@ -46,23 +46,23 @@ const UserSetting: React.FC = () => {
       link: async () => {
         await router.push('user-setting/account-security-center');
       }
-    },
-    {
-      name: t('setting.setting.createPin.title'),
-      src: CreatePinIcon,
-      extra: '',
-      link: async () => {
-        await router.push('user-setting/create-pin');
-      }
-    },
-    {
-      name: t('setting.setting.changePin.title'),
-      src: CreatePinIcon,
-      extra: '',
-      link: async () => {
-        await router.push('user-setting/change-pin');
-      }
     }
+    // {
+    //   name: t('setting.setting.createPin.title'),
+    //   src: CreatePinIcon,
+    //   extra: '',
+    //   link: async () => {
+    //     await router.push('user-setting/create-pin');
+    //   }
+    // },
+    // {
+    //   name: t('setting.setting.changePin.title'),
+    //   src: CreatePinIcon,
+    //   extra: '',
+    //   link: async () => {
+    //     await router.push('user-setting/change-pin');
+    //   }
+    // }
   ];
   const languageCurrencyMenu = [
     {

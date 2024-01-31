@@ -9,15 +9,20 @@ import Section5 from '@/containers/homepage/Section5';
 import TrendingSection from '@/containers/homepage/TrendingSection';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const Homepage: React.FC = () => {
-  const { dataUser } = useAppSelector(state => state.user);
-  console.log(dataUser);
+  const { t } = useTranslation();
+  const { registered } = useRouter().query;
   const [userInfo, setUserInfo] = useState<any>([]);
   const [popUpCurrency, setPopupCurrency] = useState<boolean>(false);
   useEffect(() => {
+    if (registered === 'true') {
+      toast(t('authLogin.SSO'), { type: 'error' });
+    }
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();

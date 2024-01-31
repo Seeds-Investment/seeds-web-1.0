@@ -150,7 +150,7 @@ const initialState: IUserState = {
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: { resetUser: () => initialState },
   extraReducers: builder => {
     // Handle fetching user data
     builder.addCase(fetchUserData.pending, state => {
@@ -175,5 +175,7 @@ const userSlice = createSlice({
     });
   }
 });
+
+export const { resetUser } = userSlice.actions;
 
 export default userSlice.reducer;

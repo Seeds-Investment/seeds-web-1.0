@@ -12,12 +12,12 @@ const authOptions = {
     GoogleProvider({
       clientId:
         process.env.GOOGLE_CLIENT_ID ??
-        // '414526331056-r1qjs9l9vlkgt48hqc8eit81dag3paip.apps.googleusercontent.com',
-        '1017054068936-3lhdtcmqaebjgtuk04htpj7bo5rqaufr.apps.googleusercontent.com',
+        '414526331056-pd8n2j5t5i30qsmp0qjg8vuvcsrdm7mf.apps.googleusercontent.com',
+      // '1017054068936-3lhdtcmqaebjgtuk04htpj7bo5rqaufr.apps.googleusercontent.com',
       clientSecret:
         process.env.GOOGLE_CLIENT_SECRET ??
-        // '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'
-        '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'
+        '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'
+      // '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'
     })
     // AppleProvider({
     //   clientId: process.env.APPLE_CLIENT_ID ?? '',

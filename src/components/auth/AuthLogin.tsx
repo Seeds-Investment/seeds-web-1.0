@@ -5,6 +5,7 @@ import AuthPassword from '@/components/auth/AuthPassword';
 import countries from '@/constants/countries.json';
 import TrackerEvent from '@/helpers/GTM';
 import { loginPhoneNumber } from '@/repository/auth.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
@@ -61,14 +62,15 @@ const AuthLogin: React.FC = () => {
         setFormData({ ...formData, phoneNumber: '', password: '' });
         await dispatch(fetchUserData());
         await dispatch(fetchExpData());
+        const responseUser = await getUserInfo();
         TrackerEvent({
           event: 'Seeds_login_web',
-          userId: ''
+          userId: responseUser.id
         });
         await router.push('/homepage');
         TrackerEvent({
           event: `Seeds_view_home_page_web`,
-          userId: '',
+          userId: responseUser.id,
           pageName: 'homepage'
         });
       } else if (response.data.message === 'wrong phone number or password') {
@@ -109,13 +111,13 @@ const AuthLogin: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
+    <div className="flex flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
       <Image
         src={Backward}
         alt="Backward"
-        className="absolute left-0 cursor-pointer"
+        className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push('/auth2');
+          await router.push('/auth');
         }}
       />
       <Image
@@ -123,7 +125,7 @@ const AuthLogin: React.FC = () => {
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authLogin.title1')}
         </span>
@@ -152,7 +154,7 @@ const AuthLogin: React.FC = () => {
           {error ? t('authLogin.validation.login') : <br />}
         </Typography>
       </div>
-      <Link href={'/auth2/forgot-password'} className="self-end">
+      <Link href={'/auth/forgot-password'} className="self-end">
         <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
           {t('authLogin.forgotPass')}
         </Typography>
@@ -164,7 +166,7 @@ const AuthLogin: React.FC = () => {
       >
         {loading ? <Spinner className=" h-6 w-6" /> : t('authLogin.login')}
       </Button>
-      <Link href={'/auth2/forgot-password'} className="self-end">
+      <Link href={'/auth/forgot-password'} className="self-end">
         <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
           {t('authLogin.forgotPass')}
         </Typography>

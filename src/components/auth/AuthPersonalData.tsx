@@ -28,8 +28,10 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const router = useRouter();
   const { data } = useSession();
   const { t } = useTranslation();
+  const regex = /[^a-zA-Z0-9]/g;
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
+  const [errorRegex, setErrorRegex] = useState(false);
   const [errorDoB, setErrorDoB] = useState(false);
   const [blank, setBlank] = useState(false);
   const [blankTag, setBlankTag] = useState(false);
@@ -70,6 +72,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       if (
         formData.name.length === 0 ||
         formData.seedsTag.length === 0 ||
+        regex.test(formData.seedsTag) ||
         birthLimit < 12 ||
         day === undefined ||
         month === undefined ||
@@ -114,11 +117,9 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const handleChangeTag = (e: any): void => {
     setErrorTag(false);
     setBlankTag(false);
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const updatedForm = { ...formData, [e.target.name]: e.target.value };
+    setFormData(updatedForm);
+    setErrorRegex(regex.test(updatedForm.seedsTag));
   };
 
   const handleChangeDoB = (e: any): void => {
@@ -140,7 +141,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       <Image
         src={Backward}
         alt="Backward"
-        className="absolute left-0 cursor-pointer"
+        className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
           if (data !== null) {
             await router.push('/auth');
@@ -155,7 +156,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authLogin.title1')}
         </span>
@@ -185,7 +186,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           placeholder="Ex: Seeds123"
           label="Seeds Tag"
           type="text"
-          error={errorTag}
+          error={errorTag || errorRegex}
           required={true}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
@@ -193,6 +194,8 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
             t('authLogin.validation.blank')
           ) : errorTag ? (
             t('authRegister.authPersonalData.validation.seedsTag')
+          ) : errorRegex ? (
+            t('authRegister.authPersonalData.validation.regex')
           ) : (
             <br />
           )}

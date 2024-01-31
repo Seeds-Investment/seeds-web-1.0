@@ -33,7 +33,14 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
 
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
-          await router.push('/homepage');
+          if (window.location.pathname === '/auth/register') {
+            await router.push({
+              pathname: '/homepage',
+              query: { registered: true }
+            });
+          } else {
+            await router.push('/homepage');
+          }
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);

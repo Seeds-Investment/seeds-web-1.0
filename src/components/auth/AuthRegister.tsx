@@ -105,14 +105,14 @@ const AuthRegister: React.FC<IAuthRegister> = ({
 
   return (
     <div
-      className={`${className} relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+      className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
         src={Backward}
         alt="Backward"
-        className="absolute left-0 cursor-pointer"
+        className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push('/auth2');
+          await router.push('/auth');
         }}
       />
       <Image
@@ -120,7 +120,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authLogin.title1')}
         </span>

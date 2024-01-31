@@ -7,6 +7,7 @@ import FormModalNumber from '@/components/setting/accountSecurityCenter/FormModa
 import SecuritySettingForm from '@/components/setting/accountSecurityCenter/SecuritySettingForm';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
+import withAuth from '@/helpers/withAuth';
 import { useAppSelector } from '@/store/redux/store';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -95,8 +96,8 @@ const AccountSecurityCenter: React.FC = () => {
         <SecuritySettingForm
           onClick={async () => {
             dataUser.isPasswordExists
-              ? await router.push('/auth2/change-password')
-              : await router.push('/auth2/create-password');
+              ? await router.push('/auth/change-password')
+              : await router.push('/auth/create-password');
           }}
           form={
             dataUser.isPasswordExists ? (
@@ -150,4 +151,4 @@ const AccountSecurityCenter: React.FC = () => {
   );
 };
 
-export default AccountSecurityCenter;
+export default withAuth(AccountSecurityCenter);

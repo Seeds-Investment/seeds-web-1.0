@@ -584,7 +584,8 @@ export default {
       password:
         'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
     },
-    next: 'Selanjutnya'
+    next: 'Selanjutnya',
+    SSO: 'Akunmu sudah terdaftar'
   },
   authRegister: {
     authOTP: {
@@ -607,6 +608,7 @@ export default {
       year: 'TTTT',
       validation: {
         seedsTag: 'Seeds Tag sudah dipakai, nih',
+        regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
         dob: 'Kamu harus berusia minimal 12 tahun'
       }
     },
@@ -643,7 +645,6 @@ export default {
       'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
     modal: { title1: 'Yeay, sukses', title2: 'Password barumu sudah dibuat' }
   },
-
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',

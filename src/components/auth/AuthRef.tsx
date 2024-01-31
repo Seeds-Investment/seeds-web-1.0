@@ -6,7 +6,10 @@ import {
   loginSSO,
   register
 } from '@/repository/auth.repository';
-import { useAppSelector } from '@/store/redux/store';
+import { getUserInfo } from '@/repository/profile.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import {
   Button,
   Dialog,
@@ -44,7 +47,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   formData
 }: IAuthRef) => {
   const deviceDetector = new DeviceDetector();
-  const { dataUser } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -58,15 +61,18 @@ const AuthRef: React.FC<IAuthRef> = ({
   });
 
   const handleTracker = async (): Promise<void> => {
+    await dispatch(fetchUserData());
+    await dispatch(fetchExpData());
+    const responseUser = await getUserInfo();
     TrackerEvent({
       event: 'Seeds_login_web',
-      userId: dataUser.id
+      userId: responseUser.id
     });
     handleOpen();
     await router.push('/homepage');
     TrackerEvent({
       event: `Seeds_view_home_page_web`,
-      userId: dataUser.id,
+      userId: responseUser.id,
       pageName: 'homepage'
     });
   };

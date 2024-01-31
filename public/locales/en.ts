@@ -661,7 +661,8 @@ export default {
       number: 'Oops, Your number already registered',
       password: 'Password must contain 8 digit with upper case and lower case'
     },
-    next: 'Next'
+    next: 'Next',
+    SSO: 'Your account has been registered'
   },
   authRegister: {
     authOTP: {
@@ -684,6 +685,7 @@ export default {
       year: 'YYYY',
       validation: {
         seedsTag: 'Seeds Tag alredy used',
+        regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
         dob: 'Minimun  age 12 Years old'
       }
     },

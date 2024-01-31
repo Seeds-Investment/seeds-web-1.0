@@ -102,7 +102,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
         <Image
           src={Backward}
           alt="Backward"
-          className="absolute left-0 cursor-pointer"
+          className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
             setSelect(0);
           }}
@@ -112,7 +112,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           alt="SeedyAuthLogin"
           className="w-[141.8px] md:flex hidden"
         />
-        <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
+        <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C] pt-10 md:p-0">
           <span className="font-poppins font-semibold md:text-2xl text-base text-[#050522]">
             {t('authRegister.authOTP.title1')}
           </span>

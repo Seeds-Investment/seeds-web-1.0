@@ -3,6 +3,7 @@ import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalende
 import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
@@ -235,4 +236,4 @@ const AccountInformation: React.FC = () => {
   );
 };
 
-export default AccountInformation;
+export default withAuth(AccountInformation);

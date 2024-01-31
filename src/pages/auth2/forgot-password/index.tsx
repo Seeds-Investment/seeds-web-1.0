@@ -1,4 +1,5 @@
-import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
+import SeedyLock from '@/assets/auth/SeedyLock.png';
 import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
 import AuthForgotPassNew from '@/components/auth/AuthForgotPassNew';
@@ -41,11 +42,36 @@ const ForgotPassword: React.FC = () => {
     };
   }, [countdown]);
   const element = (
-    <Image
-      src={SeedyAuthLogin}
-      alt="SeedyAuthLogin"
-      className="md:hidden flex self-center w-1/2"
-    />
+    <>
+      <Image
+        src={SeedyAuthPass}
+        alt="SeedyAuthPass"
+        className={`${
+          select === 0 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedyWAOTP}
+        alt="SeedyWAOTP"
+        className={`${
+          select === 1 && method === 'whatsapp' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedySMSOTP}
+        alt="SeedySMSOTP"
+        className={`${
+          select === 1 && method === 'sms' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedyLock}
+        alt="SeedyLock"
+        className={`${
+          select === 2 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+    </>
   );
   const form = (
     <>

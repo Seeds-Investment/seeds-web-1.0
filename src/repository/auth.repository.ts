@@ -127,7 +127,7 @@ export const checkSeedsTag = async (seedsTag: string): Promise<any> => {
 };
 export const checkRefCode = async (refCode: string): Promise<any> => {
   const response = await authService.get(
-    `validate//ref-code?ref-code=${refCode}`
+    `validate/ref-code?ref-code=${refCode}`
   );
   return response.data;
 };

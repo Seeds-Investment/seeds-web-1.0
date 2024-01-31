@@ -125,7 +125,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
     setOpen(!open);
   };
   return (
-    <div className="flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2]">
+    <div className="flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] h-full">
       <div className="flex flex-col md:justify-center justify-between md:w-[37%] w-full">
         <div className="flex flex-col gap-4 md:gap-0">
           <LogoLanguage
@@ -147,7 +147,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
           </div>
         </div>
       </div>
-      <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full ">
+      <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full h-full ">
         <div className="w-4/5 flex flex-col gap-16">
           <LogoLanguage
             open={open}

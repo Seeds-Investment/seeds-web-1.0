@@ -65,7 +65,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const handleNext = async (): Promise<void> => {
     try {
       if (data !== null) {
-        setFormData({ ...formData, password: '' });
+        setFormData({ ...formData, password: '', phoneNumber: '' });
       }
       if (
         formData.name.length === 0 ||

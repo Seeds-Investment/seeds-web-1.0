@@ -3,9 +3,10 @@ import TrackerEvent from '@/helpers/GTM';
 import {
   checkRefCode,
   loginPhoneNumber,
+  loginSSO,
   register
 } from '@/repository/auth.repository';
-import { getUserInfo } from '@/repository/profile.repository';
+import { useAppSelector } from '@/store/redux/store';
 import {
   Button,
   Dialog,
@@ -14,6 +15,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -42,6 +44,8 @@ const AuthRef: React.FC<IAuthRef> = ({
   formData
 }: IAuthRef) => {
   const deviceDetector = new DeviceDetector();
+  const { dataUser } = useAppSelector(state => state.user);
+  const { data } = useSession();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -53,28 +57,40 @@ const AuthRef: React.FC<IAuthRef> = ({
     os_name: ''
   });
 
+  const handleTracker = async (): Promise<void> => {
+    TrackerEvent({
+      event: 'Seeds_login_web',
+      userId: dataUser.id
+    });
+    handleOpen();
+    await router.push('/homepage');
+    TrackerEvent({
+      event: `Seeds_view_home_page_web`,
+      userId: dataUser.id,
+      pageName: 'homepage'
+    });
+  };
+
   const handleSubmit = async (): Promise<void> => {
     try {
       setLoading(true);
+
       const response = await loginPhoneNumber(loginForm);
-      if (response.status === 200) {
+      if (data !== null) {
+        const SSOresponse = await loginSSO({
+          identifier: data.accessToken,
+          provider: data.provider
+        });
+        window.localStorage.setItem('accessToken', SSOresponse.accessToken);
+        window.localStorage.setItem('refreshToken', SSOresponse.refreshToken);
+        window.localStorage.setItem('expiresAt', SSOresponse.expiresAt);
+        await handleTracker();
+      } else if (response.status === 200) {
         window.localStorage.setItem('accessToken', response.accessToken);
         window.localStorage.setItem('refreshToken', response.refreshToken);
         window.localStorage.setItem('expiresAt', response.expiresAt);
-
         setFormData({ ...formData, phoneNumber: '', password: '' });
-        const responseUser = await getUserInfo();
-        TrackerEvent({
-          event: 'Seeds_login_web',
-          userId: responseUser.id
-        });
-        handleOpen();
-        await router.push('/homepage');
-        TrackerEvent({
-          event: `Seeds_view_home_page_web`,
-          userId: responseUser.id,
-          pageName: 'homepage'
-        });
+        await handleTracker();
       } else if (response.data.message === 'wrong phone number or password') {
         setLoading(false);
         setError(true);
@@ -99,6 +115,7 @@ const AuthRef: React.FC<IAuthRef> = ({
 
   const handleConfirm = async (): Promise<void> => {
     try {
+      console.log(formData.refCode);
       await checkRefCode(formData.refCode);
       const response = await register(formData);
       if (response === null) {
@@ -160,7 +177,7 @@ const AuthRef: React.FC<IAuthRef> = ({
         </div>
         <div className="flex gap-4 w-full">
           <Button
-            className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
+            className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
           >
             {loading ? (
@@ -170,7 +187,7 @@ const AuthRef: React.FC<IAuthRef> = ({
             )}
           </Button>
           <Button
-            className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
+            className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
           >
             {loading ? (

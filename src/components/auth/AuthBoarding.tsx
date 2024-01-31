@@ -32,7 +32,7 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
       <Typography className="text-center font-normal font-poppins md:text-lg sm:text-base text-sm text-[#262626]">
         {t(`authBoarding.term`)}
         <br />
-        <Link href={'/'} className="text-[#3AC4A0]">
+        <Link href={'/term-condition'} className="text-[#3AC4A0]">
           {t(`authBoarding.term2`)}
         </Link>
       </Typography>

@@ -115,7 +115,6 @@ const AuthRef: React.FC<IAuthRef> = ({
 
   const handleConfirm = async (): Promise<void> => {
     try {
-      console.log(formData.refCode);
       await checkRefCode(formData.refCode);
       const response = await register(formData);
       if (response === null) {

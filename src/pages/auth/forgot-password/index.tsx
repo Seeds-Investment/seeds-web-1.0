@@ -95,6 +95,7 @@ const ForgotPassword: React.FC = () => {
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
         formData={formData}
+        setFormData={setFormData}
       />
       <AuthForgotPassNew
         setSelect={setSelect}

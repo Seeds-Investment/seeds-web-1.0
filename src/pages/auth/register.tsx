@@ -146,6 +146,7 @@ const Register: React.FC = () => {
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
         formData={formData}
+        setFormData={setFormData}
       />
       <AuthPersonalData
         className={select === 2 ? 'flex' : 'hidden'}

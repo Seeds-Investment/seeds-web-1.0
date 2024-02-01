@@ -101,6 +101,7 @@ const EditFormModal: React.FC<IEditFormModal> = ({
           formData={formData.phone}
           name="phone"
           error={false}
+          handleSubmit={handleOpen}
         />
 
         <Button className="font-poppins font-semibold text-base text-white capitalize w-full bg-[#3AC4A0] rounded-full">

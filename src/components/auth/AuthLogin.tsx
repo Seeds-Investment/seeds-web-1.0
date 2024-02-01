@@ -140,6 +140,11 @@ const AuthLogin: React.FC = () => {
         setCountry={setCountry}
         countries={countries}
         error={error}
+        handleSubmit={async (e: any) => {
+          if (e.key === 'Enter') {
+            await handleSubmit();
+          }
+        }}
       />
       <div className="w-full">
         <AuthPassword
@@ -149,6 +154,11 @@ const AuthLogin: React.FC = () => {
           name="password"
           label={t('authLogin.password').toString()}
           placeholder={t('authLogin.passwordPlaceholder').toString()}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleSubmit();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error ? t('authLogin.validation.login') : <br />}

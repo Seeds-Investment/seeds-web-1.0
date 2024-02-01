@@ -19,6 +19,7 @@ interface IAuthNumber {
   setCountry: any;
   countries: any;
   error: boolean;
+  handleSubmit: (e: any) => void;
 }
 
 const AuthNumber: React.FC<IAuthNumber> = ({
@@ -28,7 +29,8 @@ const AuthNumber: React.FC<IAuthNumber> = ({
   country,
   countries,
   setCountry,
-  error
+  error,
+  handleSubmit
 }: IAuthNumber) => {
   const { t } = useTranslation();
   return (
@@ -93,6 +95,7 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           name={name}
           pattern="[0-9]"
           value={formData}
+          onKeyDown={handleSubmit}
           onChange={() =>
             handleChange(event, countries[country].dialCode.replace('+', ''))
           }

@@ -630,12 +630,17 @@ export default {
     forgotPassword: 'Forgot Password'
   },
   authCarousel: {
-    title: { 1: 'Hi! Welcome to Seeds', 2: 'Learn more', 3: 'Play', 4: 'Meet' },
+    title: {
+      1: 'Welcome to Seeds!',
+      2: 'Explore',
+      3: 'Game On!',
+      4: 'Connect'
+    },
     subtitle: {
-      1: 'Start and grow your investment journey with friends',
-      2: 'About investing and finance from experts',
-      3: 'Tournaments and win cash',
-      4: 'and chat with your compatible people.'
+      1: 'Embark on your investment journey with friends and watch your seeds grow.',
+      2: 'Learn the ropes of investing and finance from seasoned experts in the field.',
+      3: 'Participate in thrilling tournaments and win exciting cash rewards.',
+      4: 'Meet and chat with like-minded individuals who share your passion for financial growth.'
     }
   },
   authBoarding: {
@@ -662,7 +667,8 @@ export default {
       password: 'Password must contain 8 digit with upper case and lower case'
     },
     next: 'Next',
-    SSO: 'Your account has been registered'
+    SSO: 'Your account has been registered',
+    unSSO: 'Account not registered'
   },
   authRegister: {
     authOTP: {

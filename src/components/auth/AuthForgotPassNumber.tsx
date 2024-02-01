@@ -68,7 +68,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         error.response.data.message === 'requested phone number already exists'
       ) {
         await getOtp(getOTP);
-        setCountdown(30);
+        setCountdown(60);
         setSelect(1);
         setFormData(formattedPhone);
       }
@@ -100,6 +100,11 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
           setCountry={setCountry}
           countries={countries}
           error={error}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error ? t('authForgotPass.validation.number') : <br />}

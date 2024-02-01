@@ -79,6 +79,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           name="password"
           label={t('authForgotPass.newPassword.label')}
           placeholder={t('authForgotPass.newPassword.placeholder')}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass ? t('authForgotPass.validation.password') : <br />}
@@ -92,6 +97,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           name="old_password"
           label={t('authForgotPass.matchPassword.label')}
           placeholder={t('authForgotPass.matchPassword.placeholder')}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorRepass ? t('authForgotPass.validation.match') : <br />}

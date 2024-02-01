@@ -15,28 +15,14 @@ const Register: React.FC = () => {
   const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
     phoneNumber: '',
-    birthDate: `${
-      data !== null
-        ? `${new Date(
-            new Date().getFullYear() - 17,
-            new Date().getMonth(),
-            new Date().getDate()
-          ).toISOString()}`
-        : ''
-    }`,
-    name: data?.user?.name ?? '',
-    seedsTag: `${
-      data !== null
-        ? `${data?.user?.name?.replace(' ', '') as string}${Math.round(
-            Math.random() * 1000
-          )}`
-        : ''
-    }`,
+    birthDate: '',
+    name: '',
+    seedsTag: '',
     refCode: '',
     password: '',
     provider: {
-      provider: data?.provider ?? '',
-      identifier: data?.accessToken ?? ''
+      provider: '',
+      identifier: ''
     }
   });
   const [method, setMethod] = useState('whatsapp');
@@ -74,7 +60,9 @@ const Register: React.FC = () => {
         name: data?.user?.name ?? '',
         seedsTag: `${
           data !== null
-            ? `${data?.user?.name as string}${Math.round(Math.random() * 1000)}`
+            ? `${data?.user?.name?.split(' ').join('') as string}${Math.round(
+                Math.random() * 1000
+              )}`
             : ''
         }`,
         provider: {

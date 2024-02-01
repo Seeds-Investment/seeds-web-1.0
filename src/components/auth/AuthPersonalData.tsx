@@ -144,6 +144,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
           if (data !== null) {
+            setFormData({ ...formData, name: '', seedsTag: '' });
             await router.push('/auth');
             await signOut();
           } else {

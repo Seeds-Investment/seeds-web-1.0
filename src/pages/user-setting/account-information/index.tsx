@@ -4,6 +4,7 @@ import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
+import { checkSeedsTag } from '@/repository/auth.repository';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
@@ -13,6 +14,7 @@ import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IForm {
   name: string;
@@ -33,6 +35,7 @@ const AccountInformation: React.FC = () => {
   const [updateAvatar, setAvatar] = useState<File | null>(null);
   const [birthDate, setBirthDate] = useState(new Date());
   const [error, setError] = useState(false);
+  const [errorCheck, setErrorCheck] = useState(false);
   const [form, setForm] = useState<IForm>({
     name: dataUser.name,
     seedsTag: dataUser.seedsTag,
@@ -65,11 +68,21 @@ const AccountInformation: React.FC = () => {
     setSelect(0);
   };
 
-  const changeData = (e: any): void => {
+  const changeData = async (e: any): Promise<void> => {
+    setError(false);
+    setErrorCheck(false);
     const updatedForm = { ...form, [e.target.name]: e.target.value };
     setForm(updatedForm);
     const regex = /[^a-zA-Z0-9]/g;
     setError(regex.test(updatedForm.seedsTag));
+    try {
+      await checkSeedsTag(updatedForm.seedsTag);
+    } catch (error: any) {
+      if (dataUser.seedsTag !== updatedForm.seedsTag) {
+        toast(error.response.data.message, { type: 'error' });
+        setErrorCheck(true);
+      }
+    }
   };
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -116,7 +129,7 @@ const AccountInformation: React.FC = () => {
             <Button
               type="submit"
               className="font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
-              disabled={error}
+              disabled={error || errorCheck}
             >
               {t('button.label.done')}
             </Button>
@@ -188,16 +201,22 @@ const AccountInformation: React.FC = () => {
                     '!text-base !text-[#262626] !font-semibold !font-poppins'
                 }}
                 className={`${
-                  error ? 'text-red-600' : '!text-[#7C7C7C]'
+                  error || errorCheck ? 'text-red-600' : '!text-[#7C7C7C]'
                 } !text-base !font-poppins !font-normal pl-[20px]`}
-                error={error}
+                error={error || errorCheck}
               />
               <Typography
                 className={`${
-                  error ? 'flex' : 'hidden'
+                  error || errorCheck ? 'flex' : 'hidden'
                 } text-xs font-poppins font-normal text-red-600`}
               >
-                SeedsTag cannot contain spaces or symbols, please delete!
+                {error ? (
+                  t('authRegister.authPersonalData.validation.regex')
+                ) : errorCheck ? (
+                  t('authRegister.authPersonalData.validation.seedsTag')
+                ) : (
+                  <br />
+                )}
               </Typography>
             </div>
             <BirthDateCalender

@@ -72,7 +72,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       if (
         formData.name.length === 0 ||
         formData.seedsTag.length === 0 ||
-        regex.test(formData.seedsTag) ||
+        errorRegex ||
         birthLimit < 12 ||
         day === undefined ||
         month === undefined ||
@@ -94,9 +94,10 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         }
         await checkSeedsTag(formData.seedsTag);
         throw new Error('something error');
+      } else {
+        await checkSeedsTag(formData.seedsTag);
+        handleOpen();
       }
-      await checkSeedsTag(formData.seedsTag);
-      handleOpen();
     } catch (error: any) {
       toast(error, { type: 'error' });
       if (
@@ -117,6 +118,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const handleChangeTag = (e: any): void => {
     setErrorTag(false);
     setBlankTag(false);
+    setErrorRegex(false);
     const updatedForm = { ...formData, [e.target.name]: e.target.value };
     setFormData(updatedForm);
     setErrorRegex(regex.test(updatedForm.seedsTag));
@@ -193,10 +195,10 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankTag && errorTag ? (
             t('authLogin.validation.blank')
-          ) : errorTag ? (
-            t('authRegister.authPersonalData.validation.seedsTag')
           ) : errorRegex ? (
             t('authRegister.authPersonalData.validation.regex')
+          ) : errorTag ? (
+            t('authRegister.authPersonalData.validation.seedsTag')
           ) : (
             <br />
           )}

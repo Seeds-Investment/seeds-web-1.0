@@ -17,6 +17,7 @@ interface IAuthOTP {
   setSelect: any;
   image: any;
   formData: any;
+  setFormData: any;
 }
 
 const AuthOTP: React.FC<IAuthOTP> = ({
@@ -29,7 +30,8 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   setCountdown,
   setSelect,
   image,
-  formData
+  formData,
+  setFormData
 }: IAuthOTP) => {
   const { t } = useTranslation();
   const [input, setInput] = useState(['', '', '', '']);
@@ -62,7 +64,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
     const newMethod = method === 'whatsapp' ? 'sms' : 'whatsapp';
     await getOtp({ method: newMethod, phoneNumber: number });
     setMethod(newMethod);
-    setCountdown(30);
+    setCountdown(60);
     inputRefs.current[0]?.focus();
   };
 
@@ -97,13 +99,14 @@ const AuthOTP: React.FC<IAuthOTP> = ({
       <div
         className={`${
           select === 1 ? 'flex' : 'hidden'
-        } relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+        } flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
       >
         <Image
           src={Backward}
           alt="Backward"
           className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
+            setFormData({ ...formData, phoneNumber: '', password: '' });
             setSelect(0);
           }}
         />
@@ -130,16 +133,18 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 setInput(['', '', '', '']);
                 inputRefs.current[0]?.focus();
                 await getOtp(getOTP);
-                setCountdown(30);
+                setCountdown(60);
               }}
               disabled={countdown > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
-            <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">{`00:${
-              countdown < 10 ? '0' : ''
-            }${countdown as string}`}</Typography>
+            <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
+              {countdown === 60
+                ? '01:00'
+                : `00:${countdown < 10 ? '0' : ''}${countdown as string}`}
+            </Typography>
           </div>
           <div className="flex justify-center w-full gap-6">
             {input.map((value, index) => (
@@ -157,6 +162,11 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                   ref={el => (inputRefs.current[index] = el)}
                   value={value}
                   maxLength={1}
+                  onKeyDown={async (e: any) => {
+                    if (e.key === 'Enter') {
+                      await handleSubmitOTP(event);
+                    }
+                  }}
                   onChange={e => {
                     handleChangeOTP(index, e.target.value);
                   }}

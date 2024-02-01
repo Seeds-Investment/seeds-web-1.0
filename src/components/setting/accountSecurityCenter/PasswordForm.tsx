@@ -80,6 +80,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
             name="old_password"
             label={t('authForgotPass.matchPassword.label')}
             placeholder={t('authForgotPass.matchPassword.placeholder')}
+            handleSubmit={false}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
             {errorOldPass ? t('authForgotPass.validation.match') : <br />}
@@ -95,6 +96,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
           name="password"
           label={t('authForgotPass.newPassword.label')}
           placeholder={t('authForgotPass.newPassword.placeholder')}
+          handleSubmit={false}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass ? t('authForgotPass.validation.password') : <br />}
@@ -109,6 +111,7 @@ const PasswordForm: React.FC<IPasswordForm> = ({
             name="repass"
             label={t('authForgotPass.matchPassword.label')}
             placeholder={t('authForgotPass.matchPassword.placeholder')}
+            handleSubmit={false}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
             {errorRepass ? t('authForgotPass.validation.match') : <br />}

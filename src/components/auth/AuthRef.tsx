@@ -157,6 +157,11 @@ const AuthRef: React.FC<IAuthRef> = ({
             type="text"
             error={error}
             required={false}
+            handleSubmit={async (e: any) => {
+              if (e.key === 'Enter') {
+                await handleConfirm();
+              }
+            }}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
             {error ? t('authRegister.authRef.validation') : <br />}

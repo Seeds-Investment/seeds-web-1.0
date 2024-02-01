@@ -79,7 +79,7 @@ const ChangePhoneNumber: React.FC<Form> = ({
       await checkPhoneNumber(form.phone);
       await editUserInfo(updatedForm);
       await getOtp(getOTP);
-      setCountdown(30);
+      setCountdown(60);
       setSelect(2);
     } catch (error: any) {
       console.error(error.response.data.message);

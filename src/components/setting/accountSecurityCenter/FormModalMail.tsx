@@ -87,6 +87,7 @@ const EditFormModal: React.FC<IEditFormModal> = ({
             formData={formData.email}
             handleChange={handleChange}
             error={false}
+            handleSubmit={() => {}}
           />
           <Image
             src={PenMail}

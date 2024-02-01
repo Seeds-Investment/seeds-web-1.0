@@ -11,6 +11,7 @@ interface IAuthPassword {
   name: string;
   label: string;
   placeholder: string;
+  handleSubmit: any;
 }
 
 const AuthPassword: React.FC<IAuthPassword> = ({
@@ -19,7 +20,8 @@ const AuthPassword: React.FC<IAuthPassword> = ({
   error,
   name,
   label,
-  placeholder
+  placeholder,
+  handleSubmit
 }: IAuthPassword) => {
   const [open, setOpen] = useState(false);
   return (
@@ -38,6 +40,7 @@ const AuthPassword: React.FC<IAuthPassword> = ({
           value={formData}
           onChange={handleChange}
           required
+          onKeyDown={handleSubmit}
           labelProps={{
             className:
               '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'

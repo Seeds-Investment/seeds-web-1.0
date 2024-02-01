@@ -548,16 +548,16 @@ export default {
   },
   authCarousel: {
     title: {
-      1: 'Hai! Selamat Datang di Seeds',
-      2: 'Yuk, belajar lebih banyak',
-      3: 'Mainkan',
-      4: 'Bertemu'
+      1: 'Selamat Datang di Seeds',
+      2: 'Jelajahi',
+      3: 'Yuk! Mainkan',
+      4: 'Perluas Koneksi'
     },
     subtitle: {
-      1: 'Mulai dan perluas perjalanan investasimu dengan teman-teman',
-      2: 'Tentang investasi dan finansial dari ahlinya',
-      3: 'Turnamennya dan menangkan hadiah uang tunai',
-      4: 'dan mengobrol dengan orang-orang yang cocok dengan kamu'
+      1: 'Mulai investasi dengan teman dan lihat benih kamu berkembang!',
+      2: 'Pelajari hal-hal tentang investasi dan financial dari ahlinya!',
+      3: 'Ikuti turnamen yang menantang dan menangkan hadiah uang tunainya!',
+      4: 'Temui  individu  dengan passion yang sama dalam dunia finansial'
     }
   },
   authBoarding: {
@@ -585,7 +585,8 @@ export default {
         'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
     },
     next: 'Selanjutnya',
-    SSO: 'Akunmu sudah terdaftar'
+    SSO: 'Akunmu sudah terdaftar',
+    unSSO: 'Akun belum terdaftar'
   },
   authRegister: {
     authOTP: {

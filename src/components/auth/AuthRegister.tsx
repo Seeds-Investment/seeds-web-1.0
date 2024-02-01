@@ -86,7 +86,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       };
       if (response === undefined && passTest) {
         await getOtp(getOTP);
-        setCountdown(30);
+        setCountdown(60);
         setSelect(1);
         setFormData(formattedPhone);
         setLoginForm({
@@ -150,6 +150,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           setCountry={setCountry}
           countries={countries}
           error={error}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error && blank ? (
@@ -169,6 +174,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           name="password"
           label={t('authLogin.password').toString()}
           placeholder={t('authLogin.passwordPlaceholder').toString()}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass && blankPass ? (

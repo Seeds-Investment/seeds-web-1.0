@@ -8,6 +8,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface IAuthSSO {
@@ -15,6 +16,7 @@ interface IAuthSSO {
 }
 
 const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data } = useSession();
@@ -34,10 +36,8 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
           if (window.location.pathname === '/auth/register') {
-            await router.push({
-              pathname: '/homepage',
-              query: { registered: true }
-            });
+            await router.push('/homepage');
+            toast(t('authLogin.SSO'), { type: 'error' });
           } else {
             await router.push('/homepage');
           }

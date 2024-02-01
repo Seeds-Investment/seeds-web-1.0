@@ -145,7 +145,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
 
   return (
     <div
-      className={`${className} relative flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
+      className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
         src={Backward}
@@ -183,6 +183,11 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           type="text"
           error={blank}
           required={true}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blank ? t('authLogin.validation.blank') : <br />}
@@ -198,6 +203,11 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           type="text"
           error={errorTag || errorRegex}
           required={true}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankTag && errorTag ? (

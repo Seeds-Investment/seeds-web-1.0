@@ -2,6 +2,7 @@
 import { Logout } from '@/constants/assets/images';
 import TrackerEvent from '@/helpers/GTM';
 import { Typography } from '@material-tailwind/react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
@@ -21,6 +22,7 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');
+    await signOut();
     TrackerEvent({
       event: `Seeds_logout_web`,
       userId: userInfo?.id

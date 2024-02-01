@@ -24,6 +24,11 @@ interface LoginForm {
   os_name?: string;
 }
 
+interface LoginSSOForm {
+  identifier: string;
+  provider: string;
+}
+
 interface RegistForm {
   phoneNumber: string;
   birthDate: string;
@@ -52,6 +57,18 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   }
 };
 
+export const loginSSO = async ({
+  identifier,
+  provider
+}: LoginSSOForm): Promise<any> => {
+  try {
+    let response = await authService.post(`login/${provider}`, { identifier });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
 export const register = async (formData: RegistForm): Promise<any> => {
   try {
     let response = await authService.post('create', formData);
@@ -73,6 +90,26 @@ export const forgotPassword = async (
   }
 };
 
+export const changePassword = async (
+  formData: IChangePassword
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await userService.post(`change-password`, formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
 export const checkEmail = async (email: string): Promise<any> => {
   const response = await authService.get(`validate/email?email=${email}`);
   return response.data;
@@ -90,7 +127,7 @@ export const checkSeedsTag = async (seedsTag: string): Promise<any> => {
 };
 export const checkRefCode = async (refCode: string): Promise<any> => {
   const response = await authService.get(
-    `validate//ref-code?ref-code=${refCode}`
+    `validate/ref-code?ref-code=${refCode}`
   );
   return response.data;
 };

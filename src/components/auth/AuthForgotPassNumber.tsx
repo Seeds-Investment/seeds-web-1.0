@@ -1,4 +1,4 @@
-import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
 import AuthNumber from '@/components/auth/AuthNumber';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
@@ -68,7 +68,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         error.response.data.message === 'requested phone number already exists'
       ) {
         await getOtp(getOTP);
-        setCountdown(30);
+        setCountdown(60);
         setSelect(1);
         setFormData(formattedPhone);
       }
@@ -80,8 +80,8 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
-        src={SeedyAuthLogin}
-        alt="SeedyAuthLogin"
+        src={SeedyAuthPass}
+        alt="SeedyAuthPass"
         className="w-[141.8px] md:flex hidden"
       />
       <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
@@ -95,10 +95,16 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         <AuthNumber
           handleChange={handleChange}
           formData={formData.phoneNumber}
+          name="phoneNumber"
           country={country}
           setCountry={setCountry}
           countries={countries}
           error={error}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error ? t('authForgotPass.validation.number') : <br />}

@@ -1,26 +1,38 @@
-'use client';
-
+// store.js
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-
 import {
   useDispatch,
   useSelector,
   type TypedUseSelectorHook
 } from 'react-redux';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import expSlice from './features/exp';
 import soundSlice from './features/sound';
-import userSlice from './features/user-data/user-slice';
+import userSlice from './features/user';
 
 const reducers = combineReducers({
+  exp: expSlice,
   user: userSlice,
   soundSlice
 });
 
+const persistConfig = {
+  key: 'root',
+  storage
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 export const store = configureStore({
-  reducer: reducers
+  reducer: persistedReducer
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const useAppDispatch = () => useDispatch<any>();
+
+export const useAppDispatch: () => AppDispatch = () =>
+  useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

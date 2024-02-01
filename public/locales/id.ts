@@ -548,16 +548,16 @@ export default {
   },
   authCarousel: {
     title: {
-      1: 'Hai! Selamat Datang di Seeds',
-      2: 'Yuk, belajar lebih banyak',
-      3: 'Mainkan',
-      4: 'Bertemu'
+      1: 'Selamat Datang di Seeds',
+      2: 'Jelajahi',
+      3: 'Yuk! Mainkan',
+      4: 'Perluas Koneksi'
     },
     subtitle: {
-      1: 'Mulai dan perluas perjalanan investasimu dengan teman-teman',
-      2: 'Tentang investasi dan finansial dari ahlinya',
-      3: 'Turnamennya dan menangkan hadiah uang tunai',
-      4: 'dan mengobrol dengan orang-orang yang cocok dengan kamu'
+      1: 'Mulai investasi dengan teman dan lihat benih kamu berkembang!',
+      2: 'Pelajari hal-hal tentang investasi dan financial dari ahlinya!',
+      3: 'Ikuti turnamen yang menantang dan menangkan hadiah uang tunainya!',
+      4: 'Temui  individu  dengan passion yang sama dalam dunia finansial'
     }
   },
   authBoarding: {
@@ -584,7 +584,9 @@ export default {
       password:
         'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
     },
-    next: 'Selanjutnya'
+    next: 'Selanjutnya',
+    SSO: 'Akunmu sudah terdaftar',
+    unSSO: 'Akun belum terdaftar'
   },
   authRegister: {
     authOTP: {
@@ -592,8 +594,7 @@ export default {
       title2: 'Kode-nya kami kirim ke ',
       title3: '',
       resend: 'Kirim ulang kode OTP',
-      otherMethod1: 'Belum',
-      otherMethod2: ' dapet kodenya? ',
+      otherMethod1: 'Belum dapet kodenya? ',
       otherMethod3: 'Coba',
       otherMethod4: ' lewat',
       validation: 'Yah, OTPmu salah, yuk coba lagi'
@@ -608,6 +609,7 @@ export default {
       year: 'TTTT',
       validation: {
         seedsTag: 'Seeds Tag sudah dipakai, nih',
+        regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
         dob: 'Kamu harus berusia minimal 12 tahun'
       }
     },
@@ -644,7 +646,6 @@ export default {
       'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
     modal: { title1: 'Yeay, sukses', title2: 'Password barumu sudah dibuat' }
   },
-
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',
@@ -695,6 +696,43 @@ export default {
     cancelButton: 'Batal'
   },
   setting: {
+    setting: {
+      title: 'Pengaturan',
+      accountInfo: { title: 'Informasi Akun' },
+      accountSecure: {
+        title: 'Pusat Keamanan Akun',
+        confirm: 'Konfirmasi',
+        titleMail1: 'Yuk, tambahin Emailmu!',
+        titleMail2:
+          'Untuk keamanan verifikasi, tambahkan email Kamu terlebih dahulu',
+        titleChangeMail1: 'Yuk, ganti Email kamu!',
+        titleChangeMail2: 'Masukan email barumu',
+        placeholderMail: 'Masukan email kamu',
+        titleNumber1: 'Yuk, tambahin nomor telepon',
+        titleNumber2: 'Masukan nomor teleponmu',
+        titleChangeNumber1: 'Yuk, ganti nomor teleponmu',
+        titleChangeNumber2: 'Masukin nomor telepon barumu',
+        createPass: {
+          title1: '',
+          title2: '',
+          label1: '',
+          label2: '',
+          placeholder1: '',
+          placeholder2: ''
+        },
+        changePass: {}
+      },
+      createPin: { title: 'Buat PIN' },
+      changePin: { title: 'Ganti PIN' },
+      language: { title: 'Bahasa' },
+      currency: { title: 'Mata Uang' },
+      block: { title: 'Daftar Blokir' },
+      legal: { title: 'Hukum' },
+      faq: { title: 'FAQ & Bantuan' },
+      rate: { title: 'Nilai Aplikasi' },
+      chat: { title: 'Berbincang Dengan Seedy' },
+      logout: { title: 'Keluar' }
+    },
     changeAvatar: {
       title: 'Galeri',
       content: {
@@ -1197,7 +1235,7 @@ export default {
       },
       option3: {
         title: 'Monetize & Prosper',
-        subtitle: `Bersama-sama kita tumbuh dan meraih keuntungan bersama. Dari Play Arena hingga Premium Circle, terdapat peluang pertumbuhan finansial yang melimpah.`
+        subtitle: `Hasilkan keuntungan bersama ketika berkembang. Di antara Play Arena, Premium Circle, dan banyak lagi, ada banyak peluang untuk pertumbuhan finansial bersama.`
       },
       option4: {
         title: 'Community Powerhouse',
@@ -1219,7 +1257,7 @@ export default {
       },
       option2: {
         title: 'Meet',
-        subtitle: 'Berbicara dengan orang-orang yang memiliki pandangan serupa'
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pemikiran sama'
       },
       option3: {
         title: 'Play',
@@ -1347,7 +1385,7 @@ export default {
     section2: {
       text1: 'Social',
       text2:
-        'Berdiskusi dan berkoneksi dengan seorang ahli keuangan untuk memulai perjalanan keuangan yang sukses.'
+        'Berdiskusi dan berkoneksi dengan berbagai ahli keuangan untuk memulai perjalanan finansial yang sukses.'
     },
     section3: {
       text1: 'Bagaimana Seeds Meningkatkan',
@@ -1366,12 +1404,12 @@ export default {
       text1: 'Acara Seeds'
     },
     section7: {
-      text1: 'Temui Ahli Kami',
-      text2: 'Capai Sukses Keuangan Bersama'
+      text1: 'Berkenalan dengan Ahli Keuangan Kami!',
+      text2: 'Capai Kesuksesan Finansial Bersama'
     },
     section8: {
-      text1: 'Tetap Terinformasi dengan',
-      text2: 'Berita Finansial Terkurasi'
+      text1: 'Tetap Update dengan Informasi',
+      text2: 'Keuangan Pilihan Kami'
     },
     section9: {
       text1: 'Apa Kata Mereka Tentang '
@@ -1391,7 +1429,7 @@ export default {
     section12: {
       text1: 'Komunitas Kami',
       text2:
-        'Kami berkomitmen untuk meningkatkan literasi keuangan Generasi Z dan milenial di Asia Tenggara.',
+        'Kami berkomitmen untuk meningkatkan literasi finansial Generasi Z dan milenial di Asia Tenggara.',
       text3: 'Program Mitra'
     }
   },

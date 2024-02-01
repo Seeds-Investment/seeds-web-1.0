@@ -126,7 +126,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
   };
   return (
     <div className="flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] h-full">
-      <div className="flex flex-col md:justify-center justify-between md:w-[37%] w-full h-full">
+      <div className="flex flex-col md:justify-center justify-between md:w-[37%] w-full">
         <div className="flex flex-col gap-4 md:gap-0">
           <LogoLanguage
             open={open}
@@ -139,15 +139,15 @@ const AuthLayout: React.FC<IAuthLayout> = ({
           <AuthCarousel className="md:flex hidden" />
           {elementChild}
         </div>
-        <div className="bg-white w-full h-fit md:hidden p-[18px] rounded-t-[35px]">
-          <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] h-full">
-            <div className="flex justify-center items-center bg-white w-full rounded-[19px] h-full">
+        <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px]">
+          <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
+            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px] ">
               {formChild}
             </div>
           </div>
         </div>
       </div>
-      <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full h-full">
+      <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full h-full ">
         <div className="w-4/5 flex flex-col gap-16">
           <LogoLanguage
             open={open}
@@ -158,7 +158,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
             menuClassName="md:flex hidden"
           />
           <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px]">
-            <div className="flex justify-center items-center bg-white w-full rounded-[19px]">
+            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
               {formChild}
             </div>
           </div>

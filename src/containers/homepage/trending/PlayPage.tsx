@@ -88,8 +88,8 @@ export default function PlayPage(): React.ReactElement {
                 shadow={false}
                 className="w-full my-3 border border-[#E9E9E9]"
                 style={{
-                  borderTopLeftRadius: width !== undefined ? width * 0.01 : 0,
-                  borderTopRightRadius: width !== undefined ? width * 0.01 : 0
+                  borderTopLeftRadius: width !== undefined ? width * 0.05 : 0,
+                  borderTopRightRadius: width !== undefined ? width * 0.05 : 0
                 }}
               >
                 <Image

@@ -5,9 +5,11 @@ interface IAuthCommonInput {
   formData: string;
   placeholder: string;
   label: string;
+  type: string;
   name: string;
   error: boolean;
   required: boolean;
+  handleSubmit: (e: any) => void;
 }
 
 const AuthCommonInput: React.FC<IAuthCommonInput> = ({
@@ -15,9 +17,11 @@ const AuthCommonInput: React.FC<IAuthCommonInput> = ({
   formData,
   placeholder,
   label,
+  type,
   name,
   error,
-  required
+  required,
+  handleSubmit
 }: IAuthCommonInput) => {
   return (
     <div
@@ -28,13 +32,15 @@ const AuthCommonInput: React.FC<IAuthCommonInput> = ({
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
         <Input
           label={label}
-          type="text"
+          type={type}
           variant="static"
           placeholder={placeholder}
           name={name}
           value={formData}
           onChange={handleChange}
           required={required}
+          maxLength={name === 'name' ? 50 : undefined}
+          onKeyDown={handleSubmit}
           labelProps={{
             className:
               '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'

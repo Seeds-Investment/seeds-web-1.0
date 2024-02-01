@@ -630,12 +630,17 @@ export default {
     forgotPassword: 'Forgot Password'
   },
   authCarousel: {
-    title: { 1: 'Hi! Welcome to Seeds', 2: 'Learn more', 3: 'Play', 4: 'Meet' },
+    title: {
+      1: 'Welcome to Seeds!',
+      2: 'Explore',
+      3: 'Game On!',
+      4: 'Connect'
+    },
     subtitle: {
-      1: 'Start and grow your investment journey with friends',
-      2: 'About investing and finance from experts',
-      3: 'Tournaments and win cash',
-      4: 'and chat with your compatible people.'
+      1: 'Embark on your investment journey with friends and watch your seeds grow.',
+      2: 'Learn the ropes of investing and finance from seasoned experts in the field.',
+      3: 'Participate in thrilling tournaments and win exciting cash rewards.',
+      4: 'Meet and chat with like-minded individuals who share your passion for financial growth.'
     }
   },
   authBoarding: {
@@ -661,7 +666,9 @@ export default {
       number: 'Oops, Your number already registered',
       password: 'Password must contain 8 digit with upper case and lower case'
     },
-    next: 'Next'
+    next: 'Next',
+    SSO: 'Your account has been registered',
+    unSSO: 'Account not registered'
   },
   authRegister: {
     authOTP: {
@@ -669,8 +676,7 @@ export default {
       title2: 'We have sent the OTP code via ',
       title3: ' to',
       resend: 'Resend OTP Code',
-      otherMethod1: `Didn't`,
-      otherMethod2: ' get the code? ',
+      otherMethod1: `Didn't get the code? `,
       otherMethod3: 'Try',
       otherMethod4: ' sending it by',
       validation: 'Incorrect OTP. Please Try again.'
@@ -685,6 +691,7 @@ export default {
       year: 'YYYY',
       validation: {
         seedsTag: 'Seeds Tag alredy used',
+        regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
         dob: 'Minimun  age 12 Years old'
       }
     },
@@ -781,6 +788,33 @@ export default {
     cancelButton: 'Cancel'
   },
   setting: {
+    setting: {
+      title: 'Settings',
+      accountInfo: { title: 'Account Information' },
+      accountSecure: {
+        title: 'Account Security Center',
+        confirm: 'Confirm',
+        titleMail1: `Let's, add your Email!`,
+        titleMail2: 'For security purposes verify add your email first',
+        titleChangeMail1: `Let's, Change your Email!`,
+        titleChangeMail2: 'Enter your new email',
+        placeholderMail: 'Input your email',
+        titleNumber1: `Let's, Add Phone Number!`,
+        titleNumber2: 'Enter your new phone number',
+        titleChangeNumber1: `Let's, Change Phone Number!`,
+        titleChangeNumber2: 'Enter your new phone number'
+      },
+      createPin: { title: 'Create PIN' },
+      changePin: { title: 'Change PIN' },
+      language: { title: 'Language' },
+      currency: { title: 'Currency' },
+      block: { title: 'Block List' },
+      legal: { title: 'Legal' },
+      faq: { title: 'FAQ & Help' },
+      rate: { title: 'Rate Apps' },
+      chat: { title: 'Chat With Seedy' },
+      logout: { title: 'Log Out' }
+    },
     changeAvatar: {
       title: 'Gallery',
       content: {
@@ -1461,7 +1495,7 @@ export default {
     section12: {
       text1: 'Our Communities',
       text2:
-        "We're committed in improving financial literacy for Gen-Z and millennials in South East Asia.",
+        "We're committed in improving financial literacy for Gen-Z and millennials in Southeast Asia.",
       text3: 'Partnership Program'
     }
   },

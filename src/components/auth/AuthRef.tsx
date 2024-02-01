@@ -3,9 +3,13 @@ import TrackerEvent from '@/helpers/GTM';
 import {
   checkRefCode,
   loginPhoneNumber,
+  loginSSO,
   register
 } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import {
   Button,
   Dialog,
@@ -13,10 +17,10 @@ import {
   Spinner,
   Typography
 } from '@material-tailwind/react';
-import DeviceDetector from 'device-detector-js';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthCommonInput from './AuthCommonInput';
@@ -26,55 +30,64 @@ interface IAuthRef {
   handleOpen: any;
   setFormData: any;
   formData: any;
-}
-
-interface LoginFormData {
-  phoneNumber: string;
-  password: string;
-  platform: string;
-  os_name: string;
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
 }
 
 const AuthRef: React.FC<IAuthRef> = ({
   open,
   handleOpen,
   setFormData,
-  formData
+  formData,
+  loginForm
 }: IAuthRef) => {
-  const deviceDetector = new DeviceDetector();
+  const dispatch = useAppDispatch();
+  const { data } = useSession();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(false);
-  const [loginForm, setLoginForm] = useState<LoginFormData>({
-    phoneNumber: formData.phoneNumber,
-    password: formData.password,
-    platform: '',
-    os_name: ''
-  });
+
+  const handleTracker = async (): Promise<void> => {
+    await dispatch(fetchUserData());
+    await dispatch(fetchExpData());
+    const responseUser = await getUserInfo();
+    TrackerEvent({
+      event: 'Seeds_login_web',
+      userId: responseUser.id
+    });
+    handleOpen();
+    await router.push('/homepage');
+    TrackerEvent({
+      event: `Seeds_view_home_page_web`,
+      userId: responseUser.id,
+      pageName: 'homepage'
+    });
+  };
 
   const handleSubmit = async (): Promise<void> => {
     try {
       setLoading(true);
       const response = await loginPhoneNumber(loginForm);
-      if (response.status === 200) {
+      if (data !== null) {
+        const SSOresponse = await loginSSO({
+          identifier: data.accessToken,
+          provider: data.provider
+        });
+        window.localStorage.setItem('accessToken', SSOresponse.accessToken);
+        window.localStorage.setItem('refreshToken', SSOresponse.refreshToken);
+        window.localStorage.setItem('expiresAt', SSOresponse.expiresAt);
+        await handleTracker();
+      } else if (response.status === 200) {
         window.localStorage.setItem('accessToken', response.accessToken);
         window.localStorage.setItem('refreshToken', response.refreshToken);
         window.localStorage.setItem('expiresAt', response.expiresAt);
-
         setFormData({ ...formData, phoneNumber: '', password: '' });
-        const responseUser = await getUserInfo();
-        TrackerEvent({
-          event: 'Seeds_login_web',
-          userId: responseUser.id
-        });
-        handleOpen();
-        await router.push('/homepage');
-        TrackerEvent({
-          event: `Seeds_view_home_page_web`,
-          userId: responseUser.id,
-          pageName: 'homepage'
-        });
+        await handleTracker();
       } else if (response.data.message === 'wrong phone number or password') {
         setLoading(false);
         setError(true);
@@ -117,15 +130,6 @@ const AuthRef: React.FC<IAuthRef> = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    setLoginForm({
-      ...loginForm,
-      platform: `${
-        deviceDetector.parse(navigator.userAgent).device?.type as string
-      }_web`,
-      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
-    });
-  }, []);
   return (
     <Dialog
       open={open}
@@ -150,8 +154,14 @@ const AuthRef: React.FC<IAuthRef> = ({
             formData={formData.refCode}
             placeholder={t('authRegister.authRef.referralPlaceholder')}
             label={t('authRegister.authRef.referral')}
+            type="text"
             error={error}
             required={false}
+            handleSubmit={async (e: any) => {
+              if (e.key === 'Enter') {
+                await handleConfirm();
+              }
+            }}
           />
           <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
             {error ? t('authRegister.authRef.validation') : <br />}
@@ -159,7 +169,7 @@ const AuthRef: React.FC<IAuthRef> = ({
         </div>
         <div className="flex gap-4 w-full">
           <Button
-            className="w-full capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
+            className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
           >
             {loading ? (
@@ -169,7 +179,7 @@ const AuthRef: React.FC<IAuthRef> = ({
             )}
           </Button>
           <Button
-            className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
+            className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
           >
             {loading ? (

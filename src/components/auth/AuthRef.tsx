@@ -17,11 +17,10 @@ import {
   Spinner,
   Typography
 } from '@material-tailwind/react';
-import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthCommonInput from './AuthCommonInput';
@@ -31,34 +30,27 @@ interface IAuthRef {
   handleOpen: any;
   setFormData: any;
   formData: any;
-}
-
-interface LoginFormData {
-  phoneNumber: string;
-  password: string;
-  platform: string;
-  os_name: string;
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
 }
 
 const AuthRef: React.FC<IAuthRef> = ({
   open,
   handleOpen,
   setFormData,
-  formData
+  formData,
+  loginForm
 }: IAuthRef) => {
-  const deviceDetector = new DeviceDetector();
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [error, setError] = useState(false);
-  const [loginForm, setLoginForm] = useState<LoginFormData>({
-    phoneNumber: formData.phoneNumber,
-    password: formData.password,
-    platform: '',
-    os_name: ''
-  });
 
   const handleTracker = async (): Promise<void> => {
     await dispatch(fetchUserData());
@@ -80,7 +72,6 @@ const AuthRef: React.FC<IAuthRef> = ({
   const handleSubmit = async (): Promise<void> => {
     try {
       setLoading(true);
-
       const response = await loginPhoneNumber(loginForm);
       if (data !== null) {
         const SSOresponse = await loginSSO({
@@ -139,15 +130,6 @@ const AuthRef: React.FC<IAuthRef> = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    setLoginForm({
-      ...loginForm,
-      platform: `${
-        deviceDetector.parse(navigator.userAgent).device?.type as string
-      }_web`,
-      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
-    });
-  }, []);
   return (
     <Dialog
       open={open}

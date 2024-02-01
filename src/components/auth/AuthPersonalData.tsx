@@ -16,6 +16,12 @@ interface IAuthPersonalData {
   className: string;
   setFormData: any;
   formData: any;
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
   setSelect: (value: number) => void;
 }
 
@@ -23,6 +29,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   className,
   setFormData,
   formData,
+  loginForm,
   setSelect
 }: IAuthPersonalData) => {
   const router = useRouter();
@@ -230,6 +237,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         handleOpen={handleOpen}
         setFormData={setFormData}
         formData={formData}
+        loginForm={loginForm}
       />
 
       <Button

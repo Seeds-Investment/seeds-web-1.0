@@ -19,6 +19,13 @@ interface IAuthRegister {
   setCountdown: any;
   countries: any;
   method: string;
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
+  setLoginForm: any;
 }
 
 const AuthRegister: React.FC<IAuthRegister> = ({
@@ -28,7 +35,9 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   setFormData,
   setCountdown,
   countries,
-  method
+  method,
+  loginForm,
+  setLoginForm
 }: IAuthRegister) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -80,6 +89,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         setCountdown(30);
         setSelect(1);
         setFormData(formattedPhone);
+        setLoginForm({
+          ...loginForm,
+          phoneNumber: formattedPhone.phoneNumber,
+          password: formattedPhone.password
+        });
       }
     } catch (error: any) {
       toast(error.response.data.message, { type: 'error' });

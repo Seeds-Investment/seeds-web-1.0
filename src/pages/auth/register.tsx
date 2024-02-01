@@ -6,11 +6,20 @@ import AuthPersonalData from '@/components/auth/AuthPersonalData';
 import AuthRegister from '@/components/auth/AuthRegister';
 import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
+import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+interface LoginFormData {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
+}
+
 const Register: React.FC = () => {
+  const deviceDetector = new DeviceDetector();
   const { data } = useSession();
   const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
@@ -24,6 +33,12 @@ const Register: React.FC = () => {
       provider: '',
       identifier: ''
     }
+  });
+  const [loginForm, setLoginForm] = useState<LoginFormData>({
+    phoneNumber: '',
+    password: '',
+    platform: '',
+    os_name: ''
   });
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);
@@ -72,6 +87,16 @@ const Register: React.FC = () => {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    setLoginForm({
+      ...loginForm,
+      platform: `${
+        deviceDetector.parse(navigator.userAgent).device?.type as string
+      }_web`,
+      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
+    });
+  }, []);
   const element = (
     <>
       <Image
@@ -107,6 +132,8 @@ const Register: React.FC = () => {
         setCountdown={setCountdown}
         countries={countries}
         method={method}
+        setLoginForm={setLoginForm}
+        loginForm={loginForm}
       />
       <AuthOTP
         select={select}
@@ -125,6 +152,7 @@ const Register: React.FC = () => {
         setFormData={setFormData}
         formData={formData}
         setSelect={setSelect}
+        loginForm={loginForm}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import Verified from '@/assets/setting/Verified.svg';
 import ChooselanguagePopup from '@/components/popup/ChooseLanguage';
 import MenuCard from '@/components/setting/MenuCard';
+import withAuth from '@/helpers/withAuth';
 import { useAppSelector } from '@/store/redux/store';
 import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -196,4 +197,4 @@ const UserSetting: React.FC = () => {
   );
 };
 
-export default UserSetting;
+export default withAuth(UserSetting);

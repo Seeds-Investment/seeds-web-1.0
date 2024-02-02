@@ -116,7 +116,6 @@ const AuthLayout: React.FC<IAuthLayout> = ({
   const languageCtx = useContext(LanguageContext);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
   const [height, setHeight] = useState(0);
-  console.log(height);
   const [open, setOpen] = useState(false);
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);

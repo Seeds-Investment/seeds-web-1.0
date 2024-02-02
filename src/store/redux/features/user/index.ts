@@ -41,7 +41,6 @@ export const updateUser = createAsyncThunk(
         Authorization: `Bearer ${token ?? ''}`
       }
     });
-    console.log(response);
     return response;
   }
 );
@@ -179,7 +178,6 @@ const userSlice = createSlice({
 
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      console.log(state.status);
     });
     builder.addCase(deleteUser.fulfilled, (state, action) => {
       state.status = 'succeeded';

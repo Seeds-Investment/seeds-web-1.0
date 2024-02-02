@@ -67,7 +67,7 @@ const UserSetting: React.FC = () => {
       startAdornment: UserIcon,
       onClick: async () => {
         try {
-          await router.push('/edit-profile');
+          await router.push('/my-profile/edit-profile');
         } catch (error) {
           console.error('Error navigating to Edit Profile:', error);
         }

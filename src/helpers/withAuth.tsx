@@ -19,7 +19,7 @@ const withAuth = (
           const response = await getUserInfo();
           if (response === 'Access token not found') {
             await router
-              .push('/auth')
+              .push('/')
               .then()
               .catch(() => {});
           }
@@ -31,7 +31,7 @@ const withAuth = (
               fetchNewAccessToken === 'Refresh token not found'
             ) {
               router
-                .push('/auth')
+                .push('/')
                 .then()
                 .catch(() => []);
             } else {
@@ -46,7 +46,7 @@ const withAuth = (
             }
           } else {
             router
-              .push('/auth')
+              .push('/')
               .then()
               .catch(() => []);
           }

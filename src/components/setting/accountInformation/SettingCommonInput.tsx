@@ -4,11 +4,11 @@ interface ISettingCommonInput {
   label: string;
   name: string;
   value: string;
-  onChange: (e: any) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   divClassName: string;
   className: string;
-  extraClassesTop?: any;
-  extraClassesBottom?: any;
+  extraClassesTop?: React.ReactNode;
+  extraClassesBottom?: React.ReactNode;
   error?: boolean;
   maxLength?: number;
 }

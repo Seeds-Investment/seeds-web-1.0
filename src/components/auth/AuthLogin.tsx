@@ -165,7 +165,7 @@ const AuthLogin: React.FC = () => {
         </Typography>
       </div>
       <Link href={'/auth/forgot-password'} className="self-end">
-        <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+        <Typography className="flex font-poppins font-semibold text-xs text-[#3AC4A0] ">
           {t('authLogin.forgotPass')}
         </Typography>
       </Link>
@@ -176,11 +176,6 @@ const AuthLogin: React.FC = () => {
       >
         {loading ? <Spinner className=" h-6 w-6" /> : t('authLogin.login')}
       </Button>
-      <Link href={'/auth/forgot-password'} className="self-end">
-        <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
-          {t('authLogin.forgotPass')}
-        </Typography>
-      </Link>
       <AuthSSO setSelect={setSelect} />
     </div>
   );

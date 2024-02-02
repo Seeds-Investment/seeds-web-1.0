@@ -790,7 +790,12 @@ export default {
   setting: {
     setting: {
       title: 'Settings',
-      accountInfo: { title: 'Account Information' },
+      accountInfo: {
+        title: 'Account Information',
+        name: 'Name',
+        edit: 'Edit Image',
+        DoB: 'Date of Birth'
+      },
       accountSecure: {
         title: 'Account Security Center',
         confirm: 'Confirm',

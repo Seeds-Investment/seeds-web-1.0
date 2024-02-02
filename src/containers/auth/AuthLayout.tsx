@@ -13,7 +13,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 interface IAuthLayout {
   elementChild: any;
@@ -115,6 +115,8 @@ const AuthLayout: React.FC<IAuthLayout> = ({
 }: IAuthLayout) => {
   const languageCtx = useContext(LanguageContext);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
+  const [height, setHeight] = useState(0);
+  console.log(height);
   const [open, setOpen] = useState(false);
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
@@ -124,9 +126,16 @@ const AuthLayout: React.FC<IAuthLayout> = ({
     });
     setOpen(!open);
   };
+  useEffect(() => {
+    setHeight(window.innerHeight);
+  }, []);
   return (
-    <div className="flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] h-full">
-      <div className="flex flex-col md:justify-center justify-between md:w-[37%] w-full">
+    <div
+      className={`flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] ${
+        height >= 1040 ? 'h-full' : ''
+      }`}
+    >
+      <div className="flex flex-col md:justify-center md:w-[37%] w-full h-full">
         <div className="flex flex-col gap-4 md:gap-0">
           <LogoLanguage
             open={open}
@@ -139,9 +148,9 @@ const AuthLayout: React.FC<IAuthLayout> = ({
           <AuthCarousel className="md:flex hidden" />
           {elementChild}
         </div>
-        <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px]">
+        <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px] h-full">
           <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
-            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px] ">
+            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
               {formChild}
             </div>
           </div>

@@ -698,7 +698,12 @@ export default {
   setting: {
     setting: {
       title: 'Pengaturan',
-      accountInfo: { title: 'Informasi Akun' },
+      accountInfo: {
+        title: 'Informasi Akun',
+        name: 'Nama',
+        edit: 'Ubah Gambar',
+        DoB: 'Tanggal Lahir'
+      },
       accountSecure: {
         title: 'Pusat Keamanan Akun',
         confirm: 'Konfirmasi',

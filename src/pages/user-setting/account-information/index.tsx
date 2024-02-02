@@ -2,19 +2,20 @@ import AvatarList from '@/components/profile/editProfile/AvatarList';
 import BirthDateCalender from '@/components/profile/editProfile/BirthDateCalender';
 import ModalCrop from '@/components/profile/editProfile/ModalCrop';
 import ModalImage from '@/components/profile/editProfile/ModalImage';
+import SettingCommonInput from '@/components/setting/accountInformation/SettingCommonInput';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { checkSeedsTag } from '@/repository/auth.repository';
 import { postCloud } from '@/repository/cloud.repository';
 import { editUserInfo } from '@/repository/profile.repository';
-import { useAppSelector } from '@/store/redux/store';
-import { Button, Card, Input, Typography } from '@material-tailwind/react';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch, useAppSelector } from '@/store/redux/store';
+import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 interface IForm {
   name: string;
@@ -27,6 +28,7 @@ interface IForm {
 }
 
 const AccountInformation: React.FC = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
   const { dataUser } = useAppSelector(state => state.user);
@@ -79,7 +81,6 @@ const AccountInformation: React.FC = () => {
       await checkSeedsTag(updatedForm.seedsTag);
     } catch (error: any) {
       if (dataUser.seedsTag !== updatedForm.seedsTag) {
-        toast(error.response.data.message, { type: 'error' });
         setErrorCheck(true);
       }
     }
@@ -104,6 +105,7 @@ const AccountInformation: React.FC = () => {
         birthDate: new Date(birthDate).toISOString()
       };
       await editUserInfo(updatedForm);
+      await dispatch(fetchUserData());
       await router.push('/my-profile');
     } catch (error: any) {
       console.error(error.response.data.message);
@@ -114,27 +116,28 @@ const AccountInformation: React.FC = () => {
       <Card
         className={`${
           select === 0 ? 'flex' : 'hidden'
-        } w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md`}
+        } relative w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md`}
       >
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <Image
-              src={ArrowBackwardIcon}
-              alt="arrow-backward-icon"
-              className="mr-[18px]"
-            />
-            <Typography className="font-montserrat font-bold text-[#262626] text-base">
-              {t('editProfile.title')}
-            </Typography>
-            <Button
-              type="submit"
-              className="font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
-              disabled={error || errorCheck}
-            >
-              {t('button.label.done')}
-            </Button>
-          </div>
+        <Image
+          src={ArrowBackwardIcon}
+          alt="arrow-backward-icon"
+          className="absolute cursor-pointer"
+          onClick={() => {
+            router.back();
+          }}
+        />
+        <Button
+          onClick={handleSubmit}
+          className="!absolute right-5 font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
+          disabled={error || errorCheck}
+        >
+          {t('button.label.done')}
+        </Button>
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col justify-center items-center gap-2">
+            <Typography className="font-montserrat font-bold text-[#262626] text-base">
+              {t('setting.setting.accountInfo.title')}
+            </Typography>
             {updateAvatar !== undefined && updateAvatar !== null ? (
               <img
                 src={URL.createObjectURL(updateAvatar)}
@@ -152,7 +155,7 @@ const AccountInformation: React.FC = () => {
               onClick={handleOpenImage}
               className="text-[#3AC4A0] text-xs font-semibold font-poppins cursor-pointer bg-transparent hover:shadow-none shadow-none capitalize"
             >
-              Edit Image
+              {t('setting.setting.accountInfo.edit')}
             </Button>
             <ModalImage
               openImage={openImage}
@@ -169,82 +172,71 @@ const AccountInformation: React.FC = () => {
             )}
           </div>
           <Card className="flex flex-col justify-center items-center gap-4 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:p-0 ">
-            <Input
-              label="Name"
+            <SettingCommonInput
+              divClassName="w-full"
+              label={`${t('setting.setting.accountInfo.name')}`}
               name="name"
               value={form?.name}
               onChange={changeData}
-              variant="static"
-              maxLength={maxLengthBio}
-              labelProps={{
-                className:
-                  '!text-base !text-[#262626] !font-semibold !font-poppins'
-              }}
               className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
+              maxLength={maxLengthBio}
             />
-            <div className="relative flex flex-col w-full">
-              <Typography
-                className={`${
-                  error ? 'text-red-600' : 'text-[#7C7C7C]'
-                } absolute  p-0 pb-[7px] pt-[15px] text-base font-poppins font-normal cursor-default`}
-              >
-                @
-              </Typography>
-              <Input
-                label="SeedsTag"
-                name="seedsTag"
-                value={form?.seedsTag}
-                onChange={changeData}
-                variant="static"
-                labelProps={{
-                  className:
-                    '!text-base !text-[#262626] !font-semibold !font-poppins'
-                }}
-                className={`${
-                  error || errorCheck ? 'text-red-600' : '!text-[#7C7C7C]'
-                } !text-base !font-poppins !font-normal pl-[20px]`}
-                error={error || errorCheck}
-              />
-              <Typography
-                className={`${
-                  error || errorCheck ? 'flex' : 'hidden'
-                } text-xs font-poppins font-normal text-red-600`}
-              >
-                {error ? (
-                  t('authRegister.authPersonalData.validation.regex')
-                ) : errorCheck ? (
-                  t('authRegister.authPersonalData.validation.seedsTag')
-                ) : (
-                  <br />
-                )}
-              </Typography>
-            </div>
+            <SettingCommonInput
+              divClassName="relative flex flex-col w-full"
+              extraClassesTop={
+                <Typography
+                  className={`${
+                    error || errorCheck ? 'text-red-600' : 'text-[#7C7C7C]'
+                  } absolute  p-0 pb-[7px] pt-[14px] text-base font-poppins font-normal cursor-default`}
+                >
+                  @
+                </Typography>
+              }
+              label="SeedsTag"
+              name="seedsTag"
+              value={form?.seedsTag}
+              onChange={changeData}
+              className={`${
+                error || errorCheck ? 'text-red-600' : '!text-[#7C7C7C]'
+              } !text-base !font-poppins !font-normal pl-[20px]`}
+              error={error || errorCheck}
+              extraClassesBottom={
+                <Typography
+                  className={`${
+                    error || errorCheck ? 'flex' : 'hidden'
+                  } text-xs font-poppins font-normal text-red-600`}
+                >
+                  {error ? (
+                    t('authRegister.authPersonalData.validation.regex')
+                  ) : errorCheck ? (
+                    t('authRegister.authPersonalData.validation.seedsTag')
+                  ) : (
+                    <br />
+                  )}
+                </Typography>
+              }
+            />
             <BirthDateCalender
               wrapperClassName="w-full"
               birthDate={birthDate}
               setBirthDate={setBirthDate}
             />
-
-            <div className="w-full">
-              <Input
-                label="Bio"
-                name="bio"
-                value={form?.bio}
-                onChange={changeData}
-                variant="static"
-                labelProps={{
-                  className:
-                    '!text-base !text-[#262626] !font-semibold !font-poppins'
-                }}
-                className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-                maxLength={maxLengthBio}
-              />
-              <Typography className="font-light font-poppins text-base text-[#3C49D6]">
-                {form.bio.length}/{maxLengthBio}
-              </Typography>
-            </div>
+            <SettingCommonInput
+              divClassName="w-full"
+              label="Bio"
+              name="bio"
+              value={form?.bio}
+              onChange={changeData}
+              className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
+              maxLength={maxLengthBio}
+              extraClassesBottom={
+                <Typography className="font-light font-poppins text-base text-[#3C49D6]">
+                  {form.bio.length}/{maxLengthBio}
+                </Typography>
+              }
+            />
           </Card>
-        </form>
+        </div>
       </Card>
       <AvatarList
         setSelect={setSelect}

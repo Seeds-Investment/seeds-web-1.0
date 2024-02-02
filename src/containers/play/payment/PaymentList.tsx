@@ -11,6 +11,7 @@ import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
+import { useAppSelector } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -30,11 +31,16 @@ interface UserData {
   phone: string;
   _pin: string;
 }
-interface Payment {
-  id?: string;
-  payment_method?: string;
-  logo_url?: string;
-  payment_type?: string;
+export interface Payment {
+  id: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  is_promo_available: boolean;
+  promo_price: number;
+  service_fee: number;
+  payment_gateway?: string;
 }
 
 interface props {
@@ -48,14 +54,15 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
-  const [option, setOption] = useState<Payment>({});
+  const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data = await getPaymentList();
+      const data = await getPaymentList(preferredCurrency);
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
@@ -184,8 +191,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
 
-    if (option.payment_type === 'qris') {
-      void handlePay(option.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    if (option?.payment_type === 'qris') {
+      void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -211,7 +218,11 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           onChange={setOption}
           currentValue={option}
         />
-        <SubmitButton disabled={option.id == null} fullWidth onClick={onSubmit}>
+        <SubmitButton
+          disabled={option?.id == null}
+          fullWidth
+          onClick={onSubmit}
+        >
           {t('PlayPayment.button')}
         </SubmitButton>
       </div>
@@ -223,12 +234,12 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       {loading ? renderLoading() : renderContent()}
       <Dialog
         title={
-          option.payment_type === 'ewallet'
+          option?.payment_type === 'ewallet'
             ? t('PlayPayment.WalletForm.title', {
                 wallet: option.payment_method
               })
             : t('PlayPayment.VirtualAccountGuide.title', {
-                bank: option.payment_method?.split('_')[0]
+                bank: option?.payment_method?.split('_')[0]
               })
         }
         isOpen={openDialog}
@@ -237,7 +248,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           setOpenDialog(false);
         }}
       >
-        {option.payment_type === 'ewallet' ? (
+        {option?.payment_type === 'ewallet' ? (
           <WalletForm
             payment={option}
             handlePay={handlePay}

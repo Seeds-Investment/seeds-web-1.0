@@ -859,7 +859,9 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Pay before {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
       button: 'Pay'
     },
     VirtualAccountGuide: {

@@ -1,12 +1,9 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 'use client';
+import { useAppSelector } from '@/store/redux/store';
 import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
-
-interface Payment {
-  id: string;
-  payment_method: string;
-  logo_url: string;
-}
+import { type Payment } from './PaymentList';
 
 interface IPaymentOption {
   option: Payment;
@@ -18,30 +15,38 @@ const PaymentOption = ({
   option,
   onChange,
   currentValue
-}: IPaymentOption): JSX.Element => (
-  <label
-    htmlFor={option.id}
-    className="flex justify-between rounded-xl border items-center pl-4"
-  >
-    <Image
-      src={option.logo_url}
-      width={200}
-      height={200}
-      className="w-auto h-[20px] object-contain object-[center_center]"
-      alt={option.payment_method}
-    />
-    <Radio
-      id={option.id}
-      value={option.id}
-      name="paymentOption"
-      className="rounded-xl border"
-      color="teal"
-      checked={option.id === currentValue.id}
-      onChange={() => {
-        onChange(option);
-      }}
-    />
-  </label>
-);
+}: IPaymentOption): JSX.Element => {
+  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  return (
+    <label
+      htmlFor={option?.id}
+      className="flex justify-between rounded-xl border items-center p-2 pl-4"
+    >
+      <div>
+        <Image
+          src={option?.logo_url}
+          width={200}
+          height={200}
+          className="w-auto h-[20px] object-contain object-[center_center]"
+          alt={option?.payment_method}
+        />
+        <div className="text-[#27A590] text-xs mt-1">
+          {`Admin fee ${preferredCurrency.toUpperCase()} ${option?.admin_fee}`}
+        </div>
+      </div>
+      <Radio
+        id={option?.id}
+        value={option?.id}
+        name="paymentOption"
+        className="rounded-xl border"
+        color="teal"
+        checked={option?.id === currentValue?.id}
+        onChange={() => {
+          onChange(option);
+        }}
+      />
+    </label>
+  );
+};
 
 export default PaymentOption;

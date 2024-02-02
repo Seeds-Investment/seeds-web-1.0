@@ -1,12 +1,7 @@
 'use client';
 import { Typography } from '@material-tailwind/react';
+import { type Payment } from './PaymentList';
 import PaymentOption from './PaymentOption';
-
-interface Payment {
-  id: string;
-  payment_method: string;
-  logo_url: string;
-}
 
 interface IPaymentOptions {
   currentValue: any;
@@ -28,7 +23,7 @@ const PaymentOptions = ({
     <div className="flex flex-col gap-4">
       {options.map(option => (
         <PaymentOption
-          key={option.id}
+          key={option?.id}
           option={option}
           onChange={onChange}
           currentValue={currentValue}

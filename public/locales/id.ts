@@ -784,7 +784,9 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Bayar sebelum {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
       button: 'Pay'
     },
     VirtualAccountGuide: {

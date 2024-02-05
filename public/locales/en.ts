@@ -790,7 +790,12 @@ export default {
   setting: {
     setting: {
       title: 'Settings',
-      accountInfo: { title: 'Account Information' },
+      accountInfo: {
+        title: 'Account Information',
+        name: 'Name',
+        edit: 'Edit Image',
+        DoB: 'Date of Birth'
+      },
       accountSecure: {
         title: 'Account Security Center',
         confirm: 'Confirm',
@@ -859,7 +864,9 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Pay before {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
       button: 'Pay'
     },
     VirtualAccountGuide: {

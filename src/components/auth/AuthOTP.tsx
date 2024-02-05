@@ -106,6 +106,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           alt="Backward"
           className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
+            setMethod('whatsapp');
             setFormData({ ...formData, phoneNumber: '', password: '' });
             setSelect(0);
           }}

@@ -6,6 +6,15 @@ const API_BASE_URL = `${
   process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
 }/user/v1/`;
 
+interface IForm {
+  name: string;
+  seedsTag: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+}
 // Create Async Thunk for fetching user data
 export const fetchUserData = createAsyncThunk(
   'users/fetchUserData',
@@ -24,7 +33,7 @@ export const fetchUserData = createAsyncThunk(
 // Create Async Thunk for updating user data
 export const updateUser = createAsyncThunk(
   'users/updateUser',
-  async userData => {
+  async (userData: IForm) => {
     const token = localStorage.getItem('accessToken');
     const response = await axios.put(API_BASE_URL, userData, {
       headers: {

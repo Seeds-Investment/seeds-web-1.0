@@ -698,7 +698,12 @@ export default {
   setting: {
     setting: {
       title: 'Pengaturan',
-      accountInfo: { title: 'Informasi Akun' },
+      accountInfo: {
+        title: 'Informasi Akun',
+        name: 'Nama',
+        edit: 'Ubah Gambar',
+        DoB: 'Tanggal Lahir'
+      },
       accountSecure: {
         title: 'Pusat Keamanan Akun',
         confirm: 'Konfirmasi',
@@ -784,7 +789,9 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Bayar sebelum {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
       button: 'Pay'
     },
     VirtualAccountGuide: {

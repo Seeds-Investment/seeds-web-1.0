@@ -62,50 +62,20 @@ const UserSetting: React.FC = () => {
   const [selectedMedal, setSelectedMedal] = useState<string>('gold');
   const menus = [
     {
-      label: 'Account Information',
-      altStartAdornment: 'account information',
+      label: 'Edit Profile',
+      altStartAdornment: 'edit profile',
       startAdornment: UserIcon,
       onClick: async () => {
         try {
-          await router.push('/user-setting/account-information');
+          await router.push('/my-profile/edit-profile');
         } catch (error) {
-          console.error('Error navigating to Account Information:', error);
+          console.error('Error navigating to Edit Profile:', error);
         }
       },
       extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
         width !== undefined && width < 370 ? 'h-9' : ''
       } bg-white`
     },
-    {
-      label: 'Account Security Center',
-      altStartAdornment: 'edit profile',
-      startAdornment: CreatePinIcon,
-      onClick: async () => {
-        try {
-          await router.push('/user-setting/account-security-center');
-        } catch (error) {
-          console.error('Error navigating to Account Security Center:', error);
-        }
-      },
-      extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 mb-4 ${
-        width !== undefined && width < 370 ? 'h-9' : ''
-      } bg-white`
-    },
-    // {
-    //   label: 'Edit Profile',
-    //   altStartAdornment: 'edit profile',
-    //   startAdornment: UserIcon,
-    //   onClick: async () => {
-    //     try {
-    //       await router.push('/edit-profile');
-    //     } catch (error) {
-    //       console.error('Error navigating to Edit Profile:', error);
-    //     }
-    //   },
-    //   extraClasses: `lg:w-1/2 md:w-2/3 sm:w-[80%] w-full h-12 px-6 ${
-    //     width !== undefined && width < 370 ? 'h-9' : ''
-    //   } bg-white`
-    // },
     {
       label: languageCtx.language === 'EN' ? 'Language' : 'Bahasa',
       altStartAdornment: 'language',
@@ -295,6 +265,9 @@ const UserSetting: React.FC = () => {
             </div>
             <span className="mb-1 font-poppins text-xs text-neutral-500">
               @{userData?.seedsTag}
+            </span>
+            <span className="mb-2 font-poppins text-xs text-neutral-500">
+              +{userData?.phoneNumber}
             </span>
             <LevelButton type="Sprout" />
           </div>

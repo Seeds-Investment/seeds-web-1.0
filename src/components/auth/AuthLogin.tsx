@@ -1,3 +1,4 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth/AuthNumber';
 import AuthPassword from '@/components/auth/AuthPassword';
@@ -5,6 +6,9 @@ import countries from '@/constants/countries.json';
 import TrackerEvent from '@/helpers/GTM';
 import { loginPhoneNumber } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { fetchExpData } from '@/store/redux/features/exp';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
@@ -13,6 +17,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import AuthSSO from './AuthSSO';
 
 interface FormData {
   phoneNumber: string;
@@ -22,7 +27,11 @@ interface FormData {
 }
 
 const AuthLogin: React.FC = () => {
+  const setSelect = (): number => {
+    return 2;
+  };
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
   const [error, setError] = useState(false);
@@ -51,6 +60,8 @@ const AuthLogin: React.FC = () => {
         window.localStorage.setItem('expiresAt', response.expiresAt);
 
         setFormData({ ...formData, phoneNumber: '', password: '' });
+        await dispatch(fetchUserData());
+        await dispatch(fetchExpData());
         const responseUser = await getUserInfo();
         TrackerEvent({
           event: 'Seeds_login_web',
@@ -102,11 +113,19 @@ const AuthLogin: React.FC = () => {
   return (
     <div className="flex flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
       <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-5 top-5 cursor-pointer"
+        onClick={async () => {
+          await router.push('/auth');
+        }}
+      />
+      <Image
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authLogin.title1')}
         </span>
@@ -116,10 +135,16 @@ const AuthLogin: React.FC = () => {
       <AuthNumber
         handleChange={handleChange}
         formData={formData.phoneNumber}
+        name="phoneNumber"
         country={country}
         setCountry={setCountry}
         countries={countries}
         error={error}
+        handleSubmit={async (e: any) => {
+          if (e.key === 'Enter') {
+            await handleSubmit();
+          }
+        }}
       />
       <div className="w-full">
         <AuthPassword
@@ -129,13 +154,18 @@ const AuthLogin: React.FC = () => {
           name="password"
           label={t('authLogin.password').toString()}
           placeholder={t('authLogin.passwordPlaceholder').toString()}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleSubmit();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {error ? t('authLogin.validation.login') : <br />}
         </Typography>
       </div>
-      <Link href={'/auth2/forgot-password'} className="self-end">
-        <Typography className="hidden md:inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
+      <Link href={'/auth/forgot-password'} className="self-end">
+        <Typography className="flex font-poppins font-semibold text-xs text-[#3AC4A0] ">
           {t('authLogin.forgotPass')}
         </Typography>
       </Link>
@@ -146,13 +176,7 @@ const AuthLogin: React.FC = () => {
       >
         {loading ? <Spinner className=" h-6 w-6" /> : t('authLogin.login')}
       </Button>
-      <Link href={'/auth2/forgot-password'} className="self-end">
-        <Typography className="md:hidden inline font-poppins font-semibold text-xs text-[#3AC4A0] ">
-          {t('authLogin.forgotPass')}
-        </Typography>
-      </Link>
-
-      {/* <AuthSSO /> */}
+      <AuthSSO setSelect={setSelect} />
     </div>
   );
 };

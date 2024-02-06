@@ -3,6 +3,7 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTranslation } from 'react-i18next';
 
 interface BirthDate {
   wrapperClassName?: string;
@@ -17,6 +18,7 @@ const BirthDateCalender: React.FC<BirthDate> = ({
   birthDate,
   setBirthDate
 }: BirthDate) => {
+  const { t } = useTranslation();
   const [showMonth, setMonth] = useState(false);
   const [showYear, setYear] = useState(true);
   const [shouldClose, setClose] = useState(false);
@@ -50,7 +52,7 @@ const BirthDateCalender: React.FC<BirthDate> = ({
       popperPlacement="top-start"
       customInput={
         <Input
-          label="Date of Birth"
+          label={`${t('setting.setting.accountInfo.DoB')}`}
           name="birthDate"
           variant="static"
           labelProps={{

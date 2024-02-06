@@ -1,7 +1,10 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import { checkSeedsTag } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -13,27 +16,48 @@ interface IAuthPersonalData {
   className: string;
   setFormData: any;
   formData: any;
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
+  setSelect: (value: number) => void;
 }
 
 const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   className,
   setFormData,
-  formData
+  formData,
+  loginForm,
+  setSelect
 }: IAuthPersonalData) => {
+  const router = useRouter();
+  const { data } = useSession();
   const { t } = useTranslation();
+  const regex = /[^a-zA-Z0-9]/g;
   const [open, setOpen] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
+  const [errorRegex, setErrorRegex] = useState(false);
   const [errorDoB, setErrorDoB] = useState(false);
   const [blank, setBlank] = useState(false);
   const [blankTag, setBlankTag] = useState(false);
   const [blankDoB, setBlankDoB] = useState(false);
-  const [day, setDay] = useState<number | undefined>();
-  const [month, setMonth] = useState<number | undefined>();
-  const [year, setYear] = useState<number | undefined>();
+  const [day, setDay] = useState<number | undefined>(
+    data !== null ? new Date().getDate() : undefined
+  );
+  const [month, setMonth] = useState<number | undefined>(
+    data !== null ? new Date().getMonth() : undefined
+  );
+
+  const [year, setYear] = useState<number | undefined>(
+    data !== null ? new Date().getFullYear() - 17 : undefined
+  );
+
   const timezoneOffset = new Date().getTimezoneOffset();
   const utcDate = new Date(
     `${typeof year === 'number' ? year : ''}/${
-      typeof month === 'number' ? month : ''
+      typeof month === 'number' ? month + 1 : ''
     }/${typeof day === 'number' ? day : ''}`
   );
   const birthLimit =
@@ -49,9 +73,13 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   };
   const handleNext = async (): Promise<void> => {
     try {
+      if (data !== null) {
+        setFormData({ ...formData, password: '', phoneNumber: '' });
+      }
       if (
         formData.name.length === 0 ||
         formData.seedsTag.length === 0 ||
+        errorRegex ||
         birthLimit < 12 ||
         day === undefined ||
         month === undefined ||
@@ -73,9 +101,10 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         }
         await checkSeedsTag(formData.seedsTag);
         throw new Error('something error');
+      } else {
+        await checkSeedsTag(formData.seedsTag);
+        handleOpen();
       }
-      await checkSeedsTag(formData.seedsTag);
-      handleOpen();
     } catch (error: any) {
       toast(error, { type: 'error' });
       if (
@@ -96,11 +125,10 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   const handleChangeTag = (e: any): void => {
     setErrorTag(false);
     setBlankTag(false);
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setErrorRegex(false);
+    const updatedForm = { ...formData, [e.target.name]: e.target.value };
+    setFormData(updatedForm);
+    setErrorRegex(regex.test(updatedForm.seedsTag));
   };
 
   const handleChangeDoB = (e: any): void => {
@@ -120,11 +148,25 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-5 top-5 cursor-pointer"
+        onClick={async () => {
+          if (data !== null) {
+            setFormData({ ...formData, name: '', seedsTag: '' });
+            await router.push('/auth');
+            await signOut();
+          } else {
+            setSelect(0);
+          }
+        }}
+      />
+      <Image
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authLogin.title1')}
         </span>
@@ -138,8 +180,14 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           formData={formData.name}
           placeholder={t('authRegister.authPersonalData.namePlaceholder')}
           label={t('authRegister.authPersonalData.name')}
+          type="text"
           error={blank}
           required={true}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blank ? t('authLogin.validation.blank') : <br />}
@@ -152,12 +200,20 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           formData={formData.seedsTag}
           placeholder="Ex: Seeds123"
           label="Seeds Tag"
-          error={errorTag}
+          type="text"
+          error={errorTag || errorRegex}
           required={true}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankTag && errorTag ? (
             t('authLogin.validation.blank')
+          ) : errorRegex ? (
+            t('authRegister.authPersonalData.validation.regex')
           ) : errorTag ? (
             t('authRegister.authPersonalData.validation.seedsTag')
           ) : (
@@ -191,6 +247,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         handleOpen={handleOpen}
         setFormData={setFormData}
         formData={formData}
+        loginForm={loginForm}
       />
 
       <Button

@@ -14,19 +14,23 @@ import { useTranslation } from 'react-i18next';
 interface IAuthNumber {
   handleChange: any;
   formData: string;
+  name: string;
   country: number;
   setCountry: any;
   countries: any;
   error: boolean;
+  handleSubmit: (e: any) => void;
 }
 
 const AuthNumber: React.FC<IAuthNumber> = ({
   handleChange,
   formData,
+  name,
   country,
   countries,
   setCountry,
-  error
+  error,
+  handleSubmit
 }: IAuthNumber) => {
   const { t } = useTranslation();
   return (
@@ -88,9 +92,10 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           type="number"
           variant="static"
           placeholder="85XXX"
-          name="phoneNumber"
+          name={name}
           pattern="[0-9]"
           value={formData}
+          onKeyDown={handleSubmit}
           onChange={() =>
             handleChange(event, countries[country].dialCode.replace('+', ''))
           }

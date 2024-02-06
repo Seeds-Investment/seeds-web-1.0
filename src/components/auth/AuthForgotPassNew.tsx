@@ -1,5 +1,5 @@
 import Info from '@/assets/auth/Info.png';
-import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import SeedyLock from '@/assets/auth/SeedyLock.png';
 import AuthPassword from '@/components/auth/AuthPassword';
 import { forgotPassword } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
@@ -60,8 +60,8 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
-        src={SeedyAuthLogin}
-        alt="SeedyAuthLogin"
+        src={SeedyLock}
+        alt="SeedyLock"
         className="w-[141.8px] md:flex hidden"
       />
       <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
@@ -79,6 +79,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           name="password"
           label={t('authForgotPass.newPassword.label')}
           placeholder={t('authForgotPass.newPassword.placeholder')}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorPass ? t('authForgotPass.validation.password') : <br />}
@@ -92,6 +97,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
           name="old_password"
           label={t('authForgotPass.matchPassword.label')}
           placeholder={t('authForgotPass.matchPassword.placeholder')}
+          handleSubmit={async (e: any) => {
+            if (e.key === 'Enter') {
+              await handleNext();
+            }
+          }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {errorRepass ? t('authForgotPass.validation.match') : <br />}

@@ -119,7 +119,7 @@ const ValidateOTP: React.FC<VariableOTP> = ({
                   <Button
                     onClick={async () => {
                       await getOtp(getOTP);
-                      setCountdown(30);
+                      setCountdown(60);
                     }}
                     disabled={countdown > 0}
                     className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm text-[#3AC4A0] font-normal font-poppins"
@@ -134,7 +134,7 @@ const ValidateOTP: React.FC<VariableOTP> = ({
                   setMethod((prev: any) =>
                     prev === 'whatsapp' ? 'sms' : 'whatsapp'
                   );
-                  setCountdown(30);
+                  setCountdown(60);
                 }}
                 disabled={countdown > 0}
               >

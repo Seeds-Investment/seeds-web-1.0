@@ -7,6 +7,7 @@ import Section3 from '@/containers/homepage/Section3';
 import Section4 from '@/containers/homepage/Section4';
 import Section5 from '@/containers/homepage/Section5';
 import TrendingSection from '@/containers/homepage/TrendingSection';
+import SocketService from '@/helpers/SocketService';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
@@ -28,6 +29,22 @@ const Homepage: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      SocketService.disconnect(userInfo?.id);
+      return () => {
+        SocketService.disconnect(userInfo?.id);
+      };
+    }
+
+    if (userInfo?.id !== undefined) {
+      SocketService.connect(userInfo?.id);
+    }
+
+    return () => {
+      SocketService.disconnect(userInfo?.id);
+    };
+  }, [userInfo, userInfo?.id]);
 
   useEffect(() => {
     if (userInfo?.preferredCurrency?.length === 0) {

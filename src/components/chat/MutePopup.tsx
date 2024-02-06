@@ -1,18 +1,37 @@
 'use client';
+// import { mutePersonalChat } from '@/repository/chat.repository';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from '../ui/modal/Modal';
-
 interface Props {
   onClose: () => void;
+  onMute: (muteType: 'eight_hours' | 'one_week' | 'always') => void;
+  roomId: any;
 }
 
-const MutePopUp: React.FC<Props> = ({ onClose }) => {
+const MutePopUp: React.FC<Props> = ({ onClose, onMute, roomId }) => {
   const { t } = useTranslation();
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const handleMute = async (): Promise<void> => {
+    try {
+      if (selectedOption !== null) {
+        const muteType =
+          selectedOption === 'eight_hours'
+            ? 'eight_hours'
+            : selectedOption === 'one_week'
+            ? 'one_week'
+            : 'always';
+        onMute(muteType);
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error muting personal chat:', error);
+    }
+  };
 
   return (
     <Modal onClose={onClose}>
@@ -41,10 +60,10 @@ const MutePopUp: React.FC<Props> = ({ onClose }) => {
           <input
             type="radio"
             name="muteDuration"
-            value={7}
-            checked={selectedOption === 7}
+            value={'eight_hours'}
+            checked={selectedOption === 'eight_hours'}
             onChange={() => {
-              setSelectedOption(7);
+              setSelectedOption('eight_hours');
             }}
             className="mr-2"
           />
@@ -54,10 +73,10 @@ const MutePopUp: React.FC<Props> = ({ onClose }) => {
           <input
             type="radio"
             name="muteDuration"
-            value={14}
-            checked={selectedOption === 14}
+            value={'one_week'}
+            checked={selectedOption === 'one_week'}
             onChange={() => {
-              setSelectedOption(14);
+              setSelectedOption('one_week');
             }}
             className="mr-2"
           />
@@ -67,10 +86,10 @@ const MutePopUp: React.FC<Props> = ({ onClose }) => {
           <input
             type="radio"
             name="muteDuration"
-            value={30}
-            checked={selectedOption === 30}
+            value={'always'}
+            checked={selectedOption === 'always'}
             onChange={() => {
-              setSelectedOption(30);
+              setSelectedOption('always');
             }}
             className="mr-2"
           />
@@ -78,7 +97,10 @@ const MutePopUp: React.FC<Props> = ({ onClose }) => {
       </div>
       <hr></hr>
       <div className="flex flex-col gap-4">
-        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-[#3AC4A0] rounded-full hover:scale-105 transition ease-out">
+        <div
+          onClick={handleMute}
+          className="bg-[#3AC4A0] mt-5 w-full hover:bg-[#3AC4A0] rounded-full hover:scale-105 transition ease-out"
+        >
           <Typography className="text-white text-lg font-bold text-center p-2">
             {t('DeleteAccount.confirmButton')}
           </Typography>

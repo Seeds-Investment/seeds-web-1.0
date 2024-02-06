@@ -1,6 +1,7 @@
 export { default as camera } from './camera.svg';
 export { default as chatIcon1 } from './chat1.svg';
 export { default as dropdownGreen } from './dropdownGreen.svg';
+export { default as empty } from './empty.svg';
 export { default as filterSearch } from './filterSearch.svg';
 export { default as galleryChat } from './gallery.svg';
 export { default as mic } from './mic.svg';

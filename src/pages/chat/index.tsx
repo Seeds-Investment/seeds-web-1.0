@@ -4,9 +4,16 @@ import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import SearchChatPopup from '@/components/chat/SearchPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ContactList from '@/containers/chat/ContactList';
+import SocketService from '@/helpers/SocketService';
 import withAuth from '@/helpers/withAuth';
-import { getListChat } from '@/repository/chat.repository';
-import { getOtherUser } from '@/repository/profile.repository';
+import {
+  deletePersonalChat,
+  getListChat,
+  getPersonalChatById,
+  mutePersonalChat,
+  sendPersonalChat
+} from '@/repository/chat.repository';
+import { getOtherUser, getUserInfo } from '@/repository/profile.repository';
 import type {
   Chat,
   GetListChatParams
@@ -47,6 +54,29 @@ interface TabTypes {
   handler: () => void;
 }
 
+interface UserData {
+  id: string;
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+}
+interface PersonalMessage {
+  accept_at: string;
+  content_text: string;
+  created_at: string;
+  created_by: string;
+  id: string;
+  media_urls: [];
+  read_at: string;
+  reference: string;
+}
+
 const initialFilter: GetListChatParams = {
   page: 1,
   limit: 10,
@@ -60,7 +90,6 @@ const ChatPages: React.FC = () => {
   const { roomId } = router.query;
   const [chatList, setChatList] = useState<Chat[] | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<GetListChatParams>(initialFilter);
   const [otherUserData, setOtherUserData] = useState<IOtherUserProfile | null>(
     null
@@ -70,13 +99,15 @@ const ChatPages: React.FC = () => {
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
+  const [message, setMessage] = useState('');
+  const [personalChat, setPersonalChat] = useState<PersonalMessage[]>([]);
+  const [showDropdownPlus, setShowDropdownPlus] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   const [activeTab, setActiveTab] = useState<
     'PERSONAL' | 'COMMUNITY' | 'REQUEST'
   >('PERSONAL');
   const { t } = useTranslation();
-  console.log(hasMore);
 
   const handleChangeTab = (
     value: 'PERSONAL' | 'COMMUNITY' | 'REQUEST'
@@ -84,7 +115,6 @@ const ChatPages: React.FC = () => {
     if (activeTab !== value) {
       setActiveTab(value);
       setChatList([]);
-      setHasMore(true);
       setFilter(prevState => ({
         ...prevState,
         type: value,
@@ -92,6 +122,19 @@ const ChatPages: React.FC = () => {
       }));
     }
   };
+
+  const handleGetUserInfo = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    void handleGetUserInfo();
+  }, []);
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -133,27 +176,27 @@ const ChatPages: React.FC = () => {
     [handleChangeTab, t]
   );
 
-  const handleToggleDropdown = (): void => {
+  const handleToggleDropdown = (chatId: string): void => {
     setIsDropdownOpen(!isDropdownOpen);
-    // setSelectedChatId(chatId);
     setIsSearchActive(false);
   };
+
+  const handlePlusRoundedClick = (): void => {
+    setShowDropdownPlus(!showDropdownPlus);
+  };
+
   const handleDropdownOptionClick = (option: string): void => {
     switch (option) {
       case 'Search':
-        console.log('Menggunakan opsi search');
         setIsSearchActive(true);
         break;
       case 'Delete':
-        console.log('Menggunakan opsi Delete');
         setIsDeletePopupOpen(true);
         break;
       case 'Mute':
-        console.log('Menggunakan opsi Mute');
         setIsMutePopupOpen(true);
         break;
       case 'New':
-        console.log('Menggunakan opsi search');
         setIsSearchPopupOpen(true);
         break;
 
@@ -194,6 +237,112 @@ const ChatPages: React.FC = () => {
   useEffect(() => {
     if (roomId !== undefined) {
       void fetchOtherUser();
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    const handleSocketConnect = (): void => {
+      if (roomId !== undefined) {
+        SocketService.connect(roomId as string);
+      }
+    };
+
+    const handleSocketDisconnect = (): void => {
+      if (roomId === undefined) {
+        SocketService.disconnect(roomId as unknown as string);
+      }
+    };
+
+    const handleSocketEvent = (eventName: string, data: any): void => {
+      console.log(`Received socket event '${eventName}':`, data);
+    };
+
+    handleSocketConnect();
+
+    SocketService.addListener('someEvent', handleSocketEvent);
+
+    return () => {
+      handleSocketDisconnect();
+      SocketService.removeListener('someEvent', handleSocketEvent);
+    };
+  }, [roomId]);
+
+  const handleMute = async (
+    userId: any,
+    muteType: 'eight_hours' | 'one_week' | 'always'
+  ): Promise<void> => {
+    try {
+      await mutePersonalChat(userId, muteType);
+      setIsMutePopupOpen(false);
+    } catch (error) {
+      console.error('Error muting personal chat:', error);
+    }
+  };
+
+  const handleDeleteChat = async (): Promise<void> => {
+    try {
+      const normalizedRoomId: string | string[] | undefined = roomId ?? '';
+
+      const finalRoomId: string = Array.isArray(normalizedRoomId)
+        ? normalizedRoomId[0]
+        : normalizedRoomId;
+
+      await deletePersonalChat(finalRoomId);
+      console.log('Chat deleted successfully');
+      setIsDeletePopupOpen(false);
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+    }
+  };
+
+  const handleSendMessage = async (): Promise<void> => {
+    try {
+      if (message.trim() !== '' && typeof roomId === 'string') {
+        await sendPersonalChat({
+          user_id: roomId,
+          content_text: message,
+          media_urls: []
+        });
+
+        setMessage('');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
+
+  function formatTimestamp(timestamp: string): string {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    let formattedHours = hours % 12;
+    formattedHours = formattedHours === 0 ? 12 : formattedHours;
+
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${formattedHours}.${formattedMinutes} ${ampm}`;
+  }
+
+  const getPersonalChat = async (chatId: string): Promise<void> => {
+    try {
+      const response = await getPersonalChatById({ user_id: chatId });
+
+      if (response !== null) {
+        console.log('Personal Chat Data:', response.data);
+        setPersonalChat(response.data);
+      } else {
+        console.error('Error fetching personal chat: Response is null');
+      }
+    } catch (error) {
+      console.error('Error fetching personal chat:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof roomId === 'string') {
+      void getPersonalChat(roomId);
     }
   }, [roomId]);
 
@@ -420,9 +569,12 @@ const ChatPages: React.FC = () => {
                           width={24}
                           height={24}
                           onClick={e => {
-                            // Menambahkan event.stopPropagation() untuk menghentikan propogasi klik
                             e.stopPropagation();
-                            handleToggleDropdown();
+                            if (typeof roomId === 'string') {
+                              handleToggleDropdown(roomId);
+                            } else {
+                              console.error('Error: roomId is not a string');
+                            }
                           }}
                         />
                         {isDropdownOpen && (
@@ -501,7 +653,7 @@ const ChatPages: React.FC = () => {
                           onClose={() => {
                             setIsDeletePopupOpen(false);
                           }}
-                          // onDelete={handleDeleteChat}
+                          onDelete={handleDeleteChat}
                         />
                       )}
                       {isSearchPopupOpen && (
@@ -517,14 +669,58 @@ const ChatPages: React.FC = () => {
                           onClose={() => {
                             setIsMutePopupOpen(false);
                           }}
-                          // onDelete={handleDeleteChat}
+                          onMute={muteType => {
+                            void handleMute(roomId, muteType);
+                          }}
+                          roomId={roomId}
                         />
                       )}
                     </div>
                   </div>
                 </div>
               )}
-              <div className={`bg-[#E9E9E980] h-[60vh] w-full`}></div>
+              <div className={`bg-[#E9E9E980] h-[70vh] w-full overflow-auto`}>
+                {personalChat !== undefined && (
+                  <div className="w-full ">
+                    {personalChat.map((message, index) => (
+                      <div key={index} className="w-full flex">
+                        <p
+                          className={`text-sm font-normal font-poppins text-[#BDBDBD] mt-auto mb-2 mx-1 ${
+                            message.created_by === userInfo?.id
+                              ? 'ms-auto'
+                              : 'hidden '
+                          }`}
+                        >
+                          {formatTimestamp(message.created_at)}
+                        </p>
+                        <p
+                          className={`py-2 w-[60%] my-2 border-1 text-sm font-normal font-poppins ${
+                            message.created_by === userInfo?.id
+                              ? 'justify-end px-2 text-end bg-[#DCFCE4] text-[#262626] '
+                              : 'justify-start px-2 text-start bg-[#3AC4A0] text-[#FFFFFF] '
+                          }`}
+                        >
+                          {message.content_text}
+                        </p>
+                        <p
+                          className={`text-sm font-normal font-poppins text-[#BDBDBD] mt-auto mb-2 mx-1 ${
+                            message.created_by === userInfo?.id ? 'hidden' : ''
+                          }`}
+                        >
+                          {formatTimestamp(message.created_at)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {showDropdownPlus && (
+                <div className="dropdown-content w-[20%] rounded-lg bg-white border-1 relative p-2 z-10">
+                  <p>GIF</p>
+                  <p>Notes</p>
+                </div>
+              )}
               <div className="bg-white px-4 py-2 rounded-b-xl">
                 <div className="flex items-center gap-3">
                   <Image
@@ -532,7 +728,9 @@ const ChatPages: React.FC = () => {
                     alt="plusRounded"
                     width={20}
                     height={20}
+                    onClick={handlePlusRoundedClick}
                   />
+
                   <Image src={camera} alt="camera" width={20} height={20} />
                   <Image
                     src={galleryChat}
@@ -543,8 +741,10 @@ const ChatPages: React.FC = () => {
                   <div className="flex w-full">
                     <input
                       type="text"
-                      value={filter.search}
-                      onChange={handleFormChange}
+                      value={message}
+                      onChange={e => {
+                        setMessage(e.target.value);
+                      }}
                       className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full"
                       placeholder="Type message…"
                     />
@@ -553,7 +753,9 @@ const ChatPages: React.FC = () => {
                     </div>
                   </div>
                   <Image src={mic} alt="mic" width={20} height={20} />
-                  <Image src={sendChat} alt="send" width={20} height={20} />
+                  <button onClick={handleSendMessage}>
+                    <Image src={sendChat} alt="send" width={20} height={20} />
+                  </button>
                 </div>
               </div>
             </>

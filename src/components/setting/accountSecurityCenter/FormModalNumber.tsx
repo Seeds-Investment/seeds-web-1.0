@@ -21,7 +21,7 @@ interface IFormModalNumber {
   handleOpen: () => void;
   phoneData: string;
   country: number;
-  setCountry: any;
+  setCountry: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface IForm {
@@ -81,7 +81,7 @@ const FormModalNumber: React.FC<IFormModalNumber> = ({
       toast(error.message ?? error?.response?.data?.message, { type: 'error' });
     }
   };
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (e: any, dialCode: string): void => {
     setUnderSixDigit(false);
     setError(false);
     if (formData.phone === dialCode) {

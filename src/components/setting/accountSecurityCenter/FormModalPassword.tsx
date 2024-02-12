@@ -12,14 +12,14 @@ import {
 } from '@material-tailwind/react';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 interface IFormModalPassword {
   open: boolean;
   handleOpen: () => void;
   provider: string;
-  setProviderList: any;
+  setProviderList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 interface FormData {
@@ -40,9 +40,9 @@ const FormModalPassword: React.FC<IFormModalPassword> = ({
     password: ''
   });
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     setError(false);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   };
   const handleSubmit = async (): Promise<void> => {
     try {

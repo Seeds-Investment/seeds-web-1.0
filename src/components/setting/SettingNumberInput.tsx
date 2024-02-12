@@ -3,15 +3,27 @@ import { Input, Option, Select, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
+interface Sort {
+  name: string;
+  code: string;
+}
+
 interface ISettingNumberInput {
-  handleChange: any;
+  handleChange: (e: any, dialCode: string) => void;
   formData: string;
   name: string;
   country: number;
-  setCountry: any;
-  countries: any;
+  setCountry: React.Dispatch<React.SetStateAction<number>>;
+  countries: Country[];
   error: boolean;
-  handleSubmit: (e: any) => void;
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const SettingNumberInput: React.FC<ISettingNumberInput> = ({
@@ -40,9 +52,9 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
             return (
               <div className="absolute top-1/2 -translate-y-1/2 left-1.5 ms-3 flex items-center gap-2">
                 <img
-                  src={`https://flagcdn.com/${
-                    countries[country]?.code.toLowerCase() as string
-                  }.svg`}
+                  src={`https://flagcdn.com/${countries[
+                    country
+                  ]?.code.toLowerCase()}.svg`}
                   alt={countries[country].name}
                   className="h-4 w-7 object-cover"
                 />
@@ -72,8 +84,8 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
           menuProps={{ className: '!w-[250px]' }}
         >
           {countries
-            .sort((a: any, b: any) => a.name.localeCompare(b.name))
-            .map(({ name, code }: any, index: any) => {
+            .sort((a: Sort, b: Sort) => a.name.localeCompare(b.name))
+            .map(({ name, code }: Sort, index: number) => {
               return (
                 <Option
                   key={name}
@@ -84,9 +96,7 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
                   }}
                 >
                   <img
-                    src={`https://flagcdn.com/${
-                      code.toLowerCase() as string
-                    }.svg`}
+                    src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
                     alt={name}
                     className="h-5 w-5 object-cover"
                   />
@@ -103,9 +113,9 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
           pattern="[0-9]"
           value={formData}
           onKeyDown={handleSubmit}
-          onChange={() =>
-            handleChange(event, countries[country].dialCode.replace('+', ''))
-          }
+          onChange={() => {
+            handleChange(event, countries[country].dialCode.replace('+', ''));
+          }}
           labelProps={{
             className:
               '!bg-white !w-fit !h-fit !px-1 !ms-3 after:!border-none !font-semibold !font-poppins !text-base !text-[#262626] !leading-[10px]'

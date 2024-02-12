@@ -49,6 +49,7 @@ const UserSetting: React.FC = () => {
       }
     }
     // {
+
     //   name: t('setting.setting.createPin.title'),
     //   src: CreatePinIcon,
     //   extra: '',

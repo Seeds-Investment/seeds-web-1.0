@@ -13,6 +13,21 @@ const referralService = baseAxios(
   }/referral-affiliates/v1/`
 );
 
+export const getUserProviders = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.get('providers', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const getUserInfo = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -88,7 +103,7 @@ interface EditForm {
   name: string;
   seedsTag: string;
   email: string;
-  pin: string;
+  pin?: string;
   avatar: string;
   bio: string;
   birthDate: string;
@@ -183,6 +198,21 @@ export const deleteAccount = async (): Promise<any> => {
   }
 
   return await profileService.delete('', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const deleteAccountProvider = async (provider: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await profileService.delete(`providers/${provider}`, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

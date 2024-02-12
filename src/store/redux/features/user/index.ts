@@ -35,7 +35,7 @@ export const updateUser = createAsyncThunk(
   'users/updateUser',
   async (userData: IForm) => {
     const token = localStorage.getItem('accessToken');
-    const response = await axios.put(API_BASE_URL, userData, {
+    const response = await axios.patch(API_BASE_URL, userData, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${token ?? ''}`

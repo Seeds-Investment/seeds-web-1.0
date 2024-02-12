@@ -1,9 +1,10 @@
-import AuthFacebook2 from '@/assets/auth/AuthFacebook2.png';
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import AssociatedAccountButton from '@/components/setting/accountSecurityCenter/AssociatedAccountButton';
-import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
+import FormModalDelete from '@/components/setting/accountSecurityCenter/FormModalDelete';
+// import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
 import FormModalNumber from '@/components/setting/accountSecurityCenter/FormModalNumber';
+import ModalPrevent from '@/components/setting/accountSecurityCenter/ModalPrevent';
 import SecuritySettingForm from '@/components/setting/accountSecurityCenter/SecuritySettingForm';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
@@ -13,6 +14,7 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CountryCodeInfo {
   name: string;
@@ -21,21 +23,35 @@ interface CountryCodeInfo {
   dialCode: string;
 }
 
+const getCountry = (phone: string): CountryCodeInfo | undefined =>
+  countries.find(code => {
+    const dialCode = code?.dialCode.replace('+', '');
+    return phone?.replace('+', '').slice(0, dialCode?.length) === dialCode;
+  });
+
 const AccountSecurityCenter: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { dataUser } = useAppSelector(state => state.user);
   const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
   const [country, setCountry] = useState(101);
-  const [openMail, setOpenMail] = useState(false);
   const [openNumber, setOpenNumber] = useState(false);
-  const getCountry = (phone: string): CountryCodeInfo | undefined =>
-    countries.find(code => {
-      const dialCode = code?.dialCode.replace('+', '');
-      return phone?.replace('+', '').slice(0, dialCode?.length) === dialCode;
-    });
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
+  const [openPreventPass, setOpenPreventPass] = useState(false);
+  const [openPreventUnlink, setOpenPreventUnlink] = useState(false);
 
-  const handleOpenMail = (): void => {
-    setOpenMail(!openMail);
+  const handleOpenDelete = (): void => {
+    setOpenDelete(!openDelete);
+  };
+  const handleOpenPassword = (): void => {
+    setOpenPassword(!openPassword);
+  };
+  const handleOpenPreventUnlink = (): void => {
+    setOpenPreventUnlink(!openPreventUnlink);
+  };
+  const handleOpenPreventPass = (): void => {
+    setOpenPreventPass(!openPreventPass);
   };
   const handleOpenNumber = (): void => {
     setOpenNumber(!openNumber);
@@ -48,11 +64,7 @@ const AccountSecurityCenter: React.FC = () => {
       defaultGradient
       className="w-full flex flex-col justify-center gap-4"
     >
-      <FormModalMail
-        open={openMail}
-        handleOpen={handleOpenMail}
-        emailData={dataUser.email}
-      />
+      {/* TODO: MODAL SESSION */}
       <FormModalNumber
         open={openNumber}
         handleOpen={handleOpenNumber}
@@ -60,33 +72,45 @@ const AccountSecurityCenter: React.FC = () => {
         country={country}
         setCountry={setCountry}
       />
-      <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:py-10 md:px-32">
+      <FormModalDelete open={openDelete} handleOpen={handleOpenDelete} />
+      <ModalPrevent
+        open={openPreventPass}
+        handleOpen={handleOpenPreventPass}
+        text={t('setting.setting.accountSecure.prevent.password')}
+      />
+      <ModalPrevent
+        open={openPreventUnlink}
+        handleOpen={handleOpenPreventUnlink}
+        text={t('setting.setting.accountSecure.prevent.unlink')}
+      />
+      {/* TODO: END OF MODAL SESSION */}
+      <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 lg:py-10 lg:px-32">
         <Typography className="font-poppins font-semibold text-base text-[#262626] self-start">
-          Security Setting
+          {t('setting.setting.accountSecure.titleCard1')}
         </Typography>
         <SecuritySettingForm
-          onClick={handleOpenMail}
-          form={dataUser.email}
-          textBlank="add your email"
-          label="Email"
-          extraChildren={<></>}
-        />
-        <SecuritySettingForm
           onClick={handleOpenNumber}
-          form={dataUser.phoneNumber}
-          textBlank="add your phone number"
-          label="Phone Number"
+          form={dataUser.phoneNumber.replace(
+            `${countryInfo?.dialCode.replace('+', '') as string}`,
+            ''
+          )}
+          textBlank={t('setting.setting.accountSecure.blank1Card1')}
+          label={t('setting.setting.accountSecure.label1Card1')}
           extraChildren={
             <>
               <img
-                src={`https://flagcdn.com/${
-                  countryInfo?.code.toLowerCase() as string
-                }.svg`}
-                alt={countryInfo?.name}
+                src={
+                  countryInfo !== undefined
+                    ? `https://flagcdn.com/${countryInfo?.code.toLowerCase()}.svg`
+                    : `https://flagcdn.com/${countries[
+                        country
+                      ].code.toLowerCase()}.svg`
+                }
+                alt={countryInfo?.name ?? countries[country].name}
                 className="h-4 w-7 object-cover"
               />
               <Typography className="text-[#7C7C7C] text-base font-poppins font-normal">
-                {countryInfo?.dialCode}
+                {countryInfo?.dialCode ?? countries[country].dialCode}
               </Typography>
               <Image src={DropdownPhone} alt="DropdownPhone" />
             </>
@@ -95,56 +119,60 @@ const AccountSecurityCenter: React.FC = () => {
 
         <SecuritySettingForm
           onClick={async () => {
-            dataUser.isPasswordExists
+            dataUser.phoneNumber === ''
+              ? handleOpenPreventPass()
+              : dataUser.isPasswordExists
               ? await router.push('/auth/change-password')
               : await router.push('/auth/create-password');
           }}
           form={
             dataUser.isPasswordExists ? (
               <div className="flex gap-2 pt-2">
-                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#262626]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
+                <div className="w-2 h-2 rounded-full bg-[#7C7C7C]"></div>
               </div>
             ) : (
               ''
             )
           }
-          textBlank="Create a new password"
-          label="Password"
+          textBlank={t('setting.setting.accountSecure.blank2Card1')}
+          label={t('setting.setting.accountSecure.label2Card1')}
           extraChildren={<></>}
         />
       </Card>
-      <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:py-10 md:px-32">
+      <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 lg:py-10 lg:px-32">
         <Typography className="font-poppins font-semibold text-base text-[#262626] self-start">
-          Associated Account
+          {t('setting.setting.accountSecure.titleCard2')}
         </Typography>
         <AssociatedAccountButton
           image={AuthGoogle}
           imageClassName="w-12"
           alternative="Google Account"
           text="Google Account"
-        />
-        <AssociatedAccountButton
-          image={AuthFacebook2}
-          imageClassName="w-12"
-          alternative="Facebook Account"
-          text="Facebook Account"
+          provider="google"
+          handleOpen={handleOpenPreventUnlink}
+          openPassword={openPassword}
+          handleOpenPassword={handleOpenPassword}
         />
       </Card>
-      <Card className="flex flex-col gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:py-10 md:px-32">
+      <Card className="flex flex-col gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 lg:py-10 lg:px-32">
         <div className="flex flex-col gap-2">
           <Typography className="font-poppins font-semibold text-base text-[#262626]">
-            Delete Account
+            {t('setting.setting.accountSecure.titleCard3')}
           </Typography>
           <Typography className="font-poppins font-normal text-sm text-[#7C7C7C]">
-            Deleting your account will delete all of your information.
+            {t('setting.setting.accountSecure.descriptionCard3')}
           </Typography>
         </div>
-        <Button className="w-fit py-2.5 px-5 capitalize font-poppins font-semibold text-sm text-[#DD2525] rounded-full bg-transparent border border-[#DD2525]">
-          Delete Account
+        <Button
+          onClick={handleOpenDelete}
+          className="w-fit py-2.5 px-5 capitalize font-poppins font-semibold text-sm text-[#DD2525] rounded-full bg-transparent border border-[#DD2525]"
+        >
+          {t('setting.setting.accountSecure.titleCard3')}
         </Button>
       </Card>
     </PageGradient>

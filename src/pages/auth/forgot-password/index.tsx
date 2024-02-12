@@ -16,7 +16,7 @@ const ForgotPassword: React.FC = () => {
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
-    old_password: ''
+    oldPassword: ''
   });
   const [method, setMethod] = useState('whatsapp');
   const [countdown, setCountdown] = useState(0);

@@ -13,6 +13,7 @@ interface ISettingCommonInput {
   maxLength?: number;
   placeholder?: string;
   readOnly?: boolean;
+  onClick?: () => void;
 }
 
 const SettingCommonInput: React.FC<ISettingCommonInput> = ({
@@ -27,7 +28,8 @@ const SettingCommonInput: React.FC<ISettingCommonInput> = ({
   error,
   maxLength,
   placeholder,
-  readOnly
+  readOnly,
+  onClick
 }: ISettingCommonInput) => {
   return (
     <div className={divClassName}>
@@ -46,6 +48,7 @@ const SettingCommonInput: React.FC<ISettingCommonInput> = ({
         maxLength={maxLength}
         placeholder={placeholder}
         readOnly={readOnly}
+        onClick={onClick}
       />
       {extraClassesBottom}
     </div>

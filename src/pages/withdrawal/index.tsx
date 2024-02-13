@@ -1,13 +1,21 @@
 import RewardClaimed from '@/assets/play/quiz/rewards-claimed.png';
+import ModalClaimMethod from '@/components/quiz/ModalClaimMethod';
 import SettingCommonInput from '@/components/setting/accountInformation/SettingCommonInput';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const Withdrawal: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
+
   return (
     <PageGradient defaultGradient className="w-full">
+      <ModalClaimMethod open={open} handleOpen={handleOpen} />
       <Card shadow={false} className="flex p-5 gap-4 items-center">
         <div className="flex flex-col items-center gap-6">
           <Typography className="font-poppins font-semibold md:text-3xl text-2xl text-[#262626]">
@@ -33,6 +41,7 @@ const Withdrawal: React.FC = () => {
             onChange={() => {}}
             className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
             readOnly={true}
+            onClick={handleOpen}
           />
           <SettingCommonInput
             divClassName="relative flex flex-col w-full"

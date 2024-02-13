@@ -48,8 +48,10 @@ const AuthRef: React.FC<IAuthRef> = ({
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
+  const [loadingSkip, setLoadingSkip] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { quizId } = router.query;
   const [error, setError] = useState(false);
 
   const handleTracker = async (): Promise<void> => {
@@ -61,17 +63,20 @@ const AuthRef: React.FC<IAuthRef> = ({
       userId: responseUser.id
     });
     handleOpen();
-    await router.push('/homepage');
-    TrackerEvent({
-      event: `Seeds_view_home_page_web`,
-      userId: responseUser.id,
-      pageName: 'homepage'
-    });
+    if (quizId !== undefined) {
+      await router.push(`/play/quiz/${quizId as string}`);
+    } else {
+      await router.push('/homepage');
+      TrackerEvent({
+        event: `Seeds_view_home_page_web`,
+        userId: responseUser.id,
+        pageName: 'homepage'
+      });
+    }
   };
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      setLoading(true);
       const response = await loginPhoneNumber(loginForm);
       if (data !== null) {
         const SSOresponse = await loginSSO({
@@ -90,15 +95,19 @@ const AuthRef: React.FC<IAuthRef> = ({
         await handleTracker();
       } else if (response.data.message === 'wrong phone number or password') {
         setLoading(false);
+        setLoadingSkip(false);
         setError(true);
       }
     } catch (error: any) {
+      setLoading(false);
+      setLoadingSkip(false);
       toast(error, { type: 'error' });
     }
   };
 
   const handleSkip = async (): Promise<void> => {
     try {
+      setLoadingSkip(true);
       const response = await register(formData);
       if (response === null) {
         throw new Error(response);
@@ -106,12 +115,14 @@ const AuthRef: React.FC<IAuthRef> = ({
       await handleSubmit();
       setError(false);
     } catch (error: any) {
+      setLoadingSkip(false);
       toast(error, { type: 'error' });
     }
   };
 
   const handleConfirm = async (): Promise<void> => {
     try {
+      setLoading(true);
       await checkRefCode(formData.refCode);
       const response = await register(formData);
       if (response === null) {
@@ -120,6 +131,7 @@ const AuthRef: React.FC<IAuthRef> = ({
       await handleSubmit();
       setError(false);
     } catch (error: any) {
+      setLoading(true);
       toast(error, { type: 'error' });
       setError(true);
     }
@@ -171,8 +183,9 @@ const AuthRef: React.FC<IAuthRef> = ({
           <Button
             className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
+            disabled={loading}
           >
-            {loading ? (
+            {loadingSkip ? (
               <Spinner className=" h-6 w-6" />
             ) : (
               t('authRegister.authRef.skip')
@@ -181,6 +194,7 @@ const AuthRef: React.FC<IAuthRef> = ({
           <Button
             className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
+            disabled={loadingSkip}
           >
             {loading ? (
               <Spinner className=" h-6 w-6" />

@@ -751,6 +751,7 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Buka di aplikasi Seeds', button: 'Unduh App' },
   DeleteAccount: {
     title: 'Apakah kamu yakin ingin menghapus akun ini?',
     description:

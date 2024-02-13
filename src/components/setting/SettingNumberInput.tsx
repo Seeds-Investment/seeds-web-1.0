@@ -88,7 +88,7 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
             .map(({ name, code }: Sort, index: number) => {
               return (
                 <Option
-                  key={name}
+                  key={index}
                   value={name}
                   className="flex items-center gap-2"
                   onClick={() => {

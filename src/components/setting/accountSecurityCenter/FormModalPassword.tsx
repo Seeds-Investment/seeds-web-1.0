@@ -40,9 +40,9 @@ const FormModalPassword: React.FC<IFormModalPassword> = ({
     password: ''
   });
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     setError(false);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   };
   const handleSubmit = async (): Promise<void> => {
     try {

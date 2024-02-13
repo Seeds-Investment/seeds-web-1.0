@@ -10,11 +10,6 @@ interface Country {
   dialCode: string;
 }
 
-interface Sort {
-  name: string;
-  code: string;
-}
-
 interface ISettingNumberInput {
   handleChange: (e: any, dialCode: string) => void;
   formData: string;
@@ -84,8 +79,8 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
           menuProps={{ className: '!w-[250px]' }}
         >
           {countries
-            .sort((a: Sort, b: Sort) => a.name.localeCompare(b.name))
-            .map(({ name, code }: Sort, index: number) => {
+            .sort((a: any, b: any) => a.name.localeCompare(b.name))
+            .map(({ name, code }: any, index: any) => {
               return (
                 <Option
                   key={index}
@@ -96,7 +91,9 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
                   }}
                 >
                   <img
-                    src={`https://flagcdn.com/${code.toLowerCase()}.svg`}
+                    src={`https://flagcdn.com/${
+                      code.toLowerCase() as string
+                    }.svg`}
                     alt={name}
                     className="h-5 w-5 object-cover"
                   />

@@ -80,10 +80,10 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
         >
           {countries
             .sort((a: any, b: any) => a.name.localeCompare(b.name))
-            .map(({ name, code }: any, index: any) => {
+            .map(({ name, code }: any, index: number) => {
               return (
                 <Option
-                  key={index}
+                  key={index.toString()}
                   value={name}
                   className="flex items-center gap-2"
                   onClick={() => {

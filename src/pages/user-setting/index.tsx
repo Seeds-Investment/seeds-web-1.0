@@ -173,7 +173,7 @@ const UserSetting: React.FC = () => {
               .map((value, index) => {
                 return (
                   <div
-                    key={index}
+                    key={index.toString()}
                     className="flex bg-[#4FE6AF] p-1 items-center gap-0.5 rounded-full w-fit"
                   >
                     <Image

@@ -6,8 +6,10 @@ import withAuth from '@/helpers/withAuth';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Withdrawal: React.FC = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
     setOpen(!open);
@@ -19,7 +21,7 @@ const Withdrawal: React.FC = () => {
       <Card shadow={false} className="flex p-5 gap-4 items-center">
         <div className="flex flex-col items-center gap-6">
           <Typography className="font-poppins font-semibold md:text-3xl text-2xl text-[#262626]">
-            Congratulation!
+            {t('quiz.congratulation')}
           </Typography>
           <Image
             src={RewardClaimed}
@@ -27,7 +29,7 @@ const Withdrawal: React.FC = () => {
             className="md:w-[298.46px] md:h-[255.18px] w-[233.92px] h-[200px]"
           />
           <Typography className="font-poppins font-normal md:text-lg text-sm text-[#7C7C7C]">
-            Congratulation!
+            Cash out your rewards!
           </Typography>
         </div>
         <div className="flex flex-col gap-4 w-full">
@@ -35,7 +37,7 @@ const Withdrawal: React.FC = () => {
             divClassName="relative flex flex-col w-full"
             extraClassesTop={true}
             label="Claim Method"
-            name="seedsTag"
+            name=""
             placeholder="Select your Method"
             value={''}
             onChange={() => {}}
@@ -47,7 +49,7 @@ const Withdrawal: React.FC = () => {
             divClassName="relative flex flex-col w-full"
             extraClassesTop={true}
             label="Account"
-            name="seedsTag"
+            name=""
             placeholder="Select your account"
             value={''}
             onChange={() => {}}
@@ -57,7 +59,7 @@ const Withdrawal: React.FC = () => {
           <SettingCommonInput
             divClassName="w-full"
             label="Account Name"
-            name="seedsTag"
+            name=""
             placeholder="Your account name"
             value={''}
             onChange={() => {}}
@@ -66,13 +68,14 @@ const Withdrawal: React.FC = () => {
           <SettingCommonInput
             divClassName="w-full"
             label="Account Number"
-            name="seedsTag"
+            name=""
             placeholder="Your account number"
             value={''}
             onChange={() => {}}
             className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
           />
         </div>
+        {/* Please disable this button if all form not fill */}
         <Button className="capitalize disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-[#FFFFFF] rounded-full font-poppins font-semibold text-sm md:w-[343px] w-full">
           Submit
         </Button>

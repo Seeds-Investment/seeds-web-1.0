@@ -1661,7 +1661,9 @@ export default {
     areYouReady: 'Kamu siap?',
     millionaire: 'Siapa yang mau jadi miliarder Seeds!',
     incorrectWord: 'Belum tepat, fyuhh sedikit lagi',
-    correctWord: 'Benar, kamu dapat {{point}} poin'
+    correctWord: 'Benar, kamu dapat {{point}} poin',
+    congratulation: 'Selamat!',
+    cashOut: ''
   },
   discover: {
     hotNews: 'Hot News',

@@ -1729,7 +1729,8 @@ export default {
     areYouReady: 'Are You Ready?',
     millionaire: 'Who wants to be Seeds Millionaire!',
     incorrectWord: 'Incorrect, fyuhh that was close',
-    correctWord: 'Correct, you got {{point}} points'
+    correctWord: 'Correct, you got {{point}} points',
+    congratulation: 'Congratulation!'
   },
   discover: {
     hotNews: 'Hot News',

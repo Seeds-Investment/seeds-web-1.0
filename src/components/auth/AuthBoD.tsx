@@ -120,7 +120,7 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         open={open}
         handler={handleOpen}
         size="sm"
-        className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
+        className="flex flex-col items-center rounded-3xl min-w-full"
       >
         <DialogBody className="flex gap-8">
           <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-scroll cursor-pointer no-scroll">

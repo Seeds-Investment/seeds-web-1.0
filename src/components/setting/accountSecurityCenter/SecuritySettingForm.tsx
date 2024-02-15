@@ -1,6 +1,7 @@
 import ChecklistInputSecuritySetting from '@/assets/my-profile/editProfile/ChecklistInputSecuritySetting.svg';
 import ChevronRight from '@/assets/my-profile/editProfile/ChevronRight.svg';
 import NoneInputSecuritySetting from '@/assets/my-profile/editProfile/NoneInputSecuritySetting.svg';
+import { useAppSelector } from '@/store/redux/store';
 import { Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 
@@ -19,6 +20,7 @@ const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
   extraChildren,
   onClick
 }: ISecuritySettingForm) => {
+  const { dataUser } = useAppSelector(state => state.user);
   return (
     <div onClick={onClick} className="relative flex w-full p-0 bg-transparent">
       <div className="absolute flex p-0 gap-2 items-center pr-[18px] pb-[7px] pt-[15px]">
@@ -30,7 +32,8 @@ const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
         >
           {form === '' ? textBlank : form}
         </Typography>
-        {label !== 'Password' ? (
+        {(label === 'Password' || label === 'Kata Sandi') &&
+        dataUser.isPasswordExists ? null : (
           <Image
             src={
               form === ''
@@ -39,7 +42,7 @@ const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
             }
             alt="InformationInputIcon"
           />
-        ) : null}
+        )}
       </div>
       <Input
         label={label}

@@ -79,7 +79,7 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
                   onClick={() => {
                     handleLanguageChange(item.language as 'EN' | 'ID');
                   }}
-                  key={index.toString()}
+                  key={index}
                 >
                   <Button
                     ripple={false}

@@ -161,7 +161,7 @@ const UserSetting: React.FC = () => {
                     border = 'border-2 border-[#3AC4A0]';
                   return (
                     <div
-                      key={index.toString()}
+                      key={index}
                       className={`relative w-14 h-14 rounded-[1.75rem] overflow-hidden bg-[#DCFCE4] hover:opacity-80 hover:cursor-pointer`}
                     >
                       <Image

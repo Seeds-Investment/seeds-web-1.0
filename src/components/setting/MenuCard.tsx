@@ -19,7 +19,7 @@ const MenuCard: React.FC<IMenuCard> = ({ menuList }: IMenuCard) => {
       {menuList.map((value, index) => {
         return (
           <Button
-            key={index.toString()}
+            key={index}
             onClick={value.link}
             className="flex justify-between items-center p-3 bg-white w-full shadow-none hover:shadow-none hover:bg-black/10"
           >

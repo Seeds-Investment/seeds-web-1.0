@@ -78,7 +78,7 @@ const BlockList: React.FC = () => {
         </div>
         {blocklistData.map((data, index) => (
           <div
-            key={index}
+            key={index.toString()}
             className={`w-full p-3 mb-2 bg-[#FFFFFF] mt-2 rounded-2xl border border-1`}
           >
             <div className="flex justify-between">

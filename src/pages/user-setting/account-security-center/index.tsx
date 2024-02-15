@@ -3,6 +3,7 @@ import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import AssociatedAccountButton from '@/components/setting/accountSecurityCenter/AssociatedAccountButton';
 import FormModalDelete from '@/components/setting/accountSecurityCenter/FormModalDelete';
 // import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
+import FormModalNumber from '@/components/setting/accountSecurityCenter/FormModalNumber';
 import ModalPrevent from '@/components/setting/accountSecurityCenter/ModalPrevent';
 import SecuritySettingForm from '@/components/setting/accountSecurityCenter/SecuritySettingForm';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -33,6 +34,7 @@ const AccountSecurityCenter: React.FC = () => {
   const router = useRouter();
   const { dataUser } = useAppSelector(state => state.user);
   const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
+  const [country, setCountry] = useState(101);
   const [openNumber, setOpenNumber] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
@@ -63,6 +65,13 @@ const AccountSecurityCenter: React.FC = () => {
       className="w-full flex flex-col justify-center gap-4"
     >
       {/* TODO: MODAL SESSION */}
+      <FormModalNumber
+        open={openNumber}
+        handleOpen={handleOpenNumber}
+        phoneData={dataUser.phoneNumber}
+        country={country}
+        setCountry={setCountry}
+      />
       <FormModalDelete open={openDelete} handleOpen={handleOpenDelete} />
       <ModalPrevent
         open={openPreventPass}
@@ -93,13 +102,15 @@ const AccountSecurityCenter: React.FC = () => {
                 src={
                   countryInfo !== undefined
                     ? `https://flagcdn.com/${countryInfo?.code.toLowerCase()}.svg`
-                    : `https://flagcdn.com/${countries[101].code.toLowerCase()}.svg`
+                    : `https://flagcdn.com/${countries[
+                        country
+                      ].code.toLowerCase()}.svg`
                 }
-                alt={countryInfo?.name ?? countries[101].name}
+                alt={countryInfo?.name ?? countries[country].name}
                 className="h-4 w-7 object-cover"
               />
               <Typography className="text-[#7C7C7C] text-base font-poppins font-normal">
-                {countryInfo?.dialCode ?? countries[101].dialCode}
+                {countryInfo?.dialCode ?? countries[country].dialCode}
               </Typography>
               <Image src={DropdownPhone} alt="DropdownPhone" />
             </>

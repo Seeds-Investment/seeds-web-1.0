@@ -28,10 +28,7 @@ interface ILogoLanguage {
   menuClassName: string;
 }
 
-const languageList = [
-  { id: 1, language: 'ID' },
-  { id: 2, language: 'EN' }
-];
+const languageList = [{ language: 'ID' }, { language: 'EN' }];
 
 const LogoLanguage: React.FC<ILogoLanguage> = ({
   open,
@@ -82,7 +79,7 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
                   onClick={() => {
                     handleLanguageChange(item.language as 'EN' | 'ID');
                   }}
-                  key={item.id}
+                  key={index.toString()}
                 >
                   <Button
                     ripple={false}

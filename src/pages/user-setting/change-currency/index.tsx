@@ -145,7 +145,7 @@ const ChangeCurrency: React.FC = () => {
                 onClick={() => {
                   setCurrency(el.short_code);
                 }}
-                key={idx}
+                key={idx.toString()}
               >
                 <div className="flex gap-2 items-center">
                   <img

@@ -3,6 +3,7 @@ import BackgroundPayment from '@/assets/play/quiz/BackgroundPayment.svg';
 import ChecklistPayment from '@/assets/play/quiz/ChecklistPayment.svg';
 import RectangleStatusPayment from '@/assets/play/quiz/RectangleStatusPayment.svg';
 import RectangleStatusPaymentTiny from '@/assets/play/quiz/RectangleStatusPaymentTiny.svg';
+import withAuth from '@/helpers/withAuth';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 
@@ -109,4 +110,4 @@ const StatusPayment: React.FC = () => {
   );
 };
 
-export default StatusPayment;
+export default withAuth(StatusPayment);

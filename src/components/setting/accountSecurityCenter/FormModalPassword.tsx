@@ -19,7 +19,7 @@ interface IFormModalPassword {
   open: boolean;
   handleOpen: () => void;
   provider: string;
-  setProviderList: React.Dispatch<React.SetStateAction<string[]>>;
+  setProviderList: any;
 }
 
 interface FormData {
@@ -40,9 +40,9 @@ const FormModalPassword: React.FC<IFormModalPassword> = ({
     password: ''
   });
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+  const handleChange = (e: any): void => {
     setError(false);
-    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (): Promise<void> => {
     try {

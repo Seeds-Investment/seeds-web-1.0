@@ -1,24 +1,17 @@
-import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import { Input, Option, Select, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
-
-interface Country {
-  name: string;
-  flag: string;
-  code: string;
-  dialCode: string;
-}
+// import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
+import { Input } from '@material-tailwind/react';
+// import { Input, Option, Select, Typography } from '@material-tailwind/react';
+// import Image from 'next/image';
 
 interface ISettingNumberInput {
-  handleChange: (e: any, dialCode: string) => void;
+  handleChange: (e: any, dialCode: any) => void;
   formData: string;
   name: string;
   country: number;
-  setCountry: React.Dispatch<React.SetStateAction<number>>;
-  countries: Country[];
+  setCountry: any;
+  countries: any;
   error: boolean;
-  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: any) => void;
 }
 
 const SettingNumberInput: React.FC<ISettingNumberInput> = ({
@@ -31,7 +24,6 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
   error,
   handleSubmit
 }: ISettingNumberInput) => {
-  const { t } = useTranslation();
   return (
     <div
       className={`rounded-xl p-[2px] h-full w-full ${
@@ -39,7 +31,7 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
       }`}
     >
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
-        <Select
+        {/* <Select
           variant="static"
           label={t('authLogin.phone').toString()}
           arrow={<Image src={DropdownPhone} alt="DropdownPhone" />}
@@ -47,9 +39,9 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
             return (
               <div className="absolute top-1/2 -translate-y-1/2 left-1.5 ms-3 flex items-center gap-2">
                 <img
-                  src={`https://flagcdn.com/${countries[
-                    country
-                  ]?.code.toLowerCase()}.svg`}
+                  src={`https://flagcdn.com/${
+                    countries[country]?.code.toLowerCase() as string
+                  }.svg`}
                   alt={countries[country].name}
                   className="h-4 w-7 object-cover"
                 />
@@ -80,11 +72,11 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
         >
           {countries
             .sort((a: any, b: any) => a.name.localeCompare(b.name))
-            .map(({ name, code }: any, index: number) => {
+            .map((value: any, index: any) => {
               return (
                 <Option
-                  key={index.toString()}
-                  value={name}
+                  key={index}
+                  value={value.name}
                   className="flex items-center gap-2"
                   onClick={() => {
                     setCountry(index);
@@ -92,16 +84,16 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
                 >
                   <img
                     src={`https://flagcdn.com/${
-                      code.toLowerCase() as string
+                      value.code.toLowerCase() as string
                     }.svg`}
-                    alt={name}
+                    alt={value.name}
                     className="h-5 w-5 object-cover"
                   />
-                  {name}
+                  {value.name}
                 </Option>
               );
             })}
-        </Select>
+        </Select> */}
         <Input
           type="number"
           variant="static"

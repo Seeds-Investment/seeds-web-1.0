@@ -1,86 +1,40 @@
-import RewardClaimed from '@/assets/play/quiz/rewards-claimed.png';
-import ModalClaimMethod from '@/components/quiz/ModalClaimMethod';
-import SettingCommonInput from '@/components/setting/accountInformation/SettingCommonInput';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import ValidatePin from '@/components/forms/ValidatePin';
+import IndexWithdrawal from '@/components/quiz/Withdrawal';
 import withAuth from '@/helpers/withAuth';
-import { Button, Card, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const Withdrawal: React.FC = () => {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const handleOpen = (): void => {
-    setOpen(!open);
-  };
-
+  const router = useRouter();
+  const [select, setSelect] = useState(0);
+  const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
+  const [error, setError] = useState(false);
+  const emptyPinIndex = pin.findIndex(number => number === '');
+  const joinPin = pin.join('');
+  if (joinPin !== '' && emptyPinIndex === -1) {
+    setPin(['', '', '', '', '', '']);
+    router
+      .push('withdrawal/payment-detail')
+      .then(() => {})
+      .catch(() => {});
+  }
   return (
-    <PageGradient defaultGradient className="w-full">
-      <ModalClaimMethod open={open} handleOpen={handleOpen} />
-      <Card shadow={false} className="flex p-5 gap-4 items-center">
-        <div className="flex flex-col items-center gap-6">
-          <Typography className="font-poppins font-semibold md:text-3xl text-2xl text-[#262626]">
-            {t('quiz.congratulation')}
-          </Typography>
-          <Image
-            src={RewardClaimed}
-            alt="RewardClaimed"
-            className="md:w-[298.46px] md:h-[255.18px] w-[233.92px] h-[200px]"
-          />
-          <Typography className="font-poppins font-normal md:text-lg text-sm text-[#7C7C7C]">
-            Cash out your rewards!
-          </Typography>
-        </div>
-        <div className="flex flex-col gap-4 w-full">
-          <SettingCommonInput
-            divClassName="relative flex flex-col w-full"
-            extraClassesTop={true}
-            label="Claim Method"
-            name=""
-            placeholder="Select your Method"
-            value={''}
-            onChange={() => {}}
-            className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-            readOnly={true}
-            onClick={handleOpen}
-          />
-          <SettingCommonInput
-            divClassName="relative flex flex-col w-full"
-            extraClassesTop={true}
-            label="Account"
-            name=""
-            placeholder="Select your account"
-            value={''}
-            onChange={() => {}}
-            className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-            readOnly={true}
-          />
-          <SettingCommonInput
-            divClassName="w-full"
-            label="Account Name"
-            name=""
-            placeholder="Your account name"
-            value={''}
-            onChange={() => {}}
-            className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-          />
-          <SettingCommonInput
-            divClassName="w-full"
-            label="Account Number"
-            name=""
-            placeholder="Your account number"
-            value={''}
-            onChange={() => {}}
-            className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-          />
-        </div>
-        {/* Please disable this button if all form not fill */}
-        <Button className="capitalize disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-[#FFFFFF] rounded-full font-poppins font-semibold text-sm md:w-[343px] w-full">
-          Submit
-        </Button>
-      </Card>
-    </PageGradient>
+    <>
+      <IndexWithdrawal
+        setSelect={setSelect}
+        className={select === 0 ? 'flex' : 'hidden'}
+      />
+      <ValidatePin
+        pin={pin}
+        setPin={setPin}
+        emptyPinIndex={emptyPinIndex}
+        error={error}
+        setError={setError}
+        className={select === 1 ? 'flex' : 'hidden'}
+        title="Enter Your PIN"
+        setSelect={setSelect}
+      />
+    </>
   );
 };
 

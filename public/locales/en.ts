@@ -1730,7 +1730,21 @@ export default {
     millionaire: 'Who wants to be Seeds Millionaire!',
     incorrectWord: 'Incorrect, fyuhh that was close',
     correctWord: 'Correct, you got {{point}} points',
-    congratulation: 'Congratulation!'
+    congratulation: 'Congratulation!',
+    cashOut: 'Cash out your rewards!',
+    claimMethod: 'Claim Method',
+    account: 'Account',
+    accountName: 'Account Name',
+    accountNumber: 'Account Number',
+    placeholderMethod: 'Select your method',
+    placeholderAccount: 'Select your account',
+    placeholderAccountName: 'Your account name',
+    placeholderAccountNumber: 'Your account number',
+    transferBank: 'Transfer with Bank',
+    eWallet: 'E-Wallet',
+    transferEWallet: 'Transfer with E-Wallet',
+    bankList: 'Bank List',
+    eWalletList: 'E-Wallet List'
   },
   discover: {
     hotNews: 'Hot News',

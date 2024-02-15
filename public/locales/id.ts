@@ -1663,7 +1663,20 @@ export default {
     incorrectWord: 'Belum tepat, fyuhh sedikit lagi',
     correctWord: 'Benar, kamu dapat {{point}} poin',
     congratulation: 'Selamat!',
-    cashOut: ''
+    cashOut: 'Cairkan hadiahmu!',
+    claimMethod: 'Metode Klaim',
+    account: 'Akun',
+    accountName: 'Nama Akun',
+    accountNumber: 'Nomor Akun',
+    placeholderMethod: 'Pilih metodemu',
+    placeholderAccount: 'Pilih akunmu',
+    placeholderAccountName: 'Nama akunmu',
+    placeholderAccountNumber: 'Nomor akunmu',
+    transferBank: 'Transfer dengan Bank',
+    eWallet: 'Dompet Digital',
+    transferEWallet: 'Transfer dengan Dompet Digital',
+    bankList: 'Daftar Akun Bank',
+    eWalletList: 'Daftar Dompet Digital'
   },
   discover: {
     hotNews: 'Hot News',

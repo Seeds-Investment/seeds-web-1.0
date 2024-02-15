@@ -1,7 +1,7 @@
-import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import { Input, Option, Select, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import { useTranslation } from 'react-i18next';
+// import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
+import { Input } from '@material-tailwind/react';
+// import { Input, Option, Select, Typography } from '@material-tailwind/react';
+// import Image from 'next/image';
 
 interface ISettingNumberInput {
   handleChange: (e: any, dialCode: any) => void;
@@ -24,7 +24,6 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
   error,
   handleSubmit
 }: ISettingNumberInput) => {
-  const { t } = useTranslation();
   return (
     <div
       className={`rounded-xl p-[2px] h-full w-full ${
@@ -32,7 +31,7 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
       }`}
     >
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
-        <Select
+        {/* <Select
           variant="static"
           label={t('authLogin.phone').toString()}
           arrow={<Image src={DropdownPhone} alt="DropdownPhone" />}
@@ -94,7 +93,7 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
                 </Option>
               );
             })}
-        </Select>
+        </Select> */}
         <Input
           type="number"
           variant="static"

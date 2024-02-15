@@ -2,6 +2,7 @@ import BackgroundPayment from '@/assets/play/quiz/BackgroundPayment.svg';
 import BlueInformation from '@/assets/play/quiz/BlueInformation.svg';
 import ChecklistPayment from '@/assets/play/quiz/ChecklistPayment.svg';
 import PaymentRectangle from '@/assets/play/quiz/PaymentRectangle.svg';
+import PaymentRectangleTiny from '@/assets/play/quiz/PaymentRectangleTiny.svg';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,8 +29,8 @@ const PaymentDetail: React.FC = () => {
         <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
           Transaction Details
         </Typography>
-        <div className="flex relative">
-          <div className="absolute flex flex-col gap-6 w-full px-6 pt-[34px]">
+        <div className="flex relative justify-center">
+          <div className="absolute flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-6 pt-[34px]">
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
                 Date
@@ -47,7 +48,7 @@ const PaymentDetail: React.FC = () => {
               </Typography>
             </div>
           </div>
-          <div className="absolute bottom-0 flex flex-col gap-6 w-full px-16 pb-[26.52px]">
+          <div className="absolute 2xl:top-[160px] sm:top-52 top-[160px]  flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-16 pb-[26.52px]">
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
                 Withdraw
@@ -77,7 +78,12 @@ const PaymentDetail: React.FC = () => {
           <Image
             src={PaymentRectangle}
             alt="PaymentRectangle"
-            className="w-full"
+            className="w-full hidden 2xl:flex"
+          />
+          <Image
+            src={PaymentRectangleTiny}
+            alt="PaymentRectangleTiny"
+            className="w-[343px] sm:w-[500px] 2xl:hidden flex"
           />
         </div>
         <div className="flex gap-3">

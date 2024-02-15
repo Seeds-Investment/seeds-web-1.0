@@ -1,17 +1,23 @@
+import BCABank from '@/assets/play/quiz/BCABank.png';
 import BackgroundPayment from '@/assets/play/quiz/BackgroundPayment.svg';
-import BlueInformation from '@/assets/play/quiz/BlueInformation.svg';
 import ChecklistPayment from '@/assets/play/quiz/ChecklistPayment.svg';
-import PaymentRectangle from '@/assets/play/quiz/PaymentRectangle.svg';
-import PaymentRectangleTiny from '@/assets/play/quiz/PaymentRectangleTiny.svg';
+import RectangleStatusPayment from '@/assets/play/quiz/RectangleStatusPayment.svg';
+import RectangleStatusPaymentTiny from '@/assets/play/quiz/RectangleStatusPaymentTiny.svg';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import Link from 'next/link';
 
 const StatusPayment: React.FC = () => {
   return (
-    <Card shadow={false} className="w-full rounded-xl">
+    <Card shadow={false} className="w-full rounded-xl relative h-[816px]">
       <div className="flex flex-col items-center bg-[#3AC4A0] rounded-t-xl relative h-[384px]">
-        <div className="absolute flex flex-col gap-2 w-[266px] z-10 items-center mt-14">
+        <Image
+          src={BackgroundPayment}
+          alt="BackgroundPayment"
+          className="absolute bottom-0"
+        />
+      </div>
+      <div className="flex flex-col items-center absolute w-full">
+        <div className="flex flex-col gap-2 w-[266px] z-10 items-center mt-14 mb-[34px]">
           <Image
             src={ChecklistPayment}
             alt="ChecklistPayment"
@@ -25,86 +31,79 @@ const StatusPayment: React.FC = () => {
             hours.
           </Typography>
         </div>
-
-        <Image
-          src={BackgroundPayment}
-          alt="BackgroundPayment"
-          className="absolute bottom-0"
-        />
-      </div>
-
-      <div className="flex flex-col p-4 gap-4">
-        <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
-          Transaction Details
-        </Typography>
-        <div className="flex relative justify-center">
-          <div className="absolute flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-6 pt-[34px]">
-            <div className="flex justify-between">
+        <div className="mb-[70px] relative flex justify-center">
+          <div className="absolute flex flex-col items-center ">
+            <div className="flex flex-col gap-3 mt-6 mb-11">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Date
+                Payment Method
               </Typography>
-              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                2022-07-15 11:13:55 WIB
-              </Typography>
+              <Image src={BCABank} alt="BCABank" className="w-[102px]" />
             </div>
-            <div className="flex justify-between">
-              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Reference Number
-              </Typography>
-              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                123456789
-              </Typography>
+            <div className="flex flex-col gap-6">
+              <div className=" flex justify-between w-[295px]">
+                <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                  Date
+                </Typography>
+                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                  2022-07-15 11:13:55 WIB
+                </Typography>
+              </div>
+              <div className=" flex justify-between w-[295px]">
+                <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                  Id Transaction
+                </Typography>
+                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                  12345678910
+                </Typography>
+              </div>
+              <div className=" flex justify-between w-[295px]">
+                <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                  Withdraw
+                </Typography>
+                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                  IDR 100.000
+                </Typography>
+              </div>
+              <div className=" flex justify-between w-[295px]">
+                <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                  Admin
+                </Typography>
+                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                  IDR 20.000
+                </Typography>
+              </div>
+              <div className="border-b border-[#BDBDBD]"></div>
+              <div className=" flex justify-between w-[295px]">
+                <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                  Nominal
+                </Typography>
+                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                  IDR 80.000
+                </Typography>
+              </div>
             </div>
-          </div>
-          <div className="absolute 2xl:top-[160px] sm:top-52 top-[160px]  flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-16 pb-[26.52px]">
-            <div className="flex justify-between">
-              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Withdraw
-              </Typography>
+            <div className=" flex justify-between w-[295px] mt-[50px]">
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                IDR 100.000
+                Total
               </Typography>
-            </div>
-            <div className="flex justify-between">
-              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Admin
-              </Typography>
-              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                IDR 20.000
-              </Typography>
-            </div>
-            <div className="border border-[#BDBDBD] w-full"></div>
-            <div className="flex justify-between">
-              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Total Amount
-              </Typography>
-              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+              <Typography className="font-poppins font-semibold text-lg text-[#3AC4A0]">
                 IDR 80.000
               </Typography>
             </div>
           </div>
+
           <Image
-            src={PaymentRectangle}
-            alt="PaymentRectangle"
-            className="w-full hidden 2xl:flex"
+            src={RectangleStatusPayment}
+            alt="RectangleStatusPayment"
+            className="hidden lg:flex"
           />
           <Image
-            src={PaymentRectangleTiny}
-            alt="PaymentRectangleTiny"
-            className="w-[343px] sm:w-[500px] 2xl:hidden flex"
+            src={RectangleStatusPaymentTiny}
+            alt="RectangleStatusPaymentTiny"
+            className="lg:hidden flex"
           />
         </div>
-        <div className="flex gap-3">
-          <Image src={BlueInformation} alt="BlueInformation" />
-          <Typography className="font-poppins font-light text-sm text-[#5263F9]">
-            The withdrawal request would take one business day.
-          </Typography>
-        </div>
-        <Link href={'payment-detail/status'} className="self-center">
-          <Button className="font-poppins font-semibold text-sm text-white w-[343px] rounded-full capitalize bg-[#3AC4A0] mt-2">
-            Check Status
-          </Button>
-        </Link>
+        <Button className="w-[343px] bg-[#3AC4A0] rounded-full">Ok</Button>
       </div>
     </Card>
   );

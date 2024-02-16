@@ -59,8 +59,8 @@ const QuizDetail = (): React.ReactElement => {
   );
 
   useEffect(() => {
-    if (id && userInfo !== undefined) {
-      getDetail(userInfo.preferredCurrency);
+    if (id) {
+      getDetail(userInfo?.preferredCurrency ?? '');
     }
   }, [id, userInfo]);
 

@@ -1,28 +1,57 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import ValidatePin from '@/components/forms/ValidatePin';
+import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
 import withAuth from '@/helpers/withAuth';
+import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+
+export interface IWithdrawalAccount {
+  method: string;
+  account_name: string;
+  account_number: string;
+}
 
 const Withdrawal: React.FC = () => {
   const router = useRouter();
   const [select, setSelect] = useState(0);
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<IWithdrawalAccount>();
   const emptyPinIndex = pin.findIndex(number => number === '');
   const joinPin = pin.join('');
+  const quizId = router.query.quizId;
+  const { submitLoading, submitQuizCashout } = useQuizCashout();
+
+  const handleSubmit = async () => {
+    const res = await submitQuizCashout({
+      quiz_id: quizId as string,
+      method: selectedAccount?.method as string,
+      account_name: selectedAccount?.account_name as string,
+      account_number: selectedAccount?.account_number as string
+    });
+    if (res?.id != null) {
+      router
+        .push('withdrawal/payment-detail')
+        .then(() => {})
+        .catch(() => {});
+    }
+  };
+
   if (joinPin !== '' && emptyPinIndex === -1) {
     setPin(['', '', '', '', '', '']);
-    router
-      .push('withdrawal/payment-detail')
-      .then(() => {})
-      .catch(() => {});
+    void handleSubmit();
   }
-  return (
+
+  const renderLoading = (): JSX.Element => <Loading />;
+  const renderContent = (): JSX.Element => (
     <>
       <IndexWithdrawal
         setSelect={setSelect}
         className={select === 0 ? 'flex' : 'hidden'}
+        setSelectedAccount={setSelectedAccount}
+        account={selectedAccount}
       />
       <ValidatePin
         pin={pin}
@@ -36,6 +65,7 @@ const Withdrawal: React.FC = () => {
       />
     </>
   );
+  return <>{submitLoading ? renderLoading() : renderContent()}</>;
 };
 
 export default withAuth(Withdrawal);

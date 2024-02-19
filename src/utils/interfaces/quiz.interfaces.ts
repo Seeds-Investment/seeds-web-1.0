@@ -214,3 +214,21 @@ export interface QuizReviewDataI {
   started_at: string;
   ended_at: string;
 }
+
+export interface QuizCashoutI {
+  quiz_id: string;
+  method: string;
+  account_name: string;
+  account_number: string;
+}
+
+export interface QuizCashoutRespI {
+  id: string;
+  user_id: string;
+  method: string;
+  account_name: string;
+  account_number: string;
+  reference_number: string;
+  created_at: string;
+  updated_at: string;
+}

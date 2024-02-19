@@ -57,7 +57,8 @@ const ModalClaimMethod: React.FC<IModalClaimMethod> = ({
               <Button
                 key={index}
                 onClick={() => {
-                  setMethodList(value.click);
+                  setMethodList('method', value.click?.toUpperCase());
+                  setMethodList('account_name', '');
                   handleOpen();
                 }}
                 className="flex flex-col gap-2 w-full normal-case bg-[#F9F9F9] border-[#E9E9E9] border"

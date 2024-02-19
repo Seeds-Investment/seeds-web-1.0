@@ -2,43 +2,26 @@ import CloseButtonWithdrawal from '@/assets/play/quiz/CloseButtonWithdrawal.svg'
 import { Dialog, DialogBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { type IAccountList } from './Withdrawal';
+
 interface IModalAccountList {
   open: boolean;
   handleOpen: () => void;
+  setAccount: any;
   methodList: string;
+  bankList: IAccountList[];
+  eWalletList: IAccountList[];
 }
 
 const ModalAccountList: React.FC<IModalAccountList> = ({
   open,
   handleOpen,
-  methodList
+  setAccount,
+  methodList,
+  bankList,
+  eWalletList
 }: IModalAccountList) => {
   const { t } = useTranslation();
-  // Change this with API if any
-  const methodBank = [
-    { name: 'BRI' },
-    { name: 'BCA' },
-    { name: 'BNI' },
-    { name: 'BTN' },
-    { name: 'BTN' },
-    { name: 'BTN' },
-    { name: 'BTN' },
-    { name: 'BTN' },
-    { name: 'BTN' },
-    { name: 'BTN' }
-  ];
-  const methodEWallet = [
-    { name: 'GOPAY' },
-    { name: 'DANA' },
-    { name: 'OVO' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' },
-    { name: 'SHOPEEPAY' }
-  ];
   return (
     <Dialog
       open={open}
@@ -63,15 +46,20 @@ const ModalAccountList: React.FC<IModalAccountList> = ({
         </div>
 
         <div className="flex flex-col w-full h-[244px] overflow-auto">
-          {(methodList === 'bank' ? methodBank : methodEWallet).map(
+          {(methodList === 'BANK' ? bankList : eWalletList).map(
             (value, index) => {
+              const data = value.payment_method?.split('_').reverse().join(' ');
               return (
                 <div
+                  onClick={() => {
+                    setAccount('account_name', data);
+                    handleOpen();
+                  }}
                   key={index}
-                  className="w-full bg-transparent border-[#E9E9E9] border-b rounded-none px-4 pt-4 pb-1.5 md:py-3"
+                  className="w-full bg-transparent border-[#E9E9E9] border-b rounded-none px-4 pt-4 pb-1.5 md:py-3 cursor-pointer"
                 >
                   <Typography className="font-poppins font-semibold text-base md:text-lg text-[#262626] text-start">
-                    {value.name}
+                    {data}
                   </Typography>
                 </div>
               );

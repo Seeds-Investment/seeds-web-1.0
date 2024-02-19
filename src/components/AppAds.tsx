@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 const AppAds: React.FC = () => {
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
+  console.log(deviceDetector.parse(navigator.userAgent).os?.name as string);
   const [isClose, setClose] = useState(false);
   return (
     <Card
@@ -37,7 +38,9 @@ const AppAds: React.FC = () => {
         <Link
           href={
             (deviceDetector.parse(navigator.userAgent).os?.name as string) ===
-            'iOS'
+              'iOS' ||
+            (deviceDetector.parse(navigator.userAgent).os?.name as string) ===
+              'Mac'
               ? 'https://apps.apple.com/id/app/seeds-investing-together/id6443659980'
               : 'https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en&gl=US'
           }

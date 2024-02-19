@@ -889,6 +889,7 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Open in the Seeds App', button: 'Download App' },
   LogoutAccount: {
     title: 'Come Back Soon!',
     description: 'Are you sure want to logout',

@@ -1,5 +1,6 @@
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import React from 'react';
+import AppAds from '../AppAds';
 import HeaderLogin from './HeaderLogin';
 import SidebarLogin from './SidebarLogin';
 
@@ -26,11 +27,14 @@ const LoginLayout: React.FC<props> = ({ children }) => {
       />
 
       <div className="w-4/5 flex-1 flex flex-col">
-        <header
-          className={`bg-white border-b p-5 rounded-xl md:mx-14 md:mt-10`}
-        >
-          <HeaderLogin />
-        </header>
+        <div className="flex flex-col-reverse md:flex-col md:gap-4">
+          <header
+            className={`bg-white border-b p-5 rounded-xl md:mx-14 md:mt-10`}
+          >
+            <HeaderLogin />
+          </header>
+          <AppAds />
+        </div>
 
         <div className="md:p-4 md:mx-11">{children}</div>
       </div>

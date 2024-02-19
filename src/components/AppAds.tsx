@@ -1,6 +1,7 @@
 import SeedsAds from '@/assets/SeedsAds.png';
 import grayClose from '@/assets/grayClose.svg';
 import { Button, Card, Typography } from '@material-tailwind/react';
+import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const AppAds: React.FC = () => {
   const { t } = useTranslation();
+  const deviceDetector = new DeviceDetector();
   const [isClose, setClose] = useState(false);
   return (
     <Card
@@ -33,7 +35,12 @@ const AppAds: React.FC = () => {
       </div>
       <div className="flex items-center md:gap-4 gap-3">
         <Link
-          href="https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en&gl=US"
+          href={
+            (deviceDetector.parse(navigator.userAgent).os?.name as string) ===
+            'iOS'
+              ? 'https://apps.apple.com/id/app/seeds-investing-together/id6443659980'
+              : 'https://play.google.com/store/apps/details?id=com.seeds.investment&hl=en&gl=US'
+          }
           target="_blank"
         >
           <Button className="capitalize font-semibold font-poppins md:text-sm text-[10px] leading-[14px] text-white rounded-full bg-[#3AC4A0] py-2 px-5 md:py-[15px] md:px-[36.5px] w-[115px] h-[30px] md:w-[178px] md:h-[50px]">

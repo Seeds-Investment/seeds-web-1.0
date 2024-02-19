@@ -33,6 +33,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   setSelect
 }: IAuthPersonalData) => {
   const router = useRouter();
+  const { quizId } = router.query;
   const { data } = useSession();
   const { t } = useTranslation();
   const regex = /[^a-zA-Z0-9]/g;
@@ -154,7 +155,11 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         onClick={async () => {
           if (data !== null) {
             setFormData({ ...formData, name: '', seedsTag: '' });
-            await router.push('/auth');
+            await router.push(
+              quizId !== undefined
+                ? { pathname: '/auth', query: { quizId: quizId } }
+                : '/auth'
+            );
             await signOut();
           } else {
             setSelect(0);

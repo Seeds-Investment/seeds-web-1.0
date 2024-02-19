@@ -25,6 +25,7 @@ const menu = [
 ];
 
 const SidebarLogin: React.FC = () => {
+  const [accessToken, setAccessToken] = useState('');
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
@@ -34,6 +35,7 @@ const SidebarLogin: React.FC = () => {
   };
 
   useEffect(() => {
+    setAccessToken(localStorage.getItem('accessToken') ?? '');
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
@@ -90,7 +92,9 @@ const SidebarLogin: React.FC = () => {
       </ul>
       <div className="mx-auto">
         <button
-          className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+          className={`${
+            accessToken === '' ? 'hidden' : 'flex'
+          } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
           onClick={() => {
             setIsLogoutModal(true);
           }}

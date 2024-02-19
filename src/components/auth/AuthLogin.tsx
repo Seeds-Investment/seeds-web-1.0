@@ -31,6 +31,7 @@ const AuthLogin: React.FC = () => {
     return 2;
   };
   const router = useRouter();
+  const { quizId } = router.query;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
@@ -67,12 +68,16 @@ const AuthLogin: React.FC = () => {
           event: 'Seeds_login_web',
           userId: responseUser.id
         });
-        await router.push('/homepage');
-        TrackerEvent({
-          event: `Seeds_view_home_page_web`,
-          userId: responseUser.id,
-          pageName: 'homepage'
-        });
+        if (quizId !== undefined) {
+          await router.push(`/play/quiz/${quizId as string}`);
+        } else {
+          await router.push('/homepage');
+          TrackerEvent({
+            event: `Seeds_view_home_page_web`,
+            userId: responseUser.id,
+            pageName: 'homepage'
+          });
+        }
       } else if (response.data.message === 'wrong phone number or password') {
         throw new Error(response.data.message);
       }
@@ -117,7 +122,11 @@ const AuthLogin: React.FC = () => {
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push('/auth');
+          await router.push(
+            quizId !== undefined
+              ? { pathname: '/auth', query: { quizId: quizId } }
+              : '/auth'
+          );
         }}
       />
       <Image

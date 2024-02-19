@@ -44,7 +44,7 @@ interface RegistForm {
 
 interface IChangePassword {
   phoneNumber: string;
-  old_password: string;
+  oldPassword: string;
   password: string;
 }
 
@@ -63,6 +63,31 @@ export const loginSSO = async ({
 }: LoginSSOForm): Promise<any> => {
   try {
     let response = await authService.post(`login/${provider}`, { identifier });
+    return (response = { ...response, status: 200 });
+  } catch (error: any) {
+    return error.response;
+  }
+};
+export const linkSSO = async ({
+  identifier,
+  provider
+}: LoginSSOForm): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    let response = await authService.post(
+      `login/${provider}`,
+      { identifier },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
     return (response = { ...response, status: 200 });
   } catch (error: any) {
     return error.response;
@@ -99,7 +124,7 @@ export const changePassword = async (
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    return await userService.post(`change-password`, formData, {
+    return await userService.patch(`change-password`, formData, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

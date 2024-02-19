@@ -695,6 +695,7 @@ export default {
     removeButton: 'Hapus',
     cancelButton: 'Batal'
   },
+
   setting: {
     setting: {
       title: 'Pengaturan',
@@ -706,6 +707,14 @@ export default {
       },
       accountSecure: {
         title: 'Pusat Keamanan Akun',
+        titleCard1: 'Pengaturan Keamanan',
+        label1Card1: 'Nomor Telepon',
+        blank1Card1: 'tambah nomor teleponmu',
+        label2Card1: 'Kata Sandi',
+        blank2Card1: 'Buat kata sandi baru',
+        titleCard2: 'Akun yang Terhubung',
+        titleCard3: 'Hapus Akun',
+        descriptionCard3: 'Menghapus akunmu akan menghapus semua informasimu.',
         confirm: 'Konfirmasi',
         titleMail1: 'Yuk, tambahin Emailmu!',
         titleMail2:
@@ -717,15 +726,50 @@ export default {
         titleNumber2: 'Masukan nomor teleponmu',
         titleChangeNumber1: 'Yuk, ganti nomor teleponmu',
         titleChangeNumber2: 'Masukin nomor telepon barumu',
-        createPass: {
-          title1: '',
-          title2: '',
-          label1: '',
-          label2: '',
-          placeholder1: '',
-          placeholder2: ''
+        validationNumber1: 'Oops, nomormu sudah dipakai nih',
+        validationNumber2: 'Nomor telepon minimal terdiri dari 6 angka',
+        prevent: {
+          title: 'Pembaruan Keamanan Akun',
+          password: 'Pastiin nomor kamu sudah terhubung di akun ini',
+          unlink:
+            'Pastiin nomor dan kata sandi kamu sudah terhubung di akun ini'
         },
-        changePass: {}
+        delete: {
+          title1: 'Yakin nih mau hapus akun?',
+          title2: `Kalo kamu pilih ‘Iya’, akunmu akan dihapus dalam jangka waktu 30 hari kedepan`,
+          yes: 'Iya',
+          no: 'Nggak'
+        },
+        modalUnlink: {
+          title1: 'Masukkan Kata Sandi Kamu',
+          title2: 'Biar lebih aman, konfirmasi kata sandimu',
+          validation: 'Yah, kata sandi Kamu salah'
+        },
+        settingPassword: {
+          title1: 'Buat Kata Sandi Baru',
+          title2: 'Yuk, buat kata sandi yang aman',
+          title3: 'Masukan Kata Sandi Baru',
+          title4: 'Yuk, ubah kata sandi',
+          createPassword: {
+            label: 'Buat Kata Sandi Baru',
+            placeholder: 'Tolong buat kata sandi'
+          },
+          matchPassword: {
+            label: 'Konfirmasi Kata Sandi Baru',
+            placeholder: 'Tolong konfirmasi kata sandi'
+          },
+          newPassword: {
+            label: 'Kata Sandi Baru',
+            placeholder: 'Tolong buat kata sandi',
+            validation:
+              'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+          },
+          oldPassword: {
+            label: 'Kata Sandi Saat Ini',
+            placeholder: 'Tolong masukan kata sandi',
+            validation: 'Opps, kata sandi kamu salah'
+          }
+        }
       },
       createPin: { title: 'Buat PIN' },
       changePin: { title: 'Ganti PIN' },
@@ -751,6 +795,7 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Buka di aplikasi Seeds', button: 'Unduh App' },
   DeleteAccount: {
     title: 'Apakah kamu yakin ingin menghapus akun ini?',
     description:

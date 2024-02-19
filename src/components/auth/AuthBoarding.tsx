@@ -6,6 +6,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 interface IAuthBoading {
@@ -13,6 +14,7 @@ interface IAuthBoading {
 }
 
 const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
+  const { quizId } = useRouter().query;
   const { t } = useTranslation();
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
@@ -37,12 +39,24 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
         </Link>
       </Typography>
       <div className="flex gap-4 justify-center">
-        <Link href={'/auth/login'}>
+        <Link
+          href={
+            quizId !== undefined
+              ? `/auth/login?quizId=${quizId as string}`
+              : '/auth/login'
+          }
+        >
           <Button className="font-semibold font-poppins text-[#6750A3] text-sm bg-[#E0E0E091] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
             {t(`authBoarding.login`)}
           </Button>
         </Link>
-        <Link href={'/auth/register'}>
+        <Link
+          href={
+            quizId !== undefined
+              ? `/auth/register?quizId=${quizId as string}`
+              : '/auth/register'
+          }
+        >
           <Button className="font-semibold font-poppins text-white text-sm bg-[#3AC4A0] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
             {t(`authBoarding.signup`).split(' ')[0]}{' '}
             <span className="lowercase">

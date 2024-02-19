@@ -1,7 +1,10 @@
 import Backward from '@/assets/auth/Backward.svg';
-import { getOtp, verifyOtp } from '@/repository/auth.repository';
+import { editVerifyOtp, getOtp, verifyOtp } from '@/repository/auth.repository';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch } from '@/store/redux/store';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -34,6 +37,8 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   setFormData
 }: IAuthOTP) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [input, setInput] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
   const [blank, setBlank] = useState(false);
@@ -78,8 +83,18 @@ const AuthOTP: React.FC<IAuthOTP> = ({
         inputRefs.current[0]?.focus();
         throw new Error(`${t('authLogin.validation.blank')}`);
       } else {
-        await verifyOtp(verifyOTP);
-        setSelect(2);
+        if (localStorage.getItem('accessToken') !== null) {
+          await editVerifyOtp(verifyOTP);
+        } else {
+          await verifyOtp(verifyOTP);
+        }
+
+        if (window.location.pathname !== '/auth/change-phone-number') {
+          setSelect(2);
+        } else {
+          await dispatch(fetchUserData());
+          router.back();
+        }
         setCountdown(0);
       }
     } catch (error: any) {
@@ -106,9 +121,13 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           alt="Backward"
           className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
-            setMethod('whatsapp');
-            setFormData({ ...formData, phoneNumber: '', password: '' });
-            setSelect(0);
+            if (window.location.pathname !== '/auth/change-phone-number') {
+              setMethod('whatsapp');
+              setFormData({ ...formData, phoneNumber: '', password: '' });
+              setSelect(0);
+            } else {
+              router.back();
+            }
           }}
         />
         <Image

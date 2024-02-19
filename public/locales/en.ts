@@ -724,6 +724,7 @@ export default {
       label: 'Confirm New Password',
       placeholder: 'Please confirm your password'
     },
+
     information:
       'Password must be 8 characters long and have both uppercase and lowercase letters.',
     modal: {
@@ -787,6 +788,7 @@ export default {
     removeButton: 'Remove',
     cancelButton: 'Cancel'
   },
+
   setting: {
     setting: {
       title: 'Settings',
@@ -798,6 +800,15 @@ export default {
       },
       accountSecure: {
         title: 'Account Security Center',
+        titleCard1: 'Security Setting',
+        label1Card1: 'Phone Number',
+        blank1Card1: 'add your phone number',
+        label2Card1: 'Password',
+        blank2Card1: 'Create a new password',
+        titleCard2: 'Associated Account',
+        titleCard3: 'Delete Account',
+        descriptionCard3:
+          'Deleting your account will delete all of your information.',
         confirm: 'Confirm',
         titleMail1: `Let's, add your Email!`,
         titleMail2: 'For security purposes verify add your email first',
@@ -807,7 +818,52 @@ export default {
         titleNumber1: `Let's, Add Phone Number!`,
         titleNumber2: 'Enter your new phone number',
         titleChangeNumber1: `Let's, Change Phone Number!`,
-        titleChangeNumber2: 'Enter your new phone number'
+        titleChangeNumber2: 'Enter your new phone number',
+        validationNumber1: 'Oops, Phone Number already used',
+        validationNumber2: 'Your phone number contains at least 6 digits',
+        prevent: {
+          title: 'Account Security Update',
+          password: 'Please bind your account with a phone number first',
+          unlink:
+            'Please bind your account with a phone number and password first'
+        },
+        delete: {
+          title1: 'Are you sure to delete this account?',
+          title2: `If you select ‘yes’, your account data will be deleted in 30 days`,
+          yes: 'Yes',
+          no: 'No'
+        },
+        modalUnlink: {
+          title1: 'Input Your Password',
+          title2: 'For security purposes confirmation your password',
+          validation: 'Your password is wrong'
+        },
+        settingPassword: {
+          title1: 'Create New Password',
+          title2: 'Let’s create a secure password',
+          title3: 'Input New Password',
+          title4: 'Let’s Change Password',
+          createPassword: {
+            label: 'Create a New Password',
+            placeholder: 'Please create password'
+          },
+
+          matchPassword: {
+            label: 'Confirm New Password',
+            placeholder: 'Please confirm password'
+          },
+          newPassword: {
+            label: 'New Password',
+            placeholder: 'Please create password',
+            validation:
+              'Password must contain 8 digit with upper case and lower case'
+          },
+          oldPassword: {
+            label: 'Current Password',
+            placeholder: 'Please input password',
+            validation: 'Oops, current password is wrong'
+          }
+        }
       },
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
@@ -833,6 +889,7 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Open in the Seeds App', button: 'Download App' },
   LogoutAccount: {
     title: 'Come Back Soon!',
     description: 'Are you sure want to logout',

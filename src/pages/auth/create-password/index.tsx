@@ -1,38 +1,27 @@
-import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
-import AuthForgotPassNew from '@/components/auth/AuthForgotPassNew';
+import SeedyLock from '@/assets/auth/SeedyLock.png';
+import PasswordForm from '@/components/setting/accountSecurityCenter/PasswordForm';
 import PassLayout from '@/components/setting/PassLayout';
+import { useAppSelector } from '@/store/redux/store';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const ForgotPassword: React.FC = () => {
-  const [select, setSelect] = useState(0);
+const CreatePassword: React.FC = () => {
+  const { dataUser } = useAppSelector(state => state.user);
   const [formData, setFormData] = useState({
-    phoneNumber: '',
+    phoneNumber: dataUser.phoneNumber,
     password: '',
-    old_password: ''
+    oldPassword: ''
   });
-  const [open, setOpen] = useState(false);
-  const handleOpen = (): void => {
-    setOpen(!open);
-  };
 
   const element = (
     <Image
-      src={SeedyAuthLogin}
-      alt="SeedyAuthLogin"
+      src={SeedyLock}
+      alt="SeedyLock"
       className="md:hidden flex self-center w-1/2"
     />
   );
-  const form = (
-    <AuthForgotPassNew
-      setSelect={setSelect}
-      className={select === 2 ? 'flex' : 'hidden'}
-      formData={formData}
-      setFormData={setFormData}
-      handleOpen={handleOpen}
-    />
-  );
+  const form = <PasswordForm formData={formData} setFormData={setFormData} />;
   return <PassLayout elementChild={element} formChild={form} />;
 };
 
-export default ForgotPassword;
+export default CreatePassword;

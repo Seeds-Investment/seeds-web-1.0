@@ -40,6 +40,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   setLoginForm
 }: IAuthRegister) => {
   const router = useRouter();
+  const { quizId } = router.query;
   const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
@@ -126,7 +127,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push('/auth');
+          await router.push(
+            quizId !== undefined
+              ? { pathname: '/auth', query: { quizId: quizId } }
+              : '/auth'
+          );
         }}
       />
       <Image

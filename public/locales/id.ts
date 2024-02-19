@@ -655,7 +655,7 @@ export default {
     wrongPassword: 'Kata sandi salah',
     invalid: 'Nomor Telepon atau password salah'
   },
-  or: 'atau',
+  or: 'Atau',
   registerPage: {
     title: {
       personalInfo: 'Daftar',

@@ -6,8 +6,22 @@ import PaymentRectangleTiny from '@/assets/play/quiz/PaymentRectangleTiny.svg';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const PaymentDetail: React.FC = () => {
+interface PaymentDetailProps {
+  date: string;
+  refNumber: string;
+  withdraw: number;
+  adminFee: number;
+  promoPrice: number;
+  serviceFee: number;
+}
+const PaymentDetail: React.FC<PaymentDetailProps> = ({
+  date,
+  refNumber,
+  withdraw,
+  adminFee,
+  promoPrice,
+  serviceFee
+}: PaymentDetailProps) => {
   return (
     <Card shadow={false} className="w-full rounded-xl">
       <div className="flex flex-col items-center justify-end bg-[#3AC4A0] rounded-t-xl relative h-[298px]">
@@ -36,7 +50,7 @@ const PaymentDetail: React.FC = () => {
                 Date
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                2022-07-15 11:13:55 WIB
+                {date}
               </Typography>
             </div>
             <div className="flex justify-between">
@@ -44,7 +58,7 @@ const PaymentDetail: React.FC = () => {
                 Reference Number
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                123456789
+                {refNumber}
               </Typography>
             </div>
           </div>
@@ -54,15 +68,31 @@ const PaymentDetail: React.FC = () => {
                 Withdraw
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                IDR 100.000
+                {`IDR ${withdraw}`}
               </Typography>
             </div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Admin
+                Biaya Admin
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                IDR 20.000
+                {`IDR ${adminFee}`}
+              </Typography>
+            </div>
+            <div className="flex justify-between">
+              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                Diskon Biaya Admin
+              </Typography>
+              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                {`IDR ${promoPrice}`}
+              </Typography>
+            </div>
+            <div className="flex justify-between">
+              <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
+                Biaya Layanan
+              </Typography>
+              <Typography className="font-poppins font-semibold text-sm text-[#262626]">
+                {`IDR ${serviceFee}`}
               </Typography>
             </div>
             <div className="border border-[#BDBDBD] w-full"></div>
@@ -71,7 +101,7 @@ const PaymentDetail: React.FC = () => {
                 Total Amount
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                IDR 80.000
+                {`IDR ${withdraw - adminFee - serviceFee + promoPrice}`}
               </Typography>
             </div>
           </div>

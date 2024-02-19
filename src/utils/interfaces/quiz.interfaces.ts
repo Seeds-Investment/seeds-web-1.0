@@ -229,6 +229,11 @@ export interface QuizCashoutRespI {
   account_name: string;
   account_number: string;
   reference_number: string;
+  description: string;
+  admin_fee: number;
+  promo_price: number;
+  service_fee: number;
+  withdraw?: number;
   created_at: string;
   updated_at: string;
 }

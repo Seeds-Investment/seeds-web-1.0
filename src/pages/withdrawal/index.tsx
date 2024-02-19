@@ -32,8 +32,19 @@ const Withdrawal: React.FC = () => {
       account_number: selectedAccount?.account_number as string
     });
     if (res?.id != null) {
+      const params = {
+        adminFee: res.admin_fee,
+        withdraw: res.withdraw,
+        serviceFee: res.service_fee,
+        promoPrice: res.promo_price,
+        date: res.created_at,
+        ref: res.reference_number
+      };
       router
-        .push('withdrawal/payment-detail')
+        .push({
+          pathname: '/withdrawal/payment-detail',
+          query: params
+        })
         .then(() => {})
         .catch(() => {});
     }

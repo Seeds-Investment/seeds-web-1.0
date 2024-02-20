@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface IModalClaimMethod {
   open: boolean;
   handleOpen: () => void;
-  setMethodList: any;
+  setMethodList: (key: string, value: any) => void;
 }
 
 const ModalClaimMethod: React.FC<IModalClaimMethod> = ({

@@ -3,6 +3,7 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowBackwardIcon, DeleteIcon } from 'public/assets/vector';
+import { type Dispatch, type SetStateAction } from 'react';
 
 interface VariablePin {
   pin: any;
@@ -12,7 +13,7 @@ interface VariablePin {
   emptyPinIndex: any;
   className: string;
   title: string;
-  setSelect: any;
+  setSelect: Dispatch<SetStateAction<number>>;
 }
 
 const ColNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -34,7 +35,9 @@ const ValidatePin: React.FC<VariablePin> = ({
           <Image
             src={ArrowBackwardIcon}
             alt="arrow-backward-icon"
-            onClick={() => setSelect((prev: number) => prev - 1)}
+            onClick={() => {
+              setSelect((prev: number) => prev - 1);
+            }}
             className="absolute left-8 cursor-pointer"
           />
 

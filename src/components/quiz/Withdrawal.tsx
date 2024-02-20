@@ -8,7 +8,7 @@ import { type IWithdrawalAccount } from '@/pages/withdrawal';
 import { getWithdrawalList } from '@/repository/payment.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Loading from '../popup/Loading';
@@ -27,9 +27,9 @@ export interface IAccountList {
   is_priority: boolean;
 }
 interface IIndexWithdrawal {
-  setSelect: any;
+  setSelect: Dispatch<SetStateAction<number>>;
   className: string;
-  setSelectedAccount: any;
+  setSelectedAccount: Dispatch<SetStateAction<IWithdrawalAccount | undefined>>;
   account: IWithdrawalAccount | undefined;
 }
 
@@ -174,7 +174,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
         open={openAccountList}
         handleOpen={handleOpenAccountList}
         setAccount={handleSelectAccount}
-        methodList={account?.method ?? 'bank'}
+        methodList={account?.method ?? 'BANK'}
         bankList={bankList}
         eWalletList={eWalletList}
       />

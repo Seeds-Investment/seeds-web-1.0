@@ -1744,7 +1744,23 @@ export default {
     eWallet: 'E-Wallet',
     transferEWallet: 'Transfer with E-Wallet',
     bankList: 'Bank List',
-    eWalletList: 'E-Wallet List'
+    eWalletList: 'E-Wallet List',
+    thankyou: 'Thank You!',
+    withdrawalRequest:
+      'Your withdrawal request is being processed. Please wait max 1x24 hours.',
+    transactionDetails: 'Transaction Details',
+    date: 'Date',
+    refNum: 'Reference Number',
+    withdraw: 'Withdraw',
+    admin: 'Admin',
+    adminFee: 'Admin Fee',
+    adminFeeDiscount: 'Admin Fee Discount',
+    serviceFee: 'Service Fee',
+    totalAmount: 'Total Amount',
+    paymentMethod: 'Payment Method',
+    id: 'Id Transaction',
+    nominal: 'Nominal',
+    total: 'Total'
   },
   discover: {
     hotNews: 'Hot News',

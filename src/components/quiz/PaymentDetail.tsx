@@ -6,6 +6,7 @@ import PaymentRectangleTiny from '@/assets/play/quiz/PaymentRectangleTiny.svg';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 interface PaymentDetailProps {
   date: string;
   refNumber: string;
@@ -22,17 +23,17 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
   promoPrice,
   serviceFee
 }: PaymentDetailProps) => {
+  const { t } = useTranslation();
   return (
     <Card shadow={false} className="w-full rounded-xl">
       <div className="flex flex-col items-center justify-end bg-[#3AC4A0] rounded-t-xl relative h-[298px]">
         <div className="absolute flex flex-col gap-2 w-[266px] z-10 items-center mb-3 ">
           <Image src={ChecklistPayment} alt="ChecklistPayment" />
           <Typography className="font-poppins font-semibold text-2xl text-white text-center">
-            Thank You!
+            {t('quiz.thankyou')}
           </Typography>
           <Typography className="font-poppins font-normal text-sm text-white text-center">
-            Your withdrawal request is being processed. Please wait max 1x24
-            hours.
+            {t('quiz.withdrawalRequest')}
           </Typography>
         </div>
 
@@ -41,13 +42,13 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
 
       <div className="flex flex-col p-4 gap-4">
         <Typography className="font-poppins font-semibold text-base text-[#3AC4A0]">
-          Transaction Details
+          {t('quiz.transactionDetails')}
         </Typography>
         <div className="flex relative justify-center">
           <div className="absolute flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-6 pt-[34px]">
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Date
+                {t('quiz.date')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {date}
@@ -55,17 +56,17 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             </div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Reference Number
+                {t('quiz.refNum')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {refNumber}
               </Typography>
             </div>
           </div>
-          <div className="absolute 2xl:top-[160px] sm:top-52 top-[160px]  flex flex-col gap-6 2xl:w-full sm:w-[490px] w-[350px] px-16 pb-[26.52px]">
+          <div className="absolute 2xl:top-[160px] sm:top-52 top-[160px]  flex flex-col gap-4 2xl:w-full sm:w-[490px] w-[350px] px-16 pb-[26.52px]">
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Withdraw
+                {t('quiz.withdraw')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {`IDR ${withdraw}`}
@@ -73,7 +74,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             </div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Biaya Admin
+                {t('quiz.adminFee')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {`IDR ${adminFee}`}
@@ -81,7 +82,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             </div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Diskon Biaya Admin
+                {t('quiz.adminFeeDiscount')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {`IDR ${promoPrice}`}
@@ -89,7 +90,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             </div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Biaya Layanan
+                {t('quiz.serviceFee')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {`IDR ${serviceFee}`}
@@ -98,7 +99,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             <div className="border border-[#BDBDBD] w-full"></div>
             <div className="flex justify-between">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Total Amount
+                {t('quiz.totalAmount')}
               </Typography>
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                 {`IDR ${withdraw - adminFee - serviceFee + promoPrice}`}

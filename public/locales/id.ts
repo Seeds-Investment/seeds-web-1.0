@@ -1676,7 +1676,23 @@ export default {
     eWallet: 'Dompet Digital',
     transferEWallet: 'Transfer dengan Dompet Digital',
     bankList: 'Daftar Akun Bank',
-    eWalletList: 'Daftar Dompet Digital'
+    eWalletList: 'Daftar Dompet Digital',
+    thankyou: 'Terima Kasih!',
+    withdrawalRequest:
+      'Permintaan penarikan sedang diproses. Mohon tunggu maksimal 1x24 jam.',
+    transactionDetails: 'Detail Transaksi',
+    date: 'Tanggal',
+    refNum: 'Nomor Referensi',
+    withdraw: 'Penarikan',
+    admin: 'Admin',
+    adminFee: 'Biaya Admin',
+    adminFeeDiscount: 'Diskon Biaya Admin',
+    serviceFee: 'Biaya Layanan',
+    totalAmount: 'Jumlah Total',
+    paymentMethod: 'Metode Pembayaran',
+    id: 'Id Transaksi',
+    nominal: 'Nominal',
+    total: 'Total'
   },
   discover: {
     hotNews: 'Hot News',

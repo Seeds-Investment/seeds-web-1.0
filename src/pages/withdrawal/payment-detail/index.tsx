@@ -8,7 +8,6 @@ const PaymentIndex: React.FC = () => {
   const { date, ref, withdraw, adminFee, promoPrice, serviceFee } =
     router.query;
 
-  console.log(router.query);
   return (
     <PaymentDetail
       date={date as string}

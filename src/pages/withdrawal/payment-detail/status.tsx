@@ -6,8 +6,10 @@ import RectangleStatusPaymentTiny from '@/assets/play/quiz/RectangleStatusPaymen
 import withAuth from '@/helpers/withAuth';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 const StatusPayment: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <Card shadow={false} className="w-full rounded-xl relative h-[816px]">
       <div className="flex flex-col items-center bg-[#3AC4A0] rounded-t-xl relative h-[384px]">
@@ -25,25 +27,24 @@ const StatusPayment: React.FC = () => {
             className="w-[60px]"
           />
           <Typography className="font-poppins font-semibold text-2xl text-white text-center">
-            Thank You!
+            {t('quiz.thankyou')}
           </Typography>
           <Typography className="font-poppins font-normal text-sm text-white text-center">
-            Your withdrawal request is being processed. Please wait max 1x24
-            hours.
+            {t('quiz.withdrawalRequest')}
           </Typography>
         </div>
         <div className="mb-[70px] relative flex justify-center">
           <div className="absolute flex flex-col items-center ">
             <div className="flex flex-col gap-3 mt-6 mb-11">
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                Payment Method
+                {t('quiz.paymentMethod')}
               </Typography>
               <Image src={BCABank} alt="BCABank" className="w-[102px]" />
             </div>
             <div className="flex flex-col gap-6">
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                  Date
+                  {t('quiz.date')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                   2022-07-15 11:13:55 WIB
@@ -51,7 +52,7 @@ const StatusPayment: React.FC = () => {
               </div>
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                  Id Transaction
+                  {t('quiz.id')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                   12345678910
@@ -59,7 +60,7 @@ const StatusPayment: React.FC = () => {
               </div>
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                  Withdraw
+                  {t('quiz.withdraw')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                   IDR 100.000
@@ -67,7 +68,7 @@ const StatusPayment: React.FC = () => {
               </div>
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                  Admin
+                  {t('quiz.adminFee')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                   IDR 20.000
@@ -76,7 +77,7 @@ const StatusPayment: React.FC = () => {
               <div className="border-b border-[#BDBDBD]"></div>
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
-                  Nominal
+                  {t('quiz.nominal')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
                   IDR 80.000
@@ -85,7 +86,7 @@ const StatusPayment: React.FC = () => {
             </div>
             <div className=" flex justify-between w-[295px] mt-[50px]">
               <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                Total
+                {t('quiz.total')}
               </Typography>
               <Typography className="font-poppins font-semibold text-lg text-[#3AC4A0]">
                 IDR 80.000

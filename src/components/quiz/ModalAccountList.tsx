@@ -7,7 +7,7 @@ import { type IAccountList } from './Withdrawal';
 interface IModalAccountList {
   open: boolean;
   handleOpen: () => void;
-  setAccount: any;
+  setAccount: (key: string, value: any) => void;
   methodList: string;
   bankList: IAccountList[];
   eWalletList: IAccountList[];

@@ -4,6 +4,7 @@
 
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
+import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import moment from 'moment';
@@ -147,7 +148,9 @@ const QuizDetail = (): React.ReactElement => {
               className="text-lg text-[#7C7C7C]"
               dangerouslySetInnerHTML={{
                 __html: detailQuiz?.tnc
-                  ? String(detailQuiz.tnc).replace(/\n/g, '<br />')
+                  ? detailQuiz?.tnc[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ].replace(/\n/g, '<br />')
                   : '-'
               }}
             />

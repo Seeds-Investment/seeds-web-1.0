@@ -124,6 +124,19 @@ const DoneQuiz: React.FC = () => {
     }
   }, [id, userInfo]);
 
+  useEffect(() => {
+    if (
+      detailQuiz?.status === 'ENDED' &&
+      QuizReview?.rank != null &&
+      QuizReview?.rank < 4
+    ) {
+      router
+        .push(`/withdrawal?quizId=${id as string}`)
+        .then(() => {})
+        .catch(() => {});
+    }
+  }, [QuizReview?.rank, detailQuiz?.status, id, router]);
+
   const answerFilter = (
     data: any[]
   ): { correct: number; inCorrect: number } => {

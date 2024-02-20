@@ -1,5 +1,6 @@
 'use client';
-import Reward from '@/assets/landing-page/totalReward.svg';
+import Coin1080 from '@/constants/Coin1080.json';
+import Lottie from 'lottie-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,8 +58,8 @@ export default function Section5(): React.ReactElement {
             </h1>
           </div>
         </div>
-        <div className="lg:flex justify-center flex-row">
-          <Image alt="img" className="mt-5 lg:mx-0 lg:mt-20" src={Reward} />
+        <div className="flex justify-center">
+          <Lottie animationData={Coin1080} className="lg:w-[350px] w-[200px]" />
         </div>
       </div>
     </section>

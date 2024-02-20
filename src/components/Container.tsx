@@ -49,12 +49,6 @@ export default function Container({
             </div>
           </div>
         </div>
-        <div className="w-full h-1/2 flex justify-center">
-          <div
-            className="rounded-full bg-seeds-green blur-[100px]"
-            style={{ height: '700px', width: '700px' }}
-          />
-        </div>
         <div className="w-full h-1/2 justify-between flex">
           <div
             className="rounded-full bg-seeds-green blur-[100px] "

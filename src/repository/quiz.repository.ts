@@ -2,6 +2,7 @@ import baseAxios from '@/utils/common/axios';
 import {
   type JoinQuizI,
   type LifelineReqI,
+  type QuizCashoutI,
   type QuizStatus,
   type SubmitAnswerI
 } from '@/utils/interfaces/quiz.interfaces';
@@ -78,19 +79,8 @@ export const getQuizById = async ({
   currency: string;
 }): Promise<any> => {
   try {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
-
     const path = `/${id}?currency=${currency}`;
-    return await quizService.get(path, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
-      }
-    });
+    return await quizService.get(path);
   } catch (error) {
     console.error('Error fetching trending play list:', error);
   }
@@ -264,4 +254,18 @@ export const getLeaderBoardByQuizId = async (quizId: any): Promise<any> => {
   } catch (error) {
     console.error('Error fetching leaderboard by quiz id:', error);
   }
+};
+
+export const cashoutQuiz = async (payload: QuizCashoutI): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.post('/cashout', payload, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

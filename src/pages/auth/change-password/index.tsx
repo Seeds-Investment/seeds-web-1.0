@@ -5,12 +5,12 @@ import { useAppSelector } from '@/store/redux/store';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const ForgotPassword: React.FC = () => {
+const ChangePassword: React.FC = () => {
   const { dataUser } = useAppSelector(state => state.user);
   const [formData, setFormData] = useState({
     phoneNumber: dataUser.phoneNumber,
     password: '',
-    old_password: ''
+    oldPassword: ''
   });
 
   const element = (
@@ -24,4 +24,4 @@ const ForgotPassword: React.FC = () => {
   return <PassLayout elementChild={element} formChild={form} />;
 };
 
-export default ForgotPassword;
+export default ChangePassword;

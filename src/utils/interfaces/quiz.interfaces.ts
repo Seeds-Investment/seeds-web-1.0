@@ -36,11 +36,16 @@ export interface ParticipantLifeline {
   is_used: boolean;
 }
 
+export interface ITNC {
+  id: string;
+  en: string;
+}
+
 export interface IDetailQuiz {
   id: string;
   circle_category_id: string;
   name: string;
-  tnc: string;
+  tnc: ITNC;
   status: string;
   min_participant: number;
   max_participant: number;
@@ -68,7 +73,10 @@ export const initialDetailQuiz = {
   id: '',
   circle_category_id: '',
   name: '',
-  tnc: '',
+  tnc: {
+    id: '',
+    en: ''
+  },
   status: '',
   min_participant: 0,
   max_participant: 0,
@@ -213,4 +221,27 @@ export interface QuizReviewDataI {
   data: QuestionDataI;
   started_at: string;
   ended_at: string;
+}
+
+export interface QuizCashoutI {
+  quiz_id: string;
+  method: string;
+  account_name: string;
+  account_number: string;
+}
+
+export interface QuizCashoutRespI {
+  id: string;
+  user_id: string;
+  method: string;
+  account_name: string;
+  account_number: string;
+  reference_number: string;
+  description: string;
+  admin_fee: number;
+  promo_price: number;
+  service_fee: number;
+  raw_amount?: number;
+  created_at: string;
+  updated_at: string;
 }

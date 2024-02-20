@@ -3,6 +3,7 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowBackwardIcon, DeleteIcon } from 'public/assets/vector';
+import { type Dispatch, type SetStateAction } from 'react';
 
 interface VariablePin {
   pin: any;
@@ -12,6 +13,7 @@ interface VariablePin {
   emptyPinIndex: any;
   className: string;
   title: string;
+  setSelect: Dispatch<SetStateAction<number>>;
 }
 
 const ColNum = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -23,18 +25,22 @@ const ValidatePin: React.FC<VariablePin> = ({
   error,
   setError,
   className,
-  title
+  title,
+  setSelect
 }: VariablePin) => {
   return (
     <div className={`${className} justify-center`}>
       <Card className="flex items-center w-[947px] h-[721px] py-5">
         <form className="flex flex-col items-center w-[600px] h-full p-4">
-          <Link
-            href="/my-profile/edit-profile"
+          <Image
+            src={ArrowBackwardIcon}
+            alt="arrow-backward-icon"
+            onClick={() => {
+              setSelect((prev: number) => prev - 1);
+            }}
             className="absolute left-8 cursor-pointer"
-          >
-            <Image src={ArrowBackwardIcon} alt="arrow-backward-icon" />
-          </Link>
+          />
+
           <div className="flex flex-col items-center gap-[43px]">
             <Image src={SeedsPin} alt="SeedsPin" />
             <div className="flex flex-col gap-2">

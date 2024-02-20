@@ -42,11 +42,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
         setErrorPass(true);
         throw new Error(`${t('authForgotPass.validation.password')}`);
       }
-      if (formData.password !== formData.old_password) {
+      if (formData.password !== formData.oldPassword) {
         setErrorRepass(true);
         throw new Error(`${t('authForgotPass.validation.match')}`);
       }
-      if (passTest && formData.password === formData.old_password) {
+      if (passTest && formData.password === formData.oldPassword) {
         await forgotPassword(formData);
         handleOpen();
       }
@@ -92,9 +92,9 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handleRepass}
-          formData={formData.old_password}
+          formData={formData.oldPassword}
           error={errorRepass}
-          name="old_password"
+          name="oldPassword"
           label={t('authForgotPass.matchPassword.label')}
           placeholder={t('authForgotPass.matchPassword.placeholder')}
           handleSubmit={async (e: any) => {
@@ -116,7 +116,7 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <Button
         onClick={handleNext}
         disabled={
-          formData.password.length === 0 || formData.old_password.length === 0
+          formData.password.length === 0 || formData.oldPassword.length === 0
         }
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] disabled:bg-[#BDBDBD] rounded-full w-full"
       >

@@ -55,9 +55,12 @@ const Section1 = (): React.ReactElement => {
 
   const sliderSettings = {
     infinite: true,
-    speed: 500,
+    speed: 2000,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 3000
   };
 
   return (

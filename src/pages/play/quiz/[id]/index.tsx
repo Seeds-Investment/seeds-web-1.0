@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
+import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import moment from 'moment';
@@ -60,8 +60,8 @@ const QuizDetail = (): React.ReactElement => {
   );
 
   useEffect(() => {
-    if (id && userInfo !== undefined) {
-      getDetail(userInfo.preferredCurrency);
+    if (id) {
+      getDetail(userInfo?.preferredCurrency ?? '');
     }
   }, [id, userInfo]);
 
@@ -147,7 +147,9 @@ const QuizDetail = (): React.ReactElement => {
               className="text-lg text-[#7C7C7C]"
               dangerouslySetInnerHTML={{
                 __html: detailQuiz?.tnc
-                  ? detailQuiz?.tnc.replace(/\n/g, '<br />')
+                  ? detailQuiz?.tnc[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ].replace(/\n/g, '<br />')
                   : '-'
               }}
             />
@@ -155,7 +157,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="mt-4">
             <div className="text-lg font-semibold">Quiz Prize</div>
             <table className="mt-2">
-              {detailQuiz?.prizes.map((item, i) => (
+              {detailQuiz?.prizes?.map((item, i) => (
                 <tr key={i}>
                   <td className="inline-flex gap-2 border p-3 w-full">
                     <Image
@@ -228,7 +230,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="font-semibold text-xl">
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
-              : detailQuiz?.admission_fee.toLocaleString('id-ID', {
+              : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
                   currency:
                     userInfo?.preferredCurrency?.length > 0
                       ? userInfo?.preferredCurrency
@@ -238,14 +240,18 @@ const QuizDetail = (): React.ReactElement => {
           </div>
           <button
             onClick={() => {
-              if (detailQuiz?.participant_status === 'JOINED') {
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                router.push(`/play/quiz/${id}/start`);
+              if (localStorage.getItem('accessToken') !== null) {
+                if (detailQuiz?.participant_status === 'JOINED') {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  router.push(`/play/quiz/${id}/start`);
+                } else {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  router.push(`/play/quiz/${id}/welcome`).catch(err => {
+                    console.log(err);
+                  });
+                }
               } else {
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                router.push(`/play/quiz/${id}/welcome`).catch(err => {
-                  console.log(err);
-                });
+                router.push({ pathname: '/auth', query: { quizId: id } });
               }
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
@@ -260,4 +266,4 @@ const QuizDetail = (): React.ReactElement => {
   );
 };
 
-export default withAuth(QuizDetail);
+export default QuizDetail;

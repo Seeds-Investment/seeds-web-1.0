@@ -7,8 +7,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { checkSeedsTag } from '@/repository/auth.repository';
 import { postCloud } from '@/repository/cloud.repository';
-import { editUserInfo } from '@/repository/profile.repository';
-import { fetchUserData } from '@/store/redux/features/user';
+import { fetchUserData, updateUser } from '@/store/redux/features/user';
 import { useAppDispatch, useAppSelector } from '@/store/redux/store';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -104,7 +103,7 @@ const AccountInformation: React.FC = () => {
         ...updatedForm,
         birthDate: new Date(birthDate).toISOString()
       };
-      await editUserInfo(updatedForm);
+      await dispatch(updateUser(updatedForm));
       await dispatch(fetchUserData());
       await router.push('/my-profile');
     } catch (error: any) {
@@ -116,28 +115,30 @@ const AccountInformation: React.FC = () => {
       <Card
         className={`${
           select === 0 ? 'flex' : 'hidden'
-        } relative w-[947px] p-5 bg-transparent shadow-none md:bg-white md:shadow-md`}
+        } w-[947px] md:p-5 bg-transparent shadow-none md:bg-white md:shadow-md`}
       >
-        <Image
-          src={ArrowBackwardIcon}
-          alt="arrow-backward-icon"
-          className="absolute cursor-pointer"
-          onClick={() => {
-            router.back();
-          }}
-        />
-        <Button
-          onClick={handleSubmit}
-          className="!absolute right-5 font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
-          disabled={error || errorCheck}
-        >
-          {t('button.label.done')}
-        </Button>
-        <div className="flex flex-col gap-3">
+        <div className="relative flex items-center my-5 bg-white w-full py-8 md:p-0">
+          <Image
+            src={ArrowBackwardIcon}
+            alt="arrow-backward-icon"
+            className="absolute left-4 md:left-0 cursor-pointer"
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <Typography className="!absolute right-1/2 translate-x-1/2 font-poppins font-bold text-[#262626] text-base">
+            {t('setting.setting.accountInfo.title')}
+          </Typography>
+          <Button
+            onClick={handleSubmit}
+            className="!absolute right-4 md:right-0 font-poppins font-semibold text-[#3AC4A0] text-base bg-transparent shadow-none hover:shadow-none capitalize p-0 disabled:text-[#7C7C7C]"
+            disabled={error || errorCheck}
+          >
+            {t('button.label.done')}
+          </Button>
+        </div>
+        <div className="flex flex-col gap-3 bg-white">
           <div className="flex flex-col justify-center items-center gap-2">
-            <Typography className="font-montserrat font-bold text-[#262626] text-base">
-              {t('setting.setting.accountInfo.title')}
-            </Typography>
             {updateAvatar !== undefined && updateAvatar !== null ? (
               <img
                 src={URL.createObjectURL(updateAvatar)}
@@ -171,7 +172,7 @@ const AccountInformation: React.FC = () => {
               />
             )}
           </div>
-          <Card className="flex flex-col justify-center items-center gap-4 w-full shadow-none sm:shadow-md md:shadow-none p-4 md:p-0 ">
+          <div className="flex flex-col justify-center items-center gap-4 w-full p-4 md:pb-0">
             <SettingCommonInput
               divClassName="w-full"
               label={`${t('setting.setting.accountInfo.name')}`}
@@ -235,7 +236,7 @@ const AccountInformation: React.FC = () => {
                 </Typography>
               }
             />
-          </Card>
+          </div>
         </div>
       </Card>
       <AvatarList

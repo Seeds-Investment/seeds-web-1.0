@@ -67,6 +67,7 @@ const MainEmail: React.FC = () => {
         setError={setError}
         className={select === 0 ? 'flex' : 'hidden'}
         title="Enter Your PIN"
+        setSelect={setSelect}
       />
       <ChangeEmail form={form} setForm={setForm} select={select} />
     </PageGradient>

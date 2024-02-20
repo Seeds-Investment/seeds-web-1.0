@@ -83,7 +83,7 @@ const LogoLanguage: React.FC<ILogoLanguage> = ({
                   onClick={() => {
                     handleLanguageChange(item.language as 'EN' | 'ID');
                   }}
-                  key={item.id}
+                  key={index.toString()}
                 >
                   <Button
                     ripple={false}
@@ -131,7 +131,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
   return (
     <div
       className={`flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] ${
-        height >= 1040 ? 'h-full' : ''
+        height >= 700 ? 'h-full' : ''
       }`}
     >
       <div className="flex flex-col md:justify-center md:w-[37%] w-full h-full">

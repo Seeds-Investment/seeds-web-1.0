@@ -142,11 +142,12 @@ const QuizDetail = (): React.ReactElement => {
           </div>
           <div className="mt-4">
             <div className="text-lg font-semibold">Terms & Conditions</div>
+
             <div
               className="text-lg text-[#7C7C7C]"
               dangerouslySetInnerHTML={{
                 __html: detailQuiz?.tnc
-                  ? detailQuiz?.tnc.replace(/\n/g, '<br />')
+                  ? String(detailQuiz.tnc).replace(/\n/g, '<br />')
                   : '-'
               }}
             />

@@ -36,11 +36,16 @@ export interface ParticipantLifeline {
   is_used: boolean;
 }
 
+export interface ITNC {
+  id: string;
+  en: string;
+}
+
 export interface IDetailQuiz {
   id: string;
   circle_category_id: string;
   name: string;
-  tnc: string;
+  tnc: ITNC;
   status: string;
   min_participant: number;
   max_participant: number;
@@ -68,7 +73,10 @@ export const initialDetailQuiz = {
   id: '',
   circle_category_id: '',
   name: '',
-  tnc: '',
+  tnc: {
+    id: '',
+    en: ''
+  },
   status: '',
   min_participant: 0,
   max_participant: 0,

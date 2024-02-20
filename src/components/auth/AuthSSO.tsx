@@ -60,7 +60,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
     <>
       <div className="flex justify-center border-t w-full border-[#E9E9E9]">
         <Typography className="font-poppins font-light text-sm text-[#BDBDBD] -mt-2.5 bg-white w-fit px-3">
-          Or
+          {t('or')}
         </Typography>
       </div>
       <div className="flex gap-6">

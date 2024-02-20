@@ -147,7 +147,7 @@ const AuthRef: React.FC<IAuthRef> = ({
       open={open}
       handler={handleOpen}
       size="sm"
-      className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
+      className="flex flex-col items-center rounded-3xl min-w-full"
     >
       <DialogBody className="flex flex-col gap-4 p-10 items-center">
         <Image src={SeedyAuthRef} alt="SeedyAuthRef" className="w-[242px]" />

@@ -741,7 +741,7 @@ export default {
     wrongPassword: 'The password is incorrect',
     invalid: 'Invalid Phone Number or Password'
   },
-  or: 'or',
+  or: 'Or',
   registerPage: {
     title: {
       personalInfo: 'Register',

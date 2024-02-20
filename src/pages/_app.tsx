@@ -64,7 +64,8 @@ function App({
     router.pathname.startsWith('/user-setting') ||
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/chat') ||
-    router.pathname.startsWith('/faq');
+    router.pathname.startsWith('/faq') ||
+    router.pathname.startsWith('/withdrawal');
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   if (loginLayouts) {

@@ -2,6 +2,7 @@ import baseAxios from '@/utils/common/axios';
 import {
   type JoinQuizI,
   type LifelineReqI,
+  type QuizCashoutI,
   type QuizStatus,
   type SubmitAnswerI
 } from '@/utils/interfaces/quiz.interfaces';
@@ -253,4 +254,18 @@ export const getLeaderBoardByQuizId = async (quizId: any): Promise<any> => {
   } catch (error) {
     console.error('Error fetching leaderboard by quiz id:', error);
   }
+};
+
+export const cashoutQuiz = async (payload: QuizCashoutI): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.post('/cashout', payload, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

@@ -30,3 +30,9 @@ export const getHowToPay = async (url: string): Promise<any> => {
   const axios = baseAxios(url);
   return await axios.get('');
 };
+
+export const getWithdrawalList = async (currency?: string): Promise<any> => {
+  return await paymentService.get(
+    `/withdrawal/list?currency=${currency ?? 'IDR'}`
+  );
+};

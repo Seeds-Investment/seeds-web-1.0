@@ -50,6 +50,7 @@ const ForgotPin: React.FC = () => {
         emptyPinIndex={emptyPinIndex}
         className={select === 1 ? 'flex' : 'hidden'}
         title="Create Your New PIN"
+        setSelect={setSelect}
       />
       <PINModal open={open} handleOpen={handleOpen} />
     </>

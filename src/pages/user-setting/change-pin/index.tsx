@@ -50,6 +50,7 @@ const ChangePin: React.FC = () => {
         emptyPinIndex={emptyPinIndex}
         className={select === 0 ? 'flex' : 'hidden'}
         title="Enter Your PIN"
+        setSelect={setSelect}
       />
       <ValidatePin
         pin={pin}
@@ -59,6 +60,7 @@ const ChangePin: React.FC = () => {
         emptyPinIndex={emptyPinIndex}
         className={select === 1 ? 'flex' : 'hidden'}
         title="Create Your New PIN"
+        setSelect={setSelect}
       />
       <PINModal open={open} handleOpen={handleOpen} />
     </>

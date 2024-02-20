@@ -241,7 +241,7 @@ export interface QuizCashoutRespI {
   admin_fee: number;
   promo_price: number;
   service_fee: number;
-  withdraw?: number;
+  raw_amount?: number;
   created_at: string;
   updated_at: string;
 }

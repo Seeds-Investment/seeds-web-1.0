@@ -34,7 +34,7 @@ const Withdrawal: React.FC = () => {
     if (res?.id != null) {
       const params = {
         adminFee: res.admin_fee,
-        withdraw: res.withdraw,
+        withdraw: res.raw_amount,
         serviceFee: res.service_fee,
         promoPrice: res.promo_price,
         date: res.created_at,

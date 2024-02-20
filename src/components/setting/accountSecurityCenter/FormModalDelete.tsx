@@ -30,6 +30,7 @@ const FormModalDelete: React.FC<IFormModalDelete> = ({
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');
+    window.localStorage.removeItem('isBannerOpen');
     await signOut();
     await router.push('/');
   };

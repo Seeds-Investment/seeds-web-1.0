@@ -9,7 +9,7 @@ interface ISecuritySettingForm {
   form: any;
   label: string;
   textBlank: string;
-  extraChildren: any;
+  extraChildren?: any;
   onClick: () => void;
 }
 

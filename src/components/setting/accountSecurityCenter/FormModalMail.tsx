@@ -2,7 +2,6 @@ import PenMail from '@/assets/auth/PenMail.svg';
 import SeedyMail from '@/assets/auth/SeedyMail.png';
 import close from '@/assets/more-option/close.svg';
 import AuthCommonInput from '@/components/auth/AuthCommonInput';
-import ModalMail from '@/components/setting/accountSecurityCenter/ModalMail';
 import { checkEmail } from '@/repository/auth.repository';
 import { useAppSelector } from '@/store/redux/store';
 import {
@@ -14,10 +13,13 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-interface IEditFormModalMail {
+import ModalPrevent from './ModalPrevent';
+interface IFormModalMail {
   open: boolean;
   handleOpen: () => void;
   emailData: string;
+  setOpenMail: React.Dispatch<React.SetStateAction<boolean>>;
+  openMail: boolean;
 }
 
 interface IForm {
@@ -29,11 +31,13 @@ interface IForm {
   birthDate: string;
   phone: string;
 }
-const EditFormModalMail: React.FC<IEditFormModalMail> = ({
+const FormModalMail: React.FC<IFormModalMail> = ({
   open,
   handleOpen,
-  emailData
-}: IEditFormModalMail) => {
+  emailData,
+  setOpenMail,
+  openMail
+}: IFormModalMail) => {
   const { dataUser } = useAppSelector(state => state.user);
   const [error, setError] = useState(false);
   const [openVerifyMail, setVerifyMail] = useState(false);
@@ -59,6 +63,7 @@ const EditFormModalMail: React.FC<IEditFormModalMail> = ({
     e.preventDefault();
     try {
       await checkEmail(formData.email);
+      setOpenMail(!openMail);
       handleOpenVerify();
     } catch (error: any) {
       setError(true);
@@ -71,27 +76,27 @@ const EditFormModalMail: React.FC<IEditFormModalMail> = ({
         open={open}
         handler={handleOpen}
         size="sm"
-        className="p-8"
+        className="p-4 md:p-8 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
         dismiss={{ enabled: false }}
       >
         <Image
           src={close}
           alt="close"
-          className="absolute right-8 top-8 cursor-pointer z-10"
+          className="absolute right-4 top-4 md:right-8 md:top-8 cursor-pointer z-10"
           onClick={() => {
             handleOpen();
           }}
         />
 
-        <DialogBody className="flex flex-col items-center gap-5 p-0">
+        <DialogBody className="flex flex-col items-center gap-5 p-0 w-full">
           <Image src={SeedyMail} alt="SeedyMail" className="w-52 h-52" />
           <div className="flex flex-col gap-2 items-center">
-            <Typography className="font-poppins font-semibold text-xl text-[#262626]">
+            <Typography className="font-poppins font-semibold text-xl text-[#262626] text-center">
               {emailData !== ''
                 ? t('setting.setting.accountSecure.titleChangeMail1')
                 : t('setting.setting.accountSecure.titleMail1')}
             </Typography>
-            <Typography className="font-poppins font-light text-base text-[#7C7C7C]">
+            <Typography className="font-poppins font-light text-base text-[#7C7C7C] text-center">
               {emailData !== ''
                 ? t('setting.setting.accountSecure.titleChangeMail2')
                 : t('setting.setting.accountSecure.titleMail2')}
@@ -119,7 +124,11 @@ const EditFormModalMail: React.FC<IEditFormModalMail> = ({
               className="absolute right-[14px] top-[14px]"
             />
             <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-              {error ? t('authLogin.validation.login') : <br />}
+              {error ? (
+                t('setting.setting.accountSecure.validationEmail')
+              ) : (
+                <br />
+              )}
             </Typography>
           </div>
 
@@ -131,13 +140,13 @@ const EditFormModalMail: React.FC<IEditFormModalMail> = ({
           </Button>
         </DialogBody>
       </Dialog>
-      <ModalMail
+      <ModalPrevent
         open={openVerifyMail}
-        handleOpenVerify={handleOpenVerify}
-        handleOpen={handleOpen}
+        handleOpen={handleOpenVerify}
+        text={t('authForgotPass.modal.title3')}
       />
     </>
   );
 };
 
-export default EditFormModalMail;
+export default FormModalMail;

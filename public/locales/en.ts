@@ -729,7 +729,8 @@ export default {
       'Password must be 8 characters long and have both uppercase and lowercase letters.',
     modal: {
       title1: 'Success',
-      title2: 'The new password has been successfully created.'
+      title2: 'The new password has been successfully created.',
+      title3: 'Please check your email'
     }
   },
   validation: {
@@ -805,6 +806,8 @@ export default {
         blank1Card1: 'add your phone number',
         label2Card1: 'Password',
         blank2Card1: 'Create a new password',
+        label3Card1: 'Email',
+        blank3Card1: 'add your email',
         titleCard2: 'Associated Account',
         titleCard3: 'Delete Account',
         descriptionCard3:
@@ -821,6 +824,7 @@ export default {
         titleChangeNumber2: 'Enter your new phone number',
         validationNumber1: 'Oops, Phone Number already used',
         validationNumber2: 'Your phone number contains at least 6 digits',
+        validationEmail: 'Oops,  Your email already registered',
         prevent: {
           title: 'Account Security Update',
           password: 'Please bind your account with a phone number first',

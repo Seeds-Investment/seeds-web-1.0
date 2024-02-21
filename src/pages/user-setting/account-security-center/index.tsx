@@ -2,6 +2,7 @@ import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import AssociatedAccountButton from '@/components/setting/accountSecurityCenter/AssociatedAccountButton';
 import FormModalDelete from '@/components/setting/accountSecurityCenter/FormModalDelete';
+import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
 // import FormModalMail from '@/components/setting/accountSecurityCenter/FormModalMail';
 import FormModalNumber from '@/components/setting/accountSecurityCenter/FormModalNumber';
 import ModalPrevent from '@/components/setting/accountSecurityCenter/ModalPrevent';
@@ -33,9 +34,11 @@ const AccountSecurityCenter: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { dataUser } = useAppSelector(state => state.user);
+  console.log(dataUser);
   const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
   const [country, setCountry] = useState(101);
   const [openNumber, setOpenNumber] = useState(false);
+  const [openMail, setOpenMail] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
   const [openPreventPass, setOpenPreventPass] = useState(false);
@@ -43,6 +46,9 @@ const AccountSecurityCenter: React.FC = () => {
 
   const handleOpenDelete = (): void => {
     setOpenDelete(!openDelete);
+  };
+  const handleOpenMail = (): void => {
+    setOpenMail(!openMail);
   };
   const handleOpenPassword = (): void => {
     setOpenPassword(!openPassword);
@@ -65,6 +71,13 @@ const AccountSecurityCenter: React.FC = () => {
       className="w-full flex flex-col justify-center gap-4"
     >
       {/* TODO: MODAL SESSION */}
+      <FormModalMail
+        open={openMail}
+        handleOpen={handleOpenMail}
+        emailData={dataUser.email}
+        setOpenMail={setOpenMail}
+        openMail={openMail}
+      />
       <FormModalNumber
         open={openNumber}
         handleOpen={handleOpenNumber}
@@ -88,6 +101,12 @@ const AccountSecurityCenter: React.FC = () => {
         <Typography className="font-poppins font-semibold text-base text-[#262626] self-start">
           {t('setting.setting.accountSecure.titleCard1')}
         </Typography>
+        <SecuritySettingForm
+          onClick={handleOpenMail}
+          form={dataUser.email}
+          textBlank={t('setting.setting.accountSecure.blank3Card1')}
+          label={t('setting.setting.accountSecure.label3Card1')}
+        />
         <SecuritySettingForm
           onClick={handleOpenNumber}
           form={dataUser.phoneNumber.replace(
@@ -141,7 +160,6 @@ const AccountSecurityCenter: React.FC = () => {
           }
           textBlank={t('setting.setting.accountSecure.blank2Card1')}
           label={t('setting.setting.accountSecure.label2Card1')}
-          extraChildren={<></>}
         />
       </Card>
       <Card className="flex flex-col justify-center items-center gap-6 w-full shadow-none sm:shadow-md md:shadow-none p-4 lg:py-10 lg:px-32">

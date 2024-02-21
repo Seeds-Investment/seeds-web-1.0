@@ -51,7 +51,7 @@ const AppAds: React.FC = () => {
           }
           target="_blank"
         >
-          <Button className="capitalize font-semibold font-poppins md:text-sm text-[10px] leading-[14px] text-white rounded-full bg-[#3AC4A0] py-2 px-5 md:py-[15px] md:px-[36.5px] w-[115px] h-[30px] md:w-[178px] md:h-[50px]">
+          <Button className="capitalize font-semibold font-poppins md:text-sm text-[10px] leading-[14px] text-white rounded-full bg-[#3AC4A0] p-2 md:py-[15px] md:px-[36.5px] w-[115px] h-[30px] md:w-[178px] md:h-[50px]">
             {t('AppAds.button')}
           </Button>
         </Link>

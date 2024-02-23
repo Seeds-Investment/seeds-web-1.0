@@ -1,15 +1,94 @@
-import BCABank from '@/assets/play/quiz/BCABank.png';
 import BackgroundPayment from '@/assets/play/quiz/BackgroundPayment.svg';
 import ChecklistPayment from '@/assets/play/quiz/ChecklistPayment.svg';
 import RectangleStatusPayment from '@/assets/play/quiz/RectangleStatusPayment.svg';
 import RectangleStatusPaymentTiny from '@/assets/play/quiz/RectangleStatusPaymentTiny.svg';
 import withAuth from '@/helpers/withAuth';
+import { getWithdrawalList } from '@/repository/payment.repository';
+import { getQuizWithdraw } from '@/repository/quiz.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+interface PaymentDataI {
+  id: string;
+  rank: number;
+  user_id: string;
+  user_name: string;
+  quiz_id: string;
+  quiz_name: string;
+  amount: number;
+  fee_amount: number;
+  method: string;
+  account_name: string;
+  account_number: string;
+  status: string;
+  created_at: string;
+}
+
+export interface IAccountList {
+  id: string;
+  payment_gateway: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  service_fee: number;
+  promo_price: number;
+  is_active: boolean;
+  is_promo_available: boolean;
+  is_priority: boolean;
+}
+
 const StatusPayment: React.FC = () => {
+  const router = useRouter();
   const { t } = useTranslation();
+  const id = router.query.id;
+  const [loading, setLoading] = useState(true);
+  const [withdrawData, setWithdrawData] = useState<PaymentDataI>();
+  const [bankList, setBankList] = useState<IAccountList[]>([]);
+  const [eWalletList, setEWalletList] = useState<IAccountList[]>([]);
+
+  const fetchWithdrawStatus = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const res = await getQuizWithdraw(id as string);
+      // response from BE is array, always take index 0 for latest data
+      setWithdrawData(res?.data[0]);
+    } catch (error) {
+      console.error('Error fetching play simulation:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPaymentList = async (): Promise<void> => {
+    try {
+      const data = await getWithdrawalList();
+      setBankList(data.type_va);
+      setEWalletList(data.type_ewallet);
+    } catch (error) {
+      console.error('Error fetching play simulation:', error);
+    }
+  };
+
+  const getImageUrl = (type: string, name: string): string => {
+    const paymentMethod = type === 'BANK' ? bankList : eWalletList;
+    const formatedName = name.split(' ').reverse().join('_');
+    const matchingPayment = paymentMethod.find(
+      payment => payment.payment_method === formatedName
+    );
+    return matchingPayment != null ? matchingPayment.logo_url : '';
+  };
+
+  useEffect(() => {
+    if (typeof id === 'string') {
+      void fetchWithdrawStatus();
+    }
+    void fetchPaymentList();
+  }, [id]);
+
   return (
     <Card shadow={false} className="w-full rounded-xl relative h-[816px]">
       <div className="flex flex-col items-center bg-[#3AC4A0] rounded-t-xl relative h-[384px]">
@@ -39,23 +118,34 @@ const StatusPayment: React.FC = () => {
               <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
                 {t('quiz.paymentMethod')}
               </Typography>
-              <Image src={BCABank} alt="BCABank" className="w-[102px]" />
+              {!loading && (
+                <Image
+                  width={200}
+                  height={100}
+                  src={getImageUrl(
+                    withdrawData?.method as string,
+                    withdrawData?.account_name as string
+                  )}
+                  alt="BCABank"
+                  className="w-[102px]"
+                />
+              )}
             </div>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
                   {t('quiz.date')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  2022-07-15 11:13:55 WIB
+                  {withdrawData?.created_at}
                 </Typography>
               </div>
               <div className=" flex justify-between w-[295px]">
                 <Typography className="font-poppins font-semibold text-sm text-[#BDBDBD]">
                   {t('quiz.id')}
                 </Typography>
-                <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  12345678910
+                <Typography className="font-poppins text-right font-semibold text-sm text-[#262626]">
+                  {withdrawData?.id}
                 </Typography>
               </div>
               <div className=" flex justify-between w-[295px]">
@@ -63,7 +153,7 @@ const StatusPayment: React.FC = () => {
                   {t('quiz.withdraw')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  IDR 100.000
+                  IDR {withdrawData?.amount.toLocaleString('id-ID')}
                 </Typography>
               </div>
               <div className=" flex justify-between w-[295px]">
@@ -71,7 +161,7 @@ const StatusPayment: React.FC = () => {
                   {t('quiz.adminFee')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  IDR 20.000
+                  IDR {withdrawData?.fee_amount.toLocaleString('id-ID')}
                 </Typography>
               </div>
               <div className="border-b border-[#BDBDBD]"></div>
@@ -80,7 +170,13 @@ const StatusPayment: React.FC = () => {
                   {t('quiz.nominal')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  IDR 80.000
+                  IDR{' '}
+                  {withdrawData?.amount !== undefined &&
+                  withdrawData?.fee_amount !== undefined
+                    ? (
+                        withdrawData.amount - withdrawData.fee_amount
+                      ).toLocaleString('id-ID')
+                    : ''}
                 </Typography>
               </div>
             </div>
@@ -89,7 +185,13 @@ const StatusPayment: React.FC = () => {
                 {t('quiz.total')}
               </Typography>
               <Typography className="font-poppins font-semibold text-lg text-[#3AC4A0]">
-                IDR 80.000
+                IDR{' '}
+                {withdrawData?.amount !== undefined &&
+                withdrawData?.fee_amount !== undefined
+                  ? (
+                      withdrawData.amount - withdrawData.fee_amount
+                    ).toLocaleString('id-ID')
+                  : ''}
               </Typography>
             </div>
           </div>
@@ -105,7 +207,17 @@ const StatusPayment: React.FC = () => {
             className="lg:hidden flex"
           />
         </div>
-        <Button className="w-[343px] bg-[#3AC4A0] rounded-full">Ok</Button>
+        <Button
+          onClick={() => {
+            router
+              .push(`/play/`)
+              .then(() => {})
+              .catch(() => {});
+          }}
+          className="w-[343px] bg-[#3AC4A0] rounded-full"
+        >
+          Ok
+        </Button>
       </div>
     </Card>
   );

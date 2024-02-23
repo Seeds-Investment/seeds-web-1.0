@@ -1692,7 +1692,11 @@ export default {
     paymentMethod: 'Metode Pembayaran',
     id: 'Id Transaksi',
     nominal: 'Nominal',
-    total: 'Total'
+    total: 'Total',
+    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    score: 'Skor Kamu : ',
+    earn: ' Kamu Mendapatkan IDR ',
+    tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds'
   },
   discover: {
     hotNews: 'Hot News',

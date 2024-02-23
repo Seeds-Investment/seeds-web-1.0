@@ -6,10 +6,12 @@ import withAuth from '@/helpers/withAuth';
 import { getWithdrawalList } from '@/repository/payment.repository';
 import { getQuizWithdraw } from '@/repository/quiz.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface PaymentDataI {
   id: string;
@@ -56,8 +58,8 @@ const StatusPayment: React.FC = () => {
       const res = await getQuizWithdraw(id as string);
       // response from BE is array, always take index 0 for latest data
       setWithdrawData(res?.data[0]);
-    } catch (error) {
-      console.error('Error fetching play simulation:', error);
+    } catch (error: any) {
+      toast(`Error fetching Withdraw Status: ${error.message as string}`);
     } finally {
       setLoading(false);
     }
@@ -68,8 +70,8 @@ const StatusPayment: React.FC = () => {
       const data = await getWithdrawalList();
       setBankList(data.type_va);
       setEWalletList(data.type_ewallet);
-    } catch (error) {
-      console.error('Error fetching play simulation:', error);
+    } catch (error: any) {
+      toast(`Error fetching Payment List: ${error.message as string}`);
     }
   };
 
@@ -137,7 +139,9 @@ const StatusPayment: React.FC = () => {
                   {t('quiz.date')}
                 </Typography>
                 <Typography className="font-poppins font-semibold text-sm text-[#262626]">
-                  {withdrawData?.created_at}
+                  {moment(withdrawData?.created_at).format(
+                    'DD-MM-YYYY hh:mm:ss'
+                  )}
                 </Typography>
               </div>
               <div className=" flex justify-between w-[295px]">

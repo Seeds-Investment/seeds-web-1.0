@@ -11,6 +11,7 @@ export interface IWithdrawalAccount {
   method: string;
   account_name: string;
   account_number: string;
+  beneficiary_name: string;
 }
 
 const Withdrawal: React.FC = () => {
@@ -29,7 +30,8 @@ const Withdrawal: React.FC = () => {
       quiz_id: quizId as string,
       method: selectedAccount?.method as string,
       account_name: selectedAccount?.account_name as string,
-      account_number: selectedAccount?.account_number as string
+      account_number: selectedAccount?.account_number as string,
+      beneficiary_name: selectedAccount?.beneficiary_name as string
     });
     if (res?.id != null) {
       const params = {
@@ -38,11 +40,12 @@ const Withdrawal: React.FC = () => {
         serviceFee: res.service_fee,
         promoPrice: res.promo_price,
         date: res.created_at,
-        ref: res.reference_number
+        ref: res.reference_number,
+        id: quizId
       };
       router
         .push({
-          pathname: '/withdrawal/payment-detail',
+          pathname: `/withdrawal/payment-detail`,
           query: params
         })
         .then(() => {})

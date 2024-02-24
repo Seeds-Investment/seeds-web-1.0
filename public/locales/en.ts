@@ -1821,7 +1821,11 @@ export default {
     paymentMethod: 'Payment Method',
     id: 'Id Transaction',
     nominal: 'Nominal',
-    total: 'Total'
+    total: 'Total',
+    winnerModalTitle: 'Congrats you won the Quiz!',
+    score: 'Your Score : ',
+    earn: ' You earn IDR ',
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
   },
   discover: {
     hotNews: 'Hot News',

@@ -10,7 +10,8 @@ import SecuritySettingForm from '@/components/setting/accountSecurityCenter/Secu
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import countries from '@/constants/countries.json';
 import withAuth from '@/helpers/withAuth';
-import { useAppSelector } from '@/store/redux/store';
+import { fetchUserData } from '@/store/redux/features/user';
+import { useAppDispatch, useAppSelector } from '@/store/redux/store';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -33,8 +34,8 @@ const getCountry = (phone: string): CountryCodeInfo | undefined =>
 const AccountSecurityCenter: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { dataUser } = useAppSelector(state => state.user);
-  console.log(dataUser);
   const [countryInfo, setCountryInfo] = useState<CountryCodeInfo | undefined>();
   const [country, setCountry] = useState(101);
   const [openNumber, setOpenNumber] = useState(false);
@@ -65,6 +66,11 @@ const AccountSecurityCenter: React.FC = () => {
   useEffect(() => {
     setCountryInfo(getCountry(dataUser.phoneNumber));
   }, [dataUser.phoneNumber]);
+  useEffect(() => {
+    dispatch(fetchUserData())
+      .then()
+      .catch(() => {});
+  }, []);
   return (
     <PageGradient
       defaultGradient

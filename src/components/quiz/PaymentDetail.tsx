@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 interface PaymentDetailProps {
+  id: string;
   date: string;
   refNumber: string;
   withdraw: number;
@@ -16,6 +17,7 @@ interface PaymentDetailProps {
   serviceFee: number;
 }
 const PaymentDetail: React.FC<PaymentDetailProps> = ({
+  id,
   date,
   refNumber,
   withdraw,
@@ -123,7 +125,7 @@ const PaymentDetail: React.FC<PaymentDetailProps> = ({
             The withdrawal request would take one business day.
           </Typography>
         </div>
-        <Link href={'payment-detail/status'} className="self-center">
+        <Link href={`payment-detail/status?id=${id}`} className="self-center">
           <Button className="font-poppins font-semibold text-sm text-white w-[343px] rounded-full capitalize bg-[#3AC4A0] mt-2">
             Check Status
           </Button>

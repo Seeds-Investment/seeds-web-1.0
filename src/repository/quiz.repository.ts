@@ -269,3 +269,17 @@ export const cashoutQuiz = async (payload: QuizCashoutI): Promise<any> => {
     }
   });
 };
+
+export const getQuizWithdraw = async (quizId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.get(`/withdraw/${quizId}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};

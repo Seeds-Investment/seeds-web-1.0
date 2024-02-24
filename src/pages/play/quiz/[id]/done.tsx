@@ -3,6 +3,7 @@
 import { QuizDone, YourScore, YourScoreMobile } from '@/assets/play/quiz';
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
+import ModalQuizWinner from '@/components/quiz/ModalQuizWinner';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import ReccomendationCirclePopup from '@/components/quiz/recommendation-component';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -27,15 +28,20 @@ const DoneQuiz: React.FC = () => {
   useOnLeavePageConfirmation(false);
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isWinnerModalOpen, setIsWinnerModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const id = router.query.id;
   const width = useWindowInnerWidth();
   const handleOpen = (): void => {
     setIsOpen(!isOpen);
   };
+  const handleWinnerModalOpen = (): void => {
+    setIsWinnerModalOpen(!isOpen);
+  };
   const [loading, setLoading] = useState(true);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
+  const [prize, setPrize] = useState<number>(0);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -130,12 +136,17 @@ const DoneQuiz: React.FC = () => {
       QuizReview?.rank != null &&
       QuizReview?.rank < 4
     ) {
-      router
-        .push(`/withdrawal?quizId=${id as string}`)
-        .then(() => {})
-        .catch(() => {});
+      setIsWinnerModalOpen(true);
     }
   }, [QuizReview?.rank, detailQuiz?.status, id, router]);
+
+  useEffect(() => {
+    // Check if both detailQuiz and QuizReview are defined and valid
+    if (detailQuiz != null && QuizReview != null) {
+      const calculatedPrizeForRank = detailQuiz.prizes[QuizReview.rank - 1];
+      setPrize(calculatedPrizeForRank);
+    }
+  }, [detailQuiz, QuizReview]);
 
   const answerFilter = (
     data: any[]
@@ -312,6 +323,13 @@ const DoneQuiz: React.FC = () => {
             </CCard>
           </div>
         </div>
+        <ModalQuizWinner
+          quizId={id as string}
+          open={isWinnerModalOpen}
+          handleOpen={handleWinnerModalOpen}
+          score={QuizReview?.score as number}
+          prize={prize}
+        />
       </QuizLayoutComponent>
     </PageGradient>
   );

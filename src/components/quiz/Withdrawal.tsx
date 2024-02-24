@@ -128,15 +128,17 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
           readOnly={true}
           onClick={handleOpenAccountList}
         />
-        {/* <SettingCommonInput
+        <SettingCommonInput
           divClassName="w-full"
           label={t('quiz.accountName')}
           name=""
           placeholder={`${t('quiz.placeholderAccountName')}`}
-          value={''}
-          onChange={() => {}}
+          value={account?.beneficiary_name ?? ''}
+          onChange={data => {
+            handleSelectAccount('beneficiary_name', data.target.value);
+          }}
           className="!text-[#7C7C7C] !text-base !font-poppins !font-normal"
-        /> */}
+        />
         <SettingCommonInput
           divClassName="w-full"
           label={t('quiz.accountNumber')}

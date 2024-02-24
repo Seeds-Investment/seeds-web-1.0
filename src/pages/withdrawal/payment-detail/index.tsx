@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 const PaymentIndex: React.FC = () => {
   const router = useRouter();
-  const { date, ref, withdraw, adminFee, promoPrice, serviceFee } =
+  const { date, ref, withdraw, adminFee, promoPrice, serviceFee, id } =
     router.query;
 
   return (
@@ -16,6 +16,7 @@ const PaymentIndex: React.FC = () => {
       adminFee={parseInt(adminFee as string)}
       promoPrice={parseInt(promoPrice as string)}
       serviceFee={parseInt(serviceFee as string)}
+      id={id as string}
     />
   );
 };

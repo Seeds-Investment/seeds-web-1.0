@@ -4,13 +4,19 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const AppAds: React.FC = () => {
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
   const [isClose, setClose] = useState(false);
+
+  useEffect(() => {
+    if (window.localStorage.getItem('isBannerOpen') === 'false') {
+      setClose(true);
+    }
+  }, []);
   return (
     <Card
       shadow={false}
@@ -45,7 +51,7 @@ const AppAds: React.FC = () => {
           }
           target="_blank"
         >
-          <Button className="capitalize font-semibold font-poppins md:text-sm text-[10px] leading-[14px] text-white rounded-full bg-[#3AC4A0] py-2 px-5 md:py-[15px] md:px-[36.5px] w-[115px] h-[30px] md:w-[178px] md:h-[50px]">
+          <Button className="capitalize font-semibold font-poppins md:text-sm text-[10px] leading-[14px] text-white rounded-full bg-[#3AC4A0] p-2 md:py-[15px] md:px-[36.5px] w-[115px] h-[30px] md:w-[178px] md:h-[50px]">
             {t('AppAds.button')}
           </Button>
         </Link>
@@ -55,6 +61,7 @@ const AppAds: React.FC = () => {
           className="cursor-pointer md:w-6 w-5 md:h-6 h-5"
           onClick={() => {
             setClose(true);
+            window.localStorage.setItem('isBannerOpen', 'false');
           }}
         />
       </div>

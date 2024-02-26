@@ -37,6 +37,7 @@ const menu = [
 
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
+  const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
@@ -47,6 +48,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   };
 
   useEffect(() => {
+    setAccessToken(localStorage.getItem('accessToken') ?? '');
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
@@ -99,17 +101,25 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
             />
           </Link>
           <ul className="flex flex-col items-start w-full social-sidebar-list">
-            {menu.map((data, idx) => (
-              <Link
-                className={isLinkActive(data.url)}
-                href={data.url}
-                key={idx}
-                onClick={handleOpen}
-              >
-                <Image width={20} height={20} src={data.image} alt="" />
-                <h1>{data.title}</h1>
-              </Link>
-            ))}
+            {menu
+              .filter(value => {
+                if (accessToken === '') {
+                  return !value.title.includes('Profile');
+                } else {
+                  return true;
+                }
+              })
+              .map((data, idx) => (
+                <Link
+                  className={isLinkActive(data.url)}
+                  href={data.url}
+                  key={idx}
+                  onClick={handleOpen}
+                >
+                  <Image width={20} height={20} src={data.image} alt="" />
+                  <h1>{data.title}</h1>
+                </Link>
+              ))}
             <div className="flex flex-row">
               <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
                 <button
@@ -178,7 +188,9 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                 </button>
               </section>
             </div>
-            <div className="mx-auto">
+            <div
+              className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}
+            >
               <button
                 className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
                 onClick={() => {

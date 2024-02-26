@@ -32,6 +32,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           window.localStorage.setItem('accessToken', response.accessToken);
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
+          window.localStorage.setItem('isBannerOpen', 'true');
 
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());

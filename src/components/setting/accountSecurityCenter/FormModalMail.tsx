@@ -66,7 +66,7 @@ const FormModalMail: React.FC<IFormModalMail> = ({
       await checkEmail(formData.email);
       setOpenMail(!openMail);
       handleOpenVerify();
-      const updatedForm: any = { ...formData };
+      const updatedForm: IForm = { ...formData };
       await editUserInfo(updatedForm);
     } catch (error: any) {
       setError(true);

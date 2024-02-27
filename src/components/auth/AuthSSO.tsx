@@ -37,15 +37,33 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
           if (window.location.pathname === '/auth/register') {
-            await router.push('/homepage');
+            await router.push(
+              window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
+                ? `/play/quiz/${
+                    window.location.href?.split('?')[1]?.split('=')[1]
+                  }`
+                : '/homepage'
+            );
             toast(t('authLogin.SSO'), { type: 'error' });
           } else {
-            await router.push('/homepage');
+            await router.push(
+              window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
+                ? `/play/quiz/${
+                    window.location.href?.split('?')[1]?.split('=')[1]
+                  }`
+                : '/homepage'
+            );
           }
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
-          await router.push('register');
+          await router.push(
+            window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
+              ? `register?quizId=${
+                  window.location.href?.split('?')[1]?.split('=')[1]
+                }`
+              : 'register'
+          );
         }
       }
     } catch (error: any) {

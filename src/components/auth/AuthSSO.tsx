@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +17,8 @@ interface IAuthSSO {
 }
 
 const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -36,21 +39,17 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
 
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
-          if (window.location.pathname === '/auth/register') {
+          if (pathname === '/auth/register') {
             await router.push(
-              window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
-                ? `/play/quiz/${
-                    window.location.href?.split('?')[1]?.split('=')[1]
-                  }`
+              searchParams.get('quizId') !== null
+                ? `/play/quiz/${searchParams.get('quizId') as string}`
                 : '/homepage'
             );
             toast(t('authLogin.SSO'), { type: 'error' });
           } else {
             await router.push(
-              window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
-                ? `/play/quiz/${
-                    window.location.href?.split('?')[1]?.split('=')[1]
-                  }`
+              searchParams.get('quizId') !== null
+                ? `/play/quiz/${searchParams.get('quizId') as string}`
                 : '/homepage'
             );
           }
@@ -58,10 +57,8 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
           await router.push(
-            window.location.href?.split('?')[1]?.split('=')[0] === 'quizId'
-              ? `register?quizId=${
-                  window.location.href?.split('?')[1]?.split('=')[1]
-                }`
+            searchParams.get('quizId') !== null
+              ? `register?quizId=${searchParams.get('quizId') as string}`
               : 'register'
           );
         }
@@ -74,7 +71,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
     handleLoginSSO()
       .then()
       .catch(() => {});
-  }, [data]);
+  }, [data, searchParams.get('quizId')]);
   return (
     <>
       <div className="flex justify-center border-t w-full border-[#E9E9E9]">

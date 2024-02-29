@@ -18,7 +18,7 @@ const ForgotPassword: React.FC = () => {
     password: '',
     oldPassword: ''
   });
-  const [method, setMethod] = useState('whatsapp');
+  const [method, setMethod] = useState('sms');
   const [countdown, setCountdown] = useState(0);
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {

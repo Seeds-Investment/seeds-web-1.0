@@ -11,7 +11,7 @@ const ChangeNumber: React.FC = () => {
   const { number } = router.query;
   const [formData, setFormData] = useState({ phoneNumber: number });
   const [select, setSelect] = useState(1);
-  const [method, setMethod] = useState('whatsapp');
+  const [method, setMethod] = useState('sms');
   const [countdown, setCountdown] = useState(0);
 
   const getOTP = {

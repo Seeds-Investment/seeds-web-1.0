@@ -90,11 +90,9 @@ const SidebarLogin: React.FC = () => {
           </Link>
         ))}
       </ul>
-      <div className="mx-auto">
+      <div className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}>
         <button
-          className={`${
-            accessToken === '' ? 'hidden' : 'flex'
-          } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
+          className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
           onClick={() => {
             setIsLogoutModal(true);
           }}

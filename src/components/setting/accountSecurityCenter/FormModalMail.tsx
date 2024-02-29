@@ -136,8 +136,9 @@ const FormModalMail: React.FC<IFormModalMail> = ({
           </div>
 
           <Button
+            disabled={formData.email === ''}
             onClick={handleSubmit}
-            className="font-poppins font-semibold text-base text-white capitalize w-full bg-[#3AC4A0] rounded-full"
+            className="font-poppins font-semibold text-base text-white capitalize w-full bg-[#3AC4A0] rounded-full disabled:bg-[#DADADA]"
           >
             {t('setting.setting.accountSecure.confirm')}
           </Button>

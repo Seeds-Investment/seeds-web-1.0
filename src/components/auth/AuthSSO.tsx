@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,13 +18,13 @@ interface IAuthSSO {
 
 const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data } = useSession();
 
   const handleLoginSSO = async (): Promise<void> => {
+    const searchParams = new URLSearchParams(window.location.search);
     try {
       if (data !== null) {
         const response = await loginSSO({
@@ -71,7 +71,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
     handleLoginSSO()
       .then()
       .catch(() => {});
-  }, [data, searchParams.get('quizId')]);
+  }, [data]);
   return (
     <>
       <div className="flex justify-center border-t w-full border-[#E9E9E9]">

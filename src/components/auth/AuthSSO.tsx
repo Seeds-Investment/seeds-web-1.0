@@ -43,6 +43,8 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
             await router.push(
               searchParams.get('quizId') !== null
                 ? `/play/quiz/${searchParams.get('quizId') as string}`
+                : searchParams.get('withdrawal') !== null
+                ? '/withdrawal'
                 : '/homepage'
             );
             toast(t('authLogin.SSO'), { type: 'error' });
@@ -50,6 +52,8 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
             await router.push(
               searchParams.get('quizId') !== null
                 ? `/play/quiz/${searchParams.get('quizId') as string}`
+                : searchParams.get('withdrawal') !== null
+                ? '/withdrawal'
                 : '/homepage'
             );
           }
@@ -59,6 +63,10 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           await router.push(
             searchParams.get('quizId') !== null
               ? `register?quizId=${searchParams.get('quizId') as string}`
+              : searchParams.get('withdrawal') !== null
+              ? `register?withdrawal=${
+                  searchParams.get('withdrawal') as string
+                }`
               : 'register'
           );
         }

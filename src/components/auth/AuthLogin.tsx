@@ -31,7 +31,7 @@ const AuthLogin: React.FC = () => {
     return 2;
   };
   const router = useRouter();
-  const { quizId } = router.query;
+  const { quizId, withdrawal } = router.query;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
@@ -71,6 +71,8 @@ const AuthLogin: React.FC = () => {
         });
         if (quizId !== undefined) {
           await router.push(`/play/quiz/${quizId as string}`);
+        } else if (withdrawal !== undefined) {
+          await router.push(`/withdrawal`);
         } else {
           await router.push('/homepage');
           TrackerEvent({
@@ -126,6 +128,8 @@ const AuthLogin: React.FC = () => {
           await router.push(
             quizId !== undefined
               ? { pathname: '/auth', query: { quizId: quizId } }
+              : withdrawal !== undefined
+              ? { pathname: '/auth', query: { withdrawal: withdrawal } }
               : '/auth'
           );
         }}

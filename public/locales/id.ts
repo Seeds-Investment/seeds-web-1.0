@@ -1774,5 +1774,13 @@ export default {
     peopleList: 'Daftar Orang',
     explorePeopleList: 'Temukan pengguna yang cocok dengan Anda',
     dataNotFound: 'Data Tidak Ditemukan'
+  },
+  chat: {
+    personalEmptyState: 'Tidak ada percakapan',
+    communityEmptyState: 'Tidak ada percakapan komunitas',
+    selectUsername:
+      'You didn’t made any conversation yet, please select username.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community'
   }
 };

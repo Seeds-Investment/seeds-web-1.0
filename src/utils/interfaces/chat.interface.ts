@@ -49,9 +49,12 @@ export interface IGroupChatDetail {
   description: string;
   privacy: string;
   hashtags: string[];
-  deleted_by: string;
+  memberships: Record<string, unknown>;
+  created_by: string;
   created_at: string;
   updated_at: string;
+  total_memberships: number;
+  total_online: number;
 }
 
 export const initialGroupDetail = {
@@ -75,4 +78,20 @@ export interface IGroupMember {
   status: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface GetChatParams {
+  user_id?: string;
+  group_id?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+  unread?: boolean;
+}
+
+export interface SendMessageParams {
+  content_text?: string;
+  media_urls?: string[];
+  group_id?: string;
+  user_id?: string;
 }

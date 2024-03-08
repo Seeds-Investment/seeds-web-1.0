@@ -40,7 +40,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   setLoginForm
 }: IAuthRegister) => {
   const router = useRouter();
-  const { quizId } = router.query;
+  const { quizId, withdrawal } = router.query;
   const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
@@ -130,6 +130,8 @@ const AuthRegister: React.FC<IAuthRegister> = ({
           await router.push(
             quizId !== undefined
               ? { pathname: '/auth', query: { quizId: quizId } }
+              : withdrawal !== undefined
+              ? { pathname: '/auth', query: { withdrawal: withdrawal } }
               : '/auth'
           );
         }}

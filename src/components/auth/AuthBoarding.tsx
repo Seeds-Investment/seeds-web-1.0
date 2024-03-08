@@ -14,7 +14,7 @@ interface IAuthBoading {
 }
 
 const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
-  const { quizId } = useRouter().query;
+  const { quizId, withdrawal } = useRouter().query;
   const { t } = useTranslation();
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
@@ -43,6 +43,8 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
           href={
             quizId !== undefined
               ? `/auth/login?quizId=${quizId as string}`
+              : withdrawal !== undefined
+              ? `/auth/login?withdrawal=${withdrawal as string}`
               : '/auth/login'
           }
         >
@@ -54,6 +56,8 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
           href={
             quizId !== undefined
               ? `/auth/register?quizId=${quizId as string}`
+              : withdrawal !== undefined
+              ? `/auth/register?withdrawal=${withdrawal as string}`
               : '/auth/register'
           }
         >

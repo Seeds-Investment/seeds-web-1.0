@@ -2,10 +2,9 @@
 import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
-import withAuth from '@/helpers/withAuth';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface IWithdrawalAccount {
   method: string;
@@ -24,6 +23,15 @@ const Withdrawal: React.FC = () => {
   const joinPin = pin.join('');
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
+
+  const withAuthWithdrawal = async () => {
+    await router.push({ pathname: '/auth', query: { withdrawal: true } });
+  };
+  useEffect(() => {
+    if (window.localStorage.getItem('accessToken') === null) {
+      void withAuthWithdrawal();
+    }
+  }, []);
 
   const handleSubmit = async () => {
     const res = await submitQuizCashout({
@@ -82,4 +90,4 @@ const Withdrawal: React.FC = () => {
   return <>{submitLoading ? renderLoading() : renderContent()}</>;
 };
 
-export default withAuth(Withdrawal);
+export default Withdrawal;

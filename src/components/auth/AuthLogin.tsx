@@ -127,9 +127,9 @@ const AuthLogin: React.FC = () => {
         onClick={async () => {
           await router.push(
             quizId !== undefined
-              ? { pathname: '/auth', query: { quizId: quizId } }
+              ? { pathname: '/auth', query: { quizId } }
               : withdrawal !== undefined
-              ? { pathname: '/auth', query: { withdrawal: withdrawal } }
+              ? { pathname: '/auth', query: { withdrawal } }
               : '/auth'
           );
         }}

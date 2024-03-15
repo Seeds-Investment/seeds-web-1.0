@@ -11,10 +11,16 @@ interface props {
   data: Chat[];
   filter: GetListChatParams;
   handleFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleListClick: () => void;
   isLoading: boolean;
 }
 
-const ContactList: React.FC<props> = ({ data, filter, handleFormChange }) => {
+const ContactList: React.FC<props> = ({
+  data,
+  filter,
+  handleFormChange,
+  handleListClick
+}) => {
   return (
     <div className={`flex flex-col`}>
       <div className="flex justify-start gap-2">
@@ -36,7 +42,10 @@ const ContactList: React.FC<props> = ({ data, filter, handleFormChange }) => {
           <Image alt="Search" src={filterSearch} width={24} height={24} />
         </div>
       </div>
-      <div className={`flex flex-col max-h-[40vh] overflow-auto mt-4`}>
+      <div
+        onClick={handleListClick}
+        className={`flex flex-col max-h-[40vh] overflow-auto mt-4`}
+      >
         {data?.map((el: Chat) => {
           return <ChatList data={el} key={el.id} />;
         })}

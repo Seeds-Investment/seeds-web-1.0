@@ -1,5 +1,6 @@
 'use-client';
 import Button from '@/components/ui/button/Button';
+import { isGuest } from '@/helpers/guest';
 import {
   getArticle,
   getArticleByIdHome,
@@ -453,7 +454,9 @@ export default function ArticleDetailPage(): JSX.Element {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             onClick={() => {
-              copyValueWithUrl(articleDetail?.id ?? 0);
+              isGuest()
+                ? router.push('/auth')
+                : copyValueWithUrl(articleDetail?.id ?? 0);
             }}
           >
             <path

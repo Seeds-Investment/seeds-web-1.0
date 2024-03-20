@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -59,7 +60,9 @@ const AssetTrendingCard: React.FC<props> = ({
               router
                 .push(
                   `${
-                    playId !== undefined
+                    isGuest()
+                      ? '/auth'
+                      : playId !== undefined
                       ? `/homepage/assets/${data.id}?playId=${playId}`
                       : `/homepage/assets/${data.id}`
                   }`

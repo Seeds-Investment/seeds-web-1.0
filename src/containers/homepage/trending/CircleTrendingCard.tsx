@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import {
   DocumentTextIcon,
   HandThumbUpIcon,
@@ -40,9 +41,11 @@ export default function CircleTrendingCard({
       {data?.banner !== undefined && (
         <div
           onClick={() => {
-            router.push(`/connect/post/${data.id}`).catch(error => {
-              console.log(error);
-            });
+            router
+              .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
+              .catch(error => {
+                console.log(error);
+              });
           }}
           className="cursor-pointer"
         >

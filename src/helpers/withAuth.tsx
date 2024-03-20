@@ -1,5 +1,6 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
+import { isGuest } from '@/helpers/guest';
 import { getRefreshToken } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
@@ -17,7 +18,7 @@ const withAuth = (
       const checkAuth = async (): Promise<void> => {
         try {
           const response = await getUserInfo();
-          if (response === 'Access token not found') {
+          if ((response === 'Access token not found') && (isGuest() === false)) {
             await router
               .push('/')
               .then()

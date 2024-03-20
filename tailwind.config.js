@@ -148,14 +148,6 @@ module.exports = withMT({
             'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
           }
         }
-      },
-      typography: {
-        DEFAULT: {
-          css: {
-            h2: null,
-            h3: null
-          }
-        }
       }
     }
   },

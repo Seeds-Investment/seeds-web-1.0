@@ -95,3 +95,14 @@ export interface SendMessageParams {
   group_id?: string;
   user_id?: string;
 }
+
+export interface SearchUserChat {
+  id: string;
+  avatar: string;
+  rank: number;
+  name: string;
+  seedsTag: string;
+  followers: number;
+  followings: number;
+  isFollowed: boolean;
+}

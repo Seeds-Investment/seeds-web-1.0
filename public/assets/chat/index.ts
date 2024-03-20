@@ -14,4 +14,3 @@ export { default as seedyChatPersonal } from './seedsChatPersonal.png';
 export { default as sendChat } from './sendGreen.svg';
 export { default as emoji } from './smile.svg';
 export { default as threedotsVertical } from './threedots.svg';
-

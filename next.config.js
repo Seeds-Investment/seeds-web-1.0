@@ -20,7 +20,8 @@ const nextConfig = {
       'a.fsdn.com',
       'i.insider.com',
       'res.cloudinary.com',
-      'pict.sindonews.net'
+      'pict.sindonews.net',
+      'images.unsplash.com'
     ],
     remotePatterns: [
       {
@@ -70,7 +71,8 @@ const nextConfig = {
       'dev-assets.seeds.finance',
       'assets.seeds.finance',
       'cdn06.pramborsfm.com',
-      'i.pravatar.cc'
+      'i.pravatar.cc',
+      'images.unsplash.com'
     ],
     remotePatterns: [
       {

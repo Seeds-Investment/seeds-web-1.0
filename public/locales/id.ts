@@ -1555,7 +1555,9 @@ export default {
       text11: 'Peringkat Kamu',
       text12: 'Menangkan Hadiah setiap Bulan',
       text13: '"Sekarang di Desember"',
-      text14: 'Lihat lebih banyak'
+      text14: 'Lihat lebih banyak',
+      text15: 'Masuk untuk menuju arena bermain',
+      text16: 'Masuk untuk menuju permainan'
     },
     section3: {
       text1: 'Sumber semua utama berita keuangan terbaru',

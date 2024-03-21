@@ -1853,5 +1853,13 @@ export default {
     peopleList: 'People List',
     explorePeopleList: 'Find a User that suits you.',
     dataNotFound: 'Data Not Found'
+  },
+  chat: {
+    personalEmptyState: 'No Conversation',
+    communityEmptyState: 'No Community Chat',
+    selectUsername:
+      'You didn’t made any conversation yet, please select username.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community'
   }
 };

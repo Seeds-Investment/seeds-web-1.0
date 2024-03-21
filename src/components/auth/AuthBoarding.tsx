@@ -2,7 +2,7 @@ import { loginGuest } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -12,14 +12,14 @@ interface IAuthBoading {
 
 const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(false);
   const { quizId, withdrawal } = useRouter().query;
   const { t } = useTranslation();
 
   const handleGuest = async (): Promise<void> => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await loginGuest();
       if (response.status === 200) {
         window.localStorage.setItem('isBannerOpen', 'true');
@@ -30,12 +30,12 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
         window.localStorage.removeItem('refreshToken');
         window.localStorage.removeItem('expiresAt');
 
-        router.push('/homepage');
+        await router.push('/homepage');
       }
     } catch (error: any) {
       toast(error, { type: 'error' });
-      setLoading(false);
-      setError(true);
+      // setLoading(false);
+      // setError(true);
     }
   };
 

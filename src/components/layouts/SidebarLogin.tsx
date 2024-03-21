@@ -103,7 +103,7 @@ const SidebarLogin: React.FC = () => {
         ))}
       </ul>
       {isGuest() ? (
-        <Link href="/auth" className="flex mx-auto">
+        <Link href="/" className="flex mx-auto">
           <button className="flex bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full">
             Logout
           </button>

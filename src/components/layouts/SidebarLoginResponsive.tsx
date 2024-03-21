@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -24,16 +25,23 @@ interface props {
   handleOpen: any;
 }
 
-const menu = [
-  { title: 'Social', url: '/social', image: social },
-  { title: 'Homepage', url: '/homepage', image: homepage },
-  { title: 'Connect', url: '/connect', image: connect },
-  { title: 'Play', url: '/play', image: play },
-  { title: 'Setting', url: '/user-setting', image: setting },
-  // { title: 'Notification', url: '/setting', image: notification },
-  // { title: 'Chat', url: '/setting', image: chat },
-  { title: 'Profile', url: '/my-profile', image: profile }
-];
+const menu = isGuest()
+  ? [
+      { title: 'Social', url: '/social', image: social },
+      { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Connect', url: '/connect', image: connect },
+      { title: 'Play', url: '/play', image: play }
+    ]
+  : [
+      { title: 'Social', url: '/social', image: social },
+      { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Connect', url: '/connect', image: connect },
+      { title: 'Play', url: '/play', image: play },
+      { title: 'Setting', url: '/user-setting', image: setting },
+      // { title: 'Notification', url: '/setting', image: notification },
+      // { title: 'Chat', url: '/setting', image: chat },
+      { title: 'Profile', url: '/my-profile', image: profile }
+    ];
 
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
@@ -188,18 +196,26 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                 </button>
               </section>
             </div>
-            <div
-              className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}
-            >
-              <button
-                className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-                onClick={() => {
-                  setIsLogoutModal(true);
-                }}
+            {isGuest() ? (
+              <Link href="/" className="flex mx-auto">
+                <button className="flex justify-center items-center bg-red-500 text-white text-center font-semibold rounded-2xl py-2 px-11 w-full">
+                  <div>Logout</div>
+                </button>
+              </Link>
+            ) : (
+              <div
+                className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}
               >
-                Logout
-              </button>
-            </div>
+                <button
+                  className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+                  onClick={() => {
+                    setIsLogoutModal(true);
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </ul>
         </div>
       </div>

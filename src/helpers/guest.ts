@@ -1,5 +1,8 @@
 export const isGuest = (): boolean => {
-  const guest = window.localStorage.getItem('isGuest') ?? false;
+  const guest =
+    typeof window !== 'undefined'
+      ? window.localStorage.getItem('isGuest') ?? false
+      : false;
 
   if (guest === 'true') {
     return true;

@@ -219,13 +219,13 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
             </div>
           </div>
           <div
-            onClick={async() => await router.push('/auth')}
+            onClick={async () => await router.push('/auth')}
             className="hidden md:block w-full z-50 text-center bg-[#7555DA] py-2 mt-2 lg:mt-4 rounded-full text-white font-semibold hover:shadow-md duration-300 cursor-pointer"
           >
             {t('homepage.section2.text15')}
           </div>
           <div
-            onClick={async() => await router.push('/auth')}
+            onClick={async () => await router.push('/auth')}
             className="md:hidden w-full z-50 text-center bg-[#7555DA] py-2 mt-2 lg:mt-4 rounded-full text-white font-semibold hover:shadow-md duration-300 cursor-pointer"
           >
             {t('homepage.section2.text16')}
@@ -392,7 +392,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </h1>
               </div>
               <div className="lg:flex flex-row justify-end">
-                <div className="border lg:w-1/3 w-full justify-center text-center border-1 me-3 rounded-lg bg-[#7555DA] z-50">
+                <div className="border lg:w-1/3 w-full justify-center text-center border-1 me-3 rounded-lg bg-[#7555DA]">
                   <div className="">
                     <Image src={bestReward} alt="Next" width={72} height={72} />
                   </div>
@@ -409,7 +409,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                     </h1>
                   </div>
                 </div>
-                <div className="flex w-full lg:w-1/2 justify-end z-50">
+                <div className="flex w-full lg:w-1/2 justify-end">
                   <div className="w-1/2 border border-[#E9E9E9] shadow-md py-2 px-3 me-3 mt-2 justify-center text-center border-1 rounded-lg bg-white">
                     <h1 className="text-[22px] lg:text-lg mb-2 mt-3 font-semibold text-[#553BB8]">
                       2nd Rank

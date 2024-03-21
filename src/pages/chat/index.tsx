@@ -254,7 +254,7 @@ const ChatPages: React.FC = () => {
         await readGroupMessage(roomId as string);
       }
     } catch (error: any) {
-      toast(error, { type: 'error' });
+      toast('Oops! Error when try to get chat');
     } finally {
       setIsLoading(false);
       if (containerRef.current != null) {
@@ -267,10 +267,11 @@ const ChatPages: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await searchUser(searchFilter);
-      setSearchUserList(response.result);
-      console.log(response);
+      if (response !== null) {
+        setSearchUserList(response.result);
+      }
     } catch (error: any) {
-      toast(error, { type: 'error' });
+      toast('Oops! Error when try to search user');
     } finally {
       setIsLoading(false);
     }
@@ -547,7 +548,6 @@ const ChatPages: React.FC = () => {
                   variant="outlined"
                   className="rounded-full w-fit capitalize py-2 px-3 border border-[#3AC4A0]"
                   onClick={() => {
-                    console.log(isSearchPopupOpen);
                     handleDropdownOptionClick('New');
                   }}
                 >

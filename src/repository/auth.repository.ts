@@ -1,6 +1,7 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { type SearchUserChat } from '@/utils/interfaces/chat.interface';
 import type {
   IGetOtp,
   IVerifyOtp
@@ -293,7 +294,7 @@ export const searchUser = async ({
   search = '',
   page = 1,
   limit = 20
-}: SearchUserParams): Promise<any> => {
+}: SearchUserParams): Promise<{ result: SearchUserChat[] } | null> => {
   const accessToken = localStorage.getItem('accessToken');
   const path = Endpoints.user.search;
 

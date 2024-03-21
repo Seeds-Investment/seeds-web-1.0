@@ -94,14 +94,14 @@ export const sendPersonalMessage = async (
   });
 };
 
-export const readPersonalMessage = async (id: string): Promise<any> => {
+export const readPersonalMessage = async (id: string): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     toast('Access token not found');
   }
   const path = `${Endpoints.chat.readChat}/${id}/personal`;
-  return await baseUrl.put(path, null, {
+  await baseUrl.put(path, null, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
@@ -109,14 +109,14 @@ export const readPersonalMessage = async (id: string): Promise<any> => {
   });
 };
 
-export const readGroupMessage = async (id: string): Promise<any> => {
+export const readGroupMessage = async (id: string): Promise<void> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
     toast('Access token not found');
   }
   const path = `${Endpoints.chat.readChat}/${id}/group`;
-  return await baseUrl.put(path, null, {
+  await baseUrl.put(path, null, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

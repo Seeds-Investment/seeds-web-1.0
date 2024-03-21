@@ -49,7 +49,7 @@ const Homepage: React.FC = () => {
       <CCard className="p-3 mb-5">
         <Section2 userInfo={userInfo} />
       </CCard>
-      {isGuest() === false && (
+      {!isGuest() && (
         <CCard className="px-3 py-5 mb-5">
           <Section3 />
         </CCard>

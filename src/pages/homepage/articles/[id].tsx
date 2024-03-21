@@ -453,9 +453,9 @@ export default function ArticleDetailPage(): JSX.Element {
             viewBox="0 0 32 32"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => {
+            onClick={async() => {
               isGuest()
-                ? router.push('/auth')
+                ? await router.push('/auth')
                 : copyValueWithUrl(articleDetail?.id ?? 0);
             }}
           >

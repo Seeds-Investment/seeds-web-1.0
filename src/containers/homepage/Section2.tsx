@@ -219,13 +219,13 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
             </div>
           </div>
           <div
-            onClick={() => router.push('/auth')}
+            onClick={async() => await router.push('/auth')}
             className="hidden md:block w-full z-50 text-center bg-[#7555DA] py-2 mt-2 lg:mt-4 rounded-full text-white font-semibold hover:shadow-md duration-300 cursor-pointer"
           >
             {t('homepage.section2.text15')}
           </div>
           <div
-            onClick={() => router.push('/auth')}
+            onClick={async() => await router.push('/auth')}
             className="md:hidden w-full z-50 text-center bg-[#7555DA] py-2 mt-2 lg:mt-4 rounded-full text-white font-semibold hover:shadow-md duration-300 cursor-pointer"
           >
             {t('homepage.section2.text16')}

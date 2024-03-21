@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 
 const articleService = baseAxios(
@@ -36,7 +37,7 @@ export const getArticleHome = async (params: {
     const response = await articleService.get('/news/v1/all', {
       params,
       headers: {
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
 
@@ -60,7 +61,7 @@ export const getArticleByIdHome = async (id: string): Promise<any> => {
   try {
     const response = await articleService.get(`/news/v1/${id}`, {
       headers: {
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
     return { ...response, status: 200 };

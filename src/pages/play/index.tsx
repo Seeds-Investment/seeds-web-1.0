@@ -5,6 +5,7 @@ import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
 import TopQuiz from '@/containers/play/quiz/TopQuiz';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
@@ -18,6 +19,7 @@ import {
   TabsHeader
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -33,6 +35,7 @@ interface StatusQuizI {
 
 const Player = (): React.ReactElement => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(QuizStatus.STARTED);
   const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
   const [loading, setLoading] = useState(false);
@@ -93,33 +96,41 @@ const Player = (): React.ReactElement => {
     }
   }, [userInfo, activeTab, params]);
 
-  const statusQuiz: StatusQuizI[] = [
-    {
-      id: 0,
-      status: QuizStatus.MYQUIZ,
-      title: t('quiz.myQuiz')
-    },
-    {
-      id: 1,
-      status: QuizStatus.PUBLISHED,
-      title: t('quiz.open')
-    },
-    {
-      id: 2,
-      status: QuizStatus.STARTED,
-      title: t('quiz.active')
-    },
-    {
-      id: 3,
-      status: QuizStatus.ENDED,
-      title: t('quiz.ended')
-    },
-    {
-      id: 4,
-      status: QuizStatus.CANCELED,
-      title: t('quiz.canceled')
-    }
-  ];
+  const statusQuiz: StatusQuizI[] = isGuest()
+    ? [
+        {
+          id: 2,
+          status: QuizStatus.STARTED,
+          title: t('quiz.active')
+        }
+      ]
+    : [
+        {
+          id: 0,
+          status: QuizStatus.MYQUIZ,
+          title: t('quiz.myQuiz')
+        },
+        {
+          id: 1,
+          status: QuizStatus.PUBLISHED,
+          title: t('quiz.open')
+        },
+        {
+          id: 2,
+          status: QuizStatus.STARTED,
+          title: t('quiz.active')
+        },
+        {
+          id: 3,
+          status: QuizStatus.ENDED,
+          title: t('quiz.ended')
+        },
+        {
+          id: 4,
+          status: QuizStatus.CANCELED,
+          title: t('quiz.canceled')
+        }
+      ];
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -162,7 +173,11 @@ const Player = (): React.ReactElement => {
               <Tab
                 value="leaderboard"
                 onClick={() => {
-                  handleTabChange('leaderboard');
+                  isGuest()
+                    ? router.push('/auth').catch(error => {
+                        console.log(error);
+                      })
+                    : handleTabChange('leaderboard');
                 }}
                 className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
                   activeNavbar === 'leaderboard'
@@ -179,14 +194,16 @@ const Player = (): React.ReactElement => {
               </TabPanel>
               <TabPanel value="quiz">
                 <div className="bg-white rounded-lg p-0 lg:p-5">
-                  <div className="flex justify-center items-center gap-2">
-                    <input
-                      type="text"
-                      className="rounded-full border border-neutral-soft py-1.5 px-3 w-80"
-                      placeholder="Input your invitation code"
-                    />
-                    <Button variant="dark" label="Enter" />
-                  </div>
+                  {!isGuest() && (
+                    <div className="flex justify-center items-center gap-2">
+                      <input
+                        type="text"
+                        className="rounded-full border border-neutral-soft py-1.5 px-3 w-80"
+                        placeholder="Input your invitation code"
+                      />
+                      <Button variant="dark" label="Enter" />
+                    </div>
+                  )}
 
                   {/* Filter Section */}
                   <div className="flex flex-row items-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">

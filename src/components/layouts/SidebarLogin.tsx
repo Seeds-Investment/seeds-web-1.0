@@ -1,4 +1,5 @@
 import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
@@ -10,21 +11,30 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
+// import { useTranslation } from 'react-i18next';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
-const menu = [
-  { title: 'Social', url: '/social', image: social },
-  { title: 'Homepage', url: '/homepage', image: homepage },
-  { title: 'Connect', url: '/connect', image: connect },
-  { title: 'Play', url: '/play', image: play },
-  { title: 'Setting', url: '/user-setting', image: setting }
-  // { title: 'Notification', url : '/setting', image: notification},
-  // { title: 'Chat', url : '/setting', image: chat},
-  // { title: 'Profile', url : '/setting', image: setting},
-];
-
 const SidebarLogin: React.FC = () => {
+  const menu = isGuest()
+    ? [
+        { title: 'Social', url: '/social', image: social },
+        { title: 'Homepage', url: '/homepage', image: homepage },
+        { title: 'Connect', url: '/connect', image: connect },
+        { title: 'Play', url: '/play', image: play }
+      ]
+    : [
+        { title: 'Social', url: '/social', image: social },
+        { title: 'Homepage', url: '/homepage', image: homepage },
+        { title: 'Connect', url: '/connect', image: connect },
+        { title: 'Play', url: '/play', image: play },
+        { title: 'Setting', url: '/user-setting', image: setting }
+        // { title: 'Notification', url : '/setting', image: notification},
+        // { title: 'Chat', url : '/setting', image: chat},
+        // { title: 'Profile', url : '/setting', image: setting},
+      ];
+
+  // const { t } = useTranslation();
   const [accessToken, setAccessToken] = useState('');
   const width = useWindowInnerWidth();
   const router = useRouter();
@@ -35,19 +45,21 @@ const SidebarLogin: React.FC = () => {
   };
 
   useEffect(() => {
-    setAccessToken(localStorage.getItem('accessToken') ?? '');
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
+    if (!isGuest()) {
+      setAccessToken(localStorage.getItem('accessToken') ?? '');
+      const fetchData = async (): Promise<void> => {
+        try {
+          const dataInfo = await getUserInfo();
+          setUserInfo(dataInfo);
+        } catch (error: any) {
+          console.error('Error fetching data:', error.message);
+        }
+      };
 
-    fetchData()
-      .then()
-      .catch(() => {});
+      fetchData()
+        .then()
+        .catch(() => {});
+    }
   }, []);
 
   return (
@@ -90,18 +102,26 @@ const SidebarLogin: React.FC = () => {
           </Link>
         ))}
       </ul>
-      <div className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}>
-        <button
-          className={`${
-            accessToken === '' ? 'hidden' : 'flex'
-          } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
-          onClick={() => {
-            setIsLogoutModal(true);
-          }}
-        >
-          Logout
-        </button>
-      </div>
+      {isGuest() ? (
+        <Link href="/auth" className="flex mx-auto">
+          <button className="flex bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full">
+            Logout
+          </button>
+        </Link>
+      ) : (
+        <div className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}>
+          <button
+            className={`${
+              accessToken === '' ? 'hidden' : 'flex'
+            } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
+            onClick={() => {
+              setIsLogoutModal(true);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-export const isGuest = () => {
+export const isGuest = (): boolean => {
   const guest = window.localStorage.getItem('isGuest') ?? false;
 
   if (guest === 'true') {

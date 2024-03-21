@@ -18,7 +18,7 @@ const withAuth = (
       const checkAuth = async (): Promise<void> => {
         try {
           const response = await getUserInfo();
-          if (response === 'Access token not found' && isGuest() === false) {
+          if (response === 'Access token not found' && !isGuest()) {
             await router
               .push('/')
               .then()

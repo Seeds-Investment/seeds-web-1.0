@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ChatIcon from '../svgs/chatIcon';
 import NotificationIcon from '../svgs/notificationIcon';
 import Logo from '../ui/vector/Logo';
@@ -178,7 +179,16 @@ const HeaderLogin: React.FC = () => {
               </div>
             </section>
             <section>
-              <ChatIcon />
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push('/chat').catch(err => {
+                    toast(err);
+                  });
+                }}
+              >
+                <ChatIcon />
+              </div>
             </section>
             {accessToken !== null && userInfo !== null ? (
               <Link href="/my-profile">

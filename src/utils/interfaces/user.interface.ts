@@ -30,3 +30,9 @@ export interface IOtherUserProfile {
   updated_at: string;
   verified: boolean;
 }
+
+export interface SearchUserParams {
+  search?: string;
+  page?: number;
+  limit?: number;
+}

@@ -18,7 +18,7 @@ export const getListChat = async ({
   search = '',
   page = 1,
   limit = 10,
-  unread = true
+  unread = false
 }: GetListChatParams): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
   const chatType = type === 'COMMUNITY' ? 'group' : type.toLowerCase();
@@ -87,6 +87,36 @@ export const sendPersonalMessage = async (
   }
   const path = Endpoints.chat.sendPersonalChat;
   return await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const readPersonalMessage = async (id: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = `${Endpoints.chat.readChat}/${id}/personal`;
+  await baseUrl.put(path, null, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const readGroupMessage = async (id: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = `${Endpoints.chat.readChat}/${id}/group`;
+  await baseUrl.put(path, null, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

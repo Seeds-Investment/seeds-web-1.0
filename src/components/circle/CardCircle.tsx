@@ -1,5 +1,6 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
 import {
   DocumentTextIcon,
   HandThumbUpIcon,
@@ -45,9 +46,11 @@ export default function CardCircle({
       {data?.cover !== undefined && (
         <div
           onClick={() => {
-            router.push(`/connect/post/${data.id}`).catch(error => {
-              console.log(error);
-            });
+            router
+              .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
+              .catch(error => {
+                console.log(error);
+              });
             TrackerEvent({
               event: `Seeds_view_circle_detail_page_web`,
               userId: userInfo?.id,

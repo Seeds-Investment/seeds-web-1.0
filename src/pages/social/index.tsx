@@ -6,6 +6,7 @@ import ModalMention from '@/containers/circle/[id]/ModalMention';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -78,7 +79,9 @@ const initialFilter = {
 const Social: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string>('following');
+  const [activeTab, setActiveTab] = useState<string>(
+    isGuest() ? 'for_you' : 'following'
+  );
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -275,6 +278,9 @@ const Social: React.FC = () => {
 
   useEffect(() => {
     void fetchUserInfo();
+    if (isGuest()) {
+      void fetchPostForYou();
+    }
   }, []);
 
   const renderLoading = (): JSX.Element => (
@@ -352,20 +358,26 @@ const Social: React.FC = () => {
         filter={filter}
       />
 
-      <div className="fixed bottom-10 right-10 z-20">
-        <div className="bg-[#3AC4A0] p-2 rounded-full">
-          <PlusIcon
-            width={50}
-            height={50}
-            className="text-white"
-            onClick={() => {
-              setIsOpenModalAdd(true);
-            }}
-          />
+      {!isGuest() && (
+        <div className="fixed bottom-10 right-10 z-20">
+          <div className="bg-[#3AC4A0] p-2 rounded-full">
+            <PlusIcon
+              width={50}
+              height={50}
+              className="text-white"
+              onClick={() => {
+                setIsOpenModalAdd(true);
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      <Card2 userData={userInfo} handleOpen={handleOpen} />
+      {isGuest() ? (
+        <></>
+      ) : (
+        <Card2 userData={userInfo} handleOpen={handleOpen} />
+      )}
 
       <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
         <div className="flex justify-end">

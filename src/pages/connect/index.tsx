@@ -221,8 +221,6 @@ const Circle = (): React.ReactElement => {
   const fetchCircle = async (page: number, search: string): Promise<void> => {
     try {
       const response = await getCircle({ ...filter, page, search });
-
-      console.log('rez getcircle ', response)
       const newData = response.data !== null ? response.data : [];
 
       if (filter.page === 1) {
@@ -289,8 +287,6 @@ const Circle = (): React.ReactElement => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
-
-  console.log(setUserInfo);
 
   const categories = [
     'All',

@@ -51,6 +51,10 @@ interface IChangePassword {
   password: string;
 }
 
+interface LoginGuestResponse {
+  status: number;
+}
+
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('login/phone-number', formData);
@@ -60,7 +64,7 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   }
 };
 
-export const loginGuest = async (): Promise<any> => {
+export const loginGuest = async (): Promise<LoginGuestResponse> => {
   const response = { status: 200 }
   return response
 };

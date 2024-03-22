@@ -9,6 +9,7 @@ import {
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 interface Circle {
   id: string;
@@ -49,7 +50,7 @@ export default function CardCircle({
             router
               .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
               .catch(error => {
-                console.log(error);
+                toast(error, { type: 'error' });
               });
             TrackerEvent({
               event: `Seeds_view_circle_detail_page_web`,

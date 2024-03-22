@@ -41,8 +41,8 @@ export default function CircleTrendingCard({
     >
       {data?.banner !== undefined && (
         <div
-          onClick={() => {
-            router
+          onClick={async() => {
+            await router
               .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
               .catch(error => {
                 toast(error, { type: 'error' });

@@ -1148,7 +1148,7 @@ const PostSection: React.FC<props> = ({
                   <div
                     className="cursor-pointer flex gap-2"
                     onClick={async () => {
-                      router
+                      await router
                         .push(
                           isGuest()
                             ? '/auth'

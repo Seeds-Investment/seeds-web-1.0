@@ -8,7 +8,6 @@ import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircle,
-  getCircleCategories,
   getCircleLeaderBoard
 } from '@/repository/circle.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -59,7 +58,7 @@ const initialFilter = {
   limit: 15,
   page: 1,
   sort_by: '',
-  type: 'my_circle'
+  type: 'my_circle',
 };
 
 const dropdownValue = [
@@ -222,6 +221,8 @@ const Circle = (): React.ReactElement => {
   const fetchCircle = async (page: number, search: string): Promise<void> => {
     try {
       const response = await getCircle({ ...filter, page, search });
+
+      console.log('rez getcircle ', response)
       const newData = response.data !== null ? response.data : [];
 
       if (filter.page === 1) {
@@ -240,26 +241,29 @@ const Circle = (): React.ReactElement => {
     }
   };
 
-  const fetchCircleCategory = async (): Promise<void> => {
-    try {
-      const response = await getCircleCategories({ page: 1, limit: 200 });
-      if (response.data === null) {
-        // setCircleCategory([]);
-      } else {
-        // setCircleCategory(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // Fitur belum berjalan. Creator: Redika
+
+  // const fetchCircleCategory = async (): Promise<void> => {
+  //   try {
+  //     const response = await getCircleCategories({ page: 1, limit: 200 });
+  //     console.log('rez : ', response)
+  //     if (response.data === null) {
+  //       setCircleCategory([]);
+  //     } else {
+  //       setCircleCategory(response.data);
+  //     }
+  //   } catch (error) {
+  //     toast(error, { type: 'error' });
+  //   }
+  // };
 
   useEffect(() => {
     void fetchCircleLeaderBoard();
   }, []);
 
-  useEffect(() => {
-    void fetchCircleCategory();
-  }, [activeCategory]);
+  // useEffect(() => {
+  //   void fetchCircleCategory();
+  // }, [activeCategory]);
 
   useEffect(() => {
     void fetchCircle(1, filter.search);
@@ -299,7 +303,7 @@ const Circle = (): React.ReactElement => {
     'Forex',
     'Finance'
   ];
-
+  
   return (
     <PageGradient defaultGradient className="w-full">
       {!isGuest() && <BannerCircleList />}

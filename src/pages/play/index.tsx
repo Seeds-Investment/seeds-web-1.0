@@ -172,9 +172,9 @@ const Player = (): React.ReactElement => {
               </Tab>
               <Tab
                 value="leaderboard"
-                onClick={() => {
+                onClick={async() => {
                   isGuest()
-                    ? router.push('/auth').catch(error => {
+                    ? await router.push('/auth').catch(error => {
                       toast(error, { type: 'error' });
                       })
                     : handleTabChange('leaderboard');

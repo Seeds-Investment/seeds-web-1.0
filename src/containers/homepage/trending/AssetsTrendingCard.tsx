@@ -56,8 +56,8 @@ const AssetTrendingCard: React.FC<props> = ({
       className={`w-full my-3 bg-[#F9F9F9] ${isClick ? 'cursor-pointer' : ''}`}
       onClick={
         isClick
-          ? () => {
-              router
+          ? async() => {
+              await router
                 .push(
                   `${
                     isGuest()

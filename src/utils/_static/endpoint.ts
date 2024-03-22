@@ -19,6 +19,11 @@ export default class Endpoints {
     getAllCommentChat: '/chat/v1/note/:id/comments',
     rateCommenChat: '/chat/v1/comment/like',
     getChatSettings: '/chat/v1/settings',
-    updateChatSettings: '/chat/v1/settings'
+    updateChatSettings: '/chat/v1/settings',
+    readChat: '/chat/v1/message/read'
+  };
+
+  static user = {
+    search: '/search'
   };
 }

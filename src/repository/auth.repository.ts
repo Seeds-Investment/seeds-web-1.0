@@ -1,9 +1,12 @@
+import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { type SearchUserChat } from '@/utils/interfaces/chat.interface';
 import type {
   IGetOtp,
   IVerifyOtp
 } from '@/utils/interfaces/payload.interfaces';
+import { type SearchUserParams } from '@/utils/interfaces/user.interface';
 
 const authService = baseAxios(
   `${
@@ -290,4 +293,25 @@ export const registerNewUser = async (formData: {
     console.log(error);
     return await Promise.resolve(null);
   }
+};
+
+export const searchUser = async ({
+  search = '',
+  page = 1,
+  limit = 20
+}: SearchUserParams): Promise<{ result: SearchUserChat[] } | null> => {
+  const accessToken = localStorage.getItem('accessToken');
+  const path = Endpoints.user.search;
+
+  if (isUndefindOrNull(accessToken)) {
+    return await Promise.resolve(null);
+  }
+
+  return await userService.get(path, {
+    params: { search, page, limit },
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

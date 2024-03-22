@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import bestReward from '../../../public/assets/images/bestReward.svg';
 import goldHome from '../../../public/assets/images/goldHome.svg';
 import rectangle from '../../assets/RectangleHome.png';
@@ -367,7 +368,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 router
                   .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
                   .catch(err => {
-                    console.log(err);
+                    toast(err, { type: 'error' });
                   });
               }}
             >

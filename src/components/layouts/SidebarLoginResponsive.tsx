@@ -17,6 +17,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -62,7 +63,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
         const dataInfo = await getUserInfo();
         setUserInfo(dataInfo);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast(error.message, { type: 'error' });
       }
     };
 

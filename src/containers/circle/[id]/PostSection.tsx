@@ -43,6 +43,7 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import PDFViewer from './PDFViewer';
 
 interface props {
@@ -739,22 +740,22 @@ const PostSection: React.FC<props> = ({
     }
   }, []);
 
-  const [expanded, setExpanded] = useState(false);
-  const redirectToPaymentPostPremium = (): any => {
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const redirectToPaymentPostPremium = (): void => {
     router
       .push(isGuest() ? '/auth' : `/social/payment/${dataPost.id as number}`)
       .catch(error => {
-        console.log(error);
+        toast(error, { type: 'error' });
       });
   };
-  const handleSeeMore = (text: string, maxWords: number): any => {
+  const handleSeeMore = (text: string, maxWords: number): JSX.Element => {
     const words = text.split(' ');
 
     const displayText =
       dataPost.status_payment === true
         ? text
         : expanded
-        ? redirectToPaymentPostPremium()
+        ? (redirectToPaymentPostPremium(), '')
         : words.slice(0, maxWords).join(' ');
 
     return (
@@ -1154,7 +1155,7 @@ const PostSection: React.FC<props> = ({
                             : `/connect/comment/${dataPost.id as string}`
                         )
                         .catch((err: any) => {
-                          console.error(err);
+                          toast(err, { type: 'error' });
                         });
                     }}
                   >
@@ -1175,7 +1176,7 @@ const PostSection: React.FC<props> = ({
                         ? await router.push('/auth')
                         : handleCopyClick(`${dataPost.id as string}`).catch(
                             err => {
-                              console.log(err);
+                              toast(err, { type: 'error' });
                             }
                           );
                     }}

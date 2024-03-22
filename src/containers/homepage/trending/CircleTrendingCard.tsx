@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export interface CircleInterface {
   banner: string;
@@ -44,7 +45,7 @@ export default function CircleTrendingCard({
             router
               .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
               .catch(error => {
-                console.log(error);
+                toast(error, { type: 'error' });
               });
           }}
           className="cursor-pointer"

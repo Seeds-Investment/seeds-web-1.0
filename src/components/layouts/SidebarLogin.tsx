@@ -12,6 +12,7 @@ import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -52,7 +53,7 @@ const SidebarLogin: React.FC = () => {
           const dataInfo = await getUserInfo();
           setUserInfo(dataInfo);
         } catch (error: any) {
-          console.error('Error fetching data:', error.message);
+          toast(error.message, { type: 'error' });
         }
       };
 

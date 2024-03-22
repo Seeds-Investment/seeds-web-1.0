@@ -175,7 +175,7 @@ const Player = (): React.ReactElement => {
                 onClick={() => {
                   isGuest()
                     ? router.push('/auth').catch(error => {
-                        console.log(error);
+                      toast(error, { type: 'error' });
                       })
                     : handleTabChange('leaderboard');
                 }}

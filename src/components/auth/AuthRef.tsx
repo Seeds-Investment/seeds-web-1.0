@@ -1,5 +1,6 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
 import TrackerEvent from '@/helpers/GTM';
+import withRedirect from '@/helpers/withRedirect';
 import {
   checkRefCode,
   loginPhoneNumber,
@@ -51,7 +52,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   const [loadingSkip, setLoadingSkip] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { quizId } = router.query;
+  const isQuery = Object.keys(router.query).length > 0;
   const [error, setError] = useState(false);
 
   const handleTracker = async (): Promise<void> => {
@@ -63,8 +64,8 @@ const AuthRef: React.FC<IAuthRef> = ({
       userId: responseUser.id
     });
     handleOpen();
-    if (quizId !== undefined) {
-      await router.push(`/play/quiz/${quizId as string}`);
+    if (isQuery) {
+      await withRedirect(router, router.query);
     } else {
       await router.push('/homepage');
       TrackerEvent({

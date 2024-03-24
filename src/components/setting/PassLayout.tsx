@@ -3,6 +3,7 @@ import AuthGlobeLanguage from '@/assets/auth/AuthGlobeLanguage.svg';
 import SeedsLogo from '@/assets/landing-page/header/SeedsLogo.svg';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
   Menu,
@@ -12,7 +13,8 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface IPassLayout {
   elementChild: any;
@@ -113,16 +115,27 @@ const PassLayout: React.FC<IPassLayout> = ({
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
   const [open, setOpen] = useState(false);
   const [height, setHeight] = useState(0);
-  const handleLanguageChange = (language: 'EN' | 'ID'): void => {
+  const handleLanguageChange = async (language: 'EN' | 'ID'): Promise<void> => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
-    setTranslationToLocalStorage(language).catch(err => {
-      console.log(err);
-    });
+    await setTranslationToLocalStorage(language);
     setOpen(!open);
   };
+
+  const getLastTranslation = useCallback(async (): Promise<void> => {
+    try {
+      if (typeof window !== 'undefined') {
+        const translation = getLocalStorage('translation', 'EN');
+        languageCtx.languageHandler(translation as 'EN' | 'ID');
+        setSelectedLanguage(translation);
+      }
+    } catch {
+      toast.error('Error in translation');
+    }
+  }, []);
   useEffect(() => {
     setHeight(window.innerHeight);
+    void getLastTranslation();
   }, []);
   return (
     <div

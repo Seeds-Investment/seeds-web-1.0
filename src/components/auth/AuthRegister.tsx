@@ -2,6 +2,7 @@ import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth/AuthNumber';
 import AuthPassword from '@/components/auth/AuthPassword';
+import withRedirect from '@/helpers/withRedirect';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -40,7 +41,6 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   setLoginForm
 }: IAuthRegister) => {
   const router = useRouter();
-  const { quizId, withdrawal } = router.query;
   const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorPass, setErrorPass] = useState(false);
@@ -127,13 +127,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push(
-            quizId !== undefined
-              ? { pathname: '/auth', query: { quizId: quizId } }
-              : withdrawal !== undefined
-              ? { pathname: '/auth', query: { withdrawal: withdrawal } }
-              : '/auth'
-          );
+          await withRedirect(router, router.query, '/auth');
         }}
       />
       <Image

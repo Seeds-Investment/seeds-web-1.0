@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import withRedirect from '@/helpers/withRedirect';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
@@ -32,7 +33,7 @@ const QuizDetail = (): React.ReactElement => {
 
         setUserInfo(dataInfo);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast.error('Error fetching data:', error.message);
       }
     };
 
@@ -247,12 +248,10 @@ const QuizDetail = (): React.ReactElement => {
                   router.push(`/play/quiz/${id}/start`);
                 } else {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/quiz/${id}/welcome`).catch(err => {
-                    console.log(err);
-                  });
+                  router.push(`/play/quiz/${id}/welcome`);
                 }
               } else {
-                router.push({ pathname: '/auth', query: { quizId: id } });
+                withRedirect(router, { quizId: id as string }, '/auth');
               }
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"

@@ -1,3 +1,4 @@
+import withRedirect from '@/helpers/withRedirect';
 import {
   Button,
   Popover,
@@ -14,7 +15,7 @@ interface IAuthBoading {
 }
 
 const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
-  const { quizId, withdrawal } = useRouter().query;
+  const router = useRouter();
   const { t } = useTranslation();
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
@@ -39,35 +40,25 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
         </Link>
       </Typography>
       <div className="flex gap-4 justify-center">
-        <Link
-          href={
-            quizId !== undefined
-              ? `/auth/login?quizId=${quizId as string}`
-              : withdrawal !== undefined
-              ? `/auth/login?withdrawal=${withdrawal as string}`
-              : '/auth/login'
-          }
+        <Button
+          onClick={async () => {
+            await withRedirect(router, router.query, '/auth/login');
+          }}
+          className="font-semibold font-poppins text-[#6750A3] text-sm bg-[#E0E0E091] rounded-full sm:w-[163.5px] w-[139.5px] capitalize"
         >
-          <Button className="font-semibold font-poppins text-[#6750A3] text-sm bg-[#E0E0E091] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
-            {t(`authBoarding.login`)}
-          </Button>
-        </Link>
-        <Link
-          href={
-            quizId !== undefined
-              ? `/auth/register?quizId=${quizId as string}`
-              : withdrawal !== undefined
-              ? `/auth/register?withdrawal=${withdrawal as string}`
-              : '/auth/register'
-          }
+          {t(`authBoarding.login`)}
+        </Button>
+        <Button
+          onClick={async () => {
+            await withRedirect(router, router.query, '/auth/register');
+          }}
+          className="font-semibold font-poppins text-white text-sm bg-[#3AC4A0] rounded-full sm:w-[163.5px] w-[139.5px] capitalize"
         >
-          <Button className="font-semibold font-poppins text-white text-sm bg-[#3AC4A0] rounded-full sm:w-[163.5px] w-[139.5px] capitalize">
-            {t(`authBoarding.signup`).split(' ')[0]}{' '}
-            <span className="lowercase">
-              {t(`authBoarding.signup`).split(' ')?.[1]}
-            </span>
-          </Button>
-        </Link>
+          {t(`authBoarding.signup`).split(' ')[0]}{' '}
+          <span className="lowercase">
+            {t(`authBoarding.signup`).split(' ')?.[1]}
+          </span>
+        </Button>
       </div>
     </div>
   );

@@ -2,15 +2,67 @@
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 // import { useTranslation } from 'react-i18next';
+import { type SearchUserChat } from '@/utils/interfaces/chat.interface';
+import { Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import Modal from '../ui/modal/Modal';
-
 interface Props {
   onClose: () => void;
+  onChange: (value: string) => void;
+  value: string;
+  userList: SearchUserChat[];
 }
 
-const SearchChatPopup: React.FC<Props> = ({ onClose }) => {
+const SearchChatPopup: React.FC<Props> = ({
+  onClose,
+  onChange,
+  value,
+  userList
+}) => {
   //   const { t } = useTranslation();
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    onChange(event.target.value);
+  };
+  const router = useRouter();
 
+  const renderUserList = (): JSX.Element | null => {
+    if (userList.length > 0) {
+      return (
+        <div>
+          {userList.map(item => (
+            <div
+              key={item.id}
+              className="flex w-full gap-2 mt-4 overflow-hidden cursor-pointer"
+              onClick={() => {
+                void router.replace(`/chat?roomId=${item.id}`);
+                onClose();
+              }}
+            >
+              <Image
+                src={item.avatar}
+                alt="Avatar"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <div className="flex flex-col gap-1">
+                <Typography className="text-md text-left font-semibold text-[#262626] font-poppins">
+                  {item.name}
+                </Typography>
+                <Typography className="text-sm text-left text-[#7C7C7C] font-poppins">
+                  {item.seedsTag}
+                </Typography>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
   return (
     <Modal onClose={onClose}>
       <div className="flex justify-between mb-3">
@@ -31,8 +83,8 @@ const SearchChatPopup: React.FC<Props> = ({ onClose }) => {
         <div className="flex w-full">
           <input
             type="text"
-            // value={filter.search}
-            // onChange={handleFormChange}
+            value={value}
+            onChange={handleInputChange}
             className="focus:outline-none placeholder:text-[#7C7C7C] w-full text-sm font-normal py-3 px-4 rounded-full"
             placeholder="Search"
           />
@@ -59,6 +111,7 @@ const SearchChatPopup: React.FC<Props> = ({ onClose }) => {
           </div>
         </div>
       </div>
+      {renderUserList()}
     </Modal>
   );
 };

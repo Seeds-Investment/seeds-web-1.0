@@ -2,15 +2,15 @@
 import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
-import withAuth from '@/helpers/withAuth';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface IWithdrawalAccount {
   method: string;
   account_name: string;
   account_number: string;
+  beneficiary_name: string;
 }
 
 const Withdrawal: React.FC = () => {
@@ -24,12 +24,22 @@ const Withdrawal: React.FC = () => {
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
 
+  const withAuthWithdrawal = async () => {
+    await router.push({ pathname: '/auth', query: { withdrawal: true } });
+  };
+  useEffect(() => {
+    if (window.localStorage.getItem('accessToken') === null) {
+      void withAuthWithdrawal();
+    }
+  }, []);
+
   const handleSubmit = async () => {
     const res = await submitQuizCashout({
       quiz_id: quizId as string,
       method: selectedAccount?.method as string,
       account_name: selectedAccount?.account_name as string,
-      account_number: selectedAccount?.account_number as string
+      account_number: selectedAccount?.account_number as string,
+      beneficiary_name: selectedAccount?.beneficiary_name as string
     });
     if (res?.id != null) {
       const params = {
@@ -38,11 +48,12 @@ const Withdrawal: React.FC = () => {
         serviceFee: res.service_fee,
         promoPrice: res.promo_price,
         date: res.created_at,
-        ref: res.reference_number
+        ref: res.reference_number,
+        id: quizId
       };
       router
         .push({
-          pathname: '/withdrawal/payment-detail',
+          pathname: `/withdrawal/payment-detail`,
           query: params
         })
         .then(() => {})
@@ -79,4 +90,4 @@ const Withdrawal: React.FC = () => {
   return <>{submitLoading ? renderLoading() : renderContent()}</>;
 };
 
-export default withAuth(Withdrawal);
+export default Withdrawal;

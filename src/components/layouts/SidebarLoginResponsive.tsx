@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -16,6 +17,7 @@ import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
@@ -24,19 +26,27 @@ interface props {
   handleOpen: any;
 }
 
-const menu = [
-  { title: 'Social', url: '/social', image: social },
-  { title: 'Homepage', url: '/homepage', image: homepage },
-  { title: 'Connect', url: '/connect', image: connect },
-  { title: 'Play', url: '/play', image: play },
-  { title: 'Setting', url: '/user-setting', image: setting },
-  // { title: 'Notification', url: '/setting', image: notification },
-  // { title: 'Chat', url: '/setting', image: chat },
-  { title: 'Profile', url: '/my-profile', image: profile }
-];
+const menu = isGuest()
+  ? [
+      { title: 'Social', url: '/social', image: social },
+      { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Connect', url: '/connect', image: connect },
+      { title: 'Play', url: '/play', image: play }
+    ]
+  : [
+      { title: 'Social', url: '/social', image: social },
+      { title: 'Homepage', url: '/homepage', image: homepage },
+      { title: 'Connect', url: '/connect', image: connect },
+      { title: 'Play', url: '/play', image: play },
+      { title: 'Setting', url: '/user-setting', image: setting },
+      // { title: 'Notification', url: '/setting', image: notification },
+      // { title: 'Chat', url: '/setting', image: chat },
+      { title: 'Profile', url: '/my-profile', image: profile }
+    ];
 
 const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   const width = useWindowInnerWidth();
+  const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
@@ -47,12 +57,13 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
   };
 
   useEffect(() => {
+    setAccessToken(localStorage.getItem('accessToken') ?? '');
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
         setUserInfo(dataInfo);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast(error.message, { type: 'error' });
       }
     };
 
@@ -99,17 +110,25 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
             />
           </Link>
           <ul className="flex flex-col items-start w-full social-sidebar-list">
-            {menu.map((data, idx) => (
-              <Link
-                className={isLinkActive(data.url)}
-                href={data.url}
-                key={idx}
-                onClick={handleOpen}
-              >
-                <Image width={20} height={20} src={data.image} alt="" />
-                <h1>{data.title}</h1>
-              </Link>
-            ))}
+            {menu
+              .filter(value => {
+                if (accessToken === '') {
+                  return !value.title.includes('Profile');
+                } else {
+                  return true;
+                }
+              })
+              .map((data, idx) => (
+                <Link
+                  className={isLinkActive(data.url)}
+                  href={data.url}
+                  key={idx}
+                  onClick={handleOpen}
+                >
+                  <Image width={20} height={20} src={data.image} alt="" />
+                  <h1>{data.title}</h1>
+                </Link>
+              ))}
             <div className="flex flex-row">
               <section className="flex flex-row gap-2 rounded-full backdrop-blur-[10px] py-2 px-4">
                 <button
@@ -178,16 +197,26 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                 </button>
               </section>
             </div>
-            <div className="mx-auto">
-              <button
-                className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
-                onClick={() => {
-                  setIsLogoutModal(true);
-                }}
+            {isGuest() ? (
+              <Link href="/" className="flex mx-auto">
+                <button className="flex justify-center items-center bg-red-500 text-white text-center font-semibold rounded-2xl py-2 px-11 w-full">
+                  <div>Logout</div>
+                </button>
+              </Link>
+            ) : (
+              <div
+                className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}
               >
-                Logout
-              </button>
-            </div>
+                <button
+                  className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
+                  onClick={() => {
+                    setIsLogoutModal(true);
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </ul>
         </div>
       </div>

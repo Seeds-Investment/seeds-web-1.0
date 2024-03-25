@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,12 +17,14 @@ interface IAuthSSO {
 }
 
 const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
+  const pathname = usePathname();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data } = useSession();
 
   const handleLoginSSO = async (): Promise<void> => {
+    const searchParams = new URLSearchParams(window.location.search);
     try {
       if (data !== null) {
         const response = await loginSSO({
@@ -32,19 +35,40 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           window.localStorage.setItem('accessToken', response.accessToken);
           window.localStorage.setItem('refreshToken', response.refreshToken);
           window.localStorage.setItem('expiresAt', response.expiresAt);
+          window.localStorage.setItem('isBannerOpen', 'true');
 
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
-          if (window.location.pathname === '/auth/register') {
-            await router.push('/homepage');
+          if (pathname === '/auth/register') {
+            await router.push(
+              searchParams.get('quizId') !== null
+                ? `/play/quiz/${searchParams.get('quizId') as string}`
+                : searchParams.get('withdrawal') !== null
+                ? '/withdrawal'
+                : '/homepage'
+            );
             toast(t('authLogin.SSO'), { type: 'error' });
           } else {
-            await router.push('/homepage');
+            await router.push(
+              searchParams.get('quizId') !== null
+                ? `/play/quiz/${searchParams.get('quizId') as string}`
+                : searchParams.get('withdrawal') !== null
+                ? '/withdrawal'
+                : '/homepage'
+            );
           }
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
-          await router.push('register');
+          await router.push(
+            searchParams.get('quizId') !== null
+              ? `register?quizId=${searchParams.get('quizId') as string}`
+              : searchParams.get('withdrawal') !== null
+              ? `register?withdrawal=${
+                  searchParams.get('withdrawal') as string
+                }`
+              : 'register'
+          );
         }
       }
     } catch (error: any) {

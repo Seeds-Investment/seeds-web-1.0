@@ -644,7 +644,11 @@ export default {
     },
     information:
       'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
-    modal: { title1: 'Yeay, sukses', title2: 'Password barumu sudah dibuat' }
+    modal: {
+      title1: 'Yeay, sukses',
+      title2: 'Password barumu sudah dibuat',
+      title3: 'Tolong cek emailmu'
+    }
   },
   validation: {
     phoneNumberEmpty:
@@ -712,6 +716,8 @@ export default {
         blank1Card1: 'tambah nomor teleponmu',
         label2Card1: 'Kata Sandi',
         blank2Card1: 'Buat kata sandi baru',
+        label3Card1: 'Email',
+        blank3Card1: 'tambah emailmu',
         titleCard2: 'Akun yang Terhubung',
         titleCard3: 'Hapus Akun',
         descriptionCard3: 'Menghapus akunmu akan menghapus semua informasimu.',
@@ -728,6 +734,7 @@ export default {
         titleChangeNumber2: 'Masukin nomor telepon barumu',
         validationNumber1: 'Oops, nomormu sudah dipakai nih',
         validationNumber2: 'Nomor telepon minimal terdiri dari 6 angka',
+        validationEmail: 'Oops, email kamu sudah terdaftar',
         prevent: {
           title: 'Pembaruan Keamanan Akun',
           password: 'Pastiin nomor kamu sudah terhubung di akun ini',
@@ -1548,7 +1555,9 @@ export default {
       text11: 'Peringkat Kamu',
       text12: 'Menangkan Hadiah setiap Bulan',
       text13: '"Sekarang di Desember"',
-      text14: 'Lihat lebih banyak'
+      text14: 'Lihat lebih banyak',
+      text15: 'Masuk untuk menuju arena bermain',
+      text16: 'Masuk untuk menuju permainan'
     },
     section3: {
       text1: 'Sumber semua utama berita keuangan terbaru',
@@ -1737,7 +1746,11 @@ export default {
     paymentMethod: 'Metode Pembayaran',
     id: 'Id Transaksi',
     nominal: 'Nominal',
-    total: 'Total'
+    total: 'Total',
+    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    score: 'Skor Kamu : ',
+    earn: ' Kamu Mendapatkan IDR ',
+    tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds'
   },
   discover: {
     hotNews: 'Hot News',
@@ -1763,5 +1776,13 @@ export default {
     peopleList: 'Daftar Orang',
     explorePeopleList: 'Temukan pengguna yang cocok dengan Anda',
     dataNotFound: 'Data Tidak Ditemukan'
+  },
+  chat: {
+    personalEmptyState: 'Tidak ada percakapan',
+    communityEmptyState: 'Tidak ada percakapan komunitas',
+    selectUsername:
+      'You didn’t made any conversation yet, please select username.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community'
   }
 };

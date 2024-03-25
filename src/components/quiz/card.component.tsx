@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import type { IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import moment from 'moment';
@@ -38,7 +39,11 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">
         <div className="flex flex-row justify-between px-4 py-2 border-b border-dashed border-white">
           <div className="text-white text-sm font-semibold">{item.name}</div>
-          <button onClick={handleCopyClick}>
+          <button
+            onClick={async () =>
+              { isGuest() ? await router.push('/auth') : await handleCopyClick(); }
+            }
+          >
             <ShareIcon width={20} height={20} className="text-white" />
           </button>
         </div>

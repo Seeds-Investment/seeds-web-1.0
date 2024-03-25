@@ -40,7 +40,7 @@ const Register: React.FC = () => {
     platform: '',
     os_name: ''
   });
-  const [method, setMethod] = useState('whatsapp');
+  const [method, setMethod] = useState('sms');
   const [countdown, setCountdown] = useState(0);
   const getOTP = {
     method,

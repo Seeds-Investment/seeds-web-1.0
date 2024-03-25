@@ -729,7 +729,8 @@ export default {
       'Password must be 8 characters long and have both uppercase and lowercase letters.',
     modal: {
       title1: 'Success',
-      title2: 'The new password has been successfully created.'
+      title2: 'The new password has been successfully created.',
+      title3: 'Please check your email'
     }
   },
   validation: {
@@ -805,6 +806,8 @@ export default {
         blank1Card1: 'add your phone number',
         label2Card1: 'Password',
         blank2Card1: 'Create a new password',
+        label3Card1: 'Email',
+        blank3Card1: 'add your email',
         titleCard2: 'Associated Account',
         titleCard3: 'Delete Account',
         descriptionCard3:
@@ -821,6 +824,7 @@ export default {
         titleChangeNumber2: 'Enter your new phone number',
         validationNumber1: 'Oops, Phone Number already used',
         validationNumber2: 'Your phone number contains at least 6 digits',
+        validationEmail: 'Oops,  Your email already registered',
         prevent: {
           title: 'Account Security Update',
           password: 'Please bind your account with a phone number first',
@@ -1626,7 +1630,9 @@ export default {
       text11: 'Your Rank',
       text12: 'Win Reward every Month',
       text13: '"Now in December"',
-      text14: 'See More'
+      text14: 'See More',
+      text15: 'Please Login to enter the arena simulation',
+      text16: 'Login to enter arena simulation'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1817,7 +1823,11 @@ export default {
     paymentMethod: 'Payment Method',
     id: 'Id Transaction',
     nominal: 'Nominal',
-    total: 'Total'
+    total: 'Total',
+    winnerModalTitle: 'Congrats you won the Quiz!',
+    score: 'Your Score : ',
+    earn: ' You earn IDR ',
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
   },
   discover: {
     hotNews: 'Hot News',
@@ -1843,5 +1853,13 @@ export default {
     peopleList: 'People List',
     explorePeopleList: 'Find a User that suits you.',
     dataNotFound: 'Data Not Found'
+  },
+  chat: {
+    personalEmptyState: 'No Conversation',
+    communityEmptyState: 'No Community Chat',
+    selectUsername:
+      'You didn’t made any conversation yet, please select username.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community'
   }
 };

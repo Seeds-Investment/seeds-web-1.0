@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import {
   type JoinQuizI,
@@ -55,7 +56,7 @@ export const getAllQuiz = async ({
   try {
     const accessToken = localStorage.getItem('accessToken');
 
-    if (accessToken === null || accessToken === '') {
+    if (!isGuest() && (accessToken === null || accessToken === '')) {
       return await Promise.resolve('Access token not found');
     }
 
@@ -63,7 +64,7 @@ export const getAllQuiz = async ({
     return await quizService.get(path, {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {
@@ -263,6 +264,20 @@ export const cashoutQuiz = async (payload: QuizCashoutI): Promise<any> => {
     toast('Access token not found');
   }
   return await quizService.post('/cashout', payload, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getQuizWithdraw = async (quizId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await quizService.get(`/withdraw/${quizId}`, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

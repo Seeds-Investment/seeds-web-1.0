@@ -266,3 +266,10 @@ body.modal-open {
 .slick-dots li.slick-active button:before {
   color: #3ac4a0 !important;
 }
+
+h2 {
+  @apply text-xl;
+}
+h3 {
+  @apply text-lg;
+}

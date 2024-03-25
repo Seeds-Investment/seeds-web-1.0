@@ -103,7 +103,7 @@ const FormModalNumber: React.FC<IFormModalNumber> = ({
       open={open}
       handler={handleOpen}
       size="sm"
-      className="p-4 md:p-8 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
+      className="p-4 md:p-8 flex flex-col items-center rounded-3xl min-w-full"
       dismiss={{ enabled: false }}
     >
       <Image

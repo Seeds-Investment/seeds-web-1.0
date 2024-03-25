@@ -22,6 +22,7 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');
+    window.localStorage.removeItem('isBannerOpen');
     await signOut();
     TrackerEvent({
       event: `Seeds_logout_web`,

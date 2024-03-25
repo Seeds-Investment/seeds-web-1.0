@@ -1,15 +1,19 @@
 import ChecklistInputSecuritySetting from '@/assets/my-profile/editProfile/ChecklistInputSecuritySetting.svg';
 import ChevronRight from '@/assets/my-profile/editProfile/ChevronRight.svg';
 import NoneInputSecuritySetting from '@/assets/my-profile/editProfile/NoneInputSecuritySetting.svg';
+import {
+  Input,
+  Typography
+} from '@/components/MaterialTailwind/MaterialTailwind';
 import { useAppSelector } from '@/store/redux/store';
-import { Input, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import type { ReactElement, ReactNode } from 'react';
 
 interface ISecuritySettingForm {
-  form: any;
+  form: ReactNode;
   label: string;
   textBlank: string;
-  extraChildren: any;
+  extraChildren?: ReactElement;
   onClick: () => void;
 }
 
@@ -24,7 +28,7 @@ const SecuritySettingForm: React.FC<ISecuritySettingForm> = ({
   return (
     <div onClick={onClick} className="relative flex w-full p-0 bg-transparent">
       <div className="absolute flex p-0 gap-2 items-center pr-[18px] pb-[7px] pt-[15px]">
-        {extraChildren}
+        {extraChildren !== null && <>{extraChildren}</>}
         <Typography
           className={`${
             form === '' ? 'text-[#7C7C7C]' : 'text-[#262626]'

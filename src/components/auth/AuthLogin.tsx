@@ -31,7 +31,7 @@ const AuthLogin: React.FC = () => {
     return 2;
   };
   const router = useRouter();
-  const { quizId } = router.query;
+  const { quizId, withdrawal } = router.query;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
@@ -59,6 +59,8 @@ const AuthLogin: React.FC = () => {
         window.localStorage.setItem('accessToken', response.accessToken);
         window.localStorage.setItem('refreshToken', response.refreshToken);
         window.localStorage.setItem('expiresAt', response.expiresAt);
+        window.localStorage.setItem('isBannerOpen', 'true');
+        window.localStorage.removeItem('isGuest');
 
         setFormData({ ...formData, phoneNumber: '', password: '' });
         await dispatch(fetchUserData());
@@ -70,6 +72,8 @@ const AuthLogin: React.FC = () => {
         });
         if (quizId !== undefined) {
           await router.push(`/play/quiz/${quizId as string}`);
+        } else if (withdrawal !== undefined) {
+          await router.push(`/withdrawal`);
         } else {
           await router.push('/homepage');
           TrackerEvent({
@@ -124,7 +128,9 @@ const AuthLogin: React.FC = () => {
         onClick={async () => {
           await router.push(
             quizId !== undefined
-              ? { pathname: '/auth', query: { quizId: quizId } }
+              ? { pathname: '/auth', query: { quizId } }
+              : withdrawal !== undefined
+              ? { pathname: '/auth', query: { withdrawal } }
               : '/auth'
           );
         }}

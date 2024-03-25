@@ -27,6 +27,7 @@ const Section1 = (): React.ReactElement => {
   //   const { t } = useTranslation();
   //   const router = useRouter();
   const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
+  const [activeSlide, setActiveSlide] = useState<number>(0);
 
   useEffect(() => {
     const fetchBannerAsset = async (): Promise<void> => {
@@ -45,7 +46,23 @@ const Section1 = (): React.ReactElement => {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    dots: true,
+    appendDots: (dots: any) => (
+      <div>
+        <ul className="mb-5"> {dots} </ul>
+      </div>
+    ),
+    beforeChange: (current: number, next: number) => {
+      setActiveSlide(next);
+    },
+    customPaging: (i: number) => (
+      <div
+        className={`h-2.5 rounded-full ${
+          activeSlide === i ? 'bg-[#3ac4a0] w-[18px]' : 'bg-[#E9E9E9] w-2.5'
+        }`}
+      ></div>
+    )
   };
 
   return (

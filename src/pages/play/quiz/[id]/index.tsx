@@ -113,9 +113,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-xl font-semibold">
                   {detailQuiz?.total_played}
                 </div>
-                <div className="text-sm text-[#7C7C7C]">
-                  {t('quiz.players')}
-                </div>
+                <div className="text-sm text-[#7C7C7C]">{t('quiz.played')}</div>
               </div>
               <div className="flex flex-col justify-center items-center p-4">
                 <div className="text-xl font-semibold">

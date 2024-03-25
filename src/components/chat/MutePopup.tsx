@@ -8,11 +8,24 @@ import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
+  onMute: (type: string) => Promise<void>;
 }
 
-const MutePopUp: React.FC<Props> = ({ onClose }) => {
+const MutePopUp: React.FC<Props> = ({ onClose, onMute }) => {
   const { t } = useTranslation();
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(7);
+
+  const handleMuteClick = (): void => {
+    if (selectedOption === 7) {
+      void onMute('eight_hours');
+    }
+    if (selectedOption === 14) {
+      void onMute('one_week');
+    }
+    if (selectedOption === 30) {
+      void onMute('');
+    }
+  };
 
   return (
     <Modal onClose={onClose}>
@@ -78,7 +91,10 @@ const MutePopUp: React.FC<Props> = ({ onClose }) => {
       </div>
       <hr></hr>
       <div className="flex flex-col gap-4">
-        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-[#3AC4A0] rounded-full hover:scale-105 transition ease-out">
+        <div
+          onClick={handleMuteClick}
+          className="bg-[#3AC4A0] mt-5 w-full hover:bg-[#3AC4A0] rounded-full hover:scale-105 transition ease-out"
+        >
           <Typography className="text-white text-lg font-bold text-center p-2">
             {t('DeleteAccount.confirmButton')}
           </Typography>

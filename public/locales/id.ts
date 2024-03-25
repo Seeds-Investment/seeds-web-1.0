@@ -1781,6 +1781,12 @@ export default {
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
-    createCommunity: 'Create Community'
+    createCommunity: 'Create Community',
+    popUpLeave: {
+      Title: 'Keluar dari grup?',
+      Description: 'Kamu yakin ingin meninggalkan grup?',
+      helpUs: 'Bantu kami untuk memahami masalahmu',
+      continue: 'Lanjutkan'
+    }
   }
 };

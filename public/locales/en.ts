@@ -1858,6 +1858,12 @@ export default {
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
-    createCommunity: 'Create Community'
+    createCommunity: 'Create Community',
+    popUpLeave: {
+      Title: 'Leave Group?',
+      Description: 'Are you sure to leave this Group',
+      helpUs: 'Help us to understand the problem',
+      continue: 'Continue'
+    }
   }
 };

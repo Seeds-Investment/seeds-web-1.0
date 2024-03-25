@@ -257,6 +257,7 @@ const Circle = (): React.ReactElement => {
 
   useEffect(() => {
     void fetchCircleLeaderBoard();
+    setUserInfo([])
   }, []);
 
   // useEffect(() => {

@@ -1630,7 +1630,9 @@ export default {
       text11: 'Your Rank',
       text12: 'Win Reward every Month',
       text13: '"Now in December"',
-      text14: 'See More'
+      text14: 'See More',
+      text15: 'Please Login to enter the arena simulation',
+      text16: 'Login to enter arena simulation'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',

@@ -1,4 +1,5 @@
 'use client';
+import more_vertical from '@/assets/more-option/more_vertical.svg';
 import MoreOption from '@/components/MoreOption';
 import {
   Bookmark,
@@ -12,6 +13,7 @@ import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
 import TrackerEvent from '@/helpers/GTM';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
+import { isGuest } from '@/helpers/guest';
 import { getAssetById } from '@/repository/asset.repository';
 import {
   getDetailCircle,
@@ -41,6 +43,7 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import PDFViewer from './PDFViewer';
 
 interface props {
@@ -737,20 +740,22 @@ const PostSection: React.FC<props> = ({
     }
   }, []);
 
-  const [expanded, setExpanded] = useState(false);
-  const redirectToPaymentPostPremium = (): any => {
-    router.push(`/social/payment/${dataPost.id as number}`).catch(error => {
-      console.log(error);
-    });
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const redirectToPaymentPostPremium = (): void => {
+    router
+      .push(isGuest() ? '/auth' : `/social/payment/${dataPost.id as number}`)
+      .catch(error => {
+        toast(error, { type: 'error' });
+      });
   };
-  const handleSeeMore = (text: string, maxWords: number): any => {
+  const handleSeeMore = (text: string, maxWords: number): JSX.Element => {
     const words = text.split(' ');
 
     const displayText =
       dataPost.status_payment === true
         ? text
         : expanded
-        ? redirectToPaymentPostPremium()
+        ? (redirectToPaymentPostPremium(), '')
         : words.slice(0, maxWords).join(' ');
 
     return (
@@ -786,7 +791,9 @@ const PostSection: React.FC<props> = ({
                 alt="AVATAR"
                 className="rounded-full w-12 h-12 object-cover cursor-pointer"
                 onClick={async () => {
-                  dataPost.user_id === userInfo.id
+                  isGuest()
+                    ? await router.push('/auth')
+                    : dataPost.user_id === userInfo.id
                     ? await router.push('/my-profile')
                     : await router.push(
                         `/social/${dataPost.user_id as string}`
@@ -809,7 +816,9 @@ const PostSection: React.FC<props> = ({
                       alt="AVATAR"
                       className="rounded-full w-12 h-12 object-cover cursor-pointer"
                       onClick={async () => {
-                        dataPost.user_id === userInfo.id
+                        isGuest()
+                          ? await router.push('/auth')
+                          : dataPost.user_id === userInfo.id
                           ? await router.push('/my-profile')
                           : await router.push(
                               `/social/${dataPost.user_id as string}`
@@ -825,7 +834,9 @@ const PostSection: React.FC<props> = ({
                       <Typography
                         className="font-bold text-black md:text-lg cursor-pointer"
                         onClick={async () => {
-                          dataPost.user_id === userInfo.id
+                          isGuest()
+                            ? await router.push('/auth')
+                            : dataPost.user_id === userInfo.id
                             ? await router.push('/my-profile')
                             : await router.push(
                                 `/social/${dataPost.user_id as string}`
@@ -853,13 +864,26 @@ const PostSection: React.FC<props> = ({
                           )
                         : null}
                     </div>
-                    <MoreOption
-                      myInfo={myInfo}
-                      setDataPost={setData}
-                      dataPost={dataPost}
-                      userInfo={userInfo}
-                      handleSubmitBlockUser={handleSubmitBlockUser}
-                    />
+                    {isGuest() ? (
+                      <div
+                        onClick={async () => await router.push('/auth')}
+                        className="cursor-pointer"
+                      >
+                        <Image
+                          src={more_vertical}
+                          alt="threeDots"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    ) : (
+                      <MoreOption
+                        myInfo={myInfo}
+                        setDataPost={setData}
+                        dataPost={dataPost}
+                        userInfo={userInfo}
+                        handleSubmitBlockUser={handleSubmitBlockUser}
+                      />
+                    )}
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">
                     <Typography className="text-xs md:text-sm">
@@ -872,37 +896,75 @@ const PostSection: React.FC<props> = ({
                   </div>
                 </div>
               </div>
-              <div className="flex items-center mb-2">
-                {dataPost.privacy === 'premium' &&
-                dataPost.user_id !== userInfo.id
-                  ? handleSeeMore(dataPost.content_text, 10)
-                  : renderTouchableText(dataPost?.content_text)}
-                {/* {renderTouchableText(dataPost?.content_text)} */}
-              </div>
-              {categorizeURL(dataPost.media_urls)}
-              {voice.length > 0 && (
-                <audio controls>
-                  <source
-                    src={voice[0]}
-                    type="audio/wav"
-                    className="w-full mb-4"
-                  />
-                  Your browser does not support the audio element.
-                </audio>
-              )}
-              {document.length > 0 && <PDFViewer file={document[0]} />}
-              {media.length > 0 && <ImageCarousel images={media} />}
-              {dataPost.pollings?.length > 0 && (
-                <PollingView
-                  data={dataPost.pollings}
-                  totalVote={dataPost.total_polling}
-                  pollingDate={dataPost.polling_date}
-                />
-              )}
+              {isGuest() ? (
+                <div onClick={async () => await router.push('/auth')}>
+                  <div className="flex items-center mb-2">
+                    {dataPost.privacy === 'premium' &&
+                    dataPost.user_id !== userInfo.id
+                      ? handleSeeMore(dataPost.content_text, 10)
+                      : renderTouchableText(dataPost?.content_text)}
+                    {/* {renderTouchableText(dataPost?.content_text)} */}
+                  </div>
+                  {categorizeURL(dataPost.media_urls)}
+                  {voice.length > 0 && (
+                    <audio controls>
+                      <source
+                        src={voice[0]}
+                        type="audio/wav"
+                        className="w-full mb-4"
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
+                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {media.length > 0 && <ImageCarousel images={media} />}
+                  {dataPost.pollings?.length > 0 && (
+                    <PollingView
+                      data={dataPost.pollings}
+                      totalVote={dataPost.total_polling}
+                      pollingDate={dataPost.polling_date}
+                    />
+                  )}
 
-              {dataPost?.pie?.length > 0 ? (
-                <PieCirclePost data={dataPost} chartData={chartData} />
-              ) : null}
+                  {dataPost?.pie?.length > 0 ? (
+                    <PieCirclePost data={dataPost} chartData={chartData} />
+                  ) : null}
+                </div>
+              ) : (
+                <div>
+                  <div className="flex items-center mb-2">
+                    {dataPost.privacy === 'premium' &&
+                    dataPost.user_id !== userInfo.id
+                      ? handleSeeMore(dataPost.content_text, 10)
+                      : renderTouchableText(dataPost?.content_text)}
+                    {/* {renderTouchableText(dataPost?.content_text)} */}
+                  </div>
+                  {categorizeURL(dataPost.media_urls)}
+                  {voice.length > 0 && (
+                    <audio controls>
+                      <source
+                        src={voice[0]}
+                        type="audio/wav"
+                        className="w-full mb-4"
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
+                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {media.length > 0 && <ImageCarousel images={media} />}
+                  {dataPost.pollings?.length > 0 && (
+                    <PollingView
+                      data={dataPost.pollings}
+                      totalVote={dataPost.total_polling}
+                      pollingDate={dataPost.polling_date}
+                    />
+                  )}
+
+                  {dataPost?.pie?.length > 0 ? (
+                    <PieCirclePost data={dataPost} chartData={chartData} />
+                  ) : null}
+                </div>
+              )}
             </div>
             <div className="flex justify-start gap-4 flex-wrap">
               {thumbnailList.length > 0 &&
@@ -1035,7 +1097,9 @@ const PostSection: React.FC<props> = ({
                   <div
                     className={`p-2 rounded-full cursor-pointer`}
                     onClick={async () => {
-                      await likePost(1);
+                      isGuest()
+                        ? await router.push('/auth')
+                        : await likePost(1);
                     }}
                   >
                     {dataPost.status_like === true ? (
@@ -1083,11 +1147,15 @@ const PostSection: React.FC<props> = ({
                 <div className="flex items-center gap-1">
                   <div
                     className="cursor-pointer flex gap-2"
-                    onClick={() => {
-                      router
-                        .push(`/connect/comment/${dataPost.id as string}`)
+                    onClick={async () => {
+                      await router
+                        .push(
+                          isGuest()
+                            ? '/auth'
+                            : `/connect/comment/${dataPost.id as string}`
+                        )
                         .catch((err: any) => {
-                          console.error(err);
+                          toast(err, { type: 'error' });
                         });
                     }}
                   >
@@ -1103,10 +1171,14 @@ const PostSection: React.FC<props> = ({
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    onClick={() => {
-                      handleCopyClick(`${dataPost.id as string}`).catch(err => {
-                        console.log(err);
-                      });
+                    onClick={async () => {
+                      isGuest()
+                        ? await router.push('/auth')
+                        : handleCopyClick(`${dataPost.id as string}`).catch(
+                            err => {
+                              toast(err, { type: 'error' });
+                            }
+                          );
                     }}
                   >
                     <Image

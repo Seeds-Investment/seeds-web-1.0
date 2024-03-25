@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import {
   type JoinQuizI,
@@ -55,7 +56,7 @@ export const getAllQuiz = async ({
   try {
     const accessToken = localStorage.getItem('accessToken');
 
-    if (accessToken === null || accessToken === '') {
+    if (!isGuest() && (accessToken === null || accessToken === '')) {
       return await Promise.resolve('Access token not found');
     }
 
@@ -63,7 +64,7 @@ export const getAllQuiz = async ({
     return await quizService.get(path, {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {

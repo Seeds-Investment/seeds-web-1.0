@@ -61,6 +61,7 @@ const AuthLogin: React.FC = () => {
         window.localStorage.setItem('refreshToken', response.refreshToken);
         window.localStorage.setItem('expiresAt', response.expiresAt);
         window.localStorage.setItem('isBannerOpen', 'true');
+        window.localStorage.removeItem('isGuest');
 
         setFormData({ ...formData, phoneNumber: '', password: '' });
         await dispatch(fetchUserData());

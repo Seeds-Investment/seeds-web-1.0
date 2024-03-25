@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -67,7 +68,11 @@ const HeaderLogin: React.FC = () => {
   useEffect(() => {
     void handleGetUserInfo();
     void getLastTranslation();
+    if (!isGuest()) {
+      void handleGetUserInfo();
+    }
   }, []);
+
   return (
     <div>
       {openSidebarResponsive ? (
@@ -161,40 +166,37 @@ const HeaderLogin: React.FC = () => {
                 />
               </button>
             </section>
-            <section>
-              <div
-                className="cursor-pointer"
-                onClick={async () => {
-                  await router.push('/social/notification');
-                }}
-              >
-                <NotificationIcon />
-              </div>
-            </section>
-            <section>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  router.push('/chat').catch(err => {
-                    toast(err);
-                  });
-                }}
-              >
-                <ChatIcon />
-              </div>
-            </section>
-            {accessToken !== null && userInfo !== null ? (
-              <Link href="/my-profile">
-                <Image
-                  alt="image"
-                  width={17}
-                  height={17}
-                  className="rounded-full w-10"
-                  src={dataUser.avatar}
-                />
-              </Link>
-            ) : (
-              <></>
+            {!isGuest() && (
+              <>
+                <section>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      router.push('/social/notification').catch(err => {
+                        toast(err, { type: 'error' });
+                      });
+                    }}
+                  >
+                    <NotificationIcon />
+                  </div>
+                </section>
+                <section>
+                  <ChatIcon />
+                </section>
+                {accessToken !== null && userInfo !== null ? (
+                  <Link href="/my-profile">
+                    <Image
+                      alt="image"
+                      width={17}
+                      height={17}
+                      className="rounded-full w-10"
+                      src={dataUser.avatar}
+                    />
+                  </Link>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </section>
         )

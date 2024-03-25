@@ -1,6 +1,7 @@
 // Section4.tsx
 import { getBanner } from '@/repository/discover.repository';
 // import { useRouter } from 'next/router';
+import { isGuest } from '@/helpers/guest';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -96,7 +97,12 @@ const Section4 = (): React.ReactElement => {
       <div className=" mt-4">
         <Slider {...sliderSettings}>
           {bannerData?.map(data => (
-            <Link key={data.id} href={`/homepage/exclusive/${data?.id ?? 0}`}>
+            <Link
+              key={data.id}
+              href={
+                isGuest() ? '/auth' : `/homepage/exclusive/${data?.id ?? 0}`
+              }
+            >
               <div
                 key={data.id}
                 className={`lg:pe-5  flex   cursor-pointer hover:shadow-lg transition-all ${hotNewsItemClass}`}
@@ -116,7 +122,7 @@ const Section4 = (): React.ReactElement => {
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/homepage/exclusive'}
+          href={isGuest() ? '/auth' : '/homepage/exclusive'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
           {t('homepage.section2.text14')}

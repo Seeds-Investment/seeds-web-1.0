@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import {
   DocumentTextIcon,
   HandThumbUpIcon,
@@ -5,6 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export interface CircleInterface {
   banner: string;
@@ -39,10 +41,12 @@ export default function CircleTrendingCard({
     >
       {data?.banner !== undefined && (
         <div
-          onClick={() => {
-            router.push(`/connect/post/${data.id}`).catch(error => {
-              console.log(error);
-            });
+          onClick={async () => {
+            await router
+              .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
+              .catch(error => {
+                toast(error, { type: 'error' });
+              });
           }}
           className="cursor-pointer"
         >

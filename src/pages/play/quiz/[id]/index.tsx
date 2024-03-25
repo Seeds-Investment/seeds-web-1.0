@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
@@ -248,6 +249,11 @@ const QuizDetail = (): React.ReactElement => {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   router.push(`/play/quiz/${id}/welcome`);
                 }
+              } else if (
+                localStorage.getItem('accessToken') === null &&
+                isGuest()
+              ) {
+                router.push('/auth');
               } else {
                 withRedirect(router, { quizId: id as string }, '/auth');
               }

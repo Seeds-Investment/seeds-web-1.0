@@ -1,4 +1,5 @@
 import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
 import { getTrendingAssets } from '@/repository/asset.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -74,7 +75,7 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/homepage/trending-assets'}
+          href={isGuest() ? '/auth' : '/homepage/trending-assets'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
           onClick={() => {
             TrackerEvent({

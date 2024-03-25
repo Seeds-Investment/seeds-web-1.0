@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import { isGuest } from '@/helpers/guest';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
@@ -251,6 +252,11 @@ const QuizDetail = (): React.ReactElement => {
                     console.log(err);
                   });
                 }
+              } else if (
+                localStorage.getItem('accessToken') === null &&
+                isGuest()
+              ) {
+                router.push('/auth');
               } else {
                 router.push({ pathname: '/auth', query: { quizId: id } });
               }

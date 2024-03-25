@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 // import moment from 'moment';
+import { isGuest } from '@/helpers/guest';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
@@ -219,7 +220,7 @@ export default function PlayPage(): React.ReactElement {
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/play'}
+          href={isGuest() ? '/auth' : '/play'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
           {t('homepage.section2.text14')}

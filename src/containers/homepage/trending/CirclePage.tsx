@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import { getTrendingCircle } from '@/repository/asset.repository';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -59,7 +60,7 @@ export default function CirclePage(): React.ReactElement {
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/homepage/trending-circle'}
+          href={isGuest() ? '/auth' : '/homepage/trending-circle'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
           See More

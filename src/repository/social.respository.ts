@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
@@ -30,7 +31,7 @@ export const getSocialPostFollowing = async (params: any): Promise<any> => {
 export const getSocialPostForYou = async (params: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
+  if (!isGuest() && (accessToken === null || accessToken === '')) {
     return await Promise.resolve('Access token not found');
   }
 
@@ -42,7 +43,7 @@ export const getSocialPostForYou = async (params: any): Promise<any> => {
     params,
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+      Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
     }
   });
 };

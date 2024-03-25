@@ -7,6 +7,7 @@ import Section3 from '@/containers/homepage/Section3';
 import Section4 from '@/containers/homepage/Section4';
 import Section5 from '@/containers/homepage/Section5';
 import TrendingSection from '@/containers/homepage/TrendingSection';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useState } from 'react';
@@ -48,9 +49,11 @@ const Homepage: React.FC = () => {
       <CCard className="p-3 mb-5">
         <Section2 userInfo={userInfo} />
       </CCard>
-      <CCard className="px-3 py-5 mb-5">
-        <Section3 />
-      </CCard>
+      {!isGuest() && (
+        <CCard className="px-3 py-5 mb-5">
+          <Section3 />
+        </CCard>
+      )}
       <CCard className="p-3 mb-5">
         <Section4 />
       </CCard>

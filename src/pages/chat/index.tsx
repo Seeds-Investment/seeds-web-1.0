@@ -4,15 +4,21 @@ import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
+import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
 import SearchChatPopup from '@/components/chat/SearchPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ContactList from '@/containers/chat/ContactList';
 import withAuth from '@/helpers/withAuth';
 import { searchUser } from '@/repository/auth.repository';
 import {
+  deleteGroupChat,
+  deletePersonalChat,
   getChat,
   getGroupDetail,
   getListChat,
+  leaveGroupChat,
+  muteGroupChat,
+  mutePersonalChat,
   readGroupMessage,
   readPersonalMessage,
   sendPersonalMessage
@@ -103,6 +109,7 @@ const ChatPages: React.FC = () => {
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLeavePopupOpen, setIsLeavePopupOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -224,6 +231,9 @@ const ChatPages: React.FC = () => {
       case 'New':
         setIsSearchPopupOpen(true);
         break;
+      case 'Leave':
+        setIsLeavePopupOpen(true);
+        break;
 
       default:
     }
@@ -263,7 +273,49 @@ const ChatPages: React.FC = () => {
     }
   };
 
+  const muteChat = async (type: string): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await mutePersonalChat({ user_id: roomId as string, type })
+        : await muteGroupChat({ group_id: roomId as string, type });
+    } catch (error: any) {
+      toast('Oops! Error when try to mute chat');
+    } finally {
+      setIsMutePopupOpen(false);
+    }
+  };
+
+  const deleteChat = async (): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await deletePersonalChat(roomId as string)
+        : await deleteGroupChat(roomId as string);
+    } catch (error: any) {
+      toast('Oops! Error when try to delete chat');
+    } finally {
+      setIsDeletePopupOpen(false);
+      void fetchChat();
+    }
+  };
+
+  const leaveCommunity = async (message: string): Promise<void> => {
+    try {
+      await leaveGroupChat({
+        id: roomId as string,
+        user_id: dataUser.id,
+        message_text: message
+      });
+    } catch (error: any) {
+      toast('Oops! Error when try to Leave Community');
+    } finally {
+      setIsDeletePopupOpen(false);
+    }
+  };
+
   const fetchUserNewChat = useCallback(async (): Promise<void> => {
+    if (searchFilter.search === '') {
+      return;
+    }
     try {
       setIsLoading(true);
       const response = await searchUser(searchFilter);
@@ -327,6 +379,15 @@ const ChatPages: React.FC = () => {
           onClose={() => {
             setIsDeletePopupOpen(false);
           }}
+          onClick={deleteChat}
+        />
+      )}
+      {isLeavePopupOpen && (
+        <LeaveCommunityPopUp
+          onClose={() => {
+            setIsLeavePopupOpen(false);
+          }}
+          onClick={leaveCommunity}
         />
       )}
       {isSearchPopupOpen && (
@@ -344,6 +405,7 @@ const ChatPages: React.FC = () => {
           onClose={() => {
             setIsMutePopupOpen(false);
           }}
+          onMute={muteChat}
         />
       )}
       {isShowDetail ? (
@@ -930,6 +992,43 @@ const ChatPages: React.FC = () => {
                                   </svg>
                                   <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838]">
                                     Delete Chat
+                                  </h1>
+                                </div>
+                                <div
+                                  className="dropdown-option flex p-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={() => {
+                                    handleDropdownOptionClick('Leave');
+                                  }}
+                                >
+                                  <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                    <path
+                                      d="M13.332 14.1663L17.4987 9.99967L13.332 5.83301"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                    <path
+                                      d="M17.5 10H7.5"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+
+                                  <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838] whitespace-nowrap">
+                                    Leave Group
                                   </h1>
                                 </div>
                               </div>

@@ -106,3 +106,19 @@ export interface SearchUserChat {
   followings: number;
   isFollowed: boolean;
 }
+
+export interface MutePersonalChatParams {
+  user_id?: string;
+  type: string;
+}
+
+export interface MuteGroupChatParams {
+  group_id?: string;
+  type: string;
+}
+
+export interface LeaveGroupParams {
+  id?: string;
+  user_id: string;
+  message_text: string;
+}

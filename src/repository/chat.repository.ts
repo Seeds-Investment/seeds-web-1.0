@@ -5,6 +5,9 @@ import { isUndefindOrNull } from '@/utils/common/utils';
 import {
   type GetChatParams,
   type GetListChatParams,
+  type LeaveGroupParams,
+  type MuteGroupChatParams,
+  type MutePersonalChatParams,
   type SendMessageParams
 } from '@/utils/interfaces/chat.interface';
 import { toast } from 'react-toastify';
@@ -117,6 +120,85 @@ export const readGroupMessage = async (id: string): Promise<void> => {
   }
   const path = `${Endpoints.chat.readChat}/${id}/group`;
   await baseUrl.put(path, null, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const mutePersonalChat = async (
+  data: MutePersonalChatParams
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.mutePersonalChat;
+  await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const muteGroupChat = async (
+  data: MuteGroupChatParams
+): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.muteGroupChat;
+  await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const deletePersonalChat = async (id: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.deletePersonalChat.replace(':id', id);
+  await baseUrl.delete(path, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const deleteGroupChat = async (id: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.deleteGroupChat.replace(':id', id);
+  await baseUrl.delete(path, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const leaveGroupChat = async (data: LeaveGroupParams): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.leaveGroupChat.replace(':id', data?.id as string);
+  await baseUrl.put(path, data, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

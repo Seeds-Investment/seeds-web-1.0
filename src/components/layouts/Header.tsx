@@ -7,10 +7,13 @@ import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
+  Dialog,
+  DialogBody,
   Menu,
   MenuHandler,
   MenuItem,
   MenuList,
+  Spinner,
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -42,9 +45,14 @@ const languageList = [
 const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
   const { t } = useTranslation();
   const [openMenu, setOpenMenu] = useState(false);
+  const [open, setOpen] = useState(false);
   const languageCtx = useContext(LanguageContext);
   const router = useRouter();
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
+
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
 
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
@@ -69,10 +77,30 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
     getLastTranslation().catch(err => {
       console.log(err);
     });
+    if (localStorage.getItem('accessToken') !== null) {
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleOpen();
+    }
   }, []);
 
   return (
     <nav className={`fixed z-50 ${className as string} w-full bg-white`}>
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        dismiss={{ enabled: false }}
+        size="xs"
+      >
+        <DialogBody className="flex justify-center items-center gap-2 rounded-3xl">
+          <Spinner color="teal" className="h-4 w-4 text-[#3AC4A0]/70" />
+          <Typography className="font-normal font-poppins text-base text-[#3AC4A0]">
+            Redirecting
+          </Typography>
+        </DialogBody>
+      </Dialog>
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
         <Link href="https://seeds.finance">

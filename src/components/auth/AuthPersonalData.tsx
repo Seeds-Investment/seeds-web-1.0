@@ -1,5 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import withRedirect from '@/helpers/withRedirect';
 import { checkSeedsTag } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import { signOut, useSession } from 'next-auth/react';
@@ -33,7 +34,6 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   setSelect
 }: IAuthPersonalData) => {
   const router = useRouter();
-  const { quizId } = router.query;
   const { data } = useSession();
   const { t } = useTranslation();
   const regex = /[^a-zA-Z0-9]/g;
@@ -155,11 +155,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         onClick={async () => {
           if (data !== null) {
             setFormData({ ...formData, name: '', seedsTag: '' });
-            await router.push(
-              quizId !== undefined
-                ? { pathname: '/auth', query: { quizId: quizId } }
-                : '/auth'
-            );
+            await withRedirect(router, router.query, '/auth');
             await signOut();
           } else {
             setSelect(0);

@@ -4,6 +4,7 @@ import AuthNumber from '@/components/auth/AuthNumber';
 import AuthPassword from '@/components/auth/AuthPassword';
 import countries from '@/constants/countries.json';
 import TrackerEvent from '@/helpers/GTM';
+import withRedirect from '@/helpers/withRedirect';
 import { loginPhoneNumber } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
@@ -31,7 +32,7 @@ const AuthLogin: React.FC = () => {
     return 2;
   };
   const router = useRouter();
-  const { quizId, withdrawal } = router.query;
+  const isQuery = Object.keys(router.query).length > 0;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();
@@ -70,10 +71,8 @@ const AuthLogin: React.FC = () => {
           event: 'Seeds_login_web',
           userId: responseUser.id
         });
-        if (quizId !== undefined) {
-          await router.push(`/play/quiz/${quizId as string}`);
-        } else if (withdrawal !== undefined) {
-          await router.push(`/withdrawal`);
+        if (isQuery) {
+          await withRedirect(router, router.query);
         } else {
           await router.push('/homepage');
           TrackerEvent({
@@ -126,13 +125,7 @@ const AuthLogin: React.FC = () => {
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          await router.push(
-            quizId !== undefined
-              ? { pathname: '/auth', query: { quizId } }
-              : withdrawal !== undefined
-              ? { pathname: '/auth', query: { withdrawal } }
-              : '/auth'
-          );
+          await withRedirect(router, router.query, '/auth');
         }}
       />
       <Image

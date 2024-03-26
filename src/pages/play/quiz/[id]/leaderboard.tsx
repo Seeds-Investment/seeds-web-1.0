@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
-import withAuth from '@/helpers/withAuth';
+import withRedirect from '@/helpers/withRedirect';
+import { toast } from 'react-toastify';
 import rank1Box from '../../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../../public/assets/images/rank3Box.svg';
@@ -50,7 +51,7 @@ const LeaderBoardPage = (): React.ReactElement => {
 
         setUserInfo(dataInfo);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast.error('Error fetching data:', error.message);
       }
     };
 
@@ -59,20 +60,27 @@ const LeaderBoardPage = (): React.ReactElement => {
       .catch(() => {});
   }, []);
 
-  const id: any = router.query.id;
+  const { id } = router.query;
   const fetchPlaySimulation = async (): Promise<void> => {
     try {
       const res = await getLeaderBoardByQuizId(id);
       setMyRank(res.my_rank);
       setLeaderBoard(res.data);
-    } catch (error) {
-      console.error('Error fetching play simulation:', error);
+    } catch {
+      toast.error('Error fetching play simulation');
     }
   };
 
   useEffect(() => {
     if (typeof id === 'string') {
       void fetchPlaySimulation();
+    }
+    if (window.localStorage.getItem('accessToken') === null) {
+      void withRedirect(
+        router,
+        { lead: 'true', quizId: id as string },
+        '/auth'
+      );
     }
   }, [id]);
 
@@ -309,4 +317,4 @@ const LeaderBoardPage = (): React.ReactElement => {
   );
 };
 
-export default withAuth(LeaderBoardPage);
+export default LeaderBoardPage;

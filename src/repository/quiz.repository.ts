@@ -129,7 +129,7 @@ export const startQuiz = async (id: string): Promise<boolean> => {
       toast('Access token not found');
       return false;
     }
-    const path = `/${id}/start`;
+    const path = `/${id}/start?platform=WEB`;
     await quizService.post(
       path,
       {},

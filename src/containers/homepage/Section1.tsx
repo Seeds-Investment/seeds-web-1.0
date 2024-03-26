@@ -2,7 +2,7 @@
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
 // import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -48,7 +48,7 @@ const Section1 = (): React.ReactElement => {
     slidesToShow: 1,
     slidesToScroll: 1,
     dots: true,
-    appendDots: (dots: any) => (
+    appendDots: (dots: React.ReactNode) => (
       <div>
         <ul className="mb-5"> {dots} </ul>
       </div>

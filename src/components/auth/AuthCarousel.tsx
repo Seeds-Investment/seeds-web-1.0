@@ -34,10 +34,10 @@ const AuthCarousel: React.FC<IAuthCarousel> = ({
     autoplay: true,
     speed: 1000,
     autoplaySpeed: 3000,
-    beforeChange: (current: any, next: any) => {
+    beforeChange: (current: number, next: number) => {
       setActiveSlide(next);
     },
-    customPaging: (i: any) => (
+    customPaging: (i: number) => (
       <div
         className={`h-2.5 rounded-full ${
           activeSlide === i ? 'bg-[#B798FF] w-[18px]' : 'bg-[#E9E9E9] w-2.5'

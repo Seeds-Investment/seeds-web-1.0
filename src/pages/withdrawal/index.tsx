@@ -2,6 +2,7 @@
 import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
+import withRedirect from '@/helpers/withRedirect';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -24,12 +25,9 @@ const Withdrawal: React.FC = () => {
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
 
-  const withAuthWithdrawal = async () => {
-    await router.push({ pathname: '/auth', query: { withdrawal: true } });
-  };
   useEffect(() => {
     if (window.localStorage.getItem('accessToken') === null) {
-      void withAuthWithdrawal();
+      void withRedirect(router, { withdrawal: 'true' }, '/auth');
     }
   }, []);
 

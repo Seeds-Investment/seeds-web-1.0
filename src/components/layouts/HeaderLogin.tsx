@@ -1,7 +1,9 @@
+import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { useAppSelector } from '@/store/redux/store';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import { Bars4Icon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
@@ -9,7 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ChatIcon from '../svgs/chatIcon';
 import NotificationIcon from '../svgs/notificationIcon';
@@ -32,6 +34,7 @@ const HeaderLogin: React.FC = () => {
   const accessToken =
     typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  const { dataUser } = useAppSelector(state => state.user);
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [openSidebarResponsive, setOpenSidebarResponsive] =
@@ -46,29 +49,30 @@ const HeaderLogin: React.FC = () => {
     try {
       const response = await getUserInfo();
       setUserInfo(response);
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error('Error fecthing user data');
     }
   };
 
+  const getLastTranslation = useCallback(async (): Promise<void> => {
+    try {
+      if (typeof window !== 'undefined') {
+        const translation = getLocalStorage('translation', 'EN');
+        languageCtx.languageHandler(translation as 'EN' | 'ID');
+      }
+    } catch {
+      toast.error('Error in translation');
+    }
+  }, []);
+
   useEffect(() => {
     void handleGetUserInfo();
+    void getLastTranslation();
+    if (!isGuest()) {
+      void handleGetUserInfo();
+    }
   }, []);
-  useEffect(() => {
-    const getLastTranslation = async (): Promise<void> => {
-      try {
-        if (typeof window !== 'undefined') {
-          const translation = getLocalStorage('translation', 'EN');
-          languageCtx.languageHandler(translation as 'EN' | 'ID');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getLastTranslation().catch(err => {
-      console.log(err);
-    });
-  }, []);
+
   return (
     <div>
       {openSidebarResponsive ? (
@@ -109,11 +113,9 @@ const HeaderLogin: React.FC = () => {
                     ? 'border border-seeds-purple'
                     : ''
                 }`}
-                onClick={() => {
+                onClick={async () => {
                   languageCtx.languageHandler('ID');
-                  setTranslationToLocalStorage('ID').catch(err => {
-                    console.log(err);
-                  });
+                  await setTranslationToLocalStorage('ID');
                 }}
               >
                 <span
@@ -143,11 +145,9 @@ const HeaderLogin: React.FC = () => {
                     ? 'border border-seeds-purple'
                     : ''
                 }`}
-                onClick={() => {
+                onClick={async () => {
                   languageCtx.languageHandler('EN');
-                  setTranslationToLocalStorage('EN').catch(err => {
-                    console.log(err);
-                  });
+                  await setTranslationToLocalStorage('EN');
                 }}
               >
                 <span
@@ -166,42 +166,37 @@ const HeaderLogin: React.FC = () => {
                 />
               </button>
             </section>
-            <section>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  router.push('/social/notification').catch(err => {
-                    console.log(err);
-                  });
-                }}
-              >
-                <NotificationIcon />
-              </div>
-            </section>
-            <section>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  router.push('/chat').catch(err => {
-                    toast(err);
-                  });
-                }}
-              >
-                <ChatIcon />
-              </div>
-            </section>
-            {accessToken !== null && userInfo !== null ? (
-              <Link href="/my-profile">
-                <Image
-                  alt="image"
-                  width={17}
-                  height={17}
-                  className="rounded-full w-10"
-                  src={userInfo.avatar}
-                />
-              </Link>
-            ) : (
-              <></>
+            {!isGuest() && (
+              <>
+                <section>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      router.push('/social/notification').catch(err => {
+                        toast(err, { type: 'error' });
+                      });
+                    }}
+                  >
+                    <NotificationIcon />
+                  </div>
+                </section>
+                <section>
+                  <ChatIcon />
+                </section>
+                {accessToken !== null && userInfo !== null ? (
+                  <Link href="/my-profile">
+                    <Image
+                      alt="image"
+                      width={17}
+                      height={17}
+                      className="rounded-full w-10"
+                      src={dataUser.avatar}
+                    />
+                  </Link>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </section>
         )

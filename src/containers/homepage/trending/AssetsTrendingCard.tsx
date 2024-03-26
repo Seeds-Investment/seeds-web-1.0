@@ -1,3 +1,4 @@
+import { isGuest } from '@/helpers/guest';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -55,11 +56,13 @@ const AssetTrendingCard: React.FC<props> = ({
       className={`w-full my-3 bg-[#F9F9F9] ${isClick ? 'cursor-pointer' : ''}`}
       onClick={
         isClick
-          ? () => {
-              router
+          ? async () => {
+              await router
                 .push(
                   `${
-                    playId !== undefined
+                    isGuest()
+                      ? '/auth'
+                      : playId !== undefined
                       ? `/homepage/assets/${data.id}?playId=${playId}`
                       : `/homepage/assets/${data.id}`
                   }`

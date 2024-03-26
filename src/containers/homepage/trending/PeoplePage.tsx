@@ -1,8 +1,10 @@
 import FollowButton from '@/components/FollowButton';
+import { isGuest } from '@/helpers/guest';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTrendingPeople } from '../../../repository/asset.repository';
+
 export interface PeopleInterface {
   avatar: string;
   followers: number;
@@ -109,11 +111,15 @@ export default function PeoplePage(): React.ReactElement {
                   </div>
                 </div>
                 <div>
-                  <FollowButton
-                    userId={data.id}
-                    isFollowed={data.isFollowed}
-                    customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
-                  />
+                  {isGuest() ? (
+                    <></>
+                  ) : (
+                    <FollowButton
+                      userId={data.id}
+                      isFollowed={data.isFollowed}
+                      customClass="bg-[#3AC4A0] flex gap-2 items-center justify-center rounded-full w-[147px] h-[42px] self-center text-[#FFFFFF] text-base font-semibold font-poppins normal-case"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -121,7 +127,7 @@ export default function PeoplePage(): React.ReactElement {
       </div>
       <div className="text-center justify-center mt-3">
         <Link
-          href={'/homepage/trending-people'}
+          href={isGuest() ? '/auth' : '/homepage/trending-people'}
           className="text-md mt-3 font-normal text-[#3AC4A0]"
         >
           {t('homepage.section2.text14')}

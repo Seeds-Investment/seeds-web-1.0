@@ -3,11 +3,11 @@ import CardCircle from '@/components/circle/CardCircle';
 import { SearchCircle } from '@/components/forms/searchCircle';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import BannerCircleList from '@/containers/circle/main/Banner';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
   getCircle,
-  getCircleCategories,
   getCircleLeaderBoard
 } from '@/repository/circle.repository';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -26,6 +26,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
+
 export interface CircleInterface {
   id: string;
   name: string;
@@ -118,32 +119,42 @@ const Circle = (): React.ReactElement => {
   const [isLoadingCircle, setIsLoadingCircle] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
   const [circle, setCircle] = useState<CircleInterface[]>([]);
-  const [circleCategory, setCircleCategory] = useState<any[]>([]);
+  // const [circleCategory, setCircleCategory] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
-  const [activeTab, setActiveTab] = useState<string>('my_circle');
+  const [activeTab, setActiveTab] = useState<string>(
+    isGuest() ? 'all' : 'my_circle'
+  );
   const [userInfo, setUserInfo] = useState<any>([]);
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [hasMore, setHasMore] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
-  const dataTab = [
-    {
-      label: 'MyCircle',
-      value: 'my_circle',
-      data: circle
-    },
-    {
-      label: 'Joined',
-      value: 'joined',
-      data: circle
-    },
-    {
-      label: 'Circle',
-      value: 'all',
-      data: circle
-    }
-  ];
+  const dataTab = isGuest()
+    ? [
+        {
+          label: 'Circle',
+          value: 'all',
+          data: circle
+        }
+      ]
+    : [
+        {
+          label: 'MyCircle',
+          value: 'my_circle',
+          data: circle
+        },
+        {
+          label: 'Joined',
+          value: 'joined',
+          data: circle
+        },
+        {
+          label: 'Circle',
+          value: 'all',
+          data: circle
+        }
+      ];
 
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
@@ -228,23 +239,30 @@ const Circle = (): React.ReactElement => {
     }
   };
 
-  const fetchCircleCategory = async (): Promise<void> => {
-    try {
-      const response = await getCircleCategories({ page: 1, limit: 200 });
-      if (response.data === null) {
-        setCircleCategory([]);
-      } else {
-        setCircleCategory(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // Fitur belum berjalan. Creator: Redika
+
+  // const fetchCircleCategory = async (): Promise<void> => {
+  //   try {
+  //     const response = await getCircleCategories({ page: 1, limit: 200 });
+  //     console.log('rez : ', response)
+  //     if (response.data === null) {
+  //       setCircleCategory([]);
+  //     } else {
+  //       setCircleCategory(response.data);
+  //     }
+  //   } catch (error) {
+  //     toast(error, { type: 'error' });
+  //   }
+  // };
 
   useEffect(() => {
     void fetchCircleLeaderBoard();
-    void fetchCircleCategory();
+    setUserInfo([]);
   }, []);
+
+  // useEffect(() => {
+  //   void fetchCircleCategory();
+  // }, [activeCategory]);
 
   useEffect(() => {
     void fetchCircle(1, filter.search);
@@ -271,8 +289,6 @@ const Circle = (): React.ReactElement => {
     };
   }, [handleScroll]);
 
-  console.log(setUserInfo);
-
   const categories = [
     'All',
     'General',
@@ -285,11 +301,9 @@ const Circle = (): React.ReactElement => {
     'Finance'
   ];
 
-  console.log(circleCategory);
-
   return (
     <PageGradient defaultGradient className="w-full">
-      <BannerCircleList />
+      {!isGuest() && <BannerCircleList />}
 
       <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
@@ -348,7 +362,11 @@ const Circle = (): React.ReactElement => {
             {/* Tab */}
             <div className="w-full justify-center">
               <TabsHeader
-                className="bg-transparent w-full md:w-1/2 mx-auto p-0 rounded-none border-b border-blue-gray-50"
+                className={
+                  isGuest()
+                    ? 'bg-transparent w-full mx-auto p-0 rounded-none border-b border-blue-gray-50'
+                    : 'bg-transparent w-full md:w-1/2 mx-auto p-0 rounded-none border-b border-blue-gray-50'
+                }
                 indicatorProps={{
                   className:
                     'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
@@ -372,20 +390,22 @@ const Circle = (): React.ReactElement => {
             </div>
 
             {/* Searchbar */}
-            <div className="w-full md:w-3/4 justify-center mx-auto mt-5">
-              <SearchCircle
-                name="search"
-                type="outline"
-                prefix={
-                  <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
-                }
-                onChange={e => {
-                  handleChangeFilter(e);
-                }}
-                placeholder="Search"
-                value={filter.search}
-              />
-            </div>
+            {!isGuest() && (
+              <div className="w-full md:w-3/4 justify-center mx-auto mt-5">
+                <SearchCircle
+                  name="search"
+                  type="outline"
+                  prefix={
+                    <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
+                  }
+                  onChange={e => {
+                    handleChangeFilter(e);
+                  }}
+                  placeholder="Search"
+                  value={filter.search}
+                />
+              </div>
+            )}
 
             {/* Sort By Create */}
             <div className="flex flex-row w-full justify-between mt-5">
@@ -404,7 +424,9 @@ const Circle = (): React.ReactElement => {
                 <Button
                   className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full"
                   onClick={() => {
-                    void router.push('/connect/create-circle');
+                    void router.push(
+                      isGuest() ? '/auth' : '/connect/create-circle'
+                    );
                   }}
                 >
                   Create Circle +
@@ -466,7 +488,7 @@ const Circle = (): React.ReactElement => {
                 <TabPanel key={value} value={value}>
                   <div className="">
                     <div className="flex flex-wrap">
-                      {circle.length !== 0 ? (
+                      {circle?.length !== 0 ? (
                         circle?.map((data, idx) => (
                           <div
                             className={`w-${

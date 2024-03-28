@@ -187,7 +187,9 @@ const DescriptionQuiz = () => {
               background="#C286FF"
               darkBackground="#A75CF4"
               onClick={() => {
-                void router.replace(`/play/quiz/${id as string}/waiting`);
+                void router.replace(
+                  `/play/quiz/${id as string}/question-explanation`
+                );
               }}
             />
           </div>

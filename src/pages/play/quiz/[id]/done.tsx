@@ -49,7 +49,7 @@ const DoneQuiz: React.FC = () => {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.mp3',
         isAutoPlay: true,
         isLoop: true
       }
@@ -168,9 +168,9 @@ const DoneQuiz: React.FC = () => {
       (detailQuiz?.duration_in_minute ?? 6000) -
       Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    return `${Math.abs(minutes) < 10 ? `0${minutes}` : minutes}:${
-      Math.abs(seconds) < 10 ? `0${seconds}` : seconds
-    }`;
+    return `${
+      Math.abs(minutes) < 10 ? `0${Math.abs(minutes)}` : Math.abs(minutes)
+    }:${Math.abs(seconds) < 10 ? `0${Math.abs(seconds)}` : Math.abs(seconds)}`;
   }
 
   return (

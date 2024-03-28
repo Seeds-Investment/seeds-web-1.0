@@ -43,7 +43,7 @@ const HelpOptionContainer = () => {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.mp3',
         isAutoPlay: true,
         isLoop: true
       }

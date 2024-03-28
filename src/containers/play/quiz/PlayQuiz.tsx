@@ -26,16 +26,19 @@ import {
   type QuestionI,
   type UseLifelineState
 } from '@/utils/interfaces/quiz.interfaces';
+import Lottie from 'lottie-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import FiftySeedy from '../../../assets/play/quiz/5050-seedy.png';
+import Easy from '../../../assets/play/quiz/easy.json';
 import Fifty from '../../../assets/play/quiz/fifty.svg';
+import Hard from '../../../assets/play/quiz/hard.json';
+import Medium from '../../../assets/play/quiz/medium.json';
 import PhoneSeedy from '../../../assets/play/quiz/phone-seedy.png';
 import Phone from '../../../assets/play/quiz/phone.svg';
-import PlayAnimation from '../../../assets/play/quiz/quiz-play.png';
 import QuizSubmitConfirm from '../../../assets/play/quiz/quiz-submit-confirmation.png';
 import Timer from '../../../assets/play/quiz/timer.svg';
 import VoteSeedy from '../../../assets/play/quiz/vote-seedy.png';
@@ -71,17 +74,19 @@ const QuizPlay = ({
   const [confirmSubmit, setConfirmSubmit] = useState(false);
   const [confirmUseLifeline, setConfirmUseLifeline] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { submitQuizAnswer, submitLoading, score, quitQuiz } = useQuiz();
-  if (id === undefined) {
-    console.log(quitQuiz);
-  }
+  const [prevLevel, setPrevLevel] = useState('');
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const { submitQuizAnswer, submitLoading, score } = useQuiz();
+  // if (id === undefined) {
+  //   console.log(quitQuiz);
+  // }
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const audioConfig = {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
+        name: baseUrl + '/assets/quiz/sound/quiz_background.mp3',
         isAutoPlay: true,
         isLoop: true
       },
@@ -109,6 +114,38 @@ const QuizPlay = ({
       name: baseUrl + '/assets/quiz/sound/Answer_reducted_effect.mp3'
     });
   };
+
+  useEffect(() => {
+    if (detailQuiz) {
+      const threeQLVup =
+        detailQuiz.total_questions === 3 &&
+        (currentPage === 1 || currentPage === 2 || currentPage === 3);
+      const sixQLVup =
+        detailQuiz.total_questions === 6 &&
+        (currentPage === 1 || currentPage === 3 || currentPage === 5);
+      const nineQLVup =
+        detailQuiz.total_questions === 9 &&
+        (currentPage === 1 || currentPage === 4 || currentPage === 7);
+      const twelveQLVup =
+        detailQuiz.total_questions === 12 &&
+        (currentPage === 1 || currentPage === 5 || currentPage === 9);
+      const fifteenQLVup =
+        detailQuiz.total_questions === 15 &&
+        (currentPage === 1 || currentPage === 6 || currentPage === 11);
+      if (threeQLVup || sixQLVup || nineQLVup || twelveQLVup || fifteenQLVup) {
+        playAudio({
+          name: baseUrl + '/assets/quiz/sound/quiz_level_upgrade.mp3'
+        });
+      }
+      if (quizQuestions[currentPage]?.difficulty !== prevLevel) {
+        setShowLevelUp(true);
+        setTimeout(() => {
+          setShowLevelUp(false);
+        }, 2000);
+      }
+      setPrevLevel(quizQuestions[currentPage]?.difficulty);
+    }
+  }, [currentPage, detailQuiz]);
 
   useEffect(() => {
     if (
@@ -261,7 +298,9 @@ const QuizPlay = ({
         centerContent={
           <div className="flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
             <div className="text-base lg:text-2xl font-semibold capitalize">
-              {quizQuestions?.[currentPage]?.difficulty}
+              {`${quizQuestions?.[currentPage]?.difficulty} ${
+                quizQuestions.length / 3
+              }`}
             </div>
             <div className="text-sm lg:text-xl">
               {currentPage + 1}/{quizQuestions.length}
@@ -289,15 +328,15 @@ const QuizPlay = ({
                 </div>
               </div>
             </div>
-            <div className="w-[125px] lg:w-[220px]">
+            {/* <div className="w-[125px] lg:w-[220px]">
               <Image
                 alt="Quiz Playing"
                 src={PlayAnimation}
                 width={400}
                 height={400}
               />
-            </div>
-            <div className="text-white text-base text-center lg:text-xl w-full lg:w-5/6 mt-2">
+            </div> */}
+            <div className="text-[#262626] text-base text-center lg:text-xl w-full lg:w-5/6 mt-4 bg-white px-3 py-4 rounded-lg">
               {
                 quizQuestions[currentPage]?.data?.[
                   i18n.language === 'id' ? 'id' : 'en'
@@ -323,6 +362,20 @@ const QuizPlay = ({
                         setConfirmUseLifeline(true);
                       }
                     }}
+                    background={
+                      item.name === LifelinesEnum.PHONE
+                        ? '#95DB56'
+                        : item.name === LifelinesEnum.VOTE
+                        ? '#B798FF'
+                        : '#7B8BFC'
+                    }
+                    darkBackground={
+                      item.name === LifelinesEnum.PHONE
+                        ? '#4DA81C'
+                        : item.name === LifelinesEnum.VOTE
+                        ? '#7555DA'
+                        : '#3C49D6'
+                    }
                   />
                 ) : null;
               })}
@@ -508,6 +561,26 @@ const QuizPlay = ({
               />
             </div>
           </div>
+        </Modal>
+      )}
+      {showLevelUp && (
+        <Modal
+          onClose={() => {
+            setConfirmUseLifeline(false);
+          }}
+          modalClasses="z-30 animate-slide-down fixed top-[35%] lg:left-[40%] mt-[-12.35rem] w-full lg:w-[23%] h-fit p-4 text-center bg-transparent"
+        >
+          <Lottie
+            animationData={
+              quizQuestions[currentPage]?.difficulty === 'easy'
+                ? Easy
+                : quizQuestions[currentPage]?.difficulty === 'medium'
+                ? Medium
+                : Hard
+            }
+            loop={true}
+            width={400}
+          />
         </Modal>
       )}
     </>

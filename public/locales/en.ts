@@ -1698,9 +1698,11 @@ export default {
     extraCash:
       "Oops, if you want an extra assist, you'll need an extra IDR {{amount}} cash",
     select: 'Select',
-    quizCompanion: 'Meet Your Quiz Companion',
+    quizCompanion: 'Pick your power-up!',
     chooseOptions:
-      'Choose your assistance options, and of course you can even choose more than one!',
+      'Struggling? This power-up will guide you towards the correct answer',
+    freeOptions:
+      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
     fiftyfifty: 'This option will eliminate two wrong answers.',
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",

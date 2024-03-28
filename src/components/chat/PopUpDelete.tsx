@@ -8,9 +8,10 @@ import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
+  onClick: () => Promise<void>;
 }
 
-const DeleteChatPopUp: React.FC<Props> = ({ onClose }) => {
+const DeleteChatPopUp: React.FC<Props> = ({ onClose, onClick }) => {
   const { t } = useTranslation();
 
   return (
@@ -42,7 +43,12 @@ const DeleteChatPopUp: React.FC<Props> = ({ onClose }) => {
         </Typography>
       </div>
       <div className="flex flex-col gap-4">
-        <div className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out">
+        <div
+          onClick={() => {
+            void onClick();
+          }}
+          className="bg-[#DD2525] mt-5 w-full hover:bg-red-700 rounded-full hover:scale-105 transition ease-out"
+        >
           <Typography className="text-white text-lg font-bold text-center p-2">
             {t('DeleteAccount.confirmButton')}
           </Typography>

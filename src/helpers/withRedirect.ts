@@ -39,6 +39,12 @@ const withRedirect = async <T extends QueryType>(
         if (redirectList[i].logic) {
           await router.push({ pathname: redirectList[i].redirect });
           break;
+        } else if (window.localStorage.getItem('accessToken') !== null) {
+          window.localStorage.removeItem('accessToken');
+          await router.push({
+            pathname,
+            query
+          });
         }
       }
     }

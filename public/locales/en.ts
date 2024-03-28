@@ -1786,9 +1786,9 @@ export default {
     active: 'Active',
     ended: 'Ended',
     canceled: 'Cancelled',
-    quizDone1: 'One Step Closer to the Win.',
+    quizDone1: "let's join another interesting quiz!",
     quizDone2:
-      'Our recommended circle that will boost your performance in tournament!',
+      'Ooops... you only get one chance to play a free quiz! Explore more quizzes!',
     testInvestment: 'Test your investment knowledge and win real money!',
     welcome: 'Welcome to Seeds Quiz',
     areYouReady: 'Are You Ready?',

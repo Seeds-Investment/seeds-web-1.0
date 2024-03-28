@@ -58,7 +58,7 @@ jobs:
           export CONTAINER_NAME=dev-web-1
           kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n dev
 
-      - name: Update secret
-        run: |
-          kubectl delete secret web-secret -n dev
-          kubectl create secret generic web-secret --from-file=environment/.env-dev -n dev
+      # - name: Update secret
+      #   run: |
+      #     kubectl delete secret web-secret -n dev
+      #     kubectl create secret generic web-secret --from-file=environment/.env-dev -n dev

@@ -19,10 +19,7 @@ const withAuth = (
         try {
           const response = await getUserInfo();
           if (response === 'Access token not found' && !isGuest()) {
-            await router
-              .push('/')
-              .then()
-              .catch(() => {});
+            await router.push('/');
           }
         } catch (error: any) {
           if (error.response.status === 401) {
@@ -31,10 +28,7 @@ const withAuth = (
               fetchNewAccessToken === 'Please Login again' ||
               fetchNewAccessToken === 'Refresh token not found'
             ) {
-              router
-                .push('/')
-                .then()
-                .catch(() => []);
+              await router.push('/');
             } else {
               localStorage.setItem(
                 'accessToken',
@@ -46,10 +40,7 @@ const withAuth = (
               );
             }
           } else {
-            router
-              .push('/')
-              .then()
-              .catch(() => []);
+            await router.push('/');
           }
         } finally {
           setLoading(false);

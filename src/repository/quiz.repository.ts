@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import {
@@ -84,6 +85,14 @@ export const getQuizById = async ({
     return await quizService.get(path);
   } catch (error) {
     console.error('Error fetching trending play list:', error);
+  }
+};
+
+export const getQuizCategoryById = async (id: string): Promise<any> => {
+  try {
+    return await quizService.get(`/category/${id}`);
+  } catch (error) {
+    toast.error('Error get quiz category');
   }
 };
 

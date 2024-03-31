@@ -20,7 +20,7 @@ const StartQuiz = () => {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/quiz_background.wav',
+        name: baseUrl + '/assets/quiz/sound/quiz_background.mp3',
         isAutoPlay: true,
         isLoop: true
       }

@@ -1143,6 +1143,7 @@ export default {
     invalidConfirmPassword: 'Konfirmasi Password tidak valid'
   },
   landingPageV2: {
+    redirectError: 'Tolong Login Ulang',
     product: {
       section1: {
         title1: 'Mainkan & Menangkan',

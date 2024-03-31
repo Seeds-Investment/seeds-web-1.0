@@ -1,10 +1,11 @@
-import { getUserInfo } from '@/repository/profile.repository';
 import { getLeaderBoardByQuizId } from '@/repository/quiz.repository';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 import withRedirect from '@/helpers/withRedirect';
+import { useAppSelector } from '@/store/redux/store';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import rank1Box from '../../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../../public/assets/images/rank2Box.svg';
@@ -38,29 +39,24 @@ interface LeaderData {
 }
 
 const LeaderBoardPage = (): React.ReactElement => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
+  const { id } = router.query;
+  const { dataUser } = useAppSelector(state => state.user);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
   const [myRank, setMyRank] = useState();
 
-  const [userInfo, setUserInfo] = useState<any>([]);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
+  const redirect = async (): Promise<void> => {
+    if (id !== undefined) {
+      await withRedirect(
+        router,
+        { lead: 'true', quizId: id as string },
+        '/auth'
+      );
+      toast.error(t('landingPageV2.redirectError'));
+    }
+  };
 
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const { id } = router.query;
   const fetchPlaySimulation = async (): Promise<void> => {
     try {
       const res = await getLeaderBoardByQuizId(id);
@@ -72,15 +68,9 @@ const LeaderBoardPage = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    if (typeof id === 'string') {
+    if (id !== undefined) {
       void fetchPlaySimulation();
-    }
-    if (window.localStorage.getItem('accessToken') === null) {
-      void withRedirect(
-        router,
-        { lead: 'true', quizId: id as string },
-        '/auth'
-      );
+      void redirect();
     }
   }, [id]);
 
@@ -259,7 +249,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     <h2 className="font-bold">
                       {leaderBoard[myRank - 1]?.name}
                     </h2>
-                    <p>{userInfo?.seeds_tag}</p>
+                    <p>{dataUser?.seedsTag}</p>
                     <p className="text-[#3AC4A0]">
                       {leaderBoard[myRank - 1]?.score}
                     </p>

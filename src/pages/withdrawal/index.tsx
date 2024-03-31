@@ -5,7 +5,9 @@ import IndexWithdrawal from '@/components/quiz/Withdrawal';
 import withRedirect from '@/helpers/withRedirect';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface IWithdrawalAccount {
   method: string;
@@ -15,6 +17,7 @@ export interface IWithdrawalAccount {
 }
 
 const Withdrawal: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [select, setSelect] = useState(0);
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
@@ -25,10 +28,15 @@ const Withdrawal: React.FC = () => {
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
 
+  const redirect = useCallback(async (): Promise<void> => {
+    try {
+      await withRedirect(router, { withdrawal: 'true' }, '/auth');
+      toast.error(t('landingPageV2.redirectError'));
+    } catch (error) {}
+  }, []);
+
   useEffect(() => {
-    if (window.localStorage.getItem('accessToken') === null) {
-      void withRedirect(router, { withdrawal: 'true' }, '/auth');
-    }
+    void redirect();
   }, []);
 
   const handleSubmit = async () => {

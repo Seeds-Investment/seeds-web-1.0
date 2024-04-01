@@ -45,6 +45,10 @@ const LeaderBoardPage = (): React.ReactElement => {
   const { dataUser } = useAppSelector(state => state.user);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
   const [myRank, setMyRank] = useState();
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
 
   const redirect = async (): Promise<void> => {
     if (id !== undefined) {
@@ -53,6 +57,11 @@ const LeaderBoardPage = (): React.ReactElement => {
         { lead: 'true', quizId: id as string },
         '/auth'
       );
+    }
+    if (
+      window.localStorage.getItem('accessToken') === null ||
+      expiredUnixTime < currentUnixTime
+    ) {
       toast.error(t('landingPageV2.redirectError'));
     }
   };

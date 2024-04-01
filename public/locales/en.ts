@@ -1223,6 +1223,7 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    redirectError: 'Please Re-login',
     product: {
       section1: {
         title1: 'Play & Win',

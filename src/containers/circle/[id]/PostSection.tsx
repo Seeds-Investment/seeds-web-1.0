@@ -1171,7 +1171,7 @@ const PostSection: React.FC<props> = ({
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    onClick={async() => {
+                    onClick={async () => {
                       isGuest()
                         ? await router.push('/auth')
                         : handleCopyClick(`${dataPost.id as string}`).catch(

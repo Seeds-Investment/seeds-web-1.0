@@ -58,7 +58,7 @@ const initialFilter = {
   limit: 15,
   page: 1,
   sort_by: '',
-  type: 'my_circle',
+  type: 'my_circle'
 };
 
 const dropdownValue = [
@@ -257,7 +257,7 @@ const Circle = (): React.ReactElement => {
 
   useEffect(() => {
     void fetchCircleLeaderBoard();
-    setUserInfo([])
+    setUserInfo([]);
   }, []);
 
   // useEffect(() => {
@@ -300,7 +300,7 @@ const Circle = (): React.ReactElement => {
     'Forex',
     'Finance'
   ];
-  
+
   return (
     <PageGradient defaultGradient className="w-full">
       {!isGuest() && <BannerCircleList />}

@@ -1,10 +1,12 @@
-import { getUserInfo } from '@/repository/profile.repository';
 import { getLeaderBoardByQuizId } from '@/repository/quiz.repository';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
-import withAuth from '@/helpers/withAuth';
+import withRedirect from '@/helpers/withRedirect';
+import { useAppSelector } from '@/store/redux/store';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import rank1Box from '../../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../../public/assets/images/rank3Box.svg';
@@ -37,42 +39,47 @@ interface LeaderData {
 }
 
 const LeaderBoardPage = (): React.ReactElement => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
+  const { id } = router.query;
+  const { dataUser } = useAppSelector(state => state.user);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
   const [myRank, setMyRank] = useState();
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
 
-  const [userInfo, setUserInfo] = useState<any>([]);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
+  const redirect = async (): Promise<void> => {
+    if (id !== undefined) {
+      await withRedirect(
+        router,
+        { lead: 'true', quizId: id as string },
+        '/auth'
+      );
+    }
+    if (
+      window.localStorage.getItem('accessToken') === null ||
+      expiredUnixTime < currentUnixTime
+    ) {
+      toast.error(t('landingPageV2.redirectError'));
+    }
+  };
 
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const id: any = router.query.id;
   const fetchPlaySimulation = async (): Promise<void> => {
     try {
       const res = await getLeaderBoardByQuizId(id);
       setMyRank(res.my_rank);
       setLeaderBoard(res.data);
-    } catch (error) {
-      console.error('Error fetching play simulation:', error);
+    } catch {
+      toast.error('Error fetching play simulation');
     }
   };
 
   useEffect(() => {
-    if (typeof id === 'string') {
+    if (id !== undefined) {
       void fetchPlaySimulation();
+      void redirect();
     }
   }, [id]);
 
@@ -251,7 +258,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     <h2 className="font-bold">
                       {leaderBoard[myRank - 1]?.name}
                     </h2>
-                    <p>{userInfo?.seeds_tag}</p>
+                    <p>{dataUser?.seedsTag}</p>
                     <p className="text-[#3AC4A0]">
                       {leaderBoard[myRank - 1]?.score}
                     </p>
@@ -309,4 +316,4 @@ const LeaderBoardPage = (): React.ReactElement => {
   );
 };
 
-export default withAuth(LeaderBoardPage);
+export default LeaderBoardPage;

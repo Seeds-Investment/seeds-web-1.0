@@ -40,9 +40,9 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
         <div className="flex flex-row justify-between px-4 py-2 border-b border-dashed border-white">
           <div className="text-white text-sm font-semibold">{item.name}</div>
           <button
-            onClick={async () =>
-              { isGuest() ? await router.push('/auth') : await handleCopyClick(); }
-            }
+            onClick={async () => {
+              isGuest() ? await router.push('/auth') : await handleCopyClick();
+            }}
           >
             <ShareIcon width={20} height={20} className="text-white" />
           </button>

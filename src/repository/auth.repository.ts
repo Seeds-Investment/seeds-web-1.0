@@ -65,8 +65,8 @@ export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
 };
 
 export const loginGuest = async (): Promise<LoginGuestResponse> => {
-  const response = { status: 200 }
-  return response
+  const response = { status: 200 };
+  return response;
 };
 
 export const loginSSO = async ({

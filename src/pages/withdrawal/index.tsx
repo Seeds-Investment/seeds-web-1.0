@@ -2,9 +2,12 @@
 import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
+import withRedirect from '@/helpers/withRedirect';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface IWithdrawalAccount {
   method: string;
@@ -14,6 +17,7 @@ export interface IWithdrawalAccount {
 }
 
 const Withdrawal: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [select, setSelect] = useState(0);
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
@@ -23,14 +27,23 @@ const Withdrawal: React.FC = () => {
   const joinPin = pin.join('');
   const quizId = router.query.quizId;
   const { submitLoading, submitQuizCashout } = useQuizCashout();
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
 
-  const withAuthWithdrawal = async () => {
-    await router.push({ pathname: '/auth', query: { withdrawal: true } });
-  };
-  useEffect(() => {
-    if (window.localStorage.getItem('accessToken') === null) {
-      void withAuthWithdrawal();
+  const redirect = async (): Promise<void> => {
+    await withRedirect(router, { withdrawal: 'true' }, '/auth');
+    if (
+      window.localStorage.getItem('accessToken') === null ||
+      expiredUnixTime < currentUnixTime
+    ) {
+      toast.error(t('landingPageV2.redirectError'));
     }
+  };
+
+  useEffect(() => {
+    void redirect();
   }, []);
 
   const handleSubmit = async () => {

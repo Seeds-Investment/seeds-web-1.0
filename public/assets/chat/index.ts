@@ -4,6 +4,7 @@ export { default as chatEmpty } from './chatEmpty.png';
 export { default as dropdownGreen } from './dropdownGreen.svg';
 export { default as filterSearch } from './filterSearch.svg';
 export { default as galleryChat } from './gallery.svg';
+export { default as leaveGroup } from './leaveGroup.png';
 export { default as mic } from './mic.svg';
 export { default as moreVerticalGreen } from './moreVertical.svg';
 export { default as plusRounded } from './plusRounded.svg';

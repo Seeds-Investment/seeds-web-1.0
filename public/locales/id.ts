@@ -1143,6 +1143,7 @@ export default {
     invalidConfirmPassword: 'Konfirmasi Password tidak valid'
   },
   landingPageV2: {
+    redirectError: 'Tolong Login Ulang',
     product: {
       section1: {
         title1: 'Mainkan & Menangkan',
@@ -1623,8 +1624,11 @@ export default {
     extraCash:
       'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
     select: 'Pilih',
-    quizCompanion: 'Temui Teman Kuis Kamu',
-    chooseOptions: 'Pilih bantuan kamu, dan bisa lebih dari satu!',
+    quizCompanion: 'Pick your power-up!',
+    chooseOptions:
+      'Struggling? This power-up will guide you towards the correct answer',
+    freeOptions:
+      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
     vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
@@ -1783,6 +1787,12 @@ export default {
     selectUsername:
       'You didn’t made any conversation yet, please select username.',
     chatPeople: 'Chat People',
-    createCommunity: 'Create Community'
+    createCommunity: 'Create Community',
+    popUpLeave: {
+      Title: 'Keluar dari grup?',
+      Description: 'Kamu yakin ingin meninggalkan grup?',
+      helpUs: 'Bantu kami untuk memahami masalahmu',
+      continue: 'Lanjutkan'
+    }
   }
 };

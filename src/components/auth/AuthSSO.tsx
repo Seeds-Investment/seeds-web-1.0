@@ -1,4 +1,6 @@
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
+import queryList from '@/helpers/queryList';
+import withRedirect from '@/helpers/withRedirect';
 import { loginSSO } from '@/repository/auth.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
@@ -21,10 +23,9 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { queries, totalQueries } = queryList();
   const { data } = useSession();
-
   const handleLoginSSO = async (): Promise<void> => {
-    const searchParams = new URLSearchParams(window.location.search);
     try {
       if (data !== null) {
         const response = await loginSSO({
@@ -39,36 +40,17 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
 
           await dispatch(fetchUserData());
           await dispatch(fetchExpData());
-          if (pathname === '/auth/register') {
-            await router.push(
-              searchParams.get('quizId') !== null
-                ? `/play/quiz/${searchParams.get('quizId') as string}`
-                : searchParams.get('withdrawal') !== null
-                ? '/withdrawal'
-                : '/homepage'
-            );
-            toast(t('authLogin.SSO'), { type: 'error' });
+          if (totalQueries > 0) {
+            await withRedirect(router, queries);
           } else {
-            await router.push(
-              searchParams.get('quizId') !== null
-                ? `/play/quiz/${searchParams.get('quizId') as string}`
-                : searchParams.get('withdrawal') !== null
-                ? '/withdrawal'
-                : '/homepage'
-            );
+            await router.push('/homepage');
           }
+          pathname === '/auth/register' &&
+            toast(t('authLogin.SSO'), { type: 'error' });
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
-          await router.push(
-            searchParams.get('quizId') !== null
-              ? `register?quizId=${searchParams.get('quizId') as string}`
-              : searchParams.get('withdrawal') !== null
-              ? `register?withdrawal=${
-                  searchParams.get('withdrawal') as string
-                }`
-              : 'register'
-          );
+          await withRedirect(router, router.query, 'register');
         }
       }
     } catch (error: any) {

@@ -4,15 +4,26 @@ import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
+import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
 import SearchChatPopup from '@/components/chat/SearchPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ContactList from '@/containers/chat/ContactList';
 import withAuth from '@/helpers/withAuth';
 import { searchUser } from '@/repository/auth.repository';
 import {
+  deleteGroupChat,
+  deletePersonalChat,
   getChat,
+  getChatLinks,
+  getChatMedia,
+  getChatNotes,
   getGroupDetail,
+  getGroupMember,
   getListChat,
+  getPersonalChatCommonGroups,
+  leaveGroupChat,
+  muteGroupChat,
+  mutePersonalChat,
   readGroupMessage,
   readPersonalMessage,
   sendPersonalMessage
@@ -21,9 +32,13 @@ import { getOtherUser } from '@/repository/profile.repository';
 import { useAppSelector } from '@/store/redux/store';
 import type {
   Chat,
+  CommonGroupData,
   GetListChatParams,
+  GroupMemberData,
   IChatBubble,
   IGroupChatDetail,
+  PersonalChatMediaData,
+  PersonalChatNotesData,
   SearchUserChat
 } from '@/utils/interfaces/chat.interface';
 import type {
@@ -39,7 +54,9 @@ import {
   TabsHeader,
   Typography
 } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   camera,
@@ -90,7 +107,7 @@ const ChatPages: React.FC = () => {
   const { roomId } = router.query;
   const [chatList, setChatList] = useState<Chat[] | []>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isChatActive, setIsChatActive] = useState<boolean>(true);
+  const [isChatActive, setIsChatActive] = useState<boolean>(false);
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   // const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<GetListChatParams>(initialFilter);
@@ -103,6 +120,7 @@ const ChatPages: React.FC = () => {
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLeavePopupOpen, setIsLeavePopupOpen] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -112,6 +130,23 @@ const ChatPages: React.FC = () => {
     []
   );
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [personalMediaData, setPersonalMediaData] = useState<
+    PersonalChatMediaData[] | []
+  >([]);
+
+  const [personalNotesData, setPersonalNotesData] = useState<
+    PersonalChatNotesData[] | []
+  >([]);
+
+  const [personalLinksData, setPersonalLinksData] = useState<
+    PersonalChatMediaData[] | []
+  >([]);
+
+  const [commonGroupData, setCommonGroupData] = useState<
+    CommonGroupData[] | []
+  >([]);
+
+  const [groupMember, setGroupMember] = useState<GroupMemberData[] | []>([]);
 
   const [activeTab, setActiveTab] = useState<
     'PERSONAL' | 'COMMUNITY' | 'REQUEST'
@@ -175,6 +210,13 @@ const ChatPages: React.FC = () => {
       search: value // Update only the search property
     }));
   };
+
+  const handleFilterUnreadChange = (): void => {
+    setFilter((prevState: GetListChatParams) => ({
+      ...prevState,
+      unread: !filter.unread
+    }));
+  };
   const dataTab = useMemo<TabTypes[]>(
     () => [
       {
@@ -213,7 +255,7 @@ const ChatPages: React.FC = () => {
   const handleDropdownOptionClick = (option: string): void => {
     switch (option) {
       case 'Search':
-        setIsSearchActive(true);
+        // setIsSearchActive(true);
         break;
       case 'Delete':
         setIsDeletePopupOpen(true);
@@ -223,6 +265,9 @@ const ChatPages: React.FC = () => {
         break;
       case 'New':
         setIsSearchPopupOpen(true);
+        break;
+      case 'Leave':
+        setIsLeavePopupOpen(true);
         break;
 
       default:
@@ -263,7 +308,49 @@ const ChatPages: React.FC = () => {
     }
   };
 
+  const muteChat = async (type: string): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await mutePersonalChat({ user_id: roomId as string, type })
+        : await muteGroupChat({ group_id: roomId as string, type });
+    } catch (error: any) {
+      toast('Oops! Error when try to mute chat');
+    } finally {
+      setIsMutePopupOpen(false);
+    }
+  };
+
+  const deleteChat = async (): Promise<void> => {
+    try {
+      activeTab === 'PERSONAL'
+        ? await deletePersonalChat(roomId as string)
+        : await deleteGroupChat(roomId as string);
+    } catch (error: any) {
+      toast('Oops! Error when try to delete chat');
+    } finally {
+      setIsDeletePopupOpen(false);
+      void fetchChat();
+    }
+  };
+
+  const leaveCommunity = async (message: string): Promise<void> => {
+    try {
+      await leaveGroupChat({
+        id: roomId as string,
+        user_id: dataUser.id,
+        message_text: message
+      });
+    } catch (error: any) {
+      toast('Oops! Error when try to Leave Community');
+    } finally {
+      setIsDeletePopupOpen(false);
+    }
+  };
+
   const fetchUserNewChat = useCallback(async (): Promise<void> => {
+    if (searchFilter.search === '') {
+      return;
+    }
     try {
       setIsLoading(true);
       const response = await searchUser(searchFilter);
@@ -309,6 +396,113 @@ const ChatPages: React.FC = () => {
     }
   };
 
+  const fetchNotes = async (): Promise<void> => {
+    try {
+      const personalNotes =
+        activeTab === 'COMMUNITY'
+          ? await getChatNotes({
+              group_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            })
+          : await getChatNotes({
+              user_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            });
+      setPersonalNotesData(personalNotes.data);
+    } catch (error: any) {
+      toast('Failed to fetch Notes');
+      setPersonalNotesData([]);
+    }
+  };
+  const fetchMedia = async (): Promise<void> => {
+    try {
+      const personalMedia =
+        activeTab === 'COMMUNITY'
+          ? await getChatMedia({
+              group_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            })
+          : await getChatMedia({
+              user_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            });
+      setPersonalMediaData(personalMedia.data);
+    } catch (error: any) {
+      toast('Failed to fetch Media');
+      setPersonalMediaData([]);
+    }
+  };
+  const fetchLink = async (): Promise<void> => {
+    try {
+      const personalLinks =
+        activeTab === 'COMMUNITY'
+          ? await getChatLinks({
+              group_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            })
+          : await getChatLinks({
+              user_id: roomId as string,
+              page: 1,
+              limit: 3,
+              type: activeTab
+            });
+      setPersonalLinksData(personalLinks.data);
+    } catch (error: any) {
+      toast('Failed to fetch Links');
+      setPersonalLinksData([]);
+    }
+  };
+  const fetchCommonGroup = async (): Promise<void> => {
+    try {
+      const commonGroup = await getPersonalChatCommonGroups({
+        user_id: roomId as string,
+        page: 1,
+        limit: 3
+      });
+      setCommonGroupData(commonGroup.data);
+    } catch (error: any) {
+      toast('Failed to fetch Group list');
+      setCommonGroupData([]);
+    }
+  };
+  const fetchDetailPersonal = async (): Promise<void> => {
+    void fetchNotes();
+    void fetchMedia();
+    void fetchLink();
+    void fetchCommonGroup();
+  };
+
+  const fetchGroupMember = async (): Promise<void> => {
+    try {
+      const groupMember = await getGroupMember({
+        id: roomId as string,
+        page: 1,
+        limit: 3
+      });
+      setGroupMember(groupMember.data);
+    } catch (error: any) {
+      toast('Failed to fetch Group Member');
+      setGroupMember([]);
+    }
+  };
+
+  const fetchDetailGroup = async (): Promise<void> => {
+    void fetchNotes();
+    void fetchMedia();
+    void fetchLink();
+    void fetchGroupMember();
+  };
+
   useEffect(() => {
     if (roomId !== undefined) {
       if (activeTab === 'COMMUNITY') {
@@ -327,6 +521,15 @@ const ChatPages: React.FC = () => {
           onClose={() => {
             setIsDeletePopupOpen(false);
           }}
+          onClick={deleteChat}
+        />
+      )}
+      {isLeavePopupOpen && (
+        <LeaveCommunityPopUp
+          onClose={() => {
+            setIsLeavePopupOpen(false);
+          }}
+          onClick={leaveCommunity}
         />
       )}
       {isSearchPopupOpen && (
@@ -337,6 +540,9 @@ const ChatPages: React.FC = () => {
           onChange={handleSearchInputChange}
           value={searchFilter.search as string}
           userList={sarchUserList}
+          onSelect={() => {
+            setIsChatActive(true);
+          }}
         />
       )}
       {isMutePopupOpen && (
@@ -344,197 +550,386 @@ const ChatPages: React.FC = () => {
           onClose={() => {
             setIsMutePopupOpen(false);
           }}
+          onMute={muteChat}
         />
       )}
       {isShowDetail ? (
         <CCard className="flex flex-col border-none rounded-xl bg-white w-full py-5 px-4 gap-4">
-          <div className="flex justify-between items-center">
-            <div
-              onClick={() => {
-                setIsShowDetail(false);
-              }}
-            >
-              <Image
-                alt="Back"
-                src={back_nav}
-                className="h-6 w-6 object-cover"
-              />
-            </div>
-            <Image
-              src={more_vertical}
-              alt="threeDots"
-              className="cursor-pointer"
-            />
-          </div>
-          <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
-            <img
-              src={
-                activeTab === 'COMMUNITY'
-                  ? groupData?.avatar
-                  : (otherUserData?.avatar as string)
-              }
-              alt="avatar"
-              className="rounded-full w-36 h-36 bg-[#3AC4A0]"
-            />
-            <Typography className="text-md text-[#3AC4A0] font-poppins">
-              {otherUserData?.seeds_tag}
-            </Typography>
-          </div>
-          <div className="w-full flex flex-col p-4 gap-8">
-            <div>
-              <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                Description
-              </Typography>
-              <Typography className="text-md text-[#262626] font-poppins">
-                Sedang tidak ingin diganggu!
-              </Typography>
-            </div>
-            <div className="w-full border-b border-[#E9E9E9]">
-              <div className="w-full flex justify-between">
-                <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                  Notes
-                </Typography>
-                <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                  See more
-                </Typography>
-              </div>
-              <div>
-                <div className="flex gap-4">
+          {activeTab === 'COMMUNITY' ? (
+            <>
+              <div className="flex justify-between items-center">
+                <div
+                  onClick={() => {
+                    setIsShowDetail(false);
+                  }}
+                >
                   <Image
-                    src={otherUserData?.avatar as string}
-                    alt="Avatar"
-                    width={30}
-                    height={30}
-                    className="rounded-full w-[30px] h-[30px]"
+                    alt="Back"
+                    src={back_nav}
+                    className="h-6 w-6 object-cover"
                   />
-                  <div className="flex flex-col">
-                    <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                      Andrew Math
-                    </Typography>
-                    <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                      12/02/2023
-                    </Typography>
-                    <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
-                      Lorem ipsum dolor sit amet consectetur. Nisi nunc pretium
-                      potenti massa purus. Dui at nisl etiam pellentesque
-                      egestas congue.
-                    </Typography>
-                  </div>
                 </div>
-              </div>
-              <div>
-                <div className="flex gap-4">
-                  <Image
-                    src={otherUserData?.avatar as string}
-                    alt="Avatar"
-                    width={30}
-                    height={30}
-                    className="rounded-full w-[30px] h-[30px]"
-                  />
-                  <div className="flex flex-col">
-                    <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                      Andrew Math
-                    </Typography>
-                    <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                      12/02/2023
-                    </Typography>
-                    <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
-                      Lorem ipsum dolor sit amet consectetur. Nisi nunc pretium
-                      potenti massa purus. Dui at nisl etiam pellentesque
-                      egestas congue.
-                    </Typography>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full">
-              <div className="w-full flex justify-between">
-                <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                  Media
-                </Typography>
-                <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                  See more
-                </Typography>
-              </div>
-              <div className="w-full flex gap-4">
-                <img
-                  className="w-1/3 h-36 rounded-md"
-                  alt="Media"
-                  src="https://s3-alpha-sig.figma.com/img/73c7/7f4a/3383fe6b1d63f32b038c4400babdf0e3?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=SqrtHpoEf5K1agCIG~12yhq9N9G9OM6JGxRtQpikssyjYXhIK8WoKLaP2uVoJzMNk6WYdn0HGeCY4Ut~s4MbW4NV4pn~UNFLjHyoiDrzk7xDqqsWoFmwBIATsXFx22OXePqiGmdEAuhjg81y5~ai9TKGC-cqDtWP8JSGIPVdUGzUgRzdU-AYKKsaGEK0VFoHfBZ1VDQ~bw1ea017LtvPxjM9jcfnQyQIucUeeIZoN5f0Ul-xg-AlPHqbHkJyPry0PL8Rls32MjNlD6aacBhD--822v5eBbfRnGqE91D1Ereh47HhNEMwzPWQXTvefRPVsRo6cr0qFZjVmfJOUkMecQ__"
-                />
-                <img
-                  className="w-1/3 h-36 rounded-md"
-                  alt="Media"
-                  src="https://s3-alpha-sig.figma.com/img/291d/1858/52d590373a3c1a0600cc1a2ec2260429?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bBmhnpHo7yPGZMfZdInqhh1SlU4ih0xe7A6p3t218~P2PqyV0VpPS5VHYmyMcqK~UKpDBu3m8Pi720KJPLeEmdD7q2Wdw9~G~ParVE3kacmSmZPBzuW6mkzdLOcnp140nEn1RuTgtOG433KqNYcT0FFDN-dOVArrBf8~8WaW1ZYoyA2x1Xyrij~vmCKVKBw2dvCfgWFz0K1ZPdixz6wNt7jXPH6kYmvqO-o~g1kC2mWRz-fnKozak0TlYPO7p6IXGzd3D5GZ3Scp8FtRJchoz82WokJYZKZo0kgx-2IrLxnt3zlRC22ILPy6GCdtoMKipAvLJL~lWZghyRx62pYaFw__"
-                />
-                <img
-                  className="w-1/3 h-36 rounded-md"
-                  alt="Media"
-                  src="https://s3-alpha-sig.figma.com/img/f252/361c/1f3d3575f38af59dd221c31251ea7d1e?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kPWo1NoWpT0qezmocX7QsjxfalGzoZyKWdJjcMm13qFD8mnlZEtFIxx0W88LvefhANrND6F85GiEFjor1vt5XvszTwvulYuFj~lo6N8VnMF4InmY4-yN4WIPDXkpEBOCZk5y~GFPWATKgjaKxEbaEt41oFG6K5GQhyLjt98VliAVwP-lPd~vbPYs6YGD2AvSTzBDpioHbjkNEPMOt0gdryxDpeZ5KWFbf~mhn-nq3Mg8gh5WC9bCFjx-Lwx3VLy7OHvsg0AaLgDoUKO8sqre5uhUGru3Dv7UQU9Z-VvOl~QP7aGl4qc1Tt6dl7Bzc9RnM205Q~7Gb8EGIsLB5eiD0Q__"
+                <Image
+                  src={more_vertical}
+                  alt="threeDots"
+                  className="cursor-pointer"
                 />
               </div>
-            </div>
-            <div className="w-full border-b border-[#E9E9E9]">
-              <div className="w-full flex justify-between">
-                <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                  Links
-                </Typography>
-                <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                  See more
-                </Typography>
-              </div>
-              <div>
-                <div className="flex gap-4">
-                  <Image
-                    src={otherUserData?.avatar as string}
-                    alt="Avatar"
-                    width={30}
-                    height={30}
-                    className="rounded-full w-[30px] h-[30px]"
-                  />
-                  <div className="flex flex-col">
-                    <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                      Andrew Math
-                    </Typography>
-                    <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                      12/02/2023
-                    </Typography>
-                    <Typography className="text-mxl underline font-medium text-[#262626] font-poppins mb-2">
-                      https://www.apple.com/id/
-                    </Typography>
-                  </div>
+              <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
+                <img
+                  src={groupData?.avatar}
+                  alt="avatar"
+                  className="rounded-full w-36 h-36 bg-[#3AC4A0]"
+                />
+                <div className="flex items-center gap-4">
+                  <Typography className="text-md text-[#3AC4A0] font-poppins">
+                    {groupData?.total_memberships} participants
+                  </Typography>
+                  <div className="size-2 bg-[#3AC4A0] rounded-full" />
+                  <Typography className="text-md text-[#3AC4A0] font-poppins">
+                    {groupData?.total_online} online
+                  </Typography>
                 </div>
               </div>
-              <div>
-                <div className="flex gap-4">
-                  <Image
-                    src={otherUserData?.avatar as string}
-                    alt="Avatar"
-                    width={30}
-                    height={30}
-                    className="rounded-full w-[30px] h-[30px]"
-                  />
-                  <div className="flex flex-col">
-                    <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                      Andrew Math
-                    </Typography>
-                    <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                      12/02/2023
-                    </Typography>
-                    <Typography className="text-mxl underline font-medium text-[#262626] font-poppins mb-2">
-                      https://www.apple.com/id/
-                    </Typography>
+              <div className="w-full flex flex-col p-4 gap-8">
+                <div>
+                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                    Description
+                  </Typography>
+                  <Typography className="text-md text-[#262626] font-poppins">
+                    {groupData?.description}
+                  </Typography>
+                </div>
+                <div>
+                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                    Type Group
+                  </Typography>
+                  <Typography className="text-md text-[#262626] font-poppins">
+                    Detail
+                  </Typography>
+                </div>
+                <div>
+                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                    Hashtag
+                  </Typography>
+                  <div className="flex gap-4">
+                    {groupData?.hashtags?.map((tag: string, index: number) => (
+                      <div key={index} className="p-2 bg-[#DCE1FE] rounded-md">
+                        <Typography className="text-md text-[#3C49D6]] font-poppins">
+                          #{tag}
+                        </Typography>
+                      </div>
+                    ))}
                   </div>
                 </div>
+                <div>
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Participants
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  <div className="flex flex-col gap-4">
+                    {groupMember?.map(
+                      (item: GroupMemberData, index: number) => (
+                        <div key={index}>
+                          <div className="flex gap-4">
+                            <Image
+                              src={item?.user_avatar}
+                              alt="Avatar"
+                              width={48}
+                              height={48}
+                              className="rounded-full w-12 h-12"
+                            />
+                            <div className="flex gap-2">
+                              <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                {item?.user_name}
+                              </Typography>
+                              {item?.role === 'admin' && (
+                                <div className="bg-[#DCFCE4] rounded-full p-1 h-6 flex-shrink-0">
+                                  <Typography className="text-xs text-[#3AC4A0] font-poppins">
+                                    Admin
+                                  </Typography>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+                <div className="w-full border-b border-[#E9E9E9]">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Notes
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+
+                  {personalNotesData?.map((item: PersonalChatNotesData) => (
+                    <div key={item?.id}>
+                      <div className="flex gap-4">
+                        <Image
+                          src={otherUserData?.avatar as string}
+                          alt="Avatar"
+                          width={30}
+                          height={30}
+                          className="rounded-full w-[30px] h-[30px]"
+                        />
+                        <div className="flex flex-col">
+                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                            {otherUserData?.name}
+                          </Typography>
+                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                            {moment(item?.created_at).format('MM/DD/YY, HH:mm')}
+                          </Typography>
+                          <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
+                            {item?.content_text}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-full">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Media
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  <div className="w-full flex gap-4">
+                    {personalMediaData?.map((item: PersonalChatMediaData) => (
+                      <img
+                        key={item.id}
+                        className="w-1/3 h-36 rounded-md"
+                        alt="Media"
+                        src={item?.media_url}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full border-b border-[#E9E9E9]">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Links
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  {personalLinksData?.map((item: PersonalChatMediaData) => (
+                    <div key={item?.id}>
+                      <div className="flex gap-4">
+                        <Image
+                          src={otherUserData?.avatar as string}
+                          alt="Avatar"
+                          width={30}
+                          height={30}
+                          className="rounded-full w-[30px] h-[30px]"
+                        />
+                        <div className="flex flex-col">
+                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                            {otherUserData?.name}
+                          </Typography>
+                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                            {moment(item?.created_at).format('MM/DD/YYYY')}
+                          </Typography>
+
+                          <Typography
+                            href={item?.content_text}
+                            className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                          >
+                            {item?.content_text}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-between items-center">
+                <div
+                  onClick={() => {
+                    setIsShowDetail(false);
+                  }}
+                >
+                  <Image
+                    alt="Back"
+                    src={back_nav}
+                    className="h-6 w-6 object-cover"
+                  />
+                </div>
+                <Image
+                  src={more_vertical}
+                  alt="threeDots"
+                  className="cursor-pointer"
+                />
+              </div>
+              <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
+                <img
+                  src={otherUserData?.avatar as string}
+                  alt="avatar"
+                  className="rounded-full w-36 h-36 bg-[#3AC4A0]"
+                />
+                <Typography className="text-md text-[#3AC4A0] font-poppins">
+                  @{otherUserData?.seeds_tag}
+                </Typography>
+              </div>
+              <div className="w-full flex flex-col p-4 gap-8">
+                <div>
+                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                    Bio
+                  </Typography>
+                  <Typography className="text-md text-[#262626] font-poppins">
+                    {otherUserData?.bio}
+                  </Typography>
+                </div>
+                <div className="w-full border-b border-[#E9E9E9]">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Notes
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+
+                  {personalNotesData?.map((item: PersonalChatNotesData) => (
+                    <div key={item?.id}>
+                      <div className="flex gap-4">
+                        <Image
+                          src={otherUserData?.avatar as string}
+                          alt="Avatar"
+                          width={30}
+                          height={30}
+                          className="rounded-full w-[30px] h-[30px]"
+                        />
+                        <div className="flex flex-col">
+                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                            {otherUserData?.name}
+                          </Typography>
+                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                            {moment(item?.created_at).format('MM/DD/YY, HH:mm')}
+                          </Typography>
+                          <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
+                            {item?.content_text}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-full">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Media
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  <div className="w-full flex gap-4">
+                    {personalMediaData?.map((item: PersonalChatMediaData) => (
+                      <img
+                        key={item.id}
+                        className="w-1/3 h-36 rounded-md"
+                        alt="Media"
+                        src={item?.media_url}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full border-b border-[#E9E9E9]">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Links
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  {personalLinksData?.map((item: PersonalChatMediaData) => (
+                    <div key={item?.id}>
+                      <div className="flex gap-4">
+                        <Image
+                          src={otherUserData?.avatar as string}
+                          alt="Avatar"
+                          width={30}
+                          height={30}
+                          className="rounded-full w-[30px] h-[30px]"
+                        />
+                        <div className="flex flex-col">
+                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                            {otherUserData?.name}
+                          </Typography>
+                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                            {moment(item?.created_at).format('MM/DD/YYYY')}
+                          </Typography>
+
+                          <Link
+                            href={item?.content_text}
+                            className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                          >
+                            {item?.content_text}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-full border-b border-[#E9E9E9]">
+                  <div className="w-full flex justify-between">
+                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                      Group&apos;s In Common
+                    </Typography>
+                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
+                      See more
+                    </Typography>
+                  </div>
+                  {commonGroupData?.map((item: CommonGroupData) => (
+                    <div key={item?.id}>
+                      <div className="flex gap-4">
+                        <Image
+                          src={item?.avatar}
+                          alt="Avatar"
+                          width={56}
+                          height={56}
+                          className="rounded-full w-14 h-14"
+                        />
+                        <div className="flex flex-col">
+                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                            {item?.name}
+                          </Typography>
+                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                            {item?.top_members
+                              ?.map(member => member.name)
+                              .join(', ')}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </CCard>
       ) : (
         <div className="flex justify-start gap-4">
           <CCard
             className={`flex flex-col border-none rounded-xl bg-white max-h-[90vh] overflow-y-scroll ${
-              chatList?.length !== 0 ? 'w-1/3' : 'w-full'
+              chatList?.length !== 0 || isChatActive ? 'w-1/3' : 'w-full'
             }`}
           >
             <div className="flex justify-between py-5 px-4 border-b-2 border-[#E9E9E9]">
@@ -640,6 +1035,7 @@ const ChatPages: React.FC = () => {
                     <ContactList
                       data={chatList}
                       filter={filter}
+                      handleFilterUnreadChange={handleFilterUnreadChange}
                       handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
@@ -673,6 +1069,7 @@ const ChatPages: React.FC = () => {
                     <ContactList
                       data={chatList}
                       filter={filter}
+                      handleFilterUnreadChange={handleFilterUnreadChange}
                       handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
@@ -706,6 +1103,7 @@ const ChatPages: React.FC = () => {
                     <ContactList
                       data={chatList}
                       filter={filter}
+                      handleFilterUnreadChange={handleFilterUnreadChange}
                       handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
@@ -739,7 +1137,7 @@ const ChatPages: React.FC = () => {
               </Tabs>
             </div>
           </CCard>
-          {chatList?.length !== 0 && (
+          {(chatList?.length !== 0 || isChatActive) && (
             <CCard className="flex flex-col w-2/3 border-none rounded-xl bg-white">
               {roomId !== undefined && isChatActive ? (
                 <>
@@ -803,6 +1201,9 @@ const ChatPages: React.FC = () => {
                             className="flex items-center"
                             onClick={() => {
                               setIsShowDetail(true);
+                              void (activeTab === 'COMMUNITY'
+                                ? fetchDetailGroup()
+                                : fetchDetailPersonal());
                             }}
                           >
                             <img
@@ -825,7 +1226,13 @@ const ChatPages: React.FC = () => {
                         </div>
                         <div className="flex justify-between w-full h-fit">
                           {activeTab === 'COMMUNITY' ? (
-                            <div className="flex flex-col gap-2 h-fit">
+                            <div
+                              className="flex flex-col gap-2 h-fit"
+                              onClick={() => {
+                                setIsShowDetail(true);
+                                void fetchDetailGroup();
+                              }}
+                            >
                               <Typography className="font-semibold text-sm text-black font-poppins">
                                 {groupData?.name}
                               </Typography>
@@ -840,6 +1247,7 @@ const ChatPages: React.FC = () => {
                               className="flex flex-col gap-2 h-fit"
                               onClick={() => {
                                 setIsShowDetail(true);
+                                void fetchDetailPersonal();
                               }}
                             >
                               <Typography className="font-semibold text-sm text-black font-poppins">
@@ -932,6 +1340,43 @@ const ChatPages: React.FC = () => {
                                     Delete Chat
                                   </h1>
                                 </div>
+                                <div
+                                  className="dropdown-option flex p-2 hover:bg-gray-100 cursor-pointer"
+                                  onClick={() => {
+                                    handleDropdownOptionClick('Leave');
+                                  }}
+                                >
+                                  <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                    <path
+                                      d="M13.332 14.1663L17.4987 9.99967L13.332 5.83301"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                    <path
+                                      d="M17.5 10H7.5"
+                                      stroke="#FF3838"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+
+                                  <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838] whitespace-nowrap">
+                                    Leave Group
+                                  </h1>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -941,9 +1386,9 @@ const ChatPages: React.FC = () => {
                   )}
                   <div
                     ref={containerRef}
-                    className={`bg-[#E9E9E980] flex-grow w-full min-h-[420px] py-4 max-h-[60vh] overflow-y-scroll`}
+                    className={`bg-[#E9E9E980] flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
                   >
-                    <div>
+                    <div className="h-full">
                       {messageList.length === 0 && (
                         <div className="flex flex-col gap-4 items-center justify-center h-full">
                           <Image alt="Chat Empty" src={chatEmpty} />
@@ -954,7 +1399,7 @@ const ChatPages: React.FC = () => {
                       )}
                       {messageList.length > 0 && (
                         <div className="flex flex-col gap-4 justify-end h-full">
-                          {messageList.map(message => {
+                          {messageList.map((message: IChatBubble) => {
                             if (message.created_by === dataUser.id) {
                               return (
                                 <div

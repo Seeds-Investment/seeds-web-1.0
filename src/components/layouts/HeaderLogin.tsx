@@ -183,7 +183,16 @@ const HeaderLogin: React.FC = () => {
                   </div>
                 </section>
                 <section>
-                  <ChatIcon />
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      router.push('/chat').catch(err => {
+                        toast(err);
+                      });
+                    }}
+                  >
+                    <ChatIcon />
+                  </div>
                 </section>
                 {accessToken !== null && userInfo !== null ? (
                   <Link href="/my-profile">

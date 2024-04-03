@@ -40,6 +40,7 @@ const SidebarLogin: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
+  const [showLogoutButton, setShowLogoutButton] = useState(false);
   const [userInfo, setUserInfo] = useState<any>([]);
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
@@ -51,9 +52,12 @@ const SidebarLogin: React.FC = () => {
       const fetchData = async (): Promise<void> => {
         try {
           const dataInfo = await getUserInfo();
+          setShowLogoutButton(true);
           setUserInfo(dataInfo);
         } catch (error: any) {
-          toast(error.message, { type: 'error' });
+          if (error.response.status !== 401) {
+            toast(error.message, { type: 'error' });
+          }
         }
       };
 
@@ -110,18 +114,20 @@ const SidebarLogin: React.FC = () => {
           </button>
         </Link>
       ) : (
-        <div className={`${accessToken === '' ? 'hidden' : 'flex'} mx-auto`}>
-          <button
-            className={`${
-              accessToken === '' ? 'hidden' : 'flex'
-            } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
-            onClick={() => {
-              setIsLogoutModal(true);
-            }}
-          >
-            Logout
-          </button>
-        </div>
+        showLogoutButton && (
+          <div className={`${accessToken !== '' ? 'flex' : 'hidden'} mx-auto`}>
+            <button
+              className={`${
+                accessToken !== '' ? 'flex' : 'hidden'
+              } bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full`}
+              onClick={() => {
+                setIsLogoutModal(true);
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )
       )}
     </div>
   );

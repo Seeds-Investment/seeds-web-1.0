@@ -27,6 +27,21 @@ const QuizDetail = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
+
+  useEffect(() => {
+    if (
+      window.localStorage.getItem('accessToken') === null ||
+      expiredUnixTime < currentUnixTime
+    ) {
+      window.localStorage.removeItem('accessToken');
+      window.localStorage.removeItem('expiresAt');
+      window.localStorage.removeItem('refreshToken');
+    }
+  }, []);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -34,7 +49,9 @@ const QuizDetail = (): React.ReactElement => {
 
         setUserInfo(dataInfo);
       } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
+        toast.error(
+          `Error fetching data: ${error.response.data.message as string}`
+        );
       }
     };
 

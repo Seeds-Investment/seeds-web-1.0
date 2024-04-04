@@ -1,23 +1,35 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 'use-client';
+import IconClock from '@/assets/play/tournament/clock.svg';
+import IconFee from '@/assets/play/tournament/fee.svg';
+import IconNoData from '@/assets/play/tournament/noData.svg';
+import IconShare from '@/assets/play/tournament/share.svg';
+import TutorialIcon from '@/assets/play/tournament/tutorialPicture.svg';
+import IconUsers from '@/assets/play/tournament/users.svg';
 import QuizCard from '@/components/quiz/card.component';
+import TournamentPagination from '@/components/TournmentPagination';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
 import TopQuiz from '@/containers/play/quiz/TopQuiz';
+import { generateFormattedDate } from '@/helpers/dateFormat';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
+import { getPlayAll } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { TournamentStatus } from '@/utils/interfaces/tournament.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Tab,
   TabPanel,
   Tabs,
   TabsBody,
-  TabsHeader
+  TabsHeader,
+  Typography
 } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -33,29 +45,65 @@ interface StatusQuizI {
   title: string;
 }
 
+interface StatusTournament {
+  id: number;
+  status: TournamentStatus;
+  title: string;
+}
+// interface Filter {
+//   search: string;
+//   limit: number;
+//   page: number;
+//   sort_by: string;
+// }
+
+// const initialFilter = {
+//   search: '',
+//   limit: 10,
+//   page: 1,
+//   sort_by: ''
+// };
+
 const Player = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(QuizStatus.STARTED);
+  // const [dataTournament, setDataTournament] = useState(null);
+  const [quizActiveTab, setQuizActiveTab] = useState(QuizStatus.STARTED);
+  const [tournamentActiveTab, setTournamentActiveTab] = useState(TournamentStatus.STARTED);
   const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [activeNavbar, setActiveNavbar] = useState('quiz');
-  const [params, setParams] = useState({
+  const [data, setData] = useState<any[]>([]);
+  // const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [quizParams, setQuizParams] = useState({
     search: '',
-    status: activeTab,
+    status: '',
     page: 1,
     limit: 12
   });
-  // const [meta, setMeta] = useState({
-  //   page: 1,
-  //   perPage: 12,
-  //   total: 0
-  // });
+  const [tournamentParams, setTournamentParams] = useState({
+    search: '',
+    limit: 6,
+    page: 1,
+    sort_by: '',
+    totalPage: 9
+  });
+  
   const handleTabChange = (tab: string): void => {
     setActiveNavbar(tab);
+
+    if (tab === 'tournament') {
+      // void fetchDataPlay();
+    }
+
+    if (tab === 'quiz') {
+      // void fetchDataCircle();
+    }
   };
+
   const [userInfo, setUserInfo] = useState<any>();
   useEffect(() => {
+    // setDataTournament(null)
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
@@ -71,10 +119,42 @@ const Player = (): React.ReactElement => {
       .catch(() => {});
   }, []);
 
+  // const handleChangeFilter = (event: any): void => {
+  //   const target = event.target;
+  //   const value = target.value;
+  //   const name = target.name;
+
+  //   setFilter(prevState => ({
+  //     ...prevState,
+  //     [name]: value
+  //   }));
+  // };
+
+  const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
+      const daysDiff = moment(endTime).diff(moment(startTime), 'days');
+      return daysDiff;
+  };
+
+  const getListPlay = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await getPlayAll(tournamentParams);
+      if (response.playList === null) {
+        setData([]);
+      } else {
+        setData(response.playList);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   const getListQuiz = async (currency: string): Promise<void> => {
     try {
       setLoading(true);
-      const res = await getAllQuiz({ ...params, status: activeTab, currency });
+      const res = await getAllQuiz({ ...quizParams, status: quizActiveTab, currency });
       if (res.data !== null) {
         const list: IQuiz[] = res.data;
         setListQuiz(list);
@@ -87,14 +167,21 @@ const Player = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    if (userInfo !== undefined) {
-      const getData = setTimeout(() => {
-        void getListQuiz(userInfo.preferredCurrency);
-      }, 2000);
 
-      return () => clearTimeout(getData);
+    if (activeNavbar === 'tournament') {
+      void getListPlay();
     }
-  }, [userInfo, activeTab, params]);
+
+    if (activeNavbar === 'quiz') {
+      if (userInfo !== undefined) {
+        const getData = setTimeout(() => {
+          void getListQuiz(userInfo.preferredCurrency);
+        }, 2000);
+
+        return () => clearTimeout(getData);
+      }
+    }
+  }, [activeNavbar, userInfo, quizActiveTab, tournamentParams]);
 
   const statusQuiz: StatusQuizI[] = isGuest()
     ? [
@@ -132,11 +219,50 @@ const Player = (): React.ReactElement => {
         }
       ];
 
+  const statusTournament: StatusTournament[] = [
+    {
+      id: 0,
+      status: TournamentStatus.MYPLAY,
+      title: t('tournament.myPlay')
+    },
+    {
+      id: 1,
+      status: TournamentStatus.PUBLISHED,
+      title: t('tournament.open')
+    },
+    {
+      id: 2,
+      status: TournamentStatus.STARTED,
+      title: t('tournament.active')
+    },
+    {
+      id: 3,
+      status: TournamentStatus.ENDED,
+      title: t('tournament.ended')
+    },
+  ];
+
   return (
     <PageGradient defaultGradient className="w-full">
       {/* <ComingSoon /> */}
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl">
-        <div className="h-auto">
+        <div className="h-auto font-poppins my-4">
+          <div className='w-full flex justify-center'>
+            <input
+              id="search"
+              type="text"
+              // value={filter.search}
+              // onChange={e => {
+              //   handleChangeFilter(e);
+              // }}
+              name="search"
+              placeholder="Search"
+              className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
+            />
+            <button className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold">
+              Enter
+            </button>
+          </div>
           <Tabs value={activeNavbar}>
             <TabsHeader
               className="w-full text-center justify-center mx-auto  rounded-none bg-transparent p-0"
@@ -190,7 +316,180 @@ const Player = (): React.ReactElement => {
             </TabsHeader>
             <TabsBody className="w-full">
               <TabPanel value="tournament">
-                <div>tournament</div>
+                <div className="bg-white rounded-lg p-0 lg:pt-5 lg:px-0 font-poppins">
+
+                  {/* Filter Section */}
+                  <div className='w-full flex items-center justify-center'>
+                    <div className="flex flex-row items-center gap-3 max-w-full overflow-x-auto no-scroll">
+                      {statusTournament.map(item => (
+                        <button
+                          className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
+                            item.status === tournamentActiveTab
+                              ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
+                              : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
+                          }`}
+                          key={item.id}
+                          onClick={() => {
+                            setTournamentActiveTab(item.status);
+                          }}
+                        >
+                          {item.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Tutorial Banner */}
+                  <div className='bg-gradient-to-r from-[#7B51FF] to-[#B7A6EB] p-4 rounded-lg mt-4 relative overflow-hidden'>
+                    <p className='text-xl text-white font-semibold'>
+                      {t('tournament.banner1')}
+                    </p>
+                    <p className='text-lg text-white my-2'>
+                      {t('tournament.banner2')}
+                    </p>
+                    <p className='text-lg bg-white text-[#7B51FF] w-fit py-2 px-16 rounded-full text-center font-semibold cursor-pointer'>
+                      {t('tournament.banner3')}
+                    </p>
+                    <Image alt="" src={TutorialIcon} className='absolute right-[-18px] top-[-18px] w-[165px]'/>
+                  </div>
+                  
+                  {
+                    !loading ? (
+                      data !== null ? (
+                        <div className='w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8'>
+                          {
+                            data.map(item => ( 
+                              <div key={item.id} onClick={async() => await router.push('/play/tournament/1')} className='flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300'>
+                                <div className='w-[60px] text-black text-center'>
+                                  <Typography className="text-black font-normal text-[12px]">
+                                    {moment(item?.play_time).format('MMM')}
+                                  </Typography>
+                                  <Typography className="text-[24px] text-black font-semibold">
+                                    {moment(item?.play_time).format('DD')}
+                                  </Typography>
+                                </div>
+
+                                <div className='w-full bg-white'>
+                                  <div className='w-full rounded-xl overflow-hidden'>
+                                    <div className='border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2'>
+                                      <Image
+                                        alt="" 
+                                        src={
+                                          ((item.banner !== undefined) && (item.banner !== ''))
+                                            ? item.banner
+                                            : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                                        } 
+                                        width={100} 
+                                        height={100} 
+                                        className='w-auto h-full'
+                                      />
+                                    </div>
+                                    <div className='pl-2 flex justify-between'>
+                                      <div className='text-[14px] font-semibold text-[#262626]'>
+                                        {item.name}
+                                      </div>
+                                      <div className='text-[10px] bg-[#E9E9E9] text-[#553BB8] px-4 flex justify-center items-center rounded-lg'>
+                                        {item.type}
+                                      </div>
+                                    </div>
+                                    <div className='text-[#BDBDBD] px-2 text-[10px]'>
+                                      {`${generateFormattedDate(
+                                        item.play_time,
+                                        false
+                                      )} - ${generateFormattedDate(item.end_time)}`}
+                                    </div>
+                                  </div>
+
+                                  <div className='w-full flex text-[10px] px-2 bg-[#E9E9E9] rounded-lg py-1 mt-1'>
+                                    <div className='w-full flex items-start'>
+                                      <Image alt="" src={IconClock} className='w-[14px] mb-2 mr-1'/>
+                                      <div className='flex flex-col'>
+                                        <div>
+                                          Duration
+                                        </div>
+                                        <div className='font-semibold text-black'>
+                                          {calculateDaysLeft(item.play_time, item.end_time)} Days
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='w-full flex items-start'>
+                                      <Image alt="" src={IconUsers} className='w-[14px] mb-2 mr-1'/>
+                                      <div className='flex flex-col'>
+                                        <div>
+                                          Joined
+                                        </div>
+                                        <div className='font-semibold text-black'>
+                                          20 Players
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='w-full flex items-start'>
+                                      <Image alt="" src={IconFee} className='w-[14px] mb-2 mr-1'/>
+                                      <div className='flex flex-col'>
+                                        <div>
+                                          Fee
+                                        </div>
+                                        <div className='font-semibold text-black'>
+                                          IDR. 50.000
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className='flex justify-between border-t-2 border-dashed mt-2 py-2 pr-2'>
+                                    <div className='flex gap-1'>
+                                      <div className='flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg'>
+                                        {item.category}
+                                      </div>
+                                      <div className='h-full flex justify-center items-center gap-1'>
+                                        <div className='w-full h-full flex justify-center items-center'>
+                                          <Image alt="" src={IconShare} className='w-[20px]'/>
+                                        </div>
+                                        <div className='text-[10px] font-semibold'>
+                                          Share
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300'>
+                                      Open
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            ))
+                          }
+                        </div>
+                        ) : (
+                        <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                          <Image alt="" src={IconNoData} className='w-[250px]'/>
+                          <p className='font-semibold text-black'>
+                            {t('tournament.blank1')}
+                          </p>
+                          <p className='text-[#7C7C7C]'>
+                            {t('tournament.blank2')}
+                          </p>
+                        </div>
+                      )
+                    ) : (
+                      <div className="w-full flex justify-center h-fit mt-8">
+                        <div className="h-[60px]">
+                          <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                        </div>
+                      </div>
+                    )}
+
+                  <div className="flex justify-center mx-auto my-8">
+                    <TournamentPagination
+                      currentPage={tournamentParams.page}
+                      totalPages={tournamentParams.totalPage}
+                      onPageChange={page => {
+                        setTournamentParams({ ...tournamentParams, page });
+                      }}
+                    />
+                  </div>
+
+                </div>
               </TabPanel>
               <TabPanel value="quiz">
                 <div className="bg-white rounded-lg p-0 lg:p-5">
@@ -210,13 +509,13 @@ const Player = (): React.ReactElement => {
                     {statusQuiz.map(item => (
                       <button
                         className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
-                          item.status === activeTab
+                          item.status === quizActiveTab
                             ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
                             : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
                         }`}
                         key={item.id}
                         onClick={() => {
-                          setActiveTab(item.status);
+                          setQuizActiveTab(item.status);
                         }}
                       >
                         {item.title}
@@ -242,9 +541,9 @@ const Player = (): React.ReactElement => {
                         id="search"
                         type="text"
                         name="search"
-                        value={params.search}
+                        value={quizParams.search}
                         onChange={e => {
-                          setParams(prev => ({
+                          setQuizParams(prev => ({
                             ...prev,
                             search: e.target.value
                           }));

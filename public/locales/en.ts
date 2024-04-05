@@ -1831,9 +1831,9 @@ export default {
   },
   tournament: {
     myPlay: 'My Play',
-    open: 'Open',
     active: 'Active',
     ended: 'Ended',
+    canceled: 'Canceled',
     banner1: 'Hi There! New to Play Arena?',
     banner2: 'Check out the tutorial here!',
     banner3: 'Tutorial',
@@ -1857,6 +1857,7 @@ export default {
     leaderboardBanner1: 'Are you at the top?',
     leaderboardBanner2: 'Check out',
     leaderboardBanner3: 'Check Leaderboard',
+    tutorialToournament: 'Tournament Tutorial',
   },
   discover: {
     hotNews: 'Hot News',

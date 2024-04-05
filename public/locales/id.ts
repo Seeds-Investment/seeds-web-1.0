@@ -1754,9 +1754,9 @@ export default {
   },
   tournament: {
     myPlay: 'Turnamen Saya',
-    open: 'Terbuka',
     active: 'Aktif',
     ended: 'Berakhir',
+    canceled: 'Dibatalkan',
     banner1: 'Halo! Butuh petunjuk bermain?',
     banner2: 'Cek petunjuknya disini!',
     banner3: 'Tutorial',
@@ -1780,6 +1780,7 @@ export default {
     leaderboardBanner1: 'Apakah kamu memimpin?',
     leaderboardBanner2: 'Ayo, cek',
     leaderboardBanner3: 'Cek Leaderboard',
+    tutorialToournament: 'Petunjuk Turnamen',
   },
   discover: {
     hotNews: 'Hot News',

@@ -1,10 +1,8 @@
 export enum TournamentStatus {
-  MYQUIZ = 'MYPLAY',
-  PUBLISHED = 'PUBLISHED',
-  STARTED = 'STARTED',
-  ENDED = 'ENDED',
   MYPLAY = "MYPLAY",
-//   CANCELED = 'CANCELED'
+  ACTIVE = 'ACTIVE',
+  PAST = 'PAST',
+  CANCELED = 'CANCELED'
 }
 
 export enum PortfolioFilter {

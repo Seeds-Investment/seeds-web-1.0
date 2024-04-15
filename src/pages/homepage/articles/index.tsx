@@ -324,7 +324,7 @@ export default function ArticleList(): React.ReactElement {
         })}
       </div>
 
-      <div className="hidden lg:flex  justify-center mx-auto my-8">
+      <div className="hidden lg:flex justify-center mx-auto my-8">
         <ArtPagination
           currentPage={params.page}
           totalPages={params.totalPage}

@@ -1869,6 +1869,7 @@ export default {
       Description: 'Are you sure to leave this Group',
       helpUs: 'Help us to understand the problem',
       continue: 'Continue'
-    }
+    },
+    tapAndHold: 'Tap and hold to record and send voice messages'
   }
 };

@@ -1,16 +1,12 @@
 import ChatList from '@/components/chat/ChatList';
-import type {
-  Chat,
-  GetListChatParams
-} from '@/utils/interfaces/chat.interface';
+import type { Chat } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { filterSearch } from 'public/assets/chat';
 import { SearchMember } from 'public/assets/circle';
+import { useState } from 'react';
 
 interface props {
   data: Chat[];
-  filter: GetListChatParams;
-  handleFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleFilterUnreadChange: () => void;
   handleListClick: () => void;
 
@@ -19,11 +15,16 @@ interface props {
 
 const ContactList: React.FC<props> = ({
   data,
-  filter,
-  handleFormChange,
   handleListClick,
   handleFilterUnreadChange
 }) => {
+  const [filter, setFilter] = useState<string>('');
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setFilter(e.target.value);
+  };
+  const filteredChats = data.filter(chat =>
+    chat.name.toLowerCase().includes(filter.toLowerCase())
+  );
   return (
     <div className={`flex flex-col`}>
       <div className="flex justify-start gap-2">
@@ -36,7 +37,7 @@ const ContactList: React.FC<props> = ({
         </div>
         <input
           type="text"
-          value={filter.search}
+          value={filter}
           onChange={handleFormChange}
           className="h-10 pl-10 focus:outline-none placeholder:text-neutral-soft rounded-xl w-full border border-neutral-ultrasoft text-xs"
           placeholder="search"
@@ -52,7 +53,7 @@ const ContactList: React.FC<props> = ({
         onClick={handleListClick}
         className={`flex flex-col max-h-[40vh] overflow-auto mt-4`}
       >
-        {data?.map((el: Chat) => {
+        {filteredChats?.map((el: Chat) => {
           return <ChatList data={el} key={el.id} />;
         })}
       </div>

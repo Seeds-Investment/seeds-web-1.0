@@ -1793,6 +1793,7 @@ export default {
       Description: 'Kamu yakin ingin meninggalkan grup?',
       helpUs: 'Bantu kami untuk memahami masalahmu',
       continue: 'Lanjutkan'
-    }
+    },
+    tapAndHold: 'Tap and hold to record and send voice messages'
   }
 };

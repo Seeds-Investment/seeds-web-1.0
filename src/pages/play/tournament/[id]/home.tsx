@@ -12,10 +12,11 @@ import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg'
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
 import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
+import CountdownTimer from '@/components/play/CountdownTimer';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
+import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getQuizById } from '@/repository/quiz.repository';
-import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -60,7 +61,7 @@ const TournamentHome = (): React.ReactElement => {
   const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
 
@@ -81,14 +82,11 @@ const TournamentHome = (): React.ReactElement => {
   }, []);
 
   const getDetail = useCallback(
-    async (currency: string) => {
+    async () => {
       try {
         setLoading(true);
-        const resp: IDetailQuiz = await getQuizById({
-          id: id as string,
-          currency
-        });
-        setDetailQuiz(resp);
+        const resp: IDetailTournament = await getPlayById(id as string);
+        setDetailTournament(resp);
       } catch (error) {
         toast(`ERROR fetch tournament ${error as string}`);
       } finally {
@@ -97,14 +95,14 @@ const TournamentHome = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
-    if (id) {
-      getDetail(userInfo?.preferredCurrency ?? '');
+    if (id !== null && userInfo !== undefined) {
+      getDetail();
     }
   }, [id, userInfo]);
 
-  if (detailQuiz === undefined && loading) {
+  if (detailTournament === undefined && loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <div className="animate-spinner w-10 h-10" />
@@ -114,9 +112,9 @@ const TournamentHome = (): React.ReactElement => {
 
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `tournament's link`;
+    const textToCopy = `${detailTournament?.play_id}`
     await navigator.clipboard.writeText(textToCopy).then(() => {
-      toast('Tournament link copied!');
+      toast('Play ID copied!');
     });
   };
 
@@ -129,10 +127,10 @@ const TournamentHome = (): React.ReactElement => {
           }}
         />
       )}
-      <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5'>
+      <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
         <div className='flex justify-start w-full gap-2'>
           <Typography className='text-xl font-semibold'>
-            Tournament Cuan
+            {detailTournament?.name}
           </Typography>
           <Image 
             onClick={() => {
@@ -145,7 +143,7 @@ const TournamentHome = (): React.ReactElement => {
         </div>
         <div className='text-[14px] flex justify-start items-center gap-2 py-2 w-full'>
           <Typography className='font-poppins'>
-            Play ID : 123456
+            Play ID : {detailTournament?.play_id}
           </Typography>
           <button onClick={handleCopyClick}>
             <Image alt="" src={IconCopy} className='w-[20px]'/>
@@ -188,11 +186,11 @@ const TournamentHome = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <div className='mt-16'>
-          <div className="text-md md:text-lg">{t('tournament.detailRemaining')}</div>
-          <Typography className="text-lg text-[#FDBA22] font-semibold mt-2 font-poppins text-center">
-            03d : 12h: 60m
-          </Typography>
+        <div className='mt-16 w-full'>
+          <div className='flex flex-col w-full justify-center items-center'>
+            <div className="text-lg font-semibold">{t('tournament.detailRemaining')}</div>
+            <CountdownTimer className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins" deadline={detailTournament?.end_time ? detailTournament.end_time.toString() : ''} />
+          </div>
         </div>
         <div className='bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4'>
           <Image alt="" src={IconSeeds} className='w-[60px] md:w-[80px] xl:ml-8'/>
@@ -261,7 +259,7 @@ const TournamentHome = (): React.ReactElement => {
         </div>
       </div>
 
-      <div className='w-full rounded-lg mt-4 p-5'>
+      <div className='w-full rounded-lg mt-4 p-5 bg-white'>
         <Typography className='text-xl font-semibold text-[#3AC4A0]'>
           {t('tournament.circleRecommendation')}
         </Typography>

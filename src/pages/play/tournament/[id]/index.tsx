@@ -6,18 +6,20 @@ import IconCopy from '@/assets/play/tournament/copyLink.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning.svg';
 import IconPrizes from '@/assets/play/tournament/seedsPrizes.svg';
 import IconCircle from '@/assets/play/tournament/seedsPrizesCircle.svg';
+import CountdownTimer from '@/components/play/CountdownTimer';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
+import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getQuizById } from '@/repository/quiz.repository';
-import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import LanguageContext from '@/store/language/language-context';
+import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
@@ -29,9 +31,10 @@ const TournamentDetail = (): React.ReactElement => {
   const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const languageCtx = useContext(LanguageContext);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -50,14 +53,11 @@ const TournamentDetail = (): React.ReactElement => {
   }, []);
 
   const getDetail = useCallback(
-    async (currency: string) => {
+    async () => {
       try {
         setLoading(true);
-        const resp: IDetailQuiz = await getQuizById({
-          id: id as string,
-          currency
-        });
-        setDetailQuiz(resp);
+        const resp: IDetailTournament = await getPlayById(id as string);
+        setDetailTournament(resp);
       } catch (error) {
         toast(`ERROR fetch tournament ${error as string}`);
       } finally {
@@ -66,14 +66,14 @@ const TournamentDetail = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
-    if (id) {
-      getDetail(userInfo?.preferredCurrency ?? '');
+    if (id !== null && userInfo !== undefined) {
+      getDetail();
     }
   }, [id, userInfo]);
 
-  if (detailQuiz === undefined && loading) {
+  if (detailTournament === undefined && loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <div className="animate-spinner w-10 h-10" />
@@ -83,11 +83,13 @@ const TournamentDetail = (): React.ReactElement => {
 
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `tournament's link`;
+    const textToCopy = `${detailTournament?.play_id}`
     await navigator.clipboard.writeText(textToCopy).then(() => {
-      toast('Tournament link copied!');
+      toast('Play ID copied!');
     });
   };
+
+  console.log('detail tournament ', detailTournament)
 
   return (
     <>
@@ -96,16 +98,18 @@ const TournamentDetail = (): React.ReactElement => {
           onClose={() => {
             setIsShareModal(prev => !prev);
           }}
+          url={detailTournament?.id ?? ''}
+          playId={detailTournament?.play_id ?? ''}
         />
       )}
       <div className='bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins'>
         <div className='absolute bottom-[-25px] text-center'>
           <Typography className='text-[26px] font-semibold font-poppins'>
-            Seeds Tournaments
+            {detailTournament?.name}
           </Typography>
           <div className='text-[14px] flex justify-center items-center gap-2 py-2'>
             <Typography className='font-poppins'>
-              Play ID : 123456
+            Play ID : {detailTournament?.play_id}
             </Typography>
             <button onClick={handleCopyClick}>
               <Image alt="" src={IconCopy} className='w-[20px]'/>
@@ -115,7 +119,15 @@ const TournamentDetail = (): React.ReactElement => {
             {t('tournament.detailBannerTotalRewards')}
           </Typography>
           <Typography className='text-[34px] text-white font-semibold font-poppins'>
-            IDR 1.000.000
+            {detailTournament?.fixed_prize === 0
+              ? t('tournament.free')
+              : detailTournament?.fixed_prize?.toLocaleString('id-ID', {
+                  currency:
+                    userInfo?.preferredCurrency?.length > 0
+                      ? userInfo?.preferredCurrency
+                      : 'IDR',
+                  style: 'currency'
+                })}
           </Typography>
           <Image alt="" src={IconPrizes} className='w-[250px]'/>
         </div>
@@ -124,11 +136,9 @@ const TournamentDetail = (): React.ReactElement => {
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
           <div className="mt-4 flex justify-between">
-            <div>
+            <div className='flex flex-col'>
               <div className="text-lg font-semibold">{t('tournament.detailRemaining')}</div>
-              <Typography className="text-lg text-[#27A590] font-semibold mt-2 font-poppins">
-                03d : 12h: 60m
-              </Typography>
+              <CountdownTimer deadline={detailTournament?.end_time ? detailTournament.end_time.toString() : ''} />
             </div>
             <button className='bg-[#DCFCE4] rounded-full w-fit h-fit p-2'>
               <ShareIcon 
@@ -144,16 +154,16 @@ const TournamentDetail = (): React.ReactElement => {
           <div className="mt-4">
             <div className="text-lg font-semibold">{t('tournament.detailPeriod')}</div>
             <div className="text-lg text-[#7C7C7C]">
-              {moment(detailQuiz?.started_at).format('D MMM YYYY, h a')} Jakarta
-              - {moment(detailQuiz?.ended_at).format('D MMM YYYY, h a')} Jakarta
+              {moment(detailTournament?.play_time).format('D MMM YYYY, h a')} Jakarta
+              - {moment(detailTournament?.end_time).format('D MMM YYYY, h a')} Jakarta
             </div>
           </div>
           <div className="mt-4 flex flex-row gap-8">
-            {detailQuiz?.sponsors?.image_url ? (
+            {detailTournament?.sponsorship?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
                 <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
                 <Image
-                  src={detailQuiz?.sponsors?.image_url}
+                  src={detailTournament?.sponsorship?.image_url}
                   alt=""
                   width={200}
                   height={200}
@@ -161,11 +171,11 @@ const TournamentDetail = (): React.ReactElement => {
                 />
               </div>
             ) : null}
-            {detailQuiz?.communities?.image_url ? (
+            {detailTournament?.community?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
                 <div className="text-lg font-semibold">{'Community'}</div>
                 <Image
-                  src={detailQuiz?.communities?.image_url}
+                  src={detailTournament?.community?.image_url}
                   alt=""
                   width={200}
                   height={200}
@@ -177,24 +187,24 @@ const TournamentDetail = (): React.ReactElement => {
           <div className="mt-4">
             <div className="text-lg font-semibold">{t('tournament.detailPrize')}</div>
             <table className="mt-2">
-              {detailQuiz?.prizes?.map((item, i) => (
-                <tr key={i}>
+              {detailTournament?.prize?.map((item, index) => (
+                <tr key={index}>
                   <td className="inline-flex gap-2 border p-3 w-full">
                     <Image
                       src={
-                        i === 0
+                        index === 0
                           ? FirstMedal
-                          : i === 1
+                          : index === 1
                           ? SecondMedal
                           : ThirdMedal
                       }
-                      alt={`${i}-medal`}
+                      alt={`${index}-medal`}
                       width={200}
                       height={200}
                       className="object-contain max-h-5 max-w-5"
                     />
                     {t(
-                      `quiz.${i === 0 ? 'first' : i === 1 ? 'second' : 'third'}`
+                      `tournament.${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`
                     )}
                   </td>
                   <td className="border p-3 w-full">
@@ -212,19 +222,21 @@ const TournamentDetail = (): React.ReactElement => {
           </div>
           <div className="mt-4">
             <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
-            <p className='text-[#7C7C7C]'>1. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>2. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>3. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>4. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>5. Lorem Ipsum dolor sit amet consectur adispiscing</p>
+              {
+                languageCtx.language === 'ID' ?
+                  <p className='text-[#7C7C7C]'>
+                    {detailTournament?.tnc?.id}
+                  </p>
+                  :
+                  <p className='text-[#7C7C7C]'>
+                    {detailTournament?.tnc?.en}
+                  </p>
+              }
           </div>
           <div className="mt-4">
             <p className="text-lg font-semibold">{t('tournament.detailResponsibility')}</p>
-            <p className='text-[#7C7C7C]'>1. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>2. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>3. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>4. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-            <p className='text-[#7C7C7C]'>5. Lorem Ipsum dolor sit amet consectur adispiscing</p>
+            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility1')}</p>
+            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility2')}</p>
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-6">
@@ -241,9 +253,9 @@ const TournamentDetail = (): React.ReactElement => {
             {t('tournament.entranceFee')}
           </div>
           <div className="font-semibold text-xl">
-            {detailQuiz?.admission_fee === 0
+            {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
+              : detailTournament?.admission_fee?.toLocaleString('id-ID', {
                   currency:
                     userInfo?.preferredCurrency?.length > 0
                       ? userInfo?.preferredCurrency
@@ -254,14 +266,12 @@ const TournamentDetail = (): React.ReactElement => {
           <button
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
-                if (detailQuiz?.participant_status === 'JOINED') {
+                if (detailTournament?.is_joined === true) {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  // router.push(`/play/quiz/${id}/start`);
-                  router.push(`/play/tournament/1/home`);
+                  router.push(`/play/tournament/${id}/home`);
                 } else {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  // router.push(`/play/quiz/${id}/welcome`);
-                  router.push(`/play/tournament/1/home`);
+                  router.push(`/play/tournament/${id}/home`);
                 }
               } else if (
                 localStorage.getItem('accessToken') === null &&
@@ -274,7 +284,7 @@ const TournamentDetail = (): React.ReactElement => {
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
           >
-            {detailQuiz?.participant_status === 'JOINED'
+            {detailTournament?.participant_status === 'JOINED'
               ? t('tournament.start')
               : t('tournament.join')}
           </button>

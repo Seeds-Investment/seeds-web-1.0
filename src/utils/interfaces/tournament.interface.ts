@@ -25,3 +25,25 @@ export enum SortingFilter {
   TOP_LOSER_PERCENTAGE = 'TOP_LOSER_PERCENTAGE',
   TOP_LOSER_VALUE = 'TOP_LOSER_VALUE',
 }
+
+export interface ITNC {
+  id: string;
+  en: string;
+}
+
+export interface IDetailTournament {
+  id: string;
+  play_id: string
+  fixed_prize: number;
+  currency: string;
+  name: string;
+  prize: number[];
+  play_time: Date;
+  end_time: Date;
+  sponsorship: any;
+  community: any;
+  admission_fee: number;
+  participant_status: string;
+  tnc: ITNC
+  is_joined: boolean;
+}

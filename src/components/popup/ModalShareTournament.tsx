@@ -10,16 +10,19 @@ import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
+  url: string;
+  playId: string;
 }
 
-const ModalShareTournament: React.FC<Props> = ({ onClose }) => {
+const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
   // const { t } = useTranslation();
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    // const textToCopy = `${baseUrl}/play/quiz/${detailQuiz?.id}`;
-    const textToCopy = "tournament's link";
+    const textToCopy = `${baseUrl}/play/quiz/${url}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
-      toast('Quiz link copied!');
+      toast("Tournament's link copied!");
     });
   };
 
@@ -41,7 +44,7 @@ const ModalShareTournament: React.FC<Props> = ({ onClose }) => {
 
       <div className="flex flex-col gap-3 justify-center  px-8 pt-2 items-center text-center">
         <Typography className="text-lg text-black">
-          Play ID : #123456
+          Play ID : {playId}
         </Typography>
         <Image
           src={Barcode}
@@ -64,7 +67,7 @@ const ModalShareTournament: React.FC<Props> = ({ onClose }) => {
             placeholder=""
             readOnly={true}
             disabled={false}
-            value={`https://circle.seeds.finance/us-stocks`}
+            value={`${baseUrl}/play/tournament/${url}`}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
           <div onClick={handleCopyClick} className='w-[50px] cursor-pointer flex justify-center items-center'>

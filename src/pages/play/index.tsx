@@ -38,6 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
 
+
 interface StatusQuizI {
   id: number;
   status: QuizStatus;
@@ -91,7 +92,7 @@ const Player = (): React.ReactElement => {
 
         setUserInfo(dataInfo);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast.error('Error fetching data:', error.message)
       }
     };
 
@@ -118,8 +119,8 @@ const Player = (): React.ReactElement => {
       } else {
         setData(response.playList);
       };
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error)
       setLoading(false);
     } finally {
       setLoading(false)
@@ -355,7 +356,8 @@ const Player = (): React.ReactElement => {
                         <div className='w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8'>
                           {
                             data.map(item => ( 
-                              <div key={item.id} onClick={async() => await router.push('/play/tournament/1')} className='flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300'>
+                              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                              <div key={item.id} onClick={async() => await router.push(`/play/tournament/${item.id}`).catch(error => {toast.error(error)})} className='flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300'>
                                 <div className='w-[60px] text-black text-center'>
                                   <Typography className="text-black font-normal text-[12px]">
                                     {moment(item?.play_time).format('MMM')}
@@ -426,7 +428,12 @@ const Player = (): React.ReactElement => {
                                           Fee
                                         </div>
                                         <div className='font-semibold text-black'>
-                                          IDR. 50.000
+                                          {item.admission_fee === 0
+                                            ? t('quiz.free')
+                                            : item.admission_fee.toLocaleString('id-ID', {
+                                                currency: userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR',
+                                                style: 'currency'
+                                              })}
                                         </div>
                                       </div>
                                     </div>

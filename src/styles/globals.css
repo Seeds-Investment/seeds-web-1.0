@@ -226,8 +226,24 @@ code {
   }
 }
 
+@keyframes redFadeBackgroundColor {
+  0% {
+    background-color: #e64f4f0c;
+  }
+  50% {
+    background-color: #e64f4f5a;
+  }
+  100% {
+    background-color: #e64f4f0c;
+  }
+}
+
 .fade-background-color {
   animation: fadeBackgroundColor 2.5s infinite;
+}
+
+.red-fade-background-color {
+  animation: redFadeBackgroundColor 2.5s infinite;
 }
 
 .widthPDF {

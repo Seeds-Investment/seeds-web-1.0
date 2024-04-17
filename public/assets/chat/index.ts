@@ -17,4 +17,3 @@ export { default as sendChat } from './sendGreen.svg';
 export { default as emoji } from './smile.svg';
 export { default as threedotsVertical } from './threedots.svg';
 export { default as wave } from './wave.svg';
-

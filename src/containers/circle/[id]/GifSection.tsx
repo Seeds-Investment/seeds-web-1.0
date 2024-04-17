@@ -3,6 +3,7 @@ import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
+import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -30,7 +31,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
   const fetchGif = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await getGifFromGhipy();
+      const { data } = (await getGifFromGhipy()) as GiphyI;
       setData(data);
     } catch (error: any) {
       console.error('Error fetching Gif from ghipy', error);

@@ -24,7 +24,6 @@ export const ChatVoiceRecorder: React.FC<props> = ({
   setIsVoiceRecording
 }) => {
   const [recording, setRecording] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { t } = useTranslation();
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
@@ -67,7 +66,6 @@ export const ChatVoiceRecorder: React.FC<props> = ({
         mediaRecorder.current.start();
 
         setRecording(true);
-        setAudioUrl(null);
 
         mediaRecorder.current.ondataavailable = event => {
           audioChunks.current.push(event.data);
@@ -87,7 +85,6 @@ export const ChatVoiceRecorder: React.FC<props> = ({
 
           setAudio(audioFile);
           await postMedia(audioFile);
-          setAudioUrl(URL.createObjectURL(audioFile));
           audioChunks.current = [];
         };
       })

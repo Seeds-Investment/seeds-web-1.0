@@ -2,13 +2,17 @@
 import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
+import ModalNewChat from '@/components/chat/ModalNewChat';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
 import SearchChatPopup from '@/components/chat/SearchPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { ChatVoiceRecorder } from '@/containers/chat/ChatVoiceRecording';
 import ContactList from '@/containers/chat/ContactList';
+import GifChat from '@/containers/chat/GifChat';
 import withAuth from '@/helpers/withAuth';
+import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
 import { searchUser } from '@/repository/auth.repository';
 import {
   deleteGroupChat,
@@ -28,7 +32,9 @@ import {
   readPersonalMessage,
   sendPersonalMessage
 } from '@/repository/chat.repository';
+import { UseUploadMedia } from '@/repository/circleDetail.repository';
 import { getOtherUser } from '@/repository/profile.repository';
+import socketService from '@/repository/socket.repository';
 import { useAppSelector } from '@/store/redux/store';
 import type {
   Chat,
@@ -66,8 +72,6 @@ import {
   emoji,
   galleryChat,
   mic,
-  moreVerticalGreen,
-  plusRounded,
   seedsChat,
   seedyChatCommunty,
   seedyChatNotSelected,
@@ -118,9 +122,12 @@ const ChatPages: React.FC = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
+  const [isNewPopupOpen, setIsNewPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLeavePopupOpen, setIsLeavePopupOpen] = useState<boolean>(false);
+  const [isShowGifPopup, setIsShowGifPopup] = useState<boolean>(false);
+  const [isVoiceRecording, setIsVoiceRecording] = useState<boolean>(false);
   const [messageList, setMessageList] = useState<IChatBubble[] | []>([]);
   const [message, setMessage] = useState<string>('');
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
@@ -129,6 +136,7 @@ const ChatPages: React.FC = () => {
   const [sarchUserList, setSearchUserList] = useState<SearchUserChat[] | []>(
     []
   );
+  const [searchText, setSearchText] = useState<string>('');
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [personalMediaData, setPersonalMediaData] = useState<
     PersonalChatMediaData[] | []
@@ -145,6 +153,9 @@ const ChatPages: React.FC = () => {
   const [commonGroupData, setCommonGroupData] = useState<
     CommonGroupData[] | []
   >([]);
+  const [audio, setAudio] = useState<File | null>(null);
+
+  const isOnline = useGetOnlineStatus(otherUserData?.id as string);
 
   const [groupMember, setGroupMember] = useState<GroupMemberData[] | []>([]);
 
@@ -169,20 +180,11 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  const handleFormChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const { value } = event.target;
-    setFilter(prevState => ({
-      ...prevState,
-      search: value
-    }));
-  };
   const handleListClick = (): void => {
     setIsChatActive(true);
   };
   const handleMessageChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => {
     const { value } = event.target;
     setMessage(value);
@@ -204,11 +206,31 @@ const ChatPages: React.FC = () => {
     }
   };
 
+  const handleSendGifMessage = async (mediaUrl: string): Promise<void> => {
+    const data =
+      activeTab === 'COMMUNITY'
+        ? { media_urls: [mediaUrl], group_id: roomId as string }
+        : { media_urls: [mediaUrl], user_id: roomId as string };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
+    }
+  };
+
   const handleSearchInputChange = (value: string): void => {
     setSearchFilter(prevFilter => ({
       ...prevFilter, // Keep the previous state values
       search: value // Update only the search property
     }));
+  };
+
+  const handleSearchTextChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const { value } = event.target;
+    setSearchText(value);
   };
 
   const handleFilterUnreadChange = (): void => {
@@ -255,7 +277,7 @@ const ChatPages: React.FC = () => {
   const handleDropdownOptionClick = (option: string): void => {
     switch (option) {
       case 'Search':
-        // setIsSearchActive(true);
+        setIsSearchActive(true);
         break;
       case 'Delete':
         setIsDeletePopupOpen(true);
@@ -264,10 +286,13 @@ const ChatPages: React.FC = () => {
         setIsMutePopupOpen(true);
         break;
       case 'New':
-        setIsSearchPopupOpen(true);
+        setIsNewPopupOpen(true);
         break;
       case 'Leave':
         setIsLeavePopupOpen(true);
+        break;
+      case 'Gif':
+        setIsShowGifPopup(true);
         break;
 
       default:
@@ -329,7 +354,8 @@ const ChatPages: React.FC = () => {
       toast('Oops! Error when try to delete chat');
     } finally {
       setIsDeletePopupOpen(false);
-      void fetchChat();
+      await fetchChat();
+      await router.push('/chat');
     }
   };
 
@@ -340,6 +366,7 @@ const ChatPages: React.FC = () => {
         user_id: dataUser.id,
         message_text: message
       });
+      await router.push('/chat');
     } catch (error: any) {
       toast('Oops! Error when try to Leave Community');
     } finally {
@@ -503,6 +530,125 @@ const ChatPages: React.FC = () => {
     void fetchGroupMember();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setMessage(message + '\n');
+    }
+  };
+
+  const postMedia = async (mediaFile: File): Promise<string | undefined> => {
+    try {
+      const { data } = await UseUploadMedia(mediaFile);
+      return data?.path as string;
+    } catch (error: any) {
+      toast('error uploading file');
+    }
+  };
+
+  const handleSendVoiceMessage = async (mediaFile: File): Promise<void> => {
+    const mediaUrl = (await postMedia(mediaFile)) as string;
+    const data =
+      activeTab === 'COMMUNITY'
+        ? { media_urls: [mediaUrl], group_id: roomId as string }
+        : { media_urls: [mediaUrl], user_id: roomId as string };
+    try {
+      await sendPersonalMessage(data);
+      void fetchChat();
+    } catch (error: any) {
+      toast(error, { type: 'error' });
+    }
+  };
+
+  const handleSendImageMessage = async (event: any): Promise<any> => {
+    const fileMedia = event.target.files[0];
+    const fileMediaEle = event.target;
+
+    if (fileMedia?.type?.includes('video') === true) {
+      const validation =
+        fileMedia?.type !== 'video/mp4' && fileMedia?.type !== 'video/mov';
+      const maxFileMediaSize = 20;
+      const sizeFileOnMB: any = parseFloat(
+        (fileMedia?.size / 1024 / 1024).toFixed(20)
+      );
+      if (validation) {
+        fileMediaEle.value = null;
+        // setIsError(true);
+        toast(`${t('social.errorState.video1')}`);
+        return new Error(
+          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+        );
+      }
+      if (sizeFileOnMB > maxFileMediaSize) {
+        fileMediaEle.value = null;
+        // setIsError(true);
+        toast(`${t('social.errorState.video3')}`);
+        return new Error('Your image is exceeding the 20MB size limit');
+      } else {
+        const mediaUrl = (await postMedia(fileMedia)) as string;
+        const data =
+          activeTab === 'COMMUNITY'
+            ? { media_urls: [mediaUrl], group_id: roomId as string }
+            : { media_urls: [mediaUrl], user_id: roomId as string };
+        try {
+          await sendPersonalMessage(data);
+          void fetchChat();
+        } catch (error: any) {
+          toast(error, { type: 'error' });
+        }
+      }
+    }
+    const validation =
+      fileMedia?.type !== 'image/jpg' &&
+      fileMedia?.type !== 'image/jpeg' &&
+      fileMedia?.type !== 'image/heic' &&
+      fileMedia?.type !== 'image/heif' &&
+      fileMedia?.type !== 'image/png';
+    const maxFileMediaSize = 5;
+    const sizeFileOnMB: any = parseFloat(
+      (fileMedia?.size / 1024 / 1024).toFixed(20)
+    );
+
+    if (validation) {
+      fileMediaEle.value = null;
+
+      toast(`${t('social.errorState.image2')}`);
+      return new Error(
+        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+      );
+    }
+    if (sizeFileOnMB > maxFileMediaSize) {
+      fileMediaEle.value = null;
+
+      toast(`${t('social.errorState.image1')}`);
+      return new Error('Your image is exceeding the 5MB size limit');
+    } else {
+      const mediaUrl = (await postMedia(fileMedia)) as string;
+      const data =
+        activeTab === 'COMMUNITY'
+          ? { media_urls: [mediaUrl], group_id: roomId as string }
+          : { media_urls: [mediaUrl], user_id: roomId as string };
+      try {
+        await sendPersonalMessage(data);
+        void fetchChat();
+      } catch (error: any) {
+        toast(error, { type: 'error' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (roomId === null) {
+      return;
+    }
+
+    socketService.addListener(`chat.personal.${dataUser.id}`, () => {
+      void fetchChat();
+    });
+
+    return () => {};
+  }, [dataUser.id, roomId]);
+
   useEffect(() => {
     if (roomId !== undefined) {
       if (activeTab === 'COMMUNITY') {
@@ -553,6 +699,20 @@ const ChatPages: React.FC = () => {
           onMute={muteChat}
         />
       )}
+      <ModalNewChat
+        isOpen={isNewPopupOpen}
+        handleOpen={() => {
+          setIsNewPopupOpen(false);
+        }}
+        onPersonalClick={() => {
+          setIsNewPopupOpen(false);
+          setIsSearchPopupOpen(true);
+        }}
+        onGroupClick={() => {
+          setIsNewPopupOpen(false);
+          void router.push('/chat/create-group');
+        }}
+      />
       {isShowDetail ? (
         <CCard className="flex flex-col border-none rounded-xl bg-white w-full py-5 px-4 gap-4">
           {activeTab === 'COMMUNITY' ? (
@@ -706,14 +866,17 @@ const ChatPages: React.FC = () => {
                     </Typography>
                   </div>
                   <div className="w-full flex gap-4">
-                    {personalMediaData?.map((item: PersonalChatMediaData) => (
-                      <img
-                        key={item.id}
-                        className="w-1/3 h-36 rounded-md"
-                        alt="Media"
-                        src={item?.media_url}
-                      />
-                    ))}
+                    {personalMediaData?.map(
+                      (item: PersonalChatMediaData) =>
+                        !item.media_url.includes('mp3') && (
+                          <img
+                            key={item.id}
+                            className="w-1/3 h-36 rounded-md"
+                            alt="Media"
+                            src={item.media_url}
+                          />
+                        )
+                    )}
                   </div>
                 </div>
                 <div className="w-full border-b border-[#E9E9E9]">
@@ -840,14 +1003,17 @@ const ChatPages: React.FC = () => {
                     </Typography>
                   </div>
                   <div className="w-full flex gap-4">
-                    {personalMediaData?.map((item: PersonalChatMediaData) => (
-                      <img
-                        key={item.id}
-                        className="w-1/3 h-36 rounded-md"
-                        alt="Media"
-                        src={item?.media_url}
-                      />
-                    ))}
+                    {personalMediaData?.map(
+                      (item: PersonalChatMediaData) =>
+                        !item.media_url.includes('mp3') && (
+                          <img
+                            key={item.id}
+                            className="w-1/3 h-36 rounded-md"
+                            alt="Media"
+                            src={item.media_url}
+                          />
+                        )
+                    )}
                   </div>
                 </div>
                 <div className="w-full border-b border-[#E9E9E9]">
@@ -966,22 +1132,6 @@ const ChatPages: React.FC = () => {
                     </div>
                   </div>
                 </Button>
-                <Button
-                  variant="outlined"
-                  className="rounded-full w-fit capitalize p-2 border border-[#3AC4A0]"
-                  onClick={() => {
-                    // TODO implementation button more
-                  }}
-                >
-                  <div className="flex items-center">
-                    <Image
-                      src={moreVerticalGreen}
-                      alt="more"
-                      width={16}
-                      height={16}
-                    />
-                  </div>
-                </Button>
               </div>
             </div>
             <div className="flex flex-col my-4 px-4">
@@ -1034,9 +1184,7 @@ const ChatPages: React.FC = () => {
                   <TabPanel value="PERSONAL" className="py-0 pt-2 px-0">
                     <ContactList
                       data={chatList}
-                      filter={filter}
                       handleFilterUnreadChange={handleFilterUnreadChange}
-                      handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
@@ -1053,7 +1201,7 @@ const ChatPages: React.FC = () => {
                           variant="filled"
                           className="rounded-full w-fit capitalize py-2 px-3 border bg-[#3AC4A0]"
                           onClick={() => {
-                            // TODO: Chat people
+                            handleDropdownOptionClick('New');
                           }}
                         >
                           <div className="flex gap-1">
@@ -1068,9 +1216,7 @@ const ChatPages: React.FC = () => {
                   <TabPanel value="COMMUNITY" className="py-0 pt-2 px-0">
                     <ContactList
                       data={chatList}
-                      filter={filter}
                       handleFilterUnreadChange={handleFilterUnreadChange}
-                      handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
@@ -1087,12 +1233,12 @@ const ChatPages: React.FC = () => {
                           variant="filled"
                           className="rounded-full w-fit capitalize py-2 px-3 border bg-[#3AC4A0]"
                           onClick={() => {
-                            // TODO: Chat people
+                            handleDropdownOptionClick('New');
                           }}
                         >
                           <div className="flex gap-1">
                             <Typography className="font-semibold text-sm text-white font-poppins">
-                              {t('chat.createCommunity')}
+                              {t('chat.chatPeople')}
                             </Typography>
                           </div>
                         </Button>
@@ -1102,9 +1248,7 @@ const ChatPages: React.FC = () => {
                   <TabPanel value="REQUEST" className="py-0 pt-2 px-0">
                     <ContactList
                       data={chatList}
-                      filter={filter}
                       handleFilterUnreadChange={handleFilterUnreadChange}
-                      handleFormChange={handleFormChange}
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
@@ -1121,12 +1265,12 @@ const ChatPages: React.FC = () => {
                           variant="filled"
                           className="rounded-full w-fit capitalize py-2 px-3 border bg-[#3AC4A0]"
                           onClick={() => {
-                            // TODO: Chat people
+                            handleDropdownOptionClick('New');
                           }}
                         >
                           <div className="flex gap-1">
                             <Typography className="font-semibold text-sm text-white font-poppins">
-                              Chat People
+                              {t('chat.chatPeople')}
                             </Typography>
                           </div>
                         </Button>
@@ -1156,8 +1300,8 @@ const ChatPages: React.FC = () => {
                       <input
                         type="text"
                         className="p-2 border-2 w-full rounded-xl m-2"
-                        value={filter.search}
-                        onChange={handleFormChange}
+                        value={searchText}
+                        onChange={handleSearchTextChange}
                         placeholder="Search..."
                       />
                       <div className="justify-center items-center  w-1/8 mx-2 my-auto">
@@ -1254,9 +1398,7 @@ const ChatPages: React.FC = () => {
                                 {otherUserData?.name}
                               </Typography>
                               <Typography className="font-normal text-sm text-[#7C7C7C] font-poppins max-h-[20px] overflow-hidden">
-                                {(otherUserData?.status_online as boolean)
-                                  ? 'Online'
-                                  : 'Offline'}
+                                {isOnline ? 'Online' : 'Offline'}
                               </Typography>
                             </div>
                           )}
@@ -1340,43 +1482,45 @@ const ChatPages: React.FC = () => {
                                     Delete Chat
                                   </h1>
                                 </div>
-                                <div
-                                  className="dropdown-option flex p-2 hover:bg-gray-100 cursor-pointer"
-                                  onClick={() => {
-                                    handleDropdownOptionClick('Leave');
-                                  }}
-                                >
-                                  <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 20 20"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                {activeTab === 'COMMUNITY' && (
+                                  <div
+                                    className="dropdown-option flex p-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => {
+                                      handleDropdownOptionClick('Leave');
+                                    }}
                                   >
-                                    <path
-                                      d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
-                                      stroke="#FF3838"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M13.332 14.1663L17.4987 9.99967L13.332 5.83301"
-                                      stroke="#FF3838"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M17.5 10H7.5"
-                                      stroke="#FF3838"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
+                                    <svg
+                                      width="20"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
+                                        stroke="#FF3838"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M13.332 14.1663L17.4987 9.99967L13.332 5.83301"
+                                        stroke="#FF3838"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                      <path
+                                        d="M17.5 10H7.5"
+                                        stroke="#FF3838"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
 
-                                  <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838] whitespace-nowrap">
-                                    Leave Group
-                                  </h1>
-                                </div>
+                                    <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838] whitespace-nowrap">
+                                      Leave Group
+                                    </h1>
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
@@ -1388,27 +1532,116 @@ const ChatPages: React.FC = () => {
                     ref={containerRef}
                     className={`bg-[#E9E9E980] flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
                   >
-                    <div className="h-full">
-                      {messageList.length === 0 && (
-                        <div className="flex flex-col gap-4 items-center justify-center h-full">
-                          <Image alt="Chat Empty" src={chatEmpty} />
-                          <Typography className="font-poppins text-[#7C7C7C] w-60 text-center">
-                            {'No messages here yet. Start a conversation now!'}
-                          </Typography>
-                        </div>
-                      )}
-                      {messageList.length > 0 && (
-                        <div className="flex flex-col gap-4 justify-end h-full">
-                          {messageList.map((message: IChatBubble) => {
-                            if (message.created_by === dataUser.id) {
+                    {messageList.length === 0 && (
+                      <div className="flex flex-col gap-4 items-center justify-center h-full">
+                        <Image alt="Chat Empty" src={chatEmpty} />
+                        <Typography className="font-poppins text-[#7C7C7C] w-60 text-center">
+                          {'No messages here yet. Start a conversation now!'}
+                        </Typography>
+                      </div>
+                    )}
+                    {messageList.length > 0 && (
+                      <div className="flex flex-col gap-4 justify-end">
+                        {messageList.map((message: IChatBubble) => {
+                          if (message.created_by === dataUser.id) {
+                            if (message.content_text?.length > 0) {
                               return (
                                 <div
                                   key={message.id}
                                   className="bg-[#DCFCE4] p-2 self-end max-w-[60%] rounded-lg mx-4"
                                 >
-                                  <Typography className="font-poppins text-[#262626]">
+                                  <Typography
+                                    className={
+                                      message.content_text.includes(
+                                        searchText
+                                      ) && searchText !== ''
+                                        ? 'font-poppins text-[#262626] bg-[#FBF719]'
+                                        : 'font-poppins text-[#262626]'
+                                    }
+                                  >
                                     {message.content_text}
                                   </Typography>
+                                </div>
+                              );
+                            }
+                            if (
+                              message.media_urls?.length > 0 &&
+                              message.media_urls[0]?.includes('mp3')
+                            ) {
+                              return (
+                                <audio
+                                  key={message?.id}
+                                  controls
+                                  className="self-end"
+                                >
+                                  <source
+                                    src={message.media_urls[0]}
+                                    type="audio/wav"
+                                    className="w-full"
+                                  />
+                                  Your browser does not support the audio
+                                  element.
+                                </audio>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={message.id}
+                                  className="p-2 self-end max-w-[60%] rounded-lg mx-4"
+                                >
+                                  <img src={message?.media_urls[0]} />
+                                </div>
+                              );
+                            }
+                          } else {
+                            if (message.content_text?.length > 0) {
+                              return (
+                                <div className="flex ml-4" key={message.id}>
+                                  <Image
+                                    width={32}
+                                    height={32}
+                                    src={otherUserData?.avatar as string}
+                                    alt="avatar"
+                                    className="rounded-full w-8 h-8"
+                                  />
+                                  <div className="bg-[#3AC4A0] p-2 self-start max-w-[60%] rounded-lg mx-2">
+                                    <Typography
+                                      className={
+                                        message.content_text.includes(
+                                          searchText
+                                        ) && searchText !== ''
+                                          ? 'font-poppins text-[#fff] bg-[#FBF719]'
+                                          : 'font-poppins text-[#fff]'
+                                      }
+                                    >
+                                      {message.content_text}
+                                    </Typography>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            if (
+                              message.media_urls?.length > 0 &&
+                              message.media_urls[0]?.includes('mp3')
+                            ) {
+                              return (
+                                <div className="flex ml-4" key={message.id}>
+                                  <Image
+                                    width={32}
+                                    height={32}
+                                    src={otherUserData?.avatar as string}
+                                    alt="avatar"
+                                    className="rounded-full w-8 h-8"
+                                  />
+                                  <audio controls>
+                                    <source
+                                      src={message.media_urls[0]}
+                                      type="audio/wav"
+                                      className="w-full"
+                                    />
+                                    Your browser does not support the audio
+                                    element.
+                                  </audio>
                                 </div>
                               );
                             } else {
@@ -1419,63 +1652,124 @@ const ChatPages: React.FC = () => {
                                     height={32}
                                     src={otherUserData?.avatar as string}
                                     alt="avatar"
-                                    className="rounded-full w-12 h-12"
+                                    className="rounded-full w-8 h-8"
                                   />
-                                  <div className="bg-[#3AC4A0] p-2 self-start max-w-[60%] rounded-lg mx-2">
-                                    <Typography className="font-poppins text-[#fff]">
-                                      {message.content_text}
-                                    </Typography>
-                                  </div>
+                                  <img
+                                    src={message?.media_urls[0]}
+                                    className="max-w-[60%]"
+                                  />
                                 </div>
                               );
                             }
-                          })}
-                        </div>
-                      )}
-                    </div>
+                          }
+                        })}
+                      </div>
+                    )}
                   </div>
                   <div className="bg-white px-4 py-2 rounded-b-xl">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={plusRounded}
-                        alt="plusRounded"
-                        width={20}
-                        height={20}
-                      />
-                      <Image src={camera} alt="camera" width={20} height={20} />
-                      <Image
-                        src={galleryChat}
-                        alt="gallery"
-                        width={20}
-                        height={20}
-                      />
-                      <div className="flex w-full">
-                        <input
-                          type="text"
-                          value={message}
-                          onChange={handleMessageChange}
-                          className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full"
-                          placeholder="Type message…"
+                    {isVoiceRecording ? (
+                      <div className="flex items-center gap-3">
+                        <ChatVoiceRecorder
+                          setAudio={setAudio}
+                          setLoading={setIsLoading}
+                          postMedia={handleSendVoiceMessage}
+                          setIsVoiceRecording={setIsVoiceRecording}
+                          audio={audio}
                         />
-                        <div className="flex justify-center items-center absolute right-[95px] pt-[14px]">
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div className="relative flex">
+                          <div
+                            className="dropdown-option flex cursor-pointer"
+                            onClick={() => {
+                              handleDropdownOptionClick('Gif');
+                            }}
+                          >
+                            <svg
+                              width="16"
+                              height="14"
+                              viewBox="0 0 16 14"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M13.4 0C14.786 0 15.92 1.187 15.996 2.682L16 2.844V11.156C16 12.673 14.915 13.912 13.547 13.996L13.4 14H2.6C1.214 14 0.0799999 12.813 0.00399995 11.318L0 11.156V2.844C0 1.327 1.085 0.0879999 2.452 0.00399995L2.6 0H13.4ZM13.25 1H2.75C1.824 1 1.066 1.793 1.004 2.797L1 2.929V11.071C1 12.092 1.72 12.928 2.63 12.996L2.75 13H13.25C14.176 13 14.934 12.207 14.996 11.204L15 11.07V2.93C15 1.909 14.28 1.073 13.37 1.005L13.25 1ZM4.851 4.002C5.471 4.002 5.999 4.099 6.432 4.301C6.699 4.425 6.806 4.725 6.672 4.972C6.60066 5.09307 6.48654 5.18302 6.35215 5.22412C6.21776 5.26521 6.07286 5.25447 5.946 5.194C5.678 5.069 5.314 5.002 4.851 5.002C3.825 5.002 3.081 5.834 3.081 7.002C3.081 8.121 3.894 9 4.851 9C5.448 9 5.853 8.649 5.911 8.327L5.919 8.247V7.501L5.54 7.5C5.242 7.5 5 7.276 5 7C5 6.755 5.191 6.55 5.443 6.508L5.541 6.5L6.459 6.501C6.58139 6.49737 6.70126 6.53623 6.79824 6.61097C6.89522 6.68571 6.96333 6.79173 6.991 6.911L7 7.001V8.247C7 9.124 6.114 10 4.851 10C3.256 10 2 8.642 2 7.001C2 5.32 3.177 4.002 4.851 4.002ZM9 4C9.11703 3.99996 9.23036 4.04097 9.32026 4.11589C9.41016 4.19081 9.47093 4.29489 9.492 4.41L9.5 4.5V9.5C9.50023 9.62495 9.45367 9.74545 9.36949 9.83778C9.28531 9.93012 9.16961 9.98759 9.04518 9.99888C8.92074 10.0102 8.79659 9.97446 8.69717 9.89878C8.59775 9.8231 8.53026 9.71295 8.508 9.59L8.5 9.5V4.5C8.5 4.36739 8.55268 4.24021 8.64645 4.14645C8.74021 4.05268 8.86739 4 9 4ZM13.5 4C13.6249 3.99977 13.7455 4.04633 13.8378 4.13051C13.9301 4.21469 13.9876 4.33039 13.9989 4.45482C14.0102 4.57926 13.9745 4.70341 13.8988 4.80283C13.8231 4.90225 13.7129 4.96974 13.59 4.992L13.5 5H12V7H13.5C13.6249 6.99977 13.7455 7.04633 13.8378 7.13051C13.9301 7.21469 13.9876 7.33039 13.9989 7.45482C14.0102 7.57926 13.9745 7.70341 13.8988 7.80283C13.8231 7.90225 13.7129 7.96974 13.59 7.992L13.5 8H12V9.5C12.0002 9.62495 11.9537 9.74545 11.8695 9.83778C11.7853 9.93012 11.6696 9.98759 11.5452 9.99888C11.4207 10.0102 11.2966 9.97446 11.1972 9.89878C11.0977 9.8231 11.0303 9.71295 11.008 9.59L11 9.5V4.5C11 4.36739 11.0527 4.24021 11.1464 4.14645C11.2402 4.05268 11.3674 4 11.5 4H13.5Z"
+                                fill="#201B1C"
+                              />
+                            </svg>
+                          </div>
+                          {isShowGifPopup && (
+                            <div className="absolute left-2 bottom-8 flex flex-col mt-2 bg-white border border-gray-300 rounded-md shadow-md">
+                              <GifChat
+                                sendGif={handleSendGifMessage}
+                                onClose={() => {
+                                  setIsShowGifPopup(false);
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex w-5 cursor-pointer">
                           <Image
-                            alt="Search"
-                            src={emoji}
+                            src={camera}
+                            alt="camera"
                             width={16}
                             height={16}
                           />
                         </div>
+                        <div className="flex relative cursor-pointer">
+                          <input
+                            type="file"
+                            id="MediaUpload"
+                            onChange={handleSendImageMessage}
+                            className="absolute inset-0 opacity-0"
+                            accept="image/jpg,image/jpeg,image/png,video/mp4,video/mov"
+                          />
+                          <Image
+                            src={galleryChat}
+                            alt="gallery"
+                            width={16}
+                            height={16}
+                            className="w-full h-full"
+                          />
+                        </div>
+                        <div className="flex w-full">
+                          <textarea
+                            value={message}
+                            onChange={handleMessageChange}
+                            onKeyDown={handleKeyDown}
+                            rows={1}
+                            className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full resize-none"
+                            placeholder="Type message…"
+                          />
+                          <div className="flex justify-center items-center absolute right-[95px] pt-[14px]">
+                            <Image
+                              alt="Search"
+                              src={emoji}
+                              width={16}
+                              height={16}
+                            />
+                          </div>
+                        </div>
+                        <div
+                          onClick={() => {
+                            setIsVoiceRecording(true);
+                          }}
+                          className="w-5"
+                        >
+                          <Image src={mic} alt="mic" width={20} height={20} />
+                        </div>
+                        <button onClick={handleSendMessage}>
+                          <Image
+                            src={sendChat}
+                            alt="send"
+                            width={20}
+                            height={20}
+                          />
+                        </button>
                       </div>
-                      <Image src={mic} alt="mic" width={20} height={20} />
-                      <button onClick={handleSendMessage}>
-                        <Image
-                          src={sendChat}
-                          alt="send"
-                          width={20}
-                          height={20}
-                        />
-                      </button>
-                    </div>
+                    )}
                   </div>
                 </>
               ) : (

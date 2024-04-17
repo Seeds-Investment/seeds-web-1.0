@@ -4,6 +4,8 @@ import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import {
   type CommonGroupResponse,
+  type CreateGroupParams,
+  type CreateGroupResponse,
   type GetChatMediaParams,
   type GetChatNotesParams,
   type GetChatParams,
@@ -326,6 +328,23 @@ export const getGroupMember = async ({
   const path = Endpoints.chat.groupMember.replace(':id', id);
   return await baseUrl.get(path, {
     params: { page, limit, id },
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const createGroup = async (
+  data: CreateGroupParams
+): Promise<CreateGroupResponse> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.createGroupChat;
+  return await baseUrl.post(path, data, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`

@@ -33,11 +33,11 @@ const Withdrawal: React.FC = () => {
   );
 
   const redirect = async (): Promise<void> => {
-    await withRedirect(router, { withdrawal: 'true' }, '/auth');
     if (
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
+      await withRedirect(router, { withdrawal: 'true' }, '/auth');
       toast.error(t('landingPageV2.redirectError'));
     }
   };

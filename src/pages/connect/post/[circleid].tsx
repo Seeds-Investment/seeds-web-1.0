@@ -55,11 +55,11 @@ const CirclePost = (): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
 
   const redirect = async (): Promise<void> => {
-    await withRedirect(router, { circleId }, '/auth');
     if (
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
+      await withRedirect(router, { circleId }, '/auth');
       toast.error(t('landingPageV2.redirectError'));
     }
   };

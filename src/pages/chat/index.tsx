@@ -2,6 +2,7 @@
 import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
+import ModalNewChat from '@/components/chat/ModalNewChat';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
 import LeaveCommunityPopUp from '@/components/chat/PopUpLeave';
@@ -121,6 +122,7 @@ const ChatPages: React.FC = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isSearchPopupOpen, setIsSearchPopupOpen] = useState(false);
+  const [isNewPopupOpen, setIsNewPopupOpen] = useState(false);
   const [isMutePopupOpen, setIsMutePopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLeavePopupOpen, setIsLeavePopupOpen] = useState<boolean>(false);
@@ -284,7 +286,7 @@ const ChatPages: React.FC = () => {
         setIsMutePopupOpen(true);
         break;
       case 'New':
-        setIsSearchPopupOpen(true);
+        setIsNewPopupOpen(true);
         break;
       case 'Leave':
         setIsLeavePopupOpen(true);
@@ -697,6 +699,20 @@ const ChatPages: React.FC = () => {
           onMute={muteChat}
         />
       )}
+      <ModalNewChat
+        isOpen={isNewPopupOpen}
+        handleOpen={() => {
+          setIsNewPopupOpen(false);
+        }}
+        onPersonalClick={() => {
+          setIsNewPopupOpen(false);
+          setIsSearchPopupOpen(true);
+        }}
+        onGroupClick={() => {
+          setIsNewPopupOpen(false);
+          void router.push('/chat/create-group');
+        }}
+      />
       {isShowDetail ? (
         <CCard className="flex flex-col border-none rounded-xl bg-white w-full py-5 px-4 gap-4">
           {activeTab === 'COMMUNITY' ? (

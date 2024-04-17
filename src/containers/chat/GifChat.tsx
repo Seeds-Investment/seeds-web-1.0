@@ -2,9 +2,11 @@ import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
+import { type GiphyData, type GiphyI } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface props {
   sendGif: (mediaUrl: string) => Promise<void>;
@@ -12,7 +14,7 @@ interface props {
 }
 
 const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
-  const [dataGif, setData]: any = useState();
+  const [dataGif, setData] = useState<GiphyData[] | undefined>();
   const [search, setSearch] = useState({
     searchGif: ''
   });
@@ -24,10 +26,10 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
   const fetchGif = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await getGifFromGhipy();
+      const { data } = (await getGifFromGhipy()) as GiphyI;
       setData(data);
     } catch (error: any) {
-      console.error('Error fetching Gif from ghipy', error);
+      toast(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -43,25 +45,27 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
     void fetchGif();
   }, []);
 
-  const handlePostGif = async (url: any): Promise<any> => {
+  const handlePostGif = async (url: string): Promise<void> => {
     await sendGif(url);
   };
 
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>
-  ): any => {
+  ): void => {
     const { name, value } = event.target;
     setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
   };
 
-  const searchGhipy = async (event: any): Promise<void> => {
+  const searchGhipy = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
     try {
       setIsLoading(true);
       const { data } = await searchGifFromGhipy(search.searchGif);
       setData(data);
     } catch (error: any) {
-      console.error('Error Search Gif from ghipy', error);
+      toast(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +113,7 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
         renderLoading()
       ) : (
         <div className="grid grid-cols-5 gap-3 mt-8 px-2">
-          {dataGif?.map((el: any, i: number) => {
+          {dataGif?.map((el: GiphyData, i: number) => {
             return (
               <div
                 className="max-h-[230px]"

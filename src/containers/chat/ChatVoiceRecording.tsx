@@ -58,7 +58,7 @@ export const ChatVoiceRecorder: React.FC<props> = ({
     return `${seconds}.${pad(milliseconds)}`;
   };
 
-  const startRecording = (): any => {
+  const startRecording = (): void => {
     setLoading(false);
     navigator.mediaDevices
       .getUserMedia({ audio: true })

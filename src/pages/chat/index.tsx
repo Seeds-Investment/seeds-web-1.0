@@ -1265,7 +1265,6 @@ const ChatPages: React.FC = () => {
               </Tabs>
             </div>
           </CCard>
-          ;
           {(chatList?.length !== 0 || isChatActive) && (
             <CCard className="flex flex-col w-2/3 border-none rounded-xl bg-white">
               {roomId !== undefined && isChatActive ? (

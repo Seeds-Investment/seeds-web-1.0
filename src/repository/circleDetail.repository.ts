@@ -1,5 +1,6 @@
 import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
+import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import axios from 'axios';
 
 const baseUrl = baseAxios(
@@ -219,7 +220,7 @@ export const getCircleRecomend = async ({
   }
 };
 
-export const getGifFromGhipy = async (): Promise<any> => {
+export const getGifFromGhipy = async (): Promise<GiphyI | unknown> => {
   try {
     const response = await fetch(
       'https://api.giphy.com/v1/gifs/trending?api_key=STZwTE2z0evd6Ew1nReSwJnXfi01XSRp&limit=10'

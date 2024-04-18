@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use client';
+import LanguageContext from '@/store/language/language-context';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from '../ui/modal/Modal';
 
@@ -13,6 +15,7 @@ interface Props {
 
 const ModalTutorialTournament: React.FC<Props> = ({ onClose }) => {
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
 
   return (
     <Modal
@@ -38,7 +41,7 @@ const ModalTutorialTournament: React.FC<Props> = ({ onClose }) => {
         </div>
         <iframe
           style={{ padding: 0, width: '100%', height: '90%' }}
-          src="https://drive.google.com/file/d/1EN67ElP7VlMo-mqHGN0EGX1u2j6vRZ9V/preview"
+          src={languageCtx.language === 'ID' ? "https://drive.google.com/file/d/1TMkB5bXx7JWiP6oXyA9gc7qXNgNPpuBS/preview" : "https://drive.google.com/file/d/1oneJcUB4zBfx_kXV_M4FUYG8zrTBKQ7k/preview"}
           title={`${t('tournament.tutorialToournament')}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen

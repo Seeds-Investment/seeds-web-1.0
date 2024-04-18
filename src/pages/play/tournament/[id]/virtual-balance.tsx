@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
@@ -26,7 +25,6 @@ const VirtualBalance = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
-  const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -88,13 +86,6 @@ const VirtualBalance = (): React.ReactElement => {
 
   return (
     <>
-      {isDetailModal && (
-        <ModalDetailTournament
-          onClose={() => {
-            setIsDetailModal(prev => !prev);
-          }}
-        />
-      )}
       <div className='w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
         <div className='flex justify-start w-full'>
           <Typography className='text-xl font-semibold'>

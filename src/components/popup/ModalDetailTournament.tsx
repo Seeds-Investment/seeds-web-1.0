@@ -8,15 +8,27 @@ import Modal from '../ui/modal/Modal';
 import ThirdMedal from '@/assets/play/quiz/bronze-medal.png';
 import FirstMedal from '@/assets/play/quiz/gold-medal.png';
 import SecondMedal from '@/assets/play/quiz/silver-medal.png';
+import LanguageContext from '@/store/language/language-context';
+import { type ITNC } from '@/utils/interfaces/tournament.interface';
+import moment from 'moment';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
+import { useContext } from 'react';
 
 interface Props {
   onClose: () => void;
+  category: string;
+  playTime: string;
+  endTime: string;
+  prize: number[];
+  tnc: ITNC
+  length: number;
+  userInfoCurrency: string;
 }
 
-const ModalDetailTournament: React.FC<Props> = ({ onClose }) => {
+const ModalDetailTournament: React.FC<Props> = ({ onClose, length, playTime, endTime, category, prize, tnc, userInfoCurrency }) => {
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
 
   return (
     <Modal
@@ -42,86 +54,75 @@ const ModalDetailTournament: React.FC<Props> = ({ onClose }) => {
           {t('tournament.participants')}
         </Typography>
         <Typography className='font-poppins text-[#7C7C7C]'>
-          7 {t('tournament.participants')}
+          {length} {t('tournament.participants')}
         </Typography>
         <Typography className='font-semibold font-poppins'>
           {t('tournament.detailPeriod')}
         </Typography>
         <Typography className='font-poppins text-[#7C7C7C]'>
-          9 Aug 2023, 9am Jakarta - 11 Aug 2023, 11pm Jakarta 
+          {moment(playTime).format('D MMM YYYY, h a')} Jakarta
+          - {moment(endTime).format('D MMM YYYY, h a')} Jakarta
         </Typography>
         <Typography className='font-semibold font-poppins'>
           {t('tournament.categoryAsset')}
         </Typography>
         <Typography className='font-poppins text-[#7C7C7C]'>
-          Crypto
+          {category}
         </Typography>
       </div>
       <div className="mt-4">
         <div className="text-lg font-semibold">{t('tournament.detailPrize')}</div>
         <table className="mt-2">
-          <tr>
-            <td className="inline-flex gap-2 border p-3 w-full">
-              <Image
-                src={FirstMedal}
-                alt='1-medal'
-                width={200}
-                height={200}
-                className="object-contain max-h-5 max-w-5"
-              />
-              1st
-            </td>
-            <td className="border p-3 w-full">
-              IDR 1.000.000
-            </td>
-          </tr>
-          <tr>
-            <td className="inline-flex gap-2 border p-3 w-full">
-              <Image
-                src={SecondMedal}
-                alt='2-medal'
-                width={200}
-                height={200}
-                className="object-contain max-h-5 max-w-5"
-              />
-              2nd
-            </td>
-            <td className="border p-3 w-full">
-              IDR 750.000
-            </td>
-          </tr>
-          <tr>
-            <td className="inline-flex gap-2 border p-3 w-full">
-              <Image
-                src={ThirdMedal}
-                alt='3-medal'
-                width={200}
-                height={200}
-                className="object-contain max-h-5 max-w-5"
-              />
-              3rd
-            </td>
-            <td className="border p-3 w-full">
-              IDR 500.000
-            </td>
-          </tr>
+          {prize?.map((item, index) => (
+            <tr key={index}>
+              <td className="inline-flex gap-2 border p-3 w-full">
+                <Image
+                  src={
+                    index === 0
+                      ? FirstMedal
+                      : index === 1
+                      ? SecondMedal
+                      : ThirdMedal
+                  }
+                  alt={`${index}-medal`}
+                  width={200}
+                  height={200}
+                  className="object-contain max-h-5 max-w-5"
+                />
+                {t(
+                  `tournament.${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`
+                )}
+              </td>
+              <td className="border p-3 w-full">
+                {item?.toLocaleString('id-ID', {
+                  currency:
+                    userInfoCurrency?.length > 0
+                      ? userInfoCurrency
+                      : 'IDR',
+                  style: 'currency'
+                })}
+              </td>
+            </tr>
+          ))}
         </table>
       </div>
       <div className="mt-4">
         <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
-        <p className='text-[#7C7C7C]'>1. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>2. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>3. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>4. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>5. Lorem Ipsum dolor sit amet consectur adispiscing</p>
+          {
+            languageCtx.language === 'ID' ?
+              <p className='text-[#7C7C7C]'>
+                {tnc?.id}
+              </p>
+              :
+              <p className='text-[#7C7C7C]'>
+                {tnc?.en}
+              </p>
+          }
       </div>
       <div className="mt-4">
         <p className="text-lg font-semibold">{t('tournament.detailResponsibility')}</p>
-        <p className='text-[#7C7C7C]'>1. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>2. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>3. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>4. Lorem Ipsum dolor sit amet consectur adispiscing</p>
-        <p className='text-[#7C7C7C]'>5. Lorem Ipsum dolor sit amet consectur adispiscing</p>
+        <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility1')}</p>
+        <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility2')}</p>
       </div>
     </Modal>
   );

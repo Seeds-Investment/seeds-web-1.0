@@ -4,6 +4,7 @@ import { getArticleHome } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
+import { toast } from 'react-toastify';
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -57,10 +58,10 @@ export default function ArticleList(): React.ReactElement {
       if (response.status === 200) {
         setArticles(response.data);
       } else {
-        console.error('Failed to fetch articles:', response);
+        toast.error('Failed to fetch articles')
       }
     } catch (error) {
-      console.error('Error fetching articles:', error);
+      toast.error(`Error fetching articles: ${error as string}`)
     }
   }
 
@@ -84,7 +85,7 @@ export default function ArticleList(): React.ReactElement {
     };
 
     fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
+      toast.error('Error fetching data: ', error)
     });
   }, [params]);
 

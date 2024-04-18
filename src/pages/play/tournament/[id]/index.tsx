@@ -7,10 +7,13 @@ import IconWarning from '@/assets/play/tournament/miniWarning.svg';
 import IconPrizes from '@/assets/play/tournament/seedsPrizes.svg';
 import IconCircle from '@/assets/play/tournament/seedsPrizesCircle.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
+import Loading from '@/components/popup/Loading';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import { isGuest } from '@/helpers/guest';
+import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
-import { getPlayById } from '@/repository/play.repository';
+import { type Ballance } from '@/pages/homepage/play-assets';
+import { getPlayBallance, getPlayById, getPlayPortfolio } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
@@ -26,15 +29,44 @@ import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
-const TournamentDetail = (): React.ReactElement => {
+interface itemPortfolioSummaryType {
+  value: number;
+  gnl: number;
+  gnl_percentage: number;
+  currency: string;
+}
+
+interface IPortfolioSummary {
+  summary: itemPortfolioSummaryType;
+  id_stock: itemPortfolioSummaryType;
+  us_stock: itemPortfolioSummaryType;
+  crypto: itemPortfolioSummaryType;
+  commodity: itemPortfolioSummaryType;
+  pie: {
+    assets: any[];
+    cash_balance: number;
+    total_portfolio: number;
+  };
+}
+
+const TournamentDetail: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
+  const [ballance, setBallance] = useState<Ballance>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    currency: 'IDR'
+  });
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -73,14 +105,6 @@ const TournamentDetail = (): React.ReactElement => {
     }
   }, [id, userInfo]);
 
-  if (detailTournament === undefined && loading) {
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <div className="animate-spinner w-10 h-10" />
-      </div>
-    );
-  }
-
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`
@@ -89,7 +113,33 @@ const TournamentDetail = (): React.ReactElement => {
     });
   };
 
-  console.log('detail tournament ', detailTournament)
+  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getPlayPortfolio(id as string, currency);
+      setPortfolio(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`)
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency as string);
+      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
+    }
+  }, [id, userInfo]);
 
   return (
     <>
@@ -102,6 +152,7 @@ const TournamentDetail = (): React.ReactElement => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
+      {(detailTournament === undefined && loading && isLoading && portfolio && ballance) && <Loading />}
       <div className='bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins'>
         <div className='absolute bottom-[-25px] text-center'>
           <Typography className='text-[26px] font-semibold font-poppins'>
@@ -137,7 +188,7 @@ const TournamentDetail = (): React.ReactElement => {
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
           <div className="mt-4 flex justify-between">
             <div className='flex flex-col'>
-              <div className="text-lg font-semibold">{t('tournament.detailRemaining')}</div>
+              <Typography className="text-lg font-semibold font-poppins">{t('tournament.detailRemaining')}</Typography>
               <CountdownTimer deadline={detailTournament?.end_time ? detailTournament.end_time.toString() : ''} />
             </div>
             <button className='bg-[#DCFCE4] rounded-full w-fit h-fit p-2'>
@@ -152,16 +203,16 @@ const TournamentDetail = (): React.ReactElement => {
             </button>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">{t('tournament.detailPeriod')}</div>
-            <div className="text-lg text-[#7C7C7C]">
+            <Typography className="text-lg font-semibold font-poppins">{t('tournament.detailPeriod')}</Typography>
+            <Typography className="text-lg text-[#7C7C7C] font-poppins">
               {moment(detailTournament?.play_time).format('D MMM YYYY, h a')} Jakarta
               - {moment(detailTournament?.end_time).format('D MMM YYYY, h a')} Jakarta
-            </div>
+            </Typography>
           </div>
           <div className="mt-4 flex flex-row gap-8">
             {detailTournament?.sponsorship?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
+                <Typography className="text-lg font-semibold font-poppins">{'Sponsor(s)'}</Typography>
                 <Image
                   src={detailTournament?.sponsorship?.image_url}
                   alt=""
@@ -173,7 +224,7 @@ const TournamentDetail = (): React.ReactElement => {
             ) : null}
             {detailTournament?.community?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Community'}</div>
+                <Typography className="text-lg font-semibold font-poppins">{'Community'}</Typography>
                 <Image
                   src={detailTournament?.community?.image_url}
                   alt=""
@@ -185,7 +236,7 @@ const TournamentDetail = (): React.ReactElement => {
             ) : null}
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">{t('tournament.detailPrize')}</div>
+            <Typography className="text-lg font-semibold font-poppins">{t('tournament.detailPrize')}</Typography>
             <table className="mt-2">
               {detailTournament?.prize?.map((item, index) => (
                 <tr key={index}>
@@ -221,6 +272,36 @@ const TournamentDetail = (): React.ReactElement => {
             </table>
           </div>
           <div className="mt-4">
+            <Typography className="text-lg font-semibold font-poppins">{t('tournament.participants')}</Typography>
+            <div className='flex gap-2'>
+              <Typography className="text-lg text-[#7C7C7C] font-poppins font-semibold">
+                {detailTournament?.total_participants} / {detailTournament?.max_participant}
+              </Typography>
+              <Typography className="text-lg text-[#7C7C7C] font-poppins">
+                {t('tournament.participants')}
+              </Typography>
+            </div>
+            <div className='w-full flex justify-start mt-2 gap-2'>
+              {detailTournament?.participants?.slice(0, 5).map((participant, index) => (
+                <div key={index} className='flex bg-white shadow-md rounded-full overflow-hidden'>
+                  <Image
+                    src={participant.photo_url}
+                    alt=""
+                    width={50}
+                    height={50}
+                    className="object-contain max-h-16 max-w-16"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-4">
+            <Typography className="text-lg font-semibold font-poppins">{t('tournament.categoryAsset')}</Typography>
+            <Typography className="text-lg text-[#7C7C7C] font-poppins">
+              {detailTournament?.category}
+            </Typography>
+          </div>
+          <div className="mt-4">
             <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
               {
                 languageCtx.language === 'ID' ?
@@ -234,9 +315,9 @@ const TournamentDetail = (): React.ReactElement => {
               }
           </div>
           <div className="mt-4">
-            <p className="text-lg font-semibold">{t('tournament.detailResponsibility')}</p>
-            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility1')}</p>
-            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility2')}</p>
+            <Typography className="text-lg font-semibold font-poppins">{t('tournament.detailResponsibility')}</Typography>
+            <Typography className='text-[#7C7C7C] font-poppins'>• {t('tournament.seedsResponsibility1')}</Typography>
+            <Typography className='text-[#7C7C7C] font-poppins'>• {t('tournament.seedsResponsibility2')}</Typography>
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-6">
@@ -249,10 +330,10 @@ const TournamentDetail = (): React.ReactElement => {
             disabled={false}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
-          <div className="text-sm text-[#7C7C7C] mt-2.5">
+          <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
-          </div>
-          <div className="font-semibold text-xl">
+          </Typography>
+          <Typography className="font-semibold text-xl font-poppins">
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : detailTournament?.admission_fee?.toLocaleString('id-ID', {
@@ -262,7 +343,7 @@ const TournamentDetail = (): React.ReactElement => {
                       : 'IDR',
                   style: 'currency'
                 })}
-          </div>
+          </Typography>
           <button
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
@@ -300,4 +381,4 @@ const TournamentDetail = (): React.ReactElement => {
   );
 };
 
-export default TournamentDetail;
+export default withAuth(TournamentDetail);

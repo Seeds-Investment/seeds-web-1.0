@@ -195,7 +195,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       <div className="bg-[#FFF] lg:col-span-2 xl:rounded-[18px] pb-6 w-full relative shadow-md">
         <Link
           href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
-            articleName?.split(' ').join('-') as string
+            articleName
+              ?.replace(/[^\w\s]/gi, '')
+              .split(' ')
+              .join('-') as string
           }`}
         >
           {isImageValid ? (
@@ -215,7 +218,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         <div className="p-4">
           <Link
             href={`/seedspedia/articles/${articleDetail?.id ?? 0}/${
-              articleName?.split(' ').join('-') as string
+              articleName
+                ?.replace(/[^\w\s]/gi, '')
+                .split(' ')
+                .join('-') as string
             }`}
           >
             <h1 className="text-xl text-justify font-semibold text-[#000]">

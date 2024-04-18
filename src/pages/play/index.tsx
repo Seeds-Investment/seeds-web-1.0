@@ -119,8 +119,8 @@ const Player = (): React.ReactElement => {
       } else {
         setData(response.playList);
       };
-    } catch (error: any) {
-      toast.error('Error fetching data:', error)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`)
       setLoading(false);
     } finally {
       setLoading(false)
@@ -358,7 +358,7 @@ const Player = (): React.ReactElement => {
                             data.map(item => ( 
                               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                               <div key={item.id} onClick={async() => await router.push(`/play/tournament/${item.id}`).catch(error => {toast.error(error)})} className='flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300'>
-                                <div className='w-[60px] text-black text-center'>
+                                <div className='w-[60px] text-black text-center hidden md:block'>
                                   <Typography className="text-black font-normal text-[12px]">
                                     {moment(item?.play_time).format('MMM')}
                                   </Typography>
@@ -403,10 +403,10 @@ const Player = (): React.ReactElement => {
                                       <Image alt="" src={IconClock} className='w-[14px] mb-2 mr-1'/>
                                       <div className='flex flex-col'>
                                         <div>
-                                          Duration
+                                          {t('tournament.tournamentCard.duration')}
                                         </div>
                                         <div className='font-semibold text-black'>
-                                          {calculateDaysLeft(item.play_time, item.end_time)} Days
+                                          {calculateDaysLeft(item.play_time, item.end_time)} {t('tournament.tournamentCard.days')}
                                         </div>
                                       </div>
                                     </div>
@@ -414,10 +414,10 @@ const Player = (): React.ReactElement => {
                                       <Image alt="" src={IconUsers} className='w-[14px] mb-2 mr-1'/>
                                       <div className='flex flex-col'>
                                         <div>
-                                          Joined
+                                          {t('tournament.tournamentCard.joined')}
                                         </div>
                                         <div className='font-semibold text-black'>
-                                          20 Players
+                                          {item?.participants?.length ?? '0'} {t('tournament.tournamentCard.player')}
                                         </div>
                                       </div>
                                     </div>
@@ -425,7 +425,7 @@ const Player = (): React.ReactElement => {
                                       <Image alt="" src={IconFee} className='w-[14px] mb-2 mr-1'/>
                                       <div className='flex flex-col'>
                                         <div>
-                                          Fee
+                                          {t('tournament.tournamentCard.fee')}
                                         </div>
                                         <div className='font-semibold text-black'>
                                           {item.admission_fee === 0
@@ -449,12 +449,12 @@ const Player = (): React.ReactElement => {
                                           <Image alt="" src={IconShare} className='w-[20px]'/>
                                         </div>
                                         <div className='text-[10px] font-semibold'>
-                                          Share
+                                          {t('tournament.tournamentCard.share')}
                                         </div>
                                       </div>
                                     </div>
                                     <div className='flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300'>
-                                      Open
+                                      {t('tournament.tournamentCard.openButton')}
                                     </div>
                                   </div>
                                 </div>

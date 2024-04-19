@@ -4,10 +4,13 @@ class SocketService {
   private socket: Socket | null = null;
 
   connect(id: string): void {
-    this.socket = io(process.env.SOCKET_URL as string, {
-      transports: ['websocket'],
-      query: { uuid: id }
-    });
+    this.socket = io(
+      process.env.SOCKET_URL ?? 'wss://seeds-dev-gcp.seeds.finance',
+      {
+        transports: ['websocket'],
+        query: { uuid: id }
+      }
+    );
   }
 
   disconnect(id: string): void {

@@ -155,7 +155,7 @@ const ChatPages: React.FC = () => {
   >([]);
   const [audio, setAudio] = useState<File | null>(null);
 
-  const isOnline = useGetOnlineStatus(otherUserData?.id as string);
+  const isOnline = useGetOnlineStatus(roomId as string);
 
   const [groupMember, setGroupMember] = useState<GroupMemberData[] | []>([]);
 
@@ -642,12 +642,17 @@ const ChatPages: React.FC = () => {
       return;
     }
 
-    socketService.addListener(`chat.personal.${dataUser.id}`, () => {
+    socketService.addListener(`chat.personal.${roomId as string}`, () => {
       void fetchChat();
     });
 
     return () => {};
   }, [dataUser.id, roomId]);
+
+  useEffect(() => {
+    socketService.connect(dataUser.id);
+    return () => {};
+  }, []);
 
   useEffect(() => {
     if (roomId !== undefined) {

@@ -1,12 +1,20 @@
-import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
+import BurgerMenu from '@/assets/landing-page/header/BurgerMenu.svg';
+import ChevronDown from '@/assets/landing-page/header/ChevronDown.svg';
+import SeedLogo from '@/assets/landing-page/header/SeedsLogo.svg';
+import TrackerEvent from '@/helpers/GTM';
+import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import {
-  IconButton,
+  Button,
+  Dialog,
+  DialogBody,
   Menu,
   MenuHandler,
   MenuItem,
-  MenuList
+  MenuList,
+  Spinner,
+  Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,424 +22,289 @@ import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
-import Button from '../ui/button/Button';
-import Logo from '../ui/vector/Logo';
+import { useTranslation } from 'react-i18next';
 
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
+interface VariableHeader {
+  className?: any;
 }
 
-function clearLocalStorageAndRefreshPage(): void {
-  // Remove specific items from local storage
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('expiresAt');
-  localStorage.removeItem('keepMeLoggedIn');
+const pathUrl = [
+  { id: 1, name: 'Home', nama: 'Beranda', url: '/' },
+  { id: 2, name: 'Product', nama: 'Produk', url: '/product' },
+  { id: 3, name: 'Seedspedia', nama: 'Seedspedia', url: '/seedspedia' },
+  // { id: 4, name: 'Market', nama:'Pasar', url: '/market' },
+  { id: 5, name: 'Partner', nama: 'Mitra', url: '/partner' },
+  { id: 6, name: 'About Us', nama: 'Tentang Kami', url: '/about-us' }
+];
 
-  // Refresh the page
-  window.location.reload();
-}
+const languageList = [
+  { id: 1, language: 'ID', flag: ID },
+  { id: 2, language: 'EN', flag: US }
+];
 
-const Header: React.FC = () => {
+const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
+  const { t } = useTranslation();
+  const [openMenu, setOpenMenu] = useState(false);
+  const [open, setOpen] = useState(false);
   const languageCtx = useContext(LanguageContext);
   const router = useRouter();
-
-  const width = useWindowInnerWidth();
-  const [openNav, setOpenNav] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener('resize', (): void => {
-      if (window.innerWidth >= 960) {
-        setOpenNav(false);
-      }
-    });
-  }, []);
-
-  const _handleRedirectJoinUs = (): any => {
-    return router.push('/auth/register');
-  };
-
-  const accessToken =
-    typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
+
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
 
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
-  };
-  const [openLanguage, setOpenLanguage] = useState(false);
-
-  const handleDropdownLanguage = (): void => {
-    setOpenLanguage(!openLanguage);
+    setTranslationToLocalStorage(language).catch(err => {
+      console.log(err);
+    });
   };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
+    const getLastTranslation = async (): Promise<void> => {
       try {
-        const response = await getUserInfo();
-        setUserInfo(response);
+        if (typeof window !== 'undefined') {
+          const translation = getLocalStorage('translation', 'EN');
+          languageCtx.languageHandler(translation as 'EN' | 'ID');
+          setSelectedLanguage(translation);
+        }
       } catch (error) {
         console.log(error);
       }
     };
-
-    void fetchData();
+    getLastTranslation().catch(err => {
+      console.log(err);
+    });
+    if (
+      localStorage.getItem('accessToken') !== null &&
+      parseInt(localStorage.getItem('expiresAt') as string) >
+        Math.floor(Date.now() / 1000)
+    ) {
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleOpen();
+    }
   }, []);
 
-  const logout = (): void => {
-    clearLocalStorageAndRefreshPage();
-  };
-
-  const navList = (
-    <ul className="flex flex-col gap-3 text-center w-full">
-      <li>
-        <Link
-          className={`${
-            router.pathname === '/' ? 'text-[#261679]' : 'text-white'
-          }`}
-          href="/"
-        >
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link
-          className={`${
-            router.pathname === '/product' ? 'text-[#261679]' : 'text-white'
-          }`}
-          href="/product"
-        >
-          Products
-        </Link>
-      </li>
-      <li>
-        <Link
-          className={`${
-            router.pathname === '/seedspedia' ? 'text-[#261679]' : 'text-white'
-          }`}
-          href="/seedspedia"
-        >
-          Seedspedia
-        </Link>
-      </li>
-      <li>
-        <Link
-          className={`${
-            router.pathname === '/about-us' ? 'text-[#261679]' : 'text-white'
-          }`}
-          href="/about-us"
-        >
-          About Us
-        </Link>
-      </li>
-      {accessToken !== null && userInfo !== null ? (
-        <></>
-      ) : (
-        <li>
-          <Link href="/auth/login" className="cursor-pointer text-white">
-            Login
-          </Link>
-        </li>
-      )}
-      <li>
-        {accessToken !== null && userInfo !== null ? (
-          <>
-            <div className="flex justify-center gap-4">
-              <div className="mt-2 font-bold text-center justify-center">
-                Hi, {userInfo.name}
-              </div>
-              <Image
-                alt="image"
-                width={17}
-                height={17}
-                className="rounded-full w-10"
-                src={userInfo.avatar}
-              />
-            </div>
-            <button
-              className="block bg-[#DD2525] mx-auto my-4 border border-transparent text-white text-base font-semibold py-2 px-8 xl:mx-8 rounded-full leading-tight focus:outline-none focus:shadow-outline"
-              onClick={logout}
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <Button
-            variant="purple"
-            label="Join Us"
-            containerClasses="w-full p-3 sm:h-11 rounded-full"
-            onClick={() => _handleRedirectJoinUs()}
-          />
-        )}
-      </li>
-      <li>
-        <div className="relative inline-flex">
-          <select
-            className="block appearance-none bg-transparent border border-transparent text-white text-base font-semibold py-2 rounded leading-tight focus:outline-none focus:shadow-outline"
-            value={selectedLanguage}
-            onChange={(e): void => {
-              handleLanguageChange(e.target.value as 'EN' | 'ID');
-            }}
-          >
-            <option value="EN">EN</option>
-            <option value="ID">ID</option>
-          </select>
-          <div className="flex items-center ml-2">
-            {languageCtx.language === 'EN' ? (
-              <Image src={US} width={16} alt="US-flag" />
-            ) : (
-              <Image src={ID} width={16} alt="ID-flag" />
-            )}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="3"
-              stroke="#FFFFFF"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
-            </svg>
-          </div>
-        </div>
-      </li>
-    </ul>
-  );
-
   return (
-    <header className="">
-      <div className="document-header xl:pt-0 pt-5 xl:px-[80px] xl:py-0 py-5 px-5 bg-[#9A76FE80]/50">
-        <section className="flex xl:hidden  flex-col xl:w-auto w-full">
-          <section className="flex flex-row w-full">
-            <Link href="https://seeds.finance">
-              <Logo
-                width={
-                  width !== undefined && width <= 640 ? '62.22' : undefined
-                }
-                height={
-                  width !== undefined && width <= 640 ? '23.58' : undefined
-                }
-              />
-            </Link>
-            <IconButton
-              variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-              ripple={false}
-              onClick={(): void => {
-                setOpenNav(!openNav);
-              }}
-            >
-              {openNav ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </IconButton>
-          </section>
-          {openNav ? (
-            <section className="xl:hidden flex flex-col w-full mx-auto mt-4 mb-5 text-center text-base font-semibold">
-              {navList}
-            </section>
-          ) : (
-            <></>
-          )}
-        </section>
-        <section className="xl:flex hidden flex-row">
-          <Link href="https://seeds.finance">
-            <Logo
-              width={width !== undefined && width <= 640 ? '62.22' : undefined}
-              height={width !== undefined && width <= 640 ? '23.58' : undefined}
-            />
-          </Link>
-          <section className="flex flex-row text-base font-semibold xl:ml-8 gap-4 items-center">
-            <Link
-              className={`${
-                router.pathname === '/'
-                  ? 'text-[#261679] underline-offset-8 underline'
-                  : 'text-white'
-              }`}
-              href="/"
-            >
-              Home
-            </Link>
-            <Link
-              className={`${
-                router.pathname === '/product'
-                  ? 'text-[#261679] underline-offset-8 underline'
-                  : 'text-white'
-              }`}
-              href="/product"
-            >
-              Products
-            </Link>
-            <Link
-              className={`${
-                router.pathname === '/seedspedia'
-                  ? 'text-[#261679] underline-offset-8 underline'
-                  : 'text-white'
-              }`}
-              href="/seedspedia"
-            >
-              Seedspedia
-            </Link>
-            <Link
-              className={`${
-                router.pathname === '/about-us'
-                  ? 'text-[#261679] underline-offset-8 underline'
-                  : 'text-white'
-              }`}
-              href="/about-us"
-            >
-              About Us
-            </Link>
-          </section>
-        </section>
-        <div className="xl:flex hidden items-center gap-4">
-          {accessToken !== null && userInfo !== null ? (
-            <></>
-          ) : (
-            <Link
-              href="/auth/login"
-              className="cursor-pointer text-base font-semibold text-white mr-3"
-            >
-              Login
-            </Link>
-          )}
-          {accessToken !== null && userInfo !== null ? (
-            <div className="flex flex-row">
-              <div className="flex">
-                <div className="mt-2 mx-2 font-bold">Hi, {userInfo.name}</div>
-                <Image
-                  alt="image"
-                  width={17}
-                  height={17}
-                  className="rounded-full w-10"
-                  src={userInfo.avatar}
-                />
-              </div>
-              <button
-                className="block bg-[#DD2525] border border-transparent text-white text-base font-semibold py-2 px-8 xl:mx-8 rounded-full leading-tight focus:outline-none focus:shadow-outline"
-                onClick={logout}
+    <nav className={`fixed z-50 ${className as string} w-full bg-white`}>
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        dismiss={{ enabled: false }}
+        size="xs"
+      >
+        <DialogBody className="flex justify-center items-center gap-2 rounded-3xl">
+          <Spinner color="teal" className="h-4 w-4 text-[#3AC4A0]/70" />
+          <Typography className="font-normal font-poppins text-base text-[#3AC4A0]">
+            Redirecting
+          </Typography>
+        </DialogBody>
+      </Dialog>
+      {/* TODO: NEW HEADER */}
+      <section className="xl:flex hidden justify-evenly h-20 items-center">
+        <Link href="https://seeds.finance">
+          <Image
+            alt="SeedsLogo"
+            src={SeedLogo}
+            width={97}
+            height={36.77}
+            className="mr-9"
+          />
+        </Link>
+        <section className="flex flex-row font-poppins text-xl font-semibold gap-4 items-center">
+          {pathUrl.map((item, index) => {
+            return (
+              <Link
+                className={`${
+                  router.pathname === `${item.url}`
+                    ? 'text-[#3AC4A0] underline-offset-8 underline'
+                    : 'text-[#7C7C7C]'
+                } px-3`}
+                href={`${item.url}`}
+                key={item.id}
+                onClick={() => {
+                  TrackerEvent({
+                    event: `Seeds_view_landing_page_web`,
+                    pageName: item.name
+                  });
+                }}
               >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <Button
-              variant="purple"
-              label="Join Us"
-              containerClasses="sm:w-[5.7rem] w-[4.5rem] h-7 sm:h-11 rounded-full"
-              onClick={() => _handleRedirectJoinUs()}
-            />
-          )}
-          <div
-            className="relative inline-flex"
-            onClick={handleDropdownLanguage}
+                {selectedLanguage === 'EN' ? item.name : item.nama}
+              </Link>
+            );
+          })}
+        </section>
+        <section className="flex items-center gap-8">
+          <Link
+            href="/auth"
+            className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
           >
-            <h1 className="text-white font-medium text-base">
-              {selectedLanguage}
-            </h1>
-            <div className="flex items-center ml-2">
-              {languageCtx.language === 'EN' ? (
-                <Image src={US} width={16} alt="US-flag" />
-              ) : (
-                <Image src={ID} width={16} alt="ID-flag" />
-              )}
-            </div>
-            <div
-              className="flex self-center items-center"
-              onClick={handleDropdownLanguage}
-            >
-              <Menu open={openLanguage}>
+            {t('header.join')}
+          </Link>
+
+          <Menu>
+            <MenuHandler>
+              <Button
+                ripple={false}
+                className="flex items-center justify-center gap-1.5 rounded-full bg-[#E9E9E9] w-[110px] h-11 hover:shadow-none shadow-none"
+              >
+                <Typography className="text-lg text-black font-semibold font-poppins">
+                  {selectedLanguage}
+                </Typography>
+                {selectedLanguage === 'EN' ? (
+                  <Image src={US} width={30} alt="US-flag" />
+                ) : (
+                  <Image src={ID} width={30} alt="ID-flag" />
+                )}
+                <Image src={ChevronDown} alt="ChevronDown" />
+              </Button>
+            </MenuHandler>
+            <MenuList className="flex flex-col items-center p-0 bg-transparent border-none shadow-none">
+              {languageList
+                .filter(item => item.language !== selectedLanguage)
+                .map((item, index) => {
+                  return (
+                    <MenuItem
+                      className="p-0 w-[110px] bg-white rounded-full"
+                      onClick={() => {
+                        handleLanguageChange(item.language as 'EN' | 'ID');
+                      }}
+                      key={item.id}
+                    >
+                      <Button
+                        ripple={false}
+                        className="flex items-center justify-center gap-1.5 rounded-full bg-[#E9E9E9] w-[110px] h-11 hover:shadow-none shadow-none"
+                      >
+                        <Typography className="text-lg text-black font-semibold font-poppins">
+                          {item.language}
+                        </Typography>
+                        <Image
+                          src={item.flag}
+                          width={19}
+                          alt={`${item.language} flag`}
+                        />
+                      </Button>
+                    </MenuItem>
+                  );
+                })}
+            </MenuList>
+          </Menu>
+        </section>
+      </section>
+      {/* TODO: END NEW HEADER */}
+      <section className="flex xl:hidden justify-between mx-4 items-center h-20">
+        <Link href="https://seeds.finance">
+          <Image alt="SeedsLogo" src={SeedLogo} height={46} />
+        </Link>
+        <Menu
+          placement="left-start"
+          offset={-24}
+          dismiss={{
+            ancestorScroll: true
+          }}
+          open={openMenu}
+          handler={setOpenMenu}
+        >
+          <MenuHandler>
+            <Image
+              src={BurgerMenu}
+              alt="BurgerMenu"
+              className="cursor-pointer z-20"
+            />
+          </MenuHandler>
+          <MenuList className="pb-12 shadow-none border-none xl:hidden flex flex-col">
+            {pathUrl.map((item, index) => {
+              return (
+                <MenuItem
+                  key={item.id}
+                  className="hover:bg-transparent focus:bg-transparent"
+                >
+                  <Link
+                    href={item.url}
+                    className={` font-poppins font-normal text-base ${
+                      router.pathname === item.url
+                        ? 'text-[#3AC4A0]'
+                        : 'text-[#7C7C7C]'
+                    }`}
+                    onClick={() => {
+                      setOpenMenu(false);
+                      TrackerEvent({
+                        event: `Seeds_view_landing_page_web`,
+                        pageName: item.name
+                      });
+                    }}
+                  >
+                    {selectedLanguage === 'EN' ? item.name : item.nama}
+                  </Link>
+                </MenuItem>
+              );
+            })}
+            <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
+              <Link
+                href="/auth"
+                className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
+              >
+                {t('header.join')}
+              </Link>
+            </MenuItem>
+            <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
+              <Menu>
                 <MenuHandler>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="3"
-                    className="w-6 h-6"
+                  <Button
+                    ripple={false}
+                    className="flex items-center justify-center gap-1.5 rounded-full bg-[#E9E9E9] w-[110px] h-11 hover:shadow-none shadow-none"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
+                    <Typography className="text-lg text-black font-semibold font-poppins">
+                      {selectedLanguage}
+                    </Typography>
+                    {selectedLanguage === 'EN' ? (
+                      <Image src={US} width={30} alt="US-flag" />
+                    ) : (
+                      <Image src={ID} width={30} alt="ID-flag" />
+                    )}
+                    <Image src={ChevronDown} alt="ChevronDown" />
+                  </Button>
                 </MenuHandler>
-                <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      handleLanguageChange('EN');
-                    }}
-                  >
-                    EN
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      handleLanguageChange('ID');
-                    }}
-                  >
-                    ID
-                  </MenuItem>
+                <MenuList className="flex flex-col items-center p-0 bg-transparent border-none shadow-none">
+                  {languageList
+                    .filter(item => item.language !== selectedLanguage)
+                    .map((item, index) => {
+                      return (
+                        <MenuItem
+                          className="p-0 w-[110px] bg-white rounded-full"
+                          onClick={() => {
+                            handleLanguageChange(item.language as 'EN' | 'ID');
+                          }}
+                          key={item.id}
+                        >
+                          <Button
+                            ripple={false}
+                            className="flex items-center justify-center gap-1.5 rounded-full bg-[#E9E9E9] w-[110px] h-11 hover:shadow-none shadow-none"
+                          >
+                            <Typography className="text-lg text-black font-semibold font-poppins">
+                              {item.language}
+                            </Typography>
+                            <Image
+                              src={item.flag}
+                              width={19}
+                              alt={`${item.language} flag`}
+                            />
+                          </Button>
+                        </MenuItem>
+                      );
+                    })}
                 </MenuList>
               </Menu>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="3"
-                stroke="#FFFFFF"
-                className="w-6 h-6 -ml-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </section>
+    </nav>
   );
 };
 

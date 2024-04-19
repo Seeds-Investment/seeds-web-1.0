@@ -1,9 +1,8 @@
 import ArtPagination from '@/components/ArtPagination';
+import Footer from '@/components/layouts/Footer';
 import NewsCard from '@/components/seedsPedia/newsCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
@@ -38,8 +37,8 @@ export interface Metadata {
 
 export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [hotNews, setHotNews] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
+  console.log(articles, 'sdnjndjfdhs');
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -61,7 +60,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -80,31 +79,9 @@ export default function ArticleList(): React.ReactElement {
     void fetchArticles();
   }, [searchInput]);
 
-  async function fetchHotNews(): Promise<void> {
-    try {
-      const response = await getArticle({
-        page: 1,
-        limit: 9,
-        source: 'news',
-        language: '',
-        search: '',
-        category: 'All'
-      });
-
-      if (response.status === 200) {
-        setHotNews(response.news);
-      } else {
-        console.error('Failed to fetch articles:', response);
-      }
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    }
-  }
-
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       await fetchArticles();
-      await fetchHotNews();
     };
 
     fetchData().catch(error => {
@@ -120,7 +97,6 @@ export default function ArticleList(): React.ReactElement {
 
     setActiveCategory(newCategory);
   };
-  const hotNewsItemClass = 'mb-2 mx-48';
 
   const { t } = useTranslation();
 
@@ -144,7 +120,8 @@ export default function ArticleList(): React.ReactElement {
   //   }
   // };
 
-  const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
+  const categoryItemClass =
+    'py-1 rounded-full text-center w-full text-base font-poppins font-semibold px-2';
 
   const categories = [
     'All',
@@ -159,49 +136,43 @@ export default function ArticleList(): React.ReactElement {
     'World'
   ];
 
-  const customGradient = (
-    <>
-      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+  //     {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
+  //   </>
+  // );
 
-  const defaultHotNewsImage = '/assets/default-news.png';
-  function isImageUrlValid(url: string): boolean {
-    return url?.startsWith('http://') || url?.startsWith('https://');
-  }
   return (
     <>
       <PageGradient
-        customGradient={customGradient}
+        // customGradient={customGradient}
         className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
       >
-        <div className="flex z-10 flex-col lg:flex-row justify-between">
+        <div className="flex z-10 flex-col lg:flex-col justify-center text-center">
           <div className="flex flex-col">
             <div className="text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text7')}
             </div>
-            <div className=" text-md font-normal text-gray-500">
+            <div className=" text-base font-normal text-gray-500">
               {t('articleList.text5')}
             </div>
           </div>
-          <div className="lg:flex-col  justify-end mt-4 ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
+          <div className="lg:flex-col mb-2 justify-center items-center mt-4">
+            <div className="w-full lg:w-[50%] lg:mx-auto  bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between ">
               <input
-                type="search"
-                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
+                type="text"
+                className=" text-[#7C7C7C] border-none rounded-3xl  px-[8px] focus:outline-none  "
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}
               />
               <svg
-                className="mt-2 me-3"
+                className="mt-1 me-3"
                 width="18"
                 height="18"
                 viewBox="0 0 18 18"
@@ -214,31 +185,7 @@ export default function ArticleList(): React.ReactElement {
                 />
               </svg>
             </div>
-            <div className="lg:flex  justify-end mt-4 ">
-              <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')}
-              </div>
-              <select
-                className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-                aria-label="All"
-              >
-                <option value="option1">All</option>
-                <option value="option2">All</option>
-              </select>
-            </div>
           </div>
-        </div>
-        <div className="lg:hidden z-10 flex justify-end mt-5">
-          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')} :
-          </div>
-          <select
-            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-            aria-label="All"
-          >
-            <option value="option1">All</option>
-            <option value="option2">All</option>
-          </select>
         </div>
         <div className="lg:hidden mt-4 ">
           <Slider
@@ -262,7 +209,7 @@ export default function ArticleList(): React.ReactElement {
                 className={`${categoryItemClass} ${
                   activeCategory === category
                     ? 'bg-[#3AC4A0] text-white'
-                    : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                    : 'text-[#3AC4A0] bg-[#DCFCE4]'
                 }`}
                 onClick={() => {
                   updateCategory(category);
@@ -275,10 +222,10 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
           <button
-            className={`py-1 rounded-full text-md px-4 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('All');
@@ -287,10 +234,10 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'business'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('business');
@@ -299,10 +246,10 @@ export default function ArticleList(): React.ReactElement {
             Business
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'entertainment'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('entertainment');
@@ -312,10 +259,10 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'health'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('health');
@@ -324,10 +271,10 @@ export default function ArticleList(): React.ReactElement {
             Health
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'politics'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('politics');
@@ -336,10 +283,10 @@ export default function ArticleList(): React.ReactElement {
             Politics
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'science'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('science');
@@ -348,10 +295,10 @@ export default function ArticleList(): React.ReactElement {
             Science
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'sports'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('sports');
@@ -360,10 +307,10 @@ export default function ArticleList(): React.ReactElement {
             Sports
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'technology'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('technology');
@@ -372,10 +319,10 @@ export default function ArticleList(): React.ReactElement {
             Technology
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'top'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('top');
@@ -384,10 +331,10 @@ export default function ArticleList(): React.ReactElement {
             Top
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-poppins font-semibold mx-2 px-2 ${
               activeCategory === 'world'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('world');
@@ -396,70 +343,8 @@ export default function ArticleList(): React.ReactElement {
             World
           </button>
         </div>
-        <Slider
-          slidesToShow={2.4}
-          speed={500}
-          className="my-12"
-          initialSlide={0}
-          // slidesToScroll={1}
-          responsive={[
-            {
-              breakpoint: 1024,
-              settings: {
-                dots: true,
-                slidesToShow: 2.4,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                dots: true,
-                slidesToShow: 2.4,
-                slidesToScroll: 1
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                dots: true,
-                slidesToShow: 1
-              }
-            }
-          ]}
-        >
-          {hotNews.map((data, key) => (
-            <div
-              key={key}
-              className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
-            >
-              <Link href={`/seedspedia/news/${data?.id ?? 0}`}>
-                {isImageUrlValid(data.imageUrl) ? (
-                  <img
-                    src={data.imageUrl}
-                    alt={data.title}
-                    className="w-full rounded-xl h-[240px]"
-                  />
-                ) : (
-                  <img
-                    src={defaultHotNewsImage}
-                    alt={data.title}
-                    className="w-full rounded-xl h-[240px]"
-                  />
-                )}
-              </Link>
-              <div className="absolute top-0 right-5 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
-                Hot News
-              </div>
-              <h3 className="absolute bottom-0 left-0 right-0 bg-transparent text-white p-2 text-left">
-                {data.title}
-              </h3>
-            </div>
-          ))}
-        </Slider>
-
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
-          {articles.map(article => {
+          {articles?.map(article => {
             return <NewsCard key={article.id} articleId={article.id} />;
           })}
         </div>
@@ -473,7 +358,7 @@ export default function ArticleList(): React.ReactElement {
           />
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { Card, Typography } from '@material-tailwind/react';
 
 interface props {
   data: Transaction;
+  userInfo: any;
 }
 
 interface Transaction {
@@ -14,7 +15,7 @@ interface Transaction {
   timestamp: string;
 }
 
-const CardTransaction: React.FC<props> = ({ data }) => {
+const CardTransaction: React.FC<props> = ({ data, userInfo }) => {
   function formatDate(inputDateString: any): string {
     const date = new Date(inputDateString);
     const day = date.getUTCDate().toString().padStart(2, '0');
@@ -38,7 +39,7 @@ const CardTransaction: React.FC<props> = ({ data }) => {
             {data.title}
           </Typography>
           <Typography className="text-xs text-left font-normal text-[#7C7C7C]">
-            IDR {data.amount}
+            {userInfo?.preferredCurrency} {data.amount.toFixed(2)}
           </Typography>
           <Typography className="text-[12px] text-left italic text-[#BDBDBD]">
             ID: {data.circle_id}

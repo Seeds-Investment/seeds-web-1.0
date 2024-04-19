@@ -144,9 +144,13 @@ export default function ArticleDetailPage(): JSX.Element {
         <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           <div className="w-full">
             {isImageValid ? (
-              <img src={imageUrl} alt="Image" className="w-full" />
+              <img src={imageUrl} alt="Image" className="w-full rounded-2xl" />
             ) : (
-              <img src={defaultNews} alt="Image" className="w-full" />
+              <img
+                src={defaultNews}
+                alt="Image"
+                className="w-full rounded-2xl"
+              />
             )}
           </div>
           <div className="flex flex-col border-b-4 pb-5 border-[#7555DA]">
@@ -177,7 +181,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 >
                   <div key={data.id} className="w-full">
                     <Image
-                      className="object-cover "
+                      className="object-cover rounded-2xl "
                       src={data.image_url}
                       alt={data.name}
                       width={1420}

@@ -18,6 +18,7 @@ interface props {
   setIsJoined: any;
   dataCircle: any;
   setIsLoading: any;
+  userInfo: any;
 }
 
 const MainPostLayout: React.FC<props> = ({
@@ -33,14 +34,15 @@ const MainPostLayout: React.FC<props> = ({
   dataCircle,
   setIsLoading,
   open,
-  handleOpen
+  handleOpen,
+  userInfo
 }) => {
   return (
     <PageGradient defaultGradient className="overflow-hidden w-full">
       {/* main component */}
       <div className="flex justify-center">
         <div className="bg-transparent w-full">
-          <div className="flex md:gap-8 flex-col">
+          <div className="flex md:gap-8 flex-col px-2">
             <div className="relative">
               <CirclePostSection1
                 dataCircle={dataCircle}
@@ -51,6 +53,8 @@ const MainPostLayout: React.FC<props> = ({
                 handleEdit={handleEdit}
                 isJoined={isJoined}
                 setIsJoined={setIsJoined}
+                userInfo={userInfo}
+                circleId={circleId}
               />
               {dataCircle.type !== 'free' && !isJoined ? (
                 <div className="h-[80vh] rounded-xl bg-white mt-10 mb-10">
@@ -84,6 +88,7 @@ const MainPostLayout: React.FC<props> = ({
                       setIsLoading={setIsLoading}
                       circleId={circleId}
                       dataCircle={dataCircle}
+                      isJoined={isJoined}
                     />
                   )}
                 </>

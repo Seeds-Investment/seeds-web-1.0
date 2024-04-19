@@ -1,0 +1,395 @@
+import BallanceImage from '@/assets/ballanceCardBackground.png';
+import ArtPagination from '@/components/ArtPagination';
+import ImageBackground from '@/components/ImageBackground';
+import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import type { AssetsInterface } from '@/containers/homepage/trending/AssetsPage';
+import AssetPlayCard from '@/containers/homepage/trending/AssetsPlayCard';
+import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
+import { standartCurrency } from '@/helpers/currency';
+import { getMarketList } from '@/repository/market.repository';
+import { getPlayBallance } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { SearchMember } from 'public/assets/circle';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+export interface AssetItemType {
+  id: string;
+  seedsTicker: string;
+  realTicker: string;
+  logo: string;
+  name: string;
+  exchange: string;
+  exchangeCurrency: string;
+  listedCountry: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  assetType: string;
+  priceBar: {
+    timestamp: Date | string;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    vwap: number;
+    volume: number;
+  };
+}
+export interface AssetsListRoot {
+  AssetList: AssetsInterface[];
+  metadata: Metadata;
+}
+
+export interface Ballance {
+  balance: number;
+  portfolio: number;
+  total_sell: number;
+  total_buy: number;
+  currency: string;
+}
+interface Metadata {
+  current_page: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
+interface Filter {
+  search: string;
+  limit: number;
+  page: number;
+  currency: string;
+  type: string;
+}
+
+const initialFilter: Filter = {
+  search: '',
+  limit: 10,
+  page: 1,
+  type: 'ALL',
+  currency: ''
+};
+
+const initialMetadata: Metadata = {
+  current_page: 1,
+  limit: 10,
+  totalPage: 1,
+  totalRow: 10
+};
+
+const optionSortBy = [
+  { label: 'ALL', value: 'ALL' },
+  { label: 'STOCK', value: 'STOCK' },
+  { label: 'CRYPTO', value: 'CRYPTO' }
+];
+
+export default function PlayAssetsPage(): React.ReactElement {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const { playId } = router.query;
+  const [assets, setAssets] = useState<AssetItemType[]>([]);
+  const [ballance, setBallance] = useState<Ballance>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    currency: 'IDR'
+  });
+  const [searchInput, setSearchInput] = useState('');
+  const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [filter, setFilter] = useState<Filter>(initialFilter);
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  const fetchDataAssets = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const response = await getMarketList(filter);
+      if (response.result === null) {
+        setAssets([]);
+      } else {
+        setAssets(response.marketAssetList);
+        setMetadata(response.metadata);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(playId as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (playId !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
+    }
+  }, [playId, userInfo]);
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      setFilter(prevState => ({
+        ...prevState,
+        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
+      }));
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (userInfo !== undefined && filter.currency !== '') {
+      const fetchData = async (): Promise<void> => {
+        await fetchDataAssets();
+      };
+
+      fetchData().catch(error => {
+        console.error('Error in fetchData:', error);
+      });
+    }
+  }, [filter, userInfo]);
+
+  useEffect(() => {
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
+    setDebounceTimer(
+      setTimeout((): void => {
+        setFilter(prevParams => ({
+          ...prevParams,
+          search: searchInput,
+          page: 1
+        }));
+      }, 500)
+    );
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (searchInput.length === 0 && filter.currency !== '') {
+      void fetchDataAssets();
+    }
+  }, [searchInput.length]);
+
+  return (
+    <PageGradient defaultGradient className="w-full">
+      <div className="sm:mx-0 mx-4 bg-white p-5 rounded-xl">
+        <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
+          <div className="flex flex-col">
+            <div className="sm:text-3xl text-2xl font-semibold bg-clip-text text-black">
+              {t('playSimulation.assetList')}
+            </div>
+          </div>
+        </div>
+        <ImageBackground className="rounded-2xl" imageUrl={BallanceImage.src}>
+          <div className="p-5">
+            <Typography className="text-white font-poppins mb-2">
+              {t('playSimulation.seedsCash')}
+            </Typography>
+            <Typography className="text-white font-poppins text-xl font-semibold">
+              {`${ballance.currency} ${standartCurrency(
+                ballance.balance + ballance.portfolio
+              ).replace('Rp', '')}`}
+            </Typography>
+          </div>
+        </ImageBackground>
+        <div className="flex flex-col pt-4">
+          <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
+            <Typography className="text-[#27A590] font-poppins font-semibold">
+              {t('playSimulation.balance')}
+            </Typography>
+            <div
+              className="flex gap-4 items-center cursor-pointer"
+              onClick={() => {
+                router
+                  .push(`/homepage/cash-balance/${playId as string}`)
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              <Typography className="text-black font-poppins text-base font-semibold">
+                {`${ballance.currency} ${standartCurrency(
+                  ballance.balance
+                ).replace('Rp', '')}`}
+              </Typography>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
+                  fill="#27A590"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="flex justify-between border-b border-neutral-ultrasoft p-3">
+            <Typography className="text-[#27A590] font-poppins font-semibold">
+              {t('playSimulation.portfolio')}
+            </Typography>
+            <div
+              className="flex gap-4 items-center cursor-pointer"
+              onClick={() => {
+                router
+                  .push(`/homepage/portfolio/${playId as string}`)
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              <Typography className="text-black font-poppins text-base font-semibold">
+                {`${ballance.currency} ${standartCurrency(
+                  ballance.portfolio
+                ).replace('Rp', '')}`}
+              </Typography>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.99121 17.2509L9.59245 19.001L16.0011 12.0002L9.59245 4.99941L7.99121 6.75001L12.797 12.0003L7.99121 17.2509Z"
+                  fill="#27A590"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center pt-4">
+          <div className="flex justify-start">
+            <div className="flex justify-center flex-col relative left-8">
+              <Image
+                alt="Search"
+                src={SearchMember}
+                className="h-6 w-6 object-cover"
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+              aria-describedby="button-addon2"
+              onChange={e => {
+                setSearchInput(e.target.value);
+              }}
+              className="h-10 pl-10 w-full xl:min-w-[400px] focus:outline-none focus:outline focus:outline-seeds-green placeholder:text-neutral-soft rounded-xl border border-neutral-ultrasoft"
+            />
+          </div>
+        </div>
+        <div className="lg:flex  justify-end mt-4 ">
+          <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+            {t('articleList.text3')}
+          </div>
+          <select
+            className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
+            aria-label="All"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setFilter(prevState => ({
+                ...prevState,
+                type: e.target.value
+              }));
+            }}
+          >
+            {optionSortBy?.map((data, idx) => (
+              <option key={idx} value={data.value}>
+                {data.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="lg:hidden z-10 flex justify-end mt-5">
+          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
+            {t('articleList.text3')}
+          </div>
+          <select
+            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
+            aria-label="All"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setFilter(prevState => ({
+                ...prevState,
+                type: e.target.value
+              }));
+            }}
+          >
+            {optionSortBy?.map((data, idx) => (
+              <option key={idx} value={data.value}>
+                {data.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-wrap mt-6">
+          {!isLoading ? (
+            assets?.length !== 0 ? (
+              assets?.map((data: AssetItemType, idx: number) => {
+                return (
+                  <div key={idx} className="w-full mb-5">
+                    <AssetPlayCard
+                      data={data}
+                      currency={userInfo?.preferredCurrency}
+                      isClick={true}
+                      playId={playId as string}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
+                Data Not Found
+              </Typography>
+            )
+          ) : (
+            Array.from(
+              { length: metadata.totalRow === 0 ? 1 : metadata.totalRow },
+              (_, idx) => <AssetTrendingCardSkeleton key={idx} />
+            )
+          )}
+        </div>
+
+        <div className="flex justify-center mx-auto my-4">
+          <ArtPagination
+            currentPage={filter.page}
+            totalPages={metadata.totalPage}
+            onPageChange={page => {
+              setFilter({ ...filter, page });
+            }}
+          />
+        </div>
+      </div>
+    </PageGradient>
+  );
+}

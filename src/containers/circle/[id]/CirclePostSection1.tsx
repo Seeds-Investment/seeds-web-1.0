@@ -2,6 +2,7 @@ import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
 import Loading from '@/components/popup/Loading';
+import TrackerEvent from '@/helpers/GTM';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,
@@ -19,6 +20,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 interface props {
   setIsLoading: any;
   dataCircle: any;
@@ -28,6 +30,8 @@ interface props {
   handleEdit: any;
   isJoined: boolean;
   setIsJoined: any;
+  userInfo: any;
+  circleId: any;
 }
 
 const CirclePostSection1: React.FC<props> = ({
@@ -37,7 +41,9 @@ const CirclePostSection1: React.FC<props> = ({
   openModalReport,
   handleEdit,
   isJoined,
-  setIsJoined
+  setIsJoined,
+  userInfo,
+  circleId
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -72,7 +78,7 @@ const CirclePostSection1: React.FC<props> = ({
   return (
     <div className="flex flex-col bg-white rounded-xl">
       {isLoading && <Loading />}
-      <div className="flex flex-col rounded-b-3xl px-14 py-8">
+      <div className="flex flex-col rounded-b-3xl md:px-14 pt-4">
         <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
           <Image alt="pencil-edit" src={pencil} className="h-[13px] w-[14px]" />
         </button>
@@ -163,7 +169,7 @@ const CirclePostSection1: React.FC<props> = ({
               </h1>
             </div>
             {/* avatar and members section */}
-            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-8">
+            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-4">
               <div className="flex justify-start">
                 <img
                   alt="bg-avatar-sm"
@@ -213,7 +219,7 @@ const CirclePostSection1: React.FC<props> = ({
                       </h1>
                     </div>
                     <h1 className="font-poppins text-seeds-purple">
-                      IDR {dataCircle.premium_fee}
+                      {userInfo?.preferredCurrency} {dataCircle.premium_fee}
                     </h1>
                   </div>
                 </div>
@@ -225,7 +231,15 @@ const CirclePostSection1: React.FC<props> = ({
                   </button>
                 ) : (
                   <button
-                    onClick={handleJoin}
+                    onClick={async () => {
+                      await handleJoin();
+                      TrackerEvent({
+                        event: `Seeds_btn_join_circle_web`,
+                        userId: userInfo?.id,
+                        pageName: 'circle_detail_join',
+                        circleId: circleId
+                      });
+                    }}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
                   >
                     {t('circleDetail.statusNotJoined')}

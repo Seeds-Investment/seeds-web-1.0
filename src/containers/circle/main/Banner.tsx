@@ -8,12 +8,29 @@ import {
   WithdrawCircleIcon
 } from '@/constants/assets/icons';
 import { getCircleBalance } from '@/repository/circle.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const BannerCircleList = (): JSX.Element => {
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [balance, setBalance] = useState(0);
   const router = useRouter();
@@ -50,7 +67,7 @@ const BannerCircleList = (): JSX.Element => {
           alt={CircleLineLight.alt}
           height={0}
           width={0}
-          className="absolute bottom-0 left-0 w-[8rem] h-[8rem]
+          className="absolute bottom-0 left-0 w-[6rem] h-[6rem]
                             md:w-[9rem] md:h-[9rem]"
         />
 
@@ -121,7 +138,9 @@ const BannerCircleList = (): JSX.Element => {
           >
             {isLoadingBalance
               ? 'Loading...'
-              : `IDR ${new Intl.NumberFormat().format(balance)}`}
+              : `${
+                  userInfo?.preferredCurrency as string
+                } ${new Intl.NumberFormat().format(balance)}`}
           </Typography>
           <div className="flex flex-row gap-7">
             <div className="">

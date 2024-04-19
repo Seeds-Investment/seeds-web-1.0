@@ -1,15 +1,16 @@
 import CCard from '@/components/CCard';
-import { formatNumber } from '@/helpers/currency';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   data: any;
 }
 
 const Card2: React.FC<props> = ({ data }) => {
+  const { t } = useTranslation();
   return (
     <CCard className="flex w-full md:w-2/3 p-2 md:mt-5 md:rounded-lg border-none rounded-none">
       <p className="text-sm text-center items-center text-[#262626]">
-        Remaining Time :
+        {t('playSimulation.remainingTime')} :
       </p>
       <p className="text-sm font-semibold text-center items-center text-[#424242]">
         03d : 12h: 60m
@@ -18,21 +19,27 @@ const Card2: React.FC<props> = ({ data }) => {
       <div className="flex flex-row">
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice?.open)}
+            {new Intl.NumberFormat().format(data?.lastPrice?.open)}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">Open</p>
+          <p className="text-base font-light text-[#7C7C7C]">
+            {t('playSimulation.open')}
+          </p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice?.high)}
+            {new Intl.NumberFormat().format(data?.lastPrice?.high)}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">Day High</p>
+          <p className="text-base font-light text-[#7C7C7C]">
+            {t('playSimulation.dayHigh')}
+          </p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
           <p className="text-base font-semibold text-black">
-            {formatNumber(data?.lastPrice?.low)}
+            {new Intl.NumberFormat().format(data?.lastPrice?.low)}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">Day Low</p>
+          <p className="text-base font-light text-[#7C7C7C]">
+            {t('playSimulation.dayLow')}
+          </p>
         </div>
       </div>
     </CCard>

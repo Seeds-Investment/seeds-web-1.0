@@ -23,6 +23,7 @@ const getGradient = (ctx: any, chartArea: any): any => {
 const LineChart: React.FC<LineChartProps> = ({ data }) => {
   const labelDummy = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
   const dataDummy = [0, 0, 0, 0, 0, 0];
+  console.log(data);
 
   const dataChart = {
     labels: data?.x ?? labelDummy,
@@ -58,11 +59,11 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
         },
         ticks: {
           font: {
-            family: 'Arial', // Ganti dengan nama font yang diinginkan
-            size: 15, // Ukuran font
-            weight: 'bold' // Ketebalan font
+            family: 'Arial',
+            size: 15
+            // weight: 'bold'
           },
-          color: '#7C7C7C', // Warna teks label
+          color: '#7C7C7C',
           backgroundColor: '#7C7C7C',
           backdropPadding: 30,
           padding: 20,
@@ -74,7 +75,8 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
           display: false
         },
         ticks: {
-          callback: (label: any) => formatNumber(label)
+          callback: (label: any) =>
+            label === 0 || label < 1 ? label : formatNumber(label)
         }
       }
     }

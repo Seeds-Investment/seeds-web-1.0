@@ -13,7 +13,7 @@ import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Pending } from 'public/assets/circle';
+import { Pending, receiptXIcon } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 
 interface props {
@@ -52,11 +52,14 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const id = router.query.orderId as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [virtualAccountInfo, setVirtualAccountInfo] = useState<any>();
+  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
+  const [qRisList, setQRisList] = useState<any>([]);
+  console.log(_, orderDetail?.transactionStatus);
+  const bigText = 'text-2xl font-semibold text-white text-center';
+  const normalText = 'text-sm font-normal text-white text-center';
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -74,7 +77,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     try {
       setIsLoading(true);
       const data = await getPaymentList();
-      setVirtualAccountList(data.type_va);
+      setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
       console.error('Error fetching Payment List', error.message);
@@ -96,31 +99,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     }
   };
 
-  function formatDateString(dateString: string): string {
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-    const hour = dateString.substring(8, 10);
-    const minute = dateString.substring(10, 12);
-
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    const formattedMonth = months[parseInt(month, 10) - 1];
-
-    return `${day} ${formattedMonth},${hour}:${minute}`;
-  }
-
   function parseStrongText(text: string): any {
     const regex = /"(.*?)"/g;
     const splitText = text.split(regex);
@@ -138,6 +116,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     });
   }
 
+  const validationError: boolean =
+    orderDetail?.transactionStatus !== 'PENDING' &&
+    orderDetail?.transactionStatus !== 'CREATED' &&
+    orderDetail?.transactionStatus !== 'SUCCEEDED';
+
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
@@ -147,12 +130,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   }, [id, orderDetail?.howToPayApi]);
 
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
-    (el: undefined | PaymentList): any => {
-      return el?.payment_method === orderDetail?.paymentMethod;
-    }
-  );
-
-  const paymentSelectedVA: PaymentList[] = virtualAccountList.filter(
     (el: undefined | PaymentList): any => {
       return el?.payment_method === orderDetail?.paymentMethod;
     }
@@ -190,7 +167,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.vaNumber !== undefined ? (
+                {(orderDetail?.transactionStatus === 'PENDING' ||
+                  orderDetail?.transactionStatus === 'CREATED') && (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -201,7 +179,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       />
                     </div>
                   </div>
-                ) : (
+                )}
+                {orderDetail?.transactionStatus === 'SUCCEEDED' && (
                   <Image
                     src={CeklisCircle.src}
                     alt="AVATAR"
@@ -209,34 +188,68 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     height={80}
                   />
                 )}
+                {validationError && (
+                  <Image
+                    src={receiptXIcon.src}
+                    alt="AVATAR"
+                    width={80}
+                    height={80}
+                  />
+                )}
               </div>
-              <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.vaNumber !== undefined
-                  ? 'Pending Paid Membership'
-                  : 'Successful'}
+              <Typography
+                className={
+                  orderDetail?.transactionStatus === 'PENDING' ||
+                  orderDetail?.transactionStatus === 'CREATED'
+                    ? normalText
+                    : bigText
+                }
+              >
+                {(orderDetail?.transactionStatus === 'PENDING' ||
+                  orderDetail?.transactionStatus === 'CREATED') &&
+                  'Pending Paid Membership'}
+                {orderDetail?.transactionStatus === 'SUCCEEDED' && 'Successful'}
+                {validationError && 'Payment Failed'}
               </Typography>
-              <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.vaNumber !== undefined
-                  ? `${orderDetail?.currency} ${formatCurrency(
-                      orderDetail?.grossAmount
-                    )}`
-                  : 'Successful'}
+              <Typography
+                className={
+                  orderDetail?.transactionStatus === 'PENDING' ||
+                  orderDetail?.transactionStatus === 'CREATED'
+                    ? bigText
+                    : normalText
+                }
+              >
+                {(orderDetail?.transactionStatus === 'PENDING' ||
+                  orderDetail?.transactionStatus === 'CREATED') &&
+                  `${orderDetail?.currency} ${formatCurrency(
+                    orderDetail?.grossAmount
+                  )}`}
+                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
+                  'Your premium circle payment has been successfully processed'}
+                {validationError &&
+                  'We can’t process your payment, Check your internet connection and try again.'}
               </Typography>
-              <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.vaNumber !== undefined &&
-                virtualAccountInfo !== undefined
-                  ? `Pay before ${formatDateString(
-                      virtualAccountInfo.expired_date
-                    )}`
-                  : 'Your recurring has been saved!'}
-              </Typography>
-
               <Card className="p-5 mt-8 bg-white w-full">
+                {validationError && (
+                  <Typography className="text-xs font-semibold text-[#FF3838] text-center">
+                    Failed payment circle premium
+                  </Typography>
+                )}
                 <Typography className="text-sm font-semibold text-[#BDBDBD] text-center">
                   {orderDetail?.vaNumber !== undefined
                     ? 'Your Virtual Account Number'
                     : 'Payment Method'}
                 </Typography>
+                {orderDetail?.paymentMethod === 'OTHER_QRIS' && (
+                  <div className="flex items-center justify-center mb-9 mt-3">
+                    <Image
+                      src={qRisList[0]?.logo_url}
+                      alt="AVATAR"
+                      width={90}
+                      height={90}
+                    />
+                  </div>
+                )}
                 {paymentSelectedEWallet.length > 0 && (
                   <div className="flex items-center justify-center mb-9 mt-3">
                     <Image
@@ -247,7 +260,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     />
                   </div>
                 )}
-                {paymentSelectedVA.length > 0 && (
+                {/* {paymentSelectedVA.length > 0 && (
                   <div className="flex items-center justify-around mb-9 mt-3">
                     <Image
                       src={paymentSelectedVA[0].logo_url}
@@ -260,7 +273,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       {orderDetail?.vaNumber}
                     </Typography>
                   </div>
-                )}
+                )} */}
                 <hr className="border-t-2 border-dashed" />
                 <div className="flex justify-between relative bottom-3 z-50">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
@@ -286,8 +299,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       `${orderDetail.currency} ${formatCurrency(
                         paymentSelectedEWallet.length > 0
                           ? paymentSelectedEWallet[0].admin_fee
-                          : paymentSelectedVA.length > 0
-                          ? paymentSelectedVA[0].admin_fee
                           : 0
                       )}`}
                   </Typography>
@@ -303,8 +314,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                         orderDetail.grossAmount +
                           (paymentSelectedEWallet.length > 0
                             ? paymentSelectedEWallet[0].admin_fee
-                            : paymentSelectedVA.length > 0
-                            ? paymentSelectedVA[0].admin_fee
                             : 0)
                       )}`}
                   </Typography>

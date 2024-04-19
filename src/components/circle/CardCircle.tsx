@@ -1,4 +1,6 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
+import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
 import {
   DocumentTextIcon,
   HandThumbUpIcon,
@@ -7,6 +9,7 @@ import {
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 interface Circle {
   id: string;
@@ -28,10 +31,12 @@ interface Circle {
 
 export default function CardCircle({
   data,
-  cover
+  cover,
+  userInfo
 }: {
   data: Circle;
   cover: string;
+  userInfo: any;
 }): React.ReactElement {
   const router = useRouter();
   return (
@@ -42,8 +47,16 @@ export default function CardCircle({
       {data?.cover !== undefined && (
         <div
           onClick={() => {
-            router.push(`/connect/post/${data.id}`).catch(error => {
-              console.log(error);
+            router
+              .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
+              .catch(error => {
+                toast(error, { type: 'error' });
+              });
+            TrackerEvent({
+              event: `Seeds_view_circle_detail_page_web`,
+              userId: userInfo?.id,
+              pageName: 'circle_detail_web',
+              circleId: data.id
             });
           }}
           className="cursor-pointer"

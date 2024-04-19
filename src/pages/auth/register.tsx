@@ -1,113 +1,163 @@
-import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
-import AuthLayout from '@/components/layouts/AuthLayout';
-import ChooseAvatarPage from '@/containers/register/ChooseAvatarPage';
-import ConfigureSeedsUserPage from '@/containers/register/ConfigureSeedsUserPage';
-import CreatePasswordPage from '@/containers/register/CreatePasswordPage';
-import PersonalInfoPage from '@/containers/register/PersonalInfoPage';
-import SuccessRegisterPage from '@/containers/register/SuccessRegisterPage';
-import ValidateOTPPage from '@/containers/register/ValidateOTPPage';
-import type { IRegisterFormdata } from '@/utils/interfaces/form.interfaces';
-import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
+import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
+import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
+import AuthOTP from '@/components/auth/AuthOTP';
+import AuthPersonalData from '@/components/auth/AuthPersonalData';
+import AuthRegister from '@/components/auth/AuthRegister';
+import countries from '@/constants/countries.json';
+import AuthLayout from '@/containers/auth/AuthLayout';
+import DeviceDetector from 'device-detector-js';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-export interface IRegisterPaging {
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  formdata: IRegisterFormdata;
-  setFormdata: Dispatch<SetStateAction<IRegisterFormdata>>;
+interface LoginFormData {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
 }
 
-const RegisterPage = (): JSX.Element => {
-  const [page, setPage] = useState<number>(0);
-  const [formdata, setFormdata] = useState<IRegisterFormdata>({
-    countryCode: '62',
+const Register: React.FC = () => {
+  const deviceDetector = new DeviceDetector();
+  const { data } = useSession();
+  const [select, setSelect] = useState(0);
+  const [formData, setFormData] = useState({
     phoneNumber: '',
-    email: '',
-    birthdate: '',
+    birthDate: '',
     name: '',
     seedsTag: '',
-    referralCode: '',
-    otp: '',
+    refCode: '',
     password: '',
-    rePassword: '',
-    avatar: '',
-    providers: {
+    provider: {
       provider: '',
       identifier: ''
     }
   });
+  const [loginForm, setLoginForm] = useState<LoginFormData>({
+    phoneNumber: '',
+    password: '',
+    platform: '',
+    os_name: ''
+  });
+  const [method, setMethod] = useState('sms');
+  const [countdown, setCountdown] = useState(0);
+  const getOTP = {
+    method,
+    phoneNumber: formData.phoneNumber
+  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
 
-  return (
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdown]);
+  useEffect(() => {
+    if (data !== null) {
+      setFormData({
+        ...formData,
+        birthDate: `${
+          data !== null
+            ? `${new Date(
+                new Date().getFullYear() - 17,
+                new Date().getMonth(),
+                new Date().getDate()
+              ).toISOString()}`
+            : ''
+        }`,
+        name: data?.user?.name ?? '',
+        seedsTag: `${
+          data !== null
+            ? `${data?.user?.name?.split(' ').join('') as string}${Math.round(
+                Math.random() * 1000
+              )}`
+            : ''
+        }`,
+        provider: {
+          provider: data?.provider ?? '',
+          identifier: data?.accessToken ?? ''
+        }
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setLoginForm({
+      ...loginForm,
+      platform: `${
+        deviceDetector.parse(navigator.userAgent).device?.type as string
+      }_web`,
+      os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
+    });
+  }, []);
+  const element = (
     <>
-      <GoogleAnalyticsScript />
-      <div className="md:px-8 px-4 mt-2 md:mt-4">
-        {(() => {
-          switch (page) {
-            case 0:
-              return (
-                <PersonalInfoPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-            case 1:
-              return (
-                <ConfigureSeedsUserPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-            case 2:
-              return (
-                <ValidateOTPPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-            case 3:
-              return (
-                <CreatePasswordPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-            case 4:
-              return (
-                <ChooseAvatarPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-            case 5:
-              return (
-                <SuccessRegisterPage
-                  page={page}
-                  setPage={setPage}
-                  formdata={formdata}
-                  setFormdata={setFormdata}
-                />
-              );
-          }
-        })()}
-      </div>
+      <Image
+        src={SeedyAuthLogin}
+        alt="SeedyAuthLogin"
+        className={`${
+          select === 0 || select === 2 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedyWAOTP}
+        alt="SeedyWAOTP"
+        className={`${
+          select === 1 && method === 'whatsapp' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedySMSOTP}
+        alt="SeedySMSOTP"
+        className={`${
+          select === 1 && method === 'sms' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
     </>
   );
-};
-
-RegisterPage.getLayout = function getLayout(page: JSX.Element) {
-  return (
-    <AuthLayout titleKey="registerPage.title.personalInfo">{page}</AuthLayout>
+  const form = (
+    <>
+      <AuthRegister
+        className={select === 0 ? 'flex' : 'hidden'}
+        setSelect={setSelect}
+        formData={formData}
+        setFormData={setFormData}
+        setCountdown={setCountdown}
+        countries={countries}
+        method={method}
+        setLoginForm={setLoginForm}
+        loginForm={loginForm}
+      />
+      <AuthOTP
+        select={select}
+        number={formData.phoneNumber}
+        method={method}
+        setMethod={setMethod}
+        countdown={countdown}
+        setCountdown={setCountdown}
+        getOTP={getOTP}
+        setSelect={setSelect}
+        image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
+        formData={formData}
+        setFormData={setFormData}
+      />
+      <AuthPersonalData
+        className={select === 2 ? 'flex' : 'hidden'}
+        setFormData={setFormData}
+        formData={formData}
+        setSelect={setSelect}
+        loginForm={loginForm}
+      />
+    </>
   );
+  return <AuthLayout elementChild={element} formChild={form} />;
 };
 
-export default RegisterPage;
+export default Register;

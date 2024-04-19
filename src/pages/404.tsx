@@ -1,12 +1,16 @@
 'use client';
 import error from '@/assets/error-page/error.svg';
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
 export default function Custom404(): any {
   const { t } = useTranslation();
+  const router = useRouter();
   const customGradient = (
     <>
       <span className="-z-10 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
@@ -18,7 +22,7 @@ export default function Custom404(): any {
   );
   return (
     <PageGradient
-      className="p-5 absolute overflow-hidden w-full"
+      className="py-5 absolute overflow-hidden w-full"
       customGradient={customGradient}
     >
       <div
@@ -36,19 +40,25 @@ export default function Custom404(): any {
           <Button
             className="text-xs font-semibold bg-seeds-purple rounded-full mr-4
                                     lg:text-base"
+            onClick={() => {
+              void router.push('/');
+            }}
           >
             {t('errorPage.button1')}
           </Button>
-          <Button
-            className="text-xs font-semibold text-[#7555DA] outline outline-offset-0 outline-[#7555DA] bg-inherit rounded-full
+          <Link href={'https://api.whatsapp.com/send?phone=628118883519'}>
+            <Button
+              className="text-xs font-semibold text-[#7555DA] outline outline-offset-0 outline-[#7555DA] bg-inherit rounded-full
                                     lg:text-base"
-          >
-            {t('errorPage.button2')}
-          </Button>
+            >
+              {t('errorPage.button2')}
+            </Button>
+          </Link>
         </div>
 
         <Image alt="" src={error} className="mt-10 h-full w-full" />
       </div>
+      <Footer />
     </PageGradient>
   );
 }

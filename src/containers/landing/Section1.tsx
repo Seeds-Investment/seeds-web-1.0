@@ -8,25 +8,15 @@ import s1Line2 from '@/assets/landing-page/s1-line-2.png';
 import vector2 from '@/assets/landing-page/vector-faq-2.png';
 import vector3 from '@/assets/landing-page/vector-faq-3.png';
 import vector from '@/assets/landing-page/vector.png';
-import { getTrendingAssets } from '@/repository/asset.repository';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import phone from 'public/assets/rectangle1.png';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-const fetch = async (): Promise<void> => {
-  const res = await getTrendingAssets();
-  console.log(res);
-};
 
 export default function Section1(): React.ReactElement {
   const { t } = useTranslation();
   const router = useRouter();
-
-  useEffect(() => {
-    void fetch();
-  }, []);
 
   return (
     <div className="min-w-full w-full sm:w-screen h-auto cursor-default">

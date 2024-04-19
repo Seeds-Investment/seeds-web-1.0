@@ -3,6 +3,23 @@ export default {
   second: 'second',
   seconds: 'seconds',
   greeting: 'Hello, {{name}}',
+  header: { join: 'Join Us' },
+  footer: {
+    description:
+      'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
+    download: 'Download Our App',
+    regist: 'Registered in',
+    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
+
+    support: { title: 'Support' },
+    legal: {
+      title: 'Legal',
+      list1: 'Terms & Conditions',
+      list2: 'Privacy Policy',
+      list3: 'Social Guidelines'
+    },
+    contactUs: { title: 'Contact Us' }
+  },
   landing: {
     section1: {
       text1: '#PlaywithSeeds',
@@ -15,7 +32,7 @@ export default {
       text2: 'Learn everything about Finance with friends',
       text3a: 'Play',
       text3b:
-        'Compete with your friend in virtual trading. Learn everything about trading stocks, crypto, and commodities with zero risk!',
+        'Trade virtually with a friend using risk-free virtual money and test your financial knowledge with our exciting quizzes.',
       text3c: 'Learn',
       text3d:
         'Learn everything about the finance world with seeds. Together with friends and many professionals. ',
@@ -161,7 +178,8 @@ export default {
     editImage: 'Edit Image',
     linkedAccount: 'Linked Account',
     changePin: 'Change PIN',
-    telephoneNumber: 'Telephone Number'
+    telephoneNumber: 'Telephone Number',
+    email: 'Email'
   },
   input: {
     label: {
@@ -221,6 +239,7 @@ export default {
       confirm: 'Confirm',
       tryAgain: 'Try Again',
       next: 'Next',
+      save: 'Save',
       done: 'Done',
       deleteAccount: 'Delete Account'
     }
@@ -254,7 +273,7 @@ export default {
       title: {
         1: 'What is Seeds?',
         2: 'What investment products are available at Seeds?',
-        3: 'How can I access seeds?',
+        3: 'How can I access Seeds?',
         4: 'How safe is it to invest in Seeds?',
         5: 'I want to ask more about Seeds products and services'
       },
@@ -610,15 +629,120 @@ export default {
     keepMeLoggedIn: 'Keep me logged in',
     forgotPassword: 'Forgot Password'
   },
+  authCarousel: {
+    title: {
+      1: 'Welcome to Seeds!',
+      2: 'Explore',
+      3: 'Game On!',
+      4: 'Connect'
+    },
+    subtitle: {
+      1: 'Embark on your investment journey with friends and watch your seeds grow.',
+      2: 'Learn the ropes of investing and finance from seasoned experts in the field.',
+      3: 'Participate in thrilling tournaments and win exciting cash rewards.',
+      4: 'Meet and chat with like-minded individuals who share your passion for financial growth.'
+    }
+  },
+  authBoarding: {
+    guest1: 'Login',
+    guest2: ' as ',
+    guest3: 'Guest',
+    term: 'By clicking sign up, you agree to Seeds',
+    term2: 'Terms and Conditions',
+    login: 'Login',
+    signup: 'Sign up'
+  },
+  authLogin: {
+    title1: 'Let’s Input!',
+    title2: 'Phone number & password',
+    phone: 'Phone Number',
+    password: 'Password',
+    passwordPlaceholder: 'Please input your password',
+    forgotPass: 'Forgot Password?',
+    login: 'Login',
+    validation: {
+      login: 'Your phone number or password is wrong',
+      blank: 'You must fill in this field',
+      number: 'Oops, Your number already registered',
+      password: 'Password must contain 8 digit with upper case and lower case'
+    },
+    next: 'Next',
+    SSO: 'Your account has been registered',
+    unSSO: 'Account not registered'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Input OTP Code',
+      title2: 'We have sent the OTP code via ',
+      title3: ' to',
+      resend: 'Resend OTP Code',
+      otherMethod1: `Didn't get the code? `,
+      otherMethod3: 'Try',
+      otherMethod4: ' sending it by',
+      validation: 'Incorrect OTP. Please Try again.'
+    },
+    authPersonalData: {
+      title: 'Your Personal Data',
+      name: 'Your Name',
+      namePlaceholder: 'Enter your name',
+      dob: 'Date of Birth',
+      day: 'DD',
+      month: 'MM',
+      year: 'YYYY',
+      validation: {
+        seedsTag: 'Seeds Tag alredy used',
+        regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
+        dob: 'Minimun  age 12 Years old'
+      }
+    },
+    authRef: {
+      title1: 'Input Referral Code',
+      title2: 'To get exciting prizes',
+      referral: 'Referral Code',
+      referralPlaceholder: 'Input referral code',
+      skip: 'Skip',
+      confirm: 'Confirm',
+      validation: 'Invalid referral code'
+    }
+  },
+  authForgotPass: {
+    title1: 'Input Phone Number',
+    title2: 'To get OTP Code',
+    title3: 'Create New Password',
+    title4: 'Let’s create a secure password',
+    validation: {
+      number: 'Oops, your phone number not registered',
+      password:
+        'Oops, password must be 8 characters long and have both uppercase and lowercase letters.',
+      match: 'Oops, password doesn’t match'
+    },
+    newPassword: {
+      label: 'Create a New Password',
+      placeholder: 'Please create your password'
+    },
+    matchPassword: {
+      label: 'Confirm New Password',
+      placeholder: 'Please confirm your password'
+    },
+
+    information:
+      'Password must be 8 characters long and have both uppercase and lowercase letters.',
+    modal: {
+      title1: 'Success',
+      title2: 'The new password has been successfully created.',
+      title3: 'Please check your email'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Phone number is required, please enter your phone number!',
     wrongPhoneNumber:
       'The phone number you entered is incorrect. Please try again',
     passwordEmpty: 'The password is required, please enter your password!',
-    wrongPassword: 'The password is incorrect'
+    wrongPassword: 'The password is incorrect',
+    invalid: 'Invalid Phone Number or Password'
   },
-  or: 'or',
+  or: 'Or',
   registerPage: {
     title: {
       personalInfo: 'Register',
@@ -665,7 +789,97 @@ export default {
     removeButton: 'Remove',
     cancelButton: 'Cancel'
   },
+
   setting: {
+    setting: {
+      title: 'Settings',
+      accountInfo: {
+        title: 'Account Information',
+        name: 'Name',
+        edit: 'Edit Image',
+        DoB: 'Date of Birth'
+      },
+      accountSecure: {
+        title: 'Account Security Center',
+        titleCard1: 'Security Setting',
+        label1Card1: 'Phone Number',
+        blank1Card1: 'add your phone number',
+        label2Card1: 'Password',
+        blank2Card1: 'Create a new password',
+        label3Card1: 'Email',
+        blank3Card1: 'add your email',
+        titleCard2: 'Associated Account',
+        titleCard3: 'Delete Account',
+        descriptionCard3:
+          'Deleting your account will delete all of your information.',
+        confirm: 'Confirm',
+        titleMail1: `Let's, add your Email!`,
+        titleMail2: 'For security purposes verify add your email first',
+        titleChangeMail1: `Let's, Change your Email!`,
+        titleChangeMail2: 'Enter your new email',
+        placeholderMail: 'Input your email',
+        titleNumber1: `Let's, Add Phone Number!`,
+        titleNumber2: 'Enter your new phone number',
+        titleChangeNumber1: `Let's, Change Phone Number!`,
+        titleChangeNumber2: 'Enter your new phone number',
+        validationNumber1: 'Oops, Phone Number already used',
+        validationNumber2: 'Your phone number contains at least 6 digits',
+        validationEmail: 'Oops,  Your email already registered',
+        prevent: {
+          title: 'Account Security Update',
+          password: 'Please bind your account with a phone number first',
+          unlink:
+            'Please bind your account with a phone number and password first'
+        },
+        delete: {
+          title1: 'Are you sure to delete this account?',
+          title2: `If you select ‘yes’, your account data will be deleted in 30 days`,
+          yes: 'Yes',
+          no: 'No'
+        },
+        modalUnlink: {
+          title1: 'Input Your Password',
+          title2: 'For security purposes confirmation your password',
+          validation: 'Your password is wrong'
+        },
+        settingPassword: {
+          title1: 'Create New Password',
+          title2: 'Let’s create a secure password',
+          title3: 'Input New Password',
+          title4: 'Let’s Change Password',
+          createPassword: {
+            label: 'Create a New Password',
+            placeholder: 'Please create password'
+          },
+
+          matchPassword: {
+            label: 'Confirm New Password',
+            placeholder: 'Please confirm password'
+          },
+          newPassword: {
+            label: 'New Password',
+            placeholder: 'Please create password',
+            validation:
+              'Password must contain 8 digit with upper case and lower case'
+          },
+          oldPassword: {
+            label: 'Current Password',
+            placeholder: 'Please input password',
+            validation: 'Oops, current password is wrong'
+          }
+        }
+      },
+      createPin: { title: 'Create PIN' },
+      changePin: { title: 'Change PIN' },
+      language: { title: 'Language' },
+      currency: { title: 'Currency' },
+      block: { title: 'Block List' },
+      legal: { title: 'Legal' },
+      faq: { title: 'FAQ & Help' },
+      rate: { title: 'Rate Apps' },
+      chat: { title: 'Chat With Seedy' },
+      logout: { title: 'Log Out' }
+    },
     changeAvatar: {
       title: 'Gallery',
       content: {
@@ -679,19 +893,26 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Open in the Seeds App', button: 'Download App' },
   LogoutAccount: {
     title: 'Come Back Soon!',
     description: 'Are you sure want to logout',
     confirmButton: 'Log Out',
     cancelButton: 'Cancel'
   },
-  ReferalCode: {
+  ReferralCode: {
+    total: 'Total Referral Used',
     title: 'Refer your friends',
     subtitle: 'Earn more XP',
-    referal: 'How Referral Works',
-    option1: 'Invite your friend to install the app with the link',
+    referal: 'Refer your friends & Earn more XP',
+    referralHistory: 'Your Referral History',
+    option1: 'Invite your friend',
+    option1desc:
+      'Encourage your friend to install the app using your referral link.',
     option2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
-    option3: 'Get more XP when your friend registered to Seeds'
+    option3: 'Earn Your XP',
+    option3desc: 'Earn more XP when your friend registers Seeds.',
+    used: 'has used your code'
   },
   PlayPayment: {
     title: 'Payment Method',
@@ -704,7 +925,9 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Pay before {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
       button: 'Pay'
     },
     VirtualAccountGuide: {
@@ -1000,30 +1223,27 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    redirectError: 'Please Re-login',
     product: {
       section1: {
-        title1: 'Share & Influence ',
-        title2: 'Others to Start Their Financial Journey',
+        title1: 'Play & Win',
+        title2: 'Real Prizes While Learning',
         subtitle:
-          'Create threads and socialize with the Seeds community. Make friends along your finance journey and Influence others to start their own.'
+          'Challenge your financial knowledge with exciting games and win real money'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'The top three star players who have dominated in Play.'
+        title1: 'Climb the Leaderboard & Be a Champion!'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Invest In Knowledge',
+        title2: 'Invest In Success',
+        subtitle: 'Grow your investment journey by learn and explore on Seeds'
       },
       section5: {
         title1: 'How to Play',
         title2: 'Tournament',
         title3:
-          'Watch a quick video about how to play a tournament. Listen and watch so you can challenge other people and win a lot of prizes. Learn everything about virtual trading here!'
+          'Let’s Watch to learn everything about tournament and virtual trading here!'
       },
       section6: {
         title1: 'Download Now!',
@@ -1098,5 +1318,558 @@ export default {
       listMembers: 'Members',
       about: 'About'
     }
+  },
+  partner: {
+    section1: {
+      title: 'Partner with Seeds & Shape the Future of Investment Education',
+      text: 'Host exclusive investment tournaments, win prizes, and promote risk-free investment education with Seeds for a better investment world. Grow with us!',
+      button: 'Contact Us'
+    },
+    section2: {
+      option1: 'Communities and University',
+      option2: 'Registration',
+      option3: 'Event Hosted'
+    },
+    section3: {
+      title: 'Collaborate to Solve Investment Problems'
+    },
+    section4: {
+      title: 'Empowering The Next Generation Together',
+      subtitle:
+        'Join us in making financial education more exciting and accessible for everyone',
+      option1: {
+        title: 'Community',
+        text: 'Exclusive Content Access, Community Recognition, Engagement Opportunities',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Networking Opportunities, Exclusive Training, and Monetary Incentives',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Brand',
+        text: 'Brand Exposure, Sponsorship Opportunities, Custom Collaborations',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Seeds Events'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Step in the world of investing through our Play Arena-climb the leaderboards, win exciting prizes, and perfect your investment strategy with ZERO RISK. Connect with financial experts and like-minded individuals in our strong and interactive community.'
+    },
+    section2: {
+      title: 'Vision and Mission',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `To reach Indonesia's fast-growing millennial and Gen Z market, as well as universities, schools, communities, financial influencers, and media. All eyes on your community, event or brand!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Help improve financial knowledge and save people from wrong investment choices. Dive into the exciting world of virtual trading games and make investment learning more enjoyable.'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Earn together as we grow. Between Play Arena, Premium Circle, and more, there's a sea of opportunity for mutual financial growth.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `With an average of 4k monthly users and a 5% engagement rate, in Seeds Finance, your message won't just be seen, it'll resonate.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Collaborate with top financial influencers and be at the forefront of financial education and trends in Indonesia.'
+      }
+    },
+    section3: {
+      title: 'What Makes Us Different',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle: 'more about investing and finance from the experts'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'And chat with like-minded people'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'The tournaments and win cash rewards!'
+      }
+    },
+    section4: {
+      subtitle: `The podcast where money talks get interesting! We're here to share the coolest tips, latest news, and some interesting insights on money and investing.`
+    }
+  },
+  social: {
+    postSetting: {
+      publicTitle: 'Public',
+      publicDesc: 'Everyone can see your post',
+      privateTitle: 'Private',
+      privateDesc: 'Only you can see your post',
+      friendsTitle: 'Friends Only',
+      friendsDesc: 'Followers that you followback',
+      premiumTitle: 'Premium',
+      premiumDesc: 'Only premium content buyers can view post details'
+    },
+    pieSection: {
+      title: 'Title',
+      detail: 'Add a title based on your financial goal',
+      placeholder: 'Create your title Pie',
+      amount: 'Amount',
+      amountError: 'Enter your allocation amount',
+      selectAsset: 'Select Assets',
+      overview: 'Overview',
+      stocks: 'Stocks',
+      crypto: 'Cryptos'
+    },
+    errorState: {
+      image1: 'Your image is exceeding the 5MB size limit',
+      image2:
+        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.',
+      video1: 'You can only insert video in .MOV and .MP4 format.',
+      video2: 'You can only insert video with maximum durations of 60 seconds',
+      video3: 'Your video is exceeding the 20MB size limit.',
+      thread1: 'Text exceed 500 characters',
+      thread2: 'Sorry, we can not find your URL. Please insert the correct URL',
+      thread3: 'Your thread is exceeding the maximum character limit',
+      poll1:
+        'Your question is exceeding the maximum character limit. Please rewrite the questions',
+      poll2: "The ending date can not be less than today's date"
+    },
+    reportUser: {
+      text1: 'Report User',
+      text2: 'This account will be reported',
+      text3: 'Why are you reporting this account?',
+      text4: 'A specific post that should not be on Seeds',
+      text5: 'Something about this account',
+      text6:
+        'Are you sure you want to report this account? You will no longer see statuses or threads posted by this profile.',
+      text7:
+        "You have reported this account. You won't see the status or thread posted by this profile anymore."
+    },
+    reportPost: {
+      text1: 'Report Post',
+      text2: 'This post will be reported.',
+      text3: 'Why are you reporting this post?',
+      option1: 'Spam',
+      option2: 'Nudity or sexual Activity',
+      option3: 'Hate speech or symbols',
+      option4: 'Bullying or harassment',
+      option5: 'I do not like it',
+      option6: 'Scam or fraud',
+      option7: 'Something else',
+      success1: 'Report has been submitted',
+      success2: 'Thank you for helping us'
+    },
+    blockUser: {
+      block: 'Block',
+      text: 'They won’t be able to message you or find your profile, posts or story on Seeds.'
+    },
+    gif: 'GIF',
+    pdf: 'PDF',
+    gallery: 'Gallery',
+    talk: 'Talk',
+    pie: 'Pie',
+    poll: 'Poll',
+    navbar: {
+      following: 'Following',
+      foryou: 'For You',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'All',
+      allDesc: 'Everyone',
+      circle: 'Circle',
+      circleDesc: 'Create a post in circle',
+      personal: 'Personal',
+      personalDesc: 'Your Only Friend'
+    },
+    fiterSortBy: {
+      all: 'All',
+      allDesc: 'All posts',
+      recent: 'Most Recent',
+      recentDesc: 'Based on time posted',
+      relevant: 'Most Relevant',
+      relevantDesc: 'Based on users preferences',
+      like: 'Most Like',
+      likeDesc: 'Based on most liked',
+      trending: 'Most Trending',
+      trendingDesc: 'Based on highest engagement'
+    },
+    placeholder1: 'What do you want to discuss? ...',
+    placeholder2:
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text6: 'Play Now',
+      text7: 'Improve Investing Skills From Experts',
+      text8: 'Play Games & Win Real Money!',
+      text9: 'Level Up Your Knowledge & Be the Best!'
+    },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Have a conversation and connect with a finance expert to kickstart a successful financial journey.'
+    },
+    section3: {
+      text1: 'How Seeds Enhance',
+      text2: 'Your Financial Journey',
+      text3: 'Learning finance to achive succesfull investment',
+      text4: 'Questioning finance and seeking basic knowledge.',
+      text5: 'Ready to adopt financial strategies.',
+      text6: 'Gain confidence in financial decision',
+      text7: 'Achieve a higher level of financial literacy'
+    },
+    section5: {
+      text1: 'Total Rewards Claimed by Users'
+    },
+    section6: {
+      text1: 'Seeds Events'
+    },
+    section7: {
+      text1: 'Meet Our Expert',
+      text2: 'Unlock Financial Success Together'
+    },
+    section8: {
+      text1: 'Stay Informed with',
+      text2: 'Our Curated Financial Updates'
+    },
+    section9: {
+      text1: 'What They Say About'
+    },
+    section10: {
+      text1: 'Over 1000+ people trust us',
+      text2: 'Professionals, universities, many more do!'
+    },
+    section11: {
+      text1: 'Want to Collaborate with Seeds?',
+      text2:
+        'Make finance fun, empower the future. Join the Seeds revolution now!',
+      text3:
+        "Join us, get involved, and together let's shape the future of investing!",
+      text4: 'Contact Us'
+    },
+    section12: {
+      text1: 'Our Communities',
+      text2:
+        "We're committed in improving financial literacy for Gen-Z and millennials in Southeast Asia.",
+      text3: 'Partnership Program'
+    }
+  },
+  playSimulation: {
+    assetList: 'Asset List',
+    seedsCash: 'Seeds Cash',
+    cashBalance: 'Cash Balance',
+    portfolio: 'Portfolio',
+    assetDetail: 'Asset Details',
+    today: 'Today',
+    remainingTime: 'Remaining Time',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Sell',
+    buy: 'Buy',
+    balance: 'Balance',
+    takeProfit1: 'Activate Take Profit and Stop Loss',
+    takeProfit2: 'Advance your strategy and win the Arena.',
+    purchaseAmount: 'Purchase Amount',
+    cashAmount: 'Cash Amount',
+    purchaseConfirmation: 'Purchase Confirmation',
+    confirmation: 'Confirmation',
+    orderReview: 'Order Review',
+    orderType: 'Order Type',
+    buyMarketOrder: 'Buy - Market Order',
+    sellMarketOrder: 'Sell - Market Order',
+    marketPrice: 'Market Price',
+    amount: 'Amount',
+    transactionFee: 'Transaction Fee',
+    totalCost: 'Total Cost',
+    footerOrderDetail1:
+      'This is a risk-free investment because you are using virtual balance for the transaction. Please refer to this',
+    footerOrderDetail2: 'for more information',
+    disclosure: 'disclosure',
+    orderCompleted: 'Order Completed',
+    orderCompletedBuy: 'You purchased',
+    orderCompletedSell: 'You have successfully sold',
+    investmentValue: 'Investment Value',
+    totalPortfolio: 'Total Portfolio',
+    yourAssetsPortfolio: 'Your assets portfolio',
+    joinArena1: 'Are you ready to join Arena?',
+    joinArena2:
+      'Get ready for trading challenges to test your skills and win prizes.',
+    sellAssetText1: 'You can choose the amount of the asset to sell',
+    sellAmount: 'Sell Amount',
+    cashAvailable: 'Cash Available',
+    cashUsed: 'Cash Used',
+    historyTransaction: 'History Transaction',
+    transactionDetail: 'Transaction Details'
+  },
+  homepage: {
+    section2: {
+      text1: 'Virtual Cash',
+      text2: 'Return',
+      text3: 'Seeds Coin',
+      text4: 'Referral Code',
+      text5: 'No recommended people to share with',
+      text6: 'Exclusive Offers',
+      text7: 'Enjoy a variety of special promotions just for you! ',
+      text8: 'Trending Today',
+      text9: "Check out what's popular right now",
+      text10: 'SeedsPedia',
+      text11: 'Your Rank',
+      text12: 'Win Reward every Month',
+      text13: '"Now in December"',
+      text14: 'See More',
+      text15: 'Please Login to enter the arena simulation',
+      text16: 'Login to enter arena simulation'
+    },
+    section3: {
+      text1: 'Your all-in-one source for financial updates',
+      text2: 'Current',
+      text3: 'Last Month',
+      text4: 'Current Rank',
+      text5: 'Find and follow interesting profiles.',
+      text6: 'People List'
+    }
+  },
+  chooseCurrency: {
+    header: 'Choose your currency',
+    body: 'Your chosen currency will be be used for all transactions on Seeds.',
+    successHeader: 'Your currency is',
+    successBody1: "Great job! You've chosen",
+    successBody2:
+      'as your currency preference. From now on, all your transactions on Seeds will be in',
+    successBody3: ', you can change it whenever you want in the settings.',
+    defaultHeader: 'Your default currency is USD',
+    defaultBody:
+      "USD is currently your default currency, but don't worry, you can change it whenever you want in the settings.",
+    button: 'Save',
+    buttonSuccess: 'OK',
+    yourCurrencyIs: 'Your currency is',
+    successChangeCurrency:
+      "Great job! You've chosen ## as your currency preference. From now on, all your transactions on Seeds will be in ##, you can change it whenever you want in the settings."
+  },
+  quiz: {
+    explanation: 'Explanation',
+    invitationCodePlaceholder: 'Input your invitation code',
+    enter: 'Enter',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Check out the latest rankings for top quizzes!',
+    play: 'Play',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Challenge your finance knowledge with these quizzes.',
+    search: 'Search',
+    qs: '{{amount}} Qs',
+    durationInDays: 'Duration {{days}} days',
+    playersJoined: '{{players}} Players Joined',
+    questionsAmount: '{{questions}} Questions',
+    questions: 'Questions',
+    quiz: 'Quiz',
+    entranceFee: 'Entrance Fee',
+    played: 'Played',
+    duration: 'Duration',
+    quizPeriod: 'Quiz Period',
+    tnc: 'Terms & Conditions',
+    quizPrize: 'Quiz Prize',
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    sponsors: 'Sponsor(s)',
+    community: 'Community',
+    join: 'Join',
+    reviewQuiz: 'Review Quiz',
+    continue: 'Continue',
+    start: 'start',
+    startTheGame: 'Start the Game!',
+    yourCurrentlyRank: 'Your Currently Rank',
+    cancel: 'Cancel',
+    notification: 'Notification',
+    extraCash:
+      "Oops, if you want an extra assist, you'll need an extra IDR {{amount}} cash",
+    select: 'Select',
+    quizCompanion: 'Pick your power-up!',
+    chooseOptions:
+      'Struggling? This power-up will guide you towards the correct answer',
+    freeOptions:
+      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
+    fiftyfifty: 'This option will eliminate two wrong answers.',
+    phone:
+      "It's like calling a friend for help, and they are always ready to help you.",
+    vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    incorrect: 'Incorrect',
+    correct: 'Correct',
+    anotherQuiz: 'Another Quiz',
+    leaderboard: 'Leaderboard',
+    remainingTime: 'Your remaining time',
+    currentRank: 'Your Current Rank',
+    currentScore: 'Your Current Score',
+    submit: 'Submit',
+    finish: 'Finish',
+    sureSubmit: 'Are you sure to submit this Quiz?',
+    sureSubmitDesc:
+      "After submitting, you won't be able to change the answers.",
+    yes: 'Yes',
+    theQuestion: 'The Question',
+    understand: 'Understand',
+    payAttention:
+      "Pay attention to Seedy's response, you can't revisit it after tapping Understand.",
+    beMindful:
+      "Be mindful of the vote from Seedy's friends, you won't be able to view it again after clicking OK.",
+    sureNeedHelp: 'Are you sure you need this help?',
+    description: 'Description',
+    wantLeave: 'Are you sure you want to leave?',
+    dontGiveUp: "Please don't give up, you're better than this.",
+    quizInformation:
+      "We will provide a series of questions related to cryptocurrency topics. Answer all the questions correctly to earn points, and you can also use Seedy's help.",
+    playAgain: 'Play Again',
+    admissionFee: 'IDR {{amount}}',
+    dayDuration: '{{duration}} days',
+    quizCategory: {
+      all: 'All',
+      allDesc:
+        "Welcome to General Financial & Investment Quiz! Explore your financial savvy with questions on everyday investments like Mutual Funds, US Stocks, ID Stocks, Financial Bonds, Gold, Crypto, Forex, and P2P investments. It's a fun way to test your money knowledge and learn more about the world of finance! Ready to dive in?",
+      mutualFunds: 'Mutual Funds',
+      mutualFundsDesc:
+        'Test your knowledge of mutual funds with this quiz! Learn about the basics of mutual fund investing, types of mutual funds, and how they can help you achieve your financial goals.',
+      investment: 'Investment',
+      investmentDesc:
+        'Test your knowledge of investing and learn how to choose the best products for your financial goals. This quiz covers topics such as risk, return, diversification, evaluation, and regulation.',
+      stock: 'STOCK',
+      stockDesc:
+        'How well do you know the stock market and investing? Take this quiz and find out! This quiz will help you improve your financial literacy and your skills in analyzing stock market data.',
+      usStock: 'US Stock',
+      usStockDesc:
+        'Challenge yourself with questions about the history, performance, and regulation of the US stock market. Learn how the NYSE and NASDAQ evolved, how stock indexes are calculated, and what factors affect stock prices.',
+      idStock: 'ID Stock',
+      idStockDesc:
+        'Test your knowledge of the Indonesia Stock Exchange and its listed companies. Learn how the Jakarta Stock Price Index is calculated…',
+      financial: 'Financial',
+      financialDesc:
+        'Test your financial literacy and improve your money management skills. Learn how to budget, save, use credit, and plan for your future.',
+      gold: 'Gold',
+      goldDesc:
+        'Test your knowledge of gold, the most precious metal on Earth. Learn about its properties, uses, history, and sources.',
+      crypto: 'Crypto',
+      cryptoDesc:
+        'Test your knowledge of cryptocurrencies, the digital assets that are revolutionizing the world of finance. Learn about their history, technology, regulation, and trends.',
+      forex: 'Forex',
+      forexDesc:
+        'Learn about the foreign exchange market, the largest and most liquid market in the world. This quiz covers topics such as currency pairs, exchange rates, trading strategies, central banks, and forex risks.',
+      p2p: 'P2P (Peer-to-Peer)',
+      p2pDesc:
+        'Jump into the world of Peer-to-Peer Lending with our quiz! Explore how P2P platforms work, the risks and benefits, and the ins and outs of lending and borrowing directly from individuals. Test your P2P lending knowledge and discover if this innovative approach to finance is right.',
+      financialBonds: 'Financial Bonds',
+      financialBondsDesc:
+        'Learn about the different types of bonds, the debt instruments that allow entities to borrow money from investors. This quiz covers topics such as bond characteristics, valuation, risks, and strategies.'
+    },
+    free: 'Free',
+    lifeline: 'Extra Lifeline',
+    tryInfo:
+      'Free quiz is only available for one attempt, try another challenges!',
+    day: '{{days}} days',
+    players: 'Players',
+    entryFee: 'Entry Fee',
+    entFee: 'Entrance Fee',
+    myQuiz: 'My Quiz',
+    open: 'Open',
+    active: 'Active',
+    ended: 'Ended',
+    canceled: 'Cancelled',
+    quizDone1: "let's join another interesting quiz!",
+    quizDone2:
+      'Ooops... you only get one chance to play a free quiz! Explore more quizzes!',
+    testInvestment: 'Test your investment knowledge and win real money!',
+    welcome: 'Welcome to Seeds Quiz',
+    areYouReady: 'Are You Ready?',
+    millionaire: 'Who wants to be Seeds Millionaire!',
+    incorrectWord: 'Incorrect, fyuhh that was close',
+    correctWord: 'Correct, you got {{point}} points',
+    congratulation: 'Congratulation!',
+    cashOut: 'Cash out your rewards!',
+    claimMethod: 'Claim Method',
+    account: 'Account',
+    accountName: 'Account Name',
+    accountNumber: 'Account Number',
+    placeholderMethod: 'Select your method',
+    placeholderAccount: 'Select your account',
+    placeholderAccountName: 'Your account name',
+    placeholderAccountNumber: 'Your account number',
+    transferBank: 'Transfer with Bank',
+    eWallet: 'E-Wallet',
+    transferEWallet: 'Transfer with E-Wallet',
+    bankList: 'Bank List',
+    eWalletList: 'E-Wallet List',
+    thankyou: 'Thank You!',
+    withdrawalRequest:
+      'Your withdrawal request is being processed. Please wait max 1x24 hours.',
+    transactionDetails: 'Transaction Details',
+    date: 'Date',
+    refNum: 'Reference Number',
+    withdraw: 'Withdraw',
+    admin: 'Admin',
+    adminFee: 'Admin Fee',
+    adminFeeDiscount: 'Admin Fee Discount',
+    serviceFee: 'Service Fee',
+    totalAmount: 'Total Amount',
+    paymentMethod: 'Payment Method',
+    id: 'Id Transaction',
+    nominal: 'Nominal',
+    total: 'Total',
+    winnerModalTitle: 'Congrats you won the Quiz!',
+    score: 'Your Score : ',
+    earn: ' You earn IDR ',
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
+  },
+  discover: {
+    hotNews: 'Hot News',
+    newsList: 'News',
+    findMoreYouMighLike: 'Find more news you might like.',
+    youMayLike: 'You May Like',
+    seeAll: 'See All',
+    trendingToday: 'Trending Today',
+    whatIsTrendingToday: "What's trending today?",
+    circleList: 'Circle List',
+    exploreCircleList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    assetList: 'Asset List',
+    exploreAssetList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    merchantBannerText: 'Enjoy a variety of special promotions just for you!',
+    explorePlayList:
+      'Explore our list of communities, find the ones that match with your interest, or create one.',
+    playList: 'Play List',
+    clearHistory: 'Clear History',
+    search: 'Search',
+    recentSearch: 'Recent Search',
+    peopleList: 'People List',
+    explorePeopleList: 'Find a User that suits you.',
+    dataNotFound: 'Data Not Found'
+  },
+  chat: {
+    personalEmptyState: 'No Conversation',
+    communityEmptyState: 'No Community Chat',
+    selectUsername:
+      'You didn’t made any conversation yet, please select username.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community',
+    popUpLeave: {
+      Title: 'Leave Group?',
+      Description: 'Are you sure to leave this Group',
+      helpUs: 'Help us to understand the problem',
+      continue: 'Continue'
+    },
+    tapAndHold: 'Tap and hold to record and send voice messages'
   }
 };

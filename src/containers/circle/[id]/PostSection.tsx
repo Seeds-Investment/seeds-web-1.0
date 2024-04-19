@@ -1,6 +1,6 @@
 'use client';
+import more_vertical from '@/assets/more-option/more_vertical.svg';
 import MoreOption from '@/components/MoreOption';
-import Modal from '@/components/ui/modal/Modal';
 import {
   Bookmark,
   ChatBubble,
@@ -11,7 +11,9 @@ import {
 import ImageCarousel from '@/containers/circle/[id]/CarouselImage';
 import PieCirclePost from '@/containers/circle/[id]/PieCirclePost';
 import PollingView from '@/containers/circle/[id]/PollingView';
+import TrackerEvent from '@/helpers/GTM';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
+import { isGuest } from '@/helpers/guest';
 import { getAssetById } from '@/repository/asset.repository';
 import {
   getDetailCircle,
@@ -22,12 +24,11 @@ import {
 import { getPlayById } from '@/repository/play.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
-import { Transition } from '@headlessui/react';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { PDFViewer, PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
+import { PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
 import {
   FacebookShare,
   InstagramShare,
@@ -42,11 +43,15 @@ import {
 import { BookmarkFill, XIcon } from 'public/assets/vector';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import PDFViewer from './PDFViewer';
 
 interface props {
   dataPost: any;
   setData: any;
   userInfo: UserData;
+  handleSubmitBlockUser?: any;
+  myInfo?: any;
 }
 
 interface ChartData {
@@ -91,7 +96,7 @@ const shareData: ShareData[] = [
   {
     name: 'Instagram',
     image: InstagramShare,
-    link: 'https://www.instagram.com/',
+    link: 'https://www.instagram.com/direct/inbox/',
     class: ''
   },
   {
@@ -109,13 +114,13 @@ const shareData: ShareData[] = [
   {
     name: 'Twitter',
     image: TwitterShare,
-    link: 'https://twitter.com/',
+    link: 'https://twitter.com/messages/compose',
     class: ''
   },
   {
     name: 'Whatsapp',
     image: WhatsappShare,
-    link: 'www.instagram.com',
+    link: 'https://api.whatsapp.com/',
     class: ''
   },
   {
@@ -133,7 +138,7 @@ const shareData: ShareData[] = [
   {
     name: 'Linkedin',
     image: LinkedinShare,
-    link: 'https://www.linkedin.com/',
+    link: 'https://www.linkedin.com/feed/',
     class: 'bg-[#0A66C2]'
   },
   {
@@ -144,10 +149,15 @@ const shareData: ShareData[] = [
   }
 ];
 
-const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
+const PostSection: React.FC<props> = ({
+  dataPost,
+  setData,
+  userInfo,
+  handleSubmitBlockUser,
+  myInfo
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [docModal, setDocModal]: any = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>(initialChartData);
   const [isCopied, setIsCopied] = useState(false);
   // const [userInfo, setUserInfo] = useState<UserData | null>(null);
@@ -155,7 +165,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
   if (isCopied) {
-    console.log('success', additionalPostData);
+    if (isShare) {
+      console.log('success', additionalPostData);
+    }
   }
   // useEffect(() => {
   //   const fetchData = async (): Promise<void> => {
@@ -176,9 +188,13 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const handleItemClick = (link: string): void => {
     window.open(link, '_blank');
   };
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
 
   const handleCopyClick = async (text: string): Promise<void> => {
-    await navigator.clipboard.writeText(text).then(() => {
+    console.log(process.env.NEXT_PUBLIC_DOMAIN);
+    const textToCopy = `${baseUrl}/connect/comment/${text}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
       setTimeout((): void => {
         setIsCopied(false);
@@ -196,12 +212,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   }
 
   const toUserProfile = (id: any): void => {
-    if (dataPost?.id === userInfo?.id && isUndefindOrNull(id)) {
-      router.push('MyProfileScreen').catch(err => {
+    if (dataPost?.user_id === userInfo?.id && isUndefindOrNull(id)) {
+      router.push('/my-profile').catch(err => {
         console.error(err);
       });
     } else if (id !== undefined) {
-      router.push('ProfileUserScreen').catch(err => {
+      router.push(`/social/${id as string}`).catch(err => {
         console.error(err);
       });
     } else {
@@ -297,12 +313,12 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 key={index}
                 onDoubleClick={() => {}}
                 onClick={() => {
-                  router.push(link).catch(err => {
-                    console.error(err);
-                  });
+                  handleItemClick(link);
                 }}
               >
-                <pre className="text-blue-500 font-poppins">{part}</pre>
+                <pre className="text-blue-500 font-poppins">
+                  {part.length > 30 ? part.substring(0, 30) + '...' : part}
+                </pre>
               </button>
             );
           } else {
@@ -354,10 +370,13 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
         .filter(Boolean);
 
       return (
-        <div className="flex justify-start flex-col" key={10000}>
-          <p className="flex break-words overflow-hidden flex-wrap">
+        <div
+          className="flex justify-start flex-col"
+          key={Math.floor(Math.random() * 100000000)}
+        >
+          <div className="flex break-words overflow-hidden flex-wrap">
             {renderedParts}
-          </p>
+          </div>
         </div>
       );
     });
@@ -449,7 +468,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
           });
         } else if (el?.includes('-asset') === true) {
           await getAssetById(el?.replace('-asset', '')).then((res: any) => {
-            tempThumbnailList.push({ thumbnailType: 'asset', ...res });
+            tempThumbnailList.push({
+              thumbnailType: 'asset',
+              ...res.marketAsset
+            });
           });
         }
         await Promise.resolve();
@@ -472,15 +494,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
     } else if (content?.includes('-circle') === true) {
       toCircleDetail(content?.replace('-circle', ''));
     } else if (content?.includes('-asset') === true) {
-      router.push('').catch(err => {
-        console.error(err);
-      });
+      router
+        .push(`/homepage/assets/${content?.replace('-asset', '') as string}`)
+        .catch(err => {
+          console.error(err);
+        });
     } else if (content?.includes('-play') === true) {
       router.push('').catch(err => {
         console.error(err);
       });
     } else {
-      router.push('').catch(err => {
+      router.push(`/social/search?hashtags=${content as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -496,7 +520,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router.push('OverviewAsset').catch(err => {
+      router.push(`/homepage/assets/${item.id as string}`).catch(err => {
         console.error(err);
       });
     }
@@ -544,19 +568,35 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   const likePost = async (type: number): Promise<void> => {
     try {
       const response = await postLikeCirclePost(type, dataPost.id);
-
+      console.log('sukses');
       if (response.status === 200) {
+        console.log('200');
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
             if (Array.isArray(prevDataPost)) {
               const newData = prevDataPost.map((el: any) => {
+                console.log(el);
                 if (el.id === dataPost.id) {
                   if (dataPost.status_like === true) {
                     el.total_upvote -= 1;
                     el.status_like = false;
+                    TrackerEvent({
+                      event: `Seeds_unliked_post_web`,
+                      postId: el.id,
+                      statusLike: el.status_like,
+                      userId: userInfo?.id,
+                      personId: el.user_id
+                    });
                   } else {
                     el.total_upvote++;
                     el.status_like = true;
+                    TrackerEvent({
+                      event: `Seeds_liked_post_web`,
+                      postId: el.id,
+                      statusLike: el.status_like,
+                      userId: userInfo?.id,
+                      personId: el.user_id
+                    });
                   }
                 }
                 return el;
@@ -585,8 +625,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   };
 
   const pinPost = async (type: string): Promise<void> => {
-    console.log(dataPost);
-
     try {
       const response = await postPinCirclePost(type, dataPost.id);
       if (response.status === 200) {
@@ -603,8 +641,24 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 }
                 return el;
               });
+              const filteredTrue = newData.filter(el => el.is_pinned === true);
+              const filterPin = filteredTrue.filter(
+                el => el.id !== dataPost.id
+              );
+              const findPin = filteredTrue.find(el => el.id === dataPost.id);
+              const filteredFalse = newData.filter(
+                el => el.is_pinned === false
+              );
 
-              return newData;
+              let arrangedPinPost = [];
+              if (findPin === undefined) {
+                arrangedPinPost = [...filterPin];
+              } else {
+                arrangedPinPost = [findPin, ...filterPin];
+              }
+
+              const newArrPinnedPost = [...arrangedPinPost, ...filteredFalse];
+              return newArrPinnedPost;
             } else {
               const updatedDataPost = { ...prevDataPost };
               if (dataPost.is_pinned === true) {
@@ -681,73 +735,70 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
   };
 
   useEffect(() => {
-    if (dataPost.pie_title !== '') {
+    if (dataPost?.pie?.length > 0) {
       handleSetChartData();
     }
   }, []);
 
-  const renderIsCopied = (): JSX.Element => {
-    return (
-      <Transition
-        show={isCopied}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="z-[100000] fixed left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 shadow-[0 2px 8px bg-black/20 rounded-xl">
-          <Typography className="font-poppins text-black p-1">
-            Copied!
-          </Typography>
-        </div>
-      </Transition>
-    );
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const redirectToPaymentPostPremium = (): void => {
+    router
+      .push(isGuest() ? '/auth' : `/social/payment/${dataPost.id as number}`)
+      .catch(error => {
+        toast(error, { type: 'error' });
+      });
   };
-
-  const [expanded, setExpanded] = useState(false);
-  const handleSeeMore = (text: string, maxWords: number): any => {
+  const handleSeeMore = (text: string, maxWords: number): JSX.Element => {
     const words = text.split(' ');
 
-    const displayText = expanded
-      ? renderTouchableText(text)
-      : words.slice(0, maxWords).join(' ');
+    const displayText =
+      dataPost.status_payment === true
+        ? text
+        : expanded
+        ? (redirectToPaymentPostPremium(), '')
+        : words.slice(0, maxWords).join(' ');
 
     return (
       <div>
         <p>{displayText}</p>
-        {words.length > maxWords && (
+        {words.length > maxWords && dataPost.status_payment === false ? (
           <button
             className="text-blue-600"
             onClick={() => {
               setExpanded(!expanded);
             }}
           >
-            {expanded ? 'See Less' : 'See More'}
+            See More
           </button>
-        )}
+        ) : null}
       </div>
     );
   };
 
   return (
     <>
-      {isCopied && renderIsCopied()}
-
       <div
         className="w-full pb-5 mt-5 border-b border-neutral-ultrasoft"
         key={`${dataPost.id as string}${Math.floor(Math.random() * 100000000)}`}
       >
         <div className="flex gap-4 md:gap-8">
           <div className="hidden md:flex">
-            <div>
+            <div className="shrink-0">
               <img
                 src={
                   dataPost.owner !== undefined ? dataPost.owner.avatar : null
                 }
                 alt="AVATAR"
-                className="rounded-full w-12 h-12"
+                className="rounded-full w-12 h-12 object-cover cursor-pointer"
+                onClick={async () => {
+                  isGuest()
+                    ? await router.push('/auth')
+                    : dataPost.user_id === userInfo.id
+                    ? await router.push('/my-profile')
+                    : await router.push(
+                        `/social/${dataPost.user_id as string}`
+                      );
+                }}
               />
             </div>
           </div>
@@ -755,7 +806,7 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
             <div className="mb-4">
               <div className="flex gap-5 pb-4">
                 <div className="md:hidden flex">
-                  <div>
+                  <div className="shrink-0">
                     <img
                       src={
                         dataPost.owner !== undefined
@@ -763,7 +814,16 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           : null
                       }
                       alt="AVATAR"
-                      className="rounded-full w-12 h-12"
+                      className="rounded-full w-12 h-12 object-cover cursor-pointer"
+                      onClick={async () => {
+                        isGuest()
+                          ? await router.push('/auth')
+                          : dataPost.user_id === userInfo.id
+                          ? await router.push('/my-profile')
+                          : await router.push(
+                              `/social/${dataPost.user_id as string}`
+                            );
+                      }}
                     />
                   </div>
                 </div>
@@ -771,7 +831,18 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 <div className="w-full">
                   <div className="flex justify-between">
                     <div className="flex items-center gap-2">
-                      <Typography className="font-bold text-black md:text-lg">
+                      <Typography
+                        className="font-bold text-black md:text-lg cursor-pointer"
+                        onClick={async () => {
+                          isGuest()
+                            ? await router.push('/auth')
+                            : dataPost.user_id === userInfo.id
+                            ? await router.push('/my-profile')
+                            : await router.push(
+                                `/social/${dataPost.user_id as string}`
+                              );
+                        }}
+                      >
                         @
                         {dataPost.owner !== undefined
                           ? dataPost.owner.seeds_tag !== undefined
@@ -793,7 +864,26 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           )
                         : null}
                     </div>
-                    <MoreOption dataPost={dataPost} />
+                    {isGuest() ? (
+                      <div
+                        onClick={async () => await router.push('/auth')}
+                        className="cursor-pointer"
+                      >
+                        <Image
+                          src={more_vertical}
+                          alt="threeDots"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    ) : (
+                      <MoreOption
+                        myInfo={myInfo}
+                        setDataPost={setData}
+                        dataPost={dataPost}
+                        userInfo={userInfo}
+                        handleSubmitBlockUser={handleSubmitBlockUser}
+                      />
+                    )}
                   </div>
                   <div className="flex gap-1 items-center text-gray-500">
                     <Typography className="text-xs md:text-sm">
@@ -806,91 +896,77 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center mb-2">
-                {dataPost.privacy === 'premium' &&
-                dataPost.user_id !== userInfo.id
-                  ? handleSeeMore(dataPost.content_text, 10)
-                  : renderTouchableText(dataPost?.content_text)}
-                {/* {renderTouchableText(dataPost?.content_text)} */}
-              </div>
-              {categorizeURL(dataPost.media_urls)}
-              {voice.length > 0 && (
-                <audio controls>
-                  <source
-                    src={voice[0]}
-                    type="audio/wav"
-                    className="w-full mb-4"
-                  />
-                  Your browser does not support the audio element.
-                </audio>
-              )}
-              {document.length > 0 && (
-                <div className="flex justify-start md:pl-0 pl-14 mb-4">
-                  <div className="flex flex-col">
-                    <div
-                      className="flex justify-start cursor-pointer"
-                      onClick={() => {
-                        setDocModal(true);
-                      }}
-                    >
-                      <Image
-                        src={PDFViewer}
-                        alt="pdf"
-                        className="w-[100px] h-[100px]"
-                      />
-                    </div>
+              {isGuest() ? (
+                <div onClick={async () => await router.push('/auth')}>
+                  <div className="flex items-center mb-2">
+                    {dataPost.privacy === 'premium' &&
+                    dataPost.user_id !== userInfo.id
+                      ? handleSeeMore(dataPost.content_text, 10)
+                      : renderTouchableText(dataPost?.content_text)}
+                    {/* {renderTouchableText(dataPost?.content_text)} */}
                   </div>
-                  {docModal === true && (
-                    <Modal
-                      onClose={() => {
-                        setDocModal(false);
-                      }}
-                      modalClasses="z-30 animate-slide-down fixed left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-transparent"
-                    >
-                      <embed
-                        src={document[0]}
-                        type="application/pdf"
-                        className="widthPDF h-screen"
+                  {categorizeURL(dataPost.media_urls)}
+                  {voice.length > 0 && (
+                    <audio controls>
+                      <source
+                        src={voice[0]}
+                        type="audio/wav"
+                        className="w-full mb-4"
                       />
-                      <button
-                        className="z-50 fixed text-white top-3 -right-14"
-                        onClick={() => {
-                          setDocModal(false);
-                        }}
-                      >
-                        <svg
-                          className="h-8 w-8 text-white bg-black/20 rounded-full"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {' '}
-                          <circle cx="12" cy="12" r="10" />{' '}
-                          <line x1="15" y1="9" x2="9" y2="15" />{' '}
-                          <line x1="9" y1="9" x2="15" y2="15" />
-                        </svg>
-                      </button>
-                    </Modal>
+                      Your browser does not support the audio element.
+                    </audio>
                   )}
+                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {media.length > 0 && <ImageCarousel images={media} />}
+                  {dataPost.pollings?.length > 0 && (
+                    <PollingView
+                      data={dataPost.pollings}
+                      totalVote={dataPost.total_polling}
+                      pollingDate={dataPost.polling_date}
+                    />
+                  )}
+
+                  {dataPost?.pie?.length > 0 ? (
+                    <PieCirclePost data={dataPost} chartData={chartData} />
+                  ) : null}
+                </div>
+              ) : (
+                <div>
+                  <div className="flex items-center mb-2">
+                    {dataPost.privacy === 'premium' &&
+                    dataPost.user_id !== userInfo.id
+                      ? handleSeeMore(dataPost.content_text, 10)
+                      : renderTouchableText(dataPost?.content_text)}
+                    {/* {renderTouchableText(dataPost?.content_text)} */}
+                  </div>
+                  {categorizeURL(dataPost.media_urls)}
+                  {voice.length > 0 && (
+                    <audio controls>
+                      <source
+                        src={voice[0]}
+                        type="audio/wav"
+                        className="w-full mb-4"
+                      />
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
+                  {document.length > 0 && <PDFViewer file={document[0]} />}
+                  {media.length > 0 && <ImageCarousel images={media} />}
+                  {dataPost.pollings?.length > 0 && (
+                    <PollingView
+                      data={dataPost.pollings}
+                      totalVote={dataPost.total_polling}
+                      pollingDate={dataPost.polling_date}
+                    />
+                  )}
+
+                  {dataPost?.pie?.length > 0 ? (
+                    <PieCirclePost data={dataPost} chartData={chartData} />
+                  ) : null}
                 </div>
               )}
-              {media.length > 0 && <ImageCarousel images={media} />}
-              {dataPost.pollings?.length > 0 && (
-                <PollingView
-                  data={dataPost.pollings}
-                  totalVote={dataPost.total_polling}
-                  pollingDate={dataPost.polling_date}
-                />
-              )}
-
-              {dataPost.pie_title !== '' ? (
-                <PieCirclePost data={dataPost} chartData={chartData} />
-              ) : null}
             </div>
-            <div className="flex justify-start gap-4">
+            <div className="flex justify-start gap-4 flex-wrap">
               {thumbnailList.length > 0 &&
                 thumbnailList.map((item: any, index: number) => {
                   return (
@@ -967,15 +1043,17 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           <img
                             src={
                               item?.thumbnailType === 'asset'
-                                ? item?.marketAsset?.logo
+                                ? item?.logo
                                 : item?.logo !== undefined
                                 ? item.logo
                                 : item?.avatar
                             }
-                            alt="image"
-                            className="rounded-full object-cover"
-                            width={60}
-                            height={60}
+                            alt="image thumbnail"
+                            className={`${
+                              item?.thumbnailType === 'asset'
+                                ? 'object-contain'
+                                : 'object-cover'
+                            } rounded-full w-14 h-14 max-w-[60px] max-h-[60px] min-h-[50px] min-w-[50px]`}
                           />
                         </div>
                       )}
@@ -984,13 +1062,6 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                           {item?.name?.length > 10
                             ? (item?.name.substring(0, 15) as string) + '...'
                             : item?.name}
-                          {item?.thumbnailType === 'asset' &&
-                            (item?.marketAsset?.name?.length > 10
-                              ? (item?.marketAsset?.name.substring(
-                                  0,
-                                  15
-                                ) as string) + '...'
-                              : item?.marketAsset?.name)}
                         </Typography>
                       </div>
                       {item?.thumbnailType === 'play' ? (
@@ -1001,13 +1072,10 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                       {item?.thumbnailType === 'asset' ? (
                         <div className="flex justify-center">
                           <Typography className="text-neutral-soft font-poppins text-center text-xs font-medium pb-4">
-                            {item?.marketAsset?.exchangeCurrency === 'IDR'
-                              ? `IDR ${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close
-                                )}`
+                            {item?.exchangeCurrency === 'IDR'
+                              ? `IDR ${formatCurrency(item?.lastPrice?.close)}`
                               : `$${formatCurrency(
-                                  item?.marketAsset?.lastPrice?.close /
-                                    item?.marketAsset?.exchangeRate
+                                  item?.lastPrice?.close / item?.exchangeRate
                                 )}`}
                           </Typography>
                         </div>
@@ -1029,7 +1097,9 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                   <div
                     className={`p-2 rounded-full cursor-pointer`}
                     onClick={async () => {
-                      await likePost(1);
+                      isGuest()
+                        ? await router.push('/auth')
+                        : await likePost(1);
                     }}
                   >
                     {dataPost.status_like === true ? (
@@ -1064,18 +1134,28 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                       </svg>
                     )}
                   </div>
-                  <Typography className="text-[#50E6AF] text-sm">
-                    +{dataPost.total_upvote}
+                  <Typography
+                    className={`${
+                      dataPost.status_like === true
+                        ? 'text-[#50E6AF]'
+                        : 'text-black'
+                    } text-sm`}
+                  >
+                    {dataPost.total_upvote}
                   </Typography>
                 </div>
                 <div className="flex items-center gap-1">
                   <div
                     className="cursor-pointer flex gap-2"
-                    onClick={() => {
-                      router
-                        .push(`/connect/comment/${dataPost.id as string}`)
+                    onClick={async () => {
+                      await router
+                        .push(
+                          isGuest()
+                            ? '/auth'
+                            : `/connect/comment/${dataPost.id as string}`
+                        )
                         .catch((err: any) => {
-                          console.error(err);
+                          toast(err, { type: 'error' });
                         });
                     }}
                   >
@@ -1091,8 +1171,14 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    onClick={() => {
-                      handleOpen();
+                    onClick={async () => {
+                      isGuest()
+                        ? await router.push('/auth')
+                        : handleCopyClick(`${dataPost.id as string}`).catch(
+                            err => {
+                              toast(err, { type: 'error' });
+                            }
+                          );
                     }}
                   >
                     <Image
@@ -1231,6 +1317,44 @@ const PostSection: React.FC<props> = ({ dataPost, setData, userInfo }) => {
                     </div>
                   )}
                 </div>
+                {isCopied && (
+                  <div className="flex items-center">
+                    <div className="flex gap-2 px-2 py-3 bg-white border border-[#E9E9E9] rounded-lg shadow-md absolute">
+                      <Typography className="font-poppins font-normal text-base text-black">
+                        {'Copied'}
+                      </Typography>
+                      <div className="flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <g clipPath="url(#clip0_5900_68690)">
+                            <path
+                              d="M14.6667 7.38668V8.00001C14.6658 9.43763 14.2003 10.8365 13.3395 11.9879C12.4788 13.1393 11.2688 13.9817 9.89022 14.3893C8.5116 14.7969 7.03815 14.7479 5.68963 14.2497C4.3411 13.7515 3.18975 12.8307 2.40729 11.6247C1.62482 10.4187 1.25317 8.99205 1.34776 7.55755C1.44235 6.12305 1.99812 4.75756 2.93217 3.66473C3.86621 2.57189 5.1285 1.81027 6.53077 1.49344C7.93304 1.17662 9.40016 1.32157 10.7133 1.90668"
+                              stroke="#3AC4A0"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M14.6667 2.66666L8 9.33999L6 7.33999"
+                              stroke="#3AC4A0"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_5900_68690">
+                              <rect width="16" height="16" fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="flex gap-5">
                 <div className="flex items-center gap-1">

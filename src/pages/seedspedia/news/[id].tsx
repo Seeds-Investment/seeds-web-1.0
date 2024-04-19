@@ -1,7 +1,7 @@
 'use-client';
+import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import {
   getArticle,
   getArticleById,
@@ -127,7 +127,7 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -167,7 +167,6 @@ export default function ArticleDetailPage(): JSX.Element {
           .then(response => {
             if (response.status === 200) {
               setArticleDetail(response.news);
-              console.log(response.news);
             }
           })
           .catch(error => {
@@ -313,22 +312,22 @@ export default function ArticleDetailPage(): JSX.Element {
     return <p>Loading...</p>;
   }
 
-  const customGradient = (
-    <>
-      <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-      <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-      {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
-      <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-0 absolute top-0 mt-[50%] -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
+  //     <span className="-z-0 absolute top-0 mt-[55%] left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
+  //     {/* <span className="-z-0 absolute -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-0 absolute top-64 -right-4 w-60 h-48 bg-seeds-purple blur-[140px] rotate-45 rounded-full" />
+  //     <span className="-z-0 absolute bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[140px] rotate-90 rounded-full" />
+  //   </>
+  // );
 
   const defaultNews = '/assets/default-news.png';
   const imageUrl = articleDetail?.imageUrl;
   const isImageValid = isImageUrlValid(imageUrl);
   return (
     <>
-      <PageGradient customGradient={customGradient} className="z-0">
+      <PageGradient className="z-0">
         <div className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20">
           {open && (
             <div
@@ -339,7 +338,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
                   i
                 </span>
-                You have successfully created a comment
+                Link copied to clipboard
               </p>
             </div>
           )}
@@ -376,12 +375,20 @@ export default function ArticleDetailPage(): JSX.Element {
 
           <div className="w-full">
             {isImageValid ? (
-              <img src={imageUrl} alt="Image" className="w-full" />
+              <img
+                src={imageUrl}
+                alt="Image"
+                className="w-full object-cover rounded-2xl lg:h-[676px]"
+              />
             ) : (
-              <img src={defaultNews} alt="Image" className="w-full" />
+              <img
+                src={defaultNews}
+                alt="Image"
+                className="w-full object-cover rounded-2xl lg:h-[676px]"
+              />
             )}
           </div>
-          <div className="flex flex-col border-b-4 pb-5 border-[#7555DA]">
+          <div className="flex flex-col border-b-4 pb-5 border-[#E9E9E9]">
             {contentParagraphs.map((paragraph, index) => (
               <div key={index} className=" py-4">
                 <p className="w-full">{paragraph}</p>
@@ -400,9 +407,10 @@ export default function ArticleDetailPage(): JSX.Element {
                   <h1 className="text-[#201B1C] text-lg font-semibold">
                     {userInfo.name}
                   </h1>
-                  <div className="w-full">
+                  <div className="w-full rounded-lg border-1 border border-[#3AC4A0]">
                     <Input
-                      label="Type your comment.."
+                      placeholder="Type your comment.."
+                      className="focus:outline-none "
                       onChange={e => {
                         updateComment(e.target.value);
                       }}
@@ -412,9 +420,8 @@ export default function ArticleDetailPage(): JSX.Element {
                 <div className="pt-7">
                   <Button
                     disabled={comment === '' && loading}
-                    variant="purple"
                     label="Comment"
-                    containerClasses="xl:w-[196px] h-full p-1 rounded-full"
+                    containerClasses="xl:w-[196px] h-full p-1 rounded-full bg-[#3AC4A0]"
                     onClick={async () => {
                       await submitComment(articleDetail.id);
                     }}
@@ -475,14 +482,14 @@ export default function ArticleDetailPage(): JSX.Element {
                     <path
                       d="M4.16602 10H15.8327"
                       stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M10 4.16675L15.8333 10.0001L10 15.8334"
                       stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </span>
@@ -540,7 +547,7 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

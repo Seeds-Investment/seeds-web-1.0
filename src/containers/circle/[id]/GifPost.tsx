@@ -3,6 +3,7 @@ import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
+import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -14,9 +15,18 @@ interface form {
 interface props {
   setPages: any;
   form: form;
+  isTooMuch: boolean;
+  setErrorMessage: any;
+  setIsError: any;
 }
 
-const GifPost: React.FC<props> = ({ setPages, form }) => {
+const GifPost: React.FC<props> = ({
+  setPages,
+  form,
+  isTooMuch,
+  setErrorMessage,
+  setIsError
+}) => {
   const [dataGif, setData]: any = useState();
   const [search, setSearch] = useState({
     searchGif: ''
@@ -29,7 +39,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   const fetchGif = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await getGifFromGhipy();
+      const { data } = (await getGifFromGhipy()) as GiphyI;
       setData(data);
     } catch (error: any) {
       console.error('Error fetching Gif from ghipy', error);
@@ -50,7 +60,12 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   }, []);
 
   const handlePostGif = (url: any): any => {
-    form.media_urls.push(url);
+    if (isTooMuch) {
+      setIsError(true);
+      setErrorMessage('You can only post maximum 4 images, video and gif');
+    } else {
+      form.media_urls.push(url);
+    }
     setPages('text');
   };
 

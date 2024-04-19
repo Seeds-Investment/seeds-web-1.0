@@ -5,9 +5,11 @@ import Card1 from '@/containers/homepage/asset/Card1';
 import Card2 from '@/containers/homepage/asset/Card2';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
-import { Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import { getUserInfo } from '@/repository/profile.repository';
+import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const dataTab = [
   { label: '1d', value: 'daily' },
@@ -20,12 +22,29 @@ const dataTab = [
 const AssetDetailPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { playId } = router.query;
+  const { t } = useTranslation();
   const [data, setData] = useState<any>();
   const [params, setParams] = useState({
-    tf: 'daily',
-    currency: 'IDR'
+    tf: 'daily'
   });
   const { chartItem } = useLineChart(data, params.tf);
+  const [userInfo, setUserInfo] = useState<any>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+
+        setUserInfo(dataInfo);
+      } catch (error: any) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
@@ -34,10 +53,10 @@ const AssetDetailPage: React.FC = () => {
     }));
   };
 
-  const fetchDetailAsset = async (): Promise<void> => {
+  const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {
       if (typeof id === 'string') {
-        const response = await getDetailAsset(id, params);
+        const response = await getDetailAsset(id, { ...params, currency });
         setData(response.marketAsset);
       }
     } catch (error) {
@@ -46,15 +65,15 @@ const AssetDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id !== null) {
-      void fetchDetailAsset();
+    if (id !== null && userInfo !== undefined) {
+      void fetchDetailAsset(userInfo.preferredCurrency);
     }
-  }, [id, params]);
+  }, [id, userInfo, params]);
 
   return (
     <PageGradient defaultGradient className="w-full">
       <div className="flex flex-col md:flex-row gap-5">
-        <Card1 data={data} />
+        <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
         <Card2 data={data} />
       </div>
 
@@ -89,6 +108,46 @@ const AssetDetailPage: React.FC = () => {
           </TabsHeader>
         </Tabs>
       </CCard>
+      {playId !== undefined && (
+        <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
+          <div className="flex justify-between gap-2">
+            <Button
+              variant="outlined"
+              className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
+              onClick={() => {
+                router
+                  .push(
+                    `/homepage/order/${id as string}?transaction=sell&playId=${
+                      playId as string
+                    }`
+                  )
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              {t('playSimulation.sell')}
+            </Button>
+            <Button
+              variant="filled"
+              className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
+              onClick={() => {
+                router
+                  .push(
+                    `/homepage/order/${id as string}?transaction=buy&playId=${
+                      playId as string
+                    }`
+                  )
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }}
+            >
+              {t('playSimulation.buy')}
+            </Button>
+          </div>
+        </CCard>
+      )}
     </PageGradient>
   );
 };

@@ -32,7 +32,8 @@ module.exports = withMT({
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",
-        'ellipse-purple': "url('../src/assets/ellipse-purple.png')"
+        'ellipse-purple': "url('../src/assets/ellipse-purple.png')",
+        'quiz-gradient': 'linear-gradient(88deg, #10A8AD 0%, #79F0B8 137.56%)'
       },
       backgroundSize: {
         '50%': '50%',
@@ -55,8 +56,12 @@ module.exports = withMT({
       animation: {
         'slide-down': 'slide-down 300ms ease-out forwards',
         'slide-up': 'slide-up 300ms ease-out forwards',
+        'fade-in-slide': 'fade-in-slide 1000ms ease-out forwards',
+        'fade-out-slide': 'fade-out-slide 1000ms ease-out forwards',
         'fade-in': 'fade-in 300ms ease-out forwards',
-        spinner: 'spinner 800ms ease-in-out infinite'
+        spinner: 'spinner 800ms ease-in-out infinite',
+        'bounce-horizontal': 'bounce-horizontal 2000ms infinite',
+        'bounce-reverse': 'bounce-reverse 2000ms infinite'
       },
       keyframes: {
         'slide-down': {
@@ -93,6 +98,54 @@ module.exports = withMT({
           },
           '100%': {
             transform: 'rotate(360deg)'
+          }
+        },
+        'fade-in-slide': {
+          from: {
+            opacity: 0,
+            transform: 'translateY(100px)'
+          },
+          to: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          }
+        },
+        'fade-out-slide': {
+          from: {
+            opacity: 1,
+            transform: 'translateY(0)'
+          },
+          to: {
+            opacity: 0,
+            transform: 'translateY(100px)'
+          }
+        },
+        'bounce-horizontal': {
+          '0%': {
+            transform: 'translateX(-25%)',
+            'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic - bezier(0, 0, 0.2, 1)'
+          },
+          '100%': {
+            transform: 'translateX(-25%)',
+            'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
+          }
+        },
+        'bounce-reverse': {
+          '0%': {
+            transform: 'translateX(25%)',
+            'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
+          },
+          '50%': {
+            transform: 'translateX(0)',
+            'animation-timing-function': 'cubic - bezier(0, 0, 0.2, 1)'
+          },
+          '100%': {
+            transform: 'translateX(25%)',
+            'animation-timing-function': 'cubic - bezier(0.8, 0, 1, 1)'
           }
         }
       }

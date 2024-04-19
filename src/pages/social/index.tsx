@@ -1,10 +1,12 @@
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
+import ModalAddPost from '@/components/social/ModalAddPost';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import ModalMention from '@/containers/circle/[id]/ModalMention';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import Card1 from '@/containers/social/main/Card1';
 import Card2 from '@/containers/social/main/Card2';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -12,6 +14,7 @@ import {
   getSocialPostForYou,
   getSocialPostMySpace
 } from '@/repository/social.respository';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import {
   Menu,
   MenuHandler,
@@ -73,24 +76,12 @@ const initialFilter = {
   sort_by: ''
 };
 
-const optionsFilter: optionSortBy[] = [
-  { title: 'All', subtitle: 'In descending order', value: '' },
-  {
-    title: 'Most Relevant',
-    subtitle: 'In descending order',
-    value: 'relevant'
-  },
-  {
-    title: 'Most Recent',
-    subtitle: 'In descending order',
-    value: 'recent'
-  }
-];
-
 const Social: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<string>('following');
+  const [activeTab, setActiveTab] = useState<string>(
+    isGuest() ? 'for_you' : 'following'
+  );
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [dataPost, setDataPost] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -100,8 +91,41 @@ const Social: React.FC = () => {
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [isOpen, setIsOpen] = useState(false);
   const [isIncrease, setIsIncrease] = useState(false);
+  const [isOpenModalAdd, setIsOpenModalAdd] = useState<boolean>(false);
+  const optionsFilter: optionSortBy[] = [
+    {
+      title: t('social.fiterSortBy.all'),
+      subtitle: t('social.fiterSortBy.allDesc'),
+      value: ''
+    },
+    {
+      title: t('social.fiterSortBy.recent'),
+      subtitle: t('social.fiterSortBy.recentDesc'),
+      value: 'recent'
+    },
+    {
+      title: t('social.fiterSortBy.relevant'),
+      subtitle: t('social.fiterSortBy.relevantDesc'),
+      value: 'relevant'
+    },
+    {
+      title: t('social.fiterSortBy.like'),
+      subtitle: t('social.fiterSortBy.likeDesc'),
+      value: 'liked'
+    },
+    {
+      title: t('social.fiterSortBy.trending'),
+      subtitle: t('social.fiterSortBy.trendingDesc'),
+      value: 'trending'
+    }
+  ];
 
   const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
     setIsOpen(!isOpen);
   };
 
@@ -111,7 +135,7 @@ const Social: React.FC = () => {
     setHasMore(true);
     setFilter(prevState => ({
       ...prevState,
-      type: value,
+      type: 'all',
       page: 1
     }));
     if (value === 'following') {
@@ -127,7 +151,7 @@ const Social: React.FC = () => {
     }
   };
 
-  const handleChangeFilter = (name: string, value: string): void => {
+  const handleChangeFilter = (name: string, value: string | number): void => {
     setDataPost([]);
     setHasMore(true);
     setFilter(prevState => ({
@@ -254,6 +278,9 @@ const Social: React.FC = () => {
 
   useEffect(() => {
     void fetchUserInfo();
+    if (isGuest()) {
+      void fetchPostForYou();
+    }
   }, []);
 
   const renderLoading = (): JSX.Element => (
@@ -316,6 +343,14 @@ const Social: React.FC = () => {
         setData={setDataPost}
         setGolId={setGolId}
       />
+      <ModalAddPost
+        isOpen={isOpenModalAdd}
+        handleOpen={() => {
+          setIsOpenModalAdd(false);
+        }}
+        openModalPost={handleOpen}
+      />
+
       <Card1
         activeTab={activeTab}
         setActiveTab={handleChangeTab}
@@ -323,7 +358,26 @@ const Social: React.FC = () => {
         filter={filter}
       />
 
-      <Card2 userData={userInfo} handleOpen={handleOpen} />
+      {!isGuest() && (
+        <div className="fixed bottom-10 right-10 z-20">
+          <div className="bg-[#3AC4A0] p-2 rounded-full">
+            <PlusIcon
+              width={50}
+              height={50}
+              className="text-white"
+              onClick={() => {
+                setIsOpenModalAdd(true);
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {isGuest() ? (
+        <></>
+      ) : (
+        <Card2 userData={userInfo} handleOpen={handleOpen} />
+      )}
 
       <CCard className="flex p-8 md:mt-5 md:rounded-lg border-none rounded-none pb-10">
         <div className="flex justify-end">
@@ -368,13 +422,16 @@ const Social: React.FC = () => {
                       filter.sort_by === data.value ? 'bg-[#DCFCE4]' : ''
                     }`}
                     onClick={() => {
-                      handleChangeFilter('sort_by', data.value);
+                      if (filter.sort_by !== data.value) {
+                        handleChangeFilter('sort_by', data.value);
+                        handleChangeFilter('page', 1);
+                      }
                     }}
                   >
-                    <h1 className="font-semibold font-montserrat">
+                    <h1 className="font-semibold font-montserrat text-xs">
                       {data.title}
                     </h1>
-                    <p className="font-normal font-montserrat">
+                    <p className="font-normal font-montserrat text-xs">
                       {data.subtitle}
                     </p>
                   </MenuItem>

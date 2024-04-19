@@ -1,7 +1,7 @@
 'use-client';
+import Footer from '@/components/layouts/Footer';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import {
   getArticle,
   getArticleById,
@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
 
 interface UserData {
   name: string;
@@ -114,6 +115,7 @@ export default function ArticleDetailPage(): JSX.Element {
   const [articleDetail, setArticleDetail] = useState<ArticleDetail | null>(
     null
   );
+  const [seeAllClicked, setSeeAllClicked] = useState(false);
   const { t } = useTranslation();
   const [articleComment, setArticleComment] = useState<ArticleComment[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
@@ -127,13 +129,51 @@ export default function ArticleDetailPage(): JSX.Element {
     try {
       const response = await getArticle(params);
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
+  }
+  const displayedComments = seeAllClicked
+    ? articleComment
+    : articleComment?.slice(0, 3);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleSeeAllComments = () => {
+    setSeeAllClicked(prevSeeAllClicked => !prevSeeAllClicked);
+  };
+
+  const hotNewsItemClass = 'mb-2 me-12';
+
+  const stripHtmlTags = (html: any): string => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return (tempElement.textContent ?? tempElement.innerText ?? '').toString();
+  };
+  function LimitString({
+    text,
+    limit
+  }: {
+    text: string;
+    limit: number;
+  }): JSX.Element {
+    const [showFullText] = useState(false);
+
+    const truncatedText = showFullText ? text : text.slice(0, limit);
+
+    return (
+      <div>
+        <p className="text-sm font-normal text-[#7C7C7C] my-2">
+          {truncatedText}...
+        </p>
+        {!showFullText && text.length > limit && (
+          <button className="text-[#7555DA] text-base font-normal underline"></button>
+        )}
+      </div>
+    );
   }
 
   useEffect(() => {
@@ -339,7 +379,7 @@ export default function ArticleDetailPage(): JSX.Element {
                 <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">
                   i
                 </span>
-                You have successfully created a comment
+                Link copied to clipboard
               </p>
             </div>
           )}
@@ -393,7 +433,7 @@ export default function ArticleDetailPage(): JSX.Element {
               <div className="flex flex-row gap-3 my-6 w-full">
                 <img
                   src={userInfo.avatar}
-                  className="xl:w-[75px] h-full rounded-full"
+                  className="xl:w-[75px] w-[48px] h-[48px] xl:h-full rounded-full"
                   alt=""
                 />
                 <div className="flex flex-col gap-2 w-full">
@@ -429,7 +469,7 @@ export default function ArticleDetailPage(): JSX.Element {
             </h1>
             {articleDetail.total_comments !== 0 ? (
               <div className="flex flex-col">
-                {articleComment.map(article => (
+                {displayedComments?.map(article => (
                   <div
                     key={article?.id}
                     className="flex flex-col mt-5 bg-[#E9E9E94D]/30 p-4 gap-3 rounded-xl"
@@ -438,7 +478,7 @@ export default function ArticleDetailPage(): JSX.Element {
                       <img
                         src={article?.avatar}
                         alt=""
-                        className="xl:w-[48px] xl:h-[48px] rounded-full"
+                        className="xl:w-[48px] xl:h-[48px] w-[48px] h-[48px] rounded-full"
                       />
                       <div className="xl:ml-4">
                         <h1 className="text-[#201B1C] text-lg font-semibold">
@@ -454,6 +494,30 @@ export default function ArticleDetailPage(): JSX.Element {
                     </p>
                   </div>
                 ))}
+                {articleDetail?.total_comments > 3 && (
+                  <button
+                    className="mt-5 flex w-[130px] items-center mx-auto justify-center text-center text-white bg-gradient-to-r to-[#4FE6AF] from-[#9A76FE] rounded-full text-base font-normal font-poppins p-2 cursor-pointer"
+                    onClick={handleSeeAllComments}
+                  >
+                    {seeAllClicked ? 'close' : 'see all'}{' '}
+                    <span className="ms-2">
+                      <svg
+                        width="13"
+                        height="8"
+                        viewBox="0 0 13 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12.5 0.999999L6.5 7L0.5 1"
+                          stroke="white"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                )}
               </div>
             ) : (
               <></>
@@ -461,86 +525,108 @@ export default function ArticleDetailPage(): JSX.Element {
           </div>
           <div className="mt-12 flex justify-between">
             <p className="text-3xl font-bold ">{t('articleList.text6')} </p>
-            <Link href={'/homepage'}>
-              <p className="flex text-md border border-1 p-2 font-semibold">
-                {t('articleList.text8')}
-                <span className="mt-1">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4.16602 10H15.8327"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10 4.16675L15.8333 10.0001L10 15.8334"
-                      stroke="#262626"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </span>
-              </p>
-            </Link>
           </div>
-          <div className="grid lg:grid-cols-6 gap-4 rounded-2xl py-10">
-            {articles.slice(0, 3).map(article => (
-              <div
-                key={article.id}
-                className="p-4 border bg-[#F9F9F9] gap-[16px] lg:col-span-2 border-gray-300 rounded-3xl w-full"
-              >
-                <Link href={`/homepage/news/${article.id}`}>
-                  <div className="flex justify-between">
-                    <div className="flex-row">
-                      <div className="flex justify-between flex-col">
-                        <div className="mb-auto">
-                          <p className="mt-2 font-bold text-base">
-                            {article.title}
-                          </p>
-                        </div>
+          <div className="">
+            <Slider
+              slidesToShow={2}
+              slidesToScroll={1}
+              speed={500}
+              className="my-12 "
+              initialSlide={1}
+              // slidesToScroll={1}
+              responsive={[
+                {
+                  breakpoint: 1024,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 2
+                    // slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 768,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 2
+                    // slidesToScroll: 1
+                  }
+                },
+                {
+                  breakpoint: 480,
+                  settings: {
+                    dots: true,
+                    slidesToShow: 1
+                  }
+                }
+              ]}
+            >
+              {articles.map(article => (
+                <div
+                  key={article.id}
+                  className={` lg:pe-5 w-[200px] flex  cursor-pointer hover:shadow-lg transition-all  ${hotNewsItemClass}`}
+                >
+                  <Link href={`/homepage/news/${article.id}`}>
+                    <div className="flex justify-between bg-[#E9E9E980] rounded-2xl">
+                      <div className="flex-row">
+                        <div className="flex justify-between flex-col">
+                          <div className="p-2">
+                            <h1 className="bg-[#DCFCE4] text-xs font-semibold w-[65px] text-center text-[#3AC4A0] p-1 rounded-full">
+                              {article?.category}
+                            </h1>
+                            <h1 className="text-base font-semibold text-[#000] my-1">
+                              {article?.title !== undefined &&
+                              article.title.length > 45
+                                ? `${article.title.slice(0, 45)}...`
+                                : article?.title}
+                            </h1>
+                            <Link
+                              className="text-sm"
+                              href={`/homepage/articles/${article?.id ?? 0}`}
+                            >
+                              <LimitString
+                                text={stripHtmlTags(article?.content ?? '')}
+                                limit={80}
+                              />
+                            </Link>
+                          </div>
 
-                        <div>
-                          <div className="flex mt-2 justify-between">
-                            <p className="mt-1 font-normal text-sm text-[#8A8A8A]">
-                              {formatDateToIndonesian(
-                                articleDetail?.publicationDate
-                              )}
-                            </p>
+                          <div>
+                            <div className="flex  justify-between">
+                              <p className="font-normal text-sm text-[#8A8A8A]">
+                                {formatDateToIndonesian(
+                                  articleDetail?.publicationDate
+                                )}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="mt-1 w-[100px] h-[100px]">
-                        {isImageValid ? (
-                          <img
-                            src={article?.imageUrl}
-                            alt=""
-                            className="w-[75px] h-full rounded-2xl"
-                          />
-                        ) : (
-                          <img
-                            src={defaultNews}
-                            alt=""
-                            className="w-[75px] h-full rounded-2xl"
-                          />
-                        )}
+                      <div>
+                        <div className="mt-1 w-[120px] h-[120px]">
+                          {isImageUrlValid(article.imageUrl) ? (
+                            <img
+                              src={article?.imageUrl}
+                              alt=""
+                              className="w-[100px] h-full object-cover rounded-2xl"
+                            />
+                          ) : (
+                            <img
+                              src={defaultNews}
+                              alt=""
+                              className="w-[100px] h-full object-cover rounded-2xl"
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  </Link>
+                </div>
+              ))}
+            </Slider>
           </div>
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />{' '}
     </>
   );
 }

@@ -51,7 +51,7 @@ const ContactList: React.FC<props> = ({
       </div>
       <div
         onClick={handleListClick}
-        className={`flex flex-col max-h-[40vh] overflow-auto mt-4`}
+        className={`flex flex-col max-h-[40vh] overflow-hidden mt-4`}
       >
         {filteredChats?.map((el: Chat) => {
           return <ChatList data={el} key={el.id} />;

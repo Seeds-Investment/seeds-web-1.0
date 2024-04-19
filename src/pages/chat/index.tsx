@@ -1547,25 +1547,39 @@ const ChatPages: React.FC = () => {
                     )}
                     {messageList.length > 0 && (
                       <div className="flex flex-col gap-4 justify-end">
-                        {messageList.map((message: IChatBubble) => {
+                        {messageList.map((message: IChatBubble, index) => {
                           if (message.created_by === dataUser.id) {
                             if (message.content_text?.length > 0) {
                               return (
                                 <div
                                   key={message.id}
-                                  className="bg-[#DCFCE4] p-2 self-end max-w-[60%] rounded-lg mx-4"
+                                  className="flex flex-col w-full"
                                 >
-                                  <Typography
-                                    className={
-                                      message.content_text.includes(
-                                        searchText
-                                      ) && searchText !== ''
-                                        ? 'font-poppins text-[#262626] bg-[#FBF719]'
-                                        : 'font-poppins text-[#262626]'
-                                    }
-                                  >
-                                    {message.content_text}
-                                  </Typography>
+                                  <div className="bg-[#DCFCE4] p-2 self-end max-w-[60%] rounded-lg mx-4">
+                                    <Typography
+                                      className={
+                                        message.content_text.includes(
+                                          searchText
+                                        ) && searchText !== ''
+                                          ? 'font-poppins break-all text-[#262626] bg-[#FBF719]'
+                                          : 'font-poppins break-all text-[#262626]'
+                                      }
+                                    >
+                                      {message.content_text}
+                                    </Typography>
+                                  </div>
+                                  {message?.read_at !==
+                                    '0001-01-01T00:00:00Z' && (
+                                    <>
+                                      {(messageList[index + 1]?.read_at ===
+                                        '0001-01-01T00:00:00Z' ||
+                                        messageList?.length === index + 1) && (
+                                        <Typography className="font-poppins text-[#BDBDBD] self-end mr-4">
+                                          Seen
+                                        </Typography>
+                                      )}
+                                    </>
+                                  )}
                                 </div>
                               );
                             }
@@ -1587,6 +1601,25 @@ const ChatPages: React.FC = () => {
                                   Your browser does not support the audio
                                   element.
                                 </audio>
+                              );
+                            }
+                            if (
+                              message.media_urls?.length > 0 &&
+                              (message.media_urls[0]?.includes('mp4') ||
+                                message.media_urls[0]?.includes('mov'))
+                            ) {
+                              return (
+                                <div
+                                  key={message.id}
+                                  className="p-2 self-end max-w-[60%] rounded-lg mx-4"
+                                >
+                                  <video width="320" height="240" controls>
+                                    <source
+                                      src={message.media_urls[0]}
+                                      type="video/mp4"
+                                    />
+                                  </video>
+                                </div>
                               );
                             } else {
                               return (
@@ -1615,8 +1648,8 @@ const ChatPages: React.FC = () => {
                                         message.content_text.includes(
                                           searchText
                                         ) && searchText !== ''
-                                          ? 'font-poppins text-[#fff] bg-[#FBF719]'
-                                          : 'font-poppins text-[#fff]'
+                                          ? 'font-poppins break-all text-[#fff] bg-[#FBF719]'
+                                          : 'font-poppins break-all text-[#fff]'
                                       }
                                     >
                                       {message.content_text}
@@ -1649,6 +1682,34 @@ const ChatPages: React.FC = () => {
                                   </audio>
                                 </div>
                               );
+                            }
+                            if (
+                              message.media_urls?.length > 0 &&
+                              (message.media_urls[0]?.includes('mp4') ||
+                                message.media_urls[0]?.includes('mov'))
+                            ) {
+                              return (
+                                <div className="flex ml-4" key={message.id}>
+                                  <Image
+                                    width={32}
+                                    height={32}
+                                    src={otherUserData?.avatar as string}
+                                    alt="avatar"
+                                    className="rounded-full w-8 h-8"
+                                  />
+                                  <div
+                                    key={message.id}
+                                    className="p-2 self-start max-w-[60%] rounded-lg"
+                                  >
+                                    <video width="320" height="240" controls>
+                                      <source
+                                        src={message.media_urls[0]}
+                                        type="video/mp4"
+                                      />
+                                    </video>
+                                  </div>
+                                </div>
+                              );
                             } else {
                               return (
                                 <div className="flex ml-4" key={message.id}>
@@ -1659,10 +1720,12 @@ const ChatPages: React.FC = () => {
                                     alt="avatar"
                                     className="rounded-full w-8 h-8"
                                   />
-                                  <img
-                                    src={message?.media_urls[0]}
-                                    className="max-w-[60%]"
-                                  />
+                                  <div
+                                    key={message.id}
+                                    className="p-2 self-start max-w-[60%] rounded-lg"
+                                  >
+                                    <img src={message?.media_urls[0]} />
+                                  </div>
                                 </div>
                               );
                             }

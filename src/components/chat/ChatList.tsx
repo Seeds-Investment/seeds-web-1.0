@@ -13,7 +13,7 @@ const ChatList: React.FC<props> = ({ data }) => {
   return (
     <div
       key={data?.id}
-      className={`flex justify-start gap-2 py-2 px-2 border-b border-solid border-[#E9E9E9] cursor-pointer ${
+      className={`flex w-full justify-start gap-2 py-2 px-2 border-b border-solid border-[#E9E9E9] cursor-pointer ${
         roomId !== undefined && roomId === data?.id
           ? 'bg-[#DCFCE4BF] rounded-xl'
           : 'bg-white'
@@ -22,12 +22,12 @@ const ChatList: React.FC<props> = ({ data }) => {
         void router.replace(`/chat?roomId=${data?.id}`);
       }}
     >
-      <div className="flex items-center">
+      <div className="flex items-center shrink-0">
         <img src={data?.avatar} alt="avatar" className="rounded-full w-8 h-8" />
       </div>
       <div className="flex flex-col w-full items-center">
         <div className="flex justify-between w-full">
-          <Typography className="font-semibold text-sm text-black font-poppins">
+          <Typography className="font-semibold text-sm text-black font-poppins shrink text-ellipsis overflow-hidden">
             {data?.name}
           </Typography>
           <Typography className="font-normal text-xs text-[#27A590] font-poppins">

@@ -77,13 +77,17 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
     getLastTranslation().catch(err => {
       console.log(err);
     });
-    // if (localStorage.getItem('accessToken') !== null) {
-    //   router
-    //     .push('/homepage')
-    //     .then()
-    //     .catch(() => {});
-    //   handleOpen();
-    // }
+    if (
+      localStorage.getItem('accessToken') !== null &&
+      parseInt(localStorage.getItem('expiresAt') as string) >
+        Math.floor(Date.now() / 1000)
+    ) {
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleOpen();
+    }
   }, []);
 
   return (

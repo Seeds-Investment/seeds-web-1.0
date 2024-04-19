@@ -107,21 +107,18 @@ const TournamentHome: React.FC = () => {
     void fetchCircleLeaderBoard();
   }, []);
 
-  const getDetail = useCallback(
-    async () => {
-      try {
-        setLoading(true);
-        const resp: IDetailTournament = await getPlayById(id as string);
-        setDetailTournament(resp);
-      } catch (error) {
-        toast(`ERROR fetch tournament ${error as string}`);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [id]
-  );
-  
+  const getDetail = useCallback(async () => {
+    try {
+      setLoading(true);
+      const resp: IDetailTournament = await getPlayById(id as string);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`ERROR fetch tournament ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       getDetail();
@@ -130,7 +127,7 @@ const TournamentHome: React.FC = () => {
 
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${detailTournament?.play_id}`
+    const textToCopy = `${detailTournament?.play_id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Play ID copied!');
     });
@@ -176,21 +173,21 @@ const TournamentHome: React.FC = () => {
           <Typography className='text-xl font-semibold'>
             {detailTournament?.name}
           </Typography>
-          <Image 
+          <Image
             onClick={() => {
               setIsDetailModal(true);
             }}
-            alt="" 
-            src={IconWarning} 
-            className='w-[20px] cursor-pointer'
+            alt=""
+            src={IconWarning}
+            className="w-[20px] cursor-pointer"
           />
         </div>
-        <div className='text-[14px] flex justify-start items-center gap-2 py-2 w-full'>
-          <Typography className='font-poppins'>
+        <div className="text-[14px] flex justify-start items-center gap-2 py-2 w-full">
+          <Typography className="font-poppins">
             Play ID : {detailTournament?.play_id}
           </Typography>
           <button onClick={handleCopyClick}>
-            <Image alt="" src={IconCopy} className='w-[20px]'/>
+            <Image alt="" src={IconCopy} className="w-[20px]" />
           </button>
         </div>
         <div className='w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative'>
@@ -216,50 +213,70 @@ const TournamentHome: React.FC = () => {
                 Portfolio
               </Typography>
             </div>
-            <div onClick={async() => await router.push('/play/tournament/1/virtual-balance')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
-              <Image alt="" src={IconVirtualBalance} className='w-[30px] md:w-[45px]'/>
-              <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
+            <div
+              onClick={async () =>
+                await router.push('/play/tournament/1/virtual-balance')
+              }
+              className="flex flex-col justify-center items-center gap-2 cursor-pointer"
+            >
+              <Image
+                alt=""
+                src={IconVirtualBalance}
+                className="w-[30px] md:w-[45px]"
+              />
+              <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
                 Virtual Balance
               </Typography>
             </div>
-            <div className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
-              <Image alt="" src={IconWatchlist} className='w-[30px] md:w-[45px]'/>
-              <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
+            <div className="flex flex-col justify-center items-center gap-2 cursor-pointer">
+              <Image
+                alt=""
+                src={IconWatchlist}
+                className="w-[30px] md:w-[45px]"
+              />
+              <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
                 Watchlist
               </Typography>
             </div>
           </div>
         </div>
-        <div className='mt-16 w-full'>
-          <div className='flex flex-col w-full justify-center items-center'>
-            <div className="text-lg font-semibold">{t('tournament.detailRemaining')}</div>
-            <CountdownTimer className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins" deadline={detailTournament?.end_time ? detailTournament.end_time.toString() : ''} />
+        <div className="mt-16 w-full">
+          <div className="flex flex-col w-full justify-center items-center">
+            <div className="text-lg font-semibold">
+              {t('tournament.detailRemaining')}
+            </div>
+            <CountdownTimer
+              className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
+              deadline={
+                detailTournament?.end_time
+                  ? detailTournament.end_time.toString()
+                  : ''
+              }
+            />
           </div>
         </div>
-        <div className='bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4'>
-          <Image alt="" src={IconSeeds} className='w-[60px] md:w-[80px] xl:ml-8'/>
-          <div className='w-full lg:flex lg:justify-between ml-2'>
-            <div className='flex flex-col justify-center items-start text-sm lg:text-lg'>
-              <div>
-                {t('tournament.leaderboardBanner1')}
-              </div>
-              <div className='flex gap-2'>
-                <div>
-                  {t('tournament.leaderboardBanner2')}
-                </div>
-                <div className='text-[#3AC4A0] font-semibold'>
-                  Leaderboard
-                </div>
+        <div className="bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4">
+          <Image
+            alt=""
+            src={IconSeeds}
+            className="w-[60px] md:w-[80px] xl:ml-8"
+          />
+          <div className="w-full lg:flex lg:justify-between ml-2">
+            <div className="flex flex-col justify-center items-start text-sm lg:text-lg">
+              <div>{t('tournament.leaderboardBanner1')}</div>
+              <div className="flex gap-2">
+                <div>{t('tournament.leaderboardBanner2')}</div>
+                <div className="text-[#3AC4A0] font-semibold">Leaderboard</div>
               </div>
             </div>
-            <div className='bg-[#3AC4A0] text-white flex justify-center items-center w- lg:w-[300px] lg:text-lg text-xs rounded-full px-4 py-1 mt-2 xl:mr-8'>
+            <div className="bg-[#3AC4A0] text-white flex justify-center items-center w- lg:w-[300px] lg:text-lg text-xs rounded-full px-4 py-1 mt-2 xl:mr-8">
               {t('tournament.leaderboardBanner3')}
             </div>
           </div>
         </div>
 
-        <div className='w-full mt-4'>
-          <Typography className='text-xl font-semibold text-[#3AC4A0]'>
+        <div className="w-full mt-4">
+          <Typography className="text-xl font-semibold text-[#3AC4A0]">
             Tournament Assets
           </Typography>
           <input
@@ -271,21 +288,15 @@ const TournamentHome: React.FC = () => {
             disabled={false}
             className="mt-4 block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
-          <div className='flex justify-between items-center p-4 mt-4'>
-            <div className='flex gap-4'>
-              <Image alt="" src={CoinLogo} className='w-[40px]'/>
-              <div className='flex flex-col justify-center items-start'>
-                <div className='flex gap-1'>
-                  <div className='font-semibold'>
-                    ETH /
-                  </div>
-                  <div>
-                    BIDR
-                  </div>
+          <div className="flex justify-between items-center p-4 mt-4">
+            <div className="flex gap-4">
+              <Image alt="" src={CoinLogo} className="w-[40px]" />
+              <div className="flex flex-col justify-center items-start">
+                <div className="flex gap-1">
+                  <div className="font-semibold">ETH /</div>
+                  <div>BIDR</div>
                 </div>
-                <div className='text-[#7C7C7C]'>
-                  Ethereum
-                </div>
+                <div className="text-[#7C7C7C]">Ethereum</div>
               </div>
             </div>
             <div className='flex flex-col justify-end items-end'>
@@ -311,8 +322,8 @@ const TournamentHome: React.FC = () => {
         </div>
       </div>
 
-      <div className='w-full rounded-lg mt-4 p-5 bg-white'>
-        <Typography className='text-xl font-semibold text-[#3AC4A0]'>
+      <div className="w-full rounded-lg mt-4 p-5 bg-white">
+        <Typography className="text-xl font-semibold text-[#3AC4A0]">
           {t('tournament.circleRecommendation')}
         </Typography>
         <div className="mt-4">

@@ -12,6 +12,10 @@ const withRedirect = async <T extends QueryType>(
   query?: T,
   pathname?: string
 ): Promise<void> => {
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
   // Add logic and redirect pathname in here
   const redirectList: RedirectList = [
     {
@@ -28,19 +32,21 @@ const withRedirect = async <T extends QueryType>(
     }
   ];
 
-  if (window.localStorage.getItem('accessToken') === null) {
+  if (
+    window.localStorage.getItem('accessToken') === null ||
+    expiredUnixTime < currentUnixTime
+  ) {
     await router.push({
       pathname,
       query
     });
-  } else {
-    if (redirectList !== undefined) {
-      for (let i = 0; i < redirectList?.length; i++) {
-        if (redirectList[i].logic) {
-          await router.push({ pathname: redirectList[i].redirect });
-          break;
-        }
-      }
+  } else if (
+    window.localStorage.getItem('accessToken') !== null &&
+    expiredUnixTime > currentUnixTime
+  ) {
+    const redirectItem = redirectList.find(item => item.logic);
+    if (redirectItem !== undefined && redirectItem !== null) {
+      await router.push({ pathname: redirectItem.redirect });
     }
   }
 };

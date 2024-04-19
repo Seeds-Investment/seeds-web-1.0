@@ -5,7 +5,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 // import { useTranslation } from 'react-i18next';
-import QRCode from "react-qr-code";
+import QRCode from 'react-qr-code';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
 
@@ -47,9 +47,12 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
         <Typography className="text-lg text-black">
           Play ID : {playId}
         </Typography>
-        <div style={{ height: "auto", margin: "0 auto"}} className='w-[80%] md:w-[50%]'>
+        <div
+          style={{ height: 'auto', margin: '0 auto' }}
+          className="w-[80%] md:w-[50%]"
+        >
           <QRCode
-            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
             value={`${baseUrl}/play/tournament/${url}`}
             viewBox={`0 0 256 256`}
           />
@@ -59,7 +62,7 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
           Share links:
         </Typography>
 
-        <div className='w-full h-fit flex mb-4'>
+        <div className="w-full h-fit flex mb-4">
           <input
             id="search"
             type="text"
@@ -70,8 +73,11 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
             value={`${baseUrl}/play/tournament/${url}`}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
-          <div onClick={handleCopyClick} className='w-[50px] cursor-pointer flex justify-center items-center'>
-            <Image alt="" src={CopyLink} className='w-[20px]'/>
+          <div
+            onClick={handleCopyClick}
+            className="w-[50px] cursor-pointer flex justify-center items-center"
+          >
+            <Image alt="" src={CopyLink} className="w-[20px]" />
           </div>
         </div>
       </div>

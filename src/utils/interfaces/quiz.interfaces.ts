@@ -246,3 +246,12 @@ export interface QuizCashoutRespI {
   created_at: string;
   updated_at: string;
 }
+
+export interface QuizCategoryI {
+  category_id: string;
+  name: string;
+  descriptions: {
+    id: string;
+    en: string;
+  };
+}

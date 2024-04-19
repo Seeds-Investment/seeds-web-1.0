@@ -9,6 +9,7 @@ import Modal from '../ui/modal/Modal';
 interface Props {
   onClose: () => void;
   onChange: (value: string) => void;
+  onSelect: () => void;
   value: string;
   userList: SearchUserChat[];
 }
@@ -16,6 +17,7 @@ interface Props {
 const SearchChatPopup: React.FC<Props> = ({
   onClose,
   onChange,
+  onSelect,
   value,
   userList
 }) => {
@@ -37,6 +39,7 @@ const SearchChatPopup: React.FC<Props> = ({
               className="flex w-full gap-2 mt-4 overflow-hidden cursor-pointer"
               onClick={() => {
                 void router.replace(`/chat?roomId=${item.id}`);
+                onSelect();
                 onClose();
               }}
             >

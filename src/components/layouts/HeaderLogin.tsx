@@ -49,8 +49,10 @@ const HeaderLogin: React.FC = () => {
     try {
       const response = await getUserInfo();
       setUserInfo(response);
-    } catch {
-      toast.error('Error fecthing user data');
+    } catch (error: any) {
+      if (error.response.status !== 401) {
+        toast.error('Error fetching user data');
+      }
     }
   };
 
@@ -181,7 +183,16 @@ const HeaderLogin: React.FC = () => {
                   </div>
                 </section>
                 <section>
-                  <ChatIcon />
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      router.push('/chat').catch(err => {
+                        toast(err);
+                      });
+                    }}
+                  >
+                    <ChatIcon />
+                  </div>
                 </section>
                 {accessToken !== null && userInfo !== null ? (
                   <Link href="/my-profile">

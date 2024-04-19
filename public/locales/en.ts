@@ -1223,6 +1223,7 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    redirectError: 'Please Re-login',
     product: {
       section1: {
         title1: 'Play & Win',
@@ -1698,9 +1699,11 @@ export default {
     extraCash:
       "Oops, if you want an extra assist, you'll need an extra IDR {{amount}} cash",
     select: 'Select',
-    quizCompanion: 'Meet Your Quiz Companion',
+    quizCompanion: 'Pick your power-up!',
     chooseOptions:
-      'Choose your assistance options, and of course you can even choose more than one!',
+      'Struggling? This power-up will guide you towards the correct answer',
+    freeOptions:
+      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
     fiftyfifty: 'This option will eliminate two wrong answers.',
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
@@ -1784,9 +1787,9 @@ export default {
     active: 'Active',
     ended: 'Ended',
     canceled: 'Cancelled',
-    quizDone1: 'One Step Closer to the Win.',
+    quizDone1: "let's join another interesting quiz!",
     quizDone2:
-      'Our recommended circle that will boost your performance in tournament!',
+      'Ooops... you only get one chance to play a free quiz! Explore more quizzes!',
     testInvestment: 'Test your investment knowledge and win real money!',
     welcome: 'Welcome to Seeds Quiz',
     areYouReady: 'Are You Ready?',
@@ -1863,7 +1866,7 @@ export default {
       days: 'd',
       hours: 'h',
       minutes: 'm',
-      seconds: 's',
+      seconds: 's'
     },
     tournamentCard: {
       player: 'Player(s)',
@@ -1872,13 +1875,15 @@ export default {
       fee: 'Fee',
       openButton: 'Open',
       share: 'Share',
-      days: 'Day(s)',
+      days: 'Day(s)'
     },
     first: '1st',
     second: '2nd',
     third: '3rd',
-    seedsResponsibility1: 'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
-    seedsResponsibility2: 'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application',
+    seedsResponsibility1:
+      'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
+    seedsResponsibility2:
+      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application'
   },
   discover: {
     hotNews: 'Hot News',

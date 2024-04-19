@@ -69,7 +69,6 @@ import {
   chatEmpty,
   chatIcon1,
   dropdownGreen,
-  emoji,
   galleryChat,
   mic,
   seedsChat,
@@ -1811,14 +1810,6 @@ const ChatPages: React.FC = () => {
                             className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full resize-none"
                             placeholder="Type message…"
                           />
-                          <div className="flex justify-center items-center absolute right-[95px] pt-[14px]">
-                            <Image
-                              alt="Search"
-                              src={emoji}
-                              width={16}
-                              height={16}
-                            />
-                          </div>
                         </div>
                         <div
                           onClick={() => {

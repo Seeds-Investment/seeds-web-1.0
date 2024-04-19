@@ -3,7 +3,6 @@
 'use-client';
 
 import Bullish from '@/assets/play/tournament/bullish.svg';
-import CardRecomendation from '@/assets/play/tournament/circleRecomendation.svg';
 import CoinLogo from '@/assets/play/tournament/coinLogo.svg';
 import IconCopy from '@/assets/play/tournament/copyLink.svg';
 import BannerCircle from '@/assets/play/tournament/homeBannerCircle.svg';
@@ -12,12 +11,16 @@ import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg'
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
 import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
+import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
+import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
+import withAuth from '@/helpers/withAuth';
+import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -56,7 +59,26 @@ const settings: Settings = {
     }
   ]
 };
-const TournamentHome = (): React.ReactElement => {
+
+export interface CircleInterface {
+  id: string;
+  name: string;
+  avatar: string;
+  cover: string;
+  description: string;
+  description_rules: string;
+  type: string;
+  premium_fee: number;
+  admin_fee: number;
+  monthly_time: number;
+  total_rating: number;
+  total_member: number;
+  total_post: number;
+  created_at: string;
+  updated_at: string;
+}
+
+const TournamentHome: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
@@ -64,6 +86,8 @@ const TournamentHome = (): React.ReactElement => {
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
+  const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
+  const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -79,6 +103,8 @@ const TournamentHome = (): React.ReactElement => {
     fetchData()
       .then()
       .catch(() => {});
+
+    void fetchCircleLeaderBoard();
   }, []);
 
   const getDetail = useCallback(async () => {
@@ -99,14 +125,6 @@ const TournamentHome = (): React.ReactElement => {
     }
   }, [id, userInfo]);
 
-  if (detailTournament === undefined && loading) {
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <div className="animate-spinner w-10 h-10" />
-      </div>
-    );
-  }
-
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`;
@@ -115,6 +133,24 @@ const TournamentHome = (): React.ReactElement => {
     });
   };
 
+  const fetchCircleLeaderBoard = async (): Promise<void> => {
+    try {
+      setIsLoadingLeaderBoard(true);
+      getCircleLeaderBoard()
+        .then(res => {
+          setLeaderBoard(res.data);
+          setIsLoadingLeaderBoard(false);
+        })
+        .catch(err => {
+          toast.error('Error fetching data:', err);
+          setIsLoadingLeaderBoard(false);
+        });
+    } catch (error: any) {
+      setIsLoadingLeaderBoard(false);
+      toast.error('Error fetching circle data:', error.message);
+    }
+  };
+  
   return (
     <>
       {isDetailModal && (
@@ -122,11 +158,19 @@ const TournamentHome = (): React.ReactElement => {
           onClose={() => {
             setIsDetailModal(prev => !prev);
           }}
+          playTime={detailTournament?.play_time ?? ''}
+          endTime={detailTournament?.end_time ?? ''}
+          category={detailTournament?.category ?? ''}
+          prize={detailTournament?.prize ?? []}
+          tnc={detailTournament?.tnc ?? {en: '', id: ''}}
+          length={detailTournament?.total_participants ?? 0}
+          userInfoCurrency={userInfo.preferredCurrency ?? ''}
         />
       )}
-      <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-        <div className="flex justify-start w-full gap-2">
-          <Typography className="text-xl font-semibold">
+      {(detailTournament === undefined && loading) && <Loading />}
+      <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
+        <div className='flex justify-start w-full gap-2'>
+          <Typography className='text-xl font-semibold'>
             {detailTournament?.name}
           </Typography>
           <Image
@@ -146,39 +190,26 @@ const TournamentHome = (): React.ReactElement => {
             <Image alt="" src={IconCopy} className="w-[20px]" />
           </button>
         </div>
-        <div className="w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative">
-          <div className="flex flex-col justify-start gap-2 md:gap-0">
-            <Typography className="text-white font-poppins z-20 text-sm md:text-lg">
+        <div className='w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative'>
+          <div className='flex flex-col justify-start gap-2 md:gap-0'>
+            <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               Total Investment
             </Typography>
-            <Typography className="text-white text-[26px] font-semibold font-poppins z-20">
+            <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
               IDR 4.490.000
             </Typography>
-            <Typography className="text-white font-poppins z-20 text-sm md:text-lg">
+            <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               Total Return IDR 44.500.400 (+2.8%)
             </Typography>
-            <Typography className="text-white font-poppins z-20 text-sm md:text-lg">
+            <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               Virtual Balance : 100.000.000
             </Typography>
           </div>
-          <Image
-            alt=""
-            src={BannerCircle}
-            className="absolute top-0 right-0 z-10"
-          />
-          <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-30 rounded-xl shadow-lg">
-            <div
-              onClick={async () =>
-                await router.push('/play/tournament/1/portfolio')
-              }
-              className="flex flex-col justify-center items-center gap-2 cursor-pointer"
-            >
-              <Image
-                alt=""
-                src={IconPortfolio}
-                className="w-[30px] md:w-[45px]"
-              />
-              <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+          <Image alt="" src={BannerCircle} className='absolute top-0 right-0 z-0'/>
+          <div className='w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg'>
+            <div onClick={async() => await router.push('/play/tournament/1/portfolio')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
+              <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
+              <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
                 Portfolio
               </Typography>
             </div>
@@ -268,12 +299,24 @@ const TournamentHome = (): React.ReactElement => {
                 <div className="text-[#7C7C7C]">Ethereum</div>
               </div>
             </div>
-            <div className="flex flex-col justify-end items-end">
-              <div className="font-semibold">IDR 3.575.000</div>
-              <div className="flex justify-center gap-2">
-                <Image alt="" src={Bullish} className="w-[20px]" />
-                <div className="text-[#3AC4A0]">(47%)</div>
+            <div className='flex flex-col justify-end items-end'>
+              <div className='font-semibold'>
+                IDR 3.575.000
               </div>
+              <div className='flex justify-center gap-2'>
+                <Image alt="" src={Bullish} className='w-[20px]'/>
+                <div className='text-[#3AC4A0]'>
+                  (47%)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='w-full flex justify-center items-center' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
+            <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
+              <Typography className='text-lg font-semibold text-white'>
+                See More
+              </Typography>
             </div>
           </div>
         </div>
@@ -283,22 +326,29 @@ const TournamentHome = (): React.ReactElement => {
         <Typography className="text-xl font-semibold text-[#3AC4A0]">
           {t('tournament.circleRecommendation')}
         </Typography>
-        <div className="w-full overflow-hidden mt-4">
-          <Slider {...settings}>
-            <div className="w-full lg:w-1/3 p-2">
-              <Image alt="" src={CardRecomendation} className="" />
-            </div>
-            <div className="w-full lg:w-1/3 p-2">
-              <Image alt="" src={CardRecomendation} className="" />
-            </div>
-            <div className="w-full lg:w-1/3 p-2">
-              <Image alt="" src={CardRecomendation} className="" />
-            </div>
-          </Slider>
+        <div className="mt-4">
+          {isLoadingLeaderBoard ? (
+            <Card
+              shadow={false}
+              className="h-[250px] max-w-full rounded-3xl overflow-hidden shadow-lg mr-3 relative"
+            >
+              <Typography className="flex items-center justify-center font-semibold text-xl">
+                Loading...
+              </Typography>
+            </Card>
+          ) : (
+            <Slider {...settings}>
+              {leaderBoards?.map((leaderBoard, idx) => (
+                <div key={idx} className="w-full lg:w-1/3">
+                  <CardCircle data={leaderBoard} cover={leaderBoard.cover} userInfo={null} />
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-export default TournamentHome;
+export default withAuth(TournamentHome);

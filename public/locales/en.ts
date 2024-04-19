@@ -1868,6 +1868,15 @@ export default {
       minutes: 'm',
       seconds: 's'
     },
+    tournamentCard: {
+      player: 'Player(s)',
+      duration: 'Duration',
+      joined: 'Joined',
+      fee: 'Fee',
+      openButton: 'Open',
+      share: 'Share',
+      days: 'Day(s)',
+    },
     first: '1st',
     second: '2nd',
     third: '3rd',

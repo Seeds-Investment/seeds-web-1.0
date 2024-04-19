@@ -1,10 +1,11 @@
 'use client';
-import Barcode from '@/assets/play/tournament/barcode.svg';
+// import Barcode from '@/assets/play/tournament/barcode.svg';
 import CopyLink from '@/assets/play/tournament/copyTournamentLink.svg';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 // import { useTranslation } from 'react-i18next';
+import QRCode from "react-qr-code";
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
 
@@ -20,7 +21,7 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${baseUrl}/play/quiz/${url}`;
+    const textToCopy = `${baseUrl}/play/tournament/${url}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast("Tournament's link copied!");
     });
@@ -42,18 +43,17 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-3 justify-center  px-8 pt-2 items-center text-center">
+      <div className="flex flex-col gap-3 justify-center px-2 lg:px-8 pt-2 items-center text-center">
         <Typography className="text-lg text-black">
           Play ID : {playId}
         </Typography>
-        <Image
-          src={Barcode}
-          alt="barcode"
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-auto h-auto aspect-auto"
-        />
+        <div style={{ height: "auto", margin: "0 auto"}} className='w-[80%] md:w-[50%]'>
+          <QRCode
+            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            value={`${baseUrl}/play/tournament/${url}`}
+            viewBox={`0 0 256 256`}
+          />
+        </div>
 
         <Typography className="font-bold text-lg text-black">
           Share links:

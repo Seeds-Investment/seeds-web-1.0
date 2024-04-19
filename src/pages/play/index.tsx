@@ -6,9 +6,9 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconShare from '@/assets/play/tournament/share.svg';
 import TutorialIcon from '@/assets/play/tournament/tutorialPicture.svg';
 import IconUsers from '@/assets/play/tournament/users.svg';
+import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import QuizCard from '@/components/quiz/card.component';
-import TournamentPagination from '@/components/TournmentPagination';
 import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
@@ -37,6 +37,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
+
 
 interface StatusQuizI {
   id: number;
@@ -124,8 +125,8 @@ const Player = (): React.ReactElement => {
       } else {
         setData(response.playList);
       }
-    } catch (error: any) {
-      toast.error('Error fetching data:', error);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -389,7 +390,7 @@ const Player = (): React.ReactElement => {
                             }
                             className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                           >
-                            <div className="w-[60px] text-black text-center">
+                            <div className="w-[60px] text-black text-center hidden md:block">
                               <Typography className="text-black font-normal text-[12px]">
                                 {moment(item?.play_time).format('MMM')}
                               </Typography>
@@ -438,13 +439,15 @@ const Player = (): React.ReactElement => {
                                     className="w-[14px] mb-2 mr-1"
                                   />
                                   <div className="flex flex-col">
-                                    <div>Duration</div>
+                                    <div>
+                                      {t('tournament.tournamentCard.duration')}
+                                    </div>
                                     <div className="font-semibold text-black">
                                       {calculateDaysLeft(
                                         item.play_time,
                                         item.end_time
                                       )}{' '}
-                                      Days
+                                      {t('tournament.tournamentCard.days')}
                                     </div>
                                   </div>
                                 </div>
@@ -455,9 +458,12 @@ const Player = (): React.ReactElement => {
                                     className="w-[14px] mb-2 mr-1"
                                   />
                                   <div className="flex flex-col">
-                                    <div>Joined</div>
+                                    <div>
+                                      {t('tournament.tournamentCard.joined')}
+                                    </div>
                                     <div className="font-semibold text-black">
-                                      20 Players
+                                      {item?.participants?.length ?? '0'}{' '}
+                                      {t('tournament.tournamentCard.player')}
                                     </div>
                                   </div>
                                 </div>
@@ -468,7 +474,9 @@ const Player = (): React.ReactElement => {
                                     className="w-[14px] mb-2 mr-1"
                                   />
                                   <div className="flex flex-col">
-                                    <div>Fee</div>
+                                    <div>
+                                      {t('tournament.tournamentCard.fee')}
+                                    </div>
                                     <div className="font-semibold text-black">
                                       {item.admission_fee === 0
                                         ? t('quiz.free')
@@ -502,12 +510,12 @@ const Player = (): React.ReactElement => {
                                       />
                                     </div>
                                     <div className="text-[10px] font-semibold">
-                                      Share
+                                      {t('tournament.tournamentCard.share')}
                                     </div>
                                   </div>
                                 </div>
                                 <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                  Open
+                                  {t('tournament.tournamentCard.openButton')}
                                 </div>
                               </div>
                             </div>

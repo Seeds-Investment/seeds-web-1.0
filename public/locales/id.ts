@@ -1790,13 +1790,15 @@ export default {
       days: 'h',
       hours: 'j',
       minutes: 'm',
-      seconds: 'd',
+      seconds: 'd'
     },
     first: '1st',
     second: '2nd',
     third: '3rd',
-    seedsResponsibility1: 'Seeds merupakan Pihak yang menyediakan fitur Play Arena Tournament pada aplikasi Seeds',
-    seedsResponsibility2: 'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds',
+    seedsResponsibility1:
+      'Seeds merupakan Pihak yang menyediakan fitur Play Arena Tournament pada aplikasi Seeds',
+    seedsResponsibility2:
+      'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds'
   },
   discover: {
     hotNews: 'Hot News',

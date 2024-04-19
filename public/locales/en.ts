@@ -1866,13 +1866,15 @@ export default {
       days: 'd',
       hours: 'h',
       minutes: 'm',
-      seconds: 's',
+      seconds: 's'
     },
     first: '1st',
     second: '2nd',
     third: '3rd',
-    seedsResponsibility1: 'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
-    seedsResponsibility2: 'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application',
+    seedsResponsibility1:
+      'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
+    seedsResponsibility2:
+      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application'
   },
   discover: {
     hotNews: 'Hot News',

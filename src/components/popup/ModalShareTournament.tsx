@@ -59,7 +59,7 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
           Share links:
         </Typography>
 
-        <div className='w-full h-fit flex mb-4'>
+        <div className="w-full h-fit flex mb-4">
           <input
             id="search"
             type="text"
@@ -70,8 +70,11 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
             value={`${baseUrl}/play/tournament/${url}`}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
           />
-          <div onClick={handleCopyClick} className='w-[50px] cursor-pointer flex justify-center items-center'>
-            <Image alt="" src={CopyLink} className='w-[20px]'/>
+          <div
+            onClick={handleCopyClick}
+            className="w-[50px] cursor-pointer flex justify-center items-center"
+          >
+            <Image alt="" src={CopyLink} className="w-[20px]" />
           </div>
         </div>
       </div>

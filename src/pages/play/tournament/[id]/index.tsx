@@ -38,7 +38,6 @@ const TournamentDetail = (): React.ReactElement => {
   const languageCtx = useContext(LanguageContext);
   const [_, setDiscount] = useState<any>(null);
   console.log(_);
-  
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -90,8 +89,8 @@ const TournamentDetail = (): React.ReactElement => {
   };
 
   const handleDiscountChange = (discount: any): void => {
-     setDiscount(discount);
-   };
+    setDiscount(discount);
+  };
 
   return (
     <>

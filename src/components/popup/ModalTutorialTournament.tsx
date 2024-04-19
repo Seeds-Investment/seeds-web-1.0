@@ -18,15 +18,15 @@ const ModalTutorialTournament: React.FC<Props> = ({ onClose }) => {
     <Modal
       onClose={onClose}
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/75 flex justify-start items-start"
-      modalClasses='z-50 animate-slide-down fixed top-[35%] left-0 right-0 ml-auto mr-auto mt-[-12.35rem] w-full md:w-fit xl:w-[60%] h-[70vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white'
+      modalClasses="z-50 animate-slide-down fixed top-[35%] left-0 right-0 ml-auto mr-auto mt-[-12.35rem] w-full md:w-fit xl:w-[60%] h-[70vh] p-4 rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
     >
-      <div className='w-full h-full relative'>
+      <div className="w-full h-full relative">
         <div className="flex justify-between mb-2">
           <Typography className="font-bold text-lg text-[#3AC4A0]">
             {t('tournament.tutorialToournament')}
           </Typography>
         </div>
-        <div className='bg-[#E9E9E9] w-[50px] rounded-full absolute bottom-[-80px] p-2 left-0 right-0 ml-auto mr-auto hover:scale-110 transition ease-out cursor-pointer hover:shadow-lg duration-300'>
+        <div className="bg-[#E9E9E9] w-[50px] rounded-full absolute bottom-[-80px] p-2 left-0 right-0 ml-auto mr-auto hover:scale-110 transition ease-out cursor-pointer hover:shadow-lg duration-300">
           <Image
             src={XIcon}
             alt="X"

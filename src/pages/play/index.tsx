@@ -228,7 +228,7 @@ const Player = (): React.ReactElement => {
                   <TopQuiz />
 
                   {/* List Quiz Section */}
-                  <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center">
+                  <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center lg:mb-4">
                     <div>
                       <h1 className="text-3xl font-semibold font-poppins">
                         List Quiz
@@ -237,7 +237,7 @@ const Player = (): React.ReactElement => {
                         Challenge your finance knowledge with these quizzes.
                       </p>
                     </div>
-                    <div className="relative">
+                    <div className="relative mt-2 lg:mt-0 w-full lg:w-[200px] xl:w-[300px]">
                       <input
                         id="search"
                         type="text"
@@ -252,7 +252,7 @@ const Player = (): React.ReactElement => {
                         placeholder="Search"
                         readOnly={false}
                         disabled={false}
-                        className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
+                        className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-10 rounded-xl border border-[#BDBDBD]"
                       />
                       <label
                         htmlFor="search"
@@ -273,8 +273,10 @@ const Player = (): React.ReactElement => {
                       </div>
                     ) : null}
                     {loading ? (
-                      <div className="col-span-3 flex items-center justify-center">
-                        <div className="animate-spinner w-5 h-5" />
+                      <div className="w-full flex justify-center items-center my-8">
+                        <div className="h-[60px]">
+                          <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                        </div>
                       </div>
                     ) : (
                       listQuiz?.map(item => (

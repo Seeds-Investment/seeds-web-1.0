@@ -1,3 +1,4 @@
+import { getThisMonthEN, getThisMonthID } from '@/helpers/dateFormat';
 import { isGuest } from '@/helpers/guest';
 import {
   getPlaySimulation,
@@ -13,12 +14,14 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import bestReward from '../../../public/assets/images/bestReward.svg';
 import goldHome from '../../../public/assets/images/goldHome.svg';
 import rectangle from '../../assets/RectangleHome.png';
+
+import LanguageContext from '@/store/language/language-context';
 
 interface DataPlayer {
   name: string;
@@ -44,6 +47,7 @@ interface props {
 const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
+  const languageCtx = useContext(LanguageContext);
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [playDetail, setPlayDetail] = useState<DataPlay>({
     play_id: '08e1bdf9-d618-408b-8a2e-9fe98f66de8e',
@@ -115,6 +119,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </h1>
                 <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
                   {t('homepage.section2.text13')}
+                  {languageCtx.language === 'ID' ? getThisMonthID(new Date()) : getThisMonthEN(new Date())}
                 </h1>
               </div>
               <div className="lg:flex flex-row justify-center xl:w-3/4">
@@ -171,6 +176,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
               </h1>
               <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
                 {t('homepage.section2.text13')}
+                {languageCtx.language === 'ID' ? getThisMonthID(new Date()) : getThisMonthEN(new Date())}
               </h1>
             </div>
             <div className="lg:flex flex-row justify-center xl:w-3/4">
@@ -390,6 +396,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </h1>
                 <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
                   {t('homepage.section2.text13')}
+                  {languageCtx.language === 'ID' ? getThisMonthID(new Date()) : getThisMonthEN(new Date())}
                 </h1>
               </div>
               <div className="lg:flex flex-row justify-end">

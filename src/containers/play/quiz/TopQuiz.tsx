@@ -54,8 +54,8 @@ const TopQuiz = (): JSX.Element => {
   }, [getTopQuiz]);
 
   return (
-    <div className="w-full">
-      <div className="mt-4">
+    <div className="w-full mb-4">
+      <div className="my-4">
         <h1 className="text-3xl font-semibold font-poppins">
           {t('quiz.topQuiz')}
         </h1>
@@ -68,8 +68,10 @@ const TopQuiz = (): JSX.Element => {
           </div>
         ) : null}
         {loading ? (
-          <div className="col-span-3 flex items-center justify-center">
-            <div className="animate-spinner w-5 h-5" />
+          <div className="w-full flex justify-center items-center my-8">
+            <div className="h-[60px]">
+              <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+            </div>
           </div>
         ) : (
           topQuizes?.map(item => (

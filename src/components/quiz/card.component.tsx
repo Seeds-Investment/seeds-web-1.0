@@ -47,8 +47,8 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
             <ShareIcon width={20} height={20} className="text-white" />
           </button>
         </div>
-        <div className="flex flex-row justify-between items-center px-4 py-2 pb-4">
-          <div className="flex flex-row items-center gap-3 text-white text-xs lg:text-sm">
+        <div className="flex flex-row justify-between items-center px-4 py-2">
+          <div className="flex flex-row items-center gap-2 md:gap-3 lg:gap-2 text-white text-[10px] md:text-xs lg:text-[11px]">
             <div>
               <div>{t('quiz.entryFee')}</div>
               <div className="font-semibold">
@@ -93,7 +93,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                   });
                 }
               }}
-              className="bg-white text-sm md:text-base text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
+              className="bg-white text-sm md:text-base text-seeds-button-green flex items-center justify-center py-2 px-4 md:px-0 rounded-full font-semibold w-fit md:w-36 lg:w-fit lg:px-4 xl:px-6"
             >
               {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
             </button>

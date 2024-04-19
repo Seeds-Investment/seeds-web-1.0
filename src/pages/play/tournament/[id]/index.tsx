@@ -8,6 +8,7 @@ import IconPrizes from '@/assets/play/tournament/seedsPrizes.svg';
 import IconCircle from '@/assets/play/tournament/seedsPrizesCircle.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
+import PromoCodeSelection from '@/containers/promo-code';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
 import { getPlayById } from '@/repository/play.repository';
@@ -35,12 +36,14 @@ const TournamentDetail = (): React.ReactElement => {
   const [userInfo, setUserInfo] = useState<any>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
+  const [_, setDiscount] = useState<any>(null);
+  console.log(_);
+  
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-
         setUserInfo(dataInfo);
       } catch (error: any) {
         toast.error('Error fetching data:', error.message);
@@ -52,21 +55,18 @@ const TournamentDetail = (): React.ReactElement => {
       .catch(() => {});
   }, []);
 
-  const getDetail = useCallback(
-    async () => {
-      try {
-        setLoading(true);
-        const resp: IDetailTournament = await getPlayById(id as string);
-        setDetailTournament(resp);
-      } catch (error) {
-        toast(`ERROR fetch tournament ${error as string}`);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [id]
-  );
-  
+  const getDetail = useCallback(async () => {
+    try {
+      setLoading(true);
+      const resp: IDetailTournament = await getPlayById(id as string);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`ERROR fetch tournament ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       getDetail();
@@ -83,13 +83,15 @@ const TournamentDetail = (): React.ReactElement => {
 
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${detailTournament?.play_id}`
+    const textToCopy = `${detailTournament?.play_id}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Play ID copied!');
     });
   };
 
-  console.log('detail tournament ', detailTournament)
+  const handleDiscountChange = (discount: any): void => {
+     setDiscount(discount);
+   };
 
   return (
     <>
@@ -102,23 +104,23 @@ const TournamentDetail = (): React.ReactElement => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
-      <div className='bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins'>
-        <div className='absolute bottom-[-25px] text-center'>
-          <Typography className='text-[26px] font-semibold font-poppins'>
+      <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
+        <div className="absolute bottom-[-25px] text-center">
+          <Typography className="text-[26px] font-semibold font-poppins">
             {detailTournament?.name}
           </Typography>
-          <div className='text-[14px] flex justify-center items-center gap-2 py-2'>
-            <Typography className='font-poppins'>
-            Play ID : {detailTournament?.play_id}
+          <div className="text-[14px] flex justify-center items-center gap-2 py-2">
+            <Typography className="font-poppins">
+              Play ID : {detailTournament?.play_id}
             </Typography>
             <button onClick={handleCopyClick}>
-              <Image alt="" src={IconCopy} className='w-[20px]'/>
+              <Image alt="" src={IconCopy} className="w-[20px]" />
             </button>
           </div>
-          <Typography className='text-xl font-semibold font-poppins'>
+          <Typography className="text-xl font-semibold font-poppins">
             {t('tournament.detailBannerTotalRewards')}
           </Typography>
-          <Typography className='text-[34px] text-white font-semibold font-poppins'>
+          <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
               : detailTournament?.fixed_prize?.toLocaleString('id-ID', {
@@ -129,33 +131,49 @@ const TournamentDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </Typography>
-          <Image alt="" src={IconPrizes} className='w-[250px]'/>
+          <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
-        <Image alt="" src={IconCircle} className='hidden xl:flex w-[250px] absolute bottom-[-20px] left-[-20px]'/>
+        <Image
+          alt=""
+          src={IconCircle}
+          className="hidden xl:flex w-[250px] absolute bottom-[-20px] left-[-20px]"
+        />
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
           <div className="mt-4 flex justify-between">
-            <div className='flex flex-col'>
-              <div className="text-lg font-semibold">{t('tournament.detailRemaining')}</div>
-              <CountdownTimer deadline={detailTournament?.end_time ? detailTournament.end_time.toString() : ''} />
+            <div className="flex flex-col">
+              <div className="text-lg font-semibold">
+                {t('tournament.detailRemaining')}
+              </div>
+              <CountdownTimer
+                deadline={
+                  detailTournament?.end_time
+                    ? detailTournament.end_time.toString()
+                    : ''
+                }
+              />
             </div>
-            <button className='bg-[#DCFCE4] rounded-full w-fit h-fit p-2'>
-              <ShareIcon 
+            <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+              <ShareIcon
                 onClick={() => {
                   setIsShareModal(true);
                 }}
-                width={24} 
-                height={24} 
-                className='text-[#3AC4A0]'
+                width={24}
+                height={24}
+                className="text-[#3AC4A0]"
               />
             </button>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">{t('tournament.detailPeriod')}</div>
+            <div className="text-lg font-semibold">
+              {t('tournament.detailPeriod')}
+            </div>
             <div className="text-lg text-[#7C7C7C]">
-              {moment(detailTournament?.play_time).format('D MMM YYYY, h a')} Jakarta
-              - {moment(detailTournament?.end_time).format('D MMM YYYY, h a')} Jakarta
+              {moment(detailTournament?.play_time).format('D MMM YYYY, h a')}{' '}
+              Jakarta -{' '}
+              {moment(detailTournament?.end_time).format('D MMM YYYY, h a')}{' '}
+              Jakarta
             </div>
           </div>
           <div className="mt-4 flex flex-row gap-8">
@@ -185,7 +203,9 @@ const TournamentDetail = (): React.ReactElement => {
             ) : null}
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">{t('tournament.detailPrize')}</div>
+            <div className="text-lg font-semibold">
+              {t('tournament.detailPrize')}
+            </div>
             <table className="mt-2">
               {detailTournament?.prize?.map((item, index) => (
                 <tr key={index}>
@@ -204,7 +224,9 @@ const TournamentDetail = (): React.ReactElement => {
                       className="object-contain max-h-5 max-w-5"
                     />
                     {t(
-                      `tournament.${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`
+                      `tournament.${
+                        index === 0 ? 'first' : index === 1 ? 'second' : 'third'
+                      }`
                     )}
                   </td>
                   <td className="border p-3 w-full">
@@ -221,33 +243,31 @@ const TournamentDetail = (): React.ReactElement => {
             </table>
           </div>
           <div className="mt-4">
-            <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
-              {
-                languageCtx.language === 'ID' ?
-                  <p className='text-[#7C7C7C]'>
-                    {detailTournament?.tnc?.id}
-                  </p>
-                  :
-                  <p className='text-[#7C7C7C]'>
-                    {detailTournament?.tnc?.en}
-                  </p>
-              }
+            <p className="text-lg font-semibold">
+              {t('tournament.detailTerms')}
+            </p>
+            {languageCtx.language === 'ID' ? (
+              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.id}</p>
+            ) : (
+              <p className="text-[#7C7C7C]">{detailTournament?.tnc?.en}</p>
+            )}
           </div>
           <div className="mt-4">
-            <p className="text-lg font-semibold">{t('tournament.detailResponsibility')}</p>
-            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility1')}</p>
-            <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility2')}</p>
+            <p className="text-lg font-semibold">
+              {t('tournament.detailResponsibility')}
+            </p>
+            <p className="text-[#7C7C7C]">
+              • {t('tournament.seedsResponsibility1')}
+            </p>
+            <p className="text-[#7C7C7C]">
+              • {t('tournament.seedsResponsibility2')}
+            </p>
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-6">
-          <input
-            id="search"
-            type="text"
-            name="search"
-            placeholder={`${t('tournament.detailAccessCode')}`}
-            readOnly={false}
-            disabled={false}
-            className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
+        <div className="w-full h-[300px] bg-white rounded-xl p-2">
+          <PromoCodeSelection
+            detailTournament={detailTournament}
+            onDiscountChange={handleDiscountChange}
           />
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('tournament.entranceFee')}
@@ -264,14 +284,14 @@ const TournamentDetail = (): React.ReactElement => {
                 })}
           </div>
           <button
-            onClick={() => {
+            onClick={async () => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailTournament?.is_joined === true) {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   router.push(`/play/tournament/${id}/home`);
                 } else {
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/tournament/${id}/home`);
+                  router.push(`/play/tournament/${id}/payment`);
                 }
               } else if (
                 localStorage.getItem('accessToken') === null &&
@@ -288,10 +308,13 @@ const TournamentDetail = (): React.ReactElement => {
               ? t('tournament.start')
               : t('tournament.join')}
           </button>
-          <div className='flex gap-2 mt-4'>
-            <Image alt="" src={IconWarning} className='w-[14px]'/>
-            <Typography className='text-[#3C49D6] text-[14px] font-poppins'>
-              {t('tournament.detailCurrency')} {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}
+          <div className="flex gap-2 mt-4">
+            <Image alt="" src={IconWarning} className="w-[14px]" />
+            <Typography className="text-[#3C49D6] text-[14px] font-poppins">
+              {t('tournament.detailCurrency')}{' '}
+              {userInfo?.preferredCurrency?.length > 0
+                ? userInfo?.preferredCurrency
+                : 'IDR'}
             </Typography>
           </div>
         </div>

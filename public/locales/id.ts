@@ -1799,7 +1799,7 @@ export default {
       fee: 'Biaya',
       openButton: 'Buka',
       share: 'Share',
-      days: 'Hari',
+      days: 'Hari'
     },
     first: '1st',
     second: '2nd',

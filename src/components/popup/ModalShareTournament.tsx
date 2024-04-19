@@ -5,7 +5,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 // import { useTranslation } from 'react-i18next';
-import QRCode from "react-qr-code";
+import QRCode from 'react-qr-code';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
 
@@ -47,9 +47,12 @@ const ModalShareTournament: React.FC<Props> = ({ onClose, url, playId }) => {
         <Typography className="text-lg text-black">
           Play ID : {playId}
         </Typography>
-        <div style={{ height: "auto", margin: "0 auto"}} className='w-[80%] md:w-[50%]'>
+        <div
+          style={{ height: 'auto', margin: '0 auto' }}
+          className="w-[80%] md:w-[50%]"
+        >
           <QRCode
-            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+            style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
             value={`${baseUrl}/play/tournament/${url}`}
             viewBox={`0 0 256 256`}
           />

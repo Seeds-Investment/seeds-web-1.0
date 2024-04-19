@@ -21,12 +21,21 @@ interface Props {
   playTime: string;
   endTime: string;
   prize: number[];
-  tnc: ITNC
+  tnc: ITNC;
   length: number;
   userInfoCurrency: string;
 }
 
-const ModalDetailTournament: React.FC<Props> = ({ onClose, length, playTime, endTime, category, prize, tnc, userInfoCurrency }) => {
+const ModalDetailTournament: React.FC<Props> = ({
+  onClose,
+  length,
+  playTime,
+  endTime,
+  category,
+  prize,
+  tnc,
+  userInfoCurrency
+}) => {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
 
@@ -53,20 +62,20 @@ const ModalDetailTournament: React.FC<Props> = ({ onClose, length, playTime, end
         <Typography className="font-semibold font-poppins">
           {t('tournament.participants')}
         </Typography>
-        <Typography className='font-poppins text-[#7C7C7C]'>
+        <Typography className="font-poppins text-[#7C7C7C]">
           {length} {t('tournament.participants')}
         </Typography>
         <Typography className="font-semibold font-poppins">
           {t('tournament.detailPeriod')}
         </Typography>
-        <Typography className='font-poppins text-[#7C7C7C]'>
-          {moment(playTime).format('D MMM YYYY, h a')} Jakarta
-          - {moment(endTime).format('D MMM YYYY, h a')} Jakarta
+        <Typography className="font-poppins text-[#7C7C7C]">
+          {moment(playTime).format('D MMM YYYY, h a')} Jakarta -{' '}
+          {moment(endTime).format('D MMM YYYY, h a')} Jakarta
         </Typography>
         <Typography className="font-semibold font-poppins">
           {t('tournament.categoryAsset')}
         </Typography>
-        <Typography className='font-poppins text-[#7C7C7C]'>
+        <Typography className="font-poppins text-[#7C7C7C]">
           {category}
         </Typography>
       </div>
@@ -92,15 +101,15 @@ const ModalDetailTournament: React.FC<Props> = ({ onClose, length, playTime, end
                   className="object-contain max-h-5 max-w-5"
                 />
                 {t(
-                  `tournament.${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`
+                  `tournament.${
+                    index === 0 ? 'first' : index === 1 ? 'second' : 'third'
+                  }`
                 )}
               </td>
               <td className="border p-3 w-full">
                 {item?.toLocaleString('id-ID', {
                   currency:
-                    userInfoCurrency?.length > 0
-                      ? userInfoCurrency
-                      : 'IDR',
+                    userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR',
                   style: 'currency'
                 })}
               </td>
@@ -110,21 +119,22 @@ const ModalDetailTournament: React.FC<Props> = ({ onClose, length, playTime, end
       </div>
       <div className="mt-4">
         <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
-          {
-            languageCtx.language === 'ID' ?
-              <p className='text-[#7C7C7C]'>
-                {tnc?.id}
-              </p>
-              :
-              <p className='text-[#7C7C7C]'>
-                {tnc?.en}
-              </p>
-          }
+        {languageCtx.language === 'ID' ? (
+          <p className="text-[#7C7C7C]">{tnc?.id}</p>
+        ) : (
+          <p className="text-[#7C7C7C]">{tnc?.en}</p>
+        )}
       </div>
       <div className="mt-4">
-        <p className="text-lg font-semibold">{t('tournament.detailResponsibility')}</p>
-        <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility1')}</p>
-        <p className='text-[#7C7C7C]'>• {t('tournament.seedsResponsibility2')}</p>
+        <p className="text-lg font-semibold">
+          {t('tournament.detailResponsibility')}
+        </p>
+        <p className="text-[#7C7C7C]">
+          • {t('tournament.seedsResponsibility1')}
+        </p>
+        <p className="text-[#7C7C7C]">
+          • {t('tournament.seedsResponsibility2')}
+        </p>
       </div>
     </Modal>
   );

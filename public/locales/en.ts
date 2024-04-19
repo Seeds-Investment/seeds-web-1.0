@@ -1875,7 +1875,7 @@ export default {
       fee: 'Fee',
       openButton: 'Open',
       share: 'Share',
-      days: 'Day(s)',
+      days: 'Day(s)'
     },
     first: '1st',
     second: '2nd',

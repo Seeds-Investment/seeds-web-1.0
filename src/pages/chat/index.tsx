@@ -15,6 +15,7 @@ import withAuth from '@/helpers/withAuth';
 import useGetOnlineStatus from '@/hooks/useGetOnlineStatus';
 import { searchUser } from '@/repository/auth.repository';
 import {
+  acceptRequest,
   deleteGroupChat,
   deletePersonalChat,
   getChat,
@@ -30,6 +31,7 @@ import {
   mutePersonalChat,
   readGroupMessage,
   readPersonalMessage,
+  rejectRequest,
   sendPersonalMessage
 } from '@/repository/chat.repository';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
@@ -136,6 +138,7 @@ const ChatPages: React.FC = () => {
     []
   );
   const [searchText, setSearchText] = useState<string>('');
+  const [limit, setLimit] = useState<number>(20);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [personalMediaData, setPersonalMediaData] = useState<
     PersonalChatMediaData[] | []
@@ -310,27 +313,41 @@ const ChatPages: React.FC = () => {
     }
   };
 
-  const fetchChat = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-      if (activeTab === 'PERSONAL') {
-        const response = await getChat({ user_id: roomId as string });
-        setMessageList(response.data);
-        await readPersonalMessage(roomId as string);
-      } else if (activeTab === 'COMMUNITY') {
-        const response = await getChat({ group_id: roomId as string });
-        setMessageList(response.data);
-        await readGroupMessage(roomId as string);
+  const fetchChat = useCallback(
+    async (isRefetch: boolean = true): Promise<void> => {
+      try {
+        setIsLoading(true);
+        if (activeTab === 'PERSONAL') {
+          const response = await getChat({ user_id: roomId as string, limit });
+          setMessageList(response.data);
+          await readPersonalMessage(roomId as string);
+        } else if (activeTab === 'COMMUNITY') {
+          const response = await getChat({ group_id: roomId as string, limit });
+          setMessageList(response.data);
+          await readGroupMessage(roomId as string);
+        }
+      } catch (error: any) {
+        toast('Oops! Error when try to get chat');
+      } finally {
+        setIsLoading(false);
+        if (containerRef.current != null && isRefetch) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
       }
-    } catch (error: any) {
-      toast('Oops! Error when try to get chat');
-    } finally {
-      setIsLoading(false);
-      if (containerRef.current != null) {
-        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    },
+    [activeTab, containerRef, limit, roomId, setIsLoading]
+  );
+
+  useEffect(() => {
+    const handleScrollEvent = (): void => {
+      if (containerRef?.current?.scrollTop === 0) {
+        setLimit(limit + 10);
+        void fetchChat(false);
       }
-    }
-  };
+    };
+
+    containerRef?.current?.addEventListener('scroll', handleScrollEvent);
+  }, [fetchChat, limit]);
 
   const muteChat = async (type: string): Promise<void> => {
     try {
@@ -355,6 +372,22 @@ const ChatPages: React.FC = () => {
       setIsDeletePopupOpen(false);
       await fetchChat();
       await router.push('/chat');
+    }
+  };
+
+  const acceptRequestChat = async (): Promise<void> => {
+    try {
+      await acceptRequest(roomId as string);
+    } catch (error: any) {
+      toast('Oops! Error when try to accept request');
+    }
+  };
+
+  const rejectRequestChat = async (): Promise<void> => {
+    try {
+      await rejectRequest(roomId as string);
+    } catch (error: any) {
+      toast('Oops! Error when try to reject request');
     }
   };
 
@@ -562,7 +595,6 @@ const ChatPages: React.FC = () => {
   const handleSendImageMessage = async (event: any): Promise<any> => {
     const fileMedia = event.target.files[0];
     const fileMediaEle = event.target;
-
     if (fileMedia?.type?.includes('video') === true) {
       const validation =
         fileMedia?.type !== 'video/mp4' && fileMedia?.type !== 'video/mov';
@@ -597,41 +629,43 @@ const ChatPages: React.FC = () => {
         }
       }
     }
-    const validation =
-      fileMedia?.type !== 'image/jpg' &&
-      fileMedia?.type !== 'image/jpeg' &&
-      fileMedia?.type !== 'image/heic' &&
-      fileMedia?.type !== 'image/heif' &&
-      fileMedia?.type !== 'image/png';
-    const maxFileMediaSize = 5;
-    const sizeFileOnMB: any = parseFloat(
-      (fileMedia?.size / 1024 / 1024).toFixed(20)
-    );
-
-    if (validation) {
-      fileMediaEle.value = null;
-
-      toast(`${t('social.errorState.image2')}`);
-      return new Error(
-        'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+    if (fileMedia?.type?.includes('image') === true) {
+      const validation =
+        fileMedia?.type !== 'image/jpg' &&
+        fileMedia?.type !== 'image/jpeg' &&
+        fileMedia?.type !== 'image/heic' &&
+        fileMedia?.type !== 'image/heif' &&
+        fileMedia?.type !== 'image/png';
+      const maxFileMediaSize = 5;
+      const sizeFileOnMB: any = parseFloat(
+        (fileMedia?.size / 1024 / 1024).toFixed(20)
       );
-    }
-    if (sizeFileOnMB > maxFileMediaSize) {
-      fileMediaEle.value = null;
 
-      toast(`${t('social.errorState.image1')}`);
-      return new Error('Your image is exceeding the 5MB size limit');
-    } else {
-      const mediaUrl = (await postMedia(fileMedia)) as string;
-      const data =
-        activeTab === 'COMMUNITY'
-          ? { media_urls: [mediaUrl], group_id: roomId as string }
-          : { media_urls: [mediaUrl], user_id: roomId as string };
-      try {
-        await sendPersonalMessage(data);
-        void fetchChat();
-      } catch (error: any) {
-        toast(error, { type: 'error' });
+      if (validation) {
+        fileMediaEle.value = null;
+
+        toast(`${t('social.errorState.image2')}`);
+        return new Error(
+          'You can only insert image in JPG, JPEG, PNG, .HEIC, .HEIF. format.'
+        );
+      }
+      if (sizeFileOnMB > maxFileMediaSize) {
+        fileMediaEle.value = null;
+
+        toast(`${t('social.errorState.image1')}`);
+        return new Error('Your image is exceeding the 5MB size limit');
+      } else {
+        const mediaUrl = (await postMedia(fileMedia)) as string;
+        const data =
+          activeTab === 'COMMUNITY'
+            ? { media_urls: [mediaUrl], group_id: roomId as string }
+            : { media_urls: [mediaUrl], user_id: roomId as string };
+        try {
+          await sendPersonalMessage(data);
+          void fetchChat();
+        } catch (error: any) {
+          toast(error, { type: 'error' });
+        }
       }
     }
   };
@@ -642,11 +676,11 @@ const ChatPages: React.FC = () => {
     }
 
     socketService.addListener(`chat.personal.${roomId as string}`, () => {
-      void fetchChat();
+      void fetchChat(false);
     });
 
     return () => {};
-  }, [dataUser.id, roomId]);
+  }, [roomId]);
 
   useEffect(() => {
     socketService.connect(dataUser.id);
@@ -792,7 +826,7 @@ const ChatPages: React.FC = () => {
                       Participants
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   <div className="flex flex-col gap-4">
@@ -831,7 +865,7 @@ const ChatPages: React.FC = () => {
                       Notes
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
 
@@ -866,7 +900,7 @@ const ChatPages: React.FC = () => {
                       Media
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   <div className="w-full flex gap-4">
@@ -886,10 +920,10 @@ const ChatPages: React.FC = () => {
                 <div className="w-full border-b border-[#E9E9E9]">
                   <div className="w-full flex justify-between">
                     <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Links
+                      {t('chat.links')}
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   {personalLinksData?.map((item: PersonalChatMediaData) => (
@@ -968,7 +1002,7 @@ const ChatPages: React.FC = () => {
                       Notes
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
 
@@ -1003,7 +1037,7 @@ const ChatPages: React.FC = () => {
                       Media
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   <div className="w-full flex gap-4">
@@ -1026,7 +1060,7 @@ const ChatPages: React.FC = () => {
                       Links
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   {personalLinksData?.map((item: PersonalChatMediaData) => (
@@ -1061,10 +1095,10 @@ const ChatPages: React.FC = () => {
                 <div className="w-full border-b border-[#E9E9E9]">
                   <div className="w-full flex justify-between">
                     <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Group&apos;s In Common
+                      {t('chat.commonGroup')}
                     </Typography>
                     <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      See more
+                      {t('chat.seeMore')}
                     </Typography>
                   </div>
                   {commonGroupData?.map((item: CommonGroupData) => (
@@ -1098,7 +1132,7 @@ const ChatPages: React.FC = () => {
       ) : (
         <div className="flex justify-start gap-4">
           <CCard
-            className={`flex flex-col border-none rounded-xl bg-white max-h-[90vh] overflow-y-scroll ${
+            className={`flex flex-col border-none rounded-xl bg-white max-h-[90vh] ${
               chatList?.length !== 0 || isChatActive ? 'w-1/3' : 'w-full'
             }`}
           >
@@ -1124,7 +1158,7 @@ const ChatPages: React.FC = () => {
                       height={16}
                     />
                     <Typography className="font-semibold text-sm text-[#3AC4A0] font-poppins">
-                      New Chat
+                      {t('chat.newChat')}
                     </Typography>
                     <div className="flex items-center">
                       <Image
@@ -1144,10 +1178,11 @@ const ChatPages: React.FC = () => {
                   <Image src={seedsChat} alt="seeds" width={50} height={50} />
                   <div className="flex flex-col">
                     <Typography className="font-semibold text-sm xl:text-base text-[#FFFFFF] font-poppins">
-                      Seedy will help you 🙌
+                      {t('chat.willHelp')}
                     </Typography>
+
                     <Typography className="font-normal text-xs xl:text-sm text-[#FFFFFF] font-poppins">
-                      Start a conversation now!
+                      {t('chat.startConversation')}
                     </Typography>
                   </div>
                 </div>
@@ -1242,7 +1277,7 @@ const ChatPages: React.FC = () => {
                         >
                           <div className="flex gap-1">
                             <Typography className="font-semibold text-sm text-white font-poppins">
-                              {t('chat.chatPeople')}
+                              {t('chat.createCommunity')}
                             </Typography>
                           </div>
                         </Button>
@@ -1256,30 +1291,6 @@ const ChatPages: React.FC = () => {
                       handleListClick={handleListClick}
                       isLoading={isLoading}
                     />
-                    {chatList?.length === 0 && (
-                      <div className="flex flex-col items-center gap-4 py-10">
-                        <Image src={seedyChatPersonal} alt="Seedy No Chat" />
-                        <Typography className="font-poppins font-semibold text-xl text-[#3AC4A0]">
-                          {t('chat.personalEmptyState')}
-                        </Typography>
-                        <Typography className="font-poppins font-medium text-[#7C7C7C]">
-                          {t('chat.selectUsername')}
-                        </Typography>
-                        <Button
-                          variant="filled"
-                          className="rounded-full w-fit capitalize py-2 px-3 border bg-[#3AC4A0]"
-                          onClick={() => {
-                            handleDropdownOptionClick('New');
-                          }}
-                        >
-                          <div className="flex gap-1">
-                            <Typography className="font-semibold text-sm text-white font-poppins">
-                              {t('chat.chatPeople')}
-                            </Typography>
-                          </div>
-                        </Button>
-                      </div>
-                    )}
                   </TabPanel>
                 </TabsBody>
               </Tabs>
@@ -1419,7 +1430,7 @@ const ChatPages: React.FC = () => {
                               }}
                             />
                             {isDropdownOpen && (
-                              <div className="absolute right-2 top-8 flex flex-col mt-2 bg-white border border-gray-300 rounded-md shadow-md">
+                              <div className="absolute z-10 right-2 top-8 flex flex-col mt-2 bg-white border border-gray-300 rounded-md shadow-md">
                                 <div
                                   className="dropdown-option flex p-2 hover:bg-gray-100 cursor-pointer"
                                   onClick={() => {
@@ -1534,7 +1545,7 @@ const ChatPages: React.FC = () => {
                   )}
                   <div
                     ref={containerRef}
-                    className={`bg-[#E9E9E980] flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
+                    className={`relative bg-[#E9E9E980] flex-grow w-full min-h-[420px] py-4 max-h-[70vh] overflow-y-scroll`}
                   >
                     {messageList.length === 0 && (
                       <div className="flex flex-col gap-4 items-center justify-center h-full">
@@ -1732,6 +1743,36 @@ const ChatPages: React.FC = () => {
                         })}
                       </div>
                     )}
+                    {activeTab === 'REQUEST' && (
+                      <div className="absolute bottom-4 w-full gap-4 px-8 flex">
+                        <Button
+                          variant="outlined"
+                          className="rounded-full w-1/2 capitalize py-2 border border-[#DD2525]"
+                          onClick={() => {
+                            void rejectRequestChat();
+                          }}
+                        >
+                          <div className="flex justify-center">
+                            <Typography className="font-semibold text-sm text-[#DD2525] font-poppins">
+                              {t('chat.reject')}
+                            </Typography>
+                          </div>
+                        </Button>
+                        <Button
+                          variant="filled"
+                          className="rounded-full w-1/2 capitalize py-2 border border-[#3AC4A0] bg-[#3AC4A0]"
+                          onClick={() => {
+                            void acceptRequestChat();
+                          }}
+                        >
+                          <div className="flex justify-center">
+                            <Typography className="font-semibold text-sm text-white font-poppins">
+                              {t('chat.accept')}
+                            </Typography>
+                          </div>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                   <div className="bg-white px-4 py-2 rounded-b-xl">
                     {isVoiceRecording ? (
@@ -1808,7 +1849,7 @@ const ChatPages: React.FC = () => {
                             onKeyDown={handleKeyDown}
                             rows={1}
                             className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full resize-none"
-                            placeholder="Type message…"
+                            placeholder={t('chat.personalEmptyState') ?? ''}
                           />
                         </div>
                         <div

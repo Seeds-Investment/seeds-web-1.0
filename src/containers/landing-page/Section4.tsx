@@ -1,9 +1,8 @@
 // Section1.tsx
 import { getBanner } from '@/repository/discover.repository';
 import Image from 'next/image';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -23,10 +22,38 @@ interface Banner {
   updated_at: string;
   deleted_at: string;
 }
+interface ArrowProps {
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+}
+
+const PrevArrow = (props: ArrowProps): React.ReactElement => {
+  const { className, onClick } = props;
+  return (
+    <div
+      className={`${className as string} absolute z-10`}
+      style={{
+        left: 10
+      }}
+      onClick={onClick}
+    />
+  );
+};
+
+const NextArrow = (props: ArrowProps): React.ReactElement => {
+  const { className, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ position: 'absolute', right: 10 }}
+      onClick={onClick}
+    />
+  );
+};
 
 const Section1 = (): React.ReactElement => {
-  //   const { t } = useTranslation();
-  //   const router = useRouter();
+  const router = useRouter();
   const [isBottom, setBottom] = useState(0);
   const measurement = 900;
 
@@ -60,7 +87,10 @@ const Section1 = (): React.ReactElement => {
     slidesToScroll: 1,
     dots: true,
     autoplay: true,
-    autoplaySpeed: 3000
+    autoplaySpeed: 3000,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    arrow: true
   };
 
   return (
@@ -84,7 +114,9 @@ const Section1 = (): React.ReactElement => {
                 alt={asset.name}
                 width={1420}
                 height={420}
-                layout="responsive"
+                onClick={async () => {
+                  await router.push(asset.external_url);
+                }}
               />
             </div>
           ))}

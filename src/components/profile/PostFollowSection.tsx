@@ -10,7 +10,7 @@ const PostFollowSection = ({ profileData, id }: Params): JSX.Element => {
   const _handleFollowers = (): any => {
     return router.push({
       pathname: `/${
-        id === true ? `social/${id as string}` : 'my-profile'
+        id !== undefined ? `social/${id as string}` : 'my-profile'
       }/follow-list`,
       query: { type: 'followers' }
     });
@@ -18,7 +18,7 @@ const PostFollowSection = ({ profileData, id }: Params): JSX.Element => {
   const _handleFollowing = (): any => {
     return router.push({
       pathname: `/${
-        id === true ? `social/${id as string}` : 'my-profile'
+        id !== undefined ? `social/${id as string}` : 'my-profile'
       }/follow-list`,
       query: { type: 'followings' }
     });

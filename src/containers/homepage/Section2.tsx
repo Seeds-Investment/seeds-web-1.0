@@ -58,7 +58,6 @@ const month = [
 ];
 const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const monthNow = new Date().getMonth();
-  console.log(monthNow);
   const { t } = useTranslation();
   const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
@@ -112,10 +111,8 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
 
   useEffect(() => {
     if (window.localStorage.getItem('translation') === '"ID"') {
-      console.log('tes');
       setMonthNowString(month[monthNow].ind);
     } else {
-      console.log('tus');
       setMonthNowString(month[monthNow].eng);
     }
   }, [window.localStorage.getItem('translation')]);

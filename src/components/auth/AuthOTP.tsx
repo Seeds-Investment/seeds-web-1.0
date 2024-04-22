@@ -40,10 +40,9 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [input, setInput] = useState(['', '', '', '']);
-  console.log(input);
   const [error, setError] = useState(false);
   const [blank, setBlank] = useState(false);
-  const inputRefs = useRef<any[]>([]);
+  const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
   const verifyOTP = {
     method,
@@ -184,7 +183,11 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 <input
                   type="text"
                   key={index}
-                  ref={el => (inputRefs.current[index] = el)}
+                  ref={el => {
+                    if (el !== null) {
+                      inputRefs.current[index] = el;
+                    }
+                  }}
                   value={value}
                   maxLength={1}
                   onKeyDown={async (e: any) => {

@@ -49,20 +49,14 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
     await sendGif(url);
   };
 
-  const handleFormChange = (
+  const handleFormChange = async (
     event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ): Promise<void> => {
     const { name, value } = event.target;
     setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
-  };
-
-  const searchGhipy = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
     try {
       setIsLoading(true);
-      const { data } = await searchGifFromGhipy(search.searchGif);
+      const { data } = await searchGifFromGhipy(value);
       setData(data);
     } catch (error: any) {
       toast(error.message);
@@ -95,7 +89,7 @@ const GifChat: React.FC<props> = ({ onClose, sendGif }) => {
         </div>
       </div>
       <div className="flex justify-center mt-2 px-2 relative">
-        <form onSubmit={searchGhipy}>
+        <form>
           <input
             type="text"
             name="searchGif"

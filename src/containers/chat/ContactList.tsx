@@ -11,7 +11,9 @@ interface props {
   data: Chat[];
   filter: GetListChatParams;
   handleFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFilterUnreadChange: () => void;
   handleListClick: () => void;
+
   isLoading: boolean;
 }
 
@@ -19,7 +21,8 @@ const ContactList: React.FC<props> = ({
   data,
   filter,
   handleFormChange,
-  handleListClick
+  handleListClick,
+  handleFilterUnreadChange
 }) => {
   return (
     <div className={`flex flex-col`}>
@@ -38,7 +41,10 @@ const ContactList: React.FC<props> = ({
           className="h-10 pl-10 focus:outline-none placeholder:text-neutral-soft rounded-xl w-full border border-neutral-ultrasoft text-xs"
           placeholder="search"
         />
-        <div className="flex items-center cursor-pointer">
+        <div
+          onClick={handleFilterUnreadChange}
+          className="flex items-center cursor-pointer"
+        >
           <Image alt="Search" src={filterSearch} width={24} height={24} />
         </div>
       </div>

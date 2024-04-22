@@ -89,6 +89,50 @@ export const getPlayJoined = async (params: any): Promise<any> => {
   });
 };
 
+export const joinTournament = async (
+  playId: string,
+  currency: string,
+  paymentGateway: string,
+  paymentMethod: string,
+  phoneNumber: string,
+  promoCode: string,
+  invitationCode: string,
+  isUseCoins: boolean
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await playService.post(
+      `/join`,
+      {
+        play_id: playId,
+        currency,
+        payment_gateway: paymentGateway,
+        payment_method: paymentMethod,
+        phone_number: phoneNumber,
+        promo_code: promoCode,
+        invitation_code: invitationCode,
+        is_use_coins: isUseCoins
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error('Error joining tournament:', error);
+    throw error;
+  }
+};
+
 export const getPlaySimulation = async (
   datePeriod: string,
   currency: string
@@ -265,5 +309,33 @@ export const getHistoryTransaction = async (
     });
   } catch (error) {
     await Promise.resolve();
+  }
+};
+
+const paymentService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/payment/v1`
+);
+
+export const getPaymentById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await paymentService.get(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error getting payment by ID:', error);
+    throw error;
   }
 };

@@ -21,7 +21,8 @@ const nextConfig = {
       'i.insider.com',
       'res.cloudinary.com',
       'pict.sindonews.net',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
     ],
     remotePatterns: [
       {
@@ -72,7 +73,8 @@ const nextConfig = {
       'assets.seeds.finance',
       'cdn06.pramborsfm.com',
       'i.pravatar.cc',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
     ],
     remotePatterns: [
       {

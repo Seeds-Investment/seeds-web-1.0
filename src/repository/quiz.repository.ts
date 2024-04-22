@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import {
@@ -87,6 +88,14 @@ export const getQuizById = async ({
   }
 };
 
+export const getQuizCategoryById = async (id: string): Promise<any> => {
+  try {
+    return await quizService.get(`/category/${id}`);
+  } catch (error) {
+    toast.error('Error get quiz category');
+  }
+};
+
 export const getQuizReview = async (id: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -129,10 +138,10 @@ export const startQuiz = async (id: string): Promise<boolean> => {
       toast('Access token not found');
       return false;
     }
-    const path = `/${id}/start?platform=WEB`;
+    const path = `/${id}/start?`;
     await quizService.post(
       path,
-      {},
+      { platform: 'WEB' },
       {
         headers: {
           Accept: 'application/json',

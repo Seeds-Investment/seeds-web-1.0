@@ -80,7 +80,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             </Typography>
           </div>
           <Typography className="font-poppins font-semibold text-lg text-[#262626] mb-4">
-            {t('quiz.earn')} {prize.toLocaleString('id-ID')}
+            {t('quiz.earn')} {prize?.toLocaleString('id-ID')}
           </Typography>
           <Typography className="font-poppins text-lg text-[#262626] mb-4 text-center px-8">
             {t('quiz.tax')}

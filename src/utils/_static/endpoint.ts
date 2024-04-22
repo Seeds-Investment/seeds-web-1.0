@@ -20,7 +20,11 @@ export default class Endpoints {
     rateCommenChat: '/chat/v1/comment/like',
     getChatSettings: '/chat/v1/settings',
     updateChatSettings: '/chat/v1/settings',
-    readChat: '/chat/v1/message/read'
+    readChat: '/chat/v1/message/read',
+    listMediaChat: '/chat/v1/message/media',
+    listLinkChat: '/chat/v1/message/link',
+    listCommonGroupChat: '/circle/v2/related/:id',
+    groupMember: '/chat/v1/group/:id/memberships'
   };
 
   static user = {

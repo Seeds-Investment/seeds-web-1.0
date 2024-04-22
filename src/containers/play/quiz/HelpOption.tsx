@@ -46,7 +46,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     routeName: router.pathname,
     audioFiles: [
       {
-        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.wav',
+        name: baseUrl + '/assets/quiz/sound/Waiting_time_loop.mp3',
         isAutoPlay: true
       }
     ]
@@ -197,6 +197,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   };
 
   const handleTapOption = (value: LifelinesEnum) => {
+    console.log(lifelines);
     if (lifelines.includes(value)) {
       addOrRemoveLifelines(value);
     } else {
@@ -221,31 +222,42 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               {t('quiz.chooseOptions')}
             </div>
           </div>
-          <div className="flex flex-row justify-center items-center gap-2 lg:gap-6">
-            <HelpBox
-              title="Phone Seedy"
-              icon={Phone}
-              selected={lifelines.includes(LifelinesEnum.PHONE)}
-              onClick={() => {
-                handleTapOption(LifelinesEnum.PHONE);
-              }}
-            />
-            <HelpBox
-              title="50:50"
-              icon={Fifty}
-              selected={lifelines.includes(LifelinesEnum['50_50'])}
-              onClick={() => {
-                handleTapOption(LifelinesEnum['50_50']);
-              }}
-            />
-            <HelpBox
-              title="Vote"
-              icon={Vote}
-              selected={lifelines.includes(LifelinesEnum.VOTE)}
-              onClick={() => {
-                handleTapOption(LifelinesEnum.VOTE);
-              }}
-            />
+          <div>
+            <div className="flex flex-row justify-center items-center gap-2 lg:gap-6">
+              <HelpBox
+                title="Phone Seedy"
+                icon={Phone}
+                selected={lifelines.includes(LifelinesEnum.PHONE)}
+                onClick={() => {
+                  handleTapOption(LifelinesEnum.PHONE);
+                }}
+                background="#95DB56"
+                darkBackground="#4DA81C"
+              />
+              <HelpBox
+                title="50:50"
+                icon={Fifty}
+                selected={lifelines.includes(LifelinesEnum['50_50'])}
+                onClick={() => {
+                  handleTapOption(LifelinesEnum['50_50']);
+                }}
+                background="#7B8BFC"
+                darkBackground="#3C49D6"
+              />
+              <HelpBox
+                title="Vote"
+                icon={Vote}
+                selected={lifelines.includes(LifelinesEnum.VOTE)}
+                onClick={() => {
+                  handleTapOption(LifelinesEnum.VOTE);
+                }}
+                background="#B798FF"
+                darkBackground="#7555DA"
+              />
+            </div>
+            <div className="text-sm lg:text-base mt-6">
+              {t('quiz.freeOptions')}
+            </div>
           </div>
           <div className="mt-24 w-full lg:w-1/3">
             <QuizButton

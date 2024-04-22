@@ -21,3 +21,20 @@ export const promoValidate = async (params: any): Promise<any> => {
     }
   });
 };
+
+export const getPromocodeActive = async (
+  page: number,
+  limit: number
+): Promise<any> => {
+  try {
+    const response = await promoService.get('/list/active', {
+      params: {
+        page,
+        limit
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

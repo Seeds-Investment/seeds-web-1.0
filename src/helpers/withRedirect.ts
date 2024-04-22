@@ -29,6 +29,10 @@ const withRedirect = async <T extends QueryType>(
     {
       logic: query?.withdrawal !== undefined,
       redirect: `/withdrawal`
+    },
+    {
+      logic: query?.circleId !== undefined,
+      redirect: `/connect/post/${query?.circleId as string}`
     }
   ];
 

@@ -4,6 +4,8 @@ import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import {
   type CommonGroupResponse,
+  type CreateGroupParams,
+  type CreateGroupResponse,
   type GetChatMediaParams,
   type GetChatNotesParams,
   type GetChatParams,
@@ -331,4 +333,63 @@ export const getGroupMember = async ({
       Authorization: `Bearer ${accessToken ?? ''}`
     }
   });
+};
+
+export const createGroup = async (
+  data: CreateGroupParams
+): Promise<CreateGroupResponse> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.createGroupChat;
+  return await baseUrl.post(path, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const acceptRequest = async (data: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.acceptRequest;
+  await baseUrl.patch(
+    path,
+    {
+      user_id: data
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};
+
+export const rejectRequest = async (data: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.acceptRequest;
+  await baseUrl.patch(
+    path,
+    {
+      user_id: data
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
 };

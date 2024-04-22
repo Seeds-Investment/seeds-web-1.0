@@ -3,7 +3,7 @@ import EditCircle from '@/containers/circle/[id]/EditCircle';
 import ModalDeleteCircle from '@/containers/circle/[id]/ModalDeleteCircle';
 import ModalLeaveCircle from '@/containers/circle/[id]/ModalLeaveCircle';
 import ModalReportCircle from '@/containers/circle/[id]/ModalReportLeave';
-import withAuth from '@/helpers/withAuth';
+import withRedirect from '@/helpers/withRedirect';
 import {
   getDetailCircle,
   getStatusCircle
@@ -12,6 +12,8 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 
 interface UserData {
@@ -28,6 +30,11 @@ interface UserData {
 
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const expiredUnixTime = parseInt(
+    window.localStorage.getItem('expiresAt') as string
+  );
   const circleId: string | any = router.query.circleid;
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = (): void => {
@@ -46,6 +53,16 @@ const CirclePost = (): JSX.Element => {
   const [dataCircle, setData]: any = useState({});
   const [isJoined, setIsJoined] = useState(false);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+
+  const redirect = async (): Promise<void> => {
+    if (
+      window.localStorage.getItem('accessToken') === null ||
+      expiredUnixTime < currentUnixTime
+    ) {
+      await withRedirect(router, { circleId }, '/auth');
+      toast.error(t('landingPageV2.redirectError'));
+    }
+  };
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -96,6 +113,7 @@ const CirclePost = (): JSX.Element => {
   useEffect(() => {
     void fetchUserInfo();
     void fetchDetailCircle();
+    void redirect();
   }, [circleId]);
 
   const handlePages = (): any => {
@@ -204,4 +222,4 @@ const CirclePost = (): JSX.Element => {
   );
 };
 
-export default withAuth(CirclePost);
+export default CirclePost;

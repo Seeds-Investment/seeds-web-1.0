@@ -51,17 +51,17 @@ const LeaderBoardPage = (): React.ReactElement => {
   );
 
   const redirect = async (): Promise<void> => {
-    if (id !== undefined) {
-      await withRedirect(
-        router,
-        { lead: 'true', quizId: id as string },
-        '/auth'
-      );
-    }
     if (
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
+      if (id !== undefined) {
+        await withRedirect(
+          router,
+          { lead: 'true', quizId: id as string },
+          '/auth'
+        );
+      }
       toast.error(t('landingPageV2.redirectError'));
     }
   };

@@ -1869,6 +1869,19 @@ export default {
       Description: 'Are you sure to leave this Group',
       helpUs: 'Help us to understand the problem',
       continue: 'Continue'
-    }
+    },
+    tapAndHold: 'Tap and hold to record and send voice messages',
+    newChat: 'New Chat',
+    willHelp: 'Seedy will help you 🙌',
+    startConversation: 'Start a conversation now!',
+    textInputPlaceholder: 'Type message…',
+    seeMore: 'See more',
+    links: 'Links',
+    commonGroup: `Group's in common`,
+    personal: 'Personal',
+    community: 'Community',
+    request: 'Request',
+    reject: 'Reject',
+    accept: 'Accept'
   }
 };

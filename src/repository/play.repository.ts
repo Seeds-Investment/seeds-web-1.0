@@ -31,6 +31,21 @@ export const getLeaderboardDetail = async (userId: string): Promise<any> => {
   });
 };
 
+export const getLeaderboardByPlayId = async (playId: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  return await playService.get(`/leaderboard/${playId}/list`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
 export const getPlayById = async (id: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

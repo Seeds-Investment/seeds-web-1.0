@@ -1629,8 +1629,8 @@ export default {
       text9: "Check out what's popular right now",
       text10: 'SeedsPedia',
       text11: 'Your Rank',
-      text12: 'Win Reward every Month',
-      text13: '"Now in December"',
+      text12: 'Win every reward',
+      text13: 'in ',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
       text16: 'Login to enter arena simulation'
@@ -1876,6 +1876,13 @@ export default {
       openButton: 'Open',
       share: 'Share',
       days: 'Day(s)'
+    },
+    leaderboard: {
+      lastUpdated: 'Last updated: ',
+      currentRank: 'Your current rank',
+      player: 'Player',
+      totalGain: 'Total Gain',
+      totalPoint: 'Total Points',
     },
     first: '1st',
     second: '2nd',

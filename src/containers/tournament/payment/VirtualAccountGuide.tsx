@@ -1,10 +1,13 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import Divider from './components/Divider';
 import InlineText from './components/InlineText';
+
 interface VirtualAccountGuideProps {
   payment: any;
   dataPost: any;
@@ -48,8 +51,15 @@ const VirtualAccountGuide = ({
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
   const accountName = '';
   const userName = user_name;
+  const discount =
+    promoCodeValidationResult !== undefined
+      ? promoCodeValidationResult?.total_discount
+      : 0;
   const admissionFee = dataPost?.admission_fee * numberMonth;
   const adminFee = payment?.admin_fee as number;
   const serviceFee = payment?.service_fee as number;
@@ -60,7 +70,8 @@ const VirtualAccountGuide = ({
       (adminFee +
         serviceFee -
         // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        (payment?.is_promo_available ? promoPrice : 0))
+        (payment?.is_promo_available ? promoPrice : 0) -
+        discount)
     }`
   );
 
@@ -130,6 +141,16 @@ const VirtualAccountGuide = ({
           className="mb-2"
         />
       ) : null}
+      {promoCodeValidationResult !== undefined ? (
+        <InlineText
+          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          value={`IDR ${
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            promoCodeValidationResult?.total_discount
+          }`}
+          className="mb-2"
+        />
+      ) : null}
       <Divider />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right">
         {`IDR ${totalFee}`}
@@ -184,7 +205,7 @@ const VirtualAccountGuide = ({
           );
         }}
       >
-        {paymentStatus?.vaNumber !== '' ? 'Pay' : 'Cek No Rekening'}
+        {paymentStatus?.vaNumber !== undefined ? 'Pay' : 'Cek No Rekening'}
       </SubmitButton>
       <Divider />
     </div>

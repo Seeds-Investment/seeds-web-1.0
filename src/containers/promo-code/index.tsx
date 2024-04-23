@@ -2,8 +2,10 @@ import {
   getPromocodeActive,
   promoValidate
 } from '@/repository/promo.repository';
+import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface PromoCodeSelectionProps {
@@ -20,6 +22,7 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
   const [discount, setDiscount] = useState<any>(null);
   const [promoCode, setPromoCode] = useState<string>('');
   const [totalDiscount, setTotalDiscount] = useState<number>(0);
+  const dispatch = useDispatch();
 
   const handleDropdownClick = (): void => {
     setShowRadioButtons(!showRadioButtons);
@@ -32,7 +35,6 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
         // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         setActivePromoCodes(activePromoCodesResponse?.data || []);
       } catch (error) {
-        console.log(error);
         toast.error('Error fetching promo codes:');
       }
     };
@@ -56,6 +58,8 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
         setDiscount(response);
         onDiscountChange(discount);
         setTotalDiscount(response.total_discount);
+
+        dispatch(setPromoCodeValidationResult(response));
       } else {
         toast.error('Error Promo Code:', response.message);
       }
@@ -128,9 +132,9 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
                 type="radio"
                 name="promoCodes"
                 value=""
-                checked={promoCode === ''} // Jika promoCode kosong, tandai sebagai dipilih
+                checked={promoCode === ''}
                 onChange={() => {
-                  void handlePromoCodeSelection(''); // Atur promoCode menjadi kosong
+                  void handlePromoCodeSelection('');
                 }}
               />
             </label>

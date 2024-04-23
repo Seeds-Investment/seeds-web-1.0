@@ -2,9 +2,11 @@
 /* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Input, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { type Payment } from './PaymentList';
 import InlineText from './components/InlineText';
 
@@ -35,6 +37,10 @@ const WalletForm = ({
   const [admissionFee, setAdmissionFee] = useState(0);
   const [adminFee, setAdminFee] = useState(0);
   const [totalFee, setTotalFee] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   useEffect(() => {
     let _admissionFee = 0;
@@ -50,6 +56,10 @@ const WalletForm = ({
     if (dataPost) {
       _admissionFee = dataPost?.admission_fee;
       _adminFee = payment?.admin_fee;
+      _discount = promoCodeValidationResult
+        ? promoCodeValidationResult?.total_discount
+        : 0;
+
       _totalFee = parseFloat(
         `${(
           Number(_admissionFee) +
@@ -144,6 +154,17 @@ const WalletForm = ({
           label={t(`${translationId}.adminFeeDiscountLabel`)}
           value={`${userInfo?.preferredCurrency as string} ${
             payment.promo_price
+          }`}
+          className="mb-2"
+        />
+      ) : null}
+      <hr />
+      {promoCodeValidationResult ? (
+        <InlineText
+          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          value={`${userInfo?.preferredCurrency as string} ${
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            promoCodeValidationResult?.total_discount
           }`}
           className="mb-2"
         />

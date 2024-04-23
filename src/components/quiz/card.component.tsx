@@ -24,7 +24,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
 
   return (
     <div key={item.id} className="rounded-t-lg">
-      <div className="w-full max-h-48">
+      <div className="w-full max-h-60">
         <Image
           src={
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -33,7 +33,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
           alt="banner"
           width={1000}
           height={500}
-          className="object-cover h-28 bg-blue-gray-50 rounded-t-lg"
+          className="object-cover h-44 bg-blue-gray-50 rounded-t-lg"
         />
       </div>
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">

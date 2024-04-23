@@ -81,8 +81,14 @@ export const getQuizById = async ({
   currency: string;
 }): Promise<any> => {
   try {
+    const accessToken = localStorage.getItem('accessToken');
     const path = `/${id}?currency=${currency}`;
-    return await quizService.get(path);
+    return await quizService.get(path, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
+      }
+    });
   } catch (error) {
     console.error('Error fetching trending play list:', error);
   }

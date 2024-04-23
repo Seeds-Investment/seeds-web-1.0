@@ -1844,8 +1844,7 @@ export default {
   chat: {
     personalEmptyState: 'Tidak ada percakapan',
     communityEmptyState: 'Tidak ada percakapan komunitas',
-    selectUsername:
-      'You didn’t made any conversation yet, please select username.',
+    selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
     chatPeople: 'Chat People',
     createCommunity: 'Create Community',
     popUpLeave: {
@@ -1853,6 +1852,19 @@ export default {
       Description: 'Kamu yakin ingin meninggalkan grup?',
       helpUs: 'Bantu kami untuk memahami masalahmu',
       continue: 'Lanjutkan'
-    }
+    },
+    tapAndHold: 'Ketuk dan tahan untuk merekam dan mengirim pesan suara',
+    newChat: 'Percakapan Baru',
+    willHelp: 'Seeds akan membantu kamu 🙌',
+    startConversation: 'Mulai percakapan sekarang!',
+    textInputPlaceholder: 'Ketik Pesan…',
+    seeMore: 'Lihat Lebih Banyak',
+    links: 'Tautan',
+    commonGroup: `Grup yang sama`,
+    personal: 'Pribadi',
+    community: 'Komunitas',
+    request: 'Request',
+    reject: 'Tolak',
+    accept: 'Terima'
   }
 };

@@ -24,7 +24,9 @@ export default class Endpoints {
     listMediaChat: '/chat/v1/message/media',
     listLinkChat: '/chat/v1/message/link',
     listCommonGroupChat: '/circle/v2/related/:id',
-    groupMember: '/chat/v1/group/:id/memberships'
+    groupMember: '/chat/v1/group/:id/memberships',
+    acceptRequest: '/chat/v1/request/accept',
+    rejectRequest: '/chat/v1/request/reject'
   };
 
   static user = {

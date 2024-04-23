@@ -113,7 +113,7 @@ const QuizDetail = (): React.ReactElement => {
         alt={detailQuiz?.name ?? ''}
         height={1000}
         width={1000}
-        className="object-cover w-full max-h-[250px] rounded-3xl"
+        className="object-cover w-full rounded-3xl"
       />
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">

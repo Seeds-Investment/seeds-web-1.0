@@ -296,7 +296,9 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </div>
                 <h1 className="text-xl font-semibold mt-2 text-[#262626]">
                   {userInfo?.preferredCurrency ?? 'IDR'}{' '}
-                  {formatCurrency(`${playerData?.asset.toFixed(0)}`) ?? 0}
+                  {formatCurrency(
+                    `${playerData?.asset.toFixed(0) as string}`
+                  ) ?? 0}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
                   {t('homepage.section2.text2')} {playerData?.gain ?? 0}

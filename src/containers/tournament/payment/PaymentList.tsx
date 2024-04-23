@@ -119,15 +119,13 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
-  const [_, setVirtualList] = useState([]);
+  const [virtualList, setVirtualList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
-
-  console.log(_);
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -297,12 +295,12 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {/* <PaymentOptions
+        <PaymentOptions
           label="Virtual Account"
           options={virtualList}
           onChange={setOption}
           currentValue={option}
-        /> */}
+        />
         <PaymentOptions
           label="QRIS"
           options={qRisList}

@@ -331,7 +331,17 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               <div className="w-full flex items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
+                  // disabled={orderDetail?.transactionStatus !== 'SETTLEMENT'}
                   onClick={() => {
+                    // if (orderDetail?.transactionStatus !== 'SETTLEMENT') {
+                    //   void router.replace(
+                    //     `/play/tournament/${orderDetail?.itemId as string}/home`
+                    //   );
+                    // } else {
+                    //   void router.replace(
+                    //     `/play/tournament/${orderDetail?.itemId}/payment`
+                    //   );
+                    // }
                     void router.replace(
                       `/play/tournament/${orderDetail?.itemId as string}/home`
                     );

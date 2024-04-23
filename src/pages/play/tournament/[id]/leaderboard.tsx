@@ -1,4 +1,5 @@
 import Loading from '@/components/popup/Loading';
+import { standartCurrency } from '@/helpers/currency';
 import { getLastUpdatedEN, getLastUpdatedID } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getLeaderboardByPlayId, getPlayBallance } from '@/repository/play.repository';
@@ -278,13 +279,7 @@ const LeaderBoardPage: React.FC = () => {
                     </Typography>
                     <Typography className='font-poppins'>{userInfo?.seeds_tag}</Typography>
                     <Typography className={`${leaderBoard[currentRank - 1]?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'} font-poppins text-sm md:text-base`}>
-                      {ballance?.return_value.toLocaleString('id-ID', {
-                        currency:
-                          userInfo?.preferredCurrency?.length > 0
-                            ? userInfo?.preferredCurrency
-                            : 'IDR',
-                        style: 'currency'
-                      })}
+                      {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
                       {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '-' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
                     </Typography>
                   </div>

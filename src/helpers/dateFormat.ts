@@ -66,5 +66,5 @@ export const getLastUpdatedEN = (date: Date): string => {
   const currentHours = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
 
-  return `${currentDay} ${monthsEN[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`
 };

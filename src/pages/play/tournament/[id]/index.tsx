@@ -10,6 +10,7 @@ import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
+import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
@@ -121,13 +122,9 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
-              : detailTournament?.fixed_prize?.toLocaleString('id-ID', {
-                  currency:
-                    userInfo?.preferredCurrency?.length > 0
-                      ? userInfo?.preferredCurrency
-                      : 'IDR',
-                  style: 'currency'
-                })}
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
+            }
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -232,13 +229,7 @@ const TournamentDetail: React.FC = () => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {item?.toLocaleString('id-ID', {
-                      currency:
-                        userInfo?.preferredCurrency?.length > 0
-                          ? userInfo?.preferredCurrency
-                          : 'IDR',
-                      style: 'currency'
-                    })}
+                    {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
                   </td>
                 </tr>
               ))}
@@ -317,13 +308,9 @@ const TournamentDetail: React.FC = () => {
           <Typography className="font-semibold text-xl font-poppins">
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              : detailTournament?.admission_fee?.toLocaleString('id-ID', {
-                  currency:
-                    userInfo?.preferredCurrency?.length > 0
-                      ? userInfo?.preferredCurrency
-                      : 'IDR',
-                  style: 'currency'
-                })}
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
+            }
           </Typography>
           <button
             onClick={async () => {

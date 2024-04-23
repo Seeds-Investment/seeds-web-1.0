@@ -15,6 +15,7 @@ import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
+import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getPlayBallance, getPlayById, getPlayPortfolio } from '@/repository/play.repository';
@@ -216,9 +217,6 @@ const TournamentHome: React.FC = () => {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
-
-  console.log('portfolio ', portfolio)
-  console.log('ballance ', ballance)
   
   return (
     <>
@@ -269,34 +267,16 @@ const TournamentHome: React.FC = () => {
               Total Investment
             </Typography>
             <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
-              {ballance?.portfolio.toLocaleString('id-ID', {
-                currency:
-                  userInfo?.preferredCurrency?.length > 0
-                    ? userInfo?.preferredCurrency
-                    : 'IDR',
-                style: 'currency'
-              })}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`Total Return: `}
-              {ballance?.return_value.toLocaleString('id-ID', {
-                currency:
-                  userInfo?.preferredCurrency?.length > 0
-                    ? userInfo?.preferredCurrency
-                    : 'IDR',
-                style: 'currency'
-              })}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
               {` (${ballance?.return_value < 0 ? `-` : `+`}${ballance?.return_percentage}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`Virtual Balance : `}
-              {ballance?.balance.toLocaleString('id-ID', {
-                currency:
-                  userInfo?.preferredCurrency?.length > 0
-                    ? userInfo?.preferredCurrency
-                    : 'IDR',
-                style: 'currency'
-              })}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
             </Typography>
           </div>
           <Image alt="" src={BannerCircle} className='absolute top-0 right-0 z-0'/>

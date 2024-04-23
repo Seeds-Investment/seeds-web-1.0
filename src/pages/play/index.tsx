@@ -13,6 +13,7 @@ import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
 import TopQuiz from '@/containers/play/quiz/TopQuiz';
+import { standartCurrency } from '@/helpers/currency';
 import { generateFormattedDate } from '@/helpers/dateFormat';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
@@ -469,17 +470,9 @@ const Player = (): React.ReactElement => {
                                     <div className="font-semibold text-black">
                                       {item.admission_fee === 0
                                         ? t('quiz.free')
-                                        : item.admission_fee.toLocaleString(
-                                            'id-ID',
-                                            {
-                                              currency:
-                                                userInfo?.preferredCurrency
-                                                  ?.length > 0
-                                                  ? userInfo?.preferredCurrency
-                                                  : 'IDR',
-                                              style: 'currency'
-                                            }
-                                          )}
+                                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                        : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(item.admission_fee).replace('Rp', '')}`
+                                      }
                                     </div>
                                   </div>
                                 </div>

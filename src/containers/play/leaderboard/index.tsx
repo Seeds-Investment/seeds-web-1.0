@@ -1,25 +1,14 @@
-import { getUserInfo } from '@/repository/profile.repository';
+import { getPlayLeaderboard } from '@/repository/play.repository';
 import { getLeaderBoardGlobal } from '@/repository/quiz.repository';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-// import bgleaderboard from '../../../../public/assets/images/bgleaderboard.png';
+import { toast } from 'react-toastify';
 import rank1Box from '../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../public/assets/images/rank3Box.svg';
 
-interface DataPlayer {
-  name: string;
-  avatar_url: string;
-  asset: number;
-  gain: number;
-  rank: number;
-  medal: string;
-  prize: number;
-  seeds_tag: string;
-}
-
-interface LeaderData {
+interface LeaderDataQuiz {
   id: string;
   quiz_id: string;
   user_id: string;
@@ -36,20 +25,43 @@ interface LeaderData {
   updated_at: string;
 }
 
+interface LeaderDataTournament {
+  avatar_url: string;
+  current_rank: number;
+  is_followed: boolean;
+  points: number;
+  total_lose: number;
+  total_play: number;
+  total_reward: number;
+  total_win: number;
+  user_full_name: string;
+  user_id: string;
+  user_seeds_tag: string;
+  verified: boolean;
+  win_rate: number;
+}
+
 const LeaderBoardGlobalPage = (): React.ReactElement => {
   const { t } = useTranslation();
-  const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
-  const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
   const [activeTab, setActiveTab] = useState('Quiz');
+  const [leaderBoardQuiz, setLeaderBoardQuiz] = useState<LeaderDataQuiz[]>([]);
+  const [leaderBoardTournament, setLeaderBoardTournament] = useState<LeaderDataTournament[]>([]);
 
-  const [userInfo, setUserInfo] = useState<any>([]);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
+        const params = {
+          page: 1,
+          limit: 10
+        };
+
+        const resTournament = await getPlayLeaderboard();
+        const resQuiz = await getLeaderBoardGlobal(params);
+
+        setLeaderBoardTournament(resTournament.playLeaderboards);
+        setLeaderBoardQuiz(resQuiz.data);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast.error('Error fetching data:', error.message);
       }
     };
 
@@ -57,28 +69,6 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
       .then()
       .catch(() => {});
   }, []);
-
-  const fetchPlaySimulation = async (currency: string): Promise<void> => {
-    try {
-      const params = {
-        page: 1,
-        limit: 10
-      };
-
-      const res = await getLeaderBoardGlobal(params);
-      console.log(res, '..');
-
-      setPlayerData(res.user_rank);
-      setLeaderBoard(res.data);
-    } catch (error) {
-      console.error('Error fetching play simulation:', error);
-    }
-  };
-  useEffect(() => {
-    if (userInfo !== undefined) {
-      void fetchPlaySimulation(userInfo.preferredCurrency);
-    }
-  }, [userInfo]);
 
   return (
     <>
@@ -113,9 +103,11 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
           <div className="flex justify-center pt-3">
             <div className="justify-center mt-auto items-center text-center">
               <div className="w-full justify-center">
-                <img
-                  src={leaderBoard[1]?.avatar}
-                  alt={leaderBoard[1]?.name}
+                <Image
+                  width={100}
+                  height={100}
+                  src={activeTab === 'Quiz' ? leaderBoardQuiz[1]?.avatar : leaderBoardTournament[1]?.avatar_url}
+                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[1]?.name : leaderBoardTournament[1]?.user_full_name}
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2 "
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-[#7555DA] text-sm text-white text-center justify-center items-center">
@@ -123,10 +115,10 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {leaderBoard[1]?.name}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[1]?.name : leaderBoardTournament[1]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {leaderBoard[1]?.current_rank}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[1]?.current_rank : leaderBoardTournament[1]?.current_rank}
               </div>
               <div>
                 <Image
@@ -155,9 +147,11 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </svg>
               </div>
               <div className="w-full justify-center">
-                <img
-                  src={leaderBoard[0]?.avatar}
-                  alt={leaderBoard[0]?.name}
+                <Image
+                  width={100}
+                  height={100}
+                  src={activeTab === 'Quiz' ? leaderBoardQuiz[0]?.avatar : leaderBoardTournament[0]?.avatar_url}
+                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[0]?.name : leaderBoardTournament[0]?.user_full_name}
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2 mt-1"
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-white text-sm text-center text-[#27A590] justify-center items-center">
@@ -165,10 +159,10 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {leaderBoard[0]?.name}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[0]?.name : leaderBoardTournament[0]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {leaderBoard[0]?.current_rank}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[0]?.current_rank : leaderBoardTournament[0]?.current_rank}
               </div>
               <div>
                 <Image
@@ -182,9 +176,11 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             </div>
             <div className="justify-center mt-auto text-center">
               <div className="w-full justify-center">
-                <img
-                  src={leaderBoard[2]?.avatar}
-                  alt={leaderBoard[2]?.name}
+                <Image
+                  width={100}
+                  height={100}
+                  src={activeTab === 'Quiz' ? leaderBoardQuiz[2]?.avatar : leaderBoardTournament[2]?.avatar_url}
+                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[2]?.name : leaderBoardTournament[2]?.user_full_name}
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2"
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-[#FDBA22] text-sm text-white text-center justify-center items-center">
@@ -192,10 +188,10 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {leaderBoard[2]?.name}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[2]?.name : leaderBoardTournament[2]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {leaderBoard[2]?.current_rank}
+                {activeTab === 'Quiz' ? leaderBoardQuiz[2]?.current_rank : leaderBoardTournament[2]?.current_rank}
               </div>
               <div>
                 <Image
@@ -209,91 +205,87 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <div
-          className={
-            'hidden border-2 rounded-xl border-[#3AC4A0] w-full p-3 mt-5 mb-2 '
-          }
-        >
-          <div className="flex justify-between">
-            <div className="flex w-full items-center">
-              <div>
-                <p className="font-semibold text-[22px] font-poppins">
-                  {playerData?.rank}
-                </p>
-                <svg
-                  width="17"
-                  height="18"
-                  viewBox="0 0 17 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M13.1243 11.5579C12.8551 11.8271 12.4186 11.8271 12.1494 11.5579L8.5008 7.90927L4.85221 11.5579C4.58301 11.8271 4.14654 11.8271 3.87734 11.5579C3.60814 11.2887 3.60814 10.8522 3.87734 10.583L8.01337 6.44696C8.28257 6.17776 8.71904 6.17776 8.98824 6.44696L13.1243 10.583C13.3935 10.8522 13.3935 11.2887 13.1243 11.5579Z"
-                    fill="#3AC4A0"
-                  />
-                </svg>
-              </div>
-              <img
-                src={playerData?.avatar_url}
-                alt={playerData?.name}
-                className="w-10 h-10 rounded-full"
-              />
-              <div className="ml-3">
-                <h2 className="font-bold">{playerData?.name}</h2>
-                <p>{playerData?.seeds_tag}</p>
-                <p className="text-[#3AC4A0]">
-                  {t('homepage.section2.text2')} ({playerData?.gain}%)
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <table className="w-full">
+        <table className='w-full'>
           <thead>
             <tr className="border-b">
               <th className="px-2 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
                 Rank
               </th>
               <th className="px-4 py-5 text-start text-sm font-semibold font-poppins text-[#7C7C7C]">
-                Player
+                {t('tournament.leaderboard.player')}
               </th>
               <th className="px-4 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
-                Total Point
+                {t('tournament.leaderboard.totalPoint')}
               </th>
             </tr>
           </thead>
-          <tbody>
-            {leaderBoard?.slice(3).map((leader, index) => (
-              <tr key={index} className="border-b">
-                <td className="px-2 py-5 text-center">
-                  {leader?.current_rank}.
-                </td>
-                <td className="px-4 py-5 text-start flex">
-                  <div className="">
-                    <img
-                      src={leader?.avatar}
-                      alt={leader?.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                  </div>
-                  <div className="mx-3">
-                    <h1 className="text-base font-normal font-poppins text-[#262626]">
-                      {leader?.name}
-                    </h1>
-                    <h1 className="text-sm font-normal font-poppins text-[#7C7C7C]">
-                      @{leader?.seeds_tag}
-                    </h1>
-                  </div>
-                </td>
-                <td className="px-4 py-5 text-center text-base font-normal font-poppins">
-                  {leader?.total_prizes}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {
+            activeTab === 'Quiz' ?
+            <tbody>
+              {leaderBoardQuiz?.slice(3).map((leader, index) => (
+                <tr key={index} className="border-b">
+                  <td className="px-2 py-5 text-center text-sm md:text-base">
+                    {leader?.current_rank}.
+                  </td>
+                  <td className="px-4 py-5 text-start flex">
+                    <div className="">
+                      <Image
+                        src={leader?.avatar}
+                        alt={leader?.name}
+                        width={100}
+                        height={100}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </div>
+                    <div className="mx-3">
+                      <h1 className="text-sm md:text-base font-normal font-poppins text-[#262626]">
+                        {leader?.name}
+                      </h1>
+                      <h1 className="text-xs md:text-sm font-normal font-poppins text-[#7C7C7C]">
+                        @{leader?.seeds_tag}
+                      </h1>
+                    </div>
+                  </td>
+                  <td className="px-4 py-5 text-center text-sm md:text-base font-normal font-poppins">
+                    {leader?.total_prizes}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            :
+            <tbody>
+              {leaderBoardTournament?.slice(3).map((leader, index) => (
+                <tr key={index} className="border-b">
+                  <td className="px-2 py-5 text-center text-sm md:text-base">
+                    {leader?.current_rank}.
+                  </td>
+                  <td className="px-4 py-5 text-start flex">
+                    <div className="">
+                      <Image
+                        src={leader?.avatar_url}
+                        alt={leader?.user_full_name}
+                        width={100}
+                        height={100}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </div>
+                    <div className="mx-3">
+                      <h1 className="text-sm md:text-base font-normal font-poppins text-[#262626]">
+                        {leader?.user_full_name}
+                      </h1>
+                      <h1 className="text-xs md:text-sm font-normal font-poppins text-[#7C7C7C]">
+                        @{leader?.user_seeds_tag}
+                      </h1>
+                    </div>
+                  </td>
+                  <td className="px-4 py-5 text-center text-sm md:text-base font-normal font-poppins">
+                    {leader?.points}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          }
         </table>
       </div>
     </>

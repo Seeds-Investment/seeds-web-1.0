@@ -8,6 +8,7 @@ import Modal from '../ui/modal/Modal';
 import ThirdMedal from '@/assets/play/quiz/bronze-medal.png';
 import FirstMedal from '@/assets/play/quiz/gold-medal.png';
 import SecondMedal from '@/assets/play/quiz/silver-medal.png';
+import { standartCurrency } from '@/helpers/currency';
 import LanguageContext from '@/store/language/language-context';
 import { type ITNC } from '@/utils/interfaces/tournament.interface';
 import moment from 'moment';
@@ -107,11 +108,7 @@ const ModalDetailTournament: React.FC<Props> = ({
                 )}
               </td>
               <td className="border p-3 w-full">
-                {item?.toLocaleString('id-ID', {
-                  currency:
-                    userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR',
-                  style: 'currency'
-                })}
+                {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
               </td>
             </tr>
           ))}

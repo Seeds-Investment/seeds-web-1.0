@@ -41,10 +41,28 @@ interface DataPlay {
 interface props {
   userInfo: any;
 }
+
+const month = [
+  { ind: 'Januari', eng: 'January' },
+  { ind: 'Februari', eng: 'February' },
+  { ind: 'Maret', eng: 'March' },
+  { ind: 'April', eng: 'April' },
+  { ind: 'Mei', eng: 'May' },
+  { ind: 'Juni', eng: 'June' },
+  { ind: 'Juli', eng: 'July' },
+  { ind: 'Agustus', eng: 'August' },
+  { ind: 'September', eng: 'September' },
+  { ind: 'Oktober', eng: 'October' },
+  { ind: 'November', eng: 'November' },
+  { ind: 'Desember', eng: 'December' }
+];
+
 const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const { t } = useTranslation();
+  const monthNow = new Date().getMonth();
   const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
+  const [monthNowString, setMonthNowString] = useState<string>('');
   const [playDetail, setPlayDetail] = useState<DataPlay>({
     play_id: '08e1bdf9-d618-408b-8a2e-9fe98f66de8e',
     user_detail: {
@@ -92,6 +110,14 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    if (window.localStorage.getItem('translation') === '"ID"') {
+      setMonthNowString(month[monthNow].ind);
+    } else {
+      setMonthNowString(month[monthNow].eng);
+    }
+  }, [window.localStorage.getItem('translation')]);
+
   return (
     <div
       className={`w-full lg:flex ${
@@ -114,7 +140,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                   {t('homepage.section2.text12')}{' '}
                 </h1>
                 <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
-                  {t('homepage.section2.text13')}
+                  {`"${t('homepage.section2.text13')} ${monthNowString}"`}
                 </h1>
               </div>
               <div className="lg:flex flex-row justify-center xl:w-3/4">
@@ -170,7 +196,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 {t('homepage.section2.text12')}{' '}
               </h1>
               <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
-                {t('homepage.section2.text13')}
+                  {`"${t('homepage.section2.text13')} ${monthNowString}"`}
               </h1>
             </div>
             <div className="lg:flex flex-row justify-center xl:w-3/4">
@@ -389,7 +415,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                   {t('homepage.section2.text12')}{' '}
                 </h1>
                 <h1 className="font-semibold text-sm text-[#262626] mb-3 z-50">
-                  {t('homepage.section2.text13')}
+                  {`"${t('homepage.section2.text13')} ${monthNowString}"`}
                 </h1>
               </div>
               <div className="lg:flex flex-row justify-end">

@@ -1555,7 +1555,7 @@ export default {
       text10: 'SeedsPedia',
       text11: 'Peringkat Kamu',
       text12: 'Menangkan Hadiah setiap Bulan',
-      text13: '"Sekarang di Desember"',
+      text13: 'Sekarang di',
       text14: 'Lihat lebih banyak',
       text15: 'Masuk untuk menuju arena bermain',
       text16: 'Masuk untuk menuju permainan'
@@ -1800,6 +1800,13 @@ export default {
       openButton: 'Buka',
       share: 'Share',
       days: 'Hari'
+    },
+    leaderboard: {
+      lastUpdated: 'Update terakhir: ',
+      currentRank: 'Peringkat Anda Sekarang',
+      player: 'Pemain',
+      totalGain: 'Pendapatan',
+      totalPoint: 'Total Poin',
     },
     first: '1st',
     second: '2nd',

@@ -15,9 +15,10 @@ import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
+import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
-import { getPlayById } from '@/repository/play.repository';
+import { getPlayBallance, getPlayById, getPlayPortfolio } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Card, Typography } from '@material-tailwind/react';
@@ -28,6 +29,16 @@ import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
+
+interface BallanceTournament {
+  balance: number;
+  portfolio: number;
+  total_sell: number;
+  total_buy: number;
+  currency: string;
+  return_value: number;
+  return_percentage: number;
+}
 
 const settings: Settings = {
   slidesToShow: 3,
@@ -78,16 +89,49 @@ export interface CircleInterface {
   updated_at: string;
 }
 
+interface itemPortfolioSummaryType {
+  value: number;
+  gnl: number;
+  gnl_percentage: number;
+  currency: string;
+}
+
+interface IPortfolioSummary {
+  summary: itemPortfolioSummaryType;
+  id_stock: itemPortfolioSummaryType;
+  us_stock: itemPortfolioSummaryType;
+  crypto: itemPortfolioSummaryType;
+  commodity: itemPortfolioSummaryType;
+  pie: {
+    assets: any[];
+    cash_balance: number;
+    total_portfolio: number;
+  };
+}
+
 const TournamentHome: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
+  
+  const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
+  const [ballance, setBallance] = useState<BallanceTournament>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    return_value: 0,
+    return_percentage: 0,
+    currency: 'IDR'
+  });
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -122,6 +166,8 @@ const TournamentHome: React.FC = () => {
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       getDetail();
+      void fetchPlayBallance(userInfo.preferredCurrency as string);
+      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
     }
   }, [id, userInfo]);
 
@@ -150,6 +196,27 @@ const TournamentHome: React.FC = () => {
       toast.error('Error fetching circle data:', error.message);
     }
   };
+
+  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getPlayPortfolio(id as string, currency);
+      setPortfolio(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
   
   return (
     <>
@@ -167,7 +234,11 @@ const TournamentHome: React.FC = () => {
           userInfoCurrency={userInfo.preferredCurrency ?? ''}
         />
       )}
-      {(detailTournament === undefined && loading) && <Loading />}
+      {detailTournament === undefined &&
+        loading &&
+        isLoading &&
+        portfolio === null && 
+        <Loading />}
       <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
         <div className='flex justify-start w-full gap-2'>
           <Typography className='text-xl font-semibold'>
@@ -196,13 +267,16 @@ const TournamentHome: React.FC = () => {
               Total Investment
             </Typography>
             <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
-              IDR 4.490.000
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
-              Total Return IDR 44.500.400 (+2.8%)
+              {`Total Return: `}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
+              {` (${ballance?.return_value < 0 ? `-` : `+`}${ballance?.return_percentage}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
-              Virtual Balance : 100.000.000
+              {`Virtual Balance : `}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
             </Typography>
           </div>
           <Image alt="" src={BannerCircle} className='absolute top-0 right-0 z-0'/>
@@ -261,12 +335,16 @@ const TournamentHome: React.FC = () => {
             src={IconSeeds}
             className="w-[60px] md:w-[80px] xl:ml-8"
           />
-          <div className="w-full lg:flex lg:justify-between ml-2">
+          <div 
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            onClick={async() => await router.push(`/play/tournament/${id}/leaderboard`)} 
+            className="w-full lg:flex lg:justify-between ml-2"
+          >
             <div className="flex flex-col justify-center items-start text-sm lg:text-lg">
               <div>{t('tournament.leaderboardBanner1')}</div>
               <div className="flex gap-2">
                 <div>{t('tournament.leaderboardBanner2')}</div>
-                <div className="text-[#3AC4A0] font-semibold">Leaderboard</div>
+                <div className="text-[#3AC4A0] font-semibold cursor-pointer">Leaderboard</div>
               </div>
             </div>
             <div className="bg-[#3AC4A0] text-white flex justify-center items-center w- lg:w-[300px] lg:text-lg text-xs rounded-full px-4 py-1 mt-2 xl:mr-8">

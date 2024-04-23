@@ -10,14 +10,12 @@ import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
+import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
-import { type Ballance } from '@/pages/homepage/play-assets';
 import {
-  getPlayBallance,
-  getPlayById,
-  getPlayPortfolio
+  getPlayById
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -34,45 +32,16 @@ import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
-interface itemPortfolioSummaryType {
-  value: number;
-  gnl: number;
-  gnl_percentage: number;
-  currency: string;
-}
-
-interface IPortfolioSummary {
-  summary: itemPortfolioSummaryType;
-  id_stock: itemPortfolioSummaryType;
-  us_stock: itemPortfolioSummaryType;
-  crypto: itemPortfolioSummaryType;
-  commodity: itemPortfolioSummaryType;
-  pie: {
-    assets: any[];
-    cash_balance: number;
-    total_portfolio: number;
-  };
-}
-
 const TournamentDetail: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
   const [_, setDiscount] = useState<any>();
-  const [ballance, setBallance] = useState<Ballance>({
-    balance: 0,
-    portfolio: 0,
-    total_sell: 0,
-    total_buy: 0,
-    currency: 'IDR'
-  });
 
   console.log(_);
 
@@ -116,34 +85,7 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-
-  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const response = await getPlayPortfolio(id as string, currency);
-      setPortfolio(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
-    try {
-      const response = await getPlayBallance(id as string, { currency });
-      setBallance(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency as string);
-      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
-    }
-  }, [id, userInfo]);
+  
   const handleDiscountChange = (discount: any): void => {
     setDiscount(discount);
   };
@@ -160,10 +102,7 @@ const TournamentDetail: React.FC = () => {
         />
       )}
       {detailTournament === undefined &&
-        loading &&
-        isLoading &&
-        portfolio &&
-        ballance && <Loading />}
+        loading && <Loading />}
       <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
         <div className="absolute bottom-[-25px] text-center">
           <Typography className="text-[26px] font-semibold font-poppins">
@@ -183,13 +122,9 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
-              : detailTournament?.fixed_prize?.toLocaleString('id-ID', {
-                  currency:
-                    userInfo?.preferredCurrency?.length > 0
-                      ? userInfo?.preferredCurrency
-                      : 'IDR',
-                  style: 'currency'
-                })}
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
+            }
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -294,13 +229,7 @@ const TournamentDetail: React.FC = () => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {item?.toLocaleString('id-ID', {
-                      currency:
-                        userInfo?.preferredCurrency?.length > 0
-                          ? userInfo?.preferredCurrency
-                          : 'IDR',
-                      style: 'currency'
-                    })}
+                    {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
                   </td>
                 </tr>
               ))}
@@ -379,13 +308,9 @@ const TournamentDetail: React.FC = () => {
           <Typography className="font-semibold text-xl font-poppins">
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              : detailTournament?.admission_fee?.toLocaleString('id-ID', {
-                  currency:
-                    userInfo?.preferredCurrency?.length > 0
-                      ? userInfo?.preferredCurrency
-                      : 'IDR',
-                  style: 'currency'
-                })}
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
+            }
           </Typography>
           <button
             onClick={async () => {

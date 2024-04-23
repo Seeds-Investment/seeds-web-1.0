@@ -351,3 +351,45 @@ export const createGroup = async (
     }
   });
 };
+
+export const acceptRequest = async (data: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.acceptRequest;
+  await baseUrl.patch(
+    path,
+    {
+      user_id: data
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};
+
+export const rejectRequest = async (data: string): Promise<void> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  const path = Endpoints.chat.acceptRequest;
+  await baseUrl.patch(
+    path,
+    {
+      user_id: data
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    }
+  );
+};

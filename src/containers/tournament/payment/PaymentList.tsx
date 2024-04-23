@@ -188,7 +188,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
         type === 'ewallet' &&
         (phoneNumber === userInfo?.phoneNumber || phoneNumber === '')
       ) {
-        console.error('Please fill the phone number');
+        toast.error('Please fill the phone number');
       }
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (detailTournament) {
@@ -215,7 +215,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
               `/play/payment-tournament/receipt/${response.order_id as string}`
             )
             .catch(error => {
-              console.log(error);
+              toast.error(error);
             });
         }
       } else {
@@ -249,12 +249,12 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
               }`
             )
             .catch(error => {
-              console.log(error);
+              toast.error(error);
             });
         }
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }

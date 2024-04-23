@@ -64,7 +64,6 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
         toast.error('Error Promo Code:', response.message);
       }
     } catch (error) {
-      console.error('Error validating promo code');
       toast.error('Error Promo Code only for New User');
       setPromoCode('');
     }

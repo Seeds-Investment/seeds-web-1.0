@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface props {
   data?: any;
@@ -65,7 +66,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       const response = await getPaymentDetail(id);
       setOrderDetail(response);
     } catch (error) {
-      console.error('error fetching order detail', error);
+      toast.error('Error fetching order detail', error);
     } finally {
       setIsLoading(false);
     }
@@ -78,7 +79,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
-      console.error('Error fetching Payment List', error.message);
+      toast.error('Error fetching Payment List', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +92,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setSteps(data.payment_instruction[0].step);
       setVirtualAccountInfo(data.virtual_account_info);
     } catch (error: any) {
-      console.error('Error fetching Payment List', error.message);
+      toast.error('Error fetching Payment List', error.message);
     } finally {
       setIsLoading(false);
     }

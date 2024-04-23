@@ -86,7 +86,8 @@ export const getQuizById = async ({
     return await quizService.get(path, {
       headers: {
         Accept: 'application/json',
-        Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
+        Authorization:
+          isGuest() || accessToken === null ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {

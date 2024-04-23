@@ -42,7 +42,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
   const [input, setInput] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
   const [blank, setBlank] = useState(false);
-  const inputRefs = useRef<any[]>([]);
+  const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
   const verifyOTP = {
     method,
@@ -54,10 +54,14 @@ const AuthOTP: React.FC<IAuthOTP> = ({
     setBlank(false);
     setError(false);
     const newInput = [...input];
-    newInput[index] = value;
+    newInput[index] = value.replace(/\D/g, '');
+    const isReplaced = new RegExp(value).test(value);
+    const isLetter = /\D/g.test(value);
     setInput(newInput);
     if (newInput[index] !== '') {
       inputRefs.current[index + 1]?.focus();
+    } else if (isReplaced && isLetter) {
+      inputRefs.current[index]?.focus();
     } else if (newInput[index] === '') {
       inputRefs.current[index - 1]?.focus();
     }
@@ -177,9 +181,13 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 key={index}
               >
                 <input
-                  type="number"
+                  type="text"
                   key={index}
-                  ref={el => (inputRefs.current[index] = el)}
+                  ref={el => {
+                    if (el !== null) {
+                      inputRefs.current[index] = el;
+                    }
+                  }}
                   value={value}
                   maxLength={1}
                   onKeyDown={async (e: any) => {

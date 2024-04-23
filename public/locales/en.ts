@@ -1629,8 +1629,8 @@ export default {
       text9: "Check out what's popular right now",
       text10: 'SeedsPedia',
       text11: 'Your Rank',
-      text12: 'Win every reward',
-      text13: 'in ',
+      text12: 'Win Reward every Month',
+      text13: 'Now in',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
       text16: 'Login to enter arena simulation'

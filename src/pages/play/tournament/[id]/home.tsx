@@ -216,6 +216,9 @@ const TournamentHome: React.FC = () => {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
+
+  console.log('portfolio ', portfolio)
+  console.log('ballance ', ballance)
   
   return (
     <>

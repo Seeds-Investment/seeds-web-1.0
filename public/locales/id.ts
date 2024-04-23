@@ -1554,8 +1554,8 @@ export default {
       text9: 'Cek apa yang sedang populer sekarang',
       text10: 'SeedsPedia',
       text11: 'Peringkat Kamu',
-      text12: 'Menangkan setiap hadiah',
-      text13: 'di Bulan ',
+      text12: 'Menangkan Hadiah setiap Bulan',
+      text13: 'Sekarang di',
       text14: 'Lihat lebih banyak',
       text15: 'Masuk untuk menuju arena bermain',
       text16: 'Masuk untuk menuju permainan'

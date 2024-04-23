@@ -206,7 +206,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
           </div>
         </div>
 
-        <table>
+        <table className='w-full'>
           <thead>
             <tr className="border-b">
               <th className="px-2 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">

@@ -35,32 +35,6 @@ export const formatMonthlyChart = (date: Date): string[] => {
   return months.reverse();
 };
 
-export const getThisMonthID = (date: Date): string => {
-
-  const monthsID: string[] = [
-      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-  ];
-
-  const currentDate = date;
-  const currentMonth = currentDate.getMonth();
-
-  return monthsID[currentMonth]
-};
-
-export const getThisMonthEN = (date: Date): string => {
-
-  const monthsEN: string[] = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-  ];
-
-  const currentDate = date;
-  const currentMonth = currentDate.getMonth();
-
-  return monthsEN[currentMonth]
-};
-
 export const getLastUpdatedID = (date: Date): string => {
 
   const monthsID: string[] = [

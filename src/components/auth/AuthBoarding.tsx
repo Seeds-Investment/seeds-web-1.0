@@ -47,6 +47,7 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
       <Button
+        disabled={true}
         onClick={handleGuest}
         className="font-semibold font-poppins text-base text-white bg-[#3AC4A0] rounded-full capitalize p-3.5 sm:px-20 sm:w-full w-full"
       >

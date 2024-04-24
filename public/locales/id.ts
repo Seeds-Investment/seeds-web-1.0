@@ -1805,6 +1805,17 @@ export default {
     community: 'Komunitas',
     request: 'Request',
     reject: 'Tolak',
-    accept: 'Terima'
+    accept: 'Terima',
+    newGroup: 'Grup Baru',
+    groupName: 'Nama Grup',
+    enterGroupName: 'Masukan nama grup',
+    description: 'Deskripsi',
+    enterGroupDescription: 'Masukan deskripsi grup',
+    typeGroup: 'Tipe Grup',
+    public: 'Publik',
+    private: 'Pribadi',
+    next: 'Berikutnya',
+    createGroupPopUpText1: 'Yakin ingin membuat group ini?',
+    createGroupPopUpText2: 'Yuk, konfirmasi untuk membuat grup kamu'
   }
 };

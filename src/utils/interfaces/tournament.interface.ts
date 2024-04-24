@@ -18,12 +18,12 @@ export enum AssetFilter {
 }
 
 export enum SortingFilter {
-  ASCENDING = 'ASCENDING',
-  DESCENDING = 'DESCENDING',
-  TOP_GAINER_PERCENTAGE = 'TOP_GAINER_PERCENTAGE',
-  TOP_GAINER_VALUE = 'TOP_GAINER_VALUE',
-  TOP_LOSER_PERCENTAGE = 'TOP_LOSER_PERCENTAGE',
-  TOP_LOSER_VALUE = 'TOP_LOSER_VALUE'
+  ASCENDING = 'alphabet_asc',
+  DESCENDING = 'alphabet_desc',
+  TOP_GAINER_PERCENTAGE = 'top_gainers_percentage',
+  TOP_GAINER_VALUE = 'top_gainers_value',
+  TOP_LOSER_PERCENTAGE = 'top_losers_percentage',
+  TOP_LOSER_VALUE = 'top_losers_value'
 }
 
 export interface ITNC {

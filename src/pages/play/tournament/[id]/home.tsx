@@ -2,14 +2,17 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import Bearish from '@/assets/play/tournament/bearish.svg';
 import Bullish from '@/assets/play/tournament/bullish.svg';
 import CoinLogo from '@/assets/play/tournament/coinLogo.svg';
 import IconCopy from '@/assets/play/tournament/copyLink.svg';
 import BannerCircle from '@/assets/play/tournament/homeBannerCircle.svg';
+import IconFilter from '@/assets/play/tournament/iconFilter.svg';
 import IconPortfolio from '@/assets/play/tournament/iconPortfolio.svg';
 import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg';
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
+import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
@@ -17,10 +20,12 @@ import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
+import { type AssetItemType } from '@/pages/homepage/play-assets';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
+import { getMarketList } from '@/repository/market.repository';
 import { getPlayBallance, getPlayById, getPlayPortfolio } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
+import { SortingFilter, type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -29,6 +34,7 @@ import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
+import { calculatePercentageChange } from '../../../../helpers/assetPercentageChange';
 
 interface BallanceTournament {
   balance: number;
@@ -109,6 +115,12 @@ interface IPortfolioSummary {
   };
 }
 
+interface FilterSorting {
+  id: number;
+  title: string;
+  status: SortingFilter;
+}
+
 const TournamentHome: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
@@ -121,7 +133,18 @@ const TournamentHome: React.FC = () => {
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
-  
+
+  const [assets, setAssets] = useState<AssetItemType[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filter, setFilter] = useState({
+    search: searchQuery,
+    limit: 5,
+    page: 1,
+    type: 'ALL',
+    currency: '',
+    sort_by: '',
+  })
+
   const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
   const [ballance, setBallance] = useState<BallanceTournament>({
     balance: 0,
@@ -132,6 +155,32 @@ const TournamentHome: React.FC = () => {
     return_percentage: 0,
     currency: 'IDR'
   });
+  
+  const [showFilter, setShowFilter] = useState(false);
+  const [assetActiveSort, setAssetActiveSort] = useState(
+    SortingFilter.ASCENDING
+  );
+
+  const handleShowFilters = (): void => {
+    setShowFilter(!showFilter);
+  };
+
+  const handleSearch = (event: any): void => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filterSorting: FilterSorting[] = [
+    {
+      id: 0,
+      title: 'A-Z',
+      status: SortingFilter.ASCENDING
+    },
+    {
+      id: 1,
+      title: 'Z-A',
+      status: SortingFilter.DESCENDING
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -218,6 +267,48 @@ const TournamentHome: React.FC = () => {
     }
   };
   
+  const fetchDataAssets = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+
+      const response = await getMarketList({
+        ...filter,
+        search: searchQuery,
+        sort_by: assetActiveSort
+      });
+      if (response.result === null) {
+        setAssets([]);
+      } else {
+        setAssets(response.marketAssetList);
+      }
+      setIsLoading(false);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      setFilter(prevState => ({
+        ...prevState,
+        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
+      }));
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (userInfo !== undefined && filter.currency !== '') {
+      const fetchData = async (): Promise<void> => {
+        await fetchDataAssets();
+      };
+
+      fetchData().catch(error => {
+        toast.error('Error fetching data:', error);
+      });
+    }
+  }, [filter, userInfo, assetActiveSort, searchQuery]);
+  
   return (
     <>
       {isDetailModal && (
@@ -237,6 +328,7 @@ const TournamentHome: React.FC = () => {
       {detailTournament === undefined &&
         loading &&
         isLoading &&
+        assets &&
         portfolio === null && 
         <Loading />}
       <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
@@ -275,7 +367,7 @@ const TournamentHome: React.FC = () => {
               {` (${ballance?.return_value < 0 ? `-` : `+`}${ballance?.return_percentage}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
-              {`Virtual Balance : `}
+              {`${t('tournament.assets.virtualBalance')}: `}
               {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
             </Typography>
           </div>
@@ -284,7 +376,7 @@ const TournamentHome: React.FC = () => {
             <div onClick={async() => await router.push('/play/tournament/1/portfolio')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
               <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
               <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
-                Portfolio
+                {t('tournament.assets.portfolio')}
               </Typography>
             </div>
             <div
@@ -299,7 +391,7 @@ const TournamentHome: React.FC = () => {
                 className="w-[30px] md:w-[45px]"
               />
               <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
-                Virtual Balance
+                {t('tournament.assets.virtualBalance')}
               </Typography>
             </div>
             <div className="flex flex-col justify-center items-center gap-2 cursor-pointer">
@@ -357,40 +449,93 @@ const TournamentHome: React.FC = () => {
           <Typography className="text-xl font-semibold text-[#3AC4A0]">
             Tournament Assets
           </Typography>
-          <input
-            id="search"
-            type="text"
-            name="search"
-            placeholder="Search"
-            readOnly={false}
-            disabled={false}
-            className="mt-4 block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
-          />
-          <div className="flex justify-between items-center p-4 mt-4">
-            <div className="flex gap-4">
-              <Image alt="" src={CoinLogo} className="w-[40px]" />
-              <div className="flex flex-col justify-center items-start">
-                <div className="flex gap-1">
-                  <div className="font-semibold">ETH /</div>
-                  <div>BIDR</div>
-                </div>
-                <div className="text-[#7C7C7C]">Ethereum</div>
-              </div>
-            </div>
-            <div className='flex flex-col justify-end items-end'>
-              <div className='font-semibold'>
-                IDR 3.575.000
-              </div>
-              <div className='flex justify-center gap-2'>
-                <Image alt="" src={Bullish} className='w-[20px]'/>
-                <div className='text-[#3AC4A0]'>
-                  (47%)
-                </div>
-              </div>
-            </div>
+          <div className="w-full flex gap-2 mt-4">
+            <input
+              id="search"
+              type="text"
+              name="search"
+              value={searchQuery}
+              onChange={e => {
+                handleSearch(e);
+              }}
+              placeholder="Search"
+              className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
+            />
+            <Image
+              onClick={() => {
+                handleShowFilters();
+              }}
+              alt=""
+              src={IconFilter}
+              className="w-[30px] cursor-pointer"
+            />
           </div>
 
-          <div className='w-full flex justify-center items-center' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
+          {/* Sorting Section */}
+          {showFilter && (
+            <div className="w-full flex items-center justify-center mt-4 duration-500">
+              <div className="flex flex-row items-center gap-3 max-w-full overflow-x-auto no-scroll">
+                {filterSorting.map(item => (
+                  <button
+                    className={`w-full flex gap-2 border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
+                      item.status === assetActiveSort
+                        ? 'border-seeds-button-green bg-seeds-button-green text-white'
+                        : 'border-seeds-button-green bg-white text-seeds-button-green'
+                    }`}
+                    key={item.id}
+                    onClick={() => {
+                      setAssetActiveSort(item.status);
+                    }}
+                  >
+                    <div>{item.title}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {
+            assets !== null ?
+            <>
+              {assets?.map((data, index) => (
+                <div key={index} className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg">
+                  <div className="flex gap-4 text-sm md:text-base">
+                    <img alt="" src={data?.logo === "" ? CoinLogo : data?.logo} className="w-[40px] h-[40px] rounded-full" />
+                    <div className="flex flex-col justify-center items-start">
+                      <div className="flex gap-1">
+                        <div className="font-semibold">{data?.seedsTicker}</div>
+                        <div>/ {data?.exchangeCurrency}</div>
+                      </div>
+                      <div className="text-[#7C7C7C] text-xs md:text-base">{data?.name}</div>
+                    </div>
+                  </div>
+                  <div className='flex flex-col justify-end items-end'>
+                    <div className='font-semibold text-sm md:text-base'>
+                      {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.priceBar?.close).replace('Rp', '')}
+                    </div>
+                    <div className='flex justify-center gap-2'>
+                      <Image alt="" src={data?.priceBar?.close >= data?.priceBar?.open ? Bullish : Bearish} className='w-[20px]'/>
+                      <div className={`${data?.priceBar?.close >= data?.priceBar?.open ? 'text-[#3AC4A0]' : 'text-[#DD2525]'} text-sm md:text-base`}>
+                        {`(${calculatePercentageChange(data?.priceBar?.open, data?.priceBar?.close)}%)`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+            :
+            <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+              <Image alt="" src={IconNoData} className="w-[250px]" />
+              <p className="font-semibold text-black">
+                {`"${searchQuery}" ${t('tournament.assets.text1')}`}
+              </p>
+              <p className="text-[#7C7C7C]">
+                {t('tournament.assets.text2')}
+              </p>
+            </div>
+          }
+
+          <div className='w-full flex justify-center items-center mt-4' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
             <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
               <Typography className='text-lg font-semibold text-white'>
                 See More

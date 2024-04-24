@@ -26,7 +26,7 @@ const ModalTutorialTournament: React.FC<Props> = ({ onClose }) => {
       <div className="w-full h-full relative">
         <div className="flex justify-between mb-2">
           <Typography className="font-bold text-lg text-[#3AC4A0]">
-            {t('tournament.tutorialToournament')}
+            {t('tournament.tutorialTournament')}
           </Typography>
         </div>
         <div className="bg-[#E9E9E9] w-[50px] rounded-full absolute bottom-[-80px] p-2 left-0 right-0 ml-auto mr-auto hover:scale-110 transition ease-out cursor-pointer hover:shadow-lg duration-300">

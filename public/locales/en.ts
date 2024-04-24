@@ -1884,6 +1884,13 @@ export default {
       totalGain: 'Total Gain',
       totalPoint: 'Total Points',
     },
+    assets: {
+      text1: "is not found!",
+      text2: "Let's find using another keyword!",
+      totalInvesment: 'Total Investment',
+      portfolio: 'Portfolio',
+      virtualBalance: 'Virtual Balance',
+    },
     first: '1st',
     second: '2nd',
     third: '3rd',

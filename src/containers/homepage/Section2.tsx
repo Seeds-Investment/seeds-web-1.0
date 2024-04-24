@@ -61,7 +61,6 @@ const month = [
 const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const monthNow = new Date().getMonth();
   const { t } = useTranslation();
-  const monthNow = new Date().getMonth();
   const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [monthNowString, setMonthNowString] = useState<string>('');

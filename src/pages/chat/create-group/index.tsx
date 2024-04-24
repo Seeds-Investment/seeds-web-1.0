@@ -17,7 +17,6 @@ import {
   Button,
   ButtonGroup,
   Input,
-  Textarea,
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -89,6 +88,10 @@ const CreateGroup: React.FC = () => {
   }, [searchFilter]);
 
   const createGroupChat = async (): Promise<void> => {
+    if ((form.name === '', form.desc === '')) {
+      toast('Please fill all fields');
+      return;
+    }
     try {
       const members = selectedUserList.map(user => user.id);
       members.push(dataUser.id);
@@ -170,15 +173,42 @@ const CreateGroup: React.FC = () => {
     }));
   };
 
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
+  const tagInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleInputHashtagChange = (
+    event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     const { value } = event.target;
-    const hashtags = value.split('\n');
-    setForm(prevForm => ({
-      ...prevForm,
-      hashtag: hashtags
-    }));
+    const lastCharacterIsSpace = /\s$/.test(value);
+    if (lastCharacterIsSpace && value.trim() !== '') {
+      const newTag = value.trim();
+      if (form.hashtag.includes(newTag)) {
+        event.target.value = '';
+      } else {
+        setForm({
+          ...form,
+          hashtag: [...form.hashtag, newTag]
+        });
+        event.target.value = '';
+      }
+    }
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (
+      event.key === 'Backspace' &&
+      event.currentTarget.value === '' &&
+      form.hashtag.length > 0
+    ) {
+      const newHashtag = [...form.hashtag];
+      newHashtag.pop(); // Remove the last tag
+      setForm({
+        ...form,
+        hashtag: newHashtag
+      });
+    }
   };
 
   useEffect(() => {
@@ -222,7 +252,7 @@ const CreateGroup: React.FC = () => {
                   />
                 </div>
                 <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                  New Group
+                  {t('chat.newGroup')}
                 </Typography>
               </div>
               <div
@@ -320,7 +350,7 @@ const CreateGroup: React.FC = () => {
                 className="bg-[#3AC4A0] mt-5 w-full rounded-full hover:scale-105 transition ease-out"
               >
                 <Typography className="text-white text-lg font-bold text-center p-2">
-                  {t('DeleteAccount.confirmButton')}
+                  {t('chat.next')}
                 </Typography>
               </div>
             </>
@@ -339,7 +369,7 @@ const CreateGroup: React.FC = () => {
                   />
                 </div>
                 <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                  New Group
+                  {t('chat.newGroup')}
                 </Typography>
               </div>
               <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4] relative rounded-lg overflow-hidden my-4">
@@ -370,8 +400,8 @@ const CreateGroup: React.FC = () => {
               <div className="w-full flex flex-col my-8">
                 <Input
                   variant="static"
-                  label="Group Name"
-                  placeholder="Enter group name"
+                  label={t('chat.groupName') ?? ''}
+                  placeholder={t('chat.enterGroupName') ?? ''}
                   value={form.name}
                   name="name"
                   onChange={handleFormInputChange}
@@ -386,8 +416,8 @@ const CreateGroup: React.FC = () => {
                 </Typography>
                 <Input
                   variant="static"
-                  label="Description"
-                  placeholder="Enter group description"
+                  label={t('chat.description') ?? ''}
+                  placeholder={t('chat.enterGroupDescription') ?? ''}
                   value={form.desc}
                   name="desc"
                   onChange={handleFormInputChange}
@@ -398,7 +428,7 @@ const CreateGroup: React.FC = () => {
                   className="placeholder:text-[#7C7C7C] font-thin"
                 />
                 <Typography className="text-[#262626] !font-poppins text-base font-semibold mt-4 mb-2 w-full">
-                  Type Group
+                  {t('chat.typeGroup')}
                 </Typography>
                 <ButtonGroup className="mb-8">
                   <Button
@@ -411,7 +441,7 @@ const CreateGroup: React.FC = () => {
                       setPrivacy('public');
                     }}
                   >
-                    public
+                    {t('chat.public')}
                   </Button>
                   <Button
                     className={`shadow-none border font-thin capitalize !border-[#BDBDBD] ${
@@ -423,23 +453,33 @@ const CreateGroup: React.FC = () => {
                       setPrivacy('private');
                     }}
                   >
-                    private
+                    {t('chat.private')}
                   </Button>
                 </ButtonGroup>
-                <Textarea
-                  variant="static"
-                  label="Hashtag"
-                  placeholder="Enter group hashtag"
-                  value={form.hashtag?.join('\n')}
-                  name="hashtag"
-                  onChange={handleTextareaChange}
-                  labelProps={{
-                    className:
-                      '!text-base !text-[#262626] !font-semibold !font-poppins '
-                  }}
-                  className="placeholder:text-[#7C7C7C] font-thin min-h-full"
-                  rows={1}
-                />
+                <Typography className="text-[#262626] !font-poppins font-semibold mt-4 w-full">
+                  Hashtag
+                </Typography>
+                <div className="flex w-full border-b border-[#BDBDBD]">
+                  <div className="flex flex-wrap mt-2">
+                    {form.hashtag.map((tag, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#DCE1FE] text-[#3C49D6] rounded-md px-3 py-1 text-sm mr-2 mb-2"
+                      >
+                        <span>#{tag}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <input
+                    ref={tagInputRef}
+                    className="flex flex-wrap outline-0 min-w-[100px] text-blue-gray-700 font-sans font-thin mt-2"
+                    contentEditable="true"
+                    onChange={handleInputHashtagChange}
+                    onKeyDown={handleKeyDown}
+                    style={{ minHeight: '40px' }}
+                  />
+                </div>
+
                 <div
                   onClick={() => {
                     setIsShowConfirmation(true);
@@ -447,7 +487,7 @@ const CreateGroup: React.FC = () => {
                   className="bg-[#3AC4A0] mt-8 w-full rounded-full hover:scale-105 transition ease-out"
                 >
                   <Typography className="text-white text-lg font-bold text-center p-2">
-                    {t('DeleteAccount.confirmButton')}
+                    {t('chat.next')}
                   </Typography>
                 </div>
               </div>

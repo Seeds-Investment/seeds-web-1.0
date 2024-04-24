@@ -2,6 +2,7 @@
 import back_nav from '@/assets/circle-page/back_nav.svg';
 import more_vertical from '@/assets/more-option/more_vertical.svg';
 import CCard from '@/components/CCard';
+import MediaItem from '@/components/chat/MediaItem';
 import ModalNewChat from '@/components/chat/ModalNewChat';
 import MutePopUp from '@/components/chat/MutePopup';
 import DeleteChatPopUp from '@/components/chat/PopUpDelete';
@@ -114,6 +115,8 @@ const ChatPages: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isChatActive, setIsChatActive] = useState<boolean>(false);
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+  const [isShowSeeMore, setIsShowSeeMore] = useState<boolean>(false);
+  const [detailType, setDetailType] = useState<string>('media');
   // const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState<GetListChatParams>(initialFilter);
   const [otherUserData, setOtherUserData] = useState<IOtherUserProfile | null>(
@@ -183,6 +186,7 @@ const ChatPages: React.FC = () => {
   };
 
   const handleListClick = (): void => {
+    setIsDropdownOpen(false);
     setIsChatActive(true);
   };
   const handleMessageChange = (
@@ -245,7 +249,7 @@ const ChatPages: React.FC = () => {
     () => [
       {
         id: 1,
-        name: 'Personal',
+        name: t('chat.personal'),
         value: 'PERSONAL',
         handler: () => {
           handleChangeTab(dataTab[0].value);
@@ -253,7 +257,7 @@ const ChatPages: React.FC = () => {
       },
       {
         id: 2,
-        name: 'Community',
+        name: t('chat.community'),
         value: 'COMMUNITY',
         handler: () => {
           handleChangeTab(dataTab[1].value);
@@ -261,7 +265,7 @@ const ChatPages: React.FC = () => {
       },
       {
         id: 3,
-        name: 'Request',
+        name: t('chat.request'),
         value: 'REQUEST',
         handler: () => {
           handleChangeTab(dataTab[2].value);
@@ -698,6 +702,138 @@ const ChatPages: React.FC = () => {
     }
   }, [roomId]);
 
+  const renderDetailChatItem = (): JSX.Element | undefined => {
+    if (detailType === 'media') {
+      return (
+        <div className="w-full flex gap-4">
+          {personalMediaData?.map((item: PersonalChatMediaData) => (
+            <MediaItem key={item.id} message={item} />
+          ))}
+        </div>
+      );
+    }
+    if (detailType === 'note') {
+      return (
+        <div className="w-full flex">
+          {personalNotesData?.map((item: PersonalChatNotesData) => (
+            <div key={item?.id}>
+              <div className="flex gap-4">
+                <Image
+                  src={otherUserData?.avatar as string}
+                  alt="Avatar"
+                  width={30}
+                  height={30}
+                  className="rounded-full w-[30px] h-[30px]"
+                />
+                <div className="flex flex-col">
+                  <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                    {otherUserData?.name}
+                  </Typography>
+                  <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                    {moment(item?.created_at).format('MM/DD/YY, HH:mm')}
+                  </Typography>
+                  <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
+                    {item?.content_text}
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (detailType === 'link') {
+      return (
+        <div className="w-full flex">
+          {personalLinksData?.map((item: PersonalChatMediaData) => (
+            <div key={item?.id}>
+              <div className="flex gap-4">
+                <Image
+                  src={otherUserData?.avatar as string}
+                  alt="Avatar"
+                  width={30}
+                  height={30}
+                  className="rounded-full w-[30px] h-[30px]"
+                />
+                <div className="flex flex-col">
+                  <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                    {otherUserData?.name}
+                  </Typography>
+                  <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                    {moment(item?.created_at).format('MM/DD/YYYY')}
+                  </Typography>
+
+                  <Typography
+                    href={item?.content_text}
+                    className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                  >
+                    {item?.content_text}
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (detailType === 'participant') {
+      return (
+        <div className="w-full flex">
+          {groupMember?.map((item: GroupMemberData, index: number) => (
+            <div key={index} className="flex gap-4 w-1/3">
+              <Image
+                src={item?.user_avatar}
+                alt="Avatar"
+                width={48}
+                height={48}
+                className="rounded-full w-12 h-12"
+              />
+              <div className="flex gap-2">
+                <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                  {item?.user_name}
+                </Typography>
+                {item?.role === 'admin' && (
+                  <div className="bg-[#DCFCE4] rounded-full p-1 h-6 flex-shrink-0">
+                    <Typography className="text-xs text-[#3AC4A0] font-poppins">
+                      Admin
+                    </Typography>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (detailType === 'groups') {
+      return (
+        <div className="w-full flex">
+          {commonGroupData?.map((item: CommonGroupData) => (
+            <div key={item?.id}>
+              <div className="flex gap-4">
+                <Image
+                  src={item?.avatar}
+                  alt="Avatar"
+                  width={56}
+                  height={56}
+                  className="rounded-full w-14 h-14"
+                />
+                <div className="flex flex-col">
+                  <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                    {item?.name}
+                  </Typography>
+                  <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                    {item?.top_members?.map(member => member.name).join(', ')}
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+  };
+
   return (
     <PageGradient defaultGradient className="w-full">
       {isDeletePopupOpen && (
@@ -755,377 +891,491 @@ const ChatPages: React.FC = () => {
         <CCard className="flex flex-col border-none rounded-xl bg-white w-full py-5 px-4 gap-4">
           {activeTab === 'COMMUNITY' ? (
             <>
-              <div className="flex justify-between items-center">
-                <div
-                  onClick={() => {
-                    setIsShowDetail(false);
-                  }}
-                >
-                  <Image
-                    alt="Back"
-                    src={back_nav}
-                    className="h-6 w-6 object-cover"
-                  />
-                </div>
-                <Image
-                  src={more_vertical}
-                  alt="threeDots"
-                  className="cursor-pointer"
-                />
-              </div>
-              <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
-                <img
-                  src={groupData?.avatar}
-                  alt="avatar"
-                  className="rounded-full w-36 h-36 bg-[#3AC4A0]"
-                />
-                <div className="flex items-center gap-4">
-                  <Typography className="text-md text-[#3AC4A0] font-poppins">
-                    {groupData?.total_memberships} participants
-                  </Typography>
-                  <div className="size-2 bg-[#3AC4A0] rounded-full" />
-                  <Typography className="text-md text-[#3AC4A0] font-poppins">
-                    {groupData?.total_online} online
-                  </Typography>
-                </div>
-              </div>
-              <div className="w-full flex flex-col p-4 gap-8">
-                <div>
-                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                    Description
-                  </Typography>
-                  <Typography className="text-md text-[#262626] font-poppins">
-                    {groupData?.description}
-                  </Typography>
-                </div>
-                <div>
-                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                    Type Group
-                  </Typography>
-                  <Typography className="text-md text-[#262626] font-poppins">
-                    Detail
-                  </Typography>
-                </div>
-                <div>
-                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                    Hashtag
-                  </Typography>
-                  <div className="flex gap-4">
-                    {groupData?.hashtags?.map((tag: string, index: number) => (
-                      <div key={index} className="p-2 bg-[#DCE1FE] rounded-md">
-                        <Typography className="text-md text-[#3C49D6]] font-poppins">
-                          #{tag}
+              {isShowSeeMore ? (
+                <>
+                  <div className="flex justify-between items-center">
+                    <div
+                      onClick={() => {
+                        setIsShowSeeMore(false);
+                      }}
+                    >
+                      <Image
+                        alt="Back"
+                        src={back_nav}
+                        className="h-6 w-6 object-cover"
+                      />
+                    </div>
+                    <Image
+                      src={more_vertical}
+                      alt="threeDots"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  {renderDetailChatItem()}
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center">
+                    <div
+                      onClick={() => {
+                        setIsShowDetail(false);
+                      }}
+                    >
+                      <Image
+                        alt="Back"
+                        src={back_nav}
+                        className="h-6 w-6 object-cover"
+                      />
+                    </div>
+                    <Image
+                      src={more_vertical}
+                      alt="threeDots"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
+                    <img
+                      src={groupData?.avatar}
+                      alt="avatar"
+                      className="rounded-full w-36 h-36 bg-[#3AC4A0]"
+                    />
+                    <div className="flex items-center gap-4">
+                      <Typography className="text-md text-[#3AC4A0] font-poppins">
+                        {groupData?.total_memberships} participants
+                      </Typography>
+                      <div className="size-2 bg-[#3AC4A0] rounded-full" />
+                      <Typography className="text-md text-[#3AC4A0] font-poppins">
+                        {groupData?.total_online} online
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="w-full flex flex-col p-4 gap-8">
+                    <div>
+                      <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                        Description
+                      </Typography>
+                      <Typography className="text-md text-[#262626] font-poppins">
+                        {groupData?.description}
+                      </Typography>
+                    </div>
+                    <div>
+                      <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                        Type Group
+                      </Typography>
+                      <Typography className="text-md text-[#262626] font-poppins">
+                        Detail
+                      </Typography>
+                    </div>
+                    <div>
+                      <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                        Hashtag
+                      </Typography>
+                      <div className="flex gap-4">
+                        {groupData?.hashtags?.map(
+                          (tag: string, index: number) => (
+                            <div
+                              key={index}
+                              className="p-2 bg-[#DCE1FE] rounded-md"
+                            >
+                              <Typography className="text-md text-[#3C49D6]] font-poppins">
+                                #{tag}
+                              </Typography>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Participants
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('participant');
+                            void fetchDetailGroup();
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
                         </Typography>
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Participants
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {groupMember?.map(
-                      (item: GroupMemberData, index: number) => (
-                        <div key={index}>
+                      <div className="flex flex-col gap-4">
+                        {groupMember?.map(
+                          (item: GroupMemberData, index: number) => (
+                            <div key={index}>
+                              <div className="flex gap-4">
+                                <Image
+                                  src={item?.user_avatar}
+                                  alt="Avatar"
+                                  width={48}
+                                  height={48}
+                                  className="rounded-full w-12 h-12"
+                                />
+                                <div className="flex gap-2">
+                                  <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                    {item?.user_name}
+                                  </Typography>
+                                  {item?.role === 'admin' && (
+                                    <div className="bg-[#DCFCE4] rounded-full p-1 h-6 flex-shrink-0">
+                                      <Typography className="text-xs text-[#3AC4A0] font-poppins">
+                                        Admin
+                                      </Typography>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div className="w-full border-b border-[#E9E9E9]">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Notes
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('note');
+                            void fetchDetailGroup();
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
+
+                      {personalNotesData?.map((item: PersonalChatNotesData) => (
+                        <div key={item?.id}>
                           <div className="flex gap-4">
                             <Image
-                              src={item?.user_avatar}
+                              src={otherUserData?.avatar as string}
                               alt="Avatar"
-                              width={48}
-                              height={48}
-                              className="rounded-full w-12 h-12"
+                              width={30}
+                              height={30}
+                              className="rounded-full w-[30px] h-[30px]"
                             />
-                            <div className="flex gap-2">
+                            <div className="flex flex-col">
                               <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                                {item?.user_name}
+                                {otherUserData?.name}
                               </Typography>
-                              {item?.role === 'admin' && (
-                                <div className="bg-[#DCFCE4] rounded-full p-1 h-6 flex-shrink-0">
-                                  <Typography className="text-xs text-[#3AC4A0] font-poppins">
-                                    Admin
-                                  </Typography>
-                                </div>
-                              )}
+                              <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                                {moment(item?.created_at).format(
+                                  'MM/DD/YY, HH:mm'
+                                )}
+                              </Typography>
+                              <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
+                                {item?.content_text}
+                              </Typography>
                             </div>
                           </div>
                         </div>
-                      )
-                    )}
-                  </div>
-                </div>
-                <div className="w-full border-b border-[#E9E9E9]">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Notes
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-
-                  {personalNotesData?.map((item: PersonalChatNotesData) => (
-                    <div key={item?.id}>
-                      <div className="flex gap-4">
-                        <Image
-                          src={otherUserData?.avatar as string}
-                          alt="Avatar"
-                          width={30}
-                          height={30}
-                          className="rounded-full w-[30px] h-[30px]"
-                        />
-                        <div className="flex flex-col">
-                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                            {otherUserData?.name}
-                          </Typography>
-                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                            {moment(item?.created_at).format('MM/DD/YY, HH:mm')}
-                          </Typography>
-                          <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
-                            {item?.content_text}
-                          </Typography>
-                        </div>
+                      ))}
+                    </div>
+                    <div className="w-full">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Media
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('participants');
+                            void fetchDetailGroup();
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        {personalMediaData?.map(
+                          (item: PersonalChatMediaData) =>
+                            !item.media_url.includes('mp3') && (
+                              <img
+                                key={item.id}
+                                className="w-1/3 h-36 rounded-md"
+                                alt="Media"
+                                src={item.media_url}
+                              />
+                            )
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-                <div className="w-full">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Media
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-                  <div className="w-full flex gap-4">
-                    {personalMediaData?.map(
-                      (item: PersonalChatMediaData) =>
-                        !item.media_url.includes('mp3') && (
-                          <img
-                            key={item.id}
-                            className="w-1/3 h-36 rounded-md"
-                            alt="Media"
-                            src={item.media_url}
-                          />
-                        )
-                    )}
-                  </div>
-                </div>
-                <div className="w-full border-b border-[#E9E9E9]">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      {t('chat.links')}
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-                  {personalLinksData?.map((item: PersonalChatMediaData) => (
-                    <div key={item?.id}>
-                      <div className="flex gap-4">
-                        <Image
-                          src={otherUserData?.avatar as string}
-                          alt="Avatar"
-                          width={30}
-                          height={30}
-                          className="rounded-full w-[30px] h-[30px]"
-                        />
-                        <div className="flex flex-col">
-                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                            {otherUserData?.name}
-                          </Typography>
-                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                            {moment(item?.created_at).format('MM/DD/YYYY')}
-                          </Typography>
-
-                          <Typography
-                            href={item?.content_text}
-                            className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
-                          >
-                            {item?.content_text}
-                          </Typography>
-                        </div>
+                    <div className="w-full border-b border-[#E9E9E9]">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          {t('chat.links')}
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('participants');
+                            void fetchDetailGroup();
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
                       </div>
+                      {personalLinksData?.map((item: PersonalChatMediaData) => (
+                        <div key={item?.id}>
+                          <div className="flex gap-4">
+                            <Image
+                              src={otherUserData?.avatar as string}
+                              alt="Avatar"
+                              width={30}
+                              height={30}
+                              className="rounded-full w-[30px] h-[30px]"
+                            />
+                            <div className="flex flex-col">
+                              <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                {otherUserData?.name}
+                              </Typography>
+                              <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                                {moment(item?.created_at).format('MM/DD/YYYY')}
+                              </Typography>
+
+                              <Typography
+                                href={item?.content_text}
+                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                              >
+                                {item?.content_text}
+                              </Typography>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                </>
+              )}
             </>
           ) : (
             <>
-              <div className="flex justify-between items-center">
-                <div
-                  onClick={() => {
-                    setIsShowDetail(false);
-                  }}
-                >
-                  <Image
-                    alt="Back"
-                    src={back_nav}
-                    className="h-6 w-6 object-cover"
-                  />
-                </div>
-                <Image
-                  src={more_vertical}
-                  alt="threeDots"
-                  className="cursor-pointer"
-                />
-              </div>
-              <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
-                <img
-                  src={otherUserData?.avatar as string}
-                  alt="avatar"
-                  className="rounded-full w-36 h-36 bg-[#3AC4A0]"
-                />
-                <Typography className="text-md text-[#3AC4A0] font-poppins">
-                  @{otherUserData?.seeds_tag}
-                </Typography>
-              </div>
-              <div className="w-full flex flex-col p-4 gap-8">
-                <div>
-                  <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                    Bio
-                  </Typography>
-                  <Typography className="text-md text-[#262626] font-poppins">
-                    {otherUserData?.bio}
-                  </Typography>
-                </div>
-                <div className="w-full border-b border-[#E9E9E9]">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Notes
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
+              {isShowSeeMore ? (
+                <>
+                  <div className="flex justify-between items-center">
+                    <div
+                      onClick={() => {
+                        setIsShowSeeMore(false);
+                      }}
+                    >
+                      <Image
+                        alt="Back"
+                        src={back_nav}
+                        className="h-6 w-6 object-cover"
+                      />
+                    </div>
+                    <Image
+                      src={more_vertical}
+                      alt="threeDots"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  {renderDetailChatItem()}
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center">
+                    <div
+                      onClick={() => {
+                        setIsShowDetail(false);
+                      }}
+                    >
+                      <Image
+                        alt="Back"
+                        src={back_nav}
+                        className="h-6 w-6 object-cover"
+                      />
+                    </div>
+                    <Image
+                      src={more_vertical}
+                      alt="threeDots"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                  <div className="w-full py-4 flex flex-col gap-4 justify-center items-center bg-[#DCFCE4]">
+                    <img
+                      src={otherUserData?.avatar as string}
+                      alt="avatar"
+                      className="rounded-full w-36 h-36 bg-[#3AC4A0]"
+                    />
+                    <Typography className="text-md text-[#3AC4A0] font-poppins">
+                      @{otherUserData?.seeds_tag}
                     </Typography>
                   </div>
+                  <div className="w-full flex flex-col p-4 gap-8">
+                    <div>
+                      <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                        Bio
+                      </Typography>
+                      <Typography className="text-md text-[#262626] font-poppins">
+                        {otherUserData?.bio}
+                      </Typography>
+                    </div>
+                    <div className="w-full border-b border-[#E9E9E9]">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Notes
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('note');
+                            void fetchDetailPersonal();
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
 
-                  {personalNotesData?.map((item: PersonalChatNotesData) => (
-                    <div key={item?.id}>
-                      <div className="flex gap-4">
-                        <Image
-                          src={otherUserData?.avatar as string}
-                          alt="Avatar"
-                          width={30}
-                          height={30}
-                          className="rounded-full w-[30px] h-[30px]"
-                        />
-                        <div className="flex flex-col">
-                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                            {otherUserData?.name}
-                          </Typography>
-                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                            {moment(item?.created_at).format('MM/DD/YY, HH:mm')}
-                          </Typography>
-                          <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
-                            {item?.content_text}
-                          </Typography>
+                      {personalNotesData?.map((item: PersonalChatNotesData) => (
+                        <div key={item?.id}>
+                          <div className="flex gap-4">
+                            <Image
+                              src={otherUserData?.avatar as string}
+                              alt="Avatar"
+                              width={30}
+                              height={30}
+                              className="rounded-full w-[30px] h-[30px]"
+                            />
+                            <div className="flex flex-col">
+                              <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                {otherUserData?.name}
+                              </Typography>
+                              <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                                {moment(item?.created_at).format(
+                                  'MM/DD/YY, HH:mm'
+                                )}
+                              </Typography>
+                              <Typography className="text-mxl font-medium text-[#262626] font-poppins mb-2">
+                                {item?.content_text}
+                              </Typography>
+                            </div>
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                    <div className="w-full">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Media
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('media');
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
+                      <div className="w-full flex gap-4">
+                        {personalMediaData?.map(
+                          (item: PersonalChatMediaData) =>
+                            !item.media_url.includes('mp3') && (
+                              <img
+                                key={item.id}
+                                className="w-1/3 h-36 rounded-md"
+                                alt="Media"
+                                src={item.media_url}
+                              />
+                            )
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-                <div className="w-full">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Media
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-                  <div className="w-full flex gap-4">
-                    {personalMediaData?.map(
-                      (item: PersonalChatMediaData) =>
-                        !item.media_url.includes('mp3') && (
-                          <img
-                            key={item.id}
-                            className="w-1/3 h-36 rounded-md"
-                            alt="Media"
-                            src={item.media_url}
-                          />
-                        )
-                    )}
-                  </div>
-                </div>
-                <div className="w-full border-b border-[#E9E9E9]">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      Links
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
-                  </div>
-                  {personalLinksData?.map((item: PersonalChatMediaData) => (
-                    <div key={item?.id}>
-                      <div className="flex gap-4">
-                        <Image
-                          src={otherUserData?.avatar as string}
-                          alt="Avatar"
-                          width={30}
-                          height={30}
-                          className="rounded-full w-[30px] h-[30px]"
-                        />
-                        <div className="flex flex-col">
-                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                            {otherUserData?.name}
-                          </Typography>
-                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                            {moment(item?.created_at).format('MM/DD/YYYY')}
-                          </Typography>
+                    <div className="w-full border-b border-[#E9E9E9]">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          Links
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('link');
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
+                      {personalLinksData?.map((item: PersonalChatMediaData) => (
+                        <div key={item?.id}>
+                          <div className="flex gap-4">
+                            <Image
+                              src={otherUserData?.avatar as string}
+                              alt="Avatar"
+                              width={30}
+                              height={30}
+                              className="rounded-full w-[30px] h-[30px]"
+                            />
+                            <div className="flex flex-col">
+                              <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                {otherUserData?.name}
+                              </Typography>
+                              <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                                {moment(item?.created_at).format('MM/DD/YYYY')}
+                              </Typography>
 
-                          <Link
-                            href={item?.content_text}
-                            className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
-                          >
-                            {item?.content_text}
-                          </Link>
+                              <Link
+                                href={item?.content_text}
+                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                              >
+                                {item?.content_text}
+                              </Link>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div className="w-full border-b border-[#E9E9E9]">
-                  <div className="w-full flex justify-between">
-                    <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                      {t('chat.commonGroup')}
-                    </Typography>
-                    <Typography className="text-md text-[#3AC4A0] font-poppins mb-2">
-                      {t('chat.seeMore')}
-                    </Typography>
+                    <div className="w-full border-b border-[#E9E9E9]">
+                      <div className="w-full flex justify-between">
+                        <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
+                          {t('chat.commonGroup')}
+                        </Typography>
+                        <Typography
+                          onClick={() => {
+                            setDetailType('groups');
+                            setIsShowSeeMore(true);
+                          }}
+                          className="text-md text-[#3AC4A0] font-poppins mb-2"
+                        >
+                          {t('chat.seeMore')}
+                        </Typography>
+                      </div>
+                      {commonGroupData?.map((item: CommonGroupData) => (
+                        <div key={item?.id}>
+                          <div className="flex gap-4">
+                            <Image
+                              src={item?.avatar}
+                              alt="Avatar"
+                              width={56}
+                              height={56}
+                              className="rounded-full w-14 h-14"
+                            />
+                            <div className="flex flex-col">
+                              <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
+                                {item?.name}
+                              </Typography>
+                              <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
+                                {item?.top_members
+                                  ?.map(member => member.name)
+                                  .join(', ')}
+                              </Typography>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  {commonGroupData?.map((item: CommonGroupData) => (
-                    <div key={item?.id}>
-                      <div className="flex gap-4">
-                        <Image
-                          src={item?.avatar}
-                          alt="Avatar"
-                          width={56}
-                          height={56}
-                          className="rounded-full w-14 h-14"
-                        />
-                        <div className="flex flex-col">
-                          <Typography className="text-md font-semibold text-[#262626] font-poppins mb-2">
-                            {item?.name}
-                          </Typography>
-                          <Typography className="text-md text-[#7c7c7c] font-poppins mb-2">
-                            {item?.top_members
-                              ?.map(member => member.name)
-                              .join(', ')}
-                          </Typography>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                </>
+              )}
             </>
           )}
         </CCard>

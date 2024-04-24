@@ -1882,6 +1882,17 @@ export default {
     community: 'Community',
     request: 'Request',
     reject: 'Reject',
-    accept: 'Accept'
+    accept: 'Accept',
+    newGroup: 'New Group',
+    groupName: 'Group Name',
+    enterGroupName: 'Enter Group Name',
+    description: 'Description',
+    enterGroupDescription: 'Enter Group Description',
+    typeGroup: 'Type Group',
+    public: 'Public',
+    private: 'Private',
+    next: 'Next',
+    createGroupPopUpText1: 'Are you sure to create this group?',
+    createGroupPopUpText2: 'Please confirm to create the group'
   }
 };

@@ -1713,8 +1713,7 @@ export default {
     quizDone1: 'Selangkah lagi menuju kemenangan.',
     quizDone2:
       'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!',
-    testInvestment:
-      'Test pengetahuan investasimu dan menangkan hadiah uang tunainya!',
+    testInvestment: 'Uji kemampuan finansialmu dan dapatkan hadiahnya!',
     welcome: 'Selamat datang di Seeds Quiz',
     areYouReady: 'Kamu siap?',
     millionaire: 'Siapa yang mau jadi miliarder Seeds!',

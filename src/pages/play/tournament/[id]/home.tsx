@@ -13,6 +13,7 @@ import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
 import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
+import FloatingButton from '@/components/play/FloatingButton';
 import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { standartCurrency } from '@/helpers/currency';
@@ -264,7 +265,7 @@ const TournamentHome: React.FC = () => {
         <div className='w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative'>
           <div className='flex flex-col justify-start gap-2 md:gap-0'>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
-              Total Investment
+              {t('tournament.asset.totalInvestment')}
             </Typography>
             <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
               {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
@@ -284,7 +285,7 @@ const TournamentHome: React.FC = () => {
             <div onClick={async() => await router.push('/play/tournament/1/portfolio')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
               <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
               <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
-                Portfolio
+                {t('tournament.asset.portfolio')}
               </Typography>
             </div>
             <div
@@ -353,9 +354,10 @@ const TournamentHome: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full mt-4">
+        <div className="w-full mt-4 relative">
+          <FloatingButton />
           <Typography className="text-xl font-semibold text-[#3AC4A0]">
-            Tournament Assets
+            {t('tournament.asset.tournamentAsset')}
           </Typography>
           <input
             id="search"
@@ -393,7 +395,7 @@ const TournamentHome: React.FC = () => {
           <div className='w-full flex justify-center items-center' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
             <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
               <Typography className='text-lg font-semibold text-white'>
-                See More
+                {t('tournament.asset.seeAll')}
               </Typography>
             </div>
           </div>

@@ -1790,7 +1790,7 @@ export default {
     quizDone1: "let's join another interesting quiz!",
     quizDone2:
       'Ooops... you only get one chance to play a free quiz! Explore more quizzes!',
-    testInvestment: 'Test your investment knowledge and win real money!',
+    testInvestment: 'Test your financial knowledge and win rewards!',
     welcome: 'Welcome to Seeds Quiz',
     areYouReady: 'Are You Ready?',
     millionaire: 'Who wants to be Seeds Millionaire!',

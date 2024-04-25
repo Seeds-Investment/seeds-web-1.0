@@ -284,7 +284,7 @@ const TournamentHome: React.FC = () => {
           <div className='w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg'>
             <div onClick={async() => await router.push('/play/tournament/1/portfolio')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
               <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
-              <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
+              <Typography className='text-[#262626] font-poppins text-xs md:text-lg text-center'>
                 {t('tournament.asset.portfolio')}
               </Typography>
             </div>
@@ -299,7 +299,7 @@ const TournamentHome: React.FC = () => {
                 src={IconVirtualBalance}
                 className="w-[30px] md:w-[45px]"
               />
-              <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+              <Typography className="text-[#262626] font-poppins text-xs md:text-lg text-center">
                 Virtual Balance
               </Typography>
             </div>
@@ -309,7 +309,7 @@ const TournamentHome: React.FC = () => {
                 src={IconWatchlist}
                 className="w-[30px] md:w-[45px]"
               />
-              <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
+              <Typography className="text-[#262626] font-poppins text-xs md:text-lg text-center">
                 Watchlist
               </Typography>
             </div>

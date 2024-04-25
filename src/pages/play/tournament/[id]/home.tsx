@@ -109,10 +109,18 @@ interface IPortfolioSummary {
   crypto: itemPortfolioSummaryType;
   commodity: itemPortfolioSummaryType;
   pie: {
-    assets: any[];
+    assets: PieAssets[];
     cash_balance: number;
     total_portfolio: number;
   };
+}
+
+interface PieAssets {
+  exchange: string;
+  id: string;
+  logo: string;
+  percentage: number;
+  ticker: string;
 }
 
 interface FilterSorting {
@@ -165,7 +173,7 @@ const TournamentHome: React.FC = () => {
     setShowFilter(!showFilter);
   };
 
-  const handleSearch = (event: any): void => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(event.target.value);
   };
 
@@ -188,8 +196,8 @@ const TournamentHome: React.FC = () => {
         const dataInfo = await getUserInfo();
 
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -240,9 +248,9 @@ const TournamentHome: React.FC = () => {
           toast.error('Error fetching data:', err);
           setIsLoadingLeaderBoard(false);
         });
-    } catch (error: any) {
+    } catch (error) {
       setIsLoadingLeaderBoard(false);
-      toast.error('Error fetching circle data:', error.message);
+      toast.error(`Error fetching circle data: ${error as string}`);
     }
   };
 
@@ -282,8 +290,8 @@ const TournamentHome: React.FC = () => {
         setAssets(response.marketAssetList);
       }
       setIsLoading(false);
-    } catch (error: any) {
-      toast.error('Error fetching data:', error);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
       setIsLoading(false);
     }
   };
@@ -363,8 +371,8 @@ const TournamentHome: React.FC = () => {
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`Total Return: `}
-              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
-              {` (${ballance?.return_value < 0 ? `-` : `+`}${ballance?.return_percentage}%)`}
+              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value).replace('Rp', '')}
+              {` (${ballance?.return_value < 0 ? '' : '+'}${ballance?.return_percentage?.toFixed(2)}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`${t('tournament.assets.virtualBalance')}: `}
@@ -381,7 +389,7 @@ const TournamentHome: React.FC = () => {
             </div>
             <div
               onClick={async () =>
-                await router.push('/play/tournament/1/virtual-balance')
+                await router.push(`/play/tournament/${id as string}/virtual-balance`)
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >

@@ -305,6 +305,45 @@ export const createOrderPlay = async (
   }
 };
 
+export const getOperOrderList = async (
+  id: string,
+  params: { currency: string }): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/${id}/orders/open`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
+export const cancelOrderList = async ( playId: string, orderId: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService.delete(`/${playId}/orders/${orderId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
 export const getHistoryTransaction = async (
   id: string,
   params: { limit: number; page: number; currency: string }

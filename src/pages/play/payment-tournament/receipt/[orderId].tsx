@@ -55,10 +55,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<any>([]);
-  console.log(_);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -66,7 +64,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       const response = await getPaymentDetail(id);
       setOrderDetail(response);
     } catch (error) {
-      toast.error('Error fetching order detail', error);
+      toast.error(`Error fetching order detail ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -78,8 +76,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-    } catch (error: any) {
-      toast.error('Error fetching Payment List', error.message);
+    } catch (error) {
+      toast.error(`Error fetching order detail ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -90,15 +88,14 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(true);
       const data = await getHowToPay(url);
       setSteps(data.payment_instruction[0].step);
-      setVirtualAccountInfo(data.virtual_account_info);
-    } catch (error: any) {
-      toast.error('Error fetching Payment List', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Payment List ${error as string}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  function parseStrongText(text: string): any {
+  function parseStrongText(text: string): React.ReactNode[] {
     const regex = /"(.*?)"/g;
     const splitText = text.split(regex);
 

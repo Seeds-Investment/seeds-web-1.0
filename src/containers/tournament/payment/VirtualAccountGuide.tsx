@@ -5,12 +5,13 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { type DetailTournament, type Payment } from './PaymentList';
 import Divider from './components/Divider';
 import InlineText from './components/InlineText';
 
 interface VirtualAccountGuideProps {
-  payment: any;
-  dataPost: any;
+  payment: Payment;
+  dataPost: DetailTournament;
   handlePay: (
     type: string,
     paymentGateway: string,
@@ -61,9 +62,9 @@ const VirtualAccountGuide = ({
       ? promoCodeValidationResult?.total_discount
       : 0;
   const admissionFee = dataPost?.admission_fee * numberMonth;
-  const adminFee = payment?.admin_fee as number;
-  const serviceFee = payment?.service_fee as number;
-  const promoPrice = payment?.promo_price as number;
+  const adminFee = payment?.admin_fee;
+  const serviceFee = payment?.service_fee;
+  const promoPrice = payment?.promo_price;
   const totalFee = parseInt(
     `${
       admissionFee +
@@ -134,7 +135,7 @@ const VirtualAccountGuide = ({
         label={t(`${translationsId}.adminFeeLabel`)}
         value={`IDR ${adminFee}`}
       />
-      {payment.is_promo_available === true ? (
+      {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
           value={`IDR ${promoPrice}`}
@@ -199,7 +200,7 @@ const VirtualAccountGuide = ({
         onClick={async () => {
           await handlePay(
             payment?.payment_type,
-            payment.payment_gateway,
+            payment?.payment_gateway ?? 'DOKU',
             payment?.payment_method,
             totalFee
           );

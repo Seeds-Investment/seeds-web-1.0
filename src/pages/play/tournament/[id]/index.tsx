@@ -41,20 +41,16 @@ const TournamentDetail: React.FC = () => {
   const [userInfo, setUserInfo] = useState<any>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
-  const [_, setDiscount] = useState<any>();
 
-  console.log(_);
-
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error.message);
+    }
+  };
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
@@ -85,10 +81,6 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-  
-  const handleDiscountChange = (discount: any): void => {
-    setDiscount(discount);
-  };
 
   return (
     <>
@@ -101,8 +93,7 @@ const TournamentDetail: React.FC = () => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
-      {detailTournament === undefined &&
-        loading && <Loading />}
+      {detailTournament === undefined && loading && <Loading />}
       <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
         <div className="absolute bottom-[-25px] text-center">
           <Typography className="text-[26px] font-semibold font-poppins">
@@ -122,9 +113,16 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
-            }
+              : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `${
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  userInfo?.preferredCurrency?.length > 0
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'
+                }${standartCurrency(detailTournament?.fixed_prize).replace(
+                  'Rp',
+                  ''
+                )}`}
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -229,7 +227,10 @@ const TournamentDetail: React.FC = () => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
+                    {userInfo?.preferredCurrency?.length > 0
+                      ? userInfo?.preferredCurrency
+                      : 'IDR'}
+                    {standartCurrency(item).replace('Rp', '')}
                   </td>
                 </tr>
               ))}
@@ -300,7 +301,7 @@ const TournamentDetail: React.FC = () => {
         <div className="w-full h-[300px] bg-white rounded-xl p-2">
           <PromoCodeSelection
             detailTournament={detailTournament}
-            onDiscountChange={handleDiscountChange}
+            // onDiscountChange={handleDiscountChange}
           />
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
@@ -308,9 +309,15 @@ const TournamentDetail: React.FC = () => {
           <Typography className="font-semibold text-xl font-poppins">
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
-            }
+              : `${
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  userInfo?.preferredCurrency?.length > 0
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'
+                }${standartCurrency(detailTournament?.admission_fee).replace(
+                  'Rp',
+                  ''
+                )}`}
           </Typography>
           <button
             onClick={async () => {

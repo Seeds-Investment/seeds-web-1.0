@@ -46,17 +46,16 @@ const Portfolio = (): React.ReactElement => {
     PortfolioFilter.OVERVIEW
   );
 
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error.message);
+    }
+  };
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});

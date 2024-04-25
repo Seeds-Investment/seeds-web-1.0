@@ -941,7 +941,7 @@ const ChatPages: React.FC = () => {
                     />
                     <div className="flex items-center gap-4">
                       <Typography className="text-md text-[#3AC4A0] font-poppins">
-                        {groupData?.total_memberships} participants
+                        {groupData?.total_memberships} {t('chat.participants')}
                       </Typography>
                       <div className="size-2 bg-[#3AC4A0] rounded-full" />
                       <Typography className="text-md text-[#3AC4A0] font-poppins">
@@ -952,7 +952,7 @@ const ChatPages: React.FC = () => {
                   <div className="w-full flex flex-col p-4 gap-8">
                     <div>
                       <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                        Description
+                        {t('chat.description')}
                       </Typography>
                       <Typography className="text-md text-[#262626] font-poppins">
                         {groupData?.description}
@@ -960,7 +960,7 @@ const ChatPages: React.FC = () => {
                     </div>
                     <div>
                       <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                        Type Group
+                        {t('chat.typeGroup')}
                       </Typography>
                       <Typography className="text-md text-[#262626] font-poppins">
                         Detail
@@ -988,7 +988,7 @@ const ChatPages: React.FC = () => {
                     <div>
                       <div className="w-full flex justify-between">
                         <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                          Participants
+                          {t('chat.participants')}
                         </Typography>
                         <Typography
                           onClick={() => {
@@ -1034,7 +1034,7 @@ const ChatPages: React.FC = () => {
                     <div className="w-full border-b border-[#E9E9E9]">
                       <div className="w-full flex justify-between">
                         <Typography className="text-md font-semibold text-[#7C7C7C] font-poppins mb-2">
-                          Notes
+                          {t('chat.notes')}
                         </Typography>
                         <Typography
                           onClick={() => {
@@ -1093,15 +1093,41 @@ const ChatPages: React.FC = () => {
                       </div>
                       <div className="w-full flex gap-4">
                         {personalMediaData?.map(
-                          (item: PersonalChatMediaData) =>
-                            !item.media_url.includes('mp3') && (
-                              <img
-                                key={item.id}
-                                className="w-1/3 h-36 rounded-md"
-                                alt="Media"
-                                src={item.media_url}
-                              />
-                            )
+                          (item: PersonalChatMediaData) => {
+                            if (item.media_url.includes('mp3')) {
+                              return null;
+                            }
+                            if (
+                              item.media_url.includes('mp4') ||
+                              item.media_url.includes('mov')
+                            ) {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="w-1/3 h-42 rounded-md"
+                                >
+                                  <video width="320" height="144" controls>
+                                    <source
+                                      src={item.media_url}
+                                      type="video/mp4"
+                                    />
+                                  </video>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="w-1/3 h-36 rounded-md"
+                                >
+                                  <img
+                                    src={item?.media_url}
+                                    className="w-full h-full object-contain"
+                                  />
+                                </div>
+                              );
+                            }
+                          }
                         )}
                       </div>
                     </div>
@@ -1122,7 +1148,7 @@ const ChatPages: React.FC = () => {
                         </Typography>
                       </div>
                       {personalLinksData?.map((item: PersonalChatMediaData) => (
-                        <div key={item?.id}>
+                        <div key={item?.id} className="w-full overflow-hidden">
                           <div className="flex gap-4">
                             <Image
                               src={otherUserData?.avatar as string}
@@ -1141,7 +1167,7 @@ const ChatPages: React.FC = () => {
 
                               <Typography
                                 href={item?.content_text}
-                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2 break-all overflow-hidden text-ellipsis"
                               >
                                 {item?.content_text}
                               </Typography>
@@ -1278,15 +1304,41 @@ const ChatPages: React.FC = () => {
                       </div>
                       <div className="w-full flex gap-4">
                         {personalMediaData?.map(
-                          (item: PersonalChatMediaData) =>
-                            !item.media_url.includes('mp3') && (
-                              <img
-                                key={item.id}
-                                className="w-1/3 h-36 rounded-md"
-                                alt="Media"
-                                src={item.media_url}
-                              />
-                            )
+                          (item: PersonalChatMediaData) => {
+                            if (item.media_url.includes('mp3')) {
+                              return null;
+                            }
+                            if (
+                              item.media_url.includes('mp4') ||
+                              item.media_url.includes('mov')
+                            ) {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="w-1/3 h-42 rounded-md"
+                                >
+                                  <video width="320" height="144" controls>
+                                    <source
+                                      src={item.media_url}
+                                      type="video/mp4"
+                                    />
+                                  </video>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="w-1/3 h-36 rounded-md"
+                                >
+                                  <img
+                                    src={item?.media_url}
+                                    className="w-full h-full object-contain"
+                                  />
+                                </div>
+                              );
+                            }
+                          }
                         )}
                       </div>
                     </div>
@@ -1306,7 +1358,7 @@ const ChatPages: React.FC = () => {
                         </Typography>
                       </div>
                       {personalLinksData?.map((item: PersonalChatMediaData) => (
-                        <div key={item?.id}>
+                        <div key={item?.id} className="w-full overflow-hidden">
                           <div className="flex gap-4">
                             <Image
                               src={otherUserData?.avatar as string}
@@ -1325,7 +1377,7 @@ const ChatPages: React.FC = () => {
 
                               <Link
                                 href={item?.content_text}
-                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2"
+                                className="text-mxl underline font-medium text-[#262626] font-poppins mb-2 break-all overflow-hidden text-ellipsis"
                               >
                                 {item?.content_text}
                               </Link>
@@ -1386,7 +1438,7 @@ const ChatPages: React.FC = () => {
               chatList?.length !== 0 || isChatActive ? 'w-1/3' : 'w-full'
             }`}
           >
-            <div className="flex justify-between py-5 px-4 border-b-2 border-[#E9E9E9]">
+            <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 justify-between py-5 px-4 border-b-2 border-[#E9E9E9]">
               <div className="flex items-center">
                 <Typography className="font-semibold text-lg text-[#201B1C] font-poppins">
                   Chat
@@ -1700,7 +1752,7 @@ const ChatPages: React.FC = () => {
                                     />
                                   </svg>
                                   <h1 className="text-sm ms-2 font-poppins font-normal">
-                                    Search
+                                    {t('chat.search')}
                                   </h1>
                                 </div>
                                 <div
@@ -1722,7 +1774,7 @@ const ChatPages: React.FC = () => {
                                     />
                                   </svg>
                                   <h1 className="text-sm ms-2 font-poppins font-normal">
-                                    Mute Notification
+                                    {t('chat.mute')}
                                   </h1>
                                 </div>
                                 <div
@@ -1744,7 +1796,7 @@ const ChatPages: React.FC = () => {
                                     />
                                   </svg>
                                   <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838]">
-                                    Delete Chat
+                                    {t('chat.deleteChat')}
                                   </h1>
                                 </div>
                                 {activeTab === 'COMMUNITY' && (
@@ -1782,7 +1834,7 @@ const ChatPages: React.FC = () => {
                                     </svg>
 
                                     <h1 className="text-sm ms-2 font-normal font-poppins text-[#FF3838] whitespace-nowrap">
-                                      Leave Group
+                                      {t('chat.popUpLeave.Title')}
                                     </h1>
                                   </div>
                                 )}
@@ -1801,7 +1853,7 @@ const ChatPages: React.FC = () => {
                       <div className="flex flex-col gap-4 items-center justify-center h-full">
                         <Image alt="Chat Empty" src={chatEmpty} />
                         <Typography className="font-poppins text-[#7C7C7C] w-60 text-center">
-                          {'No messages here yet. Start a conversation now!'}
+                          {t('chat.emptyChat')}
                         </Typography>
                       </div>
                     )}
@@ -1835,7 +1887,7 @@ const ChatPages: React.FC = () => {
                                         '0001-01-01T00:00:00Z' ||
                                         messageList?.length === index + 1) && (
                                         <Typography className="font-poppins text-[#BDBDBD] self-end mr-4">
-                                          Seen
+                                          {t('chat.seen')}
                                         </Typography>
                                       )}
                                     </>
@@ -2099,7 +2151,7 @@ const ChatPages: React.FC = () => {
                             onKeyDown={handleKeyDown}
                             rows={1}
                             className="focus:outline-none placeholder:text-[#7C7C7C] bg-[#E9E9E9] w-full text-sm font-normal py-3 px-4 rounded-full resize-none"
-                            placeholder={t('chat.personalEmptyState') ?? ''}
+                            placeholder={t('chat.textInputPlaceholder') ?? ''}
                           />
                         </div>
                         <div

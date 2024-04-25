@@ -7,7 +7,6 @@ import withAuth from '@/helpers/withAuth';
 import { searchUser } from '@/repository/auth.repository';
 import { createGroup } from '@/repository/chat.repository';
 import { UseUploadMedia } from '@/repository/circleDetail.repository';
-import { useAppSelector } from '@/store/redux/store';
 import {
   type CreateGroupForm,
   type SearchUserChat
@@ -45,7 +44,6 @@ const initialForm: CreateGroupForm = {
 
 const CreateGroup: React.FC = () => {
   const router = useRouter();
-  const { dataUser } = useAppSelector(state => state.user);
   const [searchFilter, setSearchFilter] = useState<SearchUserParams>(
     initialSearchUserFilter
   );
@@ -94,7 +92,6 @@ const CreateGroup: React.FC = () => {
     }
     try {
       const members = selectedUserList.map(user => user.id);
-      members.push(dataUser.id);
       const groupData = await createGroup({
         avatar: avatarPath,
         name: form.name,

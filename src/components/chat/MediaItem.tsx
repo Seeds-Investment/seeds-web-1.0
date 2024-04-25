@@ -13,7 +13,7 @@ const MediaItem: React.FC<{ message: PersonalChatMediaData }> = ({
     (message.media_url?.includes('mov') ?? false)
   ) {
     return (
-      <div className="w-1/3 h-36 rounded-md">
+      <div className="w-1/3 h-42 rounded-md">
         <video width="320" height="240" controls>
           <source src={message.media_url} type="video/mp4" />
         </video>
@@ -21,7 +21,7 @@ const MediaItem: React.FC<{ message: PersonalChatMediaData }> = ({
     );
   } else {
     return (
-      <div className="w-1/3 h-36 rounded-md">
+      <div className="w-1/3 h-42 rounded-md">
         <img
           src={message?.media_url}
           className="w-full h-36 object-contain"

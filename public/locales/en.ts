@@ -1893,6 +1893,20 @@ export default {
     private: 'Private',
     next: 'Next',
     createGroupPopUpText1: 'Are you sure to create this group?',
-    createGroupPopUpText2: 'Please confirm to create the group'
+    createGroupPopUpText2: 'Please confirm to create the group',
+    elaborate: 'Please write and elaborate your problem',
+    emptyChat: 'No messages here yet. Start a conversation now!',
+    deleteChatTitle: 'Are you sure to delete this chat?',
+    deleteChatSubtitle:
+      'If you click yes, your chat history can not be retrace after deletethe chat',
+    search: 'Search',
+    mute: 'Mute Notification',
+    deleteChat: 'Delete chat',
+    participants: 'Participants',
+    notes: 'Notes',
+    seen: 'Seen',
+    muteNotificationTitle: 'Are you sure to mute notifications?',
+    muteNotificationSubtitle:
+      'Other participants will not see that you muted this chat'
   }
 };

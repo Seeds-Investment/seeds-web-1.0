@@ -35,10 +35,10 @@ const CreateGroupPopUp: React.FC<Props> = ({ onClose, onClick }) => {
           className="w-auto h-auto aspect-auto"
         />
         <Typography className="font-bold text-lg text-black">
-          Are you sure to create this group?
+          {t('chat.createGroupPopUpText1')}
         </Typography>
         <Typography className="text-lg text-gray-500">
-          Please confirm to create the group
+          {t('chat.createGroupPopUpText2')}
         </Typography>
       </div>
       <div className="flex flex-col gap-4">

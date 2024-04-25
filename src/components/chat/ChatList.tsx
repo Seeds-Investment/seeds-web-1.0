@@ -31,7 +31,9 @@ const ChatList: React.FC<props> = ({ data }) => {
             {data?.name.slice(0, 20)}
           </Typography>
           <Typography className="font-normal text-xs text-[#27A590] font-poppins">
-            {moment(data?.created_at).format('L')}
+            {moment(data?.created_at).isSame(moment(), 'day')
+              ? moment(data?.created_at).format('HH:mm')
+              : moment(data?.created_at).format('L')}
           </Typography>
         </div>
         <div className="flex">

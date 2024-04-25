@@ -1816,6 +1816,20 @@ export default {
     private: 'Pribadi',
     next: 'Berikutnya',
     createGroupPopUpText1: 'Yakin ingin membuat group ini?',
-    createGroupPopUpText2: 'Yuk, konfirmasi untuk membuat grup kamu'
+    createGroupPopUpText2: 'Yuk, konfirmasi untuk membuat grup kamu',
+    elaborate: 'Yuk, tulis dan jelaskan masalahmu',
+    emptyChat: 'Opps, belum ada pesan. Mulai percakapan sekarang!',
+    deleteChatTitle: 'Yakin mau menghapus chat ini?',
+    deleteChatSubtitle:
+      'Jika kamu  mengklik ya, riwayat obrolanmu  tidak dapat ditelusuri kembali setelah menghapus obrolan',
+    search: 'Telusuri',
+    mute: 'Bisukan Notifikasi',
+    deleteChat: 'Hapus Pesan',
+    participants: 'Peserta',
+    notes: 'Catatan',
+    seen: 'Dilihat',
+    muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
+    muteNotificationSubtitle:
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
   }
 };

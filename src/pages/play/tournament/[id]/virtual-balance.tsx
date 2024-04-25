@@ -25,18 +25,17 @@ const VirtualBalance = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
 
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error.message);
+    }
+  };
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});

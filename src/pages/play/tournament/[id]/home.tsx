@@ -133,16 +133,16 @@ const TournamentHome: React.FC = () => {
     currency: 'IDR'
   });
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
 
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast.error('Error fetching data:', error.message);
+    }
+  };
+  useEffect(() => {
 
     fetchData()
       .then()

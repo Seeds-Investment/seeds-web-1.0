@@ -130,8 +130,6 @@ const Player = (): React.ReactElement => {
       setLoading(false);
     }
   };
-console.log('data ', data)
-console.log('userInfo ', userInfo)
 
   const getListQuiz = async (currency: string): Promise<void> => {
     try {

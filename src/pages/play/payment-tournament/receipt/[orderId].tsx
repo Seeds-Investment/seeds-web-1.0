@@ -17,10 +17,6 @@ import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-interface props {
-  data?: any;
-}
-
 interface PaymentList {
   admin_fee: number;
   id: string;
@@ -47,7 +43,21 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-const SuccessPaymentPage: React.FC<props> = ({ data }) => {
+interface QRList {
+  admin_fee: string;
+  id: string;
+  is_active: boolean;
+  is_priority: boolean;
+  is_promo_available: boolean;
+  logo_url: string;
+  payment_gateway: string;
+  payment_method: string;
+  payment_type: string;
+  promo_price: number;
+  service_fee: number;
+}
+
+const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const id = router.query.orderId as string;
@@ -56,7 +66,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [qRisList, setQRisList] = useState<any>([]);
+  const [qRisList, setQRisList] = useState<QRList[]>([]);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -121,7 +131,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   }, [id, orderDetail?.howToPayApi]);
 
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
-    (el: undefined | PaymentList): any => {
+    (el: PaymentList | undefined): boolean => {
       return el?.payment_method === orderDetail?.paymentMethod;
     }
   );
@@ -221,20 +231,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     />
                   </div>
                 )}
-                {/* {paymentSelectedVA.length > 0 && (
-                  <div className="flex items-center justify-around mb-9 mt-3">
-                    <Image
-                      src={paymentSelectedVA[0].logo_url}
-                      alt="AVATAR"
-                      width={90}
-                      height={90}
-                    />
-                    <Typography className="font-poppins font-semibold text-black">
-                      {' '}
-                      {orderDetail?.vaNumber}
-                    </Typography>
-                  </div>
-                )} */}
                 <hr className="border-t-2 border-dashed" />
                 <div className="flex justify-between relative bottom-3 z-50">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
@@ -329,17 +325,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               <div className="w-full flex items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
-                  // disabled={orderDetail?.transactionStatus !== 'SETTLEMENT'}
                   onClick={() => {
-                    // if (orderDetail?.transactionStatus !== 'SETTLEMENT') {
-                    //   void router.replace(
-                    //     `/play/tournament/${orderDetail?.itemId as string}/home`
-                    //   );
-                    // } else {
-                    //   void router.replace(
-                    //     `/play/tournament/${orderDetail?.itemId}/payment`
-                    //   );
-                    // }
                     void router.replace(
                       `/play/tournament/${orderDetail?.itemId as string}/home`
                     );

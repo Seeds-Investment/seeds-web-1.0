@@ -47,6 +47,8 @@ export interface IParticipants {
 
 export interface IDetailTournament {
   id: string;
+  banner: string;
+  type: string;
   play_id: string;
   fixed_prize: number;
   category: string;
@@ -64,4 +66,10 @@ export interface IDetailTournament {
   participants: IParticipants[];
   total_participants: number;
   max_participant: number;
+}
+
+export interface UserInfo {
+  preferredCurrency: string;
+  seedsTag: string;
+  id: string;
 }

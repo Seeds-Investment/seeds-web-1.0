@@ -14,12 +14,11 @@ import TriangleBearish from '@/assets/play/tournament/triangleBearish.svg';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { PortfolioFilter, type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
-import { PortfolioFilter } from '@/utils/interfaces/tournament.interface';
 import { toast } from 'react-toastify';
 import { Cell, Pie, PieChart } from 'recharts';
 
@@ -38,28 +37,28 @@ interface EntryType {
 const Portfolio = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
-  // const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [portfolioActiveTab, setPortfolioActiveTab] = useState(
     PortfolioFilter.OVERVIEW
   );
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-
-      setUserInfo(dataInfo);
-    } catch (error: any) {
-      toast.error('Error fetching data:', error.message);
-    }
-  };
   useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const getDetail = useCallback(
     async (currency: string) => {

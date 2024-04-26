@@ -60,8 +60,8 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
 
         setLeaderBoardTournament(resTournament.playLeaderboards);
         setLeaderBoardQuiz(resQuiz.data);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast(`Error fetching data: ${error as string}`);
       }
     };
 

@@ -69,18 +69,6 @@ const WalletForm = ({
         ).toFixed(2)}`
       );
     } 
-    // else {
-    //   _admissionFee = dataPost?.admission_fee * (numberMonth ?? 1);
-    //   _adminFee = payment.admin_fee;
-    //   _totalFee = parseFloat(
-    //     `${(
-    //       _admissionFee +
-    //       _adminFee +
-    //       payment.service_fee -
-    //       _discount
-    //     ).toFixed(2)}`
-    //   );
-    // }
 
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
@@ -125,15 +113,6 @@ const WalletForm = ({
         value={`${userInfo?.preferredCurrency } ${admissionFee}`}
         className="mb-2"
       />
-      {/* {dataPost.tournament ? (
-        <InlineText
-          label={t('quiz.lifeline')}
-          value={`${userInfo?.preferredCurrency } ${Number(
-            dataPost?.admission_fee
-          )}`}
-          className="mb-2"
-        />
-      ) : null} */}
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
         value={`${userInfo?.preferredCurrency } ${

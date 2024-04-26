@@ -40,12 +40,6 @@ export interface DetailTournament {
   id: string;
   admission_fee: number;
 }
-
-// interface PaymentData {
-//   payment: Payment;
-//   tournament: Tournament;
-// }
-
 export interface Tournament {
   fee: number;
   admission_fee: number;
@@ -81,7 +75,6 @@ export interface PaymentStatus {
 }
 
 interface props {
-  // dataPost?: PaymentData | undefined;
   monthVal?: string;
 }
 
@@ -222,41 +215,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             });
         }
       }
-      // else {
-      //   const response = await joinCirclePost({
-      //     circle_id: dataPost?.id,
-      //     duration:
-      //       numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
-      //     payment_request: {
-      //       amount: parseInt(`${totalAmount}`),
-      //       payment_gateway: paymentGateway,
-      //       payment_method: paymentMethod,
-      //       phone_number: `+62${phoneNumber as string}`,
-      //       item_id: dataPost?.payment.itemId,
-      //       item_name: dataPost?.name,
-      //       quantity: 1,
-      //       name: userInfo?.name,
-      //       email: userInfo?.email,
-      //       promo_code: '',
-      //       spot_type: 'Join Circle Premium'
-      //     }
-      //   });
-
-      //   if (response.success === true) {
-      //     if (response.data.Response.payment_url !== undefined) {
-      //       window.open(response.data.Response.payment_url as string, '_blank');
-      //     }
-      //     await router
-      //       .push(
-      //         `/connect/payment/receipt/${
-      //           response.data.Response.order_id as string
-      //         }`
-      //       )
-      //       .catch(error => {
-      //         toast.error(error);
-      //       });
-      //   }
-      // }
     } catch (error) {
       toast.error(`${error as string}`);
     } finally {
@@ -275,11 +233,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       _adminFee = 0;
       _totalFee = Number(_admissionFee) + Number(_adminFee);
     }
-    // else {
-    //         _admissionFee = detailTournament?.admission_fee ?? 0;
-    //   _adminFee = dataPost?.payment?.admin_fee as number;
-    //   _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
-    // }
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);

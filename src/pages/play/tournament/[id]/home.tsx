@@ -10,7 +10,7 @@ import IconPortfolio from '@/assets/play/tournament/iconPortfolio.svg';
 import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg';
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
-import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
+import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
@@ -331,6 +331,8 @@ const TournamentHome: React.FC = () => {
         </div>
         <div className="bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4">
           <Image
+            width={100}
+            height={100}
             alt=""
             src={IconSeeds}
             className="w-[60px] md:w-[80px] xl:ml-8"

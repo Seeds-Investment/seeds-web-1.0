@@ -297,7 +297,20 @@ export default {
           'Kami telah menerapkan teknologi dan kebijakan yang konsisten dengan aturan yang berlaku di Indonesia dengan tujuan melindungi privasi Anda dari akses yang tidak sah dan penggunaan yang tidak benar dan kami akan memperbarui langkah-langkah ini seiring perkembangan teknologi baru sesuai kebutuhan.'
         ]
       }
-    }
+    },
+    refundPolicy: {
+      title: 'Kebijakan Pengembalian Dana',
+      lastUpdated: 'Terakhir Perbarui: ',
+      date: '26 April 2022',
+      overview: {
+        title: [
+          'Kebijakan Pengembalian Dana',
+        ],
+        desc: [
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .',
+        ]
+      }
+    },
   },
   termAndCondition: {
     title: 'Syarat & Ketentuan',

@@ -1713,8 +1713,7 @@ export default {
     quizDone1: 'Selangkah lagi menuju kemenangan.',
     quizDone2:
       'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!',
-    testInvestment:
-      'Test pengetahuan investasimu dan menangkan hadiah uang tunainya!',
+    testInvestment: 'Uji kemampuan finansialmu dan dapatkan hadiahnya!',
     welcome: 'Selamat datang di Seeds Quiz',
     areYouReady: 'Kamu siap?',
     millionaire: 'Siapa yang mau jadi miliarder Seeds!',
@@ -1755,6 +1754,66 @@ export default {
     score: 'Skor Kamu : ',
     earn: ' Kamu Mendapatkan IDR ',
     tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds'
+  },
+  tournament: {
+    myPlay: 'Turnamen Saya',
+    active: 'Aktif',
+    ended: 'Berakhir',
+    canceled: 'Dibatalkan',
+    banner1: 'Halo! Butuh petunjuk bermain?',
+    banner2: 'Cek petunjuknya disini!',
+    banner3: 'Tutorial',
+    blank1: 'Ups,  Tidak Ada Turnamen Saat Ini',
+    blank2: 'Ayo bergabung ke turnament dan menangkan hadiahnya!',
+    detailRemaining: 'Waktu Tersisa',
+    detailPeriod: 'Periode Turnamen',
+    detailPrize: 'Hadiah Turnamen',
+    detailTerms: 'Syarat dan Ketentuan',
+    detailResponsibility: 'Tanggung Jawab Seeds',
+    detailCurrency: 'Kurs anda sekarang: ',
+    detailAccessCode: 'Masukan Access Code',
+    detailBannerTotalRewards: 'Total Hadiah',
+    entranceFee: 'Biaya Pendaftaran',
+    free: 'Gratis',
+    join: 'Join',
+    start: 'Mulai',
+    participants: 'Peserta',
+    categoryAsset: 'Kategori Aset',
+    circleRecommendation: 'Rekomendasi Circle',
+    leaderboardBanner1: 'Apakah kamu memimpin?',
+    leaderboardBanner2: 'Ayo, cek',
+    leaderboardBanner3: 'Cek Leaderboard',
+    tutorialToournament: 'Petunjuk Turnamen',
+    remainingTimeText: 'Turnamen telah berakhir!',
+    clock: {
+      days: 'h',
+      hours: 'j',
+      minutes: 'm',
+      seconds: 'd'
+    },
+    tournamentCard: {
+      player: 'Pemain',
+      duration: 'Durasi',
+      joined: 'Bergabung',
+      fee: 'Biaya',
+      openButton: 'Buka',
+      share: 'Share',
+      days: 'Hari'
+    },
+    leaderboard: {
+      lastUpdated: 'Update terakhir: ',
+      currentRank: 'Peringkat Anda Sekarang',
+      player: 'Pemain',
+      totalGain: 'Pendapatan',
+      totalPoint: 'Total Poin',
+    },
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    seedsResponsibility1:
+      'Seeds merupakan Pihak yang menyediakan fitur Play Arena Tournament pada aplikasi Seeds',
+    seedsResponsibility2:
+      'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds'
   },
   discover: {
     hotNews: 'Hot News',

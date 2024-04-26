@@ -8,13 +8,15 @@ import {
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import expSlice from './features/exp';
+import { promoCodeSlice } from './features/promo-code';
 import soundSlice from './features/sound';
 import userSlice from './features/user';
 
 const reducers = combineReducers({
   exp: expSlice,
   user: userSlice,
-  soundSlice
+  soundSlice,
+  promoCode: promoCodeSlice.reducer
 });
 
 const persistConfig = {

@@ -10,7 +10,7 @@ import IconPortfolio from '@/assets/play/tournament/iconPortfolio.svg';
 import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg';
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
-import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
+import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';

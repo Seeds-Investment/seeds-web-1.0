@@ -1827,6 +1827,12 @@ export default {
       cancelOrder: "Apakah Kamu ingin membatalkan pesanan?",
       yesCancel: "Batalkan pesanan",
       noCancel: "Kembali",
+      cancel: "Batalkan",
+    },
+    portfolio: {
+      investmentValue: 'Nilai Investasi',
+      today: 'Hari Ini',
+      yourAssetPortfolio: 'Aset Portfoliomu',
     },
     first: '1st',
     second: '2nd',

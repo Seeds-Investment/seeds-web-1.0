@@ -5,6 +5,7 @@ import withAuth from '@/helpers/withAuth';
 import { getLeaderboardByPlayId, getPlayBallance } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -61,28 +62,28 @@ const LeaderBoardPage: React.FC = () => {
     return_percentage: 0,
     currency: 'IDR'
   });
-
-  const [userInfo, setUserInfo] = useState<any>([]);
+  
+  const [userInfo, setUserInfo] = useState<UserInfo>();
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     if (typeof id === 'string') {
       void fetchPlaySimulation(id);
-      void fetchPlayBallance(userInfo.preferredCurrency as string);
+      void fetchPlayBallance(userInfo?.preferredCurrency as string);
     }
 
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
 
   useEffect(() => {
     leaderBoard?.map((leader) => {
@@ -277,9 +278,9 @@ const LeaderBoardPage: React.FC = () => {
                     <Typography className="font-semibold font-poppins text-sm md:text-base">
                       {leaderBoard[currentRank - 1]?.user_name}
                     </Typography>
-                    <Typography className='font-poppins'>{userInfo?.seeds_tag}</Typography>
+                    <Typography className='font-poppins'>{userInfo?.seedsTag}</Typography>
                     <Typography className={`${leaderBoard[currentRank - 1]?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'} font-poppins text-sm md:text-base`}>
-                      {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
+                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
                       {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '-' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
                     </Typography>
                   </div>

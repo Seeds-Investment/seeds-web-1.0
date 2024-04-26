@@ -25,7 +25,7 @@ import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getMarketList } from '@/repository/market.repository';
 import { getPlayBallance, getPlayById, getPlayPortfolio } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { SortingFilter, type IDetailTournament } from '@/utils/interfaces/tournament.interface';
+import { SortingFilter, type BallanceTournament, type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -35,16 +35,6 @@ import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 import { calculatePercentageChange } from '../../../../helpers/assetPercentageChange';
-
-interface BallanceTournament {
-  balance: number;
-  portfolio: number;
-  total_sell: number;
-  total_buy: number;
-  currency: string;
-  return_value: number;
-  return_percentage: number;
-}
 
 const settings: Settings = {
   slidesToShow: 3,
@@ -137,7 +127,7 @@ const TournamentHome: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
@@ -191,22 +181,22 @@ const TournamentHome: React.FC = () => {
   ];
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
 
     void fetchCircleLeaderBoard();
   }, []);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const getDetail = useCallback(async () => {
     try {
@@ -223,8 +213,8 @@ const TournamentHome: React.FC = () => {
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       getDetail();
-      void fetchPlayBallance(userInfo.preferredCurrency as string);
-      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
+      void fetchPlayBallance(userInfo.preferredCurrency );
+      void fetchPlayPortfolio(userInfo.preferredCurrency );
     }
   }, [id, userInfo]);
 
@@ -300,7 +290,7 @@ const TournamentHome: React.FC = () => {
     if (userInfo !== undefined) {
       setFilter(prevState => ({
         ...prevState,
-        currency: (userInfo?.preferredCurrency as string) ?? 'IDR'
+        currency: (userInfo?.preferredCurrency ) ?? 'IDR'
       }));
     }
   }, [userInfo]);
@@ -316,7 +306,7 @@ const TournamentHome: React.FC = () => {
       });
     }
   }, [filter, userInfo, assetActiveSort, searchQuery]);
-  
+
   return (
     <>
       {isDetailModal && (
@@ -330,7 +320,7 @@ const TournamentHome: React.FC = () => {
           prize={detailTournament?.prize ?? []}
           tnc={detailTournament?.tnc ?? {en: '', id: ''}}
           length={detailTournament?.total_participants ?? 0}
-          userInfoCurrency={userInfo.preferredCurrency ?? ''}
+          userInfoCurrency={userInfo?.preferredCurrency ?? ''}
         />
       )}
       {detailTournament === undefined &&
@@ -367,30 +357,31 @@ const TournamentHome: React.FC = () => {
               Total Investment
             </Typography>
             <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
-              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`Total Return: `}
-              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value).replace('Rp', '')}
               {` (${ballance?.return_value < 0 ? '' : '+'}${ballance?.return_percentage?.toFixed(2)}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`${t('tournament.assets.virtualBalance')}: `}
-              {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
             </Typography>
           </div>
           <Image alt="" src={BannerCircle} className='absolute top-0 right-0 z-0'/>
           <div className='w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg'>
-            <div onClick={async() => await router.push('/play/tournament/1/portfolio')} className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
+            <div 
+              onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio`)}
+              className='flex flex-col justify-center items-center gap-2 cursor-pointer'
+            >
               <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
               <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
                 {t('tournament.assets.portfolio')}
               </Typography>
             </div>
             <div
-              onClick={async () =>
-                await router.push(`/play/tournament/${id as string}/virtual-balance`)
-              }
+              onClick={async () => await router.push(`/play/tournament/${id as string}/virtual-balance`) }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
               <Image
@@ -519,7 +510,7 @@ const TournamentHome: React.FC = () => {
                   </div>
                   <div className='flex flex-col justify-end items-end'>
                     <div className='font-semibold text-sm md:text-base'>
-                      {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.priceBar?.close).replace('Rp', '')}
+                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.priceBar?.close).replace('Rp', '')}
                     </div>
                     <div className='flex justify-center gap-2'>
                       <Image alt="" src={data?.priceBar?.close >= data?.priceBar?.open ? Bullish : Bearish} className='w-[20px]'/>

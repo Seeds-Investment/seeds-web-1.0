@@ -3,34 +3,22 @@
 'use-client';
 
 import NoData from '@/assets/play/tournament/assetNoData.svg';
-import HistoryTransactionPagination from '@/components/HistoryTransactionPagination';
+import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import ModalCancelOrder from '@/components/popup/ModalCancelOrder';
+import VirtualBalanceChart from '@/containers/tournament/portfolio-chart/VirtualBalanceChart';
 import { standartCurrency } from '@/helpers/currency';
 import { getShortDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import { getHistoryTransaction, getOperOrderList, getPlayBallance } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type BallanceTournament } from '@/utils/interfaces/tournament.interface';
 import { Tab, TabPanel, Tabs, TabsBody, TabsHeader, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { Cell, Pie, PieChart } from 'recharts';
-
-interface EntryType {
-  name: string;
-}
-
-interface BallanceTournament {
-  balance: number;
-  portfolio: number;
-  total_sell: number;
-  total_buy: number;
-  currency: string;
-  return_value: number;
-  return_percentage: number;
-}
 
 interface OpenOrderList {
   amount: number;
@@ -75,7 +63,9 @@ const VirtualBalance = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
+  const [loadingBallance, setLoadingBallance] = useState<boolean>(false);
+  const [loadingOpenOrder, setLoadingOpenOrder] = useState<boolean>(false);
+  const [loadingHistoryTransaction, setLoadingHistoryTransaction] = useState<boolean>(false);
   const [activeNavbar, setActiveNavbar] = useState<string>('openOrder');
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
@@ -105,27 +95,7 @@ const VirtualBalance = (): React.ReactElement => {
     setHistoryParams({ ...historyParams, page: 1 });
   }, [activeNavbar]);
 
-  const data = [
-    { name: t('tournament.assets.cashUsed'), currency: ballance?.currency, value: ballance?.portfolio },
-    { name: t('tournament.assets.cashAvailable'), currency: ballance?.currency, value: ballance?.balance }
-  ];
-
-  const COLORS = ['#DD2525', '#3AC4A0'];
-
-  const renderLabel = (entry: EntryType): string => {
-    return entry.name;
-  };
-
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
@@ -134,7 +104,6 @@ const VirtualBalance = (): React.ReactElement => {
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       void fetchPlayBallance(userInfo?.preferredCurrency );
-      void fetchHistoryTransaction(userInfo?.preferredCurrency );
     }
   }, [id, userInfo]);
 
@@ -144,33 +113,54 @@ const VirtualBalance = (): React.ReactElement => {
     }
   }, [id, userInfo, showCancelModal, orderParams]);
 
+  useEffect(() => {
+    if (id !== null && userInfo !== undefined) {
+      void fetchHistoryTransaction(userInfo?.preferredCurrency );
+    }
+  }, [id, userInfo, historyParams]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      setLoading(true);
+      setLoadingBallance(true);
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      setLoading(false);
+      setLoadingBallance(false);
     }
   };
 
   const fetchOpenOrderList = async (currency: string): Promise<void> => {
     try {
+      setLoadingOpenOrder(true);
       const response = await getOperOrderList(id as string, { currency });
       setOpenOrder(response.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoadingOpenOrder(true);
     }
   };
 
   const fetchHistoryTransaction = async (currency: string): Promise<void> => {
     try {
+      setLoadingHistoryTransaction(true);
       const response = await getHistoryTransaction(id as string, { ...historyParams, currency });
       setHistoryTransaction(response.playOrders)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoadingHistoryTransaction(true);
     }
   };
 
@@ -186,7 +176,10 @@ const VirtualBalance = (): React.ReactElement => {
   return (
     <>
       {
-        loading && <Loading />
+        loadingBallance &&
+        loadingOpenOrder &&
+        loadingHistoryTransaction &&
+        <Loading />
       }
       {showCancelModal && (
         <ModalCancelOrder
@@ -204,70 +197,8 @@ const VirtualBalance = (): React.ReactElement => {
           </Typography>
         </div>
 
-        <div className="md:hidden w-full mt-4 flex justify-center items-center relative">
-          <PieChart width={300} height={300}>
-            <Pie
-              data={data}
-              cx={145}
-              cy={145}
-              innerRadius={100}
-              outerRadius={140}
-              fill="#8884d8"
-              paddingAngle={0}
-              dataKey="value"
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-          <div className="mt-4 flex flex-col justify-center items-center absolute top-[110px] font-poppins">
-            <div className="text-[#BDBDBD] text-sm">Total Cash</div>
-            <div className="font-semibold text-sm">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance + ballance?.portfolio).replace('Rp', '')}</div>
-          </div>
-        </div>
-        <div className="hidden md:flex w-full mt-4 justify-center items-center relative">
-          <PieChart width={600} height={350}>
-            <Pie
-              data={data}
-              cx={295}
-              cy={170}
-              innerRadius={100}
-              outerRadius={140}
-              fill="#8884d8"
-              paddingAngle={0}
-              dataKey="value"
-              labelLine={true}
-              label={renderLabel}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-          <div className="flex flex-col justify-center items-center absolute top-[150px] font-poppins">
-            <div className="text-[#BDBDBD]">Total Cash</div>
-            <div className="font-semibold md:text-sm lg:text-base">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance + ballance?.portfolio).replace('Rp', '')}</div>
-          </div>
-        </div>
-        <div className="w-full xl:w-[80%] md:mt-4 mb-4 flex flex-col gap-4 justify-center items-center">
-          {data.map((datas, index) => (
-            <div key={index} className="flex gap-2 justify-center items-center">
-              <div
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                className="w-[20px] h-[20px] rounded-md"
-              />
-              <div className="text-[#7C7C7C] text-sm md:text-base">{datas.name}</div>
-              <div className="font-semibold text-sm md:text-base">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(datas?.value).replace('Rp', '')}</div>
-            </div>
-          ))}
-        </div>
+        {/* Circle Chart */}
+        <VirtualBalanceChart currency={userInfo?.preferredCurrency ?? ''} portfolio={ballance?.portfolio ?? 0} balance={ballance?.balance ?? 0}/>
 
         <div className="w-full mt-4">
           <Typography className="text-xl font-semibold mb-4">
@@ -352,8 +283,8 @@ const VirtualBalance = (): React.ReactElement => {
                             <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.price * data?.amount).replace('Rp', '')}</div>
                           </div>
                           <div className="flex justify-center items-center bg-white">
-                            <div onClick={() => { handleShowModalCancelOrder(data?.id) }} className="text-[#DD2525] font-semibold border border-[#DD2525] px-4 py-2 my-4 w-[80%] md:w-[300px] rounded-full text-center cursor-pointer">
-                              Cancel
+                            <div onClick={() => { handleShowModalCancelOrder(data?.id) }} className="text-[#DD2525] font-semibold border border-[#DD2525] px-4 py-2 my-4 w-[80%] md:w-[300px] rounded-full text-center cursor-pointer hover:shadow-xl duration-300">
+                              {t('tournament.assets.cancel')}
                             </div>
                           </div>
                         </div>
@@ -372,7 +303,7 @@ const VirtualBalance = (): React.ReactElement => {
                   }
 
                   <div className="flex justify-center mx-auto my-8">
-                    <HistoryTransactionPagination
+                    <AssetPagination
                       currentPage={orderParams.page}
                       totalPages={10}
                       onPageChange={page => {
@@ -389,7 +320,7 @@ const VirtualBalance = (): React.ReactElement => {
                         <div key={data?.id} className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm">
                           <div className="w-full flex justify-between items-center p-2 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-tl-lg">
                             <div className="flex gap-2 md:gap-4 w-full justify-between items-center">
-                              <div className="flex justify-center items-center w-auto h-[30px] md:w-auto md:h-[40px] xl:w-auto xl:h-[50px]">
+                              <div className="flex justify-center items-center w-[30px] h-[30px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px]">
                                 <img
                                   alt=""
                                   src={data?.asset?.asset_icon}
@@ -445,7 +376,7 @@ const VirtualBalance = (): React.ReactElement => {
                   }
 
                   <div className="flex justify-center mx-auto my-8">
-                    <HistoryTransactionPagination
+                    <AssetPagination
                       currentPage={historyParams.page}
                       totalPages={10}
                       onPageChange={page => {
@@ -463,4 +394,4 @@ const VirtualBalance = (): React.ReactElement => {
   );
 };
 
-export default VirtualBalance;
+export default withAuth(VirtualBalance);

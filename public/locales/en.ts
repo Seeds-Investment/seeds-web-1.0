@@ -1903,6 +1903,12 @@ export default {
       cancelOrder: "Are you sure want to cancel order?",
       yesCancel: "Yes, cancel this order.",
       noCancel: "Back",
+      cancel: "Cancel",
+    },
+    portfolio: {
+      investmentValue: 'Investment Value',
+      today: 'Today',
+      yourAssetPortfolio: 'Your asset Portfolio',
     },
     first: '1st',
     second: '2nd',

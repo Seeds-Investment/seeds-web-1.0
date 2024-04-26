@@ -21,7 +21,7 @@ import { getPlayAll } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
-import { TournamentStatus } from '@/utils/interfaces/tournament.interface';
+import { TournamentStatus, type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Tab,
@@ -64,9 +64,9 @@ const Player = (): React.ReactElement => {
   const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
   const [activeNavbar, setActiveNavbar] = useState<string>('quiz');
   const [search, setSearch] = useState<string>('');
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<IDetailTournament[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
-
+  
   const [quizParams, setQuizParams] = useState({
     search: '',
     status: '',
@@ -87,24 +87,24 @@ const Player = (): React.ReactElement => {
     setActiveNavbar(tab);
   };
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
   }, []);
 
-  const handleSearch = (event: any): void => {
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearch(event.target.value);
   };
 
@@ -434,8 +434,8 @@ const Player = (): React.ReactElement => {
                                     </div>
                                     <div className="font-semibold text-black">
                                       {calculateDaysLeft(
-                                        item.play_time,
-                                        item.end_time
+                                        new Date(item?.play_time),
+                                        new Date(item?.end_time),
                                       )}{' '}
                                       {t('tournament.tournamentCard.days')}
                                     </div>
@@ -471,7 +471,7 @@ const Player = (): React.ReactElement => {
                                       {item.admission_fee === 0
                                         ? t('quiz.free')
                                         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                        : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(item.admission_fee).replace('Rp', '')}`
+                                        : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(item.admission_fee).replace('Rp', '')}`
                                       }
                                     </div>
                                   </div>
@@ -623,7 +623,7 @@ const Player = (): React.ReactElement => {
                         <QuizCard
                           item={item}
                           key={item.id}
-                          currency={userInfo?.preferredCurrency}
+                          currency={userInfo?.preferredCurrency ?? 'IDR'}
                         />
                       ))
                     )}

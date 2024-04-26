@@ -6,10 +6,10 @@ export enum TournamentStatus {
 }
 
 export enum PortfolioFilter {
-  OVERVIEW = 'OVERVIEW',
-  STOCKS = 'STOCKS',
-  CRYPTOS = 'CRYPTOS',
-  FRACTIONAL_BOND = 'FRACTIONAL_BOND'
+  CRYPTO = 'CRYPTO',
+  ID_STOCK = 'ID_STOCK',
+  US_STOCK = 'US_STOCK',
+  COMMODITIES = 'COMMODITIES'
 }
 
 export enum AssetFilter {
@@ -44,9 +44,10 @@ export interface IParticipants {
   win_rate: number;
 }
 
-
 export interface IDetailTournament {
   id: string;
+  banner: string;
+  type: string;
   play_id: string;
   fixed_prize: number;
   category: string;
@@ -55,8 +56,8 @@ export interface IDetailTournament {
   prize: number[];
   play_time: string;
   end_time: string;
-  sponsorship: any;
-  community: any;
+  sponsorship: Sponsorship;
+  community: Community;
   admission_fee: number;
   participant_status: string;
   tnc: ITNC;
@@ -64,4 +65,56 @@ export interface IDetailTournament {
   participants: IParticipants[];
   total_participants: number;
   max_participant: number;
+}
+
+export interface Sponsorship {
+  name: string;
+  image_url: string;
+}
+
+export interface Community {
+  name: string;
+  image_url: string;
+}
+
+export interface UserInfo {
+  preferredCurrency: string;
+  seedsTag: string;
+  id: string;
+}
+
+export interface BallanceTournament {
+  balance: number;
+  portfolio: number;
+  total_sell: number;
+  total_buy: number;
+  currency: string;
+  return_value: number;
+  return_percentage: number;
+}
+
+export interface ChartProportion {
+  asset_ticker: string;
+  percentage: number;
+}
+
+export interface AssetDetail {
+  asset_type: string;
+  exchange_currency: string;
+  listed_country: string;
+  logo: string;
+  name: string;
+  real_ticker: string;
+  seeds_ticker: string;
+}
+
+export interface ActiveAsset {
+  asset_detail: AssetDetail;
+  asset_id: string;
+  average_price: number;
+  currency: string;
+  id: string;
+  play_id: string;
+  return_percentage: number;
+  total_lot: number;
 }

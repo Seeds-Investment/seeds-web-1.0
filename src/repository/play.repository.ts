@@ -366,6 +366,28 @@ export const getHistoryTransaction = async (
   }
 };
 
+export const getActiveAsset = async (
+  id: string,
+  params: { category: string; currency: string; per_page: number; page: number; }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/assets/active?play_id=${id}`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
 const paymentService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'

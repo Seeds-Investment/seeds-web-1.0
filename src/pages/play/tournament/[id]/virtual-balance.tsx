@@ -95,6 +95,11 @@ const VirtualBalance = (): React.ReactElement => {
     limit: 5,
     page: 1,
   });
+  const [orderParams, setOrderParams] = useState({
+    page: 1,
+    startIndex: 0,
+    endIndex: 4,
+  });
 
   useEffect(() => {
     setHistoryParams({ ...historyParams, page: 1 });
@@ -137,7 +142,7 @@ const VirtualBalance = (): React.ReactElement => {
     if (id !== null && userInfo !== undefined) {
       void fetchOpenOrderList(userInfo?.preferredCurrency );
     }
-  }, [id, userInfo, showCancelModal]);
+  }, [id, userInfo, showCancelModal, orderParams]);
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
@@ -306,7 +311,7 @@ const VirtualBalance = (): React.ReactElement => {
               <TabsBody className="w-full">
                 <TabPanel value="openOrder">
                   {
-                    openOrder?.length !== 0 ?
+                    openOrder?.slice(orderParams.startIndex, orderParams.endIndex).length !== 0 ?
                     <>
                       {openOrder.map(data => (
                         <div key={data?.id} className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm">
@@ -365,6 +370,16 @@ const VirtualBalance = (): React.ReactElement => {
                       </p>
                     </div>
                   }
+
+                  <div className="flex justify-center mx-auto my-8">
+                    <HistoryTransactionPagination
+                      currentPage={orderParams.page}
+                      totalPages={10}
+                      onPageChange={page => {
+                        setOrderParams({ page, startIndex:page*5-5, endIndex:page*5-1 });
+                      }}
+                    />
+                  </div>
                 </TabPanel>
                 <TabPanel value="history">
                   {

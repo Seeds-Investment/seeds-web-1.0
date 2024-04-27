@@ -191,7 +191,6 @@ const TournamentHome: React.FC = () => {
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
-
       setUserInfo(dataInfo);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -375,7 +374,12 @@ const TournamentHome: React.FC = () => {
               onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio`)}
               className='flex flex-col justify-center items-center gap-2 cursor-pointer'
             >
-              <Image alt="" src={IconPortfolio} className='w-[30px] md:w-[45px]'/>
+              <Image
+                alt=""
+                width={100}
+                height={100}
+                src={IconPortfolio} className='w-[30px] md:w-[45px] hover:shadow-xl duration-300 rounded-full'
+              />
               <Typography className='text-[#262626] font-poppins text-sm md:text-lg text-center'>
                 {t('tournament.assets.portfolio')}
               </Typography>
@@ -387,7 +391,8 @@ const TournamentHome: React.FC = () => {
               <Image
                 alt=""
                 src={IconVirtualBalance}
-                className="w-[30px] md:w-[45px]"
+                width={100} height={100}
+                className="w-[30px] md:w-[45px] hover:shadow-xl duration-300 rounded-full"
               />
               <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
                 {t('tournament.assets.virtualBalance')}
@@ -397,7 +402,8 @@ const TournamentHome: React.FC = () => {
               <Image
                 alt=""
                 src={IconWatchlist}
-                className="w-[30px] md:w-[45px]"
+                width={100} height={100}
+                className="w-[30px] md:w-[45px] hover:shadow-xl duration-300 rounded-full"
               />
               <Typography className="text-[#262626] font-poppins text-sm md:text-lg text-center">
                 Watchlist

@@ -376,6 +376,7 @@ export const getActiveAsset = async (
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
+    
     return await playService(`/assets/active?play_id=${id}`, {
       params,
       headers: {

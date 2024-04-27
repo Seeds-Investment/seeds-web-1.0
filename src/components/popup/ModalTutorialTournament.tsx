@@ -43,8 +43,8 @@ const ModalTutorialTournament: React.FC<Props> = ({ onClose }) => {
           style={{ padding: 0, width: '100%', height: '90%' }}
           src={
             languageCtx.language === 'ID'
-              ? 'https://drive.google.com/file/d/1TMkB5bXx7JWiP6oXyA9gc7qXNgNPpuBS/preview'
-              : 'https://drive.google.com/file/d/1oneJcUB4zBfx_kXV_M4FUYG8zrTBKQ7k/preview'
+              ? 'https://drive.google.com/file/d/18yTyRMPI5BqFRJ3CAjSUNrC8z_QG0fpg/preview'
+              : 'https://drive.google.com/file/d/19RbA9LE4MUVlHr1CsAX4LNq4BB-GR2JM/preview'
           }
           title={`${t('tournament.tutorialToournament')}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

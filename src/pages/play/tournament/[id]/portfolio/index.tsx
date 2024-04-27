@@ -57,6 +57,7 @@ const Portfolio = (): React.ReactElement => {
     currency: 'IDR',
   });
   const [activeAssetParams, setActiveAssetParams] = useState({
+    category: portfolioActiveTab as string,
     currency: userInfo?.preferredCurrency ?? 'IDR',
     per_page: 5,
     page: 1,
@@ -78,9 +79,9 @@ const Portfolio = (): React.ReactElement => {
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
-      void fetchActiveAsset(portfolioActiveTab as string);
+      void fetchActiveAsset();
     }
-  }, [id, portfolioActiveTab, activeAssetParams.page]);
+  }, [id, userInfo, activeAssetParams]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -115,10 +116,10 @@ const Portfolio = (): React.ReactElement => {
     }
   };
 
-  const fetchActiveAsset = async (category: string): Promise<void> => {
+  const fetchActiveAsset = async (): Promise<void> => {
     try {
       setLoadingActiveAsset(true);
-      const response = await getActiveAsset(id as string, {...activeAssetParams, category});
+      const response = await getActiveAsset(id as string, { ...activeAssetParams });
       setActiveAsset(response?.data)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -218,6 +219,7 @@ const Portfolio = (): React.ReactElement => {
                   key={item.id}
                   onClick={() => {
                     setPortfolioActiveTab(item.status);
+                    setActiveAssetParams({ ...activeAssetParams, category: item.status })
                   }}
                 >
                   <Image
@@ -242,7 +244,11 @@ const Portfolio = (): React.ReactElement => {
             {activeAsset?.length !== 0 ?
               <>
                 {activeAsset?.map(data => (
-                  <div key={data?.id} className="flex justify-between items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-lg hover:bg-[#E1E1E1] duration-300 cursor-pointer">
+                  <div
+                    key={data?.id}
+                    onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio/${data?.asset_id}/detail-portfolio`)}
+                    className="flex justify-between items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-lg hover:bg-[#E1E1E1] duration-300 cursor-pointer"
+                  >
                     <div className="flex gap-2 md:gap-4 items-center">
                       <div className="h-[30px] md:h-[40px] w-[30px] md:w-[40px] flex justify-center items-center">
                         <img width={100} height={100} alt="" src={data?.asset_detail?.logo} className='w-full h-full'/>

@@ -248,7 +248,7 @@ const VirtualBalance = (): React.ReactElement => {
                         <div key={data?.id} className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm">
                           <div className="w-full flex justify-between items-center p-2 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-tl-lg">
                             <div className="flex gap-2 md:gap-4 w-full justify-between items-center">
-                              <div className="flex justify-center items-center w-auto h-[30px] md:w-auto md:h-[40px] xl:w-auto xl:h-[50px]">
+                              <div className="flex justify-center items-center w-[30px] h-[30px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px]">
                                 <img
                                   alt=""
                                   src={data?.asset_icon}

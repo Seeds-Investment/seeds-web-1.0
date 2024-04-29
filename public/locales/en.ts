@@ -1904,6 +1904,7 @@ export default {
       yesCancel: "Yes, cancel this order.",
       noCancel: "Back",
       cancel: "Cancel",
+      totalCash: "Total Cash",
     },
     portfolio: {
       investmentValue: 'Investment Value',

@@ -1828,6 +1828,7 @@ export default {
       yesCancel: "Batalkan pesanan",
       noCancel: "Kembali",
       cancel: "Batalkan",
+      totalCash: "Dana Total",
     },
     portfolio: {
       investmentValue: 'Nilai Investasi',

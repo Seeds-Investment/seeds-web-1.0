@@ -1927,7 +1927,35 @@ export default {
     seedsResponsibility1:
       'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
     seedsResponsibility2:
-      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application'
+      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application',
+    asset: {
+      totalInvestment: "Total Investment",
+      portfolio: "Portfolio",
+      tournamentAsset: "Tournament Assets",
+      seeAll: "Lihat Semua"
+    },
+    guidance: {
+      guidanceTitle: "Guidance",
+      goals: "Goals",
+      goalsDescription: "Build the best portfolio using the virtual balance provided.",
+      howToPlay: {
+        title: "How to Play",
+        text1: "Start by viewing your portfolio and virtual balance.",
+        text2: "Click 'See All' to view the full list of assets available.",
+        text3: "Click on an asset to view the results of the stack data analysis.",
+        text4: "To buy an asset, click the 'Buy' button. To sell an asset, click the 'Sell' button.",
+        text5: "You can make transactions within the specified time frame.",
+        text6: "View your position on the leaderboard to see how you are competing against other players.",
+      },
+      winner: "Winner",
+      winnerDescription: "The final winner will be determined on the leaderboard based on the best portfolio performance.",
+      tips: {
+        title: "Tips",
+        text1: "Do your research before making a transaction.",
+        text2: "Learn stock data analysis to help you make informed decisions.",
+        text3: "Stay alert to market price changes.",
+      }
+    }
   },
   discover: {
     hotNews: 'Hot News',

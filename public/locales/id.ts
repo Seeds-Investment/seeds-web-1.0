@@ -1850,7 +1850,35 @@ export default {
     seedsResponsibility1:
       'Seeds merupakan Pihak yang menyediakan fitur Play Arena Tournament pada aplikasi Seeds',
     seedsResponsibility2:
-      'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds'
+      'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds',
+    asset: {
+      totalInvestment: "Total Investasi",
+      portfolio: "Portofolio",
+      tournamentAsset: "Aset Turnamen",
+      seeAll: "Lihat Semua"
+    },
+    guidance: {
+      guidanceTitle: "Petunjuk",
+      goals: "Tujuan",
+      goalsDescription: "Bangun portofolio terbaikmu menggunakan virtual balance yang disediakan.",
+      howToPlay: {
+        title: "Cara Bermain",
+        text1: "Mulai dengan melihat portofolio dan virtual balance.",
+        text2: "Klik 'Lihat Semua' untuk melihat daftar aset yang tersedia.",
+        text3: "Klik pada aset untuk melihat hasil analisis data.",
+        text4: "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
+        text5: "Anda dapat membuat transaksi dalam spesifik waktu tertentu.",
+        text6: "Lihat posisi anda pada leaderboard untuk melihat persaingan dengan pemain lain.",
+      },
+      winner: "Pemenang",
+      winnerDescription: "Pemenang akhir akan ditentukan pada leaderboard berdasarkan portofolio terbaik.",
+      tips: {
+        title: "Tips",
+        text1: "Lakukan analisa anda sendiri sebelum melakukan transaksi.",
+        text2: "Pelajari analisa saham dan aset untuk membantu membuat keputusan.",
+        text3: "Selalu bersiap untuk menghadapi perubahan harga.",
+      }
+    }
   },
   discover: {
     hotNews: 'Hot News',

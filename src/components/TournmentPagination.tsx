@@ -12,14 +12,14 @@ const TournamentPagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange
 }) => {
-  const [inputPage, setInputPage] = useState<any>(currentPage);
+  const [inputPage, setInputPage] = useState(currentPage);
 
   useEffect(() => {
     setInputPage(currentPage);
   }, [currentPage]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInputPage(e.target.value);
+    setInputPage(parseInt(e.target.value, 10));
   };
 
   const handlePageChange = (): void => {

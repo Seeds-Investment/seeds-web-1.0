@@ -39,7 +39,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
 
-
 interface StatusQuizI {
   id: number;
   status: QuizStatus;
@@ -88,6 +87,7 @@ const Player = (): React.ReactElement => {
   };
 
   const [userInfo, setUserInfo] = useState<UserInfo>();
+
   useEffect(() => {
     fetchData()
       .then()
@@ -171,7 +171,7 @@ const Player = (): React.ReactElement => {
     if (activeNavbar === 'quiz') {
       if (userInfo !== undefined) {
         const getData = setTimeout(() => {
-          void getListQuiz(userInfo.preferredCurrency);
+          void getListQuiz(userInfo?.preferredCurrency);
         }, 2000);
 
         return () => clearTimeout(getData);

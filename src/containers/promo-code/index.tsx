@@ -10,16 +10,24 @@ import { toast } from 'react-toastify';
 
 interface PromoCodeSelectionProps {
   detailTournament: IDetailTournament | undefined;
-  onDiscountChange: (discount: number) => void;
+}
+
+interface PromoCode {
+  id: string;
+  promo_code: string;
+  start_date: string;
+  end_date: string;
+  discount_percentage: number;
+  quantity: number;
+  initial_quantity: number;
+  institution: string;
 }
 
 const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
-  detailTournament,
-  onDiscountChange
+  detailTournament
 }) => {
-  const [activePromoCodes, setActivePromoCodes] = useState<any[]>([]);
+  const [activePromoCodes, setActivePromoCodes] = useState<PromoCode[]>([]);
   const [showRadioButtons, setShowRadioButtons] = useState(false);
-  const [discount, setDiscount] = useState<any>(null);
   const [promoCode, setPromoCode] = useState<string>('');
   const [totalDiscount, setTotalDiscount] = useState<number>(0);
   const dispatch = useDispatch();
@@ -55,8 +63,6 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
 
       if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
-        setDiscount(response);
-        onDiscountChange(discount);
         setTotalDiscount(response.total_discount);
 
         dispatch(setPromoCodeValidationResult(response));

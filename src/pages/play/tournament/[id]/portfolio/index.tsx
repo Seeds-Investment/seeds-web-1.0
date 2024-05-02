@@ -69,6 +69,16 @@ const Portfolio = (): React.ReactElement => {
       .catch(() => {});
     setActiveAssetParams({ ...activeAssetParams, page: 1 });
   }, []);
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {

@@ -92,7 +92,7 @@ const LeaveCommunityPopUp: React.FC<Props> = ({ onClose, onClick }) => {
             }}
             variant="outlined"
             color="gray"
-            label="Please write and elaborate your problem"
+            label={t('chat.elaborate') ?? ''}
           />
           <div
             onClick={() => {

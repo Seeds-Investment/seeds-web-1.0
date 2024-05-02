@@ -775,3 +775,25 @@ export const acceptOrRejectJoinCircle = async (
     return error.response;
   }
 };
+
+export const getPostForYou = async (
+  page: number,
+  limit: number,
+  currency: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    return await baseUrl.get(
+      `/post/v2/list/for-you?page=${page}&type=all&limit=${limit}&currency=${currency}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error: any) {
+    return error.response;
+  }
+};

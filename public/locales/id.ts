@@ -1806,7 +1806,7 @@ export default {
       currentRank: 'Peringkat Anda Sekarang',
       player: 'Pemain',
       totalGain: 'Pendapatan',
-      totalPoint: 'Total Poin',
+      totalPoint: 'Total Poin'
     },
     assets: {
       text1: "tidak ditemukan!",
@@ -1931,6 +1931,34 @@ export default {
     community: 'Komunitas',
     request: 'Request',
     reject: 'Tolak',
-    accept: 'Terima'
+    accept: 'Terima',
+    newGroup: 'Grup Baru',
+    groupName: 'Nama Grup',
+    enterGroupName: 'Masukan nama grup',
+    description: 'Deskripsi',
+    enterGroupDescription: 'Masukan deskripsi grup',
+    typeGroup: 'Tipe Grup',
+    public: 'Publik',
+    private: 'Pribadi',
+    next: 'Berikutnya',
+    createGroupPopUpText1: 'Yakin ingin membuat group ini?',
+    createGroupPopUpText2: 'Yuk, konfirmasi untuk membuat grup kamu',
+    elaborate: 'Yuk, tulis dan jelaskan masalahmu',
+    emptyChat: 'Opps, belum ada pesan. Mulai percakapan sekarang!',
+    deleteChatTitle: 'Yakin mau menghapus chat ini?',
+    deleteChatSubtitle:
+      'Jika kamu  mengklik ya, riwayat obrolanmu  tidak dapat ditelusuri kembali setelah menghapus obrolan',
+    search: 'Telusuri',
+    mute: 'Bisukan Notifikasi',
+    deleteChat: 'Hapus Pesan',
+    participants: 'Peserta',
+    notes: 'Catatan',
+    seen: 'Dilihat',
+    muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
+    muteNotificationSubtitle:
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+  },
+  play: {
+    keystat: 'Key Stats'
   }
 };

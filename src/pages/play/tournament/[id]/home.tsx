@@ -355,7 +355,7 @@ const TournamentHome: React.FC = () => {
         </div>
 
         <div className="w-full mt-4 relative">
-          <FloatingButton />
+          <FloatingButton id={id as string}/>
           <Typography className="text-xl font-semibold text-[#3AC4A0]">
             {t('tournament.asset.tournamentAsset')}
           </Typography>

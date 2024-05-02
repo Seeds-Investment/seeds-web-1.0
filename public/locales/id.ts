@@ -1842,6 +1842,10 @@ export default {
         text2: "Pelajari analisa saham dan aset untuk membantu membuat keputusan.",
         text3: "Selalu bersiap untuk menghadapi perubahan harga.",
       }
+    },
+    social: {
+      sorry: "Maaf, data postingan tidak ada!",
+      noData: "Ayo buat postinganmu!",
     }
   },
   discover: {

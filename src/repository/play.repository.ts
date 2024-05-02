@@ -1,9 +1,16 @@
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { type Pie } from '@/utils/interfaces/tournament.interface';
+
 interface ICreateOrderPlay {
   asset_id: string;
   type: 'BUY' | 'SELL' | string;
   amount: number;
+}
+
+interface Polling {
+  content_text: string;
+  media_url: string;
 }
 
 const playService = baseAxios(
@@ -327,6 +334,27 @@ export const getHistoryTransaction = async (
   }
 };
 
+export const getPlayPostList = async (
+  params: { play_id: string; limit: number; page: number; }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/post/list`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
 const paymentService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
@@ -352,5 +380,72 @@ export const getPaymentById = async (id: string): Promise<any> => {
   } catch (error) {
     console.error('Error getting payment by ID:', error);
     throw error;
+  }
+};
+
+export const createPostPlay = async (formData: {
+  content_text: string;
+  media_urls: string[];
+  privacy: string;
+  is_pinned: boolean;
+  play_id: string;
+  user_id: string;
+  circleId?: string;
+  hashtags: string[];
+  pollings?: Polling[];
+  polling_multiple?: boolean;
+  polling_new_option?: boolean;
+  polling_date?: string;
+  pie_title?: string;
+  pie_amount?: number;
+  pie?: Pie;
+  premium_fee: number;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (
+      isUndefindOrNull(formData.content_text) ||
+      isUndefindOrNull(formData.media_urls) ||
+      isUndefindOrNull(formData.privacy) ||
+      isUndefindOrNull(formData.is_pinned) ||
+      isUndefindOrNull(formData.user_id) ||
+      isUndefindOrNull(formData.hashtags)
+    ) {
+      return await Promise.resolve(null);
+    }
+
+    const body = JSON.stringify({
+      content_text: formData.content_text,
+      media_urls: formData.media_urls,
+      play_id: formData.play_id,
+      privacy: formData.privacy,
+      is_pinned: formData.is_pinned,
+      user_id: formData.user_id,
+      circle_id: formData.circleId,
+      hashtags: formData.hashtags,
+      pollings: formData.pollings,
+      polling_multiple: formData.polling_multiple,
+      polling_new_option: formData.polling_new_option,
+      polling_date: formData.polling_date,
+      pie_title: formData.pie_title,
+      pie_amount: formData.pie_amount,
+      pie: formData.pie,
+      premium_fee: formData.premium_fee
+    });
+
+    const response = await playService.post('/post/create', body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return { ...response, status: 200 };
+  } catch (error) {
+    return error;
   }
 };

@@ -1805,7 +1805,7 @@ export default {
       currentRank: 'Peringkat Anda Sekarang',
       player: 'Pemain',
       totalGain: 'Pendapatan',
-      totalPoint: 'Total Poin',
+      totalPoint: 'Total Poin'
     },
     first: '1st',
     second: '2nd',
@@ -1890,5 +1890,8 @@ export default {
     muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
     muteNotificationSubtitle:
       'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+  },
+  play: {
+    keystat: 'Key Stats'
   }
 };

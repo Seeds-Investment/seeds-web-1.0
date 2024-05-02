@@ -1968,5 +1968,8 @@ export default {
     muteNotificationTitle: 'Are you sure to mute notifications?',
     muteNotificationSubtitle:
       'Other participants will not see that you muted this chat'
+  },
+  play: {
+    keystat: 'Key Stats'
   }
 };

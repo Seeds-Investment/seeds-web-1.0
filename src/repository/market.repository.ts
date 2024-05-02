@@ -1,3 +1,4 @@
+import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
@@ -38,6 +39,100 @@ export const getMarketCurrency = async (): Promise<any> => {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const getAssetOverview = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetOverview.replace(':id', id);
+  return await marketService.get(path, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetAnalysis = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetAnalysis.replace(':id', id);
+  return await marketService.get(path, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetFinancial = async (
+  id: string,
+  type: string,
+  years: string,
+  sort: string
+): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetFinancial.replace(':id', id);
+  const params = {
+    type,
+    years,
+    sort
+  };
+  return await marketService.get(path, {
+    params,
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetKeyStat = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetKeyStat.replace(':id', id);
+  return await marketService.get(path, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetProfile = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetProfile.replace(':id', id);
+  return await marketService.get(path, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+};
+
+export const getAssetNews = async (id: string): Promise<any> => {
+  if (isUndefindOrNull(id) || isEmptyString(id)) {
+    return await Promise.resolve(null);
+  }
+
+  const path = Endpoints.asset.getAssetNews.replace(':id', id);
+  const params = {
+    page: 1,
+    limit: 3
+  };
+  return await marketService.get(path, {
+    params,
+    headers: {
+      Accept: 'application/json'
     }
   });
 };

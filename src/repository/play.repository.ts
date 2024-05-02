@@ -1,5 +1,6 @@
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { type IPortfolioSummary } from '@/utils/interfaces/play.interface';
 interface ICreateOrderPlay {
   asset_id: string;
   type: 'BUY' | 'SELL' | string;
@@ -352,5 +353,30 @@ export const getPaymentById = async (id: string): Promise<any> => {
   } catch (error) {
     console.error('Error getting payment by ID:', error);
     throw error;
+  }
+};
+
+export const getPlayAssetData = async (
+  id: string,
+  assetId: string,
+  currency: string
+): Promise<{ data: IPortfolioSummary } | undefined | string> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await playService(`/${id}/assets/${assetId}`, {
+      params: {
+        currency
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
   }
 };

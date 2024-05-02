@@ -84,7 +84,7 @@ const VirtualBalanceChart: React.FC<Props> = ({
           </Pie>
         </PieChart>
         <div className="flex flex-col justify-center items-center absolute top-[150px] font-poppins">
-          <div className="text-[#BDBDBD]">Total Cash</div>
+          <div className="text-[#BDBDBD]">{t('tournament.assets.totalCash')}</div>
           <div className="font-semibold md:text-sm lg:text-base">{currency !== undefined ? currency : 'IDR'}{standartCurrency(balance + portfolio).replace('Rp', '')}</div>
         </div>
       </div>

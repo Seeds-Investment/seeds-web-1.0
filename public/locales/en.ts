@@ -1838,7 +1838,7 @@ export default {
     ended: 'Ended',
     canceled: 'Canceled',
     banner1: 'Hi There! New to Play Arena?',
-    banner2: 'Check out the tutorial here!',
+    banner2: 'Check out the tutorial video here!',
     banner3: 'Tutorial',
     blank1: 'Opps,  There’s No Tournament Yet',
     blank2: 'Let’s join the tournament and win  prize!',
@@ -1860,7 +1860,8 @@ export default {
     leaderboardBanner1: 'Are you at the top?',
     leaderboardBanner2: 'Check out',
     leaderboardBanner3: 'Check Leaderboard',
-    tutorialToournament: 'Tournament Tutorial',
+    leaderboardBanner4: 'Leaderboard',
+    tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
     clock: {
       days: 'd',
@@ -1890,6 +1891,7 @@ export default {
       totalInvesment: 'Total Investment',
       portfolio: 'Portfolio',
       virtualBalance: 'Virtual Balance',
+      watchList: 'Watchlist',
       transaction: "Transaction",
       openOrder: "Open Order",
       historyTransaction: "History Transaction",
@@ -1932,7 +1934,7 @@ export default {
       totalInvestment: "Total Investment",
       portfolio: "Portfolio",
       tournamentAsset: "Tournament Assets",
-      seeAll: "Lihat Semua"
+      seeAll: "See All"
     },
     guidance: {
       guidanceTitle: "Guidance",

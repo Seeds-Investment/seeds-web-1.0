@@ -407,7 +407,7 @@ const TournamentHome: React.FC = () => {
                 className="w-[30px] md:w-[45px] hover:shadow-xl duration-300 rounded-full"
               />
               <Typography className="text-[#262626] font-poppins text-xs md:text-lg text-center">
-                Watchlist
+                {t('tournament.assets.watchList')}
               </Typography>
             </div>
           </div>
@@ -444,7 +444,7 @@ const TournamentHome: React.FC = () => {
               <div>{t('tournament.leaderboardBanner1')}</div>
               <div className="flex gap-2">
                 <div>{t('tournament.leaderboardBanner2')}</div>
-                <div className="text-[#3AC4A0] font-semibold cursor-pointer">Leaderboard</div>
+                <div className="text-[#3AC4A0] font-semibold cursor-pointer">{t('tournament.leaderboardBanner4')}</div>
               </div>
             </div>
             <div className="bg-[#3AC4A0] text-white flex justify-center items-center w- lg:w-[300px] lg:text-lg text-xs rounded-full px-4 py-1 mt-2 xl:mr-8">
@@ -546,7 +546,7 @@ const TournamentHome: React.FC = () => {
 
           <div className='w-full flex justify-center items-center mt-4' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
             <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
-              <Typography className='text-lg font-semibold text-white'>
+              <Typography className='text-lg text-white cursor-pointer'>
                 {t('tournament.asset.seeAll')}
               </Typography>
             </div>

@@ -1790,7 +1790,7 @@ export default {
     quizDone1: "let's join another interesting quiz!",
     quizDone2:
       'Ooops... you only get one chance to play a free quiz! Explore more quizzes!',
-    testInvestment: 'Test your investment knowledge and win real money!',
+    testInvestment: 'Test your financial knowledge and win rewards!',
     welcome: 'Welcome to Seeds Quiz',
     areYouReady: 'Are You Ready?',
     millionaire: 'Who wants to be Seeds Millionaire!',
@@ -1831,6 +1831,66 @@ export default {
     score: 'Your Score : ',
     earn: ' You earn IDR ',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
+  },
+  tournament: {
+    myPlay: 'My Play',
+    active: 'Active',
+    ended: 'Ended',
+    canceled: 'Canceled',
+    banner1: 'Hi There! New to Play Arena?',
+    banner2: 'Check out the tutorial here!',
+    banner3: 'Tutorial',
+    blank1: 'Opps,  There’s No Tournament Yet',
+    blank2: 'Let’s join the tournament and win  prize!',
+    detailRemaining: 'Remaining Time',
+    detailPeriod: 'Tournament Period',
+    detailPrize: 'Tournament Prize',
+    detailTerms: 'Terms and Conditions',
+    detailResponsibility: 'Seeds Responsibility',
+    detailCurrency: 'Your current currency: ',
+    detailAccessCode: 'Input Access Code',
+    detailBannerTotalRewards: 'Total Rewards',
+    entranceFee: 'Entrance Fee',
+    free: 'Free',
+    join: 'Join',
+    start: 'Start',
+    participants: 'Participants',
+    categoryAsset: 'Category Asset',
+    circleRecommendation: 'Circle Recommendation',
+    leaderboardBanner1: 'Are you at the top?',
+    leaderboardBanner2: 'Check out',
+    leaderboardBanner3: 'Check Leaderboard',
+    tutorialToournament: 'Tournament Tutorial',
+    remainingTimeText: 'Tournament was ended!',
+    clock: {
+      days: 'd',
+      hours: 'h',
+      minutes: 'm',
+      seconds: 's'
+    },
+    tournamentCard: {
+      player: 'Player(s)',
+      duration: 'Duration',
+      joined: 'Joined',
+      fee: 'Fee',
+      openButton: 'Open',
+      share: 'Share',
+      days: 'Day(s)'
+    },
+    leaderboard: {
+      lastUpdated: 'Last updated: ',
+      currentRank: 'Your current rank',
+      player: 'Player',
+      totalGain: 'Total Gain',
+      totalPoint: 'Total Points',
+    },
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    seedsResponsibility1:
+      'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
+    seedsResponsibility2:
+      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application'
   },
   discover: {
     hotNews: 'Hot News',
@@ -1882,6 +1942,31 @@ export default {
     community: 'Community',
     request: 'Request',
     reject: 'Reject',
-    accept: 'Accept'
+    accept: 'Accept',
+    newGroup: 'New Group',
+    groupName: 'Group Name',
+    enterGroupName: 'Enter Group Name',
+    description: 'Description',
+    enterGroupDescription: 'Enter Group Description',
+    typeGroup: 'Type Group',
+    public: 'Public',
+    private: 'Private',
+    next: 'Next',
+    createGroupPopUpText1: 'Are you sure to create this group?',
+    createGroupPopUpText2: 'Please confirm to create the group',
+    elaborate: 'Please write and elaborate your problem',
+    emptyChat: 'No messages here yet. Start a conversation now!',
+    deleteChatTitle: 'Are you sure to delete this chat?',
+    deleteChatSubtitle:
+      'If you click yes, your chat history can not be retrace after deletethe chat',
+    search: 'Search',
+    mute: 'Mute Notification',
+    deleteChat: 'Delete chat',
+    participants: 'Participants',
+    notes: 'Notes',
+    seen: 'Seen',
+    muteNotificationTitle: 'Are you sure to mute notifications?',
+    muteNotificationSubtitle:
+      'Other participants will not see that you muted this chat'
   }
 };

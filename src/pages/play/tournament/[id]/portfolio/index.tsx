@@ -93,15 +93,6 @@ const Portfolio = (): React.ReactElement => {
     }
   }, [id, userInfo, activeAssetParams]);
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast(`Error fetching data: ${error as string}`);
-    }
-  };
-
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
       setLoadingBallance(true);
@@ -256,7 +247,7 @@ const Portfolio = (): React.ReactElement => {
                 {activeAsset?.map(data => (
                   <div
                     key={data?.id}
-                    onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio/${data?.asset_id}/detail-portfolio`)}
+                    onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio/${data?.asset_id }/detail-portfolio`)}
                     className="flex justify-between items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-lg hover:bg-[#E1E1E1] duration-300 cursor-pointer"
                   >
                     <div className="flex gap-2 md:gap-4 items-center">

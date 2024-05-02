@@ -57,15 +57,6 @@ const TournamentDetail: React.FC = () => {
     }
   };
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
   const getDetail = useCallback(async () => {
     try {
       setLoading(true);

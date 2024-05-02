@@ -1922,6 +1922,10 @@ export default {
     social: {
       sorry: "Sorry, there is no post here!",
       noData: "Let's make your post here!",
+      member: "member",
+      members: "members",
+      description: "Discover the experts for more insights",
+      seeAll: "See All",
     }
   },
   discover: {

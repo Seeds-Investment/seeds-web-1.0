@@ -1846,6 +1846,10 @@ export default {
     social: {
       sorry: "Maaf, data postingan tidak ada!",
       noData: "Ayo buat postinganmu!",
+      member: "peserta",
+      members: "peserta",
+      description: "Temukan ahlinya untuk informasi yang lebih banyak",
+      seeAll: "Lihat Semua",
     }
   },
   discover: {

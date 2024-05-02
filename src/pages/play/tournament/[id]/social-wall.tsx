@@ -8,9 +8,9 @@ import SocialWallPagination from '@/components/SocialWallPagination';
 import ModalMentionPlay from '@/containers/circle/[id]/ModalMentionPlay';
 import PostSection from '@/containers/circle/[id]/PostSection';
 import withAuth from '@/helpers/withAuth';
-import { getPlayPostList } from '@/repository/play.repository';
+import { getPlayById, getPlayPostList } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type PostData } from '@/utils/interfaces/tournament.interface';
+import { type IDetailTournament, type PostData } from '@/utils/interfaces/tournament.interface';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -72,8 +72,10 @@ const SocialWall = (): React.ReactElement => {
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [golId, setGolId] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingPlayId, setIsLoadingPlayId] = useState<boolean>(false);
   const [loadingPostList, setLoadingPostList] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [playData, setPlayData] = useState<IDetailTournament>()
   const [postListParams, setPostListParams] = useState({
     play_id: id as string,
     limit: 10,
@@ -86,6 +88,12 @@ const SocialWall = (): React.ReactElement => {
       .then()
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (id !== null && userInfo !== undefined) {
+      void fetchPlayById();
+    }
+  }, [id, userInfo]);
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
@@ -116,6 +124,19 @@ const SocialWall = (): React.ReactElement => {
     }
   };
 
+  const fetchPlayById = async (): Promise<void> => {
+    try {
+      setIsLoadingPlayId(true);
+      const response = await getPlayById(id as string);
+      console.log('play id: ', response)
+      setPlayData(response)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setIsLoadingPlayId(true);
+    }
+  };
+
   const handleOpen = (): void => {
     if (isOpen) {
       document.body.classList.remove('modal-open');
@@ -139,6 +160,7 @@ const SocialWall = (): React.ReactElement => {
       {
         isLoading &&
         loadingPostList &&
+        isLoadingPlayId &&
         <Loading />
       }
       <ModalMentionPlay
@@ -151,9 +173,23 @@ const SocialWall = (): React.ReactElement => {
         playId={id as string}
       />
       <div className='w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
-        <div className='flex justify-start w-full'>
+        <div className='flex justify-start md:justify-between w-full'>
           <Typography className='text-xl font-semibold'>
-            Social Wall
+            {playData?.name ?? 'Social Wall'}
+          </Typography>
+          {
+            playData !== undefined &&
+              <Typography className='hidden md:flex text-lg text-[#BDBDBD] italic'>
+                {playData?.total_participants} {playData?.total_participants > 1 ? `${t('tournament.social.members')}` : `${t('tournament.social.member')}`}
+              </Typography>
+          }
+        </div>
+        <div className='flex justify-between w-full mt-4'>
+          <Typography className='text-lg text-[#7C7C7C]'>
+            {t('tournament.social.description')}
+          </Typography>
+          <Typography className='text-lg text-[#1A857D]'>
+            {t('tournament.social.seeAll')}
           </Typography>
         </div>
 

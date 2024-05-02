@@ -221,10 +221,6 @@ const ModalMention: React.FC<props> = ({
     circleList: [],
     playList: []
   });
-  console.log('tagLists ', tagLists)
-  console.log('hashtags ', hashtags)
-  console.log('dollarLists ', dollarLists)
-  console.log('otherTagList ', otherTagList)
   
   const [form, setForm] = useState<form>({
     content_text: '',

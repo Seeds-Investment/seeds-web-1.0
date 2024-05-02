@@ -3,6 +3,7 @@
 'use-client';
 
 import NoData from '@/assets/play/tournament/assetNoData.svg';
+import Verified from '@/assets/play/tournament/verifiedIcon.svg';
 import Loading from '@/components/popup/Loading';
 import SocialWallPagination from '@/components/SocialWallPagination';
 import ModalMentionPlay from '@/containers/circle/[id]/ModalMentionPlay';
@@ -116,7 +117,6 @@ const SocialWall = (): React.ReactElement => {
       setLoadingPostList(true);
       const response = await getPlayPostList({ ...postListParams });
       setDataPost(response?.data)
-      console.log('rez ', response)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -128,7 +128,6 @@ const SocialWall = (): React.ReactElement => {
     try {
       setIsLoadingPlayId(true);
       const response = await getPlayById(id as string);
-      console.log('play id: ', response)
       setPlayData(response)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -145,15 +144,6 @@ const SocialWall = (): React.ReactElement => {
     }
     setIsOpen(!isOpen);
   };
-
-  console.log('userInfo ', userInfo)
-  console.log('id ', id)
-  console.log('loadingPostList ', loadingPostList)
-
-  console.log('x dataPost soc ', dataPost)
-  console.log('x filter ', filter)
-  console.log('x golId ', golId)
-  console.log('x isLoading ', isLoading)
 
   return (
     <>
@@ -173,27 +163,96 @@ const SocialWall = (): React.ReactElement => {
         playId={id as string}
       />
       <div className='w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
+
+        {/* Social Wall Title */}
         <div className='flex justify-start md:justify-between w-full'>
           <Typography className='text-xl font-semibold'>
             {playData?.name ?? 'Social Wall'}
           </Typography>
           {
             playData !== undefined &&
-              <Typography className='hidden md:flex text-lg text-[#BDBDBD] italic'>
+              <Typography className='hidden md:flex text-sm md:text-md text-[#BDBDBD] italic'>
                 {playData?.total_participants} {playData?.total_participants > 1 ? `${t('tournament.social.members')}` : `${t('tournament.social.member')}`}
               </Typography>
           }
         </div>
-        <div className='flex justify-between w-full mt-4'>
-          <Typography className='text-lg text-[#7C7C7C]'>
+
+        {/* Social Wall Description */}
+        <div className='flex justify-start w-full mt-2'>
+          <Typography className='text-sm md:text-md text-[#7C7C7C]'>
             {t('tournament.social.description')}
-          </Typography>
-          <Typography className='text-lg text-[#1A857D]'>
-            {t('tournament.social.seeAll')}
           </Typography>
         </div>
 
-        <div className="w-full mt-4">
+        {/* Social Highlights */}
+        <div className='flex w-full mt-4 overflow-x-scroll gap-2 pb-4 border-b-2 border-[#E2E2E2]'>
+
+          {/* Highlight Card */}
+          {
+            isLoadingPlayId ?
+            <>
+            {
+              playData?.participants?.map((participant, index) => {
+                return (
+                  <>
+                    <div key={index} className='shrink border border-[#E9E9E9] rounded-lg flex flex-col justify-start gap-2 p-2 w-full min-w-[280px] cursor-pointer hover:bg-[#F2F2F2] duration-300'>
+                      <div className='flex w-full justify-start items-center gap-2'>
+                        <div className='w-[40px] h-[40px] flex justify-center items-center rounded-full border border-1 overflow-hidden'>
+                          <img src={participant?.photo_url} alt={participant?.name} className="w-full h-full"/>
+                        </div>
+                        <div className='font-semibold text-sm md:text-base'>
+                          @{participant?.seeds_tag?.length < 20 ? participant?.seeds_tag : `${participant?.seeds_tag?.slice(0, 19)}...`}
+                        </div>
+                        {
+                          participant?.verified &&
+                            <div className='w-[20px] h-[40px] flex justify-center items-center'>
+                              <Image src={Verified} alt={participant?.name} width={100} height={100} className="w-[15px] h-[15px]"/>
+                            </div>
+                        }
+                      </div>
+                      <div className='flex w-full justify-center items-center gap-2'>
+                        <div className='w-fit h-[60px] p-2 flex flex-col justify-center items-center'>
+                          <div className='text-sm md:text-md text-[#7C7C7C]'>
+                            {participant?.total_play > 1 ? 'Plays' : 'Play'}
+                          </div>
+                          <div className='text-md md:text-xl font-semibold'>
+                            {participant?.total_play}
+                          </div>
+                        </div>
+                        <div className='w-fit h-[60px] p-2 flex flex-col justify-center items-center border-l-2 border-r-2 border-[#E2E2E2]'>
+                          <div className='text-sm md:text-md text-[#7C7C7C]'>
+                            {participant?.total_win > 1 ? 'Wins' : 'Win'}
+                          </div>
+                          <div className='text-md md:text-xl font-semibold'>
+                            {participant?.total_win}
+                          </div>
+                        </div>
+                        <div className='w-fit h-[60px] p-2 flex flex-col justify-center items-center'>
+                          <div className='text-sm md:text-md text-[#7C7C7C]'>
+                            Win Rate
+                          </div>
+                          <div className='text-md md:text-xl font-semibold'>
+                            {participant?.win_rate}%
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )
+              })
+            }
+            </>
+            :
+            <div className="w-full flex justify-center h-fit my-8">
+              <div className="h-[60px]">
+                <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+              </div>
+            </div>
+          }
+        </div>
+
+        {/* Social Posts */}
+        <div className="w-full">
         {
           !loadingPostList ? (
             dataPost?.length !== 0 ?
@@ -231,6 +290,7 @@ const SocialWall = (): React.ReactElement => {
           )}
         </div>
 
+        {/* Social Play Pagination */}
         <div className="flex justify-center mx-auto my-8">
           <SocialWallPagination
             currentPage={postListParams.page}

@@ -62,16 +62,8 @@ const LeaderBoardPage: React.FC = () => {
     return_percentage: 0,
     currency: 'IDR'
   });
-
+  
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast(`Error fetching data: ${error as string}`);
-    }
-  };
 
   useEffect(() => {
     if (typeof id === 'string') {
@@ -83,6 +75,15 @@ const LeaderBoardPage: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
 
   useEffect(() => {
     leaderBoard?.map((leader) => {
@@ -146,7 +147,7 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[1]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[1]?.gain < 0 ? '-' : '+'}{leaderBoard[1]?.gain.toFixed(2)}%
+                {leaderBoard[1]?.gain < 0 ? '' : '+'}{leaderBoard[1]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -190,7 +191,7 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[0]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[0]?.gain < 0 ? '-' : '+'}{leaderBoard[0]?.gain.toFixed(2)}%
+                {leaderBoard[0]?.gain < 0 ? '' : '+'}{leaderBoard[0]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -219,7 +220,7 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[2]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[2]?.gain < 0 ? '-' : '+'}{leaderBoard[2]?.gain.toFixed(2)}%
+                {leaderBoard[2]?.gain < 0 ? '' : '+'}{leaderBoard[2]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -280,7 +281,7 @@ const LeaderBoardPage: React.FC = () => {
                     <Typography className='font-poppins'>{userInfo?.seedsTag}</Typography>
                     <Typography className={`${leaderBoard[currentRank - 1]?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'} font-poppins text-sm md:text-base`}>
                       {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
-                      {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '-' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
+                      {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
                     </Typography>
                   </div>
                 </div>
@@ -327,7 +328,7 @@ const LeaderBoardPage: React.FC = () => {
                   </div>
                 </td>
                 <td className="px-1 md:px-4 py-5 text-center text-sm md:text-base font-normal font-poppins">
-                  {leader?.gain < 0 ? '-' : '+'}{leader?.gain.toFixed(2)}%
+                  {leader?.gain < 0 ? '' : '+'}{leader?.gain.toFixed(2)}%
                 </td>
               </tr>
             ))}

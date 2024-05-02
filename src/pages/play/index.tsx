@@ -65,6 +65,7 @@ const Player = (): React.ReactElement => {
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<IDetailTournament[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
+  
   const [quizParams, setQuizParams] = useState({
     search: '',
     status: '',
@@ -86,6 +87,13 @@ const Player = (): React.ReactElement => {
   };
 
   const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -95,11 +103,6 @@ const Player = (): React.ReactElement => {
       toast(`Error fetching data: ${error as string}`);
     }
   };
-  useEffect(() => {
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearch(event.target.value);
@@ -620,7 +623,7 @@ const Player = (): React.ReactElement => {
                         <QuizCard
                           item={item}
                           key={item.id}
-                          currency={userInfo?.preferredCurrency ?? ''}
+                          currency={userInfo?.preferredCurrency ?? 'IDR'}
                         />
                       ))
                     )}

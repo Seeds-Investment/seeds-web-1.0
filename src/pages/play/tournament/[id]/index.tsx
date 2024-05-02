@@ -19,7 +19,7 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
+import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -38,27 +38,24 @@ const TournamentDetail: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
-  const [_, setDiscount] = useState<any>();
-
-  console.log(_);
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const getDetail = useCallback(async () => {
     try {
@@ -66,7 +63,7 @@ const TournamentDetail: React.FC = () => {
       const resp: IDetailTournament = await getPlayById(id as string);
       setDetailTournament(resp);
     } catch (error) {
-      toast(`ERROR fetch tournament ${error as string}`);
+      toast(`Error fetch tournament ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -85,10 +82,6 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-  
-  const handleDiscountChange = (discount: any): void => {
-    setDiscount(discount);
-  };
 
   return (
     <>
@@ -101,8 +94,7 @@ const TournamentDetail: React.FC = () => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
-      {detailTournament === undefined &&
-        loading && <Loading />}
+      {detailTournament === undefined && loading && <Loading />}
       <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
         <div className="absolute bottom-[-25px] text-center">
           <Typography className="text-[26px] font-semibold font-poppins">
@@ -123,7 +115,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
+              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
             }
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
@@ -229,7 +221,7 @@ const TournamentDetail: React.FC = () => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
+                    {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
                   </td>
                 </tr>
               ))}
@@ -300,7 +292,6 @@ const TournamentDetail: React.FC = () => {
         <div className="w-full h-[300px] bg-white rounded-xl p-2">
           <PromoCodeSelection
             detailTournament={detailTournament}
-            onDiscountChange={handleDiscountChange}
           />
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
@@ -309,7 +300,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency?.length > 0 ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
+              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
             }
           </Typography>
           <button
@@ -341,7 +332,7 @@ const TournamentDetail: React.FC = () => {
             <Image alt="" src={IconWarning} className="w-[14px]" />
             <Typography className="text-[#3C49D6] text-[14px] font-poppins">
               {t('tournament.detailCurrency')}{' '}
-              {userInfo?.preferredCurrency?.length > 0
+              {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}
             </Typography>

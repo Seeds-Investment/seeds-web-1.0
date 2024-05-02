@@ -7,13 +7,13 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const TournamentPagination: React.FC<PaginationProps> = ({
+const AssetPagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange
 }) => {
   const [inputPage, setInputPage] = useState(currentPage);
-
+  
   useEffect(() => {
     setInputPage(currentPage);
   }, [currentPage]);
@@ -59,20 +59,19 @@ const TournamentPagination: React.FC<PaginationProps> = ({
 
     for (let i = start; i <= end; i++) {
       buttons.push(
-        <a
+        <div
           key={i}
-          href="#"
           className={`${
             i.toString() === currentPage.toString()
               ? 'text-white bg-[#3AC4A0]'
               : 'text-[#262626]'
-          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs`}
+          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs cursor-pointer`}
           onClick={() => {
             handlePageButtonClick(i);
           }}
         >
           {i}
-        </a>
+        </div>
       );
     }
 
@@ -85,24 +84,22 @@ const TournamentPagination: React.FC<PaginationProps> = ({
         <div className="col-span-2" />
         <div className="col-span-6 pt-[1px]">
           <div className="flex justify-center items-center">
-            <a
-              href="#"
+            <div
               onClick={handlePreviousPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center cursor-pointer"
             >
               <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
             {generatePageButtons()}
-            <a
-              href="#"
+            <div
               onClick={handleNextPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center cursor-pointer"
             >
               <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
           </div>
         </div>
-        <div className="col-span-2 me-12">
+        <div className="col-span-2 me-12" id="#">
           <div className="flex justify-center items-center gap-4">
             <div className="flex-none">
               <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
@@ -121,7 +118,7 @@ const TournamentPagination: React.FC<PaginationProps> = ({
               <button
                 type="button"
                 onClick={handlePageChange}
-                className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0]"
+                className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0] cursor-pointer"
               >
                 Go
               </button>
@@ -132,21 +129,19 @@ const TournamentPagination: React.FC<PaginationProps> = ({
       <div className="lg:hidden grid grid-cols-1">
         <div className="col-span-1 pt-[1px]">
           <div className="flex justify-center items-center">
-            <a
-              href="#"
+            <div
               onClick={handlePreviousPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center cursor-pointer"
             >
               <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
             {generatePageButtons()}
-            <a
-              href="#"
+            <div
               onClick={handleNextPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center cursor-pointer"
             >
               <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
           </div>
           <div className="flex justify-center pt-2">
             <div className="flex justify-center items-center gap-4">
@@ -167,7 +162,7 @@ const TournamentPagination: React.FC<PaginationProps> = ({
                 <button
                   type="button"
                   onClick={handlePageChange}
-                  className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0]"
+                  className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0] cursor-pointer"
                 >
                   Go
                 </button>
@@ -180,4 +175,4 @@ const TournamentPagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default TournamentPagination;
+export default AssetPagination;

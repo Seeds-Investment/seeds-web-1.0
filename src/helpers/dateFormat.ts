@@ -18,6 +18,13 @@ export const generateFullDatetime = (dateString: string): string => {
   return result;
 };
 
+export const getShortDate = (date: string): string => {
+  const startDate = moment.utc(date);
+  const result = startDate.format('DD-MM-YYYY');
+
+  return result;
+};
+
 export const formatMonthlyChart = (date: Date): string[] => {
   const months: string[] = [];
 

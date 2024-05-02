@@ -4,10 +4,22 @@ import { type Payment } from './PaymentList';
 import PaymentOption from './PaymentOption';
 
 interface IPaymentOptions {
-  currentValue: any;
+  currentValue: Current | undefined;
   label: string;
   options: Payment[];
   onChange: (paymentOption: Payment) => void;
+}
+
+interface Current {
+  id: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  is_promo_available: boolean;
+  promo_price: number;
+  service_fee: number;
+  payment_gateway?: string;
 }
 
 const PaymentOptions = ({

@@ -136,3 +136,24 @@ export const getAssetNews = async (id: string): Promise<any> => {
     }
   });
 };
+
+export const getWatchlist = async (
+  params: { play_id: string }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await marketService(`/watchlist`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};

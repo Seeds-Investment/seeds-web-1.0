@@ -202,9 +202,9 @@ const AssetDetailPage: React.FC = () => {
               className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
               onClick={() => {
                 void router.push(
-                  `/homepage/order/${
+                  `/play/tournament/${id as string}/order/${
                     assetId as string
-                  }?transaction=sell&playId=${id as string}`
+                  }?transaction=sell`
                 );
               }}
             >
@@ -215,9 +215,9 @@ const AssetDetailPage: React.FC = () => {
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {
                 void router.push(
-                  `/homepage/order/${
+                  `/play/tournament/${id as string}/order/${
                     assetId as string
-                  }?transaction=buy&playId=${id as string}`
+                  }?transaction=buy`
                 );
               }}
             >

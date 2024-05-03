@@ -117,7 +117,7 @@ const DetailPortfolio = (): React.ReactElement => {
           </Typography>
         </div>
         <div className="w-full flex justify-between items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg font-poppins">
-          <div className="flex gap-2 md:gap-4">
+          <div className="flex gap-2 md:gap-4 cursor-pointer" onClick={async() => await router.push(`/play/tournament/${id as string}/${assetId as string}`)}>
             <img alt="" src={marketAsset?.logo ?? CoinLogo} className="w-[30px] md:w-[40px]" />
             <div className="flex flex-col justify-center items-start">
               <div className="flex gap-1">

@@ -1,6 +1,7 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import { toast } from 'react-toastify';
 
 interface WatchlistForm {
   play_id: string;
@@ -171,7 +172,7 @@ export const createWatchlist = async (formData: WatchlistForm): Promise<any> => 
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
+      return await Promise.reject(new Error('Access token not found'));
     }
     return await marketService.post(`/watchlist`, formData, {
       headers: {
@@ -181,5 +182,26 @@ export const createWatchlist = async (formData: WatchlistForm): Promise<any> => 
     });
   } catch (error) {
     await Promise.resolve();
+  }
+};
+
+export const deleteWatchlist = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    const response = await marketService.delete(`/watchlist/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    console.log('rez: ', response)
+    return response
+  } catch (error) {
+    toast.error(`Error fetching data: ${error as string}`);
   }
 };

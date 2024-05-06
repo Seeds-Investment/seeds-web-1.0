@@ -2,17 +2,20 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import delet from '@/assets/more-option/delete.svg';
+import edit from '@/assets/more-option/edit.svg';
+import more_vertical from '@/assets/more-option/more_vertical.svg';
 import NoData from '@/assets/play/tournament/assetNoData.svg';
 import WatchlistProfile from '@/assets/play/tournament/watchlistProfile.svg';
 import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import ModalAddWatchlist from '@/components/popup/ModalAddWatchlist';
 import withAuth from '@/helpers/withAuth';
-import { getWatchlist } from '@/repository/market.repository';
+import { deleteWatchlist, getWatchlist } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Typography } from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, DialogFooter, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -35,6 +38,8 @@ const TournamentHome: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [loadingWatchlist, setLoadingWatchlist] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [deletePost, setDeletePost] = useState(null);
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
   const [watchlistParams, setWatchlistParams] = useState({
     page: 1,
@@ -73,6 +78,28 @@ const TournamentHome: React.FC = () => {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setLoadingWatchlist(false);
+    }
+  };
+  
+  const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
+    setIsOpen(!isOpen);
+  };
+  
+  const handleOpenDelete = (value: any): void => {
+    setDeletePost(value);
+  };
+
+  const handleSubmitDeleteWatchlist = async (id: string): Promise<void> => {
+    try {
+      const response = await deleteWatchlist(id);
+      console.log('rez delete wlst: ', response)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -120,9 +147,90 @@ const TournamentHome: React.FC = () => {
                   <div className='w-full h-full flex justify-start items-center'>
                     {watchLists?.name}
                   </div>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <Menu placement="left-start">
+                    <MenuHandler>
+                      <Image
+                        src={more_vertical}
+                        alt="threeDots"
+                        className="cursor-pointer"
+                      />
+                    </MenuHandler>
+                    <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                      <MenuItem
+                        className={`flex py-2 gap-2 cursor-pointer`}
+                        style={{ color: '#000000' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
+                        onClick={() => {
+                          handleOpen();
+                        }}
+                      >
+                        <Image src={edit} alt="editPost" />
+                        Edit Watchlist
+                      </MenuItem>
+                      <MenuItem
+                        className={`flex py-2 gap-2 cursor-pointer`}
+                        style={{ color: '#FF3838' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
+                        onClick={() => {
+                          handleOpenDelete('xs');
+                        }}
+                      >
+                        <Image src={delet} alt="deletePost" />
+                        Delete Watchlist
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+
+                  {/* Modal Delete Watchlist */}
+                  <Dialog
+                    dismiss={{
+                      outsidePress: false
+                    }}
+                    open={deletePost === 'xs'}
+                    size={'xs'}
+                    handler={handleOpenDelete}
+                    className="text-center p-5 m-0 max-w-full sm:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl"
+                  >
+                    <form
+                      onSubmit={async () =>
+                        { await handleSubmitDeleteWatchlist(watchLists?.id); }
+                      }
+                    >
+                      <DialogBody className="p-0 mb-6 font-poppins">
+                        <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
+                          Delete
+                        </p>
+                        <p className="font-normal text-sm">
+                          Are you sure want to delete this watchlist?
+                        </p>
+                      </DialogBody>
+                      <DialogFooter className="p-0">
+                        <button
+                          type="submit"
+                          className="rounded-full min-w-full bg-[#DD2525] h-10 text-sm font-semibold capitalize text-white transition-all mb-6 font-poppins"
+                          data-ripple-light="true"
+                          onClick={() => {
+                            handleOpenDelete(null);
+                          }}
+                        >
+                          Delete
+                        </button>
+                        <Button
+                          variant="text"
+                          color="white"
+                          onClick={() => {
+                            handleOpenDelete(null);
+                          }}
+                          className="min-w-full hover:bg-transparent focus:bg-transparent text-[#3AC4A0] text-sm font-semibold rounded-full capitalize p-0 font-poppins"
+                        >
+                          <span>Cancel</span>
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Dialog>
+                  {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                  </svg>
+                  </svg> */}
                 </div>
               ))}
             </>

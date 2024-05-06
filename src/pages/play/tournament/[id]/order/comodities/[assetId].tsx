@@ -3,9 +3,6 @@ import BannerCircle from '@/assets/play/tournament/homeBannerCircle.svg';
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import CardLimitOrder from '@/containers/tournament/order/CardLimitOrder';
-import CardPrice from '@/containers/tournament/order/CardPrice';
-import CardSwitch from '@/containers/tournament/order/CardSwitch';
 import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
@@ -26,18 +23,11 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react';
-import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import {
-  useEffect,
-  useState,
-  type ChangeEvent,
-  type SetStateAction
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-// import { type Ballance } from '../play-assets';
 
 export interface typeLimitOrder {
   type: string;
@@ -100,7 +90,6 @@ interface AssetPortfolio {
 }
 
 const BuyPage: React.FC = () => {
-  const number = '0123456789.';
   const router = useRouter();
   const { assetId } = router.query;
   const { id } = router.query;
@@ -145,22 +134,11 @@ const BuyPage: React.FC = () => {
   const [sellPercent, setSellPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(true);
-  const [isActive, setIsActive] = useState<boolean>(false);
   const [assetAmount, setAssetsAmount] = useState<string>('');
-  const [amount, setAmount] = useState<string>('');
-  const [price, setPrice] = useState<string>('');
+  const [amount, setAmount] = useState<string>('0');
   const [orderType] = useState<string>('market');
-  const [debounceTimer, setDebounceTimer] = useState<ReturnType<
-    typeof setTimeout
-  > | null>(null);
   const [modalConfirmation, setModalConfirmation] = useState<boolean>(false);
   const [modalSuccess, setModalSuccess] = useState<boolean>(false);
-  const [limitOrder, setLimitOrder] = useState<typeLimitOrder>({
-    type: '',
-    profit: '',
-    loss: ''
-  });
   const [lotSell, setLotSell] = useState<string>('0');
 
   useEffect(() => {
@@ -200,7 +178,6 @@ const BuyPage: React.FC = () => {
         toast.error(`Error fetching data: ${error as string}`);
       }
     };
-
     fetchData()
       .then()
       .catch(() => {});
@@ -239,30 +216,8 @@ const BuyPage: React.FC = () => {
     }
   }, [id, userInfo]);
 
-  const sellPercentArr = [
-    {
-      value: 25,
-      name: '25%'
-    },
-    {
-      value: 50,
-      name: '50%'
-    },
-    {
-      value: 75,
-      name: '75%'
-    },
-    {
-      value: 100,
-      name: '100%'
-    }
-  ];
   const handleModal = (): void => {
     setModalConfirmation(!modalConfirmation);
-  };
-
-  const handleToggle = (): void => {
-    setIsActive(!isActive);
   };
 
   const handleModalSuccess = (): void => {
@@ -274,10 +229,10 @@ const BuyPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (assetAmount.length === 0 && amount.length === 0) {
+    if (amount === '0') {
       setIsDisable(true);
     } else if (
-      parseFloat(amount) > ballance.balance &&
+      +amount * (data?.lastPrice?.open ?? 0) > ballance.balance &&
       router.query?.transaction === 'buy'
     ) {
       setIsDisable(true);
@@ -291,19 +246,8 @@ const BuyPage: React.FC = () => {
     }
   }, [assetAmount, amount, ballance.balance]);
 
-  useEffect(() => {
-    if (!isActive) {
-      setLimitOrder({
-        type: '',
-        profit: '',
-        loss: ''
-      });
-    }
-  }, [isActive]);
-
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {
-      setIsLoadingAsset(true);
       if (typeof assetId === 'string') {
         const response = await getDetailAsset(assetId, { ...params, currency });
 
@@ -311,8 +255,6 @@ const BuyPage: React.FC = () => {
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setIsLoadingAsset(false);
     }
   };
 
@@ -322,106 +264,17 @@ const BuyPage: React.FC = () => {
     }
   }, [assetId, userInfo]);
 
-  const handleChangeNumber = (
-    e: ChangeEvent<HTMLInputElement>,
-    val: string,
-    setVal: {
-      (value: SetStateAction<string>): void;
-      (value: SetStateAction<string>): void;
-      (arg0: string): void;
-    },
-    setNewVal: {
-      (value: SetStateAction<string>): void;
-      (value: SetStateAction<string>): void;
-      (arg0: string): void;
-    },
-    isDevide: boolean
-  ): void => {
-    const target = e.target;
-    const value = target.value;
-
-    for (let index = 0; index < number.length; index++) {
-      const element = number[index];
-      if (value[value.length - 1] === element) {
-        if (
-          val === '0' &&
-          value[value.length - 1] !== '0' &&
-          value[value.length - 1] !== '.'
-        ) {
-          setVal(value[1]);
-          if (debounceTimer !== null) clearTimeout(debounceTimer);
-          setDebounceTimer(
-            setTimeout((): void => {
-              if (isDevide) {
-                setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
-              } else {
-                setNewVal(
-                  `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
-                );
-              }
-            }, 100)
-          );
-        } else {
-          setVal(value);
-          if (debounceTimer !== null) clearTimeout(debounceTimer);
-          setDebounceTimer(
-            setTimeout((): void => {
-              if (value.length > 0) {
-                if (isDevide) {
-                  setNewVal(
-                    `${parseInt(value) / (data?.lastPrice?.open ?? 0)}`
-                  );
-                } else {
-                  setNewVal(
-                    `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
-                  );
-                }
-              }
-            }, 100)
-          );
-        }
-      } else if (value.length === 0) {
-        setVal('');
-        setNewVal('');
-      }
-    }
-  };
-
-  const handleChangePrice = (
-    e: ChangeEvent<HTMLInputElement>,
-    val: string,
-    setVal: { (value: SetStateAction<string>): void; (arg0: string): void }
-  ): void => {
-    const target = e.target;
-    const value = target.value;
-
-    for (let index = 0; index < number.length; index++) {
-      const element = number[index];
-      if (value[value.length - 1] === element) {
-        if (
-          val === '0' &&
-          value[value.length - 1] !== '0' &&
-          value[value.length - 1] !== '.'
-        ) {
-          setVal(value[1]);
-        } else {
-          setVal(value);
-        }
-      } else if (value.length === 0) {
-        setVal('');
-      }
-    }
-  };
-
   useEffect(() => {
     if (router.query.transaction !== undefined) {
       if (
         router.query?.transaction !== 'buy' &&
         router.query?.transaction !== 'sell'
       ) {
-        router.push(`/homepage/assets/${assetId as string}`).catch(err => {
-          toast.error(`Error fetching data: ${err as string}`);
-        });
+        router
+          .push(`/tournament/${id as string}/${assetId as string}`)
+          .catch(err => {
+            toast.error(`Error fetching data: ${err as string}`);
+          });
       }
     }
   }, [router.query]);
@@ -433,7 +286,7 @@ const BuyPage: React.FC = () => {
       const response = await createOrderPlay(
         {
           asset_id: assetId as string,
-          amount: parseFloat(assetAmount),
+          amount: parseFloat(amount),
           type: (router.query?.transaction as string).toUpperCase()
         },
         id as string
@@ -478,134 +331,55 @@ const BuyPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full border-none rounded-xl">
-        {router.query.transaction === 'buy' && (
-          <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px]">
-            <Image
-              alt=""
-              src={BannerCircle}
-              className="absolute top-0 right-0 z-0"
-            />
-            <Typography className="z-10 text-base font-poppins font-normal text-[#FFFFFF]">
-              {router.query?.transaction === 'buy' && t('buyAsset.text5')}
+        <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px]">
+          <Image
+            alt=""
+            src={BannerCircle}
+            className="absolute top-0 right-0 z-0"
+          />
+          <Typography className="z-10 text-base font-poppins font-normal text-[#FFFFFF]">
+            {t('buyAsset.text5')}
+          </Typography>
+          <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
+            {`${standartCurrency(
+              router.query?.transaction === 'buy'
+                ? ballance?.balance
+                : portfolio.total_lot * (data?.lastPrice?.open ?? 0)
+            ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
+          </Typography>
+        </div>
+        <div className="relative bg-white mb-[-2] w-full h-[12px]"></div>
+        {data !== undefined && (
+          <div className="z-10 w-full p-5 border-none rounded-xl shadow-none bg-[#E9E9E9]">
+            <p className="text-base md:text-xl font-semibold font-poppins text-black">
+              {router.query.transaction === 'buy' ? 'Buy' : 'Sell'}{' '}
+              {data?.realTicker}
+            </p>
+            <p className="text-xs font-normal text-[#7C7C7C] my-2">
+              Current cost: Rp{' '}
+              {new Intl.NumberFormat().format(data?.lastPrice?.open)} per gram
+            </p>
+          </div>
+        )}
+        {router.query.transaction === 'sell' && (
+          <div className="border shadow-lg border-1 rounded-[8px] border-[#E9E9E9] p-2 m-2">
+            <Typography className="mb-2 font-poppins text-sm font-normal text-[#7C7C7C]">
+              {data?.realTicker} Savings
             </Typography>
-            <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
-              {`${standartCurrency(
-                router.query?.transaction === 'buy'
-                  ? ballance?.balance
-                  : portfolio.total_lot * (data?.lastPrice?.open ?? 0)
-              ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
+            <Typography className="mb-2 font-poppins text-xl font-semibold text-[#262626]">
+              Rp 0{' '}
+              <span className="font-poppins text-sm font-normal text-[#7C7C7C]">
+                (0gram)
+              </span>
             </Typography>
           </div>
         )}
-        <div className="relative bg-white mb-[-2] w-full h-[12px]"></div>
-        {data !== undefined && (
-          <CardPrice data={data} loading={isLoadingAsset} />
-        )}
-
         <div className="flex flex-col mt-4">
-          {router.query.transaction === 'buy' && (
-            <div className="mt-4">
-              <CardSwitch handleToggle={handleToggle} />
-            </div>
-          )}
-          {orderType === 'pending' && (
-            <div className="flex flex-col mt-4 gap-4">
-              <Typography className="font-poppins text-base font-semibold text-black">
-                {t('buyAsset.text17')}
-              </Typography>
-              <div className="flex">
-                <input
-                  type="text"
-                  value={price}
-                  onChange={e => {
-                    handleChangePrice(e, price, setPrice);
-                  }}
-                  className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#7C7C7C] focus:border-seeds-button-green font-poppins outline-none pr-16"
-                  placeholder={`Insert Nominal`}
-                />
-              </div>
-            </div>
-          )}
-          {isActive && (
-            <div className="flex flex-col mt-4">
-              <CardLimitOrder setLimitOrder={setLimitOrder} />
-            </div>
-          )}
-          {router.query.transaction === 'buy' && (
-            <div className="mt-4 lg:flex block gap-3 mx-2 ">
-              <div className="w-full lg:w-1/2 ">
-                <Typography className="font-poppins text-base font-semibold text-black">
-                  {t('buyAsset.text8')}
-                </Typography>
-                <div className="flex mt-2">
-                  <input
-                    type="text"
-                    value={assetAmount}
-                    onChange={e => {
-                      handleChangeNumber(
-                        e,
-                        assetAmount,
-                        setAssetsAmount,
-                        setAmount,
-                        false
-                      );
-                    }}
-                    className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#7C7C7C] focus:border-seeds-button-green font-poppins outline-none pr-16"
-                    placeholder={`Total “${data?.realTicker as string}”`}
-                  />
-                </div>
-                <Typography className="mt-2 flex gap-1 font-poppins text-xs font-normal text-[#3C49D6]">
-                  <span>
-                    <svg
-                      width="13"
-                      height="14"
-                      viewBox="0 0 13 14"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M6.5 13.5C7.78558 13.5 9.04228 13.1188 10.1112 12.4046C11.1801 11.6903 12.0132 10.6752 12.5052 9.48744C12.9972 8.29972 13.1259 6.99279 12.8751 5.73191C12.6243 4.47104 12.0052 3.31285 11.0962 2.40381C10.1871 1.49476 9.02896 0.8757 7.76808 0.624896C6.50721 0.374092 5.20027 0.502813 4.01256 0.994783C2.82484 1.48675 1.80967 2.31987 1.09544 3.38879C0.381215 4.45771 -2.86102e-06 5.71442 -2.86102e-06 7C0.00330067 8.72289 0.689181 10.3743 1.90745 11.5925C3.12572 12.8108 4.77711 13.4967 6.5 13.5ZM7 10C7 10.1326 6.94732 10.2598 6.85355 10.3536C6.75978 10.4473 6.63261 10.5 6.5 10.5C6.36739 10.5 6.24021 10.4473 6.14644 10.3536C6.05268 10.2598 6 10.1326 6 10L6 6.5C6 6.36739 6.05268 6.24021 6.14644 6.14645C6.24021 6.05268 6.36739 6 6.5 6C6.63261 6 6.75978 6.05268 6.85355 6.14645C6.94732 6.24021 7 6.36739 7 6.5L7 10ZM6.5 3.5C6.64833 3.5 6.79334 3.54399 6.91667 3.6264C7.04001 3.70881 7.13614 3.82594 7.19291 3.96299C7.24967 4.10003 7.26452 4.25083 7.23559 4.39632C7.20665 4.5418 7.13522 4.67544 7.03033 4.78033C6.92544 4.88522 6.7918 4.95665 6.64632 4.98559C6.50083 5.01453 6.35003 4.99967 6.21299 4.94291C6.07594 4.88614 5.95881 4.79001 5.8764 4.66668C5.79398 4.54334 5.75 4.39834 5.75 4.25C5.75 4.05109 5.82902 3.86032 5.96967 3.71967C6.11032 3.57902 6.30108 3.5 6.5 3.5Z"
-                        fill="#3C49D6"
-                      />
-                    </svg>
-                  </span>
-                  {t('buyAsset.text16')}
-                </Typography>
-              </div>
-              {/* <div className="w-full lg:w-1/2 mt-3 lg:mt-0">
-                <Typography className="font-poppins text-base font-semibold text-black mb-4">
-                              {t('buyAsset.text9')}
-                </Typography>
-                <div className="flex gap-3 mt-2">
-                  {sellPercentArr.map((el, i: number) => {
-                    return (
-                      <Button
-                        key={el.value + i}
-                        variant={
-                          el.value === sellPercent ? 'filled' : 'outlined'
-                        }
-                        className={`normal-case rounded-lg p-2 flex ite ${
-                          el.value !== sellPercent
-                            ? 'border border-[#D9D9D9] text-black'
-                            : 'bg-[#3AC4A0] text-white'
-                        } font-poppins`}
-                        onClick={() => {
-                          setSellPercent(el.value);
-                        }}
-                      >
-                        {el.name}
-                      </Button>
-                    );
-                  })}
-                </div>
-              </div> */}
-            </div>
-          )}
-          {router.query.transaction === 'sell' && (
-            <div>
-              <div className="flex gap-6 items-center mx-2 lg:justify-center justify-between">
+          <div>
+            {router.query.transaction === 'sell' && (
+              <div className=" mx-2 ">
                 <Typography className="font-poppins text-base font-semibold text-[#262626]">
-                  Lot
+                  Total ( gram )
                 </Typography>
                 <div className="flex gap-4 lg:gap-12 w-[50%] lg:w-full border-1 mt-2 mx-full justify-center rounded-[6px] border py-4">
                   <Button
@@ -643,237 +417,117 @@ const BuyPage: React.FC = () => {
                   </Button>
                 </div>
               </div>
-            </div>
-          )}
-          <div className="flex mx-2 flex-col mt-4 gap-4">
-            {router.query.transaction === 'sell' && (
-              <div className="">
-                <Typography className="font-poppins text-sm font-normal text-[#7C7C7C]">
-                  {t('buyAsset.text12')}
+            )}
+            {router.query.transaction === 'buy' && (
+              <div className=" mx-2 ">
+                <Typography className="font-poppins text-base font-semibold text-[#262626]">
+                  Total ( gram )
                 </Typography>
-                <div className="flex gap-3 mt-2">
-                  {sellPercentArr.map((el, i: number) => {
-                    return (
-                      <Button
-                        key={el.value + i}
-                        variant={
-                          el.value === sellPercent ? 'filled' : 'outlined'
-                        }
-                        className={`normal-case rounded-lg p-2 flex ite ${
-                          el.value !== sellPercent
-                            ? 'border border-[#D9D9D9] text-black'
-                            : 'bg-[#3AC4A0] text-white'
-                        } font-poppins`}
-                        onClick={() => {
-                          setSellPercent(el.value);
-                        }}
-                      >
-                        {el.name}
-                      </Button>
-                    );
-                  })}
+                <div className="flex gap-4 lg:gap-12 w-[50%] lg:w-full border-1 mt-2 mx-full justify-center rounded-[6px] border py-4">
+                  <Button
+                    type="button"
+                    variant="filled"
+                    className="flex justify-center p-1 normal-case h-5 rounded-full items-center w-5 bg-[#3AC4A0]"
+                    onClick={() => {
+                      if (parseFloat(amount) > 0) {
+                        const newAmount = parseFloat(amount) - 0.1;
+                        setAmount(newAmount.toFixed(1));
+                      }
+                    }}
+                  >
+                    <div className="bg-white h-[1px] w-[8px]"></div>
+                  </Button>
+                  <input
+                    type="text"
+                    value={amount}
+                    className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
+                    onChange={e => {}}
+                  />
+                  <Button
+                    type="button"
+                    variant="filled"
+                    className="flex justify-center p-1 normal-case h-5 rounded-full items-center w-5 bg-[#3AC4A0]"
+                    onClick={() => {
+                      const newAmount = parseFloat(amount) + 0.1;
+                      setAmount(newAmount.toFixed(1));
+                    }}
+                  >
+                    <div className="bg-white h-[1px] w-[8px]"></div>
+                    <div className="bg-white h-[8px] w-[1px] absolute"></div>
+                  </Button>
                 </div>
               </div>
             )}
-            <Typography className="mb-2 font-poppins text-base font-semibold text-black">
-              {t('buyAsset.text10')}
-            </Typography>
+            <div className="items-center text-center justify-center mt-3 w-full">
+              <svg
+                width="29"
+                height="26"
+                viewBox="0 0 29 26"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="mx-auto"
+              >
+                <path
+                  d="M2 9.66602H26L18 1.66602M26.5327 16.3327H2.53267L10.5327 24.3327"
+                  stroke="#3AC4A0"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="flex mx-2 flex-col mt-4 gap-4">
             {router.query.transaction === 'buy' && (
-              <input
-                type="text"
-                value={amount}
-                onChange={e => {
-                  handleChangeNumber(
-                    e,
-                    amount,
-                    setAmount,
-                    setAssetsAmount,
-                    true
-                  );
-                }}
-                className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#7C7C7C] focus:border-seeds-button-green font-poppins outline-none"
-                placeholder="Insert nominal"
-              />
+              <div className="mt-4 mx-2">
+                <Typography className="mb-2 font-poppins text-base font-semibold text-black">
+                  {t('buyAsset.text8')} (IDR)
+                </Typography>
+                {router.query.transaction === 'buy' && (
+                  <input
+                    type="text"
+                    value={standartCurrency(
+                      (data?.lastPrice?.open ?? 0) * +amount
+                    ).replace('Rp', '')}
+                    // onChange={e => {
+                    //   handleChangeNumber(
+                    //     e,
+                    //     amount,
+                    //     setAmount,
+                    //     setAssetsAmount,
+                    //     true
+                    //   );
+                    // }}
+                    readOnly
+                    className="w-full border rounded-xl py-3 px-4 border-[#BDBDBD] text-base bg-[#E9E9E9] text-[#262626] focus:border-seeds-button-green font-poppins outline-none"
+                    placeholder="Insert nominal"
+                  />
+                )}
+              </div>
+            )}
+            {router.query.transaction === 'sell' && (
+              <Typography className="mb-2 font-poppins text-base font-semibold text-black">
+                {t('buyAsset.text8')} (IDR)
+              </Typography>
             )}
             {router.query.transaction === 'sell' && (
               <input
                 type="text"
-                value={
-                  data?.lastPrice?.open !== undefined
-                    ? standartCurrency(data?.lastPrice?.open ?? 0).replace(
-                        'Rp',
-                        ''
-                      )
-                    : 0
-                }
+                value={standartCurrency(
+                  (data?.lastPrice?.open ?? 0) * +lotSell
+                ).replace('Rp', '')}
                 readOnly
                 className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#262626] focus:border-seeds-button-green font-poppins outline-none"
                 placeholder="Insert nominal"
               />
             )}
-            {router.query.transaction === 'sell' && (
-              <div className="w-full p-3 md:p-5 border-none rounded-xl shadow-none bg-[#E9E9E9] mt-4">
-                <div className="justify-between mb-5 flex">
-                  <Typography className="font-poppins text-base font-semibold text-[#262626]">
-                    {t('buyAsset.text13')}
-                  </Typography>
-                  <Typography className="text-[#7C7C7C] font-normal text-base">
-                    {portfolio?.total_lot}
-                  </Typography>
-                </div>
-                <div className="justify-between mb-5 flex">
-                  <Typography className="font-poppins text-base font-semibold text-[#262626]">
-                    {t('buyAsset.text14')}
-                  </Typography>
-                  <Typography className="text-[#7C7C7C] font-normal text-base">
-                    {portfolio?.average_price}
-                  </Typography>
-                </div>
-                <div className="justify-between mb-5 flex">
-                  <Typography className="font-poppins text-base font-semibold text-[#262626]">
-                    P/L
-                  </Typography>
-                  <Typography className="text-[#7C7C7C] font-normal text-base">
-                    {portfolio?.return_percentage}
-                  </Typography>
-                </div>
-              </div>
-            )}
-            {router.query.transaction === 'sell' && (
-              <div className="w-full p-3 md:p-5 border-none rounded-xl shadow-none bg-[#E9E9E9] mt-4">
-                <div className="justify-between flex">
-                  <Typography className="font-poppins text-xs font-normal text-[#7C7C7C]">
-                    {t('buyAsset.text15')}
-                  </Typography>
-                  <Typography className="text-[#262626] font-bold text-base">
-                    `IDR{' '}
-                    {standartCurrency(
-                      (data?.lastPrice?.open ?? 0) * +lotSell
-                    ).replace('Rp', '')}
-                    `
-                  </Typography>
-                </div>
-              </div>
-            )}
-            {/* pending order */}
-            {orderType === 'pending' && (
-              <div className="flex flex-col mt-4">
-                <Typography className="font-poppins text-base font-semibold text-black">
-                  Open Order
-                </Typography>
-                <CCard className="flex w-full p-3 md:p-5 border-none rounded-xl shadow-none bg-[#F9F9F9] mt-4">
-                  <div className="flex justify-between mt-4">
-                    <Typography
-                      className={`${
-                        router.query.transaction !== 'buy' &&
-                        router.query.transaction === undefined
-                          ? 'text-[#3AC4A0]'
-                          : 'text-[#BB1616]'
-                      } font-semibold text-sm`}
-                    >
-                      {router.query.transaction === undefined &&
-                        `${
-                          orderType === 'pending'
-                            ? 'Pending Order - Buy Limit'
-                            : 'Buy - Market Order'
-                        }`}
-                      {router.query.transaction !== undefined &&
-                        router.query.transaction === 'sell' &&
-                        `${
-                          orderType === 'pending'
-                            ? 'Pending Order - Sell Limit'
-                            : 'Sell - Market Order'
-                        }`}
-                    </Typography>
-                    <Typography className="text-[#7C7C7C] font-normal text-sm">
-                      {`${moment(new Date()).format('MMMM - Do - YYYY')}`}
-                    </Typography>
-                  </div>
-                  <div className="flex justify-between mt-4">
-                    <Typography className="text-[#262626] font-semibold text-sm">
-                      {data?.providerName}
-                    </Typography>
-                  </div>
-                  <div className="flex justify-between mt-4">
-                    <Typography className="text-[#7C7C7C] font-normal text-xs">
-                      {t('buyAsset.text8')}
-                    </Typography>
-                    <Typography className="text-[#7555DA] font-normal text-xs">
-                      {assetAmount.length === 0 && '0'}
-                      {`${
-                        assetAmount.length === 0 || assetAmount.includes('.')
-                          ? assetAmount
-                          : assetAmount + '.0'
-                      } ${data?.realTicker as string}`}
-                    </Typography>
-                  </div>
-                  {router.query.transaction !== undefined &&
-                    router.query.transaction === 'buy' &&
-                    isActive && (
-                      <>
-                        <div className="flex justify-between mt-2">
-                          <Typography className="text-[#7C7C7C] font-normal text-xs">
-                            Take Profit
-                          </Typography>
-                          <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.type === 'percent'
-                              ? `${parseFloat(limitOrder.profit) * 100} `
-                              : `${
-                                  userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder.profit).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
-                          </Typography>
-                        </div>
-                        <div className="flex justify-between mt-2">
-                          <Typography className="text-[#7C7C7C] font-normal text-xs">
-                            Stop Loss
-                          </Typography>
-                          <Typography className="text-[#7555DA] font-normal text-xs">
-                            {limitOrder.type === 'percent'
-                              ? `${parseFloat(limitOrder.loss) * 100} %`
-                              : `${
-                                  userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder.loss).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
-                          </Typography>
-                        </div>
-                      </>
-                    )}
-                  <div className="flex justify-between mt-2">
-                    <Typography className="text-[#7C7C7C] font-normal text-xs">
-                      {t('buyAsset.text10')}
-                    </Typography>
-                    <Typography className="text-[#7555DA] font-normal text-xs">
-                      {price.length === 0
-                        ? standartCurrency(data?.lastPrice?.open).replace(
-                            'Rp',
-                            ''
-                          )
-                        : standartCurrency(price).replace('Rp', '')}
-                    </Typography>
-                  </div>
 
-                  <div className="flex justify-between mt-2">
-                    <Typography className="text-[#7C7C7C] font-normal text-xs">
-                      {t('buyAsset.text9')}
-                    </Typography>
-                    <Typography className="text-[#7555DA] font-normal text-xs">
-                      {standartCurrency(amount).replace('Rp', '')}
-                    </Typography>
-                  </div>
-                </CCard>
-              </div>
-            )}
             {router.query.transaction === 'buy' && (
               <Button
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-1/5 ml-auto justify-items-end items-end py-2 ${
+                className={`rounded-full w-full ml-auto justify-items-end items-end py-2 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -1022,33 +676,6 @@ const BuyPage: React.FC = () => {
                           #123456
                         </Typography>
                       </div>
-                      {orderType === 'pending' && (
-                        <div className="flex justify-between mt-4">
-                          <Typography className="text-[#7C7C7C] font-normal text-xs">
-                            Set Price
-                          </Typography>
-                          <Typography className="text-[#262626] font-semibold text-xs">
-                            {userInfo?.preferredCurrency}
-                            {standartCurrency(price).replace('Rp', '')}
-                          </Typography>
-                        </div>
-                      )}
-                      {orderType === 'market' &&
-                        limitOrder.loss.length === 0 &&
-                        limitOrder.profit.length === 0 && (
-                          <div className="flex justify-between mt-4">
-                            <Typography className="text-[#7C7C7C] font-normal text-xs">
-                              {t('playSimulation.marketPrice')}
-                            </Typography>
-                            <Typography className="text-[#262626] font-semibold text-xs">
-                              {userInfo?.preferredCurrency}
-                              {standartCurrency(data?.lastPrice?.open).replace(
-                                'Rp',
-                                ''
-                              )}
-                            </Typography>
-                          </div>
-                        )}
                       <div className="flex justify-between mt-4">
                         <Typography className="text-[#7C7C7C] font-normal text-xs">
                           {t('playSimulation.amount')}
@@ -1056,9 +683,7 @@ const BuyPage: React.FC = () => {
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#262626] font-semibold text-xs">
                             {`${
-                              assetAmount.includes('.')
-                                ? assetAmount
-                                : assetAmount + '.0'
+                              amount.includes('.') ? amount : amount + '.0'
                             } ${data?.realTicker as string}`}
                           </Typography>
                         ) : (
@@ -1077,12 +702,15 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#262626] font-semibold text-xs">
-                            {sellPercent !== 0
-                              ? `${sellPercent}%`
-                              : `${
-                                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                  userInfo?.preferredCurrency
-                                }${standartCurrency(amount).replace('Rp', '')}`}
+                            {
+                              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                              userInfo?.preferredCurrency
+                            }
+                            {data?.lastPrice?.open !== undefined
+                              ? standartCurrency(
+                                  +amount * data?.lastPrice?.open
+                                ).replace('Rp', '')
+                              : 'No data available'}
                           </Typography>
                         ) : (
                           <Typography className="text-[#262626] font-semibold text-xs">
@@ -1090,7 +718,6 @@ const BuyPage: React.FC = () => {
                               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                               userInfo?.preferredCurrency
                             }
-
                             {data?.lastPrice?.open !== undefined
                               ? standartCurrency(
                                   +lotSell * data?.lastPrice?.open
@@ -1100,23 +727,14 @@ const BuyPage: React.FC = () => {
                         )}
                       </div>
                       {router.query.transaction !== undefined &&
-                        router.query.transaction === 'buy' &&
-                        isActive && (
+                        router.query.transaction === 'buy' && (
                           <>
                             <div className="flex justify-between mt-4">
                               <Typography className="text-[#7C7C7C] font-normal text-xs">
                                 Take Profit ( % )
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
-                                {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
-                                  : limitOrder.type === 'nominal'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
-                                  : `${
-                                      userInfo?.preferredCurrency as string
-                                    } ${standartCurrency(
-                                      limitOrder.profit
-                                    ).replace('Rp', '')}`}
+                                0
                               </Typography>
                             </div>
                             <div className="flex justify-between mt-4">
@@ -1124,15 +742,7 @@ const BuyPage: React.FC = () => {
                                 Stop Loss ( % )
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
-                                {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.loss)}0 `
-                                  : limitOrder.type === 'nominal'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
-                                  : `${
-                                      userInfo?.preferredCurrency as string
-                                    } ${standartCurrency(
-                                      limitOrder.loss
-                                    ).replace('Rp', '')}`}
+                                0
                               </Typography>
                             </div>
                           </>
@@ -1151,7 +761,9 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                            {standartCurrency(amount).replace(
+                            {standartCurrency(
+                              +amount * (data?.lastPrice?.open ?? 0)
+                            ).replace(
                               'Rp',
                               userInfo?.preferredCurrency as string
                             )}

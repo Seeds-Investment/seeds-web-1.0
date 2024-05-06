@@ -168,7 +168,9 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -189,12 +191,16 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT'
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? 'Pending Paid Tournament'
                   : 'Successful'}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT'
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                orderDetail?.transactionStatus !== 'SUCCESS' &&
+                orderDetail?.transactionStatus !== 'SUCCEEDED'
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`

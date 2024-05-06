@@ -1,6 +1,7 @@
 import CCard from '@/components/CCard';
 import { Avatar } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   data: DetailAsset;
@@ -36,6 +37,7 @@ const SkeletonLoader = (): JSX.Element => {
 
 const CardPrice: React.FC<props> = ({ data, loading }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   if (loading) {
     return (
@@ -49,11 +51,11 @@ const CardPrice: React.FC<props> = ({ data, loading }) => {
       <CCard className="flex w-full p-4 border-none rounded-xl shadow-none bg-[#E9E9E9]">
         {router.query.transaction === 'buy' ? (
           <h1 className="text-center text-lg mb-2 font-semibold font-poppins text-[#201B1C]">
-            Assets to be purchased
+            {t('buyAsset.text1')}
           </h1>
         ) : (
           <h1 className="text-center text-lg mb-2 font-semibold font-poppins text-[#201B1C]">
-            Assets to be sold
+            {t('buyAsset.text2')}
           </h1>
         )}
         <CCard className="flex w-full p-4 border-none rounded-xl shadow-none bg-[#F9F9F9]">

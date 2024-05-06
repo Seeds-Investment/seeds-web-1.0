@@ -74,6 +74,7 @@ const AssetDetailPage: React.FC = () => {
     initialPortfolioSummary
   );
   const [forYouData, setForYouData] = useState<ForYouPostI[]>();
+  const [assetType, setAssetType] = useState<string>('');
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
@@ -136,6 +137,7 @@ const AssetDetailPage: React.FC = () => {
       if (typeof assetId === 'string') {
         const response = await getDetailAsset(assetId, { ...params, currency });
         setData(response.marketAsset);
+        setAssetType(response.marketAsset.assetType);
       }
     } catch (error) {
       toast('Faied to fetch asset');
@@ -198,11 +200,25 @@ const AssetDetailPage: React.FC = () => {
               variant="outlined"
               className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
               onClick={() => {
-                void router.push(
-                  `/play/tournament/${id as string}/order/${
-                    assetId as string
-                  }?transaction=sell`
-                );
+                if (assetType === 'CRYPTO') {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/crypto/${
+                      assetId as string
+                    }?transaction=sell`
+                  );
+                } else if (assetType === 'COMMODITIES') {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/comodities/${
+                      assetId as string
+                    }?transaction=sell`
+                  );
+                } else {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/${
+                      assetId as string
+                    }?transaction=sell`
+                  );
+                }
               }}
             >
               {t('playSimulation.sell')}
@@ -211,11 +227,25 @@ const AssetDetailPage: React.FC = () => {
               variant="filled"
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {
-                void router.push(
-                  `/play/tournament/${id as string}/order/${
-                    assetId as string
-                  }?transaction=buy`
-                );
+                if (assetType === 'CRYPTO') {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/crypto/${
+                      assetId as string
+                    }?transaction=buy`
+                  );
+                } else if (assetType === 'COMMODITIES') {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/comodities/${
+                      assetId as string
+                    }?transaction=buy`
+                  );
+                } else {
+                  void router.push(
+                    `/play/tournament/${id as string}/order/${
+                      assetId as string
+                    }?transaction=buy`
+                  );
+                }
               }}
             >
               {t('playSimulation.buy')}

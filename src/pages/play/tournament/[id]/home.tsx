@@ -548,7 +548,7 @@ const TournamentHome: React.FC = () => {
             </div>
           }
           <div className='w-full flex justify-center items-center mt-4' onClick={async() => await router.push(`/play/tournament/${id as string}/asset-list`)}>
-            <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
+            <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center hover:shadow-lg duration-300 cursor-pointer'>
               <Typography className='text-lg text-white cursor-pointer'>
                 {t('tournament.asset.seeAll')}
               </Typography>

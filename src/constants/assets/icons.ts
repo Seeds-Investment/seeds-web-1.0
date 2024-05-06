@@ -225,6 +225,16 @@ export const CircleDot: AssetsInterface = {
   alt: 'chrown'
 };
 
+export const CircleBold: AssetsInterface = {
+  src: '/assets/tournament/circleBold.svg',
+  alt: 'circle'
+};
+
+export const CircleSmall: AssetsInterface = {
+  src: '/assets/tournament/circleSmall.svg',
+  alt: 'circle'
+};
+
 const Icons: Record<string, AssetsInterface> = {
   Eye,
   Copy,

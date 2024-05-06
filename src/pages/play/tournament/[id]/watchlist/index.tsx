@@ -90,6 +90,7 @@ const TournamentHome: React.FC = () => {
           onClose={() => {
             setIsDetailModal(prev => !prev);
           }}
+          id={id as string}
         />
       )}
 

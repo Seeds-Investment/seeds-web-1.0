@@ -14,6 +14,7 @@ import {
   type Dispatch,
   type SetStateAction
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   setLimitOrder: Dispatch<SetStateAction<typeLimitOrder>>;
@@ -23,14 +24,15 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
   const [activeTab, setActiveTab] = useState<string>('nominal');
   const [loss, setLoss] = useState<string>('0');
   const [profit, setProfit] = useState<string>('0');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (activeTab === 'percent') {
-      setLoss('4.40');
-      setProfit('4.40');
+      setLoss('0');
+      setProfit('0');
     } else {
-      setLoss('0.20');
-      setProfit('0.10');
+      setLoss('0');
+      setProfit('0');
     }
   }, [activeTab]);
 
@@ -196,8 +198,7 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
             </Button>
           </div>
           <Typography className="mt-2 font-poppins text-sm font-normal text-[#7C7C7C]">
-            The order placed with a broker to buy or sell a particular stock
-            when the stock reaches a certain price.
+            {t('buyAsset.text18')}
           </Typography>
         </div>
         <div className="flex flex-col py-3 w-full lg:w-1/2">
@@ -267,8 +268,7 @@ const CardLimitOrder: React.FC<props> = ({ setLimitOrder }) => {
             </Button>
           </div>
           <Typography className="mt-2 font-poppins text-sm font-normal text-[#7C7C7C]">
-            The price level at which you want to buy or sell a stock or asset to
-            make a profit.
+            {t('buyAsset.text19')}
           </Typography>
         </div>
       </div>

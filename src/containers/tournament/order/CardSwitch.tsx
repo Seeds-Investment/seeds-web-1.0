@@ -1,22 +1,24 @@
 import CCard from '@/components/CCard';
 import { Switch } from '@material-tailwind/react';
-
+import { useTranslation } from 'react-i18next';
 interface props {
   handleToggle: () => void;
 }
 
 const CardSwitch: React.FC<props> = ({ handleToggle }) => {
+  const { t } = useTranslation();
+
   return (
     <CCard className="flex w-full p-4 border-[1px] border-[#E9E9E9] rounded-xl shadow-none ">
       <div className="flex flex-row justify-between">
         <div className="flex flex-col w-full">
           <div className="flex flex-row gap-2">
             <p className="text-base md:text-lg font-semibold font-poppins text-black">
-              Activate Take Profit and Stop Loss
+              {t('buyAsset.text6')}
             </p>
           </div>
           <p className="text-base md:text-lg font-light text-[#7C7C7C] font-poppins">
-            Advance your strategy and win the arena.
+            {t('buyAsset.text7')}
           </p>
         </div>
         <div className="flex items-center">

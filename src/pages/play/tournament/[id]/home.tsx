@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
 import Bearish from '@/assets/play/tournament/bearish.svg';
 import Bullish from '@/assets/play/tournament/bullish.svg';
 import CoinLogo from '@/assets/play/tournament/coinLogo.svg';
@@ -13,7 +14,6 @@ import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg'
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
-import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import FloatingButton from '@/components/play/FloatingButton';
@@ -544,7 +544,7 @@ const TournamentHome: React.FC = () => {
             </div>
           }
 
-          <div className='w-full flex justify-center items-center mt-4' onClick={async() => await router.push('/play/tournament/1/asset-list')}>
+          <div className='w-full flex justify-center items-center mt-4' onClick={async() => await router.push(`/play/tournament/${id as string}/asset-list`)}>
             <div className='bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center'>
               <Typography className='text-lg text-white cursor-pointer'>
                 {t('tournament.asset.seeAll')}

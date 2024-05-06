@@ -280,7 +280,7 @@ const LeaderBoardPage: React.FC = () => {
                     </Typography>
                     <Typography className='font-poppins'>{userInfo?.seedsTag}</Typography>
                     <Typography className={`${leaderBoard[currentRank - 1]?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'} font-poppins text-sm md:text-base`}>
-                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value).replace('Rp', '')}
+                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
                       {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
                     </Typography>
                   </div>
@@ -327,7 +327,7 @@ const LeaderBoardPage: React.FC = () => {
                     </Typography>
                   </div>
                 </td>
-                <td className="px-1 md:px-4 py-5 text-center text-sm md:text-base font-normal font-poppins">
+                <td className={`${leader?.gain !== undefined ? (leader?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]') : 'hidden'} px-1 md:px-4 py-5 text-center text-sm md:text-base font-normal font-poppins`}>
                   {leader?.gain < 0 ? '' : '+'}{leader?.gain.toFixed(2)}%
                 </td>
               </tr>

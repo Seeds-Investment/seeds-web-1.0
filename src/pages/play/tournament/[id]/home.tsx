@@ -332,7 +332,7 @@ const TournamentHome: React.FC = () => {
       <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
         <div className='flex justify-start w-full gap-2'>
           <Typography className='text-xl font-semibold'>
-            {detailTournament?.name}
+            {detailTournament?.name ?? 'Tournament'}
           </Typography>
           <Image
             onClick={() => {
@@ -345,7 +345,7 @@ const TournamentHome: React.FC = () => {
         </div>
         <div className="text-[14px] flex justify-start items-center gap-2 py-2 w-full">
           <Typography className="font-poppins">
-            Play ID : {detailTournament?.play_id}
+            Play ID : {detailTournament?.play_id ?? '...'}
           </Typography>
           <button onClick={handleCopyClick}>
             <Image alt="" src={IconCopy} className="w-[20px]" />
@@ -357,16 +357,16 @@ const TournamentHome: React.FC = () => {
               {t('tournament.asset.totalInvestment')}
             </Typography>
             <Typography className='text-white text-[26px] font-semibold font-poppins z-10'>
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio ?? 0).replace('Rp', '')}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`Total Return: `}
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
               {` (${ballance?.return_value < 0 ? '' : '+'}${ballance?.return_percentage?.toFixed(2)}%)`}
             </Typography>
             <Typography className='text-white font-poppins z-10 text-sm md:text-lg'>
               {`${t('tournament.assets.virtualBalance')}: `}
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.balance ?? 0).replace('Rp', '')}
             </Typography>
           </div>
           <Image alt="" src={BannerCircle} className='absolute top-0 right-0 z-0'/>
@@ -524,7 +524,7 @@ const TournamentHome: React.FC = () => {
                   </div>
                   <div className='flex flex-col justify-end items-end'>
                     <div className='font-semibold text-sm md:text-base'>
-                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.priceBar?.close).replace('Rp', '')}
+                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.priceBar?.close ?? 0).replace('Rp', '')}
                     </div>
                     <div className='flex justify-center gap-2'>
                       <Image alt="" src={data?.priceBar?.close >= data?.priceBar?.open ? Bullish : Bearish} className='w-[20px]'/>

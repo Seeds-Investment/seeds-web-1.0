@@ -175,12 +175,12 @@ const Portfolio = (): React.ReactElement => {
               {t('tournament.portfolio.investmentValue')}
             </Typography>
             <Typography className="text-white text-[26px] font-semibold font-poppins z-10">
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio ?? 0).replace('Rp', '')}
             </Typography>
             <div className="flex gap-2">
               <Image alt="" src={ballance?.return_value < 0 ? TriangleBearish : TriangleBullish} className="w-[20px]" />
               <Typography className={`${ballance?.return_value < 0 ? 'text-[#DD2525]' : 'text-white'} font-poppins z-10 text-sm md:text-lg`}>
-                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value).replace('Rp', '')}
+                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
                 {` (${ballance?.return_value < 0 ? '' : '+'}${ballance?.return_percentage?.toFixed(2)}%)`}
               </Typography>
               <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
@@ -263,7 +263,7 @@ const Portfolio = (): React.ReactElement => {
                       </div>
                     </div>
                     <div className="flex flex-col justify-end items-end">
-                      <div className="font-semibold text-xs md:text-base">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(data?.average_price * data?.total_lot).replace('Rp', '')}</div>
+                      <div className="font-semibold text-xs md:text-base">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency((data?.average_price ?? 0) * (data?.total_lot ?? 0)).replace('Rp', '')}</div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">
                         <Image alt="" src={data?.return_percentage < 0 ? Bearish : Bullish} className="w-[14px] md:w-[20px]" />
                         <div className={`${data?.return_percentage < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'}`}>{`(${data?.return_percentage})%`}</div>

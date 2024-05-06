@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import IconSeeds from '@/assets/play/tournament/SeedsBannerLeaderboard.svg';
 import Bearish from '@/assets/play/tournament/bearish.svg';
 import Bullish from '@/assets/play/tournament/bullish.svg';
 import CoinLogo from '@/assets/play/tournament/coinLogo.svg';
@@ -14,6 +13,7 @@ import IconVirtualBalance from '@/assets/play/tournament/iconVirtualBalance.svg'
 import IconWatchlist from '@/assets/play/tournament/iconWatchlist.svg';
 import IconWarning from '@/assets/play/tournament/miniWarning2.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
+import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CardCircle from '@/components/circle/CardCircle';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import FloatingButton from '@/components/play/FloatingButton';

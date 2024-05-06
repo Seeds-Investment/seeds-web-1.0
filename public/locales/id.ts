@@ -1797,7 +1797,8 @@ export default {
       duration: 'Durasi',
       joined: 'Bergabung',
       fee: 'Biaya',
-      openButton: 'Buka',
+      openButton: 'Dalam Game',
+      joinButton: 'Dapatkan Tiket',
       share: 'Share',
       days: 'Hari'
     },

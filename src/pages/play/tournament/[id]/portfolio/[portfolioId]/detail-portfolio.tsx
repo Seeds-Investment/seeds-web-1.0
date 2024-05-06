@@ -138,7 +138,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.current_price).replace('Rp', '')}
+              {standartCurrency(playAsset?.current_price ?? 0).replace('Rp', '')}
             </Typography>
             <div className="flex justify-center gap-2">
               {priceBarHistory !== undefined &&
@@ -165,8 +165,8 @@ const DetailPortfolio = (): React.ReactElement => {
                       (
                       {
                         calculatePercentageDifference(
-                          priceBarHistory[priceBarHistory?.length - 1]?.open,
-                          priceBarHistory[priceBarHistory?.length - 1]?.close
+                          priceBarHistory[priceBarHistory?.length - 1]?.open ?? 0,
+                          priceBarHistory[priceBarHistory?.length - 1]?.close ?? 0
                         )?.value
                       }
                       %)
@@ -185,7 +185,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.total_value).replace('Rp', '')}
+              {standartCurrency(playAsset?.total_value ?? 0).replace('Rp', '')}
             </Typography>
           </div>
           <div className="w-full flex justify-between">
@@ -196,7 +196,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.total_invested).replace('Rp', '')}
+              {standartCurrency(playAsset?.total_invested ?? 0).replace('Rp', '')}
             </Typography>
           </div>
           {playAsset !== undefined && (
@@ -215,7 +215,7 @@ const DetailPortfolio = (): React.ReactElement => {
                   {userInfo?.preferredCurrency !== undefined
                     ? userInfo?.preferredCurrency
                     : 'IDR'}{' '}
-                  {standartCurrency(playAsset?.return_value).replace('Rp', '')}
+                  {standartCurrency(playAsset?.return_value ?? 0).replace('Rp', '')}
                 </Typography>
               </div>
               <div className="w-full flex justify-between">
@@ -252,7 +252,7 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.average_price).replace('Rp', '')}
+              {standartCurrency(playAsset?.average_price ?? 0).replace('Rp', '')}
             </Typography>
           </div>
           <div className="w-full flex justify-between">
@@ -271,13 +271,14 @@ const DetailPortfolio = (): React.ReactElement => {
               {userInfo?.preferredCurrency !== undefined
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
-              {standartCurrency(playAsset?.current_price).replace('Rp', '')}
+              {standartCurrency(playAsset?.current_price ?? 0).replace('Rp', '')}
             </Typography>
           </div>
         </div>
       </div>
       <div className="w-full flex justify-center items-center rounded-xl p-5 bg-white gap-4 mt-4">
         <Button
+          disabled={ playAsset?.total_lot !== undefined ? ( playAsset?.total_lot <= 0 ):(true) }
           className="w-full rounded-full bg-[#DD2525] font-poppins"
           onClick={() => {
             if (assetType === 'CRYPTO') {

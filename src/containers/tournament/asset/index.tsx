@@ -73,7 +73,7 @@ const PlayAssetsList = (): React.ReactElement => {
               className="flex justify-between w-full items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg"
               onClick={() => {
                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                router.push(`/play/tournament/${id}/asset/${asset.id}`);
+                router.push(`/play/tournament/${id}/${asset.id}`);
               }}
               style={{ cursor: 'pointer' }}
             >

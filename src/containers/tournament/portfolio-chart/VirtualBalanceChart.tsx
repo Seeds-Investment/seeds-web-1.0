@@ -58,7 +58,7 @@ const VirtualBalanceChart: React.FC<Props> = ({
         </PieChart>
         <div className="mt-4 flex flex-col justify-center items-center absolute top-[110px] font-poppins">
           <div className="text-[#BDBDBD] text-sm">{t('tournament.assets.totalCash')}</div>
-          <div className="font-semibold text-sm">{currency !== undefined ? currency : 'IDR'}{standartCurrency(balance + portfolio).replace('Rp', '')}</div>
+          <div className="font-semibold text-sm">{currency !== undefined ? currency : 'IDR'}{standartCurrency((balance ?? 0) + (portfolio ?? 0)).replace('Rp', '')}</div>
         </div>
       </div>
       <div className="hidden md:flex w-full mt-4 justify-center items-center relative">
@@ -85,7 +85,7 @@ const VirtualBalanceChart: React.FC<Props> = ({
         </PieChart>
         <div className="flex flex-col justify-center items-center absolute top-[150px] font-poppins">
           <div className="text-[#BDBDBD]">{t('tournament.assets.totalCash')}</div>
-          <div className="font-semibold md:text-sm lg:text-base">{currency !== undefined ? currency : 'IDR'}{standartCurrency(balance + portfolio).replace('Rp', '')}</div>
+          <div className="font-semibold md:text-sm lg:text-base">{currency !== undefined ? currency : 'IDR'}{standartCurrency((balance ?? 0) + (portfolio ?? 0)).replace('Rp', '')}</div>
         </div>
       </div>
       <div className="w-full xl:w-[80%] md:mt-4 mb-4 flex flex-col gap-4 justify-center items-center">
@@ -96,7 +96,7 @@ const VirtualBalanceChart: React.FC<Props> = ({
               className="w-[20px] h-[20px] rounded-md"
             />
             <div className="text-[#7C7C7C] text-sm md:text-base">{datas.name}</div>
-            <div className="font-semibold text-sm md:text-base">{currency !== undefined ? currency : 'IDR'}{standartCurrency(datas?.value).replace('Rp', '')}</div>
+            <div className="font-semibold text-sm md:text-base">{currency !== undefined ? currency : 'IDR'}{standartCurrency(datas?.value ?? 0).replace('Rp', '')}</div>
           </div>
         ))}
       </div>

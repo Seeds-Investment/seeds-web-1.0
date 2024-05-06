@@ -276,11 +276,11 @@ const VirtualBalance = (): React.ReactElement => {
                           </div>
                           <div className=" bg-white p-2 flex justify-between">
                             <div className="text-[#7C7C7C]">{t('tournament.assets.price')}</div>
-                            <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.price).replace('Rp', '')}</div>
+                            <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.price ?? 0).replace('Rp', '')}</div>
                           </div>
                           <div className=" bg-[#E9E9E9] p-2 flex justify-between">
                             <div className="text-[#7C7C7C]">Total</div>
-                            <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.price * data?.amount).replace('Rp', '')}</div>
+                            <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency((data?.price ?? 0) * (data?.amount ?? 0)).replace('Rp', '')}</div>
                           </div>
                           <div className="flex justify-center items-center bg-white">
                             <div onClick={() => { handleShowModalCancelOrder(data?.id) }} className="text-[#DD2525] font-semibold border border-[#DD2525] px-4 py-2 my-4 w-[80%] md:w-[300px] rounded-full text-center cursor-pointer hover:shadow-xl duration-300">
@@ -353,11 +353,11 @@ const VirtualBalance = (): React.ReactElement => {
                           <div className="text-[#7C7C7C] bg-white p-2 flex justify-between">
                             <div className="">
                               <div className="text-[#7C7C7C]">{t('tournament.assets.price')}</div>
-                              <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.bid_price).replace('Rp', '')}</div>
+                              <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.bid_price ?? 0).replace('Rp', '')}</div>
                             </div>
                             <div className="flex flex-col justify-end items-end">
                               <div className="text-[#7C7C7C]">Total</div>
-                              <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(data?.bid_price * data?.lot).replace('Rp', '')}</div>
+                              <div className="text-black font-semibold">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency((data?.bid_price ?? 0) * (data?.lot ?? 0)).replace('Rp', '')}</div>
                             </div>
                           </div>
                         </div>

@@ -1874,7 +1874,8 @@ export default {
       duration: 'Duration',
       joined: 'Joined',
       fee: 'Fee',
-      openButton: 'Open',
+      openButton: 'In Game',
+      joinButton: 'Get Ticket',
       share: 'Share',
       days: 'Day(s)'
     },

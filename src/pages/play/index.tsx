@@ -377,7 +377,7 @@ const Player = (): React.ReactElement => {
                           <div
                             key={item.id}
                             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                            onClick={async () => await router.push(`/play/tournament/${item.id}`).catch(error => {toast.error(error);})}
+                            onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
                             className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                           >
                             <div className="w-[60px] text-black text-center hidden md:block">
@@ -496,9 +496,16 @@ const Player = (): React.ReactElement => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                  {t('tournament.tournamentCard.openButton')}
-                                </div>
+                                {
+                                  item?.is_joined ?
+                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                      {t('tournament.tournamentCard.openButton')}
+                                    </div>
+                                    :
+                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                      {t('tournament.tournamentCard.joinButton')}
+                                    </div>
+                                }
                               </div>
                             </div>
                           </div>

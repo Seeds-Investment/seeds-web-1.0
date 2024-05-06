@@ -23,7 +23,7 @@ import {
 } from '@/utils/interfaces/play.interface';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -112,20 +112,17 @@ const AssetDetailPage: React.FC = () => {
     <NewsItem key={6} />
   ];
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast('Failed to get user info');
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
+  const fetchData = useCallback(async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error: any) {
+      toast('Failed to get user info');
+    }
   }, []);
+  useEffect(() => {
+    void fetchData();
+  }, [fetchData]);
 
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({

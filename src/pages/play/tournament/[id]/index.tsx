@@ -102,7 +102,7 @@ const TournamentDetail: React.FC = () => {
           </Typography>
           <div className="text-[14px] flex justify-center items-center gap-2 py-2">
             <Typography className="font-poppins">
-              Play ID : {detailTournament?.play_id}
+              Play ID : {detailTournament?.play_id ?? '...'}
             </Typography>
             <button onClick={handleCopyClick}>
               <Image alt="" src={IconCopy} className="w-[20px]" />
@@ -115,7 +115,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize).replace('Rp', '')}`
+              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize ?? 0).replace('Rp', '')}`
             }
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
@@ -300,7 +300,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee).replace('Rp', '')}`
+              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee ?? 0).replace('Rp', '')}`
             }
           </Typography>
           <button

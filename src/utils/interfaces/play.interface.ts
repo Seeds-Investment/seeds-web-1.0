@@ -1,7 +1,7 @@
 export interface ForYouPostI {
   id: string;
   content_text: string;
-  media_urls: any;
+  media_urls: string[] | null;
   privacy: string;
   is_pinned: boolean;
   user_id: string;
@@ -10,7 +10,7 @@ export interface ForYouPostI {
   circle_id: string;
   play_id: string;
   quiz_id: string;
-  hashtags: any;
+  hashtags: string | null;
   owner: Owner;
   pie_title: string;
   pie_amount: number;

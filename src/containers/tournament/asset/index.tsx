@@ -12,10 +12,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 // import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { type AssetItemType } from '@/pages/homepage/play-assets';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const PlayAssetsList = (): React.ReactElement => {

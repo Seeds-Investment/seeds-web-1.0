@@ -96,7 +96,11 @@ const WalletForm = ({
           }}
           value={phone}
           onChange={e => {
-            setPhone(e.target.value);
+            let inputValue = e.target.value;
+            if (inputValue.charAt(0) === '0') {
+              inputValue = '8' + inputValue.slice(1);
+            }
+            setPhone(inputValue);
           }}
         />
       </div>

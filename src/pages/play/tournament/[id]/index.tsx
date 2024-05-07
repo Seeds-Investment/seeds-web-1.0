@@ -15,11 +15,16 @@ import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
 import {
-  getPlayById
+  getPlayById,
+  joinTournament,
+  validateInvitationCode
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import {
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -41,19 +46,66 @@ const TournamentDetail: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
+  const [invitationCode, setInvitationCode] = useState<string>('');
+  const [validInvit, setValidInvit] = useState<boolean>(false);
 
   useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
   }, []);
-  
+
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
       setUserInfo(dataInfo);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const handleInvitationCode = async (): Promise<void> => {
+    try {
+      // Validasi invitation code
+      if (detailTournament?.is_need_invitation_code && invitationCode !== '') {
+        const validationResponse = await validateInvitationCode(
+          detailTournament?.id ?? '',
+          invitationCode
+        );
+        if (!validationResponse.is_valid) {
+          toast.error('Invalid invitation code');
+          setValidInvit(false);
+        } else {
+          setValidInvit(true);
+          router.push(
+            `/play/tournament/${
+              id as string
+            }/payment?invitationCode=${invitationCode}`
+          );
+        }
+      }
+    } catch (error) {
+      toast.error('Error joining tournament');
+    }
+  };
+
+  const handleJoinFreeTournament = async (): Promise<void> => {
+    try {
+      const response = await joinTournament(
+        detailTournament?.id ?? '',
+        userInfo?.preferredCurrency ?? '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        false
+      );
+      if (response) {
+        router.push(`/play/tournament/${id as string}/home`);
+      }
+    } catch (error) {
+      toast.error('Error joining tournament');
     }
   };
 
@@ -114,9 +166,15 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-[34px] text-white font-semibold font-poppins">
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.fixed_prize ?? 0).replace('Rp', '')}`
-            }
+              : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `${
+                  userInfo?.preferredCurrency !== undefined
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'
+                }${standartCurrency(detailTournament?.fixed_prize ?? 0).replace(
+                  'Rp',
+                  ''
+                )}`}
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -221,7 +279,10 @@ const TournamentDetail: React.FC = () => {
                     )}
                   </td>
                   <td className="border p-3 w-full">
-                    {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
+                    {userInfo?.preferredCurrency !== undefined
+                      ? userInfo?.preferredCurrency
+                      : 'IDR'}
+                    {standartCurrency(item).replace('Rp', '')}
                   </td>
                 </tr>
               ))}
@@ -290,28 +351,50 @@ const TournamentDetail: React.FC = () => {
           </div>
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-2">
-          <PromoCodeSelection
-            detailTournament={detailTournament}
-          />
+          <PromoCodeSelection detailTournament={detailTournament} />
+          {detailTournament?.is_need_invitation_code && (
+            <div>
+              <input
+                type="text"
+                value={invitationCode}
+                onChange={e => {
+                  setInvitationCode(e.target.value);
+                }}
+                placeholder="Invitation Code"
+                className="w-full border p-2 rounded-md mt-2"
+              />
+            </div>
+          )}
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
           </Typography>
           <Typography className="font-semibold text-xl font-poppins">
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(detailTournament?.admission_fee ?? 0).replace('Rp', '')}`
-            }
+              : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `${
+                  userInfo?.preferredCurrency !== undefined
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'
+                }${standartCurrency(
+                  detailTournament?.admission_fee ?? 0
+                ).replace('Rp', '')}`}
           </Typography>
           <button
             onClick={async () => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailTournament?.is_joined === true) {
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/tournament/${id}/home`);
+                  router.push(`/play/tournament/${id as string}/home`);
                 } else {
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/tournament/${id}/payment`);
+                  if (detailTournament?.admission_fee === 0) {
+                    await handleJoinFreeTournament();
+                  } else {
+                    if (invitationCode === '' && !validInvit) {
+                      router.push(`/play/tournament/${id as string}/payment`);
+                    } else {
+                      handleInvitationCode();
+                    }
+                  }
                 }
               } else if (
                 localStorage.getItem('accessToken') === null &&
@@ -322,7 +405,17 @@ const TournamentDetail: React.FC = () => {
                 withRedirect(router, { quizId: id as string }, '/auth');
               }
             }}
-            className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
+            disabled={
+              invitationCode === '' &&
+              detailTournament?.is_need_invitation_code === true
+            }
+            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
+            className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
+              invitationCode === '' &&
+              detailTournament?.is_need_invitation_code === true
+                ? 'bg-[#7d7d7d]'
+                : 'bg-seeds-button-green text-white'
+            }`}
           >
             {detailTournament?.participant_status === 'JOINED'
               ? t('tournament.start')

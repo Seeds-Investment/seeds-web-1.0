@@ -442,3 +442,32 @@ export const getPlayAssetData = async (
     await Promise.reject(error);
   }
 };
+
+export const validateInvitationCode = async (
+  playId: string,
+  invitationCode: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await playService.get(`/invitation/validate`, {
+      params: {
+        play_id: playId,
+        invitation_code: invitationCode
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error validating invitation code:', error);
+    throw error;
+  }
+};

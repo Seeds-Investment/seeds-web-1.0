@@ -67,6 +67,7 @@ export interface IDetailTournament {
   participants: IParticipants[];
   total_participants: number;
   max_participant: number;
+  is_need_invitation_code: boolean;
 }
 
 export interface Sponsorship {

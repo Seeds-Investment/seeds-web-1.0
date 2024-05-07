@@ -77,7 +77,11 @@ const TournamentDetail: React.FC = () => {
           setValidInvit(false);
         } else {
           setValidInvit(true);
-          router.push(`/play/tournament/${id as string}/payment`);
+          router.push(
+            `/play/tournament/${
+              id as string
+            }/payment?invitationCode=${invitationCode}`
+          );
         }
       }
     } catch (error) {
@@ -401,10 +405,14 @@ const TournamentDetail: React.FC = () => {
                 withRedirect(router, { quizId: id as string }, '/auth');
               }
             }}
-            disabled={invitationCode === ''}
+            disabled={
+              invitationCode === '' &&
+              detailTournament?.is_need_invitation_code === true
+            }
             // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === ''
+              invitationCode === '' &&
+              detailTournament?.is_need_invitation_code === true
                 ? 'bg-[#7d7d7d]'
                 : 'bg-seeds-button-green text-white'
             }`}

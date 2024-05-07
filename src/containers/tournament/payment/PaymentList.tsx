@@ -92,6 +92,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
+  const invitationCode = router.query.invitationCode;
 
   const userDefault = {
     name: '',
@@ -195,7 +196,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           paymentMethod,
           `+62${phoneNumber as string}`,
           '',
-          '',
+          (invitationCode as string) || '',
           false
         );
 

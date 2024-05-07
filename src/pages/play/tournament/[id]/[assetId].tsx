@@ -2,12 +2,8 @@ import CCard from '@/components/CCard';
 import LineChart from '@/components/LineChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/homepage/asset/Card1';
-import AnalysisItem from '@/containers/play/asset/AnalysisItem';
 import KeystatCard from '@/containers/play/asset/Card2';
-import FinancialItem from '@/containers/play/asset/FinancialItem';
 import KeyStatistic from '@/containers/play/asset/KeyStatistic';
-import NewsItem from '@/containers/play/asset/NewsItem';
-import OverviewItem from '@/containers/play/asset/OverviewItem';
 import Profile from '@/containers/play/asset/Profile';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import useLineChart from '@/hooks/useLineChart';
@@ -25,7 +21,10 @@ import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
 import { toast } from 'react-toastify';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 const dataTab = [
   { label: '1d', value: 'daily' },
@@ -50,12 +49,12 @@ const initialPortfolioSummary: IPortfolioSummary = {
 };
 
 const menu = [
-  'Overview',
-  'Analysis',
-  'Financials',
+  // 'Overview',
+  // 'Analysis',
+  // 'Financials',
   'Key statistic',
-  'Profile',
-  'News'
+  'Profile'
+  // 'News'
 ];
 
 const AssetDetailPage: React.FC = () => {
@@ -105,13 +104,24 @@ const AssetDetailPage: React.FC = () => {
   };
 
   const tabsComponents = [
-    <OverviewItem key={1} />,
-    <AnalysisItem key={2} />,
-    <FinancialItem key={3} />,
-    <KeyStatistic key={4} />,
-    <Profile key={5} />,
-    <NewsItem key={6} />
+    // <OverviewItem key={1} />,
+    // <AnalysisItem key={2} />,
+    // <FinancialItem key={3} />,
+    <KeyStatistic key={1} />,
+    <Profile key={2} />
+    // <NewsItem key={6} />
   ];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    speed: 1000,
+    cssEase: 'linear',
+    variableWidth: true,
+    arrows: false
+  };
 
   const fetchData = useCallback(async (): Promise<void> => {
     try {
@@ -193,12 +203,100 @@ const AssetDetailPage: React.FC = () => {
           </TabsHeader>
         </Tabs>
       </CCard>
+      <div className="flex gap-4">
+        {data?.assetType === 'ID_STOCK' && (
+          <CCard className="flex flex-col gap-4 w-full md:w-7/12 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
+            <div className="flex w-full justify-between gap-2">
+              {menu.map((data, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedTab(index);
+                  }}
+                  className={
+                    selectedTab === index
+                      ? 'bg-[#3AC4A0] rounded-md p-2 text-white font-semibold grow'
+                      : 'border border-[#BDBDBD] rounded-md p-2 text-[#BDBDBD] font-semibold grow'
+                  }
+                >
+                  {data}
+                </button>
+              ))}
+            </div>
+            {tabsComponents[selectedTab]}
+          </CCard>
+        )}
+        <div
+          className={
+            data?.assetType === 'ID_STOCK'
+              ? 'flex flex-col w-full md:w-5/12'
+              : 'flex flex-col w-full'
+          }
+        >
+          <CCard className="flex w-full p-4 md:mt-5 md:rounded-lg border-none rounded-none">
+            <p className="font-bold text-black text-lg">Your Portfolio</p>
+            <div className="border border-[#E9E9E9] rounded-md flex justify-between gap-2 p-2">
+              <div className="flex flex-col">
+                <p className="text-[#7C7C7C]">Total Value</p>
+                <p className="font-bold text-black text-lg">
+                  {userInfo?.preferredCurrency}{' '}
+                  {portfolio?.total_value !== undefined
+                    ? new Intl.NumberFormat().format(portfolio?.total_value)
+                    : '0'}
+                </p>
+                <p
+                  className={
+                    portfolio?.return_value < 0
+                      ? 'font-thin text-[#DD2525] text-sm'
+                      : 'font-thin text-[#3AC4A0] text-sm'
+                  }
+                >
+                  {userInfo?.preferredCurrency}{' '}
+                  {portfolio?.total_value !== undefined
+                    ? new Intl.NumberFormat().format(portfolio?.return_value)
+                    : '0'}{' '}
+                  ({portfolio?.return_percentage}%)
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <p className="text-[#7C7C7C]">Lot</p>
+                <p className="font-bold text-black text-lg">
+                  {portfolio?.total_value !== undefined
+                    ? portfolio?.total_lot
+                    : '0'}{' '}
+                </p>
+              </div>
+              <div className="flex flex-col">
+                <p className="text-[#7C7C7C]">Price Avg</p>
+                <p className="font-bold text-black text-lg">
+                  {userInfo?.preferredCurrency}{' '}
+                  {portfolio?.total_value !== undefined
+                    ? new Intl.NumberFormat().format(portfolio?.average_price)
+                    : '-'}
+                </p>
+              </div>
+            </div>
+          </CCard>
+          <CCard className="flex w-full px-4 py-8  md:mt-5 md:rounded-lg border-none rounded-none">
+            <p className="font-bold text-black text-lg">Social For You</p>
+            <div className="slider-container">
+              <Slider {...settings}>
+                {forYouData?.map((data, index) => {
+                  return <SocialCard key={index} item={data} />;
+                })}
+              </Slider>
+            </div>
+            {/* <div className="flex w-full overflow-x-scroll gap-2"></div> */}
+          </CCard>
+        </div>
+      </div>
       {id !== undefined && (
         <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
           <div className="flex justify-between gap-2">
             <Button
-              variant="outlined"
-              className="normal-case border rounded-full w-full py-2 border-[#3AC4A0] text-[#3AC4A0] font-poppins"
+              variant="filled"
+              disabled={portfolio?.total_value === undefined}
+              className="normal-case rounded-full w-full py-2 bg-[#DD2525] text-white font-poppins"
               onClick={() => {
                 if (assetType === 'CRYPTO') {
                   void router.push(
@@ -253,82 +351,6 @@ const AssetDetailPage: React.FC = () => {
           </div>
         </CCard>
       )}
-      <div className="flex gap-4">
-        <CCard className="flex flex-col gap-4 w-full md:w-7/12 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
-          <div className="flex w-full justify-between">
-            {menu.map((data, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedTab(index);
-                }}
-                className={
-                  selectedTab === index
-                    ? 'bg-[#3AC4A0] rounded-md p-2 text-white font-semibold'
-                    : 'border border-[#BDBDBD] rounded-md p-2 text-[#BDBDBD] font-semibold'
-                }
-              >
-                {data}
-              </button>
-            ))}
-          </div>
-          {tabsComponents[selectedTab]}
-        </CCard>
-        <div className="flex flex-col w-full md:w-5/12 p-4">
-          <CCard className="flex w-full p-4 md:mt-5 md:rounded-lg border-none rounded-none">
-            <p className="font-bold text-black text-lg">Your Portfolio</p>
-            <div className="border border-[#E9E9E9] rounded-md flex justify-between gap-2 p-2">
-              <div className="flex flex-col">
-                <p className="text-[#7C7C7C]">Total Value</p>
-                <p className="font-bold text-black text-lg">
-                  {userInfo?.preferredCurrency}{' '}
-                  {portfolio?.total_value !== undefined
-                    ? new Intl.NumberFormat().format(portfolio?.total_value)
-                    : '0'}
-                </p>
-                <p
-                  className={
-                    portfolio?.return_value < 0
-                      ? 'font-thin text-[#DD2525] text-sm'
-                      : 'font-thin text-[#3AC4A0] text-sm'
-                  }
-                >
-                  {userInfo?.preferredCurrency}{' '}
-                  {portfolio?.total_value !== undefined
-                    ? new Intl.NumberFormat().format(portfolio?.return_value)
-                    : '0'}{' '}
-                  ({portfolio?.return_percentage}%)
-                </p>
-              </div>
-              <div className="flex flex-col">
-                <p className="text-[#7C7C7C]">Lot</p>
-                <p className="font-bold text-black text-lg">
-                  {portfolio?.total_value !== undefined
-                    ? portfolio?.total_lot
-                    : '0'}{' '}
-                </p>
-              </div>
-              <div className="flex flex-col">
-                <p className="text-[#7C7C7C]">Price Avg</p>
-                <p className="font-bold text-black text-lg">
-                  {userInfo?.preferredCurrency}{' '}
-                  {portfolio?.total_value !== undefined
-                    ? new Intl.NumberFormat().format(portfolio?.average_price)
-                    : '-'}
-                </p>
-              </div>
-            </div>
-          </CCard>
-          <CCard className="flex w-full p-4 md:mt-5 md:rounded-lg border-none rounded-none">
-            <p className="font-bold text-black text-lg">Social For You</p>
-            <div className="flex w-full overflow-x-scroll gap-2">
-              {forYouData?.map((data, index) => {
-                return <SocialCard key={index} item={data} />;
-              })}
-            </div>
-          </CCard>
-        </div>
-      </div>
     </PageGradient>
   );
 };

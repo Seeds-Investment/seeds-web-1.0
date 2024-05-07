@@ -56,17 +56,16 @@ const PlayAssetsList: React.FC<Props> = ({
     fetchAssets();
   }, [assetType, subType, searchValue, sortBy]);
 
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});

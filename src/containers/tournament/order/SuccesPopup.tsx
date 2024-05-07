@@ -25,7 +25,7 @@ const SuccessOrderModal: React.FC<props> = ({
   successData
 }) => {
   const router = useRouter();
-  const { playId } = router.query;
+  const { id } = router.query;
   const { t } = useTranslation();
   return (
     <Dialog
@@ -72,27 +72,25 @@ const SuccessOrderModal: React.FC<props> = ({
           className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
           onClick={() => {
             router
-              .push(
-                `/play/tournament/${playId as string}/portfolio/?order=success`
-              )
+              .push(`/play/tournament/${id as string}/portfolio`)
               .catch(err => {
                 toast.error(`Error fetching data: ${err as string}`);
               });
           }}
         >
-          View Portfolio
+                      {t('buyAsset.text3')}
         </Button>
         <Button
           className="rounded-full min-w-full capitalize font-semibold text-sm  bg-white text-[#7555DA] font-poppins mt-4"
           onClick={() => {
             router
-              .push(`/play/tournament/${playId as string}/asset-list`)
+              .push(`/play/tournament/${id as string}/asset-list`)
               .catch(err => {
                 console.log(err);
               });
           }}
         >
-          Buy Asset
+            {t('buyAsset.text4')}
         </Button>
       </DialogFooter>
     </Dialog>

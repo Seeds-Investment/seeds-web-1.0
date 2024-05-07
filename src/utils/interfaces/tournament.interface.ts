@@ -14,7 +14,9 @@ export enum PortfolioFilter {
 
 export enum AssetFilter {
   ID_STOCK = 'ID_STOCK',
-  US_STOCK = 'US_STOCK'
+  US_STOCK = 'US_STOCK',
+  CRYPTO = 'CRYPTO',
+  COMMODITIES = 'COMMODITIES'
 }
 
 export enum SortingFilter {

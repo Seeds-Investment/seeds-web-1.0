@@ -36,6 +36,7 @@ const AssetList = (): React.ReactElement => {
   // const { t } = useTranslation();
   const [activeNavbar, setActiveNavbar] = useState('All');
   const [assetActiveTab, setAssetActiveTab] = useState(AssetFilter.ID_STOCK);
+  const [searchTerm, setSearchTerm] = useState('');
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
   );
@@ -59,6 +60,16 @@ const AssetList = (): React.ReactElement => {
       id: 1,
       title: 'US STOCK',
       status: AssetFilter.US_STOCK
+    },
+    {
+      id: 2,
+      title: 'CRYPTO',
+      status: AssetFilter.CRYPTO
+    },
+    {
+      id: 3,
+      title: 'COMMODITIES',
+      status: AssetFilter.COMMODITIES
     }
   ];
 
@@ -94,7 +105,10 @@ const AssetList = (): React.ReactElement => {
       status: SortingFilter.TOP_LOSER_VALUE
     }
   ];
-
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value); // Update the search term state
+  };
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
@@ -107,6 +121,8 @@ const AssetList = (): React.ReactElement => {
             type="text"
             name="search"
             placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
             readOnly={false}
             disabled={false}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
@@ -228,16 +244,36 @@ const AssetList = (): React.ReactElement => {
             </TabsHeader>
             <TabsBody className="w-full">
               <TabPanel value="All">
-                <PlayAssetsList />
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'ALL'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="LQ45">
-                <PlayAssetsList />
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'LQ45'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="ISSI">
-                <PlayAssetsList />
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'ISSI'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="IDX30">
-                <PlayAssetsList />
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'IDX30'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
             </TabsBody>
           </Tabs>

@@ -18,26 +18,43 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-const PlayAssetsList = (): React.ReactElement => {
+interface Props {
+  assetType: string;
+  subType: string;
+  searchValue: string;
+  sortBy: string;
+}
+
+const PlayAssetsList: React.FC<Props> = ({
+  assetType,
+  subType,
+  searchValue,
+  sortBy
+}) => {
   // const { t } = useTranslation();
   const router = useRouter();
   const id = router.query.id;
   const [assets, setAssets] = useState<AssetItemType[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    const fetchAssets = async () => {
-      try {
-        const assetsData = await getMarketList({});
-        setAssets(assetsData.marketAssetList);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const fetchAssets = async () => {
+    try {
+      const assetsData = await getMarketList({
+        type: assetType,
+        sub_type: subType,
+        search: searchValue,
+        sort_by: sortBy
+      });
+      setAssets(assetsData.marketAssetList);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
+  useEffect(() => {
     fetchAssets();
-  }, []);
+  }, [assetType, subType, searchValue, sortBy]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

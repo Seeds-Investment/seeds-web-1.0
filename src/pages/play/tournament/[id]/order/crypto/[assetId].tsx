@@ -155,15 +155,39 @@ const BuyPage: React.FC = () => {
   const [modalSuccess, setModalSuccess] = useState<boolean>(false);
   const [lotSell, setLotSell] = useState<string>('0');
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleLotSellChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const parsedValue = parseFloat(newValue);
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setLotSell(newValue);
+    }
+  };
+
   useEffect(() => {
-    if (sellPercent !== 0) {
-      setAmount(
-        `${
-          (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
-          100
-        }`
-      );
-      setAssetsAmount(`${(portfolio?.total_lot * sellPercent) / 100}`);
+    if (router?.query?.transaction === 'sell') {
+      if (sellPercent !== 0) {
+        setAmount(
+          `${
+            (portfolio?.total_lot *
+              (data?.lastPrice?.open ?? 0) *
+              sellPercent) /
+            100
+          }`
+        );
+        setLotSell(`${(portfolio?.total_lot * sellPercent) / 100}`);
+      }
+    } else {
+      if (sellPercent !== 0) {
+        setAmount(`${(ballance?.balance * sellPercent) / 100}`);
+        setAssetsAmount(
+          (
+            (ballance?.balance * sellPercent) /
+            100 /
+            (data?.lastPrice?.open ?? 0)
+          ).toFixed(1)
+        );
+      }
     }
   }, [sellPercent]);
 
@@ -171,28 +195,29 @@ const BuyPage: React.FC = () => {
     if (
       amount !==
       `${
-        (portfolio.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) / 100
+        (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
+        100
       }`
     ) {
       setSellPercent(0);
     }
-    if (assetAmount !== `${(portfolio.total_lot * sellPercent) / 100}`) {
+    if (assetAmount !== `${(portfolio?.total_lot * sellPercent) / 100}`) {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
 
   const [userInfo, setUserInfo] = useState<UserData>();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
@@ -227,7 +252,7 @@ const BuyPage: React.FC = () => {
     }
     if (id !== undefined && router.query?.transaction !== 'buy') {
       void fetchPlayPortfolio();
-      setLotSell(portfolio.total_lot.toString());
+      setLotSell(portfolio?.total_lot.toString());
     }
   }, [id, userInfo]);
 
@@ -270,7 +295,7 @@ const BuyPage: React.FC = () => {
     ) {
       setIsDisable(true);
     } else if (
-      parseFloat(assetAmount) > portfolio.total_lot &&
+      parseFloat(assetAmount) > portfolio?.total_lot &&
       router.query?.transaction === 'sell'
     ) {
       setIsDisable(true);
@@ -468,8 +493,8 @@ const BuyPage: React.FC = () => {
           <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
             {`${standartCurrency(
               router.query?.transaction === 'buy'
-                ? ballance?.balance
-                : portfolio.total_lot * (data?.lastPrice?.open ?? 0)
+                ? ballance?.balance ?? 0
+                : ballance?.balance ?? 0
             ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
           </Typography>
         </div>
@@ -547,7 +572,7 @@ const BuyPage: React.FC = () => {
                     type="text"
                     value={lotSell}
                     className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
-                    onChange={e => {}}
+                    onChange={handleLotSellChange}
                   />
                   <Button
                     type="button"
@@ -571,7 +596,7 @@ const BuyPage: React.FC = () => {
             {router.query.transaction === 'sell' && (
               <div className="">
                 <Typography className="font-poppins text-base font-semibold text-[#262626]">
-                  How many percent do you want
+                  {t('buyAsset.text20')}
                 </Typography>
                 <div className="flex gap-3 mt-2">
                   {sellPercentArr.map((el, i: number) => {
@@ -621,7 +646,7 @@ const BuyPage: React.FC = () => {
                 )}
                 <div className="w-full mt-3 lg:mt-0">
                   <Typography className="font-poppins text-base font-semibold text-black mb-4">
-                    How Many Percent do you want
+                    {t('buyAsset.text20')}
                   </Typography>
                   <div className="flex gap-3 mt-2">
                     {sellPercentArr.map((el, i: number) => {
@@ -678,7 +703,7 @@ const BuyPage: React.FC = () => {
                   <Typography className="font-poppins text-base font-semibold text-[#262626]">
                     P/L
                   </Typography>
-                  <Typography className="text-[#7C7C7C] font-normal text-base">
+                  <Typography className="text-[#DD2525] font-normal text-base">
                     {portfolio?.return_percentage}
                   </Typography>
                 </div>

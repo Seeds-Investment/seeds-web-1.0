@@ -25,7 +25,12 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type SetStateAction
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -134,12 +139,16 @@ const BuyPage: React.FC = () => {
   const [sellPercent, setSellPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [assetAmount, setAssetsAmount] = useState<string>('');
+  const [assetAmount, setAssetsAmount] = useState<string>('0');
   const [amount, setAmount] = useState<string>('0');
   const [orderType] = useState<string>('market');
   const [modalConfirmation, setModalConfirmation] = useState<boolean>(false);
   const [modalSuccess, setModalSuccess] = useState<boolean>(false);
   const [lotSell, setLotSell] = useState<string>('0');
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  console.log(amount, assetAmount, 'kl');
 
   useEffect(() => {
     if (sellPercent !== 0) {
@@ -157,12 +166,13 @@ const BuyPage: React.FC = () => {
     if (
       amount !==
       `${
-        (portfolio.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) / 100
+        (portfolio?.total_lot * (data?.lastPrice?.open ?? 0) * sellPercent) /
+        100
       }`
     ) {
       setSellPercent(0);
     }
-    if (assetAmount !== `${(portfolio.total_lot * sellPercent) / 100}`) {
+    if (assetAmount !== `${(portfolio?.total_lot * sellPercent) / 100}`) {
       setSellPercent(0);
     }
   }, [amount, assetAmount]);
@@ -183,6 +193,24 @@ const BuyPage: React.FC = () => {
       .catch(() => {});
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleLotSellChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const parsedValue = parseFloat(newValue);
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setLotSell(newValue);
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleLotBuyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    const parsedValue = parseFloat(newValue);
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      setAssetsAmount(newValue);
+    }
+  };
+
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
       const response = await getPlayBallance(id as string, { currency });
@@ -202,6 +230,38 @@ const BuyPage: React.FC = () => {
     }
   };
 
+  const handleChangeNumber = (
+    e: ChangeEvent<HTMLInputElement>,
+    val: string,
+    setVal: {
+      (value: SetStateAction<string>): void;
+      (value: SetStateAction<string>): void;
+      (arg0: string): void;
+    },
+    setNewVal: {
+      (value: SetStateAction<string>): void;
+      (value: SetStateAction<string>): void;
+      (arg0: string): void;
+    },
+    isDevide: boolean
+  ): void => {
+    const target = e.target;
+    const value = target.value;
+    setVal(value);
+    if (debounceTimer !== null) clearTimeout(debounceTimer);
+    setDebounceTimer(
+      setTimeout((): void => {
+        if (value.length > 0) {
+          if (isDevide) {
+            setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
+          } else {
+            setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
+          }
+        }
+      }, 100)
+    );
+  };
+
   useEffect(() => {
     if (
       id !== undefined &&
@@ -212,7 +272,7 @@ const BuyPage: React.FC = () => {
     }
     if (id !== undefined && router.query?.transaction !== 'buy') {
       void fetchPlayPortfolio();
-      setLotSell(portfolio.total_lot.toString());
+      setLotSell(portfolio?.total_lot.toString());
     }
   }, [id, userInfo]);
 
@@ -237,7 +297,7 @@ const BuyPage: React.FC = () => {
     ) {
       setIsDisable(true);
     } else if (
-      parseFloat(assetAmount) > portfolio.total_lot &&
+      parseFloat(assetAmount) > portfolio?.total_lot &&
       router.query?.transaction === 'sell'
     ) {
       setIsDisable(true);
@@ -286,7 +346,7 @@ const BuyPage: React.FC = () => {
       const response = await createOrderPlay(
         {
           asset_id: assetId as string,
-          amount: parseFloat(amount),
+          amount: parseFloat(assetAmount),
           type: (router.query?.transaction as string).toUpperCase()
         },
         id as string
@@ -344,7 +404,7 @@ const BuyPage: React.FC = () => {
             {`${standartCurrency(
               router.query?.transaction === 'buy'
                 ? ballance?.balance
-                : portfolio.total_lot * (data?.lastPrice?.open ?? 0)
+                : portfolio?.total_lot * (data?.lastPrice?.open ?? 0)
             ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
           </Typography>
         </div>
@@ -399,7 +459,7 @@ const BuyPage: React.FC = () => {
                     type="text"
                     value={lotSell}
                     className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
-                    onChange={e => {}}
+                    onChange={handleLotSellChange}
                   />
                   <Button
                     type="button"
@@ -429,9 +489,9 @@ const BuyPage: React.FC = () => {
                     variant="filled"
                     className="flex justify-center p-1 normal-case h-5 rounded-full items-center w-5 bg-[#3AC4A0]"
                     onClick={() => {
-                      if (parseFloat(amount) > 0) {
-                        const newAmount = parseFloat(amount) - 0.1;
-                        setAmount(newAmount.toFixed(1));
+                      if (parseFloat(assetAmount) > 0) {
+                        const newAmount = parseFloat(assetAmount) - 0.1;
+                        setAssetsAmount(newAmount.toFixed(1));
                       }
                     }}
                   >
@@ -439,17 +499,17 @@ const BuyPage: React.FC = () => {
                   </Button>
                   <input
                     type="text"
-                    value={amount}
+                    value={assetAmount}
                     className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
-                    onChange={e => {}}
+                    onChange={handleLotBuyChange}
                   />
                   <Button
                     type="button"
                     variant="filled"
                     className="flex justify-center p-1 normal-case h-5 rounded-full items-center w-5 bg-[#3AC4A0]"
                     onClick={() => {
-                      const newAmount = parseFloat(amount) + 0.1;
-                      setAmount(newAmount.toFixed(1));
+                      const newAmount = parseFloat(assetAmount) + 0.1;
+                      setAssetsAmount(newAmount.toFixed(1));
                     }}
                   >
                     <div className="bg-white h-[1px] w-[8px]"></div>
@@ -486,19 +546,16 @@ const BuyPage: React.FC = () => {
                 {router.query.transaction === 'buy' && (
                   <input
                     type="text"
-                    value={standartCurrency(
-                      (data?.lastPrice?.open ?? 0) * +amount
-                    ).replace('Rp', '')}
-                    // onChange={e => {
-                    //   handleChangeNumber(
-                    //     e,
-                    //     amount,
-                    //     setAmount,
-                    //     setAssetsAmount,
-                    //     true
-                    //   );
-                    // }}
-                    readOnly
+                    value={(data?.lastPrice?.open ?? 0) * +assetAmount}
+                    onChange={e => {
+                      handleChangeNumber(
+                        e,
+                        amount,
+                        setAmount,
+                        setAssetsAmount,
+                        true
+                      );
+                    }}
                     className="w-full border rounded-xl py-3 px-4 border-[#BDBDBD] text-base bg-[#E9E9E9] text-[#262626] focus:border-seeds-button-green font-poppins outline-none"
                     placeholder="Insert nominal"
                   />
@@ -683,7 +740,9 @@ const BuyPage: React.FC = () => {
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#262626] font-semibold text-xs">
                             {`${
-                              amount.includes('.') ? amount : amount + '.0'
+                              assetAmount.includes('.')
+                                ? assetAmount
+                                : assetAmount + '.0'
                             } ${data?.realTicker as string}`}
                           </Typography>
                         ) : (
@@ -708,7 +767,7 @@ const BuyPage: React.FC = () => {
                             }
                             {data?.lastPrice?.open !== undefined
                               ? standartCurrency(
-                                  +amount * data?.lastPrice?.open
+                                  +assetAmount * data?.lastPrice?.open
                                 ).replace('Rp', '')
                               : 'No data available'}
                           </Typography>
@@ -762,7 +821,7 @@ const BuyPage: React.FC = () => {
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#3AC4A0] font-semibold text-xs">
                             {standartCurrency(
-                              +amount * (data?.lastPrice?.open ?? 0)
+                              +assetAmount * (data?.lastPrice?.open ?? 0)
                             ).replace(
                               'Rp',
                               userInfo?.preferredCurrency as string

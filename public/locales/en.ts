@@ -1984,8 +1984,11 @@ export default {
     text15: 'Selling Total',
     text16: 'Your current amount',
     text17: 'Set Price (IDR)',
-    text18: 'The order placed with a broker to buy or sell a particular stock when the stock reaches a certain price.',
-    text19:'The price level at which you want to sell or buy a stock or asset to make a profit.'
+    text18:
+      'The order placed with a broker to buy or sell a particular stock when the stock reaches a certain price.',
+    text19:
+      'The price level at which you want to sell or buy a stock or asset to make a profit.',
+    text20: 'How many percent do you want'
   },
 
   discover: {

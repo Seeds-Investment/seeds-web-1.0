@@ -3,11 +3,8 @@
 'use client';
 import { createWatchlist } from '@/repository/market.repository';
 import { Typography } from '@material-tailwind/react';
-import Image from 'next/image';
-import { XIcon } from 'public/assets/vector';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
 
 interface WatchlistForm {
@@ -22,7 +19,7 @@ interface Props {
   id: string;
 }
 
-const ModalAddWatchlist: React.FC<Props> = ({
+const ModalEditWatchlist: React.FC<Props> = ({
   onClose,
   id,
 }) => {
@@ -30,43 +27,44 @@ const ModalAddWatchlist: React.FC<Props> = ({
   const [watchlistName, setWatchlistName] = useState<string>();
   const [assetList, setAssetList] = useState<string[]>([]);
   const [form, setForm] = useState<WatchlistForm>({
-    play_id: id,
-    name: 'Watchs',
-    image: '',
+    play_id: id ?? '',
+    name: watchlistName ?? '',
+    image: 'https://images.unsplash.com/photo-1623227413711-25ee4388dae3?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGJpdGNvaW58ZW58MHx8MHx8fDA%3D',
     asset_list: [
-      "ebc68ddd-02bd-45c0-9385-6091b5e660c9",
-      "56e5eb70-3a9a-47f1-a9ee-ad5e861c241b",
-      "4327e449-cde5-4cb1-992d-4793018b8507"
+      "56e5eb70-3a9a-47f1-a9ee-ad5e861c241b"
     ]
   });
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setWatchlistName(event.target.value);
   };
-
+  
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files && event.target.files.length > 0) {
-      
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imageDataUrl = reader.result as string;
-        setForm({
-          ...form,
-          image: imageDataUrl
-        });
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      setForm({
+        ...form,
+        image: event.target.files[0]
+      });
     }
   };
 
-  console.log('image ', form.image)
+  const handleSubmit = async (): Promise<void> => {
 
-  const handleSubmit = async (): Promise<void> => {    
+    const formData = new FormData();
+    formData.append('play_id', form.play_id);
+    formData.append('name', form.name);
+    if (form.image) {
+      formData.append('image', form.image);
+    }
+    formData.append('asset_list', JSON.stringify(form.asset_list));
+
     try {
       const response = await createWatchlist(form);
-      console.log('response create ', response)
+      console.log('rez create: ', response)
+      console.log('formData ', formData)
+      // Handle success
     } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
+      // Handle error
     }
   };
 
@@ -80,14 +78,6 @@ const ModalAddWatchlist: React.FC<Props> = ({
         <Typography className="font-bold text-lg text-[#3AC4A0]">
           Add Watchlist
         </Typography>
-        <Image
-          src={XIcon}
-          alt="X"
-          width={30}
-          height={30}
-          onClick={onClose}
-          className="hover:scale-110 transition ease-out cursor-pointer"
-        />
       </div>
       <div className="mt-4 gap-2">
         <div className='w-full'>
@@ -112,14 +102,15 @@ const ModalAddWatchlist: React.FC<Props> = ({
           <div className='my-2'>
             Watchlist Image:
           </div>
-          <div onClick={() => handleSubmit}>
+          <div>
             <input type="file" onChange={handleFileChange} />
+            {/* Add other form fields */}
           </div>
+          <button className='bg-orange-500 rounded py-2 px-4' onClick={ async() => { await handleSubmit() }}>Submit</button>
         </div>
-        <button className='bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4' onClick={ async() => { await handleSubmit() }}>Submit</button>
       </div>
     </Modal>
   );
 };
 
-export default ModalAddWatchlist;
+export default ModalEditWatchlist;

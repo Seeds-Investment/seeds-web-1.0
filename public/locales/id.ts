@@ -1880,6 +1880,11 @@ export default {
         text2: "Pelajari analisa saham dan aset untuk membantu membuat keputusan.",
         text3: "Selalu bersiap untuk menghadapi perubahan harga.",
       }
+    },
+    watchlist: {
+      noData: "No Watchlist Yet",
+      create: "Create your Watchlist now!",
+      createWatchlist: "Create Watchlist",
     }
   },
   discover: {

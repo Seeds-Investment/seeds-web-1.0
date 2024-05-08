@@ -1957,6 +1957,11 @@ export default {
         text2: "Learn stock data analysis to help you make informed decisions.",
         text3: "Stay alert to market price changes.",
       }
+    },
+    watchlist: {
+      noData: "No Watchlist yet",
+      create: "Create your Watchlist now!",
+      createWatchlist: "Create Watchlist",
     }
   },
   discover: {

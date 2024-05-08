@@ -174,12 +174,14 @@ export const createWatchlist = async (formData: WatchlistForm): Promise<any> => 
     if (accessToken === null || accessToken === '') {
       return await Promise.reject(new Error('Access token not found'));
     }
-    return await marketService.post(`/watchlist`, formData, {
+    const response = await marketService.post(`/watchlist`, formData, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    console.log('formDatax ', formData)
+    console.log('rez create ', response)
   } catch (error) {
     await Promise.resolve();
   }
@@ -199,7 +201,6 @@ export const deleteWatchlist = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    console.log('rez: ', response)
     return response
   } catch (error) {
     toast.error(`Error fetching data: ${error as string}`);

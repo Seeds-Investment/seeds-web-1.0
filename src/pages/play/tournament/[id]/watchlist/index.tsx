@@ -8,8 +8,8 @@ import more_vertical from '@/assets/more-option/more_vertical.svg';
 import WatchlistNoData from '@/assets/play/tournament/watchlistNoData.svg';
 import WatchlistProfile from '@/assets/play/tournament/watchlistProfile.svg';
 import AssetPagination from '@/components/AssetPagination';
-import Loading from '@/components/popup/Loading';
 import ModalAddWatchlist from '@/components/popup/ModalAddWatchlist';
+import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
 import withAuth from '@/helpers/withAuth';
 import { deleteWatchlist, getWatchlist } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -26,9 +26,7 @@ interface Watchlist {
   id: string;
   imgUrl: string;
   name: string;
-  playId: string;
-  userId: string;
-  createdAt: string;
+  play_id: string;
 }
 
 const TournamentHome: React.FC = () => {
@@ -37,16 +35,21 @@ const TournamentHome: React.FC = () => {
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
-  const [loadingWatchlist, setLoadingWatchlist] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isEditModal, setIsEditModal] = useState<boolean>(false);
   const [deletePost, setDeletePost] = useState<boolean>(false);
   const [deletedWatchlist, setDeletedWatchlist] = useState<string>('');
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [watchList, setWatchlist] = useState<Watchlist[]>([]);
+  const [editedWatchlist, setEditedWatchlist] = useState<Watchlist>({
+    id: '',
+    play_id: '',
+    name: '',
+    imgUrl: ''
+  });
   const [watchlistParams, setWatchlistParams] = useState({
     page: 1,
     startIndex: 0,
-    endIndex: 5,
+    endIndex: 8,
   });
 
   useEffect(() => {
@@ -59,7 +62,7 @@ const TournamentHome: React.FC = () => {
     if (id !== null && userInfo !== undefined) {
       void fetchPlayWatchlist();
     }
-  }, [id, userInfo, watchlistParams, isDeleted]);
+  }, [id, userInfo, watchlistParams, isDeleted, isDetailModal, isEditModal]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -72,35 +75,25 @@ const TournamentHome: React.FC = () => {
 
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
-      setLoadingWatchlist(true);
       const response = await getWatchlist({ play_id: id as string });
-      console.log('reaatch: ', response)
       setWatchlist(response?.listWatchlist)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setLoadingWatchlist(false);
     }
-  };
-  
-  const handleOpen = (): void => {
-    if (isOpen) {
-      document.body.classList.remove('modal-open');
-    } else {
-      document.body.classList.add('modal-open');
-    }
-    setIsOpen(!isOpen);
   };
   
   const handleOpenDelete = (value: boolean): void => {
     setDeletePost(value);
   };
+  
+  const handleOpenEdit = (data: Watchlist): void => {
+    setIsEditModal(true);
+    setEditedWatchlist(data)
+  };
 
   const handleSubmitDeleteWatchlist = async (): Promise<void> => {
     try {
-      const response = await deleteWatchlist(deletedWatchlist);
-      console.log('rez delete wlst: ', response)
-      console.log('id deleted: ', deletedWatchlist)
+      await deleteWatchlist(deletedWatchlist);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -110,16 +103,8 @@ const TournamentHome: React.FC = () => {
     }
   };
 
-  console.log('watchList: ', watchList)
-  console.log('play id: ', id)
-
   return (
     <>
-      {
-        loadingWatchlist &&
-        <Loading />
-      }
-
       {isDetailModal && (
         <ModalAddWatchlist
           onClose={() => {
@@ -129,30 +114,31 @@ const TournamentHome: React.FC = () => {
         />
       )}
 
-      {/* {isDetailModal && (
+      {isEditModal && userInfo && (
         <ModalEditWatchlist
           onClose={() => {
-            setIsDetailModal(prev => !prev);
+            setIsEditModal(prev => !prev);
           }}
-          id={id as string}
+          data={editedWatchlist}
+          userInfo={userInfo}
         />
-      )} */}
+      )}
 
       <div className='w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
         
         {/* Page Title */}
         <div className='flex justify-start w-full'>
           <Typography className='text-xl font-semibold'>
-            Watchlist
+            {t('tournament.watchlist.watchlist')}
           </Typography>
         </div>
         
         {/* Watchlists */}
         <div className='flex flex-col justify-start w-full gap-2 mt-4'>
           {
-            watchList?.slice(watchlistParams.startIndex, watchlistParams.endIndex).length !== 0 ?
+            watchList !== null ?
             <>
-              {watchList.slice(watchlistParams.startIndex, watchlistParams.endIndex).map(watchLists => (
+              {watchList?.slice(watchlistParams.startIndex, watchlistParams.endIndex).map(watchLists => (
                 <div key={watchLists?.id} className='flex justify-start items-center w-full p-2 gap-4 rounded-lg hover:bg-[#F2F2F2] duration-300 cursor-pointer'>
                   <div className='w-[40px] h-[40px] flex justify-center items-center rounded-full overflow-hidden'>
                     <img
@@ -177,12 +163,10 @@ const TournamentHome: React.FC = () => {
                         className={`flex py-2 gap-2 cursor-pointer`}
                         style={{ color: '#000000' }}
                         onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
-                        onClick={() => {
-                          handleOpen();
-                        }}
+                        onClick={() => { handleOpenEdit(watchLists) }}
                       >
                         <Image src={edit} alt="editPost" />
-                        Edit Watchlist
+                        {t('tournament.watchlist.editWatchlist')}
                       </MenuItem>
                       <MenuItem
                         className={`flex py-2 gap-2 cursor-pointer`}
@@ -193,7 +177,7 @@ const TournamentHome: React.FC = () => {
                         }}
                       >
                         <Image src={delet} alt="deletePost" />
-                        Delete
+                        {t('tournament.watchlist.delete')}
                       </MenuItem>
                     </MenuList>
                   </Menu>
@@ -210,10 +194,10 @@ const TournamentHome: React.FC = () => {
                   >
                       <DialogBody className="p-0 mb-6 font-poppins">
                         <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
-                          Delete
+                          {t('tournament.watchlist.delete')}
                         </p>
                         <p className="font-normal text-sm">
-                          Are you sure want to delete this watchlist?
+                          {t('tournament.watchlist.deleteConfirm')}
                         </p>
                       </DialogBody>
                       <DialogFooter className="p-0">
@@ -224,7 +208,7 @@ const TournamentHome: React.FC = () => {
                             await handleSubmitDeleteWatchlist();
                           }}
                         >
-                          Delete
+                          {t('tournament.watchlist.delete')}
                         </button>
                         <Button
                           variant="text"
@@ -234,7 +218,7 @@ const TournamentHome: React.FC = () => {
                           }}
                           className="min-w-full hover:bg-transparent focus:bg-transparent text-[#3AC4A0] text-sm font-semibold rounded-full capitalize p-0 font-poppins"
                         >
-                          <span>Cancel</span>
+                          <span>{t('tournament.watchlist.cancel')}</span>
                         </Button>
                       </DialogFooter>
                   </Dialog>
@@ -266,16 +250,16 @@ const TournamentHome: React.FC = () => {
         <div className="flex justify-center mx-auto my-8">
           <AssetPagination
             currentPage={watchlistParams.page}
-            totalPages={10}
+            totalPages={Math.ceil(watchList?.length / 8)}
             onPageChange={page => {
-              setWatchlistParams({ page, startIndex:page*5-5, endIndex:page*5 });
+              setWatchlistParams({ page, startIndex:page*8-8, endIndex:page*8 });
             }}
           />
         </div>
 
         {/* Modal Add Post */}
         <div className="fixed bottom-10 right-10 z-20">
-          <div className={`${watchList?.length <= 0 ? 'hidden' : 'flex'} bg-[#3AC4A0] p-2 rounded-full`}>
+          <div className={`${watchList === null ? 'hidden' : 'flex'} bg-[#3AC4A0] p-2 rounded-full`}>
             <PlusIcon
               width={50}
               height={50}

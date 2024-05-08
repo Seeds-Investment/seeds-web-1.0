@@ -1,12 +1,16 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
-import { toast } from 'react-toastify';
 
 interface WatchlistForm {
   play_id: string;
   name: string;
   image: File | string;
+  asset_list: string[];
+}
+
+interface WatchlistFormEdit {
+  watchlistId: string;
   asset_list: string[];
 }
 
@@ -162,10 +166,29 @@ export const getWatchlist = async (
       }
     });
   } catch (error) {
-    await Promise.resolve();
+    return await Promise.reject(error);
   }
 };
 
+export const getWatchlistById = async (
+  id: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    return await marketService(`/watchlist/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
 
 export const createWatchlist = async (formData: WatchlistForm): Promise<any> => {
   try {
@@ -174,16 +197,34 @@ export const createWatchlist = async (formData: WatchlistForm): Promise<any> => 
     if (accessToken === null || accessToken === '') {
       return await Promise.reject(new Error('Access token not found'));
     }
-    const response = await marketService.post(`/watchlist`, formData, {
+    return await marketService.post(`/watchlist`, formData, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    console.log('formDatax ', formData)
-    console.log('rez create ', response)
+    
   } catch (error) {
-    await Promise.resolve();
+    return await Promise.reject(error);
+  }
+};
+
+export const updateWatchlist = async (formData: WatchlistFormEdit): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    return await marketService.patch(`/watchlist/${formData?.watchlistId}`, formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+  } catch (error) {
+    return await Promise.reject(error);
   }
 };
 
@@ -195,14 +236,14 @@ export const deleteWatchlist = async (id: string): Promise<any> => {
       return await Promise.reject(new Error('Access token not found'));
     }
 
-    const response = await marketService.delete(`/watchlist/${id}`, {
+    return await marketService.delete(`/watchlist/${id}`, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
-    return response
+
   } catch (error) {
-    toast.error(`Error fetching data: ${error as string}`);
+    return await Promise.reject(error);
   }
 };

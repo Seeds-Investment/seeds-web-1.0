@@ -1882,9 +1882,22 @@ export default {
       }
     },
     watchlist: {
-      noData: "No Watchlist Yet",
-      create: "Create your Watchlist now!",
-      createWatchlist: "Create Watchlist",
+      watchlist: "Daftar Pantau",
+      noData: "Belum Ada Daftar Pantau",
+      create: "Yuk buat Daftar Pantau sekarang!",
+      createWatchlist: "Buat Daftar Pantau",
+      add: "Tambah Daftar Pantau",
+      name: "Nama Daftar Pantau",
+      photo: "Foto Daftar Pantau",
+      addAsset: "Tambah Aset",
+      save: "Simpan",
+      delete: "Hapus",
+      cancel: "Batalkan",
+      editWatchlist: "Ubah Daftar Pantau",
+      deleteConfirm: "Apa Kamu yakin ingin menghapus Daftar Pantau ini?",
+      changeAsset: "Ubah Aset",
+      enter: "Masukan nama Daftar Pantau...",
+      search: "Cari",
     }
   },
   discover: {

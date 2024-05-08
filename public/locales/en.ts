@@ -1959,9 +1959,22 @@ export default {
       }
     },
     watchlist: {
+      watchlist: "Watchlist",
       noData: "No Watchlist yet",
       create: "Create your Watchlist now!",
       createWatchlist: "Create Watchlist",
+      add: "Add Watchlist",
+      name: "Watchlist Name",
+      photo: "Watchlist Photo",
+      addAsset: "Add Asset",
+      save: "Save",
+      delete: "Delete",
+      cancel: "Cancel",
+      editWatchlist: "Edit Watchlist",
+      deleteConfirm: "Are you sure want to delete this watchlist?",
+      changeAsset: "Change Asset",
+      enter: "Enter Watchlist name...",
+      search: "Search",
     }
   },
   discover: {

@@ -6,7 +6,6 @@ import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import {
   getPaymentById,
@@ -24,7 +23,7 @@ import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
 import WalletForm from './WalletForm';
 
-interface UserData {
+export interface UserData {
   name: string;
   seedsTag: string;
   email: string;
@@ -37,45 +36,13 @@ interface UserData {
   preferredCurrency: string;
 }
 
-interface DetailTournament {
+export interface DetailTournament {
   id: string;
-  category: string;
-  status: string;
-  play_id: string;
-  name: string;
-  type: string;
-  publish_time: string;
-  open_registration_time: string;
-  play_time: string;
-  end_time: string;
-  duration: [string];
-  min_participant: number;
-  max_participant: number;
-  currency: number;
   admission_fee: number;
-  opening_balance: number;
-  gain_percentage: number;
-  prize_fix_amount: number;
-  prize_pool_amount: number;
-  prize_fix_percentages: [number];
-  prize_pool_percentages: [number];
-  prize_total_amount: number;
-  fee_percentage: number;
-  participants: [
-    {
-      photo_url: string;
-      id: string;
-    }
-  ];
-  total_participants: number;
-  is_need_invitation_code: true;
-  tnc: string;
-  created_at: string;
-  created_by: string;
-  updated_at: string;
-  updated_by: string;
-  payment_method: [string];
-  is_free_voucher_claimed: 'string';
+}
+export interface Tournament {
+  fee: number;
+  admission_fee: number;
 }
 
 export interface Payment {
@@ -108,11 +75,10 @@ export interface PaymentStatus {
 }
 
 interface props {
-  dataPost?: any;
   monthVal?: string;
 }
 
-const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
+const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const id = router.query.id;
@@ -126,6 +92,37 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
+  const invitationCode = router.query.invitationCode;
+
+  const userDefault = {
+    name: '',
+    seedsTag: '',
+    email: '',
+    pin: '',
+    avatar: '',
+    bio: '',
+    birthDate: '',
+    phoneNumber: '',
+    _pin: '',
+    preferredCurrency: 'IDR'
+  };
+
+  const defaultOption = {
+    id: '',
+    payment_method: '',
+    logo_url: '',
+    payment_type: '',
+    admin_fee: 0,
+    is_promo_available: false,
+    promo_price: 0,
+    service_fee: 0,
+    payment_gateway: ''
+  };
+
+  const defaultTournament = {
+    id: '',
+    admission_fee: 0
+  };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -134,8 +131,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       setVirtualList(data.type_va);
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-    } catch (error: any) {
-      toast(`Error fetching Payment List: ${error.message as string}`);
+    } catch (error) {
+      toast(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -199,7 +196,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           paymentMethod,
           `+62${phoneNumber as string}`,
           '',
-          '',
+          (invitationCode as string) || '',
           false
         );
 
@@ -218,66 +215,24 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
               toast.error(error);
             });
         }
-      } else {
-        const response = await joinCirclePost({
-          circle_id: dataPost?.id,
-          duration:
-            numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
-          payment_request: {
-            amount: parseInt(`${totalAmount}`),
-            payment_gateway: paymentGateway,
-            payment_method: paymentMethod,
-            phone_number: `+62${phoneNumber as string}`,
-            item_id: dataPost?.id,
-            item_name: dataPost?.name,
-            quantity: 1,
-            name: userInfo?.name,
-            email: userInfo?.email,
-            promo_code: '',
-            spot_type: 'Join Circle Premium'
-          }
-        });
-
-        if (response.success === true) {
-          if (response.data.Response.payment_url !== undefined) {
-            window.open(response.data.Response.payment_url as string, '_blank');
-          }
-          await router
-            .push(
-              `/connect/payment/receipt/${
-                response.data.Response.order_id as string
-              }`
-            )
-            .catch(error => {
-              toast.error(error);
-            });
-        }
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(`${error as string}`);
     } finally {
       setLoading(false);
     }
   };
 
   const onSubmit = () => {
-    let _admissionFee = 0;
+    let _admissionFee: number = 0;
     let _adminFee = 0;
     let _totalFee = 0;
 
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (detailTournament) {
-      _admissionFee = dataPost?.tournament?.admission_fee;
+      _admissionFee = detailTournament?.admission_fee ?? 0;
       _adminFee = 0;
-      _totalFee =
-        Number(_admissionFee) +
-        Number(_adminFee) +
-        Number(dataPost?.tournament?.fee);
-    } else {
-      _admissionFee =
-        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
-      _adminFee = dataPost?.admin_fee as number;
-      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
+      _totalFee = Number(_admissionFee) + Number(_adminFee);
     }
 
     if (option?.payment_type === 'qris') {
@@ -348,15 +303,15 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
             payment={option}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament}
-            userInfo={userInfo}
+            dataPost={detailTournament ?? defaultTournament}
+            userInfo={userInfo ?? userDefault}
           />
         ) : (
           <VirtualAccountGuide
-            payment={option}
+            payment={option ?? defaultOption}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament}
+            dataPost={detailTournament ?? defaultTournament}
             paymentStatus={paymentStatus}
             user_name={userInfo?.name}
           />

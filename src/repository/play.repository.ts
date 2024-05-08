@@ -1,7 +1,7 @@
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { type Pie } from '@/utils/interfaces/tournament.interface';
-
+import { type IPortfolioSummary } from '@/utils/interfaces/play.interface';
 interface ICreateOrderPlay {
   asset_id: string;
   type: 'BUY' | 'SELL' | string;
@@ -312,6 +312,45 @@ export const createOrderPlay = async (
   }
 };
 
+export const getOperOrderList = async (
+  id: string,
+  params: { currency: string }): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    return await playService(`/${id}/orders/open`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const cancelOrderList = async ( playId: string, orderId: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    return await playService.delete(`/${playId}/orders/${orderId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
 export const getHistoryTransaction = async (
   id: string,
   params: { limit: number; page: number; currency: string }
@@ -320,7 +359,7 @@ export const getHistoryTransaction = async (
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
+      return await Promise.reject(new Error('Access token not found'));
     }
     return await playService(`/${id}/history`, {
       params,
@@ -330,7 +369,30 @@ export const getHistoryTransaction = async (
       }
     });
   } catch (error) {
-    await Promise.resolve();
+    await Promise.reject(error);
+  }
+};
+
+export const getActiveAsset = async (
+  id: string,
+  params: { category: string; currency: string; per_page: number; page: number; }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    
+    return await playService(`/assets/active?play_id=${id}`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };
 
@@ -405,7 +467,7 @@ export const createPostPlay = async (formData: {
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
+      return await Promise.reject(new Error('Access token not found'));
     }
     if (
       isUndefindOrNull(formData.content_text) ||

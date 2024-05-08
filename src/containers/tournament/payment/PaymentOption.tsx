@@ -8,7 +8,19 @@ import { type Payment } from './PaymentList';
 interface IPaymentOption {
   option: Payment;
   onChange: (paymentOption: Payment) => void;
-  currentValue: any;
+  currentValue: Current | undefined;
+}
+
+interface Current {
+  id: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  is_promo_available: boolean;
+  promo_price: number;
+  service_fee: number;
+  payment_gateway?: string;
 }
 
 const PaymentOption = ({
@@ -17,6 +29,7 @@ const PaymentOption = ({
   currentValue
 }: IPaymentOption): JSX.Element => {
   const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+
   return (
     <label
       htmlFor={option?.id}

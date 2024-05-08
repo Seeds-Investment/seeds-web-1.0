@@ -32,4 +32,13 @@ export default class Endpoints {
   static user = {
     search: '/search'
   };
+
+  static asset = {
+    getAssetOverview: '/assets/:id/overviews',
+    getAssetNews: '/assets/:id/news',
+    getAssetAnalysis: '/assets/:id/analysis',
+    getAssetFinancial: '/assets/:id/financials',
+    getAssetKeyStat: '/assets/:id/key-statistics',
+    getAssetProfile: '/assets/:id/profiles'
+  };
 }

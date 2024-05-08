@@ -7,6 +7,13 @@ interface CountDownProps {
   deadline?: string;
 }
 
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 const defaultClassName =
   'text-md text-[#27A590] font-semibold mt-2 font-poppins';
 const defaultDeadline = '2099-12-31T00:00:00Z';
@@ -40,7 +47,7 @@ const CountdownTimer: React.FC<CountDownProps> = ({ deadline, className }) => {
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState<any>(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +57,7 @@ const CountdownTimer: React.FC<CountDownProps> = ({ deadline, className }) => {
     return () => {
       clearTimeout(timer);
     };
-  });
+  }, [timeLeft]);
 
   const formatTime = (value: number): string => {
     return value < 10 ? `0${value}` : `${value}`;

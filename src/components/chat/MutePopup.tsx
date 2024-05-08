@@ -32,10 +32,10 @@ const MutePopUp: React.FC<Props> = ({ onClose, onMute }) => {
       <div className="flex justify-between mb-3">
         <div>
           <h1 className="text-lg text-left font-semibold font--poppins text-[#262626]">
-            Are you sure to mute notifications?
+            {t('chat.muteNotificationTitle')}
           </h1>
           <h1 className="text-sm text-left text-[#7C7C7C] font-poppins font-normal">
-            Other participants will not see that you muted this chat
+            {t('chat.muteNotificationSubtitle')}
           </h1>
         </div>
         <Image

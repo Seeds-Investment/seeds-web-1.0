@@ -37,7 +37,7 @@ interface Filter {
 const dataTab = [
   { label: 'People', value: 'people' },
   { label: 'Play', value: 'play' },
-  { label: 'Cirlce', value: 'circle' },
+  { label: 'Circle', value: 'circle' },
   { label: 'Asset', value: 'asset' },
   { label: 'Promo', value: 'promo' },
   { label: 'Hashtag', value: 'hashtag' }

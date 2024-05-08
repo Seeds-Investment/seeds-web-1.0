@@ -7,7 +7,7 @@ import { Input, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { type Payment } from './PaymentList';
+import { type DetailTournament, type Payment, type UserData } from './PaymentList';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
@@ -19,9 +19,9 @@ interface WalletFormProps {
     totalAmount: number,
     phoneNumber?: string | undefined
   ) => Promise<void>;
-  dataPost: any;
+  dataPost: DetailTournament;
   numberMonth?: number;
-  userInfo: any;
+  userInfo: UserData;
 }
 
 const WalletForm = ({
@@ -68,18 +68,7 @@ const WalletForm = ({
           Number(_discount)
         ).toFixed(2)}`
       );
-    } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth ?? 1);
-      _adminFee = payment.admin_fee;
-      _totalFee = parseFloat(
-        `${(
-          _admissionFee +
-          _adminFee +
-          payment.service_fee -
-          _discount
-        ).toFixed(2)}`
-      );
-    }
+    } 
 
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
@@ -107,7 +96,11 @@ const WalletForm = ({
           }}
           value={phone}
           onChange={e => {
-            setPhone(e.target.value);
+            let inputValue = e.target.value;
+            if (inputValue.charAt(0) === '0') {
+              inputValue = '8' + inputValue.slice(1);
+            }
+            setPhone(inputValue);
           }}
         />
       </div>
@@ -119,40 +112,27 @@ const WalletForm = ({
       {renderPhoneInput()}
       <InlineText
         label={
-          dataPost.tournament
-            ? 'Join Tournament'
-            : dataPost !== undefined
-            ? 'Circle Membership'
-            : t(`${translationId}.admissionFeeLabel`)
+           'Join Tournament'  
         }
-        value={`${userInfo?.preferredCurrency as string} ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency } ${admissionFee}`}
         className="mb-2"
       />
-      {dataPost.tournament ? (
-        <InlineText
-          label={t('quiz.lifeline')}
-          value={`${userInfo?.preferredCurrency as string} ${Number(
-            dataPost?.admission_fee
-          )}`}
-          className="mb-2"
-        />
-      ) : null}
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency as string} ${
+        value={`${userInfo?.preferredCurrency } ${
           payment.service_fee
         }`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency as string} ${adminFee}`}
+        value={`${userInfo?.preferredCurrency } ${adminFee}`}
         className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency as string} ${
+          value={`${userInfo?.preferredCurrency } ${
             payment.promo_price
           }`}
           className="mb-2"
@@ -162,7 +142,7 @@ const WalletForm = ({
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency as string} ${
+          value={`${userInfo?.preferredCurrency} ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount
           }`}
@@ -171,7 +151,7 @@ const WalletForm = ({
       ) : null}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
-        {`${userInfo?.preferredCurrency as string} ${totalFee}`}
+        {`${userInfo?.preferredCurrency} ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton

@@ -1963,7 +1963,12 @@ export default {
         text2: 'Learn stock data analysis to help you make informed decisions.',
         text3: 'Stay alert to market price changes.'
       }
-    }
+    },
+    floatingButton: {
+      text1: "Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!",
+      text2: "Have good news in the play arena? Share it with your friends and find experts for more insights.",
+      text3: "Don't forget to read Play Arena's terms and conditions before you start playing.",
+    },
   },
 
   buyAsset: {

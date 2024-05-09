@@ -7,9 +7,12 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalGuidanceTournament from '../popup/ModalGuidanceTournament';
 
 const FloatingButton: React.FC = () => {
+
+  const { t } = useTranslation();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
@@ -109,7 +112,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalSocialDescription(true); setModalTutorialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text1')}</div>
                 </div>
             )}
             {modalSocialDescription && (
@@ -125,7 +128,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalGuidanceDescription(true); setModalSocialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Have good news in the play arena? Share it with your friends and find experts for more insights.</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text2')}</div>
                 </div>
             )}
             {modalGuidanceDescription && (
@@ -141,7 +144,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalGuidanceDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>{`Don't forget to read Play Arena's terms and conditions before you start playing.`}</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text3')}</div>
                 </div>
             )}
         </div>

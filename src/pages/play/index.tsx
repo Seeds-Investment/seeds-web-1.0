@@ -252,8 +252,6 @@ const Player = (): React.ReactElement => {
     }
   ];
 
-  console.log('data ', data)
-
   return (
     <PageGradient defaultGradient className="w-full">
       {/* <ComingSoon /> */}

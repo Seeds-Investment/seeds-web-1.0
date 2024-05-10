@@ -1,3 +1,4 @@
+import { PopupWinnerPlay } from '@/components/popup/PopupWinnerPlay';
 import {
   acceptOrRejectJoinCircle,
   getDetailCircle
@@ -5,6 +6,7 @@ import {
 import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { PlayLogo } from 'public/assets/circle';
 import { ExpNotif, SuccessNotif } from 'public/assets/images';
 import { useEffect, useState } from 'react';
@@ -17,6 +19,7 @@ interface props {
 
 const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
   const [detailCircle, setDetailCircle] = useState<any>();
+  const router = useRouter();
   const fetchCircleById = async (id: string): Promise<void> => {
     try {
       const { data } = await getDetailCircle({ circleId: id });
@@ -26,6 +29,7 @@ const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
       console.error('Error fetching Circle Detail:', error.message);
     }
   };
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   const acceptOrRejectInvitation = async (isAccept: boolean): Promise<void> => {
     try {
@@ -48,7 +52,15 @@ const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
   return (
     <div
       className={`flex justify-between p-3 bg-[#F9FAFD] shadow-none rounded-2xl border w-full`}
-      onClick={() => {}}
+      onClick={() => {
+        if (data?.type === 'new_play') {
+          void router.push(`/play/tournament/${data?.data?.play_id as string}`);
+        } else if (data?.type === 'new_quiz') {
+          void router.push(`/play/quiz/${data?.data?.quiz_id as string}`);
+        } else if (data?.data?.event === 'play_winner') {
+          setIsActive(!isActive);
+        }
+      }}
     >
       <div className="flex gap-3 items-center max-w-[70%] md:max-w-[80%]">
         {(variant === 'normal' || variant === 'social') && (
@@ -124,6 +136,14 @@ const NotificationCard: React.FC<props> = ({ data, logo, variant }) => {
           </div>
         )}
       </div>
+      {isActive && (
+        <PopupWinnerPlay
+          playId={data?.data.play_id}
+          onClose={() => {
+            setIsActive(false);
+          }}
+        />
+      )}
     </div>
   );
 };

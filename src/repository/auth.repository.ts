@@ -156,6 +156,16 @@ export const checkPhoneNumber = async (phoneNumber: string): Promise<any> => {
   const response = await authService.get(`validate/phone?phone=${phoneNumber}`);
   return response.data;
 };
+
+export const validateSetupPassword = async (
+  phoneNumber: string
+): Promise<any> => {
+  const response = await userService.get(
+    `validate/account-password?phone_number=${phoneNumber}`
+  );
+  return response;
+};
+
 export const checkSeedsTag = async (seedsTag: string): Promise<any> => {
   const response = await authService.get(
     `validate/seeds-tag?seeds-tag=${seedsTag}`

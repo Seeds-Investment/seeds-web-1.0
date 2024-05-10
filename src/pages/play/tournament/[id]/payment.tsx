@@ -109,7 +109,7 @@ const PaymentPage = () => {
   //   }
   // };
 
-  return <PaymentList/>;
+  return <PaymentList />;
 };
 
 export default withAuth(PaymentPage);

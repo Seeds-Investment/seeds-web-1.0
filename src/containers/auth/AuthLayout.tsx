@@ -1,7 +1,8 @@
 import AuthArrowDown from '@/assets/auth/AuthArrowDown.svg';
 import AuthGlobeLanguage from '@/assets/auth/AuthGlobeLanguage.svg';
 import SeedsLogo from '@/assets/landing-page/header/SeedsLogo.svg';
-import AuthCarousel from '@/components/auth/AuthCarousel';
+// import AuthCarousel from '@/components/auth/AuthCarousel';
+import AuthCarousel from '@/components/auth2/AuthCarousel';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';

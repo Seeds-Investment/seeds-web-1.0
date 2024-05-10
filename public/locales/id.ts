@@ -567,13 +567,16 @@ export default {
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
     login: 'Masuk',
-    signup: 'Daftar'
+    signup: 'Daftar',
+    or: ' atau '
   },
   authLogin: {
     title1: 'Yuk, Masukan!',
     title2: 'Nomor telepon & kata sandi',
+    title3: 'Nomor telepon',
     phone: 'Nomor Telepon',
     password: 'Kata Sandi',
+    createPassword: 'Buat Kata Sandi',
     passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
     forgotPass: 'Lupa kata sandi?',
     login: 'Masuk',
@@ -1911,7 +1914,7 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20:'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan'
   },
 
   discover: {

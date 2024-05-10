@@ -43,10 +43,19 @@ export const formatMonthlyChart = (date: Date): string[] => {
 };
 
 export const getLastUpdatedID = (date: Date): string => {
-
   const monthsID: string[] = [
-      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
   ];
 
   const currentDate = date;
@@ -56,14 +65,23 @@ export const getLastUpdatedID = (date: Date): string => {
   const currentHours = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
 
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`
+  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
 
 export const getLastUpdatedEN = (date: Date): string => {
-
   const monthsEN: string[] = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
   ];
 
   const currentDate = date;
@@ -73,5 +91,5 @@ export const getLastUpdatedEN = (date: Date): string => {
   const currentHours = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
 
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
 };

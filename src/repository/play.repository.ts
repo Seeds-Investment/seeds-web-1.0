@@ -308,7 +308,8 @@ export const createOrderPlay = async (
 
 export const getOperOrderList = async (
   id: string,
-  params: { currency: string }): Promise<any> => {
+  params: { currency: string }
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -327,7 +328,10 @@ export const getOperOrderList = async (
   }
 };
 
-export const cancelOrderList = async ( playId: string, orderId: string): Promise<any> => {
+export const cancelOrderList = async (
+  playId: string,
+  orderId: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -369,7 +373,7 @@ export const getHistoryTransaction = async (
 
 export const getActiveAsset = async (
   id: string,
-  params: { category: string; currency: string; per_page: number; page: number; }
+  params: { category: string; currency: string; per_page: number; page: number }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -377,7 +381,7 @@ export const getActiveAsset = async (
     if (accessToken === null || accessToken === '') {
       return await Promise.reject(new Error('Access token not found'));
     }
-    
+
     return await playService(`/assets/active?play_id=${id}`, {
       params,
       headers: {

@@ -21,7 +21,11 @@ import { getPlayAll } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getAllQuiz } from '@/repository/quiz.repository';
 import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
-import { TournamentStatus, type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import {
+  TournamentStatus,
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   Tab,
@@ -65,7 +69,7 @@ const Player = (): React.ReactElement => {
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<IDetailTournament[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
-  
+
   const [quizParams, setQuizParams] = useState({
     search: '',
     status: '',
@@ -377,7 +381,19 @@ const Player = (): React.ReactElement => {
                           <div
                             key={item.id}
                             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                            onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
+                            onClick={async () =>
+                              await router
+                                .push(
+                                  `${
+                                    item?.is_joined
+                                      ? `/play/tournament/${item.id}/home`
+                                      : `/play/tournament/${item.id}`
+                                  }`
+                                )
+                                .catch(error => {
+                                  toast.error(error);
+                                })
+                            }
                             className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                           >
                             <div className="w-[60px] text-black text-center hidden md:block">
@@ -435,7 +451,7 @@ const Player = (): React.ReactElement => {
                                     <div className="font-semibold text-black">
                                       {calculateDaysLeft(
                                         new Date(item?.play_time),
-                                        new Date(item?.end_time),
+                                        new Date(item?.end_time)
                                       )}{' '}
                                       {t('tournament.tournamentCard.days')}
                                     </div>
@@ -470,9 +486,15 @@ const Player = (): React.ReactElement => {
                                     <div className="font-semibold text-black">
                                       {item.admission_fee === 0
                                         ? t('quiz.free')
-                                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                        : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(item.admission_fee).replace('Rp', '')}`
-                                      }
+                                        : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                          `${
+                                            userInfo?.preferredCurrency !==
+                                            undefined
+                                              ? userInfo?.preferredCurrency
+                                              : 'IDR'
+                                          }${standartCurrency(
+                                            item.admission_fee
+                                          ).replace('Rp', '')}`}
                                     </div>
                                   </div>
                                 </div>
@@ -496,16 +518,15 @@ const Player = (): React.ReactElement => {
                                     </div>
                                   </div>
                                 </div>
-                                {
-                                  item?.is_joined ?
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                      {t('tournament.tournamentCard.openButton')}
-                                    </div>
-                                    :
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                      {t('tournament.tournamentCard.joinButton')}
-                                    </div>
-                                }
+                                {item?.is_joined ? (
+                                  <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                    {t('tournament.tournamentCard.openButton')}
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                    {t('tournament.tournamentCard.joinButton')}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>

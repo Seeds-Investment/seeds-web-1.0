@@ -650,13 +650,16 @@ export default {
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
     login: 'Login',
-    signup: 'Sign up'
+    signup: 'Sign up',
+    or: ' or '
   },
   authLogin: {
     title1: 'Let’s Input!',
     title2: 'Phone number & password',
+    title3: 'Phone number',
     phone: 'Phone Number',
     password: 'Password',
+    createPassword: 'Create Password',
     passwordPlaceholder: 'Please input your password',
     forgotPass: 'Forgot Password?',
     login: 'Login',

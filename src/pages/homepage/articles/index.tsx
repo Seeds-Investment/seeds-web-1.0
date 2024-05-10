@@ -58,10 +58,10 @@ export default function ArticleList(): React.ReactElement {
       if (response.status === 200) {
         setArticles(response.data);
       } else {
-        toast.error('Failed to fetch articles')
+        toast.error('Failed to fetch articles');
       }
     } catch (error) {
-      toast.error(`Error fetching articles: ${error as string}`)
+      toast.error(`Error fetching articles: ${error as string}`);
     }
   }
 
@@ -85,7 +85,7 @@ export default function ArticleList(): React.ReactElement {
     };
 
     fetchData().catch(error => {
-      toast.error('Error fetching data: ', error)
+      toast.error('Error fetching data: ', error);
     });
   }, [params]);
 

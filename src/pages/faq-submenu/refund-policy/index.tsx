@@ -91,7 +91,9 @@ const RefundPolicy: React.FC = () => {
               {Object(
                 t('faq.refundPolicy.overview.title', { returnObjects: true })
               ).map((title: string, index: number) => {
-                const description = t(`faq.refundPolicy.overview.desc.${index}`);
+                const description = t(
+                  `faq.refundPolicy.overview.desc.${index}`
+                );
 
                 return (
                   <div key={index}>

@@ -1844,6 +1844,165 @@ export default {
     earn: ' You earn IDR ',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
   },
+  tournament: {
+    myPlay: 'My Play',
+    active: 'Active',
+    ended: 'Ended',
+    canceled: 'Canceled',
+    banner1: 'Hi There! New to Play Arena?',
+    banner2: 'Check out the tutorial video here!',
+    banner3: 'Tutorial',
+    blank1: 'Opps,  There’s No Tournament Yet',
+    blank2: 'Let’s join the tournament and win  prize!',
+    detailRemaining: 'Remaining Time',
+    detailPeriod: 'Tournament Period',
+    detailPrize: 'Tournament Prize',
+    detailTerms: 'Terms and Conditions',
+    detailResponsibility: 'Seeds Responsibility',
+    detailCurrency: 'Your current currency: ',
+    detailAccessCode: 'Input Access Code',
+    detailBannerTotalRewards: 'Total Rewards',
+    entranceFee: 'Entrance Fee',
+    free: 'Free',
+    join: 'Join',
+    start: 'Start',
+    participants: 'Participants',
+    categoryAsset: 'Category Asset',
+    circleRecommendation: 'Circle Recommendation',
+    leaderboardBanner1: 'Are you at the top?',
+    leaderboardBanner2: 'Check out',
+    leaderboardBanner3: 'Check Leaderboard',
+    leaderboardBanner4: 'Leaderboard',
+    tutorialTournament: 'Tournament Tutorial',
+    remainingTimeText: 'Tournament was ended!',
+    clock: {
+      days: 'd',
+      hours: 'h',
+      minutes: 'm',
+      seconds: 's'
+    },
+    tournamentCard: {
+      player: 'Player(s)',
+      duration: 'Duration',
+      joined: 'Joined',
+      fee: 'Fee',
+      openButton: 'In Game',
+      joinButton: 'Get Ticket',
+      share: 'Share',
+      days: 'Day(s)'
+    },
+    leaderboard: {
+      lastUpdated: 'Last updated: ',
+      currentRank: 'Your current rank',
+      player: 'Player',
+      totalGain: 'Total Gain',
+      totalPoint: 'Total Points'
+    },
+    assets: {
+      text1: 'is not found!',
+      text2: "Let's find using another keyword!",
+      totalInvesment: 'Total Investment',
+      portfolio: 'Portfolio',
+      virtualBalance: 'Virtual Balance',
+      watchList: 'Watchlist',
+      transaction: 'Transaction',
+      openOrder: 'Open Order',
+      historyTransaction: 'History Transaction',
+      pending: 'Pending Order - Buy Limit',
+      sorry: 'Sorry!',
+      noData: 'The data you were looking for does not exist.',
+      amount: 'Amount',
+      price: 'Price',
+      cashAvailable: 'Cash Available',
+      cashUsed: 'Cash Used',
+      cancelOrder: 'Are you sure want to cancel order?',
+      yesCancel: 'Yes, cancel this order.',
+      noCancel: 'Back',
+      cancel: 'Cancel',
+      totalCash: 'Total Cash'
+    },
+    portfolio: {
+      investmentValue: 'Investment Value',
+      today: 'Today',
+      yourAssetPortfolio: 'Your asset Portfolio',
+      detailPortfolio: 'Detail Portfolio',
+      totalValue: 'Total Value',
+      totalInvested: 'Total Invested',
+      returnValue: 'Return Value',
+      returnPercentage: 'Return Percentage',
+      ownedLot: 'Owned Lot',
+      averagePrice: 'Average Price',
+      currentPrice: 'Current Price',
+      buy: 'Buy',
+      sell: 'Sell'
+    },
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    seedsResponsibility1:
+      'Seeds is the party that provides the Play Arena Tournament feature on the Seeds application',
+    seedsResponsibility2:
+      'Google and Apple are not the parties that facilitate, provide, and sponsoring the features in the Play Arena Tournament on the Seeds application',
+    asset: {
+      totalInvestment: 'Total Investment',
+      portfolio: 'Portfolio',
+      tournamentAsset: 'Tournament Assets',
+      seeAll: 'See All'
+    },
+    guidance: {
+      guidanceTitle: 'Guidance',
+      goals: 'Goals',
+      goalsDescription:
+        'Build the best portfolio using the virtual balance provided.',
+      howToPlay: {
+        title: 'How to Play',
+        text1: 'Start by viewing your portfolio and virtual balance.',
+        text2: "Click 'See All' to view the full list of assets available.",
+        text3:
+          'Click on an asset to view the results of the stack data analysis.',
+        text4:
+          "To buy an asset, click the 'Buy' button. To sell an asset, click the 'Sell' button.",
+        text5: 'You can make transactions within the specified time frame.',
+        text6:
+          'View your position on the leaderboard to see how you are competing against other players.'
+      },
+      winner: 'Winner',
+      winnerDescription:
+        'The final winner will be determined on the leaderboard based on the best portfolio performance.',
+      tips: {
+        title: 'Tips',
+        text1: 'Do your research before making a transaction.',
+        text2: 'Learn stock data analysis to help you make informed decisions.',
+        text3: 'Stay alert to market price changes.'
+      }
+    }
+  },
+
+  buyAsset: {
+    text1: 'Assets to be purchased',
+    text2: 'Assets to be sold',
+    text3: 'View Portfolio',
+    text4: 'Buy Asset',
+    text5: 'Virtual Balance',
+    text6: 'Activate Take Profit and Stop Loss',
+    text7: 'Advance your strategy and win the arena.',
+    text8: 'Amount',
+    text9: 'Cash Amount',
+    text10: 'Price',
+    text11: 'Confirm',
+    text12: 'You can choose the amount of the asset to sell',
+    text13: 'Available Lots',
+    text14: 'Average Price',
+    text15: 'Selling Total',
+    text16: 'Your current amount',
+    text17: 'Set Price (IDR)',
+    text18:
+      'The order placed with a broker to buy or sell a particular stock when the stock reaches a certain price.',
+    text19:
+      'The price level at which you want to sell or buy a stock or asset to make a profit.',
+    text20: 'How many percent do you want'
+  },
+
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',
@@ -1894,6 +2053,34 @@ export default {
     community: 'Community',
     request: 'Request',
     reject: 'Reject',
-    accept: 'Accept'
+    accept: 'Accept',
+    newGroup: 'New Group',
+    groupName: 'Group Name',
+    enterGroupName: 'Enter Group Name',
+    description: 'Description',
+    enterGroupDescription: 'Enter Group Description',
+    typeGroup: 'Type Group',
+    public: 'Public',
+    private: 'Private',
+    next: 'Next',
+    createGroupPopUpText1: 'Are you sure to create this group?',
+    createGroupPopUpText2: 'Please confirm to create the group',
+    elaborate: 'Please write and elaborate your problem',
+    emptyChat: 'No messages here yet. Start a conversation now!',
+    deleteChatTitle: 'Are you sure to delete this chat?',
+    deleteChatSubtitle:
+      'If you click yes, your chat history can not be retrace after deletethe chat',
+    search: 'Search',
+    mute: 'Mute Notification',
+    deleteChat: 'Delete chat',
+    participants: 'Participants',
+    notes: 'Notes',
+    seen: 'Seen',
+    muteNotificationTitle: 'Are you sure to mute notifications?',
+    muteNotificationSubtitle:
+      'Other participants will not see that you muted this chat'
+  },
+  play: {
+    keystat: 'Key Stats'
   }
 };

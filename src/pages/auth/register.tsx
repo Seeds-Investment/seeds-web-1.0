@@ -21,7 +21,7 @@ interface LoginFormData {
 const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
   const { data } = useSession();
-  const [select, setSelect] = useState(2);
+  const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
     phoneNumber: '',
     birthDate: '',

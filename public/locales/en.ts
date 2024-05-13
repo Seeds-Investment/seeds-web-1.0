@@ -1975,6 +1975,14 @@ export default {
         text2: 'Learn stock data analysis to help you make informed decisions.',
         text3: 'Stay alert to market price changes.'
       }
+    },
+    social: {
+      sorry: "Sorry, there is no post here!",
+      noData: "Let's make your post here!",
+      member: "member",
+      members: "members",
+      description: "Discover the experts for more insights",
+      seeAll: "See All",
     }
   },
 

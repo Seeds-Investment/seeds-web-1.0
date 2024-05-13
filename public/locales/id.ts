@@ -1797,7 +1797,8 @@ export default {
       duration: 'Durasi',
       joined: 'Bergabung',
       fee: 'Biaya',
-      openButton: 'Buka',
+      openButton: 'Dalam Game',
+      joinButton: 'Dapatkan Tiket',
       share: 'Share',
       days: 'Hari'
     },
@@ -1809,27 +1810,27 @@ export default {
       totalPoint: 'Total Poin'
     },
     assets: {
-      text1: "tidak ditemukan!",
-      text2: "Temukan asetmu dengan keyword yang lain!",
+      text1: 'tidak ditemukan!',
+      text2: 'Temukan asetmu dengan keyword yang lain!',
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       virtualBalance: 'Saldo Virtual',
       watchList: 'Daftar Tonton',
-      transaction: "Transaksi",
-      openOrder: "Pesanan",
-      historyTransaction: "Riwayat Transaksi",
-      pending: "Menunggu - Limit Pembelian",
-      sorry: "Maaf!",
-      noData: "Data yang Kamu cari tidak ada.",
-      amount: "Nilai",
-      price: "Harga",
-      cashAvailable: "Dana Tersedia",
-      cashUsed: "Dana Terpakai",
-      cancelOrder: "Apakah Kamu ingin membatalkan pesanan?",
-      yesCancel: "Batalkan pesanan",
-      noCancel: "Kembali",
-      cancel: "Batalkan",
-      totalCash: "Dana Total",
+      transaction: 'Transaksi',
+      openOrder: 'Pesanan',
+      historyTransaction: 'Riwayat Transaksi',
+      pending: 'Menunggu - Limit Pembelian',
+      sorry: 'Maaf!',
+      noData: 'Data yang Kamu cari tidak ada.',
+      amount: 'Nilai',
+      price: 'Harga',
+      cashAvailable: 'Dana Tersedia',
+      cashUsed: 'Dana Terpakai',
+      cancelOrder: 'Apakah Kamu ingin membatalkan pesanan?',
+      yesCancel: 'Batalkan pesanan',
+      noCancel: 'Kembali',
+      cancel: 'Batalkan',
+      totalCash: 'Dana Total'
     },
     portfolio: {
       investmentValue: 'Nilai Investasi',
@@ -1843,8 +1844,8 @@ export default {
       ownedLot: 'Lot Dimiliki',
       averagePrice: 'Harga Rata-Rata',
       currentPrice: 'Harga Saat Ini',
-      buy: "Beli",
-      sell: "Jual",
+      buy: 'Beli',
+      sell: 'Jual'
     },
     first: '1st',
     second: '2nd',
@@ -1854,31 +1855,36 @@ export default {
     seedsResponsibility2:
       'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds',
     asset: {
-      totalInvestment: "Total Investasi",
-      portfolio: "Portofolio",
-      tournamentAsset: "Aset Turnamen",
-      seeAll: "Lihat Semua"
+      totalInvestment: 'Total Investasi',
+      portfolio: 'Portofolio',
+      tournamentAsset: 'Aset Turnamen',
+      seeAll: 'Lihat Semua'
     },
     guidance: {
-      guidanceTitle: "Petunjuk",
-      goals: "Tujuan",
-      goalsDescription: "Bangun portofolio terbaikmu menggunakan virtual balance yang disediakan.",
+      guidanceTitle: 'Petunjuk',
+      goals: 'Tujuan',
+      goalsDescription:
+        'Bangun portofolio terbaikmu menggunakan virtual balance yang disediakan.',
       howToPlay: {
-        title: "Cara Bermain",
-        text1: "Mulai dengan melihat portofolio dan virtual balance.",
+        title: 'Cara Bermain',
+        text1: 'Mulai dengan melihat portofolio dan virtual balance.',
         text2: "Klik 'Lihat Semua' untuk melihat daftar aset yang tersedia.",
-        text3: "Klik pada aset untuk melihat hasil analisis data.",
-        text4: "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
-        text5: "Anda dapat membuat transaksi dalam spesifik waktu tertentu.",
-        text6: "Lihat posisi anda pada leaderboard untuk melihat persaingan dengan pemain lain.",
+        text3: 'Klik pada aset untuk melihat hasil analisis data.',
+        text4:
+          "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
+        text5: 'Anda dapat membuat transaksi dalam spesifik waktu tertentu.',
+        text6:
+          'Lihat posisi anda pada leaderboard untuk melihat persaingan dengan pemain lain.'
       },
-      winner: "Pemenang",
-      winnerDescription: "Pemenang akhir akan ditentukan pada leaderboard berdasarkan portofolio terbaik.",
+      winner: 'Pemenang',
+      winnerDescription:
+        'Pemenang akhir akan ditentukan pada leaderboard berdasarkan portofolio terbaik.',
       tips: {
-        title: "Tips",
-        text1: "Lakukan analisa anda sendiri sebelum melakukan transaksi.",
-        text2: "Pelajari analisa saham dan aset untuk membantu membuat keputusan.",
-        text3: "Selalu bersiap untuk menghadapi perubahan harga.",
+        title: 'Tips',
+        text1: 'Lakukan analisa anda sendiri sebelum melakukan transaksi.',
+        text2:
+          'Pelajari analisa saham dan aset untuk membantu membuat keputusan.',
+        text3: 'Selalu bersiap untuk menghadapi perubahan harga.'
       }
     },
     watchlist: {
@@ -1900,6 +1906,32 @@ export default {
       search: "Cari",
     }
   },
+
+  buyAsset: {
+    text1: 'Aset yang akan di beli',
+    text2: 'Aset yang akan di jual',
+    text3: 'Lihat Portofolio',
+    text4: 'Beli Aset',
+    text5: 'Saldo Virtual',
+    text6: 'Aktifkan Take Profit dan Stop Loss',
+    text7: 'Tingkatkan strategimu dan menangkan arenanya',
+    text8: 'Total',
+    text9: 'Total tunai',
+    text10: 'Harga',
+    text11: 'Konfirmasi',
+    text12: 'Kamu bisa memilih jumlah aset yang mau dijual',
+    text13: 'Lot Tersedia',
+    text14: 'Harga rata-rata',
+    text15: 'Total Jual',
+    text16: 'Jumlah Anda saat ini',
+    text17: 'Set Harga (IDR)',
+    text18:
+      'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
+    text19:
+      'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
+    text20:'Berapa persen yang Anda inginkan'
+  },
+
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

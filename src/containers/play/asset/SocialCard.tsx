@@ -56,7 +56,7 @@ const SocialCard: React.FC<props> = ({ item }) => {
   }, []);
 
   return (
-    <div className="shrink border border-[#E9E9E9] rounded-md flex flex-col justify-start gap-2 p-2 w-full min-w-[316px]">
+    <div className="border border-[#E9E9E9] rounded-md flex flex-col justify-start gap-2 p-2 min-w-[280px] max-w-[350px] mr-4">
       <div className="flex p-2 justify-between items-center">
         <div className="flex gap-2 items-center">
           <Image

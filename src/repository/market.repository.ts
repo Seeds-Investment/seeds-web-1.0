@@ -57,7 +57,7 @@ export const getMarketCurrency = async (): Promise<any> => {
 
 export const getAssetOverview = async (id: string): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetOverview.replace(':id', id);
@@ -70,7 +70,7 @@ export const getAssetOverview = async (id: string): Promise<any> => {
 
 export const getAssetAnalysis = async (id: string): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetAnalysis.replace(':id', id);
@@ -88,7 +88,7 @@ export const getAssetFinancial = async (
   sort: string
 ): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetFinancial.replace(':id', id);
@@ -107,7 +107,7 @@ export const getAssetFinancial = async (
 
 export const getAssetKeyStat = async (id: string): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetKeyStat.replace(':id', id);
@@ -120,7 +120,7 @@ export const getAssetKeyStat = async (id: string): Promise<any> => {
 
 export const getAssetProfile = async (id: string): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetProfile.replace(':id', id);
@@ -133,7 +133,7 @@ export const getAssetProfile = async (id: string): Promise<any> => {
 
 export const getAssetNews = async (id: string): Promise<any> => {
   if (isUndefindOrNull(id) || isEmptyString(id)) {
-    return await Promise.resolve(null);
+    return await Promise.reject(new Error('ID is undefined, null, or empty.'));
   }
 
   const path = Endpoints.asset.getAssetNews.replace(':id', id);

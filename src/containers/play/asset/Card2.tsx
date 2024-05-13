@@ -25,7 +25,11 @@ const KeystatCard: React.FC<props> = ({ data, currency }) => {
             {t('playSimulation.open')}
           </p>
           <p className="text-base font-semibold text-black">
-            {currency} {new Intl.NumberFormat().format(data?.lastPrice?.open)}
+            {data?.lastPrice?.open !== undefined
+              ? `${currency} ${new Intl.NumberFormat().format(
+                  data?.lastPrice?.open
+                )}`
+              : '-'}
           </p>
         </div>
         <div className="flex-col w-1/3 text-left items-center">
@@ -33,7 +37,11 @@ const KeystatCard: React.FC<props> = ({ data, currency }) => {
             {t('playSimulation.dayHigh')}
           </p>
           <p className="text-base font-semibold text-black">
-            {currency} {new Intl.NumberFormat().format(data?.lastPrice?.high)}
+            {data?.lastPrice?.open !== undefined
+              ? `${currency} ${new Intl.NumberFormat().format(
+                  data?.lastPrice?.high
+                )}`
+              : '-'}
           </p>
         </div>
         <div className="flex-col w-1/3 text-left items-center">
@@ -41,7 +49,11 @@ const KeystatCard: React.FC<props> = ({ data, currency }) => {
             {t('playSimulation.dayLow')}
           </p>
           <p className="text-base font-semibold text-black">
-            {currency} {new Intl.NumberFormat().format(data?.lastPrice?.low)}
+            {data?.lastPrice?.open !== undefined
+              ? `${currency} ${new Intl.NumberFormat().format(
+                  data?.lastPrice?.low
+                )}`
+              : '-'}
           </p>
         </div>
       </div>

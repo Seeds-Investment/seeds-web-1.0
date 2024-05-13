@@ -5,7 +5,9 @@ import { toast } from 'react-toastify';
 
 export interface KeystatData {
   id: string;
-  eps: Array<[string, any, any, any, any]>;
+  eps: Array<
+    [string, string | number, string | number, string | number, string | number]
+  >;
   dividend: Array<[string, number, string, string]>;
   fundamental: Items[];
   earnings: Items[];

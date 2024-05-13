@@ -2,10 +2,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import BBKP from '@/assets/play/tournament/bbkpLogo.svg';
-import BCA from '@/assets/play/tournament/bcaLogo.svg';
-import BNI from '@/assets/play/tournament/bniLogo.svg';
-import Bullish from '@/assets/play/tournament/bullish.svg';
 import IconFilter from '@/assets/play/tournament/iconFilter.svg';
 import {
   Tab,
@@ -17,6 +13,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 // import { useTranslation } from 'react-i18next';
+import PlayAssetsList from '@/containers/tournament/asset';
 import {
   AssetFilter,
   SortingFilter
@@ -39,6 +36,7 @@ const AssetList = (): React.ReactElement => {
   // const { t } = useTranslation();
   const [activeNavbar, setActiveNavbar] = useState('All');
   const [assetActiveTab, setAssetActiveTab] = useState(AssetFilter.ID_STOCK);
+  const [searchTerm, setSearchTerm] = useState('');
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
   );
@@ -62,6 +60,16 @@ const AssetList = (): React.ReactElement => {
       id: 1,
       title: 'US STOCK',
       status: AssetFilter.US_STOCK
+    },
+    {
+      id: 2,
+      title: 'CRYPTO',
+      status: AssetFilter.CRYPTO
+    },
+    {
+      id: 3,
+      title: 'COMMODITIES',
+      status: AssetFilter.COMMODITIES
     }
   ];
 
@@ -97,7 +105,10 @@ const AssetList = (): React.ReactElement => {
       status: SortingFilter.TOP_LOSER_VALUE
     }
   ];
-
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value); // Update the search term state
+  };
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
@@ -110,6 +121,8 @@ const AssetList = (): React.ReactElement => {
             type="text"
             name="search"
             placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
             readOnly={false}
             disabled={false}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
@@ -231,98 +244,36 @@ const AssetList = (): React.ReactElement => {
             </TabsHeader>
             <TabsBody className="w-full">
               <TabPanel value="All">
-                <div className="flex flex-col">
-                  <div className="flex justify-between items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg">
-                    <div className="flex gap-4">
-                      <Image alt="" src={BCA} className="w-[40px]" />
-                      <div className="flex flex-col justify-center items-start">
-                        <div className="flex gap-1">
-                          <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                            BBCA /
-                          </Typography>
-                          <Typography className="text-sm md:text-lg text-black font-poppins">
-                            BIDR
-                          </Typography>
-                        </div>
-                        <Typography className="text-sm md:text-lg text-[#7C7C7C] font-poppins">
-                          Bank Central Asia Tbk.
-                        </Typography>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-end items-end">
-                      <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                        IDR 3.575.000
-                      </Typography>
-                      <div className="flex justify-center gap-2">
-                        <Image alt="" src={Bullish} className="w-[20px]" />
-                        <div className="text-[#3AC4A0]">(47%)</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg">
-                    <div className="flex gap-4">
-                      <Image alt="" src={BNI} className="w-[40px]" />
-                      <div className="flex flex-col justify-center items-start">
-                        <div className="flex gap-1">
-                          <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                            BBNI /
-                          </Typography>
-                          <Typography className="text-sm md:text-lg text-black font-poppins">
-                            BIDR
-                          </Typography>
-                        </div>
-                        <Typography className="text-sm md:text-lg text-[#7C7C7C] font-poppins">
-                          Bank Negara Indonesia
-                        </Typography>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-end items-end">
-                      <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                        IDR 3.575.000
-                      </Typography>
-                      <div className="flex justify-center gap-2">
-                        <Image alt="" src={Bullish} className="w-[20px]" />
-                        <div className="text-[#3AC4A0]">(47%)</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg">
-                    <div className="flex gap-4">
-                      <Image alt="" src={BBKP} className="w-[40px]" />
-                      <div className="flex flex-col justify-center items-start">
-                        <div className="flex gap-1">
-                          <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                            BBKP /
-                          </Typography>
-                          <Typography className="text-sm md:text-lg text-black font-poppins">
-                            BIDR
-                          </Typography>
-                        </div>
-                        <Typography className="text-sm md:text-lg text-[#7C7C7C] font-poppins">
-                          Bank KB Bukopin Tbk.
-                        </Typography>
-                      </div>
-                    </div>
-                    <div className="flex flex-col justify-end items-end">
-                      <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
-                        IDR 3.575.000
-                      </Typography>
-                      <div className="flex justify-center gap-2">
-                        <Image alt="" src={Bullish} className="w-[20px]" />
-                        <div className="text-[#3AC4A0]">(47%)</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'ALL'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="LQ45">
-                <div>LQ45</div>
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'LQ45'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="ISSI">
-                <div>ISSI</div>
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'ISSI'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
               <TabPanel value="IDX30">
-                <div>IDX30</div>
+                <PlayAssetsList
+                  assetType={assetActiveTab}
+                  searchValue={searchTerm}
+                  subType={'IDX30'}
+                  sortBy={assetActiveSort}
+                />
               </TabPanel>
             </TabsBody>
           </Tabs>

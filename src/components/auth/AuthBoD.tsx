@@ -6,7 +6,7 @@ import {
   Input,
   Typography
 } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface IAuthBoD {
@@ -32,6 +32,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
 }: IAuthBoD) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const dayRef = useRef<HTMLElement | null>(null);
+  const monthRef = useRef<HTMLElement | null>(null);
+  const yearRef = useRef<HTMLElement | null>(null);
   const handleOpen = (): void => {
     setOpen(!open);
   };
@@ -58,6 +61,18 @@ const AuthBoD: React.FC<IAuthBoD> = ({
     years[i] = i + 1924;
   }
 
+  useEffect(() => {
+    if (open) {
+      dayRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' });
+      monthRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' });
+      yearRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' });
+    }
+  }, [open]);
+  useEffect(() => {
+    dayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    monthRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    yearRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [day, month, year]);
   return (
     <>
       <div
@@ -123,16 +138,17 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         className="flex flex-col items-center rounded-3xl min-w-full"
       >
         <DialogBody className="flex gap-8">
-          <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-scroll cursor-pointer no-scroll">
+          <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-y-scroll overflow-x-hidden cursor-pointer">
             {month === undefined || year === undefined
               ? days.map((value, index) => {
                   return (
                     <Typography
+                      ref={day === value ? dayRef : null}
                       onClick={() => setDay(value)}
-                      className={`font-poppins text-base text-center ${
+                      className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                         day === value
                           ? 'text-[#3AC4A0] font-semibold'
-                          : 'text-[#BDBDBD] font-normal'
+                          : 'text-[#BDBDBD] font-normal hover:text-white'
                       }`}
                       key={index}
                     >
@@ -145,11 +161,12 @@ const AuthBoD: React.FC<IAuthBoD> = ({
               ? days.map((value, index) => {
                   return (
                     <Typography
+                      ref={day === value ? dayRef : null}
                       onClick={() => setDay(value)}
-                      className={`font-poppins text-base text-center ${
+                      className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                         day === value
                           ? 'text-[#3AC4A0] font-semibold'
-                          : 'text-[#BDBDBD] font-normal'
+                          : 'text-[#BDBDBD] font-normal hover:text-white'
                       }`}
                       key={index}
                     >
@@ -164,11 +181,12 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                   .map((value, index) => {
                     return (
                       <Typography
+                        ref={day === value ? dayRef : null}
                         onClick={() => setDay(value)}
-                        className={`font-poppins text-base text-center ${
+                        className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
-                            : 'text-[#BDBDBD] font-normal'
+                            : 'text-[#BDBDBD] font-normal hover:text-white'
                         }`}
                         key={index}
                       >
@@ -182,11 +200,12 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                   .map((value, index) => {
                     return (
                       <Typography
+                        ref={day === value ? dayRef : null}
                         onClick={() => setDay(value)}
-                        className={`font-poppins text-base text-center ${
+                        className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
-                            : 'text-[#BDBDBD] font-normal'
+                            : 'text-[#BDBDBD] font-normal hover:text-white'
                         }`}
                         key={index}
                       >
@@ -199,11 +218,12 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                   .map((value, index) => {
                     return (
                       <Typography
+                        ref={day === value ? dayRef : null}
                         onClick={() => setDay(value)}
-                        className={`font-poppins text-base text-center ${
+                        className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
-                            : 'text-[#BDBDBD] font-normal'
+                            : 'text-[#BDBDBD] font-normal hover:text-white'
                         }`}
                         key={index}
                       >
@@ -212,15 +232,16 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                     );
                   })}
           </div>
-          <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-scroll cursor-pointer no-scroll">
+          <div className="flex flex-col h-[216px] w-fit gap-2 overflow-y-scroll overflow-x-hidden cursor-pointer">
             {months.map((value, index) => {
               return (
                 <Typography
+                  ref={month === index ? monthRef : null}
                   onClick={() => setMonth(index)}
-                  className={`font-poppins text-base text-center ${
+                  className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md px-2 me-3 ${
                     month === index
                       ? 'text-[#3AC4A0] font-semibold'
-                      : 'text-[#BDBDBD] font-normal'
+                      : 'text-[#BDBDBD] font-normal hover:text-white'
                   }`}
                   key={index}
                 >
@@ -229,15 +250,18 @@ const AuthBoD: React.FC<IAuthBoD> = ({
               );
             })}
           </div>
-          <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-scroll cursor-pointer no-scroll">
+          <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-y-scroll overflow-x-hidden cursor-pointer">
             {years.map((value, index) => {
               return (
                 <Typography
-                  onClick={() => setYear(value)}
-                  className={`font-poppins text-base text-center ${
+                  onClick={() => {
+                    setYear(value);
+                  }}
+                  ref={year === value ? yearRef : null}
+                  className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                     year === value
                       ? 'text-[#3AC4A0] font-semibold'
-                      : 'text-[#BDBDBD] font-normal'
+                      : 'text-[#BDBDBD] font-normal hover:text-white'
                   }`}
                   key={index}
                 >

@@ -43,21 +43,64 @@ export const getBannerById = async (id: string): Promise<any> => {
 };
 
 export const getEventList = async (params: EventListParams): Promise<any> => {
-  const accessToken = localStorage.getItem('accessToken');
+  try {
+    const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
-    return await Promise.resolve('Access token not found');
-  }
-
-  const sentParams =  await discoverService.get(`/event/list`, {
-    params,
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
     }
-  });
 
-  console.log('params repository: ', params)
-  console.log('sent Params repository: ', sentParams)
-  return sentParams
+    return await discoverService.get(`/event/list`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const likeEvent = async (eventId: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.post(`/event/subscription`,
+      {
+        event_id: eventId
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const getEventById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.get(`/event/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
 };

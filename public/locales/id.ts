@@ -1904,9 +1904,16 @@ export default {
       changeAsset: "Ubah Aset",
       enter: "Masukan nama Daftar Pantau...",
       search: "Cari",
+    },
+    social: {
+      sorry: "Maaf, data postingan tidak ada!",
+      noData: "Ayo buat postinganmu!",
+      member: "peserta",
+      members: "peserta",
+      description: "Temukan ahlinya untuk informasi yang lebih banyak",
+      seeAll: "Lihat Semua",
     }
   },
-
   buyAsset: {
     text1: 'Aset yang akan di beli',
     text2: 'Aset yang akan di jual',
@@ -1931,7 +1938,6 @@ export default {
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
     text20:'Berapa persen yang Anda inginkan'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

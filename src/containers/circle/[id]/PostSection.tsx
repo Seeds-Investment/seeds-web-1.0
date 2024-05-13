@@ -516,7 +516,7 @@ const PostSection: React.FC<props> = ({
         console.error(err);
       });
     } else if (item?.thumbnailType === 'play') {
-      router.push('PlayDetailScreen').catch(err => {
+      router.push(`/play/tournament/${item?.id as string}`).catch(err => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {

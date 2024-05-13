@@ -1964,13 +1964,23 @@ export default {
         text3: 'Stay alert to market price changes.'
       }
     },
-    social: {
-      sorry: "Sorry, there is no post here!",
-      noData: "Let's make your post here!",
-      member: "member",
-      members: "members",
-      description: "Discover the experts for more insights",
-      seeAll: "See All",
+    watchlist: {
+      watchlist: "Watchlist",
+      noData: "No Watchlist yet",
+      create: "Create your Watchlist now!",
+      createWatchlist: "Create Watchlist",
+      add: "Add Watchlist",
+      name: "Watchlist Name",
+      photo: "Watchlist Photo",
+      addAsset: "Add Asset",
+      save: "Save",
+      delete: "Delete",
+      cancel: "Cancel",
+      editWatchlist: "Edit Watchlist",
+      deleteConfirm: "Are you sure want to delete this watchlist?",
+      changeAsset: "Change Asset",
+      enter: "Enter Watchlist name...",
+      search: "Search",
     }
   },
 

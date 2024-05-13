@@ -399,7 +399,10 @@ const TournamentHome: React.FC = () => {
                 {t('tournament.assets.virtualBalance')}
               </Typography>
             </div>
-            <div className="flex flex-col justify-center items-center gap-2 cursor-pointer">
+            <div
+              onClick={async () => await router.push(`/play/tournament/${id as string}/watchlist`) }
+              className="flex flex-col justify-center items-center gap-2 cursor-pointer"
+            >
               <Image
                 alt=""
                 src={IconWatchlist}

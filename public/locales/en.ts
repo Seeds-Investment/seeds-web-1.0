@@ -1981,9 +1981,16 @@ export default {
       changeAsset: "Change Asset",
       enter: "Enter Watchlist name...",
       search: "Search",
+    },
+    social: {
+      sorry: "Sorry, there is no post here!",
+      noData: "Let's make your post here!",
+      member: "member",
+      members: "members",
+      description: "Discover the experts for more insights",
+      seeAll: "See All",
     }
   },
-
   buyAsset: {
     text1: 'Assets to be purchased',
     text2: 'Assets to be sold',
@@ -2008,7 +2015,6 @@ export default {
       'The price level at which you want to sell or buy a stock or asset to make a profit.',
     text20: 'How many percent do you want'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

@@ -1,7 +1,7 @@
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 import { type Pie } from '@/utils/interfaces/tournament.interface';
-import { type IPortfolioSummary } from '@/utils/interfaces/play.interface';
+
 interface ICreateOrderPlay {
   asset_id: string;
   type: 'BUY' | 'SELL' | string;

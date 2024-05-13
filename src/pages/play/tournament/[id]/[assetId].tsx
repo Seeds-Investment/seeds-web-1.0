@@ -4,7 +4,6 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/homepage/asset/Card1';
 import KeystatCard from '@/containers/play/asset/Card2';
 import KeyStatistic from '@/containers/play/asset/KeyStatistic';
-import Profile from '@/containers/play/asset/Profile';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
@@ -52,8 +51,8 @@ const menu = [
   // 'Overview',
   // 'Analysis',
   // 'Financials',
-  'Key statistic',
-  'Profile'
+  'Key statistic'
+  // 'Profile'
   // 'News'
 ];
 
@@ -107,8 +106,8 @@ const AssetDetailPage: React.FC = () => {
     // <OverviewItem key={1} />,
     // <AnalysisItem key={2} />,
     // <FinancialItem key={3} />,
-    <KeyStatistic key={1} />,
-    <Profile key={2} />
+    <KeyStatistic key={1} />
+    // <Profile key={2} />
     // <NewsItem key={6} />
   ];
 

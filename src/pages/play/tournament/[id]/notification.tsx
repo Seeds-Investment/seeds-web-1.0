@@ -213,7 +213,9 @@ const NotificationWinner: React.FC = () => {
             <button
               onClick={() => {
                 const destination =
-                  dataResult.prize > 0 ? `/withdrawal?playId=1` : `/play`;
+                  dataResult.prize > 0
+                    ? `/play/tournament/${id as string}/withdrawal`
+                    : `/play`;
                 router.push(destination).catch(err => {
                   toast.error(`Error fetching data: ${err as string}`);
                 });

@@ -22,7 +22,6 @@ interface IAuthCheckNumber {
   setFormData: any;
   setCountdown: any;
   countries: any;
-  method: string;
 }
 
 const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
@@ -31,10 +30,8 @@ const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
   formData,
   setFormData,
   setCountdown,
-  countries,
-  method
-}: // method
-IAuthCheckNumber) => {
+  countries
+}: IAuthCheckNumber) => {
   const { t } = useTranslation();
   const [country, setCountry] = useState(101);
   const router = useRouter();
@@ -64,7 +61,7 @@ IAuthCheckNumber) => {
     try {
       const response = await checkPhoneNumber(formattedPhone.phoneNumber);
       if (response === undefined) {
-        // toast.error('register dulu boss');
+        // go to register page
         await withRedirect(
           router,
           { ...router.query, phoneNumber: formattedPhone.phoneNumber },
@@ -75,12 +72,11 @@ IAuthCheckNumber) => {
       toast.error(error);
       const response = await validateSetupPassword(formattedPhone.phoneNumber);
       const getOTP = {
-        method,
+        method: 'sms',
         phoneNumber: formattedPhone.phoneNumber
       };
       if (response.is_need_set_password === true) {
-        // toast.error('ganti password dulu boss');
-        console.log('ini isi getOTP', getOTP);
+        // go to create password
         await getOtp(getOTP);
         setCountdown(60);
         setSelect(1);
@@ -91,7 +87,7 @@ IAuthCheckNumber) => {
           '/auth2/setup-password'
         );
       } else {
-        // toast.error('langsung login boss');
+        // go to login page
         await withRedirect(
           router,
           { ...router.query, phoneNumber: formattedPhone.phoneNumber },

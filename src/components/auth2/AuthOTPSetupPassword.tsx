@@ -71,7 +71,6 @@ const AuthOTPSetupPassword: React.FC<IAuthOTPSetupPassword> = ({
     await getOtp({ method: newMethod, phoneNumber: formData.phoneNumber });
     setMethod(newMethod);
     setCountdown(60);
-    setFormData((prevData: any) => ({ ...prevData, phoneNumber: '' }));
     inputRefs.current[0]?.focus();
   };
 

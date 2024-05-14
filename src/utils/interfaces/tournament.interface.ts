@@ -6,6 +6,7 @@ export enum TournamentStatus {
 }
 
 export enum PortfolioFilter {
+  OVERVIEW = 'OVERVIEW',
   CRYPTO = 'CRYPTO',
   ID_STOCK = 'ID_STOCK',
   US_STOCK = 'US_STOCK',

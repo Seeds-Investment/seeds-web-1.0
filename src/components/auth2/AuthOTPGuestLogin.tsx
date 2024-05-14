@@ -1,6 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import TrackerEvent from '@/helpers/GTM';
-import { getOtp, loginSSO, quickRegister } from '@/repository/auth.repository';
+import { getOtp, loginSSO, quickLogin } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface IAuthOTPGuest {
+interface IAuthOTPGuestRegister {
   select: number;
   formData: any;
   method: any;
@@ -25,7 +25,7 @@ interface IAuthOTPGuest {
   setFormData: any;
 }
 
-const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
+const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
   select,
   formData,
   method,
@@ -35,7 +35,7 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
   setSelect,
   image,
   setFormData
-}: IAuthOTPGuest) => {
+}: IAuthOTPGuestRegister) => {
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
@@ -46,6 +46,29 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
+
+  useEffect(() => {
+    const { phoneNumber } = router.query;
+    if (phoneNumber !== '') {
+      setFormData((prevData: any) => ({
+        ...prevData,
+        phoneNumber: phoneNumber as string
+      }));
+    }
+  }, [router.query, setFormData]);
+
+  useEffect(() => {
+    if (formData.phoneNumber !== '') {
+      void (async () => {
+        try {
+          await getOtp({ method, phoneNumber: formData.phoneNumber });
+          setCountdown(60);
+        } catch (error) {
+          console.error('Error fetching OTP:', error);
+        }
+      })();
+    }
+  }, [method, formData.phoneNumber]);
 
   const handleChangeOTP = (index: number, value: string): void => {
     setBlank(false);
@@ -103,6 +126,8 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
   const handleSubmitOTP = async (event: any): Promise<void> => {
     event.preventDefault();
     try {
+      setSelect(1);
+      setLoading(true);
       if (OTP.length === 0) {
         setBlank(true);
         setError(true);
@@ -110,20 +135,13 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
         inputRefs.current[0]?.focus();
         throw new Error(`${t('authLogin.validation.blank')}`);
       } else {
-        setLoading(true);
-        const responseRegister = await quickRegister({
+        const responseLogin = await quickLogin({
           phone_number: formData.phoneNumber,
-          name: formData.name,
           method,
           otp: OTP
         });
 
-        console.log('ini adalah response register', responseRegister);
-
-        if (
-          Boolean(responseRegister) &&
-          Boolean(responseRegister.accessToken)
-        ) {
+        if (Boolean(responseLogin) && Boolean(responseLogin.accessToken)) {
           if (window.location.pathname !== '/auth2/change-phone-number') {
             setSelect(2);
           } else {
@@ -147,18 +165,17 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
             window.localStorage.setItem('isBannerOpen', 'true');
             await handleTracker();
           } else {
+            setSelect(1);
+            setLoading(true);
             window.localStorage.setItem(
               'accessToken',
-              responseRegister.accessToken
+              responseLogin.accessToken
             );
             window.localStorage.setItem(
               'refreshToken',
-              responseRegister.refreshToken
+              responseLogin.refreshToken
             );
-            window.localStorage.setItem(
-              'expiresAt',
-              responseRegister.expiresAt
-            );
+            window.localStorage.setItem('expiresAt', responseLogin.expiresAt);
             window.localStorage.setItem('isBannerOpen', 'true');
             await handleTracker();
             setFormData({ ...formData, phoneNumber: '', password: '' });
@@ -176,16 +193,6 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
   };
 
   useEffect(() => {
-    void (async () => {
-      try {
-        await getOtp({ method, phoneNumber: formData.phoneNumber });
-      } catch (error) {
-        console.error('Error fetching OTP:', error);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
     inputRefs.current[0]?.focus();
   }, [select === 1]);
 
@@ -201,7 +208,7 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
           alt="Backward"
           className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
-            if (window.location.pathname !== '/auth2/guest-register') {
+            if (window.location.pathname !== '/auth2/guest-login') {
               setMethod('sms');
               setSelect(0);
             } else {
@@ -310,4 +317,4 @@ const AuthOTPGuest: React.FC<IAuthOTPGuest> = ({
   );
 };
 
-export default AuthOTPGuest;
+export default AuthOTPGuestRegister;

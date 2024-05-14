@@ -1,11 +1,9 @@
 import withRedirect from '@/helpers/withRedirect';
-import { loginGuest } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 interface IAuthBoading {
   className: string;
@@ -17,27 +15,27 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
   // const [error, setError] = useState(false);
   const { t } = useTranslation();
 
-  const handleGuest = async (): Promise<void> => {
-    try {
-      // setLoading(true);
-      const response = await loginGuest();
-      if (response.status === 200) {
-        window.localStorage.setItem('isBannerOpen', 'true');
-        window.localStorage.setItem('isGuest', 'true');
+  // const handleGuest = async (): Promise<void> => {
+  //   try {
+  //     // setLoading(true);
+  //     const response = await loginGuest();
+  //     if (response.status === 200) {
+  //       window.localStorage.setItem('isBannerOpen', 'true');
+  //       window.localStorage.setItem('isGuest', 'true');
 
-        window.localStorage.removeItem('accessToken');
-        window.localStorage.removeItem('keepMeLoggedIn');
-        window.localStorage.removeItem('refreshToken');
-        window.localStorage.removeItem('expiresAt');
+  //       window.localStorage.removeItem('accessToken');
+  //       window.localStorage.removeItem('keepMeLoggedIn');
+  //       window.localStorage.removeItem('refreshToken');
+  //       window.localStorage.removeItem('expiresAt');
 
-        await router.push('/homepage');
-      }
-    } catch (error: any) {
-      toast(error, { type: 'error' });
-      // setLoading(false);
-      // setError(true);
-    }
-  };
+  //       await router.push('/homepage');
+  //     }
+  //   } catch (error: any) {
+  //     toast(error, { type: 'error' });
+  //     // setLoading(false);
+  //     // setError(true);
+  //   }
+  // };
 
   useEffect(() => {
     window.localStorage.removeItem('isGuest');
@@ -47,8 +45,10 @@ const AuthBoarding: React.FC<IAuthBoading> = ({ className }: IAuthBoading) => {
   return (
     <div className={`flex flex-col items-center gap-8 ${className}`}>
       <Button
-        disabled={true}
-        onClick={handleGuest}
+        // disabled={true}
+        onClick={async () => {
+          await withRedirect(router, router.query, '/auth2/guestcheck');
+        }}
         className="font-semibold font-poppins text-base text-[#3AC4A0] bg-white border border-2 border-[#3AC4A0] rounded-full capitalize p-3.5 sm:px-20 sm:w-full w-full"
       >
         {t('authBoarding.guest1')}

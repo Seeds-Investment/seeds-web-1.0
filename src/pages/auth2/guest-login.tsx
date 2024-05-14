@@ -1,9 +1,7 @@
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
-import AuthGuestRegister from '@/components/auth2/AuthGuestRegister';
-import AuthOTPGuestRegister from '@/components/auth2/AuthOTPGuestRegister';
-import countries from '@/constants/countries.json';
+import AuthOTPGuestLogin from '@/components/auth2/AuthOTPGuestLogin';
 import AuthLayout from '@/containers/auth/AuthLayout';
 import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
@@ -13,7 +11,7 @@ import { useEffect, useState } from 'react';
 const GuestRegister: React.FC = () => {
   const deviceDetector = new DeviceDetector();
   const { data } = useSession();
-  const [select, setSelect] = useState(0);
+  const [select, setSelect] = useState(1);
   const [formData, setFormData] = useState({
     phone_number: '',
     name: '',
@@ -67,7 +65,7 @@ const GuestRegister: React.FC = () => {
         src={SeedyAuthLogin}
         alt="SeedyAuthLogin"
         className={`${
-          select === 0 || select === 2 ? 'flex' : 'hidden'
+          select === 0 ? 'flex' : 'hidden'
         } md:hidden self-center w-1/2`}
       />
       <Image
@@ -89,18 +87,7 @@ const GuestRegister: React.FC = () => {
 
   const form = (
     <>
-      <AuthGuestRegister
-        className={select === 0 ? 'flex' : 'hidden'}
-        setSelect={setSelect}
-        formData={formData}
-        setFormData={setFormData}
-        setCountdown={setCountdown}
-        countries={countries}
-        method={formData.method}
-        loginForm={loginForm}
-        setLoginForm={setLoginForm}
-      />
-      <AuthOTPGuestRegister
+      <AuthOTPGuestLogin
         select={select}
         method={formData.method}
         setMethod={(method: string) => {

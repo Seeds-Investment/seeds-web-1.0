@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalGuidanceTournament from '../popup/ModalGuidanceTournament';
 
 interface FloatingProps {
@@ -15,6 +16,7 @@ interface FloatingProps {
 
 const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
 
+  const { t } = useTranslation();
   const router = useRouter();
   
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -106,82 +108,57 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
         </div>
       </div>
 
-      <div
-        className={`relative w-[20px] h-[40px] ${
-          isExpanded ? 'block' : 'hidden'
-        }`}
-      >
-        {/* Pop Up Description */}
-        {modalTutorialDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[-170px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Tutorial
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalSocialDescription(true);
-                  setModalTutorialDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">
-              Still not sure about how to play in Play Arena? Check out the
-              video tutorial here and follow the steps! Learn more about play
-              arenas and get rewards!
-            </div>
-          </div>
-        )}
-        {modalSocialDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[135px] md:top-[-45px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Social Wall
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalGuidanceDescription(true);
-                  setModalSocialDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">
-              Have good news in the play arena? Share it with your friends and
-              find experts for more insights.
-            </div>
-          </div>
-        )}
-        {modalGuidanceDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[70px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Guidance
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalGuidanceDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">{`Don't forget to read Play Arena's terms and conditions before you start playing.`}</div>
-          </div>
-        )}
-      </div>
+        <div className={`relative w-[20px] h-[40px] ${isExpanded ? "block" : "hidden"}`}>
+            {/* Pop Up Description */}
+            {modalTutorialDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[-170px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Tutorial</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalSocialDescription(true); setModalTutorialDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text1')}</div>
+                </div>
+            )}
+            {modalSocialDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[135px] md:top-[-45px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Social Wall</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalGuidanceDescription(true); setModalSocialDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text2')}</div>
+                </div>
+            )}
+            {modalGuidanceDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[70px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Guidance</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalGuidanceDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text3')}</div>
+                </div>
+            )}
+        </div>
     </div>
   );
 };

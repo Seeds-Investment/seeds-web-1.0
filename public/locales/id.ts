@@ -1904,6 +1904,11 @@ export default {
         text3: 'Selalu bersiap untuk menghadapi perubahan harga.'
       }
     },
+    floatingButton: {
+      text1: "Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!",
+      text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
+      text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
+    },
     watchlist: {
       watchlist: "Daftar Pantau",
       noData: "Belum Ada Daftar Pantau",

@@ -13,7 +13,7 @@ import {
   FileTextIcon,
   PrivacyPolicy,
   Refund,
-  SosmedGuide,
+  SosmedGuide
 } from 'public/assets/vector';
 import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';

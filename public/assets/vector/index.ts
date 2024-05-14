@@ -64,4 +64,3 @@ export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
-

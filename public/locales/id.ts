@@ -303,14 +303,12 @@ export default {
       lastUpdated: 'Terakhir Perbarui: ',
       date: '26 April 2022',
       overview: {
-        title: [
-          'Kebijakan Pengembalian Dana',
-        ],
+        title: ['Kebijakan Pengembalian Dana'],
         desc: [
-          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .',
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .'
         ]
       }
-    },
+    }
   },
   termAndCondition: {
     title: 'Syarat & Ketentuan',

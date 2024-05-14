@@ -265,7 +265,7 @@ export default {
     title3: 'Privacy Policy',
     title4: 'Refund Policy',
     title5: 'Social Media Guidelines',
-    title6: 'Circle Membership',
+    title6: 'Circle Membership'
   },
   faq: {
     title: 'Frequently Asked Questions',
@@ -328,11 +328,9 @@ export default {
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
-        title: [
-          'Refund Policy',
-        ],
+        title: ['Refund Policy'],
         desc: [
-          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.',
+          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.'
         ]
       }
     },

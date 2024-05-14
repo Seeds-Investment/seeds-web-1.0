@@ -1967,6 +1967,8 @@ export default {
   },
 
   seedsEvent: {
+    search: "Search",
+    enter: "Enter",
     past: "PAST",
     today: "TODAY",
     thisMonth: "THIS MONTH",

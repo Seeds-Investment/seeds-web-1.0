@@ -1889,6 +1889,17 @@ export default {
     }
   },
 
+  seedsEvent: {
+    search: "Cari event",
+    enter: "Cari",
+    past: "BERAKHIR",
+    today: "HARI INI",
+    thisMonth: "BULAN INI",
+    upcoming: "AKAN DATANG",
+    blank1: 'Ups,  Belum Ada Event',
+    blank2: 'Nantikan untuk update lainnya!',
+  },
+
   buyAsset: {
     text1: 'Aset yang akan di beli',
     text2: 'Aset yang akan di jual',

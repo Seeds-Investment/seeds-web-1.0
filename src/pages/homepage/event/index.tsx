@@ -71,7 +71,7 @@ const SeedsEvent: React.FC = () => {
   const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
 
   const [eventStatus, setEventStatus] = useState(
-    EventStatus.PAST
+    EventStatus.TODAY
   );
   const [eventParams, setEventParams] = useState({
     limit: 6,
@@ -164,7 +164,10 @@ const SeedsEvent: React.FC = () => {
   ];
 
   const separateEventsByMonth = (eventList: EventList[]): EventsByMonth => {
-    const monthsEN: string[] = [
+    const months: string[] = languageCtx.language === 'ID' ? [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ] : [
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
@@ -175,7 +178,7 @@ const SeedsEvent: React.FC = () => {
       const eventDate = new Date(event?.event_date);
       const month = eventDate.getMonth();
       const year = eventDate.getFullYear();
-      const monthYearKey = `${monthsEN[month]} ${year}`;
+      const monthYearKey = `${months[month]} ${year}`;
 
       if (!eventsByMonth[monthYearKey]) {
         eventsByMonth[monthYearKey] = [];
@@ -242,14 +245,14 @@ const SeedsEvent: React.FC = () => {
               handleSearch(e);
             }}
             name="search"
-            placeholder="Search"
+            placeholder={`${t('seedsEvent.search')}`}
             className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
           />
           <button
             onClick={() => { setRefreshSearch(!refreshSearch); }}
             className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
           >
-            Enter
+            {t('seedsEvent.enter')}
           </button>
         </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">
@@ -278,7 +281,7 @@ const SeedsEvent: React.FC = () => {
       <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white mt-4'>
         {!loading ? (
           eventList !== null ? (
-            <div className="w-full mt-4">
+            <div className="w-full">
               {
                 Object.entries(eventsByMonth).map(([monthYear, events]) => (
                   <div key={monthYear}>

@@ -1892,6 +1892,32 @@ export default {
       text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
       text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
     },
+    watchlist: {
+      watchlist: "Daftar Pantau",
+      noData: "Belum Ada Daftar Pantau",
+      create: "Yuk buat Daftar Pantau sekarang!",
+      createWatchlist: "Buat Daftar Pantau",
+      add: "Tambah Daftar Pantau",
+      name: "Nama Daftar Pantau",
+      photo: "Foto Daftar Pantau",
+      addAsset: "Tambah Aset",
+      save: "Simpan",
+      delete: "Hapus",
+      cancel: "Batalkan",
+      editWatchlist: "Ubah Daftar Pantau",
+      deleteConfirm: "Apa Kamu yakin ingin menghapus Daftar Pantau ini?",
+      changeAsset: "Ubah Aset",
+      enter: "Masukan nama Daftar Pantau...",
+      search: "Cari",
+    },
+    social: {
+      sorry: "Maaf, data postingan tidak ada!",
+      noData: "Ayo buat postinganmu!",
+      member: "peserta",
+      members: "peserta",
+      description: "Temukan ahlinya untuk informasi yang lebih banyak",
+      seeAll: "Lihat Semua",
+    }
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',
@@ -1917,7 +1943,6 @@ export default {
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
     text20:'Berapa persen yang Anda inginkan'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

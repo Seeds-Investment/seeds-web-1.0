@@ -64,6 +64,7 @@ const Player = (): React.ReactElement => {
   const [activeNavbar, setActiveNavbar] = useState<string>('quiz');
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<IDetailTournament[]>([]);
+  const [totalPage, setTotalPage] = useState<number>(0);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
   
   const [quizParams, setQuizParams] = useState({
@@ -121,10 +122,12 @@ const Player = (): React.ReactElement => {
         search,
         status: tournamentActiveTab
       });
+      
       if (response.playList === null) {
         setData([]);
       } else {
         setData(response.playList);
+        setTotalPage(response?.metadata?.totalPage)
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -186,6 +189,14 @@ const Player = (): React.ReactElement => {
     tournamentActiveTab,
     tournamentParams
   ]);
+
+  const handleCopyClick = async (id: string): Promise<void> => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const textToCopy = `${process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'}/play/tournament/${id}`;
+    await navigator.clipboard.writeText(textToCopy).then(() => {
+      toast('Play URL copied!');
+    });
+  };
 
   const statusQuiz: StatusQuizI[] = isGuest()
     ? [
@@ -376,8 +387,6 @@ const Player = (): React.ReactElement => {
                         {data.map(item => (
                           <div
                             key={item.id}
-                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                            onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
                             className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                           >
                             <div className="w-[60px] text-black text-center hidden md:block">
@@ -480,10 +489,10 @@ const Player = (): React.ReactElement => {
 
                               <div className="flex justify-between border-t-2 border-dashed mt-2 py-2 pr-2">
                                 <div className="flex gap-1">
-                                  <div className="flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
+                                  <div className="flex justify-center items-center px-2 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
                                     {item.category}
                                   </div>
-                                  <div className="h-full flex justify-center items-center gap-1">
+                                  <div onClick={async () => await handleCopyClick(item?.id)} className="h-full flex justify-center items-center gap-1">
                                     <div className="w-full h-full flex justify-center items-center">
                                       <Image
                                         alt=""
@@ -498,11 +507,19 @@ const Player = (): React.ReactElement => {
                                 </div>
                                 {
                                   item?.is_joined ?
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                    <div               
+                                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                      onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
+                                      className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                                    >
                                       {t('tournament.tournamentCard.openButton')}
                                     </div>
                                     :
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                    <div
+                                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                      onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
+                                      className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                                    >
                                       {t('tournament.tournamentCard.joinButton')}
                                     </div>
                                 }
@@ -533,7 +550,7 @@ const Player = (): React.ReactElement => {
                   <div className="flex justify-center mx-auto my-8">
                     <TournamentPagination
                       currentPage={tournamentParams.page}
-                      totalPages={tournamentParams.totalPage}
+                      totalPages={totalPage}
                       onPageChange={page => {
                         setTournamentParams({ ...tournamentParams, page });
                       }}

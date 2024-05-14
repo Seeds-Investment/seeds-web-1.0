@@ -7,14 +7,6 @@ interface ICreateOrderPlay {
   amount: number;
 }
 
-export interface AssetParams {
-  play_id: string;
-  category?: string | null;
-  currency: string;
-  per_page: number;
-  page: number;
-}
-
 const playService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
@@ -375,33 +367,24 @@ export const getHistoryTransaction = async (
   }
 };
 
-export const getActiveAsset = async (params: AssetParams): Promise<any> => {
-  const timeoutDuration = 100000;
-
+export const getActiveAsset = async (
+  id: string,
+  params: { category: string; currency: string; per_page: number; page: number; }
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null || accessToken === '') {
       return await Promise.reject(new Error('Access token not found'));
     }
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    const timeoutId = setTimeout(() => { controller.abort(); }, timeoutDuration);
-
-    const response = await playService(`/assets/active`, {
+    
+    return await playService(`/assets/active?play_id=${id}`, {
       params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
-      },
-      signal
+      }
     });
-
-    clearTimeout(timeoutId);
-
-    return response;
   } catch (error) {
     await Promise.reject(error);
   }

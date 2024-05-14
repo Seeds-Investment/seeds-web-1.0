@@ -35,11 +35,10 @@ const DeleteChatPopUp: React.FC<Props> = ({ onClose, onClick }) => {
           className="w-auto h-auto aspect-auto"
         />
         <Typography className="font-bold text-lg text-black">
-          Are you sure to delete this chat?
+          {t('chat.deleteChatTitle')}
         </Typography>
         <Typography className="text-lg text-gray-500">
-          If you click yes, your chat history can not be retrace after delete
-          the chat
+          {t('chat.deleteChatSubtitle')}
         </Typography>
       </div>
       <div className="flex flex-col gap-4">

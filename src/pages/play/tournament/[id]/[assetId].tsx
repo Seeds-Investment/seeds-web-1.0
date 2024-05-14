@@ -8,7 +8,7 @@ import SocialCard from '@/containers/play/asset/SocialCard';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
-import { getPlayAssetData } from '@/repository/play.repository';
+import { getPlayAssets } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   type AssetI,
@@ -76,10 +76,9 @@ const AssetDetailPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayAssetData(
+      const response = await getPlayAssets(
         id as string,
-        assetId as string,
-        currency
+        assetId as string
       );
       if (typeof response === 'object') {
         setPortfolio(response.data);

@@ -9,11 +9,23 @@ import {
 } from '@material-tailwind/react';
 
 interface props {
-  data: any;
-  changeSlider: any;
+  data: Data;
+  changeSlider: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   index: number;
-  changeIsLock: any;
+  changeIsLock: (e: React.MouseEvent<HTMLInputElement>, index: number) => void;
   sumAsset: number;
+}
+
+interface Data {
+  exchangeRate: number;
+  exchange_currency: string;
+  id: string;
+  isLock: boolean;
+  logo: string;
+  name: string;
+  price: number;
+  realTicker: string;
+  value: number;
 }
 
 const CardAssetSlider: React.FC<props> = ({
@@ -23,6 +35,7 @@ const CardAssetSlider: React.FC<props> = ({
   changeIsLock,
   sumAsset
 }) => {
+  
   return (
     <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
       <CardBody className="p-3 inline-block h-auto">
@@ -40,7 +53,7 @@ const CardAssetSlider: React.FC<props> = ({
                 {data.realTicker} /
               </Typography>
               <Typography className="font-normal ml-1 text-base text-[#262626]">
-                {data.exchangeCurrency}
+                {data.exchange_currency}
               </Typography>
             </div>
             <Typography className="font-normal text-sm text-[#7C7C7C]">
@@ -49,10 +62,10 @@ const CardAssetSlider: React.FC<props> = ({
           </div>
 
           <div className="ml-auto flex flex-col gap-0.5">
-            {data.pricebar === undefined ? (
+            {data?.price === undefined ? (
               <>
                 <Typography className="font-semibold text-base text-[#262626]">
-                  Rp {new Intl.NumberFormat().format(data.priceBar.open)}
+                  Rp {new Intl.NumberFormat().format(data?.price ?? 0)}
                 </Typography>
                 <Typography className="flex font-normal text-sm text-[#3AC4A0]">
                   <ArrowTrendingUpIcon
@@ -66,7 +79,7 @@ const CardAssetSlider: React.FC<props> = ({
             ) : (
               <>
                 <Typography className="font-semibold text-base text-[#262626]">
-                  Rp {new Intl.NumberFormat().format(data.priceBar.open)}
+                  Rp {new Intl.NumberFormat().format(data?.price ?? 0)}
                 </Typography>
                 <Typography className="flex font-normal text-sm text-[#3AC4A0]">
                   <ArrowTrendingUpIcon
@@ -89,9 +102,9 @@ const CardAssetSlider: React.FC<props> = ({
         <Slider
           color="green"
           className={`text-[#3AC4A0] mt-5 ${
-            data.isLock === true ? 'opacity-50 pointer-events-none' : ''
+            data.isLock ? 'opacity-50 pointer-events-none' : ''
           }`}
-          onChange={e => changeSlider(e, index)}
+          onChange={e => { changeSlider(e, index); }}
           min={0}
           max={100}
           defaultValue={data.value}
@@ -108,7 +121,7 @@ const CardAssetSlider: React.FC<props> = ({
             circleProps={{
               className: 'before:hidden left-0.5 border-none'
             }}
-            onClick={e => changeIsLock(e, index)}
+            onClick={e => { changeIsLock(e, index); }}
             defaultChecked={data.isLock}
           />
         </div>

@@ -60,8 +60,9 @@ interface IQuickLogin {
   method: string;
   otp: string;
 }
-interface IQuickLogin {
+interface IQuickRegister {
   phone_number: string;
+  name: string;
   method: string;
   otp: string;
 }
@@ -199,6 +200,24 @@ export const quickLogin = async (payload: IQuickLogin): Promise<any> => {
       return await Promise.resolve(null);
     }
     return await authService.post(`quick-account/login`, {
+      ...payload
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const quickRegister = async (payload: IQuickRegister): Promise<any> => {
+  try {
+    if (
+      payload?.phone_number?.length === 0 ||
+      payload?.name?.length === 0 ||
+      payload?.method?.length === 0 ||
+      payload?.otp?.length === 0
+    ) {
+      return await Promise.resolve(null);
+    }
+    return await authService.post(`quick-account/create`, {
       ...payload
     });
   } catch (error) {

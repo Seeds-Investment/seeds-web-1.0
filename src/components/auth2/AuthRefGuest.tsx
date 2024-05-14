@@ -78,7 +78,6 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      console.log('ini isi loginForm', loginForm);
       const response = await loginPhoneNumber(loginForm);
       if (data !== null) {
         const SSOresponse = await loginSSO({
@@ -123,9 +122,7 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
         phone: formData.phone,
         myAccessToken: formData.token
       };
-      console.log('ini kiriman edit', formDataForEdit);
       const response = await editGuestInfo(formDataForEdit);
-      console.log('ini response edit', response);
       if (response === null) {
         throw new Error(response);
       }
@@ -152,10 +149,7 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
         phone: formData.phone,
         myAccessToken: formData.token
       };
-
-      console.log('ini kiriman edit', formDataForEdit);
       const response = await editGuestInfo(formDataForEdit);
-      console.log('ini response edit', response);
       if (response === null) {
         throw new Error(response);
       }

@@ -33,7 +33,6 @@ const AuthLogin: React.FC = () => {
   };
   const router = useRouter();
   const isQuery = Object.keys(router.query).length < 0;
-  console.log('ini isi query', isQuery);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const deviceDetector = new DeviceDetector();

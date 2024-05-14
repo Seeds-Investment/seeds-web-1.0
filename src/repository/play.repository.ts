@@ -511,3 +511,26 @@ export const createPostPlay = async (formData: {
     return error;
   }
 };
+
+export const getPlayResult = async (playId: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await playService.get(`/${playId}/user-achievement`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    // Handle any errors
+    console.error('Error fetching play result:', error);
+    throw error;
+  }
+};

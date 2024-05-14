@@ -4,17 +4,16 @@ import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
 import AuthOTPGuestLogin from '@/components/auth2/AuthOTPGuestLogin';
 import AuthLayout from '@/containers/auth/AuthLayout';
 import DeviceDetector from 'device-detector-js';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const GuestRegister: React.FC = () => {
+const GuestLogin: React.FC = () => {
   const deviceDetector = new DeviceDetector();
-  const { data } = useSession();
   const [select, setSelect] = useState(1);
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    phone_number: '',
-    name: '',
+    phoneNumber: '',
     method: 'sms',
     otp: ''
   });
@@ -41,15 +40,6 @@ const GuestRegister: React.FC = () => {
   }, [countdown]);
 
   useEffect(() => {
-    if (data !== null) {
-      setFormData({
-        ...formData,
-        name: data?.user?.name ?? ''
-      });
-    }
-  }, [data]);
-
-  useEffect(() => {
     setLoginForm({
       ...loginForm,
       platform: `${
@@ -58,6 +48,16 @@ const GuestRegister: React.FC = () => {
       os_name: `${deviceDetector.parse(navigator.userAgent).os?.name ?? ''}`
     });
   }, []);
+
+  useEffect(() => {
+    const { phoneNumber } = router.query;
+    if (typeof phoneNumber === 'string') {
+      setFormData(prevState => ({
+        ...prevState,
+        phoneNumber
+      }));
+    }
+  }, [router.query]);
 
   const element = (
     <>
@@ -86,24 +86,21 @@ const GuestRegister: React.FC = () => {
   );
 
   const form = (
-    <>
-      <AuthOTPGuestLogin
-        select={select}
-        method={formData.method}
-        setMethod={(method: string) => {
-          setFormData({ ...formData, method });
-        }}
-        countdown={countdown}
-        setCountdown={setCountdown}
-        setSelect={setSelect}
-        image={formData.method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
-        formData={formData}
-        setFormData={setFormData}
-      />
-    </>
+    <AuthOTPGuestLogin
+      select={select}
+      method={formData.method}
+      setMethod={(method: string) => {
+        setFormData({ ...formData, method });
+      }}
+      countdown={countdown}
+      setCountdown={setCountdown}
+      setSelect={setSelect}
+      image={formData.method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
+      formData={formData}
+    />
   );
 
   return <AuthLayout elementChild={element} formChild={form} />;
 };
 
-export default GuestRegister;
+export default GuestLogin;

@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface IAuthOTPGuestRegister {
+interface IAuthOTPGuestLogin {
   select: number;
   formData: any;
   method: any;
@@ -22,10 +22,9 @@ interface IAuthOTPGuestRegister {
   setCountdown: any;
   setSelect: any;
   image: any;
-  setFormData: any;
 }
 
-const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
+const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
   select,
   formData,
   method,
@@ -33,9 +32,8 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
   countdown,
   setCountdown,
   setSelect,
-  image,
-  setFormData
-}: IAuthOTPGuestRegister) => {
+  image
+}: IAuthOTPGuestLogin) => {
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
@@ -46,29 +44,6 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
-
-  useEffect(() => {
-    const { phoneNumber } = router.query;
-    if (phoneNumber !== '') {
-      setFormData((prevData: any) => ({
-        ...prevData,
-        phoneNumber: phoneNumber as string
-      }));
-    }
-  }, [router.query, setFormData]);
-
-  useEffect(() => {
-    if (formData.phoneNumber !== '') {
-      void (async () => {
-        try {
-          await getOtp({ method, phoneNumber: formData.phoneNumber });
-          setCountdown(60);
-        } catch (error) {
-          console.error('Error fetching OTP:', error);
-        }
-      })();
-    }
-  }, [method, formData.phoneNumber]);
 
   const handleChangeOTP = (index: number, value: string): void => {
     setBlank(false);
@@ -178,7 +153,7 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
             window.localStorage.setItem('expiresAt', responseLogin.expiresAt);
             window.localStorage.setItem('isBannerOpen', 'true');
             await handleTracker();
-            setFormData({ ...formData, phoneNumber: '', password: '' });
+            // setFormData({ ...formData, phoneNumber: '', password: '' });
           }
         } else {
           setLoading(false);
@@ -191,6 +166,23 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
       toast(error, { type: 'error' });
     }
   };
+
+  console.log('isi data', formData);
+
+  useEffect(() => {
+    if (formData.phoneNumber !== '') {
+      void (async () => {
+        try {
+          if (countdown === 0) {
+            await getOtp({ method, phoneNumber: formData.phoneNumber });
+            setCountdown(60);
+          }
+        } catch (error) {
+          console.error('Error fetching OTP:', error);
+        }
+      })();
+    }
+  }, [formData.phoneNumber]);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -317,4 +309,4 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
   );
 };
 
-export default AuthOTPGuestRegister;
+export default AuthOTPGuestLogin;

@@ -1886,9 +1886,39 @@ export default {
           'Pelajari analisa saham dan aset untuk membantu membuat keputusan.',
         text3: 'Selalu bersiap untuk menghadapi perubahan harga.'
       }
+    },
+    floatingButton: {
+      text1: "Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!",
+      text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
+      text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
+    },
+    watchlist: {
+      watchlist: "Daftar Pantau",
+      noData: "Belum Ada Daftar Pantau",
+      create: "Yuk buat Daftar Pantau sekarang!",
+      createWatchlist: "Buat Daftar Pantau",
+      add: "Tambah Daftar Pantau",
+      name: "Nama Daftar Pantau",
+      photo: "Foto Daftar Pantau",
+      addAsset: "Tambah Aset",
+      save: "Simpan",
+      delete: "Hapus",
+      cancel: "Batalkan",
+      editWatchlist: "Ubah Daftar Pantau",
+      deleteConfirm: "Apa Kamu yakin ingin menghapus Daftar Pantau ini?",
+      changeAsset: "Ubah Aset",
+      enter: "Masukan nama Daftar Pantau...",
+      search: "Cari",
+    },
+    social: {
+      sorry: "Maaf, data postingan tidak ada!",
+      noData: "Ayo buat postinganmu!",
+      member: "peserta",
+      members: "peserta",
+      description: "Temukan ahlinya untuk informasi yang lebih banyak",
+      seeAll: "Lihat Semua",
     }
   },
-
   seedsEvent: {
     search: "Cari event",
     enter: "Cari",
@@ -1899,7 +1929,6 @@ export default {
     blank1: 'Ups,  Belum Ada Event',
     blank2: 'Nantikan untuk update lainnya!',
   },
-
   buyAsset: {
     text1: 'Aset yang akan di beli',
     text2: 'Aset yang akan di jual',
@@ -1924,7 +1953,6 @@ export default {
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
     text20:'Berapa persen yang Anda inginkan'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

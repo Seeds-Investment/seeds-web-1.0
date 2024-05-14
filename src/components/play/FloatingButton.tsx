@@ -5,12 +5,21 @@ import FloatingVideo from '@/assets/play/tournament/floatingVideo.svg';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalGuidanceTournament from '../popup/ModalGuidanceTournament';
 
-const FloatingButton: React.FC = () => {
+interface FloatingProps {
+  id?: string;
+}
 
+const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
+
+  const { t } = useTranslation();
+  const router = useRouter();
+  
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
   const [isGuidanceModal, setIsGuidanceModal] = useState<boolean>(false);
@@ -63,7 +72,7 @@ const FloatingButton: React.FC = () => {
                         className="w-[25px] h-[25px]"
                     />
                 </div>
-                <div className='absolute right-[20px] top-0 bottom-0 m-auto w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300'>
+                <div onClick={ async() => await router.push(`/play/tournament/${id as string}/social-wall`)} className='absolute right-[20px] top-0 bottom-0 m-auto w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300'>
                     <Image
                         width={100}
                         height={100}
@@ -109,7 +118,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalSocialDescription(true); setModalTutorialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text1')}</div>
                 </div>
             )}
             {modalSocialDescription && (
@@ -125,7 +134,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalGuidanceDescription(true); setModalSocialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Have good news in the play arena? Share it with your friends and find experts for more insights.</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text2')}</div>
                 </div>
             )}
             {modalGuidanceDescription && (
@@ -141,7 +150,7 @@ const FloatingButton: React.FC = () => {
                             onClick={() => {setModalGuidanceDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>{`Don't forget to read Play Arena's terms and conditions before you start playing.`}</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text3')}</div>
                 </div>
             )}
         </div>

@@ -55,6 +55,29 @@ interface LoginGuestResponse {
   status: number;
 }
 
+interface IQuickLogin {
+  phone_number: string;
+  method: string;
+  otp: string;
+}
+interface IQuickLogin {
+  phone_number: string;
+  method: string;
+  otp: string;
+}
+
+interface IEditForm {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin?: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  myAccessToken: string;
+}
+
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
   try {
     let response = await authService.post('login/phone-number', formData);
@@ -164,6 +187,45 @@ export const validateSetupPassword = async (
     `validate/account-password?phone_number=${phoneNumber}`
   );
   return response;
+};
+
+export const quickLogin = async (payload: IQuickLogin): Promise<any> => {
+  try {
+    if (
+      payload?.phone_number?.length === 0 ||
+      payload?.method?.length === 0 ||
+      payload?.otp?.length === 0
+    ) {
+      return await Promise.resolve(null);
+    }
+    return await authService.post(`quick-account/login`, {
+      ...payload
+    });
+  } catch (error) {
+    return await Promise.reject(error);
+  }
+};
+
+export const editGuestInfo = async (formData: IEditForm): Promise<any> => {
+  try {
+    const accessToken = formData.myAccessToken;
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const { myAccessToken, ...formDataWithoutToken } = formData;
+
+    const response = await userService.patch('', formDataWithoutToken, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return { ...response, status: 200 };
+  } catch (error: any) {
+    return error.response;
+  }
 };
 
 export const checkSeedsTag = async (seedsTag: string): Promise<any> => {

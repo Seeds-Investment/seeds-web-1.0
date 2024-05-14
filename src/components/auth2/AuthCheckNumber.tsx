@@ -4,7 +4,7 @@ import AuthNumber from '@/components/auth2/AuthNumber';
 import withRedirect from '@/helpers/withRedirect';
 import {
   checkPhoneNumber,
-  getOtp,
+  // getOtp,
   validateSetupPassword
 } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
@@ -71,19 +71,11 @@ const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
     } catch (error: any) {
       toast.error(error);
       const response = await validateSetupPassword(formattedPhone.phoneNumber);
-      const getOTP = {
-        method: 'sms',
-        phoneNumber: formattedPhone.phoneNumber
-      };
       if (response.is_need_set_password === true) {
         // go to create password
-        await getOtp(getOTP);
-        setCountdown(60);
-        setSelect(1);
-        setFormData(formattedPhone);
         await withRedirect(
           router,
-          { ...router.query, number: formattedPhone.phoneNumber },
+          { ...router.query, phoneNumber: formattedPhone.phoneNumber },
           '/auth2/setup-password'
         );
       } else {

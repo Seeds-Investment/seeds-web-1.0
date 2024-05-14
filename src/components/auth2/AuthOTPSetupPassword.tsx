@@ -1,8 +1,13 @@
 import Backward from '@/assets/auth/Backward.svg';
-import { editVerifyOtp, getOtp, verifyOtp } from '@/repository/auth.repository';
+import {
+  forgotPassword,
+  getOtp,
+  quickLogin
+} from '@/repository/auth.repository';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
 import { Button, Typography } from '@material-tailwind/react';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -40,11 +45,6 @@ const AuthOTPSetupPassword: React.FC<IAuthOTPSetupPassword> = ({
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
-  const verifyOTP = {
-    method,
-    msisdn: formData.phoneNumber,
-    otp: OTP
-  };
 
   const handleChangeOTP = (index: number, value: string): void => {
     setBlank(false);
@@ -91,11 +91,27 @@ const AuthOTPSetupPassword: React.FC<IAuthOTPSetupPassword> = ({
         inputRefs.current[0]?.focus();
         throw new Error(`${t('authLogin.validation.blank')}`);
       } else {
-        if (localStorage.getItem('accessToken') !== null) {
-          await editVerifyOtp(verifyOTP);
-        } else {
-          await verifyOtp(verifyOTP);
-        }
+        const responseLogin = await quickLogin({
+          phone_number: formData.phoneNumber,
+          method,
+          otp: OTP
+        });
+
+        const decodedToken = jwt.decode(
+          responseLogin.accessToken
+        ) as JwtPayload;
+
+        const name = decodedToken?.name;
+
+        const changePassword = {
+          phoneNumber: formData.phoneNumber,
+          oldPassword: formData.password,
+          password: formData.password
+        };
+
+        await forgotPassword(changePassword);
+
+        setFormData({ ...formData, name, token: responseLogin.accessToken });
 
         if (window.location.pathname !== '/auth2/change-phone-number') {
           setSelect(2);

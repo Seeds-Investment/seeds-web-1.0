@@ -1791,6 +1791,9 @@ export default {
     detailAccessCode: 'Masukan Access Code',
     detailBannerTotalRewards: 'Total Hadiah',
     entranceFee: 'Biaya Pendaftaran',
+    shareArena: "Bagikan Arena Ini",
+    shareLinks: "Bagikan Link",
+    playId: "ID Permainan",
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
@@ -1935,6 +1938,16 @@ export default {
       description: "Temukan ahlinya untuk informasi yang lebih banyak",
       seeAll: "Lihat Semua",
     }
+  },
+  seedsEvent: {
+    search: "Cari event",
+    enter: "Cari",
+    past: "BERAKHIR",
+    today: "HARI INI",
+    thisMonth: "BULAN INI",
+    upcoming: "AKAN DATANG",
+    blank1: 'Ups,  Belum Ada Event',
+    blank2: 'Nantikan untuk update lainnya!',
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

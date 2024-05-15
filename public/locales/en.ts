@@ -1869,6 +1869,9 @@ export default {
     detailAccessCode: 'Input Access Code',
     detailBannerTotalRewards: 'Total Rewards',
     entranceFee: 'Entrance Fee',
+    shareArena: "Share This Arena",
+    shareLinks: "Share Link",
+    playId: "Play ID",
     free: 'Free',
     join: 'Join',
     start: 'Start',
@@ -2013,6 +2016,16 @@ export default {
       description: "Discover the experts for more insights",
       seeAll: "See All",
     }
+  },
+  seedsEvent: {
+    search: "Search",
+    enter: "Enter",
+    past: "PAST",
+    today: "TODAY",
+    thisMonth: "THIS MONTH",
+    upcoming: "UPCOMING",
+    blank1: 'Opps,  There’s No Event Yet',
+    blank2: 'Stay tuned for more updates!',
   },
   buyAsset: {
     text1: 'Assets to be purchased',

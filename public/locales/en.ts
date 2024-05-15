@@ -1976,6 +1976,29 @@ export default {
         text3: 'Stay alert to market price changes.'
       }
     },
+    floatingButton: {
+      text1: "Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!",
+      text2: "Have good news in the play arena? Share it with your friends and find experts for more insights.",
+      text3: "Don't forget to read Play Arena's terms and conditions before you start playing.",
+    },
+    watchlist: {
+      watchlist: "Watchlist",
+      noData: "No Watchlist yet",
+      create: "Create your Watchlist now!",
+      createWatchlist: "Create Watchlist",
+      add: "Add Watchlist",
+      name: "Watchlist Name",
+      photo: "Watchlist Photo",
+      addAsset: "Add Asset",
+      save: "Save",
+      delete: "Delete",
+      cancel: "Cancel",
+      editWatchlist: "Edit Watchlist",
+      deleteConfirm: "Are you sure want to delete this watchlist?",
+      changeAsset: "Change Asset",
+      enter: "Enter Watchlist name...",
+      search: "Search",
+    },
     social: {
       sorry: "Sorry, there is no post here!",
       noData: "Let's make your post here!",
@@ -1985,7 +2008,16 @@ export default {
       seeAll: "See All",
     }
   },
-
+  seedsEvent: {
+    search: "Search",
+    enter: "Enter",
+    past: "PAST",
+    today: "TODAY",
+    thisMonth: "THIS MONTH",
+    upcoming: "UPCOMING",
+    blank1: 'Opps,  There’s No Event Yet',
+    blank2: 'Stay tuned for more updates!',
+  },
   buyAsset: {
     text1: 'Assets to be purchased',
     text2: 'Assets to be sold',
@@ -2010,7 +2042,6 @@ export default {
       'The price level at which you want to sell or buy a stock or asset to make a profit.',
     text20: 'How many percent do you want'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',

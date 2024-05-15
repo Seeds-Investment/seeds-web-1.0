@@ -260,7 +260,8 @@ const SocialWall = (): React.ReactElement => {
                 {
                   dataPost.map(el => {
                     return (
-                      <div className="flex flex-col" key={`${el?.id } ${el?.id}`}>
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                      <div className="flex flex-col" key={`${el?.id} ${el?.id}`}>
                         <PostSection
                           dataPost={el}
                           setData={setDataPost}

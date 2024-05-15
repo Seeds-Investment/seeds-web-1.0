@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ModalGuidanceTournament from '../popup/ModalGuidanceTournament';
 
 interface FloatingProps {
@@ -16,6 +17,7 @@ interface FloatingProps {
 
 const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
 
+  const { t } = useTranslation();
   const router = useRouter();
   
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -116,7 +118,7 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
                             onClick={() => {setModalSocialDescription(true); setModalTutorialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text1')}</div>
                 </div>
             )}
             {modalSocialDescription && (
@@ -132,7 +134,7 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
                             onClick={() => {setModalGuidanceDescription(true); setModalSocialDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>Have good news in the play arena? Share it with your friends and find experts for more insights.</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text2')}</div>
                 </div>
             )}
             {modalGuidanceDescription && (
@@ -148,7 +150,7 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
                             onClick={() => {setModalGuidanceDescription(false)}} 
                         />
                     </div>
-                    <div className='text-[#7C7C7C] text-sm'>{`Don't forget to read Play Arena's terms and conditions before you start playing.`}</div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text3')}</div>
                 </div>
             )}
         </div>

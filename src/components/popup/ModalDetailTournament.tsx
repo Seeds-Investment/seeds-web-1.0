@@ -108,7 +108,8 @@ const ModalDetailTournament: React.FC<Props> = ({
                 )}
               </td>
               <td className="border p-3 w-full">
-                {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}{standartCurrency(item).replace('Rp', '')}
+                {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}
+                {standartCurrency(item).replace('Rp', '')}
               </td>
             </tr>
           ))}

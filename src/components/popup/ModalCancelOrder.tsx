@@ -23,7 +23,7 @@ const ModalCancelOrder: React.FC<Props> = ({ onClose, orderId, playId }) => {
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      onClose()
+      onClose();
     }
   };
 
@@ -58,7 +58,9 @@ const ModalCancelOrder: React.FC<Props> = ({ onClose, orderId, playId }) => {
       <div className="flex flex-col gap-4">
         <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-green-700 rounded-full hover:scale-105 transition ease-out">
           <Typography
-            onClick={async () => { await handleCancelOrder(); }}
+            onClick={async () => {
+              await handleCancelOrder();
+            }}
             className="text-white text-lg font-bold text-center p-2"
           >
             {t('tournament.assets.yesCancel')}

@@ -263,8 +263,9 @@ export default {
     title1: 'Terms & Conditions',
     title2: 'Disclosure',
     title3: 'Privacy Policy',
-    title4: 'Social Media Guidelines',
-    title5: 'Circle Membership'
+    title4: 'Refund Policy',
+    title5: 'Social Media Guidelines',
+    title6: 'Circle Membership'
   },
   faq: {
     title: 'Frequently Asked Questions',
@@ -319,6 +320,17 @@ export default {
           'Seeds will do its best to help you ensure that the information you receive is accurate, complete, and updated. We will retain your personal data for the periods necessary to meet the different purposes set forth in this Privacy Policy unless retention time is longer permitted or required by law. You can help ensure that your contact and reference information is accurate, complete and kept up-to-date by logging in on the Seeds app. For other personal information, we make a good faith effort to grant access to you so that you may ask us to repair the data if Seeds app does not have to be kept by law or for legitimate business purposes. We may refuse to process irrational requests made repeatedly, requiring excessive technical effort, threatening the privacy of others, it is completely impractical or if access is not otherwise required by it by local law. Requests for access, correction or deletion can be made through the Seeds application.',
           'To help Seeds improve our services and products provide a special experience for users on their site using “cookies”. Cookies are small text files stored on your computer/smartphone that give us information about your site usage online to help us customize your user experience and make our site more user-friendly.',
           'We have applied technology and policies consistent with the prevailing rules of Indonesia with the objective of protecting your privacy from unauthorized access and improper use and we will update these steps as new technology develops as necessary.'
+        ]
+      }
+    },
+    refundPolicy: {
+      title: 'Refund Policy',
+      lastUpdated: 'Last Updated: ',
+      date: '26 April 2022',
+      overview: {
+        title: ['Refund Policy'],
+        desc: [
+          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.'
         ]
       }
     },
@@ -650,13 +662,19 @@ export default {
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
     login: 'Login',
-    signup: 'Sign up'
+    signup: 'Sign up',
+    or: ' or '
   },
   authLogin: {
     title1: 'Let’s Input!',
     title2: 'Phone number & password',
+    title3: 'Phone number',
+    title4: 'Name & phone number',
     phone: 'Phone Number',
+    name: 'Name',
+    namePlaceholder: 'Please, input your name',
     password: 'Password',
+    createPassword: 'Create Password',
     passwordPlaceholder: 'Please input your password',
     forgotPass: 'Forgot Password?',
     login: 'Login',

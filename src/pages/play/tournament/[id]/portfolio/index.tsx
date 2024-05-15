@@ -16,9 +16,19 @@ import Loading from '@/components/popup/Loading';
 import TournamentPortfolioChart from '@/containers/tournament/portfolio-chart/TournamentPortfolioChart';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
-import { getActiveAsset, getPlayBallance, getPlayPortfolio } from '@/repository/play.repository';
+import {
+  getActiveAsset,
+  getPlayBallance,
+  getPlayPortfolio
+} from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type ActiveAsset, type BallanceTournament, type ChartProportion, PortfolioFilter, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import {
+  PortfolioFilter,
+  type ActiveAsset,
+  type BallanceTournament,
+  type ChartProportion,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -58,7 +68,7 @@ const Portfolio = (): React.ReactElement => {
     total_buy: 0,
     return_value: 0,
     return_percentage: 0,
-    currency: 'IDR',
+    currency: 'IDR'
   });
 
   const [activeAssetParams, setActiveAssetParams] = useState({
@@ -66,7 +76,7 @@ const Portfolio = (): React.ReactElement => {
     category: portfolioActiveTab === 'OVERVIEW' ? null : portfolioActiveTab,
     currency: userInfo?.preferredCurrency ?? 'IDR',
     per_page: 5,
-    page: 1,
+    page: 1
   });
 
   useEffect(() => {
@@ -75,7 +85,7 @@ const Portfolio = (): React.ReactElement => {
       .catch(() => {});
     setActiveAssetParams({ ...activeAssetParams, page: 1 });
   }, []);
-  
+
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -114,8 +124,8 @@ const Portfolio = (): React.ReactElement => {
   const fetchPlayPoftfolio = async (currency: string): Promise<void> => {
     try {
       setLoadingPortfolio(true);
-      const response = await getPlayPortfolio(id as string, currency );
-      setChartProportion(response?.pie?.chart_proportions ?? [])
+      const response = await getPlayPortfolio(id as string, currency);
+      setChartProportion(response?.pie?.chart_proportions ?? []);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -185,12 +195,12 @@ const Portfolio = (): React.ReactElement => {
 
   return (
     <>
-      {
-        loadingBallance && loadingPortfolio && loadingActiveAsset && <Loading />
-      }
+      {loadingBallance && loadingPortfolio && loadingActiveAsset && <Loading />}
       <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         <div className="flex justify-start w-full">
-          <Typography className="text-xl font-semibold">{t('tournament.assets.portfolio')}</Typography>
+          <Typography className="text-xl font-semibold">
+            {t('tournament.assets.portfolio')}
+          </Typography>
         </div>
         <div className="w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[150px] relative overflow-hidden mt-4">
           <div className="flex flex-col justify-start gap-2 md:gap-0">
@@ -198,13 +208,34 @@ const Portfolio = (): React.ReactElement => {
               {t('tournament.portfolio.investmentValue')}
             </Typography>
             <Typography className="text-white text-[26px] font-semibold font-poppins z-10">
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.portfolio ?? 0).replace('Rp', '')}
+              {userInfo?.preferredCurrency !== undefined
+                ? userInfo?.preferredCurrency
+                : 'IDR'}
+              {standartCurrency(ballance?.portfolio ?? 0).replace('Rp', '')}
             </Typography>
             <div className="flex gap-2">
-              <Image alt="" src={ballance?.return_value < 0 ? TriangleBearish : TriangleBullish} className="w-[20px]" />
-              <Typography className={`${ballance?.return_value < 0 ? 'text-[#DD2525]' : 'text-white'} font-poppins z-10 text-sm md:text-lg`}>
-                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
-                {` (${ballance?.return_value < 0 ? '' : '+'}${ballance?.return_percentage?.toFixed(2)}%)`}
+              <Image
+                alt=""
+                src={
+                  ballance?.return_value < 0 ? TriangleBearish : TriangleBullish
+                }
+                className="w-[20px]"
+              />
+              <Typography
+                className={`${
+                  ballance?.return_value < 0 ? 'text-[#DD2525]' : 'text-white'
+                } font-poppins z-10 text-sm md:text-lg`}
+              >
+                {userInfo?.preferredCurrency !== undefined
+                  ? userInfo?.preferredCurrency
+                  : 'IDR'}{' '}
+                {standartCurrency(ballance?.return_value ?? 0).replace(
+                  'Rp',
+                  ''
+                )}
+                {` (${
+                  ballance?.return_value < 0 ? '' : '+'
+                }${ballance?.return_percentage?.toFixed(2)}%)`}
               </Typography>
               <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
                 {t('tournament.portfolio.today')}
@@ -227,7 +258,9 @@ const Portfolio = (): React.ReactElement => {
         <div className="w-full mt-4">
           <div className="flex gap-2">
             <Image alt="" src={IconPortfolio2} className="w-[30px]" />
-            <Typography className="text-xl font-semibold">{t('tournament.assets.portfolio')}</Typography>
+            <Typography className="text-xl font-semibold">
+              {t('tournament.assets.portfolio')}
+            </Typography>
           </div>
           <Typography className="text-lg mt-4">
             {t('tournament.portfolio.yourAssetPortfolio')}
@@ -264,17 +297,22 @@ const Portfolio = (): React.ReactElement => {
               ))}
             </div>
           </div>
-          
+
           {/* Asset */}
           <div className="flex flex-col">
-
             {/* Asset Card */}
-            {activeAsset?.length !== 0 ?
+            {activeAsset?.length !== 0 ? (
               <>
                 {activeAsset?.map(data => (
                   <div
                     key={data?.id}
-                    onClick={async() => await router.push(`/play/tournament/${id as string}/portfolio/${data?.asset_id }/detail-portfolio`)}
+                    onClick={async () =>
+                      await router.push(
+                        `/play/tournament/${id as string}/portfolio/${
+                          data?.asset_id
+                        }/detail-portfolio`
+                      )
+                    }
                     className="flex justify-between items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] md:bg-white border border-[#E9E9E9] md:border-none rounded-lg hover:bg-[#E1E1E1] duration-300 cursor-pointer"
                   >
                     <div className="w-full flex gap-1 md:gap-4 items-center">
@@ -297,12 +335,17 @@ const Portfolio = (): React.ReactElement => {
                       </div>
                     </div>
                   </div>
-                  ))
-                }
+                ))}
               </>
-              :
+            ) : (
               <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mt-8">
-                <Image alt="" src={NoData} className="w-[250px]" width={100} height={100} />
+                <Image
+                  alt=""
+                  src={NoData}
+                  className="w-[250px]"
+                  width={100}
+                  height={100}
+                />
                 <p className="font-semibold text-black mt-4">
                   {t('tournament.assets.sorry')}
                 </p>
@@ -310,7 +353,7 @@ const Portfolio = (): React.ReactElement => {
                   {t('tournament.assets.noData')}
                 </p>
               </div>
-            }
+            )}
           </div>
 
           <div className="flex justify-center mx-auto my-8">

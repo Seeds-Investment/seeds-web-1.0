@@ -329,7 +329,8 @@ export const createOrderPlay = async (
 
 export const getOperOrderList = async (
   id: string,
-  params: { currency: string }): Promise<any> => {
+  params: { currency: string }
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -348,7 +349,10 @@ export const getOperOrderList = async (
   }
 };
 
-export const cancelOrderList = async ( playId: string, orderId: string): Promise<any> => {
+export const cancelOrderList = async (
+  playId: string,
+  orderId: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 

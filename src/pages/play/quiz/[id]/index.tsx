@@ -27,7 +27,7 @@ const QuizDetail = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );

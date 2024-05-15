@@ -7,13 +7,10 @@ import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import {
   Button,
-  Dialog,
-  DialogBody,
   Menu,
   MenuHandler,
   MenuItem,
   MenuList,
-  Spinner,
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -23,6 +20,7 @@ import ID from 'public/assets/images/flags/ID.png';
 import US from 'public/assets/images/flags/US.png';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Redirecting from '../popup/Redirecting';
 
 interface VariableHeader {
   className?: any;
@@ -79,32 +77,21 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
     });
     if (
       localStorage.getItem('accessToken') !== null &&
-      parseInt(localStorage.getItem('expiresAt') as string) >
-        Math.floor(Date.now() / 1000)
+      parseInt(localStorage.getItem('expiresAt') as string) > Date.now() / 1000
     ) {
       router
         .push('/homepage')
         .then()
         .catch(() => {});
       handleOpen();
+    } else {
+      localStorage.removeItem('accessToken');
     }
   }, []);
 
   return (
     <nav className={`fixed z-50 ${className as string} w-full bg-white`}>
-      <Dialog
-        open={open}
-        handler={handleOpen}
-        dismiss={{ enabled: false }}
-        size="xs"
-      >
-        <DialogBody className="flex justify-center items-center gap-2 rounded-3xl">
-          <Spinner color="teal" className="h-4 w-4 text-[#3AC4A0]/70" />
-          <Typography className="font-normal font-poppins text-base text-[#3AC4A0]">
-            Redirecting
-          </Typography>
-        </DialogBody>
-      </Dialog>
+      <Redirecting open={open} handleOpen={handleOpen} />
       {/* TODO: NEW HEADER */}
       <section className="xl:flex hidden justify-evenly h-20 items-center">
         <Link href="https://seeds.finance">
@@ -141,7 +128,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
         </section>
         <section className="flex items-center gap-8">
           <Link
-            href="/auth"
+            href="/auth2"
             className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
           >
             {t('header.join')}
@@ -246,7 +233,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
             })}
             <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
               <Link
-                href="/auth"
+                href="/auth2"
                 className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
               >
                 {t('header.join')}

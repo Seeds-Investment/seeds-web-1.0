@@ -7,7 +7,11 @@ import { Input, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { type DetailTournament, type Payment, type UserData } from './PaymentList';
+import {
+  type DetailTournament,
+  type Payment,
+  type UserData
+} from './PaymentList';
 import InlineText from './components/InlineText';
 
 interface WalletFormProps {
@@ -68,7 +72,7 @@ const WalletForm = ({
           Number(_discount)
         ).toFixed(2)}`
       );
-    } 
+    }
 
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
@@ -111,30 +115,24 @@ const WalletForm = ({
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label={
-           'Join Tournament'  
-        }
-        value={`${userInfo?.preferredCurrency } ${admissionFee}`}
+        label={'Join Tournament'}
+        value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${
-          payment.service_fee
-        }`}
+        value={`${userInfo?.preferredCurrency} ${payment.service_fee}`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency } ${adminFee}`}
+        value={`${userInfo?.preferredCurrency} ${adminFee}`}
         className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency } ${
-            payment.promo_price
-          }`}
+          value={`${userInfo?.preferredCurrency} ${payment.promo_price}`}
           className="mb-2"
         />
       ) : null}

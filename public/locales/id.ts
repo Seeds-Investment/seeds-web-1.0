@@ -297,6 +297,17 @@ export default {
           'Kami telah menerapkan teknologi dan kebijakan yang konsisten dengan aturan yang berlaku di Indonesia dengan tujuan melindungi privasi Anda dari akses yang tidak sah dan penggunaan yang tidak benar dan kami akan memperbarui langkah-langkah ini seiring perkembangan teknologi baru sesuai kebutuhan.'
         ]
       }
+    },
+    refundPolicy: {
+      title: 'Kebijakan Pengembalian Dana',
+      lastUpdated: 'Terakhir Perbarui: ',
+      date: '26 April 2022',
+      overview: {
+        title: ['Kebijakan Pengembalian Dana'],
+        desc: [
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .'
+        ]
+      }
     }
   },
   termAndCondition: {
@@ -567,13 +578,19 @@ export default {
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
     login: 'Masuk',
-    signup: 'Daftar'
+    signup: 'Daftar',
+    or: ' atau '
   },
   authLogin: {
     title1: 'Yuk, Masukan!',
     title2: 'Nomor telepon & kata sandi',
+    title3: 'Nomor telepon',
+    title4: 'Nama & nomor telepon',
     phone: 'Nomor Telepon',
+    name: 'Nama',
+    namePlaceholder: 'Tolong, masukan nama anda',
     password: 'Kata Sandi',
+    createPassword: 'Buat Kata Sandi',
     passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
     forgotPass: 'Lupa kata sandi?',
     login: 'Masuk',
@@ -1954,7 +1971,7 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20:'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan'
   },
   discover: {
     hotNews: 'Hot News',

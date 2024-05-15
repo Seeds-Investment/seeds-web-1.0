@@ -12,7 +12,7 @@ const withRedirect = async <T extends QueryType>(
   query?: T,
   pathname?: string
 ): Promise<void> => {
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );

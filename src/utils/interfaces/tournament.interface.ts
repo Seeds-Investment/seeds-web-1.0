@@ -82,9 +82,48 @@ export interface Community {
 }
 
 export interface UserInfo {
-  preferredCurrency: string;
-  seedsTag: string;
+  avatar: string;
+  badge: string;
+  bio: string;
+  birthDate: string;
+  claims: Claim
+  currentExp: number;
+  email: string;
+  email_verification: string;
+  followers: number;
+  following: number;
   id: string;
+  isPasswordExists: boolean;
+  label: string;
+  name: string;
+  phoneNumber: string;
+  pin: boolean;
+  posts: number;
+  preferredCurrency: string;
+  preferredLanguage: string;
+  refCode: string;
+  refCodeUsage: number;
+  region: string;
+  seedsTag: string;
+  verified: boolean;
+}
+
+interface Claim {
+  aud: string[];
+  avatar: string;
+  birthDate: string;
+  email: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  nbf: string;
+  phoneNumber: string;
+  preferredCurrency: string;
+  preferredLanguage: string;
+  refCode: string;
+  role: string;
+  seedsTag: string;
+  sub: string;
 }
 
 export interface BallanceTournament {

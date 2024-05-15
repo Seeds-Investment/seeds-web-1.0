@@ -1996,6 +1996,16 @@ export default {
       seeAll: "See All",
     }
   },
+  seedsEvent: {
+    search: "Search",
+    enter: "Enter",
+    past: "PAST",
+    today: "TODAY",
+    thisMonth: "THIS MONTH",
+    upcoming: "UPCOMING",
+    blank1: 'Opps,  There’s No Event Yet',
+    blank2: 'Stay tuned for more updates!',
+  },
   buyAsset: {
     text1: 'Assets to be purchased',
     text2: 'Assets to be sold',

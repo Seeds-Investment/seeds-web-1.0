@@ -328,11 +328,7 @@ export default {
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
-        title: [
-          'Refund Policy',
-          'General Policy',
-          'Refund Procedure',
-        ],
+        title: ['Refund Policy', 'General Policy', 'Refund Procedure'],
         desc: [
           'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.\t',
           "This Refund Policy is applied to the features provided by the Seeds Party. This policy constitutes the steps and methods regarding the refund procedures carried out by SEEDS towards Users.\t Events that can be categorized as Refund:\n a. When there is a problem with the application caused by SEEDS Parties\n b. In the event of the Play Arena Feature being unilaterally canceled by SEEDS due to noncompliance with the following requirements\n c. Refunds do not apply to Users who have :\t i. Paid for tickets in the SEEDS application and due to their negligence wish to apply for a refund\n ii. Set the premium circle price and want to apply for a refund for the user's negligence in setting the premium circle feature price.\t",

@@ -70,6 +70,7 @@ const month = [
   { ind: 'November', eng: 'November' },
   { ind: 'Desember', eng: 'December' }
 ];
+
 const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const monthNow = new Date().getMonth();
   const { t } = useTranslation();

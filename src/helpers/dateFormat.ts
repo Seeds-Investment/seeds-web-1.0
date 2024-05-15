@@ -18,6 +18,13 @@ export const generateFullDatetime = (dateString: string): string => {
   return result;
 };
 
+export const getShortDate = (date: string): string => {
+  const startDate = moment.utc(date);
+  const result = startDate.format('DD-MM-YYYY');
+
+  return result;
+};
+
 export const formatMonthlyChart = (date: Date): string[] => {
   const months: string[] = [];
 
@@ -33,4 +40,38 @@ export const formatMonthlyChart = (date: Date): string[] => {
     months.push(monthAbbreviation);
   }
   return months.reverse();
+};
+
+export const getLastUpdatedID = (date: Date): string => {
+
+  const monthsID: string[] = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`
+};
+
+export const getLastUpdatedEN = (date: Date): string => {
+
+  const monthsEN: string[] = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+  ];
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`
 };

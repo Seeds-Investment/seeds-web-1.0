@@ -328,9 +328,15 @@ export default {
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
-        title: ['Refund Policy'],
+        title: [
+          'Refund Policy',
+          'General Policy',
+          'Refund Procedure',
+        ],
         desc: [
-          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.'
+          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.\t',
+          "This Refund Policy is applied to the features provided by the Seeds Party. This policy constitutes the steps and methods regarding the refund procedures carried out by SEEDS towards Users.\t Events that can be categorized as Refund:\n a. When there is a problem with the application caused by SEEDS Parties\n b. In the event of the Play Arena Feature being unilaterally canceled by SEEDS due to noncompliance with the following requirements\n c. Refunds do not apply to Users who have :\t i. Paid for tickets in the SEEDS application and due to their negligence wish to apply for a refund\n ii. Set the premium circle price and want to apply for a refund for the user's negligence in setting the premium circle feature price.\t",
+          "Refund applied to paid features within the Seeds application including but not limited to:\na. Premium Circle\n b. Play Arena\n c. Play Quiz\t User who would like to refund are required to send 'Refund Request' via Email info@seeds.finance\t Refund Request includes:\n a. User's Full Name\n b. Phone Number\n c. User Account Name\n d. Email Address\n e. Refund Request Amount\n f. Evidence and reason for refund\t Seeds will verify the proof of application and proof of payment submited by user who have failed to make a payment for 3 working days.\t After verification by SEEDS Parties and the application cant be proven correct, SEEDS parties will transfer the refund either through banking institutions or through non-bank institutions (E-Money and / or e-wallet) based on the nominal value of the verification results by SEEDS.\t If it is proven that the refund application is not an authentic application from the verification by SEEDS, the application will get rejected and SEEDS reserves the right not to respond to the refund application.\t SEEDS reserves the right to take necessary legal action against any unauthentic refund requests by users."
         ]
       }
     },

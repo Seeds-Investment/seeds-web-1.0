@@ -3,7 +3,7 @@ import { editVerifyOtp, getOtp, verifyOtp } from '@/repository/auth.repository';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
 import { Button, Typography } from '@material-tailwind/react';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,15 +12,32 @@ import { toast } from 'react-toastify';
 interface IAuthOTP {
   select: number;
   number: string;
-  method: any;
-  setMethod: any;
-  getOTP: any;
-  countdown: any;
-  setCountdown: any;
-  setSelect: any;
-  image: any;
-  formData: any;
-  setFormData: any;
+  method: string;
+  setMethod: React.Dispatch<React.SetStateAction<string>>;
+  getOTP: {
+    method: string;
+    phoneNumber: string;
+  };
+  countdown: number | string;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
+  setSelect: React.Dispatch<React.SetStateAction<number>>;
+  image: StaticImageData;
+  formData: {
+    phoneNumber: string;
+    password: string;
+    oldPassword: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    oldPassword: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: { provider: string; identifier: string };
+    token: string;
+  }) => void;
 }
 
 const AuthOTP: React.FC<IAuthOTP> = ({
@@ -127,7 +144,20 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           onClick={() => {
             if (window.location.pathname !== '/auth/change-phone-number') {
               setMethod('sms');
-              setFormData({ ...formData, phoneNumber: '', password: '' });
+              setFormData({
+                ...formData,
+                phoneNumber: '',
+                password: '',
+                birthDate: '',
+                name: '',
+                seedsTag: '',
+                refCode: '',
+                provider: {
+                  provider: '',
+                  identifier: ''
+                },
+                token: ''
+              });
               setSelect(0);
             } else {
               router.back();
@@ -159,15 +189,17 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 await getOtp(getOTP);
                 setCountdown(60);
               }}
-              disabled={countdown > 0}
+              disabled={(countdown as number) > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
             <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
-              {countdown === 60
+              {(countdown as number) === 60
                 ? '01:00'
-                : `00:${countdown < 10 ? '0' : ''}${countdown as string}`}
+                : `00:${(countdown as number) < 10 ? '0' : ''}${
+                    countdown as string
+                  }`}
             </Typography>
           </div>
           <div className="flex justify-center w-full gap-6">
@@ -220,7 +252,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           <Button
             className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             onClick={handleMethodChange}
-            disabled={countdown > 0}
+            disabled={(countdown as number) > 0}
           >
             {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">

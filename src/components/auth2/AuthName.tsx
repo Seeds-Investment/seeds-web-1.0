@@ -1,12 +1,12 @@
 import { Input } from '@material-tailwind/react';
 
 interface IAuthName {
-  handleChange: any;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   formData: string;
   name: string;
   label: string;
   placeholder: string;
-  handleSubmit: any;
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const AuthName: React.FC<IAuthName> = ({

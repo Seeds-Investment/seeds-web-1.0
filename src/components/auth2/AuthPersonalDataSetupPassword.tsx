@@ -13,10 +13,35 @@ import AuthBoD from './AuthBoD';
 import AuthCommonInput from './AuthCommonInput';
 import AuthRefGuest from './AuthRefGuest';
 
-interface IAuthPersonalData {
+interface IAuthPersonalDataSetupPassword {
   className: string;
-  setFormData: any;
-  formData: any;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      oldPassword: string;
+      phoneNumber: string;
+      birthDate: string;
+      name: string;
+      seedsTag: string;
+      refCode: string;
+      password: string;
+      provider: { provider: string; identifier: string };
+      token: string;
+    }>
+  >;
+  formData: {
+    oldPassword: string;
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifier: string;
+    };
+    token: string;
+  };
   loginForm: {
     phoneNumber: string;
     password: string;
@@ -26,13 +51,22 @@ interface IAuthPersonalData {
   setSelect: (value: number) => void;
 }
 
-const AuthPersonalData: React.FC<IAuthPersonalData> = ({
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
+}
+
+const AuthPersonalDataSetupPassword: React.FC<
+  IAuthPersonalDataSetupPassword
+> = ({
   className,
   setFormData,
   formData,
   loginForm,
   setSelect
-}: IAuthPersonalData) => {
+}: IAuthPersonalDataSetupPassword) => {
   const router = useRouter();
   const { data } = useSession();
   const { t } = useTranslation();
@@ -116,14 +150,14 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
     }
   };
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: EventObject): void => {
     setBlank(false);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  const handleChangeTag = (e: any): void => {
+  const handleChangeTag = (e: EventObject): void => {
     setErrorTag(false);
     setBlankTag(false);
     setErrorRegex(false);
@@ -132,7 +166,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
     setErrorRegex(regex.test(updatedForm.seedsTag));
   };
 
-  const handleChangeDoB = (e: any): void => {
+  const handleChangeDoB = (e: EventObject): void => {
     const date = new Date(
       utcDate.getTime() - (timezoneOffset - 20) * 60 * 1000
     ).toISOString();
@@ -261,4 +295,4 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   );
 };
 
-export default AuthPersonalData;
+export default AuthPersonalDataSetupPassword;

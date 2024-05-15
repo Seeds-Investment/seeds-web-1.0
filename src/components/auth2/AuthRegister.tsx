@@ -1,6 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
-import AuthNumber2 from '@/components/auth2/AuthNumber2';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import withRedirect from '@/helpers/withRedirect';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
@@ -12,13 +12,46 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthSSO from './AuthSSO';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
+type SetLoginFormFunction = (value: {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
+}) => void;
 interface IAuthRegister {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  setCountdown: any;
-  countries: any;
+  setSelect: (value: number) => void;
+  formData: {
+    phoneNumber: string;
+    oldPassword: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: { provider: string; identifier: string };
+    token: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    oldPassword: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: { provider: string; identifier: string };
+    token: string;
+  }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
   method: string;
   loginForm: {
     phoneNumber: string;
@@ -26,7 +59,14 @@ interface IAuthRegister {
     platform: string;
     os_name: string;
   };
-  setLoginForm: any;
+  setLoginForm: SetLoginFormFunction;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthRegister: React.FC<IAuthRegister> = ({
@@ -48,34 +88,72 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   const [blankPass, setBlankPass] = useState(false);
   const [country, setCountry] = useState<number>(101);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     setBlank(false);
     if (formData.phoneNumber === dialCode) {
       setFormData({
         ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length)
+        phoneNumber: e.target.value.substring(dialCode.length),
+        birthDate: '',
+        name: '',
+        seedsTag: '',
+        refCode: '',
+        provider: {
+          provider: '',
+          identifier: ''
+        }
       });
     } else if (formData.phoneNumber === '0') {
       setFormData({
         ...formData,
-        phoneNumber: e.target.value.substring(1)
+        phoneNumber: e.target.value.substring(1),
+        birthDate: '',
+        name: '',
+        seedsTag: '',
+        refCode: '',
+        provider: {
+          provider: '',
+          identifier: ''
+        }
       });
     } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+        birthDate: '',
+        name: '',
+        seedsTag: '',
+        refCode: '',
+        provider: {
+          provider: '',
+          identifier: ''
+        }
+      });
     }
   };
-  const handleChangePass = (e: any): void => {
+  const handleChangePass = (e: EventObject): void => {
     setErrorPass(false);
     setBlankPass(false);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+      birthDate: '',
+      name: '',
+      seedsTag: '',
+      refCode: '',
+      provider: {
+        provider: '',
+        identifier: ''
+      }
+    });
   };
 
   const handleNext = async (): Promise<void> => {
     const formattedPhone = {
       ...formData,
-      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
-        formData.phoneNumber as string
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
       }`
     };
     const passTest = regex.test(formData.password);
@@ -134,7 +212,15 @@ const AuthRegister: React.FC<IAuthRegister> = ({
 
       setFormData({
         ...formData,
-        phoneNumber: cleanedPhoneNumber
+        phoneNumber: cleanedPhoneNumber,
+        birthDate: '',
+        name: '',
+        seedsTag: '',
+        refCode: '',
+        provider: {
+          provider: '',
+          identifier: ''
+        }
       });
     }
   }, []);
@@ -164,7 +250,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         {t('authLogin.title2')}
       </Typography>
       <div className="w-full">
-        <AuthNumber2
+        <AuthNumberWithErrorHandling
           handleChange={handleChange}
           formData={formData.phoneNumber}
           name="phoneNumber"

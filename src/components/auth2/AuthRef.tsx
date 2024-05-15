@@ -28,14 +28,42 @@ import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRef {
   open: boolean;
-  handleOpen: any;
-  setFormData: any;
-  formData: any;
+  handleOpen: () => void;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      phoneNumber: string;
+      birthDate: string;
+      name: string;
+      seedsTag: string;
+      refCode: string;
+      password: string;
+      provider: { provider: string; identifer: string };
+    }>
+  >;
+  formData: {
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifer: string;
+    };
+  };
   loginForm: {
     phoneNumber: string;
     password: string;
     platform: string;
     os_name: string;
+  };
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
   };
 }
 
@@ -140,7 +168,7 @@ const AuthRef: React.FC<IAuthRef> = ({
     }
   };
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: EventObject): void => {
     setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

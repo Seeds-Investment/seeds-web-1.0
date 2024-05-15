@@ -7,7 +7,7 @@ import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,14 +15,26 @@ import { toast } from 'react-toastify';
 
 interface IAuthOTPGuestRegister {
   select: number;
-  formData: any;
-  method: any;
-  setMethod: any;
-  countdown: any;
-  setCountdown: any;
-  setSelect: any;
-  image: any;
-  setFormData: any;
+  formData: {
+    phoneNumber: string;
+    method: string;
+    otp: string;
+    name: string;
+  };
+  method: string;
+  setMethod: (method: string) => void;
+  countdown: number | string;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
+  setSelect: React.Dispatch<React.SetStateAction<number>>;
+  image: StaticImageData;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      phoneNumber: string;
+      name: string;
+      method: string;
+      otp: string;
+    }>
+  >;
 }
 
 const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
@@ -120,8 +132,6 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
           otp: OTP
         });
 
-        console.log('ini adalah response register', responseRegister);
-
         if (
           Boolean(responseRegister) &&
           Boolean(responseRegister.accessToken)
@@ -165,12 +175,13 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
             );
             window.localStorage.setItem('isBannerOpen', 'true');
             await handleTracker();
-            setFormData({ ...formData, phoneNumber: '', password: '' });
+            // setFormData({ ...formData, phoneNumber: '', password: '' });
           }
         } else {
           setLoading(false);
           setError(true);
           console.error('Invalid or empty response from server');
+          toast.error('Invalid or empty response from server');
         }
       }
     } catch (error: any) {
@@ -183,7 +194,8 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
     void (async () => {
       try {
         await getOtp({ method, phoneNumber: formData.phoneNumber });
-      } catch (error) {
+      } catch (error: any) {
+        toast(error, { type: 'error' });
         console.error('Error fetching OTP:', error);
       }
     })();
@@ -231,15 +243,17 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
           <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
             <Button
               onClick={handleResendOTP}
-              disabled={countdown > 0}
+              disabled={(countdown as number) > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
             <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
-              {countdown === 60
+              {(countdown as number) === 60
                 ? '01:00'
-                : `00:${countdown < 10 ? '0' : ''}${countdown as string}`}
+                : `00:${(countdown as number) < 10 ? '0' : ''}${
+                    countdown as string
+                  }`}
             </Typography>
           </div>
           <div className="flex justify-center w-full gap-6">
@@ -292,7 +306,7 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
           <Button
             className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             onClick={handleMethodChange}
-            disabled={countdown > 0}
+            disabled={(countdown as number) > 0}
           >
             {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">

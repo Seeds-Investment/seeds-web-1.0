@@ -7,14 +7,35 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
 interface IAuthForgotPassNumber {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  setCountdown: any;
-  countries: any;
+  setSelect: (value: number) => void;
+  formData: {
+    oldPassword: string;
+    password: string;
+    phoneNumber: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    oldPassword: string;
+    password: string;
+  }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
   method: string;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
@@ -27,9 +48,9 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   method
 }: IAuthForgotPassNumber) => {
   const { t } = useTranslation();
-  const [error, setError] = useState(false);
-  const [country, setCountry] = useState(101);
-  const handleChange = (e: any, dialCode: any): void => {
+  const [error, setError] = useState<boolean>(false);
+  const [country, setCountry] = useState<number>(101);
+  const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     if (formData.phoneNumber === dialCode) {
       setFormData({
@@ -49,8 +70,8 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   const handleNext = async (): Promise<void> => {
     const formattedPhone = {
       ...formData,
-      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
-        formData.phoneNumber as string
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
       }`
     };
     try {

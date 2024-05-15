@@ -23,6 +23,7 @@ const Register: React.FC = () => {
   const { data } = useSession();
   const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
+    oldPassword: '',
     phoneNumber: '',
     birthDate: '',
     name: '',
@@ -32,7 +33,8 @@ const Register: React.FC = () => {
     provider: {
       provider: '',
       identifier: ''
-    }
+    },
+    token: ''
   });
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',

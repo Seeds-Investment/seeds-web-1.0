@@ -1,7 +1,7 @@
 import { Input } from '@material-tailwind/react';
 
 interface IAuthCommonInput {
-  handleChange: any;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   formData: string;
   placeholder: string;
   label: string;
@@ -9,7 +9,7 @@ interface IAuthCommonInput {
   name: string;
   error: boolean;
   required: boolean;
-  handleSubmit: (e: any) => void;
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const AuthCommonInput: React.FC<IAuthCommonInput> = ({

@@ -5,13 +5,16 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface IAuthPassword {
-  handleChange: any;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dialCode: string
+  ) => void;
   formData: string;
   error: boolean;
   name: string;
   label: string;
   placeholder: string;
-  handleSubmit: any;
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const AuthPassword: React.FC<IAuthPassword> = ({

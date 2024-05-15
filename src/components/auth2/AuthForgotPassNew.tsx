@@ -7,15 +7,28 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-
 interface IAuthForgotPassNew {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  handleOpen: any;
+  setSelect: (value: number) => void;
+  formData: {
+    oldPassword: string;
+    password: string;
+    phoneNumber: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    password: string;
+    oldPassword: string;
+  }) => void;
+  handleOpen: () => void;
 }
 
+interface FormInputChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+  target: HTMLInputElement & {
+    name: string;
+    value: string;
+  };
+}
 const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
   className,
   formData,
@@ -26,11 +39,11 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const handlePass = (e: any): void => {
+  const handlePass = (e: FormInputChangeEvent): void => {
     setErrorPass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleRepass = (e: any): void => {
+  const handleRepass = (e: FormInputChangeEvent): void => {
     setErrorRepass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

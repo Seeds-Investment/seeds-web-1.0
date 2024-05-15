@@ -1,6 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
-import AuthNumber2 from '@/components/auth2/AuthNumber2';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import countries from '@/constants/countries.json';
 import TrackerEvent from '@/helpers/GTM';
@@ -91,7 +91,10 @@ const AuthLogin: React.FC = () => {
     }
   };
 
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dialCode: string
+  ): void => {
     setError(false);
     if (formData.phoneNumber === dialCode) {
       setFormData({
@@ -157,7 +160,7 @@ const AuthLogin: React.FC = () => {
         <br />
         {t('authLogin.title2')}
       </Typography>
-      <AuthNumber2
+      <AuthNumberWithErrorHandling
         handleChange={handleChange}
         formData={formData.phoneNumber}
         name="phoneNumber"

@@ -12,12 +12,12 @@ import { useTranslation } from 'react-i18next';
 interface IAuthBoD {
   error: boolean;
   day: number | undefined;
-  setDay: any;
+  setDay: (day: number) => void;
   month: number | undefined;
-  setMonth: any;
+  setMonth: (month: number) => void;
   year: number | undefined;
-  setYear: any;
-  handleChangeDoB: (e: any) => void;
+  setYear: (year: number) => void;
+  handleChangeDoB: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const AuthBoD: React.FC<IAuthBoD> = ({
@@ -144,7 +144,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                   return (
                     <Typography
                       ref={day === value ? dayRef : null}
-                      onClick={() => setDay(value)}
+                      onClick={() => {
+                        setDay(value);
+                      }}
                       className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                         day === value
                           ? 'text-[#3AC4A0] font-semibold'
@@ -162,7 +164,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                   return (
                     <Typography
                       ref={day === value ? dayRef : null}
-                      onClick={() => setDay(value)}
+                      onClick={() => {
+                        setDay(value);
+                      }}
                       className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                         day === value
                           ? 'text-[#3AC4A0] font-semibold'
@@ -182,7 +186,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                     return (
                       <Typography
                         ref={day === value ? dayRef : null}
-                        onClick={() => setDay(value)}
+                        onClick={() => {
+                          setDay(value);
+                        }}
                         className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
@@ -201,7 +207,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                     return (
                       <Typography
                         ref={day === value ? dayRef : null}
-                        onClick={() => setDay(value)}
+                        onClick={() => {
+                          setDay(value);
+                        }}
                         className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
@@ -219,7 +227,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
                     return (
                       <Typography
                         ref={day === value ? dayRef : null}
-                        onClick={() => setDay(value)}
+                        onClick={() => {
+                          setDay(value);
+                        }}
                         className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
                           day === value
                             ? 'text-[#3AC4A0] font-semibold'
@@ -237,7 +247,9 @@ const AuthBoD: React.FC<IAuthBoD> = ({
               return (
                 <Typography
                   ref={month === index ? monthRef : null}
-                  onClick={() => setMonth(index)}
+                  onClick={() => {
+                    setMonth(index);
+                  }}
                   className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md px-2 me-3 ${
                     month === index
                       ? 'text-[#3AC4A0] font-semibold'

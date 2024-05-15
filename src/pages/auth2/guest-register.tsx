@@ -15,7 +15,7 @@ const GuestRegister: React.FC = () => {
   const { data } = useSession();
   const [select, setSelect] = useState(0);
   const [formData, setFormData] = useState({
-    phone_number: '',
+    phoneNumber: '',
     name: '',
     method: 'sms',
     otp: ''

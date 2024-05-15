@@ -7,7 +7,7 @@ import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +15,17 @@ import { toast } from 'react-toastify';
 
 interface IAuthOTPGuestLogin {
   select: number;
-  formData: any;
-  method: any;
-  setMethod: any;
-  countdown: any;
-  setCountdown: any;
-  setSelect: any;
-  image: any;
+  formData: {
+    phoneNumber: string;
+    method: string;
+    otp: string;
+  };
+  method: string;
+  setMethod: (method: string) => void;
+  countdown: number | string;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
+  setSelect: React.Dispatch<React.SetStateAction<number>>;
+  image: StaticImageData;
 }
 
 const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
@@ -167,8 +171,6 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
     }
   };
 
-  console.log('isi data', formData);
-
   useEffect(() => {
     if (formData.phoneNumber !== '') {
       void (async () => {
@@ -177,7 +179,8 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
             await getOtp({ method, phoneNumber: formData.phoneNumber });
             setCountdown(60);
           }
-        } catch (error) {
+        } catch (error: any) {
+          toast(error, { type: 'error' });
           console.error('Error fetching OTP:', error);
         }
       })();
@@ -226,15 +229,17 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
           <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
             <Button
               onClick={handleResendOTP}
-              disabled={countdown > 0}
+              disabled={(countdown as number) > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
             <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
-              {countdown === 60
+              {(countdown as number) === 60
                 ? '01:00'
-                : `00:${countdown < 10 ? '0' : ''}${countdown as string}`}
+                : `00:${(countdown as number) < 10 ? '0' : ''}${
+                    countdown as string
+                  }`}
             </Typography>
           </div>
           <div className="flex justify-center w-full gap-6">
@@ -287,7 +292,7 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
           <Button
             className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             onClick={handleMethodChange}
-            disabled={countdown > 0}
+            disabled={(countdown as number) > 0}
           >
             {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">

@@ -15,13 +15,29 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthSSO from './AuthSSO';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
 interface IAuthCheckNumber {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  setCountdown: any;
-  countries: any;
+  setSelect: (value: number) => void;
+  formData: {
+    phoneNumber: string;
+  };
+  setFormData: (value: { phoneNumber: string }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
@@ -35,7 +51,7 @@ const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
   const { t } = useTranslation();
   const [country, setCountry] = useState(101);
   const router = useRouter();
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (e: EventObject, dialCode: string): void => {
     if (formData.phoneNumber === dialCode) {
       setFormData({
         ...formData,
@@ -54,8 +70,8 @@ const AuthCheckNumber: React.FC<IAuthCheckNumber> = ({
   const handleNext = async (): Promise<void> => {
     const formattedPhone = {
       ...formData,
-      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
-        formData.phoneNumber as string
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
       }`
     };
     try {

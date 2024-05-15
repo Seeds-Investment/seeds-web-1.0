@@ -15,8 +15,29 @@ import AuthRef from './AuthRef';
 
 interface IAuthPersonalData {
   className: string;
-  setFormData: any;
-  formData: any;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      phoneNumber: string;
+      birthDate: string;
+      name: string;
+      seedsTag: string;
+      refCode: string;
+      password: string;
+      provider: { provider: string; identifer: string };
+    }>
+  >;
+  formData: {
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifer: string;
+    };
+  };
   loginForm: {
     phoneNumber: string;
     password: string;
@@ -24,6 +45,13 @@ interface IAuthPersonalData {
     os_name: string;
   };
   setSelect: (value: number) => void;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthPersonalData: React.FC<IAuthPersonalData> = ({
@@ -116,14 +144,14 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
     }
   };
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: EventObject): void => {
     setBlank(false);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  const handleChangeTag = (e: any): void => {
+  const handleChangeTag = (e: EventObject): void => {
     setErrorTag(false);
     setBlankTag(false);
     setErrorRegex(false);

@@ -11,15 +11,24 @@ import {
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
 interface IAuthNumber {
-  handleChange: any;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dialCode: string
+  ) => void;
   formData: string;
   name: string;
   country: number;
-  setCountry: any;
-  countries: any;
+  setCountry: (index: number) => void;
+  countries: Country[];
   // error: boolean;
-  handleSubmit: (e: any) => void;
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const AuthNumber: React.FC<IAuthNumber> = ({
@@ -46,9 +55,9 @@ const AuthNumber: React.FC<IAuthNumber> = ({
               className="absolute left-4 z-10 flex p-0 gap-2 items-center rounded-none hover:bg-transparent focus:border-none"
             >
               <img
-                src={`https://flagcdn.com/${
-                  countries[country]?.code.toLowerCase() as string
-                }.svg`}
+                src={`https://flagcdn.com/${countries[
+                  country
+                ]?.code.toLowerCase()}.svg`}
                 alt={countries[country].name}
                 className="h-4 w-7 object-cover"
               />
@@ -94,9 +103,9 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           pattern="[0-9]"
           value={formData}
           onKeyDown={handleSubmit}
-          onChange={() =>
-            handleChange(event, countries[country].dialCode.replace('+', ''))
-          }
+          onChange={() => {
+            handleChange(event, countries[country].dialCode.replace('+', ''));
+          }}
           onWheel={e => {
             const target = e.target as HTMLInputElement;
             target.blur();

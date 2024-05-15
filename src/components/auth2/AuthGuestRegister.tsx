@@ -1,7 +1,7 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthName from '@/components/auth2/AuthName';
-import AuthNumber2 from '@/components/auth2/AuthNumber2';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
 import withRedirect from '@/helpers/withRedirect';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
@@ -12,13 +12,38 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthSSO from './AuthSSO';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
+type SetLoginFormFunction = (value: {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  name: string;
+  os_name: string;
+}) => void;
+
 interface IAuthGuestRegister {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  setCountdown: any;
-  countries: any;
+  setSelect: (value: number) => void;
+  formData: {
+    phoneNumber: string;
+    name: string;
+    method: string;
+    otp: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    name: string;
+    method: string;
+    otp: string;
+  }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
   method: string;
   loginForm: {
     phoneNumber: string;
@@ -26,7 +51,14 @@ interface IAuthGuestRegister {
     platform: string;
     os_name: string;
   };
-  setLoginForm: any;
+  setLoginForm: SetLoginFormFunction;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
@@ -42,11 +74,11 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
 }: IAuthGuestRegister) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [error, setError] = useState(false);
-  const [blank, setBlank] = useState(false);
+  const [error, setError] = useState<boolean>(false);
+  const [blank, setBlank] = useState<boolean>(false);
   const [country, setCountry] = useState<number>(101);
 
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     setBlank(false);
     if (formData.phoneNumber === dialCode) {
@@ -67,8 +99,8 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
   const handleNext = async (): Promise<void> => {
     const formattedPhone = {
       ...formData,
-      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
-        formData.phoneNumber as string
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
       }`
     };
     try {
@@ -85,7 +117,8 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
         setLoginForm({
           ...loginForm,
           phoneNumber: formattedPhone.phoneNumber,
-          name: formData.name
+          name: formData.name,
+          password: ''
         });
       }
     } catch (error: any) {
@@ -151,9 +184,9 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
       </Typography>
       <div className="w-full">
         <AuthName
-          handleChange={(e: any) =>
-            setFormData({ ...formData, name: e.target.value })
-          }
+          handleChange={(e: any) => {
+            setFormData({ ...formData, name: e.target.value });
+          }}
           formData={formData.name}
           name="name"
           label={t('authLogin.name').toString()}
@@ -166,7 +199,7 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
         />
       </div>
       <div className="w-full">
-        <AuthNumber2
+        <AuthNumberWithErrorHandling
           handleChange={handleChange}
           formData={formData.phoneNumber}
           name="phoneNumber"

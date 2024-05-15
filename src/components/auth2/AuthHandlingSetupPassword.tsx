@@ -1,6 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
-import AuthNumber2 from '@/components/auth2/AuthNumber2';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import withRedirect from '@/helpers/withRedirect';
 import { getOtp } from '@/repository/auth.repository';
@@ -12,13 +12,52 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import AuthSSO from './AuthSSO';
 
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+
+type SetLoginFormFunction = (value: {
+  phoneNumber: string;
+  password: string;
+  platform: string;
+  os_name: string;
+}) => void;
 interface IAuthHandlingSetupPassword {
   className: string;
-  setSelect: any;
-  formData: any;
-  setFormData: any;
-  setCountdown: any;
-  countries: any;
+  setSelect: (value: number) => void;
+  formData: {
+    oldPassword: string;
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifier: string;
+    };
+    token: string;
+  };
+  setFormData: (value: {
+    oldPassword: string;
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifier: string;
+    };
+    token: string;
+  }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
   method: string;
   loginForm: {
     phoneNumber: string;
@@ -26,7 +65,14 @@ interface IAuthHandlingSetupPassword {
     platform: string;
     os_name: string;
   };
-  setLoginForm: any;
+  setLoginForm: SetLoginFormFunction;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
 }
 
 const AuthHandlingSetupPassword: React.FC<IAuthHandlingSetupPassword> = ({
@@ -42,13 +88,13 @@ const AuthHandlingSetupPassword: React.FC<IAuthHandlingSetupPassword> = ({
 }: IAuthHandlingSetupPassword) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [error, setError] = useState(false);
-  const [errorPass, setErrorPass] = useState(false);
-  const [blank, setBlank] = useState(false);
-  const [blankPass, setBlankPass] = useState(false);
+  const [error, setError] = useState<boolean>(false);
+  const [errorPass, setErrorPass] = useState<boolean>(false);
+  const [blank, setBlank] = useState<boolean>(false);
+  const [blankPass, setBlankPass] = useState<boolean>(false);
   const [country, setCountry] = useState<number>(101);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const handleChange = (e: any, dialCode: any): void => {
+  const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     setBlank(false);
     if (formData.phoneNumber === dialCode) {
@@ -74,8 +120,8 @@ const AuthHandlingSetupPassword: React.FC<IAuthHandlingSetupPassword> = ({
   const handleNext = async (): Promise<void> => {
     const formattedPhone = {
       ...formData,
-      phoneNumber: `${countries[country].dialCode.replace('+', '') as string}${
-        formData.phoneNumber as string
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
       }`
     };
     const passTest = regex.test(formData.password);
@@ -159,7 +205,7 @@ const AuthHandlingSetupPassword: React.FC<IAuthHandlingSetupPassword> = ({
         {t('authLogin.title2')}
       </Typography>
       <div className="w-full">
-        <AuthNumber2
+        <AuthNumberWithErrorHandling
           handleChange={handleChange}
           formData={formData.phoneNumber}
           name="phoneNumber"

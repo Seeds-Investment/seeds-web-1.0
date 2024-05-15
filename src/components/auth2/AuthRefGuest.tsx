@@ -28,14 +28,46 @@ import AuthCommonInput from './AuthCommonInput';
 
 interface IAuthRefGuest {
   open: boolean;
-  handleOpen: any;
-  setFormData: any;
-  formData: any;
+  handleOpen: () => void;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      oldPassword: string;
+      phoneNumber: string;
+      birthDate: string;
+      name: string;
+      seedsTag: string;
+      refCode: string;
+      password: string;
+      provider: { provider: string; identifier: string };
+      token: string;
+    }>
+  >;
+  formData: {
+    oldPassword: string;
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifier: string;
+    };
+    token: string;
+  };
   loginForm: {
     phoneNumber: string;
     password: string;
     platform: string;
     os_name: string;
+  };
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
   };
 }
 
@@ -114,12 +146,12 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
       const formDataForEdit = {
         name: formData.name,
         seedsTag: formData.seedsTag,
-        email: formData.email,
-        pin: formData.pin,
-        avatar: formData.avatar,
-        bio: formData.bio,
+        email: '',
+        pin: '',
+        avatar: '',
+        bio: '',
         birthDate: formData.birthDate,
-        phone: formData.phone,
+        phone: '',
         myAccessToken: formData.token
       };
       const response = await editGuestInfo(formDataForEdit);
@@ -141,12 +173,12 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
       const formDataForEdit = {
         name: formData.name,
         seedsTag: formData.seedsTag,
-        email: formData.email,
-        pin: formData.pin,
-        avatar: formData.avatar,
-        bio: formData.bio,
+        email: '',
+        pin: '',
+        avatar: '',
+        bio: '',
         birthDate: formData.birthDate,
-        phone: formData.phone,
+        phone: '',
         myAccessToken: formData.token
       };
       const response = await editGuestInfo(formDataForEdit);
@@ -162,7 +194,7 @@ const AuthRefGuest: React.FC<IAuthRefGuest> = ({
     }
   };
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: EventObject): void => {
     setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

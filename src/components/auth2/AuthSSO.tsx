@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import AuthGoogle from '@/assets/auth/AuthGoogle.png';
 import queryList from '@/helpers/queryList';
 import withRedirect from '@/helpers/withRedirect';

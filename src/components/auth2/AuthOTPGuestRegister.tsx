@@ -199,10 +199,11 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
         console.error('Error fetching OTP:', error);
       }
     })();
-  }, []);
+  }, [formData.phoneNumber]);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [select === 1]);
 
   return (

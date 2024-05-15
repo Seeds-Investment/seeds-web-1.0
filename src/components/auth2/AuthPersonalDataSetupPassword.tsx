@@ -265,7 +265,7 @@ const AuthPersonalDataSetupPassword: React.FC<
           setMonth={setMonth}
           year={year}
           setYear={setYear}
-          handleChangeDoB={handleChangeDoB}
+          handleChangeDoB={handleChangeDoB as any}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
           {blankDoB && errorDoB ? (

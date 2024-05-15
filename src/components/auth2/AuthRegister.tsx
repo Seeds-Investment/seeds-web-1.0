@@ -36,7 +36,7 @@ interface IAuthRegister {
     seedsTag: string;
     refCode: string;
     password: string;
-    provider: { provider: string; identifier: string };
+    provider: { provider: string; identifer: string };
     token: string;
   };
   setFormData: (value: {
@@ -47,7 +47,7 @@ interface IAuthRegister {
     seedsTag: string;
     refCode: string;
     password: string;
-    provider: { provider: string; identifier: string };
+    provider: { provider: string; identifer: string };
     token: string;
   }) => void;
   setCountdown: (value: number) => void;
@@ -101,7 +101,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         refCode: '',
         provider: {
           provider: '',
-          identifier: ''
+          identifer: ''
         }
       });
     } else if (formData.phoneNumber === '0') {
@@ -114,7 +114,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         refCode: '',
         provider: {
           provider: '',
-          identifier: ''
+          identifer: ''
         }
       });
     } else {
@@ -127,7 +127,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         refCode: '',
         provider: {
           provider: '',
-          identifier: ''
+          identifer: ''
         }
       });
     }
@@ -144,7 +144,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       refCode: '',
       provider: {
         provider: '',
-        identifier: ''
+        identifer: ''
       }
     });
   };
@@ -219,11 +219,11 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         refCode: '',
         provider: {
           provider: '',
-          identifier: ''
+          identifer: ''
         }
       });
     }
-  }, []);
+  }, [router.query]);
 
   return (
     <div

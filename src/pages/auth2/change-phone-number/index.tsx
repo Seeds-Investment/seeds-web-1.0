@@ -61,10 +61,10 @@ const ChangeNumber: React.FC = () => {
         setMethod={setMethod}
         countdown={countdown}
         setCountdown={setCountdown}
-        getOTP={getOTP}
+        getOTP={getOTP as any}
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
-        formData={formData}
+        formData={formData as any}
         setFormData={setFormData}
       />
     </>

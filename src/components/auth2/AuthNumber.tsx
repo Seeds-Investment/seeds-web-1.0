@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import {
   Button,
@@ -27,7 +28,6 @@ interface IAuthNumber {
   country: number;
   setCountry: (index: number) => void;
   countries: Country[];
-  // error: boolean;
   handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
@@ -38,7 +38,6 @@ const AuthNumber: React.FC<IAuthNumber> = ({
   country,
   countries,
   setCountry,
-  // error,
   handleSubmit
 }: IAuthNumber) => {
   const { t } = useTranslation();
@@ -104,7 +103,10 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           value={formData}
           onKeyDown={handleSubmit}
           onChange={() => {
-            handleChange(event, countries[country].dialCode.replace('+', ''));
+            handleChange(
+              event as any,
+              countries[country].dialCode.replace('+', '')
+            );
           }}
           onWheel={e => {
             const target = e.target as HTMLInputElement;

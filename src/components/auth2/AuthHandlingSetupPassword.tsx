@@ -178,7 +178,7 @@ const AuthHandlingSetupPassword: React.FC<IAuthHandlingSetupPassword> = ({
         phoneNumber: cleanedPhoneNumber
       });
     }
-  }, []);
+  }, [router.query]);
 
   return (
     <div

@@ -21,7 +21,7 @@ interface LoginFormData {
 const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
   const { data } = useSession();
-  const [select, setSelect] = useState(0);
+  const [select, setSelect] = useState<number>(0);
   const [formData, setFormData] = useState({
     oldPassword: '',
     phoneNumber: '',
@@ -32,7 +32,7 @@ const Register: React.FC = () => {
     password: '',
     provider: {
       provider: '',
-      identifier: ''
+      identifer: ''
     },
     token: ''
   });
@@ -84,7 +84,7 @@ const Register: React.FC = () => {
         }`,
         provider: {
           provider: data?.provider ?? '',
-          identifier: data?.accessToken ?? ''
+          identifer: data?.accessToken ?? ''
         }
       });
     }

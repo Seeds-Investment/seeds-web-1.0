@@ -303,9 +303,15 @@ export default {
       lastUpdated: 'Terakhir Perbarui: ',
       date: '26 April 2022',
       overview: {
-        title: ['Kebijakan Pengembalian Dana'],
+        title: [
+          'Kebijakan Pengembalian Dana',
+          'Kebijakan Umum',
+          'Prosedur Pengembalian Dana'
+        ],
         desc: [
-          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .'
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini.\t',
+          "Kebijakan Pengembalian dana ini berlaku terhadap fitur-fitur yang disediakan oleh Pihak Seeds. Kebijakan ini merupakan langkah dan metode tentang prosedur pengembalian dana yang dilakukan oleh SEEDS terhadap Pengguna\t Kejadian yang dapat dikategorikan sebagai Pengembalian Dana :\n a. Saat terjadi kendala pada aplikasi yang diakibatkan oleh Pihak SEEDS\n b. Dalam hal Fitur Play Arena dibatalkan secara sepihak oleh SEEDS karena tidak memenuhi persyaratan\n c. Pengembalian dana tidak berlaku terhadap Pengguna yang telah :\n i. membayar tiket dalam aplikasi SEEDS dan karena kelalaiannya ingin mengajukan pengembalian dana\n ii.menetapkan harga premium circle dan ingin mengajukan pengembalian dana atas kelalaian pengguna menetapkan harga fitur premium circle.\t",
+          "Pengembalian dana berlaku terhadap fitur berbayar dalam aplikasi SEEDS termasuk namun tidak terbatas pada:\n a. Premium Circle\n b. Play Arena\n c. Play Quiz\t Pengguna yang hendak mengajukan pengembalian dana wajib untuk mengirimkan 'Permohonan Pengembalian Dana' melalui email info@seeds.finance\t Permohonan Pengembalian dana mencakup :\n a.Nama Lengkap Pengguna\n b. Nomor Telepon\n c. Nama Akun Pengguna\n d. Alamat Email\n e. Nominal Permohonan Pengembalian Dana\n f. Bukti dan alasan pengembalian dana\t Pihak SEEDS akan melakukan verifikasi terhadap bukti permohonan dan bukti pembayaran yang diajukan oleh user yang mengalami gagal bayar selama 3 hari kerja.\t Setelah dilakukan verifikasi oleh Pihak SEEDS dan permohonan tersebut dapat dibuktikan kebenarannya, Pihak SEEDS akan melakukan pengembalian dana dengan cara transfer baik melalui lembaga perbankan atau melalui lembaga non bank (E-Money dan/atau e-wallet) berdasarkan nilai nominal dari hasil verifikasi oleh SEEDS.\t Jika terbukti permohonan pengembalian dana bukan merupakan permohonan yang otentik dari hasil verifikasi oleh SEEDS, Permohonan akan ditolak dan SEEDS berhak untuk tidak merespon permohonan pengembalian dana.\t SEEDS berhak untuk mengambil langkah hukum yang diperlukan terhadap permohonan pengembalian dana yang tidak otentik oleh pengguna."
         ]
       }
     }

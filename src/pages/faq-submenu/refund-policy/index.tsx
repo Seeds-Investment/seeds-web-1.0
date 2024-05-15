@@ -97,13 +97,20 @@ const RefundPolicy: React.FC = () => {
 
                 return (
                   <div key={index}>
-                    <p className="font-bold">{title}</p>
-                    <div className="text-justify">
-                      {description.split('\n').map((paragraph, index) => (
-                        <>
-                          <p key={index}>{paragraph}</p>
-                        </>
-                      ))}
+                    <div key={index}>
+                      <p className="font-bold">{title}</p>
+                      <div className="text-justify">
+                        {description.split('\n').map((paragraph, index) => {
+                          const paragraphsWithTab = paragraph.split('\t');
+
+                          return paragraphsWithTab.map((subParagraph, subIndex) => (
+                            <div key={`${index}-${subIndex}`}>
+                              <p>{subParagraph}</p>
+                              {subIndex < paragraphsWithTab.length - 1 && <p>&nbsp;</p>}
+                            </div>
+                          ));
+                        })}
+                      </div>
                     </div>
                   </div>
                 );

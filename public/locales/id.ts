@@ -1793,9 +1793,9 @@ export default {
     detailAccessCode: 'Masukan Access Code',
     detailBannerTotalRewards: 'Total Hadiah',
     entranceFee: 'Biaya Pendaftaran',
-    shareArena: "Bagikan Arena Ini",
-    shareLinks: "Bagikan Link",
-    playId: "ID Permainan",
+    shareArena: 'Bagikan Arena Ini',
+    shareLinks: 'Bagikan Link',
+    playId: 'ID Permainan',
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
@@ -1910,9 +1910,12 @@ export default {
       }
     },
     floatingButton: {
-      text1: "Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!",
-      text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
-      text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
+      text1:
+        'Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!',
+      text2:
+        'Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi',
+      text3:
+        'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
       watchlist: 'Daftar Pantau',
@@ -1942,14 +1945,14 @@ export default {
     }
   },
   seedsEvent: {
-    search: "Cari event",
-    enter: "Cari",
-    past: "BERAKHIR",
-    today: "HARI INI",
-    thisMonth: "BULAN INI",
-    upcoming: "AKAN DATANG",
+    search: 'Cari event',
+    enter: 'Cari',
+    past: 'BERAKHIR',
+    today: 'HARI INI',
+    thisMonth: 'BULAN INI',
+    upcoming: 'AKAN DATANG',
     blank1: 'Ups,  Belum Ada Event',
-    blank2: 'Nantikan untuk update lainnya!',
+    blank2: 'Nantikan untuk update lainnya!'
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',
@@ -2053,5 +2056,26 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+
+  playCenter: {
+    text1: 'Permainan Terakhir Saya',
+    text2: 'Papan Peringkat',
+    text3: 'Yuk, cek detail skormu di sini!',
+    text4: 'Durasi',
+    text5: 'hari',
+    text6: 'Cari',
+    text7: 'Daftar Quiz',
+    text8: 'Quiz Teratas',
+    text9: 'Terakhir diupdate : ',
+    text10: 'Peringkatmu saat ini',
+    text11: 'Sistem Penilaian',
+    text12: 'Juara pertama mendapat 500 poin',
+    text13: 'Juara kedua mendapat 300 poin',
+    text14: 'Juara ketiga mendapat 100 poin',
+    text15: 'Peserta 50 poin',
+    text16: 'Musim',
+    text17: 'Kapan saja'
   }
 };
+ 

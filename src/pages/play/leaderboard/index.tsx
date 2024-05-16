@@ -1,13 +1,22 @@
+import IconClock from '@/assets/play/tournament/clock.svg';
 import { getLeaderGlobal, getUserRank } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  Typography
+} from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leftLeader from '../../../../public/assets/images/leftLeader.svg';
 import rank1Box from '../../../../public/assets/images/rank1Box.svg';
 import rank2Box from '../../../../public/assets/images/rank2Box.svg';
 import rank3Box from '../../../../public/assets/images/rank3Box.svg';
+import rightLeader from '../../../../public/assets/images/rightLeader.svg';
 
 interface LeaderBoardGlobal {
   user_id: string;
@@ -56,9 +65,15 @@ interface UserRank {
   label: string;
 }
 
+interface TimeRemaining {
+  d: string;
+  h: string;
+  m: string;
+}
+
 const LeaderBoardGlobalPage = (): React.ReactElement => {
   const router = useRouter();
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('season');
   const [leaderBoardGlobal, setLeaderBoardGlobal] = useState<
     LeaderBoardGlobal[]
@@ -127,31 +142,134 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
       .catch(() => {});
   }, [filter]);
 
+  const getLeaderboardTimeRemaining = (): TimeRemaining => {
+    const now: Date = new Date();
+    const startOfYear: Date = new Date(now.getFullYear(), 0, 1);
+    const quarter = Math.floor(
+      (now.getTime() - startOfYear.getTime()) /
+        (24 * 60 * 60 * 1000) /
+        (365.25 / 4)
+    );
+    const nextQuarterStart: Date = new Date(
+      now.getFullYear(),
+      quarter * 3 + 3,
+      1
+    );
+
+    if (quarter === 3) {
+      nextQuarterStart.setFullYear(nextQuarterStart.getFullYear() + 1);
+      nextQuarterStart.setMonth(0);
+    }
+
+    const diff: number = nextQuarterStart.getTime() - now.getTime();
+
+    const days: number = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours: number = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes: number = Math.floor((diff / (1000 * 60)) % 60);
+
+    // Convert to strings for formatting
+    const daysStr: string = days.toString().padStart(2, '0');
+    const hoursStr: string = hours.toString().padStart(2, '0');
+    const minutesStr: string = minutes.toString().padStart(2, '0');
+
+    return {
+      d: daysStr,
+      h: hoursStr,
+      m: minutesStr
+    };
+  };
+
+  const leaderboardTimeRemaining = getLeaderboardTimeRemaining();
+
   return (
     <>
-      <div className="w-full h-auto justify-center cursor-default bg-white">
-        <div className="relative justify-center font-poppins bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl">
-          <div className="flex justify-center text-center gap-2">
+      <div className="w-full h-auto justify-center cursor-default bg-white font-poppins">
+        <div className="relative font-poppins bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl pt-5">
+          <Image
+            src={leftLeader}
+            alt="Next"
+            width={32}
+            height={32}
+            className="hidden md:block absolute left-[20px] top-[15px] w-[165px] z-10"
+          />
+          <Image
+            src={rightLeader}
+            alt="Next"
+            width={32}
+            height={32}
+            className="hidden md:block absolute right-[20px] top-[80px] w-[165px] z-10"
+          />
+          {activeTab !== 'all' && (
+            <div className="bg-white text-[#3AC4A0] flex gap-1 text-xs ml-auto mr-2  justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-[12%]">
+              <Image alt="" src={IconClock} className="w-[14px] mr-1 my-auto" />
+              {Object.entries(leaderboardTimeRemaining).map(
+                ([key, value], index) => (
+                  <span key={index}>
+                    {value}
+                    {key}{' '}
+                  </span>
+                )
+              )}
+            </div>
+          )}
+          <div className="flex justify-center text-center gap-2 lg:mt-[-20px]">
             <h1 className="text-white text-lg font-semibold my-3">
-              Leaderboard
+              {t('playCenter.text2')}
             </h1>
-            <svg
-              width="21"
-              height="20"
-              viewBox="0 0 21 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="my-auto"
-            >
-              <path
-                d="M10.5 0.25C8.57164 0.25 6.68657 0.821828 5.08319 1.89317C3.47982 2.96451 2.23013 4.48726 1.49218 6.26884C0.754225 8.05042 0.561142 10.0108 0.937348 11.9021C1.31355 13.7934 2.24215 15.5307 3.60571 16.8943C4.96928 18.2579 6.70656 19.1865 8.59787 19.5627C10.4892 19.9389 12.4496 19.7458 14.2312 19.0078C16.0127 18.2699 17.5355 17.0202 18.6068 15.4168C19.6782 13.8134 20.25 11.9284 20.25 10C20.2473 7.41498 19.2192 4.93661 17.3913 3.10872C15.5634 1.28084 13.085 0.25273 10.5 0.25ZM10.5 18.25C8.86831 18.25 7.27326 17.7661 5.91655 16.8596C4.55984 15.9531 3.50242 14.6646 2.878 13.1571C2.25358 11.6496 2.0902 9.99085 2.40853 8.3905C2.72685 6.79016 3.51259 5.32015 4.66637 4.16637C5.82016 3.01259 7.29017 2.22685 8.89051 1.90852C10.4909 1.59019 12.1497 1.75357 13.6571 2.37799C15.1646 3.00242 16.4531 4.05984 17.3596 5.41655C18.2661 6.77325 18.75 8.3683 18.75 10C18.7475 12.1873 17.8775 14.2843 16.3309 15.8309C14.7843 17.3775 12.6873 18.2475 10.5 18.25ZM12 14.5C12 14.6989 11.921 14.8897 11.7803 15.0303C11.6397 15.171 11.4489 15.25 11.25 15.25C10.8522 15.25 10.4706 15.092 10.1893 14.8107C9.90804 14.5294 9.75 14.1478 9.75 13.75V10C9.55109 10 9.36033 9.92098 9.21967 9.78033C9.07902 9.63968 9 9.44891 9 9.25C9 9.05109 9.07902 8.86032 9.21967 8.71967C9.36033 8.57902 9.55109 8.5 9.75 8.5C10.1478 8.5 10.5294 8.65804 10.8107 8.93934C11.092 9.22064 11.25 9.60218 11.25 10V13.75C11.4489 13.75 11.6397 13.829 11.7803 13.9697C11.921 14.1103 12 14.3011 12 14.5ZM9 5.875C9 5.6525 9.06598 5.43499 9.1896 5.24998C9.31322 5.06498 9.48892 4.92078 9.69449 4.83564C9.90005 4.75049 10.1263 4.72821 10.3445 4.77162C10.5627 4.81502 10.7632 4.92217 10.9205 5.0795C11.0778 5.23684 11.185 5.43729 11.2284 5.65552C11.2718 5.87375 11.2495 6.09995 11.1644 6.30552C11.0792 6.51109 10.935 6.68679 10.75 6.8104C10.565 6.93402 10.3475 7 10.125 7C9.82664 7 9.54049 6.88147 9.32951 6.6705C9.11853 6.45952 9 6.17337 9 5.875Z"
-                fill="white"
-              />
-            </svg>
+            <Menu placement="bottom-start">
+              <MenuHandler>
+                <button className="flex items-center" type="button">
+                  <svg
+                    width="21"
+                    height="20"
+                    viewBox="0 0 21 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="my-auto"
+                  >
+                    <path
+                      d="M10.5 0.25C8.57164 0.25 6.68657 0.821828 5.08319 1.89317C3.47982 2.96451 2.23013 4.48726 1.49218 6.26884C0.754225 8.05042 0.561142 10.0108 0.937348 11.9021C1.31355 13.7934 2.24215 15.5307 3.60571 16.8943C4.96928 18.2579 6.70656 19.1865 8.59787 19.5627C10.4892 19.9389 12.4496 19.7458 14.2312 19.0078C16.0127 18.2699 17.5355 17.0202 18.6068 15.4168C19.6782 13.8134 20.25 11.9284 20.25 10C20.2473 7.41498 19.2192 4.93661 17.3913 3.10872C15.5634 1.28084 13.085 0.25273 10.5 0.25ZM10.5 18.25C8.86831 18.25 7.27326 17.7661 5.91655 16.8596C4.55984 15.9531 3.50242 14.6646 2.878 13.1571C2.25358 11.6496 2.0902 9.99085 2.40853 8.3905C2.72685 6.79016 3.51259 5.32015 4.66637 4.16637C5.82016 3.01259 7.29017 2.22685 8.89051 1.90852C10.4909 1.59019 12.1497 1.75357 13.6571 2.37799C15.1646 3.00242 16.4531 4.05984 17.3596 5.41655C18.2661 6.77325 18.75 8.3683 18.75 10C18.7475 12.1873 17.8775 14.2843 16.3309 15.8309C14.7843 17.3775 12.6873 18.2475 10.5 18.25ZM12 14.5C12 14.6989 11.921 14.8897 11.7803 15.0303C11.6397 15.171 11.4489 15.25 11.25 15.25C10.8522 15.25 10.4706 15.092 10.1893 14.8107C9.90804 14.5294 9.75 14.1478 9.75 13.75V10C9.55109 10 9.36033 9.92098 9.21967 9.78033C9.07902 9.63968 9 9.44891 9 9.25C9 9.05109 9.07902 8.86032 9.21967 8.71967C9.36033 8.57902 9.55109 8.5 9.75 8.5C10.1478 8.5 10.5294 8.65804 10.8107 8.93934C11.092 9.22064 11.25 9.60218 11.25 10V13.75C11.4489 13.75 11.6397 13.829 11.7803 13.9697C11.921 14.1103 12 14.3011 12 14.5ZM9 5.875C9 5.6525 9.06598 5.43499 9.1896 5.24998C9.31322 5.06498 9.48892 4.92078 9.69449 4.83564C9.90005 4.75049 10.1263 4.72821 10.3445 4.77162C10.5627 4.81502 10.7632 4.92217 10.9205 5.0795C11.0778 5.23684 11.185 5.43729 11.2284 5.65552C11.2718 5.87375 11.2495 6.09995 11.1644 6.30552C11.0792 6.51109 10.935 6.68679 10.75 6.8104C10.565 6.93402 10.3475 7 10.125 7C9.82664 7 9.54049 6.88147 9.32951 6.6705C9.11853 6.45952 9 6.17337 9 5.875Z"
+                      fill="white"
+                    />
+                  </svg>
+                </button>
+              </MenuHandler>
+              <MenuList className="rounded-2xl">
+                <div className="flex flex-col p-2 max-w-[200px]">
+                  <div className="">
+                    <Typography className="font-normal text-[12px] font-poppins text-[#3AC4A0] mt-2">
+                      {t('playCenter.text10')}
+                    </Typography>
+                    <ul>
+                      <li>
+                        <Typography className="font-normal text-[10px] font-poppins text-[#262626] mt-2">
+                          {t('playCenter.text11')}
+                        </Typography>
+                      </li>
+                      <li>
+                        <Typography className="font-normal text-[10px] font-poppins text-[#262626] mt-2">
+                          {t('playCenter.text12')}
+                        </Typography>
+                      </li>
+                      <li>
+                        <Typography className="font-normal text-[10px] font-poppins text-[#262626] mt-2">
+                          {t('playCenter.text14')}
+                        </Typography>
+                      </li>
+                      <li>
+                        <Typography className="font-normal text-[10px] font-poppins text-[#262626] mt-2">
+                          {t('playCenter.text15')}
+                        </Typography>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </MenuList>
+            </Menu>
           </div>
           <div className="justify-center text-center mt-2">
             <h1 className="text-base font-normal text-white">
-              Last updated: 29 April 2024 19:11
+              {t('playCenter.text9')} 29 April 2024 19:11
             </h1>
           </div>
           <div className="flex flex-row bg-[#2b4740] justify-center mx-auto text-center w-[235px] rounded-full items-center px-1 gap-1 my-4">
@@ -166,7 +284,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 setActiveTab('season');
               }}
             >
-              Season
+              {t('playCenter.text16')}
             </button>
             <button
               className={`px-8 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
@@ -179,7 +297,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 setActiveTab('all');
               }}
             >
-              All Time
+              {t('playCenter.text17')}
             </button>
           </div>
           <div className="flex justify-center pt-3">
@@ -200,7 +318,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 {leaderBoardGlobal[1]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                +{leaderBoardGlobal[1]?.win_rate}%
+                {leaderBoardGlobal[1]?.points}
               </div>
               <div>
                 <Image
@@ -244,7 +362,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 {leaderBoardGlobal[0]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                +{leaderBoardGlobal[0]?.win_rate}%
+                {leaderBoardGlobal[0]?.points}
               </div>
               <div>
                 <Image
@@ -273,7 +391,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 {leaderBoardGlobal[2]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                +{leaderBoardGlobal[2]?.win_rate}%
+                {leaderBoardGlobal[2]?.points}
               </div>
               <div>
                 <Image
@@ -290,7 +408,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
 
         <div className="flex rounded-xl bg-[#3AC4A0] justify-between w-full my-5 px-5 py-4">
           <h1 className="text-white font-normal text-base font-poppins ">
-            Your Current Rank
+            {t('playCenter.text10')}
           </h1>
           <h1 className="text-white font-normal text-base font-poppins ">
             #{userRank?.current_rank}
@@ -300,12 +418,12 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
         <table className="w-full">
           <tbody>
             {leaderBoardGlobal?.slice(3).map((leader, index) => (
-              <tr key={index} className="border-b">
-                <td className="px-2 py-5 text-center text-sm md:text-base">
+              <tr key={index} className="">
+                <td className="pl-2 pr-1 py-5 text-center text-sm md:text-base">
                   {leader?.current_rank}.
                 </td>
-                <td className="px-4 py-5 text-start flex">
-                  <div className="">
+                <td className="px-2 py-5 text-start flex">
+                  <div className="my-auto">
                     <Image
                       src={leader?.avatar_url}
                       alt={leader?.user_full_name}
@@ -314,9 +432,9 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                       className="w-10 h-10 rounded-full"
                     />
                   </div>
-                  <div className="mx-3">
-                    <div className="flex gap-3">
-                      <h1 className="text-sm md:text-base font-normal font-poppins text-[#262626]">
+                  <div className="mx-1">
+                    <div className="flex gap-1">
+                      <h1 className="text-sm font-normal font-poppins text-[#262626]">
                         {leader?.user_full_name}
                       </h1>
                       {leader?.verified && (
@@ -353,7 +471,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                       @{leader?.user_seeds_tag}
                     </h1>
                     <button
-                      className="bg-[#3AC4A0] my-2 text-white text-[10px] rounded-full px-3 py-1"
+                      className="bg-[#3AC4A0] my-2 text-white text-[10px] rounded-full px-4 py-1"
                       onClick={() => {
                         void router.push(`/social/${leader?.user_id}`);
                       }}
@@ -362,8 +480,8 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                     </button>
                   </div>
                 </td>
-                <td className="px-4 py-5 text-center text-sm md:text-base font-normal font-poppins">
-                  {leader?.total_reward}
+                <td className="px-2 py-5 text-center text-sm md:text-base font-normal font-poppins">
+                  {leader?.points}
                 </td>
               </tr>
             ))}

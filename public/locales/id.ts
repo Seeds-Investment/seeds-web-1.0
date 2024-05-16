@@ -1631,6 +1631,7 @@ export default {
     sponsors: 'Sponsor(s)',
     community: 'Community',
     join: 'Join',
+    loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
     start: 'Mulai',

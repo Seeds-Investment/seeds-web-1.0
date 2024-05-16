@@ -318,9 +318,6 @@ const QuizDetail = (): React.ReactElement => {
                 withRedirect(router, { quizId: id as string }, '/auth2');
               }
             }}
-            disabled={
-              invitationCode === '' && detailQuiz?.is_need_invitation_code
-            }
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${
               invitationCode === '' &&
               detailQuiz?.is_need_invitation_code === true

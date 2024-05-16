@@ -156,7 +156,7 @@ const PlayTournament = (): React.ReactElement => {
                   handleSearch(e);
                 }}
                 name="search"
-                placeholder="Search"
+                placeholder={t('playCenter.text6') ?? 'Search'}
                 className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
               />
               <button

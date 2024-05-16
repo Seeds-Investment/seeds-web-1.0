@@ -168,7 +168,7 @@ const Player = (): React.ReactElement => {
               <input
                 type="text"
                 className="rounded-full border border-neutral-soft py-1.5 px-3 w-80"
-                placeholder="Search"
+                placeholder={t('playCenter.text6') ?? 'Search'}
                 value={quizParams.search}
                 onChange={e => {
                   setQuizParams(prev => ({
@@ -208,7 +208,7 @@ const Player = (): React.ReactElement => {
             <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center">
               <div>
                 <h1 className="text-3xl font-semibold font-poppins">
-                  List Quiz
+                  {t('playCenter.text7')}
                 </h1>
                 <p className="text-sm font-poppins">{t('quiz.text1')}</p>
               </div>

@@ -2138,6 +2138,7 @@ export default {
   },
   openAccount: {
     noAccountYet: 'Opps,  There’s No Open Account Yet',
-    stayTuned: 'Stay tuned for more updates!'
+    stayTuned: 'Stay tuned for more updates!',
+    register: 'Register Now'
   }
 };

@@ -1,6 +1,7 @@
 import { type Banner } from '@/utils/interfaces/play.interface';
 import Image from 'next/image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface OpenAccountProps {
   data: Banner;
@@ -8,6 +9,7 @@ interface OpenAccountProps {
 }
 
 const OpenAccountCard: React.FC<OpenAccountProps> = ({ data, onClick }) => {
+  const { t } = useTranslation();
   return (
     <div
       onClick={onClick}
@@ -22,7 +24,7 @@ const OpenAccountCard: React.FC<OpenAccountProps> = ({ data, onClick }) => {
       />
       <div className="p-4 font-poppins flex flex-col gap-1">
         <p className="font-semibold">{data.title}</p>
-        <p className="text-sm text-[#BDBDBD]">Register Now</p>
+        <p className="text-sm text-[#BDBDBD]">{t('openAccount.register')}</p>
       </div>
     </div>
   );

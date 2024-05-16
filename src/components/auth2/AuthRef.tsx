@@ -84,7 +84,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   const [loadingSkip, setLoadingSkip] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const isQuery = Object.keys(router.query).length < 0;
+  const isQuery = Object.keys(router.query).length > 0;
   const [error, setError] = useState(false);
 
   const handleTracker = async (): Promise<void> => {

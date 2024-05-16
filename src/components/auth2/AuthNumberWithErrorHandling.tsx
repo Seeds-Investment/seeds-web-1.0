@@ -112,6 +112,14 @@ const AuthNumberWithErrorHandling: React.FC<IAuthNumberWithErrorHandling> = ({
               countries[country].dialCode.replace('+', '')
             );
           }}
+          onWheel={e => {
+            const target = e.target as HTMLInputElement;
+            target.blur();
+            e.stopPropagation();
+            setTimeout(() => {
+              target.focus();
+            }, 0);
+          }}
           required
           labelProps={{
             className:

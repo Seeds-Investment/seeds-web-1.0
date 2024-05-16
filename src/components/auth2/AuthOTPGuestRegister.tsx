@@ -1,5 +1,6 @@
 import Backward from '@/assets/auth/Backward.svg';
 import TrackerEvent from '@/helpers/GTM';
+import withRedirect from '@/helpers/withRedirect';
 import { getOtp, loginSSO, quickRegister } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
@@ -58,6 +59,7 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const OTP = input.join('');
+  const isQuery = Object.keys(router.query).length > 0;
 
   const handleChangeOTP = (index: number, value: string): void => {
     setBlank(false);
@@ -103,13 +105,16 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
       userId: responseUser.id
     });
 
-    await router.push('/homepage');
-
-    TrackerEvent({
-      event: 'Seeds_view_home_page_web',
-      userId: responseUser.id,
-      pageName: 'homepage'
-    });
+    if (isQuery) {
+      await withRedirect(router, router.query);
+    } else {
+      await router.push('/homepage');
+      TrackerEvent({
+        event: `Seeds_view_home_page_web`,
+        userId: responseUser.id,
+        pageName: 'homepage'
+      });
+    }
   };
 
   const handleSubmitOTP = async (event: any): Promise<void> => {

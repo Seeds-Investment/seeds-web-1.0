@@ -50,9 +50,6 @@ const Homepage: React.FC = () => {
         <Section1 />
       </CCard>
       <CCard className="p-3 mb-5">
-        <FeatureSection/>
-      </CCard>
-      <CCard className="p-3 mb-5">
         <Section2 userInfo={userInfo} />
       </CCard>
       {!isGuest() && (
@@ -60,6 +57,9 @@ const Homepage: React.FC = () => {
           <Section3 />
         </CCard>
       )}
+      <CCard className="p-3 mb-5">
+        <FeatureSection/>
+      </CCard>
       <CCard className="p-3 mb-5">
         <Section4 />
       </CCard>

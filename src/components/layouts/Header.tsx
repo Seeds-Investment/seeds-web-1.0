@@ -128,7 +128,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
         </section>
         <section className="flex items-center gap-8">
           <Link
-            href="/auth"
+            href="/auth2"
             className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
           >
             {t('header.join')}
@@ -233,7 +233,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
             })}
             <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
               <Link
-                href="/auth"
+                href="/auth2"
                 className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
               >
                 {t('header.join')}

@@ -1,4 +1,3 @@
-
 import FloatingIdea from '@/assets/play/tournament/floatingIdea.svg';
 import FloatingUsers from '@/assets/play/tournament/floatingUsers.svg';
 import FloatingVideo from '@/assets/play/tournament/floatingVideo.svg';
@@ -23,41 +22,48 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
   const [isGuidanceModal, setIsGuidanceModal] = useState<boolean>(false);
-  
-  const [modalTutorialDescription, setModalTutorialDescription] = useState<boolean>(false);
-  const [modalSocialDescription, setModalSocialDescription] = useState<boolean>(false);
-  const [modalGuidanceDescription, setModalGuidanceDescription] = useState<boolean>(false);
+
+  const [modalTutorialDescription, setModalTutorialDescription] =
+    useState<boolean>(false);
+  const [modalSocialDescription, setModalSocialDescription] =
+    useState<boolean>(false);
+  const [modalGuidanceDescription, setModalGuidanceDescription] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const visitedBefore = localStorage.getItem('visitedBefore');
     if (visitedBefore === 'true') {
       setModalTutorialDescription(false);
     } else {
-      setIsExpanded(true)
-      setModalTutorialDescription(true)
+      setIsExpanded(true);
+      setModalTutorialDescription(true);
       localStorage.setItem('visitedBefore', 'true');
     }
   }, []);
 
   return (
-    <div className='fixed right-0 md:right-[55px] bottom-[30vh] z-10'>
-        <div onClick={() => {setIsExpanded(!isExpanded)}} className='flex w-fit h-fit fixed right-0 md:right-[55px] bottom-[30vh] z-10'>
-
-            {/* Open Close Modal */}
-            {isTutorialModal && (
-                <ModalTutorialTournament
-                    onClose={() => {
-                        setIsTutorialModal(prev => !prev);
-                    }}
-                />
-            )}
-            {isGuidanceModal && (
-                <ModalGuidanceTournament
-                    onClose={() => {
-                        setIsGuidanceModal(prev => !prev);
-                    }}
-                />
-            )}
+    <div className="fixed right-0 md:right-[55px] bottom-[30vh] z-10">
+      <div
+        onClick={() => {
+          setIsExpanded(!isExpanded);
+        }}
+        className="flex w-fit h-fit fixed right-0 md:right-[55px] bottom-[30vh] z-10"
+      >
+        {/* Open Close Modal */}
+        {isTutorialModal && (
+          <ModalTutorialTournament
+            onClose={() => {
+              setIsTutorialModal(prev => !prev);
+            }}
+          />
+        )}
+        {isGuidanceModal && (
+          <ModalGuidanceTournament
+            onClose={() => {
+              setIsGuidanceModal(prev => !prev);
+            }}
+          />
+        )}
 
             {/* Triple Circles */}
             <div className={`relative w-[20px] h-[40px] ${isExpanded ? "block" : "hidden"}`}>
@@ -92,16 +98,15 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
                 </div>
             </div>
 
-            {/* Arrow Button */}
-            <div className='w-[50px] h-[40px] pr-[20px] bg-[#BAFBD0] hover:bg-[#8fffb4] p-2 rounded-l-full cursor-pointer hover:shadow-xl duration-300'>
-                {
-                isExpanded ?
-                    <ChevronRightIcon className="w-full h-full text-[#3AC4A0] font-bold" />
-                    :
-                    <ChevronLeftIcon className="w-full h-full text-[#3AC4A0] font-bold" />
-                }
-            </div>
+        {/* Arrow Button */}
+        <div className="w-[50px] h-[40px] pr-[20px] bg-[#BAFBD0] hover:bg-[#8fffb4] p-2 rounded-l-full cursor-pointer hover:shadow-xl duration-300">
+          {isExpanded ? (
+            <ChevronRightIcon className="w-full h-full text-[#3AC4A0] font-bold" />
+          ) : (
+            <ChevronLeftIcon className="w-full h-full text-[#3AC4A0] font-bold" />
+          )}
         </div>
+      </div>
 
         <div className={`relative w-[20px] h-[40px] ${isExpanded ? "block" : "hidden"}`}>
             {/* Pop Up Description */}

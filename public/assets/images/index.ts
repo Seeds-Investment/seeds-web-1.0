@@ -31,4 +31,3 @@ export { default as SuccessRegister } from 'public/assets/images/success-registe
 export { default as Trash } from 'public/assets/images/trash.svg';
 export { default as Tree } from 'public/assets/images/tree.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
-

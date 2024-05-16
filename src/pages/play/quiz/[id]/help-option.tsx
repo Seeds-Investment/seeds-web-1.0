@@ -6,6 +6,7 @@ import {
   type LifelinesEnum,
   type LifelinesI
 } from '@/utils/interfaces/quiz.interfaces';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export interface PaymentData {
@@ -33,7 +34,8 @@ export interface Quiz {
 const HelpOptionContainer = () => {
   const [showing, setShowing] = useState<'lifeline' | 'payment'>('lifeline');
   const [paymentData, setPaymentData] = useState<PaymentData>();
-
+  const router = useRouter();
+  const invitationCode = router.query.invitationCode ?? '';
   return showing === 'lifeline' ? (
     <HelpOption
       onPay={data => {
@@ -42,7 +44,10 @@ const HelpOptionContainer = () => {
       }}
     />
   ) : (
-    <PaymentList dataPost={paymentData} />
+    <PaymentList
+      dataPost={paymentData}
+      invitationCode={invitationCode as string}
+    />
   );
 };
 

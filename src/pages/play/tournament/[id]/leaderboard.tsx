@@ -2,7 +2,10 @@ import Loading from '@/components/popup/Loading';
 import { standartCurrency } from '@/helpers/currency';
 import { getLastUpdatedEN, getLastUpdatedID } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
-import { getLeaderboardByPlayId, getPlayBallance } from '@/repository/play.repository';
+import {
+  getLeaderboardByPlayId,
+  getPlayBallance
+} from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -62,7 +65,7 @@ const LeaderBoardPage: React.FC = () => {
     return_percentage: 0,
     currency: 'IDR'
   });
-  
+
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   useEffect(() => {
@@ -75,7 +78,7 @@ const LeaderBoardPage: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
-  
+
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -86,12 +89,12 @@ const LeaderBoardPage: React.FC = () => {
   };
 
   useEffect(() => {
-    leaderBoard?.map((leader) => {
+    leaderBoard?.map(leader => {
       if (leader?.user_id === userInfo?.id) {
         setCurrentRank(leader?.rank);
       }
       return null;
-    })
+    });
   }, [leaderBoard]);
 
   const fetchPlaySimulation = async (id: string): Promise<void> => {
@@ -108,13 +111,13 @@ const LeaderBoardPage: React.FC = () => {
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      setLoadingBallance(true)
+      setLoadingBallance(true);
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      setLoadingBallance(false)
+      setLoadingBallance(false);
     }
   };
 
@@ -123,10 +126,15 @@ const LeaderBoardPage: React.FC = () => {
       {loading && loadingBallance && <Loading />}
       <div className="w-full h-auto justify-center cursor-default bg-white p-4 rounded-xl">
         <div className="relative flex flex-col justify-center bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl">
-          <div className='mt-8 mb-4 flex flex-col justify-center items-center'>
-            <Typography className='text-lg mb-2 font-poppins font-semibold text-white'>Leaderboard</Typography>
-            <Typography className='text-sm font-poppins text-white'>
-              {t('tournament.leaderboard.lastUpdated')}{languageCtx.language === 'ID' ? getLastUpdatedID(new Date()) : getLastUpdatedEN(new Date())}
+          <div className="mt-8 mb-4 flex flex-col justify-center items-center">
+            <Typography className="text-lg mb-2 font-poppins font-semibold text-white">
+              Leaderboard
+            </Typography>
+            <Typography className="text-sm font-poppins text-white">
+              {t('tournament.leaderboard.lastUpdated')}
+              {languageCtx.language === 'ID'
+                ? getLastUpdatedID(new Date())
+                : getLastUpdatedEN(new Date())}
             </Typography>
           </div>
           <div className="flex justify-center pt-3">
@@ -147,7 +155,8 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[1]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[1]?.gain < 0 ? '' : '+'}{leaderBoard[1]?.gain.toFixed(2)}%
+                {leaderBoard[1]?.gain < 0 ? '' : '+'}
+                {leaderBoard[1]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -191,7 +200,8 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[0]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[0]?.gain < 0 ? '' : '+'}{leaderBoard[0]?.gain.toFixed(2)}%
+                {leaderBoard[0]?.gain < 0 ? '' : '+'}
+                {leaderBoard[0]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -220,7 +230,8 @@ const LeaderBoardPage: React.FC = () => {
                 {leaderBoard[2]?.user_name}
               </div>
               <div className="text-sm mt-1 font-poppins font-normal text-[#FFFFFF] max-w-[120px]">
-                {leaderBoard[2]?.gain < 0 ? '' : '+'}{leaderBoard[2]?.gain.toFixed(2)}%
+                {leaderBoard[2]?.gain < 0 ? '' : '+'}
+                {leaderBoard[2]?.gain.toFixed(2)}%
               </div>
               <div>
                 <Image
@@ -240,7 +251,7 @@ const LeaderBoardPage: React.FC = () => {
           }
         >
           <div className="flex flex-col justify-between ">
-            <Typography className='text-sm font-poppins'>
+            <Typography className="text-sm font-poppins">
               {t('tournament.leaderboard.currentRank')}
             </Typography>
             <div className="flex w-full items-center my-2">
@@ -248,7 +259,7 @@ const LeaderBoardPage: React.FC = () => {
                 <Typography className="font-semibold text-sm md:text-[22px] font-poppins">
                   #{currentRank}
                 </Typography>
-                <div className='flex justify-center items-center'>
+                <div className="flex justify-center items-center">
                   <svg
                     width="17"
                     height="18"
@@ -265,8 +276,8 @@ const LeaderBoardPage: React.FC = () => {
                   </svg>
                 </div>
               </div>
-              {currentRank !== 0 &&
-                <div className='flex items-center'>
+              {currentRank !== 0 && (
+                <div className="flex items-center">
                   <Image
                     src={leaderBoard[currentRank - 1]?.photo_url}
                     alt={leaderBoard[currentRank - 1]?.user_name}
@@ -278,14 +289,29 @@ const LeaderBoardPage: React.FC = () => {
                     <Typography className="font-semibold font-poppins text-sm md:text-base">
                       {leaderBoard[currentRank - 1]?.user_name}
                     </Typography>
-                    <Typography className='font-poppins'>{userInfo?.seedsTag}</Typography>
-                    <Typography className={`${leaderBoard[currentRank - 1]?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'} font-poppins text-sm md:text-base`}>
-                      {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
-                      {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '' : '+'}`}{leaderBoard[currentRank - 1]?.gain}%)
+                    <Typography className="font-poppins">
+                      {userInfo?.seedsTag}
+                    </Typography>
+                    <Typography
+                      className={`${
+                        leaderBoard[currentRank - 1]?.gain < 0
+                          ? 'text-[#DD2525]'
+                          : 'text-[#3AC4A0]'
+                      } font-poppins text-sm md:text-base`}
+                    >
+                      {userInfo?.preferredCurrency !== undefined
+                        ? userInfo?.preferredCurrency
+                        : 'IDR'}
+                      {standartCurrency(ballance?.return_value ?? 0).replace(
+                        'Rp',
+                        ''
+                      )}
+                      {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '' : '+'}`}
+                      {leaderBoard[currentRank - 1]?.gain}%)
                     </Typography>
                   </div>
                 </div>
-              }
+              )}
             </div>
           </div>
         </div>
@@ -307,7 +333,9 @@ const LeaderBoardPage: React.FC = () => {
           <tbody>
             {leaderBoard?.slice(3).map((leader, index) => (
               <tr key={index} className="border-b">
-                <td className="px-1 md:px-2 py-5 text-center">{leader?.rank}.</td>
+                <td className="px-1 md:px-2 py-5 text-center">
+                  {leader?.rank}.
+                </td>
                 <td className="px-1 md:px-4 py-5 text-start flex">
                   <div className="">
                     <Image
@@ -327,8 +355,17 @@ const LeaderBoardPage: React.FC = () => {
                     </Typography>
                   </div>
                 </td>
-                <td className={`${leader?.gain !== undefined ? (leader?.gain < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]') : 'hidden'} px-1 md:px-4 py-5 text-center text-sm md:text-base font-normal font-poppins`}>
-                  {leader?.gain < 0 ? '' : '+'}{leader?.gain.toFixed(2)}%
+                <td
+                  className={`${
+                    leader?.gain !== undefined
+                      ? leader?.gain < 0
+                        ? 'text-[#DD2525]'
+                        : 'text-[#3AC4A0]'
+                      : 'hidden'
+                  } px-1 md:px-4 py-5 text-center text-sm md:text-base font-normal font-poppins`}
+                >
+                  {leader?.gain < 0 ? '' : '+'}
+                  {leader?.gain.toFixed(2)}%
                 </td>
               </tr>
             ))}

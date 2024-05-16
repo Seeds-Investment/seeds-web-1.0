@@ -61,7 +61,7 @@ export const getLastUpdatedID = (date: Date): string => {
   const currentHours = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
 
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`
+  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
 
 export const getLastUpdatedEN = (date: Date): string => {
@@ -73,7 +73,7 @@ export const getLastUpdatedEN = (date: Date): string => {
   const currentHours = currentDate.getHours();
   const currentMinutes = currentDate.getMinutes();
 
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
 
 export const getEventDateID = (date: Date): string => {

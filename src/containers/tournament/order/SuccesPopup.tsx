@@ -78,7 +78,7 @@ const SuccessOrderModal: React.FC<props> = ({
               });
           }}
         >
-                      {t('buyAsset.text3')}
+          {t('buyAsset.text3')}
         </Button>
         <Button
           className="rounded-full min-w-full capitalize font-semibold text-sm  bg-white text-[#7555DA] font-poppins mt-4"
@@ -90,7 +90,7 @@ const SuccessOrderModal: React.FC<props> = ({
               });
           }}
         >
-            {t('buyAsset.text4')}
+          {t('buyAsset.text4')}
         </Button>
       </DialogFooter>
     </Dialog>

@@ -39,7 +39,7 @@ const AuthLogin: React.FC = () => {
     return 2;
   };
   const router = useRouter();
-  const isQuery = Object.keys(router.query).length < 0;
+  const isQuery = Object.keys(router.query).length > 0;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   // eslint-disable-next-line react-hooks/exhaustive-deps

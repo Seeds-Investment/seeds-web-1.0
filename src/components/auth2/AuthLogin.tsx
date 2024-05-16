@@ -15,6 +15,7 @@ import DeviceDetector from 'device-detector-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -101,18 +102,20 @@ const AuthLogin: React.FC = () => {
 
   const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
-    if (formData.phoneNumber === dialCode) {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length)
-      });
-    } else if (formData.phoneNumber === '0') {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(1)
-      });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length)
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1)
+        });
+      } else {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      }
     }
   };
 
@@ -181,7 +184,9 @@ const AuthLogin: React.FC = () => {
       />
       <div className="w-full">
         <AuthPassword
-          handleChange={handleChange as any}
+          handleChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+          }}
           formData={formData.password}
           error={error}
           name="password"

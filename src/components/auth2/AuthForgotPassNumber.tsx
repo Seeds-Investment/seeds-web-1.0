@@ -1,5 +1,5 @@
 import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
-import AuthNumber from '@/components/auth/AuthNumber';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
 import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -52,18 +52,20 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   const [country, setCountry] = useState<number>(101);
   const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
-    if (formData.phoneNumber === dialCode) {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length)
-      });
-    } else if (formData.phoneNumber === '0') {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(1)
-      });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length)
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1)
+        });
+      } else {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      }
     }
   };
 
@@ -113,7 +115,7 @@ const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
         {t('authForgotPass.title2')}
       </Typography>
       <div className="w-full">
-        <AuthNumber
+        <AuthNumberWithErrorHandling
           handleChange={handleChange}
           formData={formData.phoneNumber}
           name="phoneNumber"

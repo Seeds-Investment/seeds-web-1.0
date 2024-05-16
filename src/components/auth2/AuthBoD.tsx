@@ -265,24 +265,26 @@ const AuthBoD: React.FC<IAuthBoD> = ({
             })}
           </div>
           <div className="flex flex-col h-[216px] w-[100px] gap-2 overflow-y-scroll overflow-x-hidden cursor-pointer">
-            {years.map((value, index) => {
-              return (
-                <Typography
-                  onClick={() => {
-                    setYear(value);
-                  }}
-                  ref={year === value ? yearRef : null}
-                  className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
-                    year === value
-                      ? 'text-[#3AC4A0] font-semibold'
-                      : 'text-[#BDBDBD] font-normal hover:text-white'
-                  }`}
-                  key={index}
-                >
-                  {value}
-                </Typography>
-              );
-            })}
+            {years
+              .sort((a, b) => b - a)
+              .map((value, index) => {
+                return (
+                  <Typography
+                    onClick={() => {
+                      setYear(value);
+                    }}
+                    ref={year === value ? yearRef : null}
+                    className={`font-poppins text-base text-center hover:bg-[#BDBDBD]/40 rounded-md me-3 ${
+                      year === value
+                        ? 'text-[#3AC4A0] font-semibold'
+                        : 'text-[#BDBDBD] font-normal hover:text-white'
+                    }`}
+                    key={index}
+                  >
+                    {value}
+                  </Typography>
+                );
+              })}
           </div>
         </DialogBody>
         <DialogFooter className="w-full">

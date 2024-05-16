@@ -47,18 +47,20 @@ const AuthCheckGuestNumber: React.FC<IAuthCheckGuestNumber> = ({
   const [country, setCountry] = useState(101);
   const router = useRouter();
   const handleChange = (e: EventObject, dialCode: string): void => {
-    if (formData.phoneNumber === dialCode) {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length)
-      });
-    } else if (formData.phoneNumber === '0') {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(1)
-      });
-    } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length)
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1)
+        });
+      } else {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      }
     }
   };
 

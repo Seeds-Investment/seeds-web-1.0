@@ -625,7 +625,7 @@ export default {
       month: 'BB',
       year: 'TTTT',
       validation: {
-        seedsTag: 'Seeds Tag sudah dipakai, nih',
+        seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
         dob: 'Kamu harus berusia minimal 12 tahun'
       }

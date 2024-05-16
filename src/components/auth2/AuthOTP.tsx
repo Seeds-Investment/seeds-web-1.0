@@ -160,6 +160,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 token: ''
               });
               setSelect(0);
+              setInput(['', '', '', '']);
             } else {
               router.back();
             }

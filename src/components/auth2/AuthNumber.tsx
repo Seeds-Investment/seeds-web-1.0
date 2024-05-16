@@ -95,26 +95,24 @@ const AuthNumber: React.FC<IAuthNumber> = ({
         </Menu>
         <Input
           label={t('authLogin.phone').toString()}
-          type="number"
+          type="text"
           variant="static"
           placeholder="85XXX"
           name={name}
-          pattern="[0-9]"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={13}
           value={formData}
           onKeyDown={handleSubmit}
+          onPaste={e => {
+            e.preventDefault();
+            return false;
+          }}
           onChange={() => {
             handleChange(
               event as any,
               countries[country].dialCode.replace('+', '')
             );
-          }}
-          onWheel={e => {
-            const target = e.target as HTMLInputElement;
-            target.blur();
-            e.stopPropagation();
-            setTimeout(() => {
-              target.focus();
-            }, 0);
           }}
           required
           labelProps={{

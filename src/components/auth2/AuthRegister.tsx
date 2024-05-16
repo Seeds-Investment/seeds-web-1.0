@@ -91,45 +91,47 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     setBlank(false);
-    if (formData.phoneNumber === dialCode) {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length),
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
-    } else if (formData.phoneNumber === '0') {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(1),
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length),
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifer: ''
+          }
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1),
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifer: ''
+          }
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifer: ''
+          }
+        });
+      }
     }
   };
   const handleChangePass = (e: EventObject): void => {

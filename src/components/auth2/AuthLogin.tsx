@@ -153,6 +153,7 @@ const AuthLogin: React.FC = () => {
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
+          delete router.query.phoneNumber;
           await withRedirect(router, router.query, '/auth2');
         }}
       />

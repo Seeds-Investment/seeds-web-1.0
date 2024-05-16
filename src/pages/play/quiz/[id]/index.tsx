@@ -31,7 +31,7 @@ const QuizDetail = (): React.ReactElement => {
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
   const [invitationCode, setInvitationCode] = useState<string>('');
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );

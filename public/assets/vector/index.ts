@@ -45,6 +45,7 @@ export { default as LogoutIcon } from 'public/assets/vector/logout-icon.svg';
 export { default as Pin } from 'public/assets/vector/pin.svg';
 export { default as PrivacyPolicy } from 'public/assets/vector/privacy.png';
 export { default as RateUs } from 'public/assets/vector/rate-us.svg';
+export { default as Refund } from 'public/assets/vector/refund.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';
 export { default as Search } from 'public/assets/vector/search.svg';
 export { default as SeedIcon } from 'public/assets/vector/seed-icon.svg';

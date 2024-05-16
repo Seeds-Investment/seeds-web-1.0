@@ -45,7 +45,7 @@ const LeaderBoardPage = (): React.ReactElement => {
   const { dataUser } = useAppSelector(state => state.user);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
   const [myRank, setMyRank] = useState();
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );

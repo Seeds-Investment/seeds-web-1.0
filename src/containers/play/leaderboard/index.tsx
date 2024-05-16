@@ -45,7 +45,9 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Quiz');
   const [leaderBoardQuiz, setLeaderBoardQuiz] = useState<LeaderDataQuiz[]>([]);
-  const [leaderBoardTournament, setLeaderBoardTournament] = useState<LeaderDataTournament[]>([]);
+  const [leaderBoardTournament, setLeaderBoardTournament] = useState<
+    LeaderDataTournament[]
+  >([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -106,8 +108,16 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 <Image
                   width={100}
                   height={100}
-                  src={activeTab === 'Quiz' ? leaderBoardQuiz[1]?.avatar : leaderBoardTournament[1]?.avatar_url}
-                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[1]?.name : leaderBoardTournament[1]?.user_full_name}
+                  src={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[1]?.avatar
+                      : leaderBoardTournament[1]?.avatar_url
+                  }
+                  alt={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[1]?.name
+                      : leaderBoardTournament[1]?.user_full_name
+                  }
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2 "
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-[#7555DA] text-sm text-white text-center justify-center items-center">
@@ -115,10 +125,14 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[1]?.name : leaderBoardTournament[1]?.user_full_name}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[1]?.name
+                  : leaderBoardTournament[1]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[1]?.current_rank : leaderBoardTournament[1]?.current_rank}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[1]?.current_rank
+                  : leaderBoardTournament[1]?.current_rank}
               </div>
               <div>
                 <Image
@@ -150,8 +164,16 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 <Image
                   width={100}
                   height={100}
-                  src={activeTab === 'Quiz' ? leaderBoardQuiz[0]?.avatar : leaderBoardTournament[0]?.avatar_url}
-                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[0]?.name : leaderBoardTournament[0]?.user_full_name}
+                  src={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[0]?.avatar
+                      : leaderBoardTournament[0]?.avatar_url
+                  }
+                  alt={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[0]?.name
+                      : leaderBoardTournament[0]?.user_full_name
+                  }
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2 mt-1"
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-white text-sm text-center text-[#27A590] justify-center items-center">
@@ -159,10 +181,14 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[0]?.name : leaderBoardTournament[0]?.user_full_name}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[0]?.name
+                  : leaderBoardTournament[0]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[0]?.current_rank : leaderBoardTournament[0]?.current_rank}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[0]?.current_rank
+                  : leaderBoardTournament[0]?.current_rank}
               </div>
               <div>
                 <Image
@@ -179,8 +205,16 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 <Image
                   width={100}
                   height={100}
-                  src={activeTab === 'Quiz' ? leaderBoardQuiz[2]?.avatar : leaderBoardTournament[2]?.avatar_url}
-                  alt={activeTab === 'Quiz' ? leaderBoardQuiz[2]?.name : leaderBoardTournament[2]?.user_full_name}
+                  src={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[2]?.avatar
+                      : leaderBoardTournament[2]?.avatar_url
+                  }
+                  alt={
+                    activeTab === 'Quiz'
+                      ? leaderBoardQuiz[2]?.name
+                      : leaderBoardTournament[2]?.user_full_name
+                  }
                   className="z-0 w-[64px] h-[64px] mx-auto rounded-xl border-white border-2"
                 />
                 <div className="z-10 w-6 h-6  mt-[-10%] relative mx-auto rounded-full bg-[#FDBA22] text-sm text-white text-center justify-center items-center">
@@ -188,10 +222,14 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </div>
               </div>
               <div className="text-base mt-3 font-poppins font-semibold text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[2]?.name : leaderBoardTournament[2]?.user_full_name}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[2]?.name
+                  : leaderBoardTournament[2]?.user_full_name}
               </div>
               <div className="text-sm mt-3 font-poppins font-normal text-[#FFFFFF]">
-                {activeTab === 'Quiz' ? leaderBoardQuiz[2]?.current_rank : leaderBoardTournament[2]?.current_rank}
+                {activeTab === 'Quiz'
+                  ? leaderBoardQuiz[2]?.current_rank
+                  : leaderBoardTournament[2]?.current_rank}
               </div>
               <div>
                 <Image
@@ -206,7 +244,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
           </div>
         </div>
 
-        <table className='w-full'>
+        <table className="w-full">
           <thead>
             <tr className="border-b">
               <th className="px-2 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
@@ -220,8 +258,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               </th>
             </tr>
           </thead>
-          {
-            activeTab === 'Quiz' ?
+          {activeTab === 'Quiz' ? (
             <tbody>
               {leaderBoardQuiz?.slice(3).map((leader, index) => (
                 <tr key={index} className="border-b">
@@ -253,7 +290,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </tr>
               ))}
             </tbody>
-            :
+          ) : (
             <tbody>
               {leaderBoardTournament?.slice(3).map((leader, index) => (
                 <tr key={index} className="border-b">
@@ -285,7 +322,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 </tr>
               ))}
             </tbody>
-          }
+          )}
         </table>
       </div>
     </>

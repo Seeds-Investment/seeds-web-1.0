@@ -8,6 +8,14 @@ interface ICreateOrderPlay {
   amount: number;
 }
 
+export interface AssetParams {
+  play_id: string;
+  category?: string | null;
+  currency: string;
+  per_page: number;
+  page: number;
+}
+
 interface Polling {
   content_text: string;
   media_url: string;
@@ -211,9 +219,16 @@ export const getPlaySimulationDetail = async (
 
 export const getTrendingPlayList = async (): Promise<any> => {
   try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    
     return await playService.get(`/trending`, {
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {
@@ -321,6 +336,7 @@ export const createOrderPlay = async (
 export const getOperOrderList = async (
   id: string,
   params: { currency: string }
+
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -341,8 +357,11 @@ export const getOperOrderList = async (
 };
 
 export const cancelOrderList = async (
+ 
   playId: string,
+ 
   orderId: string
+
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -383,10 +402,9 @@ export const getHistoryTransaction = async (
   }
 };
 
-export const getActiveAsset = async (
-  id: string,
-  params: { category: string; currency: string; per_page: number; page: number }
-): Promise<any> => {
+export const getActiveAsset = async (params: AssetParams): Promise<any> => {
+  const timeoutDuration = 100000;
+
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -394,13 +412,23 @@ export const getActiveAsset = async (
       return await Promise.reject(new Error('Access token not found'));
     }
 
-    return await playService(`/assets/active?play_id=${id}`, {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const timeoutId = setTimeout(() => { controller.abort(); }, timeoutDuration);
+
+    const response = await playService(`/assets/active`, {
       params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`
-      }
+      },
+      signal
     });
+
+    clearTimeout(timeoutId);
+
+    return response;
   } catch (error) {
     await Promise.reject(error);
   }

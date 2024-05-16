@@ -146,7 +146,7 @@ const Section5: React.FC = () => {
                 {t('faq.faq.desc.3')}
               </AccordionBody>
             </Accordion>
-            <Accordion
+            {/* <Accordion
               icon={<Icon id={4} open={open} />}
               open={open === 4}
               className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
@@ -164,8 +164,8 @@ const Section5: React.FC = () => {
               <AccordionBody className="pt-0 text-base font-normal">
                 {t('faq.faq.desc.2')}
               </AccordionBody>
-            </Accordion>
-            <Accordion
+            </Accordion> */}
+            {/* <Accordion
               icon={<Icon id={5} open={open} />}
               open={open === 5}
               className="mb-2 rounded-lg border bg-[#ffffff59] border-[#E9E9E9] px-4 backdrop-blur-sm"
@@ -183,7 +183,7 @@ const Section5: React.FC = () => {
               <AccordionBody className="pt-0 text-base font-normal">
                 {t('faq.faq.desc.1')}
               </AccordionBody>
-            </Accordion>
+            </Accordion> */}
           </div>
         </div>
       </div>

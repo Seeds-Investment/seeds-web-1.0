@@ -183,6 +183,7 @@ const Player = (): React.ReactElement => {
         ...tournamentParams,
         search
       });
+      
       if (response.playList === null) {
         setData([]);
       } else {

@@ -297,6 +297,17 @@ export default {
           'Kami telah menerapkan teknologi dan kebijakan yang konsisten dengan aturan yang berlaku di Indonesia dengan tujuan melindungi privasi Anda dari akses yang tidak sah dan penggunaan yang tidak benar dan kami akan memperbarui langkah-langkah ini seiring perkembangan teknologi baru sesuai kebutuhan.'
         ]
       }
+    },
+    refundPolicy: {
+      title: 'Kebijakan Pengembalian Dana',
+      lastUpdated: 'Terakhir Perbarui: ',
+      date: '26 April 2022',
+      overview: {
+        title: ['Kebijakan Pengembalian Dana'],
+        desc: [
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .'
+        ]
+      }
     }
   },
   termAndCondition: {
@@ -567,13 +578,19 @@ export default {
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
     login: 'Masuk',
-    signup: 'Daftar'
+    signup: 'Daftar',
+    or: ' atau '
   },
   authLogin: {
     title1: 'Yuk, Masukan!',
     title2: 'Nomor telepon & kata sandi',
+    title3: 'Nomor telepon',
+    title4: 'Nama & nomor telepon',
     phone: 'Nomor Telepon',
+    name: 'Nama',
+    namePlaceholder: 'Tolong, masukan nama anda',
     password: 'Kata Sandi',
+    createPassword: 'Buat Kata Sandi',
     passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
     forgotPass: 'Lupa kata sandi?',
     login: 'Masuk',
@@ -1776,6 +1793,9 @@ export default {
     detailAccessCode: 'Masukan Access Code',
     detailBannerTotalRewards: 'Total Hadiah',
     entranceFee: 'Biaya Pendaftaran',
+    shareArena: "Bagikan Arena Ini",
+    shareLinks: "Bagikan Link",
+    playId: "ID Permainan",
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
@@ -1889,6 +1909,11 @@ export default {
         text3: 'Selalu bersiap untuk menghadapi perubahan harga.'
       }
     },
+    floatingButton: {
+      text1: "Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!",
+      text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
+      text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
+    },
     watchlist: {
       watchlist: 'Daftar Pantau',
       noData: 'Belum Ada Daftar Pantau',
@@ -1915,6 +1940,16 @@ export default {
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Semua'
     }
+  },
+  seedsEvent: {
+    search: "Cari event",
+    enter: "Cari",
+    past: "BERAKHIR",
+    today: "HARI INI",
+    thisMonth: "BULAN INI",
+    upcoming: "AKAN DATANG",
+    blank1: 'Ups,  Belum Ada Event',
+    blank2: 'Nantikan untuk update lainnya!',
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

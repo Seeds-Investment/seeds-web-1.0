@@ -4,6 +4,7 @@ export { default as ArrowLeftBlack } from 'public/assets/vector/arrow-left-black
 export { default as ArrowLeft } from 'public/assets/vector/arrow-left.svg';
 export { default as ArrowRightCollapseIcon } from 'public/assets/vector/arrow-right-collapse.svg';
 export { default as ArrowRight } from 'public/assets/vector/arrow-right.svg';
+export { default as ArrowTaillessRight } from 'public/assets/vector/arrow-tailless-right.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
@@ -64,3 +65,4 @@ export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
+

@@ -1,4 +1,5 @@
 'use client';
+import Wallet from '@/assets/my-profile/earning/wallet.svg';
 import message from '@/assets/profile/message.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
@@ -7,6 +8,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
+import { ArrowTaillessRight } from 'public/assets/vector';
 import { useState } from 'react';
 import FollowButton from '../FollowButton';
 import MoreOptionHorizontal from '../MoreOptionHorizontal';
@@ -165,6 +167,38 @@ const Profile = ({
           <div className="xl:flex hidden">
             <ExpInfo data={expData} profileData={profileData} id={id} />
           </div>
+
+          {/* My Earnings Breakpoint: XL */}
+          <div className='hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'>
+            <div className='flex justify-start items-center'>
+              <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+                <Image
+                  src={Wallet}
+                  alt={'Wallet'}
+                  height={100}
+                  width={100}
+                  className='w-full h-full'
+                />
+              </div>
+              <div className='flex flex-col justify-start items-start ml-4 text-white'>
+                <div className='text-sm'>
+                  My Earnings
+                </div>
+                <div className='font-semibold text-md'>
+                  Rp 750.000
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-center items-center h-[20px]'>
+              <Image
+                src={ArrowTaillessRight}
+                alt={'Arrow'}
+                height={100}
+                width={100}
+                className='w-full h-full'
+              />
+            </div>
+          </div>
         </div>
       </div>
       {/* TODO: WEB IN MOBILE DEVICE */}
@@ -266,6 +300,38 @@ const Profile = ({
       </div>
       <div className="flex xl:hidden">
         <ExpInfo data={expData} profileData={profileData} id={id} />
+      </div>
+
+      {/* My Earnings Breakpoint: XL */}
+      <div className='xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'>
+        <div className='flex justify-start items-center'>
+          <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+            <Image
+              src={Wallet}
+              alt={'Wallet'}
+              height={100}
+              width={100}
+              className='w-full h-full'
+            />
+          </div>
+          <div className='flex flex-col justify-start items-start ml-4 text-white'>
+            <div className='text-sm'>
+              My Earnings
+            </div>
+            <div className='font-semibold text-md'>
+              Rp 750.000
+            </div>
+          </div>
+        </div>
+        <div className='flex justify-center items-center h-[20px]'>
+          <Image
+            src={ArrowTaillessRight}
+            alt={'Arrow'}
+            height={100}
+            width={100}
+            className='w-full h-full'
+          />
+        </div>
       </div>
     </>
   );

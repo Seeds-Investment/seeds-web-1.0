@@ -1,10 +1,10 @@
 'use client';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
-  Dialog as TailwindDialog,
   DialogBody,
   DialogHeader,
   IconButton,
+  Dialog as TailwindDialog,
   Typography
 } from '@material-tailwind/react';
 
@@ -23,7 +23,7 @@ const Dialog: React.FC<Props> = ({
   children,
   bottomSheetOnSmall = false
 }) => {
-  const bottomSheetOnSmallClass = `max-h-[90vh] self-end mb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-sm sm:max-w-sm sm:w-sm md:min-w-sm md:max-w-sm lg:min-w-sm lg:max-w-sm xl:min-w-sm xl:max-w-sm 2xl:min-w-sm 2xl:max-w-sm`;
+  const bottomSheetOnSmallClass = `max-h-[90vh] h-auto self-end mb-0 pb-16 md:pb-0 sm:self-center sm:mb-4 max-w-full sm:min-w-sm sm:max-w-sm sm:w-sm md:min-w-sm md:max-w-sm lg:min-w-sm lg:max-w-sm xl:min-w-sm xl:max-w-sm 2xl:min-w-sm 2xl:max-w-sm overflow-y-scroll`;
 
   return (
     <TailwindDialog

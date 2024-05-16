@@ -185,7 +185,6 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
         } else {
           setLoading(false);
           setError(true);
-          console.error('Invalid or empty response from server');
           toast.error('Invalid or empty response from server');
         }
       }
@@ -201,7 +200,6 @@ const AuthOTPGuestRegister: React.FC<IAuthOTPGuestRegister> = ({
         await getOtp({ method, phoneNumber: formData.phoneNumber });
       } catch (error: any) {
         toast(error, { type: 'error' });
-        console.error('Error fetching OTP:', error);
       }
     })();
   }, [formData.phoneNumber]);

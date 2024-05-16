@@ -625,7 +625,7 @@ export default {
       month: 'BB',
       year: 'TTTT',
       validation: {
-        seedsTag: 'Seeds Tag sudah dipakai, nih',
+        seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
         dob: 'Kamu harus berusia minimal 12 tahun'
       }
@@ -1793,9 +1793,9 @@ export default {
     detailAccessCode: 'Masukan Access Code',
     detailBannerTotalRewards: 'Total Hadiah',
     entranceFee: 'Biaya Pendaftaran',
-    shareArena: "Bagikan Arena Ini",
-    shareLinks: "Bagikan Link",
-    playId: "ID Permainan",
+    shareArena: 'Bagikan Arena Ini',
+    shareLinks: 'Bagikan Link',
+    playId: 'ID Permainan',
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
@@ -1910,9 +1910,12 @@ export default {
       }
     },
     floatingButton: {
-      text1: "Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!",
-      text2: "Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi",
-      text3: "Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya"
+      text1:
+        'Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!',
+      text2:
+        'Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi',
+      text3:
+        'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
     },
     watchlist: {
       watchlist: 'Daftar Pantau',
@@ -1942,14 +1945,14 @@ export default {
     }
   },
   seedsEvent: {
-    search: "Cari event",
-    enter: "Cari",
-    past: "BERAKHIR",
-    today: "HARI INI",
-    thisMonth: "BULAN INI",
-    upcoming: "AKAN DATANG",
+    search: 'Cari event',
+    enter: 'Cari',
+    past: 'BERAKHIR',
+    today: 'HARI INI',
+    thisMonth: 'BULAN INI',
+    upcoming: 'AKAN DATANG',
     blank1: 'Ups,  Belum Ada Event',
-    blank2: 'Nantikan untuk update lainnya!',
+    blank2: 'Nantikan untuk update lainnya!'
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

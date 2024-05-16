@@ -1703,6 +1703,7 @@ export default {
     sponsors: 'Sponsor(s)',
     community: 'Community',
     join: 'Join',
+    loading: 'Loading...',
     reviewQuiz: 'Review Quiz',
     continue: 'Continue',
     start: 'start',

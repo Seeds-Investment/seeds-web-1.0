@@ -257,6 +257,7 @@ const QuizDetail = (): React.ReactElement => {
                 })}
           </div>
           <button
+            disabled={loading}
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {
@@ -277,7 +278,9 @@ const QuizDetail = (): React.ReactElement => {
             }}
             className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
           >
-            {detailQuiz?.participant_status === 'JOINED'
+            {loading
+              ? t('quiz.loading')
+              : detailQuiz?.participant_status === 'JOINED'
               ? t('quiz.start')
               : t('quiz.join')}
           </button>

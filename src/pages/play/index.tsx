@@ -5,18 +5,15 @@ import LeaderBoardIcon from '@/assets/play/tournament/leaderBoardIcon.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
-import QuizCard from '@/components/quiz/card.component';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import {
+  getAllPlayCenter,
   getEventList,
-  getPlayAll,
   getPlayLatestList,
   getUserRank
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getAllQuiz } from '@/repository/quiz.repository';
-import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import moment from 'moment';
@@ -30,7 +27,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import PlayButton from '../../../public/assets/playButton.svg';
 import QuizButton from '../../../public/assets/quizButton.svg';
-import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
 interface Banner {
   no: number;
   id: string;
@@ -100,18 +96,12 @@ const Player = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [activeSlide, setActiveSlide] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<DetailPlay[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
-  const [quizParams, setQuizParams] = useState({
-    search: '',
-    status: '',
-    page: 1,
-    limit: 12
-  });
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
     status: '',
@@ -121,10 +111,7 @@ const Player = (): React.ReactElement => {
     totalPage: 9
   });
   const [userRank, setUserRank] = useState<number>(0);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showSearchResult, setShowSearchResult] = useState(false);
-  const [quizActiveTab, setQuizActiveTab] = useState(QuizStatus.STARTED);
-  const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
   const [listPlay, setListPlay] = useState<DetailPlay[]>([]);
 
   useEffect(() => {
@@ -133,16 +120,17 @@ const Player = (): React.ReactElement => {
     } else {
       setShowSearchResult(true);
     }
-  }, [listQuiz.length, listPlay.length, search]);
+  }, [listPlay?.length, search]);
 
   const getListTournament = async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await getPlayAll({
-        ...tournamentParams,
-        search,
-        status: 'ACTIVE'
-      });
+      const response = await getAllPlayCenter(
+        1,
+        10,
+        userInfo?.preferredCurrency ?? '',
+        search
+      );
       if (response.playList === null) {
         setListPlay([]);
       } else {
@@ -156,32 +144,12 @@ const Player = (): React.ReactElement => {
     }
   };
 
-  const getListQuiz = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const res = await getAllQuiz({
-        ...quizParams,
-        search,
-        status: quizActiveTab,
-        currency: userInfo?.preferredCurrency
-      });
-      if (res.data !== null) {
-        const list: IQuiz[] = res.data;
-        setListQuiz(list);
-        setQuizActiveTab(QuizStatus.STARTED);
-      }
-    } catch (error) {
-      toast(`ERROR fetch list quiz ${error as string}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    void getListTournament();
-    getListQuiz()
-      .then()
-      .catch(() => {});
+    const timer = setTimeout(() => {
+      void getListTournament();
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [search]);
 
   useEffect(() => {
@@ -279,7 +247,17 @@ const Player = (): React.ReactElement => {
 
       return () => clearTimeout(getData);
     }
-  }, [userInfo, search, refreshSearch, tournamentParams]);
+  }, [userInfo, tournamentParams]);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleEnter = () => {
+    setShowSearchResult(true);
+    const inputElement = document.getElementById('search') as HTMLInputElement;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (inputElement) {
+      setSearch(inputElement.value);
+    }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full bg-transparent">
@@ -310,7 +288,7 @@ const Player = (): React.ReactElement => {
                 className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
               />
               <button
-                onClick={() => setRefreshSearch(!refreshSearch)}
+                onClick={handleEnter}
                 className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
               >
                 Enter
@@ -319,30 +297,6 @@ const Player = (): React.ReactElement => {
           </div>
           {showSearchResult && (
             <div>
-              <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-4">
-                {listQuiz?.length === 0 && !loading ? (
-                  <div className="col-span-3">
-                    <Image
-                      src={ListQuizEmpty}
-                      width={500}
-                      alt="Top Quiz Empty"
-                    />
-                  </div>
-                ) : null}
-                {loading ? (
-                  <div className="col-span-3 flex items-center justify-center">
-                    <div className="animate-spinner w-5 h-5" />
-                  </div>
-                ) : (
-                  listQuiz?.map(item => (
-                    <QuizCard
-                      item={item}
-                      key={item.id}
-                      currency={userInfo?.preferredCurrency ?? 'IDR'}
-                    />
-                  ))
-                )}
-              </div>
               {listPlay?.length !== 0 ? (
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
                   {listPlay.map(item => (
@@ -642,7 +596,6 @@ const Player = (): React.ReactElement => {
                   totalPages={tournamentParams.totalPage}
                   onPageChange={page => {
                     setTournamentParams({ ...tournamentParams, page });
-                    setQuizParams({ ...tournamentParams, page });
                   }}
                 />
               )}

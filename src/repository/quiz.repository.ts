@@ -56,7 +56,6 @@ export const getAllQuiz = async ({
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-
     if (!isGuest() && (accessToken === null || accessToken === '')) {
       return await Promise.resolve('Access token not found');
     }

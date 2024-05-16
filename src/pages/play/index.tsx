@@ -1,77 +1,103 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 'use-client';
-import IconClock from '@/assets/play/tournament/clock.svg';
-import IconFee from '@/assets/play/tournament/fee.svg';
+import Circle from '@/assets/play/tournament/circleleaderboard.svg';
+import LeaderBoardIcon from '@/assets/play/tournament/leaderBoardIcon.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
-import IconShare from '@/assets/play/tournament/share.svg';
-import TutorialIcon from '@/assets/play/tournament/tutorialPicture.svg';
-import IconUsers from '@/assets/play/tournament/users.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
-import QuizCard from '@/components/quiz/card.component';
-import Button from '@/components/ui/button/Button';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import LeaderBoardGlobalPage from '@/containers/play/leaderboard';
-import TopQuiz from '@/containers/play/quiz/TopQuiz';
-import { standartCurrency } from '@/helpers/currency';
 import { generateFormattedDate } from '@/helpers/dateFormat';
-import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
-import { getPlayAll } from '@/repository/play.repository';
-import { getUserInfo } from '@/repository/profile.repository';
-import { getAllQuiz } from '@/repository/quiz.repository';
-import { QuizStatus, type IQuiz } from '@/utils/interfaces/quiz.interfaces';
-import { TournamentStatus, type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  TabsHeader,
-  Typography
-} from '@material-tailwind/react';
-import moment from 'moment';
+  getEventList,
+  getPlayLatestList,
+  getUserRank
+} from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
 import { toast } from 'react-toastify';
-import ListQuizEmpty from '../../assets/play/quiz/list-quiz-empty.jpg';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+import PlayButton from '../../../public/assets/playButton.svg';
+import QuizButton from '../../../public/assets/quizButton.svg';
 
-interface StatusQuizI {
-  id: number;
-  status: QuizStatus;
-  title: string;
+interface Banner {
+  no: number;
+  id: string;
+  name: string;
+  play_center_type: string;
+  ended_at: string;
+  banner: string;
+  is_joined: boolean;
 }
 
-interface StatusTournament {
-  id: number;
-  status: TournamentStatus;
-  title: string;
+interface DetailPlay {
+  id: string;
+  name: string;
+  category: string;
+  play_type: string;
+  publish_time: string;
+  open_registration_time: string;
+  play_time: string;
+  end_time: string;
+  min_participant: number;
+  max_participant: number;
+  prize_fix_amount: number;
+  admission_fee: number;
+  status: string;
+  banner: string;
+  is_joined: true;
+  created_at: string;
+  updated_at: string;
+  joined_participants: number;
+  play_center_type: string;
 }
+interface ArrowProps {
+  className?: string;
+  style?: React.CSSProperties;
+  onClick?: () => void;
+}
+
+const PrevArrow = (props: ArrowProps): React.ReactElement => {
+  const { className, onClick } = props;
+  return (
+    <div
+      className={`${className as string} absolute z-10`}
+      style={{
+        left: 10
+      }}
+      onClick={onClick}
+    />
+  );
+};
+
+const NextArrow = (props: ArrowProps): React.ReactElement => {
+  const { className, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ position: 'absolute', right: 10 }}
+      onClick={onClick}
+    />
+  );
+};
 
 const Player = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [quizActiveTab, setQuizActiveTab] = useState(QuizStatus.STARTED);
-  const [tournamentActiveTab, setTournamentActiveTab] = useState(
-    TournamentStatus.ACTIVE
-  );
-  const [listQuiz, setListQuiz] = useState<IQuiz[]>([]);
+  const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
+  const [activeSlide, setActiveSlide] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
-  const [activeNavbar, setActiveNavbar] = useState<string>('quiz');
   const [search, setSearch] = useState<string>('');
-  const [data, setData] = useState<IDetailTournament[]>([]);
+  const [data, setData] = useState<DetailPlay[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
-  
-  const [quizParams, setQuizParams] = useState({
-    search: '',
-    status: '',
-    page: 1,
-    limit: 12
-  });
 
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
@@ -81,18 +107,60 @@ const Player = (): React.ReactElement => {
     sort_by: '',
     totalPage: 9
   });
-
-  const handleTabChange = (tab: string): void => {
-    setActiveNavbar(tab);
-  };
-
+  const [userRank, setUserRank] = useState<number>(0);
   const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  useEffect(() => {
+    const fetchBannerAsset = async (): Promise<void> => {
+      try {
+        const res = await getEventList();
+        setBannerAsset(res.playList);
+        const resUserRank = await getUserRank(
+          userInfo?.preferredCurrency ?? '',
+          ''
+        );
+        setUserRank(resUserRank.current_rank);
+      } catch (error) {
+        console.error('Error fetching trending assets:', error);
+      }
+    };
+
+    void fetchBannerAsset();
+  }, []);
 
   useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
   }, []);
+
+  const sliderSettings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    arrow: true,
+    appendDots: (dots: React.ReactNode) => (
+      <div>
+        <ul className="mb-5"> {dots} </ul>
+      </div>
+    ),
+    beforeChange: (current: number, next: number) => {
+      setActiveSlide(next);
+    },
+    customPaging: (i: number) => (
+      <div
+        className={`h-2.5 rounded-full ${
+          activeSlide === i ? 'bg-[#3ac4a0] w-[18px]' : 'bg-[#E9E9E9] w-2.5'
+        }`}
+      ></div>
+    )
+  };
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -108,18 +176,12 @@ const Player = (): React.ReactElement => {
     setSearch(event.target.value);
   };
 
-  const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
-    const daysDiff = moment(endTime).diff(moment(startTime), 'days');
-    return daysDiff;
-  };
-
   const getListPlay = async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await getPlayAll({
+      const response = await getPlayLatestList({
         ...tournamentParams,
-        search,
-        status: tournamentActiveTab
+        search
       });
       if (response.playList === null) {
         setData([]);
@@ -134,115 +196,18 @@ const Player = (): React.ReactElement => {
     }
   };
 
-  const getListQuiz = async (currency: string): Promise<void> => {
-    try {
-      setLoading(true);
-      const res = await getAllQuiz({
-        ...quizParams,
-        status: quizActiveTab,
-        currency
-      });
-      if (res.data !== null) {
-        const list: IQuiz[] = res.data;
-        setListQuiz(list);
-      }
-    } catch (error) {
-      toast(`ERROR fetch list quiz ${error as string}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    setTournamentParams({ ...tournamentParams, page: 1 });
-  }, [tournamentActiveTab]);
+    if (userInfo !== undefined) {
+      const getData = setTimeout(() => {
+        void getListPlay();
+      }, 2000);
 
-  useEffect(() => {
-    if (activeNavbar === 'tournament') {
-      if (userInfo !== undefined) {
-        const getData = setTimeout(() => {
-          void getListPlay();
-        }, 2000);
-
-        return () => clearTimeout(getData);
-      }
+      return () => clearTimeout(getData);
     }
-
-    if (activeNavbar === 'quiz') {
-      if (userInfo !== undefined) {
-        const getData = setTimeout(() => {
-          void getListQuiz(userInfo?.preferredCurrency);
-        }, 2000);
-
-        return () => clearTimeout(getData);
-      }
-    }
-  }, [
-    activeNavbar,
-    userInfo,
-    quizActiveTab,
-    search,
-    refreshSearch,
-    tournamentActiveTab,
-    tournamentParams
-  ]);
-
-  const statusQuiz: StatusQuizI[] = isGuest()
-    ? [
-        {
-          id: 2,
-          status: QuizStatus.STARTED,
-          title: t('quiz.active')
-        }
-      ]
-    : [
-        {
-          id: 0,
-          status: QuizStatus.MYQUIZ,
-          title: t('quiz.myQuiz')
-        },
-        {
-          id: 1,
-          status: QuizStatus.PUBLISHED,
-          title: t('quiz.open')
-        },
-        {
-          id: 2,
-          status: QuizStatus.STARTED,
-          title: t('quiz.active')
-        },
-        {
-          id: 3,
-          status: QuizStatus.ENDED,
-          title: t('quiz.ended')
-        },
-        {
-          id: 4,
-          status: QuizStatus.CANCELED,
-          title: t('quiz.canceled')
-        }
-      ];
-
-  const statusTournament: StatusTournament[] = [
-    {
-      id: 1,
-      status: TournamentStatus.ACTIVE,
-      title: t('tournament.active')
-    },
-    {
-      id: 2,
-      status: TournamentStatus.PAST,
-      title: t('tournament.ended')
-    },
-    {
-      id: 3,
-      status: TournamentStatus.CANCELED,
-      title: t('tournament.canceled')
-    }
-  ];
+  }, [userInfo, search, refreshSearch, tournamentParams]);
 
   return (
-    <PageGradient defaultGradient className="w-full">
+    <PageGradient defaultGradient className="w-full bg-transparent">
       {/* <ComingSoon /> */}
       {isTutorialModal && (
         <ModalTutorialTournament
@@ -252,396 +217,227 @@ const Player = (): React.ReactElement => {
         />
       )}
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl">
-        <div className="bg-white w-full h-auto font-poppins my-4">
-          <div className="w-full flex justify-center">
-            <input
-              id="search"
-              type="text"
-              value={search}
-              onChange={e => {
-                handleSearch(e);
-              }}
-              name="search"
-              placeholder="Search"
-              className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
-            />
-            <button
-              onClick={() => setRefreshSearch(!refreshSearch)}
-              className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
-            >
-              Enter
-            </button>
+        <div className="w-full h-auto font-poppins my-4">
+          <div className=" bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] p-[24px] w-full h-auto justify-center text-center font-poppins my-4">
+            <Typography className="text-center text-xl font-seminbold mb-5 text-white">
+              Play Center
+            </Typography>
+            <div className="w-full flex justify-center">
+              <input
+                id="search"
+                type="text"
+                value={search}
+                onChange={e => {
+                  handleSearch(e);
+                }}
+                name="search"
+                placeholder="Search"
+                className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
+              />
+              <button
+                onClick={() => setRefreshSearch(!refreshSearch)}
+                className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
+              >
+                Enter
+              </button>
+            </div>
           </div>
-          <Tabs value={activeNavbar} className="w-full">
-            <TabsHeader
-              className="w-full text-center justify-center mx-auto rounded-none bg-transparent p-0"
-              indicatorProps={{
-                className: 'shadow-none rounded-none bg-transparent'
+          <div className="w-full my-5 h-auto cursor-default">
+            <Slider {...sliderSettings}>
+              {bannerAsset.map(asset => (
+                <div
+                  key={asset.id}
+                  className="w-full lg:w-[826px] relative h-[249px]"
+                >
+                  <Image
+                    className="object-cover w-full"
+                    src={asset.banner}
+                    alt={asset.name}
+                    width={826}
+                    height={249}
+                    // onClick={async () => {
+                    //   await router.push(asset.external_url);
+                    // }}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+          <div className="justify-center rounded-xl my-3 bg-[#FFFFFF]">
+            <Typography className="text-center mb-5 text-xl font-normal text-[#262626] ">
+              Seeds Play
+            </Typography>
+            <div className="justify-center flex gap-4">
+              <div
+                onClick={() => {
+                  void router.push('/play/quiz');
+                }}
+              >
+                <Image alt="" src={QuizButton} className="mb-2" />
+                <Typography className="text-center text-xl font-normal text-[#262626] ">
+                  Seeds Quiz
+                </Typography>
+              </div>
+              <div
+                onClick={() => {
+                  void router.push('/play/tournament');
+                }}
+              >
+                <Image alt="" src={PlayButton} className="mb-2" />
+                <Typography className="text-center text-xl font-normal text-[#262626] ">
+                  Play Arena
+                </Typography>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-xl my-3 bg-[#FFFFFF]">
+            <div
+              className="flex justify-between bg-gradient-to-r from-[#7B51FF] to-[#B7A6EB] p-4 rounded-lg mt-4 mx-3 relative overflow-hidden"
+              onClick={() => {
+                void router.push('/play/leaderboard');
               }}
             >
-              <Tab
-                value="tournament"
-                onClick={() => {
-                  handleTabChange('tournament');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'tournament'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t z-0 from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                Tournament
-              </Tab>
-              <Tab
-                value="quiz"
-                onClick={() => {
-                  handleTabChange('quiz');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'quiz'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                Quiz
-              </Tab>
-              <Tab
-                value="leaderboard"
-                onClick={async () => {
-                  isGuest()
-                    ? await router.push('/auth').catch(error => {
-                        toast(error, { type: 'error' });
-                      })
-                    : handleTabChange('leaderboard');
-                }}
-                className={`text-center text-xl z-0 bg-transparent mt-3 xl:mt-5 ${
-                  activeNavbar === 'leaderboard'
-                    ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                    : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
-                }`}
-              >
-                Leaderboard
-              </Tab>
-            </TabsHeader>
-            <TabsBody className="w-full">
-              <TabPanel value="tournament">
-                <div className="bg-white rounded-lg p-0 font-poppins">
-                  {/* Filter Section */}
-                  <div className="w-full flex items-center justify-center">
-                    <div className="flex flex-row items-center gap-2 max-w-full overflow-x-auto no-scroll">
-                      {statusTournament.map(item => (
-                        <button
-                          className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
-                            item.status === tournamentActiveTab
-                              ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
-                              : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
-                          }`}
-                          key={item.id}
-                          onClick={() => {
-                            setTournamentActiveTab(item.status);
-                          }}
-                        >
-                          {item.title}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Tutorial Banner */}
-                  <div className="bg-gradient-to-r from-[#7B51FF] to-[#B7A6EB] p-4 rounded-lg mt-4 relative overflow-hidden">
-                    <p className="text-sm md:text-xl text-white font-semibold z-50">
-                      {t('tournament.banner1')}
-                    </p>
-                    <p className="text-sm md:text-lg text-white my-2 z-50">
-                      {t('tournament.banner2')}
-                    </p>
-                    <p
-                      onClick={() => {
-                        setIsTutorialModal(true);
-                      }}
-                      className="text-sm md:text-lg bg-white text-[#7B51FF] w-fit py-2 px-8 md:px-16 rounded-full text-center font-semibold cursor-pointer z-50"
-                    >
-                      {t('tournament.banner3')}
-                    </p>
-                    <Image
-                      alt=""
-                      src={TutorialIcon}
-                      className="hidden md:block absolute right-[-18px] top-[-18px] w-[165px] z-30"
+              <Image
+                alt=""
+                src={LeaderBoardIcon}
+                className="hidden md:block absolute left-[-18px] top-[-5px] w-[125px] z-30"
+              />
+              <div className="md:ms-[20%]">
+                <p className="text-sm md:text-2xl text-white font-semibold z-50">
+                  Leaderboards
+                </p>
+                <p className="text-sm font-normal md:text-lg text-white my-2 z-50">
+                  Let’s check your detailed score!
+                </p>
+              </div>
+              <div className="flex gap-4 ">
+                <div className="relative z-50">
+                  <p className="text-sm md:text-xl text-white font-semibold z-100">
+                    #{userRank ?? '-'}
+                  </p>
+                  <p className="text-sm md:text-xl text-white font-semibold z-100">
+                    place
+                  </p>
+                </div>
+                <div className="relative z-50 items-center justify-center my-auto">
+                  <svg
+                    width="7"
+                    height="12"
+                    viewBox="0 0 7 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.310022 0.824249C0.217319 0.916763 0.143771 1.02665 0.0935898 1.14763C0.0434083 1.2686 0.0175781 1.39828 0.0175781 1.52925C0.0175781 1.66022 0.0434083 1.7899 0.0935898 1.91087C0.143771 2.03185 0.217319 2.14174 0.310022 2.23425L4.19002 6.11425L0.310022 9.99425C0.123045 10.1812 0.0180016 10.4348 0.0180016 10.6992C0.0180016 10.9637 0.123045 11.2173 0.310022 11.4043C0.497 11.5912 0.750596 11.6963 1.01502 11.6963C1.27945 11.6963 1.53304 11.5912 1.72002 11.4043L6.31002 6.81425C6.40273 6.72174 6.47627 6.61185 6.52645 6.49087C6.57664 6.3699 6.60247 6.24022 6.60247 6.10925C6.60247 5.97828 6.57664 5.8486 6.52645 5.72762C6.47627 5.60665 6.40273 5.49676 6.31002 5.40425L1.72002 0.814249C1.34002 0.434249 0.700022 0.434249 0.310022 0.824249Z"
+                      fill="white"
                     />
-                  </div>
-
-                  {!loading ? (
-                    data?.length !== 0 ? (
-                      <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
-                        {data.map(item => (
-                          <div
-                            key={item.id}
-                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                            onClick={async () => await router.push(`${item?.is_joined ? `/play/tournament/${item.id}/home` : `/play/tournament/${item.id}`}`).catch(error => {toast.error(error);})}
-                            className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
-                          >
-                            <div className="w-[60px] text-black text-center hidden md:block">
-                              <Typography className="text-black font-normal text-[12px]">
-                                {moment(item?.play_time).format('MMM')}
-                              </Typography>
-                              <Typography className="text-[24px] text-black font-semibold">
-                                {moment(item?.play_time).format('DD')}
-                              </Typography>
+                  </svg>
+                </div>
+              </div>
+              <Image
+                alt=""
+                src={Circle}
+                className="hidden md:block absolute right-[-18px] top-[-8px] w-[165px] z-10"
+              />
+            </div>
+            <p className="text-base mt-3 md:text-base text-[#262626] font-semibold z-50">
+              My Latest Play
+            </p>
+            {!loading ? (
+              data?.length !== 0 ? (
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
+                  {data.map(item => (
+                    <div
+                      key={item.id}
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                      onClick={async () =>
+                        await router
+                          .push(
+                            `${
+                              item?.is_joined
+                                ? `/play/tournament/${item.id}/home`
+                                : `/play/tournament/${item.id}`
+                            }`
+                          )
+                          .catch(error => {
+                            toast.error(error);
+                          })
+                      }
+                      className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
+                    >
+                      <div className="w-full bg-white">
+                        <div className="w-full rounded-xl overflow-hidden">
+                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                            <Image
+                              alt=""
+                              src={
+                                item.banner !== undefined && item.banner !== ''
+                                  ? item.banner
+                                  : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                              }
+                              width={100}
+                              height={100}
+                              className="w-auto h-full"
+                            />
+                          </div>
+                          <div className="pl-2 flex justify-between bg-[#3AC4A0]">
+                            <div>
+                              <div className="text-[14px] font-semibold text-white">
+                                {item.name}
+                              </div>
+                              <div className="text-white px-2 text-[10px]">
+                                {`${generateFormattedDate(
+                                  item.play_time,
+                                  false
+                                )} - ${generateFormattedDate(item.end_time)}`}
+                              </div>
                             </div>
-
-                            <div className="w-full bg-white">
-                              <div className="w-full rounded-xl overflow-hidden">
-                                <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
-                                  <Image
-                                    alt=""
-                                    src={
-                                      item.banner !== undefined &&
-                                      item.banner !== ''
-                                        ? item.banner
-                                        : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
-                                    }
-                                    width={100}
-                                    height={100}
-                                    className="w-auto h-full"
-                                  />
+                            <div className="my-auto items-center">
+                              {item?.is_joined ? (
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                  {t('tournament.tournamentCard.openButton')}
                                 </div>
-                                <div className="pl-2 flex justify-between">
-                                  <div className="text-[14px] font-semibold text-[#262626]">
-                                    {item.name}
-                                  </div>
-                                  <div className="text-[10px] bg-[#E9E9E9] text-[#553BB8] px-4 flex justify-center items-center rounded-lg">
-                                    {item.type}
-                                  </div>
+                              ) : (
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                  {t('tournament.tournamentCard.joinButton')}
                                 </div>
-                                <div className="text-[#BDBDBD] px-2 text-[10px]">
-                                  {`${generateFormattedDate(
-                                    item.play_time,
-                                    false
-                                  )} - ${generateFormattedDate(item.end_time)}`}
-                                </div>
-                              </div>
-
-                              <div className="w-full flex text-[10px] px-2 bg-[#E9E9E9] rounded-lg py-1 mt-1">
-                                <div className="w-full flex items-start">
-                                  <Image
-                                    alt=""
-                                    src={IconClock}
-                                    className="w-[14px] mb-2 mr-1"
-                                  />
-                                  <div className="flex flex-col">
-                                    <div>
-                                      {t('tournament.tournamentCard.duration')}
-                                    </div>
-                                    <div className="font-semibold text-black">
-                                      {calculateDaysLeft(
-                                        new Date(item?.play_time),
-                                        new Date(item?.end_time),
-                                      )}{' '}
-                                      {t('tournament.tournamentCard.days')}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="w-full flex items-start">
-                                  <Image
-                                    alt=""
-                                    src={IconUsers}
-                                    className="w-[14px] mb-2 mr-1"
-                                  />
-                                  <div className="flex flex-col">
-                                    <div>
-                                      {t('tournament.tournamentCard.joined')}
-                                    </div>
-                                    <div className="font-semibold text-black">
-                                      {item?.participants?.length ?? '0'}{' '}
-                                      {t('tournament.tournamentCard.player')}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="w-full flex items-start">
-                                  <Image
-                                    alt=""
-                                    src={IconFee}
-                                    className="w-[14px] mb-2 mr-1"
-                                  />
-                                  <div className="flex flex-col">
-                                    <div>
-                                      {t('tournament.tournamentCard.fee')}
-                                    </div>
-                                    <div className="font-semibold text-black">
-                                      {item.admission_fee === 0
-                                        ? t('quiz.free')
-                                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                        : `${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(item.admission_fee).replace('Rp', '')}`
-                                      }
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex justify-between border-t-2 border-dashed mt-2 py-2 pr-2">
-                                <div className="flex gap-1">
-                                  <div className="flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
-                                    {item.category}
-                                  </div>
-                                  <div className="h-full flex justify-center items-center gap-1">
-                                    <div className="w-full h-full flex justify-center items-center">
-                                      <Image
-                                        alt=""
-                                        src={IconShare}
-                                        className="w-[20px]"
-                                      />
-                                    </div>
-                                    <div className="text-[10px] font-semibold">
-                                      {t('tournament.tournamentCard.share')}
-                                    </div>
-                                  </div>
-                                </div>
-                                {
-                                  item?.is_joined ?
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                      {t('tournament.tournamentCard.openButton')}
-                                    </div>
-                                    :
-                                    <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
-                                      {t('tournament.tournamentCard.joinButton')}
-                                    </div>
-                                }
-                              </div>
+                              )}
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
-                        <Image alt="" src={IconNoData} className="w-[250px]" />
-                        <p className="font-semibold text-black">
-                          {t('tournament.blank1')}
-                        </p>
-                        <p className="text-[#7C7C7C]">
-                          {t('tournament.blank2')}
-                        </p>
-                      </div>
-                    )
-                  ) : (
-                    <div className="w-full flex justify-center h-fit mt-8">
-                      <div className="h-[60px]">
-                        <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                        </div>
                       </div>
                     </div>
-                  )}
-
-                  <div className="flex justify-center mx-auto my-8">
-                    <TournamentPagination
-                      currentPage={tournamentParams.page}
-                      totalPages={tournamentParams.totalPage}
-                      onPageChange={page => {
-                        setTournamentParams({ ...tournamentParams, page });
-                      }}
-                    />
-                  </div>
+                  ))}
                 </div>
-              </TabPanel>
-              <TabPanel value="quiz">
-                <div className="bg-white rounded-lg p-0 lg:p-5">
-                  {!isGuest() && (
-                    <div className="flex justify-center items-center gap-2">
-                      <input
-                        type="text"
-                        className="rounded-full border border-neutral-soft py-1.5 px-3 w-80"
-                        placeholder="Input your invitation code"
-                      />
-                      <Button variant="dark" label="Enter" />
-                    </div>
-                  )}
-
-                  {/* Filter Section */}
-                  <div className="flex flex-row items-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
-                    {statusQuiz.map(item => (
-                      <button
-                        className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
-                          item.status === quizActiveTab
-                            ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
-                            : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
-                        }`}
-                        key={item.id}
-                        onClick={() => {
-                          setQuizActiveTab(item.status);
-                        }}
-                      >
-                        {item.title}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Top Quiz Section */}
-                  <TopQuiz />
-
-                  {/* List Quiz Section */}
-                  <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center">
-                    <div>
-                      <h1 className="text-3xl font-semibold font-poppins">
-                        List Quiz
-                      </h1>
-                      <p className="text-sm font-poppins">
-                        Challenge your finance knowledge with these quizzes.
-                      </p>
-                    </div>
-                    <div className="relative">
-                      <input
-                        id="search"
-                        type="text"
-                        name="search"
-                        value={quizParams.search}
-                        onChange={e => {
-                          setQuizParams(prev => ({
-                            ...prev,
-                            search: e.target.value
-                          }));
-                        }}
-                        placeholder="Search"
-                        readOnly={false}
-                        disabled={false}
-                        className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
-                      />
-                      <label
-                        htmlFor="search"
-                        className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                      >
-                        <MagnifyingGlassIcon className="w-5 h-5 text-[#262626]" />
-                      </label>
-                    </div>
-                  </div>
-                  <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-4">
-                    {listQuiz?.length === 0 && !loading ? (
-                      <div className="col-span-3">
-                        <Image
-                          src={ListQuizEmpty}
-                          width={500}
-                          alt="Top Quiz Empty"
-                        />
-                      </div>
-                    ) : null}
-                    {loading ? (
-                      <div className="col-span-3 flex items-center justify-center">
-                        <div className="animate-spinner w-5 h-5" />
-                      </div>
-                    ) : (
-                      listQuiz?.map(item => (
-                        <QuizCard
-                          item={item}
-                          key={item.id}
-                          currency={userInfo?.preferredCurrency ?? 'IDR'}
-                        />
-                      ))
-                    )}
-                  </div>
+              ) : (
+                <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                  <Image alt="" src={IconNoData} className="w-[250px]" />
+                  <p className="font-semibold text-black">
+                    {t('tournament.blank1')}
+                  </p>
+                  <p className="text-[#7C7C7C]">{t('tournament.blank2')}</p>
                 </div>
-              </TabPanel>
-              <TabPanel value="leaderboard">
-                <LeaderBoardGlobalPage />
-              </TabPanel>
-            </TabsBody>
-          </Tabs>
+              )
+            ) : (
+              <div className="w-full flex justify-center h-fit mt-8">
+                <div className="h-[60px]">
+                  <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                </div>
+              </div>
+            )}
+            <div className="flex justify-center mx-auto my-8">
+              {data?.length > 6 && (
+                <TournamentPagination
+                  currentPage={tournamentParams.page}
+                  totalPages={tournamentParams.totalPage}
+                  onPageChange={page => {
+                    setTournamentParams({ ...tournamentParams, page });
+                  }}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </PageGradient>

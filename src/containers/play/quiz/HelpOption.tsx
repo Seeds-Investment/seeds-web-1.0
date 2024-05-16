@@ -39,6 +39,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [showAlertPrice, setShowAlertPrice] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
+  const invitationCode = router.query.invitationCode ?? '';
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -168,7 +169,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           payment_method: '',
           phone_number: phoneNumber,
           promo_code: '',
-          invitation_code: ''
+          invitation_code: invitationCode as string
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
       } catch (error) {
@@ -197,7 +198,6 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   };
 
   const handleTapOption = (value: LifelinesEnum) => {
-    console.log(lifelines);
     if (lifelines.includes(value)) {
       addOrRemoveLifelines(value);
     } else {

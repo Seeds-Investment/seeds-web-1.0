@@ -38,7 +38,9 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
       </div>
       <div className="bg-gradient-to-r from-[#106B6E] to-[#96F7C1] w-full font-poppins">
         <div className="flex flex-row justify-between px-4 py-2 border-b border-dashed border-white">
-          <div className="text-white text-sm font-semibold">{item.name}</div>
+          <div className="text-white text-[12.5px] font-semibold">
+            {item.name}
+          </div>
           <button
             onClick={async () => {
               isGuest() ? await router.push('/auth') : await handleCopyClick();
@@ -47,11 +49,11 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
             <ShareIcon width={20} height={20} className="text-white" />
           </button>
         </div>
-        <div className="flex flex-row justify-between items-center px-4 py-2 pb-4">
+        <div className="flex flex-row justify-between items-center px-2 py-2 pb-4">
           <div className="flex flex-row items-center gap-3 text-white text-xs lg:text-sm">
             <div>
-              <div>{t('quiz.entryFee')}</div>
-              <div className="font-semibold">
+              <div className="text-[8.93px]">{t('quiz.entryFee')}</div>
+              <div className="font-semibold text-[10.71px]">
                 {item.admission_fee === 0
                   ? t('quiz.free')
                   : item.admission_fee.toLocaleString('id-ID', {
@@ -61,8 +63,8 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
               </div>
             </div>
             <div>
-              <div>{t('quiz.duration')}</div>
-              <div className="font-semibold">
+              <div className="text-[8.93px]">{t('quiz.duration')}</div>
+              <div className="font-semibold text-[10.71px]">
                 {t('quiz.dayDuration', {
                   duration: Math.floor(
                     moment(item.ended_at).diff(
@@ -75,8 +77,10 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
               </div>
             </div>
             <div>
-              <div>{t('quiz.players')}</div>
-              <div className="font-semibold">{item.participants}</div>
+              <div className="text-[8.93px]">{t('quiz.players')}</div>
+              <div className="font-semibold text-[10.71px]">
+                {item.participants}
+              </div>
             </div>
           </div>
           <div>
@@ -93,7 +97,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                   });
                 }
               }}
-              className="bg-white text-sm md:text-base text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
+              className="bg-white text-sm md:text-[10.71px] lg:w-[76.77px] lg:h-[25px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
             >
               {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
             </button>

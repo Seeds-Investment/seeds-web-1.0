@@ -1830,7 +1830,9 @@ export default {
     winnerModalTitle: 'Congrats you won the Quiz!',
     score: 'Your Score : ',
     earn: ' You earn IDR ',
-    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
+    text1: 'Challenge your finance knowledge with these quizzes.',
+    text2: 'Check out the latest rankings for top quizzes!'
   },
   tournament: {
     myPlay: 'My Play',
@@ -1965,30 +1967,30 @@ export default {
       }
     },
     watchlist: {
-      watchlist: "Watchlist",
-      noData: "No Watchlist yet",
-      create: "Create your Watchlist now!",
-      createWatchlist: "Create Watchlist",
-      add: "Add Watchlist",
-      name: "Watchlist Name",
-      photo: "Watchlist Photo",
-      addAsset: "Add Asset",
-      save: "Save",
-      delete: "Delete",
-      cancel: "Cancel",
-      editWatchlist: "Edit Watchlist",
-      deleteConfirm: "Are you sure want to delete this watchlist?",
-      changeAsset: "Change Asset",
-      enter: "Enter Watchlist name...",
-      search: "Search",
+      watchlist: 'Watchlist',
+      noData: 'No Watchlist yet',
+      create: 'Create your Watchlist now!',
+      createWatchlist: 'Create Watchlist',
+      add: 'Add Watchlist',
+      name: 'Watchlist Name',
+      photo: 'Watchlist Photo',
+      addAsset: 'Add Asset',
+      save: 'Save',
+      delete: 'Delete',
+      cancel: 'Cancel',
+      editWatchlist: 'Edit Watchlist',
+      deleteConfirm: 'Are you sure want to delete this watchlist?',
+      changeAsset: 'Change Asset',
+      enter: 'Enter Watchlist name...',
+      search: 'Search'
     },
     social: {
-      sorry: "Sorry, there is no post here!",
+      sorry: 'Sorry, there is no post here!',
       noData: "Let's make your post here!",
-      member: "member",
-      members: "members",
-      description: "Discover the experts for more insights",
-      seeAll: "See All",
+      member: 'member',
+      members: 'members',
+      description: 'Discover the experts for more insights',
+      seeAll: 'See All'
     }
   },
   buyAsset: {

@@ -56,7 +56,6 @@ export const getAllQuiz = async ({
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-
     if (!isGuest() && (accessToken === null || accessToken === '')) {
       return await Promise.resolve('Access token not found');
     }
@@ -299,4 +298,33 @@ export const getQuizWithdraw = async (quizId: string): Promise<any> => {
       Authorization: `Bearer ${accessToken ?? ''}`
     }
   });
+};
+
+export const validateInvitationCode = async (
+  quizId: string,
+  invitationCode: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    const response = await quizService.get('/invitation/validate', {
+      params: {
+        quiz_id: quizId,
+        invitation_code: invitationCode
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error validating invitation code:', error);
+    throw error;
+  }
 };

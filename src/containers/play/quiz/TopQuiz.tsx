@@ -61,7 +61,7 @@ const TopQuiz = (): JSX.Element => {
         </h1>
         <p className="text-sm font-poppins">{t('quiz.topQuizDesc')}</p>
       </div>
-      <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-3">
         {topQuizes?.length === 0 && !loading ? (
           <div className="col-span-3">
             <Image src={TopQuizEmpty} width={500} alt="Top Quiz Empty" />

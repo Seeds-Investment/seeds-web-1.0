@@ -1871,9 +1871,9 @@ export default {
     detailAccessCode: 'Input Access Code',
     detailBannerTotalRewards: 'Total Rewards',
     entranceFee: 'Entrance Fee',
-    shareArena: "Share This Arena",
-    shareLinks: "Share Link",
-    playId: "Play ID",
+    shareArena: 'Share This Arena',
+    shareLinks: 'Share Link',
+    playId: 'Play ID',
     free: 'Free',
     join: 'Join',
     start: 'Start',
@@ -1988,9 +1988,12 @@ export default {
       }
     },
     floatingButton: {
-      text1: "Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!",
-      text2: "Have good news in the play arena? Share it with your friends and find experts for more insights.",
-      text3: "Don't forget to read Play Arena's terms and conditions before you start playing.",
+      text1:
+        'Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!',
+      text2:
+        'Have good news in the play arena? Share it with your friends and find experts for more insights.',
+      text3:
+        "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
       watchlist: 'Watchlist',
@@ -2020,14 +2023,14 @@ export default {
     }
   },
   seedsEvent: {
-    search: "Search",
-    enter: "Enter",
-    past: "PAST",
-    today: "TODAY",
-    thisMonth: "THIS MONTH",
-    upcoming: "UPCOMING",
+    search: 'Search',
+    enter: 'Enter',
+    past: 'PAST',
+    today: 'TODAY',
+    thisMonth: 'THIS MONTH',
+    upcoming: 'UPCOMING',
     blank1: 'Opps,  There’s No Event Yet',
-    blank2: 'Stay tuned for more updates!',
+    blank2: 'Stay tuned for more updates!'
   },
   buyAsset: {
     text1: 'Assets to be purchased',
@@ -2132,5 +2135,9 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Opps,  There’s No Open Account Yet',
+    stayTuned: 'Stay tuned for more updates!'
   }
 };

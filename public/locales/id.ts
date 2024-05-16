@@ -2053,5 +2053,9 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
+    stayTuned: 'Nantikan update selanjutnya!'
   }
 };

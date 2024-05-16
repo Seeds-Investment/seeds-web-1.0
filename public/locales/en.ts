@@ -1845,7 +1845,19 @@ export default {
     winnerModalTitle: 'Congrats you won the Quiz!',
     score: 'Your Score : ',
     earn: ' You earn IDR ',
-    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
+    payment: {
+      paymentMethod: "Payment Method",
+      pendingPaidQuiz: "Pending Paid Quiz",
+      quizFee: "Quiz Fee",
+      lifelinesFee: "Lifeline Fee",
+      adminFee: "Admin Fee",
+      serviceFee: "Service Fee",
+      discountFee: "Discount Fee",
+      totalAmount: "Total Amount",
+      idTransaction: "ID Transaction",
+      close: "Close",
+    }
   },
   discover: {
     hotNews: 'Hot News',

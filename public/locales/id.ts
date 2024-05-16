@@ -1771,7 +1771,19 @@ export default {
     winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
     score: 'Skor Kamu : ',
     earn: ' Kamu Mendapatkan IDR ',
-    tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds'
+    tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
+    payment: {
+      paymentMethod: "Metode Pembayaran",
+      pendingPaidQuiz: "Menunggu Kuis Dibayar",
+      quizFee: "Biaya Kuis",
+      lifelinesFee: "Biaya Bantuan Tambahan",
+      adminFee: "Biaya Admin",
+      serviceFee: "Biaya Layanan",
+      discountFee: "Diskon",
+      totalAmount: "Total Biaya",
+      idTransaction: "ID Transaksi",
+      close: "Tutup",
+    }
   },
   discover: {
     hotNews: 'Hot News',

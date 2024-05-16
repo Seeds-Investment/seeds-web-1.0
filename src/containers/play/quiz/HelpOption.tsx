@@ -197,7 +197,6 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   };
 
   const handleTapOption = (value: LifelinesEnum) => {
-    console.log(lifelines);
     if (lifelines.includes(value)) {
       addOrRemoveLifelines(value);
     } else {

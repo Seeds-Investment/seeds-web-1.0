@@ -66,12 +66,12 @@ const TournamentDetail: React.FC = () => {
 
   const handleInvitationCode = async (): Promise<void> => {
     try {
-      // Validasi invitation code
       if (detailTournament?.is_need_invitation_code && invitationCode !== '') {
         const validationResponse = await validateInvitationCode(
           detailTournament?.id ?? '',
           invitationCode
         );
+
         if (!validationResponse.is_valid) {
           toast.error('Invalid invitation code');
           setValidInvit(false);
@@ -387,7 +387,11 @@ const TournamentDetail: React.FC = () => {
                   router.push(`/play/tournament/${id as string}/home`);
                 } else {
                   if (detailTournament?.admission_fee === 0) {
-                    await handleJoinFreeTournament();
+                    if (invitationCode === '') {
+                      await handleJoinFreeTournament();
+                    } else {
+                      handleInvitationCode();
+                    }
                   } else {
                     if (invitationCode === '' && !validInvit) {
                       router.push(`/play/tournament/${id as string}/payment`);

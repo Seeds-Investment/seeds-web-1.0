@@ -12,12 +12,19 @@ const WelcomeQuiz = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const id = router.query.id;
+  const invitationCode = router.query.invitationCode;
   const timeOut = () => {
     setTimeout(() => {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      router.replace(`/play/quiz/${id as string}/help-option`).catch(err => {
-        console.error('navigation error:', err);
-      });
+      router
+        .replace(
+          `/play/quiz/${id as string}/help-option?invitationCode=${
+            invitationCode as string
+          }`
+        )
+        .catch(err => {
+          console.error('navigation error:', err);
+        });
     }, 2000);
   };
 

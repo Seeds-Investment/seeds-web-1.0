@@ -17,7 +17,9 @@ interface IAuthBoD {
   setMonth: (month: number) => void;
   year: number | undefined;
   setYear: (year: number) => void;
-  handleChangeDoB: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeDoB: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
 const AuthBoD: React.FC<IAuthBoD> = ({
@@ -285,8 +287,8 @@ const AuthBoD: React.FC<IAuthBoD> = ({
         </DialogBody>
         <DialogFooter className="w-full">
           <Button
-            onClick={() => {
-              handleChangeDoB(event);
+            onClick={e => {
+              handleChangeDoB(e);
               handleOpen();
             }}
             disabled={

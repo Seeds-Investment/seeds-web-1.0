@@ -156,7 +156,7 @@ const AuthGuestRegister: React.FC<IAuthGuestRegister> = ({
         phoneNumber: cleanedPhoneNumber
       });
     }
-  }, []);
+  }, [router.query]);
 
   return (
     <div

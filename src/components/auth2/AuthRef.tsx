@@ -31,6 +31,7 @@ interface IAuthRef {
   handleOpen: () => void;
   setFormData: React.Dispatch<
     React.SetStateAction<{
+      oldPassword: string;
       phoneNumber: string;
       birthDate: string;
       name: string;
@@ -38,9 +39,11 @@ interface IAuthRef {
       refCode: string;
       password: string;
       provider: { provider: string; identifer: string };
+      token: string;
     }>
   >;
   formData: {
+    oldPassword: string;
     phoneNumber: string;
     birthDate: string;
     name: string;
@@ -51,6 +54,7 @@ interface IAuthRef {
       provider: string;
       identifer: string;
     };
+    token: string;
   };
   loginForm: {
     phoneNumber: string;

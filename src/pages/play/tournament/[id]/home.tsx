@@ -431,7 +431,9 @@ const TournamentHome: React.FC = () => {
               </Typography>
             </div>
             <div
-              onClick={async () => await router.push(`/play/tournament/${id as string}/watchlist`) }
+              onClick={async () =>
+                await router.push(`/play/tournament/${id as string}/watchlist`)
+              }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
               <Image
@@ -473,6 +475,7 @@ const TournamentHome: React.FC = () => {
           <div
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             onClick={async () =>
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               await router.push(`/play/tournament/${id}/leaderboard`)
             }
             className="w-full lg:flex lg:justify-between ml-2"
@@ -493,7 +496,7 @@ const TournamentHome: React.FC = () => {
         </div>
 
         <div className="w-full mt-4 relative">
-          <FloatingButton id={id as string}/>
+          <FloatingButton id={id as string} />
           <Typography className="text-xl font-semibold text-[#3AC4A0]">
             {t('tournament.asset.tournamentAsset')}
           </Typography>

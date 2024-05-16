@@ -5,10 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface IAuthPassword {
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    dialCode: string
-  ) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   formData: string;
   error: boolean;
   name: string;

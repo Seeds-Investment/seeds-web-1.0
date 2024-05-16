@@ -2,7 +2,7 @@ import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import AuthNumber from '@/components/auth2/AuthNumber';
 import withRedirect from '@/helpers/withRedirect';
-import { checkPhoneNumber } from '@/repository/auth.repository';
+import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -80,8 +80,8 @@ const AuthCheckGuestNumber: React.FC<IAuthCheckGuestNumber> = ({
         );
       }
     } catch (error: any) {
-      // console.error(error);
-      // go to login page
+      // setFormData(formattedPhone.phoneNumber)
+      await getOtp({ method: 'sms', phoneNumber: formattedPhone.phoneNumber });
       await withRedirect(
         router,
         { ...router.query, phoneNumber: formattedPhone.phoneNumber },

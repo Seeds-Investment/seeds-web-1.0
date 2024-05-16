@@ -17,6 +17,7 @@ interface IAuthPersonalData {
   className: string;
   setFormData: React.Dispatch<
     React.SetStateAction<{
+      oldPassword: string;
       phoneNumber: string;
       birthDate: string;
       name: string;
@@ -24,9 +25,11 @@ interface IAuthPersonalData {
       refCode: string;
       password: string;
       provider: { provider: string; identifer: string };
+      token: string;
     }>
   >;
   formData: {
+    oldPassword: string;
     phoneNumber: string;
     birthDate: string;
     name: string;
@@ -37,6 +40,7 @@ interface IAuthPersonalData {
       provider: string;
       identifer: string;
     };
+    token: string;
   };
   loginForm: {
     phoneNumber: string;

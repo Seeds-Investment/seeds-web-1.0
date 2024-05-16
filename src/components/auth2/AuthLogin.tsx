@@ -27,6 +27,13 @@ interface FormData {
   os_name: string;
 }
 
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
+}
+
 const AuthLogin: React.FC = () => {
   const setSelect = (): number => {
     return 2;
@@ -35,6 +42,7 @@ const AuthLogin: React.FC = () => {
   const isQuery = Object.keys(router.query).length < 0;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const deviceDetector = new DeviceDetector();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -91,10 +99,7 @@ const AuthLogin: React.FC = () => {
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    dialCode: string
-  ): void => {
+  const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     if (formData.phoneNumber === dialCode) {
       setFormData({
@@ -136,7 +141,7 @@ const AuthLogin: React.FC = () => {
         }`
       });
     }
-  }, []);
+  }, [router.query]);
 
   return (
     <div className="flex flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4">
@@ -176,7 +181,7 @@ const AuthLogin: React.FC = () => {
       />
       <div className="w-full">
         <AuthPassword
-          handleChange={handleChange}
+          handleChange={handleChange as any}
           formData={formData.password}
           error={error}
           name="password"

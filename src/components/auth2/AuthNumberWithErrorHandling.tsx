@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
 import {
   Button,
@@ -106,7 +107,10 @@ const AuthNumberWithErrorHandling: React.FC<IAuthNumberWithErrorHandling> = ({
           value={formData}
           onKeyDown={handleSubmit}
           onChange={() => {
-            handleChange(event, countries[country].dialCode.replace('+', ''));
+            handleChange(
+              event as any,
+              countries[country].dialCode.replace('+', '')
+            );
           }}
           required
           labelProps={{

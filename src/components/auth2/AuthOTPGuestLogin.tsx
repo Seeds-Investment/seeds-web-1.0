@@ -41,7 +41,7 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const [input, setInput] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
@@ -172,22 +172,7 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
   };
 
   useEffect(() => {
-    if (formData.phoneNumber !== '') {
-      void (async () => {
-        try {
-          if (countdown === 0) {
-            await getOtp({ method, phoneNumber: formData.phoneNumber });
-            setCountdown(60);
-          }
-        } catch (error: any) {
-          toast(error, { type: 'error' });
-          console.error('Error fetching OTP:', error);
-        }
-      })();
-    }
-  }, [formData.phoneNumber]);
-
-  useEffect(() => {
+    setCountdown(60);
     inputRefs.current[0]?.focus();
   }, [select === 1]);
 

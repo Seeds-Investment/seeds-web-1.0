@@ -94,6 +94,7 @@ const SetupPassword: React.FC = () => {
       }_web`,
       os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const element = (
     <>

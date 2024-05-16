@@ -11,6 +11,7 @@ import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament'
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { standartCurrency } from '@/helpers/currency';
 import { generateFormattedDate } from '@/helpers/dateFormat';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getPlayAll } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -133,6 +134,9 @@ const PlayTournament = (): React.ReactElement => {
       title: t('tournament.canceled')
     }
   ];
+
+  const baseUrl =
+    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -337,18 +341,31 @@ const PlayTournament = (): React.ReactElement => {
                             <div className="flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
                               {item.category}
                             </div>
-                            <div className="h-full flex justify-center items-center gap-1">
-                              <div className="w-full h-full flex justify-center items-center">
-                                <Image
-                                  alt=""
-                                  src={IconShare}
-                                  className="w-[20px]"
-                                />
+                            <button
+                              onClick={async () => {
+                                const textToCopy = `${baseUrl}/play/tournament/${item.id}`;
+                                isGuest()
+                                  ? await router.push('/auth')
+                                  : await navigator.clipboard
+                                      .writeText(textToCopy)
+                                      .then(() => {
+                                        toast('Tournament link copied!');
+                                      });
+                              }}
+                            >
+                              <div className="h-full flex justify-center items-center gap-1">
+                                <div className="w-full h-full flex justify-center items-center">
+                                  <Image
+                                    alt=""
+                                    src={IconShare}
+                                    className="w-[20px]"
+                                  />
+                                </div>
+                                <div className="text-[10px] font-semibold">
+                                  {t('tournament.tournamentCard.share')}
+                                </div>
                               </div>
-                              <div className="text-[10px] font-semibold">
-                                {t('tournament.tournamentCard.share')}
-                              </div>
-                            </div>
+                            </button>
                           </div>
                           {item?.is_joined ? (
                             <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">

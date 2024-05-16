@@ -717,3 +717,36 @@ export const validateInvitationCode = async (
     throw error;
   }
 };
+
+export const getAllPlayCenter = async (
+  page: number,
+  limit: number,
+  currency: string,
+  search: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    const response = await playCenterService.get(`/list`, {
+      params: {
+        page,
+        limit,
+        currency,
+        search
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching play list:', error);
+    throw error;
+  }
+};

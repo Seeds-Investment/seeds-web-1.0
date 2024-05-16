@@ -166,7 +166,7 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
         } else {
           setLoading(false);
           setError(true);
-          console.error('Invalid or empty response from server');
+          toast.error('Invalid or empty response from server');
         }
       }
     } catch (error: any) {
@@ -196,6 +196,7 @@ const AuthOTPGuestLogin: React.FC<IAuthOTPGuestLogin> = ({
               setMethod('sms');
               setSelect(0);
             } else {
+              delete router.query.phoneNumber;
               router.back();
             }
           }}

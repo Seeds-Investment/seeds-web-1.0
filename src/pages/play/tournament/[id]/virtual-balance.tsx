@@ -158,7 +158,7 @@ const VirtualBalance = (): React.ReactElement => {
     try {
       setLoadingOpenOrder(true);
       const response = await getOperOrderList(id as string, { currency });
-      setOpenOrder(response.data);
+      setOpenOrder(response?.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -173,7 +173,7 @@ const VirtualBalance = (): React.ReactElement => {
         ...historyParams,
         currency
       });
-      setHistoryTransaction(response.playOrders);
+      setHistoryTransaction(response?.playOrders);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -264,7 +264,7 @@ const VirtualBalance = (): React.ReactElement => {
                     orderParams.endIndex
                   ).length !== 0 ? (
                     <>
-                      {openOrder.map(data => (
+                      {openOrder?.map(data => (
                         <div
                           key={data?.id}
                           className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"
@@ -374,7 +374,7 @@ const VirtualBalance = (): React.ReactElement => {
                 <TabPanel value="history">
                   {historyTransaction?.length !== 0 ? (
                     <>
-                      {historyTransaction.map(data => (
+                      {historyTransaction?.map(data => (
                         <div
                           key={data?.id}
                           className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"

@@ -234,7 +234,7 @@ const AuthPersonalDataSetupPassword: React.FC<
           name="seedsTag"
           formData={formData.seedsTag}
           placeholder="Ex: Seeds123"
-          label="Seeds Tag"
+          label="SeedsTag"
           type="text"
           error={errorTag || errorRegex}
           required={true}

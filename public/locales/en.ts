@@ -708,7 +708,7 @@ export default {
       month: 'MM',
       year: 'YYYY',
       validation: {
-        seedsTag: 'Seeds Tag alredy used',
+        seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
         dob: 'Minimun  age 12 Years old'
       }

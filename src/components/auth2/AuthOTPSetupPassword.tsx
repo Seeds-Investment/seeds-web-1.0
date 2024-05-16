@@ -160,7 +160,6 @@ const AuthOTPSetupPassword: React.FC<IAuthOTPSetupPassword> = ({
         await getOtp({ method, phoneNumber: formData.phoneNumber });
       } catch (error: any) {
         toast(error, { type: 'error' });
-        console.error('Error fetching OTP:', error);
       }
     })();
   }, [formData.phoneNumber]);

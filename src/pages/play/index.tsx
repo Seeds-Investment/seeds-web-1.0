@@ -243,7 +243,7 @@ const Player = (): React.ReactElement => {
     if (userInfo !== undefined) {
       const getData = setTimeout(() => {
         void getListPlay();
-      }, 2000);
+      }, 500);
 
       return () => clearTimeout(getData);
     }
@@ -297,89 +297,103 @@ const Player = (): React.ReactElement => {
           </div>
           {showSearchResult && (
             <div>
-              {listPlay?.length !== 0 ? (
-                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
-                  {listPlay.map(item => (
-                    <div
-                      key={item.id}
-                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                      onClick={async () =>
-                        await router
-                          .push(
-                            `${
-                              item?.is_joined
-                                ? `/play/tournament/${item.id}/home`
-                                : `/play/tournament/${item.id}`
-                            }`
-                          )
-                          .catch(error => {
-                            toast.error(error);
-                          })
-                      }
-                      className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
-                    >
-                      <div className="w-full bg-white">
-                        <div className="w-full rounded-xl overflow-hidden">
-                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
-                            <Image
-                              alt=""
-                              src={
-                                item.banner !== undefined && item.banner !== ''
-                                  ? item.banner
-                                  : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
-                              }
-                              width={100}
-                              height={100}
-                              className="w-auto h-full"
-                            />
-                          </div>
-                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
-                            <div>
-                              <div className="text-sm font-semibold text-white">
-                                {item.name}
+              {loading ? (
+                <div className="w-full flex justify-center h-fit mt-8">
+                  <div className="h-[60px]">
+                    <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {listPlay?.length !== 0 ? (
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
+                      {listPlay.map(item => (
+                        <div
+                          key={item.id}
+                          onClick={async () =>
+                            await router
+                              .push(
+                                `${
+                                  item?.is_joined
+                                    ? `/play/tournament/${item.id}/home`
+                                    : `/play/tournament/${item.id}`
+                                }`
+                              )
+                              .catch(error => {
+                                toast.error(error);
+                              })
+                          }
+                          className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
+                        >
+                          <div className="w-full bg-white">
+                            <div className="w-full rounded-xl overflow-hidden">
+                              <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                                <Image
+                                  alt=""
+                                  src={
+                                    item.banner !== undefined &&
+                                    item.banner !== ''
+                                      ? item.banner
+                                      : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                                  }
+                                  width={100}
+                                  height={100}
+                                  className="w-auto h-full"
+                                />
                               </div>
-                              <div className="text-white flex gap-2 text-[10px] mt-2">
-                                <div className="mt-1">
-                                  {t('playCenter.text4')}
-                                </div>
-                                <div className="font-normal text-white mt-1">
-                                  {calculateDaysLeft(
-                                    new Date(item?.play_time),
-                                    new Date(item?.end_time)
-                                  )}{' '}
-                                  {t('playCenter.text5')}
-                                </div>
-                                {item.play_center_type === 'quiz' && (
-                                  <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
-                                    Quiz
+                              <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
+                                <div>
+                                  <div className="text-sm font-semibold text-white">
+                                    {item.name}
                                   </div>
-                                )}
+                                  <div className="text-white flex gap-2 text-[10px] mt-2">
+                                    <div className="mt-1">
+                                      {t('playCenter.text4')}
+                                    </div>
+                                    <div className="font-normal text-white mt-1">
+                                      {calculateDaysLeft(
+                                        new Date(item?.play_time),
+                                        new Date(item?.end_time)
+                                      )}{' '}
+                                      {t('playCenter.text5')}
+                                    </div>
+                                    {item.play_center_type === 'quiz' && (
+                                      <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
+                                        Quiz
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="my-auto items-center">
+                                  {item?.is_joined ? (
+                                    <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
+                                      {t(
+                                        'tournament.tournamentCard.openButton'
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
+                                      {t(
+                                        'tournament.tournamentCard.joinButton'
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                            <div className="my-auto items-center">
-                              {item?.is_joined ? (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
-                                  {t('tournament.tournamentCard.openButton')}
-                                </div>
-                              ) : (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
-                                  {t('tournament.tournamentCard.joinButton')}
-                                </div>
-                              )}
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
-                  <Image alt="" src={IconNoData} className="w-[250px]" />
-                  <p className="font-semibold text-black">
-                    {t('tournament.blank1')}
-                  </p>
-                  <p className="text-[#7C7C7C]">{t('tournament.blank2')}</p>
+                  ) : (
+                    <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                      <Image alt="" src={IconNoData} className="w-[250px]" />
+                      <p className="font-semibold text-black">
+                        {t('tournament.blank1')}
+                      </p>
+                      <p className="text-[#7C7C7C]">{t('tournament.blank2')}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

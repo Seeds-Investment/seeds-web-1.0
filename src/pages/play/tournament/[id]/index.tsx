@@ -89,6 +89,39 @@ const TournamentDetail: React.FC = () => {
     }
   };
 
+  const handleInvitationCodeFree = async (): Promise<void> => {
+    try {
+      if (detailTournament?.is_need_invitation_code && invitationCode !== '') {
+        const validationResponse = await validateInvitationCode(
+          detailTournament?.id ?? '',
+          invitationCode
+        );
+
+        if (!validationResponse.is_valid) {
+          toast.error('Invalid invitation code');
+          setValidInvit(false);
+        } else {
+          setValidInvit(true);
+          const response = await joinTournament(
+            detailTournament?.id ?? '',
+            userInfo?.preferredCurrency ?? '',
+            '',
+            '',
+            '',
+            '',
+            invitationCode ?? '',
+            false
+          );
+          if (response) {
+            router.push(`/play/tournament/${id as string}/home`);
+          }
+        }
+      }
+    } catch (error) {
+      toast.error('Error joining tournament');
+    }
+  };
+
   const handleJoinFreeTournament = async (): Promise<void> => {
     try {
       const response = await joinTournament(
@@ -390,7 +423,7 @@ const TournamentDetail: React.FC = () => {
                     if (invitationCode === '') {
                       await handleJoinFreeTournament();
                     } else {
-                      handleInvitationCode();
+                      handleInvitationCodeFree();
                     }
                   } else {
                     if (invitationCode === '' && !validInvit) {

@@ -235,7 +235,23 @@ const PlayTournament = (): React.ReactElement => {
 
                       <div className="w-full bg-white">
                         <div className="w-full rounded-xl overflow-hidden">
-                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                          <div
+                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                            onClick={async () =>
+                              await router
+                                .push(
+                                  `${
+                                    item?.is_joined
+                                      ? `/play/tournament/${item.id}/home`
+                                      : `/play/tournament/${item.id}`
+                                  }`
+                                )
+                                .catch(error => {
+                                  toast.error(error);
+                                })
+                            }
+                            className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2"
+                          >
                             <Image
                               alt=""
                               src={

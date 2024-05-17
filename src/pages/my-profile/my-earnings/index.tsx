@@ -126,7 +126,7 @@ const MyEarnings = (): React.ReactElement => {
               <Typography className='font-semibold font-poppins text-[#3AC4A0] text-base md:text-lg'>
                 {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
               </Typography>
-              <Typography className='px-4 md:px-8 lg:px-16 py-1 font-poppins bg-[#3AC4A0] text-white text-xs md:text-sm rounded-full cursor-pointer hover:shadow-lg duration-300'>
+              <Typography onClick={async() => await router.push('/my-profile/my-earnings/withdraw')} className='px-4 md:px-8 lg:px-16 py-1 font-poppins bg-[#3AC4A0] text-white text-xs md:text-sm rounded-full cursor-pointer hover:shadow-lg duration-300'>
                 {t('earning.withdraw')}
               </Typography>
             </div>

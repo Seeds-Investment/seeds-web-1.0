@@ -176,7 +176,7 @@ const DoneQuiz: React.FC = () => {
   return (
     <PageGradient
       defaultGradient
-      className="relative overflow-hidden h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
+      className="relative overflow-y-scroll h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
     >
       {detailQuiz === undefined && loading && <Loading />}
       <ReccomendationCirclePopup open={isOpen} handleOpen={handleOpen} />

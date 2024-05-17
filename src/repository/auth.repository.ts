@@ -41,7 +41,7 @@ interface RegistForm {
   password: string;
   provider: {
     provider: string;
-    identifer: string;
+    identifier: string;
   };
 }
 
@@ -379,7 +379,7 @@ export const registerNewUser = async (formData: {
   avatar?: string;
   provider: {
     provider: string;
-    identifer: string;
+    identifier: string;
   };
 }): Promise<any> => {
   try {

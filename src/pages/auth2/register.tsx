@@ -32,7 +32,7 @@ const Register: React.FC = () => {
     password: '',
     provider: {
       provider: '',
-      identifer: ''
+      identifier: ''
     },
     token: ''
   });
@@ -84,7 +84,7 @@ const Register: React.FC = () => {
         }`,
         provider: {
           provider: data?.provider ?? '',
-          identifer: data?.accessToken ?? ''
+          identifier: data?.accessToken ?? ''
         }
       });
     }

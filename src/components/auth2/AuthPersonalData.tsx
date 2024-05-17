@@ -24,7 +24,7 @@ interface IAuthPersonalData {
       seedsTag: string;
       refCode: string;
       password: string;
-      provider: { provider: string; identifer: string };
+      provider: { provider: string; identifier: string };
       token: string;
     }>
   >;
@@ -38,7 +38,7 @@ interface IAuthPersonalData {
     password: string;
     provider: {
       provider: string;
-      identifer: string;
+      identifier: string;
     };
     token: string;
   };

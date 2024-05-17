@@ -401,7 +401,7 @@ const Player = (): React.ReactElement => {
             </div>
           )}
 
-          <div className="w-full my-5 h-auto cursor-default bg-orange-500">
+          <div className="w-full my-5 h-auto cursor-default">
             <Slider {...sliderSettings}>
               {bannerAsset.map(asset => (
                 <div

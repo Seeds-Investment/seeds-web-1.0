@@ -46,7 +46,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           } else {
             await router.push('/homepage');
           }
-          pathname === '/auth/register' &&
+          pathname === '/auth2/register' &&
             toast(t('authLogin.SSO'), { type: 'error' });
         }
         if (response.data.message === 'link-account/not-found') {

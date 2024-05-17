@@ -38,7 +38,7 @@ interface IAuthRef {
       seedsTag: string;
       refCode: string;
       password: string;
-      provider: { provider: string; identifer: string };
+      provider: { provider: string; identifier: string };
       token: string;
     }>
   >;
@@ -52,7 +52,7 @@ interface IAuthRef {
     password: string;
     provider: {
       provider: string;
-      identifer: string;
+      identifier: string;
     };
     token: string;
   };
@@ -111,6 +111,7 @@ const AuthRef: React.FC<IAuthRef> = ({
   const handleSubmit = async (): Promise<void> => {
     try {
       const response = await loginPhoneNumber(loginForm);
+      console.log('isi data', data);
       if (data !== null) {
         const SSOresponse = await loginSSO({
           identifier: data.accessToken,

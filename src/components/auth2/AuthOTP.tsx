@@ -35,7 +35,7 @@ interface IAuthOTP {
     seedsTag: string;
     refCode: string;
     password: string;
-    provider: { provider: string; identifer: string };
+    provider: { provider: string; identifier: string };
     token: string;
   }) => void;
 }
@@ -155,7 +155,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 refCode: '',
                 provider: {
                   provider: '',
-                  identifer: ''
+                  identifier: ''
                 },
                 token: ''
               });

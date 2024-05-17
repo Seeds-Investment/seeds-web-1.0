@@ -189,7 +189,7 @@ const AuthPersonalDataSetupPassword: React.FC<
         onClick={async () => {
           if (data !== null) {
             setFormData({ ...formData, name: '', seedsTag: '' });
-            await withRedirect(router, router.query, '/auth');
+            await withRedirect(router, router.query, '/auth2');
             await signOut();
           } else {
             setSelect(0);

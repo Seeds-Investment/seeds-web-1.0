@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import { ArrowTaillessRight } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import FollowButton from '../FollowButton';
 import MoreOptionHorizontal from '../MoreOptionHorizontal';
@@ -33,6 +34,7 @@ const Profile = ({
   id,
   handleSubmitBlockUser
 }: Params): JSX.Element => {
+  const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [earning, setEarning] = useState<Result>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -89,7 +91,8 @@ const Profile = ({
       const result = await getEarningBalance(currency);
       setEarning(result)
     } catch (error) {
-      toast.error(`Error follow user: ${error as string}`);
+      toast.error(`Error fetching data: ${error as string}`);
+      console.log('ererning: ', error)
     } finally {
       setIsLoadingEarn(false);
     }
@@ -213,7 +216,10 @@ const Profile = ({
           </div>
 
           {/* My Earnings Breakpoint: XL */}
-          <div className='hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'>
+          <div
+            onClick={async() => await router.push('/my-profile/my-earnings')}
+            className='hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+          >
             <div className='flex justify-start items-center'>
               <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
                 <Image
@@ -226,7 +232,7 @@ const Profile = ({
               </div>
               <div className='flex flex-col justify-start items-start ml-4 text-white'>
                 <div className='text-sm'>
-                  My Earnings
+                  {t('earning.myEarnings')}
                 </div>
                 <div className='font-semibold text-md'>
                   {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
@@ -346,8 +352,11 @@ const Profile = ({
         <ExpInfo data={expData} profileData={profileData} id={id} />
       </div>
 
-      {/* My Earnings Breakpoint: XL */}
-      <div className='xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'>
+      {/* My Earnings Breakpoint: SM */}
+      <div
+        onClick={async() => await router.push('/my-profile/my-earnings')}
+        className='xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+      >
         <div className='flex justify-start items-center'>
           <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
             <Image
@@ -360,7 +369,7 @@ const Profile = ({
           </div>
           <div className='flex flex-col justify-start items-start ml-4 text-white'>
             <div className='text-sm'>
-              My Earnings
+              {t('earning.myEarnings')}
             </div>
             <div className='font-semibold text-md'>
               {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}

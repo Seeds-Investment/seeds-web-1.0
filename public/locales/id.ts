@@ -1951,6 +1951,17 @@ export default {
     blank1: 'Ups,  Belum Ada Event',
     blank2: 'Nantikan untuk update lainnya!',
   },
+  earning: {
+    noData: "Belum ada data",
+    noDataDescription: "Yuk menangkan permainan dan dapatkan hadiahnya!",
+    earnings: "Penghasilan",
+    withdrawal: "Pendapatan",
+    withdraw: "Penarikan",
+    completed: "Selesai",
+    onProgress: "Disetujui",
+    myEarnings: "Penghasilan Saya",
+    earningHistory: "Riwayat Penghasilan",
+  },
   buyAsset: {
     text1: 'Aset yang akan di beli',
     text2: 'Aset yang akan di jual',

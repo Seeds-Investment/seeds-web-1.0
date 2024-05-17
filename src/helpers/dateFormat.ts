@@ -99,3 +99,23 @@ export const getEventDateEN = (date: Date): string => {
 
   return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} | ${currentHours}:${currentMinutes}`
 };
+
+export const getEarningDateID = (date: Date): string => {
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+
+  return `${currentDay} ${monthsID[currentMonth]} ${currentYear}`
+};
+
+export const getEarningDateEN = (date: Date): string => {
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear}`
+};

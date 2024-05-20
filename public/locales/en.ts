@@ -1909,14 +1909,16 @@ export default {
       seconds: 's'
     },
     tournamentCard: {
-      player: 'Player(s)',
+      player: 'Player',
+      players: 'Players',
       duration: 'Duration',
       joined: 'Joined',
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
       share: 'Share',
-      days: 'Day(s)'
+      day: 'Day',
+      days: 'Days'
     },
     leaderboard: {
       lastUpdated: 'Last updated: ',

@@ -1836,12 +1836,14 @@ export default {
     },
     tournamentCard: {
       player: 'Pemain',
+      players: 'Pemain',
       duration: 'Durasi',
       joined: 'Bergabung',
       fee: 'Biaya',
       openButton: 'Dalam Game',
       joinButton: 'Dapatkan Tiket',
       share: 'Share',
+      day: 'Hari',
       days: 'Hari'
     },
     leaderboard: {

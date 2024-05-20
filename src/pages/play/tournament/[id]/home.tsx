@@ -454,14 +454,21 @@ const TournamentHome: React.FC = () => {
             <div className="text-lg font-semibold">
               {t('tournament.detailRemaining')}
             </div>
-            <CountdownTimer
-              className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
-              deadline={
-                detailTournament?.end_time
-                  ? detailTournament.end_time.toString()
-                  : ''
-              }
-            />
+            {
+              detailTournament?.end_time !== undefined ?
+                <CountdownTimer
+                  className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
+                  deadline={
+                    detailTournament?.end_time
+                      ? detailTournament.end_time.toString()
+                      : ''
+                  }
+                />
+                :
+                <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
+                  Loading...
+                </Typography>
+            }
           </div>
         </div>
         <div className="bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4">

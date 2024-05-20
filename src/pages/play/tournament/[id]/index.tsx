@@ -167,7 +167,7 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-
+  
   return (
     <>
       {isShareModal && (
@@ -224,13 +224,20 @@ const TournamentDetail: React.FC = () => {
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailRemaining')}
               </Typography>
-              <CountdownTimer
-                deadline={
-                  detailTournament?.end_time
-                    ? detailTournament.end_time.toString()
-                    : ''
-                }
-              />
+              {
+                detailTournament?.end_time !== undefined ?
+                  <CountdownTimer
+                    deadline={
+                      detailTournament?.end_time
+                        ? detailTournament.end_time.toString()
+                        : ''
+                    }
+                  />
+                  :
+                  <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
+                    Loading...
+                  </Typography>
+              }
             </div>
             <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
               <ShareIcon

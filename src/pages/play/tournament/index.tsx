@@ -312,7 +312,11 @@ const PlayTournament = (): React.ReactElement => {
                                     new Date(item?.play_time),
                                     new Date(item?.end_time)
                                   )}{' '}
-                                  {t('tournament.tournamentCard.days')}
+                                  {
+                                    (calculateDaysLeft(new Date(item?.play_time), new Date(item?.end_time)) ?? 0) > 1 ?
+                                      t('tournament.tournamentCard.days')
+                                      : t('tournament.tournamentCard.day')
+                                  }
                                 </div>
                               </div>
                             </div>
@@ -326,7 +330,11 @@ const PlayTournament = (): React.ReactElement => {
                                 <div>{t('tournament.tournamentCard.joined')}</div>
                                 <div className="font-semibold text-black">
                                   {item?.participants?.length ?? '0'}{' '}
-                                  {t('tournament.tournamentCard.player')}
+                                  {
+                                    (item?.participants?.length ?? 0) > 1 ?
+                                      t('tournament.tournamentCard.players')
+                                      : t('tournament.tournamentCard.player')
+                                  }
                                 </div>
                               </div>
                             </div>

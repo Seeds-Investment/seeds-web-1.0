@@ -1,22 +1,31 @@
 'use client';
+import Wallet from '@/assets/my-profile/earning/wallet.svg';
 import message from '@/assets/profile/message.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
+import { standartCurrency } from '@/helpers/currency';
+import { getEarningBalance } from '@/repository/earning.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import { updateBlockUser } from '@/repository/user.repository';
+import { type Experience, type Result, type UserInfo } from '@/utils/interfaces/earning.interfaces';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
-import { useState } from 'react';
+import { ArrowTaillessRight } from 'public/assets/vector';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import FollowButton from '../FollowButton';
 import MoreOptionHorizontal from '../MoreOptionHorizontal';
+import Loading from '../popup/Loading';
 import PostFollowSection from './PostFollowSection';
 
 interface Params {
   profileData: any;
-  expData: any;
-  id?: any;
-  handleSubmitBlockUser?: any;
+  expData: Experience;
+  id?: string;
+  handleSubmitBlockUser?: (event: React.FormEvent) => Promise<void>;
 }
 
 const Profile = ({
@@ -25,33 +34,73 @@ const Profile = ({
   id,
   handleSubmitBlockUser
 }: Params): JSX.Element => {
+  const { t } = useTranslation();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [earning, setEarning] = useState<Result>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingEarn, setIsLoadingEarn] = useState<boolean>(false);
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const router = useRouter();
-  const _handleReferalCode = (): any => {
-    return router.push({
+  const _handleReferalCode = async (): Promise<boolean> => {
+    return await router.push({
       pathname: `/my-profile/referralCode`,
       query: { refCode: profileData.refCode, referralHistory: 'true' }
     });
   };
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== null && userInfo?.preferredCurrency !== undefined) {
+      void fetchMyEarningsData(userInfo?.preferredCurrency);
+    }
+  }, [id, userInfo]);
 
   const onBlock = async (): Promise<void> => {
     try {
       setIsLoading(true);
       const result = await updateBlockUser(profileData?.id);
       setIsBlock(result.status);
-    } catch (error: any) {
-      console.error('Error follow user:', error);
+    } catch (error) {
+      toast.error(`Error follow user: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const _handleEditProfile = (): any => {
-    return router.push('/my-profile/edit-profile');
+  const _handleEditProfile = async (): Promise<boolean> => {
+    return await router.push('/my-profile/edit-profile');
   };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchMyEarningsData = async (currency: string): Promise<void> => {
+    try {
+      setIsLoadingEarn(true);
+      const result = await getEarningBalance(currency);
+      setEarning(result)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+      console.log('ererning: ', error)
+    } finally {
+      setIsLoadingEarn(false);
+    }
+  };
+
   return (
     <>
+      {isLoading && isLoadingEarn && <Loading />}
       <div className="flex md:gap-5">
         <div className="shrink-0">
           <img
@@ -67,7 +116,7 @@ const Profile = ({
                 <Typography className="text-lg font-semibold font-poppins text-[#201B1C]">
                   @{profileData?.seeds_tag ?? profileData?.seedsTag ?? ''}
                 </Typography>
-                {profileData?.verified === true && (
+                {(Boolean((profileData?.verified))) && (
                   <Image
                     src={Verified?.src}
                     alt={Verified?.alt}
@@ -99,7 +148,7 @@ const Profile = ({
                 <>
                   <div
                     className="bg-[#DCFCE480] flex gap-2 items-center justify-center rounded-full px-4 py-2 border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer"
-                    onClick={() => _handleReferalCode()}
+                    onClick={async () => await _handleReferalCode()}
                   >
                     <Typography className="text-[#27A590] text-sm font-normal font-poppins">
                       Ref.Code:{' '}
@@ -165,6 +214,41 @@ const Profile = ({
           <div className="xl:flex hidden">
             <ExpInfo data={expData} profileData={profileData} id={id} />
           </div>
+
+          {/* My Earnings Breakpoint: XL */}
+          <div
+            onClick={async() => await router.push('/my-profile/my-earnings')}
+            className='hidden w-full mt-2 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] xl:flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+          >
+            <div className='flex justify-start items-center'>
+              <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+                <Image
+                  src={Wallet}
+                  alt={'Wallet'}
+                  height={100}
+                  width={100}
+                  className='w-full h-full'
+                />
+              </div>
+              <div className='flex flex-col justify-start items-start ml-4 text-white'>
+                <div className='text-sm'>
+                  {t('earning.myEarnings')}
+                </div>
+                <div className='font-semibold text-md'>
+                  {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
+                </div>
+              </div>
+            </div>
+            <div className='flex justify-center items-center h-[20px]'>
+              <Image
+                src={ArrowTaillessRight}
+                alt={'Arrow'}
+                height={100}
+                width={100}
+                className='w-full h-full'
+              />
+            </div>
+          </div>
         </div>
       </div>
       {/* TODO: WEB IN MOBILE DEVICE */}
@@ -173,7 +257,7 @@ const Profile = ({
           <Typography className="self-center text-sm font-semibold font-poppins text-[#222222]">
             @{profileData?.seeds_tag ?? profileData?.seedsTag ?? ''}
           </Typography>
-          {profileData?.verified === true && (
+          {(Boolean((profileData?.verified))) && (
             <Image
               src={Verified?.src}
               alt={Verified?.alt}
@@ -208,7 +292,7 @@ const Profile = ({
           <>
             <div
               className="bg-[#DCFCE480] flex gap-[37.5px] items-center justify-center rounded-full border-[0.5px] border-dashed border-[#27A590] self-center cursor-pointer px-4 py-2"
-              onClick={() => _handleReferalCode()}
+              onClick={async () => await _handleReferalCode()}
             >
               <Typography className="text-[#27A590] text-xs font-normal font-poppins">
                 Ref.Code:{' '}
@@ -266,6 +350,41 @@ const Profile = ({
       </div>
       <div className="flex xl:hidden">
         <ExpInfo data={expData} profileData={profileData} id={id} />
+      </div>
+
+      {/* My Earnings Breakpoint: SM */}
+      <div
+        onClick={async() => await router.push('/my-profile/my-earnings')}
+        className='xl:hidden w-full mt-4 bg-gradient-to-r from-[#53B5A3] to-[#5BE3C0] flex justify-between items-center px-4 py-2 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300'
+      >
+        <div className='flex justify-start items-center'>
+          <div className='w-[40px] h-[40px] rounded-full p-2 bg-white'>
+            <Image
+              src={Wallet}
+              alt={'Wallet'}
+              height={100}
+              width={100}
+              className='w-full h-full'
+            />
+          </div>
+          <div className='flex flex-col justify-start items-start ml-4 text-white'>
+            <div className='text-sm'>
+              {t('earning.myEarnings')}
+            </div>
+            <div className='font-semibold text-md'>
+              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
+            </div>
+          </div>
+        </div>
+        <div className='flex justify-center items-center h-[20px]'>
+          <Image
+            src={ArrowTaillessRight}
+            alt={'Arrow'}
+            height={100}
+            width={100}
+            className='w-full h-full'
+          />
+        </div>
       </div>
     </>
   );

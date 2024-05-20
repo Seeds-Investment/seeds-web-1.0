@@ -2047,6 +2047,17 @@ export default {
     blank1: 'Opps,  There’s No Event Yet',
     blank2: 'Stay tuned for more updates!'
   },
+  earning: {
+    noData: "There is no data yet",
+    noDataDescription: "Let's win the rewards and get the prize!",
+    earnings: "Earnings",
+    withdrawal: "Withdrawal",
+    withdraw: "Withdraw",
+    completed: "Completed",
+    onProgress: "On Progress",
+    myEarnings: "My Earnings",
+    earningHistory: "Earning History",
+  },
   buyAsset: {
     text1: 'Assets to be purchased',
     text2: 'Assets to be sold',

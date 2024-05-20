@@ -1,5 +1,6 @@
 export enum TournamentStatus {
-  MYPLAY = 'MYPLAY',
+  MYPLAY = 'JOINED',
+  OPEN = 'CREATED',
   ACTIVE = 'ACTIVE',
   PAST = 'PAST',
   CANCELED = 'CANCELED'
@@ -69,6 +70,7 @@ export interface IDetailTournament {
   total_participants: number;
   max_participant: number;
   is_need_invitation_code: boolean;
+  status: string;
 }
 
 export interface Sponsorship {

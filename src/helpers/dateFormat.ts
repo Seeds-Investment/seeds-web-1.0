@@ -59,7 +59,7 @@ export const getLastUpdatedID = (date: Date): string => {
   const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
   const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes();
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
 
   return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
@@ -71,7 +71,7 @@ export const getLastUpdatedEN = (date: Date): string => {
   const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
   const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes();
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
 
   return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
 };

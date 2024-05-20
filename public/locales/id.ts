@@ -1794,7 +1794,8 @@ export default {
     }
   },
   tournament: {
-    myPlay: 'Turnamen Saya',
+    myPlay: 'Permainan Saya',
+    open: 'Terbuka',
     active: 'Aktif',
     ended: 'Berakhir',
     canceled: 'Dibatalkan',
@@ -1899,7 +1900,7 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       tournamentAsset: 'Aset Turnamen',
-      seeAll: 'Lihat Semua'
+      seeAll: 'Lihat Lebih'
     },
     guidance: {
       guidanceTitle: 'Petunjuk',
@@ -1909,7 +1910,7 @@ export default {
       howToPlay: {
         title: 'Cara Bermain',
         text1: 'Mulai dengan melihat portofolio dan virtual balance.',
-        text2: "Klik 'Lihat Semua' untuk melihat daftar aset yang tersedia.",
+        text2: "Klik 'Lihat Lebih' untuk melihat daftar aset yang tersedia.",
         text3: 'Klik pada aset untuk melihat hasil analisis data.',
         text4:
           "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
@@ -1960,7 +1961,7 @@ export default {
       member: 'peserta',
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
-      seeAll: 'Lihat Semua'
+      seeAll: 'Lihat Lebih'
     }
   },
   seedsEvent: {

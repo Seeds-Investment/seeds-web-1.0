@@ -1869,6 +1869,7 @@ export default {
   },
   tournament: {
     myPlay: 'My Play',
+    open: 'Open',
     active: 'Active',
     ended: 'Ended',
     canceled: 'Canceled',

@@ -35,6 +35,17 @@ export const getShortDate = (date: string): string => {
   return result;
 };
 
+export const getTournamentTime = (
+  dateString: string,
+  showZone = false
+): string => {
+  const startDate = moment(dateString);
+  const result = startDate.format(
+    `D ${showZone ? 'MMMM' : 'MMM'} YYYY, HH:mm ${showZone ? '(z)' : ''}`
+  );
+  return result;
+};
+
 export const formatMonthlyChart = (date: Date): string[] => {
   const months: string[] = [];
 

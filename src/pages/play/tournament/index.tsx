@@ -10,7 +10,7 @@ import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { standartCurrency } from '@/helpers/currency';
-import { generateFormattedDate } from '@/helpers/dateFormat';
+import { getTournamentTime } from '@/helpers/dateFormat';
 import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import { getPlayAll } from '@/repository/play.repository';
@@ -288,10 +288,10 @@ const PlayTournament = (): React.ReactElement => {
                             </div>
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px]">
-                            {`${generateFormattedDate(
+                            {`${getTournamentTime(
                               item.play_time,
                               false
-                            )} - ${generateFormattedDate(item.end_time)}`}
+                            )} - ${getTournamentTime(item.end_time)}`}
                           </div>
                         </div>
                         

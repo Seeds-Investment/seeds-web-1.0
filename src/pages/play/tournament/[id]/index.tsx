@@ -436,7 +436,6 @@ const TournamentDetail: React.FC = () => {
                 true
               )
             }
-            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
               detailTournament?.status === 'ACTIVE' ? (
                 invitationCode === '' &&

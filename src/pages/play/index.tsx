@@ -582,7 +582,7 @@ const Player = (): React.ReactElement => {
                                 </div>
                               )}
                             </div>
-                            <div className="w-[90px] flex justify-center items-end">
+                            <div className="w-[100px] flex justify-center items-end">
                               {item?.is_joined ? (
                                 <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
                                   {t('tournament.tournamentCard.openButton')}

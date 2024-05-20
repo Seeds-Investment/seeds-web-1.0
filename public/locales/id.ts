@@ -1137,6 +1137,23 @@ export default {
           option4: 'Dalam Proses'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: "Nomor Virtual Akun Anda",
+      pendingPaidCircle: 'Menunggu Pembayaran',
+      circleFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: "Berhasil",
+      paymentSuccessDescription: "Pembayaran langganan premium anda telah berhasil diproses.",
+      paymentFailed: "Pembayaran Gagal",
+      paymentFailedDescription: "Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.",
+      paymentFailedWarning: "Pembayaran Langganan Premium Gagal",
     }
   },
 
@@ -1782,6 +1799,7 @@ export default {
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
     payment: {
       paymentMethod: 'Metode Pembayaran',
+      virtualNumber: "Nomor Virtual Akun Anda",
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
       lifelinesFee: 'Biaya Bantuan Tambahan',
@@ -1790,7 +1808,8 @@ export default {
       discountFee: 'Diskon',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
-      close: 'Tutup'
+      close: 'Tutup',
+      paymentSuccessful: "Berhasil",
     }
   },
   tournament: {
@@ -1964,6 +1983,20 @@ export default {
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: "Nomor Virtual Akun Anda",
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      successful: "Pembayaran Berhasil",
+      pending: "Menunggu Pembayaran"
     }
   },
   seedsEvent: {

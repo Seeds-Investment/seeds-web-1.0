@@ -297,6 +297,7 @@ const QuizDetail = (): React.ReactElement => {
                 })}
           </div>
           <button
+            disabled={loading}
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {
@@ -312,14 +313,11 @@ const QuizDetail = (): React.ReactElement => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth');
+                router.push('/auth2');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { quizId: id as string }, '/auth2');
               }
             }}
-            disabled={
-              invitationCode === '' && detailQuiz?.is_need_invitation_code
-            }
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${
               invitationCode === '' &&
               detailQuiz?.is_need_invitation_code === true
@@ -327,7 +325,9 @@ const QuizDetail = (): React.ReactElement => {
                 : 'bg-seeds-button-green text-white'
             }`}
           >
-            {detailQuiz?.participant_status === 'JOINED'
+            {loading
+              ? t('quiz.loading')
+              : detailQuiz?.participant_status === 'JOINED'
               ? t('quiz.start')
               : t('quiz.join')}
           </button>

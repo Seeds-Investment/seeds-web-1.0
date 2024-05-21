@@ -99,11 +99,13 @@ const AuthNumberWithErrorHandling: React.FC<IAuthNumberWithErrorHandling> = ({
         </Menu>
         <Input
           label={t('authLogin.phone').toString()}
-          type="number"
+          type="text"
           variant="static"
           placeholder="85XXX"
           name={name}
-          pattern="[0-9]"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={13}
           value={formData}
           onKeyDown={handleSubmit}
           onChange={() => {
@@ -111,6 +113,10 @@ const AuthNumberWithErrorHandling: React.FC<IAuthNumberWithErrorHandling> = ({
               event as any,
               countries[country].dialCode.replace('+', '')
             );
+          }}
+          onPaste={e => {
+            e.preventDefault();
+            return false;
           }}
           required
           labelProps={{

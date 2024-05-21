@@ -238,7 +238,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): J
   );
 
   return (
-    <PageGradient defaultGradient className="w-full md:px-20 my-10">
+    <PageGradient defaultGradient className="w-full md:px-20 my-10 h-screen">
       {loading ? renderLoading() : renderContent()}
       <Dialog
         title={

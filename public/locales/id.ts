@@ -303,9 +303,15 @@ export default {
       lastUpdated: 'Terakhir Perbarui: ',
       date: '26 April 2022',
       overview: {
-        title: ['Kebijakan Pengembalian Dana'],
+        title: [
+          'Kebijakan Pengembalian Dana',
+          'Kebijakan Umum',
+          'Prosedur Pengembalian Dana'
+        ],
         desc: [
-          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini .'
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini.\t',
+          'Kebijakan Pengembalian dana ini berlaku terhadap fitur-fitur yang disediakan oleh Pihak Seeds. Kebijakan ini merupakan langkah dan metode tentang prosedur pengembalian dana yang dilakukan oleh SEEDS terhadap Pengguna\t Kejadian yang dapat dikategorikan sebagai Pengembalian Dana :\n a. Saat terjadi kendala pada aplikasi yang diakibatkan oleh Pihak SEEDS\n b. Dalam hal Fitur Play Arena dibatalkan secara sepihak oleh SEEDS karena tidak memenuhi persyaratan\n c. Pengembalian dana tidak berlaku terhadap Pengguna yang telah :\n i. membayar tiket dalam aplikasi SEEDS dan karena kelalaiannya ingin mengajukan pengembalian dana\n ii.menetapkan harga premium circle dan ingin mengajukan pengembalian dana atas kelalaian pengguna menetapkan harga fitur premium circle.\t',
+          "Pengembalian dana berlaku terhadap fitur berbayar dalam aplikasi SEEDS termasuk namun tidak terbatas pada:\n a. Premium Circle\n b. Play Arena\n c. Play Quiz\t Pengguna yang hendak mengajukan pengembalian dana wajib untuk mengirimkan 'Permohonan Pengembalian Dana' melalui email info@seeds.finance\t Permohonan Pengembalian dana mencakup :\n a.Nama Lengkap Pengguna\n b. Nomor Telepon\n c. Nama Akun Pengguna\n d. Alamat Email\n e. Nominal Permohonan Pengembalian Dana\n f. Bukti dan alasan pengembalian dana\t Pihak SEEDS akan melakukan verifikasi terhadap bukti permohonan dan bukti pembayaran yang diajukan oleh user yang mengalami gagal bayar selama 3 hari kerja.\t Setelah dilakukan verifikasi oleh Pihak SEEDS dan permohonan tersebut dapat dibuktikan kebenarannya, Pihak SEEDS akan melakukan pengembalian dana dengan cara transfer baik melalui lembaga perbankan atau melalui lembaga non bank (E-Money dan/atau e-wallet) berdasarkan nilai nominal dari hasil verifikasi oleh SEEDS.\t Jika terbukti permohonan pengembalian dana bukan merupakan permohonan yang otentik dari hasil verifikasi oleh SEEDS, Permohonan akan ditolak dan SEEDS berhak untuk tidak merespon permohonan pengembalian dana.\t SEEDS berhak untuk mengambil langkah hukum yang diperlukan terhadap permohonan pengembalian dana yang tidak otentik oleh pengguna."
         ]
       }
     }
@@ -625,7 +631,7 @@ export default {
       month: 'BB',
       year: 'TTTT',
       validation: {
-        seedsTag: 'Seeds Tag sudah dipakai, nih',
+        seedsTag: 'SeedsTag sudah dipakai, nih',
         regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
         dob: 'Kamu harus berusia minimal 12 tahun'
       }
@@ -1631,6 +1637,7 @@ export default {
     sponsors: 'Sponsor(s)',
     community: 'Community',
     join: 'Join',
+    loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
     start: 'Mulai',
@@ -1772,7 +1779,19 @@ export default {
     earn: ' Kamu Mendapatkan IDR ',
     tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
     text1: 'Tantang pengetahuan finansialmu dengan daftar kuis dibawah.',
-    text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!'
+    text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidQuiz: 'Menunggu Kuis Dibayar',
+      quizFee: 'Biaya Kuis',
+      lifelinesFee: 'Biaya Bantuan Tambahan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup'
+    }
   },
   tournament: {
     myPlay: 'Turnamen Saya',
@@ -2061,5 +2080,26 @@ export default {
     noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
     stayTuned: 'Nantikan update selanjutnya!',
     register: 'Daftar Sekarang'
+  },
+
+  playCenter: {
+    text1: 'Permainan Terakhir Saya',
+    text2: 'Papan Peringkat',
+    text3: 'Yuk, cek detail skormu di sini!',
+    text4: 'Durasi',
+    text5: 'hari',
+    text6: 'Cari',
+    text7: 'Daftar Quiz',
+    text8: 'Quiz Teratas',
+    text9: 'Terakhir diupdate : ',
+    text10: 'Peringkatmu saat ini',
+    text11: 'Sistem Penilaian',
+    text12: 'Juara pertama mendapat 500 poin',
+    text13: 'Juara kedua mendapat 300 poin',
+    text14: 'Juara ketiga mendapat 100 poin',
+    text15: 'Peserta 50 poin',
+    text16: 'Musim',
+    text17: 'Kapan saja'
   }
 };
+ 

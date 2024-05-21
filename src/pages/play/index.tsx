@@ -6,9 +6,9 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { generateFormattedDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
+  getAllPlayCenter,
   getEventList,
   getPlayLatestList,
   getUserRank
@@ -16,6 +16,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -26,7 +27,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import PlayButton from '../../../public/assets/playButton.svg';
 import QuizButton from '../../../public/assets/quizButton.svg';
-
 interface Banner {
   no: number;
   id: string;
@@ -76,6 +76,10 @@ const PrevArrow = (props: ArrowProps): React.ReactElement => {
     />
   );
 };
+const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
+  const daysDiff = moment(endTime).diff(moment(startTime), 'days');
+  return daysDiff;
+};
 
 const NextArrow = (props: ArrowProps): React.ReactElement => {
   const { className, onClick } = props;
@@ -92,13 +96,12 @@ const Player = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const [bannerAsset, setBannerAsset] = useState<Banner[]>([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [activeSlide, setActiveSlide] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
   const [data, setData] = useState<DetailPlay[]>([]);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
-
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
     status: '',
@@ -108,7 +111,46 @@ const Player = (): React.ReactElement => {
     totalPage: 9
   });
   const [userRank, setUserRank] = useState<number>(0);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [showSearchResult, setShowSearchResult] = useState(false);
+  const [listPlay, setListPlay] = useState<DetailPlay[]>([]);
+
+  useEffect(() => {
+    if (search.length === 0) {
+      setShowSearchResult(false);
+    } else {
+      setShowSearchResult(true);
+    }
+  }, [listPlay?.length, search]);
+
+  const getListTournament = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await getAllPlayCenter(
+        1,
+        10,
+        userInfo?.preferredCurrency ?? '',
+        search
+      );
+      if (response.playList === null) {
+        setListPlay([]);
+      } else {
+        setListPlay(response.playList);
+      }
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void getListTournament();
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   useEffect(() => {
     const fetchBannerAsset = async (): Promise<void> => {
@@ -183,7 +225,7 @@ const Player = (): React.ReactElement => {
         ...tournamentParams,
         search
       });
-      
+
       if (response.playList === null) {
         setData([]);
       } else {
@@ -201,11 +243,21 @@ const Player = (): React.ReactElement => {
     if (userInfo !== undefined) {
       const getData = setTimeout(() => {
         void getListPlay();
-      }, 2000);
+      }, 500);
 
       return () => clearTimeout(getData);
     }
-  }, [userInfo, search, refreshSearch, tournamentParams]);
+  }, [userInfo, tournamentParams]);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleEnter = () => {
+    setShowSearchResult(true);
+    const inputElement = document.getElementById('search') as HTMLInputElement;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (inputElement) {
+      setSearch(inputElement.value);
+    }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full bg-transparent">
@@ -232,23 +284,132 @@ const Player = (): React.ReactElement => {
                   handleSearch(e);
                 }}
                 name="search"
-                placeholder="Search"
+                placeholder={t('playCenter.text6') ?? ''}
                 className="block w-full xl:w-1/3 text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
               />
               <button
-                onClick={() => setRefreshSearch(!refreshSearch)}
+                onClick={handleEnter}
                 className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
               >
                 Enter
               </button>
             </div>
           </div>
+          {showSearchResult && (
+            <div>
+              {loading ? (
+                <div className="w-full flex justify-center h-fit mt-8">
+                  <div className="h-[60px]">
+                    <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {listPlay?.length !== 0 ? (
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
+                      {listPlay.map(item => (
+                        <div
+                          key={item.id}
+                          onClick={async () =>
+                            await router
+                              .push(
+                                `${
+                                  item?.is_joined
+                                    ? `/play/tournament/${item.id}/home`
+                                    : `/play/tournament/${item.id}`
+                                }`
+                              )
+                              .catch(error => {
+                                toast.error(error);
+                              })
+                          }
+                          className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
+                        >
+                          <div className="w-full bg-white">
+                            <div className="w-full rounded-xl overflow-hidden">
+                              <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                                <Image
+                                  alt=""
+                                  src={
+                                    item.banner !== undefined &&
+                                    item.banner !== ''
+                                      ? item.banner
+                                      : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                                  }
+                                  width={100}
+                                  height={100}
+                                  className="w-auto h-full"
+                                />
+                              </div>
+                              <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
+                                <div>
+                                  <div className="text-sm font-semibold text-white">
+                                    {item.name}
+                                  </div>
+                                  <div className="text-white flex gap-2 text-[10px] mt-2">
+                                    <div className="mt-1">
+                                      {t('playCenter.text4')}
+                                    </div>
+                                    <div className="font-normal text-white mt-1">
+                                      {calculateDaysLeft(
+                                        new Date(item?.play_time),
+                                        new Date(item?.end_time)
+                                      )}{' '}
+                                      {t('playCenter.text5')}
+                                    </div>
+                                    {item.play_center_type === 'quiz' && (
+                                      <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
+                                        Quiz
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="my-auto items-center">
+                                  {item?.is_joined ? (
+                                    <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
+                                      {t(
+                                        'tournament.tournamentCard.openButton'
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
+                                      {t(
+                                        'tournament.tournamentCard.joinButton'
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+                      <Image alt="" src={IconNoData} className="w-[250px]" />
+                      <p className="font-semibold text-black">
+                        {t('tournament.blank1')}
+                      </p>
+                      <p className="text-[#7C7C7C]">{t('tournament.blank2')}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="w-full my-5 h-auto cursor-default">
             <Slider {...sliderSettings}>
               {bannerAsset.map(asset => (
                 <div
                   key={asset.id}
                   className="w-full lg:w-[826px] relative h-[249px]"
+                  onClick={() => {
+                    void (asset?.play_center_type === 'quiz'
+                      ? router.push(`/play/quiz/${asset.id}`)
+                      : router.push(`/play/play/${asset.id}`));
+                  }}
                 >
                   <Image
                     className="object-cover w-full"
@@ -269,7 +430,7 @@ const Player = (): React.ReactElement => {
               Seeds Play
             </Typography>
             <div className="justify-center flex gap-4">
-              <div
+              <button
                 onClick={() => {
                   void router.push('/play/quiz');
                 }}
@@ -278,8 +439,8 @@ const Player = (): React.ReactElement => {
                 <Typography className="text-center text-xl font-normal text-[#262626] ">
                   Seeds Quiz
                 </Typography>
-              </div>
-              <div
+              </button>
+              <button
                 onClick={() => {
                   void router.push('/play/tournament');
                 }}
@@ -288,36 +449,40 @@ const Player = (): React.ReactElement => {
                 <Typography className="text-center text-xl font-normal text-[#262626] ">
                   Play Arena
                 </Typography>
-              </div>
+              </button>
             </div>
           </div>
 
           <div className="rounded-xl my-3 bg-[#FFFFFF]">
             <div
-              className="flex justify-between bg-gradient-to-r from-[#7B51FF] to-[#B7A6EB] p-4 rounded-lg mt-4 mx-3 relative overflow-hidden"
+              className="flex justify-between cursor-pointer bg-gradient-to-r from-[#7B51FF] to-[#B7A6EB] p-4 rounded-lg mt-4 mx-3 relative overflow-hidden"
               onClick={() => {
                 void router.push('/play/leaderboard');
               }}
             >
-              <Image
-                alt=""
-                src={LeaderBoardIcon}
-                className="hidden md:block absolute left-[-18px] top-[-5px] w-[125px] z-30"
-              />
-              <div className="md:ms-[20%]">
-                <p className="text-sm md:text-2xl text-white font-semibold z-50">
-                  Leaderboards
-                </p>
-                <p className="text-sm font-normal md:text-lg text-white my-2 z-50">
-                  Let’s check your detailed score!
-                </p>
+              <div className="flex gap-3">
+                <div>
+                  <Image
+                    alt=""
+                    src={LeaderBoardIcon}
+                    // className="hidden md:block absolute left-[-18px] top-[-5px] w-[125px] z-30"
+                  />
+                </div>
+                <div className="my-auto">
+                  <p className="text-sm md:text-2xl text-white font-semibold z-50">
+                    {t('playCenter.text2')}
+                  </p>
+                  <p className="text-sm font-normal md:text-lg text-white my-2 z-50">
+                    {t('playCenter.text3')}
+                  </p>
+                </div>
               </div>
               <div className="flex gap-4 ">
-                <div className="relative z-50">
+                <div className="relative my-auto z-50">
                   <p className="text-sm md:text-xl text-white font-semibold z-100">
                     #{userRank ?? '-'}
                   </p>
-                  <p className="text-sm md:text-xl text-white font-semibold z-100">
+                  <p className="text-sm md:text-base text-white font-normal z-100">
                     place
                   </p>
                 </div>
@@ -342,8 +507,8 @@ const Player = (): React.ReactElement => {
                 className="hidden md:block absolute right-[-18px] top-[-8px] w-[165px] z-10"
               />
             </div>
-            <p className="text-base mt-3 md:text-base text-[#262626] font-semibold z-50">
-              My Latest Play
+            <p className="text-base xl:mt-8 mt-4 md:text-base text-[#262626] font-semibold z-50">
+              {t('playCenter.text1')}
             </p>
             {!loading ? (
               data?.length !== 0 ? (
@@ -382,25 +547,36 @@ const Player = (): React.ReactElement => {
                               className="w-auto h-full"
                             />
                           </div>
-                          <div className="pl-2 flex justify-between bg-[#3AC4A0]">
+                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
                             <div>
-                              <div className="text-[14px] font-semibold text-white">
+                              <div className="text-sm font-semibold text-white">
                                 {item.name}
                               </div>
-                              <div className="text-white px-2 text-[10px]">
-                                {`${generateFormattedDate(
-                                  item.play_time,
-                                  false
-                                )} - ${generateFormattedDate(item.end_time)}`}
+                              <div className="text-white flex gap-2 text-[10px] mt-2">
+                                <div className="mt-1">
+                                  {t('playCenter.text4')}
+                                </div>
+                                <div className="font-normal text-white mt-1">
+                                  {calculateDaysLeft(
+                                    new Date(item?.play_time),
+                                    new Date(item?.end_time)
+                                  )}{' '}
+                                  {t('playCenter.text5')}
+                                </div>
+                                {item.play_center_type === 'quiz' && (
+                                  <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
+                                    Quiz
+                                  </div>
+                                )}
                               </div>
                             </div>
                             <div className="my-auto items-center">
                               {item?.is_joined ? (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
                                   {t('tournament.tournamentCard.openButton')}
                                 </div>
                               ) : (
-                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
                                   {t('tournament.tournamentCard.joinButton')}
                                 </div>
                               )}

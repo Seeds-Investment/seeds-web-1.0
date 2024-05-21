@@ -24,7 +24,7 @@ interface IAuthPersonalData {
       seedsTag: string;
       refCode: string;
       password: string;
-      provider: { provider: string; identifer: string };
+      provider: { provider: string; identifier: string };
       token: string;
     }>
   >;
@@ -38,7 +38,7 @@ interface IAuthPersonalData {
     password: string;
     provider: {
       provider: string;
-      identifer: string;
+      identifier: string;
     };
     token: string;
   };
@@ -187,7 +187,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
         onClick={async () => {
           if (data !== null) {
             setFormData({ ...formData, name: '', seedsTag: '' });
-            await withRedirect(router, router.query, '/auth');
+            await withRedirect(router, router.query, '/auth2');
             await signOut();
           } else {
             setSelect(0);
@@ -232,7 +232,7 @@ const AuthPersonalData: React.FC<IAuthPersonalData> = ({
           name="seedsTag"
           formData={formData.seedsTag}
           placeholder="Ex: Seeds123"
-          label="Seeds Tag"
+          label="SeedsTag"
           type="text"
           error={errorTag || errorRegex}
           required={true}

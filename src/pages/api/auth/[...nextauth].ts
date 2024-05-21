@@ -1,14 +1,9 @@
 import NextAuth from 'next-auth';
-import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
 const authOptions = {
   secret: process.env.AUTH_SECRET ?? 'seeds.investment',
   providers: [
-    GitHubProvider({
-      clientId: '57fd83c5e6450c71e544',
-      clientSecret: 'f3d10007f21852c618b5278b8a5bae4b047cfabd'
-    }),
     GoogleProvider({
       clientId:
         process.env.GOOGLE_CLIENT_ID ??

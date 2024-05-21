@@ -36,7 +36,7 @@ interface IAuthRegister {
     seedsTag: string;
     refCode: string;
     password: string;
-    provider: { provider: string; identifer: string };
+    provider: { provider: string; identifier: string };
     token: string;
   };
   setFormData: (value: {
@@ -47,7 +47,7 @@ interface IAuthRegister {
     seedsTag: string;
     refCode: string;
     password: string;
-    provider: { provider: string; identifer: string };
+    provider: { provider: string; identifier: string };
     token: string;
   }) => void;
   setCountdown: (value: number) => void;
@@ -91,45 +91,47 @@ const AuthRegister: React.FC<IAuthRegister> = ({
   const handleChange = (e: EventObject, dialCode: string): void => {
     setError(false);
     setBlank(false);
-    if (formData.phoneNumber === dialCode) {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(dialCode.length),
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
-    } else if (formData.phoneNumber === '0') {
-      setFormData({
-        ...formData,
-        phoneNumber: e.target.value.substring(1),
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-        birthDate: '',
-        name: '',
-        seedsTag: '',
-        refCode: '',
-        provider: {
-          provider: '',
-          identifer: ''
-        }
-      });
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length),
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifier: ''
+          }
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1),
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifier: ''
+          }
+        });
+      } else {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+          birthDate: '',
+          name: '',
+          seedsTag: '',
+          refCode: '',
+          provider: {
+            provider: '',
+            identifier: ''
+          }
+        });
+      }
     }
   };
   const handleChangePass = (e: EventObject): void => {
@@ -144,7 +146,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
       refCode: '',
       provider: {
         provider: '',
-        identifer: ''
+        identifier: ''
       }
     });
   };
@@ -219,7 +221,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         refCode: '',
         provider: {
           provider: '',
-          identifer: ''
+          identifier: ''
         }
       });
     }
@@ -234,6 +236,7 @@ const AuthRegister: React.FC<IAuthRegister> = ({
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
+          delete router.query.phoneNumber;
           await withRedirect(router, router.query, '/auth2');
         }}
       />

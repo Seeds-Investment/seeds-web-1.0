@@ -55,7 +55,7 @@ const MyEarnings = (): React.ReactElement => {
   const [isLoadingEarn, setIsLoadingEarn] = useState<boolean>(false);
   const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
   const [earningHistoryParams, setEarningHistoryParams] = useState({
-    limit: 10,
+    limit: 8,
     page: 1
   });
 
@@ -113,6 +113,13 @@ const MyEarnings = (): React.ReactElement => {
       setIsLoadingHistory(false);
     }
   };
+
+  const handleRouteWithdrawStatus = async (status: string, sourceId: string): Promise<void> => {
+    if (status === 'Need Approval') {
+      await router.push(`/my-profile/my-earnings/withdraw-status/${sourceId}`)
+    }
+  }
+
   return (
     <>
       {isLoadingEarn && isLoadingHistory && <Loading />}
@@ -146,7 +153,11 @@ const MyEarnings = (): React.ReactElement => {
                 <div className='w-full gap-2'>
                   {
                     earningHistory?.map(item => (
-                      <div key={item?.id ?? '0'} className='w-full flex justify-between items-center p-2 md:p-4 cursor-pointer rounded-lg hover:bg-[#F9F9F9] hover:shadow-lg duration-300'>
+                      <div
+                        key={item?.id ?? '0'}
+                        onClick={() => { handleRouteWithdrawStatus((item?.status ?? ''), (item?.source_id ?? '0')); }}
+                        className='w-full flex justify-between items-center p-2 md:p-4 cursor-pointer rounded-lg hover:bg-[#F9F9F9] hover:shadow-lg duration-300'
+                      >
                         <div className='flex justify-start items-center gap-2 md:gap-4'>
                           <div className={`${(item?.direction ?? 'IN') === 'IN' ? 'bg-[#DCFCE4]' : 'bg-[#FFF7D2]'} w-[40px] h-[40px] md:w-[60px] md:h-[60px] flex justify-center items-center rounded-full`}>
                             <Image
@@ -185,7 +196,7 @@ const MyEarnings = (): React.ReactElement => {
                             + {`${ userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR' }${standartCurrency(item?.amount ?? 0).replace('Rp','')}`}
                           </Typography>
                           <Typography className={`${(item?.status ?? 'Completed') === 'Completed' ? 'text-[#4DA81C]' : 'text-[#D89918]'} text-xs md:text-base font-poppins font-semibold`}>
-                            {(item?.status ?? 'Completed') === 'Completed' ? t('earning.completed') : t('earning.onProgress')}
+                            {(item?.status ?? 'Loading...') === 'Completed' ? t('earning.completed') : ((item?.status ?? 'Loading...') === 'Need Approval' ? t('earning.onProgress') : 'Loading...')}
                           </Typography>
                         </div>
                       </div>

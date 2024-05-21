@@ -7,6 +7,8 @@ import {
 } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import successReceiptSlice from '../earnings/successReceiptSlice';
+import withdrawSlice from '../earnings/withdrawSlice';
 import expSlice from './features/exp';
 import { promoCodeSlice } from './features/promo-code';
 import soundSlice from './features/sound';
@@ -16,7 +18,9 @@ const reducers = combineReducers({
   exp: expSlice,
   user: userSlice,
   soundSlice,
-  promoCode: promoCodeSlice.reducer
+  promoCode: promoCodeSlice.reducer,
+  withdraw: withdrawSlice,
+  successReceipt: successReceiptSlice
 });
 
 const persistConfig = {

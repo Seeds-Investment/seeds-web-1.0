@@ -119,3 +119,29 @@ export const getEarningDateEN = (date: Date): string => {
 
   return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear}`
 };
+
+export const getEarningReceiptDateID = (date: Date): string => {
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+  const currentSeconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} ${currentHours}:${currentMinutes}:${currentSeconds}`
+};
+
+export const getEarningReceiptDateEN = (date: Date): string => {
+
+  const currentDate = date;
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
+  const currentDay = currentDate.getDate();
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+  const currentSeconds = currentDate.getSeconds().toString().padStart(2, '0');
+
+  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} ${currentHours}:${currentMinutes}:${currentSeconds}`
+};

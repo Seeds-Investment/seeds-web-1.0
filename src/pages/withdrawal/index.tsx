@@ -37,7 +37,7 @@ const Withdrawal: React.FC = () => {
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
-      await withRedirect(router, { withdrawal: 'true' }, '/auth');
+      await withRedirect(router, { withdrawal: 'true' }, '/auth2');
       toast.error(t('landingPageV2.redirectError'));
     }
   };

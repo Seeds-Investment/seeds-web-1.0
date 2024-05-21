@@ -147,8 +147,8 @@ const AccountSecurityCenter: React.FC = () => {
             dataUser.phoneNumber === ''
               ? handleOpenPreventPass()
               : dataUser.isPasswordExists
-              ? await router.push('/auth/change-password')
-              : await router.push('/auth/create-password');
+              ? await router.push('/auth2/change-password')
+              : await router.push('/auth2/create-password');
           }}
           form={
             dataUser.isPasswordExists ? (

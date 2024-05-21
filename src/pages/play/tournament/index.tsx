@@ -331,7 +331,7 @@ const PlayTournament = (): React.ReactElement => {
                               onClick={async () => {
                                 const textToCopy = `${baseUrl}/play/tournament/${item.id}`;
                                 isGuest()
-                                  ? await router.push('/auth')
+                                  ? await router.push('/auth2')
                                   : await navigator.clipboard
                                       .writeText(textToCopy)
                                       .then(() => {

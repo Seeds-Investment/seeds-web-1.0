@@ -224,7 +224,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
-                  'Your recurring has been saved!'}
+                  t('quiz.payment.recurringSaved')}
               </Typography>
 
               <Card className="p-5 mt-8 bg-white w-full">

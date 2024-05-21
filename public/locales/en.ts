@@ -1542,7 +1542,21 @@ export default {
     },
     placeholder1: 'What do you want to discuss? ...',
     placeholder2:
-      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: "Your Virtual Account Number",
+      pendingPaidSocial: 'Pending Paid Post',
+      socialFee: 'Content Premium',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: "Successful",
+      recurringSaved: "Your recurring has been saved!",
+    }
   },
   landingV2: {
     section1: {
@@ -1884,6 +1898,7 @@ export default {
       idTransaction: 'ID Transaction',
       close: 'Close',
       paymentSuccessful: "Successful",
+      recurringSaved: "Your recurring has been saved!",
     }
   },
   tournament: {
@@ -2070,7 +2085,8 @@ export default {
       idTransaction: 'ID Transaction',
       close: 'Close',
       successful: "Successful",
-      pending: "Pending Paid Tournament"
+      pending: "Pending Paid Tournament",
+      recurringSaved: "Your recurring has been saved!",
     }
   },
   seedsEvent: {

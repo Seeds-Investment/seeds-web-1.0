@@ -1469,7 +1469,21 @@ export default {
     },
     placeholder1: 'Apa yang ingin kamu diskusikan? ...',
     placeholder2:
-      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
+      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: "Nomor Virtual Akun Anda",
+      pendingPaidSocial: 'Menunggu Pembayaran',
+      socialFee: 'Konten Premium',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: "Berhasil",
+      recurringSaved: "Pembayaran anda telah tersimpan",
+    }
   },
   landingV2: {
     section1: {
@@ -1810,6 +1824,7 @@ export default {
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
       paymentSuccessful: "Berhasil",
+      recurringSaved: "Pembayaran anda telah tersimpan",
     }
   },
   tournament: {
@@ -1996,7 +2011,8 @@ export default {
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
       successful: "Pembayaran Berhasil",
-      pending: "Menunggu Pembayaran"
+      pending: "Menunggu Pembayaran",
+      recurringSaved: "Pembayaran anda telah tersimpan",
     }
   },
   seedsEvent: {

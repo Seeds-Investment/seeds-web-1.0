@@ -213,7 +213,7 @@ const SuccessPaymentPage: React.FC = () => {
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
-                  'Your recurring has been saved!'}
+                  t('tournament.payment.recurringSaved')}
               </Typography>
 
               <Card className="p-5 mt-8 bg-white w-full">

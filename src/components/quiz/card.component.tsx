@@ -23,7 +23,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   };
 
   return (
-    <div key={item.id} className="rounded-t-lg">
+    <div key={item.id} className="rounded-t-lg bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
       <div className="w-full max-h-60">
         <Image
           src={
@@ -89,11 +89,11 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                 if (item.is_played) {
                   // TODO: navigate to quiz score page
                   router.push(`/play/quiz/${item.id}/done`).catch(error => {
-                    console.log(error);
+                    toast.error(`${error as string}`);
                   });
                 } else {
                   router.push(`/play/quiz/${item.id}`).catch(error => {
-                    console.log(error);
+                    toast.error(`${error as string}`);
                   });
                 }
               }}

@@ -92,7 +92,7 @@ const MyEarnings = (): React.ReactElement => {
       const result = await getEarningBalance(currency);
       setEarning(result)
     } catch (error) {
-      toast.error(`Error follow user: ${error as string}`);
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setIsLoadingEarn(false);
     }

@@ -176,7 +176,7 @@ const Withdraw = (): React.ReactElement => {
               onChange={e => {
                 handleInputAccountName(e);
               }}
-              placeholder="Enter your account name..."
+              placeholder={`${t('earning.enterAccountName')}`}
               className="border-b border-[#CCCCCC] block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
             />
           </div>
@@ -193,7 +193,7 @@ const Withdraw = (): React.ReactElement => {
               className='w-full flex justify-between items-center border-b border-[#CCCCCC] pb-2 cursor-pointer'
             >
               <div>
-                {bankAccount?.payment_method ?? ''}
+                {(bankAccount?.payment_method ?? '') === '' ? <div className='text-[#CCCCCC]'>{t('earning.enterBankAccount')}</div> : bankAccount?.payment_method}
               </div>
               <div className='flex justify-center items-center w-[30px] h-[30px]'>
                 <Image
@@ -218,7 +218,7 @@ const Withdraw = (): React.ReactElement => {
               onChange={e => {
                 handleInputAccountNumber(e);
               }}
-              placeholder="Enter your account number..."
+              placeholder={`${t('earning.enterAccountNumber')}`}
               className="border-b border-[#CCCCCC] block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
             />
           </div>

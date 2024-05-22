@@ -2071,6 +2071,9 @@ export default {
     checkStatus: "Check Withdrawal Status",
     withdrawOnProgress: "Withdraw On Progress",
     withdrawOnProgressDescription: "Your withdrawal request is being processed, please wait.",
+    enterAccountName: "Enter your account name...",
+    enterBankAccount: "Enter your bank account...",
+    enterAccountNumber: "Enter your account number...",
   },
   buyAsset: {
     text1: 'Assets to be purchased',

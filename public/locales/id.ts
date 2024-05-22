@@ -1993,6 +1993,9 @@ export default {
     checkStatus: "Cek Status Penarikan Dana",
     withdrawOnProgress: "Penarikan Dalam Proses",
     withdrawOnProgressDescription: "Permintaan penarikanmu sedang diproses. Mohon tunggu.",
+    enterAccountName: "Masukan nama rekening anda...",
+    enterBankAccount: "Masukan rekening anda...",
+    enterAccountNumber: "Masukan nomor rekening anda...",
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

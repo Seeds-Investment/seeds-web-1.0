@@ -155,6 +155,7 @@ export interface QuestionDataI {
 export interface Answer {
   question: string;
   options: Options;
+  option_image: Options;
   description?: string;
 }
 

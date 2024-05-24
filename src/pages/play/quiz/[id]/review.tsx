@@ -8,7 +8,10 @@ import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { getQuizReview } from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
-import { type QuizReviewDTO } from '@/utils/interfaces/quiz.interfaces';
+import {
+  type Option,
+  type QuizReviewDTO
+} from '@/utils/interfaces/quiz.interfaces';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -83,14 +86,37 @@ const Review = () => {
             {QuizReview?.data.map((item, i) => {
               const selectedData =
                 item.data[i18n.language === 'id' ? 'id' : 'en'];
-              const optionsArray = Object.values(selectedData?.options);
+              const optionsArray: Option[] = [
+                ...Object.values(selectedData?.options).filter(
+                  (answer: Option) => answer.option !== ''
+                ),
+                ...Object.values(selectedData?.option_image).filter(
+                  (answer: Option) => answer.option !== ''
+                )
+              ];
+              const isValidURL = (option: string): boolean => {
+                try {
+                  // eslint-disable-next-line no-new
+                  new URL(option);
+                  return true;
+                } catch (error) {
+                  return false;
+                }
+              };
+
               return (
                 <SwiperSlide key={i.toString()}>
                   <div className="w-full flex flex-col items-center bg-white rounded-3xl font-poppins p-4 lg:p-6">
-                    <div className="text-base text-[#262626] text-start w-full">
+                    <div className="text-base text-[#262626] text-start w-full mb-3">
                       {selectedData.question}
                     </div>
-                    <div className="w-full flex flex-col gap-3 lg:gap-4 mt-4 lg:mt-6">
+                    <div
+                      className={`w-full ${
+                        isValidURL(optionsArray[0]?.option)
+                          ? 'grid grid-cols-2 gap-4'
+                          : 'flex flex-col gap-3 lg:gap-4 mt-4 lg:mt-6'
+                      } `}
+                    >
                       {optionsArray.map((opt, j) => {
                         const prefix = ['A', 'B', 'C', 'D'];
                         return (

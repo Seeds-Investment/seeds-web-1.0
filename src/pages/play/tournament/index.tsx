@@ -288,10 +288,7 @@ const PlayTournament = (): React.ReactElement => {
                             </div>
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px]">
-                            {`${getTournamentTime(
-                              item.play_time,
-                              false
-                            )} - ${getTournamentTime(item.end_time)}`}
+                            {`${getTournamentTime(item?.play_time ?? '2024-01-01T00:00:00Z')} - ${getTournamentTime(item?.end_time ?? '2024-12-31T23:59:59Z')}`}
                           </div>
                         </div>
                         
@@ -309,8 +306,8 @@ const PlayTournament = (): React.ReactElement => {
                                 </div>
                                 <div className="font-semibold text-black">
                                   {calculateDaysLeft(
-                                    new Date(item?.play_time),
-                                    new Date(item?.end_time)
+                                    new Date(item?.play_time ?? '2024-01-01T00:00:00Z'),
+                                    new Date(item?.end_time ?? '2024-12-31T23:59:59Z')
                                   )}{' '}
                                   {
                                     (calculateDaysLeft(new Date(item?.play_time), new Date(item?.end_time)) ?? 0) > 1 ?

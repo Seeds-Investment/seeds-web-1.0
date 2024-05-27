@@ -2151,7 +2151,6 @@ export default {
   play: {
     keystat: 'Key Stats'
   },
-
   playCenter: {
     text1: 'My Latest Play',
     text2: 'Leaderboards',

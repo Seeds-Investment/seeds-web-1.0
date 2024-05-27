@@ -200,7 +200,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             className="hidden md:block absolute right-[20px] top-[80px] w-[165px] z-10"
           />
           {activeTab !== 'all' && (
-            <div className="bg-white text-[#3AC4A0] flex gap-1 text-xs ml-auto mr-2  justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-[12%]">
+            <div className="hidden md:flex bg-white text-[#3AC4A0] gap-1 text-xs ml-auto mr-2  justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-[12%]">
               <Image alt="" src={IconClock} className="w-[14px] mr-1 my-auto" />
               {Object.entries(leaderboardTimeRemaining).map(
                 ([key, value], index) => (
@@ -272,9 +272,9 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               {t('playCenter.text9')} 29 April 2024 19:11
             </h1>
           </div>
-          <div className="flex flex-row bg-[#2b4740] justify-center mx-auto text-center w-[235px] rounded-full items-center px-1 gap-1 my-4">
+          <div className="flex flex-row bg-[#2b4740] justify-center mx-5 md:mx-auto text-center w-[300ox] md:w-[235px] rounded-full items-center px-1 gap-1 my-4">
             <button
-              className={`px-4 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
+              className={`md:px-4 px-12 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
                 activeTab === 'season'
                   ? 'text-[#3AC4A0] bg-[#FFFFFF]'
                   : 'bg-transparent text-[#7C7C7C]'
@@ -287,7 +287,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               {t('playCenter.text16')}
             </button>
             <button
-              className={`px-8 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
+              className={`md:px-8 px-12 py-2 font-poppins shadow-lg rounded-full text-base font-semibold ${
                 activeTab === 'all'
                   ? 'text-[#3AC4A0] bg-[#FFFFFF]'
                   : 'bg-transparent text-[#7C7C7C]'
@@ -300,6 +300,19 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               {t('playCenter.text17')}
             </button>
           </div>
+          {activeTab !== 'all' && (
+            <div className="md:hidden bg-white text-[#3AC4A0] flex gap-1 text-xs ml-5 border border-1 p-1 border-[#27A590] rounded-full w-[28%]">
+              <Image alt="" src={IconClock} className="w-[14px] mr-1 my-auto" />
+              {Object.entries(leaderboardTimeRemaining).map(
+                ([key, value], index) => (
+                  <span key={index}>
+                    {value}
+                    {key}{' '}
+                  </span>
+                )
+              )}
+            </div>
+          )}
           <div className="flex justify-center pt-3">
             <div className="justify-center mt-auto items-center text-center">
               <div className="w-full justify-center">

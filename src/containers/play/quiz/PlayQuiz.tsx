@@ -308,6 +308,14 @@ const QuizPlay = ({
           </div>
         }
         enableScroll={false}
+        isQuestionHasMedia={
+          quizQuestions[currentPage]?.data?.[
+            i18n.language === 'id' ? 'id' : 'en'
+          ]?.question_video !== '' ||
+          quizQuestions[currentPage]?.data?.[
+            i18n.language === 'id' ? 'id' : 'en'
+          ]?.question_image !== ''
+        }
       >
         {loading && quizQuestions.length === 0 ? (
           <div className="h-full w-full flex items-center justify-center">
@@ -336,6 +344,35 @@ const QuizPlay = ({
                 height={400}
               />
             </div> */}
+            {quizQuestions[currentPage]?.data?.[
+              i18n.language === 'id' ? 'id' : 'en'
+            ]?.question_video !== '' && (
+              <video controls className="w-[400px] h-[300px] object-fit">
+                <source
+                  src={
+                    quizQuestions[currentPage]?.data?.[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ]?.question_video
+                  }
+                  type="video/mp4"
+                />
+                Browser Anda tidak mendukung tag video.
+              </video>
+            )}
+            {quizQuestions[currentPage]?.data?.[
+              i18n.language === 'id' ? 'id' : 'en'
+            ]?.question_image !== '' && (
+              <Image
+                alt="Quiz Playing"
+                src={
+                  quizQuestions[currentPage]?.data?.[
+                    i18n.language === 'id' ? 'id' : 'en'
+                  ]?.question_image
+                }
+                width={400}
+                height={300}
+              />
+            )}
             <div className="text-[#262626] text-base text-center lg:text-xl w-full lg:w-5/6 mt-4 bg-white px-3 py-4 rounded-lg">
               {
                 quizQuestions[currentPage]?.data?.[

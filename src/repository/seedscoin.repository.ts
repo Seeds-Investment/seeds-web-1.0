@@ -30,3 +30,21 @@ export const getSeedsCoinTransactions = async (
     throw new Error(`Error fetching seeds coin transactions: ${error.message}`);
   }
 };
+
+export const getTransactionSummary = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    return await seedsCoinService.get(`/coin/v1/transaction/summary`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

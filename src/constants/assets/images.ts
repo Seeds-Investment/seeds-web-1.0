@@ -67,6 +67,16 @@ export const Logout: AssetsInterface = {
   alt: 'logout'
 };
 
+export const WinnerPopup: AssetsInterface = {
+  src: '/assets/story-boarding/winnerPlay.svg',
+  alt: 'winner'
+};
+
+export const LosserPopup: AssetsInterface = {
+  src: '/assets/story-boarding/lossPlay.svg',
+  alt: 'losser'
+};
+
 export const EarnXP: AssetsInterface = {
   src: '/assets/story-boarding/earnXp.svg',
   alt: 'earn'

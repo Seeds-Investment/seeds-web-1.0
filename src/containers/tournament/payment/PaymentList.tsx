@@ -13,7 +13,7 @@ import {
   joinTournament
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { useAppSelector } from '@/store/redux/store';
+// import { useAppSelector } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -89,7 +89,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
   const invitationCode = router.query.invitationCode;
@@ -104,7 +104,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     birthDate: '',
     phoneNumber: '',
     _pin: '',
-    preferredCurrency: 'IDR'
+    preferredCurrency: ''
   };
 
   const defaultOption = {
@@ -127,7 +127,9 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const fetchPaymentList = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data = await getPaymentList(preferredCurrency);
+      const data = await getPaymentList(
+        userInfo?.preferredCurrency?.toUpperCase()
+      );
       setVirtualList(data.type_va);
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
@@ -144,7 +146,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     } catch (error) {
       toast(`ERROR fetch user info ${error as string}`);
     }
-  };
+  };  
 
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
@@ -156,8 +158,12 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
   useEffect(() => {
     void fetchData();
-    void fetchPaymentList();
   }, []);
+
+  useEffect(() => {
+    void fetchPaymentList();
+  }, [userInfo?.preferredCurrency]);
+  
 
   const getDetail = useCallback(async () => {
     try {

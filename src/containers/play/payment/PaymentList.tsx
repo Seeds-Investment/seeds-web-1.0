@@ -11,7 +11,7 @@ import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
-import { useAppSelector } from '@/store/redux/store';
+// import { useAppSelector } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -30,6 +30,7 @@ interface UserData {
   birthDate: string;
   phone: string;
   _pin: string;
+  preferredCurrency: string;
 }
 export interface Payment {
   id: string;
@@ -46,9 +47,10 @@ export interface Payment {
 interface props {
   dataPost?: any;
   monthVal?: string;
+  invitationCode?:string
 }
 
-const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
+const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -57,12 +59,14 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);  
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data = await getPaymentList(preferredCurrency);
+      const data = await getPaymentList(
+        userInfo?.preferredCurrency?.toUpperCase()
+      );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
@@ -90,8 +94,12 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
 
   useEffect(() => {
     void fetchData();
-    void fetchPaymentList();
+    // void fetchPaymentList();
   }, []);
+
+  useEffect(() => {
+    void fetchPaymentList();
+  }, [userInfo?.preferredCurrency]);
 
   const handlePay = async (
     type: string,
@@ -119,7 +127,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
           promo_code: '',
-          invitation_code: ''
+          invitation_code: invitationCode as string
         });
 
         if (response) {
@@ -230,7 +238,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   );
 
   return (
-    <PageGradient defaultGradient className="w-full md:px-20 my-10">
+    <PageGradient defaultGradient className="w-full md:px-20 my-10 h-screen">
       {loading ? renderLoading() : renderContent()}
       <Dialog
         title={

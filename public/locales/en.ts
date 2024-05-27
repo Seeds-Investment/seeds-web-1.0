@@ -263,8 +263,9 @@ export default {
     title1: 'Terms & Conditions',
     title2: 'Disclosure',
     title3: 'Privacy Policy',
-    title4: 'Social Media Guidelines',
-    title5: 'Circle Membership'
+    title4: 'Refund Policy',
+    title5: 'Social Media Guidelines',
+    title6: 'Circle Membership'
   },
   faq: {
     title: 'Frequently Asked Questions',
@@ -319,6 +320,19 @@ export default {
           'Seeds will do its best to help you ensure that the information you receive is accurate, complete, and updated. We will retain your personal data for the periods necessary to meet the different purposes set forth in this Privacy Policy unless retention time is longer permitted or required by law. You can help ensure that your contact and reference information is accurate, complete and kept up-to-date by logging in on the Seeds app. For other personal information, we make a good faith effort to grant access to you so that you may ask us to repair the data if Seeds app does not have to be kept by law or for legitimate business purposes. We may refuse to process irrational requests made repeatedly, requiring excessive technical effort, threatening the privacy of others, it is completely impractical or if access is not otherwise required by it by local law. Requests for access, correction or deletion can be made through the Seeds application.',
           'To help Seeds improve our services and products provide a special experience for users on their site using “cookies”. Cookies are small text files stored on your computer/smartphone that give us information about your site usage online to help us customize your user experience and make our site more user-friendly.',
           'We have applied technology and policies consistent with the prevailing rules of Indonesia with the objective of protecting your privacy from unauthorized access and improper use and we will update these steps as new technology develops as necessary.'
+        ]
+      }
+    },
+    refundPolicy: {
+      title: 'Refund Policy',
+      lastUpdated: 'Last Updated: ',
+      date: '26 April 2022',
+      overview: {
+        title: ['Refund Policy', 'General Policy', 'Refund Procedure'],
+        desc: [
+          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.\t',
+          "This Refund Policy is applied to the features provided by the Seeds Party. This policy constitutes the steps and methods regarding the refund procedures carried out by SEEDS towards Users.\t Events that can be categorized as Refund:\n a. When there is a problem with the application caused by SEEDS Parties\n b. In the event of the Play Arena Feature being unilaterally canceled by SEEDS due to noncompliance with the following requirements\n c. Refunds do not apply to Users who have :\t i. Paid for tickets in the SEEDS application and due to their negligence wish to apply for a refund\n ii. Set the premium circle price and want to apply for a refund for the user's negligence in setting the premium circle feature price.\t",
+          "Refund applied to paid features within the Seeds application including but not limited to:\na. Premium Circle\n b. Play Arena\n c. Play Quiz\t User who would like to refund are required to send 'Refund Request' via Email info@seeds.finance\t Refund Request includes:\n a. User's Full Name\n b. Phone Number\n c. User Account Name\n d. Email Address\n e. Refund Request Amount\n f. Evidence and reason for refund\t Seeds will verify the proof of application and proof of payment submited by user who have failed to make a payment for 3 working days.\t After verification by SEEDS Parties and the application cant be proven correct, SEEDS parties will transfer the refund either through banking institutions or through non-bank institutions (E-Money and / or e-wallet) based on the nominal value of the verification results by SEEDS.\t If it is proven that the refund application is not an authentic application from the verification by SEEDS, the application will get rejected and SEEDS reserves the right not to respond to the refund application.\t SEEDS reserves the right to take necessary legal action against any unauthentic refund requests by users."
         ]
       }
     },
@@ -650,13 +664,19 @@ export default {
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
     login: 'Login',
-    signup: 'Sign up'
+    signup: 'Sign up',
+    or: ' or '
   },
   authLogin: {
     title1: 'Let’s Input!',
     title2: 'Phone number & password',
+    title3: 'Phone number',
+    title4: 'Name & phone number',
     phone: 'Phone Number',
+    name: 'Name',
+    namePlaceholder: 'Please, input your name',
     password: 'Password',
+    createPassword: 'Create Password',
     passwordPlaceholder: 'Please input your password',
     forgotPass: 'Forgot Password?',
     login: 'Login',
@@ -690,7 +710,7 @@ export default {
       month: 'MM',
       year: 'YYYY',
       validation: {
-        seedsTag: 'Seeds Tag alredy used',
+        seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
         dob: 'Minimun  age 12 Years old'
       }
@@ -1689,6 +1709,7 @@ export default {
     sponsors: 'Sponsor(s)',
     community: 'Community',
     join: 'Join',
+    loading: 'Loading...',
     reviewQuiz: 'Review Quiz',
     continue: 'Continue',
     start: 'start',
@@ -1830,7 +1851,21 @@ export default {
     winnerModalTitle: 'Congrats you won the Quiz!',
     score: 'Your Score : ',
     earn: ' You earn IDR ',
-    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds'
+    tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
+    text1: 'Challenge your finance knowledge with these quizzes.',
+    text2: 'Check out the latest rankings for top quizzes!',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidQuiz: 'Pending Paid Quiz',
+      quizFee: 'Quiz Fee',
+      lifelinesFee: 'Lifeline Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close'
+    }
   },
   tournament: {
     myPlay: 'My Play',
@@ -1851,6 +1886,9 @@ export default {
     detailAccessCode: 'Input Access Code',
     detailBannerTotalRewards: 'Total Rewards',
     entranceFee: 'Entrance Fee',
+    shareArena: 'Share This Arena',
+    shareLinks: 'Share Link',
+    playId: 'Play ID',
     free: 'Free',
     join: 'Join',
     start: 'Start',
@@ -1963,9 +2001,52 @@ export default {
         text2: 'Learn stock data analysis to help you make informed decisions.',
         text3: 'Stay alert to market price changes.'
       }
+    },
+    floatingButton: {
+      text1:
+        'Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!',
+      text2:
+        'Have good news in the play arena? Share it with your friends and find experts for more insights.',
+      text3:
+        "Don't forget to read Play Arena's terms and conditions before you start playing."
+    },
+    watchlist: {
+      watchlist: 'Watchlist',
+      noData: 'No Watchlist yet',
+      create: 'Create your Watchlist now!',
+      createWatchlist: 'Create Watchlist',
+      add: 'Add Watchlist',
+      name: 'Watchlist Name',
+      photo: 'Watchlist Photo',
+      addAsset: 'Add Asset',
+      save: 'Save',
+      delete: 'Delete',
+      cancel: 'Cancel',
+      editWatchlist: 'Edit Watchlist',
+      deleteConfirm: 'Are you sure want to delete this watchlist?',
+      changeAsset: 'Change Asset',
+      enter: 'Enter Watchlist name...',
+      search: 'Search'
+    },
+    social: {
+      sorry: 'Sorry, there is no post here!',
+      noData: "Let's make your post here!",
+      member: 'member',
+      members: 'members',
+      description: 'Discover the experts for more insights',
+      seeAll: 'See All'
     }
   },
-
+  seedsEvent: {
+    search: 'Search',
+    enter: 'Enter',
+    past: 'PAST',
+    today: 'TODAY',
+    thisMonth: 'THIS MONTH',
+    upcoming: 'UPCOMING',
+    blank1: 'Opps,  There’s No Event Yet',
+    blank2: 'Stay tuned for more updates!'
+  },
   buyAsset: {
     text1: 'Assets to be purchased',
     text2: 'Assets to be sold',
@@ -1990,7 +2071,6 @@ export default {
       'The price level at which you want to sell or buy a stock or asset to make a profit.',
     text20: 'How many percent do you want'
   },
-
   discover: {
     hotNews: 'Hot News',
     newsList: 'News',
@@ -2070,5 +2150,24 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  playCenter: {
+    text1: 'My Latest Play',
+    text2: 'Leaderboards',
+    text3: 'Let’s check your detailed score!',
+    text4: 'Duration',
+    text5: 'days',
+    text6: 'Search',
+    text7: 'List Quiz',
+    text8: 'Top Quiz',
+    text9: 'Last Update : ',
+    text10: 'Your Current Rank',
+    text11: 'Scoring System',
+    text12: '1st winner getting 500 points',
+    text13: '2nd winner getting 300 points',
+    text14: '3rd winner getting 100 points',
+    text15: 'Participant 50 points',
+    text16: 'Season',
+    text17: 'All Time'
   }
 };

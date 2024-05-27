@@ -1,14 +1,30 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 'use client';
-import { useAppSelector } from '@/store/redux/store';
+// import { useAppSelector } from '@/store/redux/store';
+import { getUserInfo } from '@/repository/profile.repository';
 import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { type Payment } from './PaymentList';
 
 interface IPaymentOption {
   option: Payment;
   onChange: (paymentOption: Payment) => void;
   currentValue: Current | undefined;
+}
+
+interface UserData {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+  preferredCurrency: string;
 }
 
 interface Current {
@@ -28,8 +44,22 @@ const PaymentOption = ({
   onChange,
   currentValue
 }: IPaymentOption): JSX.Element => {
-  const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  
+   const fetchData = async (): Promise<void> => {
+     try {
+       const response = await getUserInfo();
+       setUserInfo(response);
+     } catch (error) {
+       toast(`ERROR fetch user info ${error as string}`);
+     }
+   };
 
+   useEffect(() => {
+     void fetchData();
+     // void fetchPaymentList();
+   }, []);
   return (
     <label
       htmlFor={option?.id}
@@ -44,7 +74,7 @@ const PaymentOption = ({
           alt={option?.payment_method}
         />
         <div className="text-[#27A590] text-xs mt-1">
-          {`Admin fee ${preferredCurrency.toUpperCase()} ${option?.admin_fee}`}
+          {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${option?.admin_fee}`}
         </div>
       </div>
       <Radio

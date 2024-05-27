@@ -96,6 +96,14 @@ const AuthNumber: React.FC<IAuthNumber> = ({
           pattern="[0-9]"
           value={formData}
           onKeyDown={handleSubmit}
+          onWheel={e => {
+            const target = e.target as HTMLInputElement;
+            target.blur();
+            e.stopPropagation();
+            setTimeout(() => {
+              target.focus();
+            }, 0);
+          }}
           onChange={() =>
             handleChange(event, countries[country].dialCode.replace('+', ''))
           }

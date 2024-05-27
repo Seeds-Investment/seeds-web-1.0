@@ -31,7 +31,7 @@ interface UserData {
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
   const { t } = useTranslation();
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );

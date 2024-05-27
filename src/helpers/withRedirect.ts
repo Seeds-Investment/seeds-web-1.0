@@ -1,10 +1,12 @@
 import type { NextRouter } from 'next/router';
 
 interface QueryType extends Record<string, string | string[] | undefined> {}
+
 interface RedirectItem {
   logic: boolean;
   redirect: string;
 }
+
 interface RedirectList extends Array<RedirectItem> {}
 
 const withRedirect = async <T extends QueryType>(
@@ -12,11 +14,11 @@ const withRedirect = async <T extends QueryType>(
   query?: T,
   pathname?: string
 ): Promise<void> => {
-  const currentUnixTime = Math.floor(Date.now() / 1000);
+  const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );
-  // Add logic and redirect pathname in here
+
   const redirectList: RedirectList = [
     {
       logic: query?.lead !== undefined && query?.quizId !== undefined,
@@ -50,7 +52,9 @@ const withRedirect = async <T extends QueryType>(
   ) {
     const redirectItem = redirectList.find(item => item.logic);
     if (redirectItem !== undefined && redirectItem !== null) {
-      await router.push({ pathname: redirectItem.redirect });
+      await router.push(redirectItem.redirect);
+    } else {
+      await router.push('/homepage');
     }
   }
 };

@@ -1,7 +1,9 @@
 import AuthArrowDown from '@/assets/auth/AuthArrowDown.svg';
 import AuthGlobeLanguage from '@/assets/auth/AuthGlobeLanguage.svg';
 import SeedsLogo from '@/assets/landing-page/header/SeedsLogo.svg';
-import AuthCarousel from '@/components/auth/AuthCarousel';
+// import AuthCarousel from '@/components/auth/AuthCarousel';
+import AuthCarousel from '@/components/auth2/AuthCarousel';
+import Redirecting from '@/components/popup/Redirecting';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
@@ -14,6 +16,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -117,13 +120,18 @@ const AuthLayout: React.FC<IAuthLayout> = ({
 }: IAuthLayout) => {
   const languageCtx = useContext(LanguageContext);
   const [selectedLanguage, setSelectedLanguage] = useState<'EN' | 'ID'>('EN');
+  const router = useRouter();
   const [height, setHeight] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openRedirecting, setOpenRedirecting] = useState(false);
   const handleLanguageChange = async (language: 'EN' | 'ID'): Promise<void> => {
     setSelectedLanguage(language);
     languageCtx.languageHandler(language);
     await setTranslationToLocalStorage(language);
     setOpen(!open);
+  };
+  const handleRedirecting = (): void => {
+    setOpenRedirecting(!openRedirecting);
   };
   const getLastTranslation = useCallback(async (): Promise<void> => {
     try {
@@ -139,52 +147,67 @@ const AuthLayout: React.FC<IAuthLayout> = ({
   useEffect(() => {
     setHeight(window.innerHeight);
     void getLastTranslation();
+    if (
+      localStorage.getItem('accessToken') !== null &&
+      parseInt(localStorage.getItem('expiresAt') as string) > Date.now() / 1000
+    ) {
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleRedirecting();
+    } else {
+      localStorage.removeItem('accessToken');
+    }
   }, []);
   return (
-    <div
-      className={`flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] ${
-        height >= 700 ? 'h-full' : ''
-      }`}
-    >
-      <div className="flex flex-col md:justify-center md:w-[37%] w-full h-full">
-        <div className="flex flex-col gap-4 md:gap-0">
-          <LogoLanguage
-            open={open}
-            setOpen={setOpen}
-            selectedLanguage={selectedLanguage}
-            handleLanguageChange={handleLanguageChange}
-            className="flex justify-between m-4 md:hidden"
-            menuClassName="flex md:hidden"
-          />
-          <AuthCarousel className="md:flex hidden" />
-          {elementChild}
+    <>
+      <Redirecting open={openRedirecting} handleOpen={handleRedirecting} />
+      <div
+        className={`flex flex-row items-center bg-gradient-to-b from-[#B798FFB2] via-[#66B5C2B2] to-[#48C0ABB2] ${
+          height >= 700 ? 'h-full' : ''
+        }`}
+      >
+        <div className="flex flex-col md:justify-center md:w-[37%] w-full h-full">
+          <div className="flex flex-col gap-4 md:gap-0">
+            <LogoLanguage
+              open={open}
+              setOpen={setOpen}
+              selectedLanguage={selectedLanguage}
+              handleLanguageChange={handleLanguageChange}
+              className="flex justify-between m-4 md:hidden"
+              menuClassName="flex md:hidden"
+            />
+            <AuthCarousel className="md:flex hidden" />
+            {elementChild}
+          </div>
+          <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px] h-full">
+            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
+              <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
+                {formChild}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px] h-full">
-          <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
-            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
-              {formChild}
+        <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full h-full ">
+          <div className="w-4/5 flex flex-col gap-16">
+            <LogoLanguage
+              open={open}
+              setOpen={setOpen}
+              selectedLanguage={selectedLanguage}
+              handleLanguageChange={handleLanguageChange}
+              className="md:flex justify-between hidden"
+              menuClassName="md:flex hidden"
+            />
+            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px]">
+              <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
+                {formChild}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="md:flex justify-center items-center hidden bg-white py-[90px] w-full h-full ">
-        <div className="w-4/5 flex flex-col gap-16">
-          <LogoLanguage
-            open={open}
-            setOpen={setOpen}
-            selectedLanguage={selectedLanguage}
-            handleLanguageChange={handleLanguageChange}
-            className="md:flex justify-between hidden"
-            menuClassName="md:flex hidden"
-          />
-          <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px]">
-            <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
-              {formChild}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ export enum TournamentStatus {
 }
 
 export enum PortfolioFilter {
+  OVERVIEW = 'OVERVIEW',
   CRYPTO = 'CRYPTO',
   ID_STOCK = 'ID_STOCK',
   US_STOCK = 'US_STOCK',
@@ -81,9 +82,48 @@ export interface Community {
 }
 
 export interface UserInfo {
-  preferredCurrency: string;
-  seedsTag: string;
+  avatar: string;
+  badge: string;
+  bio: string;
+  birthDate: string;
+  claims: Claim
+  currentExp: number;
+  email: string;
+  email_verification: string;
+  followers: number;
+  following: number;
   id: string;
+  isPasswordExists: boolean;
+  label: string;
+  name: string;
+  phoneNumber: string;
+  pin: boolean;
+  posts: number;
+  preferredCurrency: string;
+  preferredLanguage: string;
+  refCode: string;
+  refCodeUsage: number;
+  region: string;
+  seedsTag: string;
+  verified: boolean;
+}
+
+interface Claim {
+  aud: string[];
+  avatar: string;
+  birthDate: string;
+  email: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  nbf: string;
+  phoneNumber: string;
+  preferredCurrency: string;
+  preferredLanguage: string;
+  refCode: string;
+  role: string;
+  seedsTag: string;
+  sub: string;
 }
 
 export interface BallanceTournament {
@@ -120,4 +160,70 @@ export interface ActiveAsset {
   play_id: string;
   return_percentage: number;
   total_lot: number;
+}
+
+export interface PostData {
+  circle: undefined;
+  circle_id: string;
+  content_text: string;
+  created_at: string;
+  id: string;
+  is_pinned: string;
+  media_urls: MediaURL[];
+  owner: Owner;
+  parent_id: string;
+  pie: Pie;
+  pie_amount: number;
+  pie_title: string;
+  play_id: string;
+  polling_date: string;
+  polling_multiple: boolean;
+  polling_new_option: boolean;
+  premium_fee: number;
+  privacy: string;
+  status_like: boolean;
+  status_payment: boolean;
+  status_saved: boolean;
+  status_unlike: boolean;
+  total_comment: number;
+  totaldownvote: number;
+  total_polling: number;
+  total_upvote: number;
+  updated_at: string;
+  user_id: string;
+}
+
+export interface MediaURL {
+  index: string;
+}
+
+interface Owner {
+  avatar: string;
+  name: string;
+  seeds_tag: string;
+  verified: boolean;
+}
+
+export interface Pie {
+  allocation: number;
+  asset_type: string;
+  exchange: string;
+  exchange_currency: string;
+  exchange_rate: number;
+  id: string;
+  listed_country: string;
+  logo: string;
+  name: string;
+  price: number;
+  price_bar: {
+    close: number;
+    high: number;
+    low: number;
+    open: number;
+    timestamp: string;
+    volume: number;
+    vwap: number;
+  }
+  real_ticker: string;
+  seeds_ticker: string;
 }

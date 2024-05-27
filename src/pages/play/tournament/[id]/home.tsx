@@ -378,7 +378,7 @@ const TournamentHome: React.FC = () => {
               {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
               {` (${
                 ballance?.return_value < 0 ? '' : '+'
-              }${ballance?.return_percentage?.toFixed(2)}%)`}
+              }${(ballance?.return_percentage ?? 0).toFixed(2)}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
               {`${t('tournament.assets.virtualBalance')}: `}

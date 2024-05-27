@@ -159,11 +159,11 @@ const Player = (): React.ReactElement => {
         setBannerAsset(res.playList);
         const resUserRank = await getUserRank(
           userInfo?.preferredCurrency ?? '',
-          ''
+          'season'
         );
         setUserRank(resUserRank.current_rank);
       } catch (error) {
-        console.error('Error fetching trending assets:', error);
+        toast(`Error fetching trending assets: ${error as string}`);
       }
     };
 
@@ -314,9 +314,11 @@ const Player = (): React.ReactElement => {
                             await router
                               .push(
                                 `${
-                                  item?.is_joined
-                                    ? `/play/tournament/${item.id}/home`
-                                    : `/play/tournament/${item.id}`
+                                  item?.play_center_type === 'play'
+                                    ? item?.is_joined
+                                      ? `/play/tournament/${item.id}/home`
+                                      : `/play/tournament/${item.id}`
+                                    : `/play/quiz/${item?.id}`
                                 }`
                               )
                               .catch(error => {
@@ -408,7 +410,7 @@ const Player = (): React.ReactElement => {
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)
-                      : router.push(`/play/play/${asset.id}`));
+                      : router.push(`/play/tournament/${asset.id}`));
                   }}
                 >
                   <Image
@@ -521,9 +523,11 @@ const Player = (): React.ReactElement => {
                         await router
                           .push(
                             `${
-                              item?.is_joined
-                                ? `/play/tournament/${item.id}/home`
-                                : `/play/tournament/${item.id}`
+                              item?.play_center_type === 'play'
+                                ? item?.is_joined
+                                  ? `/play/tournament/${item.id}/home`
+                                  : `/play/tournament/${item.id}`
+                                : `/play/quiz/${item?.id}`
                             }`
                           )
                           .catch(error => {

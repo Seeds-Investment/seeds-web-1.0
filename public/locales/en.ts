@@ -1098,7 +1098,7 @@ export default {
       tnc: {
         label: 'I agree with the Terms and Conditions*',
         error: 'Make sure you agree with the terms and condition'
-      }
+      },
     },
     typePopUp: {
       title: 'Membership Types',
@@ -1216,6 +1216,23 @@ export default {
           option4: 'On Progress'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: "Your Virtual Account Number",
+      pendingPaidCircle: 'Pending Paid Membership',
+      circleFee: 'Membership Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: "Successful",
+      paymentSuccessDescription: "Your premium circle payment has been successfully processed",
+      paymentFailed: "Payment Failed",
+      paymentFailedDescription: "We can’t process your payment, Check your internet connection and try again.",
+      paymentFailedWarning: "Payment Failed Circle Premium",
     }
   },
   articleList: {
@@ -1525,7 +1542,21 @@ export default {
     },
     placeholder1: 'What do you want to discuss? ...',
     placeholder2:
-      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: "Your Virtual Account Number",
+      pendingPaidSocial: 'Pending Paid Post',
+      socialFee: 'Content Premium',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: "Successful",
+      recurringSaved: "Your recurring has been saved!",
+    }
   },
   landingV2: {
     section1: {
@@ -1856,6 +1887,7 @@ export default {
     text2: 'Check out the latest rankings for top quizzes!',
     payment: {
       paymentMethod: 'Payment Method',
+      virtualNumber: "Your Virtual Account Number",
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
       lifelinesFee: 'Lifeline Fee',
@@ -1864,11 +1896,14 @@ export default {
       discountFee: 'Discount Fee',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
-      close: 'Close'
+      close: 'Close',
+      paymentSuccessful: "Successful",
+      recurringSaved: "Your recurring has been saved!",
     }
   },
   tournament: {
     myPlay: 'My Play',
+    open: 'Open',
     active: 'Active',
     ended: 'Ended',
     canceled: 'Canceled',
@@ -1908,14 +1943,16 @@ export default {
       seconds: 's'
     },
     tournamentCard: {
-      player: 'Player(s)',
+      player: 'Player',
+      players: 'Players',
       duration: 'Duration',
       joined: 'Joined',
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
       share: 'Share',
-      days: 'Day(s)'
+      day: 'Day',
+      days: 'Days'
     },
     leaderboard: {
       lastUpdated: 'Last updated: ',
@@ -2035,6 +2072,21 @@ export default {
       members: 'members',
       description: 'Discover the experts for more insights',
       seeAll: 'See All'
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: "Your Virtual Account Number",
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      successful: "Successful",
+      pending: "Pending Paid Tournament",
+      recurringSaved: "Your recurring has been saved!",
     }
   },
   seedsEvent: {

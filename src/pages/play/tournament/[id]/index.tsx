@@ -167,7 +167,7 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-
+  
   return (
     <>
       {isShareModal && (
@@ -224,13 +224,20 @@ const TournamentDetail: React.FC = () => {
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailRemaining')}
               </Typography>
-              <CountdownTimer
-                deadline={
-                  detailTournament?.end_time
-                    ? detailTournament.end_time.toString()
-                    : ''
-                }
-              />
+              {
+                detailTournament?.end_time !== undefined ?
+                  <CountdownTimer
+                    deadline={
+                      detailTournament?.end_time
+                        ? detailTournament.end_time.toString()
+                        : ''
+                    }
+                  />
+                  :
+                  <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
+                    Loading...
+                  </Typography>
+              }
             </div>
             <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
               <ShareIcon
@@ -255,20 +262,6 @@ const TournamentDetail: React.FC = () => {
             </Typography>
           </div>
           <div className="mt-4 flex flex-row gap-8">
-            {detailTournament?.sponsorship?.image_url ? (
-              <div className="flex flex-col justify-center items-center gap-4">
-                <Typography className="text-lg font-semibold font-poppins">
-                  {'Sponsor(s)'}
-                </Typography>
-                <Image
-                  src={detailTournament?.sponsorship?.image_url}
-                  alt=""
-                  width={200}
-                  height={200}
-                  className="object-contain max-h-16 max-w-16"
-                />
-              </div>
-            ) : null}
             {detailTournament?.community?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
                 <Typography className="text-lg font-semibold font-poppins">
@@ -443,15 +436,22 @@ const TournamentDetail: React.FC = () => {
               }
             }}
             disabled={
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
+              detailTournament?.status === 'ACTIVE' ? (
+                invitationCode === '' &&
+                detailTournament?.is_need_invitation_code
+              ) : (
+                true
+              )
             }
-            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
-                ? 'bg-[#7d7d7d]'
-                : 'bg-seeds-button-green text-white'
+              detailTournament?.status === 'ACTIVE' ? (
+                invitationCode === '' &&
+                detailTournament?.is_need_invitation_code
+                  ? 'bg-[#7d7d7d]'
+                  : 'bg-seeds-button-green text-white'
+              ) : (
+                'bg-[#7d7d7d] text-white'
+              )
             }`}
           >
             {detailTournament?.participant_status === 'JOINED'

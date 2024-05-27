@@ -159,7 +159,7 @@ const Player = (): React.ReactElement => {
         setBannerAsset(res.playList);
         const resUserRank = await getUserRank(
           userInfo?.preferredCurrency ?? '',
-          ''
+          'season'
         );
         setUserRank(resUserRank.current_rank);
       } catch (error) {

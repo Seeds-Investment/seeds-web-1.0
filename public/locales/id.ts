@@ -2087,6 +2087,11 @@ export default {
   play: {
     keystat: 'Key Stats'
   },
+  openAccount: {
+    noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
+    stayTuned: 'Nantikan update selanjutnya!',
+    register: 'Daftar Sekarang'
+  },
 
   playCenter: {
     text1: 'Permainan Terakhir Saya',

@@ -9,19 +9,26 @@ import {
   getQuizById,
   validateInvitationCode
 } from '@/repository/quiz.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
+import { Switch } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
+
+interface IAmountCoin {
+  total_available_coins: number;
+}
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
@@ -35,6 +42,8 @@ const QuizDetail = (): React.ReactElement => {
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );
+  const [useCoins, setUseCoins] = useState<boolean>(false);
+  const [amountCoins, setAmountCoins] = useState<IAmountCoin>();
 
   useEffect(() => {
     if (
@@ -50,8 +59,10 @@ const QuizDetail = (): React.ReactElement => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
+        const dataCoins = await getTransactionSummary();
 
         setUserInfo(dataInfo);
+        setAmountCoins(dataCoins.data);
       } catch (error: any) {
         toast.error(
           `Error fetching data: ${error.response.data.message as string}`
@@ -78,7 +89,8 @@ const QuizDetail = (): React.ReactElement => {
           router.push(
             `/play/quiz/${
               id as string
-            }/welcome?invitationCode=${invitationCode}`
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            }/welcome?invitationCode=${invitationCode}&useCoins=${useCoins}`
           );
         }
       }
@@ -128,6 +140,9 @@ const QuizDetail = (): React.ReactElement => {
       toast('Quiz link copied!');
     });
   };
+
+  console.log('penggunaan coin', useCoins);
+  console.log('amount coins', amountCoins);
 
   return (
     <>
@@ -296,6 +311,22 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
+          <div className="flex flex-row items-center justify-between mt-2.5">
+            <div className="flex flex-row items-center">
+              <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
+              <div className="text-sm text-[#7C7C7C]">
+                Redeem {amountCoins?.total_available_coins ?? 0} Seeds Coin
+              </div>
+            </div>
+            <div>
+              <Switch
+                checked={useCoins}
+                onChange={() => {
+                  setUseCoins(!useCoins);
+                }}
+              />
+            </div>
+          </div>
           <button
             disabled={loading}
             onClick={() => {
@@ -306,7 +337,10 @@ const QuizDetail = (): React.ReactElement => {
                   if (detailQuiz?.is_need_invitation_code) {
                     handleInvitationCode();
                   } else {
-                    router.push(`/play/quiz/${id as string}/welcome`);
+                    router.push(
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                      `/play/quiz/${id as string}/welcome?useCoins=${useCoins}`
+                    );
                   }
                 }
               } else if (

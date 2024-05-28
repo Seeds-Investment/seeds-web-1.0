@@ -17,7 +17,7 @@ import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Pending } from 'public/assets/circle';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -142,8 +142,10 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     setIsOpen(!isOpen);
   };
 
-  const getDetail = useCallback(async () => {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const getDetail = async () => {
     try {
+      setIsLoading(true);
       const dataInfo = await getUserInfo();
       const resp: IDetailQuiz = await getQuizById({
         id: orderDetail?.itemId as string,
@@ -155,12 +157,14 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setDetailQuiz(resp);
     } catch (error) {
       toast(`ERROR fetch quiz ${error as string}`);
+    } finally {
+      setIsLoading(false);
     }
-  }, [id]);
+  };
 
   useEffect(() => {
     void getDetail();
-  }, [id]);
+  }, [id, orderDetail]);
 
   return (
     <div className="pt-10">
@@ -253,7 +257,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     />
                   </div>
                 )}
-                
+
                 <hr className="border-t-2 border-dashed" />
                 <div className="flex justify-between relative bottom-3 z-50">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
@@ -285,12 +289,19 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     orderDetail.grossAmount !== undefined &&
                     paymentSelectedEWallet.length > 0
                       ? `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail.grossAmount ?? 0) - (detailQuiz?.admission_fee ?? 0) + (paymentSelectedEWallet[0]?.promo_price ?? 0) - (paymentSelectedEWallet[0]?.service_fee ?? 0) - (paymentSelectedEWallet[0].admin_fee ?? 0)
+                          (orderDetail.grossAmount ?? 0) -
+                            (detailQuiz?.admission_fee ?? 0) +
+                            (paymentSelectedEWallet[0]?.is_promo_available ??
+                            false
+                              ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                              : 0) -
+                            (paymentSelectedEWallet[0]?.service_fee ?? 0) -
+                            (paymentSelectedEWallet[0]?.admin_fee ?? 0)
                         )}`
                       : ''}
                   </Typography>
                 </div>
-                
+
                 {/* Admin Fee */}
                 <div className="flex flex-row justify-between mb-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
@@ -315,37 +326,55 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {orderDetail?.currency !== undefined &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                          : 0
+                          paymentSelectedEWallet.length > 0
+                            ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                            : 0
                         )}`
                       : ''}
                   </Typography>
                 </div>
 
                 {/* Discount Fee */}
-                {
-                  paymentSelectedEWallet.length > 0 &&
+                {paymentSelectedEWallet.length > 0 && (
                   <div>
-                    {
-                      paymentSelectedEWallet[0]?.is_promo_available &&
-                        <div className="flex flex-row justify-between mb-5">
-                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                            {t('quiz.payment.discountFee')}
-                          </Typography>
-                          <Typography className="text-sm font-semibold text-[#262626]">
-                            {orderDetail?.currency !== undefined
-                              ? `- ${orderDetail.currency} ${formatCurrency(
+                    {paymentSelectedEWallet[0]?.is_promo_available && (
+                      <div className="flex flex-row justify-between mb-5">
+                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                          {t('quiz.payment.discountFee')}
+                        </Typography>
+                        <Typography className="text-sm font-semibold text-[#262626]">
+                          {orderDetail?.currency !== undefined
+                            ? `- ${orderDetail.currency} ${formatCurrency(
                                 paymentSelectedEWallet.length > 0
                                   ? paymentSelectedEWallet[0]?.promo_price ?? 0
                                   : 0
-                                )}`
-                              : ''}
-                          </Typography>
-                        </div>
-                    }
+                              )}`
+                            : ''}
+                        </Typography>
+                      </div>
+                    )}
                   </div>
-                }
+                )}
+
+                {/* Discount Coins */}
+                <div>
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('quiz.payment.discountCoins')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                      detailQuiz !== undefined
+                        ? `- ${orderDetail.currency} ${formatCurrency(
+                            detailQuiz?.admission_fee +
+                              paymentSelectedEWallet[0]?.admin_fee +
+                              paymentSelectedEWallet[0]?.service_fee -
+                              orderDetail.grossAmount
+                          )}`
+                        : ''}
+                    </Typography>
+                  </div>
+                </div>
                 <hr />
 
                 {/* Total Amount */}

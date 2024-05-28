@@ -948,7 +948,8 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1862,6 +1863,7 @@ export default {
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close'

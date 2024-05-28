@@ -867,7 +867,8 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1788,6 +1789,7 @@ export default {
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup'

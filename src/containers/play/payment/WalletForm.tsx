@@ -2,7 +2,9 @@
 /* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import { Input, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type Payment } from './PaymentList';
@@ -35,6 +37,21 @@ const WalletForm = ({
   const [admissionFee, setAdmissionFee] = useState(0);
   const [adminFee, setAdminFee] = useState(0);
   const [totalFee, setTotalFee] = useState(0);
+  const [coinsDiscount, setCoinsDiscount] = useState(0);
+  const router = useRouter();
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleGetCoinsUser = async () => {
+    const useCoins = router.query.useCoins;
+    if (useCoins === 'true') {
+      const resCoins = await getTransactionSummary();
+      setCoinsDiscount(resCoins?.data?.total_available_coins || 0);
+    }
+  };
+
+  useEffect(() => {
+    void handleGetCoinsUser();
+  }, []);
 
   useEffect(() => {
     let _admissionFee = 0;
@@ -42,11 +59,14 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available) {
+    if (payment.is_promo_available && coinsDiscount) {
+      _discount = payment.promo_price + coinsDiscount;
+    } else if (payment.is_promo_available) {
       _discount = payment.promo_price;
+    } else if (coinsDiscount) {
+      _discount = coinsDiscount;
     }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (dataPost.quiz) {
       _admissionFee = dataPost?.quiz?.admission_fee;
       _adminFee = payment.admin_fee;
@@ -71,10 +91,15 @@ const WalletForm = ({
         ).toFixed(2)}`
       );
     }
+
+    if (coinsDiscount) {
+      setCoinsDiscount(Math.min(coinsDiscount, _admissionFee));
+    }
+
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, numberMonth, payment]);
+  }, [dataPost, numberMonth, payment, coinsDiscount]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -148,6 +173,13 @@ const WalletForm = ({
           className="mb-2"
         />
       ) : null}
+      {coinsDiscount > 0 && (
+        <InlineText
+          label={t(`${translationId}.seedsCoin`)}
+          value={`- ${userInfo?.preferredCurrency as string} ${coinsDiscount}`}
+          className="mb-2"
+        />
+      )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
         {`${userInfo?.preferredCurrency as string} ${totalFee}`}

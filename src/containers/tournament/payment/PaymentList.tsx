@@ -93,6 +93,8 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
   const invitationCode = router.query.invitationCode;
+  const useCoinsParam = router.query.useCoins;
+  const useCoins = useCoinsParam === 'true';
 
   const userDefault = {
     name: '',
@@ -119,10 +121,10 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     payment_gateway: ''
   };
 
-  const defaultTournament = {
-    id: '',
-    admission_fee: 0
-  };
+  // const defaultTournament = {
+  //   id: '',
+  //   admission_fee: 0
+  // };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -146,7 +148,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     } catch (error) {
       toast(`ERROR fetch user info ${error as string}`);
     }
-  };  
+  };
 
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
@@ -163,7 +165,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   useEffect(() => {
     void fetchPaymentList();
   }, [userInfo?.preferredCurrency]);
-  
 
   const getDetail = useCallback(async () => {
     try {
@@ -203,7 +204,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           `+62${phoneNumber as string}`,
           '',
           (invitationCode as string) || '',
-          false
+          useCoins
         );
 
         const resp = await getPaymentById(response.order_id);
@@ -230,13 +231,13 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   };
 
   const onSubmit = () => {
-    let _admissionFee: number = 0;
+    let _admissionFee = 0;
     let _adminFee = 0;
     let _totalFee = 0;
 
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (detailTournament) {
-      _admissionFee = detailTournament?.admission_fee ?? 0;
+      _admissionFee = detailTournament?.admission_fee;
       _adminFee = 0;
       _totalFee = Number(_admissionFee) + Number(_adminFee);
     }
@@ -309,7 +310,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             payment={option}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament ?? defaultTournament}
+            dataPost={detailTournament as any}
             userInfo={userInfo ?? userDefault}
           />
         ) : (
@@ -317,7 +318,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             payment={option ?? defaultOption}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament ?? defaultTournament}
+            dataPost={detailTournament as any}
             paymentStatus={paymentStatus}
             user_name={userInfo?.name}
           />

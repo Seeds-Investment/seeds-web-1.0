@@ -1903,6 +1903,18 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close'
+    },
     clock: {
       days: 'd',
       hours: 'h',

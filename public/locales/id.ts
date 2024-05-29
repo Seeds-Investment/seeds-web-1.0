@@ -1829,6 +1829,18 @@ export default {
     leaderboardBanner4: 'Cek Papan Peringkat!',
     tutorialTournament: 'Tutorial Turnamen',
     remainingTimeText: 'Turnamen telah berakhir!',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup'
+    },
     clock: {
       days: 'h',
       hours: 'j',

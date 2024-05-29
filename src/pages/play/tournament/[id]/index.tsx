@@ -20,22 +20,28 @@ import {
   validateInvitationCode
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
   type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
-import { Typography } from '@material-tailwind/react';
+import { Switch, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
+
+interface IAmountCoin {
+  total_available_coins: number;
+}
 
 const TournamentDetail: React.FC = () => {
   const router = useRouter();
@@ -48,6 +54,8 @@ const TournamentDetail: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
   const [invitationCode, setInvitationCode] = useState<string>('');
   const [validInvit, setValidInvit] = useState<boolean>(false);
+  const [useCoins, setUseCoins] = useState<boolean>(false);
+  const [amountCoins, setAmountCoins] = useState<IAmountCoin>();
 
   useEffect(() => {
     fetchData()
@@ -58,7 +66,9 @@ const TournamentDetail: React.FC = () => {
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
+      const dataCoins = await getTransactionSummary();
       setUserInfo(dataInfo);
+      setAmountCoins(dataCoins.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
@@ -80,7 +90,8 @@ const TournamentDetail: React.FC = () => {
           router.push(
             `/play/tournament/${
               id as string
-            }/payment?invitationCode=${invitationCode}`
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            }/payment?invitationCode=${invitationCode}&useCoins=${useCoins}`
           );
         }
       }
@@ -413,6 +424,22 @@ const TournamentDetail: React.FC = () => {
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
+          <div className="flex flex-row items-center justify-between mt-2.5">
+            <div className="flex flex-row items-center">
+              <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
+              <div className="text-xs text-[#7C7C7C]">
+                Redeem {amountCoins?.total_available_coins ?? 0} Seeds Coin
+              </div>
+            </div>
+            <div>
+              <Switch
+                checked={useCoins}
+                onChange={() => {
+                  setUseCoins(!useCoins);
+                }}
+              />
+            </div>
+          </div>
           <button
             onClick={async () => {
               if (localStorage.getItem('accessToken') !== null) {
@@ -427,7 +454,12 @@ const TournamentDetail: React.FC = () => {
                     }
                   } else {
                     if (invitationCode === '' && !validInvit) {
-                      router.push(`/play/tournament/${id as string}/payment`);
+                      router.push(
+                        `/play/tournament/${
+                          id as string
+                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                        }/payment?useCoins=${useCoins}`
+                      );
                     } else {
                       handleInvitationCode();
                     }
@@ -439,7 +471,7 @@ const TournamentDetail: React.FC = () => {
               ) {
                 router.push('/auth2');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { quizId: id as string }, '/auth2');
               }
             }}
             disabled={

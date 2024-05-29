@@ -159,11 +159,11 @@ const Player = (): React.ReactElement => {
         setBannerAsset(res.playList);
         const resUserRank = await getUserRank(
           userInfo?.preferredCurrency ?? '',
-          ''
+          'season'
         );
         setUserRank(resUserRank.current_rank);
       } catch (error) {
-        console.error('Error fetching trending assets:', error);
+        toast(`Error fetching trending assets: ${error as string}`);
       }
     };
 
@@ -314,9 +314,11 @@ const Player = (): React.ReactElement => {
                             await router
                               .push(
                                 `${
-                                  item?.is_joined
-                                    ? `/play/tournament/${item.id}/home`
-                                    : `/play/tournament/${item.id}`
+                                  item?.play_center_type === 'play'
+                                    ? item?.is_joined
+                                      ? `/play/tournament/${item.id}/home`
+                                      : `/play/tournament/${item.id}`
+                                    : `/play/quiz/${item?.id}`
                                 }`
                               )
                               .catch(error => {
@@ -399,27 +401,24 @@ const Player = (): React.ReactElement => {
             </div>
           )}
 
-          <div className="w-full my-5 h-auto cursor-default">
+          <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[826px] relative h-[249px]"
+                  className="w-full lg:w-[828px] relative h-fit lg:h-[249px]"
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)
-                      : router.push(`/play/play/${asset.id}`));
+                      : router.push(`/play/tournament/${asset.id}`));
                   }}
                 >
                   <Image
                     className="object-cover w-full"
                     src={asset.banner}
                     alt={asset.name}
-                    width={826}
+                    width={828}
                     height={249}
-                    // onClick={async () => {
-                    //   await router.push(asset.external_url);
-                    // }}
                   />
                 </div>
               ))}
@@ -521,9 +520,11 @@ const Player = (): React.ReactElement => {
                         await router
                           .push(
                             `${
-                              item?.is_joined
-                                ? `/play/tournament/${item.id}/home`
-                                : `/play/tournament/${item.id}`
+                              item?.play_center_type === 'play'
+                                ? item?.is_joined
+                                  ? `/play/tournament/${item.id}/home`
+                                  : `/play/tournament/${item.id}`
+                                : `/play/quiz/${item?.id}`
                             }`
                           )
                           .catch(error => {

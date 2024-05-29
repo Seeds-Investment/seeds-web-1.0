@@ -20,6 +20,7 @@ interface Props {
   centerContent?: ReactNode;
   enableScroll?: boolean;
   cancelButton?: boolean;
+  isQuestionHasMedia?: boolean;
 }
 const QuizLayout: React.FC<Props> = ({
   children,
@@ -27,7 +28,8 @@ const QuizLayout: React.FC<Props> = ({
   hideBackButton = false,
   centerContent,
   enableScroll = false,
-  cancelButton = false
+  cancelButton = false,
+  isQuestionHasMedia = false
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -40,7 +42,9 @@ const QuizLayout: React.FC<Props> = ({
     <>
       <div
         style={{ backgroundImage: "url('/assets/quiz/bg-quiz.png')" }}
-        className="w-full h-screen lg:h-auto lg:aspect-[947/685] bg-center bg-cover bg-no-repeat"
+        className={`w-full h-screen lg:h-auto bg-center bg-cover bg-no-repeat ${
+          isQuestionHasMedia ? 'rounded-[32px]' : ' lg:aspect-[947/685]'
+        }`}
       >
         <div className="w-full h-full max-h-full flex flex-col">
           {withButton ? (

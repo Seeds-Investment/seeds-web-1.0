@@ -147,6 +147,10 @@ const tagOption = [
   {
     id: 3,
     name: 'Play'
+  },
+  {
+    id: 4,
+    name: 'Quiz'
   }
 ];
 interface typeOfSelected {
@@ -204,7 +208,8 @@ const ModalMention: React.FC<props> = ({
   const [otherTagList, setOtherTagList] = useState<any>({
     peopleList: [],
     circleList: [],
-    playList: []
+    playList: [],
+    quizList: []
   });
   const [form, setForm] = useState<form>({
     content_text: '',
@@ -265,6 +270,7 @@ const ModalMention: React.FC<props> = ({
 
     void fetchData();
   }, []);
+
   useEffect(() => {
     if (dataPost !== undefined) {
       setForm(prevState => ({
@@ -478,7 +484,7 @@ const ModalMention: React.FC<props> = ({
       setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
       setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
     }
-    const API_TYPE = ['people', 'plays', 'circles'];
+    const API_TYPE = ['people', 'plays', 'circles', 'quizes'];
     const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
     const words = value.split(' ');
     const circleFind = value.split('@');
@@ -553,6 +559,11 @@ const ModalMention: React.FC<props> = ({
                       ...item,
                       id: `${item.id as string}-circle`,
                       display: item.name
+                    })),
+                    quizList: results[3]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-quiz`,
+                      display: item.name
                     }))
                   });
                   setTimeout(() => {
@@ -580,6 +591,14 @@ const ModalMention: React.FC<props> = ({
                           id: `${item.id as string}-circle`
                         }))
                       );
+                    } else if (results[3]?.data?.length > 0) {
+                      setOtherTagId(4);
+                      setTagLists(
+                        results[3].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-quiz`
+                        }))
+                      );
                     }
                   }, 500);
                 }
@@ -603,6 +622,9 @@ const ModalMention: React.FC<props> = ({
     }
     if (type?.id === 3) {
       setTagLists(otherTagList?.playList);
+    }
+    if (type?.id === 4) {
+      setTagLists(otherTagList?.quizList);
     }
   };
 
@@ -831,7 +853,8 @@ const ModalMention: React.FC<props> = ({
       setOtherTagList({
         peopleList: [],
         circleList: [],
-        playList: []
+        playList: [],
+        quizList: []
       });
       setDollarLists([]);
       setHashtags([]);
@@ -925,7 +948,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -934,10 +958,15 @@ const ModalMention: React.FC<props> = ({
                     }}
                   >
                     {el?.avatar !== undefined
-                      ? renderAvatar(el?.avatar)
+                      ? renderAvatar(el.avatar)
                       : el?.banner !== undefined
-                      ? renderAvatar(el?.banner)
+                      ? renderAvatar(
+                          el?.banner?.image_url !== undefined
+                            ? el?.banner?.image_url
+                            : el?.banner
+                        )
                       : null}
+
                     {el?.tag !== undefined ? (
                       renderNameAndTag(el?.name, el?.tag)
                     ) : el?.members !== undefined ? (
@@ -994,7 +1023,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -1288,7 +1318,8 @@ const ModalMention: React.FC<props> = ({
             setOtherTagList({
               peopleList: [],
               circleList: [],
-              playList: []
+              playList: [],
+              quizList: []
             });
             setDollarLists([]);
             setHashtags([]);
@@ -1355,7 +1386,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setDollarLists([]);
                       setHashtags([]);
@@ -1633,18 +1665,35 @@ const ModalMention: React.FC<props> = ({
                             setOtherTagList({
                               peopleList: [],
                               circleList: [],
-                              playList: []
+                              playList: [],
+                              quizList: []
                             });
                             setDollarLists([]);
                             setHashtags([]);
                           }}
                         >
-                          <Image
-                            src={XIcon}
-                            alt="close"
-                            width={30}
-                            height={30}
-                          />
+                          <div className="flex gap-2">
+                            <div className="sm:hidden flex justify-end">
+                              <button
+                                type="submit"
+                                disabled={isEmpty || isError}
+                                onClick={handlePostCircle}
+                                className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
+                                  isEmpty || isError
+                                    ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
+                                    : 'bg-seeds-button-green text-white'
+                                }`}
+                              >
+                                Post
+                              </button>
+                            </div>
+                            <Image
+                              src={XIcon}
+                              alt="close"
+                              width={30}
+                              height={30}
+                            />
+                          </div>
                         </div>
                       </div>
                     )}

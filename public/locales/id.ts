@@ -1644,14 +1644,20 @@ export default {
     extraCash:
       'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
     select: 'Pilih',
-    quizCompanion: 'Pick your power-up!',
+    quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Struggling? This power-up will guide you towards the correct answer',
+      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
     freeOptions:
-      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
+      '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
     vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
+    questionLevel: "Level Pertanyaan",
+    easy: "Mudah",
+    medium: "Sedang",
+    hard: "Sulit",
+    questionDescription1: "Kamu akan mengerjakan",
+    questionDescription2: "level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!",
     incorrect: 'Salah',
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
@@ -2071,6 +2077,11 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
+    stayTuned: 'Nantikan update selanjutnya!',
+    register: 'Daftar Sekarang'
   },
 
   playCenter: {

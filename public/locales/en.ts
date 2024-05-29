@@ -658,14 +658,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Login',
-    guest2: ' as ',
-    guest3: 'Guest',
+    guest: 'Login as Guest',
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
-    login: 'Login',
-    signup: 'Sign up',
-    or: ' or '
+    login: 'Login or Sign up'
   },
   authLogin: {
     title1: 'Let’s Input!',

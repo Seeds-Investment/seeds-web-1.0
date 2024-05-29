@@ -1,18 +1,21 @@
+import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
+import AuthGuest from '@/components/auth2/AuthGuest';
 import AuthOTP from '@/components/auth2/AuthOTP';
+import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
+import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const ChangeNumber: React.FC = () => {
-  const { number, country } = useRouter().query;
-  const [select, setSelect] = useState(1);
-  const [method, setMethod] = useState('sms');
+const GuestCheck: React.FC = () => {
+  const [select, setSelect] = useState<number>(0);
   const [countdown, setCountdown] = useState(0);
-
-  const [formOTPData, setFormOTPData] = useState({
+  const [country, setCountry] = useState(101);
+  const [method, setMethod] = useState('sms');
+  const [guest, setGuest] = useState<string>('guest-login');
+  const [otpForm, setOTPForm] = useState<OTPDataI>({
     phoneNumber: '',
     method,
     otp: ''
@@ -31,20 +34,16 @@ const ChangeNumber: React.FC = () => {
       clearInterval(interval);
     };
   }, [countdown]);
-  useEffect(() => {
-    setCountdown(60);
-  }, []);
 
-  useEffect(() => {
-    if (number !== undefined && country !== undefined) {
-      setFormOTPData({
-        ...formOTPData,
-        phoneNumber: `${number as string}`
-      });
-    }
-  }, [number, country]);
   const element = (
     <>
+      <Image
+        src={SeedyAuthLogin}
+        alt="SeedyAuthLogin"
+        className={`${
+          select === 0 || select === 2 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
       <Image
         src={SeedyWAOTP}
         alt="SeedyWAOTP"
@@ -63,6 +62,19 @@ const ChangeNumber: React.FC = () => {
   );
   const form = (
     <>
+      <AuthGuest
+        setSelect={setSelect}
+        className={select === 0 ? 'flex' : 'hidden'}
+        formData={otpForm}
+        setFormData={setOTPForm}
+        setCountdown={setCountdown}
+        countries={countries}
+        method={method}
+        guest={guest}
+        setGuest={setGuest}
+        country={country}
+        setCountry={setCountry}
+      />
       <AuthOTP
         select={select}
         method={method}
@@ -71,13 +83,14 @@ const ChangeNumber: React.FC = () => {
         setCountdown={setCountdown}
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
-        otpForm={formOTPData}
-        setOTPForm={setFormOTPData}
-        country={Number(country)}
+        otpForm={otpForm}
+        setOTPForm={setOTPForm}
+        guest={guest}
+        country={country}
       />
     </>
   );
   return <AuthLayout elementChild={element} formChild={form} />;
 };
 
-export default ChangeNumber;
+export default GuestCheck;

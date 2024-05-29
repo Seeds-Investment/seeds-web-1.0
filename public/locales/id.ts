@@ -578,14 +578,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Masuk',
-    guest2: ' sebagai ',
-    guest3: 'Tamu',
+    guest: 'Masuk sebagai Tamu',
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
-    login: 'Masuk',
-    signup: 'Daftar',
-    or: ' atau '
+    login: 'Masuk atau Daftar'
   },
   authLogin: {
     title1: 'Yuk, Masukan!',

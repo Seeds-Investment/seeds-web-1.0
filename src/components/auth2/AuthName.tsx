@@ -1,22 +1,14 @@
+import type { AuthNameI } from '@/utils/interfaces/auth.interface';
 import { Input } from '@material-tailwind/react';
 
-interface IAuthName {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  formData: string;
-  name: string;
-  label: string;
-  placeholder: string;
-  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-}
-
-const AuthName: React.FC<IAuthName> = ({
+const AuthName: React.FC<AuthNameI> = ({
   handleChange,
-  formData,
+  value,
   name,
   label,
   placeholder,
   handleSubmit
-}: IAuthName) => {
+}: AuthNameI) => {
   return (
     <div className="rounded-xl p-[2px] h-full w-full bg-gradient-to-l from-[#97A4E7] to-[#47C0AA]">
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
@@ -25,7 +17,7 @@ const AuthName: React.FC<IAuthName> = ({
           variant="static"
           placeholder={placeholder}
           name={name}
-          value={formData}
+          value={value}
           onChange={handleChange}
           required
           onKeyDown={handleSubmit}

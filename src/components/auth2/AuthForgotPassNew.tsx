@@ -2,48 +2,28 @@ import Info from '@/assets/auth/Info.png';
 import SeedyLock from '@/assets/auth/SeedyLock.png';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import { forgotPassword } from '@/repository/auth.repository';
+import type { AuthForgotPassNewI } from '@/utils/interfaces/auth.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-interface IAuthForgotPassNew {
-  className: string;
-  setSelect: (value: number) => void;
-  formData: {
-    oldPassword: string;
-    password: string;
-    phoneNumber: string;
-  };
-  setFormData: (value: {
-    phoneNumber: string;
-    password: string;
-    oldPassword: string;
-  }) => void;
-  handleOpen: () => void;
-}
 
-interface FormInputChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-  target: HTMLInputElement & {
-    name: string;
-    value: string;
-  };
-}
-const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
+const AuthForgotPassNew: React.FC<AuthForgotPassNewI> = ({
   className,
   formData,
   setFormData,
   handleOpen
-}: IAuthForgotPassNew) => {
+}: AuthForgotPassNewI) => {
   const { t } = useTranslation();
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const handlePass = (e: FormInputChangeEvent): void => {
+  const handlePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setErrorPass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleRepass = (e: FormInputChangeEvent): void => {
+  const handleRepass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setErrorRepass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -87,12 +67,12 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handlePass}
-          formData={formData.password}
+          value={formData.password}
           error={errorPass}
           name="password"
           label={t('authForgotPass.newPassword.label')}
           placeholder={t('authForgotPass.newPassword.placeholder')}
-          handleSubmit={async (e: any) => {
+          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               await handleNext();
             }
@@ -105,12 +85,12 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handleRepass}
-          formData={formData.oldPassword}
+          value={formData.oldPassword}
           error={errorRepass}
           name="oldPassword"
           label={t('authForgotPass.matchPassword.label')}
           placeholder={t('authForgotPass.matchPassword.placeholder')}
-          handleSubmit={async (e: any) => {
+          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               await handleNext();
             }

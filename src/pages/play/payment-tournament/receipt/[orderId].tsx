@@ -256,11 +256,12 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) 
-                        + ((paymentSelectedEWallet[0]?.is_promo_available ?? true) 
-                          ? (paymentSelectedEWallet[0]?.promo_price ?? 0) : 0) 
-                        - (paymentSelectedEWallet[0]?.admin_fee ?? 0) 
-                        - (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                        (orderDetail?.grossAmount ?? 0) +
+                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
+                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                            : 0) -
+                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
+                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
                       )}`}
                   </Typography>
                 </div>

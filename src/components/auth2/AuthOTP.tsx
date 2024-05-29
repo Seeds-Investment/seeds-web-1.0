@@ -1,134 +1,96 @@
 import Backward from '@/assets/auth/Backward.svg';
-import { editVerifyOtp, getOtp, verifyOtp } from '@/repository/auth.repository';
-import { fetchUserData } from '@/store/redux/features/user';
+import { handleFormattedData } from '@/helpers/authFormData';
+import { handleGetOTP, handleOTP } from '@/helpers/OTP';
 import { useAppDispatch } from '@/store/redux/store';
-import { Button, Typography } from '@material-tailwind/react';
-import Image, { type StaticImageData } from 'next/image';
+import type { AuthOTPI } from '@/utils/interfaces/otp.interface';
+import { Button, Spinner, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface IAuthOTP {
-  select: number;
-  number: string;
-  method: string;
-  setMethod: React.Dispatch<React.SetStateAction<string>>;
-  getOTP: {
-    method: string;
-    phoneNumber: string;
-  };
-  countdown: number | string;
-  setCountdown: React.Dispatch<React.SetStateAction<number>>;
-  setSelect: React.Dispatch<React.SetStateAction<number>>;
-  image: StaticImageData;
-  formData: {
-    phoneNumber: string;
-    password: string;
-    oldPassword: string;
-  };
-  setFormData: (value: {
-    phoneNumber: string;
-    oldPassword: string;
-    birthDate: string;
-    name: string;
-    seedsTag: string;
-    refCode: string;
-    password: string;
-    provider: { provider: string; identifier: string };
-    token: string;
-  }) => void;
-}
-
-const AuthOTP: React.FC<IAuthOTP> = ({
+const AuthOTP: React.FC<AuthOTPI> = ({
   select,
-  number,
   method,
   setMethod,
-  getOTP,
   countdown,
   setCountdown,
   setSelect,
   image,
-  formData,
-  setFormData
-}: IAuthOTP) => {
+  otpForm,
+  setOTPForm,
+  guest,
+  country
+}: AuthOTPI) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [input, setInput] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [blank, setBlank] = useState(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
-  const OTP = input.join('');
-  const verifyOTP = {
-    method,
-    msisdn: number,
-    otp: OTP
-  };
+  const otp = input.join('');
+  const formattedData = handleFormattedData(otpForm, country);
 
   const handleChangeOTP = (index: number, value: string): void => {
     setBlank(false);
     setError(false);
     const newInput = [...input];
     newInput[index] = value.replace(/\D/g, '');
-    const isReplaced = new RegExp(value).test(value);
-    const isLetter = /\D/g.test(value);
     setInput(newInput);
     if (newInput[index] !== '') {
       inputRefs.current[index + 1]?.focus();
-    } else if (isReplaced && isLetter) {
-      inputRefs.current[index]?.focus();
-    } else if (newInput[index] === '') {
-      inputRefs.current[index - 1]?.focus();
     }
+    setOTPForm(prev => ({ ...prev, otp: newInput.join('') }));
   };
   const handleMethodChange = async (): Promise<void> => {
     setBlank(false);
     setError(false);
     setInput(['', '', '', '']);
     const newMethod = method === 'whatsapp' ? 'sms' : 'whatsapp';
-    await getOtp({ method: newMethod, phoneNumber: number });
     setMethod(newMethod);
-    setCountdown(60);
+    await handleGetOTP(newMethod, setCountdown, setSelect, formattedData);
     inputRefs.current[0]?.focus();
+    setOTPForm(prev => ({ ...prev, method: newMethod }));
   };
 
-  const handleSubmitOTP = async (event: any): Promise<void> => {
-    event.preventDefault();
+  const handleSubmitOTP = async (e: React.SyntheticEvent): Promise<void> => {
+    e.preventDefault();
     try {
-      if (OTP.length === 0) {
+      setLoading(true);
+      if (otp.length === 0) {
         setBlank(true);
         setError(true);
         setInput(['', '', '', '']);
         inputRefs.current[0]?.focus();
         throw new Error(`${t('authLogin.validation.blank')}`);
       } else {
-        if (localStorage.getItem('accessToken') !== null) {
-          await editVerifyOtp(verifyOTP);
-        } else {
-          await verifyOtp(verifyOTP);
-        }
-
-        if (window.location.pathname !== '/auth/change-phone-number') {
-          setSelect(2);
-        } else {
-          await dispatch(fetchUserData());
-          router.back();
-        }
+        await handleOTP(
+          formattedData,
+          guest,
+          router,
+          dispatch,
+          setSelect,
+          setOTPForm
+        );
         setCountdown(0);
       }
     } catch (error: any) {
-      toast(error ?? error.response.data.message, { type: 'error' });
+      toast(error?.response?.data?.message ?? error, { type: 'error' });
 
       setError(true);
       setInput(['', '', '', '']);
       inputRefs.current[0]?.focus();
+    } finally {
+      setLoading(false);
+      setInput(['', '', '', '']);
     }
   };
+
   useEffect(() => {
     inputRefs.current[0]?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [select === 1]);
 
   return (
@@ -143,27 +105,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           alt="Backward"
           className="absolute left-5 top-5 cursor-pointer"
           onClick={() => {
-            if (window.location.pathname !== '/auth/change-phone-number') {
-              setMethod('sms');
-              setFormData({
-                ...formData,
-                phoneNumber: '',
-                password: '',
-                birthDate: '',
-                name: '',
-                seedsTag: '',
-                refCode: '',
-                provider: {
-                  provider: '',
-                  identifier: ''
-                },
-                token: ''
-              });
-              setSelect(0);
-              setInput(['', '', '', '']);
-            } else {
-              router.back();
-            }
+            router.back();
           }}
         />
         <Image
@@ -178,7 +120,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           <br />
           {t('authRegister.authOTP.title2')}
           {method === 'whatsapp' ? 'Whatsapp' : 'SMS'}
-          {t('authRegister.authOTP.title3')} +{formData.phoneNumber}.
+          {t('authRegister.authOTP.title3')} +{formattedData.phoneNumber}.
         </Typography>
         <div className="w-full">
           <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
@@ -188,20 +130,22 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 setError(false);
                 setInput(['', '', '', '']);
                 inputRefs.current[0]?.focus();
-                await getOtp(getOTP);
-                setCountdown(60);
+                await handleGetOTP(
+                  method,
+                  setCountdown,
+                  setSelect,
+                  formattedData
+                );
               }}
-              disabled={(countdown as number) > 0}
+              disabled={countdown > 0}
               className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             >
               {t('authRegister.authOTP.resend')}
             </Button>
             <Typography className="font-poppins font-normal text-base text-[#7C7C7C]">
-              {(countdown as number) === 60
+              {countdown === 60
                 ? '01:00'
-                : `00:${(countdown as number) < 10 ? '0' : ''}${
-                    countdown as string
-                  }`}
+                : `00:${countdown < 10 ? '0' : ''}${countdown}`}
             </Typography>
           </div>
           <div className="flex justify-center w-full gap-6">
@@ -217,6 +161,8 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                 <input
                   type="text"
                   key={index}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   ref={el => {
                     if (el !== null) {
                       inputRefs.current[index] = el;
@@ -224,9 +170,15 @@ const AuthOTP: React.FC<IAuthOTP> = ({
                   }}
                   value={value}
                   maxLength={1}
-                  onKeyDown={async (e: any) => {
+                  onKeyDown={async (
+                    e: React.KeyboardEvent<HTMLInputElement>
+                  ) => {
                     if (e.key === 'Enter') {
-                      await handleSubmitOTP(event);
+                      await handleSubmitOTP(e);
+                    } else if (e.key === 'Backspace') {
+                      if (input[index] === '') {
+                        inputRefs.current[index - 1]?.focus();
+                      }
                     }
                   }}
                   onChange={e => {
@@ -254,7 +206,7 @@ const AuthOTP: React.FC<IAuthOTP> = ({
           <Button
             className="capitalize bg-transparent shadow-none hover:shadow-none p-0 text-sm disabled:text-[#7C7C7C] text-[#3AC4A0] font-semibold font-poppins"
             onClick={handleMethodChange}
-            disabled={(countdown as number) > 0}
+            disabled={countdown > 0}
           >
             {t('authRegister.authOTP.otherMethod3')}
             <span className="lowercase">
@@ -265,10 +217,13 @@ const AuthOTP: React.FC<IAuthOTP> = ({
         </div>
 
         <Button
-          onClick={handleSubmitOTP}
+          disabled={isLoading}
+          onClick={async e => {
+            await handleSubmitOTP(e);
+          }}
           className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] rounded-full w-full"
         >
-          {t('authLogin.next')}
+          {isLoading ? <Spinner className=" h-6 w-6" /> : t('authLogin.next')}
         </Button>
       </div>
     </>

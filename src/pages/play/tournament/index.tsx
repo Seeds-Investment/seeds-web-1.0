@@ -102,7 +102,7 @@ const PlayTournament = (): React.ReactElement => {
         setData([]);
       } else {
         setData(response?.playList);
-        setMetadata(response?.metadata)
+        setMetadata(response?.metadata);
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -152,18 +152,18 @@ const PlayTournament = (): React.ReactElement => {
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
 
-  const handleRedirectPage = async (id: string, isJoined: boolean): Promise<void> => {
-    await router.push(
-      `${
-        isJoined
-          ? `/play/tournament/${id}/home`
-          : `/play/tournament/${id}`
-      }`
-    )
-    .catch(error => {
-      toast.error(error);
-    })
-  }
+  const handleRedirectPage = async (
+    id: string,
+    isJoined: boolean
+  ): Promise<void> => {
+    await router
+      .push(
+        `${isJoined ? `/play/tournament/${id}/home` : `/play/tournament/${id}`}`
+      )
+      .catch(error => {
+        toast.error(error);
+      });
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -246,10 +246,7 @@ const PlayTournament = (): React.ReactElement => {
               data?.length !== 0 ? (
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
                   {data.map(item => (
-                    <div
-                      key={item.id}
-                      className="flex rounded-xl"
-                    >
+                    <div key={item.id} className="flex rounded-xl">
                       <div className="w-[60px] text-black text-center hidden md:block mt-4">
                         <Typography className="text-black font-normal text-[12px]">
                           {moment(item?.play_time).format('MMM')}
@@ -260,9 +257,19 @@ const PlayTournament = (): React.ReactElement => {
                       </div>
 
                       <div className="w-full bg-white rounded-xl shadow hover:shadow-lg duration-300">
-                        <div onClick={async () => await handleRedirectPage(item?.id, item?.is_joined)} className="w-full rounded-xl overflow-hidden cursor-pointer">
+                        <div
+                          onClick={async () =>
+                            await handleRedirectPage(item?.id, item?.is_joined)
+                          }
+                          className="w-full rounded-xl overflow-hidden cursor-pointer"
+                        >
                           <div
-                            onClick={async () => await handleRedirectPage(item?.id, item?.is_joined)}
+                            onClick={async () =>
+                              await handleRedirectPage(
+                                item?.id,
+                                item?.is_joined
+                              )
+                            }
                             className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
                           >
                             <Image
@@ -281,18 +288,27 @@ const PlayTournament = (): React.ReactElement => {
                             <div className="text-[14px] font-semibold text-[#262626]">
                               {item.name ?? 'Tournament'}
                             </div>
-                            <div className='flex justify-center items-start'>
+                            <div className="flex justify-center items-start">
                               <div className="mt-1 text-[10px] bg-[#E9E9E9] text-[#553BB8] px-4 flex justify-center items-center rounded-lg">
                                 {item.type ?? 'ARENA'}
                               </div>
                             </div>
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px]">
-                            {`${getTournamentTime(item?.play_time ?? '2024-01-01T00:00:00Z')} - ${getTournamentTime(item?.end_time ?? '2024-12-31T23:59:59Z')}`}
+                            {`${getTournamentTime(
+                              item?.play_time ?? '2024-01-01T00:00:00Z'
+                            )} - ${getTournamentTime(
+                              item?.end_time ?? '2024-12-31T23:59:59Z'
+                            )}`}
                           </div>
                         </div>
-                        
-                        <div onClick={async () => await handleRedirectPage(item?.id, item?.is_joined)} className='w-full px-2 cursor-pointer'>
+
+                        <div
+                          onClick={async () =>
+                            await handleRedirectPage(item?.id, item?.is_joined)
+                          }
+                          className="w-full px-2 cursor-pointer"
+                        >
                           <div className="w-full pl-2 flex justify-center items-center text-[10px] bg-[#E9E9E9] rounded-lg py-1 mt-1">
                             <div className="w-full flex items-center">
                               <Image
@@ -306,14 +322,19 @@ const PlayTournament = (): React.ReactElement => {
                                 </div>
                                 <div className="font-semibold text-black">
                                   {calculateDaysLeft(
-                                    new Date(item?.play_time ?? '2024-01-01T00:00:00Z'),
-                                    new Date(item?.end_time ?? '2024-12-31T23:59:59Z')
+                                    new Date(
+                                      item?.play_time ?? '2024-01-01T00:00:00Z'
+                                    ),
+                                    new Date(
+                                      item?.end_time ?? '2024-12-31T23:59:59Z'
+                                    )
                                   )}{' '}
-                                  {
-                                    (calculateDaysLeft(new Date(item?.play_time), new Date(item?.end_time)) ?? 0) > 1 ?
-                                      t('tournament.tournamentCard.days')
-                                      : t('tournament.tournamentCard.day')
-                                  }
+                                  {(calculateDaysLeft(
+                                    new Date(item?.play_time),
+                                    new Date(item?.end_time)
+                                  ) ?? 0) > 1
+                                    ? t('tournament.tournamentCard.days')
+                                    : t('tournament.tournamentCard.day')}
                                 </div>
                               </div>
                             </div>
@@ -324,14 +345,14 @@ const PlayTournament = (): React.ReactElement => {
                                 className="w-[14px] mb-2 mr-1"
                               />
                               <div className="flex flex-col">
-                                <div>{t('tournament.tournamentCard.joined')}</div>
+                                <div>
+                                  {t('tournament.tournamentCard.joined')}
+                                </div>
                                 <div className="font-semibold text-black">
                                   {item?.participants?.length ?? '0'}{' '}
-                                  {
-                                    (item?.participants?.length ?? 0) > 1 ?
-                                      t('tournament.tournamentCard.players')
-                                      : t('tournament.tournamentCard.player')
-                                  }
+                                  {(item?.participants?.length ?? 0) > 1
+                                    ? t('tournament.tournamentCard.players')
+                                    : t('tournament.tournamentCard.player')}
                                 </div>
                               </div>
                             </div>
@@ -347,7 +368,8 @@ const PlayTournament = (): React.ReactElement => {
                                   {item.admission_fee === 0
                                     ? t('quiz.free')
                                     : `${
-                                        userInfo?.preferredCurrency !== undefined
+                                        userInfo?.preferredCurrency !==
+                                        undefined
                                           ? userInfo?.preferredCurrency
                                           : 'IDR'
                                       }${standartCurrency(
@@ -392,14 +414,24 @@ const PlayTournament = (): React.ReactElement => {
                           </div>
                           {item?.is_joined ? (
                             <div
-                              onClick={async () => await handleRedirectPage(item?.id, item?.is_joined)}
+                              onClick={async () =>
+                                await handleRedirectPage(
+                                  item?.id,
+                                  item?.is_joined
+                                )
+                              }
                               className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
                             >
                               {t('tournament.tournamentCard.openButton')}
                             </div>
                           ) : (
                             <div
-                              onClick={async () => await handleRedirectPage(item?.id, item?.is_joined)}
+                              onClick={async () =>
+                                await handleRedirectPage(
+                                  item?.id,
+                                  item?.is_joined
+                                )
+                              }
                               className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
                             >
                               {t('tournament.tournamentCard.joinButton')}

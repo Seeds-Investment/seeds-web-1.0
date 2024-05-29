@@ -71,65 +71,65 @@ const Follow: React.FC = () => {
             </div>
           </div>
 
-          <div className='w-full flex justify-center items-center'>
+          <div className="w-full flex justify-center items-center">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-            {followData?.data
-              ?.filter((item: any) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-              )
-              .map((item: any, index: any) => {
-                return (
-                  <Link
-                    href={`/social/${item.id as string}`}
-                    className="flex flex-row items-center justify-between hover:bg-[#f5fff8] duration-300 cursor-pointer rounded-xl p-2"
-                    key={index}
-                  >
-                    <div className="flex gap-[10px]">
-                      <div className="flex gap-2">
-                        <div className='w-[40px] h-[40px] flex justify-center items-center'>
-                          <img
-                            src={item.avatar}
-                            alt="avatar"
-                            className="w-full h-full rounded-full object-cover"
-                          />
+              {followData?.data
+                ?.filter((item: any) =>
+                  item.name.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((item: any, index: any) => {
+                  return (
+                    <Link
+                      href={`/social/${item.id as string}`}
+                      className="flex flex-row items-center justify-between hover:bg-[#f5fff8] duration-300 cursor-pointer rounded-xl p-2"
+                      key={index}
+                    >
+                      <div className="flex gap-[10px]">
+                        <div className="flex gap-2">
+                          <div className="w-[40px] h-[40px] flex justify-center items-center">
+                            <img
+                              src={item.avatar}
+                              alt="avatar"
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <Typography className="font-semibold font-poppins text-base text-[#262626]">
+                              {item.name}
+                            </Typography>
+                            <Typography className="font-normal font-poppins text-sm text-[#7C7C7C]">
+                              @{item.seeds_tag}
+                            </Typography>
+                          </div>
                         </div>
-                        <div className="flex flex-col">
-                          <Typography className="font-semibold font-poppins text-base text-[#262626]">
-                            {item.name}
-                          </Typography>
-                          <Typography className="font-normal font-poppins text-sm text-[#7C7C7C]">
-                            @{item.seeds_tag}
-                          </Typography>
-                        </div>
+
+                        {item.is_followed === true ? null : (
+                          <Button
+                            ripple={false}
+                            className="bg-transparent shadow-none hover:shadow-none py-[4.78px] px-[7.17px] h-fit font-semibold font-poppins text-[10px] text-[#7B8BFC] leading-[9.56px] capitalize z-10"
+                            onClick={async () => {
+                              await follow(item.id);
+                              _handleChange();
+                            }}
+                          >
+                            Follow
+                          </Button>
+                        )}
                       </div>
 
-                      {item.is_followed === true ? null : (
-                        <Button
-                          ripple={false}
-                          className="bg-transparent shadow-none hover:shadow-none py-[4.78px] px-[7.17px] h-fit font-semibold font-poppins text-[10px] text-[#7B8BFC] leading-[9.56px] capitalize z-10"
-                          onClick={async () => {
-                            await follow(item.id);
-                            _handleChange();
-                          }}
-                        >
-                          Follow
-                        </Button>
-                      )}
-                    </div>
-
-                    <Button
-                      ripple={false}
-                      className="bg-[#FFEBEB] shadow-none hover:shadow-none py-2 px-3 h-fit font-semibold font-poppins text-xs text-[#DD2525] rounded-full capitalize z-10"
-                      onClick={async () => {
-                        await removeFollower(item.id);
-                        _handleChange();
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </Link>
-                );
-              })}
+                      <Button
+                        ripple={false}
+                        className="bg-[#FFEBEB] shadow-none hover:shadow-none py-2 px-3 h-fit font-semibold font-poppins text-xs text-[#DD2525] rounded-full capitalize z-10"
+                        onClick={async () => {
+                          await removeFollower(item.id);
+                          _handleChange();
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </Link>
+                  );
+                })}
             </div>
           </div>
         </section>
@@ -156,7 +156,7 @@ const Follow: React.FC = () => {
             </div>
           </div>
 
-          <div className='w-full flex justify-center items-center'>
+          <div className="w-full flex justify-center items-center">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
               {followData?.data
                 ?.filter((item: any) =>
@@ -171,7 +171,7 @@ const Follow: React.FC = () => {
                     >
                       <div className="flex gap-[10px]">
                         <div className="flex items-center gap-2">
-                          <div className='w-[40px] h-[40px] flex justify-center items-center'>
+                          <div className="w-[40px] h-[40px] flex justify-center items-center">
                             <img
                               src={item.avatar}
                               alt="avatar"

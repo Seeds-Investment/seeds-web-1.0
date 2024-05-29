@@ -69,17 +69,13 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available) {
-      _discount = payment.promo_price;
-      if (coinsDiscount > 0) {
-        _discount += coinsDiscount;
-      }
-    } else if (coinsDiscount > 0) {
-      _discount = coinsDiscount;
-    }
-
+    _discount = payment.is_promo_available
+      ? payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0)
+      : coinsDiscount > 0
+      ? coinsDiscount
+      : 0;
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult.total_discount as number;
+      _discount += promoCodeValidationResult?.total_discount as number;
     }
 
     if (dataPost) {
@@ -179,7 +175,7 @@ const WalletForm = ({
           className="mb-2"
         />
       ) : null}
-      {true && (
+      {coinsDiscount > 0 && (
         <InlineText
           label={t(`${translationId}.seedsCoin`)}
           value={`- ${userInfo?.preferredCurrency} ${coinsDiscount}`}

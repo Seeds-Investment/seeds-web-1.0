@@ -59,12 +59,10 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available && coinsDiscount > 0) {
-      _discount = payment.promo_price + coinsDiscount;
-    } else if (payment.is_promo_available) {
-      _discount = payment.promo_price;
-    } else if (coinsDiscount > 0) {
-      _discount = coinsDiscount;
+    if (payment.is_promo_available) {
+      _discount = payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0);
+    } else {
+      _discount = coinsDiscount > 0 ? coinsDiscount : 0;
     }
 
     if (dataPost.quiz) {

@@ -14,10 +14,12 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 // import { useAppSelector } from '@/store/redux/store';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
@@ -96,6 +98,10 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const useCoinsParam = router.query.useCoins;
   const useCoins = useCoinsParam === 'true';
 
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+
   const userDefault = {
     name: '',
     seedsTag: '',
@@ -121,10 +127,10 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     payment_gateway: ''
   };
 
-  // const defaultTournament = {
-  //   id: '',
-  //   admission_fee: 0
-  // };
+  const defaultTournament = {
+    id: '',
+    admission_fee: 0
+  };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -202,7 +208,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           paymentGateway,
           paymentMethod,
           `+62${phoneNumber as string}`,
-          '',
+          promoCodeValidationResult?.promo_code ?? '',
           (invitationCode as string) || '',
           useCoins
         );
@@ -310,7 +316,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             payment={option}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament as any}
+            dataPost={detailTournament ?? defaultTournament}
             userInfo={userInfo ?? userDefault}
           />
         ) : (
@@ -318,7 +324,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             payment={option ?? defaultOption}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
-            dataPost={detailTournament as any}
+            dataPost={detailTournament ?? defaultTournament}
             paymentStatus={paymentStatus}
             user_name={userInfo?.name}
           />

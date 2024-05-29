@@ -247,17 +247,17 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Tournament Fee */}
                 {orderDetail?.currency !== undefined &&
-                orderDetail.grossAmount !== undefined &&
+                orderDetail?.grossAmount !== undefined &&
                 orderDetail?.paymentMethod !== 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between my-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('tournament.payment.tournamentFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount -
-                          (paymentSelectedEWallet[0]?.admin_fee +
-                            paymentSelectedEWallet[0]?.service_fee)
+                      {`${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount -
+                          ((paymentSelectedEWallet[0]?.admin_fee ?? 0) +
+                            (paymentSelectedEWallet[0]?.service_fee ?? 0))
                       )}`}
                     </Typography>
                   </div>
@@ -274,9 +274,10 @@ const SuccessPaymentPage: React.FC = () => {
                       {t('tournament.payment.tournamentFee')}
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount -
-                          (qRisList[0]?.admin_fee + qRisList[0]?.service_fee)
+                      {`${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount -
+                          ((qRisList[0]?.admin_fee ?? 0) +
+                            (qRisList[0]?.service_fee ?? 0))
                       )}`}
                     </Typography>
                   </div>
@@ -464,8 +465,8 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount
+                      `${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount
                       )}`}
                   </Typography>
                 </div>

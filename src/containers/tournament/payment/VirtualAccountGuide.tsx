@@ -58,7 +58,7 @@ const VirtualAccountGuide = ({
   const accountName = '';
   const userName = user_name;
   const discount =
-    promoCodeValidationResult !== undefined
+    promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.total_discount
       : 0;
   const admissionFee = dataPost?.admission_fee * numberMonth;
@@ -147,7 +147,7 @@ const VirtualAccountGuide = ({
           label={t(`${translationId}.adminFeeDiscountLabel`)}
           value={`IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount
+            promoCodeValidationResult?.total_discount ?? 0
           }`}
           className="mb-2"
         />

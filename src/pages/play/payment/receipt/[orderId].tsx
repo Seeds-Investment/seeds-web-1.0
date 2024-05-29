@@ -174,7 +174,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [id, orderDetail]);
+  }, [orderDetail]);
 
   useEffect(() => {
     void getDetail();

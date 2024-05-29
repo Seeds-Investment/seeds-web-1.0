@@ -31,12 +31,6 @@ const ForgotPassword: React.FC = () => {
   const handleOpen = (): void => {
     setOpen(!open);
   };
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      phoneNumber: formOTPData.phoneNumber
-    });
-  }, [formOTPData.phoneNumber]);
 
   useEffect(() => {
     const interval = setInterval(() => {

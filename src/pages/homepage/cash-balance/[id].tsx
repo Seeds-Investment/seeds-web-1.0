@@ -11,10 +11,12 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { type Ballance } from '../play-assets';
 
 interface ChartData {
@@ -97,8 +99,8 @@ const CashBalancePage: React.FC = () => {
       datasets: [
         {
           label: ' Percentage',
-          data: convertToPercent(ballance.balance, ballance.portfolio),
-          backgroundColor: ['#27A590', '#3AC4A0']
+          data: convertToPercent((ballance?.balance ?? 0), (ballance?.portfolio ?? 0)),
+          backgroundColor: ['#3AC4A0', '#DD2525']
         }
       ]
     };
@@ -112,15 +114,15 @@ const CashBalancePage: React.FC = () => {
     }
   }, [ballance]);
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
 
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -134,7 +136,7 @@ const CashBalancePage: React.FC = () => {
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -160,12 +162,12 @@ const CashBalancePage: React.FC = () => {
           setIsLoading(false);
         })
         .catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
           setIsIncrease(false);
           setIsLoading(false);
         });
     } catch (error) {
-      console.log(error);
+      toast.error(`${error as string}`);
       setIsLoading(false);
     }
   };
@@ -243,9 +245,9 @@ const CashBalancePage: React.FC = () => {
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
-              <Typography className="text-black font-poppins text-base font-semibold">
-                {`${ballance.currency} ${standartCurrency(
-                  ballance.balance
+              <Typography className="text-[#27A590] font-poppins text-base font-semibold">
+                {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
+                  (ballance?.balance ?? 0)
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -273,14 +275,14 @@ const CashBalancePage: React.FC = () => {
                   fill="white"
                 />
               </svg>
-              <Typography className="text-[#27A590] font-poppins font-semibold">
+              <Typography className="text-[#DD2525] font-poppins font-semibold">
                 {t('playSimulation.cashUsed')}
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
-              <Typography className="text-black font-poppins text-base font-semibold">
-                {`${ballance.currency} ${standartCurrency(
-                  ballance.portfolio
+              <Typography className="text-[#DD2525] font-poppins text-base font-semibold">
+                {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
+                  (ballance?.portfolio ?? 0)
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -290,12 +292,12 @@ const CashBalancePage: React.FC = () => {
           </Typography>
           <div className="flex flex-col gap-3">
             {!isLoading ? (
-              transaction.length !== 0 ? (
-                transaction.map((data: HistoryTransactionDTO, idx: number) => {
+              transaction?.length !== 0 ? (
+                transaction?.map((data: HistoryTransactionDTO, idx: number) => {
                   return (
                     <div key={idx} className="w-full">
                       <AssetOrderCard
-                        currency={userInfo?.preferredCurrency}
+                        currency={userInfo?.preferredCurrency ?? 'IDR'}
                         data={data}
                         isClick={true}
                         playId={id as string}

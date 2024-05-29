@@ -1372,7 +1372,7 @@ export default {
       selectAsset: 'Pilih Asset',
       overview: 'Ringkasan',
       stocks: 'Saham',
-      crypto: 'kripto'
+      crypto: 'Kripto'
     },
     errorState: {
       image1: 'Gambar kamu melebihi batas ukuran 5MB.',

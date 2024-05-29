@@ -20,11 +20,13 @@ import {
   getPlayPortfolio
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { type Ballance } from '../play-assets';
 
 interface ChartData {
@@ -105,18 +107,12 @@ const PortfolioPage: React.FC = () => {
       value: 'CRYPTO',
       svg: Stock,
       svgActive: StockActive
-    },
-    {
-      name: 'Fractional Bond',
-      value: 'fractional',
-      svg: Stock,
-      svgActive: StockActive
     }
   ];
 
   const filterAssetsList = useCallback((): any[] => {
     const newData = portfolio?.pie.assets.filter(el => {
-      if (activeTab === 'fractional') {
+      if (activeTab === 'STOCK') {
         if (el.exchange !== 'STOCK' && el.exchange !== 'CRYPTO') {
           return el;
         }
@@ -166,15 +162,15 @@ const PortfolioPage: React.FC = () => {
     }
   }, [portfolio]);
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
 
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -188,7 +184,7 @@ const PortfolioPage: React.FC = () => {
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -198,7 +194,7 @@ const PortfolioPage: React.FC = () => {
       const response = await getPlayPortfolio(id as string, currency);
       setPortfolio(response);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -206,8 +202,8 @@ const PortfolioPage: React.FC = () => {
 
   useEffect(() => {
     if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency as string);
-      void fetchPlayPortfolio(userInfo.preferredCurrency as string);
+      void fetchPlayBallance(userInfo.preferredCurrency );
+      void fetchPlayPortfolio(userInfo.preferredCurrency );
     }
   }, [id, userInfo]);
 
@@ -233,28 +229,28 @@ const PortfolioPage: React.FC = () => {
             </Typography>
             <Typography className="text-white font-poppins text-xl font-semibold mb-2">
               {`${ballance?.currency} ${standartCurrency(
-                portfolio?.summary?.value
+                portfolio?.summary?.value ?? 0
               ).replace('Rp', '')}`}
             </Typography>
             <div className="flex gap-2">
               <Typography
                 className={`${
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
-                } font-poppins text-xs font-light`}
+                } font-poppins text-xs md:text-sm font-light`}
               >
-                {`${ballance?.currency} ${standartCurrency(
-                  portfolio?.summary?.gnl
+                {`${ballance?.currency}${standartCurrency(
+                  portfolio?.summary?.gnl ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
               <Typography
                 className={`${
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
-                } font-poppins text-xs font-light`}
+                } font-poppins text-xs md:text-sm font-light`}
               >
                 {`(${isUptrend.summary ? '+' : '-'}${
-                  portfolio?.summary?.gnl_percentage.toFixed(2) as string
-                })`}
-                %{' '}
+                  (portfolio?.summary?.gnl_percentage ?? 0).toFixed(2) 
+                } %)`}
+                {' '}
                 <span className="text-white">{t('playSimulation.today')}</span>
               </Typography>
             </div>
@@ -265,9 +261,9 @@ const PortfolioPage: React.FC = () => {
             {portfolio !== null && (
               <PortfolioChart
                 data={chartData}
-                centerText={`${ballance?.currency} ${
+                centerText={`${ballance?.currency ?? 'IDR'} ${
                   portfolio?.summary?.gnl > 0
-                    ? formatNumber(portfolio?.summary?.gnl)
+                    ? formatNumber(portfolio?.summary?.gnl ?? 0)
                     : 0
                 }`}
               />
@@ -290,7 +286,7 @@ const PortfolioPage: React.FC = () => {
                   <Button
                     key={i}
                     variant={el.value === activeTab ? 'filled' : 'outlined'}
-                    className={`normal-case text-xs min-w-fit rounded-lg p-2 gap-2 flex items-center font-semibold ${
+                    className={`normal-case text-xs md:text-sm min-w-fit rounded-lg p-2 md:px-4 gap-2 flex items-center font-semibold ${
                       el.value !== activeTab
                         ? 'border border-[#3AC4A0] text-[#3AC4A0]'
                         : 'bg-[#3AC4A0] text-white'

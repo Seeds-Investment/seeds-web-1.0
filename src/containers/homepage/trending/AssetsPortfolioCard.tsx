@@ -13,6 +13,7 @@ import {
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface props {
   id: string;
   userInfo: any;
@@ -51,7 +52,7 @@ const AssetPortfolioCard: React.FC<props> = ({
         setData(response.marketAsset);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -79,7 +80,7 @@ const AssetPortfolioCard: React.FC<props> = ({
                   }`
                 )
                 .catch(error => {
-                  console.log(error);
+                  toast.error(`${error as string}`);
                 });
             }
           : () => {}
@@ -106,9 +107,9 @@ const AssetPortfolioCard: React.FC<props> = ({
 
           <div className="ml-auto flex flex-col gap-0.5">
             <div className="flex justify-end">
-              <Typography className="font-semibold text-sm text-[#262626]">
+              <Typography className="font-semibold text-sm md:text-base text-[#262626]">
                 {userInfo?.preferredCurrency}{' '}
-                {new Intl.NumberFormat().format(data?.lastPrice?.open)}
+                {new Intl.NumberFormat().format(data?.lastPrice?.open ?? 0)}
               </Typography>
             </div>
             <div className="flex justify-end">
@@ -116,8 +117,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 className={`flex font-normal text-sm ${
                   handleArrow(
                     calculatePercentageDifference(
-                      data?.lastPrice?.open,
-                      data?.lastPrice?.close
+                      (data?.lastPrice?.open ?? 0),
+                      (data?.lastPrice?.close ?? 0)
                     )?.value
                   )
                     ? 'text-[#3AC4A0]'
@@ -126,8 +127,8 @@ const AssetPortfolioCard: React.FC<props> = ({
               >
                 {handleArrow(
                   calculatePercentageDifference(
-                    data?.lastPrice?.open,
-                    data?.lastPrice?.close
+                    (data?.lastPrice?.open ?? 0),
+                    (data?.lastPrice?.close ?? 0)
                   )?.value
                 ) ? (
                   <ArrowTrendingUpIcon
@@ -145,8 +146,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 (
                 {
                   calculatePercentageDifference(
-                    data?.lastPrice?.open,
-                    data?.lastPrice?.close
+                    (data?.lastPrice?.open ?? 0),
+                    (data?.lastPrice?.close ?? 0)
                   )?.value
                 }{' '}
                 %)

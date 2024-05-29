@@ -86,7 +86,6 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
     },
     prize: [150000, 100000, 50000]
   });
-
   const fetchPlaySimulationDetail = async (currency: string): Promise<void> => {
     try {
       const res = await getPlaySimulationDetail(currency);

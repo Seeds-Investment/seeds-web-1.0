@@ -204,7 +204,16 @@ const SocialWall = (): React.ReactElement => {
               playData?.participants?.map((participant, index) => {
                 return (
                   <>
-                    <div key={index} className='shrink border border-[#E9E9E9] rounded-lg flex flex-col justify-start gap-2 p-2 w-full min-w-[280px] cursor-pointer hover:bg-[#F2F2F2] duration-300'>
+                    <div
+                      key={index}
+                      onClick={async() => await router.push(
+                        userInfo?.id === participant?.id ?
+                          `/my-profile`
+                          : `/social/${participant?.id}`
+                        )
+                      }
+                      className='shrink border border-[#E9E9E9] rounded-lg flex flex-col justify-start gap-2 p-2 w-full min-w-[280px] cursor-pointer hover:bg-[#F2F2F2] duration-300'
+                    >
                       <div className='flex w-full justify-start items-center gap-2'>
                         <div className='w-[40px] h-[40px] flex justify-center items-center rounded-full border border-1 overflow-hidden'>
                           <img src={participant?.photo_url} alt={participant?.name} className="w-full h-full"/>

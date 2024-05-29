@@ -137,8 +137,6 @@ const PaymentList: React.FC<props> = ({
           is_use_coins: useCoins as boolean
         });
 
-        console.log('ini response sebelum kirim recipt', response);
-
         if (response) {
           if (response.payment_url !== '') {
             window.open(response.payment_url as string, '_blank');

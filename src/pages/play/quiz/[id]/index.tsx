@@ -141,9 +141,6 @@ const QuizDetail = (): React.ReactElement => {
     });
   };
 
-  console.log('penggunaan coin', useCoins);
-  console.log('amount coins', amountCoins);
-
   return (
     <>
       <Image
@@ -314,7 +311,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
-              <div className="text-sm text-[#7C7C7C]">
+              <div className="text-xs text-[#7C7C7C]">
                 Redeem {amountCoins?.total_available_coins ?? 0} Seeds Coin
               </div>
             </div>

@@ -59,11 +59,11 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available && coinsDiscount) {
+    if (payment.is_promo_available && coinsDiscount > 0) {
       _discount = payment.promo_price + coinsDiscount;
     } else if (payment.is_promo_available) {
       _discount = payment.promo_price;
-    } else if (coinsDiscount) {
+    } else if (coinsDiscount > 0) {
       _discount = coinsDiscount;
     }
 
@@ -92,8 +92,10 @@ const WalletForm = ({
       );
     }
 
-    if (coinsDiscount) {
+    if (coinsDiscount > 0) {
       setCoinsDiscount(Math.min(coinsDiscount, _admissionFee));
+    } else {
+      setCoinsDiscount(0);
     }
 
     setAdmissionFee(_admissionFee);
@@ -167,7 +169,7 @@ const WalletForm = ({
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency as string} ${
+          value={`- ${userInfo?.preferredCurrency as string} ${
             payment.promo_price
           }`}
           className="mb-2"

@@ -44,10 +44,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
   useEffect(() => {
     setRedeemCoin(router.query.useCoins === 'true');
-    console.log('ini boolean redeemCoin', typeof redeemCoin);
   }, [router.query.useCoins]);
 
-  // console.log('ini boolean reedem', typeof useCoins);
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   const audioConfig = {

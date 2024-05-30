@@ -1,3 +1,4 @@
+import AssetPagination from '@/components/AssetPagination';
 import CCard from '@/components/CCard';
 import PieChart from '@/components/PieChart';
 import Loading from '@/components/popup/Loading';
@@ -54,6 +55,13 @@ export interface HistoryTransactionDTO {
   updated_at: string;
 }
 
+interface Metadata {
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
 const initialChartData = {
   labels: ['dummy'],
   datasets: [
@@ -78,13 +86,12 @@ const CashBalancePage: React.FC = () => {
     currency: 'IDR'
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [metadata, setMetadata] = useState<Metadata>();
   const [transaction, setTransaction] = useState<HistoryTransactionDTO[]>([]);
   const [params, setParams] = useState<Params>({
     page: 1,
     limit: 10
   });
-  const [isIncrease, setIsIncrease] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
   const convertToPercent = (num1: number, num2: number): number[] => {
     const total = num1 + num2;
@@ -145,29 +152,16 @@ const CashBalancePage: React.FC = () => {
       setIsLoading(true);
       getHistoryTransaction(id as string, { ...params, currency })
         .then(res => {
-          const data: any[] = res.playOrders;
-          const total = res.metadata.total;
-
-          if (res.data !== null) {
-            setTransaction(prevState => [...prevState, ...data]);
-            if (transaction.length + data.length < total) {
-              setHasMore(true);
-            } else {
-              setHasMore(false);
-            }
-          } else {
-            setHasMore(false);
-          }
-          setIsIncrease(false);
-          setIsLoading(false);
+          setMetadata(res?.metadata)
+          setTransaction(res?.playOrders);
         })
         .catch(err => {
           toast.error(`${err as string}`);
-          setIsIncrease(false);
-          setIsLoading(false);
         });
     } catch (error) {
       toast.error(`${error as string}`);
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -178,35 +172,11 @@ const CashBalancePage: React.FC = () => {
     }
   }, [id, userInfo]);
 
-  const handleScroll = (): void => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoading) {
-      if (!isIncrease) {
-        setIsIncrease(true);
-        setTimeout(() => {
-          setParams(prevState => ({
-            ...prevState,
-            page: prevState.page + 1
-          }));
-        }, 1000);
-      }
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll]);
-
-  useEffect(() => {
-    if (hasMore && userInfo !== undefined) {
+    if (userInfo !== undefined) {
       void fetchHistorytransaction(userInfo.preferredCurrency);
     }
-  }, [params.page, userInfo]);
+  }, [id, userInfo, params.page]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -293,18 +263,31 @@ const CashBalancePage: React.FC = () => {
           <div className="flex flex-col gap-3">
             {!isLoading ? (
               transaction?.length !== 0 ? (
-                transaction?.map((data: HistoryTransactionDTO, idx: number) => {
-                  return (
-                    <div key={idx} className="w-full">
-                      <AssetOrderCard
-                        currency={userInfo?.preferredCurrency ?? 'IDR'}
-                        data={data}
-                        isClick={true}
-                        playId={id as string}
-                      />
-                    </div>
-                  );
-                })
+                <>
+                  {
+                    transaction?.map((data: HistoryTransactionDTO, idx: number) => {
+                      return (
+                        <div key={idx} className="w-full">
+                          <AssetOrderCard
+                            currency={userInfo?.preferredCurrency ?? 'IDR'}
+                            data={data}
+                            isClick={true}
+                            playId={id as string}
+                          />
+                        </div>
+                      );
+                    })
+                  }
+                  <div className="flex justify-center mx-auto my-8">
+                    <AssetPagination
+                      currentPage={params.page}
+                      totalPages={metadata?.totalPage ?? 0}
+                      onPageChange={page => {
+                        setParams({ ...params, page });
+                      }}
+                    />
+                  </div>
+                </>
               ) : (
                 <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
                   Data Not Found

@@ -33,28 +33,67 @@ const ModalGuidanceTournament: React.FC<Props> = ({ onClose }) => {
           className="hover:scale-110 transition ease-out cursor-pointer"
         />
       </div>
-      <div className='mt-4'>
-        <Typography className='font-semibold font-poppins text-[#7C7C7C]'>{t('tournament.guidance.goals')}</Typography>
-        <Typography className='font-poppins text-[#7C7C7C] text-sm md:text-base'>{t('tournament.guidance.goalsDescription')}</Typography>
+      <div className="mt-4">
+        <Typography className="font-semibold font-poppins text-[#7C7C7C]">
+          {t('tournament.guidance.goals')}
+        </Typography>
+        <Typography className="font-poppins text-[#7C7C7C] text-sm md:text-base">
+          {t('tournament.guidance.goalsDescription')}
+        </Typography>
       </div>
-      <div className='mt-4'>
-        <Typography className='font-semibold font-poppins text-[#7C7C7C]'>{t('tournament.guidance.howToPlay.title')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text1')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text2')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text3')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text4')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text5')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.howToPlay.text6')}</Typography>
+      <div className="mt-4">
+        <Typography className="font-semibold font-poppins text-[#7C7C7C]">
+          {t('tournament.guidance.howToPlay.title')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text1')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text2')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text3')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text4')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text5')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.howToPlay.text6')}
+        </Typography>
       </div>
-      <div className='mt-4'>
-        <Typography className='font-semibold font-poppins text-[#7C7C7C]'>{t('tournament.guidance.winner')}</Typography>
-        <Typography className='font-poppins text-[#7C7C7C] text-sm md:text-base'>{t('tournament.guidance.winnerDescription')}</Typography>
+      <div className="mt-4">
+        <Typography className="font-semibold font-poppins text-[#7C7C7C]">
+          {t('tournament.guidance.winner')}
+        </Typography>
+        <Typography className="font-poppins text-[#7C7C7C] text-sm md:text-base">
+          {t('tournament.guidance.winnerDescription')}
+        </Typography>
       </div>
-      <div className='mt-4'>
-        <Typography className='font-semibold font-poppins text-[#7C7C7C]'>{t('tournament.guidance.tips.title')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.tips.text1')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.tips.text2')}</Typography>
-        <Typography className='flex font-poppins text-[#7C7C7C] text-sm md:text-base'><p className='mr-2'>•</p>{t('tournament.guidance.tips.text3')}</Typography>
+      <div className="mt-4">
+        <Typography className="font-semibold font-poppins text-[#7C7C7C]">
+          {t('tournament.guidance.tips.title')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.tips.text1')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.tips.text2')}
+        </Typography>
+        <Typography className="flex font-poppins text-[#7C7C7C] text-sm md:text-base">
+          <p className="mr-2">•</p>
+          {t('tournament.guidance.tips.text3')}
+        </Typography>
       </div>
     </Modal>
   );

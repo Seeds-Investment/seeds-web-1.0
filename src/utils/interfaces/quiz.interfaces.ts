@@ -67,6 +67,7 @@ export interface IDetailQuiz {
   is_joined: boolean;
   participant_status: string;
   created_at: Date;
+  is_need_invitation_code: boolean;
 }
 
 export const initialDetailQuiz = {
@@ -154,6 +155,8 @@ export interface QuestionDataI {
 
 export interface Answer {
   question: string;
+  question_image: string;
+  question_video: string;
   options: Options;
   description?: string;
 }

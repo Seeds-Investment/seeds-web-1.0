@@ -66,12 +66,12 @@ const TournamentDetail: React.FC = () => {
 
   const handleInvitationCode = async (): Promise<void> => {
     try {
-      // Validasi invitation code
       if (detailTournament?.is_need_invitation_code && invitationCode !== '') {
         const validationResponse = await validateInvitationCode(
           detailTournament?.id ?? '',
           invitationCode
         );
+
         if (!validationResponse.is_valid) {
           toast.error('Invalid invitation code');
           setValidInvit(false);
@@ -82,6 +82,39 @@ const TournamentDetail: React.FC = () => {
               id as string
             }/payment?invitationCode=${invitationCode}`
           );
+        }
+      }
+    } catch (error) {
+      toast.error('Error joining tournament');
+    }
+  };
+
+  const handleInvitationCodeFree = async (): Promise<void> => {
+    try {
+      if (detailTournament?.is_need_invitation_code && invitationCode !== '') {
+        const validationResponse = await validateInvitationCode(
+          detailTournament?.id ?? '',
+          invitationCode
+        );
+
+        if (!validationResponse.is_valid) {
+          toast.error('Invalid invitation code');
+          setValidInvit(false);
+        } else {
+          setValidInvit(true);
+          const response = await joinTournament(
+            detailTournament?.id ?? '',
+            userInfo?.preferredCurrency ?? '',
+            '',
+            '',
+            '',
+            '',
+            invitationCode ?? '',
+            false
+          );
+          if (response) {
+            router.push(`/play/tournament/${id as string}/home`);
+          }
         }
       }
     } catch (error) {
@@ -387,7 +420,11 @@ const TournamentDetail: React.FC = () => {
                   router.push(`/play/tournament/${id as string}/home`);
                 } else {
                   if (detailTournament?.admission_fee === 0) {
-                    await handleJoinFreeTournament();
+                    if (invitationCode === '') {
+                      await handleJoinFreeTournament();
+                    } else {
+                      handleInvitationCodeFree();
+                    }
                   } else {
                     if (invitationCode === '' && !validInvit) {
                       router.push(`/play/tournament/${id as string}/payment`);
@@ -400,7 +437,7 @@ const TournamentDetail: React.FC = () => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth');
+                router.push('/auth2');
               } else {
                 withRedirect(router, { quizId: id as string }, '/auth');
               }

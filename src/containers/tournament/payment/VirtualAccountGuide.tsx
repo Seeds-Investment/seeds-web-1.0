@@ -134,18 +134,19 @@ const VirtualAccountGuide = ({
       <InlineText
         label={t(`${translationsId}.adminFeeLabel`)}
         value={`IDR ${adminFee}`}
+        className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`IDR ${promoPrice}`}
+          value={`- IDR ${promoPrice}`}
           className="mb-2"
         />
       ) : null}
       {promoCodeValidationResult !== undefined ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`IDR ${
+          value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount ?? 0
           }`}

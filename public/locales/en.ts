@@ -1730,6 +1730,12 @@ export default {
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
     vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    questionLevel: "Question Level",
+    easy: "Easy",
+    medium: "Medium",
+    hard: "Hard",
+    questionDescription1: "You will do",
+    questionDescription2: "questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!",
     incorrect: 'Incorrect',
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',

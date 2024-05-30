@@ -401,12 +401,12 @@ const Player = (): React.ReactElement => {
             </div>
           )}
 
-          <div className="w-full my-5 h-auto cursor-default">
+          <div className="w-full my-5 h-auto cursor-pointer">
             <Slider {...sliderSettings}>
               {bannerAsset.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[826px] relative h-[249px]"
+                  className="w-full lg:w-[828px] relative h-fit lg:h-[249px]"
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)
@@ -417,11 +417,8 @@ const Player = (): React.ReactElement => {
                     className="object-cover w-full"
                     src={asset.banner}
                     alt={asset.name}
-                    width={826}
+                    width={828}
                     height={249}
-                    // onClick={async () => {
-                    //   await router.push(asset.external_url);
-                    // }}
                   />
                 </div>
               ))}

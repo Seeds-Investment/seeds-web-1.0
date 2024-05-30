@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { type Ballance } from '../play-assets';
+import { type Ballance } from '../index';
 
 interface ChartData {
   labels: string[];

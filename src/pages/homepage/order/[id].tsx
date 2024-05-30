@@ -16,6 +16,7 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import {
   Avatar,
   Button,
@@ -30,7 +31,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type Ballance } from '../play-assets';
+import { type Ballance } from '../play/[id]';
 
 export interface typeLimitOrder {
   type: string;
@@ -136,7 +137,7 @@ const OrderPage: React.FC = () => {
     }
   }, [amount, assetAmount]);
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -213,10 +214,6 @@ const OrderPage: React.FC = () => {
   const handleModalSuccess = (): void => {
     setModalSuccess(!modalSuccess);
   };
-
-  // const handleChangeOrder = (val: string): void => {
-  //   setOrderType(val);
-  // };
 
   const [params] = useState({
     tf: 'daily'
@@ -402,7 +399,7 @@ const OrderPage: React.FC = () => {
                 router.query?.transaction === 'buy'
                   ? ballance?.balance
                   : portfolio.total_lot * data?.lastPrice?.open
-              ).replace('Rp', userInfo?.preferredCurrency)}`}{' '}
+              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot} ${data?.realTicker as string}`}
             </Typography>
@@ -842,7 +839,7 @@ const OrderPage: React.FC = () => {
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.profit) * 100} %`
                                   : `${
-                                      userInfo.preferredCurrency as string
+                                      userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
                                       limitOrder.profit
                                     ).replace('Rp', '')}`}
@@ -856,7 +853,7 @@ const OrderPage: React.FC = () => {
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.loss) * 100} %`
                                   : `${
-                                      userInfo.preferredCurrency as string
+                                      userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
                                       limitOrder.loss
                                     ).replace('Rp', '')}`}
@@ -879,7 +876,7 @@ const OrderPage: React.FC = () => {
                         <Typography className="text-[#3AC4A0] font-semibold text-xs">
                           {standartCurrency(amount).replace(
                             'Rp',
-                            userInfo?.preferredCurrency
+                            userInfo?.preferredCurrency ?? 'IDR'
                           )}
                         </Typography>
                       </div>

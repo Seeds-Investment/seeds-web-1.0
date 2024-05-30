@@ -1,6 +1,6 @@
 import { standartCurrency } from '@/helpers/currency';
 import { capitalizeFirstLetter } from '@/helpers/text';
-import { type HistoryTransactionDTO } from '@/pages/homepage/cash-balance/[id]';
+import { type HistoryTransactionDTO } from '@/pages/homepage/play/[id]/virtual-balance';
 import LanguageContext from '@/store/language/language-context';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import moment from 'moment';

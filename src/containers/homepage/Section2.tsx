@@ -416,7 +416,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
               className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
               onClick={() => {
                 router
-                  .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
+                  .push(`/homepage/play/${playDetail.play_id}`)
                   .catch(err => {
                     toast(err, { type: 'error' });
                   });

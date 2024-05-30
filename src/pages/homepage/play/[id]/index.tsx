@@ -104,9 +104,11 @@ interface FilterSorting {
 export default function PlayAssetsPage(): React.ReactElement {
   const router = useRouter();
   const { t } = useTranslation();
-  const { playId } = router.query;
+  const { id } = router.query;
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [assets, setAssets] = useState<AssetItemType[]>([]);
+  const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
   const [ballance, setBallance] = useState<BallanceTournament>({
     balance: 0,
     portfolio: 0,
@@ -117,12 +119,14 @@ export default function PlayAssetsPage(): React.ReactElement {
     currency: 'IDR'
   });
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
-  const [metadata, setMetadata] = useState<Metadata>(initialMetadata);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [filter, setFilter] = useState<Filter>(initialFilter);
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const [loadingDetailTournament, setLoadingDetailTournament] = useState<boolean>(false);
+  const [loadingBalance, setLoadingBalance] = useState<boolean>(false);
+  const [loadingAssets, setLoadingAssets] = useState<boolean>(false);
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showFilter, setShowFilter] = useState<boolean>(false);
+  const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
@@ -131,14 +135,6 @@ export default function PlayAssetsPage(): React.ReactElement {
   const [assetActiveType, setAssetActiveType] = useState(
     TypeFilter.ALL
   );
-
-  const handleShowFilters = (): void => {
-    setShowFilter(!showFilter);
-  };
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchQuery(event.target.value);
-  };
 
   const filterSorting: FilterSorting[] = [
     {
@@ -181,61 +177,26 @@ export default function PlayAssetsPage(): React.ReactElement {
     }
   ];
 
-  const fetchDataAssets = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-
-      const response = await getMarketList({
-        ...filter,
-        search: searchQuery,
-        sort_by: assetActiveSort,
-        type: assetActiveType
-      });
-      if (response.result === null) {
-        setAssets([]);
-      } else {
-        setAssets(response.marketAssetList);
-        setMetadata(response.metadata);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-      setIsLoading(false);
-    }
+  const handleShowFilters = (): void => {
+    setShowFilter(!showFilter);
   };
-  
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchQuery(event.target.value);
+  };
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
   }, []);
 
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
-    try {
-      const response = await getPlayBallance(playId as string, { currency });
-      setBallance(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
   useEffect(() => {
-    if (playId !== undefined && userInfo !== undefined) {
-      void fetchDetailTournament();
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchDetailTournament(id as string);
       void fetchPlayBallance(userInfo.preferredCurrency ?? 'IDR');
     }
-  }, [playId, userInfo]);
+  }, [id, userInfo]);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -257,16 +218,59 @@ export default function PlayAssetsPage(): React.ReactElement {
       });
     }
   }, [filter, userInfo, assetActiveSort, assetActiveType, searchQuery]);
-
-  const fetchDetailTournament = async (): Promise<void> => {
+  
+  const fetchData = async (): Promise<void> => {
     try {
-      setLoading(true);
-      const resp: IDetailTournament = await getPlayById(playId as string);
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchDataAssets = async (): Promise<void> => {
+    try {
+      setLoadingAssets(true);
+      const response = await getMarketList({
+        ...filter,
+        search: searchQuery,
+        sort_by: assetActiveSort,
+        type: assetActiveType
+      });
+      if (response.result === null) {
+        setAssets([]);
+      } else {
+        setAssets(response.marketAssetList);
+        setMetadata(response.metadata);
+      }
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoadingAssets(false);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      setLoadingBalance(true);
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setLoadingBalance(false);
+    }
+  };
+
+  const fetchDetailTournament = async (id: string): Promise<void> => {
+    try {
+      setLoadingDetailTournament(true);
+      const resp: IDetailTournament = await getPlayById(id);
       setDetailTournament(resp);
     } catch (error) {
       toast(`Error fetch detail tournament ${error as string}`);
     } finally {
-      setLoading(false);
+      setLoadingDetailTournament(false);
     }
   };
 
@@ -277,9 +281,12 @@ export default function PlayAssetsPage(): React.ReactElement {
       toast('Play ID copied!');
     });
   };
-
   return (
     <>
+      {detailTournament === undefined ||
+        loadingDetailTournament ||
+        loadingAssets ||
+        loadingBalance ? <Loading /> : ''}
       {isDetailModal && (
         <ModalDetailTournament
           onClose={() => {
@@ -294,14 +301,11 @@ export default function PlayAssetsPage(): React.ReactElement {
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
         />
       )}
-      {detailTournament === undefined &&
-        loading &&
-        isLoading && <Loading />}
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         
         {/* Tournament Details */}
         <div className="flex justify-start w-full gap-2">
-          <Typography className="text-xl font-semibold">
+          <Typography className="text-xl xl:text-2xl font-semibold">
             {detailTournament?.name ?? 'Play Simulation'}
           </Typography>
           <Image
@@ -363,7 +367,7 @@ export default function PlayAssetsPage(): React.ReactElement {
             <div
               onClick={async () =>
                 await router
-                  .push(`/homepage/portfolio/${playId as string}`)
+                  .push(`/homepage/play/${id as string}/portfolio`)
                   .catch(err => {
                     toast.error(`${err as string}`);
                   }
@@ -385,7 +389,7 @@ export default function PlayAssetsPage(): React.ReactElement {
             <div
               onClick={async () =>
                 await router
-                  .push(`/homepage/cash-balance/${playId as string}`)
+                  .push(`/homepage/play/${id as string}/virtual-balance`)
                   .catch(err => {
                     toast.error(`${err as string}`);
                   })
@@ -405,7 +409,7 @@ export default function PlayAssetsPage(): React.ReactElement {
             </div>
             <div
               onClick={async () =>
-                await router.push(`/play/tournament/${playId as string}/watchlist`)
+                await router.push(`/homepage/play/${id as string}/watchlist`)
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
@@ -453,7 +457,7 @@ export default function PlayAssetsPage(): React.ReactElement {
             className="w-[60px] md:w-[80px] xl:ml-8"
           />
           <div
-            onClick={async () => await router.push(`/play/tournament/${playId as string}/leaderboard`)}
+            onClick={async () => await router.push(`/play/tournament/${id as string}/leaderboard`)}
             className="w-full lg:flex lg:justify-between ml-2 z-10"
           >
             <div className="flex flex-col justify-center items-start text-sm lg:text-lg text-white z-10">
@@ -482,7 +486,7 @@ export default function PlayAssetsPage(): React.ReactElement {
 
         {/* Market List */}
         <div className="w-full mt-4 relative">
-          <FloatingButton id={playId as string} />
+          <FloatingButton id={id as string} />
           <Typography className="text-xl font-semibold text-[#3AC4A0]">
             {t('playSimulation.assetList')}
           </Typography>
@@ -555,7 +559,7 @@ export default function PlayAssetsPage(): React.ReactElement {
           )}
 
           {/* Asset Card */}
-          {!isLoading ? (
+          {!loadingAssets ? (
             assets !== null ? (
               <>
                 {assets?.map((data, index) => (
@@ -565,8 +569,8 @@ export default function PlayAssetsPage(): React.ReactElement {
                       await router
                         .push(
                           `${
-                            playId !== undefined
-                              ? `/homepage/assets/${data.id}?playId=${playId as string}`
+                            id !== undefined
+                              ? `/homepage/assets/${data.id}?playId=${id as string}`
                               : `/homepage/assets/${data.id}`
                           }`
                         )

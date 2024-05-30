@@ -308,9 +308,9 @@ const QuizDetail = (): React.ReactElement => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth2');
+                router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth2');
+                withRedirect(router, { quizId: id as string }, '/auth');
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${

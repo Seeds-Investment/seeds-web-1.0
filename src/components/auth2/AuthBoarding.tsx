@@ -22,7 +22,7 @@ const AuthBoarding: React.FC<Props> = ({ className }: Props) => {
     <div className={`flex flex-col items-center gap-8 ${className}`}>
       <Button
         onClick={async () => {
-          await withRedirect(router, router.query, '/auth2/guest');
+          await withRedirect(router, router.query, '/auth/guest');
         }}
         className="font-semibold font-poppins text-base text-[#3AC4A0] bg-white border border-2 border-[#3AC4A0] rounded-full normal-case p-3.5 sm:px-20 sm:w-full w-full"
       >
@@ -37,7 +37,7 @@ const AuthBoarding: React.FC<Props> = ({ className }: Props) => {
       </Typography>
       <Button
         onClick={async () => {
-          await withRedirect(router, router.query, '/auth2/verification');
+          await withRedirect(router, router.query, '/auth/verification');
         }}
         className="font-semibold font-poppins text-base text-white bg-[#3AC4A0] rounded-full normal-case p-3.5 sm:px-20 sm:w-full w-full"
       >

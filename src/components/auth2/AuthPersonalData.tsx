@@ -144,7 +144,7 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
         onClick={async () => {
           if (data !== null && data !== undefined) {
             setFormData({ ...formData, name: '', seedsTag: '' });
-            await withRedirect(router, router.query, '/auth2');
+            await withRedirect(router, router.query, '/auth');
             await signOut();
           } else {
             router.back();

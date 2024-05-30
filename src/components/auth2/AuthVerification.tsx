@@ -237,7 +237,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
           )}
         </Typography>
       </div>
-      <Link href={'/auth2/forgot-password'} className="self-end">
+      <Link href={'/auth/forgot-password'} className="self-end">
         <Typography className="flex font-poppins font-semibold text-xs text-[#3AC4A0] ">
           {t('authLogin.forgotPass')}
         </Typography>

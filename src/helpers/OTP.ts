@@ -84,7 +84,7 @@ export const handleOTP = async (
   // Core logic after OTP
   if (localStorage.getItem('accessToken') !== null) {
     await editVerifyOtp(verifyOTP);
-    if (window.location.pathname === '/auth2/change-phone-number') {
+    if (window.location.pathname === '/auth/change-phone-number') {
       router.back();
     }
   } else if (guest === 'guest-login') {

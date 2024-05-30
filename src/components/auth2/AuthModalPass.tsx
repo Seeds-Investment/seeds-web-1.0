@@ -33,7 +33,7 @@ const AuthModalPass: React.FC<Props> = ({ open, handleOpen }: Props) => {
             {t('authForgotPass.modal.title2')}
           </Typography>
         </div>
-        <Link href={'/auth2/verification'} className="w-full">
+        <Link href={'/auth/verification'} className="w-full">
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleOpen}

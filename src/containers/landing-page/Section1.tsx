@@ -152,7 +152,7 @@ export default function Section1(): React.ReactElement {
             <Button
               className="text-xs lg:absolute z-10 lg:mb-20 px-20 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
               onClick={() => {
-                void router.push('/auth2');
+                void router.push('/auth');
               }}
             >
               {t('landingV2.section1.text6')}

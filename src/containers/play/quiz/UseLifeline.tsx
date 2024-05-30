@@ -327,10 +327,10 @@ const Vote = ({
                   ].options.option_1.option !== ''
                     ? quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].options.option_1.option
+                      ].options.option_1.option ?? ''
                     : quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].option_image.option_1.option
+                      ].option_image.option_1.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
@@ -349,10 +349,10 @@ const Vote = ({
                   ].options.option_2.option !== ''
                     ? quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].options.option_2.option
+                      ].options.option_2.option ?? ''
                     : quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].option_image.option_2.option
+                      ].option_image.option_2.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
@@ -371,10 +371,10 @@ const Vote = ({
                   ].options.option_3.option !== ''
                     ? quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].options.option_3.option
+                      ].options.option_3.option ?? ''
                     : quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].option_image.option_3.option
+                      ].option_image.option_3.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
@@ -393,10 +393,10 @@ const Vote = ({
                   ].options.option_4.option !== ''
                     ? quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].options.option_4.option
+                      ].options.option_4.option ?? ''
                     : quizQuestions[currentPage]?.data[
                         i18n.language === 'id' ? 'id' : 'en'
-                      ].option_image.option_4.option
+                      ].option_image.option_4.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[

@@ -130,11 +130,17 @@ const WalletForm = ({
           value={phone}
           onChange={e => {
             let inputValue = e.target.value;
+            inputValue = inputValue.replace(/[^0-9]/g, '');
             if (inputValue.charAt(0) === '0') {
               inputValue = '8' + inputValue.slice(1);
             }
             setPhone(inputValue);
           }}
+          onPaste={e => {
+            e.preventDefault();
+            return false;
+          }}
+          maxLength={13}
         />
       </div>
     </div>

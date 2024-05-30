@@ -8,9 +8,7 @@ const relativeUrl = 'payment/v1';
 const paymentService = baseAxios(`${baseUrl}/${relativeUrl}`);
 
 export const getPaymentList = async (currency?: string): Promise<any> => {
-  return await paymentService.get(
-    `/payment/list?currency=${currency ?? 'IDR'}`
-  );
+  return await paymentService.get(`/payment/list?currency=${currency ?? ''}`);
 };
 
 export const getPaymentDetail = async (id: string): Promise<any> => {

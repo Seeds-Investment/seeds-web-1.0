@@ -378,7 +378,7 @@ const UniqueInputButton: React.FC<props> = ({
           </div>
         </div>
       </div>
-      <div className="sm:hidden flex justify-end mt-4">
+      {/* <div className="sm:hidden flex justify-end mt-4">
         <button
           type="submit"
           disabled={isEmpty || isError}
@@ -390,7 +390,7 @@ const UniqueInputButton: React.FC<props> = ({
         >
           Post
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

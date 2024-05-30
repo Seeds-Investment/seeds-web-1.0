@@ -10,10 +10,13 @@ import {
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 // import moment from 'moment';
+import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import { isGuest } from '@/helpers/guest';
-import { Button, Card, Typography } from '@material-tailwind/react';
+import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 export interface PlayInterface {
   id: string;
@@ -35,7 +38,7 @@ export interface PlayInterface {
   fee_percentage: number;
   winner: string | null;
   winner_percentage: number[];
-  participants: any[];
+  participants: Participants[];
   is_joined: boolean;
   created_by_user_id: string;
   created_by_admin_id: string;
@@ -44,20 +47,35 @@ export interface PlayInterface {
   updated_by: string;
 }
 
+interface Participants {
+  id: string;
+  label: string;
+  name: string;
+  photo_url: string;
+  seeds_tag: string;
+  total_lose: number;
+  total_play: number;
+  total_win: number;
+  verified: boolean;
+  win_rate: number;
+}
+
 export default function PlayPage(): React.ReactElement {
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>();
+  const [playId, setPlayId] = useState<string>();
   const [play, setPlay] = useState<PlayInterface[]>([]);
   const { t } = useTranslation();
+  const router = useRouter();
 
   const width = useWindowInnerWidth();
 
   async function fetchPlays(): Promise<void> {
     try {
       const response = await getTrendingPlayList();
-      console.log(response.data, 'play');
-
       setPlay(response.data);
     } catch (error) {
-      console.error('Error fetching circles:', error);
+      toast.error(`Error fetching circles: ${error as string}`);
     }
   }
 
@@ -67,12 +85,21 @@ export default function PlayPage(): React.ReactElement {
     };
 
     fetchData().catch(error => {
-      console.error('Error in fetchData:', error);
+      toast.error(`Error fetching data: ${error as string}`);
     });
   }, []);
 
   return (
     <>
+      {isShareModal && (
+        <ModalShareTournament
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={url ?? ''}
+          playId={playId ?? ''}
+        />
+      )}
       <div className="flex flex-wrap w-full">
         {play.length !== 0 &&
           play.slice(0, 3).map((data, idx) => (
@@ -197,7 +224,14 @@ export default function PlayPage(): React.ReactElement {
                       <Typography className="text-[#27A590] bg-[#DCFCE4] text-[8.47px] font-poppins py-[4.24px] px-1 rounded-[6.78px]">
                         {data.category}
                       </Typography>
-                      <div className="flex flex-row mx-2">
+                      <div
+                        onClick={() => {
+                          setIsShareModal(true);
+                          setUrl(data?.id ?? '')
+                          setPlayId(data?.play_id ?? '')
+                        }}
+                        className="flex flex-row mx-2"
+                      >
                         <ShareIcon
                           width={30}
                           height={30}
@@ -209,9 +243,28 @@ export default function PlayPage(): React.ReactElement {
                       </div>
                     </div>
 
-                    <Button className="bg-[#3AC4A0] font-semibold rounded-[593.17px] text-[8.47px] font-poppins text-[#FFFFFF] py-[6.78px] px-5">
+                    {/* <Button className="bg-[#3AC4A0] font-semibold rounded-[593.17px] text-[8.47px] font-poppins text-[#FFFFFF] py-[6.78px] px-5">
                       Open
-                    </Button>
+                    </Button> */}
+                    
+                    {
+                      data?.is_joined ?
+                        <div               
+                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                          onClick={async () => await router.push(`${data?.is_joined ? `/play/tournament/${data?.id}/home` : `/play/tournament/${data?.id}`}`).catch(error => {toast.error(error);})}
+                          className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                        >
+                          {t('tournament.tournamentCard.openButton')}
+                        </div>
+                        :
+                        <div
+                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                          onClick={async () => await router.push(`${data?.is_joined ? `/play/tournament/${data?.id}/home` : `/play/tournament/${data?.id}`}`).catch(error => {toast.error(error);})}
+                          className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                        >
+                          {t('tournament.tournamentCard.joinButton')}
+                        </div>
+                    }
                   </div>
                 </div>
               </Card>

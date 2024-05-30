@@ -13,7 +13,7 @@ const AssetPagination: React.FC<PaginationProps> = ({
   onPageChange
 }) => {
   const [inputPage, setInputPage] = useState(currentPage);
-  
+
   useEffect(() => {
     setInputPage(currentPage);
   }, [currentPage]);

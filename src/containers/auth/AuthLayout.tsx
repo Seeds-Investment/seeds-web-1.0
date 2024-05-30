@@ -1,7 +1,8 @@
 import AuthArrowDown from '@/assets/auth/AuthArrowDown.svg';
 import AuthGlobeLanguage from '@/assets/auth/AuthGlobeLanguage.svg';
 import SeedsLogo from '@/assets/landing-page/header/SeedsLogo.svg';
-import AuthCarousel from '@/components/auth/AuthCarousel';
+// import AuthCarousel from '@/components/auth/AuthCarousel';
+import AuthCarousel from '@/components/auth2/AuthCarousel';
 import Redirecting from '@/components/popup/Redirecting';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import LanguageContext from '@/store/language/language-context';
@@ -181,7 +182,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
             {elementChild}
           </div>
           <div className="bg-white w-full md:hidden p-[18px] rounded-t-[35px] h-full">
-            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px] ">
+            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[2px] ">
               <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
                 {formChild}
               </div>
@@ -198,7 +199,7 @@ const AuthLayout: React.FC<IAuthLayout> = ({
               className="md:flex justify-between hidden"
               menuClassName="md:flex hidden"
             />
-            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[1px]">
+            <div className="bg-gradient-to-t rounded-[19px] from-[#48C0ABB2] via-[#66B5C2B2] to-[#B798FFB2] p-[2px]">
               <div className="flex relative justify-center items-center bg-white w-full rounded-[19px]">
                 {formChild}
               </div>

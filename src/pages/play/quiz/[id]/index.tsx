@@ -5,7 +5,10 @@
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getQuizById } from '@/repository/quiz.repository';
+import {
+  getQuizById,
+  validateInvitationCode
+} from '@/repository/quiz.repository';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { ShareIcon } from '@heroicons/react/24/outline';
@@ -27,6 +30,7 @@ const QuizDetail = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<any>();
+  const [invitationCode, setInvitationCode] = useState<string>('');
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
@@ -59,6 +63,29 @@ const QuizDetail = (): React.ReactElement => {
       .then()
       .catch(() => {});
   }, []);
+
+  const handleInvitationCode = async (): Promise<void> => {
+    try {
+      if (detailQuiz?.is_need_invitation_code && invitationCode !== '') {
+        const validationResponse = await validateInvitationCode(
+          detailQuiz?.id ?? '',
+          invitationCode
+        );
+
+        if (!validationResponse.is_valid) {
+          toast.error('Invalid invitation code');
+        } else {
+          router.push(
+            `/play/quiz/${
+              id as string
+            }/welcome?invitationCode=${invitationCode}`
+          );
+        }
+      }
+    } catch (error) {
+      toast.error('Error joining tournament');
+    }
+  };
 
   const getDetail = useCallback(
     async (currency: string) => {
@@ -242,6 +269,19 @@ const QuizDetail = (): React.ReactElement => {
               <ShareIcon width={24} height={24} />
             </button>
           </div>
+          {detailQuiz?.is_need_invitation_code && (
+            <div>
+              <input
+                type="text"
+                value={invitationCode}
+                onChange={e => {
+                  setInvitationCode(e.target.value);
+                }}
+                placeholder="Invitation Code"
+                className="w-full border p-2 rounded-md mt-2"
+              />
+            </div>
+          )}
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
@@ -257,27 +297,37 @@ const QuizDetail = (): React.ReactElement => {
                 })}
           </div>
           <button
+            disabled={loading}
             onClick={() => {
               if (localStorage.getItem('accessToken') !== null) {
                 if (detailQuiz?.participant_status === 'JOINED') {
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/quiz/${id}/start`);
+                  router.push(`/play/quiz/${id as string}/start`);
                 } else {
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  router.push(`/play/quiz/${id}/welcome`);
+                  if (detailQuiz?.is_need_invitation_code) {
+                    handleInvitationCode();
+                  } else {
+                    router.push(`/play/quiz/${id as string}/welcome`);
+                  }
                 }
               } else if (
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth');
+                router.push('/auth2');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { quizId: id as string }, '/auth2');
               }
             }}
-            className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
+            className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${
+              invitationCode === '' &&
+              detailQuiz?.is_need_invitation_code === true
+                ? 'bg-[#7d7d7d]'
+                : 'bg-seeds-button-green text-white'
+            }`}
           >
-            {detailQuiz?.participant_status === 'JOINED'
+            {loading
+              ? t('quiz.loading')
+              : detailQuiz?.participant_status === 'JOINED'
               ? t('quiz.start')
               : t('quiz.join')}
           </button>

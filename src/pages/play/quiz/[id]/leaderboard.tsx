@@ -59,7 +59,7 @@ const LeaderBoardPage = (): React.ReactElement => {
         await withRedirect(
           router,
           { lead: 'true', quizId: id as string },
-          '/auth'
+          '/auth2'
         );
       }
       toast.error(t('landingPageV2.redirectError'));

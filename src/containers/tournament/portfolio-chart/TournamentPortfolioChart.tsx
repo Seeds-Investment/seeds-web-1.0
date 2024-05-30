@@ -34,7 +34,7 @@ const TournamentPortfolioChart: React.FC<Props> = ({
     { asset_ticker: 'PRO', percentage: 45 },
     { asset_ticker: 'TKO', percentage: 30 }
   ];
-  
+
   const COLORS = [
     '#F44336',
     '#E81E63',
@@ -85,8 +85,13 @@ const TournamentPortfolioChart: React.FC<Props> = ({
           </Pie>
         </PieChart>
         <div className="mt-4 flex flex-col justify-center items-center absolute top-[110px] font-poppins">
-          <div className="text-[#BDBDBD] text-md">{t('tournament.assets.portfolio')}</div>
-          <div className="font-semibold text-md">{currency !== undefined ? currency : 'IDR'}{standartCurrency(ballance).replace('Rp', '')}</div>
+          <div className="text-[#BDBDBD] text-md">
+            {t('tournament.assets.portfolio')}
+          </div>
+          <div className="font-semibold text-md">
+            {currency !== undefined ? currency : 'IDR'}
+            {standartCurrency(ballance).replace('Rp', '')}
+          </div>
         </div>
       </div>
       <div className="hidden md:flex w-full mt-0 justify-center items-center relative">
@@ -112,8 +117,13 @@ const TournamentPortfolioChart: React.FC<Props> = ({
           </Pie>
         </PieChart>
         <div className="mt-4 flex flex-col justify-center items-center absolute top-[160px] font-poppins">
-          <div className="text-[#BDBDBD] text-md">{t('tournament.assets.portfolio')}</div>
-          <div className="font-semibold text-md">{currency !== undefined ? currency : 'IDR'}{standartCurrency(ballance).replace('Rp', '')}</div>
+          <div className="text-[#BDBDBD] text-md">
+            {t('tournament.assets.portfolio')}
+          </div>
+          <div className="font-semibold text-md">
+            {currency !== undefined ? currency : 'IDR'}
+            {standartCurrency(ballance).replace('Rp', '')}
+          </div>
         </div>
       </div>
       <div className="w-full xl:w-[80%] mt-4 md:mt-0 mb-4 flex flex-wrap gap-4 justify-center items-center">
@@ -129,7 +139,7 @@ const TournamentPortfolioChart: React.FC<Props> = ({
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TournamentPortfolioChart
+export default TournamentPortfolioChart;

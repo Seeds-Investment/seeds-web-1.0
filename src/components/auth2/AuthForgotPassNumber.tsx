@@ -1,3 +1,4 @@
+import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
 import {
   handleChangePhoneNumber,
@@ -6,8 +7,9 @@ import {
 import { handleGetOTP } from '@/helpers/OTP';
 import { checkPhoneNumber } from '@/repository/auth.repository';
 import type { AuthForgotPassNumberI } from '@/utils/interfaces/auth.interface';
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Spinner, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -26,23 +28,44 @@ const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
   otpForm,
   setOTPForm
 }: AuthForgotPassNumberI) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const [error, setError] = useState<boolean>(false);
+  const [blank, setBlank] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const formattedData = handleFormattedData(otpForm, country);
+  console.log(formattedData);
 
   const handleNext = async (): Promise<void> => {
     try {
+      setLoading(true);
+      if (
+        formattedData.phoneNumber.length ===
+        countries[country].dialCode.replace('+', '').length
+      ) {
+        setBlank(true);
+        setError(true);
+        throw new Error();
+      }
       const response = await checkPhoneNumber(formattedData.phoneNumber);
       if (response === undefined) {
         setError(true);
       }
     } catch (error: any) {
-      toast(error, { type: 'error' });
       if (
-        error.response.data.message === 'requested phone number already exists'
+        error?.response?.data?.message !==
+        'requested phone number already exists'
+      ) {
+        toast.error(error?.response?.data?.message);
+      }
+      if (
+        error?.response?.data?.message ===
+        'requested phone number already exists'
       ) {
         await handleGetOTP(method, setCountdown, setSelect, formattedData);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -58,11 +81,19 @@ const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-5 top-5 cursor-pointer"
+        onClick={() => {
+          router.back();
+        }}
+      />
+      <Image
         src={SeedyAuthPass}
         alt="SeedyAuthPass"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
+      <Typography className="w-full font-poppins font-normal md:text-xl text-sm text-[#7C7C7C] pt-10 md:p-0">
         <span className="font-poppins font-semibold md:text-2xl text-base text-[#050522]">
           {t('authForgotPass.title1')}
         </span>
@@ -87,15 +118,21 @@ const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
           }}
         />
         <Typography className="font-poppins font-light text-sm text-[#DD2525] self-start ps-4">
-          {error ? t('authForgotPass.validation.number') : <br />}
+          {blank && error ? (
+            t('authLogin.validation.blank')
+          ) : error ? (
+            t('authForgotPass.validation.number')
+          ) : (
+            <br />
+          )}
         </Typography>
       </div>
       <Button
         onClick={handleNext}
-        disabled={formData.phoneNumber.length === 0}
+        disabled={isLoading}
         className="flex justify-center font-semibold font-poppins text-base text-white capitalize bg-[#3AC4A0] disabled:bg-[#BDBDBD] rounded-full w-full"
       >
-        {t('authLogin.next')}
+        {isLoading ? <Spinner className=" h-6 w-6" /> : t('authLogin.next')}
       </Button>
     </div>
   );

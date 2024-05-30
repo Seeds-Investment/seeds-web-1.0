@@ -52,8 +52,9 @@ const AuthGuest: React.FC<AuthGuestI> = ({
     } catch (error: any) {
       setGuest('guest-login');
       await handleGetOTP(method, setCountdown, setSelect, formattedData);
-
-      toast(error.response.data.message, { type: 'error' });
+      if (guest !== 'guest-login') {
+        toast.error(error.response.data.message);
+      }
     }
   };
 

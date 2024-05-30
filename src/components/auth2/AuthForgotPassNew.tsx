@@ -1,3 +1,4 @@
+import Backward from '@/assets/auth/Backward.svg';
 import Info from '@/assets/auth/Info.png';
 import SeedyLock from '@/assets/auth/SeedyLock.png';
 import AuthPassword from '@/components/auth2/AuthPassword';
@@ -5,6 +6,7 @@ import { forgotPassword } from '@/repository/auth.repository';
 import type { AuthForgotPassNewI } from '@/utils/interfaces/auth.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -15,6 +17,7 @@ const AuthForgotPassNew: React.FC<AuthForgotPassNewI> = ({
   setFormData,
   handleOpen
 }: AuthForgotPassNewI) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
@@ -53,11 +56,19 @@ const AuthForgotPassNew: React.FC<AuthForgotPassNewI> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-5 top-5 cursor-pointer"
+        onClick={() => {
+          router.back();
+        }}
+      />
+      <Image
         src={SeedyLock}
         alt="SeedyLock"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authForgotPass.title3')}
         </span>

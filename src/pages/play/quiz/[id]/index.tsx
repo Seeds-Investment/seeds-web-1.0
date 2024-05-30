@@ -26,10 +26,6 @@ import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
-interface IAmountCoin {
-  total_available_coins: number;
-}
-
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
@@ -43,7 +39,18 @@ const QuizDetail = (): React.ReactElement => {
     window.localStorage.getItem('expiresAt') as string
   );
   const [useCoins, setUseCoins] = useState<boolean>(false);
-  const [amountCoins, setAmountCoins] = useState<IAmountCoin>();
+  const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+
+  const handleGetSeedsCoin = async (): Promise<void> => {
+    try {
+      const dataCoins = await getTransactionSummary();
+      setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
+    } catch (error: any) {
+      toast.error(
+        `Error get data coins: ${error.response.data.message as string}`
+      );
+    }
+  };
 
   useEffect(() => {
     if (
@@ -59,10 +66,7 @@ const QuizDetail = (): React.ReactElement => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-        const dataCoins = await getTransactionSummary();
-
         setUserInfo(dataInfo);
-        setAmountCoins(dataCoins.data);
       } catch (error: any) {
         toast.error(
           `Error fetching data: ${error.response.data.message as string}`
@@ -120,6 +124,7 @@ const QuizDetail = (): React.ReactElement => {
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+      handleGetSeedsCoin();
     }
   }, [id, userInfo]);
 
@@ -312,11 +317,14 @@ const QuizDetail = (): React.ReactElement => {
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
               <div className="text-xs text-[#7C7C7C]">
-                Redeem {amountCoins?.total_available_coins ?? 0} Seeds Coin
+                {totalAvailableCoins > 0
+                  ? `Redeem ${totalAvailableCoins} seeds coin`
+                  : `Coin cannot be redeemed`}
               </div>
             </div>
             <div>
               <Switch
+                disabled={totalAvailableCoins <= 0}
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);

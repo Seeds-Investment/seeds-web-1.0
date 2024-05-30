@@ -47,10 +47,14 @@ export interface Payment {
 interface props {
   dataPost?: any;
   monthVal?: string;
-  invitationCode?:string
+  invitationCode?: string;
 }
 
-const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): JSX.Element => {
+const PaymentList: React.FC<props> = ({
+  dataPost,
+  monthVal,
+  invitationCode
+}): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -59,7 +63,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): J
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);  
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
 
   const fetchPaymentList = async (): Promise<void> => {
     try {

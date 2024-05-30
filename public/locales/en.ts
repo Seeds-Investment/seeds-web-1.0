@@ -658,14 +658,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Login',
-    guest2: ' as ',
-    guest3: 'Guest',
+    guest: 'Login as Guest',
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
-    login: 'Login',
-    signup: 'Sign up',
-    or: ' or '
+    login: 'Login or Sign up'
   },
   authLogin: {
     title1: 'Let’s Input!',
@@ -1098,7 +1094,7 @@ export default {
       tnc: {
         label: 'I agree with the Terms and Conditions*',
         error: 'Make sure you agree with the terms and condition'
-      },
+      }
     },
     typePopUp: {
       title: 'Membership Types',
@@ -1219,7 +1215,7 @@ export default {
     },
     payment: {
       paymentMethod: 'Payment Method',
-      virtualNumber: "Your Virtual Account Number",
+      virtualNumber: 'Your Virtual Account Number',
       pendingPaidCircle: 'Pending Paid Membership',
       circleFee: 'Membership Fee',
       adminFee: 'Admin Fee',
@@ -1228,11 +1224,13 @@ export default {
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close',
-      paymentSuccessful: "Successful",
-      paymentSuccessDescription: "Your premium circle payment has been successfully processed",
-      paymentFailed: "Payment Failed",
-      paymentFailedDescription: "We can’t process your payment, Check your internet connection and try again.",
-      paymentFailedWarning: "Payment Failed Circle Premium",
+      paymentSuccessful: 'Successful',
+      paymentSuccessDescription:
+        'Your premium circle payment has been successfully processed',
+      paymentFailed: 'Payment Failed',
+      paymentFailedDescription:
+        'We can’t process your payment, Check your internet connection and try again.',
+      paymentFailedWarning: 'Payment Failed Circle Premium'
     }
   },
   articleList: {
@@ -1545,7 +1543,7 @@ export default {
       'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
     payment: {
       paymentMethod: 'Payment Method',
-      virtualNumber: "Your Virtual Account Number",
+      virtualNumber: 'Your Virtual Account Number',
       pendingPaidSocial: 'Pending Paid Post',
       socialFee: 'Content Premium',
       adminFee: 'Admin Fee',
@@ -1554,8 +1552,8 @@ export default {
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close',
-      paymentSuccessful: "Successful",
-      recurringSaved: "Your recurring has been saved!",
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
     }
   },
   landingV2: {
@@ -1887,7 +1885,7 @@ export default {
     text2: 'Check out the latest rankings for top quizzes!',
     payment: {
       paymentMethod: 'Payment Method',
-      virtualNumber: "Your Virtual Account Number",
+      virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
       lifelinesFee: 'Lifeline Fee',
@@ -1897,8 +1895,8 @@ export default {
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close',
-      paymentSuccessful: "Successful",
-      recurringSaved: "Your recurring has been saved!",
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
     }
   },
   tournament: {
@@ -2075,7 +2073,7 @@ export default {
     },
     payment: {
       paymentMethod: 'Payment Method',
-      virtualNumber: "Your Virtual Account Number",
+      virtualNumber: 'Your Virtual Account Number',
       pendingPaidTournament: 'Pending Paid Tournament',
       tournamentFee: 'Tournament Fee',
       adminFee: 'Admin Fee',
@@ -2084,9 +2082,9 @@ export default {
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close',
-      successful: "Successful",
-      pending: "Pending Paid Tournament",
-      recurringSaved: "Your recurring has been saved!",
+      successful: 'Successful',
+      pending: 'Pending Paid Tournament',
+      recurringSaved: 'Your recurring has been saved!'
     }
   },
   seedsEvent: {

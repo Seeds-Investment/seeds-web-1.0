@@ -126,8 +126,7 @@ const Player = (): React.ReactElement => {
       )}
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl">
         <div className="bg-white w-full h-auto font-poppins my-4">
-          <div className="w-full h-auto justify-center text-center font-poppins my-4">
-          </div>
+          <div className="w-full h-auto justify-center text-center font-poppins my-4"></div>
 
           <div className="bg-white rounded-lg p-0 lg:p-5">
             <div className="flex justify-center items-center gap-2">

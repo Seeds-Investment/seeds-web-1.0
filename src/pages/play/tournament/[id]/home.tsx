@@ -376,9 +376,9 @@ const TournamentHome: React.FC = () => {
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
               {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
-              {` (${
-                ballance?.return_value < 0 ? '' : '+'
-              }${(ballance?.return_percentage ?? 0).toFixed(2)}%)`}
+              {` (${ballance?.return_value < 0 ? '' : '+'}${(
+                ballance?.return_percentage ?? 0
+              ).toFixed(2)}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
               {`${t('tournament.assets.virtualBalance')}: `}
@@ -454,21 +454,20 @@ const TournamentHome: React.FC = () => {
             <div className="text-lg font-semibold">
               {t('tournament.detailRemaining')}
             </div>
-            {
-              detailTournament?.end_time !== undefined ?
-                <CountdownTimer
-                  className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
-                  deadline={
-                    detailTournament?.end_time
-                      ? detailTournament.end_time.toString()
-                      : ''
-                  }
-                />
-                :
-                <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
-                  Loading...
-                </Typography>
-            }
+            {detailTournament?.end_time !== undefined ? (
+              <CountdownTimer
+                className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
+                deadline={
+                  detailTournament?.end_time
+                    ? detailTournament.end_time.toString()
+                    : ''
+                }
+              />
+            ) : (
+              <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
+                Loading...
+              </Typography>
+            )}
           </div>
         </div>
         <div className="bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4">

@@ -146,7 +146,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     } catch (error) {
       toast(`ERROR fetch user info ${error as string}`);
     }
-  };  
+  };
 
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
@@ -163,7 +163,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   useEffect(() => {
     void fetchPaymentList();
   }, [userInfo?.preferredCurrency]);
-  
 
   const getDetail = useCallback(async () => {
     try {

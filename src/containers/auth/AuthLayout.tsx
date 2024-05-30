@@ -151,13 +151,11 @@ const AuthLayout: React.FC<IAuthLayout> = ({
       localStorage.getItem('accessToken') !== null &&
       parseInt(localStorage.getItem('expiresAt') as string) > Date.now() / 1000
     ) {
-      if (window.location.pathname !== '/auth2/change-phone-number') {
-        router
-          .push('/homepage')
-          .then()
-          .catch(() => {});
-        handleRedirecting();
-      }
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleRedirecting();
     } else {
       localStorage.removeItem('accessToken');
     }

@@ -224,7 +224,7 @@ export const getTrendingPlayList = async (): Promise<any> => {
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-
+    
     return await playService.get(`/trending`, {
       headers: {
         Accept: 'application/json',
@@ -336,6 +336,7 @@ export const createOrderPlay = async (
 export const getOperOrderList = async (
   id: string,
   params: { currency: string }
+
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -356,9 +357,11 @@ export const getOperOrderList = async (
 };
 
 export const cancelOrderList = async (
+ 
   playId: string,
-
+ 
   orderId: string
+
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -412,9 +415,7 @@ export const getActiveAsset = async (params: AssetParams): Promise<any> => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-    }, timeoutDuration);
+    const timeoutId = setTimeout(() => { controller.abort(); }, timeoutDuration);
 
     const response = await playService(`/assets/active`, {
       params,

@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import DropdownPhone from '@/assets/my-profile/editProfile/DropdownPhone.svg';
-import { type AuthNumberI } from '@/utils/interfaces/auth.interface';
 import {
   Button,
   Input,
@@ -13,26 +12,38 @@ import {
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
-const AuthNumber = <T extends Record<string, any>>({
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+interface IAuthNumber {
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dialCode: string
+  ) => void;
+  formData: string;
+  name: string;
+  country: number;
+  setCountry: (index: number) => void;
+  countries: Country[];
+  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
+const AuthNumber: React.FC<IAuthNumber> = ({
   handleChange,
   formData,
-  setFormData,
   name,
   country,
   countries,
   setCountry,
-  handleSubmit,
-  error,
-  setError
-}: AuthNumberI<T>): JSX.Element => {
+  handleSubmit
+}: IAuthNumber) => {
   const { t } = useTranslation();
   return (
     <div
-      className={`rounded-xl p-[2px] h-full w-full ${
-        error === true
-          ? 'bg-[#FF3838]'
-          : 'bg-gradient-to-l from-[#97A4E7] to-[#47C0AA]'
-      }`}
+      className={`rounded-xl p-[2px] h-full w-full bg-gradient-to-l from-[#97A4E7] to-[#47C0AA]`}
     >
       <div className="relative flex justify-center items-center bg-white border-none w-full rounded-[10px] h-full">
         <Menu placement="top-start">
@@ -59,7 +70,7 @@ const AuthNumber = <T extends Record<string, any>>({
           <MenuList className="max-h-[20rem] max-w-[18rem] ">
             {countries
               .sort((a: any, b: any) => a.name.localeCompare(b.name))
-              .map(({ name, code }: any, index: number) => {
+              .map(({ name, code }: any, index: any) => {
                 return (
                   <MenuItem
                     key={name}
@@ -91,21 +102,16 @@ const AuthNumber = <T extends Record<string, any>>({
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={13}
-          value={formData.phoneNumber}
+          value={formData}
           onKeyDown={handleSubmit}
           onPaste={e => {
             e.preventDefault();
             return false;
           }}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            if (setError !== undefined) {
-              setError(false);
-            }
+          onChange={() => {
             handleChange(
-              e,
-              countries[country].dialCode.replace('+', ''),
-              formData,
-              setFormData
+              event as any,
+              countries[country].dialCode.replace('+', '')
             );
           }}
           required

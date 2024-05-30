@@ -15,17 +15,7 @@ import { deleteWatchlist, getWatchlist } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  Menu,
-  MenuHandler,
-  MenuItem,
-  MenuList,
-  Typography
-} from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, DialogFooter, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -59,7 +49,7 @@ const TournamentHome: React.FC = () => {
   const [watchlistParams, setWatchlistParams] = useState({
     page: 1,
     startIndex: 0,
-    endIndex: 8
+    endIndex: 8,
   });
 
   useEffect(() => {
@@ -86,19 +76,19 @@ const TournamentHome: React.FC = () => {
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
       const response = await getWatchlist({ play_id: id as string });
-      setWatchlist(response?.listWatchlist);
+      setWatchlist(response?.listWatchlist)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
-
+  
   const handleOpenDelete = (value: boolean): void => {
     setDeletePost(value);
   };
-
+  
   const handleOpenEdit = (data: Watchlist): void => {
     setIsEditModal(true);
-    setEditedWatchlist(data);
+    setEditedWatchlist(data)
   };
 
   const handleSubmitDeleteWatchlist = async (): Promise<void> => {
@@ -107,9 +97,9 @@ const TournamentHome: React.FC = () => {
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      handleOpenDelete(false);
-      setDeletedWatchlist('');
-      setIsDeleted(!isDeleted);
+      handleOpenDelete(false)
+      setDeletedWatchlist('')
+      setIsDeleted(!isDeleted)
     }
   };
 
@@ -134,84 +124,74 @@ const TournamentHome: React.FC = () => {
         />
       )}
 
-      <div className="w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+      <div className='w-full flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white'>
+        
         {/* Page Title */}
-        <div className="flex justify-start w-full">
-          <Typography className="text-xl font-semibold">
+        <div className='flex justify-start w-full'>
+          <Typography className='text-xl font-semibold'>
             {t('tournament.watchlist.watchlist')}
           </Typography>
         </div>
-
+        
         {/* Watchlists */}
-        <div className="flex flex-col justify-start w-full gap-2 mt-4">
-          {watchList !== null ? (
+        <div className='flex flex-col justify-start w-full gap-2 mt-4'>
+          {
+            watchList !== null ?
             <>
-              {watchList
-                ?.slice(watchlistParams.startIndex, watchlistParams.endIndex)
-                .map(watchLists => (
-                  <div
-                    key={watchLists?.id}
-                    className="flex justify-start items-center w-full p-2 gap-4 rounded-lg hover:bg-[#F2F2F2] duration-300 cursor-pointer"
-                  >
-                    <div className="w-[40px] h-[40px] flex justify-center items-center rounded-full overflow-hidden">
-                      <img
-                        alt=""
-                        src={watchLists?.imgUrl ?? WatchlistProfile}
-                        className="w-auto h-full"
+              {watchList?.slice(watchlistParams.startIndex, watchlistParams.endIndex).map(watchLists => (
+                <div key={watchLists?.id} className='flex justify-start items-center w-full p-2 gap-4 rounded-lg hover:bg-[#F2F2F2] duration-300 cursor-pointer'>
+                  <div className='w-[40px] h-[40px] flex justify-center items-center rounded-full overflow-hidden'>
+                    <img
+                      alt=""
+                      src={watchLists?.imgUrl ?? WatchlistProfile}
+                      className='w-auto h-full'
+                    />
+                  </div>
+                  <div className='w-full h-full flex justify-start items-center'>
+                    {watchLists?.name}
+                  </div>
+                  <Menu placement="left-start">
+                    <MenuHandler>
+                      <Image
+                        src={more_vertical}
+                        alt="threeDots"
+                        className="cursor-pointer"
                       />
-                    </div>
-                    <div className="w-full h-full flex justify-start items-center">
-                      {watchLists?.name}
-                    </div>
-                    <Menu placement="left-start">
-                      <MenuHandler>
-                        <Image
-                          src={more_vertical}
-                          alt="threeDots"
-                          className="cursor-pointer"
-                        />
-                      </MenuHandler>
-                      <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
-                        <MenuItem
-                          className={`flex py-2 gap-2 cursor-pointer`}
-                          style={{ color: '#000000' }}
-                          onMouseEnter={e =>
-                            (e.currentTarget.style.color = '#000000')
-                          }
-                          onClick={() => {
-                            handleOpenEdit(watchLists);
-                          }}
-                        >
-                          <Image src={edit} alt="editPost" />
-                          {t('tournament.watchlist.editWatchlist')}
-                        </MenuItem>
-                        <MenuItem
-                          className={`flex py-2 gap-2 cursor-pointer`}
-                          style={{ color: '#FF3838' }}
-                          onMouseEnter={e =>
-                            (e.currentTarget.style.color = '#FF3838')
-                          }
-                          onClick={() => {
-                            handleOpenDelete(true);
-                            setDeletedWatchlist(watchLists?.id ?? '');
-                          }}
-                        >
-                          <Image src={delet} alt="deletePost" />
-                          {t('tournament.watchlist.delete')}
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
+                    </MenuHandler>
+                    <MenuList className="flex list-none flex-col font-poppins gap-2 p-2 text-sm font-normal leading-5">
+                      <MenuItem
+                        className={`flex py-2 gap-2 cursor-pointer`}
+                        style={{ color: '#000000' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#000000')}
+                        onClick={() => { handleOpenEdit(watchLists) }}
+                      >
+                        <Image src={edit} alt="editPost" />
+                        {t('tournament.watchlist.editWatchlist')}
+                      </MenuItem>
+                      <MenuItem
+                        className={`flex py-2 gap-2 cursor-pointer`}
+                        style={{ color: '#FF3838' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = '#FF3838')}
+                        onClick={() => {
+                          handleOpenDelete(true); setDeletedWatchlist(watchLists?.id ?? '')
+                        }}
+                      >
+                        <Image src={delet} alt="deletePost" />
+                        {t('tournament.watchlist.delete')}
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
 
-                    {/* Modal Delete Watchlist */}
-                    <Dialog
-                      dismiss={{
-                        outsidePress: false
-                      }}
-                      open={deletePost}
-                      size={'xs'}
-                      handler={handleOpenDelete}
-                      className="text-center p-5 m-0 max-w-full sm:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl"
-                    >
+                  {/* Modal Delete Watchlist */}
+                  <Dialog
+                    dismiss={{
+                      outsidePress: false
+                    }}
+                    open={deletePost}
+                    size={'xs'}
+                    handler={handleOpenDelete}
+                    className="text-center p-5 m-0 max-w-full sm:max-w-xs self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl"
+                  >
                       <DialogBody className="p-0 mb-6 font-poppins">
                         <p className="text-base font-semibold leading-6 text-gray-900 p-0 mb-4">
                           {t('tournament.watchlist.delete')}
@@ -224,7 +204,7 @@ const TournamentHome: React.FC = () => {
                         <button
                           className="rounded-full min-w-full bg-[#DD2525] h-10 text-sm font-semibold capitalize text-white transition-all mb-6 font-poppins"
                           data-ripple-light="true"
-                          onClick={async () => {
+                          onClick={async() => {
                             await handleSubmitDeleteWatchlist();
                           }}
                         >
@@ -241,35 +221,29 @@ const TournamentHome: React.FC = () => {
                           <span>{t('tournament.watchlist.cancel')}</span>
                         </Button>
                       </DialogFooter>
-                    </Dialog>
-                  </div>
-                ))}
+                  </Dialog>
+                </div>
+              ))}
             </>
-          ) : (
+            :
             <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mt-8">
-              <Image
-                alt=""
-                src={WatchlistNoData}
-                className="w-[250px]"
-                width={100}
-                height={100}
-              />
+              <Image alt="" src={WatchlistNoData} className="w-[250px]" width={100} height={100} />
               <p className="font-semibold text-black mt-4">
                 {t('tournament.watchlist.noData')}
               </p>
               <p className="text-[#7C7C7C] mt-2">
                 {t('tournament.watchlist.create')}
               </p>
-              <div
+              <div 
                 onClick={() => {
                   setIsDetailModal(true);
                 }}
-                className="bg-[#3AC4A0] mt-8 py-4 px-16 rounded-full text-white cursor-pointer"
+                className='bg-[#3AC4A0] mt-8 py-4 px-16 rounded-full text-white cursor-pointer'
               >
                 {t('tournament.watchlist.createWatchlist')}
               </div>
             </div>
-          )}
+          }
         </div>
 
         {/* Watchlist Pagination */}
@@ -278,22 +252,14 @@ const TournamentHome: React.FC = () => {
             currentPage={watchlistParams.page}
             totalPages={Math.ceil(watchList?.length / 8)}
             onPageChange={page => {
-              setWatchlistParams({
-                page,
-                startIndex: page * 8 - 8,
-                endIndex: page * 8
-              });
+              setWatchlistParams({ page, startIndex:page*8-8, endIndex:page*8 });
             }}
           />
         </div>
 
         {/* Modal Add Post */}
         <div className="fixed bottom-10 right-10 z-20">
-          <div
-            className={`${
-              watchList === null ? 'hidden' : 'flex'
-            } bg-[#3AC4A0] p-2 rounded-full`}
-          >
+          <div className={`${watchList === null ? 'hidden' : 'flex'} bg-[#3AC4A0] p-2 rounded-full`}>
             <PlusIcon
               width={50}
               height={50}

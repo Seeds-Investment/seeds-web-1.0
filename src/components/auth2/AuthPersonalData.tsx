@@ -2,7 +2,6 @@ import Backward from '@/assets/auth/Backward.svg';
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import withRedirect from '@/helpers/withRedirect';
 import { checkSeedsTag } from '@/repository/auth.repository';
-import type { AuthPersonalDataI } from '@/utils/interfaces/auth.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -14,13 +13,58 @@ import AuthBoD from './AuthBoD';
 import AuthCommonInput from './AuthCommonInput';
 import AuthRef from './AuthRef';
 
-const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
+interface IAuthPersonalData {
+  className: string;
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      oldPassword: string;
+      phoneNumber: string;
+      birthDate: string;
+      name: string;
+      seedsTag: string;
+      refCode: string;
+      password: string;
+      provider: { provider: string; identifier: string };
+      token: string;
+    }>
+  >;
+  formData: {
+    oldPassword: string;
+    phoneNumber: string;
+    birthDate: string;
+    name: string;
+    seedsTag: string;
+    refCode: string;
+    password: string;
+    provider: {
+      provider: string;
+      identifier: string;
+    };
+    token: string;
+  };
+  loginForm: {
+    phoneNumber: string;
+    password: string;
+    platform: string;
+    os_name: string;
+  };
+  setSelect: (value: number) => void;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
+}
+
+const AuthPersonalData: React.FC<IAuthPersonalData> = ({
   className,
   setFormData,
   formData,
   loginForm,
-  guest
-}: AuthPersonalDataI) => {
+  setSelect
+}: IAuthPersonalData) => {
   const router = useRouter();
   const { data } = useSession();
   const { t } = useTranslation();
@@ -33,16 +77,14 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
   const [blankTag, setBlankTag] = useState(false);
   const [blankDoB, setBlankDoB] = useState(false);
   const [day, setDay] = useState<number | undefined>(
-    data !== null && data !== undefined ? new Date().getDate() : undefined
+    data !== null ? new Date().getDate() : undefined
   );
   const [month, setMonth] = useState<number | undefined>(
-    data !== null && data !== undefined ? new Date().getMonth() : undefined
+    data !== null ? new Date().getMonth() : undefined
   );
 
   const [year, setYear] = useState<number | undefined>(
-    data !== null && data !== undefined
-      ? new Date().getFullYear() - 17
-      : undefined
+    data !== null ? new Date().getFullYear() - 17 : undefined
   );
 
   const timezoneOffset = new Date().getTimezoneOffset();
@@ -64,7 +106,7 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
   };
   const handleNext = async (): Promise<void> => {
     try {
-      if (data !== null && data !== undefined) {
+      if (data !== null) {
         setFormData({ ...formData, password: '', phoneNumber: '' });
       }
       if (
@@ -91,12 +133,13 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
           setBlankDoB(true);
         }
         await checkSeedsTag(formData.seedsTag);
+        throw new Error('something error');
       } else {
         await checkSeedsTag(formData.seedsTag);
         handleOpen();
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message);
+      toast(error, { type: 'error' });
       if (
         error.response?.data?.message === 'requested seeds tag already exists'
       ) {
@@ -105,14 +148,14 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: EventObject): void => {
     setBlank(false);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  const handleChangeTag = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeTag = (e: EventObject): void => {
     setErrorTag(false);
     setBlankTag(false);
     setErrorRegex(false);
@@ -121,7 +164,7 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
     setErrorRegex(regex.test(updatedForm.seedsTag));
   };
 
-  const handleChangeDoB = (): void => {
+  const handleChangeDoB = (e: any): void => {
     const date = new Date(
       utcDate.getTime() - (timezoneOffset - 20) * 60 * 1000
     ).toISOString();
@@ -142,12 +185,12 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
         alt="Backward"
         className="absolute left-5 top-5 cursor-pointer"
         onClick={async () => {
-          if (data !== null && data !== undefined) {
+          if (data !== null) {
             setFormData({ ...formData, name: '', seedsTag: '' });
             await withRedirect(router, router.query, '/auth2');
             await signOut();
           } else {
-            router.back();
+            setSelect(0);
           }
         }}
       />
@@ -173,7 +216,7 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
           type="text"
           error={blank}
           required={true}
-          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
+          handleSubmit={async (e: any) => {
             if (e.key === 'Enter') {
               await handleNext();
             }
@@ -193,7 +236,7 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
           type="text"
           error={errorTag || errorRegex}
           required={true}
-          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
+          handleSubmit={async (e: any) => {
             if (e.key === 'Enter') {
               await handleNext();
             }
@@ -238,7 +281,6 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
         setFormData={setFormData}
         formData={formData}
         loginForm={loginForm}
-        guest={guest}
       />
 
       <Button

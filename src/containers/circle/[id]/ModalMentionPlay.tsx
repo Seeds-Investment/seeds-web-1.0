@@ -177,7 +177,7 @@ const ModalMention: React.FC<props> = ({
   setGolId,
   dataPost,
   setDataPost,
-  playId
+  playId,
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -221,7 +221,7 @@ const ModalMention: React.FC<props> = ({
     circleList: [],
     playList: []
   });
-
+  
   const [form, setForm] = useState<form>({
     content_text: '',
     privacy: 'public',
@@ -286,7 +286,7 @@ const ModalMention: React.FC<props> = ({
       setForm(prevState => ({
         ...prevState,
         content_text: dataPost?.content_text,
-        privacy: dataPost?.privacy
+        privacy: dataPost?.privacy,
         // media_urls: dataPost?.media_urls?.length > 0 ? dataPost?.media_urls : [],
         // polling: {
         //   options: dataPost.pollings !== undefined ? dataPost.pollings : [],
@@ -698,7 +698,7 @@ const ModalMention: React.FC<props> = ({
         form.media_urls.push(data.path);
       }
     } catch (error) {
-      toast.error(`Error Post Media: ${error as string}`);
+        toast.error(`Error Post Media: ${error as string}`);
     }
   };
 

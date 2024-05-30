@@ -60,7 +60,7 @@ const SeedsEventDetail: React.FC = () => {
     try {
       setLoading(true);
       const response = await getEventById(id);
-      setEventData(response);
+      setEventData(response)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -68,58 +68,46 @@ const SeedsEventDetail: React.FC = () => {
     }
   };
 
-  const addSpacingBetweenParagraphs = (
-    textWithParagraphs: string
-  ): JSX.Element[] => {
+  const addSpacingBetweenParagraphs = (textWithParagraphs: string): JSX.Element[] => {
     const paragraphs = textWithParagraphs.split('</p><p>');
 
     return paragraphs.map((paragraph, index) => (
       <React.Fragment key={index}>
         <p dangerouslySetInnerHTML={{ __html: paragraph }}></p>
-        {index < paragraphs.length - 1 && (
-          <div style={{ marginBottom: '20px' }}></div>
-        )}
+        {index < paragraphs.length - 1 && <div style={{ marginBottom: '20px' }}></div>}
       </React.Fragment>
     ));
   };
 
   return (
     <>
-      {loading && <Loading />}
-      <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5">
-        <div className="flex justify-start w-full gap-2">
-          <Typography className="text-xl font-semibold">
+      {
+        loading && <Loading />
+      }
+      <div className='flex flex-col justify-center items-center rounded-xl font-poppins p-5'>
+        <div className='flex justify-start w-full gap-2'>
+          <Typography className='text-xl font-semibold'>
             {eventData?.name ?? 'Seeds Event'}
           </Typography>
         </div>
-        <div className="w-full h-auto rounded-xl mt-4 overflow-hidden">
+        <div className='w-full h-auto rounded-xl mt-4 overflow-hidden'>
           <img
             src={eventData?.image_url}
-            className="w-full h-full"
-            alt="event image"
+            className='w-full h-full'
+            alt='event image'
           />
         </div>
-        <div className="w-full mt-4 flex flex-col justify-start items-start">
-          <div className="font-semibold">
-            {languageCtx.language === 'ID'
-              ? getEventDateID(
-                  new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z')
-                )
-              : getEventDateEN(
-                  new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z')
-                )}
+        <div className='w-full mt-4 flex flex-col justify-start items-start'>
+          <div className='font-semibold'>
+            {languageCtx.language === 'ID' ? getEventDateID(new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z')) : getEventDateEN(new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'))}
           </div>
-          <div className="text-[#7C7C7C] mt-4">
+          <div className='text-[#7C7C7C] mt-4'>
             {addSpacingBetweenParagraphs(eventData?.description ?? '')}
           </div>
         </div>
       </div>
-      <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5">
-        <a
-          href={eventData?.external_url ?? 'https://seeds.finance/'}
-          target="_blank"
-          className="flex justify-center items-center w-full bg-[#3AC4A0] text-white py-2 rounded-xl cursor-pointer"
-        >
+      <div className='mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5'>
+        <a href={eventData?.external_url ?? 'https://seeds.finance/'} target="_blank"  className='flex justify-center items-center w-full bg-[#3AC4A0] text-white py-2 rounded-xl cursor-pointer'>
           Join Now
         </a>
       </div>

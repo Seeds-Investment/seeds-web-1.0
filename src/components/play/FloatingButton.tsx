@@ -15,9 +15,10 @@ interface FloatingProps {
 }
 
 const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
+
   const { t } = useTranslation();
   const router = useRouter();
-
+  
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
   const [isGuidanceModal, setIsGuidanceModal] = useState<boolean>(false);
@@ -64,56 +65,38 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
           />
         )}
 
-        {/* Triple Circles */}
-        <div
-          className={`relative w-[20px] h-[40px] ${
-            isExpanded ? 'block' : 'hidden'
-          }`}
-        >
-          {/* Pop Up Circles */}
-          <div
-            onClick={() => {
-              isExpanded && setIsTutorialModal(true);
-            }}
-            className="absolute right-0 top-[-55px] w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300"
-          >
-            <Image
-              width={100}
-              height={100}
-              alt=""
-              src={FloatingVideo}
-              className="w-[25px] h-[25px]"
-            />
-          </div>
-          <div
-            onClick={async () =>
-              await router.push(`/play/tournament/${id as string}/social-wall`)
-            }
-            className="absolute right-[20px] top-0 bottom-0 m-auto w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300"
-          >
-            <Image
-              width={100}
-              height={100}
-              alt=""
-              src={FloatingUsers}
-              className="w-[25px] h-[25px]"
-            />
-          </div>
-          <div
-            onClick={() => {
-              isExpanded && setIsGuidanceModal(true);
-            }}
-            className="absolute right-0 bottom-[-55px] w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300"
-          >
-            <Image
-              width={100}
-              height={100}
-              alt=""
-              src={FloatingIdea}
-              className="w-[25px] h-[25px]"
-            />
-          </div>
-        </div>
+            {/* Triple Circles */}
+            <div className={`relative w-[20px] h-[40px] ${isExpanded ? "block" : "hidden"}`}>
+
+                {/* Pop Up Circles */}
+                <div onClick={() => {isExpanded && setIsTutorialModal(true)}} className='absolute right-0 top-[-55px] w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300'>
+                    <Image
+                        width={100}
+                        height={100}
+                        alt=""
+                        src={FloatingVideo}
+                        className="w-[25px] h-[25px]"
+                    />
+                </div>
+                <div onClick={ async() => await router.push(`/play/tournament/${id as string}/social-wall`)} className='absolute right-[20px] top-0 bottom-0 m-auto w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300'>
+                    <Image
+                        width={100}
+                        height={100}
+                        alt=""
+                        src={FloatingUsers}
+                        className="w-[25px] h-[25px]"
+                    />
+                </div>
+                <div onClick={() => {isExpanded && setIsGuidanceModal(true)}} className='absolute right-0 bottom-[-55px] w-[45px] h-[45px] rounded-full bg-[#3AC4A0] flex justify-center items-center cursor-pointer hover:shadow-xl duration-300'>
+                    <Image
+                        width={100}
+                        height={100}
+                        alt=""
+                        src={FloatingIdea}
+                        className="w-[25px] h-[25px]"
+                    />
+                </div>
+            </div>
 
         {/* Arrow Button */}
         <div className="w-[50px] h-[40px] pr-[20px] bg-[#BAFBD0] hover:bg-[#8fffb4] p-2 rounded-l-full cursor-pointer hover:shadow-xl duration-300">
@@ -125,81 +108,57 @@ const FloatingButton: React.FC<FloatingProps> = ({ id }) => {
         </div>
       </div>
 
-      <div
-        className={`relative w-[20px] h-[40px] ${
-          isExpanded ? 'block' : 'hidden'
-        }`}
-      >
-        {/* Pop Up Description */}
-        {modalTutorialDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[-170px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Tutorial
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalSocialDescription(true);
-                  setModalTutorialDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">
-              {t('tournament.floatingButton.text1')}
-            </div>
-          </div>
-        )}
-        {modalSocialDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[135px] md:top-[-45px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Social Wall
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalGuidanceDescription(true);
-                  setModalSocialDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">
-              {t('tournament.floatingButton.text2')}
-            </div>
-          </div>
-        )}
-        {modalGuidanceDescription && (
-          <div className="w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[70px] rounded-lg shadow-lg">
-            <div className="w-full flex justify-between items-center mb-2">
-              <div className="text-seeds-button-green text-sm font-semibold">
-                Guidance
-              </div>
-              <Image
-                src={XIcon}
-                alt="X"
-                width={100}
-                height={100}
-                className="w-[15px] h-[15px] cursor-pointer"
-                onClick={() => {
-                  setModalGuidanceDescription(false);
-                }}
-              />
-            </div>
-            <div className="text-[#7C7C7C] text-sm">
-              {t('tournament.floatingButton.text3')}
-            </div>
-          </div>
-        )}
-      </div>
+        <div className={`relative w-[20px] h-[40px] ${isExpanded ? "block" : "hidden"}`}>
+            {/* Pop Up Description */}
+            {modalTutorialDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[-170px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Tutorial</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalSocialDescription(true); setModalTutorialDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text1')}</div>
+                </div>
+            )}
+            {modalSocialDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[135px] md:top-[-45px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Social Wall</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalGuidanceDescription(true); setModalSocialDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text2')}</div>
+                </div>
+            )}
+            {modalGuidanceDescription && (
+                <div className='w-[300px] h-fit bg-white p-4 absolute right-[20px] top-[-220px] md:right-[115px] md:top-[70px] rounded-lg shadow-lg'>
+                    <div className='w-full flex justify-between items-center mb-2'>
+                        <div className='text-seeds-button-green text-sm font-semibold'>Guidance</div>
+                        <Image
+                            src={XIcon}
+                            alt="X"
+                            width={100}
+                            height={100}
+                            className="w-[15px] h-[15px] cursor-pointer"
+                            onClick={() => {setModalGuidanceDescription(false)}} 
+                        />
+                    </div>
+                    <div className='text-[#7C7C7C] text-sm'>{t('tournament.floatingButton.text3')}</div>
+                </div>
+            )}
+        </div>
     </div>
   );
 };

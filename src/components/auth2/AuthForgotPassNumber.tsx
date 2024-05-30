@@ -1,57 +1,102 @@
 import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
-import {
-  handleChangePhoneNumber,
-  handleFormattedData
-} from '@/helpers/authFormData';
-import { handleGetOTP } from '@/helpers/OTP';
-import { checkPhoneNumber } from '@/repository/auth.repository';
-import type { AuthForgotPassNumberI } from '@/utils/interfaces/auth.interface';
+import AuthNumberWithErrorHandling from '@/components/auth2/AuthNumberWithErrorHandling';
+import { checkPhoneNumber, getOtp } from '@/repository/auth.repository';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import AuthNumber from './AuthNumber';
 
-const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
+interface Country {
+  name: string;
+  flag: string;
+  code: string;
+  dialCode: string;
+}
+interface IAuthForgotPassNumber {
+  className: string;
+  setSelect: (value: number) => void;
+  formData: {
+    oldPassword: string;
+    password: string;
+    phoneNumber: string;
+  };
+  setFormData: (value: {
+    phoneNumber: string;
+    oldPassword: string;
+    password: string;
+  }) => void;
+  setCountdown: (value: number) => void;
+  countries: Country[];
+  method: string;
+}
+
+interface EventObject {
+  target: {
+    name: string;
+    value: string;
+  };
+}
+
+const AuthForgotPassNumber: React.FC<IAuthForgotPassNumber> = ({
   className,
   setSelect,
   formData,
   setFormData,
   setCountdown,
   countries,
-  method,
-  country,
-  setCountry,
-  otpForm,
-  setOTPForm
-}: AuthForgotPassNumberI) => {
+  method
+}: IAuthForgotPassNumber) => {
   const { t } = useTranslation();
   const [error, setError] = useState<boolean>(false);
-  const formattedData = handleFormattedData(otpForm, country);
+  const [country, setCountry] = useState<number>(101);
+  const handleChange = (e: EventObject, dialCode: string): void => {
+    setError(false);
+    if (/^\d*$/.test(e.target.value)) {
+      if (formData.phoneNumber === dialCode) {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(dialCode.length)
+        });
+      } else if (formData.phoneNumber === '0') {
+        setFormData({
+          ...formData,
+          phoneNumber: e.target.value.substring(1)
+        });
+      } else {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      }
+    }
+  };
 
   const handleNext = async (): Promise<void> => {
+    const formattedPhone = {
+      ...formData,
+      phoneNumber: `${countries[country].dialCode.replace('+', '')}${
+        formData.phoneNumber
+      }`
+    };
     try {
-      const response = await checkPhoneNumber(formattedData.phoneNumber);
+      const response = await checkPhoneNumber(formattedPhone.phoneNumber);
       if (response === undefined) {
         setError(true);
       }
     } catch (error: any) {
       toast(error, { type: 'error' });
+      const getOTP = {
+        method,
+        phoneNumber: formattedPhone.phoneNumber
+      };
       if (
         error.response.data.message === 'requested phone number already exists'
       ) {
-        await handleGetOTP(method, setCountdown, setSelect, formattedData);
+        await getOtp(getOTP);
+        setCountdown(60);
+        setSelect(1);
+        setFormData(formattedPhone);
       }
     }
   };
-
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      phoneNumber: formattedData.phoneNumber
-    });
-  }, [formattedData.phoneNumber]);
 
   return (
     <div
@@ -70,17 +115,15 @@ const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
         {t('authForgotPass.title2')}
       </Typography>
       <div className="w-full">
-        <AuthNumber
-          handleChange={handleChangePhoneNumber}
-          formData={otpForm}
-          setFormData={setOTPForm}
+        <AuthNumberWithErrorHandling
+          handleChange={handleChange}
+          formData={formData.phoneNumber}
           name="phoneNumber"
           country={country}
           setCountry={setCountry}
           countries={countries}
           error={error}
-          setError={setError}
-          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
+          handleSubmit={async (e: any) => {
             if (e.key === 'Enter') {
               await handleNext();
             }

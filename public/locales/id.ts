@@ -578,10 +578,14 @@ export default {
     }
   },
   authBoarding: {
-    guest: 'Masuk sebagai Tamu',
+    guest1: 'Masuk',
+    guest2: ' sebagai ',
+    guest3: 'Tamu',
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
-    login: 'Masuk atau Daftar'
+    login: 'Masuk',
+    signup: 'Daftar',
+    or: ' atau '
   },
   authLogin: {
     title1: 'Yuk, Masukan!',
@@ -1136,7 +1140,7 @@ export default {
     },
     payment: {
       paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
+      virtualNumber: "Nomor Virtual Akun Anda",
       pendingPaidCircle: 'Menunggu Pembayaran',
       circleFee: 'Biaya Langganan',
       adminFee: 'Biaya Admin',
@@ -1145,13 +1149,11 @@ export default {
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
-      paymentSuccessful: 'Berhasil',
-      paymentSuccessDescription:
-        'Pembayaran langganan premium anda telah berhasil diproses.',
-      paymentFailed: 'Pembayaran Gagal',
-      paymentFailedDescription:
-        'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
-      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
+      paymentSuccessful: "Berhasil",
+      paymentSuccessDescription: "Pembayaran langganan premium anda telah berhasil diproses.",
+      paymentFailed: "Pembayaran Gagal",
+      paymentFailedDescription: "Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.",
+      paymentFailedWarning: "Pembayaran Langganan Premium Gagal",
     }
   },
 
@@ -1470,7 +1472,7 @@ export default {
       'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
     payment: {
       paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
+      virtualNumber: "Nomor Virtual Akun Anda",
       pendingPaidSocial: 'Menunggu Pembayaran',
       socialFee: 'Konten Premium',
       adminFee: 'Biaya Admin',
@@ -1479,8 +1481,8 @@ export default {
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
-      paymentSuccessful: 'Berhasil',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
+      paymentSuccessful: "Berhasil",
+      recurringSaved: "Pembayaran anda telah tersimpan",
     }
   },
   landingV2: {
@@ -1811,7 +1813,7 @@ export default {
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
     payment: {
       paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
+      virtualNumber: "Nomor Virtual Akun Anda",
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
       lifelinesFee: 'Biaya Bantuan Tambahan',
@@ -1821,8 +1823,8 @@ export default {
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
-      paymentSuccessful: 'Berhasil',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
+      paymentSuccessful: "Berhasil",
+      recurringSaved: "Pembayaran anda telah tersimpan",
     }
   },
   tournament: {
@@ -1999,7 +2001,7 @@ export default {
     },
     payment: {
       paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
+      virtualNumber: "Nomor Virtual Akun Anda",
       pendingPaidTournament: 'Menunggu Turnamen Dibayar',
       tournamentFee: 'Biaya Turnamen',
       adminFee: 'Biaya Admin',
@@ -2008,9 +2010,9 @@ export default {
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
-      successful: 'Pembayaran Berhasil',
-      pending: 'Menunggu Pembayaran',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
+      successful: "Pembayaran Berhasil",
+      pending: "Menunggu Pembayaran",
+      recurringSaved: "Pembayaran anda telah tersimpan",
     }
   },
   seedsEvent: {
@@ -2147,3 +2149,4 @@ export default {
     text17: 'Kapan saja'
   }
 };
+ 

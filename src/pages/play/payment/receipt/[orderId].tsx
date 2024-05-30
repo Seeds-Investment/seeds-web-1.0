@@ -253,7 +253,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     />
                   </div>
                 )}
-
+                
                 <hr className="border-t-2 border-dashed" />
                 <div className="flex justify-between relative bottom-3 z-50">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
@@ -285,16 +285,12 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     orderDetail.grossAmount !== undefined &&
                     paymentSelectedEWallet.length > 0
                       ? `${orderDetail.currency} ${formatCurrency(
-                          (orderDetail.grossAmount ?? 0) -
-                            (detailQuiz?.admission_fee ?? 0) +
-                            (paymentSelectedEWallet[0]?.promo_price ?? 0) -
-                            (paymentSelectedEWallet[0]?.service_fee ?? 0) -
-                            (paymentSelectedEWallet[0].admin_fee ?? 0)
+                        (orderDetail.grossAmount ?? 0) - (detailQuiz?.admission_fee ?? 0) + (paymentSelectedEWallet[0]?.promo_price ?? 0) - (paymentSelectedEWallet[0]?.service_fee ?? 0) - (paymentSelectedEWallet[0].admin_fee ?? 0)
                         )}`
                       : ''}
                   </Typography>
                 </div>
-
+                
                 {/* Admin Fee */}
                 <div className="flex flex-row justify-between mb-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
@@ -319,35 +315,37 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {orderDetail?.currency !== undefined &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                          paymentSelectedEWallet.length > 0
-                            ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                            : 0
+                        paymentSelectedEWallet.length > 0
+                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                          : 0
                         )}`
                       : ''}
                   </Typography>
                 </div>
 
                 {/* Discount Fee */}
-                {paymentSelectedEWallet.length > 0 && (
+                {
+                  paymentSelectedEWallet.length > 0 &&
                   <div>
-                    {paymentSelectedEWallet[0]?.is_promo_available && (
-                      <div className="flex flex-row justify-between mb-5">
-                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                          {t('quiz.payment.discountFee')}
-                        </Typography>
-                        <Typography className="text-sm font-semibold text-[#262626]">
-                          {orderDetail?.currency !== undefined
-                            ? `- ${orderDetail.currency} ${formatCurrency(
+                    {
+                      paymentSelectedEWallet[0]?.is_promo_available &&
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('quiz.payment.discountFee')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {orderDetail?.currency !== undefined
+                              ? `- ${orderDetail.currency} ${formatCurrency(
                                 paymentSelectedEWallet.length > 0
                                   ? paymentSelectedEWallet[0]?.promo_price ?? 0
                                   : 0
-                              )}`
-                            : ''}
-                        </Typography>
-                      </div>
-                    )}
+                                )}`
+                              : ''}
+                          </Typography>
+                        </div>
+                    }
                   </div>
-                )}
+                }
                 <hr />
 
                 {/* Total Amount */}

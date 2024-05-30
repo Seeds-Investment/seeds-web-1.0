@@ -4,10 +4,7 @@
 import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
 import { standartCurrency } from '@/helpers/currency';
 import { type AssetItemType } from '@/pages/homepage/play-assets';
-import {
-  getWatchlistById,
-  updateWatchlist
-} from '@/repository/market.repository';
+import { getWatchlistById, updateWatchlist } from '@/repository/market.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -53,7 +50,11 @@ interface Props {
   userInfo: UserInfo;
 }
 
-const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
+const ModalEditWatchlist: React.FC<Props> = ({
+  onClose,
+  data,
+  userInfo,
+}) => {
   const { t } = useTranslation();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [assets, setAssets] = useState<AssetItemType[]>([]);
@@ -70,23 +71,23 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
   const fetchPlayWatchlist = async (): Promise<void> => {
     try {
       const response = await getWatchlistById(data?.id);
-      setAssets(response?.watchlist?.assetList);
-
+      setAssets(response?.watchlist?.assetList)
+      
       response?.watchlist?.assetList.forEach((asset: AssetList) => {
-        watchList.push(asset?.id);
-      });
+        watchList.push(asset?.id)
+      })
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (): Promise<void> => {    
     try {
       await updateWatchlist(form);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      onClose();
+      onClose()
     }
   };
 
@@ -122,77 +123,51 @@ const ModalEditWatchlist: React.FC<Props> = ({ onClose, data, userInfo }) => {
             className="hover:scale-110 transition ease-out cursor-pointer"
           />
         </div>
-        <div className="w-full mt-4">
-          <div
-            onClick={() => {
-              setIsDetailModal(true);
-            }}
-            className="w-full py-2 px-4 bg-[#3AC4A0] rounded-lg text-white flex justify-center items-center cursor-pointer"
-          >
+        <div className='w-full mt-4'>
+          <div onClick={() => { setIsDetailModal(true); }} className='w-full py-2 px-4 bg-[#3AC4A0] rounded-lg text-white flex justify-center items-center cursor-pointer'>
             {t('tournament.watchlist.changeAsset')}
           </div>
         </div>
-        <div className="w-full gap-4 mt-4">
+        <div className='w-full gap-4 mt-4'>
           {assets?.map(item => (
-            <div
-              key={item.id}
-              className="w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4"
-            >
-              <div className="flex justify-start items-center gap-2 md:gap-4">
-                <div className="h-[30px] w-[30px]">
-                  <img src={item?.logo} className="w-full h-full" />
+            <div key={item.id} className='w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4'>
+              <div className='flex justify-start items-center gap-2 md:gap-4'>
+                <div className='h-[30px] w-[30px]'>
+                  <img
+                    src={item?.logo}
+                    className='w-full h-full'
+                  />
                 </div>
                 <div>
                   <div>
                     {item?.seedsTicker} / {item?.exchangeCurrency}
                   </div>
-                  <div className="hidden md:flex">{item?.name}</div>
-                  <div className="md:hidden">
-                    {item?.name?.length < 12
-                      ? item?.name
-                      : `${item?.name?.slice(0, 11)}...`}
+                  <div className='hidden md:flex'>
+                    {item?.name}
+                  </div>
+                  <div className='md:hidden'>
+                    {item?.name?.length < 12 ? item?.name : `${item?.name?.slice(0, 11)}...`}
                   </div>
                 </div>
               </div>
-              <div className="flex">
-                <div className="flex flex-col justify-end items-end">
+              <div className='flex'>
+                <div className='flex flex-col justify-end items-end'>
                   <div>
-                    {userInfo?.preferredCurrency !== undefined
-                      ? userInfo?.preferredCurrency
-                      : 'IDR'}
-                    {standartCurrency(item?.priceBar?.close ?? 0).replace(
-                      'Rp',
-                      ''
-                    )}
+                    {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item?.priceBar?.close ?? 0).replace('Rp', '')}
                   </div>
-                  {item?.priceBar !== undefined && (
-                    <div
-                      className={`${
-                        item?.priceBar?.close >= item?.priceBar?.open
-                          ? 'text-[#3AC4A0]'
-                          : 'text-[#DD2525]'
-                      } text-base`}
-                    >
-                      {`(${calculatePercentageChange(
-                        item?.priceBar?.open ?? 0,
-                        item?.priceBar?.close ?? 0
-                      )}%)`}
-                    </div>
-                  )}
+                  {
+                    item?.priceBar !== undefined &&
+                      <div className={`${item?.priceBar?.close >= item?.priceBar?.open ? 'text-[#3AC4A0]' : 'text-[#DD2525]'} text-base`}>
+                        {`(${calculatePercentageChange(item?.priceBar?.open ?? 0, item?.priceBar?.close ?? 0)}%)`}
+                      </div>
+                  }
                 </div>
               </div>
             </div>
           ))}
-        </div>
-        <div className="w-full flex justify-center items-center">
-          <button
-            className="w-full md:w-[200px] bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4"
-            onClick={async () => {
-              await handleSubmit();
-            }}
-          >
-            {t('tournament.watchlist.save')}
-          </button>
+        </div> 
+        <div className='w-full flex justify-center items-center'>
+          <button className='w-full md:w-[200px] bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4' onClick={ async() => { await handleSubmit() }}>{t('tournament.watchlist.save')}</button>  
         </div>
       </Modal>
     </>

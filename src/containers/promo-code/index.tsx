@@ -72,7 +72,7 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
     } catch (error) {
       toast.error('Error Promo Code only for New User');
       setPromoCode('');
-      dispatch(setPromoCodeValidationResult(0));
+        dispatch(setPromoCodeValidationResult(0));
     }
   };
 

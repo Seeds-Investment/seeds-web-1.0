@@ -1,4 +1,3 @@
-import type { AuthBoDI } from '@/utils/interfaces/auth.interface';
 import {
   Button,
   Dialog,
@@ -10,7 +9,20 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const AuthBoD: React.FC<AuthBoDI> = ({
+interface IAuthBoD {
+  error: boolean;
+  day: number | undefined;
+  setDay: (day: number) => void;
+  month: number | undefined;
+  setMonth: (month: number) => void;
+  year: number | undefined;
+  setYear: (year: number) => void;
+  handleChangeDoB: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+}
+
+const AuthBoD: React.FC<IAuthBoD> = ({
   error,
   day,
   setDay,
@@ -19,7 +31,7 @@ const AuthBoD: React.FC<AuthBoDI> = ({
   year,
   setYear,
   handleChangeDoB
-}: AuthBoDI) => {
+}: IAuthBoD) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const dayRef = useRef<HTMLElement | null>(null);
@@ -126,7 +138,6 @@ const AuthBoD: React.FC<AuthBoDI> = ({
         handler={handleOpen}
         size="sm"
         className="flex flex-col items-center rounded-3xl min-w-full"
-        dismiss={{ enabled: false }}
       >
         <DialogBody className="flex gap-8">
           <div className="flex flex-col h-[216px] w-[70px] gap-2 overflow-y-scroll overflow-x-hidden cursor-pointer">

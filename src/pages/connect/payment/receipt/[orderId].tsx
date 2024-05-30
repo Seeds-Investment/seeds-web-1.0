@@ -214,8 +214,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 {(orderDetail?.transactionStatus === 'PENDING' ||
                   orderDetail?.transactionStatus === 'CREATED') &&
                   t('circle.payment.pendingPaidCircle')}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  t('circle.payment.paymentSuccessful')}
+                {orderDetail?.transactionStatus === 'SUCCEEDED' && t('circle.payment.paymentSuccessful')}
                 {validationError && t('circle.payment.paymentFailed')}
               </Typography>
               <Typography
@@ -281,12 +280,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) +
-                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                            : 0) -
-                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
-                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                        (orderDetail?.grossAmount ?? 0) 
+                        + ((paymentSelectedEWallet[0]?.is_promo_available ?? true) 
+                          ? (paymentSelectedEWallet[0]?.promo_price ?? 0) : 0) 
+                        - (paymentSelectedEWallet[0]?.admin_fee ?? 0) 
+                        - (paymentSelectedEWallet[0]?.service_fee ?? 0)
                       )}`}
                   </Typography>
                 </div>
@@ -300,7 +298,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
                         paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.admin_fee ?? 0
+                          ? (paymentSelectedEWallet[0]?.admin_fee ?? 0)
                           : 0
                       )}`}
                   </Typography>
@@ -315,33 +313,35 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
                         paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                          ? (paymentSelectedEWallet[0]?.service_fee ?? 0)
                           : 0
                       )}`}
                   </Typography>
                 </div>
 
                 {/* Discount Fee */}
-                {paymentSelectedEWallet.length > 0 && (
+                {
+                  paymentSelectedEWallet.length > 0 &&
                   <div>
-                    {paymentSelectedEWallet[0]?.is_promo_available && (
-                      <div className="flex flex-row justify-between mb-5">
-                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                          {t('circle.payment.discountFee')}
-                        </Typography>
-                        <Typography className="text-sm font-semibold text-[#262626]">
-                          {orderDetail?.currency !== undefined
-                            ? `- ${orderDetail.currency} ${formatCurrency(
+                    {
+                      paymentSelectedEWallet[0]?.is_promo_available &&
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('circle.payment.discountFee')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {orderDetail?.currency !== undefined
+                              ? `- ${orderDetail.currency} ${formatCurrency(
                                 paymentSelectedEWallet.length > 0
                                   ? paymentSelectedEWallet[0]?.promo_price ?? 0
                                   : 0
-                              )}`
-                            : ''}
-                        </Typography>
-                      </div>
-                    )}
+                                )}`
+                              : ''}
+                          </Typography>
+                        </div>
+                    }
                   </div>
-                )}
+                }
                 <hr />
 
                 {/* Total Amount */}
@@ -352,7 +352,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        orderDetail?.grossAmount ?? 0
+                        (orderDetail?.grossAmount ?? 0)
                       )}`}
                   </Typography>
                 </div>

@@ -149,9 +149,9 @@ export const getAssetNews = async (id: string): Promise<any> => {
   });
 };
 
-export const getWatchlist = async (params: {
-  play_id: string;
-}): Promise<any> => {
+export const getWatchlist = async (
+  params: { play_id: string }
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -170,7 +170,9 @@ export const getWatchlist = async (params: {
   }
 };
 
-export const getWatchlistById = async (id: string): Promise<any> => {
+export const getWatchlistById = async (
+  id: string
+): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -188,9 +190,7 @@ export const getWatchlistById = async (id: string): Promise<any> => {
   }
 };
 
-export const createWatchlist = async (
-  formData: WatchlistForm
-): Promise<any> => {
+export const createWatchlist = async (formData: WatchlistForm): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -203,30 +203,26 @@ export const createWatchlist = async (
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    
   } catch (error) {
     return await Promise.reject(error);
   }
 };
 
-export const updateWatchlist = async (
-  formData: WatchlistFormEdit
-): Promise<any> => {
+export const updateWatchlist = async (formData: WatchlistFormEdit): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null || accessToken === '') {
       return await Promise.reject(new Error('Access token not found'));
     }
-    return await marketService.patch(
-      `/watchlist/${formData?.watchlistId}`,
-      formData,
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        }
+    return await marketService.patch(`/watchlist/${formData?.watchlistId}`, formData, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
-    );
+    });
+
   } catch (error) {
     return await Promise.reject(error);
   }
@@ -246,6 +242,7 @@ export const deleteWatchlist = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+
   } catch (error) {
     return await Promise.reject(error);
   }

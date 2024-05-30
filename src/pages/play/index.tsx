@@ -238,7 +238,7 @@ const Player = (): React.ReactElement => {
         setData([]);
       } else {
         setData(response?.playList);
-        setLatestMetadata(response?.metadata);
+        setLatestMetadata(response?.metadata)
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -475,7 +475,10 @@ const Player = (): React.ReactElement => {
           >
             <div className="flex gap-3">
               <div>
-                <Image alt="" src={LeaderBoardIcon} />
+                <Image
+                  alt=""
+                  src={LeaderBoardIcon}
+                />
               </div>
               <div className="my-auto">
                 <p className="text-sm md:text-2xl text-white font-semibold z-50">
@@ -556,14 +559,16 @@ const Player = (): React.ReactElement => {
                           className="w-full h-auto max-h-[150px] object-cover"
                         />
                       </div>
-                      <div className="w-full h-full bg-seeds-button-green">
+                      <div className='w-full h-full bg-seeds-button-green'>
                         <div className="p-2 gap-2 w-full flex flex-col justify-between font-poppins bg-seeds-button-green">
                           <div className="text-sm font-semibold text-white">
                             {item.name}
                           </div>
-                          <div className="w-full flex justify-between items-center">
+                          <div className='w-full flex justify-between items-center'>
                             <div className="text-white flex justify-start items-center gap-2 text-[10px]">
-                              <div>{t('playCenter.text4')}</div>
+                              <div>
+                                {t('playCenter.text4')}
+                              </div>
                               <div className="font-normal text-white">
                                 {calculateDaysLeft(
                                   new Date(item?.play_time),
@@ -611,16 +616,16 @@ const Player = (): React.ReactElement => {
               </div>
             </div>
           )}
-          {data?.length > 6 && (
-            <div className="flex justify-center mx-auto my-8">
-              <TournamentPagination
-                currentPage={tournamentParams.page}
-                totalPages={latestMetadata?.totalPage ?? 0}
-                onPageChange={page => {
-                  setTournamentParams({ ...tournamentParams, page });
-                }}
-              />
-            </div>
+            {data?.length > 6 && (
+          <div className="flex justify-center mx-auto my-8">
+            <TournamentPagination
+              currentPage={tournamentParams.page}
+              totalPages={latestMetadata?.totalPage ?? 0}
+              onPageChange={page => {
+                setTournamentParams({ ...tournamentParams, page });
+              }}
+            />
+          </div>
           )}
         </div>
       </div>

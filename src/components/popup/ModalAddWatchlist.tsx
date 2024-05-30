@@ -24,7 +24,10 @@ interface Props {
   id: string;
 }
 
-const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
+const ModalAddWatchlist: React.FC<Props> = ({
+  onClose,
+  id,
+}) => {
   const { t } = useTranslation();
   const [updateAvatar, setAvatar] = useState<File>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
@@ -36,10 +39,10 @@ const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
   });
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, name: event.target.value });
+    setForm({ ...form, name: event.target.value })
   };
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (): Promise<void> => {    
     try {
       let updatedForm = { ...form };
       if (updateAvatar !== undefined && updateAvatar !== null) {
@@ -56,16 +59,15 @@ const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      onClose();
+      onClose()
     }
   };
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
+  const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     const file = e.target.files?.[0];
     setAvatar(file);
   };
+
 
   return (
     <>
@@ -100,8 +102,10 @@ const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
           />
         </div>
         <div className="mt-4 gap-2">
-          <div className="w-full">
-            <div className="my-2">{t('tournament.watchlist.name')}:</div>
+          <div className='w-full'>
+            <div className='my-2'>
+              {t('tournament.watchlist.name')}:
+            </div>
             <div>
               <input
                 id="search"
@@ -116,8 +120,10 @@ const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
               />
             </div>
           </div>
-          <div className="w-full">
-            <div className="my-2">{t('tournament.watchlist.photo')}:</div>
+          <div className='w-full'>
+            <div className='my-2'>
+              {t('tournament.watchlist.photo')}:
+            </div>
             <div>
               <input
                 id="fileInput"
@@ -127,23 +133,11 @@ const ModalAddWatchlist: React.FC<Props> = ({ onClose, id }) => {
               />
             </div>
           </div>
-          <div
-            onClick={() => {
-              setIsDetailModal(true);
-            }}
-            className="text-center mt-4 py-2 px-4 bg-[#3AC4A0] rounded-lg text-white cursor-pointer"
-          >
+          <div onClick={() => { setIsDetailModal(true); }} className='text-center mt-4 py-2 px-4 bg-[#3AC4A0] rounded-lg text-white cursor-pointer'>
             {t('tournament.watchlist.addAsset')}
           </div>
-          <div className="w-full flex justify-center items-center">
-            <button
-              className="w-full md:w-[200px] bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4"
-              onClick={async () => {
-                await handleSubmit();
-              }}
-            >
-              {t('tournament.watchlist.save')}
-            </button>
+          <div className='w-full flex justify-center items-center'>
+            <button className='w-full md:w-[200px] bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4' onClick={ async() => { await handleSubmit() }}>{t('tournament.watchlist.save')}</button>
           </div>
         </div>
       </Modal>

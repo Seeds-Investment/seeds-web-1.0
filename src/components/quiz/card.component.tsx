@@ -23,10 +23,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   };
 
   return (
-    <div
-      key={item.id}
-      className="rounded-t-lg bg-gradient-to-r from-[#106B6E] to-[#96F7C1]"
-    >
+    <div key={item.id} className="rounded-t-lg bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
       <div className="w-full max-h-60">
         <Image
           src={

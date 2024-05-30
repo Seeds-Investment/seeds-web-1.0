@@ -227,8 +227,8 @@ export default function PlayPage(): React.ReactElement {
                       <div
                         onClick={() => {
                           setIsShareModal(true);
-                          setUrl(data?.id ?? '');
-                          setPlayId(data?.play_id ?? '');
+                          setUrl(data?.id ?? '')
+                          setPlayId(data?.play_id ?? '')
                         }}
                         className="flex flex-row mx-2"
                       >
@@ -246,48 +246,25 @@ export default function PlayPage(): React.ReactElement {
                     {/* <Button className="bg-[#3AC4A0] font-semibold rounded-[593.17px] text-[8.47px] font-poppins text-[#FFFFFF] py-[6.78px] px-5">
                       Open
                     </Button> */}
-
-                    {data?.is_joined ? (
-                      <div
-                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        onClick={async () =>
-                          await router
-                            .push(
-                              `${
-                                data?.is_joined
-                                  ? `/play/tournament/${data?.id}/home`
-                                  : `/play/tournament/${data?.id}`
-                              }`
-                            )
-                            .catch(error => {
-                              toast.error(error);
-                            })
-                        }
-                        className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
-                      >
-                        {t('tournament.tournamentCard.openButton')}
-                      </div>
-                    ) : (
-                      <div
-                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        onClick={async () =>
-                          await router
-                            .push(
-                              `${
-                                data?.is_joined
-                                  ? `/play/tournament/${data?.id}/home`
-                                  : `/play/tournament/${data?.id}`
-                              }`
-                            )
-                            .catch(error => {
-                              toast.error(error);
-                            })
-                        }
-                        className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
-                      >
-                        {t('tournament.tournamentCard.joinButton')}
-                      </div>
-                    )}
+                    
+                    {
+                      data?.is_joined ?
+                        <div               
+                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                          onClick={async () => await router.push(`${data?.is_joined ? `/play/tournament/${data?.id}/home` : `/play/tournament/${data?.id}`}`).catch(error => {toast.error(error);})}
+                          className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                        >
+                          {t('tournament.tournamentCard.openButton')}
+                        </div>
+                        :
+                        <div
+                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                          onClick={async () => await router.push(`${data?.is_joined ? `/play/tournament/${data?.id}/home` : `/play/tournament/${data?.id}`}`).catch(error => {toast.error(error);})}
+                          className="flex justify-center items-center cursor-pointer text-[10px] bg-[#3AC4A0] text-white px-2 rounded-full hover:shadow-lg duration-300"
+                        >
+                          {t('tournament.tournamentCard.joinButton')}
+                        </div>
+                    }
                   </div>
                 </div>
               </Card>

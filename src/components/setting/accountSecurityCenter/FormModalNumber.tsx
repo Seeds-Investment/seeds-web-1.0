@@ -21,7 +21,7 @@ interface IFormModalNumber {
   handleOpen: () => void;
   phoneData: string;
   country: number;
-  setCountry: React.Dispatch<React.SetStateAction<number>>;
+  setCountry: any;
 }
 
 interface IForm {
@@ -71,23 +71,17 @@ const FormModalNumber: React.FC<IFormModalNumber> = ({
       };
       await checkPhoneNumber(formattedPhone.phone);
       await editUserInfo(formattedPhone);
-      await getOtp({ method: 'sms', phoneNumber: formattedPhone.phone });
+      await getOtp({ method: 'whatsapp', phoneNumber: formattedPhone.phone });
       await router.push({
-        pathname: '/auth2/change-phone-number',
-        query: {
-          number: formData.phone,
-          country
-        }
+        pathname: '/auth/change-phone-number',
+        query: { number: formattedPhone.phone }
       });
     } catch (error: any) {
       setError(true);
       toast(error.message ?? error?.response?.data?.message, { type: 'error' });
     }
   };
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    dialCode: string
-  ): void => {
+  const handleChange = (e: any, dialCode: any): void => {
     setUnderSixDigit(false);
     setError(false);
     if (formData.phone === dialCode) {

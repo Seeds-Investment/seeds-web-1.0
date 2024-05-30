@@ -13,25 +13,21 @@ import { useEffect, useState } from 'react';
 
 const ForgotPassword: React.FC = () => {
   const [select, setSelect] = useState(0);
-  const [method, setMethod] = useState('sms');
-  const [countdown, setCountdown] = useState(0);
-  const [country, setCountry] = useState<number>(101);
-  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     phoneNumber: '',
     password: '',
     oldPassword: ''
   });
-
-  const [formOTPData, setFormOTPData] = useState({
-    phoneNumber: '',
-    method,
-    otp: ''
-  });
+  const [method, setMethod] = useState('sms');
+  const [countdown, setCountdown] = useState(0);
+  const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
     setOpen(!open);
   };
-
+  const getOTP = {
+    method,
+    phoneNumber: formData.phoneNumber
+  };
   useEffect(() => {
     const interval = setInterval(() => {
       if (countdown > 0) {
@@ -87,22 +83,19 @@ const ForgotPassword: React.FC = () => {
         setCountdown={setCountdown}
         countries={countries}
         method={method}
-        country={country}
-        setCountry={setCountry}
-        otpForm={formOTPData}
-        setOTPForm={setFormOTPData}
       />
       <AuthOTP
         select={select}
+        number={formData.phoneNumber}
         method={method}
         setMethod={setMethod}
         countdown={countdown}
         setCountdown={setCountdown}
+        getOTP={getOTP}
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
-        otpForm={formOTPData}
-        setOTPForm={setFormOTPData}
-        country={country}
+        formData={formData}
+        setFormData={setFormData}
       />
       <AuthForgotPassNew
         setSelect={setSelect}

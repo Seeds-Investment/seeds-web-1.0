@@ -167,7 +167,7 @@ const TournamentDetail: React.FC = () => {
       toast('Play ID copied!');
     });
   };
-
+  
   return (
     <>
       {isShareModal && (
@@ -224,19 +224,20 @@ const TournamentDetail: React.FC = () => {
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailRemaining')}
               </Typography>
-              {detailTournament?.end_time !== undefined ? (
-                <CountdownTimer
-                  deadline={
-                    detailTournament?.end_time
-                      ? detailTournament.end_time.toString()
-                      : ''
-                  }
-                />
-              ) : (
-                <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
-                  Loading...
-                </Typography>
-              )}
+              {
+                detailTournament?.end_time !== undefined ?
+                  <CountdownTimer
+                    deadline={
+                      detailTournament?.end_time
+                        ? detailTournament.end_time.toString()
+                        : ''
+                    }
+                  />
+                  :
+                  <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
+                    Loading...
+                  </Typography>
+              }
             </div>
             <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
               <ShareIcon
@@ -435,18 +436,22 @@ const TournamentDetail: React.FC = () => {
               }
             }}
             disabled={
-              detailTournament?.status === 'ACTIVE'
-                ? invitationCode === '' &&
-                  detailTournament?.is_need_invitation_code
-                : true
+              detailTournament?.status === 'ACTIVE' ? (
+                invitationCode === '' &&
+                detailTournament?.is_need_invitation_code
+              ) : (
+                true
+              )
             }
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              detailTournament?.status === 'ACTIVE'
-                ? invitationCode === '' &&
-                  detailTournament?.is_need_invitation_code
+              detailTournament?.status === 'ACTIVE' ? (
+                invitationCode === '' &&
+                detailTournament?.is_need_invitation_code
                   ? 'bg-[#7d7d7d]'
                   : 'bg-seeds-button-green text-white'
-                : 'bg-[#7d7d7d] text-white'
+              ) : (
+                'bg-[#7d7d7d] text-white'
+              )
             }`}
           >
             {detailTournament?.participant_status === 'JOINED'

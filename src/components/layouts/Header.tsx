@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Redirecting from '../popup/Redirecting';
 
 interface VariableHeader {
-  className?: string;
+  className?: any;
 }
 
 const pathUrl = [
@@ -79,13 +79,11 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       localStorage.getItem('accessToken') !== null &&
       parseInt(localStorage.getItem('expiresAt') as string) > Date.now() / 1000
     ) {
-      if (window.location.pathname !== '/auth2/change-phone-number') {
-        router
-          .push('/homepage')
-          .then()
-          .catch(() => {});
-        handleOpen();
-      }
+      router
+        .push('/homepage')
+        .then()
+        .catch(() => {});
+      handleOpen();
     } else {
       localStorage.removeItem('accessToken');
     }

@@ -107,13 +107,7 @@ const Portfolio = (): React.ReactElement => {
     if (id !== null && userInfo !== undefined) {
       void fetchActiveAsset();
     }
-  }, [
-    id,
-    userInfo,
-    activeAssetParams.category,
-    activeAssetParams.page,
-    filterChanged
-  ]);
+  }, [id, userInfo, activeAssetParams.category, activeAssetParams.page, filterChanged]);
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
@@ -138,8 +132,8 @@ const Portfolio = (): React.ReactElement => {
       setLoadingPortfolio(false);
     }
   };
-
-  const delay = async (ms: number): Promise<void> => {
+  
+  const delay = async (ms: number): Promise<void> => { 
     await new Promise(resolve => setTimeout(resolve, ms));
   };
 
@@ -147,8 +141,8 @@ const Portfolio = (): React.ReactElement => {
     try {
       setLoadingActiveAsset(true);
       const response = await getActiveAsset(activeAssetParams);
-      setActiveAsset(response?.data);
-      setActiveAssetLength(response?.metadata?.total);
+      setActiveAsset(response?.data)
+      setActiveAssetLength(response?.metadata?.total)
     } catch (error) {
       if (retries > 0) {
         await delay(3000);
@@ -256,13 +250,10 @@ const Portfolio = (): React.ReactElement => {
         </div>
 
         {/* Circle Chart */}
-        {chartProportion?.length !== 0 && (
-          <TournamentPortfolioChart
-            chartProportion={chartProportion}
-            currency={userInfo?.preferredCurrency ?? ''}
-            ballance={ballance?.portfolio ?? 0}
-          />
-        )}
+        {
+          chartProportion?.length !== 0 &&
+            <TournamentPortfolioChart chartProportion={chartProportion} currency={userInfo?.preferredCurrency ?? ''} ballance={ballance?.portfolio ?? 0}/>
+        }
 
         <div className="w-full mt-4">
           <div className="flex gap-2">
@@ -287,13 +278,9 @@ const Portfolio = (): React.ReactElement => {
                   }`}
                   key={item.id}
                   onClick={() => {
-                    setFilterChanged(!filterChanged);
+                    setFilterChanged(!filterChanged)
                     setPortfolioActiveTab(item.status);
-                    setActiveAssetParams({
-                      ...activeAssetParams,
-                      page: 1,
-                      category: item.status === 'OVERVIEW' ? null : item.status
-                    });
+                    setActiveAssetParams({ ...activeAssetParams, page: 1, category: item.status === 'OVERVIEW' ? null : item.status })
                   }}
                 >
                   <Image
@@ -330,50 +317,21 @@ const Portfolio = (): React.ReactElement => {
                   >
                     <div className="w-full flex gap-1 md:gap-4 items-center">
                       <div className="h-[30px] md:h-[40px] w-[30px] md:w-[40px] flex justify-center items-center overflow-hidden">
-                        <img
-                          width={100}
-                          height={100}
-                          alt=""
-                          src={data?.asset_detail?.logo}
-                          className="w-full h-full"
-                        />
+                        <img width={100} height={100} alt="" src={data?.asset_detail?.logo} className='w-full h-full'/>
                       </div>
                       <div className="flex flex-col justify-center items-start">
                         <div className="flex gap-1">
-                          <div className="font-semibold text-sm md:text-base">
-                            {data?.asset_detail?.seeds_ticker ?? 'Coin'} /{' '}
-                          </div>
-                          <div className="text-sm md:text-base">
-                            {data?.asset_detail?.exchange_currency ?? 'IDR'}
-                          </div>
+                          <div className="font-semibold text-sm md:text-base">{data?.asset_detail?.seeds_ticker ?? 'Coin'} / </div>
+                          <div className="text-sm md:text-base">{data?.asset_detail?.exchange_currency ?? 'IDR'}</div>
                         </div>
-                        <div className="text-[#7C7C7C] text-xs md:text-base">
-                          {data?.asset_detail?.name ?? 'Asset'}
-                        </div>
+                        <div className="text-[#7C7C7C] text-xs md:text-base">{data?.asset_detail?.name ?? 'Asset'}</div>
                       </div>
                     </div>
                     <div className="flex flex-col justify-end items-end w-[140px] md:w-[200px] lg:w-[300px]">
-                      <div className="font-semibold text-xs md:text-base">
-                        {userInfo?.preferredCurrency !== undefined
-                          ? userInfo?.preferredCurrency
-                          : 'IDR'}{' '}
-                        {standartCurrency(
-                          (data?.average_price ?? 0) * (data?.total_lot ?? 0)
-                        ).replace('Rp', '')}
-                      </div>
+                      <div className="font-semibold text-xs md:text-base">{userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'} {standartCurrency((data?.average_price ?? 0) * (data?.total_lot ?? 0)).replace('Rp', '')}</div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">
-                        <Image
-                          alt=""
-                          src={data?.return_percentage < 0 ? Bearish : Bullish}
-                          className="w-[14px] md:w-[20px]"
-                        />
-                        <div
-                          className={`${
-                            data?.return_percentage < 0
-                              ? 'text-[#DD2525]'
-                              : 'text-[#3AC4A0]'
-                          }`}
-                        >{`(${data?.return_percentage ?? 0})%`}</div>
+                        <Image alt="" src={data?.return_percentage < 0 ? Bearish : Bullish} className="w-[14px] md:w-[20px]" />
+                        <div className={`${data?.return_percentage < 0 ? 'text-[#DD2525]' : 'text-[#3AC4A0]'}`}>{`(${data?.return_percentage ?? 0})%`}</div>
                       </div>
                     </div>
                   </div>

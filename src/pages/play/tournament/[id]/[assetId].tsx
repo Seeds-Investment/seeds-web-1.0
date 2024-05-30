@@ -76,7 +76,10 @@ const AssetDetailPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayAssets(id as string, assetId as string);
+      const response = await getPlayAssets(
+        id as string,
+        assetId as string
+      );
       if (typeof response === 'object') {
         setPortfolio(response.data);
       }

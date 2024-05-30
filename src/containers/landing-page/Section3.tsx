@@ -50,37 +50,37 @@ export default function Section3(): React.ReactElement {
           className="w-[375px] h-[157px] top-5 lg:w-[836px] lg:h-[167px] md:top-5 relative z-1"
         />
       </div>
-      <div className="lg:flex text-center items-center flex-row gap-5 mx-20 lg:my-12">
+      <div className="lg:flex text-center items-center flex-row gap-5 mx-20 lg:my-12 md:flex md:justify-items-center">
         <div className="w-full justify-center lg:w-1/5 my-auto">
-          <Image alt="img" className="justify-center" src={Seeds} />
+          <Image alt="img" className="mx-auto" src={Seeds} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seeds</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text3')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5 my-auto">
-          <Image alt="img" className="justify-center" src={Sprout} />
+          <Image alt="img" className="mx-auto" src={Sprout} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Sprout</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text4')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5 my-auto">
-          <Image alt="img" className="justify-center" src={Seedling} />
+          <Image alt="img" className="mx-auto" src={Seedling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Seedling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text5')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5 my-auto">
-          <Image alt="img" className="justify-center" src={Sapling} />
+          <Image alt="img" className="mx-auto" src={Sapling} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Sapling</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text6')}
           </h1>
         </div>
         <div className="w-full justify-center lg:w-1/5 my-auto">
-          <Image alt="img" className="justify-center" src={Tree} />
+          <Image alt="img" className="mx-auto" src={Tree} />
           <h1 className="font-poppins font-semibold text-lg mt-5 ">Tree</h1>
           <h1 className="font-poppins text-base text-[#7C7C7C] mt-5">
             {t('landingV2.section3.text7')}

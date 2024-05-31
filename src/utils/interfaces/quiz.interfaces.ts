@@ -158,6 +158,7 @@ export interface Answer {
   question_image: string;
   question_video: string;
   options: Options;
+  option_image: Options;
   description?: string;
 }
 

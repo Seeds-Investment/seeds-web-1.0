@@ -58,10 +58,18 @@ interface IPortfolioSummary {
   crypto: itemPortfolioSummaryType;
   commodity: itemPortfolioSummaryType;
   pie: {
-    assets: any[];
+    assets: PieAssets[];
     cash_balance: number;
     total_portfolio: number;
   };
+}
+
+interface PieAssets {
+  exchange: string;
+  id: string;
+  logo: string;
+  percentage: number;
+  ticker: string;
 }
 
 const initialChartData = {
@@ -110,7 +118,7 @@ const PortfolioPage: React.FC = () => {
       svgActive: StockActive
     }
   ];
-
+  
   useEffect(() => {
     if (portfolio?.pie !== undefined) {
       handleSetChartData();
@@ -237,7 +245,7 @@ const PortfolioPage: React.FC = () => {
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
                 } font-poppins text-xs md:text-sm font-light`}
               >
-                {`${ballance?.currency}${standartCurrency(
+                {`${ballance?.currency} ${standartCurrency(
                   portfolio?.summary?.gnl ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
@@ -246,7 +254,7 @@ const PortfolioPage: React.FC = () => {
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
                 } font-poppins text-xs md:text-sm font-light`}
               >
-                {`(${isUptrend.summary ? '+' : '-'}${
+                {`(${isUptrend.summary ? '+' : ''} ${
                   (portfolio?.summary?.gnl_percentage ?? 0).toFixed(2) 
                 } %)`}
                 {' '}

@@ -73,7 +73,7 @@ export interface SuccessOrderData {
   id: string;
   play_id: string;
   user_id: string;
-  asset: AssetCreate;
+  asset: Asset;
   type: 'BUY' | 'SELL';
   lot: number;
   bid_price: number;
@@ -83,11 +83,13 @@ export interface SuccessOrderData {
   updated_at: string;
 }
 
-interface AssetCreate {
-  id: string;
-  play_id: string;
-  user_id: string;
-  limit_type: string;
+interface Asset {
+  asset_exchange: string;
+  asset_icon: string;
+  asset_id: string;
+  asset_name: string;
+  asset_ticker: string;
+  asset_type: string;
 }
 
 interface AssetPortfolio {
@@ -129,10 +131,12 @@ const BuyPage: React.FC = () => {
     play_id: '',
     user_id: '',
     asset: {
-      id: '',
-      play_id: '',
-      user_id: '',
-      limit_type: ''
+      asset_exchange: '',
+      asset_icon: '',
+      asset_id: '',
+      asset_name: '',
+      asset_ticker: '',
+      asset_type: ''
     },
     type: 'BUY',
     lot: 0,

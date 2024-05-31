@@ -86,6 +86,7 @@ const PortfolioPage: React.FC = () => {
     total_buy: 0,
     currency: 'IDR'
   });
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -109,6 +110,59 @@ const PortfolioPage: React.FC = () => {
       svgActive: StockActive
     }
   ];
+
+  useEffect(() => {
+    if (portfolio?.pie !== undefined) {
+      handleSetChartData();
+    }
+  }, [portfolio]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency );
+      void fetchPlayPortfolio(userInfo.preferredCurrency );
+    }
+  }, [id, userInfo]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const response = await getPlayPortfolio(id as string, currency);
+      setPortfolio(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleActiveTab = (val: string): void => {
+    setActiveTab(val);
+  };
 
   const filterAssetsList = useCallback((): any[] => {
     const newData = portfolio?.pie.assets.filter(el => {
@@ -154,61 +208,6 @@ const PortfolioPage: React.FC = () => {
     });
 
     setChartData(convertedData);
-  };
-
-  useEffect(() => {
-    if (portfolio?.pie !== undefined) {
-      handleSetChartData();
-    }
-  }, [portfolio]);
-
-  const [userInfo, setUserInfo] = useState<UserInfo>();
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
-    try {
-      const response = await getPlayBallance(id as string, { currency });
-      setBallance(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
-  const fetchPlayPortfolio = async (currency: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      const response = await getPlayPortfolio(id as string, currency);
-      setPortfolio(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency );
-      void fetchPlayPortfolio(userInfo.preferredCurrency );
-    }
-  }, [id, userInfo]);
-
-  const handleActiveTab = (val: string): void => {
-    setActiveTab(val);
   };
 
   return (

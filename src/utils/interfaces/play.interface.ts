@@ -222,3 +222,8 @@ export interface Banner {
   updated_at: string;
   deleted_at: string;
 }
+
+export interface Assets {
+  id: string;
+  ticker: string;
+}

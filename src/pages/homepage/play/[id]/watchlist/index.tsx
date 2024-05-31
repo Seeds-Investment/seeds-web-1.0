@@ -257,13 +257,13 @@ const TournamentHome: React.FC = () => {
           />
         </div>
 
-        {/* Modal Add Post */}
-        <div className="fixed bottom-10 right-10 z-20">
+        {/* Modal Add Watchlist */}
+        <div className="fixed bottom-10 right-10 z-20 cursor-pointer">
           <div className={`${watchList === null ? 'hidden' : 'flex'} bg-[#3AC4A0] p-2 rounded-full`}>
             <PlusIcon
               width={50}
               height={50}
-              className="text-white cursor-pointer"
+              className="text-white"
               onClick={() => {
                 setIsDetailModal(true);
               }}

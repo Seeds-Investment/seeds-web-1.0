@@ -1519,7 +1519,7 @@ export default {
   playSimulation: {
     assetList: 'Daftar Aset',
     seedsCash: 'Dana Seeds',
-    cashBalance: 'Saldo Kas',
+    cashBalance: 'Saldo Virtual',
     portfolio: 'Portofolio',
     assetDetail: 'Detail Aset',
     today: 'Hari Ini',

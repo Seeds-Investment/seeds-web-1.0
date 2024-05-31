@@ -1,3 +1,4 @@
+import NoData from '@/assets/play/tournament/assetNoData.svg';
 import AssetPagination from '@/components/AssetPagination';
 import CCard from '@/components/CCard';
 import PieChart from '@/components/PieChart';
@@ -14,6 +15,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -85,6 +87,7 @@ const CashBalancePage: React.FC = () => {
     total_buy: 0,
     currency: 'IDR'
   });
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [metadata, setMetadata] = useState<Metadata>();
   const [transaction, setTransaction] = useState<HistoryTransactionDTO[]>([]);
@@ -92,6 +95,69 @@ const CashBalancePage: React.FC = () => {
     page: 1,
     limit: 10
   });
+
+  useEffect(() => {
+    if (ballance !== undefined) {
+      handleSetChartData();
+    }
+  }, [ballance]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
+    }
+  }, [id, userInfo]);
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      void fetchHistorytransaction(userInfo.preferredCurrency);
+    }
+  }, [id, userInfo, params.page]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchHistorytransaction = async (currency: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      getHistoryTransaction(id as string, { ...params, currency })
+        .then(res => {
+          setMetadata(res?.metadata)
+          setTransaction(res?.playOrders);
+        })
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch(err => {
+          toast.error(`${err as string}`);
+        });
+    } catch (error) {
+      toast.error(`${error as string}`);
+      setIsLoading(false);
+    }
+  };
 
   const convertToPercent = (num1: number, num2: number): number[] => {
     const total = num1 + num2;
@@ -114,69 +180,6 @@ const CashBalancePage: React.FC = () => {
 
     setChartData(convertedData);
   };
-
-  useEffect(() => {
-    if (ballance !== undefined) {
-      handleSetChartData();
-    }
-  }, [ballance]);
-
-  const [userInfo, setUserInfo] = useState<UserInfo>();
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
-    try {
-      const response = await getPlayBallance(id as string, { currency });
-      setBallance(response);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
-  };
-
-  const fetchHistorytransaction = async (currency: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      getHistoryTransaction(id as string, { ...params, currency })
-        .then(res => {
-          setMetadata(res?.metadata)
-          setTransaction(res?.playOrders);
-        })
-        .catch(err => {
-          toast.error(`${err as string}`);
-        });
-    } catch (error) {
-      toast.error(`${error as string}`);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency);
-    }
-  }, [id, userInfo]);
-
-  useEffect(() => {
-    if (userInfo !== undefined) {
-      void fetchHistorytransaction(userInfo.preferredCurrency);
-    }
-  }, [id, userInfo, params.page]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -289,9 +292,21 @@ const CashBalancePage: React.FC = () => {
                   </div>
                 </>
               ) : (
-                <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                  Data Not Found
-                </Typography>
+                <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 my-8">
+                  <Image
+                    alt=""
+                    src={NoData}
+                    className="w-[250px]"
+                    width={100}
+                    height={100}
+                  />
+                  <p className="font-semibold text-black mt-4">
+                    {t('tournament.assets.sorry')}
+                  </p>
+                  <p className="text-[#7C7C7C]">
+                    {t('tournament.assets.noData')}
+                  </p>
+                </div>
               )
             ) : (
               Array.from({ length: 10 }, (_, idx) => (

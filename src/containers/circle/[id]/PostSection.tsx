@@ -167,11 +167,6 @@ const PostSection: React.FC<props> = ({
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
 
-          if (isCopied) {
-            if (isShare) {
-              console.log('success', additionalPostData);
-            }
-          }
           // useEffect(() => {
           //   const fetchData = async (): Promise<void> => {
           //     try {
@@ -196,7 +191,6 @@ const PostSection: React.FC<props> = ({
             'https://user-dev-gcp.seeds.finance/';
 
           const handleCopyClick = async (text: string): Promise<void> => {
-            console.log(process.env.NEXT_PUBLIC_DOMAIN);
             const textToCopy = `${baseUrl}/connect/comment/${text}`;
             await navigator.clipboard.writeText(textToCopy).then(() => {
               setIsCopied(true);

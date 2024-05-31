@@ -867,7 +867,8 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1794,6 +1795,7 @@ export default {
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup'
@@ -1833,6 +1835,18 @@ export default {
     leaderboardBanner4: 'Cek Papan Peringkat!',
     tutorialTournament: 'Tutorial Turnamen',
     remainingTimeText: 'Turnamen telah berakhir!',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup'
+    },
     clock: {
       days: 'h',
       hours: 'j',

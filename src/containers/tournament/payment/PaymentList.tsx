@@ -14,10 +14,12 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 // import { useAppSelector } from '@/store/redux/store';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
@@ -93,6 +95,12 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [detailTournament, setDetailTournament] = useState<DetailTournament>();
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
   const invitationCode = router.query.invitationCode;
+  const useCoinsParam = router.query.useCoins;
+  const useCoins = useCoinsParam === 'true';
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const userDefault = {
     name: '',
@@ -146,7 +154,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     } catch (error) {
       toast(`ERROR fetch user info ${error as string}`);
     }
-  };  
+  };
 
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
@@ -163,7 +171,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   useEffect(() => {
     void fetchPaymentList();
   }, [userInfo?.preferredCurrency]);
-  
 
   const getDetail = useCallback(async () => {
     try {
@@ -201,9 +208,9 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           paymentGateway,
           paymentMethod,
           `+62${phoneNumber as string}`,
-          '',
+          promoCodeValidationResult?.promo_code ?? '',
           (invitationCode as string) || '',
-          false
+          useCoins
         );
 
         const resp = await getPaymentById(response.order_id);
@@ -230,13 +237,13 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   };
 
   const onSubmit = () => {
-    let _admissionFee: number = 0;
+    let _admissionFee = 0;
     let _adminFee = 0;
     let _totalFee = 0;
 
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (detailTournament) {
-      _admissionFee = detailTournament?.admission_fee ?? 0;
+      _admissionFee = detailTournament?.admission_fee;
       _adminFee = 0;
       _totalFee = Number(_admissionFee) + Number(_adminFee);
     }

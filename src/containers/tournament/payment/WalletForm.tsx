@@ -2,8 +2,10 @@
 /* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Input, Typography } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -41,10 +43,25 @@ const WalletForm = ({
   const [admissionFee, setAdmissionFee] = useState(0);
   const [adminFee, setAdminFee] = useState(0);
   const [totalFee, setTotalFee] = useState(0);
+  const [coinsDiscount, setCoinsDiscount] = useState(0);
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handleGetCoinsUser = async () => {
+    const useCoins = router.query.useCoins;
+    if (useCoins === 'true') {
+      const resCoins = await getTransactionSummary();
+      setCoinsDiscount(resCoins?.data?.total_available_coins || 0);
+    }
+  };
+
+  useEffect(() => {
+    void handleGetCoinsUser();
+  }, []);
 
   useEffect(() => {
     let _admissionFee = 0;
@@ -52,18 +69,18 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available) {
-      _discount = payment.promo_price;
+    _discount = payment.is_promo_available
+      ? payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0)
+      : coinsDiscount > 0
+      ? coinsDiscount
+      : 0;
+    if (promoCodeValidationResult) {
+      _discount += promoCodeValidationResult?.total_discount as number;
     }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (dataPost) {
       _admissionFee = dataPost?.admission_fee;
       _adminFee = payment?.admin_fee;
-      _discount = promoCodeValidationResult
-        ? promoCodeValidationResult?.total_discount
-        : 0;
-
       _totalFee = parseFloat(
         `${(
           Number(_admissionFee) +
@@ -74,10 +91,22 @@ const WalletForm = ({
       );
     }
 
+    if (coinsDiscount > 0) {
+      setCoinsDiscount(Math.min(coinsDiscount, _admissionFee));
+    } else {
+      setCoinsDiscount(0);
+    }
+
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, numberMonth, payment]);
+  }, [
+    dataPost,
+    numberMonth,
+    payment,
+    coinsDiscount,
+    promoCodeValidationResult
+  ]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -101,11 +130,17 @@ const WalletForm = ({
           value={phone}
           onChange={e => {
             let inputValue = e.target.value;
+            inputValue = inputValue.replace(/[^0-9]/g, '');
             if (inputValue.charAt(0) === '0') {
               inputValue = '8' + inputValue.slice(1);
             }
             setPhone(inputValue);
           }}
+          onPaste={e => {
+            e.preventDefault();
+            return false;
+          }}
+          maxLength={13}
         />
       </div>
     </div>
@@ -136,17 +171,23 @@ const WalletForm = ({
           className="mb-2"
         />
       ) : null}
-      <hr />
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency} ${
+          value={`- ${userInfo?.preferredCurrency} ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount
           }`}
           className="mb-2"
         />
       ) : null}
+      {coinsDiscount > 0 && (
+        <InlineText
+          label={t(`${translationId}.seedsCoin`)}
+          value={`- ${userInfo?.preferredCurrency} ${coinsDiscount}`}
+          className="mb-2"
+        />
+      )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
         {`${userInfo?.preferredCurrency} ${totalFee}`}

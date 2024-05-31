@@ -948,7 +948,8 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1868,6 +1869,7 @@ export default {
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close'
@@ -1907,6 +1909,18 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close'
+    },
     clock: {
       days: 'd',
       hours: 'h',

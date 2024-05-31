@@ -134,7 +134,7 @@ export default function Section12(): React.ReactElement {
                     alt={`comunity`}
                     width={1440}
                     height={400}
-                    className="w-full"
+                    className="w-[1400px] h-[436px] object-contain"
                   />
                 </div>
               </Marquee>

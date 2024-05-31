@@ -1,6 +1,8 @@
 import CCard from '@/components/CCard';
 import CountdownTimer from '@/components/play/CountdownTimer';
+import { standartCurrency } from '@/helpers/currency';
 import { getPlayById } from '@/repository/play.repository';
+import { type AssetI } from '@/utils/interfaces/play.interface';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -9,10 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface props {
-  data: any;
+  data: AssetI;
+  currency: string;
 }
 
-const Card2: React.FC<props> = ({ data }) => {
+const Card2: React.FC<props> = ({ data, currency }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const { playId } = router.query;
@@ -52,26 +55,29 @@ const Card2: React.FC<props> = ({ data }) => {
       <hr className="my-3" />
       <div className="flex flex-row">
         <div className="flex-col w-1/3 text-center items-center">
-          <p className="text-base font-semibold text-black">
-            {new Intl.NumberFormat().format(data?.lastPrice?.open)}
+          <p className="text-sm md:text-base font-semibold text-black">
+            {currency ?? 'IDR'}{' '}
+            {standartCurrency((data?.lastPrice?.open ?? 0)).replace('Rp', '')}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">
+          <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.open')}
           </p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
-          <p className="text-base font-semibold text-black">
-            {new Intl.NumberFormat().format(data?.lastPrice?.high)}
+          <p className="text-sm md:text-base font-semibold text-black">
+            {currency ?? 'IDR'}{' '}
+            {standartCurrency((data?.lastPrice?.high ?? 0)).replace('Rp', '')}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">
+          <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.dayHigh')}
           </p>
         </div>
         <div className="flex-col w-1/3 text-center items-center">
-          <p className="text-base font-semibold text-black">
-            {new Intl.NumberFormat().format(data?.lastPrice?.low)}
+          <p className="text-sm md:text-base font-semibold text-black">
+            {currency ?? 'IDR'}{' '}
+            {standartCurrency((data?.lastPrice?.low ?? 0)).replace('Rp', '')}
           </p>
-          <p className="text-base font-light text-[#7C7C7C]">
+          <p className="text-sm md:text-base font-light text-[#7C7C7C]">
             {t('playSimulation.dayLow')}
           </p>
         </div>

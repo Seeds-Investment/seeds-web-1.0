@@ -53,7 +53,7 @@ const AuthGuest: React.FC<AuthGuestI> = ({
       setGuest('guest-login');
       await handleGetOTP(method, setCountdown, setSelect, formattedData);
       if (guest !== 'guest-login') {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message ?? 'Unknown Error');
       }
     }
   };

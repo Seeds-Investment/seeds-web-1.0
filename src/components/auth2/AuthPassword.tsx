@@ -1,28 +1,19 @@
 import Eye from '@/assets/my-profile/editProfile/Eye.svg';
 import EyeSlash from '@/assets/my-profile/editProfile/EyeSlash.svg';
+import type { AuthPasswordI } from '@/utils/interfaces/auth.interface';
 import { Input } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-interface IAuthPassword {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  formData: string;
-  error: boolean;
-  name: string;
-  label: string;
-  placeholder: string;
-  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-}
-
-const AuthPassword: React.FC<IAuthPassword> = ({
+const AuthPassword: React.FC<AuthPasswordI> = ({
   handleChange,
-  formData,
+  value,
   error,
   name,
   label,
   placeholder,
   handleSubmit
-}: IAuthPassword) => {
+}: AuthPasswordI) => {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -37,7 +28,7 @@ const AuthPassword: React.FC<IAuthPassword> = ({
           variant="static"
           placeholder={placeholder}
           name={name}
-          value={formData}
+          value={value}
           onChange={handleChange}
           required
           onKeyDown={handleSubmit}

@@ -269,8 +269,8 @@ const DoneQuiz: React.FC = () => {
                       onClick={() => {
                         router
                           .push(`/play/quiz/${id as string}/leaderboard`)
-                          .catch(err => {
-                            console.log(err);
+                          .catch(error => {
+                            toast.error(`${error as string}`);
                           });
                       }}
                       className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
@@ -282,11 +282,11 @@ const DoneQuiz: React.FC = () => {
                         {t('quiz.leaderboard')}
                       </div>
                     </button>
-                    {/* {detailQuiz?.admission_fee === 0 ? (
+                    {detailQuiz?.status === 'ENDED' ? (
                       <button
                         onClick={() => {
-                          router.push(`/play`).catch(err => {
-                            console.log(err);
+                          router.push(`/play/quiz`).catch(error => {
+                            toast.error(`${error as string}`);
                           });
                         }}
                         className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
@@ -298,23 +298,25 @@ const DoneQuiz: React.FC = () => {
                           {t('quiz.anotherQuiz')}
                         </div>
                       </button>
-                    ) : ( */}
-                    <button
-                      onClick={() => {
-                        router.push(`/play/quiz/${id as string}`).catch(err => {
-                          console.log(err);
-                        });
-                      }}
-                      className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
-                    >
-                      <div
-                        className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
-                      />
-                      <div className="z-10 text-center text-xl font-semibold text-white">
-                        {loading ? 'Loading...' : t('quiz.playAgain')}
-                      </div>
-                    </button>
-                    {/* )} */}
+                    ) : (
+                      <button
+                        onClick={() => {
+                          router
+                            .push(`/play/quiz/${id as string}`)
+                            .catch(error => {
+                              toast.error(`${error as string}`);
+                            });
+                        }}
+                        className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+                      >
+                        <div
+                          className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
+                        />
+                        <div className="z-10 text-center text-xl font-semibold text-white">
+                          {loading ? 'Loading...' : t('quiz.playAgain')}
+                        </div>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

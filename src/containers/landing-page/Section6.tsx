@@ -11,7 +11,7 @@ import {
   SectionSixImageOval
 } from '@/constants/assets/images';
 import Image from 'next/image';
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 // import { Zoom } from 'react-toastify';
@@ -23,7 +23,6 @@ import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 export default function Section6(): React.ReactElement {
-
   const SwiperPrevButton: React.FC = () => {
     const swiper = useSwiper();
     return (
@@ -36,11 +35,12 @@ export default function Section6(): React.ReactElement {
     );
   };
 
-  const SwiperNextButton: React.FC= () => {
+  const SwiperNextButton: React.FC = () => {
     const swiper = useSwiper();
     return (
       <button
-        className="rounded-full lg:p-2 lg:mx-4 border mx-2 p-1 border-1 border-[#4FE6AF] "onClick={() => swiper.slideNext()}
+        className="rounded-full lg:p-2 lg:mx-4 border mx-2 p-1 border-1 border-[#4FE6AF] "
+        onClick={() => swiper.slideNext()}
       >
         <Image src={next} alt="Next" className="cursor-pointer" />
       </button>

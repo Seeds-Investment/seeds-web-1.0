@@ -35,7 +35,6 @@ const CardAssetSlider: React.FC<props> = ({
   changeIsLock,
   sumAsset
 }) => {
-  
   return (
     <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
       <CardBody className="p-3 inline-block h-auto">
@@ -104,7 +103,9 @@ const CardAssetSlider: React.FC<props> = ({
           className={`text-[#3AC4A0] mt-5 ${
             data.isLock ? 'opacity-50 pointer-events-none' : ''
           }`}
-          onChange={e => { changeSlider(e, index); }}
+          onChange={e => {
+            changeSlider(e, index);
+          }}
           min={0}
           max={100}
           defaultValue={data.value}
@@ -121,7 +122,9 @@ const CardAssetSlider: React.FC<props> = ({
             circleProps={{
               className: 'before:hidden left-0.5 border-none'
             }}
-            onClick={e => { changeIsLock(e, index); }}
+            onClick={e => {
+              changeIsLock(e, index);
+            }}
             defaultChecked={data.isLock}
           />
         </div>

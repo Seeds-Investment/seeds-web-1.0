@@ -48,7 +48,6 @@ export default function Section6(): React.ReactElement {
     }
   ];
 
-  
   const autoplaySwiper = {
     delay: 1500
   };
@@ -56,8 +55,8 @@ export default function Section6(): React.ReactElement {
   const breakpointsSwiper = {
     320: { slidesPerView: 1 },
     480: { slidesPerView: 2 },
-    640: { slidesPerView: 3 }        
-  }
+    640: { slidesPerView: 3 }
+  };
   return (
     <section
       ref={ref}
@@ -82,7 +81,7 @@ export default function Section6(): React.ReactElement {
             </h1>
           </div>
         </div>
-        
+
         <div className="lg:flex-col lg:justify-center lg:items-center md:px-[250px] mb-20 md:mt-16">
           <Swiper
             modules={[Autoplay, Pagination]}

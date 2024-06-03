@@ -60,8 +60,8 @@ const SuccessOrderModal: React.FC<props> = ({
               {successData?.type === 'BUY'
                 ? t('playSimulation.orderCompletedBuy')
                 : t('playSimulation.orderCompletedSell')}{' '}
-              {`${successData?.lot} ${
-                successData?.asset?.asset_name as string
+              {`${successData?.lot ?? 0} ${
+                successData?.asset?.asset_name ?? ''
               }`}
             </Typography>
           </div>
@@ -86,7 +86,7 @@ const SuccessOrderModal: React.FC<props> = ({
             router
               .push(`/play/tournament/${id as string}/asset-list`)
               .catch(err => {
-                console.log(err);
+                toast.error(`${err as string}`);
               });
           }}
         >

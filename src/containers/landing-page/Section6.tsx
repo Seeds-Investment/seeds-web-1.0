@@ -28,7 +28,9 @@ export default function Section6(): React.ReactElement {
     return (
       <button
         className="rounded-full lg:p-2 border lg:mx-4 mx-2 p-1 border-1 border-[#4FE6AF] "
-        onClick={() => swiper.slidePrev()}
+        onClick={() => {
+          swiper.slidePrev();
+        }}
       >
         <Image src={prev} alt="Previous" className="cursor-pointer" />
       </button>
@@ -40,7 +42,9 @@ export default function Section6(): React.ReactElement {
     return (
       <button
         className="rounded-full lg:p-2 lg:mx-4 border mx-2 p-1 border-1 border-[#4FE6AF] "
-        onClick={() => swiper.slideNext()}
+        onClick={() => {
+          swiper.slideNext();
+        }}
       >
         <Image src={next} alt="Next" className="cursor-pointer" />
       </button>

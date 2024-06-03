@@ -1790,11 +1790,24 @@ export default {
     placeholderAccount: 'Pilih akunmu',
     placeholderAccountName: 'Nama akunmu',
     placeholderAccountNumber: 'Nomor akunmu',
+    completeYourData: 'Lengkapi datamu!',
+    fullname: 'Nama Lengkap',
+    placeholderFullname: 'Nama lengkapmu',
+    socialMedia: 'Media Sosial',
+    placeholderSocialMedia: 'Pilih akun media sosial',
+    socialMediaName: 'Nama Media Sosial',
+    placeholderSocialMediaName: 'Masukkan akun media sosial Anda',
+    winnerTestimonial: 'Testimoni',
+    placeholderWinnerTestimonial: 'Masukkan testimoni Anda',
+    winnerPhoto: 'Unggah Gambar',
+    placeholderWinnerPhoto: 'Upload foto terbaik kamu Sobat Seeds!',
+    addPhoto: 'Tambahkan Foto',
     transferBank: 'Transfer dengan Bank',
     eWallet: 'Dompet Digital',
     transferEWallet: 'Transfer dengan Dompet Digital',
     bankList: 'Daftar Akun Bank',
     eWalletList: 'Daftar Dompet Digital',
+    socialMediaList: 'Daftar Sosial Media',
     thankyou: 'Terima Kasih!',
     withdrawalRequest:
       'Permintaan penarikan sedang diproses. Mohon tunggu maksimal 1x24 jam.',
@@ -2021,7 +2034,7 @@ export default {
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
-    },
+    }
   },
   seedsEvent: {
     search: 'Cari event',

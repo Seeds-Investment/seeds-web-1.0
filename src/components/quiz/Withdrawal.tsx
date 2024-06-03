@@ -4,7 +4,7 @@ import ModalAccountList from '@/components/quiz/ModalAccountList';
 import ModalClaimMethod from '@/components/quiz/ModalClaimMethod';
 import SettingCommonInput from '@/components/setting/accountInformation/SettingCommonInput';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { type IWithdrawalAccount } from '@/pages/withdrawal';
+import { type IWithdrawalAccount } from '@/pages/withdrawal/quiz/[id]';
 import { getWithdrawalList } from '@/repository/payment.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -57,6 +57,15 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
       ...prevState,
       [key]: value
     }));
+  };
+
+  const isFormComplete = (): boolean => {
+    return (
+      account?.method?.trim() !== '' &&
+      account?.account_name?.trim() !== '' &&
+      (account?.beneficiary_name?.trim() ?? '').length >= 5 &&
+      (account?.account_number?.trim() ?? '').length >= 5
+    );
   };
 
   const fetchWithdrawalMethodList = async (): Promise<void> => {
@@ -155,7 +164,7 @@ const IndexWithdrawal: React.FC<IIndexWithdrawal> = ({
         onClick={() => {
           setSelect(1);
         }}
-        disabled={/* Please disable this button if all form not fill */ false}
+        disabled={!isFormComplete()}
         className="capitalize disabled:bg-[#BDBDBD] disabled:text-[#7C7C7C] bg-[#3AC4A0] text-[#FFFFFF] rounded-full font-poppins font-semibold text-sm md:w-[343px] w-full"
       >
         {t('quiz.submit')}

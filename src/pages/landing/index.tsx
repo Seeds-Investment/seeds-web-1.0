@@ -10,7 +10,7 @@ import Section2 from '@/containers/landing-page/Section2';
 import Section3 from '@/containers/landing-page/Section3';
 import Section4 from '@/containers/landing-page/Section4';
 import Section5 from '@/containers/landing-page/Section5';
-import Section6 from '@/containers/landing-page/Section6.1';
+import Section6 from '@/containers/landing-page/Section6';
 import Section7 from '@/containers/landing-page/Section7';
 import Section8 from '@/containers/landing-page/Section8';
 import Section9 from '@/containers/landing-page/Section9';

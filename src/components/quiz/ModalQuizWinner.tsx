@@ -28,7 +28,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
       open={open}
       handler={handleOpen}
       size="md"
-      className="h-screen md:h-auto md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
+      className="h-screen  md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
     >
       <DialogBody className="flex flex-col items-center md:gap-5 gap-4 p-0 h-full w-full">
         <div className="flex flex-row-reverse justify-between items-center w-full">
@@ -88,7 +88,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           <div className="w-2/3 gap-4 flex flex-col py-4">
             <button
               onClick={() => {
-                router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
+                router.push(`/withdrawal/quiz/${quizId}`).catch(err => {
                   console.log(err);
                 });
               }}

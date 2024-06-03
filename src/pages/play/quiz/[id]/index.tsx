@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -12,6 +13,7 @@ import {
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import { Switch } from '@material-tailwind/react';
 import moment from 'moment';
@@ -32,7 +34,7 @@ const QuizDetail = (): React.ReactElement => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [invitationCode, setInvitationCode] = useState<string>('');
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
@@ -67,10 +69,8 @@ const QuizDetail = (): React.ReactElement => {
       try {
         const dataInfo = await getUserInfo();
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast.error(
-          `Error fetching data: ${error.response.data.message as string}`
-        );
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -128,6 +128,18 @@ const QuizDetail = (): React.ReactElement => {
     }
   }, [id, userInfo]);
 
+  useEffect(() => {
+    if (detailQuiz !== undefined && userInfo !== undefined) {
+      TrackerEvent({
+        event: 'SW_quiz_detail_page',
+        quiz_name: detailQuiz.name,
+        user_id: userInfo.id,
+        user_name: userInfo.name,
+        user_phone: userInfo.phoneNumber
+      });
+    }
+  }, [detailQuiz]);
+
   if (detailQuiz === undefined && loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -162,7 +174,7 @@ const QuizDetail = (): React.ReactElement => {
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
           <div className="flex items-center justify-center">
-            <div className="grid grid-cols-3 w-full lg:w-1/2 border border-[#E9E9E9] rounded-xl">
+            <div className="grid grid-cols-3 w-full lg:w-3/4 xl:w-2/3 border border-[#E9E9E9] rounded-xl">
               <div className="flex flex-col justify-center items-center p-4 border-r border-[#E9E9E9]">
                 <div className="text-xl font-semibold">
                   {detailQuiz?.total_questions}
@@ -241,10 +253,7 @@ const QuizDetail = (): React.ReactElement => {
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {
-                      currency:
-                        userInfo?.preferredCurrency?.length > 0
-                          ? userInfo?.preferredCurrency
-                          : 'IDR',
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
                       style: 'currency'
                     })}
                   </td>
@@ -281,7 +290,9 @@ const QuizDetail = (): React.ReactElement => {
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-6">
           <div className="flex flex-row justify-between items-start gap-2">
-            <div className="text-2xl font-semibold">{detailQuiz?.name}</div>
+            <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
+              {detailQuiz?.name}
+            </div>
             <button onClick={handleCopyClick}>
               <ShareIcon width={24} height={24} />
             </button>
@@ -306,10 +317,7 @@ const QuizDetail = (): React.ReactElement => {
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
-                  currency:
-                    userInfo?.preferredCurrency?.length > 0
-                      ? userInfo?.preferredCurrency
-                      : 'IDR',
+                  currency: userInfo?.preferredCurrency ?? 'IDR',
                   style: 'currency'
                 })}
           </div>
@@ -352,9 +360,9 @@ const QuizDetail = (): React.ReactElement => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth2');
+                router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth2');
+                withRedirect(router, { quizId: id as string }, '/auth');
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${

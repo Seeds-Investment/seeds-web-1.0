@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -109,6 +110,18 @@ const QuizDetail = (): React.ReactElement => {
       getDetail(userInfo?.preferredCurrency ?? '');
     }
   }, [id, userInfo]);
+
+  useEffect(() => {
+    if (detailQuiz !== undefined && userInfo !== undefined) {
+      TrackerEvent({
+        event: 'SW_quiz_detail_page',
+        quiz_name: detailQuiz.name,
+        user_id: userInfo.id,
+        user_name: userInfo.name,
+        user_phone: userInfo.phoneNumber
+      });
+    }
+  }, [detailQuiz]);
 
   if (detailQuiz === undefined && loading) {
     return (

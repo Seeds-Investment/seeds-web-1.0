@@ -16,6 +16,8 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type AssetI, type SuccessOrderData } from '@/utils/interfaces/play.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import {
   Avatar,
   Button,
@@ -30,26 +32,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { type Ballance } from '../play-assets';
 
 export interface typeLimitOrder {
   type: string;
   profit: string;
   loss: string;
-}
-
-export interface SuccessOrderData {
-  id: string;
-  play_id: string;
-  user_id: string;
-  asset: any;
-  type: 'BUY' | 'SELL';
-  lot: number;
-  bid_price: number;
-  stop_loss: number;
-  pnl: number;
-  created_at: string;
-  updated_at: string;
 }
 
 interface AssetPortfolio {
@@ -66,9 +55,8 @@ const OrderPage: React.FC = () => {
   const { playId } = router.query;
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
-  console.log(height, 'asas');
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
     portfolio: 0,
@@ -86,7 +74,14 @@ const OrderPage: React.FC = () => {
     id: '',
     play_id: '',
     user_id: '',
-    asset: {},
+    asset: {
+      asset_id: '',
+      asset_name: '',
+      asset_icon: '',
+      asset_ticker: '',
+      asset_exchange: '',
+      asset_type: ''
+    },
     type: 'BUY',
     lot: 0,
     bid_price: 0,
@@ -118,7 +113,7 @@ const OrderPage: React.FC = () => {
   useEffect(() => {
     if (sellPercent !== 0) {
       setAmount(
-        `${(portfolio.total_lot * data?.lastPrice?.open * sellPercent) / 100}`
+        `${((portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0) * sellPercent) / 100}`
       );
       setAssetsAmount(`${(portfolio.total_lot * sellPercent) / 100}`);
     }
@@ -127,7 +122,7 @@ const OrderPage: React.FC = () => {
   useEffect(() => {
     if (
       amount !==
-      `${(portfolio.total_lot * data?.lastPrice?.open * sellPercent) / 100}`
+      `${((portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0) * sellPercent) / 100}`
     ) {
       setSellPercent(0);
     }
@@ -136,15 +131,15 @@ const OrderPage: React.FC = () => {
     }
   }, [amount, assetAmount]);
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
 
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -158,7 +153,7 @@ const OrderPage: React.FC = () => {
       const response = await getPlayBallance(playId as string, { currency });
       setBallance(response);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -167,7 +162,7 @@ const OrderPage: React.FC = () => {
       const response = await getPlayAssets(playId as string, id as string);
       setPortfolio(response.data);
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -214,10 +209,6 @@ const OrderPage: React.FC = () => {
     setModalSuccess(!modalSuccess);
   };
 
-  // const handleChangeOrder = (val: string): void => {
-  //   setOrderType(val);
-  // };
-
   const [params] = useState({
     tf: 'daily'
   });
@@ -258,7 +249,7 @@ const OrderPage: React.FC = () => {
         setData(response.marketAsset);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(`Error fetching data: ${error as string}`);
     } finally {
       setIsLoadingAsset(false);
     }
@@ -293,9 +284,9 @@ const OrderPage: React.FC = () => {
           setDebounceTimer(
             setTimeout((): void => {
               if (isDevide) {
-                setNewVal(`${parseInt(value) / data?.lastPrice?.open}`);
+                setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
               } else {
-                setNewVal(`${parseFloat(value) * data?.lastPrice?.open}`);
+                setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
               }
             }, 100)
           );
@@ -306,9 +297,9 @@ const OrderPage: React.FC = () => {
             setTimeout((): void => {
               if (value.length > 0) {
                 if (isDevide) {
-                  setNewVal(`${parseInt(value) / data?.lastPrice?.open}`);
+                  setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
                 } else {
-                  setNewVal(`${parseFloat(value) * data?.lastPrice?.open}`);
+                  setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
                 }
               }
             }, 100)
@@ -354,7 +345,7 @@ const OrderPage: React.FC = () => {
         router.query?.transaction !== 'sell'
       ) {
         router.push(`/homepage/assets/${id as string}`).catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
         });
       }
     }
@@ -378,7 +369,7 @@ const OrderPage: React.FC = () => {
       }, 500);
       setSuccessData(response);
     } catch (error) {
-      console.log('error create order :', error);
+      toast.error(`${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -400,42 +391,13 @@ const OrderPage: React.FC = () => {
             <Typography className="text-base font-poppins font-base text-black">
               {`${standartCurrency(
                 router.query?.transaction === 'buy'
-                  ? ballance?.balance
-                  : portfolio.total_lot * data?.lastPrice?.open
-              ).replace('Rp', userInfo?.preferredCurrency)}`}{' '}
+                  ? (ballance?.balance ?? 0)
+                  : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
+              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
               {router.query?.transaction === 'sell' &&
                 `= ${portfolio.total_lot} ${data?.realTicker as string}`}
             </Typography>
           </div>
-
-          {/* <div className="flex justify-start mt-4 gap-2">
-            <Button
-              variant={orderType === 'market' ? 'outlined' : 'filled'}
-              className={`normal-case rounded-lg py-2 px-3 ${
-                orderType === 'market'
-                  ? 'border border-[#3AC4A0] text-[#3AC4A0]'
-                  : 'bg-[#3AC4A0] text-white'
-              } font-poppins`}
-              onClick={() => {
-                handleChangeOrder('market');
-              }}
-            >
-              Market Order
-            </Button>
-            <Button
-              variant={orderType === 'pending' ? 'outlined' : 'filled'}
-              className={`normal-case rounded-lg py-2 px-3 ${
-                orderType === 'pending'
-                  ? 'border border-[#3AC4A0] text-[#3AC4A0]'
-                  : 'bg-[#3AC4A0] text-white'
-              } font-poppins`}
-              onClick={() => {
-                handleChangeOrder('pending');
-              }}
-            >
-              Pending Order
-            </Button>
-          </div> */}
           {orderType === 'pending' && (
             <div className="flex flex-col mt-4 gap-4">
               <Typography className="font-poppins text-base font-semibold text-black">
@@ -571,7 +533,7 @@ const OrderPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between mt-4">
                     <Typography className="text-[#262626] font-semibold text-sm">
-                      {data.providerName}
+                      {data?.providerName ?? ''}
                     </Typography>
                   </div>
                   <div className="flex justify-between mt-4">
@@ -842,7 +804,7 @@ const OrderPage: React.FC = () => {
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.profit) * 100} %`
                                   : `${
-                                      userInfo.preferredCurrency as string
+                                      userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
                                       limitOrder.profit
                                     ).replace('Rp', '')}`}
@@ -856,7 +818,7 @@ const OrderPage: React.FC = () => {
                                 {limitOrder.type === 'percent'
                                   ? `${parseFloat(limitOrder.loss) * 100} %`
                                   : `${
-                                      userInfo.preferredCurrency as string
+                                      userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
                                       limitOrder.loss
                                     ).replace('Rp', '')}`}
@@ -879,7 +841,7 @@ const OrderPage: React.FC = () => {
                         <Typography className="text-[#3AC4A0] font-semibold text-xs">
                           {standartCurrency(amount).replace(
                             'Rp',
-                            userInfo?.preferredCurrency
+                            userInfo?.preferredCurrency ?? 'IDR'
                           )}
                         </Typography>
                       </div>
@@ -893,7 +855,7 @@ const OrderPage: React.FC = () => {
                       className="text-[#3AC4A0] cursor-pointer"
                       onClick={() => {
                         router.push('/faq-submenu/disclosure').catch(err => {
-                          console.log(err);
+                          toast.error(`${err as string}`);
                         });
                       }}
                     >
@@ -905,7 +867,7 @@ const OrderPage: React.FC = () => {
                     className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
                     onClick={() => {
                       submitOrder().catch(err => {
-                        console.log(err);
+                        toast.error(`${err as string}`);
                       });
                     }}
                   >

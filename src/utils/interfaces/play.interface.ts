@@ -207,3 +207,26 @@ export interface AnalysisData {
   performance_2y: number;
   performance_5y: number;
 }
+
+export interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: AssetCreate;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface AssetCreate {
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+}

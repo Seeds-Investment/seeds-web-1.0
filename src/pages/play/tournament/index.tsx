@@ -270,7 +270,7 @@ const PlayTournament = (): React.ReactElement => {
                                 item?.is_joined
                               )
                             }
-                            className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
+                            className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
                           >
                             <Image
                               alt=""
@@ -295,11 +295,7 @@ const PlayTournament = (): React.ReactElement => {
                             </div>
                           </div>
                           <div className="text-[#BDBDBD] px-2 text-[10px]">
-                            {`${getTournamentTime(
-                              item?.play_time ?? '2024-01-01T00:00:00Z'
-                            )} - ${getTournamentTime(
-                              item?.end_time ?? '2024-12-31T23:59:59Z'
-                            )}`}
+                            {`${getTournamentTime(item?.play_time ?? '2024-01-01T00:00:00Z')} - ${getTournamentTime(item?.end_time ?? '2024-12-31T23:59:59Z')}`}
                           </div>
                         </div>
 

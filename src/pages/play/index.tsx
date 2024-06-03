@@ -414,7 +414,7 @@ const Player = (): React.ReactElement => {
               {bannerAsset?.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[826px] relative h-[249px]"
+                  className="w-full lg:w-[828px] relative h-fit lg:h-[249px]"
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)
@@ -543,7 +543,7 @@ const Player = (): React.ReactElement => {
                     className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                   >
                     <div className="w-full rounded-xl">
-                      <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center oveflow-hidden cursor-pointer">
+                      <div className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center oveflow-hidden cursor-pointer">
                         <Image
                           alt=""
                           src={

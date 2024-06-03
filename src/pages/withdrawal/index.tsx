@@ -32,15 +32,15 @@
 //     window.localStorage.getItem('expiresAt') as string
 //   );
 
-//   const redirect = async (): Promise<void> => {
-//     if (
-//       window.localStorage.getItem('accessToken') === null ||
-//       expiredUnixTime < currentUnixTime
-//     ) {
-//       await withRedirect(router, { withdrawal: 'true' }, '/auth');
-//       toast.error(t('landingPageV2.redirectError'));
-//     }
-//   };
+  // const redirect = async (): Promise<void> => {
+  //   if (
+  //     window.localStorage.getItem('accessToken') === null ||
+  //     expiredUnixTime < currentUnixTime
+  //   ) {
+  //     await withRedirect(router, { withdrawal: 'true' }, '/auth2');
+  //     toast.error(t('landingPageV2.redirectError'));
+  //   }
+  // };
 
 //   useEffect(() => {
 //     void redirect();

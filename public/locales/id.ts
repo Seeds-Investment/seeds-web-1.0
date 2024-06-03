@@ -867,7 +867,8 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1648,14 +1649,20 @@ export default {
     extraCash:
       'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
     select: 'Pilih',
-    quizCompanion: 'Pick your power-up!',
+    quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Struggling? This power-up will guide you towards the correct answer',
+      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
     freeOptions:
-      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
+      '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
     vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
+    questionLevel: "Level Pertanyaan",
+    easy: "Mudah",
+    medium: "Sedang",
+    hard: "Sulit",
+    questionDescription1: "Kamu akan mengerjakan",
+    questionDescription2: "level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!",
     incorrect: 'Salah',
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
@@ -1801,6 +1808,7 @@ export default {
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup'
@@ -1840,6 +1848,18 @@ export default {
     leaderboardBanner4: 'Cek Papan Peringkat!',
     tutorialTournament: 'Tutorial Turnamen',
     remainingTimeText: 'Turnamen telah berakhir!',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup'
+    },
     clock: {
       days: 'h',
       hours: 'j',

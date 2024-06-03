@@ -948,7 +948,8 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1729,6 +1730,12 @@ export default {
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
     vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    questionLevel: "Question Level",
+    easy: "Easy",
+    medium: "Medium",
+    hard: "Hard",
+    questionDescription1: "You will do",
+    questionDescription2: "questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!",
     incorrect: 'Incorrect',
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
@@ -1875,6 +1882,7 @@ export default {
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close'
@@ -1914,6 +1922,18 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close'
+    },
     clock: {
       days: 'd',
       hours: 'h',

@@ -5,10 +5,18 @@ import star from '@/assets/circle-page/star.svg';
 import PiePreviewPost from '@/components/circle/pie/PiePreviewPost';
 import HeaderLogin from '@/components/layouts/HeaderLogin';
 import Gif_Post from '@/containers/circle/[id]/GifPost';
+import ModalPie from '@/containers/circle/[id]/ModalPie';
+import PDFViewer from '@/containers/circle/[id]/PDFViewer';
+import { PollInput } from '@/containers/circle/[id]/PollingInput';
+import ProfilePost from '@/containers/circle/[id]/ProfilePost';
+import Toast from '@/containers/circle/[id]/Toast';
+import UniqueInputButton from '@/containers/circle/[id]/UniqueInputButton';
+import { VoiceRecorder } from '@/containers/circle/[id]/VoiceRecording';
 import ModalChoosePricePremium from '@/containers/social/main/ModalChoosePricePremium';
 import { formatCurrency, stringToNumberCurrency } from '@/helpers/currency';
 import { countWords } from '@/helpers/text';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
 import {
   UseUploadMedia,
   createPostCircleDetail,
@@ -24,24 +32,17 @@ import { XIcon } from 'public/assets/vector';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mention, MentionsInput } from 'react-mentions';
-import ModalPie from './ModalPie';
-import PDFViewer from './PDFViewer';
-import { PollInput } from './PollingInput';
-import ProfilePost from './ProfilePost';
-import Toast from './Toast';
-import UniqueInputButton from './UniqueInputButton';
-import { VoiceRecorder } from './VoiceRecording';
 
 interface props {
   open: boolean;
   handleOpen: () => void;
-  setIsLoading: any;
+  setIsLoading?: any;
   setIsLoadingPost?: any;
   dataPost?: any;
   setDataPost?: any;
   setFilter?: any;
   setData?: any;
-  setGolId: any;
+  asset?: SuccessOrderData;
 }
 
 interface typeOfPost {
@@ -157,16 +158,16 @@ interface typeOfSelected {
   id: string;
   tag: string;
 }
-const ModalMention: React.FC<props> = ({
+const ShareModal: React.FC<props> = ({
   open,
   handleOpen,
   setIsLoading,
   setIsLoadingPost,
   setFilter,
   setData,
-  setGolId,
   dataPost,
-  setDataPost
+  setDataPost,
+  asset
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -211,6 +212,7 @@ const ModalMention: React.FC<props> = ({
     playList: [],
     quizList: []
   });
+  const [currency, setCurrency] = useState<string>('IDR');
   const [form, setForm] = useState<form>({
     content_text: '',
     privacy: 'public',
@@ -263,6 +265,7 @@ const ModalMention: React.FC<props> = ({
       try {
         const response = await getUserInfo();
         setUserInfo(response);
+        setCurrency(response?.preferredCurrency);
       } catch (error) {
         console.log(error);
       }
@@ -739,7 +742,8 @@ const ModalMention: React.FC<props> = ({
         };
       } else {
         payload = {
-          content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          content_text: `%[${asset?.asset?.asset_ticker}](${asset?.asset?.asset_id}) &[${asset?.type}](${asset?.bid_price}) *[asset_icon](${asset?.asset?.asset_icon})`,
           media_urls: form.media_urls,
           privacy: form.privacy,
           is_pinned: false,
@@ -817,6 +821,7 @@ const ModalMention: React.FC<props> = ({
         }
       } else {
         await createPostCircleDetail(payload);
+        await router.push('/social');
       }
 
       setForm({
@@ -834,7 +839,6 @@ const ModalMention: React.FC<props> = ({
         pie: [],
         premium_fee: ''
       });
-      setGolId((prevState: number) => prevState + 1);
       setAudio(null);
       setMedia([]);
       setDocument(null);
@@ -1194,6 +1198,25 @@ const ModalMention: React.FC<props> = ({
               style={{ color: '#4FE6AF' }}
             />
           </MentionsInput>
+          <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex justify-between ">
+            <div className="flex gap-2">
+              <p className="font-poppins ">{asset?.type as string}</p>
+              <p className="font-semibold font-poppins">
+                {asset?.asset?.asset_ticker as string}
+              </p>
+              <p className="font-poppins">at</p>
+              <p className="font-semibold font-poppins">
+                {currency} {asset?.bid_price}
+              </p>
+            </div>
+            <img
+              src={asset?.asset?.asset_icon}
+              alt="icon"
+              className="w-[40px] rounded-full object-scale-down"
+              width={40}
+              height={40}
+            />
+          </div>
           {renderUserSuggestion()}
           {renderDollarSuggestion()}
           {renderUserHashtags()}
@@ -1995,4 +2018,4 @@ const ModalMention: React.FC<props> = ({
   );
 };
 
-export default ModalMention;
+export default ShareModal;

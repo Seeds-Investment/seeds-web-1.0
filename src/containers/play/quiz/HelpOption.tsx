@@ -37,9 +37,14 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [selectedLL, setSelectedLL] = useState<LifelinesEnum>();
   const [showLifelineDesc, setShowLifelineDesc] = useState(false);
   const [showAlertPrice, setShowAlertPrice] = useState(false);
+  const [redeemCoin, setRedeemCoin] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const invitationCode = router.query.invitationCode ?? '';
+
+  useEffect(() => {
+    setRedeemCoin(router.query.useCoins === 'true');
+  }, [router.query.useCoins]);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -120,7 +125,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           payment_method: '',
           phone_number: phoneNumber,
           promo_code: '',
-          invitation_code: ''
+          invitation_code: '',
+          is_use_coins: false
         },
         quiz: {
           lifelines: detailQuiz?.lifelines ?? [],
@@ -169,7 +175,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           payment_method: '',
           phone_number: phoneNumber,
           promo_code: '',
-          invitation_code: invitationCode as string
+          invitation_code: invitationCode as string,
+          is_use_coins: redeemCoin
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
       } catch (error) {

@@ -23,7 +23,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
   };
 
   return (
-    <div key={item.id} className="rounded-t-lg">
+    <div key={item.id} className="rounded-t-lg bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
       <div className="w-full max-h-60">
         <Image
           src={
@@ -89,15 +89,15 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                 if (item.is_played) {
                   // TODO: navigate to quiz score page
                   router.push(`/play/quiz/${item.id}/done`).catch(error => {
-                    console.log(error);
+                    toast.error(`${error as string}`);
                   });
                 } else {
                   router.push(`/play/quiz/${item.id}`).catch(error => {
-                    console.log(error);
+                    toast.error(`${error as string}`);
                   });
                 }
               }}
-              className="bg-white text-sm md:text-[10.71px] lg:w-[76.77px] lg:h-[25px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
+              className="bg-white text-xs md:text-[10.71px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold px-4 md:px-2 lg:px-4 w-fit md:w-32 lg:w-fit"
             >
               {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
             </button>

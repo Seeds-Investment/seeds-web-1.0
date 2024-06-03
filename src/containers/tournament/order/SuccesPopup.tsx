@@ -1,5 +1,5 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
-import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Button,
   Dialog,
@@ -77,7 +77,7 @@ const SuccessOrderModal: React.FC<props> = ({
             router
               .push(`/play/tournament/${id as string}/portfolio`)
               .catch(err => {
-                toast.error(`Error fetching data: ${err as string}`);
+                toast.error(`${err as string}`);
               });
           }}
         >
@@ -89,7 +89,7 @@ const SuccessOrderModal: React.FC<props> = ({
             router
               .push(`/play/tournament/${id as string}/asset-list`)
               .catch(err => {
-                console.log(err);
+                toast.error(`${err as string}`);
               });
           }}
         >

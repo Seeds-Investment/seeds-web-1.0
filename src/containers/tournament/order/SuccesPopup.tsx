@@ -1,4 +1,6 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
+import IconShare from '@/assets/play/tournament/share.svg';
+import Loading from '@/components/popup/Loading';
 import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
 import {
   Button,
@@ -10,8 +12,10 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import ShareModal from './ShareModal';
 
 interface props {
   handleModal: () => void;
@@ -27,6 +31,18 @@ const SuccessOrderModal: React.FC<props> = ({
   const router = useRouter();
   const { id } = router.query;
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleOpen = (): void => {
+    if (isOpen) {
+      document.body.classList.remove('modal-open');
+    } else {
+      document.body.classList.add('modal-open');
+    }
+    setIsOpen(!isOpen);
+  };
+
   return (
     <Dialog
       className="p-4 py-5 md:py-0 md:p-8 m-0 max-w-sm self-end sm:self-center md:self-center lg:self-center rounded-none rounded-t-2xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl"
@@ -37,6 +53,23 @@ const SuccessOrderModal: React.FC<props> = ({
       size={'sm'}
       handler={handleModal}
     >
+      {isLoading && <Loading />}
+      <div className="w-full h-full flex justify-end mr-3">
+        <Image
+          alt=""
+          src={IconShare}
+          className="w-[40px]"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        />
+      </div>
+      <ShareModal
+        open={isOpen}
+        handleOpen={handleOpen}
+        asset={successData}
+        setIsLoading={setIsLoading}
+      />
       <DialogHeader className="p-0 font-poppins">
         <div className="min-w-full flex items-center justify-center">
           <Image

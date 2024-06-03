@@ -13,6 +13,7 @@ const WelcomeQuiz = () => {
   const router = useRouter();
   const id = router.query.id;
   const invitationCode = router.query.invitationCode;
+  const useCoins = router.query.useCoins;
   const timeOut = () => {
     setTimeout(() => {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -20,7 +21,7 @@ const WelcomeQuiz = () => {
         .replace(
           `/play/quiz/${id as string}/help-option?invitationCode=${
             invitationCode as string
-          }`
+          }&useCoins=${useCoins as string}`
         )
         .catch(err => {
           console.error('navigation error:', err);

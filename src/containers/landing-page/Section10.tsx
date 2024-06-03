@@ -43,8 +43,8 @@ export default function Section10(): React.ReactElement {
         settings: {
           centerMode: true,
           dots: false,
-          slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToShow: 0.94,
+          slidesToScroll: 0.5
         }
       },
       {
@@ -52,8 +52,8 @@ export default function Section10(): React.ReactElement {
         settings: {
           centerMode: true,
           dots: false,
-          slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToShow: 0.94,
+          slidesToScroll: 0.5
         }
       }
     ]
@@ -135,7 +135,7 @@ export default function Section10(): React.ReactElement {
           <div className="absolute w-full h-[280px] z-0 bottom-0 bg-gradient-to-bl from-[#92FFD7] to-[#AE90FF]"></div>
         </div>
         <div className="md:hidden block mx-auto py-4">
-          <div className="relative z-10">
+          <div className="relative z-10 mx-auto">
             <Slider {...settings} ref={sliderRef}>
               <div className="mx-auto z-10">
                 <iframe
@@ -144,7 +144,7 @@ export default function Section10(): React.ReactElement {
                   src="https://www.youtube.com/embed/70nsXsFUr70?controls=1"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  className="rounded-[15px] h-[390px] w-[225px]"
+                  className="rounded-[15px] h-[390px] w-[250px]"
                 ></iframe>
               </div>
               <div className="mx-auto z-10">
@@ -154,7 +154,7 @@ export default function Section10(): React.ReactElement {
                   src="https://www.youtube.com/embed/kMpVnarl424?controls=1"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  className="rounded-[15px] h-[390px] w-[225px]"
+                  className="rounded-[15px] h-[390px] w-[250px]"
                 ></iframe>
               </div>
               <div className="mx-auto z-10">
@@ -164,7 +164,7 @@ export default function Section10(): React.ReactElement {
                   src="https://www.youtube.com/embed/B6ibCjl1XX8?controls=1"
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  className="rounded-[15px] h-[390px] w-[225px]"
+                  className="rounded-[15px] h-[390px] w-[250px]"
                 ></iframe>
               </div>
             </Slider>

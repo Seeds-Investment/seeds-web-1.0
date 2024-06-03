@@ -221,53 +221,55 @@ const LeaderBoardPage = (): React.ReactElement => {
             </div>
           </div>
         </div>
-        <div
-          className={
-            'border-2 rounded-xl border-[#3AC4A0] w-full p-3 mt-5 mb-2 '
-          }
-        >
-          <div className="flex justify-between">
-            <div className="flex w-full items-center">
-              <div>
-                <p className="font-semibold text-[22px] font-poppins">
-                  {myRank}
-                </p>
-                <svg
-                  width="17"
-                  height="18"
-                  viewBox="0 0 17 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M13.1243 11.5579C12.8551 11.8271 12.4186 11.8271 12.1494 11.5579L8.5008 7.90927L4.85221 11.5579C4.58301 11.8271 4.14654 11.8271 3.87734 11.5579C3.60814 11.2887 3.60814 10.8522 3.87734 10.583L8.01337 6.44696C8.28257 6.17776 8.71904 6.17776 8.98824 6.44696L13.1243 10.583C13.3935 10.8522 13.3935 11.2887 13.1243 11.5579Z"
-                    fill="#3AC4A0"
-                  />
-                </svg>
+        {myRank !== undefined && myRank > 0 ? (
+          <div
+            className={
+              'border-2 rounded-xl border-[#3AC4A0] w-full p-3 mt-5 mb-2 '
+            }
+          >
+            <div className="flex justify-between">
+              <div className="flex w-full items-center">
+                <div>
+                  <p className="font-semibold text-[22px] font-poppins">
+                    {myRank}
+                  </p>
+                  <svg
+                    width="17"
+                    height="18"
+                    viewBox="0 0 17 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13.1243 11.5579C12.8551 11.8271 12.4186 11.8271 12.1494 11.5579L8.5008 7.90927L4.85221 11.5579C4.58301 11.8271 4.14654 11.8271 3.87734 11.5579C3.60814 11.2887 3.60814 10.8522 3.87734 10.583L8.01337 6.44696C8.28257 6.17776 8.71904 6.17776 8.98824 6.44696L13.1243 10.583C13.3935 10.8522 13.3935 11.2887 13.1243 11.5579Z"
+                      fill="#3AC4A0"
+                    />
+                  </svg>
+                </div>
+                {myRank !== undefined && (
+                  <>
+                    <img
+                      src={leaderBoard[myRank - 1]?.avatar}
+                      alt={leaderBoard[myRank - 1]?.name}
+                      className="w-10 h-10 rounded-full mx-5"
+                    />
+                    <div className="ml-3">
+                      <h2 className="font-bold">
+                        {leaderBoard[myRank - 1]?.name}
+                      </h2>
+                      <p>{dataUser?.seedsTag}</p>
+                      <p className="text-[#3AC4A0]">
+                        {leaderBoard[myRank - 1]?.score}
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
-              {myRank !== undefined && (
-                <>
-                  <img
-                    src={leaderBoard[myRank - 1]?.avatar}
-                    alt={leaderBoard[myRank - 1]?.name}
-                    className="w-10 h-10 rounded-full mx-5"
-                  />
-                  <div className="ml-3">
-                    <h2 className="font-bold">
-                      {leaderBoard[myRank - 1]?.name}
-                    </h2>
-                    <p>{dataUser?.seedsTag}</p>
-                    <p className="text-[#3AC4A0]">
-                      {leaderBoard[myRank - 1]?.score}
-                    </p>
-                  </div>
-                </>
-              )}
             </div>
           </div>
-        </div>
+        ) : null}
 
         <table className="w-full">
           <thead>

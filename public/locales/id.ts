@@ -1879,7 +1879,11 @@ export default {
       discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
-      close: 'Tutup'
+      close: 'Tutup',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      successful: 'Pembayaran Berhasil',
+      pending: 'Menunggu Pembayaran',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     clock: {
       days: 'h',
@@ -2018,21 +2022,6 @@ export default {
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
     },
-    payment: {
-      paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
-      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
-      tournamentFee: 'Biaya Turnamen',
-      adminFee: 'Biaya Admin',
-      serviceFee: 'Biaya Layanan',
-      discountFee: 'Diskon',
-      totalAmount: 'Total Biaya',
-      idTransaction: 'ID Transaksi',
-      close: 'Tutup',
-      successful: 'Pembayaran Berhasil',
-      pending: 'Menunggu Pembayaran',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
-    }
   },
   seedsEvent: {
     search: 'Cari event',

@@ -1953,7 +1953,11 @@ export default {
       discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
-      close: 'Close'
+      close: 'Close',
+      virtualNumber: 'Your Virtual Account Number',
+      successful: 'Successful',
+      pending: 'Pending Paid Tournament',
+      recurringSaved: 'Your recurring has been saved!'
     },
     clock: {
       days: 'd',
@@ -2092,21 +2096,6 @@ export default {
       description: 'Discover the experts for more insights',
       seeAll: 'See All'
     },
-    payment: {
-      paymentMethod: 'Payment Method',
-      virtualNumber: 'Your Virtual Account Number',
-      pendingPaidTournament: 'Pending Paid Tournament',
-      tournamentFee: 'Tournament Fee',
-      adminFee: 'Admin Fee',
-      serviceFee: 'Service Fee',
-      discountFee: 'Discount Fee',
-      totalAmount: 'Total Amount',
-      idTransaction: 'ID Transaction',
-      close: 'Close',
-      successful: 'Successful',
-      pending: 'Pending Paid Tournament',
-      recurringSaved: 'Your recurring has been saved!'
-    }
   },
   seedsEvent: {
     search: 'Search',

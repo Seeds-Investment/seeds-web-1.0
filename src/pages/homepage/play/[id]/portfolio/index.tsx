@@ -12,7 +12,7 @@ import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import AssetPortfolioCard from '@/containers/homepage/trending/AssetsPortfolioCard';
 import AssetTrendingCardSkeleton from '@/containers/homepage/trending/skeleton/AssetsCardSkeleton';
-import { formatNumber, standartCurrency } from '@/helpers/currency';
+import { standartCurrency } from '@/helpers/currency';
 import { generateRandomColor } from '@/helpers/generateRandomColor';
 import withAuth from '@/helpers/withAuth';
 import {
@@ -97,6 +97,7 @@ const PortfolioPage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [portfolio, setPortfolio] = useState<IPortfolioSummary | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('overview');
   const tabData = [
     {
@@ -149,10 +150,13 @@ const PortfolioPage: React.FC = () => {
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
+      setIsLoadingBalance(true)
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
+    } finally {
+      setIsLoadingBalance(false);
     }
   };
 
@@ -220,7 +224,7 @@ const PortfolioPage: React.FC = () => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      {isLoading && <Loading />}
+      {(isLoading || isLoadingBalance) && <Loading />}
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
         <div className="flex z-10 flex-col lg:flex-row justify-between pb-4">
           <div className="flex flex-col">
@@ -269,9 +273,7 @@ const PortfolioPage: React.FC = () => {
               <PortfolioChart
                 data={chartData}
                 centerText={`${ballance?.currency ?? 'IDR'} ${
-                  portfolio?.summary?.gnl > 0
-                    ? formatNumber(portfolio?.summary?.gnl ?? 0)
-                    : 0
+                  standartCurrency(portfolio?.summary?.value ?? 0).replace('Rp', '')
                 }`}
               />
             )}
@@ -314,7 +316,7 @@ const PortfolioPage: React.FC = () => {
               })}
             </div>
           </div>
-          {isLoading ? (
+          {isLoading || (userInfo === undefined) ? (
             <AssetTrendingCardSkeleton />
           ) : (
             filterAssetsList()?.map((el: any) => {

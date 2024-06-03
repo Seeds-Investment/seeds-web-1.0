@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/helpers/currency';
+import { formatCurrency, standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import {
   getPlaySimulation,
@@ -141,7 +141,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
       setMonthNowString(month[monthNow].eng);
     }
   }, [window.localStorage.getItem('translation')]);
-
+  
   return (
     <div
       className={`w-full lg:flex ${
@@ -323,7 +323,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                   {formatCurrency((playerData?.asset ?? 0).toFixed(0))}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
-                  {t('homepage.section2.text2')} {playerData?.gain ?? 0}
+                  {t('homepage.section2.text2')}: {userInfo?.preferredCurrency ?? 'IDR'} {standartCurrency(playerData?.gain ?? 0).replace('Rp', '')}
                 </h3>
               </div>
               <div className="flex-row">

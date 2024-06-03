@@ -1,5 +1,6 @@
 import { calculatePercentageDifference } from '@/helpers/currency';
 import { getDetailAsset } from '@/repository/asset.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -16,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 interface props {
   id: string;
-  userInfo: any;
+  userInfo: UserInfo;
   handleSelectedAsset?: any;
   isDefaultChecked?: any;
   isClick?: boolean;
@@ -58,7 +59,7 @@ const AssetPortfolioCard: React.FC<props> = ({
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
-      void fetchDetailAsset(userInfo.preferredCurrency);
+      void fetchDetailAsset(userInfo?.preferredCurrency ?? 'IDR');
     }
   }, [id, userInfo]);
 
@@ -88,16 +89,16 @@ const AssetPortfolioCard: React.FC<props> = ({
     >
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
-          <Avatar size="md" variant="circular" src={data?.logo} alt="logo" />
+          <Avatar className='w-[40px] h-[40px] md:w-[50px] md:h-[50px]' variant="circular" src={data?.logo} alt="logo" />
 
-          <div className="flex ml-5 w-1/2 flex-col gap-0.5">
+          <div className="flex ml-5 w-auto flex-col gap-0.5">
             <div className="flex flex-row">
-              <Typography className="font-semibold text-base text-[#262626]">
+              <Typography className="font-semibold text-sm md:text-base text-[#262626]">
                 {data?.realTicker} /
               </Typography>
-              <Typography className="font-normal ml-1 text-base text-[#262626]">
+              <Typography className="font-normal ml-1 text-sm md:text-base text-[#262626]">
                 {data?.assetType === 'CRYPTO' && 'B'}
-                {userInfo?.preferredCurrency}
+                {userInfo?.preferredCurrency ?? 'IDR'}
               </Typography>
             </div>
             <Typography className="font-normal text-sm text-[#7C7C7C]">
@@ -105,16 +106,16 @@ const AssetPortfolioCard: React.FC<props> = ({
             </Typography>
           </div>
 
-          <div className="ml-auto flex flex-col gap-0.5">
+          <div className="ml-auto w-fit flex flex-col gap-0.5">
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm md:text-base text-[#262626]">
-                {userInfo?.preferredCurrency}{' '}
+                {userInfo?.preferredCurrency ?? 'IDR'}{' '}
                 {new Intl.NumberFormat().format(data?.lastPrice?.open ?? 0)}
               </Typography>
             </div>
             <div className="flex justify-end">
               <Typography
-                className={`flex font-normal text-sm ${
+                className={`flex font-normal text-xs md:text-sm ${
                   handleArrow(
                     calculatePercentageDifference(
                       (data?.lastPrice?.open ?? 0),

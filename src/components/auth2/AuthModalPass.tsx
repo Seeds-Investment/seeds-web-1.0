@@ -9,15 +9,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
-interface IAuthModalPass {
+interface Props {
   open: boolean;
   handleOpen: () => void;
 }
 
-const AuthModalPass: React.FC<IAuthModalPass> = ({
-  open,
-  handleOpen
-}: IAuthModalPass) => {
+const AuthModalPass: React.FC<Props> = ({ open, handleOpen }: Props) => {
   const { t } = useTranslation();
   return (
     <Dialog
@@ -36,7 +33,7 @@ const AuthModalPass: React.FC<IAuthModalPass> = ({
             {t('authForgotPass.modal.title2')}
           </Typography>
         </div>
-        <Link href={'/auth2/login'} className="w-full">
+        <Link href={'/auth/verification'} className="w-full">
           <Button
             className="w-full capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleOpen}

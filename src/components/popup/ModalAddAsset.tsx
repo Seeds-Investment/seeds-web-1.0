@@ -24,7 +24,7 @@ interface Props {
 const ModalAddAsset: React.FC<Props> = ({
   onClose,
   setAssetList,
-  assetList,
+  assetList
 }) => {
   const { t } = useTranslation();
   const [checkboxState, setCheckboxState] = useState<string[]>(assetList);
@@ -36,20 +36,19 @@ const ModalAddAsset: React.FC<Props> = ({
     limit: 5,
     page: 1,
     type: 'ALL',
-    currency: '',
-  })
-  
+    currency: ''
+  });
+
   const handleCheckboxChange = (id: string, checked: boolean): void => {
-    
     if (checked) {
       setCheckboxState([...checkboxState, id]);
     } else {
       setCheckboxState(checkboxState.filter((item: string) => item !== id));
     }
   };
-  
+
   const handleSave = (): void => {
-    setAssetList(checkboxState)
+    setAssetList(checkboxState);
     onClose();
   };
 
@@ -63,7 +62,7 @@ const ModalAddAsset: React.FC<Props> = ({
     if (userInfo !== undefined) {
       setFilter(prevState => ({
         ...prevState,
-        currency: (userInfo?.preferredCurrency ) ?? 'IDR'
+        currency: userInfo?.preferredCurrency ?? 'IDR'
       }));
     }
   }, [userInfo]);
@@ -80,12 +79,12 @@ const ModalAddAsset: React.FC<Props> = ({
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
-  
+
   const fetchDataAssets = async (): Promise<void> => {
     try {
       const response = await getMarketList({
         ...filter,
-        search: searchQuery,
+        search: searchQuery
       });
       if (response.result === null) {
         setAssets([]);
@@ -141,52 +140,75 @@ const ModalAddAsset: React.FC<Props> = ({
           className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-xl border border-[#BDBDBD]"
         />
       </div>
-      <div className='w-full gap-4 mt-4'>
+      <div className="w-full gap-4 mt-4">
         {assets.map(item => (
-          <div key={item.id} className='w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4'>
-            <div className='flex justify-start items-center gap-2 md:gap-4'>
-              <div className='h-[30px] w-[30px]'>
-                <img
-                  src={item?.logo}
-                  className='w-full h-full'
-                />
+          <div
+            key={item.id}
+            className="w-full h-fit py-2 mb-2 bg-[#F7FBFA] flex justify-between pl-2 pr-4 md:pl-4"
+          >
+            <div className="flex justify-start items-center gap-2 md:gap-4">
+              <div className="h-[30px] w-[30px]">
+                <img src={item?.logo} className="w-full h-full" />
               </div>
               <div>
                 <div>
                   {item?.seedsTicker} / {item?.exchangeCurrency}
                 </div>
-                <div className='hidden md:flex'>
-                  {item?.name}
-                </div>
-                <div className='md:hidden'>
-                  {item?.name?.length < 12 ? item?.name : `${item?.name?.slice(0, 11)}...`}
+                <div className="hidden md:flex">{item?.name}</div>
+                <div className="md:hidden">
+                  {item?.name?.length < 12
+                    ? item?.name
+                    : `${item?.name?.slice(0, 11)}...`}
                 </div>
               </div>
             </div>
-            <div className='flex'>
-              <div className='flex flex-col justify-end items-end'>
+            <div className="flex">
+              <div className="flex flex-col justify-end items-end">
                 <div>
-                  {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(item?.priceBar?.close ?? 0).replace('Rp', '')}
+                  {userInfo?.preferredCurrency !== undefined
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'}
+                  {standartCurrency(item?.priceBar?.close ?? 0).replace(
+                    'Rp',
+                    ''
+                  )}
                 </div>
-                {
-                  item?.priceBar !== undefined &&
-                    <div className={`${item?.priceBar?.close >= item?.priceBar?.open ? 'text-[#3AC4A0]' : 'text-[#DD2525]'} text-base`}>
-                      {`(${calculatePercentageChange(item?.priceBar?.open ?? 0, item?.priceBar?.close ?? 0)}%)`}
-                    </div>
-                }
+                {item?.priceBar !== undefined && (
+                  <div
+                    className={`${
+                      item?.priceBar?.close >= item?.priceBar?.open
+                        ? 'text-[#3AC4A0]'
+                        : 'text-[#DD2525]'
+                    } text-base`}
+                  >
+                    {`(${calculatePercentageChange(
+                      item?.priceBar?.open ?? 0,
+                      item?.priceBar?.close ?? 0
+                    )}%)`}
+                  </div>
+                )}
               </div>
               <input
-                className='ml-4'
+                className="ml-4"
                 type="checkbox"
                 checked={!!checkboxState.includes(item?.id)}
-                onChange={(e) => { handleCheckboxChange(item?.id, e.target.checked); }}
+                onChange={e => {
+                  handleCheckboxChange(item?.id, e.target.checked);
+                }}
               />
             </div>
           </div>
         ))}
-      </div> 
+      </div>
       <div className="mt-4 gap-2 w-full">
-        <button onClick={() => { handleSave(); }} className='bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4 w-full'>{t('tournament.watchlist.save')}</button>
+        <button
+          onClick={() => {
+            handleSave();
+          }}
+          className="bg-[#3AC4A0] rounded-lg text-white mt-4 py-2 px-4 w-full"
+        >
+          {t('tournament.watchlist.save')}
+        </button>
       </div>
     </Modal>
   );

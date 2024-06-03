@@ -231,24 +231,24 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT'
                   ? t('quiz.payment.pendingPaidQuiz')
-                  : 'Successful'}
+                  : t('quiz.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
                 {orderDetail?.transactionStatus !== 'SETTLEMENT'
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
-                  : 'Successful'}
+                  : t('quiz.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
-                  'Your recurring has been saved!'}
+                  t('quiz.payment.recurringSaved')}
               </Typography>
 
               <Card className="p-5 mt-8 bg-white w-full">
                 <Typography className="text-sm font-semibold text-[#BDBDBD] text-center">
                   {orderDetail?.vaNumber !== undefined
-                    ? 'Your Virtual Account Number'
+                    ? t('quiz.payment.virtualNumber')
                     : t('quiz.payment.paymentMethod')}
                 </Typography>
                 {orderDetail?.paymentMethod === 'OTHER_QRIS' && (

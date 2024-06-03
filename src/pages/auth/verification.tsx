@@ -1,11 +1,12 @@
 import SeedyAuthLogin from '@/assets/auth/SeedyAuthLogin.png';
 import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
 import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
-import AuthHandlingSetupPassword from '@/components/auth2/AuthHandlingSetupPassword';
-import AuthOTPSetupPassword from '@/components/auth2/AuthOTPSetupPassword';
-import AuthPersonalDataSetupPassword from '@/components/auth2/AuthPersonalDataSetupPassword';
+import AuthOTP from '@/components/auth2/AuthOTP';
+import AuthPersonalData from '@/components/auth2/AuthPersonalData';
+import AuthVerification from '@/components/auth2/AuthVerification';
 import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
+import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -18,12 +19,16 @@ interface LoginFormData {
   os_name: string;
 }
 
-const SetupPassword: React.FC = () => {
+const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
   const { data } = useSession();
-  const [select, setSelect] = useState(0);
+  const [select, setSelect] = useState<number>(0);
+  const [guest, setGuest] = useState<string>('');
+  const [method, setMethod] = useState('sms');
+  const [countdown, setCountdown] = useState(0);
+  const [country, setCountry] = useState<number>(101);
+
   const [formData, setFormData] = useState({
-    oldPassword: '',
     phoneNumber: '',
     birthDate: '',
     name: '',
@@ -33,8 +38,7 @@ const SetupPassword: React.FC = () => {
     provider: {
       provider: '',
       identifier: ''
-    },
-    token: ''
+    }
   });
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',
@@ -42,8 +46,13 @@ const SetupPassword: React.FC = () => {
     platform: '',
     os_name: ''
   });
-  const [method, setMethod] = useState('sms');
-  const [countdown, setCountdown] = useState(0);
+
+  const [otpForm, setOTPForm] = useState<OTPDataI>({
+    phoneNumber: '',
+    method,
+    otp: ''
+  });
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (countdown > 0) {
@@ -58,26 +67,19 @@ const SetupPassword: React.FC = () => {
     };
   }, [countdown]);
   useEffect(() => {
-    if (data !== null) {
+    if (data !== null && data !== undefined) {
       setFormData({
         ...formData,
-        birthDate: `${
-          data !== null
-            ? `${new Date(
-                new Date().getFullYear() - 17,
-                new Date().getMonth(),
-                new Date().getDate()
-              ).toISOString()}`
-            : ''
-        }`,
+        birthDate: `${new Date(
+          new Date().getFullYear() - 17,
+          new Date().getMonth(),
+          new Date().getDate()
+        ).toISOString()}`,
+
         name: data?.user?.name ?? '',
         seedsTag: `${
-          data !== null
-            ? `${data?.user?.name?.split(' ').join('') as string}${Math.round(
-                Math.random() * 1000
-              )}`
-            : ''
-        }`,
+          data?.user?.name?.split(' ').join('') as string
+        }${Math.round(Math.random() * 1000)}`,
         provider: {
           provider: data?.provider ?? '',
           identifier: data?.accessToken ?? ''
@@ -87,6 +89,10 @@ const SetupPassword: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
+    setFormData(prev => ({ ...prev, token: otpForm.token }));
+  }, [otpForm.token]);
+
+  useEffect(() => {
     setLoginForm({
       ...loginForm,
       platform: `${
@@ -94,7 +100,6 @@ const SetupPassword: React.FC = () => {
       }_web`,
       os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const element = (
     <>
@@ -123,7 +128,7 @@ const SetupPassword: React.FC = () => {
   );
   const form = (
     <>
-      <AuthHandlingSetupPassword
+      <AuthVerification
         className={select === 0 ? 'flex' : 'hidden'}
         setSelect={setSelect}
         formData={formData}
@@ -131,10 +136,16 @@ const SetupPassword: React.FC = () => {
         setCountdown={setCountdown}
         countries={countries}
         method={method}
-        setLoginForm={setLoginForm}
         loginForm={loginForm}
+        setLoginForm={setLoginForm}
+        otpForm={otpForm}
+        setOTPForm={setOTPForm}
+        country={country}
+        setCountry={setCountry}
+        guest={guest}
+        setGuest={setGuest}
       />
-      <AuthOTPSetupPassword
+      <AuthOTP
         select={select}
         method={method}
         setMethod={setMethod}
@@ -142,14 +153,16 @@ const SetupPassword: React.FC = () => {
         setCountdown={setCountdown}
         setSelect={setSelect}
         image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
-        formData={formData}
-        setFormData={setFormData}
+        otpForm={otpForm}
+        setOTPForm={setOTPForm}
+        country={country}
+        guest={guest}
       />
-      <AuthPersonalDataSetupPassword
+      <AuthPersonalData
         className={select === 2 ? 'flex' : 'hidden'}
         setFormData={setFormData}
         formData={formData}
-        setSelect={setSelect}
+        guest={guest}
         loginForm={loginForm}
       />
     </>
@@ -157,4 +170,4 @@ const SetupPassword: React.FC = () => {
   return <AuthLayout elementChild={element} formChild={form} />;
 };
 
-export default SetupPassword;
+export default Register;

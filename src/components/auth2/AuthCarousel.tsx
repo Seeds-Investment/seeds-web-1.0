@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 
-interface IAuthCarousel {
+interface Props {
   className: string;
 }
 
@@ -19,9 +19,7 @@ const carousel = [
   { name: 'AuthCarousel4', image: AuthCarousel4 }
 ];
 
-const AuthCarousel: React.FC<IAuthCarousel> = ({
-  className
-}: IAuthCarousel) => {
+const AuthCarousel: React.FC<Props> = ({ className }: Props) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const { t } = useTranslation();
 

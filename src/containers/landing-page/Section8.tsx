@@ -52,7 +52,7 @@ export default function Section3(): React.ReactElement {
   const { ref, inView, entry } = useInView({
     threshold: 0.2
   });
-  useEffect(()=> {
+  useEffect(() => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);

@@ -119,6 +119,7 @@ export interface IQuiz {
   ended_at: Date;
   admission_fee: number;
   is_played: boolean;
+  status: string;
 }
 
 export interface IQuizSettings {

@@ -46,20 +46,20 @@ const PaymentOption = ({
 }: IPaymentOption): JSX.Element => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
-  
-   const fetchData = async (): Promise<void> => {
-     try {
-       const response = await getUserInfo();
-       setUserInfo(response);
-     } catch (error) {
-       toast(`ERROR fetch user info ${error as string}`);
-     }
-   };
 
-   useEffect(() => {
-     void fetchData();
-     // void fetchPaymentList();
-   }, []);
+  const fetchData = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+    } catch (error) {
+      toast(`ERROR fetch user info ${error as string}`);
+    }
+  };
+
+  useEffect(() => {
+    void fetchData();
+    // void fetchPaymentList();
+  }, []);
   return (
     <label
       htmlFor={option?.id}
@@ -74,7 +74,9 @@ const PaymentOption = ({
           alt={option?.payment_method}
         />
         <div className="text-[#27A590] text-xs mt-1">
-          {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${option?.admin_fee}`}
+          {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${
+            option?.admin_fee
+          }`}
         </div>
       </div>
       <Radio

@@ -61,7 +61,7 @@ const Homepage: React.FC = () => {
         </CCard>
       )}
       <CCard className="p-3 mb-5">
-        <FeatureSection/>
+        <FeatureSection />
       </CCard>
       <CCard className="p-3 mb-5">
         <Section4 />

@@ -578,14 +578,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Masuk',
-    guest2: ' sebagai ',
-    guest3: 'Tamu',
+    guest: 'Masuk sebagai Tamu',
     term: 'Dengan mengklik daftar, Kamu menyetujui',
     term2: 'Syarat dan Ketentuan di Seeds',
-    login: 'Masuk',
-    signup: 'Daftar',
-    or: ' atau '
+    login: 'Masuk atau Daftar'
   },
   authLogin: {
     title1: 'Yuk, Masukan!',
@@ -1138,6 +1134,25 @@ export default {
           option4: 'Dalam Proses'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidCircle: 'Menunggu Pembayaran',
+      circleFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      paymentSuccessDescription:
+        'Pembayaran langganan premium anda telah berhasil diproses.',
+      paymentFailed: 'Pembayaran Gagal',
+      paymentFailedDescription:
+        'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
+      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
     }
   },
 
@@ -1453,7 +1468,21 @@ export default {
     },
     placeholder1: 'Apa yang ingin kamu diskusikan? ...',
     placeholder2:
-      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.'
+      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidSocial: 'Menunggu Pembayaran',
+      socialFee: 'Konten Premium',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    }
   },
   landingV2: {
     section1: {
@@ -1657,12 +1686,13 @@ export default {
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
     vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
-    questionLevel: "Level Pertanyaan",
-    easy: "Mudah",
-    medium: "Sedang",
-    hard: "Sulit",
-    questionDescription1: "Kamu akan mengerjakan",
-    questionDescription2: "level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!",
+    questionLevel: 'Level Pertanyaan',
+    easy: 'Mudah',
+    medium: 'Sedang',
+    hard: 'Sulit',
+    questionDescription1: 'Kamu akan mengerjakan',
+    questionDescription2:
+      'level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!',
     incorrect: 'Salah',
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
@@ -1789,6 +1819,7 @@ export default {
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
     payment: {
       paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
       lifelinesFee: 'Biaya Bantuan Tambahan',
@@ -1798,11 +1829,14 @@ export default {
       discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
-      close: 'Tutup'
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
     }
   },
   tournament: {
-    myPlay: 'Turnamen Saya',
+    myPlay: 'Permainan Saya',
+    open: 'Terbuka',
     active: 'Aktif',
     ended: 'Berakhir',
     canceled: 'Dibatalkan',
@@ -1855,12 +1889,14 @@ export default {
     },
     tournamentCard: {
       player: 'Pemain',
+      players: 'Pemain',
       duration: 'Durasi',
       joined: 'Bergabung',
       fee: 'Biaya',
       openButton: 'Dalam Game',
       joinButton: 'Dapatkan Tiket',
       share: 'Share',
+      day: 'Hari',
       days: 'Hari'
     },
     leaderboard: {
@@ -1919,7 +1955,7 @@ export default {
       totalInvestment: 'Total Investasi',
       portfolio: 'Portofolio',
       tournamentAsset: 'Aset Turnamen',
-      seeAll: 'Lihat Semua'
+      seeAll: 'Lihat Lebih'
     },
     guidance: {
       guidanceTitle: 'Petunjuk',
@@ -1929,7 +1965,7 @@ export default {
       howToPlay: {
         title: 'Cara Bermain',
         text1: 'Mulai dengan melihat portofolio dan virtual balance.',
-        text2: "Klik 'Lihat Semua' untuk melihat daftar aset yang tersedia.",
+        text2: "Klik 'Lihat Lebih' untuk melihat daftar aset yang tersedia.",
         text3: 'Klik pada aset untuk melihat hasil analisis data.',
         text4:
           "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
@@ -1980,7 +2016,22 @@ export default {
       member: 'peserta',
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
-      seeAll: 'Lihat Semua'
+      seeAll: 'Lihat Lebih'
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      successful: 'Pembayaran Berhasil',
+      pending: 'Menunggu Pembayaran',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
     }
   },
   seedsEvent: {
@@ -2122,4 +2173,3 @@ export default {
     text17: 'Kapan saja'
   }
 };
- 

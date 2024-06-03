@@ -11,6 +11,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface props {
   handleModal: () => void;
@@ -47,33 +48,36 @@ const SuccessOrderModal: React.FC<props> = ({
           />
         </div>
       </DialogHeader>
-      <DialogBody className="p-0 font-poppins">
-        <div className="flex flex-col">
-          <div className="flex justify-center">
-            <Typography className="text-[#262626] font-semibold text-lg">
-              {t('playSimulation.orderCompleted')}
-            </Typography>
-          </div>
-          <div className="flex justify-center">
-            <Typography className="text-[#7C7C7C] font-normal text-base">
-              {successData?.type === 'BUY'
-                ? t('playSimulation.orderCompletedBuy')
-                : t('playSimulation.orderCompletedSell')}{' '}
-              {`${successData?.lot} ${
-                successData?.asset?.asset_name as string
-              }`}
-            </Typography>
-          </div>
-        </div>
-      </DialogBody>
+      {
+        ((successData?.lot !== undefined) && (successData?.asset?.asset_name !== undefined)) &&
+          <DialogBody className="p-0 font-poppins">
+            <div className="flex flex-col">
+              <div className="flex justify-center">
+                <Typography className="text-[#262626] font-semibold text-lg">
+                  {t('playSimulation.orderCompleted')}
+                </Typography>
+              </div>
+              <div className="flex justify-center">
+                <Typography className="text-[#7C7C7C] font-normal text-base">
+                  {successData?.type === 'BUY'
+                    ? t('playSimulation.orderCompletedBuy')
+                    : t('playSimulation.orderCompletedSell')}{' '}
+                  {`${successData?.lot ?? 0} ${
+                    successData?.asset?.asset_name ?? ''
+                  }`}
+                </Typography>
+              </div>
+            </div>
+          </DialogBody>
+      }
       <DialogFooter className="p-0">
         <Button
           className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
           onClick={() => {
             router
-              .push(`/homepage/portfolio/${playId as string}?order=success`)
+              .push(`/homepage/play/${playId as string}/portfolio`)
               .catch(err => {
-                console.log(err);
+                toast.error(`${err as string}`);
               });
           }}
         >

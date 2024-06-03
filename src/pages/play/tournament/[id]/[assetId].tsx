@@ -2,8 +2,10 @@ import CCard from '@/components/CCard';
 import LineChart from '@/components/LineChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/homepage/asset/Card1';
+import Card1Skeleton from '@/containers/homepage/asset/skeleton/Card1Skeleton';
 import KeystatCard from '@/containers/play/asset/Card2';
 import KeyStatistic from '@/containers/play/asset/KeyStatistic';
+import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
@@ -160,11 +162,17 @@ const AssetDetailPage: React.FC = () => {
   return (
     <PageGradient defaultGradient className="w-full">
       <div className="flex flex-col md:flex-row gap-5">
-        <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
-        <KeystatCard
-          data={data as AssetI}
-          currency={userInfo?.preferredCurrency as string}
-        />
+        {(data !== undefined) ? 
+          <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
+          : <Card1Skeleton/>
+        }
+        {(data !== undefined) ? 
+          <KeystatCard
+            data={data}
+            currency={userInfo?.preferredCurrency as string}
+          />
+          : <Card2Skeleton/>
+        }
       </div>
 
       <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">

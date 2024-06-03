@@ -21,7 +21,7 @@ import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
-import { type AssetItemType } from '@/pages/homepage/play-assets';
+import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getMarketList } from '@/repository/market.repository';
 import {

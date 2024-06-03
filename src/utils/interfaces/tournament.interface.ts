@@ -30,6 +30,14 @@ export enum SortingFilter {
   TOP_LOSER_VALUE = 'top_losers_value'
 }
 
+export enum TypeFilter {
+  ALL = 'ALL',
+  STOCK = 'STOCK',
+  US_STOCK = 'US_STOCK',
+  ID_STOCK = 'ID_STOCK',
+  CRYPTO = 'CRYPTO',
+}
+
 export interface ITNC {
   id: string;
   en: string;

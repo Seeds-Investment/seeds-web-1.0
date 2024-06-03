@@ -71,7 +71,7 @@ export interface SuccessOrderData {
   id: string;
   play_id: string;
   user_id: string;
-  asset: AssetCreate;
+  asset: Asset;
   type: 'BUY' | 'SELL';
   lot: number;
   bid_price: number;
@@ -81,11 +81,13 @@ export interface SuccessOrderData {
   updated_at: string;
 }
 
-interface AssetCreate {
-  id: string;
-  play_id: string;
-  user_id: string;
-  limit_type: string;
+interface Asset {
+  asset_exchange: string;
+  asset_icon: string;
+  asset_id: string;
+  asset_name: string;
+  asset_ticker: string;
+  asset_type: string;
 }
 
 interface AssetPortfolio {
@@ -127,10 +129,12 @@ const BuyPage: React.FC = () => {
     play_id: '',
     user_id: '',
     asset: {
-      id: '',
-      play_id: '',
-      user_id: '',
-      limit_type: ''
+      asset_exchange: '',
+      asset_icon: '',
+      asset_id: '',
+      asset_name: '',
+      asset_ticker: '',
+      asset_type: ''
     },
     type: 'BUY',
     lot: 0,
@@ -481,7 +485,7 @@ const BuyPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full border-none rounded-xl">
-        <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px]">
+        <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px] overflow-hidden">
           <Image
             alt=""
             src={BannerCircle}

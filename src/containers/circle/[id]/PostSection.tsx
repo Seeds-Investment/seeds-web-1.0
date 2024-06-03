@@ -22,10 +22,12 @@ import {
   postSavedCirclePost
 } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
+import { getQuizById } from '@/repository/quiz.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { PlayLogo, UnPin, clipCopy } from 'public/assets/circle';
@@ -164,11 +166,7 @@ const PostSection: React.FC<props> = ({
   const [isShare, setIsShare] = useState(false);
   const [additionalPostData, setAdditionalPostData] = useState<any>({});
   const [thumbnailList, setThumbnailList] = useState<any>([]);
-  if (isCopied) {
-    if (isShare) {
-      console.log('success', additionalPostData);
-    }
-  }
+
   // useEffect(() => {
   //   const fetchData = async (): Promise<void> => {
   //     try {
@@ -192,7 +190,6 @@ const PostSection: React.FC<props> = ({
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance/';
 
   const handleCopyClick = async (text: string): Promise<void> => {
-    console.log(process.env.NEXT_PUBLIC_DOMAIN);
     const textToCopy = `${baseUrl}/connect/comment/${text}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
       setIsCopied(true);
@@ -200,6 +197,11 @@ const PostSection: React.FC<props> = ({
         setIsCopied(false);
       }, 2000);
     });
+  };
+
+  const calculateDaysLeft = (startTime: Date, endTime: Date): number => {
+    const daysDiff = moment(endTime).diff(moment(startTime), 'days');
+    return daysDiff;
   };
 
   function formatDate(inputDateString: any): string {
@@ -229,6 +231,18 @@ const PostSection: React.FC<props> = ({
 
   const toCircleDetail = useCallback((id: string) => {
     router.push(`/connect/post/${id}`).catch(err => {
+      console.error(err);
+    });
+  }, []);
+
+  const toQuizDetail = useCallback((id: string) => {
+    router.push(`/play/quiz/${id}`).catch(err => {
+      console.error(err);
+    });
+  }, []);
+
+  const toPlayDetail = useCallback((id: string) => {
+    router.push(`/play/tournament/${id}`).catch(err => {
       console.error(err);
     });
   }, []);
@@ -406,7 +420,7 @@ const PostSection: React.FC<props> = ({
 
   function checkPostOrderPlay(inputString: string): boolean {
     const patternRegex =
-      /^%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
+      /^%\[[^\]]+\]\([^)]+\) &[^\]]+\]\([^)]+\)( \*\[asset_icon\]\([^)]*\))?$/;
 
     const isMatching = patternRegex.test(inputString);
     return isMatching;
@@ -415,7 +429,7 @@ const PostSection: React.FC<props> = ({
   function extractIdsOrderPlay(inputString: string): any {
     // Define regular expressions to match the indicators and their values
     const assetNameRegex = /%\[([^[\]]+)\]\(([^()]+)\)/;
-    const orderTypeRegex = /&\[(buy|sell)\]\(([^()]+)\)/;
+    const orderTypeRegex = /&\[(BUY|SELL)\]\(([^()]+)\)/;
     const assetIconRegex = /\*\[asset_icon\]\(([^()]+)\)/;
 
     // Extract values using regular expressions
@@ -426,9 +440,9 @@ const PostSection: React.FC<props> = ({
     return {
       asset_name: assetNameMatch?.[1] ?? '',
       order_type:
-        orderTypeMatch?.[1] === 'buy'
+        orderTypeMatch?.[1] === 'BUY'
           ? 'buy'
-          : orderTypeMatch?.[1] === 'sell'
+          : orderTypeMatch?.[1] === 'SELL'
           ? 'sell'
           : '',
       order_amount: parseInt(orderTypeMatch?.[2] ?? '0', 10),
@@ -448,11 +462,11 @@ const PostSection: React.FC<props> = ({
       const extractedDataPlayOrder = extractIdsOrderPlay(
         dataPost?.content_text
       );
+
       setAdditionalPostData(extractedDataPlayOrder);
       setThumbnailList([]);
     } else {
       const res = extractIds(dataPost?.content_text);
-
       const tempThumbnailList: any = [];
 
       const promises = res?.map(async (el: any) => {
@@ -460,11 +474,21 @@ const PostSection: React.FC<props> = ({
           await getDetailCircle({
             circleId: el?.replace('-circle', '')
           }).then((res: any) => {
-            tempThumbnailList.push({ thumbnailType: 'circle', ...res?.data });
+            tempThumbnailList.push({
+              thumbnailType: 'circle',
+              ...res?.data
+            });
           });
         } else if (el?.includes('-play') === true) {
           await getPlayById(el?.replace('-play', '')).then((res: any) => {
             tempThumbnailList.push({ thumbnailType: 'play', ...res });
+          });
+        } else if (el?.includes('-quiz') === true) {
+          await getQuizById({
+            id: el?.replace('-quiz', ''),
+            currency: ''
+          }).then((res: any) => {
+            tempThumbnailList.push({ thumbnailType: 'quiz', ...res });
           });
         } else if (el?.includes('-asset') === true) {
           await getAssetById(el?.replace('-asset', '')).then((res: any) => {
@@ -500,9 +524,9 @@ const PostSection: React.FC<props> = ({
           console.error(err);
         });
     } else if (content?.includes('-play') === true) {
-      router.push('').catch(err => {
-        console.error(err);
-      });
+      toPlayDetail(content?.replace('-play', ''));
+    } else if (content?.includes('-quiz') === true) {
+      toQuizDetail(content?.replace('-quiz', ''));
     } else {
       router.push(`/social/search?hashtags=${content as string}`).catch(err => {
         console.error(err);
@@ -517,6 +541,10 @@ const PostSection: React.FC<props> = ({
       });
     } else if (item?.thumbnailType === 'play') {
       router.push(`/play/tournament/${item?.id as string}`).catch(err => {
+        console.error(err);
+      });
+    } else if (item?.thumbnailType === 'quiz') {
+      router.push(`/play/quiz/${item?.id as string}`).catch(err => {
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
@@ -568,14 +596,11 @@ const PostSection: React.FC<props> = ({
   const likePost = async (type: number): Promise<void> => {
     try {
       const response = await postLikeCirclePost(type, dataPost.id);
-      console.log('sukses');
       if (response.status === 200) {
-        console.log('200');
         setData((prevDataPost: any | null) => {
           if (prevDataPost !== null) {
             if (Array.isArray(prevDataPost)) {
               const newData = prevDataPost.map((el: any) => {
-                console.log(el);
                 if (el.id === dataPost.id) {
                   if (dataPost.status_like === true) {
                     el.total_upvote -= 1;
@@ -898,13 +923,14 @@ const PostSection: React.FC<props> = ({
               </div>
               {isGuest() ? (
                 <div onClick={async () => await router.push('/auth')}>
-                  <div className="flex items-center mb-2">
-                    {dataPost.privacy === 'premium' &&
-                    dataPost.user_id !== userInfo.id
-                      ? handleSeeMore(dataPost.content_text, 10)
-                      : renderTouchableText(dataPost?.content_text)}
-                    {/* {renderTouchableText(dataPost?.content_text)} */}
-                  </div>
+                  {additionalPostData?.asset_name === undefined && (
+                    <div className="flex items-center mb-2">
+                      {dataPost.privacy === 'premium' &&
+                      dataPost.user_id !== userInfo.id
+                        ? handleSeeMore(dataPost.content_text, 10)
+                        : renderTouchableText(dataPost?.content_text)}
+                    </div>
+                  )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && (
                     <audio controls>
@@ -932,13 +958,14 @@ const PostSection: React.FC<props> = ({
                 </div>
               ) : (
                 <div>
-                  <div className="flex items-center mb-2">
-                    {dataPost.privacy === 'premium' &&
-                    dataPost.user_id !== userInfo.id
-                      ? handleSeeMore(dataPost.content_text, 10)
-                      : renderTouchableText(dataPost?.content_text)}
-                    {/* {renderTouchableText(dataPost?.content_text)} */}
-                  </div>
+                  {additionalPostData?.asset_name === undefined && (
+                    <div className="flex items-center mb-2">
+                      {dataPost.privacy === 'premium' &&
+                      dataPost.user_id !== userInfo.id
+                        ? handleSeeMore(dataPost.content_text, 10)
+                        : renderTouchableText(dataPost?.content_text)}
+                    </div>
+                  )}
                   {categorizeURL(dataPost.media_urls)}
                   {voice.length > 0 && (
                     <audio controls>
@@ -969,7 +996,7 @@ const PostSection: React.FC<props> = ({
             <div className="flex justify-start gap-4 flex-wrap">
               {thumbnailList.length > 0 &&
                 thumbnailList.map((item: any, index: number) => {
-                  return (
+                  return item.thumbnailType !== 'quiz' ? (
                     <div
                       className="cursor-pointer border-2 rounded-xl border-neutral-ultrasoft bg-neutral-ultrasoft/10 min-w-[140px] max-w-[150px] h-fit"
                       key={`${item?.id as string}${index}`}
@@ -1088,8 +1115,99 @@ const PostSection: React.FC<props> = ({
                         </div>
                       )}
                     </div>
+                  ) : (
+                    <div
+                      onClick={async () =>
+                        await router
+                          .push(`/play/quiz/${item?.id as string}`)
+                          .catch(error => {
+                            toast.error(error);
+                          })
+                      }
+                      className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
+                    >
+                      <div className="w-full bg-white">
+                        <div className="w-full rounded-xl overflow-hidden">
+                          <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center mb-2">
+                            <Image
+                              alt=""
+                              src={
+                                item.banner?.image_url !== undefined &&
+                                item.banner?.image_url !== ''
+                                  ? item.banner.image_url
+                                  : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
+                              }
+                              width={100}
+                              height={100}
+                              className="w-auto h-full"
+                            />
+                          </div>
+                          <div className="pl-2 flex justify-between bg-[#3AC4A0] font-poppins">
+                            <div>
+                              <div className="text-sm font-semibold text-white">
+                                {item.name}
+                              </div>
+                              <div className="text-white flex gap-2 text-[10px] mt-2">
+                                <div className="mt-1">
+                                  {t('playCenter.text4')}
+                                </div>
+                                <div className="font-normal text-white mt-1">
+                                  {calculateDaysLeft(
+                                    new Date(item?.play_time),
+                                    new Date(item?.end_time)
+                                  )}{' '}
+                                  {t('playCenter.text5')}
+                                </div>
+                                <div className="border border-1 border-white bg-[#3AC4A0] py-1 px-2 rounded-full text-white text-[8px]">
+                                  Quiz
+                                </div>
+                              </div>
+                            </div>
+                            <div className="my-auto items-center">
+                              {item?.is_joined === true ? (
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 mx-2 py-1 rounded-full hover:shadow-lg duration-300">
+                                  {t('tournament.tournamentCard.openButton')}
+                                </div>
+                              ) : (
+                                <div className="flex justify-center my-auto items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 mx-2 rounded-full hover:shadow-lg duration-300">
+                                  {t('tournament.tournamentCard.joinButton')}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   );
                 })}
+              {
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                additionalPostData?.asset_name && (
+                  <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex lg:gap-12 justify-between ">
+                    <div className="flex gap-2 pr-5 lg:pr-12 my-auto">
+                      <p className="font-poppins">
+                        {additionalPostData?.order_type === 'buy'
+                          ? 'Bought'
+                          : additionalPostData?.order_type}
+                      </p>
+                      <p className="font-semibold font-poppins">
+                        {additionalPostData?.asset_name}
+                      </p>
+                      <p className="font-poppins">at</p>
+                      <p className="font-semibold font-poppins">
+                        {'IDR'} {additionalPostData?.order_amount}
+                      </p>
+                    </div>
+                    <img
+                      src={additionalPostData?.asset_icon}
+                      alt="icon"
+                      className="w-[60px] rounded-full object-scale-down my-auto px-2"
+                      width={40}
+                      height={40}
+                    />
+                  </div>
+                )
+              }
             </div>
             <div className="flex justify-between items-center mt-4">
               <div className="flex gap-3 md:gap-5">

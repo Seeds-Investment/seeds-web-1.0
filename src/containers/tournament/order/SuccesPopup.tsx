@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { SuccessPlayOrder } from '@/assets/order-page';
 import IconShare from '@/assets/play/tournament/share.svg';
 import Loading from '@/components/popup/Loading';

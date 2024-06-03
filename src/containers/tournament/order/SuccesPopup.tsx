@@ -62,9 +62,7 @@ const SuccessOrderModal: React.FC<props> = ({
                   {successData?.type === 'BUY'
                     ? t('playSimulation.orderCompletedBuy')
                     : t('playSimulation.orderCompletedSell')}{' '}
-                  {`${successData?.lot ?? 0} ${
-                    successData?.asset?.asset_name ?? ''
-                  }`}
+                  {`${successData?.lot ?? 0} ${successData?.asset?.asset_name ?? ''}`}
                 </Typography>
               </div>
             </div>

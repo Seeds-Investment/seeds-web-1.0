@@ -91,7 +91,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
               onClick={() => {
                 if (!item.is_played && item.status === 'ENDED') {
                   router
-                    .push(`/play/quiz/${item.id as string}/leaderboard`)
+                    .push(`/play/quiz/${item.id}/leaderboard`)
                     .catch(error => {
                       toast.error(`${error as string}`);
                     });

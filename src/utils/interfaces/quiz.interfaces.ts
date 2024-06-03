@@ -7,6 +7,7 @@ export interface JoinQuizI {
   phone_number: string;
   promo_code: string;
   invitation_code: string;
+  is_use_coins: boolean;
 }
 
 export enum QuizStatus {
@@ -158,6 +159,7 @@ export interface Answer {
   question_image: string;
   question_video: string;
   options: Options;
+  option_image: Options;
   description?: string;
 }
 

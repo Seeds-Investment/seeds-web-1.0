@@ -89,8 +89,13 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
           <div>
             <button
               onClick={() => {
-                if (item.is_played) {
-                  // TODO: navigate to quiz score page
+                if (!item.is_played && item.status === 'ENDED') {
+                  router
+                    .push(`/play/quiz/${item.id as string}/leaderboard`)
+                    .catch(error => {
+                      toast.error(`${error as string}`);
+                    });
+                } else if (item.is_played || item.status === 'ENDED') {
                   router.push(`/play/quiz/${item.id}/done`).catch(error => {
                     toast.error(`${error as string}`);
                   });
@@ -102,7 +107,9 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
               }}
               className="bg-white text-sm md:text-[10.71px] lg:w-[76.77px] lg:h-[25px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
             >
-              {item.is_played ? t('quiz.leaderboard') : t('quiz.play')}
+              {item.is_played || item.status === 'ENDED'
+                ? t('quiz.leaderboard')
+                : t('quiz.play')}
             </button>
           </div>
         </div>

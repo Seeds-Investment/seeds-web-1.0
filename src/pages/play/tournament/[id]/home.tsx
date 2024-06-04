@@ -558,6 +558,7 @@ const TournamentHome: React.FC = () => {
                   key={index}
                   onClick={async () =>
                     await router.push(
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                       `/play/tournament/${id as string}/${data?.id}`
                     )
                   }

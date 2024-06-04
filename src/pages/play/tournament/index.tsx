@@ -6,8 +6,8 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconShare from '@/assets/play/tournament/share.svg';
 import TutorialIcon from '@/assets/play/tournament/tutorialPicture.svg';
 import IconUsers from '@/assets/play/tournament/users.svg';
-import TournamentPagination from '@/components/TournmentPagination';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
+import TournamentPagination from '@/components/TournmentPagination';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { standartCurrency } from '@/helpers/currency';
 import { getTournamentTime } from '@/helpers/dateFormat';
@@ -20,7 +20,7 @@ import {
   type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -154,16 +154,39 @@ const PlayTournament = (): React.ReactElement => {
 
   const handleRedirectPage = async (
     id: string,
-    isJoined: boolean
+    isJoined: boolean,
+    status: string,
   ): Promise<void> => {
-    await router
-      .push(
-        `${isJoined ? `/play/tournament/${id}/home` : `/play/tournament/${id}`}`
-      )
-      .catch(error => {
-        toast.error(error);
-      });
+    if (isJoined) {
+      if (status === 'ACTIVE') {
+        await router.push(`/play/tournament/${id}/home`).catch(error => {toast.error(error)})
+      } else if (status === 'PAST') {
+        await router.push(`/play/tournament/${id}/notification`).catch(error => {toast.error(error)})
+      }
+    } else if ((status === 'ACTIVE') || (status === 'CREATED')) {
+        await router.push(`/play/tournament/${id}`).catch(error => {toast.error(error)})
+    }
   };
+
+  const isDisabled = (isJoined: boolean, status: string): boolean => {
+    if (isJoined) {
+      if (status === 'ACTIVE') {
+        return false
+      } else if (status === 'PAST') {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      if ((status === 'ACTIVE') || (status === 'CREATED')) {
+        return false
+      } else if (status === 'PAST') {
+        return true
+      } else {
+        return true
+      }
+    }
+  }
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -259,7 +282,11 @@ const PlayTournament = (): React.ReactElement => {
                       <div className="w-full bg-white rounded-xl shadow hover:shadow-lg duration-300">
                         <div
                           onClick={async () =>
-                            await handleRedirectPage(item?.id, item?.is_joined)
+                            await handleRedirectPage(
+                              item?.id,
+                              item?.is_joined,
+                              item?.status
+                            )
                           }
                           className="w-full rounded-xl overflow-hidden cursor-pointer"
                         >
@@ -267,7 +294,8 @@ const PlayTournament = (): React.ReactElement => {
                             onClick={async () =>
                               await handleRedirectPage(
                                 item?.id,
-                                item?.is_joined
+                                item?.is_joined,
+                                item?.status
                               )
                             }
                             className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
@@ -305,7 +333,11 @@ const PlayTournament = (): React.ReactElement => {
 
                         <div
                           onClick={async () =>
-                            await handleRedirectPage(item?.id, item?.is_joined)
+                            await handleRedirectPage(
+                              item?.id,
+                              item?.is_joined,
+                              item?.status
+                            )
                           }
                           className="w-full px-2 cursor-pointer"
                         >
@@ -412,31 +444,32 @@ const PlayTournament = (): React.ReactElement => {
                               </div>
                             </button>
                           </div>
-                          {item?.is_joined ? (
-                            <div
-                              onClick={async () =>
-                                await handleRedirectPage(
-                                  item?.id,
-                                  item?.is_joined
-                                )
-                              }
-                              className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
-                            >
-                              {t('tournament.tournamentCard.openButton')}
-                            </div>
-                          ) : (
-                            <div
-                              onClick={async () =>
-                                await handleRedirectPage(
-                                  item?.id,
-                                  item?.is_joined
-                                )
-                              }
-                              className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
-                            >
-                              {t('tournament.tournamentCard.joinButton')}
-                            </div>
-                          )}
+                          <Button
+                            onClick={async () =>
+                              await handleRedirectPage(
+                                item?.id,
+                                item?.is_joined,
+                                item?.status
+                              )
+                            }
+                            disabled={isDisabled(item?.is_joined, item?.status)}
+                            className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
+                          >
+                            {
+                              item?.is_joined
+                                ? (item?.status === 'ACTIVE' 
+                                  ? t('tournament.tournamentCard.openButton')
+                                  : (item?.status === 'PAST' 
+                                    ? t('tournament.tournamentCard.leaderboard')
+                                    : t('tournament.tournamentCard.canceled')
+                                  ))
+                                : ((item?.status === 'ACTIVE') || (item?.status === 'CREATED'))
+                                  ? t('tournament.tournamentCard.joinButton')
+                                  : (item?.status === 'CANCELED')
+                                    ? t('tournament.tournamentCard.canceled')
+                                    : t('tournament.tournamentCard.ended')
+                            }
+                          </Button>
                         </div>
                       </div>
                     </div>

@@ -4,7 +4,7 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconShare from '@/assets/play/tournament/share.svg';
 import IconUsers from '@/assets/play/tournament/users.svg';
 import { standartCurrency } from '@/helpers/currency';
-import { generateFormattedDate } from '@/helpers/dateFormat';
+import { getTournamentTime } from '@/helpers/dateFormat';
 import { getPlayAll, getPlayResult } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
@@ -168,7 +168,7 @@ const NotificationWinner: React.FC = () => {
               alt="profile"
             />
             <div
-              className={`z-10 w-8 h-8  mt-[-4%] relative mx-auto rounded-full  text-md text-white text-center justify-center items-center ${
+              className={`z-10 w-8 h-8 mt-[-4%] relative mx-auto rounded-full flex text-md text-white text-center justify-center items-center ${
                 dataResult?.prize > 0 ? 'bg-[#3AC4A0]' : 'bg-[#FDBA22]'
               }`}
             >
@@ -178,7 +178,7 @@ const NotificationWinner: React.FC = () => {
               {userInfo?.name ?? '/loading'}
             </Typography>
             <Typography className="font-poppins text-lg text-[#262626] mb-4">
-              IDR. {dataResult?.asset}
+              {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(dataResult?.asset ?? 0).replace('Rp', '')}
             </Typography>
             <Typography
               className={`flex font-normal text-sm ${
@@ -217,10 +217,10 @@ const NotificationWinner: React.FC = () => {
                     ? `/play/tournament/${id as string}/withdrawal`
                     : `/play`;
                 router.push(destination).catch(err => {
-                  toast.error(`Error fetching data: ${err as string}`);
+                  toast.error(`Error ${err as string}`);
                 });
               }}
-              className={`bg-[#3AC4A0] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+              className={`bg-[#3AC4A0] relative flex items-center justify-center w-full h-14 rounded-full shadow-sm hover:opacity-90`}
             >
               <div className="z-10 text-center text-xl font-semibold text-white">
                 {dataResult.prize > 0 ? 'Cashout Reward' : 'Go to Play Arena'}
@@ -228,11 +228,11 @@ const NotificationWinner: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                router.push(`/play/quiz/1/leaderboard`).catch(err => {
-                  toast.error(`Error fetching data: ${err as string}`);
+                router.push(`/play/tournament/${id as string}/leaderboard`).catch(err => {
+                  toast.error(`Error ${err as string}`);
                 });
               }}
-              className={`bg-white relative flex items-center justify-center border-2 border-[#3AC4A0] w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+              className={`bg-white relative flex items-center justify-center border-2 border-[#3AC4A0] w-full h-14 rounded-full shadow-sm hover:opacity-90`}
             >
               <div className="z-10 text-center text-xl font-semibold text-[#3AC4A0]">
                 {t('quiz.leaderboard')}
@@ -296,60 +296,78 @@ const NotificationWinner: React.FC = () => {
                             ? item.banner
                             : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
                         }
-                        width={100}
-                        height={100}
-                        className="w-auto h-full"
+                        width={1000}
+                        height={1000}
+                        className="w-full h-auto max-h-[150px] object-cover"
                       />
                     </div>
-                    <div className="pl-2 flex justify-between">
+                    <div className="px-2 flex justify-between">
                       <div className="text-[14px] font-semibold text-[#262626]">
-                        {item.name}
+                        {item.name ?? 'Tournament'}
                       </div>
-                      <div className="text-[10px] bg-[#E9E9E9] text-[#553BB8] px-4 flex justify-center items-center rounded-lg">
-                        {item.type}
+                      <div className="flex justify-center items-start">
+                        <div className="mt-1 text-[10px] bg-[#E9E9E9] text-[#553BB8] px-4 flex justify-center items-center rounded-lg">
+                          {item.type ?? 'ARENA'}
+                        </div>
                       </div>
                     </div>
                     <div className="text-[#BDBDBD] px-2 text-[10px]">
-                      {`${generateFormattedDate(
-                        item.play_time,
-                        false
-                      )} - ${generateFormattedDate(item.end_time)}`}
+                      {`${getTournamentTime(
+                        item?.play_time ?? '2024-01-01T00:00:00Z'
+                      )} - ${getTournamentTime(
+                        item?.end_time ?? '2024-12-31T23:59:59Z'
+                      )}`}
                     </div>
                   </div>
 
                   <div className="w-full flex text-[10px] px-2 bg-[#E9E9E9] rounded-lg py-1 mt-1">
-                    <div className="w-full flex items-start">
+                    <div className="w-full flex items-center">
                       <Image
                         alt=""
                         src={IconClock}
                         className="w-[14px] mb-2 mr-1"
                       />
                       <div className="flex flex-col">
-                        <div>{t('tournament.tournamentCard.duration')}</div>
+                        <div>
+                          {t('tournament.tournamentCard.duration')}
+                        </div>
                         <div className="font-semibold text-black">
                           {calculateDaysLeft(
+                            new Date(
+                              item?.play_time ?? '2024-01-01T00:00:00Z'
+                            ),
+                            new Date(
+                              item?.end_time ?? '2024-12-31T23:59:59Z'
+                            )
+                          )}{' '}
+                          {(calculateDaysLeft(
                             new Date(item?.play_time),
                             new Date(item?.end_time)
-                          )}{' '}
-                          {t('tournament.tournamentCard.days')}
+                          ) ?? 0) > 1
+                            ? t('tournament.tournamentCard.days')
+                            : t('tournament.tournamentCard.day')}
                         </div>
                       </div>
                     </div>
-                    <div className="w-full flex items-start">
+                    <div className="w-full flex items-center">
                       <Image
                         alt=""
                         src={IconUsers}
                         className="w-[14px] mb-2 mr-1"
                       />
                       <div className="flex flex-col">
-                        <div>{t('tournament.tournamentCard.joined')}</div>
+                        <div>
+                          {t('tournament.tournamentCard.joined')}
+                        </div>
                         <div className="font-semibold text-black">
                           {item?.participants?.length ?? '0'}{' '}
-                          {t('tournament.tournamentCard.player')}
+                          {(item?.participants?.length ?? 0) > 1
+                            ? t('tournament.tournamentCard.players')
+                            : t('tournament.tournamentCard.player')}
                         </div>
                       </div>
                     </div>
-                    <div className="w-full flex items-start">
+                    <div className="w-full flex items-center">
                       <Image
                         alt=""
                         src={IconFee}
@@ -360,15 +378,14 @@ const NotificationWinner: React.FC = () => {
                         <div className="font-semibold text-black">
                           {item.admission_fee === 0
                             ? t('quiz.free')
-                            : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                              `${
-                                userInfo?.preferredCurrency !== undefined
+                            : `${
+                                userInfo?.preferredCurrency !==
+                                undefined
                                   ? userInfo?.preferredCurrency
                                   : 'IDR'
-                              }${standartCurrency(item.admission_fee).replace(
-                                'Rp',
-                                ''
-                              )}`}
+                              }${standartCurrency(
+                                item.admission_fee
+                              ).replace('Rp', '')}`}
                         </div>
                       </div>
                     </div>
@@ -389,11 +406,11 @@ const NotificationWinner: React.FC = () => {
                       </div>
                     </div>
                     {item?.is_joined ? (
-                      <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                      <div className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300">
                         {t('tournament.tournamentCard.openButton')}
                       </div>
                     ) : (
-                      <div className="flex justify-center items-center cursor-pointer text-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-8 rounded-full hover:shadow-lg duration-300">
+                      <div className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300">
                         {t('tournament.tournamentCard.joinButton')}
                       </div>
                     )}

@@ -57,10 +57,8 @@ const TournamentDetail: React.FC = () => {
     try {
       const dataCoins = await getTransactionSummary();
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
-    } catch (error: any) {
-      toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
-      );
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -183,6 +181,14 @@ const TournamentDetail: React.FC = () => {
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Play ID copied!');
     });
+  };
+
+  const isStarted = (): boolean => {
+    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart > timeNow;
   };
 
   return (
@@ -549,13 +555,14 @@ const TournamentDetail: React.FC = () => {
               }
             }}
             disabled={
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
+              (invitationCode === '' && detailTournament?.is_need_invitation_code === true)
+              || isStarted()
             }
             // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
+              ((invitationCode === '' &&
+              detailTournament?.is_need_invitation_code === true)
+              || isStarted())
                 ? 'bg-[#7d7d7d]'
                 : 'bg-seeds-button-green text-white'
             }`}

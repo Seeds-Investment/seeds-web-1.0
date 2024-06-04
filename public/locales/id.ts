@@ -1697,6 +1697,7 @@ export default {
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
     leaderboard: 'Klasemen',
+    leaderboardEmpty: "Data leaderboard kosong.",
     remainingTime: 'Sisa waktumu',
     currentRank: 'Peringkatmu sekarang',
     currentScore: 'Skor Kamu Sekarang',
@@ -1912,6 +1913,9 @@ export default {
       fee: 'Biaya',
       openButton: 'Dalam Game',
       joinButton: 'Dapatkan Tiket',
+      leaderboard: 'Leaderboard',
+      ended: 'Berakhir',
+      canceled: 'Dibatalkan',
       share: 'Share',
       day: 'Hari',
       days: 'Hari'

@@ -280,23 +280,10 @@ const TournamentDetail: React.FC = () => {
                 <Image
                   src={detailTournament?.sponsorship?.image_url}
                   alt=""
-                  width={200}
-                  height={200}
+                  width={1000}
+                  height={1000}
                   className="object-contain max-h-16 max-w-16"
                 />
-                {detailTournament?.end_time !== undefined ? (
-                  <CountdownTimer
-                    deadline={
-                      detailTournament?.end_time
-                        ? detailTournament.end_time.toString()
-                        : ''
-                    }
-                  />
-                ) : (
-                  <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
-                    Loading...
-                  </Typography>
-                )}
               </div>
             ) : null}
             {detailTournament?.community?.image_url ? (
@@ -307,8 +294,8 @@ const TournamentDetail: React.FC = () => {
                 <Image
                   src={detailTournament?.community?.image_url}
                   alt=""
-                  width={200}
-                  height={200}
+                  width={1000}
+                  height={1000}
                   className="object-contain max-h-16 max-w-16"
                 />
               </div>

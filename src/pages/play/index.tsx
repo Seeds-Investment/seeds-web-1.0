@@ -414,7 +414,7 @@ const Player = (): React.ReactElement => {
               {bannerAsset?.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[828px] relative h-fit lg:h-[249px]"
+                  className="w-full lg:w-[828px] relative h-fit"
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)
@@ -422,11 +422,11 @@ const Player = (): React.ReactElement => {
                   }}
                 >
                   <Image
-                    className="object-cover w-full"
+                    className="object-cover w-full h-auto"
                     src={asset.banner}
                     alt={asset.name}
-                    width={826}
-                    height={249}
+                    width={1000}
+                    height={1000}
                   />
                 </div>
               ))}
@@ -436,7 +436,7 @@ const Player = (): React.ReactElement => {
       </div>
 
       <div className="w-full h-auto cursor-default bg-white p-5 md:mt-4 rounded-2xl">
-        <div className="flex flex-col justify-center md:justify-start md:items-start rounded-xl">
+        <div className="flex flex-col justify-center items-center rounded-xl">
           <Typography className="text-center mb-5 text-xl font-semibold text-[#262626] font-poppins">
             Seeds Play
           </Typography>
@@ -553,8 +553,8 @@ const Player = (): React.ReactElement => {
                               ? item.banner
                               : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
                           }
-                          width={100}
-                          height={100}
+                          width={1000}
+                          height={1000}
                           className="w-full h-auto max-h-[150px] object-cover"
                         />
                       </div>
@@ -579,7 +579,7 @@ const Player = (): React.ReactElement => {
                                 </div>
                               )}
                             </div>
-                            <div className="w-[100px] flex justify-center items-end">
+                            <div className="w-[100px] flex justify-end items-end">
                               {item?.play_center_type === 'quiz' && (
                                 <button
                                   onClick={() => {
@@ -598,7 +598,7 @@ const Player = (): React.ReactElement => {
                                         });
                                     }
                                   }}
-                                  className="bg-white text-sm md:text-[10.71px] lg:w-[76.77px] lg:h-[25px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold w-32"
+                                  className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300"
                                 >
                                   {item.is_joined
                                     ? t('quiz.leaderboard')
@@ -607,19 +607,12 @@ const Player = (): React.ReactElement => {
                               )}
                               {item?.play_center_type === 'play' && (
                                 <div>
-                                  {item?.is_joined ? (
                                     <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
-                                      {t(
-                                        'tournament.tournamentCard.openButton'
-                                      )}
+                                      {item?.is_joined
+                                        ? t('tournament.tournamentCard.openButton')
+                                        : t('tournament.tournamentCard.joinButton')
+                                      }
                                     </div>
-                                  ) : (
-                                    <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
-                                      {t(
-                                        'tournament.tournamentCard.joinButton'
-                                      )}
-                                    </div>
-                                  )}
                                 </div>
                               )}
                             </div>

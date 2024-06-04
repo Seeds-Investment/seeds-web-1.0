@@ -17,7 +17,7 @@ import { ShareIcon } from '@heroicons/react/24/outline';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
@@ -28,6 +28,7 @@ import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
+  const count = useRef(0);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
@@ -110,9 +111,12 @@ const QuizDetail = (): React.ReactElement => {
       getDetail(userInfo?.preferredCurrency ?? '');
     }
   }, [id, userInfo]);
-
   useEffect(() => {
-    if (detailQuiz !== undefined && userInfo !== undefined) {
+    if (
+      detailQuiz !== undefined &&
+      userInfo !== undefined &&
+      count.current === 0
+    ) {
       TrackerEvent({
         event: 'SW_quiz_detail_page',
         quiz_name: detailQuiz.name,
@@ -120,6 +124,7 @@ const QuizDetail = (): React.ReactElement => {
         user_name: userInfo.name,
         user_phone: userInfo.phoneNumber
       });
+      count.current = 1;
     }
   }, [detailQuiz]);
 

@@ -16,7 +16,10 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type AssetI, type SuccessOrderData } from '@/utils/interfaces/play.interface';
+import {
+  type AssetI,
+  type SuccessOrderData
+} from '@/utils/interfaces/play.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import {
   Avatar,
@@ -113,7 +116,12 @@ const OrderPage: React.FC = () => {
   useEffect(() => {
     if (sellPercent !== 0) {
       setAmount(
-        `${((portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0) * sellPercent) / 100}`
+        `${
+          ((portfolio?.total_lot ?? 0) *
+            (data?.lastPrice?.open ?? 0) *
+            sellPercent) /
+          100
+        }`
       );
       setAssetsAmount(`${(portfolio.total_lot * sellPercent) / 100}`);
     }
@@ -122,7 +130,12 @@ const OrderPage: React.FC = () => {
   useEffect(() => {
     if (
       amount !==
-      `${((portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0) * sellPercent) / 100}`
+      `${
+        ((portfolio?.total_lot ?? 0) *
+          (data?.lastPrice?.open ?? 0) *
+          sellPercent) /
+        100
+      }`
     ) {
       setSellPercent(0);
     }
@@ -286,7 +299,9 @@ const OrderPage: React.FC = () => {
               if (isDevide) {
                 setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
               } else {
-                setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
+                setNewVal(
+                  `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
+                );
               }
             }, 100)
           );
@@ -297,9 +312,13 @@ const OrderPage: React.FC = () => {
             setTimeout((): void => {
               if (value.length > 0) {
                 if (isDevide) {
-                  setNewVal(`${parseInt(value) / (data?.lastPrice?.open ?? 0)}`);
+                  setNewVal(
+                    `${parseInt(value) / (data?.lastPrice?.open ?? 0)}`
+                  );
                 } else {
-                  setNewVal(`${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`);
+                  setNewVal(
+                    `${parseFloat(value) * (data?.lastPrice?.open ?? 0)}`
+                  );
                 }
               }
             }, 100)
@@ -391,7 +410,7 @@ const OrderPage: React.FC = () => {
             <Typography className="text-base font-poppins font-base text-black">
               {`${standartCurrency(
                 router.query?.transaction === 'buy'
-                  ? (ballance?.balance ?? 0)
+                  ? ballance?.balance ?? 0
                   : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
               ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
               {router.query?.transaction === 'sell' &&

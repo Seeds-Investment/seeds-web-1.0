@@ -348,7 +348,10 @@ const Social: React.FC = () => {
         handleOpen={() => {
           setIsOpenModalAdd(false);
         }}
-        openModalPost={handleOpen}
+        openModalPost={() => {
+          handleOpen();
+          setIsOpenModalAdd(false);
+        }}
       />
 
       <Card1

@@ -303,13 +303,10 @@ const NotificationWinner: React.FC = () => {
             Join various play arena to win attractive cash rewards 💰
           </Typography>
           {data?.length !== 0 ? (
-            <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8 mb-4">
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8 mb-4 font-poppins">
               {data.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
-                >
-                  <div className="w-[60px] text-black text-center hidden md:block">
+                <div key={item.id} className="flex rounded-xl">
+                  <div className="w-[60px] text-black text-center hidden md:block mt-4">
                     <Typography className="text-black font-normal text-[12px]">
                       {moment(item?.play_time).format('MMM')}
                     </Typography>
@@ -361,7 +358,7 @@ const NotificationWinner: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="text-[#BDBDBD] px-2 text-[10px]">
+                      <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
                         {`${getTournamentTime(
                           item?.play_time ?? '2024-01-01T00:00:00Z'
                         )} - ${getTournamentTime(
@@ -380,14 +377,14 @@ const NotificationWinner: React.FC = () => {
                       }
                       className="w-full px-2 cursor-pointer"
                     >
-                      <div className="w-full flex text-[10px] px-2 bg-[#E9E9E9] rounded-lg py-1 mt-1">
-                        <div className="w-full flex items-center">
+                      <div className="w-full pl-2 flex justify-center items-center text-[10px] bg-[#E9E9E9] rounded-lg py-1 mt-1">
+                        <div className="w-full flex items-start">
                           <Image
                             alt=""
                             src={IconClock}
-                            className="w-[14px] mb-2 mr-1"
+                            className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                             <div>
                               {t('tournament.tournamentCard.duration')}
                             </div>
@@ -409,13 +406,13 @@ const NotificationWinner: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-full flex items-center">
+                        <div className="w-full flex items-start">
                           <Image
                             alt=""
                             src={IconUsers}
-                            className="w-[14px] mb-2 mr-1"
+                            className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                             <div>
                               {t('tournament.tournamentCard.joined')}
                             </div>
@@ -427,43 +424,55 @@ const NotificationWinner: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-full flex items-center">
+                        <div className="w-full flex items-start">
                           <Image
                             alt=""
                             src={IconFee}
-                            className="w-[14px] mb-2 mr-1"
+                            className="w-[14px] xl:w-[12px] 2xl:text-[14px] mb-2 mr-1"
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                             <div>{t('tournament.tournamentCard.fee')}</div>
                             <div className="font-semibold text-black">
                               {item.admission_fee === 0
                                 ? t('quiz.free')
-                                : `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(item.admission_fee ?? 0).replace('Rp', '')}`}
+                                : `${
+                                    userInfo?.preferredCurrency !==
+                                    undefined
+                                      ? userInfo?.preferredCurrency
+                                      : 'IDR'
+                                  }${standartCurrency(
+                                    item.admission_fee ?? 0
+                                  ).replace('Rp', '')}`}
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex justify-between border-t-2 border-dashed mt-2 py-2 pr-2">
+                    <div className="flex justify-between border-t-2 border-dashed mt-2 py-2 px-2">
                       <div className="flex gap-1">
-                        <div className="flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
-                          {item.category}
+                        <div className="flex justify-center items-center px-4 xl:px-2 2xl:px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
+                          {item.category ?? 'ALL'}
                         </div>
-                        <div
-                          onClick={() => {
+                        <button
+                          onClick={async () => {
                             setIsShareModal(true);
                             setSharedIndex(index);
                           }}
-                          className="h-full flex justify-center items-center gap-1 cursor-pointer"
                         >
-                          <div className="w-full h-full flex justify-center items-center">
-                            <Image alt="" src={IconShare} className="w-[20px]" />
+                          <div className="h-full flex justify-center items-center gap-1">
+                            <div className="w-full h-full flex justify-center items-center">
+                              <Image
+                                alt=""
+                                src={IconShare}
+                                className="w-[20px]"
+                              />
+                            </div>
+                            <div className="text-[10px] font-semibold">
+                              {t('tournament.tournamentCard.share')}
+                            </div>
                           </div>
-                          <div className="text-[10px] font-semibold">
-                            {t('tournament.tournamentCard.share')}
-                          </div>
-                        </div>
+                        </button>
                       </div>
                       <Button
                         onClick={async () =>
@@ -474,7 +483,7 @@ const NotificationWinner: React.FC = () => {
                           ); }
                         }
                         disabled={isDisabled(item?.is_joined, item?.status)}
-                        className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
+                        className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 2xl:px-4 rounded-full hover:shadow-lg duration-300"
                       >
                         {
                           item?.is_joined

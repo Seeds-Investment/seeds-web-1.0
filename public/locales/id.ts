@@ -1825,8 +1825,8 @@ export default {
       recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     shareQuiz: 'Bagikan Kuis Ini',
-    playId: "ID Kuis",
-    shareLinks: 'Bagikan Link',
+    playId: 'ID Kuis',
+    shareLinks: 'Bagikan Link'
   },
   tournament: {
     myPlay: 'Permainan Saya',

@@ -136,12 +136,8 @@ const NotificationWinner: React.FC = () => {
         <div className="overflow-auto flex flex-col items-center h-full w-full">
           <Typography className="hidden md:block font-poppins font-semibold text-2xl text-center text-wrap text-[#262626]">
             {dataResult.prize > 0
-              ? 'Congrats you won'
-              : 'Aw nice try! You only '}
-            <br />
-            {dataResult.prize > 0
-              ? 'the Tournaments!'
-              : `ranked ${dataResult?.rank}th`}
+              ? t('tournament.winnerModalTitle')
+              : `${t('tournament.looseModalTitle')} ${dataResult?.rank}`}
           </Typography>
           <div className="w-full flex flex-col items-center justify-center p-4">
             {/* <Typography className="block md:hidden font-poppins font-semibold text-xl text-center text-wrap text-[#262626]">

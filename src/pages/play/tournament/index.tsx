@@ -288,8 +288,8 @@ const PlayTournament = (): React.ReactElement => {
                                   ? item.banner
                                   : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
                               }
-                              width={100}
-                              height={100}
+                              width={1000}
+                              height={1000}
                               className="w-full h-auto max-h-[150px] object-cover"
                             />
                           </div>

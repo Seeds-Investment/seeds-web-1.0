@@ -261,6 +261,20 @@ const TournamentDetail: React.FC = () => {
             </Typography>
           </div>
           <div className="mt-4 flex flex-row gap-8">
+            {detailTournament?.sponsorship?.image_url ? (
+              <div className="flex flex-col justify-center items-center gap-4">
+                <Typography className="text-lg font-semibold font-poppins">
+                  {'Sponsorship'}
+                </Typography>
+                <Image
+                  src={detailTournament?.sponsorship?.image_url}
+                  alt=""
+                  width={1000}
+                  height={1000}
+                  className="object-contain max-h-16 max-w-16"
+                />
+              </div>
+            ) : null}
             {detailTournament?.community?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
                 <Typography className="text-lg font-semibold font-poppins">
@@ -269,8 +283,8 @@ const TournamentDetail: React.FC = () => {
                 <Image
                   src={detailTournament?.community?.image_url}
                   alt=""
-                  width={200}
-                  height={200}
+                  width={1000}
+                  height={1000}
                   className="object-contain max-h-16 max-w-16"
                 />
               </div>

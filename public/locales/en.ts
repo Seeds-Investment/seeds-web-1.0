@@ -1762,6 +1762,7 @@ export default {
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
+    leaderboardEmpty: "Leaderboard data is empty.",
     remainingTime: 'Your remaining time',
     currentRank: 'Your Current Rank',
     currentScore: 'Your Current Score',
@@ -1951,6 +1952,9 @@ export default {
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
+      leaderboard: 'Leaderboard',
+      ended: 'Ended',
+      canceled: 'Canceled',
       share: 'Share',
       day: 'Day',
       days: 'Days'

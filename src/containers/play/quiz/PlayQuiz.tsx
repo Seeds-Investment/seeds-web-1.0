@@ -435,34 +435,15 @@ const QuizPlay = ({
                       let option: Option | undefined;
                       let optionKey: string | undefined;
                       let qId = 1;
-                      const data =
+                      const options =
                         quizQuestions[currentPage]?.data[
                           i18n.language === 'id' ? 'id' : 'en'
-                        ];
-                      const filteredOptions = data
-                        ? {
-                            ...Object.fromEntries(
-                              Object.entries(data?.options).filter(
-                                ([, value]: [string, Option]) =>
-                                  value.option !== ''
-                              )
-                            ),
-                            ...Object.fromEntries(
-                              Object.entries(data?.option_image).filter(
-                                ([, value]: [string, Option]) =>
-                                  value.option !== ''
-                              )
-                            )
-                          }
-                        : {};
-                      for (const key in filteredOptions) {
+                        ].options;
+                      for (const key in options) {
                         if (
-                          Object.prototype.hasOwnProperty.call(
-                            filteredOptions,
-                            key
-                          )
+                          Object.prototype.hasOwnProperty.call(options, key)
                         ) {
-                          const element = filteredOptions[key as keyof Options];
+                          const element = options[key as keyof Options];
                           if (element.id === item.option_id) {
                             option = element;
                             optionKey = key;
@@ -661,30 +642,12 @@ const OptionAnswer = memo(
     setSelectedAnswer: React.Dispatch<React.SetStateAction<number | undefined>>;
     language: string;
   }) => {
-    const isValidURL = (): boolean => {
-      const options =
-        quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-          .option_image.option_1.option;
-      try {
-        // eslint-disable-next-line no-new
-        new URL(options);
-        return true;
-      } catch (err) {
-        return false;
-      }
-    };
     return (
-      <div className={`${isValidURL() ? 'grid grid-cols-2 gap-4' : 'w-full'}`}>
+      <>
         <AnswerButtonComponent
           title={`A. ${
             quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_1.option !== ''
-              ? quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].options.option_1.option
-              : quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].option_image.option_1.option
+              .options.option_1.option
           }`}
           selected={selectedAnswer === 1}
           onClick={() => {
@@ -697,13 +660,7 @@ const OptionAnswer = memo(
         <AnswerButtonComponent
           title={`B. ${
             quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_2.option !== ''
-              ? quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].options.option_2.option
-              : quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].option_image.option_2.option
+              .options.option_2.option
           }`}
           selected={selectedAnswer === 2}
           onClick={() => {
@@ -716,13 +673,7 @@ const OptionAnswer = memo(
         <AnswerButtonComponent
           title={`C. ${
             quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_3.option !== ''
-              ? quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].options.option_3.option
-              : quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].option_image.option_3.option
+              .options.option_3.option
           }`}
           selected={selectedAnswer === 3}
           onClick={() => {
@@ -735,13 +686,7 @@ const OptionAnswer = memo(
         <AnswerButtonComponent
           title={`D. ${
             quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_4.option !== ''
-              ? quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].options.option_4.option
-              : quizQuestions[currentPage]?.data[
-                  language === 'id' ? 'id' : 'en'
-                ].option_image.option_4.option
+              .options.option_4.option
           }`}
           selected={selectedAnswer === 4}
           onClick={() => {
@@ -751,7 +696,7 @@ const OptionAnswer = memo(
           disabled={spillAnswer}
           rightAnswer={correctAnswer === 'option_4'}
         />
-      </div>
+      </>
     );
   }
 );

@@ -63,7 +63,5 @@ export default function Section5(): React.ReactElement {
         </div>
       </div>
     </section>
-
-    
   );
 }

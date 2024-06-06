@@ -119,6 +119,7 @@ export interface IQuiz {
   ended_at: Date;
   admission_fee: number;
   is_played: boolean;
+  status: string;
 }
 
 export interface IQuizSettings {
@@ -230,6 +231,10 @@ export interface QuizReviewDataI {
 
 export interface QuizCashoutI {
   quiz_id: string;
+  social_media_type: string;
+  social_media_username: string;
+  testimonial: string;
+  photo_url: string;
   method: string;
   account_name: string;
   account_number: string;

@@ -658,14 +658,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Login',
-    guest2: ' as ',
-    guest3: 'Guest',
+    guest: 'Login as Guest',
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
-    login: 'Login',
-    signup: 'Sign up',
-    or: ' or '
+    login: 'Login or Sign up'
   },
   authLogin: {
     title1: 'Let’s Input!',
@@ -1217,6 +1213,25 @@ export default {
           option4: 'On Progress'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidCircle: 'Pending Paid Membership',
+      circleFee: 'Membership Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      paymentSuccessDescription:
+        'Your premium circle payment has been successfully processed',
+      paymentFailed: 'Payment Failed',
+      paymentFailedDescription:
+        'We can’t process your payment, Check your internet connection and try again.',
+      paymentFailedWarning: 'Payment Failed Circle Premium'
     }
   },
   articleList: {
@@ -1526,7 +1541,21 @@ export default {
     },
     placeholder1: 'What do you want to discuss? ...',
     placeholder2:
-      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidSocial: 'Pending Paid Post',
+      socialFee: 'Content Premium',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
+    }
   },
   landingV2: {
     section1: {
@@ -1730,12 +1759,13 @@ export default {
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
     vote: 'Display a bar chart that shows the highest percentage of correct answers.',
-    questionLevel: "Question Level",
-    easy: "Easy",
-    medium: "Medium",
-    hard: "Hard",
-    questionDescription1: "You will do",
-    questionDescription2: "questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!",
+    questionLevel: 'Question Level',
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    questionDescription1: 'You will do',
+    questionDescription2:
+      'questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!',
     incorrect: 'Incorrect',
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
@@ -1834,11 +1864,24 @@ export default {
     placeholderAccount: 'Select your account',
     placeholderAccountName: 'Your account name',
     placeholderAccountNumber: 'Your account number',
+    completeYourData: 'Complete your data!',
+    fullname: 'Fullname',
+    placeholderFullname: 'Your fullname',
+    socialMedia: 'Social Media',
+    placeholderSocialMedia: 'Select a social media account',
+    socialMediaName: 'Social Media Name',
+    placeholderSocialMediaName: 'Input your account social media',
+    winnerTestimonial: 'Testimonial',
+    placeholderWinnerTestimonial: 'Input your testimonial',
+    winnerPhoto: 'Upload Image',
+    placeholderWinnerPhoto: 'Upload your best photos, Seeds friends!',
+    addPhoto: 'Add Photo',
     transferBank: 'Transfer with Bank',
     eWallet: 'E-Wallet',
     transferEWallet: 'Transfer with E-Wallet',
     bankList: 'Bank List',
     eWalletList: 'E-Wallet List',
+    socialMediaList: 'Social Media List',
     thankyou: 'Thank You!',
     withdrawalRequest:
       'Your withdrawal request is being processed. Please wait max 1x24 hours.',
@@ -1863,6 +1906,7 @@ export default {
     text2: 'Check out the latest rankings for top quizzes!',
     payment: {
       paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
       lifelinesFee: 'Lifeline Fee',
@@ -1872,11 +1916,14 @@ export default {
       discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
-      close: 'Close'
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
     }
   },
   tournament: {
     myPlay: 'My Play',
+    open: 'Open',
     active: 'Active',
     ended: 'Ended',
     canceled: 'Canceled',
@@ -1909,6 +1956,8 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    winnerModalTitle: 'Congrats you won the Tournament!',
+    looseModalTitle: 'Not bad! You made it to',
     payment: {
       paymentMethod: 'Payment Method',
       pendingPaidTournament: 'Pending Paid Tournament',
@@ -1919,7 +1968,11 @@ export default {
       discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
-      close: 'Close'
+      close: 'Close',
+      virtualNumber: 'Your Virtual Account Number',
+      successful: 'Successful',
+      pending: 'Pending Paid Tournament',
+      recurringSaved: 'Your recurring has been saved!'
     },
     clock: {
       days: 'd',
@@ -1928,14 +1981,16 @@ export default {
       seconds: 's'
     },
     tournamentCard: {
-      player: 'Player(s)',
+      player: 'Player',
+      players: 'Players',
       duration: 'Duration',
       joined: 'Joined',
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
       share: 'Share',
-      days: 'Day(s)'
+      day: 'Day',
+      days: 'Days'
     },
     leaderboard: {
       lastUpdated: 'Last updated: ',

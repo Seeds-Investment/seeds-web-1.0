@@ -206,17 +206,17 @@ const SuccessPaymentPage: React.FC = () => {
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
-                  : 'Successful'}
+                  : t('tournament.payment.successful')}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {orderDetail?.transactionStatus === 'SETTLEMENT' &&
-                  'Your recurring has been saved!'}
+                  t('tournament.payment.recurringSaved')}
               </Typography>
 
               <Card className="p-5 mt-8 bg-white w-full">
                 <Typography className="text-sm font-semibold text-[#BDBDBD] text-center">
                   {orderDetail?.vaNumber !== undefined
-                    ? 'Your Virtual Account Number'
+                    ? t('tournament.payment.virtualNumber')
                     : t('tournament.payment.paymentMethod')}
                 </Typography>
                 {orderDetail?.paymentMethod === 'OTHER_QRIS' && (
@@ -456,6 +456,45 @@ const SuccessPaymentPage: React.FC = () => {
                       )
                     : ''}
                 </div>
+
+                {/* Service Fee */}
+                <div className="flex flex-row justify-between mb-5">
+                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                    {t('tournament.payment.serviceFee')}
+                  </Typography>
+                  <Typography className="text-sm font-semibold text-[#262626]">
+                    {orderDetail?.currency !== undefined &&
+                    orderDetail.grossAmount !== undefined
+                      ? `${orderDetail.currency} ${formatCurrency(
+                          paymentSelectedEWallet.length > 0
+                            ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                            : 0
+                        )}`
+                      : ''}
+                  </Typography>
+                </div>
+
+                {/* Discount Fee */}
+                {paymentSelectedEWallet.length > 0 && (
+                  <div>
+                    {paymentSelectedEWallet[0]?.is_promo_available && (
+                      <div className="flex flex-row justify-between mb-5">
+                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                          {t('tournament.payment.discountFee')}
+                        </Typography>
+                        <Typography className="text-sm font-semibold text-[#262626]">
+                          {orderDetail?.currency !== undefined
+                            ? `- ${orderDetail.currency} ${formatCurrency(
+                                paymentSelectedEWallet.length > 0
+                                  ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                                  : 0
+                              )}`
+                            : ''}
+                        </Typography>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <hr />
 
                 {/* Total Amount */}
@@ -470,12 +509,14 @@ const SuccessPaymentPage: React.FC = () => {
                       )}`}
                   </Typography>
                 </div>
+
+                {/* ID Transaction */}
                 <div className="flex flex-row justify-between mb-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('tournament.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.merchantId}
+                    {orderDetail?.merchantId ?? 'Loading...'}
                   </Typography>
                 </div>
               </Card>
@@ -519,9 +560,19 @@ const SuccessPaymentPage: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
-                    void router.replace(
-                      `/play/tournament/${orderDetail?.itemId as string}/home`
-                    );
+                    if (
+                      orderDetail?.transactionStatus === 'SUCCESS' ||
+                      orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                      orderDetail?.transactionStatus === 'SUCCEEDED'
+                    ) {
+                      void router.replace(
+                        `/play/tournament/${orderDetail?.itemId}/home`
+                      );
+                    } else {
+                      void router.replace(
+                        `/play/tournament/${orderDetail?.itemId as string}`
+                      );
+                    }
                   }}
                 >
                   {t('tournament.payment.close')}

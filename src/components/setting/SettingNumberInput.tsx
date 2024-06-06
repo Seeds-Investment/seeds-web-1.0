@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 interface ISettingNumberInput {
-  handleChange: (e: any, dialCode: any) => void;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dialCode: string
+  ) => void;
   formData: string;
   name: string;
   country: number;
@@ -103,8 +106,8 @@ const SettingNumberInput: React.FC<ISettingNumberInput> = ({
           pattern="[0-9]"
           value={formData}
           onKeyDown={handleSubmit}
-          onChange={() => {
-            handleChange(event, countries[country].dialCode.replace('+', ''));
+          onChange={e => {
+            handleChange(e, countries[country].dialCode.replace('+', ''));
           }}
           labelProps={{
             className:

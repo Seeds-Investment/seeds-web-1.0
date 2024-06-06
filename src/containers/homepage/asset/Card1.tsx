@@ -1,11 +1,12 @@
 import CCard from '@/components/CCard';
-import { calculatePercentageDifference } from '@/helpers/currency';
+import { calculatePercentageDifference, standartCurrency } from '@/helpers/currency';
+import { type AssetI } from '@/utils/interfaces/play.interface';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar } from '@material-tailwind/react';
 import { useTranslation } from 'react-i18next';
 
 interface props {
-  data: any;
+  data: AssetI;
   currency: string;
 }
 
@@ -26,11 +27,11 @@ const Card1: React.FC<props> = ({ data, currency }) => {
             <div className="flex flex-row gap-2">
               <p className="text-base font-semibold font-poppins text-black">
                 {data?.realTicker} / {data?.assetType === 'CRYPTO' && 'B'}
-                {currency}
+                {currency ?? 'IDR'}
               </p>
             </div>
             <p className="text-lg font-normal text-black mb-3 font-poppins">
-              {data?.name}
+              {data?.name ?? 'Loading...'}
             </p>
           </div>
         </div>
@@ -39,17 +40,16 @@ const Card1: React.FC<props> = ({ data, currency }) => {
         </div>
       </div>
       <p className="text-xl font-semibold text-black my-2">
-        {currency}{' '}
-        {data?.lastPrice?.open > 0.01
-          ? new Intl.NumberFormat().format(data?.lastPrice?.open)
-          : data?.lastPrice?.open}
+        {currency ?? 'IDR'}{' '}
+        {standartCurrency((data?.lastPrice?.open ?? 0)).replace('Rp', '')}
       </p>
       <p className="text-sm font-normal text-[#5E44FF]">
-        {data?.lastPrice?.vwap} (
+        {currency ?? 'IDR'}{' '}
+        {standartCurrency((data?.lastPrice?.vwap ?? 0)).replace('Rp', '')} (
         {
           calculatePercentageDifference(
-            data?.lastPrice?.open,
-            data?.lastPrice?.close
+            (data?.lastPrice?.open ?? 0),
+            (data?.lastPrice?.close ?? 0)
           )?.value
         }{' '}
         %) - {t('playSimulation.today')}

@@ -414,7 +414,7 @@ const Player = (): React.ReactElement => {
               {bannerAsset?.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[826px] relative h-[249px]"
+                  className="w-full lg:w-[828px] relative h-fit lg:h-[249px]"
                   onClick={() => {
                     void (asset?.play_center_type === 'quiz'
                       ? router.push(`/play/quiz/${asset.id}`)

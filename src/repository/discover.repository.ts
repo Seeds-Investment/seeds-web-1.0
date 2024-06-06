@@ -70,7 +70,8 @@ export const likeEvent = async (eventId: string): Promise<any> => {
       return await Promise.resolve('Access token not found');
     }
 
-    return await discoverService.post(`/event/subscription`,
+    return await discoverService.post(
+      `/event/subscription`,
       {
         event_id: eventId
       },

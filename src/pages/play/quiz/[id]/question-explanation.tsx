@@ -84,7 +84,9 @@ const QuestionExplanation = () => {
             {t('quiz.questionLevel')}
           </div>
           <div className="text-base lg:text-lg text-[#7C7C7C] mt-4 ">
-            {t('quiz.questionDescription1')}{` ${detailQuiz?.total_questions ?? 0} `}{t('quiz.questionDescription2')}
+            {t('quiz.questionDescription1')}
+            {` ${detailQuiz?.total_questions ?? 0} `}
+            {t('quiz.questionDescription2')}
           </div>
           <div className="self-center w-full grid grid-cols-3 text-center gap-2 mt-2 lg:mt-4">
             <div className="font-semibold rounded-md w-full p-3 bg-[#D8F9A8] text-[#4DA81C]">

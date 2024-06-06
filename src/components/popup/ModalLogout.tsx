@@ -64,7 +64,7 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-green-700 rounded-full hover:scale-105 transition ease-out">
+        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-green-700 rounded-full hover:scale-105 transition ease-out cursor-pointer">
           <Typography
             onClick={_handleLogout}
             className="text-white text-lg font-bold text-center p-2"

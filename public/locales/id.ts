@@ -972,12 +972,14 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Cari atau buat Circle yang sesuai dengan minat kamu di Seeds.',
+      join: 'Bergabung',
+      sort: 'Urutkan berdasarkan:'
     },
     list: {
-      title: 'Circle List',
+      title: 'Daftar Circle',
       description:
-        'Explore our list of communities, find the ones that match with your interest, or create one.'
+        'Jelajahi daftar komunitas kami, cari yang sesuai dengan minat kamu, atau buat yang baru.'
     },
     banner: {
       title1: 'Tarik Keuntungan',
@@ -1181,6 +1183,8 @@ export default {
     invalidConfirmPassword: 'Konfirmasi Password tidak valid'
   },
   landingPageV2: {
+    placeHolder1: 'Apa yang ingin kamu diskusikan?',
+    placeHolder2: 'Mulai posting',
     redirectError: 'Tolong Login Ulang',
     product: {
       section1: {
@@ -1610,7 +1614,9 @@ export default {
       text13: 'Sekarang di',
       text14: 'Lihat lebih banyak',
       text15: 'Masuk untuk menuju arena bermain',
-      text16: 'Masuk untuk menuju permainan'
+      text16: 'Masuk untuk menuju permainan',
+      text17:
+        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham'
     },
     section3: {
       text1: 'Sumber semua utama berita keuangan terbaru',
@@ -1689,6 +1695,7 @@ export default {
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
     leaderboard: 'Klasemen',
+    leaderboardEmpty: "Data leaderboard kosong.",
     remainingTime: 'Sisa waktumu',
     currentRank: 'Peringkatmu sekarang',
     currentScore: 'Skor Kamu Sekarang',
@@ -1825,8 +1832,8 @@ export default {
       recurringSaved: 'Pembayaran anda telah tersimpan'
     },
     shareQuiz: 'Bagikan Kuis Ini',
-    playId: "ID Kuis",
-    shareLinks: 'Bagikan Link',
+    playId: 'ID Kuis',
+    shareLinks: 'Bagikan Link'
   },
   tournament: {
     myPlay: 'Permainan Saya',
@@ -1877,6 +1884,9 @@ export default {
       fee: 'Biaya',
       openButton: 'Dalam Game',
       joinButton: 'Dapatkan Tiket',
+      leaderboard: 'Leaderboard',
+      ended: 'Berakhir',
+      canceled: 'Dibatalkan',
       share: 'Share',
       day: 'Hari',
       days: 'Hari'

@@ -59,20 +59,19 @@ const TournamentPagination: React.FC<PaginationProps> = ({
 
     for (let i = start; i <= end; i++) {
       buttons.push(
-        <a
+        <div
           key={i}
-          href="#"
           className={`${
             i.toString() === currentPage.toString()
               ? 'text-white bg-[#3AC4A0]'
               : 'text-[#262626]'
-          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs`}
+          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs cursor-pointer`}
           onClick={() => {
             handlePageButtonClick(i);
           }}
         >
           {i}
-        </a>
+        </div>
       );
     }
 
@@ -85,21 +84,19 @@ const TournamentPagination: React.FC<PaginationProps> = ({
         <div className="col-span-2" />
         <div className="col-span-6 pt-[1px]">
           <div className="flex justify-center items-center">
-            <a
-              href="#"
+            <div
               onClick={handlePreviousPage}
               className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
             >
               <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
             {generatePageButtons()}
-            <a
-              href="#"
+            <div
               onClick={handleNextPage}
               className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
             >
               <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            </div>
           </div>
         </div>
         <div className="col-span-2 me-12">

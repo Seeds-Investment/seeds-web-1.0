@@ -21,7 +21,7 @@ import {
   type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
-import { Typography } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -154,16 +154,39 @@ const PlayTournament = (): React.ReactElement => {
 
   const handleRedirectPage = async (
     id: string,
-    isJoined: boolean
+    isJoined: boolean,
+    status: string,
   ): Promise<void> => {
-    await router
-      .push(
-        `${isJoined ? `/play/tournament/${id}/home` : `/play/tournament/${id}`}`
-      )
-      .catch(error => {
-        toast.error(error);
-      });
+    if (isJoined) {
+      if (status === 'ACTIVE') {
+        await router.push(`/play/tournament/${id}/home`).catch(error => {toast.error(error)})
+      } else if (status === 'PAST') {
+        await router.push(`/play/tournament/${id}/notification`).catch(error => {toast.error(error)})
+      }
+    } else if ((status === 'ACTIVE') || (status === 'CREATED')) {
+        await router.push(`/play/tournament/${id}`).catch(error => {toast.error(error)})
+    }
   };
+
+  const isDisabled = (isJoined: boolean, status: string): boolean => {
+    if (isJoined) {
+      if (status === 'ACTIVE') {
+        return false
+      } else if (status === 'PAST') {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      if ((status === 'ACTIVE') || (status === 'CREATED')) {
+        return false
+      } else if (status === 'PAST') {
+        return true
+      } else {
+        return true
+      }
+    }
+  }
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -253,7 +276,7 @@ const PlayTournament = (): React.ReactElement => {
 
             {!loading ? (
               data?.length !== 0 ? (
-                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8 font-poppins">
                   {data.map((item, index) => (
                     <div key={item.id} className="flex rounded-xl">
                       <div className="w-[60px] text-black text-center hidden md:block mt-4">
@@ -268,7 +291,11 @@ const PlayTournament = (): React.ReactElement => {
                       <div className="w-full bg-white rounded-xl shadow hover:shadow-lg duration-300">
                         <div
                           onClick={async () =>
-                            await handleRedirectPage(item?.id, item?.is_joined)
+                            await handleRedirectPage(
+                              item?.id,
+                              item?.is_joined,
+                              item?.status
+                            )
                           }
                           className="w-full rounded-xl overflow-hidden cursor-pointer"
                         >
@@ -276,7 +303,8 @@ const PlayTournament = (): React.ReactElement => {
                             onClick={async () =>
                               await handleRedirectPage(
                                 item?.id,
-                                item?.is_joined
+                                item?.is_joined,
+                                item?.status
                               )
                             }
                             className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
@@ -288,8 +316,8 @@ const PlayTournament = (): React.ReactElement => {
                                   ? item.banner
                                   : 'https://dev-assets.seeds.finance/storage/cloud/4868a60b-90e3-4b81-b553-084ad85b1893.png'
                               }
-                              width={100}
-                              height={100}
+                              width={1000}
+                              height={1000}
                               className="w-full h-auto max-h-[150px] object-cover"
                             />
                           </div>
@@ -303,7 +331,7 @@ const PlayTournament = (): React.ReactElement => {
                               </div>
                             </div>
                           </div>
-                          <div className="text-[#BDBDBD] px-2 text-[10px]">
+                          <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
                             {`${getTournamentTime(
                               item?.play_time ?? '2024-01-01T00:00:00Z'
                             )} - ${getTournamentTime(
@@ -314,18 +342,22 @@ const PlayTournament = (): React.ReactElement => {
 
                         <div
                           onClick={async () =>
-                            await handleRedirectPage(item?.id, item?.is_joined)
+                            await handleRedirectPage(
+                              item?.id,
+                              item?.is_joined,
+                              item?.status
+                            )
                           }
                           className="w-full px-2 cursor-pointer"
                         >
                           <div className="w-full pl-2 flex justify-center items-center text-[10px] bg-[#E9E9E9] rounded-lg py-1 mt-1">
-                            <div className="w-full flex items-center">
+                            <div className="w-full flex items-start">
                               <Image
                                 alt=""
                                 src={IconClock}
-                                className="w-[14px] mb-2 mr-1"
+                                className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                               />
-                              <div className="flex flex-col">
+                              <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                                 <div>
                                   {t('tournament.tournamentCard.duration')}
                                 </div>
@@ -347,13 +379,13 @@ const PlayTournament = (): React.ReactElement => {
                                 </div>
                               </div>
                             </div>
-                            <div className="w-full flex items-center">
+                            <div className="w-full flex items-start">
                               <Image
                                 alt=""
                                 src={IconUsers}
-                                className="w-[14px] mb-2 mr-1"
+                                className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                               />
-                              <div className="flex flex-col">
+                              <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                                 <div>
                                   {t('tournament.tournamentCard.joined')}
                                 </div>
@@ -365,13 +397,13 @@ const PlayTournament = (): React.ReactElement => {
                                 </div>
                               </div>
                             </div>
-                            <div className="w-full flex items-center">
+                            <div className="w-full flex items-start">
                               <Image
                                 alt=""
                                 src={IconFee}
-                                className="w-[14px] mb-2 mr-1"
+                                className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                               />
-                              <div className="flex flex-col">
+                              <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
                                 <div>{t('tournament.tournamentCard.fee')}</div>
                                 <div className="font-semibold text-black">
                                   {item.admission_fee === 0
@@ -382,7 +414,7 @@ const PlayTournament = (): React.ReactElement => {
                                           ? userInfo?.preferredCurrency
                                           : 'IDR'
                                       }${standartCurrency(
-                                        item.admission_fee
+                                        item.admission_fee ?? 0
                                       ).replace('Rp', '')}`}
                                 </div>
                               </div>
@@ -392,7 +424,7 @@ const PlayTournament = (): React.ReactElement => {
 
                         <div className="flex justify-between border-t-2 border-dashed mt-2 py-2 px-2">
                           <div className="flex gap-1">
-                            <div className="flex justify-center items-center px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
+                            <div className="flex justify-center items-center px-4 xl:px-2 2xl:px-4 text-[10px] bg-[#DCFCE4] text-[#27A590] rounded-lg">
                               {item.category ?? 'ALL'}
                             </div>
                             <button
@@ -419,31 +451,32 @@ const PlayTournament = (): React.ReactElement => {
                               </div>
                             </button>
                           </div>
-                          {item?.is_joined ? (
-                            <div
-                              onClick={async () =>
-                                await handleRedirectPage(
-                                  item?.id,
-                                  item?.is_joined
-                                )
-                              }
-                              className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
-                            >
-                              {t('tournament.tournamentCard.openButton')}
-                            </div>
-                          ) : (
-                            <div
-                              onClick={async () =>
-                                await handleRedirectPage(
-                                  item?.id,
-                                  item?.is_joined
-                                )
-                              }
-                              className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 rounded-full hover:shadow-lg duration-300"
-                            >
-                              {t('tournament.tournamentCard.joinButton')}
-                            </div>
-                          )}
+                          <Button
+                            onClick={async () =>
+                              await handleRedirectPage(
+                                item?.id,
+                                item?.is_joined,
+                                item?.status
+                              )
+                            }
+                            disabled={isDisabled(item?.is_joined, item?.status)}
+                            className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 2xl:px-4 rounded-full hover:shadow-lg duration-300"
+                          >
+                            {
+                              item?.is_joined
+                                ? (item?.status === 'ACTIVE' 
+                                  ? t('tournament.tournamentCard.openButton')
+                                  : (item?.status === 'PAST' 
+                                    ? t('tournament.tournamentCard.leaderboard')
+                                    : t('tournament.tournamentCard.canceled')
+                                  ))
+                                : ((item?.status === 'ACTIVE') || (item?.status === 'CREATED'))
+                                  ? t('tournament.tournamentCard.joinButton')
+                                  : (item?.status === 'CANCELED')
+                                    ? t('tournament.tournamentCard.canceled')
+                                    : t('tournament.tournamentCard.ended')
+                            }
+                          </Button>
                         </div>
                       </div>
                     </div>

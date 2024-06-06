@@ -1902,7 +1902,10 @@ export default {
       close: 'Close',
       paymentSuccessful: 'Successful',
       recurringSaved: 'Your recurring has been saved!'
-    }
+    },
+    shareQuiz: 'Share This Quiz',
+    playId: "Quiz ID",
+    shareLinks: 'Share Link',
   },
   tournament: {
     myPlay: 'My Play',

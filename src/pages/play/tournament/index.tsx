@@ -7,6 +7,7 @@ import IconShare from '@/assets/play/tournament/share.svg';
 import TutorialIcon from '@/assets/play/tournament/tutorialPicture.svg';
 import IconUsers from '@/assets/play/tournament/users.svg';
 import TournamentPagination from '@/components/TournmentPagination';
+import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import ModalTutorialTournament from '@/components/popup/ModalTutorialTournament';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { standartCurrency } from '@/helpers/currency';
@@ -53,6 +54,8 @@ const PlayTournament = (): React.ReactElement => {
   const [data, setData] = useState<IDetailTournament[]>([]);
   const [metadata, setMetadata] = useState<Metadata>();
   const [isTutorialModal, setIsTutorialModal] = useState<boolean>(false);
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const [sharedIndex, setSharedIndex] = useState<number>(0);
 
   const [tournamentParams, setTournamentParams] = useState({
     search: '',
@@ -149,9 +152,6 @@ const PlayTournament = (): React.ReactElement => {
     }
   ];
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
-
   const handleRedirectPage = async (
     id: string,
     isJoined: boolean
@@ -172,6 +172,15 @@ const PlayTournament = (): React.ReactElement => {
           onClose={() => {
             setIsTutorialModal(prev => !prev);
           }}
+        />
+      )}
+      {isShareModal && (
+        <ModalShareTournament
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={data[sharedIndex]?.id ?? ''}
+          playId={data[sharedIndex]?.play_id ?? ''}
         />
       )}
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl">
@@ -245,7 +254,7 @@ const PlayTournament = (): React.ReactElement => {
             {!loading ? (
               data?.length !== 0 ? (
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 xl:mt-8">
-                  {data.map(item => (
+                  {data.map((item, index) => (
                     <div key={item.id} className="flex rounded-xl">
                       <div className="w-[60px] text-black text-center hidden md:block mt-4">
                         <Typography className="text-black font-normal text-[12px]">
@@ -388,14 +397,12 @@ const PlayTournament = (): React.ReactElement => {
                             </div>
                             <button
                               onClick={async () => {
-                                const textToCopy = `${baseUrl}/play/tournament/${item.id}`;
-                                isGuest()
-                                  ? await router.push('/auth')
-                                  : await navigator.clipboard
-                                      .writeText(textToCopy)
-                                      .then(() => {
-                                        toast('Tournament link copied!');
-                                      });
+                                if (isGuest()) {
+                                  await router.push('/auth');
+                                } else {
+                                  setIsShareModal(true);
+                                  setSharedIndex(index);
+                                }
                               }}
                             >
                               <div className="h-full flex justify-center items-center gap-1">

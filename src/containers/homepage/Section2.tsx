@@ -313,7 +313,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                     <MenuList className="rounded-2xl">
                       <div className="flex flex-col p-2 max-w-[200px]">
                         <Typography className="font-normal text-xs font-poppins text-[#262626] mt-2">
-                          Virtual cash is virtual money available for play game
+                          {t('homepage.section2.text17')}
                         </Typography>
                       </div>
                     </MenuList>

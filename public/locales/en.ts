@@ -1957,6 +1957,8 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    winnerModalTitle: 'Congrats you won the Tournament!',
+    looseModalTitle: 'Not bad! You made it to',
     payment: {
       paymentMethod: 'Payment Method',
       pendingPaidTournament: 'Pending Paid Tournament',

@@ -8,7 +8,7 @@ const SeedsPixel = (): JSX.Element => {
 
   ttq.load('CPCKDMJC77UCF4LD7GCG');
   ttq.page();
-  ttq.track('Seedy with TikTok May 2024');
+  ttq.track('CompleteRegistration')
   ttq.track('ViewContent');
 }(window, document, 'ttq');
           `

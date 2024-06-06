@@ -127,10 +127,10 @@ const CirclePost = (): JSX.Element => {
         >
           <div className="flex flex-col p-4">
             <Typography className="font-poppins text-base text-black">
-              What do you want to discuss?
+              {t('landingPageV2.placeHolder1')}
             </Typography>
             <Typography className="font-poppins text-base text-black">
-              Start a post
+              {t('landingPageV2.placeHolder2')}
             </Typography>
           </div>
         </div>

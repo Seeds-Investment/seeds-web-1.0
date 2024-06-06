@@ -1050,7 +1050,9 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Find or create a Circle that matches your interests in Seeds.',
+      join: 'Joined',
+      sort: 'Sort by:'
     },
     list: {
       title: 'Circle List',
@@ -1258,6 +1260,8 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    placeHolder1: 'What do you want to discuss?',
+    placeHolder2: 'Start a post',
     redirectError: 'Please Re-login',
     product: {
       section1: {
@@ -1682,7 +1686,8 @@ export default {
       text13: 'Now in',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
-      text16: 'Login to enter arena simulation'
+      text16: 'Login to enter arena simulation',
+      text17: 'Virtual cash is virtual money available for play game'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',

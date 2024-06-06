@@ -1655,6 +1655,7 @@ export default {
     questionsAmount: '{{questions}} Pertanyaan',
     questions: 'Pertanyaan',
     quiz: 'Quiz',
+    invitationCode: 'Kode Masuk',
     entranceFee: 'Biaya Pendaftaran',
     played: 'Main',
     duration: 'Durasi',

@@ -1727,6 +1727,7 @@ export default {
     questionsAmount: '{{questions}} Questions',
     questions: 'Questions',
     quiz: 'Quiz',
+    invitationCode: 'Invitation Code',
     entranceFee: 'Entrance Fee',
     played: 'Played',
     duration: 'Duration',

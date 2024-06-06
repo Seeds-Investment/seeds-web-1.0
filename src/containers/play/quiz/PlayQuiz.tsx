@@ -225,7 +225,13 @@ const QuizPlay = ({
 
   useEffect(() => {
     if (countDown < 0) {
-      void router.replace(`/play/quiz/${id}/review`);
+      void router.replace(
+        `${
+          router.pathname.startsWith('/play/quiz')
+            ? '/play/quiz/'
+            : '/microsite-quiz/'
+        }${id}/review`
+      );
     }
   }, [countDown]);
 

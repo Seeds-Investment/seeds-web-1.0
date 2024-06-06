@@ -178,7 +178,13 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           invitation_code: invitationCode as string,
           is_use_coins: redeemCoin
         });
-        void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
+        void router.replace(
+          `${
+            router.pathname.startsWith('/play/quiz')
+              ? '/play/quiz/'
+              : '/microsite-quiz/'
+          }${detailQuiz?.id}/start`
+        );
       } catch (error) {
         const err = error as AxiosError;
         toast(err.message ?? 'Unknown Error');
@@ -219,7 +225,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
   return (
     <>
-      <QuizLayoutComponent>
+      <QuizLayoutComponent
+        hideBackButton={!router.pathname.startsWith('/play/quiz')}
+      >
         <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12 px-3 md:p-8">
           <div>
             <div className="text-3xl lg:text-4xl font-semibold">

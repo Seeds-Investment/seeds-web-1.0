@@ -1899,8 +1899,8 @@ export default {
       recurringSaved: 'Your recurring has been saved!'
     },
     shareQuiz: 'Share This Quiz',
-    playId: "Quiz ID",
-    shareLinks: 'Share Link',
+    playId: 'Quiz ID',
+    shareLinks: 'Share Link'
   },
   tournament: {
     myPlay: 'My Play',

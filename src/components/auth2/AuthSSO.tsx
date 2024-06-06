@@ -9,7 +9,6 @@ import { useAppDispatch } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +19,6 @@ interface IAuthSSO {
 }
 
 const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
-  const pathname = usePathname();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -46,12 +44,9 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           } else {
             await router.push('/homepage');
           }
-          pathname === '/auth/register' &&
-            toast(t('authLogin.SSO'), { type: 'error' });
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
-          await withRedirect(router, router.query, 'register');
         }
       }
     } catch (error: any) {

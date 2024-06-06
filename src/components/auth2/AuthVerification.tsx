@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthNumber from './AuthNumber';
+import AuthSSO from './AuthSSO';
 
 const AuthVerification: React.FC<AuthVerificationI> = ({
   className,
@@ -249,7 +250,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
       >
         {isLoading ? <Spinner className=" h-6 w-6" /> : t('authLogin.next')}
       </Button>
-      {/* <AuthSSO setSelect={setSelect} /> */}
+      <AuthSSO setSelect={setSelect} />
     </div>
   );
 };

@@ -45,14 +45,16 @@ export default function ArticleList(): React.ReactElement {
     language: '',
     search: '',
     category: 'All',
-    totalPage: 9
+    totalPage: 9,
+    sort_by: 'all'
   });
   async function fetchArticles(): Promise<void> {
     try {
       const response = await getArticleHome({
         ...params,
         source: params.source,
-        category: params.category
+        category: params.category,
+        sort_by: params.sort_by
       });
 
       if (response.status === 200) {
@@ -147,30 +149,34 @@ export default function ArticleList(): React.ReactElement {
               />
             </svg>
           </div>
-          <div className="lg:flex  justify-end mt-4 ">
+          <div className="lg:flex justify-end items-center mt-4">
             <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
               {t('articleList.text3')}
             </div>
             <select
-              className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-              aria-label="All"
+              className="bg-transparent mt-2 hidden lg:block text-base font-semibold cursor-pointer"
+              aria-label="Sort Options"
+              onChange={(e) => { setParams({ ...params, sort_by: e.target.value }); }}
             >
-              <option value="option1">All</option>
-              <option value="option2">All</option>
+              <option value="all">{t('articleList.article.sort.all')}</option>
+              <option value="relevant">{t('articleList.article.sort.relevant')}</option>
+              <option value="recent">{t('articleList.article.sort.recent')}</option>
             </select>
           </div>
         </div>
       </div>
-      <div className="lg:hidden z-10 flex justify-end mt-5">
+      <div className="lg:hidden z-10 flex justify-end items-center mt-5">
         <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
           {t('articleList.text3')}
         </div>
         <select
-          className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-          aria-label="All"
+          className="justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
+          aria-label="Sort Options"
+          onChange={(e) => { setParams({ ...params, sort_by: e.target.value }); }}
         >
-          <option value="option1">All</option>
-          <option value="option2">All</option>
+          <option value="all">{t('articleList.article.sort.all')}</option>
+          <option value="relevant">{t('articleList.article.sort.relevant')}</option>
+          <option value="recent">{t('articleList.article.sort.recent')}</option>
         </select>
       </div>
 

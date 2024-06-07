@@ -1183,10 +1183,12 @@ const PostSection: React.FC<props> = ({
               {
                 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                 additionalPostData?.asset_name && (
-                  <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex justify-between ">
-                    <div className="flex gap-2 pr-5">
-                      <p className="font-poppins ">
-                        {additionalPostData?.order_type}
+                  <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex lg:gap-12 justify-between ">
+                    <div className="flex gap-2 pr-5 lg:pr-12 my-auto">
+                      <p className="font-poppins">
+                        {additionalPostData?.order_type === 'buy'
+                          ? 'Bought'
+                          : additionalPostData?.order_type}
                       </p>
                       <p className="font-semibold font-poppins">
                         {additionalPostData?.asset_name}
@@ -1199,7 +1201,7 @@ const PostSection: React.FC<props> = ({
                     <img
                       src={additionalPostData?.asset_icon}
                       alt="icon"
-                      className="w-[60px] rounded-full object-scale-down px-2"
+                      className="w-[60px] rounded-full object-scale-down my-auto px-2"
                       width={40}
                       height={40}
                     />

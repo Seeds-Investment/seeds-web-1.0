@@ -111,7 +111,7 @@ const SuccessOrderModal: React.FC<props> = ({
             router
               .push(`/play/tournament/${id as string}/portfolio`)
               .catch(err => {
-                toast.error(`Error fetching data: ${err as string}`);
+                toast.error(`${err as string}`);
               });
           }}
         >

@@ -290,7 +290,7 @@ const LeaderBoardPage: React.FC = () => {
                       {leaderBoard[currentRank - 1]?.user_name}
                     </Typography>
                     <Typography className="font-poppins">
-                      {userInfo?.seedsTag}
+                      @{userInfo?.seedsTag}
                     </Typography>
                     <Typography
                       className={`${

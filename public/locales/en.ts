@@ -1051,7 +1051,9 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Find or create a Circle that matches your interests in Seeds.',
+      join: 'Joined',
+      sort: 'Sort by:'
     },
     list: {
       title: 'Circle List',
@@ -1242,7 +1244,14 @@ export default {
     text5: "Don't miss popular financial news here!",
     text6: 'You may like',
     text7: 'News',
-    text8: 'See all'
+    text8: 'See all',
+    article: {
+      sort: {
+        all: 'All',
+        relevant: 'Most Relevant',
+        recent: 'Most Recent',
+      }
+    }
   },
   validationErrors: {
     required: 'This field is required',
@@ -1259,6 +1268,8 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    placeHolder1: 'What do you want to discuss?',
+    placeHolder2: 'Start a post',
     redirectError: 'Please Re-login',
     product: {
       section1: {
@@ -1683,7 +1694,8 @@ export default {
       text13: 'Now in',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
-      text16: 'Login to enter arena simulation'
+      text16: 'Login to enter arena simulation',
+      text17: 'Virtual cash is virtual money available for play game'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1692,7 +1704,7 @@ export default {
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
-    }
+    },
   },
   chooseCurrency: {
     header: 'Choose your currency',
@@ -1770,6 +1782,7 @@ export default {
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
+    leaderboardEmpty: "Leaderboard data is empty.",
     remainingTime: 'Your remaining time',
     currentRank: 'Your Current Rank',
     currentScore: 'Your Current Score',
@@ -1919,7 +1932,10 @@ export default {
       close: 'Close',
       paymentSuccessful: 'Successful',
       recurringSaved: 'Your recurring has been saved!'
-    }
+    },
+    shareQuiz: 'Share This Quiz',
+    playId: 'Quiz ID',
+    shareLinks: 'Share Link'
   },
   tournament: {
     myPlay: 'My Play',
@@ -1988,6 +2004,9 @@ export default {
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
+      leaderboard: 'Leaderboard',
+      ended: 'Ended',
+      canceled: 'Canceled',
       share: 'Share',
       day: 'Day',
       days: 'Days'

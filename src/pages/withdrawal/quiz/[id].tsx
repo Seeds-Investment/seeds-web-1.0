@@ -48,14 +48,14 @@ const Withdrawal: React.FC = () => {
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
-      await withRedirect(router, { withdrawal: 'true' }, '/auth2');
+      await withRedirect(router, { wqi: quizId }, '/auth');
       toast.error(t('landingPageV2.redirectError'));
     }
   };
 
   useEffect(() => {
     void redirect();
-  }, []);
+  }, [quizId]);
 
   const handleSelectedFile = (file: File): void => {
     setSelectedFile(file);

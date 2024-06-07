@@ -556,9 +556,9 @@ const TournamentDetail: React.FC = () => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth2');
+                router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth2');
+                withRedirect(router, { ti: id as string }, '/auth');
               }
             }}
             disabled={

@@ -56,11 +56,7 @@ const LeaderBoardPage = (): React.ReactElement => {
       expiredUnixTime < currentUnixTime
     ) {
       if (id !== undefined) {
-        await withRedirect(
-          router,
-          { lead: 'true', quizId: id as string },
-          '/auth2'
-        );
+        await withRedirect(router, { l: 'true', qi: id as string }, '/auth');
       }
       toast.error(t('landingPageV2.redirectError'));
     }

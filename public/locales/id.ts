@@ -1633,7 +1633,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    }
+    },
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',

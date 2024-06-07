@@ -1704,7 +1704,7 @@ export default {
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
-    }
+    },
   },
   chooseCurrency: {
     header: 'Choose your currency',

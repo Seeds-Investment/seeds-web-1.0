@@ -2,7 +2,7 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
 import IconShare from '@/assets/play/tournament/share.svg';
 import Loading from '@/components/popup/Loading';
-import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Button,
   Dialog,

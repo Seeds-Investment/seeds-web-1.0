@@ -179,22 +179,22 @@ const PlayTournament = (): React.ReactElement => {
   const isDisabled = (isJoined: boolean, status: string): boolean => {
     if (isJoined) {
       if (status === 'ACTIVE') {
-        return false;
+        return false
       } else if (status === 'PAST') {
-        return false;
+        return false
       } else {
-        return true;
+        return true
       }
     } else {
-      if (status === 'ACTIVE' || status === 'CREATED') {
-        return false;
+      if ((status === 'ACTIVE') || (status === 'CREATED')) {
+        return false
       } else if (status === 'PAST') {
-        return true;
+        return true
       } else {
-        return true;
+        return true
       }
     }
-  };
+  }
 
   return (
     <PageGradient defaultGradient className="w-full">

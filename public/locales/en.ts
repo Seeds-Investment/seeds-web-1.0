@@ -1249,7 +1249,7 @@ export default {
       sort: {
         all: 'All',
         relevant: 'Most Relevant',
-        recent: 'Most Recent',
+        recent: 'Most Recent'
       }
     }
   },
@@ -1704,7 +1704,7 @@ export default {
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Choose your currency',
@@ -1782,7 +1782,7 @@ export default {
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
-    leaderboardEmpty: "Leaderboard data is empty.",
+    leaderboardEmpty: 'Leaderboard data is empty.',
     remainingTime: 'Your remaining time',
     currentRank: 'Your Current Rank',
     currentScore: 'Your Current Score',

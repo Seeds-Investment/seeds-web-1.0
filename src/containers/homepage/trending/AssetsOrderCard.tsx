@@ -59,18 +59,24 @@ const AssetOrderCard: React.FC<props> = ({
 
           <div className="flex ml-5 w-1/2 flex-col gap-0.5">
             <Typography className="font-semibold text-sm text-[#262626]">
-              {(data?.asset?.asset_ticker ?? 'Loading...')}
+              {data?.asset?.asset_ticker ?? 'Loading...'}
             </Typography>
             <Typography className="font-light text-xs text-[#7C7C7C]">
               {(data?.asset?.asset_type ?? 'Loading...').includes('_')
-                ? `${(data?.asset?.asset_type ?? 'Loading...').replace('_', ' ').split(' ')[0]} 
+                ? `${
+                    (data?.asset?.asset_type ?? 'Loading...')
+                      .replace('_', ' ')
+                      .split(' ')[0]
+                  } 
               ${capitalizeFirstLetter(
                 (data?.asset?.asset_type ?? 'Loading...')
                   .replace('_', ' ')
                   .split(' ')[1]
                   .toLowerCase()
               )}`
-                : capitalizeFirstLetter((data?.asset?.asset_type ?? 'Loading...').toLowerCase())}
+                : capitalizeFirstLetter(
+                    (data?.asset?.asset_type ?? 'Loading...').toLowerCase()
+                  )}
             </Typography>
             <Typography
               className={`font-normal text-xs ${
@@ -85,20 +91,24 @@ const AssetOrderCard: React.FC<props> = ({
             <div className="flex justify-end">
               <Typography className="font-semibold text-sm text-[#262626]">
                 {currency}{' '}
-                {`${standartCurrency((data?.bid_price ?? 0) * (data?.lot ?? 0)).replace(
-                  'Rp',
-                  ''
-                )}`}
+                {`${standartCurrency(
+                  (data?.bid_price ?? 0) * (data?.lot ?? 0)
+                ).replace('Rp', '')}`}
               </Typography>
             </div>
             <div className="flex justify-end">
               <Typography className="font-semibold text-xs text-[#5E44FF]">
-                {data?.lot ?? 0} {(languageCtx.language === 'EN') && ((data?.lot ?? 0) > 1) ? 'Lots' : 'Lot'}
+                {data?.lot ?? 0}{' '}
+                {languageCtx.language === 'EN' && (data?.lot ?? 0) > 1
+                  ? 'Lots'
+                  : 'Lot'}
               </Typography>
             </div>
             <div className="flex justify-end">
               <Typography className="font-light text-[10px] font-montserrat text-[#262626]">
-                {moment(data?.updated_at ?? '2024-12-31T00:00:00.000Z').format('DD/MM/YYYY, HH:mm:ss')}
+                {moment(data?.updated_at ?? '2024-12-31T00:00:00.000Z').format(
+                  'DD/MM/YYYY, HH:mm:ss'
+                )}
               </Typography>
             </div>
           </div>

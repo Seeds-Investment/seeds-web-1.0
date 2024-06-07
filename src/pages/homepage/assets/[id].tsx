@@ -10,7 +10,11 @@ import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPlayPortfolio } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type AssetI, type Assets, type IUserData } from '@/utils/interfaces/play.interface';
+import {
+  type AssetI,
+  type Assets,
+  type IUserData
+} from '@/utils/interfaces/play.interface';
 import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -74,7 +78,7 @@ const AssetDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayPortfolio(playId as string, userInfo.preferredCurrency );
+      void fetchPlayPortfolio(playId as string, userInfo.preferredCurrency);
     }
   }, [id, userInfo]);
 
@@ -84,11 +88,14 @@ const AssetDetailPage: React.FC = () => {
     }
   }, [id, userInfo, params]);
 
-  const fetchPlayPortfolio = async (id: string, currency: string): Promise<void> => {
+  const fetchPlayPortfolio = async (
+    id: string,
+    currency: string
+  ): Promise<void> => {
     try {
       setIsLoading(true);
       const response = await getPlayPortfolio(id, currency);
-      setAssets(response?.pie?.assets)
+      setAssets(response?.pie?.assets);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -97,27 +104,35 @@ const AssetDetailPage: React.FC = () => {
   };
 
   const findById = (): boolean => {
-      const foundAsset = assets?.find((asset) => asset?.id === id);
-      if (foundAsset !== undefined) {
-        return false;
-      } else {
-        return true;
-      }
+    const foundAsset = assets?.find(asset => asset?.id === id);
+    if (foundAsset !== undefined) {
+      return false;
+    } else {
+      return true;
+    }
   };
-  
+
   return (
     <>
       {isLoading ? <Loading /> : ''}
       <PageGradient defaultGradient className="w-full">
         <div className="flex flex-col md:flex-row gap-5">
-          {(data !== undefined) ? 
-            <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
-            : <Card1Skeleton/>
-          }
-          {(data !== undefined) ? 
-            <Card2 data={data} currency={userInfo?.preferredCurrency as string} />
-            : <Card2Skeleton/>
-          }
+          {data !== undefined ? (
+            <Card1
+              data={data}
+              currency={userInfo?.preferredCurrency as string}
+            />
+          ) : (
+            <Card1Skeleton />
+          )}
+          {data !== undefined ? (
+            <Card2
+              data={data}
+              currency={userInfo?.preferredCurrency as string}
+            />
+          ) : (
+            <Card2Skeleton />
+          )}
         </div>
 
         <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
@@ -129,7 +144,8 @@ const AssetDetailPage: React.FC = () => {
             <TabsHeader
               className="bg-transparent rounded-xl"
               indicatorProps={{
-                className: 'bg-gray-900/10 rounded-xl shadow-none !text-gray-900'
+                className:
+                  'bg-gray-900/10 rounded-xl shadow-none !text-gray-900'
               }}
             >
               {dataTab.map(({ label, value }) => (
@@ -161,9 +177,9 @@ const AssetDetailPage: React.FC = () => {
                 onClick={() => {
                   router
                     .push(
-                      `/homepage/order/${id as string}?transaction=sell&playId=${
-                        playId as string
-                      }`
+                      `/homepage/order/${
+                        id as string
+                      }?transaction=sell&playId=${playId as string}`
                     )
                     .catch(err => {
                       toast.error(`${err as string}`);

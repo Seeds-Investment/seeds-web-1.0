@@ -557,8 +557,9 @@ const TournamentDetail: React.FC = () => {
               }
             }}
             disabled={
-              (invitationCode === '' && detailTournament?.is_need_invitation_code === true)
-              || isStarted()
+              (invitationCode === '' &&
+                detailTournament?.is_need_invitation_code === true) ||
+              isStarted()
             }
             // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${

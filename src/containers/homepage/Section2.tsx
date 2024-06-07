@@ -141,7 +141,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
       setMonthNowString(month[monthNow].eng);
     }
   }, [window.localStorage.getItem('translation')]);
-  
+
   return (
     <div
       className={`w-full lg:flex ${
@@ -323,7 +323,9 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                   {formatCurrency((playerData?.asset ?? 0).toFixed(0))}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
-                  {t('homepage.section2.text2')}: {userInfo?.preferredCurrency ?? 'IDR'} {standartCurrency(playerData?.gain ?? 0).replace('Rp', '')}
+                  {t('homepage.section2.text2')}:{' '}
+                  {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                  {standartCurrency(playerData?.gain ?? 0).replace('Rp', '')}
                 </h3>
               </div>
               <div className="flex-row">

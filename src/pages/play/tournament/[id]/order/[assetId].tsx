@@ -498,7 +498,7 @@ const BuyPage: React.FC = () => {
             <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
               {`${standartCurrency(
                 router.query?.transaction === 'buy'
-                  ? (ballance?.balance ?? 0)
+                  ? ballance?.balance ?? 0
                   : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
               ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
             </Typography>

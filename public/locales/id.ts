@@ -1171,7 +1171,7 @@ export default {
       sort: {
         all: 'Semua',
         relevant: 'Paling Relevan',
-        recent: 'Paling Baru',
+        recent: 'Paling Baru'
       }
     }
   },
@@ -1633,7 +1633,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',
@@ -1710,7 +1710,7 @@ export default {
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
     leaderboard: 'Klasemen',
-    leaderboardEmpty: "Data leaderboard kosong.",
+    leaderboardEmpty: 'Data leaderboard kosong.',
     remainingTime: 'Sisa waktumu',
     currentRank: 'Peringkatmu sekarang',
     currentScore: 'Skor Kamu Sekarang',

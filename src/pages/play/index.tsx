@@ -607,12 +607,15 @@ const Player = (): React.ReactElement => {
                               )}
                               {item?.play_center_type === 'play' && (
                                 <div>
-                                    <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
-                                      {item?.is_joined
-                                        ? t('tournament.tournamentCard.openButton')
-                                        : t('tournament.tournamentCard.joinButton')
-                                      }
-                                    </div>
+                                  <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {item?.is_joined
+                                      ? t(
+                                          'tournament.tournamentCard.openButton'
+                                        )
+                                      : t(
+                                          'tournament.tournamentCard.joinButton'
+                                        )}
+                                  </div>
                                 </div>
                               )}
                             </div>

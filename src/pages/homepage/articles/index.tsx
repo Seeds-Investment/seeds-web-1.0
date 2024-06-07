@@ -156,11 +156,17 @@ export default function ArticleList(): React.ReactElement {
             <select
               className="bg-transparent mt-2 hidden lg:block text-base font-semibold cursor-pointer"
               aria-label="Sort Options"
-              onChange={(e) => { setParams({ ...params, sort_by: e.target.value }); }}
+              onChange={e => {
+                setParams({ ...params, sort_by: e.target.value });
+              }}
             >
               <option value="all">{t('articleList.article.sort.all')}</option>
-              <option value="relevant">{t('articleList.article.sort.relevant')}</option>
-              <option value="recent">{t('articleList.article.sort.recent')}</option>
+              <option value="relevant">
+                {t('articleList.article.sort.relevant')}
+              </option>
+              <option value="recent">
+                {t('articleList.article.sort.recent')}
+              </option>
             </select>
           </div>
         </div>
@@ -172,10 +178,14 @@ export default function ArticleList(): React.ReactElement {
         <select
           className="justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
           aria-label="Sort Options"
-          onChange={(e) => { setParams({ ...params, sort_by: e.target.value }); }}
+          onChange={e => {
+            setParams({ ...params, sort_by: e.target.value });
+          }}
         >
           <option value="all">{t('articleList.article.sort.all')}</option>
-          <option value="relevant">{t('articleList.article.sort.relevant')}</option>
+          <option value="relevant">
+            {t('articleList.article.sort.relevant')}
+          </option>
           <option value="recent">{t('articleList.article.sort.recent')}</option>
         </select>
       </div>

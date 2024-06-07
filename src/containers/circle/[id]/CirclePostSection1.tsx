@@ -126,25 +126,24 @@ const CirclePostSection1: React.FC<props> = ({
                   </button>
                 </MenuHandler>
                 <MenuList>
-                  {
-                    (userInfo?.id === dataCircle?.owner?.id) &&
-                      <>
-                        <MenuItem onClick={handleEdit}>
-                          <div className="flex flex-row">
-                            <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                            {t('circleSetting.popUpCircle.option1')}
-                          </div>
-                        </MenuItem>
-                        <hr />
-                        <MenuItem onClick={openModalDelete}>
-                          <div className="flex flex-row text-[#DD2525]">
-                            <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                            {t('circleSetting.popUpCircle.option2')}
-                          </div>
-                        </MenuItem>
-                        <hr />
-                      </>
-                  }
+                  {userInfo?.id === dataCircle?.owner?.id && (
+                    <>
+                      <MenuItem onClick={handleEdit}>
+                        <div className="flex flex-row">
+                          <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                          {t('circleSetting.popUpCircle.option1')}
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalDelete}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                          {t('circleSetting.popUpCircle.option2')}
+                        </div>
+                      </MenuItem>
+                      <hr />
+                    </>
+                  )}
                   <MenuItem onClick={openModalReport}>
                     <div className="flex flex-row text-[#DD2525]">
                       <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
@@ -269,25 +268,24 @@ const CirclePostSection1: React.FC<props> = ({
                         </button>
                       </MenuHandler>
                       <MenuList>
-                        {
-                          (userInfo?.id === dataCircle?.owner?.id) &&
-                            <>
-                              <MenuItem onClick={handleEdit}>
-                                <div className="flex flex-row">
-                                  <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                                  {t('circleSetting.popUpCircle.option1')}
-                                </div>
-                              </MenuItem>
-                              <hr />
-                              <MenuItem onClick={openModalDelete}>
-                                <div className="flex flex-row text-[#DD2525]">
-                                  <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                                  {t('circleSetting.popUpCircle.option2')}
-                                </div>
-                              </MenuItem>
-                              <hr />
-                            </>
-                        }
+                        {userInfo?.id === dataCircle?.owner?.id && (
+                          <>
+                            <MenuItem onClick={handleEdit}>
+                              <div className="flex flex-row">
+                                <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                                {t('circleSetting.popUpCircle.option1')}
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalDelete}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                                {t('circleSetting.popUpCircle.option2')}
+                              </div>
+                            </MenuItem>
+                            <hr />
+                          </>
+                        )}
                         <MenuItem onClick={openModalReport}>
                           <div className="flex flex-row text-[#DD2525]">
                             <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />

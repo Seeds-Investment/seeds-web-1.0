@@ -394,11 +394,14 @@ const OrderPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
-        {
-          data !== undefined ?
-            <CardPrice data={data} currency={userInfo?.preferredCurrency ?? 'IDR'}/>
-            : <CardPriceSkeleton/>
-        }
+        {data !== undefined ? (
+          <CardPrice
+            data={data}
+            currency={userInfo?.preferredCurrency ?? 'IDR'}
+          />
+        ) : (
+          <CardPriceSkeleton />
+        )}
         <div className="flex flex-col mt-4">
           <div className="flex flex-col gap-3 pb-3 border-b border-neutral-ultrasoft">
             <Typography className="text-base font-poppins font-semibold text-black">
@@ -414,7 +417,7 @@ const OrderPage: React.FC = () => {
                   : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
               ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
               {router.query?.transaction === 'sell' &&
-                `= ${(portfolio.total_lot ?? 0)} ${data?.realTicker ?? ''}`}
+                `= ${portfolio.total_lot ?? 0} ${data?.realTicker ?? ''}`}
             </Typography>
           </div>
           {orderType === 'pending' && (
@@ -581,10 +584,9 @@ const OrderPage: React.FC = () => {
                               ? `${parseFloat(limitOrder?.profit ?? 1) * 100} %`
                               : `${
                                   userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder?.profit ?? 0).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
+                                } ${standartCurrency(
+                                  limitOrder?.profit ?? 0
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                         <div className="flex justify-between mt-2">
@@ -596,10 +598,9 @@ const OrderPage: React.FC = () => {
                               ? `${parseFloat(limitOrder?.loss ?? 1) * 100} %`
                               : `${
                                   userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder.loss ?? 0).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
+                                } ${standartCurrency(
+                                  limitOrder.loss ?? 0
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                       </>
@@ -783,10 +784,9 @@ const OrderPage: React.FC = () => {
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
                               {userInfo?.preferredCurrency ?? 'IDR'}
-                              {standartCurrency(data?.lastPrice?.open ?? 0).replace(
-                                'Rp',
-                                ''
-                              )}
+                              {standartCurrency(
+                                data?.lastPrice?.open ?? 0
+                              ).replace('Rp', '')}
                             </Typography>
                           </div>
                         )}
@@ -821,7 +821,9 @@ const OrderPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder?.profit ?? 1) * 100} %`
+                                  ? `${
+                                      parseFloat(limitOrder?.profit ?? 1) * 100
+                                    } %`
                                   : `${
                                       userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
@@ -835,7 +837,9 @@ const OrderPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder?.loss ?? 1) * 100} %`
+                                  ? `${
+                                      parseFloat(limitOrder?.loss ?? 1) * 100
+                                    } %`
                                   : `${
                                       userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(

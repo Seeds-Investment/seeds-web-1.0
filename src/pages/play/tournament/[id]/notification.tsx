@@ -130,38 +130,46 @@ const NotificationWinner: React.FC = () => {
   const handleRedirectPage = async (
     id: string,
     isJoined: boolean,
-    status: string,
+    status: string
   ): Promise<void> => {
     if (isJoined) {
       if (status === 'ACTIVE') {
-        await router.push(`/play/tournament/${id}/home`).catch(error => {toast.error(error)})
+        await router.push(`/play/tournament/${id}/home`).catch(error => {
+          toast.error(error);
+        });
       } else if (status === 'PAST') {
-        await router.push(`/play/tournament/${id}/notification`).catch(error => {toast.error(error)})
+        await router
+          .push(`/play/tournament/${id}/notification`)
+          .catch(error => {
+            toast.error(error);
+          });
       }
-    } else if ((status === 'ACTIVE') || (status === 'CREATED')) {
-        await router.push(`/play/tournament/${id}`).catch(error => {toast.error(error)})
+    } else if (status === 'ACTIVE' || status === 'CREATED') {
+      await router.push(`/play/tournament/${id}`).catch(error => {
+        toast.error(error);
+      });
     }
   };
 
   const isDisabled = (isJoined: boolean, status: string): boolean => {
     if (isJoined) {
       if (status === 'ACTIVE') {
-        return false
+        return false;
       } else if (status === 'PAST') {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     } else {
-      if ((status === 'ACTIVE') || (status === 'CREATED')) {
-        return false
+      if (status === 'ACTIVE' || status === 'CREATED') {
+        return false;
       } else if (status === 'PAST') {
-        return true
+        return true;
       } else {
-        return true
+        return true;
       }
     }
-  }
+  };
 
   return (
     <>
@@ -224,7 +232,8 @@ const NotificationWinner: React.FC = () => {
                 {userInfo?.name ?? '/loading'}
               </Typography>
               <Typography className="font-poppins text-lg text-[#262626] mb-4">
-                {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(dataResult?.asset ?? 0).replace('Rp', '')}
+                {userInfo?.preferredCurrency ?? 'IDR'}
+                {standartCurrency(dataResult?.asset ?? 0).replace('Rp', '')}
               </Typography>
               <Typography
                 className={`flex font-normal text-sm ${
@@ -234,7 +243,11 @@ const NotificationWinner: React.FC = () => {
                 }`}
               >
                 {handleArrow(dataResult?.gain) ? (
-                  <ArrowTrendingUpIcon height={20} width={20} className="mr-2" />
+                  <ArrowTrendingUpIcon
+                    height={20}
+                    width={20}
+                    className="mr-2"
+                  />
                 ) : (
                   <ArrowTrendingDownIcon
                     height={20}
@@ -274,9 +287,11 @@ const NotificationWinner: React.FC = () => {
               </button>
               <button
                 onClick={() => {
-                  router.push(`/play/tournament/${id as string}/leaderboard`).catch(err => {
-                    toast.error(`Error ${err as string}`);
-                  });
+                  router
+                    .push(`/play/tournament/${id as string}/leaderboard`)
+                    .catch(err => {
+                      toast.error(`Error ${err as string}`);
+                    });
                 }}
                 className={`bg-white relative flex items-center justify-center border-2 border-[#3AC4A0] w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
               >
@@ -317,23 +332,23 @@ const NotificationWinner: React.FC = () => {
 
                   <div className="w-full bg-white rounded-xl shadow hover:shadow-lg duration-300">
                     <div
-                      onClick={async () =>
-                        { await handleRedirectPage(
+                      onClick={async () => {
+                        await handleRedirectPage(
                           item?.id,
                           item?.is_joined,
                           item?.status
-                        ); }
-                      }
+                        );
+                      }}
                       className="w-full rounded-xl overflow-hidden cursor-pointer"
                     >
                       <div
-                        onClick={async () =>
-                          { await handleRedirectPage(
+                        onClick={async () => {
+                          await handleRedirectPage(
                             item?.id,
                             item?.is_joined,
                             item?.status
-                          ); }
-                        }
+                          );
+                        }}
                         className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center mb-2 oveflow-hidden cursor-pointer"
                       >
                         <Image
@@ -368,13 +383,13 @@ const NotificationWinner: React.FC = () => {
                     </div>
 
                     <div
-                      onClick={async () =>
-                        { await handleRedirectPage(
+                      onClick={async () => {
+                        await handleRedirectPage(
                           item?.id,
                           item?.is_joined,
                           item?.status
-                        ); }
-                      }
+                        );
+                      }}
                       className="w-full px-2 cursor-pointer"
                     >
                       <div className="w-full pl-2 flex justify-center items-center text-[10px] bg-[#E9E9E9] rounded-lg py-1 mt-1">
@@ -385,9 +400,7 @@ const NotificationWinner: React.FC = () => {
                             className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                           />
                           <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
-                            <div>
-                              {t('tournament.tournamentCard.duration')}
-                            </div>
+                            <div>{t('tournament.tournamentCard.duration')}</div>
                             <div className="font-semibold text-black">
                               {calculateDaysLeft(
                                 new Date(
@@ -413,9 +426,7 @@ const NotificationWinner: React.FC = () => {
                             className="w-[14px] xl:w-[12px] 2xl:w-[14px] mb-2 mr-1"
                           />
                           <div className="flex flex-col xl:text-[8px] 2xl:text-[12px]">
-                            <div>
-                              {t('tournament.tournamentCard.joined')}
-                            </div>
+                            <div>{t('tournament.tournamentCard.joined')}</div>
                             <div className="font-semibold text-black">
                               {item?.participants?.length ?? '0'}{' '}
                               {(item?.participants?.length ?? 0) > 1
@@ -436,8 +447,7 @@ const NotificationWinner: React.FC = () => {
                               {item.admission_fee === 0
                                 ? t('quiz.free')
                                 : `${
-                                    userInfo?.preferredCurrency !==
-                                    undefined
+                                    userInfo?.preferredCurrency !== undefined
                                       ? userInfo?.preferredCurrency
                                       : 'IDR'
                                   }${standartCurrency(
@@ -475,30 +485,28 @@ const NotificationWinner: React.FC = () => {
                         </button>
                       </div>
                       <Button
-                        onClick={async () =>
-                          { await handleRedirectPage(
+                        onClick={async () => {
+                          await handleRedirectPage(
                             item?.id,
                             item?.is_joined,
                             item?.status
-                          ); }
-                        }
+                          );
+                        }}
                         disabled={isDisabled(item?.is_joined, item?.status)}
                         className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 2xl:px-4 rounded-full hover:shadow-lg duration-300"
                       >
-                        {
-                          item?.is_joined
-                            ? (item?.status === 'ACTIVE' 
-                              ? t('tournament.tournamentCard.openButton')
-                              : (item?.status === 'PAST' 
-                                ? t('tournament.tournamentCard.leaderboard')
-                                : t('tournament.tournamentCard.canceled')
-                              ))
-                            : ((item?.status === 'ACTIVE') || (item?.status === 'CREATED'))
-                              ? t('tournament.tournamentCard.joinButton')
-                              : (item?.status === 'CANCELED')
-                                ? t('tournament.tournamentCard.canceled')
-                                : t('tournament.tournamentCard.ended')
-                        }
+                        {item?.is_joined
+                          ? item?.status === 'ACTIVE'
+                            ? t('tournament.tournamentCard.openButton')
+                            : item?.status === 'PAST'
+                            ? t('tournament.tournamentCard.leaderboard')
+                            : t('tournament.tournamentCard.canceled')
+                          : item?.status === 'ACTIVE' ||
+                            item?.status === 'CREATED'
+                          ? t('tournament.tournamentCard.joinButton')
+                          : item?.status === 'CANCELED'
+                          ? t('tournament.tournamentCard.canceled')
+                          : t('tournament.tournamentCard.ended')}
                       </Button>
                     </div>
                   </div>
@@ -508,7 +516,9 @@ const NotificationWinner: React.FC = () => {
           ) : (
             <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
               <Image alt="" src={IconNoData} className="w-[250px]" />
-              <p className="font-semibold text-black">{t('tournament.blank1')}</p>
+              <p className="font-semibold text-black">
+                {t('tournament.blank1')}
+              </p>
               <p className="text-[#7C7C7C]">{t('tournament.blank2')}</p>
             </div>
           )}

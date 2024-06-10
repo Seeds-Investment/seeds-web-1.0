@@ -33,18 +33,14 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
   const [blankTag, setBlankTag] = useState(false);
   const [blankDoB, setBlankDoB] = useState(false);
   const [day, setDay] = useState<number | undefined>(
-    data !== null && data !== undefined ? new Date().getDate() : undefined
+    data !== null ? new Date().getDate() : undefined
   );
   const [month, setMonth] = useState<number | undefined>(
-    data !== null && data !== undefined ? new Date().getMonth() : undefined
+    data !== null ? new Date().getMonth() : undefined
   );
-
   const [year, setYear] = useState<number | undefined>(
-    data !== null && data !== undefined
-      ? new Date().getFullYear() - 17
-      : undefined
+    data !== null ? new Date().getFullYear() - 17 : undefined
   );
-
   const timezoneOffset = new Date().getTimezoneOffset();
   const utcDate = new Date(
     `${typeof year === 'number' ? year : ''}/${

@@ -1160,12 +1160,19 @@ export default {
   articleList: {
     text1: 'Daftar Artikel',
     text2: 'Jelajahi artikel keuangan pilihan kami',
-    text3: 'Sort by :',
+    text3: 'Urutkan :',
     text4: 'Cari',
     text5: 'Jangan lewatkan berita finansial populer disini !',
     text6: 'Kamu mungkin suka',
     text7: 'Daftar Berita',
-    text8: 'lihat semua'
+    text8: 'lihat semua',
+    article: {
+      sort: {
+        all: 'Semua',
+        relevant: 'Paling Relevan',
+        recent: 'Paling Baru',
+      }
+    }
   },
 
   validationErrors: {
@@ -1625,7 +1632,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    }
+    },
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',

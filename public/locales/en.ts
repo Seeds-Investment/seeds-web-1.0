@@ -1243,7 +1243,14 @@ export default {
     text5: "Don't miss popular financial news here!",
     text6: 'You may like',
     text7: 'News',
-    text8: 'See all'
+    text8: 'See all',
+    article: {
+      sort: {
+        all: 'All',
+        relevant: 'Most Relevant',
+        recent: 'Most Recent',
+      }
+    }
   },
   validationErrors: {
     required: 'This field is required',
@@ -1696,7 +1703,7 @@ export default {
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
-    }
+    },
   },
   chooseCurrency: {
     header: 'Choose your currency',

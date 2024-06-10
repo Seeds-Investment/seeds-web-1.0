@@ -1,3 +1,4 @@
+import { type typeOfForm } from '@/pages/connect/comment/[postId]';
 import Image from 'next/image';
 import { GIFV2, galleryV2 } from 'public/assets/circle';
 interface form {
@@ -9,11 +10,13 @@ interface props {
   setPages: any;
   setMedia: any;
   setForm: any;
+  form: typeOfForm;
 }
 const UniqueInputComment: React.FC<props> = ({
   setPages,
   setMedia,
-  setForm
+  setForm,
+  form
 }) => {
   const handlePages = (page: string): any => {
     return setPages(page);
@@ -70,6 +73,14 @@ const UniqueInputComment: React.FC<props> = ({
     }
   };
 
+  const isEmpty = (): boolean => {
+    if ((form?.content_text === '') && (form?.media_type === '')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   return (
     <div className="flex justify-between pb-10">
       <input
@@ -114,8 +125,9 @@ const UniqueInputComment: React.FC<props> = ({
       {/* post button */}
       <div className="flex justify-end h-full">
         <button
+          disabled={isEmpty()}
           type="submit"
-          className="flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit bg-seeds-button-green"
+          className={`flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit ${isEmpty() ? 'bg-[#d3d3d3]' : 'bg-seeds-button-green'}`}
         >
           Post
         </button>

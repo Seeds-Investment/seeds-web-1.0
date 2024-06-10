@@ -6,6 +6,7 @@ import { loginSSO } from '@/repository/auth.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
+import { type AuthSSOI } from '@/utils/interfaces/auth.interface';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -14,11 +15,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface IAuthSSO {
-  setSelect: (value: number) => void;
-}
-
-const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
+const AuthSSO: React.FC<AuthSSOI> = ({ setSelect, setGuest }: AuthSSOI) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -47,6 +44,7 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
+          setGuest('register');
         }
       }
     } catch (error: any) {

@@ -1065,13 +1065,15 @@ export default {
       title3: 'Circle Balance'
     },
     create: {
-      title: 'Create Cirlce',
+      title: 'Create Circle',
       cover: 'Add Cover',
       image: 'Add Image',
       name: {
         label: 'Circle Name',
         placeholder: 'type circle name',
-        error: 'Input Circle Name'
+        error: 'Input Circle Name',
+        duplicate1: 'The name',
+        duplicate2: 'is already in use!',
       },
       hashtag: {
         label: 'Hashtag',
@@ -1326,7 +1328,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Report Cirlce',
+      title: 'Report Circle',
       subtitle1: 'This circle will be reported',
       subtitle2: 'Why are you reporting this circle?',
       option1: 'Spam',

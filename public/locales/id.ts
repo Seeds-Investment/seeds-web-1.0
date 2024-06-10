@@ -987,13 +987,15 @@ export default {
       title3: 'Saldo Circle'
     },
     create: {
-      title: 'Buat Cirlce',
+      title: 'Buat Circle',
       cover: 'Tambah Cover',
       image: 'Tambah Gambar',
       name: {
         label: 'Nama Circle',
-        placeholder: 'Ketik nama Cirlce',
-        error: 'Masukan Nama Circle'
+        placeholder: 'Ketik nama Circle',
+        error: 'Masukan Nama Circle',
+        duplicate1: 'Nama',
+        duplicate2: 'telah digunakan!',
       },
       hashtag: {
         label: 'Hashtag',
@@ -1249,7 +1251,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Laporkan Cirlce',
+      title: 'Laporkan Circle',
       subtitle1: 'Circle ini akan dilaporkan',
       subtitle2: 'Mengapa kamu melaporkan circle ini?',
       option1: 'Spam',

@@ -5,6 +5,8 @@ import postCircle from '@/assets/my-profile/circle/postCircle.svg';
 import info from '@/assets/my-profile/play/info.svg';
 import { chrownCirclePremium } from '@/constants/assets/icons';
 import PostSection from '@/containers/circle/[id]/PostSection';
+import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   Avatar,
@@ -22,7 +24,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { toast } from 'react-toastify';
 interface DataItem {
   label: string;
   value: string;
@@ -50,6 +52,7 @@ interface Item {
   logo?: any;
   ticker?: any;
   exchange?: any;
+  id?: string;
 }
 
 interface MyStyle extends React.CSSProperties {
@@ -65,6 +68,7 @@ const UnderLineTab = ({
   handleSubmitBlockUser
 }: Params): JSX.Element => {
   const [myInfo, setMyInfo] = useState();
+  const [userId, setUserId] = useState<string>('');
   const { t } = useTranslation();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('post');
@@ -152,8 +156,25 @@ const UnderLineTab = ({
             return (
               <Card
                 shadow={false}
-                className="lg:w-[292px] lg:h-[152.81px] w-[343px] h-[177px]"
+                className="lg:w-[292px] lg:h-[152.81px] w-[343px] h-[177px] cursor-pointer"
                 key={index}
+                onClick={() => {
+                  router
+                    .push(
+                      isGuest()
+                        ? '/auth'
+                        : `/connect/post/${item?.id as string}`
+                    )
+                    .catch(error => {
+                      toast(error, { type: 'error' });
+                    });
+                  TrackerEvent({
+                    event: `Seeds_view_circle_detail_page_web`,
+                    userId,
+                    pageName: 'circle_detail_web',
+                    circleId: item?.id
+                  });
+                }}
               >
                 <CardHeader
                   shadow={false}
@@ -318,6 +339,7 @@ const UnderLineTab = ({
       try {
         const myData = await getUserInfo();
         setMyInfo(myData);
+        setUserId(myData?.id);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }

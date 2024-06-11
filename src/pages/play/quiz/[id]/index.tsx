@@ -362,7 +362,7 @@ const QuizDetail = (): React.ReactElement => {
               ) {
                 router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { qi: id as string }, '/auth');
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${

@@ -12,8 +12,6 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
-import withAuth from '@/helpers/withAuth';
-import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
   joinTournament,
@@ -155,7 +153,7 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id !== null) {
       getDetail();
     }
   }, [id, userInfo]);
@@ -453,7 +451,7 @@ const TournamentDetail: React.FC = () => {
               ) {
                 router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                router.push('/auth');
               }
             }}
             disabled={
@@ -488,4 +486,4 @@ const TournamentDetail: React.FC = () => {
   );
 };
 
-export default withAuth(TournamentDetail);
+export default TournamentDetail;

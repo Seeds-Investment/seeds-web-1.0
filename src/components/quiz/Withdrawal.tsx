@@ -4,7 +4,7 @@ import ModalAccountList from '@/components/quiz/ModalAccountList';
 import ModalClaimMethod from '@/components/quiz/ModalClaimMethod';
 import SettingCommonInput from '@/components/setting/accountInformation/SettingCommonInput';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { type IWithdrawalAccount } from '@/pages/withdrawal/quiz/[id]';
+import { type IWithdrawalAccount } from '@/pages/withdrawal';
 import { getWithdrawalList } from '@/repository/payment.repository';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';

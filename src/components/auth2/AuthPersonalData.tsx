@@ -61,7 +61,8 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
   const handleNext = async (): Promise<void> => {
     try {
       if (data !== null && data !== undefined) {
-        setFormData({ ...formData, password: '', phoneNumber: '' });
+        console.log('tes');
+        setFormData(prev => ({ ...prev, password: '', phoneNumber: '' }));
       }
       if (
         formData.name.length === 0 ||
@@ -232,7 +233,11 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
         open={open}
         handleOpen={handleOpen}
         setFormData={setFormData}
-        formData={formData}
+        formData={
+          data !== null && data !== undefined
+            ? { ...formData, password: '', phoneNumber: '' }
+            : formData
+        }
         loginForm={loginForm}
         guest={guest}
       />

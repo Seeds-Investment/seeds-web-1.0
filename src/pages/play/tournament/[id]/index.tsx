@@ -59,7 +59,7 @@ const TournamentDetail: React.FC = () => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };

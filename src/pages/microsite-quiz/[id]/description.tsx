@@ -4,7 +4,6 @@
 import Wallet from '@/assets/play/quiz/Wallet.png';
 import MicrositeQuizLayout from '@/components/microsite-quiz/micrositeQuizLayout';
 import QuizButton from '@/components/quiz/button.component';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -85,13 +84,21 @@ const DescriptionQuiz = () => {
   }, [id, userInfo]);
 
   return (
-    <PageGradient defaultGradient className="lg:p-4">
+    <>
       <MicrositeQuizLayout hideBackButton>
         <div className="flex flex-col h-full justify-center items-center gap-3.5">
-          <div className="w-4/12 min-w-[300px]">
-            <Image alt="wallet" src={Wallet} width={400} height={400} />
-          </div>
-          <div className="flex-auto flex flex-col items-center justify-between gap-4 w-full bg-white lg:rounded-[36px] rounded-t-[36px] p-8">
+          <Image
+            alt="wallet"
+            src={Wallet}
+            width={400}
+            height={400}
+            className="w-1/4 min-w-[300px]"
+          />
+          <div
+            className={`flex-auto flex flex-col items-center justify-between w-full bg-white rounded-t-[36px] ${
+              isDesc ? 'p-8 gap-4' : 'p-4 gap-2'
+            }`}
+          >
             {isDesc ? (
               <div className="font-poppins text-center">
                 <div className="text-lg lg:text-4xl font-semibold text-[#3AC4A0] capitalize">
@@ -105,23 +112,23 @@ const DescriptionQuiz = () => {
               </div>
             ) : (
               <>
-                <div className="text-xl lg:text-3xl font-semibold text-[#3AC4A0] capitalize">
+                <div className="text-xl lg:text-3xl font-semibold text-[#3AC4A0] font-poppins capitalize">
                   {t('quiz.questionLevel')}
                 </div>
-                <div className="text-base lg:text-lg text-[#7C7C7C] mt-4 ">
+                <div className="text-base lg:text-lg text-[#7C7C7C] font-poppins font-normal">
                   {t('quiz.questionDescription1')}
                   {` ${detailQuiz?.total_questions ?? 0} `}
                   {t('quiz.questionDescription2')}
                 </div>
-                <div className="self-center w-full grid grid-cols-3 text-center gap-2 mt-2 lg:mt-4">
-                  <div className="font-semibold rounded-md w-full p-3 bg-[#D8F9A8] text-[#4DA81C]">
+                <div className="self-center w-full grid grid-cols-3 text-center gap-2">
+                  <div className="font-semibold font-poppins text-xs sm:text-base rounded-md w-full p-3 bg-[#D8F9A8] text-[#4DA81C]">
                     {t('quiz.easy')} ({(detailQuiz?.total_questions ?? 0) / 3})
                   </div>
-                  <div className="font-semibold rounded-md w-full p-3 bg-[#FEEBA6] text-[#D89918]">
+                  <div className="font-semibold font-poppins text-xs sm:text-base rounded-md w-full p-3 bg-[#FEEBA6] text-[#D89918]">
                     {t('quiz.medium')} ({(detailQuiz?.total_questions ?? 0) / 3}
                     )
                   </div>
-                  <div className="font-semibold rounded-md w-full p-3 bg-[#FFBEBE] text-[#BB1616]">
+                  <div className="font-semibold font-poppins text-xs sm:text-base rounded-md w-full p-3 bg-[#FFBEBE] text-[#BB1616]">
                     {t('quiz.hard')} ({(detailQuiz?.total_questions ?? 0) / 3})
                   </div>
                 </div>
@@ -147,7 +154,7 @@ const DescriptionQuiz = () => {
           </div>
         </div>
       </MicrositeQuizLayout>
-    </PageGradient>
+    </>
   );
 };
 

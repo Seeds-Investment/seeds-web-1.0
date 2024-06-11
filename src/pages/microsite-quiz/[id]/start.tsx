@@ -2,7 +2,6 @@
 import StartAnimation from '@/assets/play/quiz/Start.json';
 import MicrositeQuizLayout from '@/components/microsite-quiz/micrositeQuizLayout';
 import QuizButton from '@/components/quiz/button.component';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { startQuiz } from '@/repository/quiz.repository';
@@ -37,31 +36,29 @@ const StartQuiz = () => {
     }
   };
   return (
-    <PageGradient defaultGradient className="lg:p-4">
-      <MicrositeQuizLayout hideBackButton>
-        <div className="flex flex-col h-full justify-center items-center gap-6 p-4">
-          <div className="font-poppins text-white text-center flex flex-col gap-2">
-            <div className="text-4xl font-semibold font-poppins text-white">
-              Seeds Quiz
-            </div>
-            <div className="text-xl lg:text-2xl font-normal font-poppins text-white">
-              {t('quiz.testInvestment')}
-            </div>
+    <MicrositeQuizLayout hideBackButton>
+      <div className="flex flex-col h-full justify-center items-center gap-6">
+        <div className="font-poppins text-white text-center flex flex-col gap-2">
+          <div className="text-4xl font-semibold font-poppins text-white">
+            Seeds Quiz
           </div>
-          <div className="w-4/12 min-w-[300px] lg:w-3/12">
-            <Lottie animationData={StartAnimation} loop={true} width={400} />
-          </div>
-          <div className="w-full sm:w-1/3">
-            <QuizButton
-              title={t('quiz.startTheGame')}
-              background="#67EB00"
-              darkBackground="#4EC307"
-              onClick={handleContinue}
-            />
+          <div className="text-xl lg:text-2xl font-normal font-poppins text-white">
+            {t('quiz.testInvestment')}
           </div>
         </div>
-      </MicrositeQuizLayout>
-    </PageGradient>
+        <div className="min-w-[300px] w-3/12">
+          <Lottie animationData={StartAnimation} loop={true} width={400} />
+        </div>
+        <div className="w-full sm:w-1/3">
+          <QuizButton
+            title={t('quiz.startTheGame')}
+            background="#67EB00"
+            darkBackground="#4EC307"
+            onClick={handleContinue}
+          />
+        </div>
+      </div>
+    </MicrositeQuizLayout>
   );
 };
 

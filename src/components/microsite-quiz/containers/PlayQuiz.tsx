@@ -4,10 +4,20 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
-import AnswerButtonComponent from '@/components/quiz/answer-button.component';
+import FiftySeedy from '@/assets/play/quiz/5050-seedy.png';
+import Easy from '@/assets/play/quiz/easy.json';
+import Fifty from '@/assets/play/quiz/fifty.svg';
+import Hard from '@/assets/play/quiz/hard.json';
+import Medium from '@/assets/play/quiz/medium.json';
+import PhoneSeedy from '@/assets/play/quiz/phone-seedy.png';
+import Phone from '@/assets/play/quiz/phone.svg';
+import QuizSubmitConfirm from '@/assets/play/quiz/quiz-submit-confirmation.png';
+import Timer from '@/assets/play/quiz/timer.svg';
+import VoteSeedy from '@/assets/play/quiz/vote-seedy.png';
+import Vote from '@/assets/play/quiz/vote.svg';
+import AnswerButtonComponent from '@/components/microsite-quiz/playing-microsite-quiz/answerButton';
 import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
-import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useQuiz from '@/hooks/useQuiz';
@@ -32,17 +42,7 @@ import { useRouter } from 'next/router';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import FiftySeedy from '../../../assets/play/quiz/5050-seedy.png';
-import Easy from '../../../assets/play/quiz/easy.json';
-import Fifty from '../../../assets/play/quiz/fifty.svg';
-import Hard from '../../../assets/play/quiz/hard.json';
-import Medium from '../../../assets/play/quiz/medium.json';
-import PhoneSeedy from '../../../assets/play/quiz/phone-seedy.png';
-import Phone from '../../../assets/play/quiz/phone.svg';
-import QuizSubmitConfirm from '../../../assets/play/quiz/quiz-submit-confirmation.png';
-import Timer from '../../../assets/play/quiz/timer.svg';
-import VoteSeedy from '../../../assets/play/quiz/vote-seedy.png';
-import Vote from '../../../assets/play/quiz/vote.svg';
+import MicrositeQuizLayout from '../micrositeQuizLayout';
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 const QuizPlay = ({
@@ -225,7 +225,7 @@ const QuizPlay = ({
 
   useEffect(() => {
     if (countDown < 0) {
-      void router.replace(`/play/quiz/${id}/review`);
+      void router.replace(`/microsite-quiz/${id}/review`);
     }
   }, [countDown]);
 
@@ -294,7 +294,8 @@ const QuizPlay = ({
 
   return (
     <>
-      <QuizLayoutComponent
+      <MicrositeQuizLayout
+        hideBackButton
         centerContent={
           <div className="flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
             <div className="text-base lg:text-2xl font-semibold capitalize">
@@ -322,21 +323,24 @@ const QuizPlay = ({
             <div className="animate-spinner w-10 h-10" />
           </div>
         ) : (
-          <div className="flex flex-col h-full box-border justify-center items-center font-poppins">
-            <div className="w-full flex items-center justify-center">
-              <div
-                style={{ backgroundImage: "url('/assets/quiz/bg-score.png')" }}
-                className="w-full lg:w-1/3 flex flex-col justify-center items-center bg-center bg-cover bg-no-repeat p-2"
-              >
-                <div className="text-lg text-white">
-                  {t('quiz.currentScore')}
-                </div>
-                <div className="text-2xl text-[#D8F9A8] font-semibold">
-                  {score}
+          <div className="flex flex-col h-full box-border justify-between items-center font-poppins">
+            <div className="flex flex-col w-full justify-center items-center font-poppins">
+              <div className="w-full flex items-center justify-center">
+                <div
+                  style={{
+                    backgroundImage: "url('/assets/quiz/bg-score.png')"
+                  }}
+                  className="w-full lg:w-1/3 flex flex-col justify-center items-center bg-center bg-cover bg-no-repeat p-2"
+                >
+                  <div className="text-lg text-white">
+                    {t('quiz.currentScore')}
+                  </div>
+                  <div className="text-2xl text-[#D8F9A8] font-semibold">
+                    {score}
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* <div className="w-[125px] lg:w-[220px]">
+              {/* <div className="w-[125px] lg:w-[220px]">
               <Image
                 alt="Quiz Playing"
                 src={PlayAnimation}
@@ -344,80 +348,82 @@ const QuizPlay = ({
                 height={400}
               />
             </div> */}
-            {quizQuestions[currentPage]?.data?.[
-              i18n.language === 'id' ? 'id' : 'en'
-            ]?.question_video !== '' && (
-              <video controls className="w-[400px] h-[300px] object-fit">
-                <source
+              {quizQuestions[currentPage]?.data?.[
+                i18n.language === 'id' ? 'id' : 'en'
+              ]?.question_video !== '' && (
+                <video controls className="w-[400px] h-[300px] object-fit">
+                  <source
+                    src={
+                      quizQuestions[currentPage]?.data?.[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.question_video
+                    }
+                    type="video/mp4"
+                  />
+                  Browser Anda tidak mendukung tag video.
+                </video>
+              )}
+              {quizQuestions[currentPage]?.data?.[
+                i18n.language === 'id' ? 'id' : 'en'
+              ]?.question_image !== '' && (
+                <Image
+                  alt="Quiz Playing"
                   src={
                     quizQuestions[currentPage]?.data?.[
                       i18n.language === 'id' ? 'id' : 'en'
-                    ]?.question_video
+                    ]?.question_image
                   }
-                  type="video/mp4"
+                  width={400}
+                  height={300}
                 />
-                Browser Anda tidak mendukung tag video.
-              </video>
-            )}
-            {quizQuestions[currentPage]?.data?.[
-              i18n.language === 'id' ? 'id' : 'en'
-            ]?.question_image !== '' && (
-              <Image
-                alt="Quiz Playing"
-                src={
+              )}
+              <div className="text-[#262626] text-base text-center lg:text-xl w-full lg:w-5/6 mt-4 bg-white px-3 py-4 rounded-lg">
+                {
                   quizQuestions[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.question_image
+                  ]?.question
                 }
-                width={400}
-                height={300}
-              />
-            )}
-            <div className="text-[#262626] text-base text-center lg:text-xl w-full lg:w-5/6 mt-4 bg-white px-3 py-4 rounded-lg">
-              {
-                quizQuestions[currentPage]?.data?.[
-                  i18n.language === 'id' ? 'id' : 'en'
-                ]?.question
-              }
-            </div>
-            <div className="flex flex-row justify-center items-center gap-2 lg:gap-6 mb-20 mt-2">
-              {detailQuiz?.participant_lifelines?.map((item, i) => {
-                const icon =
-                  item.name === '50_50'
-                    ? Fifty
-                    : item.name === 'PHONE'
-                    ? Phone
-                    : Vote;
-                return !item.is_used ? (
-                  <HelpBox
-                    title=""
-                    icon={icon}
-                    selected={false}
-                    onClick={() => {
-                      if (!item.is_used) {
-                        setSelectedLL(item.name);
-                        setConfirmUseLifeline(true);
+              </div>
+              <div className="flex flex-row justify-center items-center gap-2 lg:gap-6 mt-2">
+                {detailQuiz?.participant_lifelines?.map((item, i) => {
+                  const icon =
+                    item.name === '50_50'
+                      ? Fifty
+                      : item.name === 'PHONE'
+                      ? Phone
+                      : Vote;
+                  return !item.is_used ? (
+                    <HelpBox
+                      title=""
+                      icon={icon}
+                      selected={false}
+                      onClick={() => {
+                        if (!item.is_used) {
+                          setSelectedLL(item.name);
+                          setConfirmUseLifeline(true);
+                        }
+                      }}
+                      background={
+                        item.name === LifelinesEnum.PHONE
+                          ? '#95DB56'
+                          : item.name === LifelinesEnum.VOTE
+                          ? '#B798FF'
+                          : '#7B8BFC'
                       }
-                    }}
-                    background={
-                      item.name === LifelinesEnum.PHONE
-                        ? '#95DB56'
-                        : item.name === LifelinesEnum.VOTE
-                        ? '#B798FF'
-                        : '#7B8BFC'
-                    }
-                    darkBackground={
-                      item.name === LifelinesEnum.PHONE
-                        ? '#4DA81C'
-                        : item.name === LifelinesEnum.VOTE
-                        ? '#7555DA'
-                        : '#3C49D6'
-                    }
-                  />
-                ) : null;
-              })}
+                      darkBackground={
+                        item.name === LifelinesEnum.PHONE
+                          ? '#4DA81C'
+                          : item.name === LifelinesEnum.VOTE
+                          ? '#7555DA'
+                          : '#3C49D6'
+                      }
+                    />
+                  ) : null;
+                })}
+              </div>
             </div>
-            <div className="h-full flex flex-col items-center justify-end w-full relative bg-white rounded-[32px] p-3 md:p-8 text-poppins text-center">
+
+            <div className=" flex flex-col items-center justify-end w-full relative bg-white rounded-t-[32px] p-3 md:p-8 text-poppins text-center">
               <div className="w-full absolute -top-9 flex items-center justify-center">
                 <div className="w-[76px] h-[76px] rounded-full border-2 border-[#106B6E] bg-white flex flex-col justify-center items-center">
                   <Image alt="timer" src={Timer} width={15} height={15} />
@@ -426,7 +432,7 @@ const QuizPlay = ({
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-center w-full gap-4 mt-10 lg:mt-4">
+              <div className="flex flex-col items-center w-full mt-10 gap-2 lg:mt-4">
                 {fromLifeline?.lifeline?.lifeline === LifelinesEnum['50_50'] &&
                 fromLifeline?.page === currentPage ? (
                   fromLifeline?.lifeline?.res
@@ -498,7 +504,7 @@ const QuizPlay = ({
                     onClick={() => {
                       if (spillAnswer) {
                         if (currentPage + 1 === quizQuestions.length) {
-                          void router.replace(`/play/quiz/${id}/review`);
+                          void router.replace(`/microsite-quiz/${id}/review`);
                         } else {
                           handleContinue();
                         }
@@ -512,7 +518,7 @@ const QuizPlay = ({
             </div>
           </div>
         )}
-      </QuizLayoutComponent>
+      </MicrositeQuizLayout>
       {confirmSubmit && (
         <Modal
           onClose={() => {
@@ -644,58 +650,62 @@ const OptionAnswer = memo(
   }) => {
     return (
       <>
-        <AnswerButtonComponent
-          title={`A. ${
-            quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_1.option
-          }`}
-          selected={selectedAnswer === 1}
-          onClick={() => {
-            setSelectedAnswer(1);
-          }}
-          spillAnswer={spillAnswer}
-          disabled={spillAnswer}
-          rightAnswer={correctAnswer === 'option_1'}
-        />
-        <AnswerButtonComponent
-          title={`B. ${
-            quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_2.option
-          }`}
-          selected={selectedAnswer === 2}
-          onClick={() => {
-            setSelectedAnswer(2);
-          }}
-          spillAnswer={spillAnswer}
-          disabled={spillAnswer}
-          rightAnswer={correctAnswer === 'option_2'}
-        />
-        <AnswerButtonComponent
-          title={`C. ${
-            quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_3.option
-          }`}
-          selected={selectedAnswer === 3}
-          onClick={() => {
-            setSelectedAnswer(3);
-          }}
-          spillAnswer={spillAnswer}
-          disabled={spillAnswer}
-          rightAnswer={correctAnswer === 'option_3'}
-        />
-        <AnswerButtonComponent
-          title={`D. ${
-            quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
-              .options.option_4.option
-          }`}
-          selected={selectedAnswer === 4}
-          onClick={() => {
-            setSelectedAnswer(4);
-          }}
-          spillAnswer={spillAnswer}
-          disabled={spillAnswer}
-          rightAnswer={correctAnswer === 'option_4'}
-        />
+        <div className="flex w-full gap-2">
+          <AnswerButtonComponent
+            title={`A. ${
+              quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
+                .options.option_1.option
+            }`}
+            selected={selectedAnswer === 1}
+            onClick={() => {
+              setSelectedAnswer(1);
+            }}
+            spillAnswer={spillAnswer}
+            disabled={spillAnswer}
+            rightAnswer={correctAnswer === 'option_1'}
+          />
+          <AnswerButtonComponent
+            title={`B. ${
+              quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
+                .options.option_2.option
+            }`}
+            selected={selectedAnswer === 2}
+            onClick={() => {
+              setSelectedAnswer(2);
+            }}
+            spillAnswer={spillAnswer}
+            disabled={spillAnswer}
+            rightAnswer={correctAnswer === 'option_2'}
+          />
+        </div>
+        <div className="flex w-full gap-2">
+          <AnswerButtonComponent
+            title={`C. ${
+              quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
+                .options.option_3.option
+            }`}
+            selected={selectedAnswer === 3}
+            onClick={() => {
+              setSelectedAnswer(3);
+            }}
+            spillAnswer={spillAnswer}
+            disabled={spillAnswer}
+            rightAnswer={correctAnswer === 'option_3'}
+          />
+          <AnswerButtonComponent
+            title={`D. ${
+              quizQuestions[currentPage]?.data[language === 'id' ? 'id' : 'en']
+                .options.option_4.option
+            }`}
+            selected={selectedAnswer === 4}
+            onClick={() => {
+              setSelectedAnswer(4);
+            }}
+            spillAnswer={spillAnswer}
+            disabled={spillAnswer}
+            rightAnswer={correctAnswer === 'option_4'}
+          />
+        </div>
       </>
     );
   }

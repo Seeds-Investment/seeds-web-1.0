@@ -7,9 +7,9 @@ interface Props {
 
 const QuizSponsor: React.FC<Props> = ({ detailQuiz }: Props) => {
   return (
-    <div className="flex flex-row gap-8">
+    <div className="flex flex-row gap-2">
       {detailQuiz?.sponsors?.image_url !== undefined ? (
-        <div className="flex flex-col justify-center items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <div className="text-lg font-semibold text-[#262626]">Sponsor(s)</div>
           <Image
             src={detailQuiz?.sponsors?.image_url}
@@ -21,7 +21,7 @@ const QuizSponsor: React.FC<Props> = ({ detailQuiz }: Props) => {
         </div>
       ) : null}
       {detailQuiz?.communities?.image_url !== undefined ? (
-        <div className="flex flex-col justify-center items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <div className="text-lg font-semibold text-[#262626]">Community</div>
           <Image
             src={detailQuiz?.communities?.image_url}

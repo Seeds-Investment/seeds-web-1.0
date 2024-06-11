@@ -7,6 +7,7 @@ import Podium, {
   type LeaderData
 } from '@/components/microsite-quiz/leaderboard-mocrisite-quiz/podium';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
@@ -38,9 +39,9 @@ const LeaderBoardPage = (): React.ReactElement => {
   return (
     <PageGradient
       defaultGradient
-      className="flex justify-center h-full items-center gap-6 p-4"
+      className="flex flex-col lg:flex-row justify-center lg:h-full items-center lg:gap-6 lg:p-4"
     >
-      <Card className="flex flex-col justify-start gap-4 w-2/3 h-full rounded-2xl p-5">
+      <Card className="flex flex-col justify-start gap-4 w-full lg:w-2/3 lg:h-full rounded-none lg:rounded-2xl p-5">
         <div
           style={{
             backgroundImage: "url('/assets/quiz/bg-leaderboard-quiz.png')"
@@ -96,16 +97,16 @@ const LeaderBoardPage = (): React.ReactElement => {
           </tbody>
         </table>
       </Card>
-      <Card className="flex flex-col justify-between items-center w-1/3 h-full p-4">
+      <Card className="flex flex-col justify-between items-center w-full lg:w-1/3 lg:h-full p-4 gap-2 rounded-none lg:rounded-2xl">
         <Typography className="font-semibold font-poppins text-xl text-[#262626]">
           Scan this!
         </Typography>
-        <QRCode value="https://seeds.finance/" size={200} />
-        <div className="flex flex-col gap-4 justify-center items-center w-full bg-[#E3FFF8] px-3.5 py-2.5">
+        <QRCode value="https://seeds.finance" size={200} />
+        <div className="flex flex-col gap-4 justify-center items-center w-fit lg:w-full bg-[#E3FFF8] px-3.5 py-2.5">
           <Typography className="font-semibold font-poppins text-base text-[#262626]">
             Download Seeds App
           </Typography>
-          <div className="flex w-full justify-evenly">
+          <div className="flex w-full justify-center gap-4 lg:justify-evenly">
             <div className="flex flex-col gap-4 items-center">
               <QRCode
                 value="https://apps.apple.com/id/app/seeds-investing-together/id6443659980"
@@ -130,7 +131,7 @@ const LeaderBoardPage = (): React.ReactElement => {
           onClick={async () => {
             await router.replace('/microsite-quiz');
           }}
-          className="bg-[#3AC4A0] w-full rounded-full normal-case font-poppins font-semibold text-white text-sm"
+          className="bg-[#3AC4A0] w-full sm:w-2/3 rounded-full normal-case font-poppins font-semibold text-white text-sm"
         >
           {t('quiz.playAgain')}
         </Button>
@@ -139,4 +140,4 @@ const LeaderBoardPage = (): React.ReactElement => {
   );
 };
 
-export default LeaderBoardPage;
+export default withAuth(LeaderBoardPage);

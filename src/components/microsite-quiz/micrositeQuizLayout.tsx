@@ -42,7 +42,7 @@ const MicrositeQuizLayout: React.FC<Props> = ({
     <>
       <div
         style={{ backgroundImage: "url('/assets/quiz/bg-microsite-quiz.png')" }}
-        className={`w-full h-screen bg-center bg-cover bg-no-repeat lg:rounded-[36px] ${
+        className={`w-full h-screen bg-center bg-cover bg-no-repeat ${
           isQuestionHasMedia ? 'rounded-[32px]' : ' lg:aspect-[947/685]'
         }`}
       >

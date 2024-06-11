@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import FiftySeedy from '@/assets/play/quiz/5050-seedy.png';
+import Fifty from '@/assets/play/quiz/fifty.svg';
+import PhoneSeedy from '@/assets/play/quiz/phone-seedy.png';
+import Phone from '@/assets/play/quiz/phone.svg';
+import ExtraCash from '@/assets/play/quiz/seedy-extra-cash.png';
+import VoteSeedy from '@/assets/play/quiz/vote-seedy.png';
+import Vote from '@/assets/play/quiz/vote.svg';
 import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
-import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useSoundEffect from '@/hooks/useSoundEffects';
@@ -20,13 +26,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import FiftySeedy from '../../../assets/play/quiz/5050-seedy.png';
-import Fifty from '../../../assets/play/quiz/fifty.svg';
-import PhoneSeedy from '../../../assets/play/quiz/phone-seedy.png';
-import Phone from '../../../assets/play/quiz/phone.svg';
-import ExtraCash from '../../../assets/play/quiz/seedy-extra-cash.png';
-import VoteSeedy from '../../../assets/play/quiz/vote-seedy.png';
-import Vote from '../../../assets/play/quiz/vote.svg';
+import MicrositeQuizLayout from '../micrositeQuizLayout';
 
 const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const { t } = useTranslation();
@@ -134,7 +134,6 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           admission_fee: detailQuiz?.admission_fee ?? 0
         }
       });
-      // navigateAndReset(
       //   [
       //     { name: 'Tabs', params: { playTab: 1 } },
       //     { name: 'QuizDetailScreen', params: { id: detailQuiz.id } },
@@ -178,7 +177,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           invitation_code: invitationCode as string,
           is_use_coins: redeemCoin
         });
-        void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
+        void router.replace(`/microsite-quiz/${detailQuiz?.id}/start`);
       } catch (error) {
         const err = error as AxiosError;
         toast(err.message ?? 'Unknown Error');
@@ -219,7 +218,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
 
   return (
     <>
-      <QuizLayoutComponent>
+      <MicrositeQuizLayout hideBackButton>
         <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12 px-3 md:p-8">
           <div>
             <div className="text-3xl lg:text-4xl font-semibold">
@@ -266,7 +265,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               {t('quiz.freeOptions')}
             </div>
           </div>
-          <div className="mt-24 w-full lg:w-1/3">
+          <div className="mt-24 w-full sm:w-1/3">
             <QuizButton
               disabled={lifelines.length === 0}
               title={t('quiz.continue')}
@@ -276,7 +275,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
             />
           </div>
         </div>
-      </QuizLayoutComponent>
+      </MicrositeQuizLayout>
       {showLifelineDesc && (
         <Modal
           onClose={() => {

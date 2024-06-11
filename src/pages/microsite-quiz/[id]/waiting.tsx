@@ -1,7 +1,7 @@
 import SeedyLoading from '@/assets/play/quiz/seedy-loading.png';
 import MicrositeQuizLayout from '@/components/microsite-quiz/micrositeQuizLayout';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
+import { Progress } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -37,36 +37,35 @@ const QuizWaiting = () => {
   }, [fakeLoading, intervalState]);
 
   return (
-    <PageGradient defaultGradient className="p-4">
-      <MicrositeQuizLayout hideBackButton>
-        <div className="flex flex-col h-full box-border items-center gap-6 p-3 md:p-8">
-          <div className="font-poppins text-white text-center">
-            <div className="text-3xl lg:text-4xl font-semibold">
-              {t('quiz.areYouReady')}
-            </div>
-            <div className="text-xl lg:text-2xl">{t('quiz.millionaire')}</div>
+    <MicrositeQuizLayout hideBackButton>
+      <div className="flex flex-col h-full box-border items-center gap-6 p-4">
+        <div className="font-poppins text-white text-center">
+          <div className="text-3xl lg:text-4xl font-semibold">
+            {t('quiz.areYouReady')}
           </div>
-          <div className="w-[300px] lg:w-[400px]">
-            <Image
-              alt="Quiz loading"
-              src={SeedyLoading}
-              width={500}
-              height={500}
-            />
-          </div>
-          <div className="w-full lg:w-1/3 bg-white relative rounded-full h-5 shadow-md">
-            <div
-              className="bg-[#67EB00] absolute h-4 rounded-full top-0.5 left-0.5"
-              style={{ width: `${fakeLoading}%` }}
-            />
-          </div>
-          <div className="font-poppins text-white text-center">
-            <div className="text-xl font-semibold">{fakeLoading}%</div>
-            <div className="text-base">Loading...</div>
+          <div className="text-xl lg:text-2xl font-normal">
+            {t('quiz.millionaire')}
           </div>
         </div>
-      </MicrositeQuizLayout>
-    </PageGradient>
+        <Image
+          alt="Quiz loading"
+          src={SeedyLoading}
+          width={500}
+          height={500}
+          className="w-1/4 min-w-[300px]"
+        />
+        <Progress
+          value={fakeLoading}
+          className="w-full md:w-1/3 shadow-md"
+          size="lg"
+          barProps={{ className: 'bg-[#67EB00]' }}
+        />
+        <div className="font-poppins text-white text-center">
+          <div className="text-xl font-semibold">{fakeLoading}%</div>
+          <div className="text-base font-normal">Loading...</div>
+        </div>
+      </div>
+    </MicrositeQuizLayout>
   );
 };
 

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use-client';
+import MicrositeQuizLayout from '@/components/microsite-quiz/micrositeQuizLayout';
 import AnswerButtonComponent from '@/components/quiz/answer-button.component';
 import QuizButton from '@/components/quiz/button.component';
-import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { getQuizReview } from '@/repository/quiz.repository';
@@ -54,8 +54,8 @@ const Review = () => {
   }, [id]);
 
   return (
-    <QuizLayoutComponent hideBackButton enableScroll>
-      <div className="w-full h-full flex flex-col items-center font-poppins px-3 md:px-8 gap-8">
+    <MicrositeQuizLayout hideBackButton enableScroll>
+      <div className="w-full h-full flex flex-col items-center font-poppins px-4 gap-4">
         <div className="w-full flex flex-row justify-center items-center gap-5">
           <div className="w-full bg-white relative rounded-full h-5 shadow-md">
             <div
@@ -71,7 +71,7 @@ const Review = () => {
             {activeIndex + 1}/{QuizReview?.data.length}
           </div>
         </div>
-        <div className="max-w-full">
+        <div className="max-w-full h-5/6 sm:h-fit">
           <Swiper
             spaceBetween={50}
             slidesPerView={1}
@@ -86,11 +86,11 @@ const Review = () => {
               const optionsArray = Object.values(selectedData?.options);
               return (
                 <SwiperSlide key={i.toString()}>
-                  <div className="w-full flex flex-col items-center bg-white rounded-3xl font-poppins p-4 lg:p-6">
+                  <div className="w-full flex flex-col items-center bg-white rounded-3xl font-poppins p-4">
                     <div className="text-base text-[#262626] text-start w-full">
                       {selectedData.question}
                     </div>
-                    <div className="w-full flex flex-col gap-3 lg:gap-4 mt-4 lg:mt-6">
+                    <div className="w-full flex flex-col gap-4 mt-4">
                       {optionsArray.map((opt, j) => {
                         const prefix = ['A', 'B', 'C', 'D'];
                         return (
@@ -112,7 +112,7 @@ const Review = () => {
                         );
                       })}
                     </div>
-                    <div className="w-full flex flex-col gap-1.5 mt-6">
+                    <div className="w-full flex flex-col gap-1.5 mt-4">
                       <div className="text-sm text-[#3AC4A0] font-semibold">
                         {t('quiz.explanation')}
                       </div>
@@ -130,7 +130,7 @@ const Review = () => {
             <Paging />
           </Swiper>
         </div>
-        <div className="w-full lg:w-1/3">
+        <div className="w-full sm:w-1/3">
           <QuizButton
             title={t('button.label.done')}
             background="#67EB00"
@@ -141,14 +141,14 @@ const Review = () => {
           />
         </div>
       </div>
-    </QuizLayoutComponent>
+    </MicrositeQuizLayout>
   );
 };
 
 const Paging = () => {
   const swiper = useSwiper();
   return (
-    <div className="w-full lg:flex flex-row gap-4 items-center justify-center mt-8 hidden">
+    <div className="w-full lg:flex flex-row gap-4 items-center mt-2 justify-center hidden">
       <button
         onClick={() => {
           swiper.slidePrev();

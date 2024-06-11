@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import HelpOption from '@/components/microsite-quiz/containers/HelpOption';
 import PaymentList from '@/containers/play/payment/PaymentList';
-import HelpOption from '@/containers/play/quiz/HelpOption';
 import withAuth from '@/helpers/withAuth';
 import {
   type LifelinesEnum,
@@ -40,7 +39,7 @@ const HelpOptionContainer = () => {
   const invitationCode = router.query.invitationCode ?? '';
   const useCoins = router.query.useCoins === 'true';
   return (
-    <PageGradient defaultGradient className="p-4">
+    <>
       {showing === 'lifeline' ? (
         <HelpOption
           onPay={data => {
@@ -55,7 +54,7 @@ const HelpOptionContainer = () => {
           useCoins={useCoins}
         />
       )}
-    </PageGradient>
+    </>
   );
 };
 

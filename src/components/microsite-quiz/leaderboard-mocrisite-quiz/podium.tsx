@@ -29,8 +29,8 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
         <div>
           <div className="flex flex-col justify-center items-center">
             <img
-              src={leaderboard[1]?.avatar}
-              alt={leaderboard[1]?.name}
+              src={leaderboard?.[1]?.avatar}
+              alt={leaderboard?.[1]?.name}
               className="z-0 w-16 h-16 rounded-2xl border-white border-2"
             />
             <Typography className="z-10 w-7 h-7 -mt-[10%] rounded-full bg-[#7555DA] text-sm font-normal font-poppins text-white text-center flex justify-center items-center">
@@ -39,10 +39,10 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
           </div>
           <div className="flex flex-col gap-1">
             <Typography className="text-base text-center font-poppins font-semibold text-[#FFFFFF] max-w-[120px]">
-              {leaderboard[1]?.name}
+              {leaderboard?.[1]?.name}
             </Typography>
             <Typography className="text-sm text-center font-poppins font-normal text-[#FFFFFF]">
-              {leaderboard[1]?.score}
+              {leaderboard?.[1]?.score}
             </Typography>
           </div>
         </div>
@@ -66,8 +66,8 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
             </svg>
             <div className="flex flex-col justify-center items-center">
               <img
-                src={leaderboard[0]?.avatar}
-                alt={leaderboard[0]?.name}
+                src={leaderboard?.[0]?.avatar}
+                alt={leaderboard?.[0]?.name}
                 className="z-0 w-16 h-16 rounded-2xl border-white border-2"
               />
               <Typography className="z-10 w-7 h-7 -mt-[10%] rounded-full bg-white text-sm font-normal font-poppins text-[#27A590] text-center flex justify-center items-center">
@@ -77,10 +77,10 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
           </div>
           <div className="flex flex-col gap-1">
             <Typography className="text-base text-center font-poppins font-semibold text-[#FFFFFF] max-w-[120px]">
-              {leaderboard[0]?.name}
+              {leaderboard?.[0]?.name}
             </Typography>
             <Typography className="text-sm text-center font-poppins font-normal text-[#FFFFFF]">
-              {leaderboard[0]?.score}
+              {leaderboard?.[0]?.score}
             </Typography>
           </div>
         </div>
@@ -90,8 +90,8 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
         <div>
           <div className="flex flex-col justify-center items-center">
             <img
-              src={leaderboard[2]?.avatar}
-              alt={leaderboard[2]?.name}
+              src={leaderboard?.[2]?.avatar}
+              alt={leaderboard?.[2]?.name}
               className="z-0 w-16 h-16 rounded-2xl border-white border-2"
             />
             <Typography className="z-10 w-7 h-7 -mt-[10%] rounded-full bg-[#FDBA22] text-sm font-normal font-poppins text-white text-center flex justify-center items-center">
@@ -100,10 +100,10 @@ const Podium: React.FC<Leaderboard> = ({ leaderboard }: Leaderboard) => {
           </div>
           <div className="flex flex-col gap-1">
             <Typography className="text-base text-center font-poppins font-semibold text-[#FFFFFF] max-w-[120px]">
-              {leaderboard[2]?.name}
+              {leaderboard?.[2]?.name}
             </Typography>
             <Typography className="text-sm text-center font-poppins font-normal text-[#FFFFFF]">
-              {leaderboard[2]?.score}
+              {leaderboard?.[2]?.score}
             </Typography>
           </div>
         </div>

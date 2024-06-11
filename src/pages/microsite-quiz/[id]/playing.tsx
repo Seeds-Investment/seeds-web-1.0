@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use-client';
-import PlayQuiz from '@/containers/play/quiz/PlayQuiz';
-import UseLifeline from '@/containers/play/quiz/UseLifeline';
+import PlayQuiz from '@/components/microsite-quiz/containers/PlayQuiz';
+import UseLifeline from '@/components/microsite-quiz/containers/UseLifeline';
 import withAuth from '@/helpers/withAuth';
 import {
   type IDetailQuiz,

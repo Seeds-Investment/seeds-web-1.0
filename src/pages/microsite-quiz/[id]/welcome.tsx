@@ -1,7 +1,6 @@
 'use client';
 import Welcome from '@/assets/play/quiz/Welcome.json';
-import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import MicrositeQuizLayout from '@/components/microsite-quiz/micrositeQuizLayout';
 import withAuth from '@/helpers/withAuth';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import Lottie from 'lottie-react';
@@ -47,18 +46,16 @@ const WelcomeQuiz = () => {
   timeOut();
 
   return (
-    <PageGradient defaultGradient className="p-5">
-      <QuizLayoutComponent withButton={false}>
-        <div className="w-full h-full flex flex-col justify-center items-center">
-          <div className="text-5xl font-semibold text-white text-center w-72">
-            {t('quiz.welcome')}
-          </div>
-          <div className="w-[400px]">
-            <Lottie animationData={Welcome} loop={true} width={400} />
-          </div>
+    <MicrositeQuizLayout withButton={false}>
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <div className="text-5xl font-semibold text-white text-center w-72">
+          {t('quiz.welcome')}
         </div>
-      </QuizLayoutComponent>
-    </PageGradient>
+        <div className="min-w-[300px] w-1/3">
+          <Lottie animationData={Welcome} loop={true} width={400} />
+        </div>
+      </div>
+    </MicrositeQuizLayout>
   );
 };
 

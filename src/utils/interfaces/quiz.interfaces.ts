@@ -231,10 +231,6 @@ export interface QuizReviewDataI {
 
 export interface QuizCashoutI {
   quiz_id: string;
-  social_media_type: string;
-  social_media_username: string;
-  testimonial: string;
-  photo_url: string;
   method: string;
   account_name: string;
   account_number: string;

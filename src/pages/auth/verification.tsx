@@ -40,6 +40,7 @@ const Register: React.FC = () => {
       identifier: ''
     }
   });
+  console.log(formData);
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',
     password: '',

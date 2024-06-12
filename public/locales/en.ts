@@ -2213,6 +2213,11 @@ export default {
   play: {
     keystat: 'Key Stats'
   },
+  openAccount: {
+    noAccountYet: 'Oops, No Account Opened Yet',
+    stayTuned: 'Stay tuned for the next update!',
+    register: 'Register Now'
+  },
   playCenter: {
     text1: 'My Latest Play',
     text2: 'Leaderboards',

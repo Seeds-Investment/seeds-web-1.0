@@ -34,7 +34,6 @@ const AuthForgotPassNumber: React.FC<AuthForgotPassNumberI> = ({
   const [blank, setBlank] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const formattedData = handleFormattedData(otpForm, country);
-  console.log(formattedData);
 
   const handleNext = async (): Promise<void> => {
     try {

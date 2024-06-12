@@ -21,11 +21,23 @@ const withAuth = (
         try {
           const response = await getUserInfo();
           if (response === 'Access token not found' && !isGuest()) {
-            await router.push('/');
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
           }
         } catch (error: any) {
           if (error.response.status === 401) {
-            await router.push('/');
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
             toast.error(t('landingPageV2.redirectError'));
             // const fetchNewAccessToken = await getRefreshToken();
             // if (
@@ -44,7 +56,13 @@ const withAuth = (
             //   );
             // }
           } else {
-            await router.push('/');
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
           }
         } finally {
           setLoading(false);

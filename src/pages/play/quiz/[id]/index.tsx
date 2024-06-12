@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -34,6 +35,7 @@ const QuizDetail = (): React.ReactElement => {
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [invitationCode, setInvitationCode] = useState<string>('');
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
@@ -135,19 +137,18 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
-
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
-  const handleCopyClick = async (): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${baseUrl}/play/quiz/${detailQuiz?.id}`;
-    await navigator.clipboard.writeText(textToCopy).then(() => {
-      toast('Quiz link copied!');
-    });
-  };
-
+  
   return (
     <>
+      {isShareModal && (
+        <ModalShareQuiz
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={detailQuiz?.id ?? ''}
+          playId={detailQuiz?.quiz_unique_id ?? ''}
+        />
+      )}
       <Image
         src={
           detailQuiz?.banner?.image_url
@@ -281,7 +282,11 @@ const QuizDetail = (): React.ReactElement => {
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>
-            <button onClick={handleCopyClick}>
+            <button
+              onClick={() => {
+                setIsShareModal(true);
+              }}
+            >
               <ShareIcon width={24} height={24} />
             </button>
           </div>

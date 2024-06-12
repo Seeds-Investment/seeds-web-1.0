@@ -68,6 +68,7 @@ export interface IDetailQuiz {
   participant_status: string;
   created_at: Date;
   is_need_invitation_code: boolean;
+  quiz_unique_id: string;
 }
 
 export const initialDetailQuiz = {

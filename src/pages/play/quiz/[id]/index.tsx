@@ -49,7 +49,7 @@ const QuizDetail = (): React.ReactElement => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };
@@ -120,10 +120,12 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);

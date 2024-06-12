@@ -12,7 +12,6 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
-import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
@@ -59,7 +58,7 @@ const TournamentDetail: React.FC = () => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };
@@ -171,8 +170,10 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id !== null) {
       getDetail();
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
@@ -592,4 +593,4 @@ const TournamentDetail: React.FC = () => {
   );
 };
 
-export default withAuth(TournamentDetail);
+export default TournamentDetail;

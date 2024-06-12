@@ -437,6 +437,7 @@ export default {
       }
     },
     circleMembership: {
+      reply: 'Balas...',
       title: 'KETENTUAN PEMILIK CIRCLE ',
       announcement:
         'Syarat dan Ketentuan ini (“Ketentuan”) berlaku pada tanggal dimana anda mengeklik tombol “Terima Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini (“Tanggal Efektif”) antara PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and entity yang menyetujui ketentuan-ketentuan ini (“Pemilik Circle ”).',

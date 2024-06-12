@@ -1,5 +1,6 @@
 import { getUserInfo } from '@/repository/profile.repository';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface props {
   handleFormChange: any;
@@ -32,6 +33,7 @@ const CommentInput: React.FC<props> = ({
 }) => {
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -65,7 +67,7 @@ const CommentInput: React.FC<props> = ({
             onChange={handleFormChange}
             value={displayValue}
             className="w-[100%] h-fit focus:outline-none bg-transparent font-poppins placeholder:font-poppins placeholder:text-neutral-medium"
-            placeholder={'Reply...'}
+            placeholder={`${t('termAndCondition.circleMembership.reply')}`}
           ></textarea>
         </div>
       </div>

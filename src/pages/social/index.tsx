@@ -80,7 +80,7 @@ const Social: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>(
-    isGuest() ? 'for_you' : 'following'
+    isGuest() ? 'for_you' : 'for_you'
   );
   const [userInfo, setUserInfo] = useState<UserData>(initialUserInfo);
   const [dataPost, setDataPost] = useState<any[]>([]);

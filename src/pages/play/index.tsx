@@ -463,6 +463,7 @@ const Player = (): React.ReactElement => {
             </button>
           </div>
         </div>
+        
       </div>
 
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl md:mt-4">

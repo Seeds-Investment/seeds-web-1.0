@@ -61,9 +61,7 @@ const FormModal: React.FC<Props> = ({
         phone_number: formattedData.phoneNumber
       });
       AuthLocalStorage(response);
-      console.log('tes');
       if (localStorage.getItem('accessToken') !== null) {
-        console.log(detailQuiz);
         if (detailQuiz?.participant_status === 'JOINED') {
           await router.push(`/microsite-quiz/${id}/start`);
         } else {
@@ -81,7 +79,6 @@ const FormModal: React.FC<Props> = ({
           }
         }
       }
-      console.log(response);
     } catch (error) {
       setLoading(false);
     } finally {

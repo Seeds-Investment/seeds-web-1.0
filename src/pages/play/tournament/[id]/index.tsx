@@ -12,7 +12,6 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
-import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
@@ -171,8 +170,10 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id !== null) {
       getDetail();
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
@@ -592,4 +593,4 @@ const TournamentDetail: React.FC = () => {
   );
 };
 
-export default withAuth(TournamentDetail);
+export default TournamentDetail;

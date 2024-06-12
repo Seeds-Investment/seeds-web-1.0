@@ -743,3 +743,25 @@ export const getAllPlayCenter = async (
     throw error;
   }
 };
+
+export const getUserRankLeaderboard = async (
+  userId: string,
+  playId: string,
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await playService(`/rank/${userId}?play_id=${playId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

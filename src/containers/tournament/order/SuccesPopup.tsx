@@ -1,6 +1,7 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
 import IconShare from '@/assets/play/tournament/share.svg';
 import Loading from '@/components/popup/Loading';
+import ModalMention from '@/containers/circle/[id]/ModalMention';
 import {
   Button,
   Dialog,
@@ -14,7 +15,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import ShareModal from './ShareModal';
 
 interface SuccessOrderData {
   id: string;
@@ -46,6 +46,7 @@ const SuccessOrderModal: React.FC<props> = ({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [golId, setGolId] = useState<number>(1);
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -66,7 +67,6 @@ const SuccessOrderModal: React.FC<props> = ({
       size={'sm'}
       handler={handleModal}
     >
-      {isLoading && <Loading />}
       <div className="w-full h-full flex justify-end mr-3 cursor-pointer">
         <Image
           alt=""
@@ -77,11 +77,14 @@ const SuccessOrderModal: React.FC<props> = ({
           }}
         />
       </div>
-      <ShareModal
+      {isLoading && <Loading />}
+      <div className="hidden">{golId}</div>
+      <ModalMention
         open={isOpen}
         handleOpen={handleOpen}
-        asset={successData}
+        assetShare={successData}
         setIsLoading={setIsLoading}
+        setGolId={setGolId}
       />
       <DialogHeader className="p-0 font-poppins">
         <div className="min-w-full flex items-center justify-center">

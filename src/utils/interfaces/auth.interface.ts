@@ -149,3 +149,8 @@ export interface AuthPasswordI {
   placeholder: string;
   handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
+
+export interface AuthSSOI {
+  setSelect: (value: number) => void;
+  setGuest: React.Dispatch<React.SetStateAction<string>>;
+}

@@ -519,7 +519,7 @@ const PostSection: React.FC<props> = ({
       toCircleDetail(content?.replace('-circle', ''));
     } else if (content?.includes('-asset') === true) {
       router
-        .push(`/homepage/assets/${content?.replace('-asset', '') as string}`)
+        .push(`/social/asset/${content?.replace('-asset', '') as string}`)
         .catch(err => {
           console.error(err);
         });
@@ -548,7 +548,7 @@ const PostSection: React.FC<props> = ({
         console.error(err);
       });
     } else if (item?.thumbnailType === 'asset') {
-      router.push(`/homepage/assets/${item.id as string}`).catch(err => {
+      router.push(`/social/asset/${item.id as string}`).catch(err => {
         console.error(err);
       });
     }

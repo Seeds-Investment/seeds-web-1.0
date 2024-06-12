@@ -520,6 +520,7 @@ export default {
       }
     },
     circleMembership: {
+      reply: 'Reply...',
       title: 'Circle Membership',
       announcement:
         'This Terms and Condition (“Terms”) is entered into force as of the date you click the “Accept Terms” button, or other equivalent button, indicating your acceptance of these terms (the “Effective Date”) between PT Benih Investasi Teknologi, a company having its domicile at Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and the entity agreeing to these terms (“Circle Owner”).',
@@ -1066,13 +1067,15 @@ export default {
       title3: 'Circle Balance'
     },
     create: {
-      title: 'Create Cirlce',
+      title: 'Create Circle',
       cover: 'Add Cover',
       image: 'Add Image',
       name: {
         label: 'Circle Name',
         placeholder: 'type circle name',
-        error: 'Input Circle Name'
+        error: 'Input Circle Name',
+        duplicate1: 'The name',
+        duplicate2: 'is already in use!',
       },
       hashtag: {
         label: 'Hashtag',
@@ -1327,7 +1330,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Report Cirlce',
+      title: 'Report Circle',
       subtitle1: 'This circle will be reported',
       subtitle2: 'Why are you reporting this circle?',
       option1: 'Spam',
@@ -1704,7 +1707,7 @@ export default {
       text4: 'Current Rank',
       text5: 'Find and follow interesting profiles.',
       text6: 'People List'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Choose your currency',

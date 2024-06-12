@@ -32,6 +32,19 @@ import Toast from './Toast';
 import UniqueInputButton from './UniqueInputButton';
 import { VoiceRecorder } from './VoiceRecording';
 
+interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: any;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
 interface props {
   open: boolean;
   handleOpen: () => void;
@@ -42,6 +55,7 @@ interface props {
   setFilter?: any;
   setData?: any;
   setGolId: any;
+  assetShare?: SuccessOrderData;
 }
 
 interface typeOfPost {
@@ -166,7 +180,8 @@ const ModalMention: React.FC<props> = ({
   setData,
   setGolId,
   dataPost,
-  setDataPost
+  setDataPost,
+  assetShare
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -738,14 +753,26 @@ const ModalMention: React.FC<props> = ({
           hashtags
         };
       } else {
-        payload = {
-          content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
-          media_urls: form.media_urls,
-          privacy: form.privacy,
-          is_pinned: false,
-          user_id: userInfo?.id,
-          hashtags
-        };
+        if (assetShare !== undefined) {
+          payload = {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            content_text: `%[${assetShare?.asset?.asset_ticker}](${assetShare?.asset?.asset_id}) &[${assetShare?.type}](${assetShare?.bid_price}) *[asset_icon](${assetShare?.asset?.asset_icon})`,
+            media_urls: form.media_urls,
+            privacy: form.privacy,
+            is_pinned: false,
+            user_id: userInfo?.id,
+            hashtags
+          };
+        } else {
+          payload = {
+            content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
+            media_urls: form.media_urls,
+            privacy: form.privacy,
+            is_pinned: false,
+            user_id: userInfo?.id,
+            hashtags
+          };
+        }
       }
       if (form.polling.options.length > 0) {
         payload.pollings = form.polling.options;
@@ -817,6 +844,7 @@ const ModalMention: React.FC<props> = ({
         }
       } else {
         await createPostCircleDetail(payload);
+        void router.push('/social');
       }
 
       setForm({
@@ -1194,6 +1222,27 @@ const ModalMention: React.FC<props> = ({
               style={{ color: '#4FE6AF' }}
             />
           </MentionsInput>
+          {assetShare !== undefined && (
+            <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex justify-between ">
+              <div className="flex gap-2">
+                <p className="font-poppins ">{assetShare?.type as string}</p>
+                <p className="font-semibold font-poppins">
+                  {assetShare?.asset?.asset_ticker as string}
+                </p>
+                <p className="font-poppins">at</p>
+                <p className="font-semibold font-poppins">
+                  IDR {assetShare?.bid_price}
+                </p>
+              </div>
+              <img
+                src={assetShare?.asset?.asset_icon}
+                alt="icon"
+                className="w-[40px] rounded-full object-scale-down"
+                width={40}
+                height={40}
+              />
+            </div>
+          )}
           {renderUserSuggestion()}
           {renderDollarSuggestion()}
           {renderUserHashtags()}

@@ -35,6 +35,7 @@ const QuizDetail = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  console.log(userInfo);
   const [invitationCode, setInvitationCode] = useState<string>('');
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
@@ -49,7 +50,7 @@ const QuizDetail = (): React.ReactElement => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };

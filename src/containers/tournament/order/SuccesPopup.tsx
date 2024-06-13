@@ -2,7 +2,7 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
 import IconShare from '@/assets/play/tournament/share.svg';
 import Loading from '@/components/popup/Loading';
-import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
+import ModalMention from '@/containers/circle/[id]/ModalMention';
 import {
   Button,
   Dialog,
@@ -16,7 +16,20 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import ShareModal from './ShareModal';
+
+interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: any;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
 
 interface props {
   handleModal: () => void;
@@ -34,6 +47,7 @@ const SuccessOrderModal: React.FC<props> = ({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [golId, setGolId] = useState<number>(1);
 
   const handleOpen = (): void => {
     if (isOpen) {
@@ -54,8 +68,7 @@ const SuccessOrderModal: React.FC<props> = ({
       size={'sm'}
       handler={handleModal}
     >
-      {isLoading && <Loading />}
-      <div className="w-full h-full flex justify-end mr-3">
+      <div className="w-full h-full flex justify-end mr-3 cursor-pointer">
         <Image
           alt=""
           src={IconShare}
@@ -65,11 +78,14 @@ const SuccessOrderModal: React.FC<props> = ({
           }}
         />
       </div>
-      <ShareModal
+      {isLoading && <Loading />}
+      <div className="hidden">{golId}</div>
+      <ModalMention
         open={isOpen}
         handleOpen={handleOpen}
-        asset={successData}
+        assetShare={successData}
         setIsLoading={setIsLoading}
+        setGolId={setGolId}
       />
       <DialogHeader className="p-0 font-poppins">
         <div className="min-w-full flex items-center justify-center">
@@ -82,28 +98,25 @@ const SuccessOrderModal: React.FC<props> = ({
           />
         </div>
       </DialogHeader>
-      {successData?.lot !== undefined &&
-        successData?.asset?.asset_name !== undefined && (
-          <DialogBody className="p-0 font-poppins">
-            <div className="flex flex-col">
-              <div className="flex justify-center">
-                <Typography className="text-[#262626] font-semibold text-lg">
-                  {t('playSimulation.orderCompleted')}
-                </Typography>
-              </div>
-              <div className="flex justify-center">
-                <Typography className="text-[#7C7C7C] font-normal text-base">
-                  {successData?.type === 'BUY'
-                    ? t('playSimulation.orderCompletedBuy')
-                    : t('playSimulation.orderCompletedSell')}{' '}
-                  {`${successData?.lot ?? 0} ${
-                    successData?.asset?.asset_name ?? ''
-                  }`}
-                </Typography>
-              </div>
-            </div>
-          </DialogBody>
-        )}
+      <DialogBody className="p-0 font-poppins">
+        <div className="flex flex-col">
+          <div className="flex justify-center">
+            <Typography className="text-[#262626] font-semibold text-lg">
+              {t('playSimulation.orderCompleted')}
+            </Typography>
+          </div>
+          <div className="flex justify-center">
+            <Typography className="text-[#7C7C7C] font-normal text-base">
+              {successData?.type === 'BUY'
+                ? t('playSimulation.orderCompletedBuy')
+                : t('playSimulation.orderCompletedSell')}{' '}
+              {`${successData?.lot} ${
+                successData?.asset?.asset_name as string
+              }`}
+            </Typography>
+          </div>
+        </div>
+      </DialogBody>
       <DialogFooter className="p-0">
         <Button
           className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
@@ -123,7 +136,7 @@ const SuccessOrderModal: React.FC<props> = ({
             router
               .push(`/play/tournament/${id as string}/asset-list`)
               .catch(err => {
-                toast.error(`${err as string}`);
+                toast.error(`Error fetching data: ${err as string}`);
               });
           }}
         >

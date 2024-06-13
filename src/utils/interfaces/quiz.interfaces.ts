@@ -69,6 +69,7 @@ export interface IDetailQuiz {
   participant_status: string;
   created_at: Date;
   is_need_invitation_code: boolean;
+  quiz_unique_id: string;
 }
 
 export const initialDetailQuiz = {
@@ -120,6 +121,7 @@ export interface IQuiz {
   admission_fee: number;
   is_played: boolean;
   status: string;
+  quiz_unique_id: string;
 }
 
 export interface IQuizSettings {

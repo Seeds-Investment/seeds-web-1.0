@@ -227,3 +227,143 @@ export interface Assets {
   id: string;
   ticker: string;
 }
+
+export interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: AssetCreate;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface AssetCreate {
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+}
+
+export interface Hashtag {
+  id: string;
+  name: string;
+}
+
+export interface Participant {
+  photo_url: string;
+  id: string;
+}
+
+export interface CircleThumbnail {
+  thumbnailType: 'circle';
+  id: string;
+  name: string;
+  avatar: string;
+  cover: string;
+  description: string;
+  description_rules: string;
+  type: string;
+  premium_fee: number;
+  hashtags: Hashtag;
+  total_rating: number;
+  total_member: number;
+  total_post: number;
+}
+
+export interface PlayThumbnail {
+  thumbnailType: 'play';
+  id: string;
+  category: string;
+  status: string;
+  play_id: string;
+  name: string;
+  type: string;
+  publish_time: string;
+  open_registration_time: string;
+  play_time: string;
+  end_time: string;
+  duration: string[];
+  min_participant: number;
+  max_participant: number;
+  currency: number;
+  admission_fee: number;
+  opening_balance: number;
+  gain_percentage: number;
+  prize_fix_amount: number;
+  prize_pool_amount: number;
+  prize_fix_percentages: number[];
+  prize_pool_percentages: number[];
+  prize_total_amount: number;
+  fee_percentage: number;
+  participants: Participant;
+  total_participants: number;
+  is_need_invitation_code: boolean;
+  tnc: string;
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+  updated_by: string;
+  payment_method: string[];
+  is_free_voucher_claimed: string;
+}
+
+export interface QuizThumbnail {
+  thumbnailType: 'quiz';
+  id: string;
+  circle_category_id: string;
+  name: string;
+  tnc: string;
+  status: string;
+  min_participant: number;
+  max_participant: number;
+  duration_in_minute: number;
+  published_at: string;
+  started_at: string;
+  ended_at: string;
+  admission_fee: number;
+  category: string;
+  prizes: number[];
+  winners: string[];
+  sponsors: Record<string, unknown>;
+  communities: Record<string, unknown>;
+  banner: { image_url: string };
+  lifelines: Record<string, unknown>;
+  participant_lifelines: Record<string, unknown>;
+  total_played: number;
+  total_questions: number;
+  is_joined: boolean;
+  is_recommended: boolean;
+  participant_status: string;
+  participant_user_ids: string[];
+  payment_method: string[];
+  created_at: string;
+}
+
+export interface AssetThumbnail {
+  thumbnailType: 'asset';
+  id: string;
+  seedsTicker: string;
+  realTicker: string;
+  logo: string;
+  name: string;
+  description: string;
+  exchange: string;
+  exchangeCurrency: string;
+  listedCountry: string;
+  createdAt: string;
+  updatedAt: string;
+  isActive: boolean;
+  assetType: string;
+  exchangeRate: number;
+  providerName: string;
+  providerWebsite: string;
+  priceBarHistory: PriceBarHistory;
+  lastPrice: LastPrice;
+}

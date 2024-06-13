@@ -25,13 +25,12 @@ const withRedirect = async <T extends QueryType>(
       redirect: `/play/quiz/${query?.qi as string}/leaderboard`
     },
     {
-      // wqi stand for withdrawal quiz id
-      logic: query?.wqi !== undefined,
-      redirect: `/withdrawal/quiz/${query?.wqi as string}`
+      logic: query?.withdrawal !== undefined && query?.quizId !== undefined,
+      redirect: `/withdrawal?quizId=${query?.quizId as string}`
     },
     {
-      logic: query?.wti !== undefined,
-      redirect: `/play/tournament/${query?.wti as string}/withdrawal`
+      logic: query?.quizId !== undefined,
+      redirect: `/play/quiz/${query?.quizId as string}`
     },
     {
       logic: query?.qi !== undefined,

@@ -1171,7 +1171,7 @@ export default {
       sort: {
         all: 'Semua',
         relevant: 'Paling Relevan',
-        recent: 'Paling Baru',
+        recent: 'Paling Baru'
       }
     }
   },
@@ -1633,7 +1633,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',
@@ -1703,7 +1703,7 @@ export default {
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
     leaderboard: 'Klasemen',
-    leaderboardEmpty: "Data leaderboard kosong.",
+    leaderboardEmpty: 'Data leaderboard kosong.',
     remainingTime: 'Sisa waktumu',
     currentRank: 'Peringkatmu sekarang',
     currentScore: 'Skor Kamu Sekarang',
@@ -2066,7 +2066,9 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20: 'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan',
+    text21: 'Harga Aktivasi Hentikan Kerugian',
+    text22: 'Harga aktivasi Take Profit'
   },
   discover: {
     hotNews: 'Hot News',

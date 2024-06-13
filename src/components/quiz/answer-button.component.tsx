@@ -23,6 +23,16 @@ const AnswerButton = ({
   const [bgColor, setBgColor] = useState<string>('bg-white');
   const [borderColor, setBorderColor] = useState<string>('border-[#E9E9E9]');
 
+  const isValidURL = (option: string): boolean => {
+    try {
+      // eslint-disable-next-line no-new
+      new URL(option.replace(/^[A-D]\.\s/, ''));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (spillAnswer) {
       if (rightAnswer) {
@@ -41,10 +51,35 @@ const AnswerButton = ({
   return (
     <button
       onClick={onClick}
-      className={`w-full rounded-full px-2 py-1 lg:px-4 lg:py-3 border ${bgColor} ${borderColor} full flex flex-row justify-between items-center`}
+      className={`${
+        isValidURL(title)
+          ? `${bgColor} ${borderColor} rounded-xl ${
+              spillAnswer ? 'border' : ''
+            }`
+          : `w-full rounded-full px-2 lg:px-4 py-3 border ${bgColor} ${borderColor} full flex flex-row justify-between items-center mb-2`
+      }`}
       disabled={disabled}
     >
-      <div className="text-sm text-start">{title}</div>
+      {isValidURL(title) ? (
+        <>
+          <p>{title.substring(0, 2)}</p>
+          <div
+            className={`flex justify-center p-6 ${
+              spillAnswer ? '' : 'border border-[#E9E9E9]'
+            }  rounded-lg`}
+          >
+            <Image
+              src={title.replace(/^[A-D]\.\s/, '')}
+              alt="answer"
+              width={120}
+              height={120}
+              className="object-cover rounded-md"
+            />
+          </div>
+        </>
+      ) : (
+        <div className="text-sm text-start">{title}</div>
+      )}
       {spillAnswer ? (
         rightAnswer ? (
           <Image src={CorrectIcon} alt="answer result" width={20} height={20} />

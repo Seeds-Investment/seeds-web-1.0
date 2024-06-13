@@ -4,7 +4,7 @@ import { getLastUpdatedEN, getLastUpdatedID } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
   getLeaderboardByPlayId,
-  getPlayBallance
+  getUserRankLeaderboard
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -37,14 +37,15 @@ interface LeaderData {
   win_rate: number;
 }
 
-interface BallanceTournament {
-  balance: number;
-  portfolio: number;
-  total_sell: number;
-  total_buy: number;
+interface UserRank {
+  avatar: string;
   currency: string;
-  return_value: number;
-  return_percentage: number;
+  gain_percentage: number;
+  gain_value: number;
+  id: string;
+  name: string;
+  rank: number;
+  tag: string;
 }
 
 const LeaderBoardPage: React.FC = () => {
@@ -52,26 +53,17 @@ const LeaderBoardPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(false);
-  const [loadingBallance, setLoadingBallance] = useState(false);
+  const [loadingUserRank, setLoadingUserRank] = useState<boolean>(false);
   const [currentRank, setCurrentRank] = useState<number>(0);
   const languageCtx = useContext(LanguageContext);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
-  const [ballance, setBallance] = useState<BallanceTournament>({
-    balance: 0,
-    portfolio: 0,
-    total_sell: 0,
-    total_buy: 0,
-    return_value: 0,
-    return_percentage: 0,
-    currency: 'IDR'
-  });
+  const [userRank, setUserRank] = useState<UserRank>();
 
   const [userInfo, setUserInfo] = useState<UserInfo>();
 
   useEffect(() => {
     if (typeof id === 'string') {
       void fetchPlaySimulation(id);
-      void fetchPlayBallance(userInfo?.preferredCurrency as string);
     }
 
     fetchData()
@@ -79,14 +71,11 @@ const LeaderBoardPage: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast(`Error fetching data: ${error as string}`);
+  useEffect(() => {
+    if ((id !== undefined) && (userInfo?.id !== undefined)) {
+      void fetchUserRank(id as string, userInfo?.id );
     }
-  };
+  }, [id, userInfo]);
 
   useEffect(() => {
     leaderBoard?.map(leader => {
@@ -96,6 +85,15 @@ const LeaderBoardPage: React.FC = () => {
       return null;
     });
   }, [leaderBoard]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const fetchPlaySimulation = async (id: string): Promise<void> => {
     try {
@@ -109,21 +107,21 @@ const LeaderBoardPage: React.FC = () => {
     }
   };
 
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
+  const fetchUserRank = async (playId: string, userId: string): Promise<void> => {
     try {
-      setLoadingBallance(true);
-      const response = await getPlayBallance(id as string, { currency });
-      setBallance(response);
+      setLoadingUserRank(true);
+      const response = await getUserRankLeaderboard(userId, playId);
+      setUserRank(response?.data)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
-      setLoadingBallance(false);
+      setLoadingUserRank(false);
     }
   };
 
   return (
     <>
-      {loading && loadingBallance && <Loading />}
+      {(loading || loadingUserRank) && <Loading />}
       <div className="w-full h-auto justify-center cursor-default bg-white p-4 rounded-xl">
         <div className="relative flex flex-col justify-center bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl">
           <div className="mt-8 mb-4 flex flex-col justify-center items-center">
@@ -279,22 +277,22 @@ const LeaderBoardPage: React.FC = () => {
               {currentRank !== 0 && (
                 <div className="flex items-center">
                   <Image
-                    src={leaderBoard[currentRank - 1]?.photo_url}
-                    alt={leaderBoard[currentRank - 1]?.user_name}
+                    src={userRank?.avatar ?? ''}
+                    alt={userRank?.name ?? ''}
                     width={100}
                     height={100}
                     className="w-10 h-10 rounded-full mx-5"
                   />
                   <div className="ml-3">
                     <Typography className="font-semibold font-poppins text-sm md:text-base">
-                      {leaderBoard[currentRank - 1]?.user_name}
+                      {userRank?.name ?? ''}
                     </Typography>
                     <Typography className="font-poppins">
-                      @{userInfo?.seedsTag}
+                      {userRank?.tag ?? ''}
                     </Typography>
                     <Typography
                       className={`${
-                        leaderBoard[currentRank - 1]?.gain < 0
+                        (userRank?.gain_value ?? 0) < 0
                           ? 'text-[#DD2525]'
                           : 'text-[#3AC4A0]'
                       } font-poppins text-sm md:text-base`}
@@ -302,12 +300,12 @@ const LeaderBoardPage: React.FC = () => {
                       {userInfo?.preferredCurrency !== undefined
                         ? userInfo?.preferredCurrency
                         : 'IDR'}
-                      {standartCurrency(ballance?.return_value ?? 0).replace(
+                      {standartCurrency(userRank?.gain_value ?? 0).replace(
                         'Rp',
                         ''
                       )}
-                      {` (${leaderBoard[currentRank - 1]?.gain < 0 ? '' : '+'}`}
-                      {leaderBoard[currentRank - 1]?.gain}%)
+                      {` (${(userRank?.gain_value ?? 0) < 0 ? '' : '+'}`}
+                      {(userRank?.gain_percentage)?.toFixed(2) ?? 0}%)
                     </Typography>
                   </div>
                 </div>

@@ -1865,24 +1865,11 @@ export default {
     placeholderAccount: 'Select your account',
     placeholderAccountName: 'Your account name',
     placeholderAccountNumber: 'Your account number',
-    completeYourData: 'Complete your data!',
-    fullname: 'Fullname',
-    placeholderFullname: 'Your fullname',
-    socialMedia: 'Social Media',
-    placeholderSocialMedia: 'Select a social media account',
-    socialMediaName: 'Social Media Name',
-    placeholderSocialMediaName: 'Input your account social media',
-    winnerTestimonial: 'Testimonial',
-    placeholderWinnerTestimonial: 'Input your testimonial',
-    winnerPhoto: 'Upload Image',
-    placeholderWinnerPhoto: 'Upload your best photos, Seeds friends!',
-    addPhoto: 'Add Photo',
     transferBank: 'Transfer with Bank',
     eWallet: 'E-Wallet',
     transferEWallet: 'Transfer with E-Wallet',
     bankList: 'Bank List',
     eWalletList: 'E-Wallet List',
-    socialMediaList: 'Social Media List',
     thankyou: 'Thank You!',
     withdrawalRequest:
       'Your withdrawal request is being processed. Please wait max 1x24 hours.',
@@ -2226,6 +2213,11 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Oops, No Account Opened Yet',
+    stayTuned: 'Stay tuned for the next update!',
+    register: 'Register Now'
   },
   playCenter: {
     text1: 'My Latest Play',

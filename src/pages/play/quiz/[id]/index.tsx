@@ -120,10 +120,12 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);

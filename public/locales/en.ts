@@ -1075,7 +1075,7 @@ export default {
         placeholder: 'type circle name',
         error: 'Input Circle Name',
         duplicate1: 'The name',
-        duplicate2: 'is already in use!',
+        duplicate2: 'is already in use!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -2121,6 +2121,13 @@ export default {
       description: 'Discover the experts for more insights',
       seeAll: 'See All'
     }
+  },
+  academy: {
+    courseTitle: 'Let’s found your favorite course',
+    courseSearchPlaceholder: 'What you want to learn today?',
+    categoryTitle: 'Categories',
+    noCategoriesTitle: 'Oops, There’s No Categories Yet',
+    noCategoriesDescription: 'Stay tuned for more updates!'
   },
   seedsEvent: {
     search: 'Search',

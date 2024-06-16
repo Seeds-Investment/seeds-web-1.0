@@ -997,7 +997,7 @@ export default {
         placeholder: 'Ketik nama Circle',
         error: 'Masukan Nama Circle',
         duplicate1: 'Nama',
-        duplicate2: 'telah digunakan!',
+        duplicate2: 'telah digunakan!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -1636,7 +1636,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',
@@ -2048,6 +2048,13 @@ export default {
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
     }
+  },
+  academy: {
+    courseTitle: 'Ayo temukan kursus favoritmu',
+    courseSearchPlaceholder: 'Apa yang ingin Anda pelajari hari ini?',
+    categoryTitle: 'Kategori',
+    noCategoriesTitle: 'Ups, Belum Ada Kategori',
+    noCategoriesDescription: 'Nantikan pembaruan lainnya!'
   },
   seedsEvent: {
     search: 'Cari event',

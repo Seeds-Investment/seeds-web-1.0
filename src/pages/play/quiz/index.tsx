@@ -148,7 +148,7 @@ const Player = (): React.ReactElement => {
             </div>
 
             {/* Filter Section */}
-            <div className="flex flex-row items-center justify-center gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
+            <div className="flex flex-row items-center justify-start gap-3 mt-4 max-w-full overflow-x-auto no-scroll">
               {statusQuiz.map(item => (
                 <button
                   className={`border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
@@ -172,13 +172,13 @@ const Player = (): React.ReactElement => {
             {/* List Quiz Section */}
             <div className="mt-4 flex flex-col mb-4 lg:m-0 lg:flex-row justify-between items-start lg:items-center">
               <div>
-                <h1 className="text-3xl font-semibold font-poppins">
+                <h1 className="text-3xl font-semibold font-poppins mt-4">
                   {t('playCenter.text7')}
                 </h1>
                 <p className="text-sm font-poppins">{t('quiz.text1')}</p>
               </div>
             </div>
-            <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-4">
+            <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
               {listQuiz?.length === 0 && !loading ? (
                 <div className="col-span-3">
                   <Image src={ListQuizEmpty} width={500} alt="Top Quiz Empty" />

@@ -208,6 +208,26 @@ export interface AnalysisData {
   performance_5y: number;
 }
 
+export interface Banner {
+  id: string;
+  name: string;
+  external_url: string;
+  image_url: string;
+  type: string;
+  title: string;
+  description: string;
+  tnc: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+}
+
+export interface Assets {
+  id: string;
+  ticker: string;
+}
+
 export interface SuccessOrderData {
   id: string;
   play_id: string;

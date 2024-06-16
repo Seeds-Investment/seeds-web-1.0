@@ -81,7 +81,7 @@ const CardPrice: React.FC<props> = ({ data, loading }) => {
             </div>
             <div className="flex items-center mx-3">
               <p className="text-lg font-semibold text-black my-2">
-                Rp. {new Intl.NumberFormat().format(data?.lastPrice?.open)}
+                Rp. {new Intl.NumberFormat().format(data?.lastPrice?.open ?? 0)}
               </p>
             </div>
           </div>

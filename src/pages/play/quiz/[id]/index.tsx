@@ -11,16 +11,19 @@ import {
   getQuizById,
   validateInvitationCode
 } from '@/repository/quiz.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { ShareIcon } from '@heroicons/react/24/outline';
+import { Switch } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
@@ -40,6 +43,19 @@ const QuizDetail = (): React.ReactElement => {
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );
+  const [useCoins, setUseCoins] = useState<boolean>(false);
+  const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+
+  const handleGetSeedsCoin = async (): Promise<void> => {
+    try {
+      const dataCoins = await getTransactionSummary();
+      setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
+    } catch (error: any) {
+      toast.error(
+        `Error get data coins: ${error?.response?.data?.message as string}`
+      );
+    }
+  };
 
   useEffect(() => {
     if (
@@ -55,7 +71,6 @@ const QuizDetail = (): React.ReactElement => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
-
         setUserInfo(dataInfo);
       } catch (error) {
         toast.error(`Error fetching data: ${error as string}`);
@@ -81,7 +96,8 @@ const QuizDetail = (): React.ReactElement => {
           router.push(
             `/play/quiz/${
               id as string
-            }/welcome?invitationCode=${invitationCode}`
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            }/welcome?invitationCode=${invitationCode}&useCoins=${useCoins}`
           );
         }
       }
@@ -107,10 +123,13 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
+      handleGetSeedsCoin();
     }
   }, [id, userInfo]);
   useEffect(() => {
@@ -312,6 +331,25 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
+          <div className="flex flex-row items-center justify-between mt-2.5">
+            <div className="flex flex-row items-center">
+              <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
+              <div className="text-xs text-[#7C7C7C]">
+                {totalAvailableCoins > 0
+                  ? `Redeem ${totalAvailableCoins} seeds coin`
+                  : `Coin cannot be redeemed`}
+              </div>
+            </div>
+            <div>
+              <Switch
+                disabled={totalAvailableCoins <= 0}
+                checked={useCoins}
+                onChange={() => {
+                  setUseCoins(!useCoins);
+                }}
+              />
+            </div>
+          </div>
           <button
             disabled={loading}
             onClick={() => {
@@ -322,7 +360,10 @@ const QuizDetail = (): React.ReactElement => {
                   if (detailQuiz?.is_need_invitation_code) {
                     handleInvitationCode();
                   } else {
-                    router.push(`/play/quiz/${id as string}/welcome`);
+                    router.push(
+                      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                      `/play/quiz/${id as string}/welcome?useCoins=${useCoins}`
+                    );
                   }
                 }
               } else if (
@@ -331,7 +372,7 @@ const QuizDetail = (): React.ReactElement => {
               ) {
                 router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { qi: id as string }, '/auth');
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${

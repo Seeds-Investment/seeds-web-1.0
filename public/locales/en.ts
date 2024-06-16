@@ -945,7 +945,8 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1741,6 +1742,7 @@ export default {
     questionsAmount: '{{questions}} Questions',
     questions: 'Questions',
     quiz: 'Quiz',
+    invitationCode: 'Invitation Code',
     entranceFee: 'Entrance Fee',
     played: 'Played',
     duration: 'Duration',
@@ -1773,6 +1775,13 @@ export default {
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
     vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    questionLevel: 'Question Level',
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    questionDescription1: 'You will do',
+    questionDescription2:
+      'questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!',
     incorrect: 'Incorrect',
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
@@ -1908,6 +1917,7 @@ export default {
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
       totalAmount: 'Total Amount',
       idTransaction: 'ID Transaction',
       close: 'Close',
@@ -1953,6 +1963,24 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    winnerModalTitle: 'Congrats you won the Tournament!',
+    looseModalTitle: 'Not bad! You made it to',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      virtualNumber: 'Your Virtual Account Number',
+      successful: 'Successful',
+      pending: 'Pending Paid Tournament',
+      recurringSaved: 'Your recurring has been saved!'
+    },
     clock: {
       days: 'd',
       hours: 'h',
@@ -2092,21 +2120,6 @@ export default {
       members: 'members',
       description: 'Discover the experts for more insights',
       seeAll: 'See All'
-    },
-    payment: {
-      paymentMethod: 'Payment Method',
-      virtualNumber: 'Your Virtual Account Number',
-      pendingPaidTournament: 'Pending Paid Tournament',
-      tournamentFee: 'Tournament Fee',
-      adminFee: 'Admin Fee',
-      serviceFee: 'Service Fee',
-      discountFee: 'Discount Fee',
-      totalAmount: 'Total Amount',
-      idTransaction: 'ID Transaction',
-      close: 'Close',
-      successful: 'Successful',
-      pending: 'Pending Paid Tournament',
-      recurringSaved: 'Your recurring has been saved!'
     }
   },
   seedsEvent: {
@@ -2223,7 +2236,11 @@ export default {
   play: {
     keystat: 'Key Stats'
   },
-
+  openAccount: {
+    noAccountYet: 'Oops, No Account Opened Yet',
+    stayTuned: 'Stay tuned for the next update!',
+    register: 'Register Now'
+  },
   playCenter: {
     text1: 'My Latest Play',
     text2: 'Leaderboards',

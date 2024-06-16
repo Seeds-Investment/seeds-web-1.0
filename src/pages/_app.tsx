@@ -65,7 +65,8 @@ function App({
     router.pathname.startsWith('/my-profile') ||
     router.pathname.startsWith('/chat') ||
     router.pathname.startsWith('/faq') ||
-    router.pathname.startsWith('/withdrawal');
+    router.pathname.startsWith('/withdrawal') ||
+    router.pathname.startsWith('/microsite-quiz');
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
   if (loginLayouts) {
@@ -83,10 +84,17 @@ function App({
             <LoadingProvider>
               <ErrorBEProvider>
                 <SessionProvider session={pageProps.session}>
-                  <LoginLayout>
-                    {getLayout(<Component {...pageProps} />)}
-                    <ToastContainer />
-                  </LoginLayout>
+                  {router.pathname.startsWith('/microsite-quiz') ? (
+                    <>
+                      {getLayout(<Component {...pageProps} />)}
+                      <ToastContainer />
+                    </>
+                  ) : (
+                    <LoginLayout>
+                      {getLayout(<Component {...pageProps} />)}
+                      <ToastContainer />
+                    </LoginLayout>
+                  )}
                 </SessionProvider>
               </ErrorBEProvider>
             </LoadingProvider>

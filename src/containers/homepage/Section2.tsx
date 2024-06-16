@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/helpers/currency';
+import { formatCurrency, standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import {
   getPlaySimulation,
@@ -86,7 +86,6 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
     },
     prize: [150000, 100000, 50000]
   });
-
   const fetchPlaySimulationDetail = async (currency: string): Promise<void> => {
     try {
       const res = await getPlaySimulationDetail(currency);
@@ -324,7 +323,9 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                   {formatCurrency((playerData?.asset ?? 0).toFixed(0))}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
-                  {t('homepage.section2.text2')} {playerData?.gain ?? 0}
+                  {t('homepage.section2.text2')}:{' '}
+                  {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                  {standartCurrency(playerData?.gain ?? 0).replace('Rp', '')}
                 </h3>
               </div>
               <div className="flex-row">
@@ -417,7 +418,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
               className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
               onClick={() => {
                 router
-                  .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
+                  .push(`/homepage/play/${playDetail.play_id}`)
                   .catch(err => {
                     toast(err, { type: 'error' });
                   });

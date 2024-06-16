@@ -3,7 +3,7 @@
 'use client';
 import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
 import { standartCurrency } from '@/helpers/currency';
-import { type AssetItemType } from '@/pages/homepage/play-assets';
+import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import {
   getWatchlistById,
   updateWatchlist

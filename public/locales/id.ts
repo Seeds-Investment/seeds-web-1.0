@@ -864,7 +864,8 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1173,7 +1174,7 @@ export default {
       sort: {
         all: 'Semua',
         relevant: 'Paling Relevan',
-        recent: 'Paling Baru',
+        recent: 'Paling Baru'
       }
     }
   },
@@ -1401,7 +1402,7 @@ export default {
       selectAsset: 'Pilih Asset',
       overview: 'Ringkasan',
       stocks: 'Saham',
-      crypto: 'kripto'
+      crypto: 'Kripto'
     },
     errorState: {
       image1: 'Gambar kamu melebihi batas ukuran 5MB.',
@@ -1562,7 +1563,7 @@ export default {
   playSimulation: {
     assetList: 'Daftar Aset',
     seedsCash: 'Dana Seeds',
-    cashBalance: 'Saldo Kas',
+    cashBalance: 'Saldo Virtual',
     portfolio: 'Portofolio',
     assetDetail: 'Detail Aset',
     today: 'Hari Ini',
@@ -1670,6 +1671,7 @@ export default {
     questionsAmount: '{{questions}} Pertanyaan',
     questions: 'Pertanyaan',
     quiz: 'Quiz',
+    invitationCode: 'Kode Masuk',
     entranceFee: 'Biaya Pendaftaran',
     played: 'Main',
     duration: 'Durasi',
@@ -1693,19 +1695,26 @@ export default {
     extraCash:
       'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
     select: 'Pilih',
-    quizCompanion: 'Pick your power-up!',
+    quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Struggling? This power-up will guide you towards the correct answer',
+      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
     freeOptions:
-      '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
+      '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
     phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
     vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
+    questionLevel: 'Level Pertanyaan',
+    easy: 'Mudah',
+    medium: 'Sedang',
+    hard: 'Sulit',
+    questionDescription1: 'Kamu akan mengerjakan',
+    questionDescription2:
+      'level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!',
     incorrect: 'Salah',
     correct: 'Benar',
     anotherQuiz: 'Quiz Lainnya',
     leaderboard: 'Klasemen',
-    leaderboardEmpty: "Data leaderboard kosong.",
+    leaderboardEmpty: 'Data leaderboard kosong.',
     remainingTime: 'Sisa waktumu',
     currentRank: 'Peringkatmu sekarang',
     currentScore: 'Skor Kamu Sekarang',
@@ -1835,6 +1844,7 @@ export default {
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
       discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
       totalAmount: 'Total Biaya',
       idTransaction: 'ID Transaksi',
       close: 'Tutup',
@@ -1875,11 +1885,29 @@ export default {
     categoryAsset: 'Kategori Aset',
     circleRecommendation: 'Rekomendasi Circle',
     leaderboardBanner1: 'Kamu di posisi atas?',
-    leaderboardBanner2: '',
+    leaderboardBanner2: 'Periksa',
     leaderboardBanner3: 'Cek Papan Peringkat',
     leaderboardBanner4: 'Cek Papan Peringkat!',
     tutorialTournament: 'Tutorial Turnamen',
     remainingTimeText: 'Turnamen telah berakhir!',
+    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Turnamen!',
+    looseModalTitle: 'Tidak buruk! Anda berhasil di peringkat',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      successful: 'Pembayaran Berhasil',
+      pending: 'Menunggu Pembayaran',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
     clock: {
       days: 'h',
       hours: 'j',
@@ -2019,21 +2047,6 @@ export default {
       members: 'peserta',
       description: 'Temukan ahlinya untuk informasi yang lebih banyak',
       seeAll: 'Lihat Lebih'
-    },
-    payment: {
-      paymentMethod: 'Metode Pembayaran',
-      virtualNumber: 'Nomor Virtual Akun Anda',
-      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
-      tournamentFee: 'Biaya Turnamen',
-      adminFee: 'Biaya Admin',
-      serviceFee: 'Biaya Layanan',
-      discountFee: 'Diskon',
-      totalAmount: 'Total Biaya',
-      idTransaction: 'ID Transaksi',
-      close: 'Tutup',
-      successful: 'Pembayaran Berhasil',
-      pending: 'Menunggu Pembayaran',
-      recurringSaved: 'Pembayaran anda telah tersimpan'
     }
   },
   seedsEvent: {
@@ -2148,6 +2161,11 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
+    stayTuned: 'Nantikan update selanjutnya!',
+    register: 'Daftar Sekarang'
   },
 
   playCenter: {

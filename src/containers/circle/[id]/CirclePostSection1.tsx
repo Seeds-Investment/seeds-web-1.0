@@ -244,12 +244,11 @@ const CirclePostSection1: React.FC<props> = ({
                   <button
                     onClick={async () => {
                       await handleJoin();
-                      TrackerEvent({
-                        event: `Seeds_btn_join_circle_web`,
-                        userId: userInfo?.id,
-                        pageName: 'circle_detail_join',
-                        circleId
-                      });
+                       TrackerEvent({
+                         event: `SW_circle_btn_join_circle`,
+                         userData: userInfo,
+                         circleData: dataCircle
+                       });
                     }}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
                   >

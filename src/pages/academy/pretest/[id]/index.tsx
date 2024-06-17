@@ -10,7 +10,7 @@ const Pretest: React.FC = () => {
         <div className="bg-white p-3 rounded-xl mt-5">
           <div
             style={{ backgroundImage: "url('/assets/academy/bg-pretest.png')" }}
-            className="relative w-full bg-center bg-cover rounded-xl aspect-[900/1600] md:aspect-[1600/900] overflow-auto shadow-md"
+            className="relative w-full bg-center bg-cover rounded-xl aspect-[1600/1900] sm:aspect-[1600/1700] md:aspect-[1600/1800] lg:aspect-[1600/1900] xl:aspect-[1600/900] overflow-auto shadow-md"
           >
             <div className="p-3">
               <div className="flex flex-row justify-between text-white font-medium text-lg">

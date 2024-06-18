@@ -128,11 +128,12 @@ const DoneQuiz: React.FC = () => {
 
     const diff = end - start;
     const minutes =
-      (detailQuiz?.duration_in_minute ?? 6000) -
-      Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      ((detailQuiz?.duration_in_minute as number) * 60000 - diff) / 60000;
+    const seconds = Math.floor((minutes - Math.floor(minutes)) * 60);
     return `${
-      Math.abs(minutes) < 10 ? `0${Math.abs(minutes)}` : Math.abs(minutes)
+      Math.abs(Math.floor(minutes)) < 10
+        ? `0${Math.abs(Math.floor(minutes))}`
+        : Math.abs(Math.floor(minutes))
     }:${Math.abs(seconds) < 10 ? `0${Math.abs(seconds)}` : Math.abs(seconds)}`;
   }
 

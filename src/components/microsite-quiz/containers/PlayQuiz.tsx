@@ -297,7 +297,7 @@ const QuizPlay = ({
       <MicrositeQuizLayout
         hideBackButton
         centerContent={
-          <div className="flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
+          <div className="ml-10 flex flex-col items-center justify-center lg:gap-2 gap-0.5 font-poppins text-white">
             <div className="text-base lg:text-2xl font-semibold capitalize">
               {`${quizQuestions?.[currentPage]?.difficulty} ${
                 quizQuestions.length / 3
@@ -423,7 +423,7 @@ const QuizPlay = ({
               </div>
             </div>
 
-            <div className=" flex flex-col items-center justify-end w-full relative bg-white rounded-t-[32px] p-3 md:p-8 text-poppins text-center">
+            <div className=" flex flex-col items-center justify-end w-full relative bg-white rounded-t-[32px] p-5 text-poppins text-center">
               <div className="w-full absolute -top-9 flex items-center justify-center">
                 <div className="w-[76px] h-[76px] rounded-full border-2 border-[#106B6E] bg-white flex flex-col justify-center items-center">
                   <Image alt="timer" src={Timer} width={15} height={15} />

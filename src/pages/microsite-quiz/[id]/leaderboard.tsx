@@ -1,6 +1,6 @@
 import { getLeaderBoardByQuizId } from '@/repository/quiz.repository';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 import MyPosition from '@/components/microsite-quiz/leaderboard-mocrisite-quiz/myPosition';
 import Podium, {
@@ -8,6 +8,8 @@ import Podium, {
 } from '@/components/microsite-quiz/leaderboard-mocrisite-quiz/podium';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
+import LanguageContext from '@/store/language/language-context';
+import { getLocalStorage } from '@/utils/common/localStorage';
 import { Button, Card, Progress, Typography } from '@material-tailwind/react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
@@ -20,7 +22,7 @@ const LeaderBoardPage = (): React.ReactElement => {
   const [myRank, setMyRank] = useState();
   const { t } = useTranslation();
   const [fakeLoading, setFakeLoading] = useState(0);
-  const [intervalState, setIntervalState] = useState<NodeJS.Timer>();
+  const languageCtx = useContext(LanguageContext);
 
   const getleaderboardData = async (): Promise<void> => {
     try {
@@ -32,6 +34,17 @@ const LeaderBoardPage = (): React.ReactElement => {
     }
   };
 
+  const getLastTranslation = useCallback(async (): Promise<void> => {
+    try {
+      if (typeof window !== 'undefined') {
+        const translation = getLocalStorage('translation', 'EN');
+        languageCtx.languageHandler(translation as 'EN' | 'ID');
+      }
+    } catch {
+      toast.error('Error in translation');
+    }
+  }, []);
+
   useEffect(() => {
     if (id !== undefined) {
       void getleaderboardData();
@@ -39,20 +52,18 @@ const LeaderBoardPage = (): React.ReactElement => {
   }, [id]);
 
   useEffect(() => {
-    setTimeout(() => {
-      void router.replace(`/microsite-quiz/`);
-      localStorage.clear();
-    }, 60000);
-
-    const interval = setInterval(() => {
+    setInterval(() => {
       setFakeLoading(prev => prev + 1);
     }, 600);
-    setIntervalState(interval);
-    return () => {
-      clearInterval(intervalState);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    void getLastTranslation();
   }, []);
+
+  useEffect(() => {
+    if (fakeLoading === 100) {
+      void router.push('/microsite-quiz');
+      localStorage.clear();
+    }
+  }, [fakeLoading]);
 
   return (
     <PageGradient
@@ -71,56 +82,50 @@ const LeaderBoardPage = (): React.ReactElement => {
             style={{
               backgroundImage: "url('/assets/quiz/bg-leaderboard-quiz.png')"
             }}
-            className="flex justify-center rounded-2xl"
+            className="flex justify-center rounded-2xl bg-no-repeat bg-cover"
           >
             <Podium leaderboard={leaderBoard} />
           </div>
           {myRank !== undefined && myRank > 0 ? (
             <MyPosition leaderboard={leaderBoard} myRank={myRank} />
           ) : null}
-
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="px-2 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
-                  Rank
-                </th>
-                <th className="px-4 py-5 text-start text-sm font-semibold font-poppins text-[#7C7C7C]">
-                  Player
-                </th>
-                <th className="px-4 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
-                  Total Point
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderBoard?.slice(3).map((leader, index) => (
-                <tr key={index} className="border-b">
-                  <td className="px-2 py-5 text-center">{leader?.rank}.</td>
-                  <td className="px-4 py-5 text-start flex">
-                    <div className="">
+          <div className="h-32 overflow-y-scroll">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="px-2 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
+                    {t('micrositeQuiz.rank')}
+                  </th>
+                  <th className="px-4 py-5 text-start text-sm font-semibold font-poppins text-[#7C7C7C]">
+                    {t('micrositeQuiz.player')}
+                  </th>
+                  <th className="px-4 py-5 text-center text-sm font-semibold font-poppins text-[#7C7C7C]">
+                    {t('micrositeQuiz.point')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderBoard?.slice(3).map((leader, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="px-2 py-5 text-center">{leader?.rank}.</td>
+                    <td className="px-4 py-5 text-start flex items-center gap-3">
                       <img
                         src={leader?.avatar}
-                        alt={leader?.name}
+                        alt={leader?.name.split('_')[0]}
                         className="w-10 h-10 rounded-full"
                       />
-                    </div>
-                    <div className="mx-3">
                       <h1 className="text-base font-normal font-poppins text-[#262626]">
-                        {leader?.name}
+                        {leader?.name.split('_')[0]}
                       </h1>
-                      <h1 className="text-sm font-normal font-poppins text-[#7C7C7C]">
-                        @{leader?.seeds_tag}
-                      </h1>
-                    </div>
-                  </td>
-                  <td className="px-4 py-5 text-center text-base font-normal font-poppins">
-                    {leader?.score}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                    <td className="px-4 py-5 text-center text-base font-normal font-poppins">
+                      {leader?.score}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
         <Card className="flex flex-col justify-between items-center w-full lg:w-1/3 lg:h-full p-4 gap-2 rounded-none lg:rounded-2xl">
           <Typography className="font-semibold font-poppins text-xl text-[#262626]">
@@ -154,7 +159,7 @@ const LeaderBoardPage = (): React.ReactElement => {
           </div>
           <Button
             onClick={async () => {
-              await router.replace('/microsite-quiz');
+              await router.push('/microsite-quiz');
             }}
             className="bg-[#3AC4A0] w-full sm:w-2/3 rounded-full normal-case font-poppins font-semibold text-white text-sm"
           >

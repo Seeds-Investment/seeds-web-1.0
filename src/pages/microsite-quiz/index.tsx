@@ -36,7 +36,9 @@ import { toast } from 'react-toastify';
 
 const MicrositeQuiz = (): React.ReactElement => {
   const router = useRouter();
-  const id = 'c9b630dc-217d-4454-b602-3c78ecc3c212';
+  const id = process.env.NEXT_PUBLIC_DOMAIN
+    ? 'c404a480-9088-4b0d-bb4f-c88b32cc3a74'
+    : 'c9b630dc-217d-4454-b602-3c78ecc3c212';
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);

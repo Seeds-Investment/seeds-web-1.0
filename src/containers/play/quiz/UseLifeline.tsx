@@ -77,7 +77,7 @@ const UseLifeline = ({
 
   useEffect(() => {
     timeOut();
-    const countDownTime = expiryInSecond ?? 6000 * 1000;
+    const countDownTime = (expiryInSecond ?? 6000) * 1000;
     setCountDown(countDownTime);
     const interval = setInterval(() => {
       setCountDown(prev => prev - 1000);

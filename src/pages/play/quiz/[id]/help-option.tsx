@@ -23,6 +23,7 @@ export interface Payment {
   phone_number: string;
   promo_code: string;
   invitation_code: string;
+  is_use_coins: boolean;
 }
 
 export interface Quiz {
@@ -36,6 +37,7 @@ const HelpOptionContainer = () => {
   const [paymentData, setPaymentData] = useState<PaymentData>();
   const router = useRouter();
   const invitationCode = router.query.invitationCode ?? '';
+  const useCoins = router.query.useCoins === 'true';
   return showing === 'lifeline' ? (
     <HelpOption
       onPay={data => {
@@ -47,6 +49,7 @@ const HelpOptionContainer = () => {
     <PaymentList
       dataPost={paymentData}
       invitationCode={invitationCode as string}
+      useCoins={useCoins}
     />
   );
 };

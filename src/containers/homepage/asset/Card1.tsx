@@ -4,13 +4,14 @@ import {
   calculatePercentageDifference,
   standartCurrency
 } from '@/helpers/currency';
+import { type AssetI } from '@/utils/interfaces/play.interface';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 interface props {
-  data: any;
+  data: AssetI;
   currency: string;
 }
 
@@ -31,11 +32,11 @@ const Card1: React.FC<props> = ({ data, currency }) => {
             <div className="flex flex-row gap-2">
               <p className="text-base font-semibold font-poppins text-black">
                 {data?.realTicker} / {data?.assetType === 'CRYPTO' && 'B'}
-                {currency}
+                {currency ?? 'IDR'}
               </p>
             </div>
             <p className="text-lg font-normal text-black mb-3 font-poppins">
-              {data?.name}
+              {data?.name ?? 'Loading...'}
             </p>
           </div>
         </div>
@@ -46,6 +47,17 @@ const Card1: React.FC<props> = ({ data, currency }) => {
       <p className="text-xl font-semibold text-black my-2">
         {currency ?? 'IDR'}{' '}
         {standartCurrency(data?.lastPrice?.open ?? 0).replace('Rp', '')}
+      </p>
+      <p className="text-sm font-normal text-[#5E44FF]">
+        {currency ?? 'IDR'}{' '}
+        {standartCurrency(data?.lastPrice?.vwap ?? 0).replace('Rp', '')} (
+        {
+          calculatePercentageDifference(
+            data?.lastPrice?.open ?? 0,
+            data?.lastPrice?.close ?? 0
+          )?.value
+        }{' '}
+        %) - {t('playSimulation.today')}
       </p>
       <div className="w-full flex flex-row justify-between">
         <p className="text-sm font-normal text-[#5E44FF]">

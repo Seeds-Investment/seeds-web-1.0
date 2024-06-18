@@ -118,8 +118,9 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                 key={item.id}
                 onClick={() => {
                   TrackerEvent({
-                    event: `Seeds_view_landing_page_web`,
-                    pageName: item.name
+                    event: `SW_landing_${item.name
+                      .toLowerCase()
+                      .replace(' ', '_')}_page`
                   });
                 }}
               >
@@ -185,7 +186,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </Menu>
         </section>
       </section>
-      {/* TODO: END NEW HEADER */}
+      ;{/* TODO: END NEW HEADER */}
       <section className="flex xl:hidden justify-between mx-4 items-center h-20">
         <Link href="https://seeds.finance">
           <Image alt="SeedsLogo" src={SeedLogo} height={46} />
@@ -220,11 +221,10 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                         ? 'text-[#3AC4A0]'
                         : 'text-[#7C7C7C]'
                     }`}
-                    onClick={() => {
+                    onClick={async () => {
                       setOpenMenu(false);
                       TrackerEvent({
-                        event: `Seeds_view_landing_page_web`,
-                        pageName: item.name
+                        event: `SW_landing_${item.name.toLowerCase()}_page`
                       });
                     }}
                   >
@@ -293,6 +293,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </MenuList>
         </Menu>
       </section>
+      ;
     </nav>
   );
 };

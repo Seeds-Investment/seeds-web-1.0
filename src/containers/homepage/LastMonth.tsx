@@ -88,7 +88,7 @@ const LastMonthPage = (): React.ReactElement => {
         >
           <div className="flex justify-between">
             <div className="flex w-full items-center gap-2 md:gap-4">
-              <div className='flex flex-col justify-center items-center'>
+              <div className="flex flex-col justify-center items-center">
                 <p className="font-semibold text-[22px] font-poppins">
                   {playerData?.rank}
                 </p>
@@ -113,8 +113,12 @@ const LastMonthPage = (): React.ReactElement => {
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <p className="font-bold text-md md:text-xl">{playerData?.name}</p>
-                <p className="text-sm md:text-[16px] my-1">@{playerData?.seeds_tag}</p>
+                <p className="font-bold text-md md:text-xl">
+                  {playerData?.name}
+                </p>
+                <p className="text-sm md:text-[16px] my-1">
+                  @{playerData?.seeds_tag}
+                </p>
                 <p className="text-[#3AC4A0] text-sm md:text-md">
                   {t('homepage.section2.text2')} ({playerData?.gain}%)
                 </p>
@@ -152,9 +156,13 @@ const LastMonthPage = (): React.ReactElement => {
                 />
                 <div>
                   <div className="flex">
-                    <p className="font-bold me-2 text-md md:text-xl">{leader.name}</p>
+                    <p className="font-bold me-2 text-md md:text-xl">
+                      {leader.name}
+                    </p>
                   </div>
-                  <p className='text-sm md:text-[16px] my-1'>@{leader.seeds_tag}</p>
+                  <p className="text-sm md:text-[16px] my-1">
+                    @{leader.seeds_tag}
+                  </p>
                   {leader.rank !== 1 &&
                   leader.rank !== 2 &&
                   leader.rank !== 3 ? (

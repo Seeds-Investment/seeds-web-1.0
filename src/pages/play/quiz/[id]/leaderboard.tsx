@@ -45,11 +45,7 @@ const LeaderBoardPage = (): React.ReactElement => {
       expiredUnixTime < currentUnixTime
     ) {
       if (id !== undefined) {
-        await withRedirect(
-          router,
-          { lead: 'true', quizId: id as string },
-          '/auth'
-        );
+        await withRedirect(router, { l: 'true', qi: id as string }, '/auth');
       }
       toast.error(t('landingPageV2.redirectError'));
     }
@@ -111,16 +107,14 @@ const LeaderBoardPage = (): React.ReactElement => {
           </div>
         </div>
         <div className="relative flex justify-center bg-gradient-to-r from-[#10A8AD] to-[#79F0B8] rounded-2xl">
-          {
-            leaderBoard === null &&
-            <div className='w-full my-8 flex justify-center items-center text-lg font-semibold text-white'>
+          {leaderBoard === null && (
+            <div className="w-full my-8 flex justify-center items-center text-lg font-semibold text-white">
               {t('quiz.leaderboardEmpty')}
             </div>
-          }
+          )}
           <div className="flex justify-center pt-3">
             <div className="justify-center mt-auto items-center text-center">
-              {
-                (leaderBoard?.[1] !== undefined) &&
+              {leaderBoard?.[1] !== undefined && (
                 <>
                   <div className="w-full justify-center items-center">
                     <img
@@ -139,7 +133,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     {leaderBoard[1]?.score}
                   </div>
                 </>
-              }
+              )}
               <div>
                 <Image
                   src={rank2Box}
@@ -151,8 +145,7 @@ const LeaderBoardPage = (): React.ReactElement => {
               </div>
             </div>
             <div className="justify-center mt-auto text-center">
-              {
-                leaderBoard?.[0] !== undefined &&
+              {leaderBoard?.[0] !== undefined && (
                 <>
                   <div className="mx-auto justify-center">
                     <svg
@@ -186,7 +179,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     {leaderBoard[0]?.score}
                   </div>
                 </>
-              }
+              )}
               <div>
                 <Image
                   src={rank1Box}
@@ -198,8 +191,7 @@ const LeaderBoardPage = (): React.ReactElement => {
               </div>
             </div>
             <div className="justify-center mt-auto text-center">
-              {
-                leaderBoard?.[2] !== undefined &&
+              {leaderBoard?.[2] !== undefined && (
                 <>
                   <div className="w-full justify-center">
                     <img
@@ -218,7 +210,7 @@ const LeaderBoardPage = (): React.ReactElement => {
                     {leaderBoard[2]?.score}
                   </div>
                 </>
-              }
+              )}
               <div>
                 <Image
                   src={rank3Box}

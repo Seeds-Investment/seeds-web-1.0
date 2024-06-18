@@ -4,6 +4,7 @@ import { Dialog, DialogBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface IModalQuizWinner {
   open: boolean;
@@ -28,7 +29,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
       open={open}
       handler={handleOpen}
       size="md"
-      className="h-screen md:h-auto md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
+      className="h-screen md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
     >
       <DialogBody className="flex flex-col items-center md:gap-5 gap-4 p-0 h-full w-full">
         <div className="flex flex-row-reverse justify-between items-center w-full">
@@ -89,7 +90,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             <button
               onClick={() => {
                 router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
-                  console.log(err);
+                  toast(`Error: ${err as string}`);
                 });
               }}
               className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
@@ -104,7 +105,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             <button
               onClick={() => {
                 router.push(`/play/quiz/${quizId}/leaderboard`).catch(err => {
-                  console.log(err);
+                  toast(`Error: ${err as string}`);
                 });
               }}
               className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}

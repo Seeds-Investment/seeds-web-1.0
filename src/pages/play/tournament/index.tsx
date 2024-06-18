@@ -155,16 +155,24 @@ const PlayTournament = (): React.ReactElement => {
   const handleRedirectPage = async (
     id: string,
     isJoined: boolean,
-    status: string,
+    status: string
   ): Promise<void> => {
     if (isJoined) {
       if (status === 'ACTIVE') {
-        await router.push(`/play/tournament/${id}/home`).catch(error => {toast.error(error)})
+        await router.push(`/play/tournament/${id}/home`).catch(error => {
+          toast.error(error);
+        });
       } else if (status === 'PAST') {
-        await router.push(`/play/tournament/${id}/notification`).catch(error => {toast.error(error)})
+        await router
+          .push(`/play/tournament/${id}/notification`)
+          .catch(error => {
+            toast.error(error);
+          });
       }
-    } else if ((status === 'ACTIVE') || (status === 'CREATED')) {
-        await router.push(`/play/tournament/${id}`).catch(error => {toast.error(error)})
+    } else if (status === 'ACTIVE' || status === 'CREATED') {
+      await router.push(`/play/tournament/${id}`).catch(error => {
+        toast.error(error);
+      });
     }
   };
 
@@ -462,20 +470,18 @@ const PlayTournament = (): React.ReactElement => {
                             disabled={isDisabled(item?.is_joined, item?.status)}
                             className="flex justify-center items-center cursor-pointer text-[10px] xl:text-[9px] h-[10px] font-semibold bg-[#3AC4A0] text-white px-4 md:px-4 xl:px-2 2xl:px-4 rounded-full hover:shadow-lg duration-300"
                           >
-                            {
-                              item?.is_joined
-                                ? (item?.status === 'ACTIVE' 
-                                  ? t('tournament.tournamentCard.openButton')
-                                  : (item?.status === 'PAST' 
-                                    ? t('tournament.tournamentCard.leaderboard')
-                                    : t('tournament.tournamentCard.canceled')
-                                  ))
-                                : ((item?.status === 'ACTIVE') || (item?.status === 'CREATED'))
-                                  ? t('tournament.tournamentCard.joinButton')
-                                  : (item?.status === 'CANCELED')
-                                    ? t('tournament.tournamentCard.canceled')
-                                    : t('tournament.tournamentCard.ended')
-                            }
+                            {item?.is_joined
+                              ? item?.status === 'ACTIVE'
+                                ? t('tournament.tournamentCard.openButton')
+                                : item?.status === 'PAST'
+                                ? t('tournament.tournamentCard.leaderboard')
+                                : t('tournament.tournamentCard.canceled')
+                              : item?.status === 'ACTIVE' ||
+                                item?.status === 'CREATED'
+                              ? t('tournament.tournamentCard.joinButton')
+                              : item?.status === 'CANCELED'
+                              ? t('tournament.tournamentCard.canceled')
+                              : t('tournament.tournamentCard.ended')}
                           </Button>
                         </div>
                       </div>

@@ -65,12 +65,8 @@ export const PopupWinnerPlay: React.FC<PopupProps> = ({ playId, onClose }) => {
       <div className="flex flex-col gap-3 justify-center  px-8 pt-2 items-center text-center">
         <Typography className=" md:block font-poppins font-semibold text-2xl text-center text-wrap text-[#262626]">
           {dataResult?.prize > 0
-            ? 'Congrats you won'
-            : 'Aw nice try! You only '}
-          <br />
-          {dataResult?.prize > 0
-            ? 'the Tournaments!'
-            : `ranked ${dataResult?.rank}th`}
+            ? t('tournament.winnerModalTitle')
+            : `${t('tournament.looseModalTitle')} ${dataResult?.rank}`}
         </Typography>
         {dataResult?.prize > 0 ? (
           <Image

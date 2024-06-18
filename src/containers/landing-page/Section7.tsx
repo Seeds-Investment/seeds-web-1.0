@@ -1,15 +1,15 @@
-import Johnny from '@/assets/landing-page/Johnny.jpg';
-import Willy from '@/assets/landing-page/Willy.jpg';
-import arvin from '@/assets/landing-page/arvin.jpg';
-import syanne from '@/assets/landing-page/syanne.jpg';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-
+import { Autoplay, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Johnny from '../../assets/landing-page/Johnny.jpg';
+import Willy from '../../assets/landing-page/Willy.jpg';
+import arvin from '../../assets/landing-page/arvin.jpg';
+import Syanne from '../../assets/landing-page/syanne.jpg';
 export default function Section6(): React.ReactElement {
   const { t } = useTranslation();
 
@@ -22,39 +22,41 @@ export default function Section6(): React.ReactElement {
   useEffect(() => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
+    return () => {};
   }, [entry]);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          dots: false,
-          slidesToShow: 3
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          dots: false,
-          slidesToShow: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          dots: false,
-          slidesToShow: 1
-        }
-      }
-    ]
+  const persons = [
+    {
+      image: Johnny,
+      name: 'Johnny',
+      desc: 'CEO of Ringan, Seeds Strategic Advisor'
+    },
+    {
+      image: Willy,
+      name: 'Willy',
+      desc: 'CEO'
+    },
+    {
+      image: arvin,
+      name: 'Arvin',
+      desc: 'Investment Journalist'
+    },
+    {
+      image: Syanne,
+      name: 'Syanne',
+      desc: 'Investment Analyst & Journalist TBA'
+    }
+  ];
+
+  const autoplaySwiper = {
+    delay: 1500
   };
 
+  const breakpointsSwiper = {
+    320: { slidesPerView: 1 },
+    480: { slidesPerView: 2 },
+    640: { slidesPerView: 3 }
+  };
   return (
     <section
       ref={ref}
@@ -79,75 +81,44 @@ export default function Section6(): React.ReactElement {
             </h1>
           </div>
         </div>
-        <div className="mx-auto lg:mx-16 justify-center items-center lg:mt-12 mt-5">
-          <Slider {...settings}>
-            <div className="lg:pe-20 mx-12 w-[180px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
-              <Image
-                src={syanne}
-                alt={`Event`}
-                width={300}
-                height={300}
-                className="w-[250px] h-[250px] mx-[60px] lg:mx-8"
-              />
-              <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <h1 className="font-poppins font-semibold text-[#FFFFFF]">
-                  Syanne
-                </h1>
-                <h1 className="font-poppins font-normal text-[#FFFFFF]">
-                  Investment Analyst & Journalist TBA
-                </h1>
-              </div>
-            </div>
-            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70  ">
-              <Image
-                src={Willy}
-                alt={`Event`}
-                width={300}
-                height={300}
-                className="w-[250px] h-[250px] mx-[60px] lg:mx-8"
-              />
-              <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <h1 className="font-poppins font-semibold text-[#FFFFFF]">
-                  Willy
-                </h1>
-                <h1 className="font-poppins font-normal text-[#FFFFFF]">CEO</h1>
-              </div>
-            </div>
-            <div className="lg:pe-20  w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
-              <Image
-                src={Johnny}
-                alt={`Event`}
-                width={300}
-                height={300}
-                className="w-[250px] h-[250px] mx-[60px] lg:mx-8"
-              />
-              <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <h1 className="font-poppins font-semibold text-[#FFFFFF]">
-                  Johnny
-                </h1>
-                <h1 className="font-poppins font-normal text-[#FFFFFF]">
-                  CEO of Ringan, Seeds Strategic Advisor
-                </h1>
-              </div>
-            </div>
-            <div className="lg:pe-20 w-[200px] flex flex-col items-center bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ">
-              <Image
-                src={arvin}
-                alt={`Event`}
-                width={300}
-                height={300}
-                className="w-[250px] h-[250px] mx-[60px] lg:mx-8"
-              />
-              <div className="text-left rounded-b-3xl p-3 bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF]">
-                <h1 className="font-poppins font-semibold text-[#FFFFFF]">
-                  Arvin
-                </h1>
-                <h1 className="font-poppins font-normal text-[#FFFFFF]">
-                  Investment Journalist
-                </h1>
-              </div>
-            </div>
-          </Slider>
+
+        <div className="lg:flex-col lg:justify-center lg:items-center md:px-[250px] mb-20 md:mt-16">
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            pagination={{ dynamicBullets: true }}
+            autoplay={autoplaySwiper}
+            loop={true}
+            slidesPerView={3}
+            spaceBetween={25}
+            breakpoints={breakpointsSwiper}
+          >
+            {persons?.length !== 0
+              ? persons?.map((data, idx) => (
+                  <SwiperSlide
+                    key={idx}
+                    className="lg:!flex-col lg:!items-center lg:!justify-center"
+                  >
+                    <div className="flex flex-col justify-center items-center">
+                      <Image
+                        src={data.image}
+                        alt={`Event`}
+                        width={300}
+                        height={300}
+                        className="w-[300px] h-[300px] lg:mx-8"
+                      />
+                    </div>
+                    <div className="text-left rounded-b-3xl p-3 h-[85px] bg-gradient-to-r from-[#9A76FE] flex flex-col justify-center to-[#4FE6AF]">
+                      <h1 className="font-poppins font-semibold text-[#FFFFFF]">
+                        {data.name}
+                      </h1>
+                      <h1 className="font-poppins font-normal text-[#FFFFFF]">
+                        {data.desc}
+                      </h1>
+                    </div>
+                  </SwiperSlide>
+                ))
+              : null}
+          </Swiper>
         </div>
       </div>
     </section>

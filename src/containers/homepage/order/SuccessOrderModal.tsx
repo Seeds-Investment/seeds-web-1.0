@@ -11,6 +11,7 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface props {
   handleModal: () => void;
@@ -74,9 +75,9 @@ const SuccessOrderModal: React.FC<props> = ({
           className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"
           onClick={() => {
             router
-              .push(`/homepage/portfolio/${playId as string}?order=success`)
+              .push(`/homepage/play/${playId as string}/portfolio`)
               .catch(err => {
-                console.log(err);
+                toast.error(`${err as string}`);
               });
           }}
         >

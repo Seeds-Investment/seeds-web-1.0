@@ -21,8 +21,8 @@ const withRedirect = async <T extends QueryType>(
 
   const redirectList: RedirectList = [
     {
-      logic: query?.lead !== undefined && query?.quizId !== undefined,
-      redirect: `/play/quiz/${query?.quizId as string}/leaderboard`
+      logic: query?.l !== undefined && query?.qi !== undefined,
+      redirect: `/play/quiz/${query?.qi as string}/leaderboard`
     },
     {
       logic: query?.withdrawal !== undefined && query?.quizId !== undefined,
@@ -33,8 +33,16 @@ const withRedirect = async <T extends QueryType>(
       redirect: `/play/quiz/${query?.quizId as string}`
     },
     {
-      logic: query?.circleId !== undefined,
-      redirect: `/connect/post/${query?.circleId as string}`
+      logic: query?.qi !== undefined,
+      redirect: `/play/quiz/${query?.qi as string}`
+    },
+    {
+      logic: query?.ci !== undefined,
+      redirect: `/connect/post/${query?.ci as string}`
+    },
+    {
+      logic: query?.ti !== undefined,
+      redirect: `/play/tournament/${query?.ti as string}`
     }
   ];
 

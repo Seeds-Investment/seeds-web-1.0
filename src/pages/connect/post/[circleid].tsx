@@ -59,7 +59,7 @@ const CirclePost = (): JSX.Element => {
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
-      await withRedirect(router, { circleId }, '/auth');
+      await withRedirect(router, { ci: circleId }, '/auth');
       toast.error(t('landingPageV2.redirectError'));
     }
   };

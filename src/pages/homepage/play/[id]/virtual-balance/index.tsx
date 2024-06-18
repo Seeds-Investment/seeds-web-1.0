@@ -144,7 +144,7 @@ const CashBalancePage: React.FC = () => {
       setIsLoading(true);
       getHistoryTransaction(id as string, { ...params, currency })
         .then(res => {
-          setMetadata(res?.metadata)
+          setMetadata(res?.metadata);
           setTransaction(res?.playOrders);
         })
         .then(() => {
@@ -172,7 +172,10 @@ const CashBalancePage: React.FC = () => {
       datasets: [
         {
           label: ' Percentage',
-          data: convertToPercent((ballance?.balance ?? 0), (ballance?.portfolio ?? 0)),
+          data: convertToPercent(
+            ballance?.balance ?? 0,
+            ballance?.portfolio ?? 0
+          ),
           backgroundColor: ['#3AC4A0', '#DD2525']
         }
       ]
@@ -220,7 +223,7 @@ const CashBalancePage: React.FC = () => {
             <div className="flex gap-4 items-center">
               <Typography className="text-[#27A590] font-poppins text-base font-semibold">
                 {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
-                  (ballance?.balance ?? 0)
+                  ballance?.balance ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -255,7 +258,7 @@ const CashBalancePage: React.FC = () => {
             <div className="flex gap-4 items-center">
               <Typography className="text-[#DD2525] font-poppins text-base font-semibold">
                 {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
-                  (ballance?.portfolio ?? 0)
+                  ballance?.portfolio ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -267,8 +270,8 @@ const CashBalancePage: React.FC = () => {
             {!isLoading ? (
               transaction?.length !== 0 ? (
                 <>
-                  {
-                    transaction?.map((data: HistoryTransactionDTO, idx: number) => {
+                  {transaction?.map(
+                    (data: HistoryTransactionDTO, idx: number) => {
                       return (
                         <div key={idx} className="w-full">
                           <AssetOrderCard
@@ -279,8 +282,8 @@ const CashBalancePage: React.FC = () => {
                           />
                         </div>
                       );
-                    })
-                  }
+                    }
+                  )}
                   <div className="flex justify-center mx-auto my-8">
                     <AssetPagination
                       currentPage={params.page}

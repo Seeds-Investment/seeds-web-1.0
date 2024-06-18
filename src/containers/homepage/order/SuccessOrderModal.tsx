@@ -48,8 +48,8 @@ const SuccessOrderModal: React.FC<props> = ({
           />
         </div>
       </DialogHeader>
-      {
-        ((successData?.lot !== undefined) && (successData?.asset?.asset_name !== undefined)) &&
+      {successData?.lot !== undefined &&
+        successData?.asset?.asset_name !== undefined && (
           <DialogBody className="p-0 font-poppins">
             <div className="flex flex-col">
               <div className="flex justify-center">
@@ -69,7 +69,7 @@ const SuccessOrderModal: React.FC<props> = ({
               </div>
             </div>
           </DialogBody>
-      }
+        )}
       <DialogFooter className="p-0">
         <Button
           className="rounded-full min-w-full capitalize font-semibold text-sm bg-[#3AC4A0] text-white font-poppins mt-4"

@@ -23,7 +23,13 @@ import { standartCurrency } from '@/helpers/currency';
 import { getMarketList } from '@/repository/market.repository';
 import { getPlayBallance, getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { SortingFilter, TypeFilter, type BallanceTournament, type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import {
+  SortingFilter,
+  TypeFilter,
+  type BallanceTournament,
+  type IDetailTournament,
+  type UserInfo
+} from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -120,7 +126,8 @@ export default function PlayAssetsPage(): React.ReactElement {
   });
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
 
-  const [loadingDetailTournament, setLoadingDetailTournament] = useState<boolean>(false);
+  const [loadingDetailTournament, setLoadingDetailTournament] =
+    useState<boolean>(false);
   const [loadingBalance, setLoadingBalance] = useState<boolean>(false);
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false);
 
@@ -132,9 +139,7 @@ export default function PlayAssetsPage(): React.ReactElement {
     SortingFilter.ASCENDING
   );
 
-  const [assetActiveType, setAssetActiveType] = useState(
-    TypeFilter.ALL
-  );
+  const [assetActiveType, setAssetActiveType] = useState(TypeFilter.ALL);
 
   const filterSorting: FilterSorting[] = [
     {
@@ -202,7 +207,7 @@ export default function PlayAssetsPage(): React.ReactElement {
     if (userInfo !== undefined) {
       setFilter(prevState => ({
         ...prevState,
-        currency: (userInfo?.preferredCurrency ?? 'IDR')
+        currency: userInfo?.preferredCurrency ?? 'IDR'
       }));
     }
   }, [userInfo]);
@@ -218,7 +223,7 @@ export default function PlayAssetsPage(): React.ReactElement {
       });
     }
   }, [filter, userInfo, assetActiveSort, assetActiveType, searchQuery]);
-  
+
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -284,9 +289,13 @@ export default function PlayAssetsPage(): React.ReactElement {
   return (
     <>
       {detailTournament === undefined ||
-        loadingDetailTournament ||
-        loadingAssets ||
-        loadingBalance ? <Loading /> : ''}
+      loadingDetailTournament ||
+      loadingAssets ||
+      loadingBalance ? (
+        <Loading />
+      ) : (
+        ''
+      )}
       {isDetailModal && (
         <ModalDetailTournament
           onClose={() => {
@@ -302,7 +311,6 @@ export default function PlayAssetsPage(): React.ReactElement {
         />
       )}
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-        
         {/* Tournament Details */}
         <div className="flex justify-start w-full gap-2">
           <Typography className="text-xl xl:text-2xl font-semibold">
@@ -346,9 +354,9 @@ export default function PlayAssetsPage(): React.ReactElement {
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
               {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
-              {` (${
-                ballance?.return_value < 0 ? '' : '+'
-              }${(ballance?.return_percentage ?? 0).toFixed(2)}%)`}
+              {` (${ballance?.return_value < 0 ? '' : '+'}${(
+                ballance?.return_percentage ?? 0
+              ).toFixed(2)}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
               {`${t('tournament.assets.virtualBalance')}: `}
@@ -370,8 +378,7 @@ export default function PlayAssetsPage(): React.ReactElement {
                   .push(`/homepage/play/${id as string}/portfolio`)
                   .catch(err => {
                     toast.error(`${err as string}`);
-                  }
-                )
+                  })
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
@@ -433,20 +440,19 @@ export default function PlayAssetsPage(): React.ReactElement {
             <div className="text-lg font-semibold">
               {t('tournament.detailRemaining')}
             </div>
-            {
-              detailTournament?.end_time !== undefined ?
-                <CountdownTimer
-                  className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
-                  deadline={detailTournament?.end_time.toString()}
-                />
-                :
-                <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
-                  Loading...
-                </Typography>
-            }
+            {detailTournament?.end_time !== undefined ? (
+              <CountdownTimer
+                className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
+                deadline={detailTournament?.end_time.toString()}
+              />
+            ) : (
+              <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
+                Loading...
+              </Typography>
+            )}
           </div>
         </div>
-        
+
         {/* Leaderboard */}
         <div className="bg-gradient-to-br from-[#7B51FF] from-30% to-[#B7A6EB] w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4 overflow-hidden">
           <Image
@@ -457,11 +463,13 @@ export default function PlayAssetsPage(): React.ReactElement {
             className="w-[60px] md:w-[80px] xl:ml-8"
           />
           <div
-            onClick={async () => await router.push(`/play/tournament/${id as string}/leaderboard`)}
+            onClick={async () =>
+              await router.push(`/play/tournament/${id as string}/leaderboard`)
+            }
             className="w-full lg:flex lg:justify-between ml-2 z-10"
           >
             <div className="flex flex-col justify-center items-start text-sm lg:text-lg text-white z-10">
-              <div className='z-10'>{t('tournament.leaderboardBanner1')}</div>
+              <div className="z-10">{t('tournament.leaderboardBanner1')}</div>
               <div className="flex gap-2 z-10">
                 <div>{t('tournament.leaderboardBanner2')}</div>
                 <div className="text-[#3AC4A0] font-semibold cursor-pointer z-10">
@@ -473,7 +481,7 @@ export default function PlayAssetsPage(): React.ReactElement {
               {t('tournament.leaderboardBanner3')}
             </div>
           </div>
-          <div className='absolute bottom-[10px] right-[-30px] w-[100px] h-[100px] flex justify-center items-center z-0'>
+          <div className="absolute bottom-[10px] right-[-30px] w-[100px] h-[100px] flex justify-center items-center z-0">
             <Image
               width={100}
               height={100}
@@ -516,9 +524,8 @@ export default function PlayAssetsPage(): React.ReactElement {
           {showFilter && (
             <div className="w-full flex items-center justify-center mt-4 duration-500">
               <div className="w-full flex flex-col md:flex-row justify-between items-center gap-3 max-w-full overflow-x-auto no-scroll">
-
                 {/* Asset Type Filter */}
-                <div className='w-full md:w-fit flex gap-2'>
+                <div className="w-full md:w-fit flex gap-2">
                   {filterType.map(item => (
                     <button
                       className={`w-full flex gap-2 border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap ${
@@ -528,15 +535,15 @@ export default function PlayAssetsPage(): React.ReactElement {
                       }`}
                       key={item.id}
                       onClick={() => {
-                        setAssetActiveType(item.value)
+                        setAssetActiveType(item.value);
                       }}
                     >
                       <div>{item.title}</div>
                     </button>
                   ))}
                 </div>
-                
-                <div className='w-full md:w-fit flex gap-2'>
+
+                <div className="w-full md:w-fit flex gap-2">
                   {/* Sorting Filter */}
                   {filterSorting.map(item => (
                     <button
@@ -570,7 +577,9 @@ export default function PlayAssetsPage(): React.ReactElement {
                         .push(
                           `${
                             id !== undefined
-                              ? `/homepage/assets/${data.id}?playId=${id as string}`
+                              ? `/homepage/assets/${data.id}?playId=${
+                                  id as string
+                                }`
                               : `/homepage/assets/${data.id}`
                           }`
                         )
@@ -588,7 +597,9 @@ export default function PlayAssetsPage(): React.ReactElement {
                       />
                       <div className="flex flex-col justify-center items-start">
                         <div className="flex gap-1">
-                          <div className="font-semibold">{data?.seedsTicker}</div>
+                          <div className="font-semibold">
+                            {data?.seedsTicker}
+                          </div>
                           <div>/ {data?.exchangeCurrency}</div>
                         </div>
                         <div className="text-[#7C7C7C] text-xs md:text-sm">
@@ -610,7 +621,8 @@ export default function PlayAssetsPage(): React.ReactElement {
                         <Image
                           alt=""
                           src={
-                            (data?.priceBar?.close ?? 0) >= (data?.priceBar?.open ?? 0)
+                            (data?.priceBar?.close ?? 0) >=
+                            (data?.priceBar?.open ?? 0)
                               ? Bullish
                               : Bearish
                           }
@@ -618,14 +630,15 @@ export default function PlayAssetsPage(): React.ReactElement {
                         />
                         <div
                           className={`${
-                            (data?.priceBar?.close ?? 0) >= (data?.priceBar?.open ?? 0)
+                            (data?.priceBar?.close ?? 0) >=
+                            (data?.priceBar?.open ?? 0)
                               ? 'text-[#3AC4A0]'
                               : 'text-[#DD2525]'
                           } text-sm md:text-base`}
                         >
                           {`(${calculatePercentageChange(
-                            (data?.priceBar?.open ?? 0),
-                            (data?.priceBar?.close ?? 0)
+                            data?.priceBar?.open ?? 0,
+                            data?.priceBar?.close ?? 0
                           )}%)`}
                         </div>
                       </div>

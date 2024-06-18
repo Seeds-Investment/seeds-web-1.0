@@ -74,7 +74,6 @@ export const SlideCircle: React.FC = () => {
       .catch(() => {});
   }, []);
 
-
   const PrevBtn: React.FC = () => {
     const swiper = useSwiper();
     setActiveSlide(activeSlide);
@@ -375,7 +374,6 @@ export const SlideCircle: React.FC = () => {
           <NextBtn />
         </div>
       </Swiper>
-
     </div>
   );
 };

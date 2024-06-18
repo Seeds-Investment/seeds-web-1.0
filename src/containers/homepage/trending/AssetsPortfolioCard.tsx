@@ -89,7 +89,12 @@ const AssetPortfolioCard: React.FC<props> = ({
     >
       <CardBody className="p-3 inline-block h-auto">
         <div className="flex flex-row items-center">
-          <Avatar className='w-[40px] h-[40px] md:w-[50px] md:h-[50px]' variant="circular" src={data?.logo} alt="logo" />
+          <Avatar
+            className="w-[40px] h-[40px] md:w-[50px] md:h-[50px]"
+            variant="circular"
+            src={data?.logo}
+            alt="logo"
+          />
 
           <div className="flex ml-5 w-auto flex-col gap-0.5">
             <div className="flex flex-row">
@@ -118,8 +123,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 className={`flex font-normal text-xs md:text-sm ${
                   handleArrow(
                     calculatePercentageDifference(
-                      (data?.lastPrice?.open ?? 0),
-                      (data?.lastPrice?.close ?? 0)
+                      data?.lastPrice?.open ?? 0,
+                      data?.lastPrice?.close ?? 0
                     )?.value
                   )
                     ? 'text-[#3AC4A0]'
@@ -128,8 +133,8 @@ const AssetPortfolioCard: React.FC<props> = ({
               >
                 {handleArrow(
                   calculatePercentageDifference(
-                    (data?.lastPrice?.open ?? 0),
-                    (data?.lastPrice?.close ?? 0)
+                    data?.lastPrice?.open ?? 0,
+                    data?.lastPrice?.close ?? 0
                   )?.value
                 ) ? (
                   <ArrowTrendingUpIcon
@@ -147,8 +152,8 @@ const AssetPortfolioCard: React.FC<props> = ({
                 (
                 {
                   calculatePercentageDifference(
-                    (data?.lastPrice?.open ?? 0),
-                    (data?.lastPrice?.close ?? 0)
+                    data?.lastPrice?.open ?? 0,
+                    data?.lastPrice?.close ?? 0
                   )?.value
                 }{' '}
                 %)

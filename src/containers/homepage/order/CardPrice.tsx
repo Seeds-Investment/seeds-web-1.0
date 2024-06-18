@@ -34,7 +34,7 @@ const CardPrice: React.FC<props> = ({ data, currency }) => {
         <div className="flex items-center">
           <p className="text-xl font-semibold text-black my-2">
             {currency ?? 'IDR'}{' '}
-            {standartCurrency((data?.lastPrice?.open ?? 0)).replace('Rp', '')}
+            {standartCurrency(data?.lastPrice?.open ?? 0).replace('Rp', '')}
           </p>
         </div>
       </div>

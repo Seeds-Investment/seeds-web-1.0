@@ -286,4 +286,3 @@ export interface TopQuiz {
   ended_at: string;
   created_at: string;
 }
-

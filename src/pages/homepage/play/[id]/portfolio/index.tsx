@@ -119,7 +119,7 @@ const PortfolioPage: React.FC = () => {
       svgActive: StockActive
     }
   ];
-  
+
   useEffect(() => {
     if (portfolio?.pie !== undefined) {
       handleSetChartData();
@@ -134,8 +134,8 @@ const PortfolioPage: React.FC = () => {
 
   useEffect(() => {
     if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency );
-      void fetchPlayPortfolio(userInfo.preferredCurrency );
+      void fetchPlayBallance(userInfo.preferredCurrency);
+      void fetchPlayPortfolio(userInfo.preferredCurrency);
     }
   }, [id, userInfo]);
 
@@ -150,7 +150,7 @@ const PortfolioPage: React.FC = () => {
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      setIsLoadingBalance(true)
+      setIsLoadingBalance(true);
       const response = await getPlayBallance(id as string, { currency });
       setBallance(response);
     } catch (error) {
@@ -258,10 +258,9 @@ const PortfolioPage: React.FC = () => {
                   isUptrend.summary ? 'text-[#B7EE79]' : 'text-[#DD2525]'
                 } font-poppins text-xs md:text-sm font-light`}
               >
-                {`(${isUptrend.summary ? '+' : ''} ${
-                  (portfolio?.summary?.gnl_percentage ?? 0).toFixed(2) 
-                } %)`}
-                {' '}
+                {`(${isUptrend.summary ? '+' : ''} ${(
+                  portfolio?.summary?.gnl_percentage ?? 0
+                ).toFixed(2)} %)`}{' '}
                 <span className="text-white">{t('playSimulation.today')}</span>
               </Typography>
             </div>
@@ -272,9 +271,9 @@ const PortfolioPage: React.FC = () => {
             {portfolio !== null && (
               <PortfolioChart
                 data={chartData}
-                centerText={`${ballance?.currency ?? 'IDR'} ${
-                  standartCurrency(portfolio?.summary?.value ?? 0).replace('Rp', '')
-                }`}
+                centerText={`${ballance?.currency ?? 'IDR'} ${standartCurrency(
+                  portfolio?.summary?.value ?? 0
+                ).replace('Rp', '')}`}
               />
             )}
           </div>
@@ -316,7 +315,7 @@ const PortfolioPage: React.FC = () => {
               })}
             </div>
           </div>
-          {isLoading || (userInfo === undefined) ? (
+          {isLoading || userInfo === undefined ? (
             <AssetTrendingCardSkeleton />
           ) : (
             filterAssetsList()?.map((el: any) => {

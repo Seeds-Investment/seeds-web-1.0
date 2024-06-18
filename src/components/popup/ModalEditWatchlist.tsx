@@ -4,7 +4,10 @@
 import { calculatePercentageChange } from '@/helpers/assetPercentageChange';
 import { standartCurrency } from '@/helpers/currency';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
-import { getWatchlistById, updateWatchlist } from '@/repository/market.repository';
+import {
+  getWatchlistById,
+  updateWatchlist
+} from '@/repository/market.repository';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';

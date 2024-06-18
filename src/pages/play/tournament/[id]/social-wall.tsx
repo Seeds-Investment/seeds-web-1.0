@@ -126,8 +126,8 @@ const SocialWall = (): React.ReactElement => {
     try {
       setLoadingPostList(true);
       const response = await getPlayPostList({ ...postListParams });
-      setDataPost(response?.data)
-      setMetadata(response?.metadata)
+      setDataPost(response?.data);
+      setMetadata(response?.metadata);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {

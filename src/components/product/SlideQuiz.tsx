@@ -2,7 +2,7 @@ import GrayArrow from '@/assets/product/GrayArrow.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
 import shareButton from '@/assets/shareButton.svg';
 import { getQuizTrending } from '@/repository/quiz.repository';
-import { TopQuiz } from '@/utils/interfaces/quiz.interfaces';
+import type { TopQuiz } from '@/utils/interfaces/quiz.interfaces';
 import {
   Button,
   Card,
@@ -13,8 +13,7 @@ import {
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
-import Slider from 'react-slick';
+import React, { useEffect, useState } from 'react';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
@@ -25,21 +24,8 @@ export const SlideQuiz: React.FC = () => {
   const [quizData, setQuizData] = useState<any>([]);
 
   const [isChange, setChange] = useState(true);
-  const sliderRef = useRef<Slider>(null);
 
-  const next = (): void => {
-    if (sliderRef.current !== null) {
-      sliderRef.current.slickNext();
-    }
-  };
-
-  const previous = (): void => {
-    if (sliderRef.current !== null) {
-      sliderRef.current.slickPrev();
-    }
-  };
-
-  /*-------------------- Get API ---------------------- */
+  /* -------------------- Get API ---------------------- */
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -58,7 +44,7 @@ export const SlideQuiz: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  /*------------Handle Prev and Next Button------------- */
+  /* ------------Handle Prev and Next Button------------- */
   const PrevBtn: React.FC = () => {
     const swiper = useSwiper();
     setActiveSlide(activeSlide);
@@ -66,7 +52,6 @@ export const SlideQuiz: React.FC = () => {
       <div className="flex gap-3">
         <div
           onClick={() => {
-            previous();
             setChange(false);
             swiper.slidePrev();
           }}
@@ -93,7 +78,6 @@ export const SlideQuiz: React.FC = () => {
       <div className="flex gap-3">
         <div
           onClick={() => {
-            next();
             setChange(true);
             swiper.slideNext();
           }}
@@ -147,7 +131,10 @@ export const SlideQuiz: React.FC = () => {
         >
           {quizData?.length !== 0
             ? quizData?.data?.map((item: TopQuiz, index: any) => {
-                const durationInDays = (startedAt: string, endedAt: string) => {
+                const durationInDays = (
+                  startedAt: string,
+                  endedAt: string
+                ): number => {
                   const startDate = moment(startedAt);
                   const endDate = moment(endedAt);
 
@@ -162,7 +149,7 @@ export const SlideQuiz: React.FC = () => {
                   >
                     <div className="flex w-full items-start gap-5 justify-center lg:w-full">
                       <Card className="flex flex-col items-center lg:w-[440px] lg:h-[250px] rounded-t-[22.7px] w-full">
-                        <CardHeader /*--------Will be used for Banner image--------*/
+                        <CardHeader /* --------Will be used for Banner image-------- */
                           floated={false}
                           shadow={false}
                           color="transparent"
@@ -176,7 +163,7 @@ export const SlideQuiz: React.FC = () => {
                           />
                         </CardHeader>
                         <CardBody className="p-1 lg:w-full h-[125px] bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
-                          {/*--------Will be used to store the details of the quiz-------*/}
+                          {/* --------Will be used to store the details of the quiz------- */}
                           <div className="p-2 flex flex-row sm:flex-row md:flex-row justify-between items-center">
                             <Typography className="text-white">
                               {item.name}

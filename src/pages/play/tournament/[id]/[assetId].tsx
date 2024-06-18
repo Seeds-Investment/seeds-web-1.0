@@ -162,17 +162,19 @@ const AssetDetailPage: React.FC = () => {
   return (
     <PageGradient defaultGradient className="w-full">
       <div className="flex flex-col md:flex-row gap-5">
-        {(data !== undefined) ? 
+        {data !== undefined ? (
           <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
-          : <Card1Skeleton/>
-        }
-        {(data !== undefined) ? 
+        ) : (
+          <Card1Skeleton />
+        )}
+        {data !== undefined ? (
           <KeystatCard
             data={data}
             currency={userInfo?.preferredCurrency as string}
           />
-          : <Card2Skeleton/>
-        }
+        ) : (
+          <Card2Skeleton />
+        )}
       </div>
 
       <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">

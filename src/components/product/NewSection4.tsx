@@ -12,6 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { SlideCircle } from './SlideCircle';
+import { SlideQuiz } from './SlideQuiz';
 
 interface DataItem {
   label: string;
@@ -442,28 +443,28 @@ const NewSection4: React.FC = () => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
-  const [activeTab, setActiveTab] = useState<string>('top circle');
+  const [activeTab, setActiveTab] = useState<string>('top quiz');
   const data: DataItem[] = [
     {
       label: 'Top Circle',
       value: 'top circle',
       content: <SlideCircle />
-    }
+    },
     // {
     //   label: 'Top Tournament',
     //   value: 'top tournament',
     //   content: <SlidePlay />
     // },
-    // {
-    //   label: 'Top Quiz',
-    //   value: 'top quiz',
-    //   content: <SlideQuiz />
-    // }
+    {
+      label: 'Top Quiz',
+      value: 'top quiz',
+      content: <SlideQuiz />
+    }
   ];
 
   return (
     <section ref={ref} className="relative md:bg-[#F9F9F9]">
-      <Image src={BlurTop} alt="BlurTop" className="absolute bottom-0" /> 
+      <Image src={BlurTop} alt="BlurTop" className="absolute bottom-0" />
       <div
         className={`lg:pt-20 lg:pb-[59px] py-10 sm:mx-5 ${
           inView && isBottom >= measurement

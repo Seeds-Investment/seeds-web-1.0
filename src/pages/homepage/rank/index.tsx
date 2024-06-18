@@ -22,7 +22,7 @@ const RankPage: React.FC = () => {
 
   return (
     <div className="w-full h-auto cursor-default">
-      <div className="text-3xl font-semibold text-[#262626]">
+      <div className="text-2xl md:text-3xl font-semibold text-[#262626] px-4 md:px-0 my-4 md:my-0">
         {t('homepage.section2.text11')}
       </div>
       <Tabs value={activeTab}>
@@ -37,10 +37,10 @@ const RankPage: React.FC = () => {
             onClick={() => {
               handleTabChange('current');
             }}
-            className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+            className={`text-center text-md md:text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'current'
                 ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                : 'text-[#7C7C7C] font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
             {t('homepage.section3.text2')}
@@ -50,10 +50,10 @@ const RankPage: React.FC = () => {
             onClick={() => {
               handleTabChange('lastMonth');
             }}
-            className={`text-center text-xl bg-transparent mt-3 xl:mt-5 ${
+            className={`text-center text-md md:text-xl bg-transparent mt-3 xl:mt-5 ${
               activeTab === 'lastMonth'
                 ? 'text-[#4FE6AF] bg-gradient-to-t from-[#e5fcf3] to-white linier font-semibold border-b-4 border-b-[#4FE6AF]'
-                : 'text-[#7C7C7C] text-xl font-normal border-b-2 border-b-[#BDBDBD]'
+                : 'text-[#7C7C7C] font-normal border-b-2 border-b-[#BDBDBD]'
             }`}
           >
             {t('homepage.section3.text3')}

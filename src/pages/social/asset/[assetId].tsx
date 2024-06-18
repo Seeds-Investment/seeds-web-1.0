@@ -165,9 +165,7 @@ const AssetDetailPage: React.FC = () => {
             router.back();
           }}
         />
-        <p className="font-bold text-black text-lg">
-          {t('playSimulation.assetDetail')}
-        </p>
+        <p className="font-bold text-black text-lg">Overview</p>
         <div></div>
       </CCard>
       <div className="flex flex-col md:flex-row gap-5">

@@ -15,6 +15,7 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Avatar,
   Button,
@@ -24,7 +25,6 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react';
-// import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import {
@@ -35,7 +35,6 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-// import { type Ballance } from '../play-assets';
 
 export interface typeLimitOrder {
   type: string;
@@ -65,29 +64,6 @@ interface DetailAsset {
 
 interface LastPrice {
   open: number;
-}
-
-export interface SuccessOrderData {
-  id: string;
-  play_id: string;
-  user_id: string;
-  asset: Asset;
-  type: 'BUY' | 'SELL';
-  lot: number;
-  bid_price: number;
-  stop_loss: number;
-  pnl: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Asset {
-  asset_exchange: string;
-  asset_icon: string;
-  asset_id: string;
-  asset_name: string;
-  asset_ticker: string;
-  asset_type: string;
 }
 
 interface AssetPortfolio {
@@ -129,11 +105,11 @@ const BuyPage: React.FC = () => {
     play_id: '',
     user_id: '',
     asset: {
-      asset_exchange: '',
-      asset_icon: '',
       asset_id: '',
       asset_name: '',
+      asset_icon: '',
       asset_ticker: '',
+      asset_exchange: '',
       asset_type: ''
     },
     type: 'BUY',

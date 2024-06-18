@@ -30,6 +30,7 @@ export const getArticleHome = async (params: {
   language: string;
   source: string;
   category: string;
+  sort_by: string;
 }): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 

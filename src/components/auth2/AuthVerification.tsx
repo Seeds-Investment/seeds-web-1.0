@@ -21,12 +21,14 @@ import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
 import type { AuthVerificationI } from '@/utils/interfaces/auth.interface';
 import { Button, Spinner, Typography } from '@material-tailwind/react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthNumber from './AuthNumber';
+import AuthSSO from './AuthSSO';
 
 const AuthVerification: React.FC<AuthVerificationI> = ({
   className,
@@ -47,6 +49,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
 }: AuthVerificationI) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { data } = useSession();
   const isQuery = Object.keys(router.query).length > 0;
   const { t } = useTranslation();
   const [error, setError] = useState(false);
@@ -151,11 +154,13 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
           : formattedData.phoneNumber,
       password: formData.password
     });
-    setFormData({
-      ...formData,
-      phoneNumber: formattedData.phoneNumber,
-      name: formattedData.name !== undefined ? formattedData.name : ''
-    });
+    if (data === undefined || data === null) {
+      setFormData({
+        ...formData,
+        phoneNumber: formattedData.phoneNumber,
+        name: formattedData.name !== undefined ? formattedData.name : ''
+      });
+    }
   }, [formattedData.phoneNumber, formData.password, formattedData.name]);
 
   return (
@@ -249,7 +254,7 @@ const AuthVerification: React.FC<AuthVerificationI> = ({
       >
         {isLoading ? <Spinner className=" h-6 w-6" /> : t('authLogin.next')}
       </Button>
-      {/* <AuthSSO setSelect={setSelect} /> */}
+      <AuthSSO setSelect={setSelect} setGuest={setGuest} />
     </div>
   );
 };

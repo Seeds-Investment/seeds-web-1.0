@@ -35,7 +35,7 @@ export enum TypeFilter {
   STOCK = 'STOCK',
   US_STOCK = 'US_STOCK',
   ID_STOCK = 'ID_STOCK',
-  CRYPTO = 'CRYPTO',
+  CRYPTO = 'CRYPTO'
 }
 
 export interface ITNC {

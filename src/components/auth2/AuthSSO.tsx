@@ -6,21 +6,16 @@ import { loginSSO } from '@/repository/auth.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
+import { type AuthSSOI } from '@/utils/interfaces/auth.interface';
 import { Typography } from '@material-tailwind/react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface IAuthSSO {
-  setSelect: (value: number) => void;
-}
-
-const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
-  const pathname = usePathname();
+const AuthSSO: React.FC<AuthSSOI> = ({ setSelect, setGuest }: AuthSSOI) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -46,12 +41,10 @@ const AuthSSO: React.FC<IAuthSSO> = ({ setSelect }: IAuthSSO) => {
           } else {
             await router.push('/homepage');
           }
-          pathname === '/auth/register' &&
-            toast(t('authLogin.SSO'), { type: 'error' });
         }
         if (response.data.message === 'link-account/not-found') {
           setSelect(2);
-          await withRedirect(router, router.query, 'register');
+          setGuest('register');
         }
       }
     } catch (error: any) {

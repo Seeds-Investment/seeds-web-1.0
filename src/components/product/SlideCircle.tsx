@@ -16,7 +16,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import type Slider from 'react-slick';
 import 'swiper/css';
-import { EffectCoverflow } from 'swiper/modules';
+import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 interface Item {
   banner?: any;
@@ -73,7 +73,6 @@ export const SlideCircle: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
-
 
   const PrevBtn: React.FC = () => {
     const swiper = useSwiper();
@@ -140,8 +139,9 @@ export const SlideCircle: React.FC = () => {
   };
   const responsiveBreakpointsSwiper = {
     320: { slidesPerView: 1, centeredSlides: true },
-    480: { slidesPerView: 3, centeredSlides: true },
-    640: { slidesPerView: 3, centeredSlides: true }
+    480: { slidesPerView: 1, centeredSlides: true },
+    640: { slidesPerView: 2, centeredSlides: true },
+    1024: {slidesPerView: 3}
   };
 
   return (
@@ -252,7 +252,7 @@ export const SlideCircle: React.FC = () => {
         grabCursor={true}
         loop={true}
         className={classNameSwiper}
-        modules={[EffectCoverflow]}
+        modules={[EffectCoverflow, Autoplay]}
         effect={'coverflow'}
         parallax={true}
         coverflowEffect={coverFlowEffectSwiper}
@@ -277,7 +277,7 @@ export const SlideCircle: React.FC = () => {
               return (
                 <SwiperSlide
                   key={index}
-                  style={myStyle}
+                  //   style={myStyle}
                   className="flex justify-center items-center"
                 >
                   <Card
@@ -375,7 +375,6 @@ export const SlideCircle: React.FC = () => {
           <NextBtn />
         </div>
       </Swiper>
-
     </div>
   );
 };

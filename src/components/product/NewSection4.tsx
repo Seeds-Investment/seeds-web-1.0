@@ -12,7 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { SlideCircle } from './SlideCircle';
-
+import { SlideTournament } from './SlideTournament';
 interface DataItem {
   label: string;
   value: string;
@@ -442,28 +442,25 @@ const NewSection4: React.FC = () => {
     const bottom = entry?.boundingClientRect.bottom ?? 0;
     setBottom(bottom);
   }, [entry]);
-  const [activeTab, setActiveTab] = useState<string>('top circle');
+  const [activeTab, setActiveTab] = useState<string>('top tournament');
   const data: DataItem[] = [
     {
       label: 'Top Circle',
       value: 'top circle',
       content: <SlideCircle />
-    }
-    // {
-    //   label: 'Top Tournament',
-    //   value: 'top tournament',
-    //   content: <SlidePlay />
-    // },
-    // {
-    //   label: 'Top Quiz',
-    //   value: 'top quiz',
-    //   content: <SlideQuiz />
-    // }
+    },
+    {
+      label: 'Top Tournament',
+      value: 'top tournament',
+      content: <SlideTournament/>
+    },
+    
+   
   ];
 
   return (
     <section ref={ref} className="relative md:bg-[#F9F9F9]">
-      <Image src={BlurTop} alt="BlurTop" className="absolute bottom-0" /> 
+      <Image src={BlurTop} alt="BlurTop" className="absolute bottom-0" />
       <div
         className={`lg:pt-20 lg:pb-[59px] py-10 sm:mx-5 ${
           inView && isBottom >= measurement
@@ -490,7 +487,7 @@ const NewSection4: React.FC = () => {
                 }}
                 className={`${
                   activeTab === value ? 'text-[#27A590]' : 'text-[#7C7C7C]'
-                } 2xl:mx-[90px] md:mx-[10px] lg:mx-[50px] xl:mx-[80px] text-xs md:text-2xl font-poppins font-normal md:font-semibold z-10 w-auto`}
+                } 2xl:mx-[90px] md:mx-[10px] lg:mx-[50px] xl:mx-[80px] text-xs md:text-[18.5px] font-poppins font-normal md:font-semibold z-10 w-auto`}
               >
                 {label}
               </Tab>

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 interface PaymentPopupProps {
@@ -6,10 +7,14 @@ interface PaymentPopupProps {
 }
 
 const PaymentPopup: React.FC<PaymentPopupProps> = ({ isOpen, onClose }) => {
+  const router = useRouter();
+  const { id } = router.query;
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+
   const checkScreenSize = (): void => {
     setIsSmallScreen(window.innerWidth < 768);
   };
+
   useEffect(() => {
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
@@ -19,7 +24,8 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({ isOpen, onClose }) => {
   }, []);
 
   const handleSubmit = (): void => {
-    console.log('Submitted:');
+    console.log(`Submitted: ${id as string}`);
+    void router.push(`/academy/course/${id as string}/payment`);
     onClose();
   };
 

@@ -53,10 +53,9 @@ export default function CardCircle({
                 toast(error, { type: 'error' });
               });
             TrackerEvent({
-              event: `Seeds_view_circle_detail_page_web`,
-              userId: userInfo?.id,
-              pageName: 'circle_detail_web',
-              circleId: data.id
+              event: `SW_circle_page_detail`,
+              userData: userInfo,
+              circleData: data
             });
           }}
           className="cursor-pointer"

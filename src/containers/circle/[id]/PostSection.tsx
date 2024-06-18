@@ -606,21 +606,17 @@ const PostSection: React.FC<props> = ({
                     el.total_upvote -= 1;
                     el.status_like = false;
                     TrackerEvent({
-                      event: `Seeds_unliked_post_web`,
-                      postId: el.id,
-                      statusLike: el.status_like,
-                      userId: userInfo?.id,
-                      personId: el.user_id
+                      event: `SW_social_btn_unliked_post`,
+                      postData: dataPost,
+                      userId: userInfo
                     });
                   } else {
                     el.total_upvote++;
                     el.status_like = true;
                     TrackerEvent({
-                      event: `Seeds_liked_post_web`,
-                      postId: el.id,
-                      statusLike: el.status_like,
-                      userId: userInfo?.id,
-                      personId: el.user_id
+                      event: `SW_social_btn_liked_post`,
+                      postData: dataPost,
+                      userId: userInfo
                     });
                   }
                 }

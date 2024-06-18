@@ -69,15 +69,9 @@ export const getLeaderboardByPlayId = async (playId: string): Promise<any> => {
 
 export const getPlayById = async (id: string): Promise<any> => {
   try {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
     return await playService(`/${id}`, {
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Accept: 'application/json'
       }
     });
   } catch (error) {
@@ -747,5 +741,27 @@ export const getAllPlayCenter = async (
   } catch (error) {
     console.error('Error fetching play list:', error);
     throw error;
+  }
+};
+
+export const getUserRankLeaderboard = async (
+  userId: string,
+  playId: string,
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await playService(`/rank/${userId}?play_id=${playId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };

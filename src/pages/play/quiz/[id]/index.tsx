@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -19,7 +20,7 @@ import { Switch } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
@@ -31,11 +32,13 @@ import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
+  const count = useRef(0);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [invitationCode, setInvitationCode] = useState<string>('');
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
@@ -49,7 +52,7 @@ const QuizDetail = (): React.ReactElement => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };
@@ -120,16 +123,21 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-
+  
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
-
   useEffect(() => {
-    if (detailQuiz !== undefined && userInfo !== undefined) {
+    if (
+      detailQuiz !== undefined &&
+      userInfo !== undefined &&
+      count.current === 0
+    ) {
       TrackerEvent({
         event: 'SW_quiz_detail_page',
         quiz_name: detailQuiz.name,
@@ -137,6 +145,7 @@ const QuizDetail = (): React.ReactElement => {
         user_name: userInfo.name,
         user_phone: userInfo.phoneNumber
       });
+      count.current = 1;
     }
   }, [detailQuiz]);
 
@@ -147,19 +156,18 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
-
-  const baseUrl =
-    process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
-  const handleCopyClick = async (): Promise<void> => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const textToCopy = `${baseUrl}/play/quiz/${detailQuiz?.id}`;
-    await navigator.clipboard.writeText(textToCopy).then(() => {
-      toast('Quiz link copied!');
-    });
-  };
-
+  
   return (
     <>
+      {isShareModal && (
+        <ModalShareQuiz
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={detailQuiz?.id ?? ''}
+          playId={detailQuiz?.quiz_unique_id ?? ''}
+        />
+      )}
       <Image
         src={
           detailQuiz?.banner?.image_url
@@ -293,7 +301,11 @@ const QuizDetail = (): React.ReactElement => {
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>
-            <button onClick={handleCopyClick}>
+            <button
+              onClick={() => {
+                setIsShareModal(true);
+              }}
+            >
               <ShareIcon width={24} height={24} />
             </button>
           </div>
@@ -362,7 +374,7 @@ const QuizDetail = (): React.ReactElement => {
               ) {
                 router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth');
+                withRedirect(router, { qi: id as string }, '/auth');
               }
             }}
             className={`text-white px-10 py-2 rounded-full font-semibold mt-4 w-full ${

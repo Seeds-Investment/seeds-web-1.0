@@ -145,7 +145,7 @@ const Circle = (): React.ReactElement => {
           data: circle
         },
         {
-          label: 'Joined',
+          label: t('circle.leaderBoard.join'),
           value: 'joined',
           data: circle
         },
@@ -410,7 +410,7 @@ const Circle = (): React.ReactElement => {
             {/* Sort By Create */}
             <div className="flex flex-row w-full justify-between mt-5">
               <div>
-                <label htmlFor="sort_by">Sort by:</label>
+                <label htmlFor="sort_by">{t('circle.leaderBoard.sort')}</label>
                 <select name="sort_by" id="sort_by" onChange={handleSortBy}>
                   {dropdownValue?.map((data, idx) => (
                     <option key={idx} value={data.value}>
@@ -425,7 +425,7 @@ const Circle = (): React.ReactElement => {
                   className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full"
                   onClick={() => {
                     void router.push(
-                      isGuest() ? '/auth2' : '/connect/create-circle'
+                      isGuest() ? '/auth' : '/connect/create-circle'
                     );
                   }}
                 >

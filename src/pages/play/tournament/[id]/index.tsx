@@ -12,7 +12,6 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
-import withAuth from '@/helpers/withAuth';
 import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
@@ -59,7 +58,7 @@ const TournamentDetail: React.FC = () => {
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins || 0);
     } catch (error: any) {
       toast.error(
-        `Error get data coins: ${error.response.data.message as string}`
+        `Error get data coins: ${error?.response?.data?.message as string}`
       );
     }
   };
@@ -171,8 +170,10 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if (id !== null && userInfo !== undefined) {
+    if (id !== null) {
       getDetail();
+    }
+    if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
@@ -183,6 +184,14 @@ const TournamentDetail: React.FC = () => {
     await navigator.clipboard.writeText(textToCopy).then(() => {
       toast('Play ID copied!');
     });
+  };
+
+  const isStarted = (): boolean => {
+    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart > timeNow;
   };
 
   return (
@@ -275,28 +284,15 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.sponsorship?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
                 <Typography className="text-lg font-semibold font-poppins">
-                  {'Sponsor(s)'}
+                  {'Sponsorship'}
                 </Typography>
                 <Image
                   src={detailTournament?.sponsorship?.image_url}
                   alt=""
-                  width={200}
-                  height={200}
+                  width={1000}
+                  height={1000}
                   className="object-contain max-h-16 max-w-16"
                 />
-                {detailTournament?.end_time !== undefined ? (
-                  <CountdownTimer
-                    deadline={
-                      detailTournament?.end_time
-                        ? detailTournament.end_time.toString()
-                        : ''
-                    }
-                  />
-                ) : (
-                  <Typography className="text-lg text-[#27A590] mt-2 font-semibold font-poppins">
-                    Loading...
-                  </Typography>
-                )}
               </div>
             ) : null}
             {detailTournament?.community?.image_url ? (
@@ -307,8 +303,8 @@ const TournamentDetail: React.FC = () => {
                 <Image
                   src={detailTournament?.community?.image_url}
                   alt=""
-                  width={200}
-                  height={200}
+                  width={1000}
+                  height={1000}
                   className="object-contain max-h-16 max-w-16"
                 />
               </div>
@@ -435,14 +431,14 @@ const TournamentDetail: React.FC = () => {
                 .map((participant, index) => (
                   <div
                     key={index}
-                    className="flex bg-white shadow-md rounded-full overflow-hidden"
+                    className="flex bg-white shadow-md rounded-full overflow-hidden w-[50px] h-[50px]"
                   >
                     <Image
                       src={participant.photo_url}
                       alt=""
-                      width={50}
-                      height={50}
-                      className="object-contain max-h-16 max-w-16"
+                      width={100}
+                      height={100}
+                      className="object-contain h-full w-full"
                     />
                   </div>
                 ))}
@@ -556,14 +552,15 @@ const TournamentDetail: React.FC = () => {
                 localStorage.getItem('accessToken') === null &&
                 isGuest()
               ) {
-                router.push('/auth2');
+                router.push('/auth');
               } else {
-                withRedirect(router, { quizId: id as string }, '/auth2');
+                withRedirect(router, { ti: id as string }, '/auth');
               }
             }}
             disabled={
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
+              (invitationCode === '' &&
+                detailTournament?.is_need_invitation_code === true) ||
+              isStarted()
             }
             // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
@@ -592,4 +589,4 @@ const TournamentDetail: React.FC = () => {
   );
 };
 
-export default withAuth(TournamentDetail);
+export default TournamentDetail;

@@ -69,6 +69,7 @@ export interface IDetailQuiz {
   participant_status: string;
   created_at: Date;
   is_need_invitation_code: boolean;
+  quiz_unique_id: string;
 }
 
 export const initialDetailQuiz = {
@@ -120,6 +121,7 @@ export interface IQuiz {
   admission_fee: number;
   is_played: boolean;
   status: string;
+  quiz_unique_id: string;
 }
 
 export interface IQuizSettings {
@@ -231,10 +233,6 @@ export interface QuizReviewDataI {
 
 export interface QuizCashoutI {
   quiz_id: string;
-  social_media_type: string;
-  social_media_username: string;
-  testimonial: string;
-  photo_url: string;
   method: string;
   account_name: string;
   account_number: string;

@@ -49,12 +49,9 @@ const Homepage: React.FC = () => {
       <CCard className="p-3 mb-5">
         <Section1 />
       </CCard>
-      {
-        userInfo !== undefined &&
-        <CCard className="p-3 mb-5">
-          <Section2 userInfo={userInfo} />
-        </CCard>
-      }
+      <CCard className="p-3 mb-5">
+        {userInfo !== undefined && <Section2 userInfo={userInfo} />}
+      </CCard>
       {!isGuest() && (
         <CCard className="px-3 py-5 mb-5">
           <Section3 />

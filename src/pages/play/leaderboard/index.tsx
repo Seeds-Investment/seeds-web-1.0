@@ -1,8 +1,6 @@
 import IconClock from '@/assets/play/tournament/clock.svg';
-import { getLastUpdatedEN, getLastUpdatedID } from '@/helpers/dateFormat';
 import { getLeaderGlobal, getUserRank } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import LanguageContext from '@/store/language/language-context';
 import {
   Menu,
   MenuHandler,
@@ -11,7 +9,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leftLeader from '../../../../public/assets/images/leftLeader.svg';
@@ -77,7 +75,6 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
   const router = useRouter();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('season');
-  const languageCtx = useContext(LanguageContext);
   const [leaderBoardGlobal, setLeaderBoardGlobal] = useState<
     LeaderBoardGlobal[]
   >([]);
@@ -193,14 +190,14 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             alt="Next"
             width={32}
             height={32}
-            className="hidden lg:block absolute left-[20px] top-[15px] w-[165px] z-10"
+            className="hidden md:block absolute left-[20px] top-[15px] w-[165px] z-10"
           />
           <Image
             src={rightLeader}
             alt="Next"
             width={32}
             height={32}
-            className="hidden lg:block absolute right-[20px] top-[80px] w-[165px] z-10"
+            className="hidden md:block absolute right-[20px] top-[80px] w-[165px] z-10"
           />
           {activeTab !== 'all' && (
             <div className="hidden md:flex bg-white text-[#3AC4A0] gap-1 text-xs ml-auto mr-2  justify-center text-center items-center border border-1 p-1 border-[#27A590] rounded-full w-[12%]">
@@ -215,7 +212,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
               )}
             </div>
           )}
-          <div className="flex justify-center text-center gap-2">
+          <div className="flex justify-center text-center gap-2 lg:mt-[-20px]">
             <h1 className="text-white text-lg font-semibold my-3">
               {t('playCenter.text2')}
             </h1>
@@ -271,12 +268,24 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             </Menu>
           </div>
           <div className="justify-center text-center mt-2">
-            <Typography className="text-base font-poppins text-white">
-              {t('tournament.leaderboard.lastUpdated')}
-              {languageCtx.language === 'ID'
-                ? getLastUpdatedID(new Date())
-                : getLastUpdatedEN(new Date())}
-            </Typography>
+            <h1 className="text-base font-normal text-white">
+              {activeTab === 'season'
+                ? `${t('playCenter.text9')} 01 ${new Date().toLocaleDateString(
+                    'id-ID',
+                    {
+                      month: 'long',
+                      year: 'numeric'
+                    }
+                  )} 00:00`
+                : `${t('playCenter.text9')} ${new Date().toLocaleDateString(
+                    'id-ID',
+                    {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric'
+                    }
+                  )} 00:00`}
+            </h1>
           </div>
           <div className="flex flex-row bg-[#2b4740] justify-center mx-5 md:mx-auto text-center w-[300ox] md:w-[235px] rounded-full items-center px-1 gap-1 my-4">
             <button
@@ -430,7 +439,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
             {t('playCenter.text10')}
           </h1>
           <h1 className="text-white font-normal text-base font-poppins ">
-            #{userRank?.current_rank ?? 0}
+            #{userRank?.current_rank}
           </h1>
         </div>
 
@@ -441,7 +450,7 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                 <td className="pl-2 pr-1 py-5 text-center text-sm md:text-base">
                   {leader?.current_rank}.
                 </td>
-                <td className="px-2 py-5 text-start flex gap-2 md:gap-4">
+                <td className="px-2 py-5 text-start flex">
                   <div className="my-auto">
                     <Image
                       src={leader?.avatar_url}

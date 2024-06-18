@@ -19,9 +19,9 @@ const AuthModalPass: React.FC<Props> = ({ open, handleOpen }: Props) => {
   return (
     <Dialog
       open={open}
-      handler={handleOpen}
+      handler={() => {}}
       size="sm"
-      className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full"
+      className="flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-t-3xl rounded-b-none md:rounded-3xl min-w-full pb-6 md:pb-0"
     >
       <DialogBody className="flex flex-col gap-4 p-10 items-center">
         <Image src={SeedyAuthRef} alt="SeedyAuthRef" className="w-[242px]" />

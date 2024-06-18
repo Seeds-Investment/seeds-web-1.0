@@ -186,16 +186,18 @@ const DetailCourse: React.FC = () => {
             </div>
             <Switch />
           </div>
-          <div>
-            <div className="text-xs text-[#7C7C7C]">Entrance Fee</div>
-            <div className="font-bold">IDR 100.000</div>
+          <div className="grid grid-cols-2 sm:grid-cols-1 gap-5">
+            <div>
+              <div className="text-xs text-[#7C7C7C]">Entrance Fee</div>
+              <div className="font-bold">IDR 100.000</div>
+            </div>
+            <button
+              className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
+              onClick={togglePopup}
+            >
+              Enroll Course
+            </button>
           </div>
-          <button
-            className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
-            onClick={togglePopup}
-          >
-            Enroll Course
-          </button>
         </div>
         <PaymentPopup isOpen={showPopup} onClose={togglePopup} />
       </PageGradient>

@@ -1,6 +1,7 @@
 import CustomProgressBar from '@/components/academy/CustomProgressBar';
 import PaymentPopup from '@/components/academy/PaymentPopup';
 import ShortDescription from '@/components/academy/ShortDescription';
+import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Switch } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ const DetailCourse: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const [showTitle, setShowTitle] = useState(true);
+  const [isShareModal, setIsShareModal] = useState<boolean>(false);
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
@@ -63,6 +65,14 @@ const DetailCourse: React.FC = () => {
 
   return (
     <>
+      {isShareModal && (
+        <ModalShareCourse
+          onClose={() => {
+            setIsShareModal(prev => !prev);
+          }}
+          url={'1'}
+        />
+      )}
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-3 rounded-xl shadow-md flex flex-col gap-5">
           <div className="video-container relative w-full aspect-video">
@@ -131,7 +141,12 @@ const DetailCourse: React.FC = () => {
               />
               100 Participants
             </div>
-            <div className="flex flex-row items-center gap-2">
+            <div
+              onClick={() => {
+                setIsShareModal(prev => !prev);
+              }}
+              className="flex flex-row items-center gap-2 cursor-pointer"
+            >
               <Image
                 src={'/assets/academy/share-icon.svg'}
                 alt="icon-participants"

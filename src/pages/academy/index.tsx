@@ -3,7 +3,6 @@ import Finance from '@/assets/academy/finance-academy.svg';
 import Investment from '@/assets/academy/investment-academy.svg';
 import NoDataCategory from '@/assets/academy/no-data-category.svg';
 import UMKM from '@/assets/academy/umkm-academy.svg';
-
 import CategoryCourseCard from '@/components/academy/CategoryCourseCard';
 import LanguageSelector from '@/components/academy/LanguageSelector';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -84,10 +83,10 @@ const Academy: React.FC = () => {
           <LanguageSelector />
         </div>
         <div className="flex flex-col justify-start mb-3">
-          <Typography className="text-white font-semibold text-lg">
+          <Typography className="text-white font-semibold text-xl">
             Hello {userInfo?.name}!
           </Typography>
-          <Typography className="text-white">
+          <Typography className="text-white text-base">
             {t('academy.courseTitle')}
           </Typography>
         </div>
@@ -117,12 +116,8 @@ const Academy: React.FC = () => {
         {data.length > 0 ? (
           <div className="grid lg:grid-cols-3 grid-cols-2 gap-6 lg:gap-x-8 gap-y-4">
             {data.map((item, index) => (
-              <Link key={index} href={`/academy/category/${item.id as number}`}>
-                <CategoryCourseCard
-                  title={item.title}
-                  image={item.image}
-                  level={item.level}
-                />
+              <Link key={index} href={`/academy/${item.id as number}`}>
+                <CategoryCourseCard data={item} />
               </Link>
             ))}
           </div>

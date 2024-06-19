@@ -414,19 +414,19 @@ const Player = (): React.ReactElement => {
               {bannerAsset?.map(asset => (
                 <div
                   key={asset.id}
-                  className="w-full lg:w-[828px] relative h-fit"
-                  onClick={() => {
-                    void (asset?.play_center_type === 'quiz'
-                      ? router.push(`/play/quiz/${asset.id}`)
-                      : router.push(`/play/tournament/${asset.id}`));
-                  }}
+                  className="w-full relative"
                 >
                   <Image
-                    className="object-cover w-full h-auto"
+                    className="object-cover w-full"
                     src={asset.banner}
                     alt={asset.name}
                     width={1000}
                     height={1000}
+                    onClick={async () => {
+                      (asset?.play_center_type === 'quiz'
+                        ? await router.push(`/play/quiz/${asset.id}`)
+                        : await router.push(`/play/tournament/${asset.id}`));
+                    }}
                   />
                 </div>
               ))}

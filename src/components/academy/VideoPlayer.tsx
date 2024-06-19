@@ -9,10 +9,12 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showProgressBar, setShowProgressBar] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
   const [showTitle, setShowTitle] = useState(false);
-  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [hideCursor, setHideCursor] = useState(false);
+  const cursorTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -27,6 +29,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
         setShowTitle(false);
       }, 1000);
     };
+
     const handlePause = (): void => {
       setIsPlaying(false);
       setShowPlayIcon(true);
@@ -59,14 +62,43 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
     }
   };
 
+  const handleMouseMove = (): void => {
+    if (cursorTimeoutRef.current !== null) {
+      clearTimeout(cursorTimeoutRef.current);
+    }
+
+    setHideCursor(false);
+
+    cursorTimeoutRef.current = window.setTimeout(() => {
+      setHideCursor(true);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+
+    if (videoElement !== null) {
+      videoElement.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      if (videoElement !== null) {
+        videoElement.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
+  }, []);
+
   return (
-    <div className="video-container relative w-full aspect-video">
+    <div className={`video-container relative w-full aspect-video`}>
       <video
         ref={videoRef}
         width="100%"
         height="100%"
         src={videoSrc}
-        className="w-full h-full cursor-pointer"
+        className={`w-full h-full ${
+          hideCursor ? 'cursor-none' : 'cursor-pointer'
+        }
+      `}
         onClick={handlePlayPause}
         controlsList="nodownload"
         onContextMenu={e => {
@@ -106,7 +138,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
       {showTitle && (
         <div
           onClick={handlePlayPause}
-          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 text-white p-4 text-2xl font-bold z-0"
+          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 text-white p-4 text-2xl font-bold z-0 cursor-pointer"
         >
           {title}
         </div>

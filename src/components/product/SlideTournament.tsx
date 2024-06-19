@@ -90,10 +90,10 @@ export const SlideTournament: React.FC = () => {
   const classNameSwiper =
     '!lg:w-full !lg:flex-col !lg:flex !flex !flex-col w-[1500px] lg:gap-3 gap-3 justify-center';
   const breakpointsSwiper = {
-    320: { slidesPerView: 1, centeredSlides: true},
-    480: { slidesPerView: 1,  centeredSlides: true},
-    640: { slidesPerView: 2,  centeredSlides: true},
-    1024: { slidesPerView: 3,  centeredSlides: true}
+    320: { slidesPerView: 1, centeredSlides: true },
+    480: { slidesPerView: 1, centeredSlides: true },
+    640: { slidesPerView: 2, centeredSlides: true },
+    1024: { slidesPerView: 3, centeredSlides: true }
   };
   const coverFlowEffectSwiper = {
     rotate: 0,
@@ -150,7 +150,7 @@ export const SlideTournament: React.FC = () => {
                         </Typography>
                       </div>
                       <Card
-                        className={`flex justify-center items-center lg:rounded-t-[13.37px] lg:rounded-b-none rounded-t-[13.37px] rounded-b-none lg:w-[420px] lg:p-3 w-[340px] gap-[13.37px] lg:h-[309px] h-[309px]`}
+                        className={`flex justify-center items-center lg:rounded-t-[13.37px] lg:rounded-b-none rounded-t-[13.37px] rounded-b-none lg:w-[420px] lg:p-3 w-[340px] gap-[13.37px] lg:h-[309px] h-[310px]`}
                       >
                         <CardHeader
                           floated={false}

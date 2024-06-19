@@ -997,7 +997,7 @@ export default {
         placeholder: 'Ketik nama Circle',
         error: 'Masukan Nama Circle',
         duplicate1: 'Nama',
-        duplicate2: 'telah digunakan!',
+        duplicate2: 'telah digunakan!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -1636,7 +1636,7 @@ export default {
       text4: 'Peringkatmu Saat Ini',
       text5: 'Cari dan ikuti profil yang menarik.',
       text6: 'Daftar Profile'
-    },
+    }
   },
   chooseCurrency: {
     header: 'Pilih mata uangmu',
@@ -1854,6 +1854,19 @@ export default {
     shareQuiz: 'Bagikan Kuis Ini',
     playId: 'ID Kuis',
     shareLinks: 'Bagikan Link'
+  },
+  micrositeQuiz: {
+    errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
+    errorEmailAlready: 'Aduh, emailmu udah terdaftar nih',
+    errorPhone: 'Aduh nomormu udah terdaftar nih',
+    name: 'Nama',
+    placeName: 'Masukin namamu',
+    email: 'Email',
+    placeEmail: 'Masukin emailmu',
+    save: 'Simpan',
+    rank: 'Peringkat',
+    player: 'Pemain',
+    point: 'Total Poin'
   },
   tournament: {
     myPlay: 'Permainan Saya',

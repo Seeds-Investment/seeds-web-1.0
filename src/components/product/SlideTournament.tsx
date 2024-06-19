@@ -25,8 +25,7 @@ export const SlideTournament: React.FC = () => {
   const [buttonChange, setButtonChange] = useState(true);
   const router = useRouter();
 
-
-  const HandlePrev:React.FC = () => {
+  const HandlePrev: React.FC = () => {
     const swiper = useSwiper();
     return (
       <button
@@ -49,7 +48,7 @@ export const SlideTournament: React.FC = () => {
     );
   };
 
-  const HandleNext:React.FC = () => {
+  const HandleNext: React.FC = () => {
     const swiper = useSwiper();
     return (
       <button

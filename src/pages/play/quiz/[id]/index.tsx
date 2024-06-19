@@ -123,7 +123,7 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-  
+
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
@@ -139,11 +139,9 @@ const QuizDetail = (): React.ReactElement => {
       count.current === 0
     ) {
       TrackerEvent({
-        event: 'SW_quiz_detail_page',
-        quiz_name: detailQuiz.name,
-        user_id: userInfo.id,
-        user_name: userInfo.name,
-        user_phone: userInfo.phoneNumber
+        event: 'SW_quiz_page_detail',
+        quizData: detailQuiz,
+        userData: userInfo
       });
       count.current = 1;
     }
@@ -156,7 +154,7 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
-  
+
   return (
     <>
       {isShareModal && (

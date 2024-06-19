@@ -36,12 +36,12 @@ const MyPosition: React.FC<Props> = ({ leaderboard, myRank }: Props) => {
         <div className="flex gap-5 items-center">
           <img
             src={leaderboard[myRank - 1]?.avatar}
-            alt={leaderboard[myRank - 1]?.name}
+            alt={leaderboard[myRank - 1]?.name.split('_')[0]}
             className="w-10 h-10 rounded-full"
           />
           <div className="flex flex-col gap-1.5">
             <Typography className="font-semibold font-poppins text-xs text-[#262626]">
-              {leaderboard[myRank - 1]?.name}
+              {leaderboard[myRank - 1]?.name.split('_')[0]}
             </Typography>
             <Typography className="font-semibold font-poppins text-xs text-[#1A857D]">
               {leaderboard[myRank - 1]?.score}

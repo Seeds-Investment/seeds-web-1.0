@@ -1075,7 +1075,7 @@ export default {
         placeholder: 'type circle name',
         error: 'Input Circle Name',
         duplicate1: 'The name',
-        duplicate2: 'is already in use!',
+        duplicate2: 'is already in use!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -1927,6 +1927,19 @@ export default {
     shareQuiz: 'Share This Quiz',
     playId: 'Quiz ID',
     shareLinks: 'Share Link'
+  },
+  micrositeQuiz: {
+    errorEmailIncorrect: 'Please input your email correctly',
+    errorEmailAlready: 'Oops,  Your email already registered',
+    errorPhone: 'Oops, Your number already registered',
+    name: 'Name',
+    placeName: 'Enter your name',
+    email: 'Email',
+    placeEmail: 'Enter your email',
+    save: 'Save',
+    rank: 'Rank',
+    player: 'Players',
+    point: 'Total Point'
   },
   tournament: {
     myPlay: 'My Play',

@@ -72,8 +72,8 @@ const LeaderBoardPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if ((id !== undefined) && (userInfo?.id !== undefined)) {
-      void fetchUserRank(id as string, userInfo?.id );
+    if (id !== undefined && userInfo?.id !== undefined) {
+      void fetchUserRank(id as string, userInfo?.id);
     }
   }, [id, userInfo]);
 
@@ -107,11 +107,14 @@ const LeaderBoardPage: React.FC = () => {
     }
   };
 
-  const fetchUserRank = async (playId: string, userId: string): Promise<void> => {
+  const fetchUserRank = async (
+    playId: string,
+    userId: string
+  ): Promise<void> => {
     try {
       setLoadingUserRank(true);
       const response = await getUserRankLeaderboard(userId, playId);
-      setUserRank(response?.data)
+      setUserRank(response?.data);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -305,7 +308,7 @@ const LeaderBoardPage: React.FC = () => {
                         ''
                       )}
                       {` (${(userRank?.gain_value ?? 0) < 0 ? '' : '+'}`}
-                      {(userRank?.gain_percentage)?.toFixed(2) ?? 0}%)
+                      {userRank?.gain_percentage?.toFixed(2) ?? 0}%)
                     </Typography>
                   </div>
                 </div>

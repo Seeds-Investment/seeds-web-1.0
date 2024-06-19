@@ -238,23 +238,22 @@ export interface Pie {
   seeds_ticker: string;
 }
 
-
-export interface Participant{
-      photo_url: string;
-      id: string;
-      verified: false;
-      label: string;
-      name: string;
-      seeds_tag: string;
-      total_play: number;
-      total_win: number;
-      total_lose: number;
-      win_rate: number;
-    }
+export interface Participant {
+  photo_url: string;
+  id: string;
+  verified: false;
+  label: string;
+  name: string;
+  seeds_tag: string;
+  total_play: number;
+  total_win: number;
+  total_lose: number;
+  win_rate: number;
+}
 
 export interface SponsorCom {
-    name: string;
-    image_url: string;
+  name: string;
+  image_url: string;
 }
 export interface TopTournament {
   id: string;
@@ -289,7 +288,7 @@ export interface TopTournament {
   created_at: string;
   updated_at: string;
   updated_by: string;
-  sponsorship:SponsorCom[];
+  sponsorship: SponsorCom[];
   featured_link: string;
   reward_url: string;
   promo_id: string;

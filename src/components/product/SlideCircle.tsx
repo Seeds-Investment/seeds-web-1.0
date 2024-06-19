@@ -141,7 +141,7 @@ export const SlideCircle: React.FC = () => {
     320: { slidesPerView: 1, centeredSlides: true },
     480: { slidesPerView: 1, centeredSlides: true },
     640: { slidesPerView: 2, centeredSlides: true },
-    1024: {slidesPerView: 3}
+    1024: { slidesPerView: 3 }
   };
 
   return (

@@ -54,8 +54,8 @@ const AuthRef: React.FC<AuthRefI> = ({
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
     TrackerEvent({
-      event: 'Seeds_login_web',
-      userId: responseUser.id
+      event: 'SW_auth_login',
+      userData: responseUser
     });
     handleOpen();
     if (isQuery) {
@@ -63,9 +63,8 @@ const AuthRef: React.FC<AuthRefI> = ({
     } else {
       await router.push('/homepage');
       TrackerEvent({
-        event: `Seeds_view_home_page_web`,
-        userId: responseUser.id,
-        pageName: 'homepage'
+        event: `SW_homepage_page`,
+        userData: responseUser
       });
     }
   };

@@ -12,7 +12,9 @@ import { useInView } from 'react-intersection-observer';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { SlideCircle } from './SlideCircle';
+import { SlideQuiz } from './SlideQuiz';
 import { SlideTournament } from './SlideTournament';
+
 interface DataItem {
   label: string;
   value: string;
@@ -39,10 +41,13 @@ const NewSection4: React.FC = () => {
     {
       label: 'Top Tournament',
       value: 'top tournament',
-      content: <SlideTournament/>
+      content: <SlideTournament />
     },
-    
-   
+    {
+      label: 'Top Quiz',
+      value: 'top quiz',
+      content: <SlideQuiz />
+    }
   ];
 
   return (

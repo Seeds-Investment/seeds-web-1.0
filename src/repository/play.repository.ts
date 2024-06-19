@@ -746,7 +746,7 @@ export const getAllPlayCenter = async (
 
 export const getUserRankLeaderboard = async (
   userId: string,
-  playId: string,
+  playId: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

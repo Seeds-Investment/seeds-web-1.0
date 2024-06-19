@@ -149,19 +149,19 @@ const CirclePostSection1: React.FC<props> = ({
                       <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                       {t('circleSetting.popUpCircle.option3')}
                     </div>
-                  </MenuItem>=
-                  {
-                    ((userInfo?.id !== dataCircle?.owner?.id) && isJoined) &&
-                      <>
-                        <hr />
-                        <MenuItem onClick={openModalLeave}>
-                          <div className="flex flex-row text-[#DD2525]">
-                            <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                            {t('circleSetting.popUpCircle.option4')}
-                          </div>
-                        </MenuItem>
-                      </>
-                  }
+                  </MenuItem>
+                  =
+                  {userInfo?.id !== dataCircle?.owner?.id && isJoined && (
+                    <>
+                      <hr />
+                      <MenuItem onClick={openModalLeave}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                          {t('circleSetting.popUpCircle.option4')}
+                        </div>
+                      </MenuItem>
+                    </>
+                  )}
                 </MenuList>
               </Menu>
             </div>
@@ -244,10 +244,9 @@ const CirclePostSection1: React.FC<props> = ({
                     onClick={async () => {
                       await handleJoin();
                       TrackerEvent({
-                        event: `Seeds_btn_join_circle_web`,
-                        userId: userInfo?.id,
-                        pageName: 'circle_detail_join',
-                        circleId
+                        event: `SW_circle_btn_join_circle`,
+                        userData: userInfo,
+                        circleData: dataCircle
                       });
                     }}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
@@ -297,18 +296,17 @@ const CirclePostSection1: React.FC<props> = ({
                             {t('circleSetting.popUpCircle.option3')}
                           </div>
                         </MenuItem>
-                        {
-                          ((userInfo?.id !== dataCircle?.owner?.id) && isJoined) &&
-                            <>
-                              <hr />
-                              <MenuItem onClick={openModalLeave}>
-                                <div className="flex flex-row text-[#DD2525]">
-                                  <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                                  {t('circleSetting.popUpCircle.option4')}
-                                </div>
-                              </MenuItem>
-                            </>
-                        }
+                        {userInfo?.id !== dataCircle?.owner?.id && isJoined && (
+                          <>
+                            <hr />
+                            <MenuItem onClick={openModalLeave}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                {t('circleSetting.popUpCircle.option4')}
+                              </div>
+                            </MenuItem>
+                          </>
+                        )}
                       </MenuList>
                     </Menu>
                   </div>

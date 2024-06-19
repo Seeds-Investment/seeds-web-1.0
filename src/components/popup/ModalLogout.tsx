@@ -25,8 +25,8 @@ const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
     window.localStorage.removeItem('isBannerOpen');
     await signOut();
     TrackerEvent({
-      event: `Seeds_logout_web`,
-      userId: userInfo?.id
+      event: `SW_auth_logout`,
+      userData: userInfo
     });
     await router.push('/');
   };

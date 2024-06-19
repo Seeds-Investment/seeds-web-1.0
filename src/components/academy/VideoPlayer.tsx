@@ -11,13 +11,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showPlayIcon, setShowPlayIcon] = useState(true);
-  const [showTitle, setShowTitle] = useState(true);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showProgressBar, setShowProgressBar] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
 
     const handlePlay = (): void => {
       setIsPlaying(true);
+      setShowProgressBar(true);
       setTimeout(() => {
         setShowPlayIcon(false);
       }, 1000);
@@ -109,7 +111,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoSrc, title }) => {
           {title}
         </div>
       )}
-      <CustomProgressBar videoElement={videoRef.current} />
+      {showProgressBar && <CustomProgressBar videoElement={videoRef.current} />}
     </div>
   );
 };

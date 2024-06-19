@@ -46,6 +46,10 @@ const CustomProgressBar: React.FC<CustomProgressBarProps> = ({
       videoElement.addEventListener('timeupdate', handleTimeUpdate);
       videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
 
+      if (videoElement.readyState >= 1) {
+        handleLoadedMetadata();
+      }
+
       return () => {
         videoElement.removeEventListener('timeupdate', handleTimeUpdate);
         videoElement.removeEventListener(

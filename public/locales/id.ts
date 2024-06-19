@@ -2054,7 +2054,19 @@ export default {
     courseSearchPlaceholder: 'Apa yang ingin Anda pelajari hari ini?',
     categoryTitle: 'Kategori',
     noCategoriesTitle: 'Ups, Belum Ada Kategori',
-    noCategoriesDescription: 'Nantikan pembaruan lainnya!'
+    noCategoriesDescription: 'Nantikan pembaruan lainnya!',
+    categoryDetailTitle: 'Tentang Kursus',
+    levels: {
+      basic: 'Dasar',
+      intermediate: 'Menengah',
+      advanced: 'Lanjutan'
+    },
+    courseFee: 'Biaya',
+    courseButtonBuy: 'Beli Sekarang',
+    courseButtonDetail: 'Lihat Detail',
+    courseButtonOpenClass: 'Kelas Terbuka',
+    shareCourse: 'Bagikan Kursus Ini',
+    shareLinks: 'Bagikan Link'
   },
   seedsEvent: {
     search: 'Cari event',

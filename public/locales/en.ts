@@ -2127,7 +2127,19 @@ export default {
     courseSearchPlaceholder: 'What you want to learn today?',
     categoryTitle: 'Categories',
     noCategoriesTitle: 'Oops, There’s No Categories Yet',
-    noCategoriesDescription: 'Stay tuned for more updates!'
+    noCategoriesDescription: 'Stay tuned for more updates!',
+    categoryDetailTitle: 'About Course',
+    levels: {
+      basic: 'Basic',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    },
+    courseFee: 'Fee',
+    courseButtonBuy: 'Buy Now',
+    courseButtonDetail: 'See Detail',
+    courseButtonOpenClass: 'Open Class',
+    shareCourse: 'Share This Course',
+    shareLinks: 'Share Links'
   },
   seedsEvent: {
     search: 'Search',

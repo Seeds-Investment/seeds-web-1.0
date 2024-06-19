@@ -76,7 +76,7 @@ const BlockList: React.FC = () => {
             />
           </svg>
         </div>
-        {blocklistData.map((data, index) => (
+        {blocklistData?.map((data, index) => (
           <div
             key={index}
             className={`w-full p-3 mb-2 bg-[#FFFFFF] mt-2 rounded-2xl border border-1`}

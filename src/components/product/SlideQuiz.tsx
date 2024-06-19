@@ -97,6 +97,7 @@ export const SlideQuiz: React.FC = () => {
     );
   };
 
+  /* ----- Handle classname Swiper ----- */
   const classNameSwiper =
     'sm:flex-col sm:!w-full sm:!justify-end !flex !flex-col w-full !items-center !justify-center';
   const coverFlowEffectSwiper = {
@@ -106,125 +107,130 @@ export const SlideQuiz: React.FC = () => {
     modifier: 2.5,
     depth: 300
   };
+
+  /* -----Handle responsive breakpoint swiper----- */
   const responsiveBreakpointsSwiper = {
     320: { slidesPerView: 1, centeredSlides: true },
-    480: { slidesPerView: 2, centeredSlides: true },
-    640: { slidesPerView: 2, centeredSlides: true },
+    480: { slidesPerView: 1, centeredSlides: true },
+    640: { slidesPerView: 1, centeredSlides: true },
     1024: { slidePerView: 3, centeredSlides: true }
   };
 
   return (
-    <div className="flex flex-col lg:items-center w-full">
-      <div className="flex lg:flex gap-5  lg:w-full w-full">
-        <Swiper
-          centeredSlides={true}
-          loop={true}
-          slidesPerView={3}
-          spaceBetween={50}
-          breakpoints={responsiveBreakpointsSwiper}
-          coverflowEffect={coverFlowEffectSwiper}
-          effect={'coverflow'}
-          className={classNameSwiper}
-          autoplay={{ delay: 1000 }}
-          modules={[EffectCoverflow, Autoplay]}
-          autoFocus={true}
-        >
-          {quizData?.length !== 0
-            ? quizData?.data?.map((item: TopQuiz, index: any) => {
-                const durationInDays = (
-                  startedAt: string,
-                  endedAt: string
-                ): number => {
-                  const startDate = moment(startedAt);
-                  const endDate = moment(endedAt);
+    <div className="flex lg:flex gap-5 lg:w-full w-full">
+      <Swiper
+        centeredSlides={true}
+        loop={true}
+        slidesPerView={3}
+        spaceBetween={50}
+        breakpoints={responsiveBreakpointsSwiper}
+        coverflowEffect={coverFlowEffectSwiper}
+        effect={'coverflow'}
+        className={classNameSwiper}
+        autoplay={{ delay: 1000 }}
+        modules={[EffectCoverflow, Autoplay]}
+        autoFocus={true}
+      >
+        {quizData?.length !== 0
+          ? quizData?.data?.map((item: TopQuiz, index: any) => {
+              const durationInDays = (
+                startedAt: string,
+                endedAt: string
+              ): number => {
+                const startDate = moment(startedAt);
+                const endDate = moment(endedAt);
 
-                  const durationDays = endDate.diff(startDate, 'days');
+                const durationDays = endDate.diff(startDate, 'days');
 
-                  return durationDays;
-                };
-                return (
-                  <SwiperSlide
-                    key={index}
-                    className="w-full lg:w-1/3 flex h-[180px]"
-                  >
-                    <div className="flex w-full items-start gap-5 justify-center lg:w-full">
-                      <Card className="flex flex-col items-center lg:w-[440px] lg:h-[250px] rounded-t-[22.7px] w-full">
-                        <CardHeader /* --------Will be used for Banner image-------- */
-                          floated={false}
-                          shadow={false}
-                          color="transparent"
-                          // className="lg:w-auto lg:h-[154px] "
-                        >
-                          <Image
-                            src={item.banner.image_url}
-                            alt={item.name}
-                            width={300}
-                            height={300}
-                          />
-                        </CardHeader>
-                        <CardBody className="p-1 lg:w-full h-[125px] bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
-                          {/* --------Will be used to store the details of the quiz------- */}
-                          <div className="p-2 flex flex-row sm:flex-row md:flex-row justify-between items-center">
-                            <Typography className="text-white">
-                              {item.name}
-                            </Typography>
-                            <button>
-                              <Image src={shareButton} alt="share" />
-                            </button>
-                          </div>
-                          <div className="border-dashed border-2 border-separate-500"></div>
-                          <div className="p-2 flex flex-row lg:w-full md:w-full sm:flex-row justify-between items-center">
-                            <div className="flex items-center justify-center gap-4 text-white sm:items-center sm:text-sm">
-                              <div className="sm:text-sm">
-                                <Typography>Entry Fee</Typography>
-                                <Typography>
-                                  {item.admission_fee === 0
-                                    ? 'FREE'
-                                    : item.admission_fee}
-                                </Typography>
-                              </div>
-                              <div className="">
-                                <Typography>Duration</Typography>
-                                <Typography>
-                                  {durationInDays(
-                                    item.started_at,
-                                    item.ended_at
-                                  )}{' '}
-                                  Days
-                                </Typography>
-                              </div>
-                              <div className="">
-                                <Typography>Players</Typography>
-                                <Typography>{item.participants}</Typography>
-                              </div>
+                return durationDays;
+              };
+              return (
+                <SwiperSlide
+                  key={index}
+                  className="w-full lg:w-1/3 md:w-1/2 flex h-[180px]"
+                >
+                  <div className="flex w-full items-start gap-5 justify-center lg:w-full">
+                    <Card className="flex flex-col items-center lg:w-[440px] lg:h-[250px] rounded-t-[22.7px] w-[300px]">
+                      <CardHeader /* --------to store Banner image-------- */
+                        floated={false}
+                        shadow={false}
+                        color="transparent"
+                        className="lg:w-auto lg:h-[154px]"
+                      >
+                        <Image
+                          src={item.banner.image_url}
+                          alt={item.name}
+                          width={300}
+                          height={300}
+                        />
+                      </CardHeader>
+                      <CardBody className="p-1 lg:w-full lg:h-[125px] w-full h-full bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
+                        {/* -------------to store the details of the quiz------------ */}
+                        <div className="p-2 flex flex-row  justify-between items-center">
+                          <Typography className="text-white lg:text-xl text-[17px]">
+                            {item.name}
+                          </Typography>
+                          <button>
+                            <Image src={shareButton} alt="share" />
+                          </button>
+                        </div>
+                        <div className="border-dashed border-2 border-separate-500"></div>
+                        <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
+                          <div className="flex gap-3 text-white ">
+                            <div className="flex flex-col items-start justify-start">
+                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                                Entry Fee
+                              </Typography>
+                              <Typography className="text-[15px] lg:text-lg">
+                                {item.admission_fee === 0
+                                  ? 'FREE'
+                                  : item.admission_fee}
+                              </Typography>
                             </div>
-                            <Button
-                              onClick={async () =>
-                                await router.push(
-                                  `${
-                                    process.env.NEXT_PUBLIC_DOMAIN ??
-                                    'https://user-dev-gcp.seeds.finance'
-                                  }/play/quiz/${item.id}`
-                                )
-                              }
-                              className="w-[100px] h-[40px] bg-white rounded-full text-[#3AC4A0] capitalize"
-                            >
-                              Play
-                            </Button>
+                            <div className="flex flex-col items-start">
+                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                                Duration
+                              </Typography>
+                              <Typography className="text-[15px] lg:text-lg">
+                                {durationInDays(item.started_at, item.ended_at)}{' '}
+                                Days
+                              </Typography>
+                            </div>
+                            <div className="flex flex-col items-start">
+                              <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
+                                Players
+                              </Typography>
+                              <Typography className=" text-[15px] lg:text-lg">
+                                {item.participants}
+                              </Typography>
+                            </div>
                           </div>
-                        </CardBody>
-                      </Card>
-                    </div>
-                  </SwiperSlide>
-                );
-              })
-            : null}
-          <div className="flex w-full justify-center cursor-pointer mt-5">
-            <PrevBtn />
-            <NextBtn />
-          </div>
-        </Swiper>
-      </div>
+                          <Button
+                            onClick={async () =>
+                              await router.push(
+                                `${
+                                  process.env.NEXT_PUBLIC_DOMAIN ??
+                                  'https://user-dev-gcp.seeds.finance'
+                                }/play/quiz/${item.id}`
+                              )
+                            }
+                            className="w-[65px] h-[25px] lg:w-[100px] lg:h-[40px] bg-white rounded-full text-[#3AC4A0] capitalize flex items-center justify-center"
+                          >
+                            Play
+                          </Button>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </div>
+                </SwiperSlide>
+              );
+            })
+          : null}
+        <div className="flex w-full justify-center cursor-pointer mt-5">
+          <PrevBtn />
+          <NextBtn />
+        </div>
+      </Swiper>
     </div>
   );
 };

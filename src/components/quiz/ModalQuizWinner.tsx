@@ -89,7 +89,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           <div className="w-2/3 gap-4 flex flex-col py-4">
             <button
               onClick={() => {
-                router.push(`/withdrawal/quiz/${quizId}`).catch(err => {
+                router.push(`/withdrawal?quizId=${quizId}`).catch(err => {
                   toast(`Error: ${err as string}`);
                 });
               }}

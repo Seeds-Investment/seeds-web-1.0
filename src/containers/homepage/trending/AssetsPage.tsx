@@ -79,9 +79,8 @@ export default function AssetsPage({ userInfo }: any): React.ReactElement {
           className="text-md mt-3 font-normal text-[#3AC4A0]"
           onClick={() => {
             TrackerEvent({
-              event: `Seeds_view_asset_list_web`,
-              userId: userInfo?.id,
-              pageName: 'Asset List'
+              event: `SW_homepage_btn_asset_list`,
+              userData: userInfo
             });
           }}
         >

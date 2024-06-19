@@ -17,6 +17,7 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Avatar,
   Button,
@@ -69,29 +70,6 @@ interface LastPrice {
   open: number;
 }
 
-export interface SuccessOrderData {
-  id: string;
-  play_id: string;
-  user_id: string;
-  asset: Asset;
-  type: 'BUY' | 'SELL';
-  lot: number;
-  bid_price: number;
-  stop_loss: number;
-  pnl: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Asset {
-  asset_exchange: string;
-  asset_icon: string;
-  asset_id: string;
-  asset_name: string;
-  asset_ticker: string;
-  asset_type: string;
-}
-
 interface AssetPortfolio {
   asset_id: string;
   play_id: string;
@@ -131,11 +109,11 @@ const BuyPage: React.FC = () => {
     play_id: '',
     user_id: '',
     asset: {
-      asset_exchange: '',
-      asset_icon: '',
       asset_id: '',
       asset_name: '',
+      asset_icon: '',
       asset_ticker: '',
+      asset_exchange: '',
       asset_type: ''
     },
     type: 'BUY',

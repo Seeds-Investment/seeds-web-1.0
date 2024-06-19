@@ -1,3 +1,4 @@
+import LiveIcon from '@/assets/play/tournament/live.svg';
 import CCard from '@/components/CCard';
 import {
   calculatePercentageDifference,
@@ -6,6 +7,7 @@ import {
 import { type AssetI } from '@/utils/interfaces/play.interface';
 import { StarIcon } from '@heroicons/react/24/outline';
 import { Avatar } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 interface props {
@@ -57,6 +59,23 @@ const Card1: React.FC<props> = ({ data, currency }) => {
         }{' '}
         %) - {t('playSimulation.today')}
       </p>
+      <div className="w-full flex flex-row justify-between">
+        <p className="text-sm font-normal text-[#5E44FF]">
+          {currency ?? 'IDR'}{' '}
+          {standartCurrency(data?.lastPrice?.vwap ?? 0).replace('Rp', '')} (
+          {
+            calculatePercentageDifference(
+              data?.lastPrice?.open ?? 0,
+              data?.lastPrice?.close ?? 0
+            )?.value
+          }{' '}
+          %) - {t('playSimulation.today')}
+        </p>
+        <div className="flex items-center gap-1">
+          <Image src={LiveIcon} alt="live" className="w-5 h-5" />
+          <p>Live</p>
+        </div>
+      </div>
     </CCard>
   );
 };

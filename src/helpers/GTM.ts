@@ -7,7 +7,7 @@ interface Tracker {
 }
 
 const TrackerEvent = ({ event, ...additionalData }: Tracker): void => {
-  const deviceDetector = new DeviceDetector();
+  const detector = new DeviceDetector();
 
   trackEvent({
     event,
@@ -15,9 +15,9 @@ const TrackerEvent = ({ event, ...additionalData }: Tracker): void => {
       ...additionalData,
       created_at: new Date().toString(),
       device: {
-        user_device: deviceDetector.parse(navigator.userAgent).device?.type,
-        user_type: deviceDetector.parse(navigator.userAgent).client?.type,
-        user_os: deviceDetector.parse(navigator.userAgent).os?.name
+        user_device: detector.parse(navigator.userAgent).device?.type,
+        user_type: detector.parse(navigator.userAgent).client?.type,
+        user_os: detector.parse(navigator.userAgent).os?.name
       }
     }
   });

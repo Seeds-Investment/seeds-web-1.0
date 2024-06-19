@@ -520,6 +520,7 @@ export default {
       }
     },
     circleMembership: {
+      reply: 'Reply...',
       title: 'Circle Membership',
       announcement:
         'This Terms and Condition (“Terms”) is entered into force as of the date you click the “Accept Terms” button, or other equivalent button, indicating your acceptance of these terms (the “Effective Date”) between PT Benih Investasi Teknologi, a company having its domicile at Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and the entity agreeing to these terms (“Circle Owner”).',
@@ -1051,7 +1052,9 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Find or create a Circle that matches your interests in Seeds.',
+      join: 'Joined',
+      sort: 'Sort by:'
     },
     list: {
       title: 'Circle List',
@@ -1064,13 +1067,15 @@ export default {
       title3: 'Circle Balance'
     },
     create: {
-      title: 'Create Cirlce',
+      title: 'Create Circle',
       cover: 'Add Cover',
       image: 'Add Image',
       name: {
         label: 'Circle Name',
         placeholder: 'type circle name',
-        error: 'Input Circle Name'
+        error: 'Input Circle Name',
+        duplicate1: 'The name',
+        duplicate2: 'is already in use!',
       },
       hashtag: {
         label: 'Hashtag',
@@ -1242,7 +1247,14 @@ export default {
     text5: "Don't miss popular financial news here!",
     text6: 'You may like',
     text7: 'News',
-    text8: 'See all'
+    text8: 'See all',
+    article: {
+      sort: {
+        all: 'All',
+        relevant: 'Most Relevant',
+        recent: 'Most Recent'
+      }
+    }
   },
   validationErrors: {
     required: 'This field is required',
@@ -1259,6 +1271,8 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    placeHolder1: 'What do you want to discuss?',
+    placeHolder2: 'Start a post',
     redirectError: 'Please Re-login',
     product: {
       section1: {
@@ -1316,7 +1330,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Report Cirlce',
+      title: 'Report Circle',
       subtitle1: 'This circle will be reported',
       subtitle2: 'Why are you reporting this circle?',
       option1: 'Spam',
@@ -1683,7 +1697,8 @@ export default {
       text13: 'Now in',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
-      text16: 'Login to enter arena simulation'
+      text16: 'Login to enter arena simulation',
+      text17: 'Virtual cash is virtual money available for play game'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1727,6 +1742,7 @@ export default {
     questionsAmount: '{{questions}} Questions',
     questions: 'Questions',
     quiz: 'Quiz',
+    invitationCode: 'Invitation Code',
     entranceFee: 'Entrance Fee',
     played: 'Played',
     duration: 'Duration',
@@ -1770,6 +1786,7 @@ export default {
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
+    leaderboardEmpty: 'Leaderboard data is empty.',
     remainingTime: 'Your remaining time',
     currentRank: 'Your Current Rank',
     currentScore: 'Your Current Score',
@@ -1864,24 +1881,11 @@ export default {
     placeholderAccount: 'Select your account',
     placeholderAccountName: 'Your account name',
     placeholderAccountNumber: 'Your account number',
-    completeYourData: 'Complete your data!',
-    fullname: 'Fullname',
-    placeholderFullname: 'Your fullname',
-    socialMedia: 'Social Media',
-    placeholderSocialMedia: 'Select a social media account',
-    socialMediaName: 'Social Media Name',
-    placeholderSocialMediaName: 'Input your account social media',
-    winnerTestimonial: 'Testimonial',
-    placeholderWinnerTestimonial: 'Input your testimonial',
-    winnerPhoto: 'Upload Image',
-    placeholderWinnerPhoto: 'Upload your best photos, Seeds friends!',
-    addPhoto: 'Add Photo',
     transferBank: 'Transfer with Bank',
     eWallet: 'E-Wallet',
     transferEWallet: 'Transfer with E-Wallet',
     bankList: 'Bank List',
     eWalletList: 'E-Wallet List',
-    socialMediaList: 'Social Media List',
     thankyou: 'Thank You!',
     withdrawalRequest:
       'Your withdrawal request is being processed. Please wait max 1x24 hours.',
@@ -1919,7 +1923,23 @@ export default {
       close: 'Close',
       paymentSuccessful: 'Successful',
       recurringSaved: 'Your recurring has been saved!'
-    }
+    },
+    shareQuiz: 'Share This Quiz',
+    playId: 'Quiz ID',
+    shareLinks: 'Share Link'
+  },
+  micrositeQuiz: {
+    errorEmailIncorrect: 'Please input your email correctly',
+    errorEmailAlready: 'Oops,  Your email already registered',
+    errorPhone: 'Oops, Your number already registered',
+    name: 'Name',
+    placeName: 'Enter your name',
+    email: 'Email',
+    placeEmail: 'Enter your email',
+    save: 'Save',
+    rank: 'Rank',
+    player: 'Players',
+    point: 'Total Point'
   },
   tournament: {
     myPlay: 'My Play',
@@ -1988,6 +2008,9 @@ export default {
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
+      leaderboard: 'Leaderboard',
+      ended: 'Ended',
+      canceled: 'Canceled',
       share: 'Share',
       day: 'Day',
       days: 'Days'
@@ -2225,6 +2248,11 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Oops, No Account Opened Yet',
+    stayTuned: 'Stay tuned for the next update!',
+    register: 'Register Now'
   },
   playCenter: {
     text1: 'My Latest Play',

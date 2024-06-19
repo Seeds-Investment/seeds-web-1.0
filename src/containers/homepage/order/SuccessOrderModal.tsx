@@ -1,5 +1,5 @@
 import { SuccessPlayOrder } from '@/assets/order-page';
-import { type SuccessOrderData } from '@/pages/homepage/order/[id]';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Button,
   Dialog,

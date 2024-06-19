@@ -234,7 +234,7 @@ const CreatePin = (): JSX.Element => {
                   </small>
                 )}
                 <a
-                  href="/auth2/forgot-password"
+                  href="/auth/forgot-password"
                   className="flex mt-3 underline font-semibold text-xs items-end justify-end text-[#3AC4A0]"
                 >
                   Forgot Password?

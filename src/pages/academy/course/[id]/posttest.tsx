@@ -3,7 +3,7 @@ import QuestionCard from '@/components/academy/QuestionCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import React from 'react';
 
-const Pretest: React.FC = () => {
+const Posttest: React.FC = () => {
   const question =
     'Penundaan konsumsi sekarang untuk aktifita produktif selama periode waktu tertentu merupakan definisi dari ...';
   const options = [
@@ -18,7 +18,7 @@ const Pretest: React.FC = () => {
     <>
       <PageGradient defaultGradient className="w-full">
         <div className="relative font-bold bg-white text-[#262626] md:p-4 p-3 rounded-xl mt-5 md:mt-0 w-full text-center">
-          Pre-Test
+          Post-Test
         </div>
         <div className="bg-white p-3 rounded-xl mt-5">
           <div
@@ -44,4 +44,4 @@ const Pretest: React.FC = () => {
   );
 };
 
-export default Pretest;
+export default Posttest;

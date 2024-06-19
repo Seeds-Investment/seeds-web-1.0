@@ -32,6 +32,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
 
   const handleSubmit = (): void => {
     console.log(`Submitted: ${id as string}`);
+    void router.push(`/academy/course/${id as string}/receipt`);
     onClose();
   };
 

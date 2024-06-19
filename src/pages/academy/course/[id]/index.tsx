@@ -1,124 +1,26 @@
-import CustomProgressBar from '@/components/academy/CustomProgressBar';
 import PaymentPopup from '@/components/academy/PaymentPopup';
 import ShortDescription from '@/components/academy/ShortDescription';
+import VideoPlayer from '@/components/academy/VideoPlayer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Switch } from '@material-tailwind/react';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 const DetailCourse: React.FC = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [showPlayIcon, setShowPlayIcon] = useState(true);
-  const [showTitle, setShowTitle] = useState(true);
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
-  };
-
-  useEffect(() => {
-    const videoElement = videoRef.current;
-
-    const handlePlay = (): void => {
-      setIsPlaying(true);
-      setTimeout(() => {
-        setShowPlayIcon(false);
-      }, 1000);
-      setTimeout(() => {
-        setShowTitle(false);
-      }, 1000);
-    };
-    const handlePause = (): void => {
-      setIsPlaying(false);
-      setShowPlayIcon(true);
-      setShowTitle(true);
-    };
-
-    if (videoElement !== null) {
-      videoElement.addEventListener('play', handlePlay);
-      videoElement.addEventListener('pause', handlePause);
-    }
-
-    return () => {
-      if (videoElement !== null) {
-        videoElement.removeEventListener('play', handlePlay);
-        videoElement.removeEventListener('pause', handlePause);
-      }
-    };
-  }, []);
-
-  const handlePlayPause = (): void => {
-    const videoElement = videoRef.current;
-    if (videoElement !== null) {
-      if (document.fullscreenElement === null) {
-        if (videoElement.paused) {
-          void videoElement.play();
-        } else {
-          videoElement.pause();
-        }
-      }
-    }
   };
 
   return (
     <>
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-3 rounded-xl shadow-md flex flex-col gap-5">
-          <div className="video-container relative w-full aspect-video">
-            <video
-              ref={videoRef}
-              id="video"
-              width="100%"
-              height="100%"
-              src="https://dev-assets.seeds.finance/quiz/cb1a51db-f455-4ae4-a1e4-5683820cacde.mp4"
-              className="w-full h-full cursor-pointer"
-              onClick={handlePlayPause}
-              controlsList="nodownload"
-              onContextMenu={e => {
-                e.preventDefault();
-              }}
-            >
-              Your browser does not support the video tag.
-            </video>
-            {showPlayIcon && !isPlaying && (
-              <div
-                className="play-icon absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl text-white opacity-80 hover:opacity-100 cursor-pointer z-10"
-                onClick={handlePlayPause}
-              >
-                <Image
-                  src={'/assets/academy/play-icon.svg'}
-                  width={100}
-                  height={100}
-                  alt="play-icon"
-                  className="w-10 sm:w-16 md:w-16 lg:w-24 xl:w-32"
-                />
-              </div>
-            )}
-            {showPlayIcon && isPlaying && (
-              <div
-                className="pause-icon absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl text-white opacity-80 hover:opacity-100 cursor-pointer z-10"
-                onClick={handlePlayPause}
-              >
-                <Image
-                  src="/assets/academy/pause-icon.svg"
-                  width={100}
-                  height={100}
-                  alt="pause-icon"
-                  className="w-10 sm:w-16 md:w-16 lg:w-24 xl:w-32"
-                />
-              </div>
-            )}
-            {showTitle && (
-              <div
-                onClick={handlePlayPause}
-                className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 text-white p-4 text-2xl font-bold z-0"
-              >
-                Learn Investing From 0
-              </div>
-            )}
-            <CustomProgressBar videoElement={videoRef.current} />
-          </div>
+          <VideoPlayer
+            videoSrc="https://dev-assets.seeds.finance/quiz/cb1a51db-f455-4ae4-a1e4-5683820cacde.mp4"
+            title="Learn Investing From 0"
+          />
           <div className="font-bold text-2xl">Learn Investing From 0</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">

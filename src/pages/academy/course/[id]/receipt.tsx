@@ -100,7 +100,9 @@ const Receipt: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-[#3AC4A0] mt-20 rounded-full capitalize"
                   onClick={() => {
-                    void router.replace(`/academy/course/${id as string}`);
+                    void router.replace(
+                      `/academy/course/${id as string}/learn`
+                    );
                   }}
                 >
                   Close

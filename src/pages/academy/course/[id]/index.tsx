@@ -5,11 +5,14 @@ import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Switch } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 const DetailCourse: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const router = useRouter();
+  const { id } = router.query;
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
@@ -66,7 +69,12 @@ const DetailCourse: React.FC = () => {
               }
             />
           </div>
-          <button className="p-3 bg-[#7555DA] rounded-3xl w-full text-white font-bold">
+          <button
+            className="p-3 bg-[#7555DA] rounded-3xl w-full text-white font-bold"
+            onClick={async () =>
+              await router.push(`/academy/course/${id as string}/pretest`)
+            }
+          >
             Try Pre-Test!
           </button>
         </div>

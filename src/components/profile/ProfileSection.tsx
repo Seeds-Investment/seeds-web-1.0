@@ -31,7 +31,7 @@ const Profile = ({
   const _handleReferalCode = (): any => {
     return router.push({
       pathname: `/my-profile/referralCode`,
-      query: { refCode: profileData.refCode, referralHistory: 'true' }
+      query: { referralHistory: 'true' }
     });
   };
 

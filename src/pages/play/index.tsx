@@ -421,7 +421,7 @@ const Player = (): React.ReactElement => {
                     src={asset.banner}
                     alt={asset.name}
                     width={1000}
-                    height={1000}
+                    height={150}
                     onClick={async () => {
                       (asset?.play_center_type === 'quiz'
                         ? await router.push(`/play/quiz/${asset.id}`)
@@ -463,7 +463,6 @@ const Player = (): React.ReactElement => {
             </button>
           </div>
         </div>
-        
       </div>
 
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl md:mt-4">

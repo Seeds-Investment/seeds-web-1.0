@@ -13,8 +13,7 @@ import {
   Typography
 } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import type Slider from 'react-slick';
+import { useEffect, useState } from 'react';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
@@ -45,20 +44,8 @@ interface MyStyle extends React.CSSProperties {
 export const SlideCircle: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [circleData, setCircleData] = useState<any>([]);
-
   const [isChange, setChange] = useState(true);
-  const sliderRef = useRef<Slider>(null);
-  const next = (): void => {
-    if (sliderRef.current !== null) {
-      sliderRef.current.slickNext();
-    }
-  };
 
-  const previous = (): void => {
-    if (sliderRef.current !== null) {
-      sliderRef.current.slickPrev();
-    }
-  };
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -81,7 +68,6 @@ export const SlideCircle: React.FC = () => {
       <div className="flex gap-3">
         <div
           onClick={() => {
-            previous();
             setChange(false);
             swiper.slidePrev();
           }}
@@ -108,7 +94,6 @@ export const SlideCircle: React.FC = () => {
       <div className="flex gap-3">
         <div
           onClick={() => {
-            next();
             setChange(true);
             swiper.slideNext();
           }}

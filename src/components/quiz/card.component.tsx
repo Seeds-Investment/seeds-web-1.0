@@ -56,7 +56,7 @@ const QuizCard = ({ item, currency }: { item: IQuiz; currency: string }) => {
                   setIsShareModal(true);
                 }
               }}
-              className="bg-white text-xs md:text-[10.71px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold px-4 md:px-2 lg:px-4 w-fit md:w-32 lg:w-fit"
+              className="text-xs md:text-[10.71px] text-seeds-button-green flex items-center justify-center py-2 rounded-full font-semibold px-4 md:px-2 lg:px-4 w-fit md:w-32 lg:w-fit"
             >
               <ShareIcon width={20} height={20} className="text-white" />
             </button>

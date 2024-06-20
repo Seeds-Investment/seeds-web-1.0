@@ -10,7 +10,10 @@ import { EarnXP } from '@/constants/assets/images';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getExpData } from '@/repository/exp.repository';
-import { getReferralHistory } from '@/repository/profile.repository';
+import {
+  getReferralHistory,
+  getUserInfo
+} from '@/repository/profile.repository';
 import {
   Button,
   Card,
@@ -24,12 +27,18 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+interface userInfoI {
+  refCode: string;
+  refCodeUsage: number;
+}
+
 const ReferalCode = (): JSX.Element => {
   const width = useWindowInnerWidth();
   const router = useRouter();
-  const { refCode, referralHistory } = router.query;
+  const { referralHistory } = router.query;
   const [expData, setExpData] = useState<any>();
   const [refHistory, setRefHistory] = useState<any>();
+  const [userInfo, setUserInfo] = useState<userInfoI | undefined>();
   const { t } = useTranslation();
 
   const customGradient = (
@@ -45,12 +54,22 @@ const ReferalCode = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const expData = await getExpData();
-        setExpData(expData);
-        const refHistory = await getReferralHistory(refCode as string);
-        setRefHistory(refHistory);
+        const [userInfoResponse, expDataResponse] = await Promise.all([
+          getUserInfo(),
+          getExpData()
+        ]);
+
+        setUserInfo(userInfoResponse);
+        setExpData(expDataResponse);
+
+        if (userInfoResponse?.refCode !== undefined) {
+          const refHistoryResponse = await getReferralHistory(
+            userInfoResponse.refCode
+          );
+          setRefHistory(refHistoryResponse);
+        }
       } catch (error: any) {
-        console.error('Error fetching exp data:', error.message);
+        console.error('Error fetching data:', error.message);
       }
     };
 
@@ -78,12 +97,14 @@ const ReferalCode = (): JSX.Element => {
                 <PopoverHandler>
                   <Button className="w-[345.33px] h-[67.15px] px-[22px] bg-[#3AC4A0] flex flex-row justify-between items-center cursor-pointer">
                     <Typography className="text-white text-[19.19px] leading-[27.41px] font-poppins font-normal">
-                      {refCode}
+                      {userInfo?.refCode}
                     </Typography>
                     <div
                       className="flex gap-1"
                       onClick={async () => {
-                        await navigator.clipboard.writeText(refCode as string);
+                        await navigator.clipboard.writeText(
+                          userInfo?.refCode as string
+                        );
                       }}
                     >
                       <Image
@@ -109,7 +130,7 @@ const ReferalCode = (): JSX.Element => {
           <Typography className="text-2xl text-white font-normal font-poppins">
             {t('ReferralCode.total')}{' '}
             <span className="text-3xl text-white font-semibold font-poppins">
-              {refHistory?.data?.length}
+              {userInfo?.refCodeUsage}
             </span>
           </Typography>
         </div>
@@ -201,11 +222,13 @@ const ReferalCode = (): JSX.Element => {
               <Button
                 className="w-full h-11 p-3 bg-white border border-[#BDBDBD] flex flex-row justify-between items-center cursor-pointer"
                 onClick={async () => {
-                  await navigator.clipboard.writeText(refCode as string);
+                  await navigator.clipboard.writeText(
+                    userInfo?.refCode as string
+                  );
                 }}
               >
                 <Typography className="text-[#262626] text-sm font-poppins font-normal">
-                  {refCode}
+                  {userInfo?.refCode}
                 </Typography>
                 <div className="flex items-center gap-1">
                   <Image
@@ -231,7 +254,7 @@ const ReferalCode = (): JSX.Element => {
           {t('ReferralCode.total')}
         </Typography>
         <Typography className="text-3xl text-[#262626] font-semibold font-poppins">
-          {refHistory?.data?.length}
+          {userInfo?.refCodeUsage}
         </Typography>
       </Card>
       {/* TODO: END OF MOBILE SIZE */}

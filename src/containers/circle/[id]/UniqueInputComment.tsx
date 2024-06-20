@@ -79,7 +79,7 @@ const UniqueInputComment: React.FC<props> = ({
     } else {
       return false;
     }
-  }
+  };
 
   return (
     <div className="flex justify-between pb-10">
@@ -127,7 +127,9 @@ const UniqueInputComment: React.FC<props> = ({
         <button
           disabled={isEmpty()}
           type="submit"
-          className={`flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit ${isEmpty() ? 'bg-[#d3d3d3]' : 'bg-seeds-button-green'}`}
+          className={`flex justify-center py-2 items-center rounded-full px-6 text-white font-semibold font-poppins h-fit ${
+            isEmpty() ? 'bg-[#d3d3d3]' : 'bg-seeds-button-green'
+          }`}
         >
           Post
         </button>

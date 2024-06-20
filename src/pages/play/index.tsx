@@ -166,7 +166,7 @@ const Player = (): React.ReactElement => {
         const res = await getEventList();
         setBannerAsset(res.playList);
         const resUserRank = await getUserRank(
-          userInfo?.preferredCurrency ?? '',
+          userInfo?.preferredCurrency ?? 'season',
           ''
         );
         setUserRank(resUserRank.current_rank);
@@ -534,6 +534,8 @@ const Player = (): React.ReactElement => {
                               ? item?.is_joined
                                 ? `/play/tournament/${item.id}/home`
                                 : `/play/tournament/${item.id}`
+                              : item?.is_joined
+                              ? `/play/quiz/${item?.id}/done`
                               : `/play/quiz/${item?.id}`
                           }`
                         )
@@ -544,7 +546,7 @@ const Player = (): React.ReactElement => {
                     className="flex rounded-xl overflow-hidden shadow hover:shadow-lg duration-300"
                   >
                     <div className="w-full rounded-xl">
-                      <div className="border border-[#E9E9E9] w-full h-fit max-h-[150px] flex justify-center items-center oveflow-hidden cursor-pointer">
+                      <div className="border border-[#E9E9E9] w-full h-[150px] flex justify-center items-center oveflow-hidden cursor-pointer">
                         <Image
                           alt=""
                           src={
@@ -606,12 +608,15 @@ const Player = (): React.ReactElement => {
                               )}
                               {item?.play_center_type === 'play' && (
                                 <div>
-                                    <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
-                                      {item?.is_joined
-                                        ? t('tournament.tournamentCard.openButton')
-                                        : t('tournament.tournamentCard.joinButton')
-                                      }
-                                    </div>
+                                  <div className="w-full flex justify-center items-center cursor-pointer text-[10px] font-semibold text-[#3AC4A0] bg-white px-4 py-1 rounded-full hover:shadow-lg duration-300">
+                                    {item?.is_joined
+                                      ? t(
+                                          'tournament.tournamentCard.openButton'
+                                        )
+                                      : t(
+                                          'tournament.tournamentCard.joinButton'
+                                        )}
+                                  </div>
                                 </div>
                               )}
                             </div>

@@ -55,7 +55,10 @@ const FeatureSection: React.FC = (): React.ReactElement => {
           Events
         </div>
       </div>
-      <div className="w-full lg:w-[1200px] flex flex-col lg:flex-row lg:gap-2 xl:gap-4 justify-center items-center border border-[#E9E9E9] rounded-lg px-1 xl:p-2 hover:border-[#3AC4A0] hover:shadow-lg duration-300 cursor-pointer">
+      <div
+        onClick={async () => await router.push('/play/open-account')}
+        className="w-full lg:w-[1200px] flex flex-col lg:flex-row lg:gap-2 xl:gap-4 justify-center items-center border border-[#E9E9E9] rounded-lg px-1 xl:p-2 hover:border-[#3AC4A0] hover:shadow-lg duration-300 cursor-pointer"
+      >
         <Image
           width={100}
           height={100}

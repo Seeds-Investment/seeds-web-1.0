@@ -77,7 +77,7 @@ const UseLifeline = ({
 
   useEffect(() => {
     timeOut();
-    const countDownTime = expiryInSecond ?? 6000 * 1000;
+    const countDownTime = (expiryInSecond ?? 6000) * 1000;
     setCountDown(countDownTime);
     const interval = setInterval(() => {
       setCountDown(prev => prev - 1000);
@@ -125,7 +125,7 @@ const UseLifeline = ({
             </div>
           </div>
         </div>
-        <div className="lg:w-[325px] w-full h-[560px] flex items-center justify-center">
+        <div className="lg:w-[325px] w-full h-full flex items-center justify-center">
           {useLifelineState?.lifeline === LifelinesEnum.PHONE ? (
             <Phone
               useLifelineState={useLifelineState}
@@ -163,6 +163,17 @@ const Phone = ({
   currentPage: number;
 }) => {
   const { t } = useTranslation();
+  const isValidURL = (): boolean => {
+    const isUrl = generateAnswerText().replace(/^[A-D]\.\s/, '');
+    try {
+      // eslint-disable-next-line no-new
+      new URL(isUrl);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
   const generateDescriptionText = (): string => {
     const desc =
       quizQuestions?.[currentPage]?.data?.[i18n.language === 'id' ? 'id' : 'en']
@@ -174,18 +185,30 @@ const Phone = ({
     let option: Option | undefined;
     let optionKey: string | undefined;
     useLifelineState?.res.forEach(item => {
-      const options =
+      const data =
         quizQuestions?.[currentPage]?.data?.[
           i18n.language === 'id' ? 'id' : 'en'
-        ]?.options;
-      if (options) {
-        for (const key in options) {
-          if (Object.prototype.hasOwnProperty.call(options, key)) {
-            const element = options[key as keyof Options];
-            if (element.id === item.option_id) {
-              option = element;
-              optionKey = key;
-            }
+        ];
+      const filteredOptions = data
+        ? {
+            ...Object.fromEntries(
+              Object.entries(data.options).filter(
+                ([, value]: [string, Option]) => value.option !== ''
+              )
+            ),
+            ...Object.fromEntries(
+              Object.entries(data.option_image).filter(
+                ([, value]: [string, Option]) => value.option !== ''
+              )
+            )
+          }
+        : {};
+      for (const key in filteredOptions) {
+        if (Object.prototype.hasOwnProperty.call(filteredOptions, key)) {
+          const element = filteredOptions[key as keyof Options];
+          if (element?.id === item.option_id) {
+            option = element;
+            optionKey = key;
           }
         }
       }
@@ -212,7 +235,7 @@ const Phone = ({
         />
       </div>
       <div className="rounded-2xl bg-white border border-[#FDBA22] w-full h-full flex flex-col items-center justify-center p-2 gap-2">
-        <div className="w-full mb-2">
+        <div className="w-full">
           <Image
             src={SeedyAnswer}
             alt="The answer"
@@ -221,9 +244,22 @@ const Phone = ({
             className="object-contain"
           />
         </div>
-        <div className="font-poppins font-semibold text-[#3AC4A0] text-xl">
-          {generateAnswerText()}
-        </div>
+        {isValidURL() ? (
+          <div className="flex items-center justify-center gap-4">
+            <p>{generateAnswerText().substring(0, 2)}</p>
+            <Image
+              src={generateAnswerText().replace(/^[A-D]\.\s/, '')}
+              alt="The answer"
+              width={120}
+              height={100}
+              className="object-cover rounded-md"
+            />
+          </div>
+        ) : (
+          <div className="font-poppins font-semibold text-[#3AC4A0] text-xl">
+            {generateAnswerText()}
+          </div>
+        )}
         <div className="w-full bg-[#E9E9E9] px-4 py-2.5 rounded-xl">
           <div className="font-poppins font-semibold text-[#3AC4A0] text-sm">
             {t('quiz.description')}
@@ -251,6 +287,22 @@ const Vote = ({
     return lifeline?.percentage ?? 0;
   };
 
+  const isValidURL = (): boolean => {
+    if (quizQuestions) {
+      const options =
+        quizQuestions[currentPage]?.data[i18n.language === 'id' ? 'id' : 'en']
+          .option_image.option_1.option;
+      try {
+        // eslint-disable-next-line no-new
+        new URL(options);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-64 -mb-5">
@@ -262,56 +314,100 @@ const Vote = ({
         </div>
         <div className="w-full flex flex-col items-center justify-center gap-2 lg:gap-4 mt-4">
           {quizQuestions && quizQuestions?.length > 0 && (
-            <>
+            <div
+              className={`${
+                isValidURL() ? 'grid grid-cols-2 gap-4' : 'w-full'
+              }`}
+            >
               <VoteBox
                 text={`A. ${
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_1.option ?? ''
+                  ]?.options?.option_1?.option !== ''
+                    ? quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.options?.option_1?.option ?? ''
+                    : quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.option_image?.option_1?.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_1.id ?? 0
+                  ]?.options?.option_1.id ??
+                    quizQuestions?.[currentPage]?.data?.[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ]?.option_image?.option_1.id ??
+                    0
                 )}
               />
               <VoteBox
                 text={`B. ${
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_2.option ?? ''
+                  ]?.options?.option_2?.option !== ''
+                    ? quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.options?.option_2?.option ?? ''
+                    : quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.option_image?.option_2?.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_2.id ?? 0
+                  ]?.options?.option_2.id ??
+                    quizQuestions?.[currentPage]?.data?.[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ]?.option_image?.option_2.id ??
+                    0
                 )}
               />
               <VoteBox
                 text={`C. ${
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_3.option ?? ''
+                  ]?.options?.option_3?.option !== ''
+                    ? quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.options?.option_3?.option ?? ''
+                    : quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.option_image?.option_3?.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_3.id ?? 0
+                  ]?.options?.option_3.id ??
+                    quizQuestions?.[currentPage]?.data?.[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ]?.option_image?.option_3.id ??
+                    0
                 )}
               />
               <VoteBox
                 text={`D. ${
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_4.option ?? ''
+                  ]?.options?.option_4?.option !== ''
+                    ? quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.options?.option_4?.option ?? ''
+                    : quizQuestions[currentPage]?.data[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ]?.option_image?.option_4?.option ?? ''
                 }`}
                 precentage={generatePercentage(
                   quizQuestions?.[currentPage]?.data?.[
                     i18n.language === 'id' ? 'id' : 'en'
-                  ]?.options.option_4.id ?? 0
+                  ]?.options?.option_4.id ??
+                    quizQuestions?.[currentPage]?.data?.[
+                      i18n.language === 'id' ? 'id' : 'en'
+                    ]?.option_image?.option_4.id ??
+                    0
                 )}
               />
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -326,17 +422,51 @@ const VoteBox = ({
   text: string;
   precentage: number;
 }) => {
+  const isValidURL = (option: string): boolean => {
+    try {
+      // eslint-disable-next-line no-new
+      new URL(option.replace(/^[A-D]\.\s/, ''));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
   return (
     <div
-      className={`w-full rounded-full px-2 py-1 lg:px-4 lg:py-2 border bg-white full flex flex-row justify-between items-center relative`}
+      className={`${
+        isValidURL(text)
+          ? 'rounded-xl'
+          : 'w-full rounded-full px-2 py-1 lg:px-4 lg:py-2 border bg-white full flex flex-row justify-between items-center mb-2'
+      } relative`}
     >
-      <div
-        className="absolute inset-0 bg-[#DCFCE4] border border-[#E9E9E9] rounded-full"
-        style={{ width: `${precentage}%` }}
-      />
-      <div className="text-xs text-[#3AC4A0] font-poppins text-clip truncate text mr-1 z-10">
-        {text}
-      </div>
+      {!isValidURL(text) && (
+        <div
+          className="absolute inset-0 bg-[#DCFCE4] border border-[#E9E9E9] rounded-full"
+          style={{ width: `${precentage}%` }}
+        />
+      )}
+      {isValidURL(text) ? (
+        <div className="z-10">
+          <p className="text-center">{text.substring(0, 2)}</p>
+          <div className="flex justify-center p-6 border border-[#E9E9E9] rounded-lg relative">
+            <Image
+              src={text.replace(/^[A-D]\.\s/, '')}
+              alt="answer"
+              width={80}
+              height={80}
+              className="object-cover rounded-md z-10"
+            />
+            <div
+              className="absolute bottom-0 w-full bg-[#DCFCE4] border border-[#E9E9E9] "
+              style={{ height: `${precentage}%` }}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="text-xs text-[#3AC4A0] font-poppins text-clip truncate text mr-1 z-10">
+          {text}
+        </div>
+      )}
       <div className="text-xs text-[#27A590] font poppins z-10">
         {precentage}%
       </div>

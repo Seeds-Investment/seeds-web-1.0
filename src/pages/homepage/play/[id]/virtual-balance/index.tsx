@@ -1,3 +1,5 @@
+import NoData from '@/assets/play/tournament/assetNoData.svg';
+import AssetPagination from '@/components/AssetPagination';
 import CCard from '@/components/CCard';
 import PieChart from '@/components/PieChart';
 import Loading from '@/components/popup/Loading';
@@ -11,11 +13,14 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type Ballance } from '../play-assets';
+import { toast } from 'react-toastify';
+import { type Ballance } from '../index';
 
 interface ChartData {
   labels: string[];
@@ -52,6 +57,13 @@ export interface HistoryTransactionDTO {
   updated_at: string;
 }
 
+interface Metadata {
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
 const initialChartData = {
   labels: ['dummy'],
   datasets: [
@@ -75,14 +87,77 @@ const CashBalancePage: React.FC = () => {
     total_buy: 0,
     currency: 'IDR'
   });
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [metadata, setMetadata] = useState<Metadata>();
   const [transaction, setTransaction] = useState<HistoryTransactionDTO[]>([]);
   const [params, setParams] = useState<Params>({
     page: 1,
     limit: 10
   });
-  const [isIncrease, setIsIncrease] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    if (ballance !== undefined) {
+      handleSetChartData();
+    }
+  }, [ballance]);
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined && userInfo !== undefined) {
+      void fetchPlayBallance(userInfo.preferredCurrency);
+    }
+  }, [id, userInfo]);
+
+  useEffect(() => {
+    if (userInfo !== undefined) {
+      void fetchHistorytransaction(userInfo.preferredCurrency);
+    }
+  }, [id, userInfo, params.page]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchHistorytransaction = async (currency: string): Promise<void> => {
+    try {
+      setIsLoading(true);
+      getHistoryTransaction(id as string, { ...params, currency })
+        .then(res => {
+          setMetadata(res?.metadata);
+          setTransaction(res?.playOrders);
+        })
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch(err => {
+          toast.error(`${err as string}`);
+        });
+    } catch (error) {
+      toast.error(`${error as string}`);
+      setIsLoading(false);
+    }
+  };
 
   const convertToPercent = (num1: number, num2: number): number[] => {
     const total = num1 + num2;
@@ -97,114 +172,17 @@ const CashBalancePage: React.FC = () => {
       datasets: [
         {
           label: ' Percentage',
-          data: convertToPercent(ballance.balance, ballance.portfolio),
-          backgroundColor: ['#27A590', '#3AC4A0']
+          data: convertToPercent(
+            ballance?.balance ?? 0,
+            ballance?.portfolio ?? 0
+          ),
+          backgroundColor: ['#3AC4A0', '#DD2525']
         }
       ]
     };
 
     setChartData(convertedData);
   };
-
-  useEffect(() => {
-    if (ballance !== undefined) {
-      handleSetChartData();
-    }
-  }, [ballance]);
-
-  const [userInfo, setUserInfo] = useState<any>();
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  const fetchPlayBallance = async (currency: string): Promise<void> => {
-    try {
-      const response = await getPlayBallance(id as string, { currency });
-      setBallance(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchHistorytransaction = async (currency: string): Promise<void> => {
-    try {
-      setIsLoading(true);
-      getHistoryTransaction(id as string, { ...params, currency })
-        .then(res => {
-          const data: any[] = res.playOrders;
-          const total = res.metadata.total;
-
-          if (res.data !== null) {
-            setTransaction(prevState => [...prevState, ...data]);
-            if (transaction.length + data.length < total) {
-              setHasMore(true);
-            } else {
-              setHasMore(false);
-            }
-          } else {
-            setHasMore(false);
-          }
-          setIsIncrease(false);
-          setIsLoading(false);
-        })
-        .catch(err => {
-          console.log(err);
-          setIsIncrease(false);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (id !== undefined && userInfo !== undefined) {
-      void fetchPlayBallance(userInfo.preferredCurrency);
-    }
-  }, [id, userInfo]);
-
-  const handleScroll = (): void => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoading) {
-      if (!isIncrease) {
-        setIsIncrease(true);
-        setTimeout(() => {
-          setParams(prevState => ({
-            ...prevState,
-            page: prevState.page + 1
-          }));
-        }, 1000);
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll]);
-
-  useEffect(() => {
-    if (hasMore && userInfo !== undefined) {
-      void fetchHistorytransaction(userInfo.preferredCurrency);
-    }
-  }, [params.page, userInfo]);
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -243,9 +221,9 @@ const CashBalancePage: React.FC = () => {
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
-              <Typography className="text-black font-poppins text-base font-semibold">
-                {`${ballance.currency} ${standartCurrency(
-                  ballance.balance
+              <Typography className="text-[#27A590] font-poppins text-base font-semibold">
+                {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
+                  ballance?.balance ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -273,14 +251,14 @@ const CashBalancePage: React.FC = () => {
                   fill="white"
                 />
               </svg>
-              <Typography className="text-[#27A590] font-poppins font-semibold">
+              <Typography className="text-[#DD2525] font-poppins font-semibold">
                 {t('playSimulation.cashUsed')}
               </Typography>
             </div>
             <div className="flex gap-4 items-center">
-              <Typography className="text-black font-poppins text-base font-semibold">
-                {`${ballance.currency} ${standartCurrency(
-                  ballance.portfolio
+              <Typography className="text-[#DD2525] font-poppins text-base font-semibold">
+                {`${ballance?.currency ?? 'IDR'} ${standartCurrency(
+                  ballance?.portfolio ?? 0
                 ).replace('Rp', '')}`}
               </Typography>
             </div>
@@ -290,23 +268,48 @@ const CashBalancePage: React.FC = () => {
           </Typography>
           <div className="flex flex-col gap-3">
             {!isLoading ? (
-              transaction.length !== 0 ? (
-                transaction.map((data: HistoryTransactionDTO, idx: number) => {
-                  return (
-                    <div key={idx} className="w-full">
-                      <AssetOrderCard
-                        currency={userInfo?.preferredCurrency}
-                        data={data}
-                        isClick={true}
-                        playId={id as string}
-                      />
-                    </div>
-                  );
-                })
+              transaction?.length !== 0 ? (
+                <>
+                  {transaction?.map(
+                    (data: HistoryTransactionDTO, idx: number) => {
+                      return (
+                        <div key={idx} className="w-full">
+                          <AssetOrderCard
+                            currency={userInfo?.preferredCurrency ?? 'IDR'}
+                            data={data}
+                            isClick={true}
+                            playId={id as string}
+                          />
+                        </div>
+                      );
+                    }
+                  )}
+                  <div className="flex justify-center mx-auto my-8">
+                    <AssetPagination
+                      currentPage={params.page}
+                      totalPages={metadata?.totalPage ?? 0}
+                      onPageChange={page => {
+                        setParams({ ...params, page });
+                      }}
+                    />
+                  </div>
+                </>
               ) : (
-                <Typography className="text-base w-full font-semibold text-[#262626] text-center items-center">
-                  Data Not Found
-                </Typography>
+                <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 my-8">
+                  <Image
+                    alt=""
+                    src={NoData}
+                    className="w-[250px]"
+                    width={100}
+                    height={100}
+                  />
+                  <p className="font-semibold text-black mt-4">
+                    {t('tournament.assets.sorry')}
+                  </p>
+                  <p className="text-[#7C7C7C]">
+                    {t('tournament.assets.noData')}
+                  </p>
+                </div>
               )
             ) : (
               Array.from({ length: 10 }, (_, idx) => (

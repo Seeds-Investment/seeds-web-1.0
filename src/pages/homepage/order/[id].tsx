@@ -6,6 +6,7 @@ import CardLimitOrder from '@/containers/homepage/order/CardLimitOrder';
 import CardPrice from '@/containers/homepage/order/CardPrice';
 import CardSwitch from '@/containers/homepage/order/CardSwitch';
 import SuccessOrderModal from '@/containers/homepage/order/SuccessOrderModal';
+import CardPriceSkeleton from '@/containers/homepage/order/skeleton/CardPriceSkeleton';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
@@ -36,7 +37,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { type Ballance } from '../play-assets';
+import { type Ballance } from '../play/[id]';
 
 export interface typeLimitOrder {
   type: string;
@@ -58,7 +59,6 @@ const OrderPage: React.FC = () => {
   const { playId } = router.query;
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
-
   const [data, setData] = useState<AssetI>();
   const [ballance, setBallance] = useState<Ballance>({
     balance: 0,
@@ -96,7 +96,6 @@ const OrderPage: React.FC = () => {
   const [sellPercent, setSellPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(true);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [assetAmount, setAssetsAmount] = useState<string>('');
   const [amount, setAmount] = useState<string>('');
@@ -256,15 +255,12 @@ const OrderPage: React.FC = () => {
 
   const fetchDetailAsset = async (currency: string): Promise<void> => {
     try {
-      setIsLoadingAsset(true);
       if (typeof id === 'string') {
         const response = await getDetailAsset(id, { ...params, currency });
         setData(response.marketAsset);
       }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
-    } finally {
-      setIsLoadingAsset(false);
     }
   };
 
@@ -398,7 +394,14 @@ const OrderPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full p-5 border-none rounded-xl">
-        <CardPrice data={data} loading={isLoadingAsset} />
+        {data !== undefined ? (
+          <CardPrice
+            data={data}
+            currency={userInfo?.preferredCurrency ?? 'IDR'}
+          />
+        ) : (
+          <CardPriceSkeleton />
+        )}
         <div className="flex flex-col mt-4">
           <div className="flex flex-col gap-3 pb-3 border-b border-neutral-ultrasoft">
             <Typography className="text-base font-poppins font-semibold text-black">
@@ -414,7 +417,7 @@ const OrderPage: React.FC = () => {
                   : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
               ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
               {router.query?.transaction === 'sell' &&
-                `= ${portfolio.total_lot} ${data?.realTicker as string}`}
+                `= ${portfolio.total_lot ?? 0} ${data?.realTicker ?? ''}`}
             </Typography>
           </div>
           {orderType === 'pending' && (
@@ -446,7 +449,7 @@ const OrderPage: React.FC = () => {
                 {t('playSimulation.sellAssetText1')}
               </Typography>
               <div className="flex gap-2">
-                {sellPercentArr.map((el, i: number) => {
+                {sellPercentArr?.map((el, i: number) => {
                   return (
                     <Button
                       key={el.value + i}
@@ -490,13 +493,13 @@ const OrderPage: React.FC = () => {
                   );
                 }}
                 className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#7C7C7C] focus:border-seeds-button-green font-poppins outline-none pr-16"
-                placeholder={`Total “${data?.realTicker as string}”`}
+                placeholder={`Total ${data?.realTicker ?? ''}`}
               />
-              {assetAmount.length > 0 && (
+              {assetAmount?.length > 0 && (
                 <Typography
                   className={`absolute text-base text-black py-3 right-10`}
                 >
-                  {data?.realTicker}
+                  {data?.realTicker ?? ''}
                 </Typography>
               )}
             </div>
@@ -562,10 +565,10 @@ const OrderPage: React.FC = () => {
                     <Typography className="text-[#7555DA] font-normal text-xs">
                       {assetAmount.length === 0 && '0'}
                       {`${
-                        assetAmount.length === 0 || assetAmount.includes('.')
+                        assetAmount?.length === 0 || assetAmount?.includes('.')
                           ? assetAmount
                           : assetAmount + '.0'
-                      } ${data?.realTicker as string}`}
+                      } ${data?.realTicker ?? ''}`}
                     </Typography>
                   </div>
                   {router.query.transaction !== undefined &&
@@ -578,13 +581,12 @@ const OrderPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
                             {limitOrder.type === 'percent'
-                              ? `${parseFloat(limitOrder.profit) * 100} %`
+                              ? `${parseFloat(limitOrder?.profit ?? 1) * 100} %`
                               : `${
                                   userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder.profit).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
+                                } ${standartCurrency(
+                                  limitOrder?.profit ?? 0
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                         <div className="flex justify-between mt-2">
@@ -593,13 +595,12 @@ const OrderPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-[#7555DA] font-normal text-xs">
                             {limitOrder.type === 'percent'
-                              ? `${parseFloat(limitOrder.loss) * 100} %`
+                              ? `${parseFloat(limitOrder?.loss ?? 1) * 100} %`
                               : `${
                                   userInfo?.preferredCurrency as string
-                                } ${standartCurrency(limitOrder.loss).replace(
-                                  'Rp',
-                                  ''
-                                )}`}
+                                } ${standartCurrency(
+                                  limitOrder.loss ?? 0
+                                ).replace('Rp', '')}`}
                           </Typography>
                         </div>
                       </>
@@ -610,11 +611,11 @@ const OrderPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-[#7555DA] font-normal text-xs">
                       {price.length === 0
-                        ? standartCurrency(data?.lastPrice?.open).replace(
+                        ? standartCurrency(data?.lastPrice?.open ?? 0).replace(
                             'Rp',
                             ''
                           )
-                        : standartCurrency(price).replace('Rp', '')}
+                        : standartCurrency(price ?? 0).replace('Rp', '')}
                     </Typography>
                   </div>
 
@@ -623,7 +624,7 @@ const OrderPage: React.FC = () => {
                       Cash Amount
                     </Typography>
                     <Typography className="text-[#7555DA] font-normal text-xs">
-                      {standartCurrency(amount).replace('Rp', '')}
+                      {standartCurrency(amount ?? 0).replace('Rp', '')}
                     </Typography>
                   </div>
                 </CCard>
@@ -699,13 +700,13 @@ const OrderPage: React.FC = () => {
                         <Typography className="text-[#7C7C7C] font-normal">
                           {router.query.transaction !== undefined &&
                             router.query.transaction === 'buy' &&
-                            `${t('playSimulation.buy')} ${assetAmount} ${
-                              data?.realTicker as string
+                            `${t('playSimulation.buy')} ${assetAmount ?? 0} ${
+                              data?.realTicker ?? ''
                             }`}
                           {router.query.transaction !== undefined &&
                             router.query.transaction === 'sell' &&
-                            `${t('playSimulation.sell')} ${assetAmount} ${
-                              data?.realTicker as string
+                            `${t('playSimulation.sell')} ${assetAmount ?? 0} ${
+                              data?.realTicker ?? ''
                             }`}
                         </Typography>
                       </div>
@@ -769,8 +770,8 @@ const OrderPage: React.FC = () => {
                             Set Price
                           </Typography>
                           <Typography className="text-[#262626] font-semibold text-xs">
-                            {userInfo?.preferredCurrency}
-                            {standartCurrency(price).replace('Rp', '')}
+                            {userInfo?.preferredCurrency ?? 'IDR'}
+                            {standartCurrency(price ?? 0).replace('Rp', '')}
                           </Typography>
                         </div>
                       )}
@@ -782,11 +783,10 @@ const OrderPage: React.FC = () => {
                               {t('playSimulation.marketPrice')}
                             </Typography>
                             <Typography className="text-[#262626] font-semibold text-xs">
-                              {userInfo?.preferredCurrency}
-                              {standartCurrency(data?.lastPrice?.open).replace(
-                                'Rp',
-                                ''
-                              )}
+                              {userInfo?.preferredCurrency ?? 'IDR'}
+                              {standartCurrency(
+                                data?.lastPrice?.open ?? 0
+                              ).replace('Rp', '')}
                             </Typography>
                           </div>
                         )}
@@ -796,10 +796,10 @@ const OrderPage: React.FC = () => {
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
                           {`${
-                            assetAmount.includes('.')
+                            assetAmount?.includes('.')
                               ? assetAmount
                               : assetAmount + '.0'
-                          } ${data?.realTicker as string}`}
+                          } ${data?.realTicker ?? ''}`}
                         </Typography>
                       </div>
                       <div className="flex justify-between mt-4">
@@ -807,8 +807,8 @@ const OrderPage: React.FC = () => {
                           {t('playSimulation.cashAmount')}
                         </Typography>
                         <Typography className="text-[#262626] font-semibold text-xs">
-                          {userInfo?.preferredCurrency}
-                          {standartCurrency(amount).replace('Rp', '')}
+                          {userInfo?.preferredCurrency ?? 'IDR'}
+                          {standartCurrency(amount ?? 0).replace('Rp', '')}
                         </Typography>
                       </div>
                       {router.query.transaction !== undefined &&
@@ -821,11 +821,13 @@ const OrderPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.profit) * 100} %`
+                                  ? `${
+                                      parseFloat(limitOrder?.profit ?? 1) * 100
+                                    } %`
                                   : `${
                                       userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
-                                      limitOrder.profit
+                                      limitOrder?.profit ?? 0
                                     ).replace('Rp', '')}`}
                               </Typography>
                             </div>
@@ -835,11 +837,13 @@ const OrderPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.loss) * 100} %`
+                                  ? `${
+                                      parseFloat(limitOrder?.loss ?? 1) * 100
+                                    } %`
                                   : `${
                                       userInfo?.preferredCurrency ?? 'IDR'
                                     } ${standartCurrency(
-                                      limitOrder.loss
+                                      limitOrder?.loss ?? 0
                                     ).replace('Rp', '')}`}
                               </Typography>
                             </div>
@@ -858,7 +862,7 @@ const OrderPage: React.FC = () => {
                           {t('playSimulation.totalCost')}
                         </Typography>
                         <Typography className="text-[#3AC4A0] font-semibold text-xs">
-                          {standartCurrency(amount).replace(
+                          {standartCurrency(amount ?? 0).replace(
                             'Rp',
                             userInfo?.preferredCurrency ?? 'IDR'
                           )}

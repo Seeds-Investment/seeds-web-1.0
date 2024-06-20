@@ -19,16 +19,18 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 interface PaymentList {
-  is_promo_available: boolean;
-  promo_price: number;
-  service_fee: number;
   admin_fee: number;
   id: string;
   is_active: boolean;
+  is_priority: boolean;
+  is_promo_available: boolean;
   logo_url: string;
+  minimum_withdrawal: number;
   payment_gateway: string;
   payment_method: string;
   payment_type: string;
+  promo_price: number;
+  service_fee: number;
 }
 
 interface ReceiptDetail {
@@ -48,12 +50,13 @@ interface ReceiptDetail {
 }
 
 interface QRList {
-  admin_fee: string;
+  admin_fee: number;
   id: string;
   is_active: boolean;
   is_priority: boolean;
   is_promo_available: boolean;
   logo_url: string;
+  minimum_withdrawal: number;
   payment_gateway: string;
   payment_method: string;
   payment_type: string;
@@ -173,9 +176,7 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                orderDetail?.transactionStatus !== 'SUCCESS' &&
-                orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
+                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -196,16 +197,12 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                orderDetail?.transactionStatus !== 'SUCCESS' &&
-                orderDetail?.transactionStatus !== 'SUCCEEDED'
-                  ? t('tournament.payment.pending')
-                  : t('tournament.payment.successful')}
+                {orderDetail?.transactionStatus !== 'SETTLEMENT'
+                  ? t('tournament.payment.pendingPaidTournament')
+                  : 'Successful'}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' &&
-                orderDetail?.transactionStatus !== 'SUCCESS' &&
-                orderDetail?.transactionStatus !== 'SUCCEEDED'
+                {orderDetail?.transactionStatus !== 'SETTLEMENT'
                   ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`
@@ -235,7 +232,7 @@ const SuccessPaymentPage: React.FC = () => {
                 {paymentSelectedEWallet.length > 0 && (
                   <div className="flex items-center justify-center mb-9 mt-3">
                     <Image
-                      src={paymentSelectedEWallet[0].logo_url}
+                      src={paymentSelectedEWallet[0]?.logo_url}
                       alt="AVATAR"
                       width={90}
                       height={90}
@@ -249,36 +246,215 @@ const SuccessPaymentPage: React.FC = () => {
                 </div>
 
                 {/* Tournament Fee */}
-                <div className="flex flex-row justify-between my-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('tournament.payment.tournamentFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) +
-                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                            : 0) -
-                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
-                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                {orderDetail?.currency !== undefined &&
+                orderDetail?.grossAmount !== undefined &&
+                orderDetail?.paymentMethod !== 'OTHER_QRIS' ? (
+                  <div className="flex flex-row justify-between my-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.tournamentFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {`${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount -
+                          ((paymentSelectedEWallet[0]?.admin_fee ?? 0) +
+                            (paymentSelectedEWallet[0]?.service_fee ?? 0))
                       )}`}
-                  </Typography>
-                </div>
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {/* Tournament Fee QRIS */}
+                {orderDetail?.currency !== undefined &&
+                orderDetail.grossAmount !== undefined &&
+                orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
+                  <div className="flex flex-row justify-between my-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.tournamentFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {`${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount -
+                          ((qRisList[0]?.admin_fee ?? 0) +
+                            (qRisList[0]?.service_fee ?? 0))
+                      )}`}
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
 
                 {/* Admin Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('tournament.payment.adminFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0].admin_fee
-                          : 0
-                      )}`}
-                  </Typography>
+                {paymentSelectedEWallet !== undefined &&
+                paymentSelectedEWallet[0]?.admin_fee > 0 ? (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.adminFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                        `${orderDetail.currency} ${formatCurrency(
+                          paymentSelectedEWallet[0].admin_fee ?? 0
+                        )}`}
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {/* Admin Fee QRIS */}
+                {qRisList !== undefined &&
+                qRisList[0]?.admin_fee > 0 &&
+                orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.adminFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                        `${orderDetail.currency} ${formatCurrency(
+                          qRisList[0]?.admin_fee ?? 0
+                        )}`}
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {/* Service Fee */}
+                {paymentSelectedEWallet[0]?.service_fee > 0 ? (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.serviceFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                      orderDetail.grossAmount !== undefined
+                        ? `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet[0]?.service_fee ?? 0
+                          )}`
+                        : ''}
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {/* Service Fee QRIS */}
+                {qRisList !== undefined &&
+                qRisList[0]?.service_fee > 0 &&
+                orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
+                  <div className="flex flex-row justify-between mb-5">
+                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                      {t('tournament.payment.serviceFee')}
+                    </Typography>
+                    <Typography className="text-sm font-semibold text-[#262626]">
+                      {orderDetail?.currency !== undefined &&
+                      orderDetail.grossAmount !== undefined
+                        ? `${orderDetail.currency} ${formatCurrency(
+                            qRisList[0]?.service_fee ?? 0
+                          )}`
+                        : ''}
+                    </Typography>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {/* Discount Fee */}
+                {paymentSelectedEWallet.length > 0 && (
+                  <div>
+                    {paymentSelectedEWallet[0]?.is_promo_available && (
+                      <div className="flex flex-row justify-between mb-5">
+                        <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                          {t('tournament.payment.discountFee')}
+                        </Typography>
+                        <Typography className="text-sm font-semibold text-[#262626]">
+                          {orderDetail?.currency !== undefined
+                            ? `- ${orderDetail.currency} ${formatCurrency(
+                                paymentSelectedEWallet.length > 0
+                                  ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                                  : 0
+                              )}`
+                            : ''}
+                        </Typography>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Discount Fee QRIS */}
+                {qRisList !== undefined &&
+                  orderDetail?.paymentMethod === 'OTHER_QRIS' && (
+                    <div>
+                      {qRisList[0]?.is_promo_available && (
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('tournament.payment.discountFee')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {orderDetail?.currency !== undefined
+                              ? `- ${orderDetail.currency} ${formatCurrency(
+                                  qRisList !== undefined
+                                    ? qRisList[0]?.promo_price ?? 0
+                                    : 0
+                                )}`
+                              : ''}
+                          </Typography>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                {/* Discount Coins */}
+                <div>
+                  {orderDetail?.currency !== undefined
+                    ? paymentSelectedEWallet[0]?.admin_fee +
+                        paymentSelectedEWallet[0]?.service_fee -
+                        orderDetail.grossAmount -
+                        paymentSelectedEWallet[0]?.promo_price >
+                        0 && (
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('tournament.payment.discountCoins')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {`- ${orderDetail.currency} ${formatCurrency(
+                              paymentSelectedEWallet[0]?.admin_fee +
+                                paymentSelectedEWallet[0]?.service_fee -
+                                orderDetail.grossAmount
+                            )}`}
+                          </Typography>
+                        </div>
+                      )
+                    : ''}
+                </div>
+
+                {/* Discount Coins QRIS */}
+                <div>
+                  {orderDetail?.currency !== undefined &&
+                  orderDetail?.paymentMethod === 'OTHER_QRIS' &&
+                  qRisList !== undefined
+                    ? qRisList[0]?.admin_fee +
+                        qRisList[0]?.service_fee -
+                        orderDetail.grossAmount -
+                        qRisList[0]?.promo_price >
+                        0 && (
+                        <div className="flex flex-row justify-between mb-5">
+                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                            {t('tournament.payment.discountCoins')}
+                          </Typography>
+                          <Typography className="text-sm font-semibold text-[#262626]">
+                            {`- ${orderDetail.currency} ${formatCurrency(
+                              qRisList[0]?.admin_fee +
+                                qRisList[0]?.service_fee -
+                                orderDetail?.grossAmount
+                            )}`}
+                          </Typography>
+                        </div>
+                      )
+                    : ''}
                 </div>
 
                 {/* Service Fee */}
@@ -328,8 +504,8 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount
+                      `${orderDetail?.currency} ${formatCurrency(
+                        orderDetail?.grossAmount
                       )}`}
                   </Typography>
                 </div>

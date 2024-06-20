@@ -65,8 +65,8 @@ interface IQuickLogin {
 interface IQuickRegister {
   phone_number: string;
   name: string;
-  method: string;
-  otp: string;
+  method?: string;
+  otp?: string;
 }
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {

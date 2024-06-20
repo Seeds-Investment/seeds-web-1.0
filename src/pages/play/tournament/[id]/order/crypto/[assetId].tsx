@@ -461,7 +461,7 @@ const BuyPage: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full border-none rounded-xl">
-        <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px]">
+        <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px] overflow-hidden">
           <Image
             alt=""
             src={BannerCircle}

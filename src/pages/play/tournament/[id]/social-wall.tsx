@@ -67,12 +67,20 @@ const initialFilter = {
   sort_by: ''
 };
 
+interface Metadata {
+  current_page: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
 const SocialWall = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
   const [dataPost, setDataPost] = useState<PostData[]>([]);
+  const [metadata, setMetadata] = useState<Metadata>();
   const [filter, setFilter] = useState<Filter>(initialFilter);
   const [golId, setGolId] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -119,6 +127,7 @@ const SocialWall = (): React.ReactElement => {
       setLoadingPostList(true);
       const response = await getPlayPostList({ ...postListParams });
       setDataPost(response?.data);
+      setMetadata(response?.metadata);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -308,7 +317,7 @@ const SocialWall = (): React.ReactElement => {
         <div className="flex justify-center mx-auto my-8">
           <SocialWallPagination
             currentPage={postListParams.page}
-            totalPages={10}
+            totalPages={metadata?.totalPage ?? 0}
             onPageChange={page => {
               setPostListParams({ ...postListParams, page });
             }}

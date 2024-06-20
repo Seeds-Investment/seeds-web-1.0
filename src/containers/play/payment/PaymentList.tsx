@@ -48,12 +48,14 @@ interface props {
   dataPost?: any;
   monthVal?: string;
   invitationCode?: string;
+  useCoins?: boolean;
 }
 
 const PaymentList: React.FC<props> = ({
   dataPost,
   monthVal,
-  invitationCode
+  invitationCode,
+  useCoins
 }): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -131,7 +133,8 @@ const PaymentList: React.FC<props> = ({
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
           promo_code: '',
-          invitation_code: invitationCode as string
+          invitation_code: invitationCode as string,
+          is_use_coins: useCoins as boolean
         });
 
         if (response) {

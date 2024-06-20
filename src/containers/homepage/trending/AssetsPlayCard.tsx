@@ -1,5 +1,5 @@
 import { calculatePercentageDifference } from '@/helpers/currency';
-import { type AssetItemType } from '@/pages/homepage/play-assets';
+import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon
@@ -13,6 +13,7 @@ import {
 } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 interface props {
   data: AssetItemType;
@@ -56,7 +57,7 @@ const AssetPlayCard: React.FC<props> = ({
                   }`
                 )
                 .catch(error => {
-                  console.log(error);
+                  toast.error(`${error as string}`);
                 });
             }
           : () => {}

@@ -81,22 +81,22 @@ const QuestionExplanation = () => {
         </div>
         <div className="flex-auto flex flex-col items-start w-full lg:w-[50%] relative bg-white rounded-[32px] p-3 md:p-8 text-poppins">
           <div className="text-xl lg:text-3xl font-semibold text-[#3AC4A0] capitalize">
-            Question Level
+            {t('quiz.questionLevel')}
           </div>
           <div className="text-base lg:text-lg text-[#7C7C7C] mt-4 ">
-            You will do {detailQuiz?.total_questions ?? 0} questions in this
-            Quiz! There are 3 levels: easy, medium, and hard. Set your pace for
-            the best score!
+            {t('quiz.questionDescription1')}
+            {` ${detailQuiz?.total_questions ?? 0} `}
+            {t('quiz.questionDescription2')}
           </div>
           <div className="self-center w-full grid grid-cols-3 text-center gap-2 mt-2 lg:mt-4">
             <div className="font-semibold rounded-md w-full p-3 bg-[#D8F9A8] text-[#4DA81C]">
-              Easy({(detailQuiz?.total_questions ?? 0) / 3})
+              {t('quiz.easy')} ({(detailQuiz?.total_questions ?? 0) / 3})
             </div>
             <div className="font-semibold rounded-md w-full p-3 bg-[#FEEBA6] text-[#D89918]">
-              Medium({(detailQuiz?.total_questions ?? 0) / 3})
+              {t('quiz.medium')} ({(detailQuiz?.total_questions ?? 0) / 3})
             </div>
             <div className="font-semibold rounded-md w-full p-3 bg-[#FFBEBE] text-[#BB1616]">
-              Hard({(detailQuiz?.total_questions ?? 0) / 3})
+              {t('quiz.hard')} ({(detailQuiz?.total_questions ?? 0) / 3})
             </div>
           </div>
         </div>

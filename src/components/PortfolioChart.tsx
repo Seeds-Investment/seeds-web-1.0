@@ -20,7 +20,7 @@ const PortfolioChart: React.FC<DoughnutProps> = ({ data, centerText }) => {
         display: false
       }
     },
-    cutout: '50%',
+    cutout: '60%',
     elements: {
       arc: {
         borderWidth: 5,
@@ -34,14 +34,14 @@ const PortfolioChart: React.FC<DoughnutProps> = ({ data, centerText }) => {
     beforeDatasetsDraw(chart: any, args: any, pluginOptions: any) {
       const { ctx } = chart;
       ctx.save();
-      ctx.font = 'bold 14px Arial';
+      ctx.font = 'bold 12px Arial';
       ctx.fillStyle = '#424242';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(
         centerText,
-        chart.getDatasetMeta(0).data[0].x,
-        chart.getDatasetMeta(0).data[0].y
+        chart?.getDatasetMeta(0)?.data[0]?.x ?? 0,
+        chart?.getDatasetMeta(0)?.data[0]?.y ?? 0
       );
     }
   };

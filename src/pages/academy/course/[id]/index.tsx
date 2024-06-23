@@ -3,20 +3,65 @@ import ShortDescription from '@/components/academy/ShortDescription';
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
+import { getClassDetail } from '@/repository/academy.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import LanguageContext from '@/store/language/language-context';
+import i18n from '@/utils/common/i18n';
+import {
+  type DetailClassI,
+  type LanguageDataI,
+  type PriceDataI
+} from '@/utils/interfaces/academy.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Switch } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const DetailCourse: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
+  const [data, setData] = useState<DetailClassI | undefined>(undefined);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const language = useContext(LanguageContext);
+  const { t } = useTranslation();
+  const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
   };
+
+  const handleGetClass = async (): Promise<void> => {
+    try {
+      const responseClass = await getClassDetail(id as string);
+      setData(responseClass);
+      const responseUser = await getUserInfo();
+      setUserInfo(responseUser);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+  const handleGetSeedsCoin = async (): Promise<void> => {
+    try {
+      const dataCoins = await getTransactionSummary();
+      setTotalAvailableCoins(dataCoins?.data?.total_available_coins ?? 0);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetClass();
+      void handleGetSeedsCoin();
+    }
+  }, [id, language]);
 
   return (
     <>
@@ -31,10 +76,10 @@ const DetailCourse: React.FC = () => {
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-3 rounded-xl shadow-md flex flex-col gap-5">
           <VideoPlayer
-            videoSrc="https://dev-assets.seeds.finance/quiz/cb1a51db-f455-4ae4-a1e4-5683820cacde.mp4"
+            videoSrc={data?.video as string}
             title="Learn Investing From 0"
           />
-          <div className="font-bold text-2xl">Learn Investing From 0</div>
+          <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">
               <Image
@@ -44,7 +89,7 @@ const DetailCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              100 Participants
+              100 {t('academy.detailCourse.participants')}
             </div>
             <div
               onClick={() => {
@@ -59,13 +104,15 @@ const DetailCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              Share
+              {t('academy.detailCourse.share')}
             </div>
           </div>
           <div className="text-lg">
             <ShortDescription
               text={
-                'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus expedita quos eaque. Cumque, magni impedit laudantium dicta quos fugiat sequi debitis tempore natus ullam unde iure vel ipsum sed dolorum.Optio doloremque temporibus ratione nemo reprehenderit, totam eius ad deserunt tempore earum enim eaque qui nesciunt, minus quos praesentium perspiciatis. Perspiciatis aliquam maiores delectus in dolorum eveniet similique ratione beatae? Illum hic vitae soluta animi, porro sed vel fugiat similique delectus itaque minima harum, reprehenderit libero inventore quidem sequi iure provident cum perspiciatis. Suscipit aperiam illo nisi cupiditate asperiores veniam Officiis illum facilis cupiditate deserunt cum ipsam ipsa nam temporibus odio tempore perferendis ducimus inventore labore quas, explicabo tempora voluptatibus necessitatibus, neque incidunt iure id blanditiis, eligendi repudiandae molestias. Quasi? Laudantium consectetur inventore cum, consequuntur temporibus dolore unde accusantium ducimus iste non ea vel quo rerum enim exercitationem minus aut illo corporis rem ipsum fugit, ipsa aperiam. Consequatur, quos eos?'
+                data?.description?.[
+                  i18n?.language as keyof LanguageDataI
+                ] as string
               }
             />
           </div>
@@ -75,7 +122,7 @@ const DetailCourse: React.FC = () => {
               await router.push(`/academy/course/${id as string}/pretest`)
             }
           >
-            Try Pre-Test!
+            {t('academy.detailCourse.buttonPretest')}
           </button>
         </div>
         <div className="bg-white p-3 rounded-xl mt-4 shadow-md flex flex-col gap-5">
@@ -107,20 +154,39 @@ const DetailCourse: React.FC = () => {
                 height={100}
                 className="w-10"
               />
-              Redeem 2000 Seeds Coin
+              {t('academy.detailCourse.seedsCoin', {
+                data: totalAvailableCoins
+              })}
             </div>
             <Switch />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-5">
             <div>
-              <div className="text-xs text-[#7C7C7C]">Entrance Fee</div>
-              <div className="font-bold">IDR 100.000</div>
+              <div className="text-xs text-[#7C7C7C]">
+                {t('academy.detailCourse.entrance')}
+              </div>
+              <div className="font-bold">
+                {data?.price?.[
+                  userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+                ]?.toLocaleString('id-ID', {
+                  currency: userInfo?.preferredCurrency ?? 'IDR',
+                  style: 'currency'
+                }) ?? <span className="text-red-500">IDR or USD</span>}
+              </div>
             </div>
             <button
               className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
               onClick={togglePopup}
+              hidden={
+                data?.price?.[
+                  userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+                ]?.toLocaleString('id-ID', {
+                  currency: userInfo?.preferredCurrency ?? 'IDR',
+                  style: 'currency'
+                }) === undefined
+              }
             >
-              Enroll Course
+              {t('academy.detailCourse.buttonEnroll')}
             </button>
           </div>
         </div>
@@ -130,4 +196,4 @@ const DetailCourse: React.FC = () => {
   );
 };
 
-export default DetailCourse;
+export default withAuth(DetailCourse);

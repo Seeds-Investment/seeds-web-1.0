@@ -1,14 +1,39 @@
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getClassDetail } from '@/repository/academy.repository';
+import i18n from '@/utils/common/i18n';
+import {
+  type DetailClassI,
+  type LanguageDataI
+} from '@/utils/interfaces/academy.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 const LearnCourse: React.FC = () => {
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
+  const { t } = useTranslation();
+  const [data, setData] = useState<DetailClassI | undefined>(undefined);
+
+  const handleGetClass = async (): Promise<void> => {
+    try {
+      const responseClass = await getClassDetail(id as string);
+      setData(responseClass);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetClass();
+    }
+  }, [id]);
 
   return (
     <>
@@ -17,16 +42,16 @@ const LearnCourse: React.FC = () => {
           onClose={() => {
             setIsShareModal(prev => !prev);
           }}
-          url={'1'}
+          url={id as string}
         />
       )}
       <PageGradient defaultGradient className="w-full">
-        <div className="bg-white p-3 rounded-xl shadow-md flex flex-col gap-5">
+        <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
           <VideoPlayer
-            videoSrc="https://dev-assets.seeds.finance/quiz/cb1a51db-f455-4ae4-a1e4-5683820cacde.mp4"
-            title="Learn Investing From 0"
+            videoSrc={data?.video as string}
+            title={data?.title as string}
           />
-          <div className="font-bold text-2xl">Learn Investing From 0</div>
+          <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">
               <Image
@@ -36,7 +61,7 @@ const LearnCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              100 Participants
+              100 {t('academy.detailCourse.participants')}
             </div>
             <div
               onClick={() => {
@@ -51,36 +76,25 @@ const LearnCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              Share
+              {t('academy.detailCourse.share')}
             </div>
           </div>
-          <div className="flex flex-row items-center bg-[#F7F7F7] border border-2 border-[#3AC4A0] p-3 rounded-lg justify-between">
-            <div className="text-lg">Your Pre-Test Score</div>
+          <div className="flex flex-row items-center bg-[#F7F7F7] border-2 border-[#3AC4A0] p-3 rounded-lg justify-between">
+            <div className="text-lg">
+              {t('academy.detailCourse.pretestScore')}
+            </div>
             <div className="text-2xl font-bold text-[#27A590]">90</div>
           </div>
           <div className="text-lg">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Possimus
-            expedita quos eaque. Cumque, magni impedit laudantium dicta quos
-            fugiat sequi debitis tempore natus ullam unde iure vel ipsum sed
-            dolorum.Optio doloremque temporibus ratione nemo reprehenderit,
-            totam eius ad deserunt tempore earum enim eaque qui nesciunt, minus
-            quos praesentium perspiciatis. Perspiciatis aliquam maiores delectus
-            in dolorum eveniet similique ratione beatae? Illum hic vitae soluta
-            animi, porro sed vel fugiat similique delectus itaque minima harum,
-            reprehenderit libero inventore quidem sequi iure provident cum
-            perspiciatis. Suscipit aperiam illo nisi cupiditate asperiores
-            veniam Officiis illum facilis cupiditate deserunt cum ipsam ipsa nam
-            temporibus odio tempore perferendis ducimus inventore labore quas,
-            explicabo tempora voluptatibus necessitatibus, neque incidunt iure
-            id blanditiis, eligendi repudiandae molestias. Quasi? Laudantium
-            consectetur inventore cum, consequuntur temporibus dolore unde
-            accusantium ducimus iste non ea vel quo rerum enim exercitationem
-            minus aut illo corporis rem ipsum fugit, ipsa aperiam. Consequatur,
-            quos eos?
+            {
+              data?.description?.[
+                i18n?.language as keyof LanguageDataI
+              ] as string
+            }
           </div>
         </div>
         <div
-          className="bg-white p-3 rounded-xl mt-4 shadow-md flex flex-col gap-5"
+          className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5"
           onClick={async () =>
             await router.push(`/academy/course/${id as string}/posttest`)
           }

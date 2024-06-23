@@ -2148,7 +2148,8 @@ export default {
       buttonEnroll: 'Enroll Course',
       moreDetail: 'More Detail',
       showLess: 'Show Less',
-      seedsCoin: 'Redeem {{data}} Seeds Coin'
+      seedsCoin: 'Redeem {{data}} Seeds Coin',
+      pretestScore: 'Your Pre-Test Score'
     }
   },
   seedsEvent: {

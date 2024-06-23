@@ -2075,7 +2075,8 @@ export default {
       buttonEnroll: 'Daftar Kursus',
       moreDetail: 'Selengkapnya',
       showLess: 'Tampilkan lebih sedikit',
-      seedsCoin: 'Tukarkan {{data}} Seeds Coin'
+      seedsCoin: 'Tukarkan {{data}} Seeds Coin',
+      pretestScore: 'Skor Pre-Test Kamu'
     }
   },
   seedsEvent: {

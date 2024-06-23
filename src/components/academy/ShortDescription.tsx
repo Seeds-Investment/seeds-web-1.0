@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ShortDescription: React.FC<{ text: string }> = ({ text }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const shortText = text.slice(0, 250);
+  const shortText = text?.slice(0, 250);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -13,7 +15,9 @@ const ShortDescription: React.FC<{ text: string }> = ({ text }) => {
           setShowFullDescription(prev => !prev);
         }}
       >
-        {showFullDescription ? 'Show Less' : 'More Detail'}
+        {showFullDescription
+          ? `${t('academy.detailCourse.showLess')}`
+          : `${t('academy.detailCourse.moreDetail')}`}
       </span>
     </>
   );

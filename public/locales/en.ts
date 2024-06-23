@@ -2139,7 +2139,17 @@ export default {
     courseButtonDetail: 'See Detail',
     courseButtonOpenClass: 'Open Class',
     shareCourse: 'Share This Course',
-    shareLinks: 'Share Links'
+    shareLinks: 'Share Links',
+    detailCourse: {
+      participants: 'Participants',
+      share: 'Share',
+      buttonPretest: 'Try Pre-Test',
+      entrance: 'Entrance Fee',
+      buttonEnroll: 'Enroll Course',
+      moreDetail: 'More Detail',
+      showLess: 'Show Less',
+      seedsCoin: 'Redeem {{data}} Seeds Coin'
+    }
   },
   seedsEvent: {
     search: 'Search',

@@ -2066,7 +2066,17 @@ export default {
     courseButtonDetail: 'Lihat Detail',
     courseButtonOpenClass: 'Kelas Terbuka',
     shareCourse: 'Bagikan Kursus Ini',
-    shareLinks: 'Bagikan Link'
+    shareLinks: 'Bagikan Link',
+    detailCourse: {
+      participants: 'Peserta',
+      share: 'Bagikan',
+      buttonPretest: 'Coba Pre-Test',
+      entrance: 'Biaya Masuk',
+      buttonEnroll: 'Daftar Kursus',
+      moreDetail: 'Selengkapnya',
+      showLess: 'Tampilkan lebih sedikit',
+      seedsCoin: 'Tukarkan {{data}} Seeds Coin'
+    }
   },
   seedsEvent: {
     search: 'Cari event',

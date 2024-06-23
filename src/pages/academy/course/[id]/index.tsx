@@ -7,7 +7,6 @@ import withAuth from '@/helpers/withAuth';
 import { getClassDetail } from '@/repository/academy.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
-import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
 import {
   type DetailClassI,
@@ -18,7 +17,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Switch } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -29,7 +28,6 @@ const DetailCourse: React.FC = () => {
   const { id } = router.query;
   const [data, setData] = useState<DetailClassI | undefined>(undefined);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const language = useContext(LanguageContext);
   const { t } = useTranslation();
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
 
@@ -61,7 +59,7 @@ const DetailCourse: React.FC = () => {
       void handleGetClass();
       void handleGetSeedsCoin();
     }
-  }, [id, language]);
+  }, [id]);
 
   return (
     <>
@@ -70,15 +68,18 @@ const DetailCourse: React.FC = () => {
           onClose={() => {
             setIsShareModal(prev => !prev);
           }}
-          url={'1'}
+          url={id as string}
         />
       )}
       <PageGradient defaultGradient className="w-full">
-        <div className="bg-white p-3 rounded-xl shadow-md flex flex-col gap-5">
-          <VideoPlayer
-            videoSrc={data?.video as string}
-            title="Learn Investing From 0"
-          />
+        <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
+          <div className="relative">
+            <div className="bg-white bg-opacity-40 w-full h-full z-50 absolute"></div>
+            <VideoPlayer
+              videoSrc={data?.video as string}
+              title={data?.title as string}
+            />
+          </div>
           <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">
@@ -125,7 +126,7 @@ const DetailCourse: React.FC = () => {
             {t('academy.detailCourse.buttonPretest')}
           </button>
         </div>
-        <div className="bg-white p-3 rounded-xl mt-4 shadow-md flex flex-col gap-5">
+        <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
           <div className="flex flex-row items-center justify-between p-2 rounded-xl bg-[#F0FFF4] border border-[#3AC4A0] shadow-md cursor-pointer">
             <div className="flex flex-row items-center">
               <Image

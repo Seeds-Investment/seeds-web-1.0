@@ -1,35 +1,5 @@
 import moment from 'moment';
 
-const monthsID: string[] = [
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember'
-];
-
-const monthsEN: string[] = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
-
 export const generateFormattedDate = (
   dateString: string,
   showZone = false
@@ -83,46 +53,50 @@ export const formatMonthlyChart = (date: Date): string[] => {
   return months.reverse();
 };
 
-export const getLastUpdatedID = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
-
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`;
+const formatDate = (date: Date, locale: string, options: Intl.DateTimeFormatOptions): string => {
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
-export const getLastUpdatedEN = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  const currentYear = date.getFullYear();
+  const currentMonth = formatDate(date, locale, { month: 'long' });
+  const currentDay = date.getDate();
+  const currentHours = date.getHours().toString().padStart(2, '0');
+  const currentMinutes = date.getMinutes().toString().padStart(2, '0');
 
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
+  return locale === 'id-ID'
+    ? `${currentDay} ${currentMonth} ${currentYear} - ${currentHours}:${currentMinutes}`
+    : `${currentMonth} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
 
-export const getEventDateID = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+export const getEventDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  const currentYear = date.getFullYear();
+  const currentMonth = formatDate(date, locale, { month: 'long' });
+  const currentDay = date.getDate();
+  const currentHours = date.getHours().toString().padStart(2, '0');
+  const currentMinutes = date.getMinutes().toString().padStart(2, '0');
 
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} | ${currentHours}:${currentMinutes}`;
+  return locale === 'id-ID'
+    ? `${currentDay} ${currentMonth} ${currentYear} | ${currentHours}:${currentMinutes}`
+    : `${currentMonth} ${currentDay}, ${currentYear} | ${currentHours}:${currentMinutes}`;
 };
 
-export const getEventDateEN = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+export const getEventDetailsDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  const currentYear = date.getFullYear();
+  const currentMonth = formatDate(date, locale, { month: 'long' });
+  const currentDay = date.getDate();
+  const dayName = formatDate(date, locale, { weekday: 'long' });
 
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} | ${currentHours}:${currentMinutes}`;
+  return locale === 'id-ID'
+    ? `${dayName}, ${currentDay} ${currentMonth} ${currentYear}`
+    : `${dayName}, ${currentMonth} ${currentDay}, ${currentYear}`;
+};
+
+export const getEventClock = (eventDate: Date, endedAt: Date ): string => {
+  const startHours = eventDate.getHours().toString().padStart(2, '0');
+  const startMinutes = eventDate.getMinutes().toString().padStart(2, '0');
+  const endHours = endedAt.getHours().toString().padStart(2, '0');
+  const endMinutes = endedAt.getMinutes().toString().padStart(2, '0');
+
+  return `${startHours}:${startMinutes} - ${endHours}:${endMinutes}`;
 };

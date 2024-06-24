@@ -2070,7 +2070,10 @@ export default {
     thisMonth: 'Bulan Ini',
     upcoming: 'Event Akan Datang',
     blank1: 'Ups,  Belum Ada Event',
-    blank2: 'Nantikan untuk update lainnya!'
+    blank2: 'Nantikan untuk update lainnya!',
+    eventDetails: "Detail Event",
+    entranceFee: "Biaya Masuk",
+    free: "Gratis",
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',

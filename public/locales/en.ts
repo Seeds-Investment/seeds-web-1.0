@@ -2143,7 +2143,10 @@ export default {
     thisMonth: 'This Month',
     upcoming: 'Upcoming Event',
     blank1: 'Opps,  There’s No Event Yet',
-    blank2: 'Stay tuned for more updates!'
+    blank2: 'Stay tuned for more updates!',
+    eventDetails: "Event Details",
+    entranceFee: "Entrance Fee",
+    free: "Free",
   },
   buyAsset: {
     text1: 'Assets to be purchased',

@@ -1,7 +1,7 @@
 import EventImage from '@/assets/event/default.png';
 import Liked from '@/assets/event/likedEvent.svg';
 import Unliked from '@/assets/event/unlikedEvent.svg';
-import { getEventDateEN, getEventDateID } from '@/helpers/dateFormat';
+import { getEventDate } from '@/helpers/dateFormat';
 import LanguageContext from '@/store/language/language-context';
 import { type EventList } from '@/utils/interfaces/event.interface';
 import Image from 'next/image';
@@ -45,15 +45,17 @@ const EventListCard: React.FC<EventListCardProps> = ({
         >
           <div>
             {languageCtx.language === 'ID'
-              ? getEventDateID(
+              ? getEventDate(
                   new Date(
                     item?.event_date ?? '2024-12-31T23:59:00Z'
-                  )
+                  ),
+                  'id-ID'
                 )
-              : getEventDateEN(
+              : getEventDate(
                   new Date(
                     item?.event_date ?? '2024-12-31T23:59:00Z'
-                  )
+                  ),
+                  'en-US'
                 )}
           </div>
           <div className="text-[#7C7C7C] text-sm md:text-base">

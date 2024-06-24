@@ -2065,10 +2065,10 @@ export default {
   seedsEvent: {
     search: 'Cari event',
     enter: 'Cari',
-    past: 'BERAKHIR',
-    today: 'HARI INI',
-    thisMonth: 'BULAN INI',
-    upcoming: 'AKAN DATANG',
+    past: 'Event Berakhir',
+    today: 'Hari Ini',
+    thisMonth: 'Bulan Ini',
+    upcoming: 'Event Akan Datang',
     blank1: 'Ups,  Belum Ada Event',
     blank2: 'Nantikan untuk update lainnya!'
   },

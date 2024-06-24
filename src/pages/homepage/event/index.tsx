@@ -71,14 +71,11 @@ const SeedsEvent: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [eventList, setEventList] = useState<EventList[]>([]);
   const [eventMetadata, setEventMetadata] = useState<EventMetadata>();
-  const [search, setSearch] = useState<string>('');
-  const [refreshSearch, setRefreshSearch] = useState<boolean>(false);
 
   const [eventStatus, setEventStatus] = useState(EventStatus.TODAY);
   const [eventParams, setEventParams] = useState({
     limit: 6,
     page: 1,
-    search: search === '' || search === undefined ? null : search,
     section: eventStatus,
     year: new Date().getFullYear()
   });
@@ -96,8 +93,6 @@ const SeedsEvent: React.FC = () => {
   }, [
     id,
     userInfo,
-    search,
-    refreshSearch,
     eventStatus,
     eventParams.page,
     eventParams.year,
@@ -134,11 +129,6 @@ const SeedsEvent: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setEventParams({ ...eventParams, search: event.target.value });
-    setSearch(event.target.value);
   };
 
   const handleOpenCloseDrowndown = (): void => {
@@ -243,91 +233,29 @@ const SeedsEvent: React.FC = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-        <div className="flex justify-between w-full gap-2">
-          <Typography className="w-full text-xl font-semibold text-center">
+        <div className="flex justify-between w-full">
+          <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
             Seeds Event
           </Typography>
-          <div className="relative w-full md:w-[120px] rounded-lg text-center">
-            <div
-              onClick={() => {
-                handleOpenCloseDrowndown();
-              }}
-              className="px-4 py-2 rounded-lg cursor-pointer flex gap-2 hover:bg-[#E9E9E9] duration-300 justify-center items-center"
-            >
-              <div className="font-semibold text-[#7C7C7C]">
-                {eventParams?.year}
-              </div>
-              <Image
-                src={ArrowDownCollapse}
-                alt="Select"
-                width={20}
-                height={20}
-              />
-            </div>
-            {showDropdown && (
-              <div className="absolute bottom-[-100px] right-[0px] w-[120px] md:w-[200px] bg-white shadow-xl p-2 rounded-lg">
-                <div
-                  onClick={() => {
-                    setEventParams({
-                      ...eventParams,
-                      year: new Date().getFullYear() - 1
-                    });
-                    handleOpenCloseDrowndown();
-                  }}
-                  className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
-                >
-                  2023
-                </div>
-                <div
-                  onClick={() => {
-                    setEventParams({
-                      ...eventParams,
-                      year: new Date().getFullYear()
-                    });
-                    handleOpenCloseDrowndown();
-                  }}
-                  className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
-                >
-                  2024
-                </div>
-              </div>
-            )}
+          <div className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer'>
+            <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.8333 15.8333H4.16667V6.66665H15.8333M13.3333 0.833313V2.49998H6.66667V0.833313H5V2.49998H4.16667C3.25 2.49998 2.5 3.24998 2.5 4.16665V15.8333C2.5 16.2753 2.67559 16.6993 2.98816 17.0118C3.30072 17.3244 3.72464 17.5 4.16667 17.5H15.8333C16.7583 17.5 17.5 16.7583 17.5 15.8333V4.16665C17.5 3.72462 17.3244 3.3007 17.0118 2.98813C16.6993 2.67557 16.2754 2.49998 15.8333 2.49998H15V0.833313M9.06667 9.99998H6.05833L8.49167 11.7583L7.56667 14.6333L10 12.8583L12.4333 14.6333L11.5 11.7666L13.9333 9.99998H10.9333L10 7.13331L9.06667 9.99998Z" fill="white"/>
+            </svg>
           </div>
         </div>
-        <div className="w-full flex justify-center mt-4">
-          <input
-            id="search"
-            type="text"
-            value={search}
-            onChange={e => {
-              handleSearch(e);
-            }}
-            name="search"
-            placeholder={`${t('seedsEvent.search')}`}
-            className="block w-full text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-8 rounded-full border border-[#BDBDBD]"
-          />
-          <button
-            onClick={() => {
-              setRefreshSearch(!refreshSearch);
-            }}
-            className="text-sm text-white bg-[#3AC4A0] ml-2 rounded-full w-[100px] font-semibold hover:shadow-lg duration-300"
-          >
-            {t('seedsEvent.enter')}
-          </button>
-        </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">
-          <div className="w-full flex flex-row items-center gap-2 max-w-full overflow-x-auto no-scroll">
+          <div className="w-full flex flex-row items-center gap-2 lg:gap-4 max-w-full overflow-x-auto no-scroll">
             {statusEvent.map(item => (
               <button
                 className={`w-full border px-4 py-2 font-poppins rounded-lg text-sm text-nowrap hover:bg-[#DCFCE4] hover:text-seeds-button-green hover:border-seeds-button-green duration-300 ${
                   item.status === eventStatus
-                    ? 'border-seeds-button-green bg-[#DCFCE4] text-seeds-button-green'
-                    : 'border-[#BDBDBD] bg-white text-[#BDBDBD]'
+                    ? 'border-seeds-button-green bg-white text-seeds-button-green'
+                    : 'bg-[#E9E9E9] text-[#7C7C7C]'
                 }`}
                 key={item.id}
                 onClick={() => {
                   setEventStatus(item.status);
-                  setEventParams({ ...eventParams, section: item.status });
+                  setEventParams({ ...eventParams, section: item.status, page: 1 });
                 }}
               >
                 {item.title}
@@ -344,9 +272,60 @@ const SeedsEvent: React.FC = () => {
             <div className="w-full">
               {Object.entries(eventsByMonth).map(([monthYear, events]) => (
                 <div key={monthYear}>
-                  <div className="w-full h-fit text-[#7C7C7C] font-semibold">
-                    {monthYear}
-                  </div>
+                  {
+                    ((eventStatus === 'past') || eventStatus === 'upcoming') &&
+                      <div className="w-full h-fit text-[#7C7C7C] font-semibold flex justify-between items-center">
+                        <div>
+                          {monthYear}
+                        </div>
+                        <div className="relative w-full md:w-[120px] rounded-lg text-center">
+                          <div
+                            onClick={() => {
+                              handleOpenCloseDrowndown();
+                            }}
+                            className="px-4 py-2 rounded-lg cursor-pointer flex gap-2 hover:bg-[#E9E9E9] duration-300 justify-center items-center"
+                          >
+                            <div className="font-semibold text-[#7C7C7C]">
+                              {eventParams?.year}
+                            </div>
+                            <Image
+                              src={ArrowDownCollapse}
+                              alt="Select"
+                              width={20}
+                              height={20}
+                            />
+                          </div>
+                          {showDropdown && (
+                            <div className="absolute bottom-[-100px] right-[0px] w-[120px] md:w-[200px] bg-white shadow-xl p-2 rounded-lg">
+                              <div
+                                onClick={() => {
+                                  setEventParams({
+                                    ...eventParams,
+                                    year: new Date().getFullYear() - 1
+                                  });
+                                  handleOpenCloseDrowndown();
+                                }}
+                                className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
+                              >
+                                {new Date().getFullYear() - 1}
+                              </div>
+                              <div
+                                onClick={() => {
+                                  setEventParams({
+                                    ...eventParams,
+                                    year: new Date().getFullYear()
+                                  });
+                                  handleOpenCloseDrowndown();
+                                }}
+                                className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
+                              >
+                                {new Date().getFullYear()}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                  }
                   <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 mb-4">
                     {events?.map(item => (
                       <div

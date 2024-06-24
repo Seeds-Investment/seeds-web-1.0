@@ -2,12 +2,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import EventImage from '@/assets/event/default.png';
-import Liked from '@/assets/event/likedEvent.svg';
-import Unliked from '@/assets/event/unlikedEvent.svg';
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import AssetPagination from '@/components/AssetPagination';
-import { getEventDateEN, getEventDateID } from '@/helpers/dateFormat';
+import EventFilter from '@/components/homepage/eventFilter';
+import EventListCard from '@/components/homepage/eventListCard';
 import withAuth from '@/helpers/withAuth';
 import {
   type EventListParams,
@@ -16,16 +14,16 @@ import {
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
+import { type EventList } from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowDownCollapse } from 'public/assets/vector';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface StatusEvent {
+export interface StatusEvent {
   id: number;
   status: EventStatus;
   title: string;
@@ -36,19 +34,6 @@ export enum EventStatus {
   TODAY = 'today',
   THIS_MONTH = 'this_month',
   UPCOMING = 'upcoming'
-}
-
-interface EventList {
-  created_at: string;
-  description: string;
-  event_date: string;
-  external_url: string;
-  id: string;
-  image_url: string;
-  is_liked: boolean;
-  likes: number;
-  name: string;
-  updated_at: string;
 }
 
 interface EventMetadata {
@@ -64,8 +49,8 @@ const SeedsEvent: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
   const languageCtx = useContext(LanguageContext);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [loading, setLoading] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -233,11 +218,11 @@ const SeedsEvent: React.FC = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full relative">
           <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
             Seeds Event
           </Typography>
-          <div className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer'>
+          <div className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute right-0 top-[-6px] lg:top-[-4px]'>
             <svg width="28" height="28" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.8333 15.8333H4.16667V6.66665H15.8333M13.3333 0.833313V2.49998H6.66667V0.833313H5V2.49998H4.16667C3.25 2.49998 2.5 3.24998 2.5 4.16665V15.8333C2.5 16.2753 2.67559 16.6993 2.98816 17.0118C3.30072 17.3244 3.72464 17.5 4.16667 17.5H15.8333C16.7583 17.5 17.5 16.7583 17.5 15.8333V4.16665C17.5 3.72462 17.3244 3.3007 17.0118 2.98813C16.6993 2.67557 16.2754 2.49998 15.8333 2.49998H15V0.833313M9.06667 9.99998H6.05833L8.49167 11.7583L7.56667 14.6333L10 12.8583L12.4333 14.6333L11.5 11.7666L13.9333 9.99998H10.9333L10 7.13331L9.06667 9.99998Z" fill="white"/>
             </svg>
@@ -274,142 +259,49 @@ const SeedsEvent: React.FC = () => {
                 <div key={monthYear}>
                   {
                     ((eventStatus === 'past') || eventStatus === 'upcoming') &&
-                      <div className="w-full h-fit text-[#7C7C7C] font-semibold flex justify-between items-center">
-                        <div>
-                          {monthYear}
-                        </div>
-                        <div className="relative w-full md:w-[120px] rounded-lg text-center">
-                          <div
-                            onClick={() => {
-                              handleOpenCloseDrowndown();
-                            }}
-                            className="px-4 py-2 rounded-lg cursor-pointer flex gap-2 hover:bg-[#E9E9E9] duration-300 justify-center items-center"
-                          >
-                            <div className="font-semibold text-[#7C7C7C]">
-                              {eventParams?.year}
-                            </div>
-                            <Image
-                              src={ArrowDownCollapse}
-                              alt="Select"
-                              width={20}
-                              height={20}
-                            />
-                          </div>
-                          {showDropdown && (
-                            <div className="absolute bottom-[-100px] right-[0px] w-[120px] md:w-[200px] bg-white shadow-xl p-2 rounded-lg">
-                              <div
-                                onClick={() => {
-                                  setEventParams({
-                                    ...eventParams,
-                                    year: new Date().getFullYear() - 1
-                                  });
-                                  handleOpenCloseDrowndown();
-                                }}
-                                className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
-                              >
-                                {new Date().getFullYear() - 1}
-                              </div>
-                              <div
-                                onClick={() => {
-                                  setEventParams({
-                                    ...eventParams,
-                                    year: new Date().getFullYear()
-                                  });
-                                  handleOpenCloseDrowndown();
-                                }}
-                                className="p-2 hover:bg-[#DCFCE4] duration-300 cursor-pointer rounded-lg text-start"
-                              >
-                                {new Date().getFullYear()}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      <EventFilter
+                        monthYear={monthYear}
+                        statusEvent={statusEvent}
+                        showDropdown={showDropdown}
+                        eventParams={eventParams}
+                        setEventStatus={setEventStatus}
+                        setEventParams={setEventParams}
+                        handleOpenCloseDrowndown={handleOpenCloseDrowndown}
+                      />
                   }
                   <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 mb-4">
                     {events?.map(item => (
-                      <div
+                      <EventListCard
                         key={item?.id}
-                        className="w-full rounded-xl shadow-md hover:shadow-xl duration-300 overflow-hidden cursor-pointer"
-                      >
-                        <div
-                          onClick={async () =>
-                            await router.push(`/homepage/event/${item?.id}`)
-                          }
-                          className="w-full max-h-[250px] overflow-hidden border-b-2 border-[#E9E9E9]"
-                        >
-                          <img
-                            src={item?.image_url ?? EventImage}
-                            className="w-full h-full"
-                          />
-                        </div>
-                        <div className="w-full flex justify-between gap-2 px-4 py-2">
-                          <div
-                            onClick={async () =>
-                              await router.push(`/homepage/event/${item?.id}`)
-                            }
-                            className="flex flex-col w-full"
-                          >
-                            <div>
-                              {languageCtx.language === 'ID'
-                                ? getEventDateID(
-                                    new Date(
-                                      item?.event_date ?? '2024-12-31T23:59:00Z'
-                                    )
-                                  )
-                                : getEventDateEN(
-                                    new Date(
-                                      item?.event_date ?? '2024-12-31T23:59:00Z'
-                                    )
-                                  )}
-                            </div>
-                            <div className="text-[#7C7C7C] text-sm md:text-base">
-                              {item?.name?.length < 24
-                                ? item?.name
-                                : `${item?.name?.slice(0, 23)}...`}
-                            </div>
-                          </div>
-                          <div className="flex flex-col justify-center items-center px-2">
-                            {item?.is_liked ? (
-                              <Image
-                                src={Liked}
-                                alt={'Liked'}
-                                width={100}
-                                height={100}
-                                className="w-full h-full cursor-pointer"
-                                onClick={() => {
-                                  handleLikeEvent(item?.id);
-                                }}
-                              />
-                            ) : (
-                              <Image
-                                src={Unliked}
-                                alt={'Liked'}
-                                width={100}
-                                height={100}
-                                className="w-full h-full cursor-pointer"
-                                onClick={() => {
-                                  handleLikeEvent(item?.id);
-                                }}
-                              />
-                            )}
-                            <div>{item?.likes}</div>
-                          </div>
-                        </div>
-                      </div>
+                        item={item}
+                        handleLikeEvent={handleLikeEvent}
+                      />
                     ))}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mb-8">
-              <Image alt="" src={IconNoData} className="w-[250px]" />
-              <p className="font-semibold text-black">
-                {t('seedsEvent.blank1')}
-              </p>
-              <p className="text-[#7C7C7C]">{t('seedsEvent.blank2')}</p>
-            </div>
+            <>
+              {
+                ((eventStatus === 'past') || eventStatus === 'upcoming') &&
+                  <EventFilter
+                    statusEvent={statusEvent}
+                    showDropdown={showDropdown}
+                    eventParams={eventParams}
+                    setEventStatus={setEventStatus}
+                    setEventParams={setEventParams}
+                    handleOpenCloseDrowndown={handleOpenCloseDrowndown}
+                  />
+              }
+              <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0 mb-8">
+                <Image alt="" src={IconNoData} className="w-[250px]" />
+                <p className="font-semibold text-black">
+                  {t('seedsEvent.blank1')}
+                </p>
+                <p className="text-[#7C7C7C]">{t('seedsEvent.blank2')}</p>
+              </div>
+            </>
           )
         ) : (
           <div className="w-full flex justify-center h-fit mt-8">

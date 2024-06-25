@@ -1,8 +1,21 @@
-export interface ClassParamsI {
+export interface ListParamsI {
   page: number;
   limit: number;
   search: string;
-  statur: string;
+  status: string;
+}
+
+export interface ListCategoryAcademyI {
+  id: string;
+  title: string;
+  about: {
+    en: string;
+    id: string;
+  };
+  banner: string;
+  level: [];
+  status: string;
+  total_class: number;
 }
 
 export interface DetailClassI {

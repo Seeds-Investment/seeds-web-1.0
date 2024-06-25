@@ -1,5 +1,5 @@
 import baseAxios from '@/utils/common/axios';
-import { type ClassParamsI } from '@/utils/interfaces/academy.interface';
+import { type ListParamsI } from '@/utils/interfaces/academy.interface';
 import { toast } from 'react-toastify';
 
 const academyService = baseAxios(
@@ -8,7 +8,23 @@ const academyService = baseAxios(
   }/academy/v1`
 );
 
-export const getAllClass = async (params: ClassParamsI): Promise<any> => {
+export const getAllCategory = async (params: ListParamsI): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(`/category`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const getAllClass = async (params: ListParamsI): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const response = await academyService.get(`/class`, {

@@ -186,7 +186,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </Menu>
         </section>
       </section>
-      ;{/* TODO: END NEW HEADER */}
+      {/* TODO: END NEW HEADER */}
       <section className="flex xl:hidden justify-between mx-4 items-center h-20">
         <Link href="https://seeds.finance">
           <Image alt="SeedsLogo" src={SeedLogo} height={46} />
@@ -293,7 +293,6 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </MenuList>
         </Menu>
       </section>
-      ;
     </nav>
   );
 };

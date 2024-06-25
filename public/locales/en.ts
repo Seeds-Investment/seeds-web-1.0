@@ -2123,6 +2123,7 @@ export default {
     }
   },
   academy: {
+    greeting: 'Hello',
     courseTitle: 'Let’s found your favorite course',
     courseSearchPlaceholder: 'What you want to learn today?',
     categoryTitle: 'Categories',

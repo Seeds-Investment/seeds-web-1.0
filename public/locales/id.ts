@@ -2050,8 +2050,9 @@ export default {
     }
   },
   academy: {
-    courseTitle: 'Ayo temukan kursus favoritmu',
-    courseSearchPlaceholder: 'Apa yang ingin Anda pelajari hari ini?',
+    greeting: 'Hai',
+    courseTitle: 'Yuk, temukan kursus favorit kamu',
+    courseSearchPlaceholder: 'Apa yang ingin kamu pelajari hari ini?',
     categoryTitle: 'Kategori',
     noCategoriesTitle: 'Ups, Belum Ada Kategori',
     noCategoriesDescription: 'Nantikan pembaruan lainnya!',

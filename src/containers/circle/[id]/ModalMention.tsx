@@ -1933,7 +1933,7 @@ const ModalMention: React.FC<props> = ({
                       </div>
 
                       {pages !== 'gif' && (
-                        <div className={`flex flex-col absolute bottom-4`}>
+                        <div className={`flex flex-col absolute bottom-14`}>
                           <div className="sm:hidden flex-col justify-center pl-3 flex">
                             {drop && (
                               <div className="bg-white mb-[40vh] absolute z-[10] rounded-2xl border border-neutral-soft w-[300px] flex flex-col justify-center items-center transition">

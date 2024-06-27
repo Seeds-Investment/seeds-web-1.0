@@ -2,6 +2,7 @@ import SummaryPay from '@/components/academy/SummaryPay';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const VAList = [
   { id: 1, bank_name: 'BCA', icon: '/assets/academy/payment/bca.svg' },
@@ -37,6 +38,7 @@ const Payment: React.FC = () => {
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [namePayment, setNamePayment] = useState('');
+  const { t } = useTranslation();
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
@@ -86,25 +88,27 @@ const Payment: React.FC = () => {
     <PageGradient defaultGradient className="w-full">
       <div className="bg-white p-3 rounded-xl shadow-md">
         <div className="text-2xl font-bold text-center mb-4">
-          Payment Method
+          {t('academy.payment.method')}
         </div>
 
         <div className="mb-4">
           <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
-            Virtual Account
+            {t('academy.payment.va')}
           </div>
           {renderOptions(VAList, 'va')}
         </div>
 
         <div className="mb-4">
           <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
-            E-Wallet
+            {t('academy.payment.ew')}
           </div>
           {renderOptions(WalletList, 'wallet')}
         </div>
 
         <div className="mb-4">
-          <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">Other</div>
+          <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
+            {t('academy.payment.other')}
+          </div>
           {renderOptions(OtherList, 'other')}
         </div>
 
@@ -117,7 +121,7 @@ const Payment: React.FC = () => {
           } mb-4 p-3 rounded-3xl w-full font-medium`}
           onClick={togglePopup}
         >
-          Pay
+          {t('academy.payment.pay')}
         </button>
       </div>
       <SummaryPay

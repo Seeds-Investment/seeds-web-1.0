@@ -2077,7 +2077,28 @@ export default {
       moreDetail: 'Selengkapnya',
       showLess: 'Tampilkan lebih sedikit',
       seedsCoin: 'Tukarkan {{data}} Seeds Coin',
-      pretestScore: 'Skor Pre-Test Kamu'
+      pretestScore: 'Skor Pre-Test Kamu',
+      free: 'Gratis'
+    },
+    pretest: {
+      question: 'Pertanyaan',
+      next: 'Selanjutnya',
+      submit: 'Kirim',
+      score: 'Skor',
+      grade: 'Nilai',
+      desc: 'Kamu telah menyelesaikan pre test.',
+      back: 'Kembali ke Detail Kelas'
+    },
+    payment: {
+      enroll: 'Daftar',
+      class: 'Kelas',
+      desc: 'atau langganan buat harga yang lebih murah!',
+      buttonPay: 'Lakukan Pembayaran',
+      method: 'Metode Pembayaran',
+      pay: 'Bayar',
+      va: 'Akun Virtual',
+      ew: 'Dompet Digital',
+      other: 'Lainnya'
     }
   },
   seedsEvent: {

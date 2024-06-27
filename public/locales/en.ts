@@ -2150,7 +2150,28 @@ export default {
       moreDetail: 'More Detail',
       showLess: 'Show Less',
       seedsCoin: 'Redeem {{data}} Seeds Coin',
-      pretestScore: 'Your Pre-Test Score'
+      pretestScore: 'Your Pre-Test Score',
+      free: 'Free'
+    },
+    pretest: {
+      question: 'Questions',
+      next: 'Next',
+      submit: 'Submit',
+      score: 'Score',
+      grade: 'Grade',
+      desc: 'You’ve completed the pre test.',
+      back: 'Back to Detail Class'
+    },
+    payment: {
+      enroll: 'Enroll',
+      class: 'Class',
+      desc: 'or subscribe for cheaper price!',
+      buttonPay: 'Make Payment',
+      method: 'Payment Method',
+      pay: 'Pay',
+      va: 'Virtual Account',
+      ew: 'E-Wallet',
+      other: 'Other'
     }
   },
   seedsEvent: {

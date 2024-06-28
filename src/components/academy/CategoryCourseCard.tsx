@@ -1,11 +1,9 @@
-import { type ListCategoryAcademyI } from '@/utils/interfaces/academy.interface';
+import { type CategoryAcademyI } from '@/utils/interfaces/academy.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import React from 'react';
 
-const CategoryCourseCard: React.FC<{ data: ListCategoryAcademyI }> = ({
-  data
-}) => {
+const CategoryCourseCard: React.FC<{ data: CategoryAcademyI }> = ({ data }) => {
   return (
     <div className="flex flex-col justify-center items-center bg-[#DCFCE4] rounded-2xl py-6">
       <Typography className="font-semibold text-sm lg:text-lg">

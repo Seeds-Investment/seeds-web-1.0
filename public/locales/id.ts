@@ -2057,11 +2057,16 @@ export default {
     noCategoriesTitle: 'Ups, Belum Ada Kategori',
     noCategoriesDescription: 'Nantikan pembaruan lainnya!',
     categoryDetailTitle: 'Tentang Kursus',
+    categoryDetailMoreDetail: 'Lebih Detail',
+    categoryDetailShowLess: 'Tampilkan Lebih Sedikit',
     levels: {
-      basic: 'Dasar',
+      all: 'Semua',
+      beginner: 'Dasar',
       intermediate: 'Menengah',
-      advanced: 'Lanjutan'
+      advance: 'Tingkat Lanjut'
     },
+    noClassesTitle: 'Ups, Belum Ada Kelas',
+    noClassesDescription: 'Nantikan pembaruan lainnya!',
     courseFee: 'Biaya',
     courseButtonBuy: 'Beli Sekarang',
     courseButtonDetail: 'Lihat Detail',

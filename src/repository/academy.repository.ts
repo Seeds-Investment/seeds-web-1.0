@@ -27,6 +27,40 @@ export const getAllCategory = async (params: ListParamsI): Promise<any> => {
   }
 };
 
+export const getCategoryDetail = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(`/category/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const getClassListByCategoryId = async (
+  id: string,
+  params: ListParamsI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(`/category/${id}/class`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
 export const getAllClass = async (params: ListParamsI): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

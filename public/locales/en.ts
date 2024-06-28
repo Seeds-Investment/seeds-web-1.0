@@ -2130,11 +2130,16 @@ export default {
     noCategoriesTitle: 'Oops, There’s No Categories Yet',
     noCategoriesDescription: 'Stay tuned for more updates!',
     categoryDetailTitle: 'About Course',
+    categoryDetailMoreDetail: 'More Detail',
+    categoryDetailShowLess: 'Show Less',
     levels: {
-      basic: 'Basic',
+      all: 'All',
+      beginner: 'Beginner',
       intermediate: 'Intermediate',
-      advanced: 'Advanced'
+      advance: 'Advanced'
     },
+    noClassesTitle: 'Oops, There’s No Classes Yet',
+    noClassesDescription: 'Stay tuned for more updates!',
     courseFee: 'Fee',
     courseButtonBuy: 'Buy Now',
     courseButtonDetail: 'See Detail',

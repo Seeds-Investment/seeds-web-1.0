@@ -1,10 +1,25 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { Button, Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 
-const Receipt: React.FC = () => {
+interface ReceiptProps {
+  //   payment: string;
+  amount: number;
+  adminFee: number;
+  serviceFee: number;
+  logoURL: string;
+}
+
+const Receipt: React.FC<ReceiptProps> = ({
+  //   payment,
+  amount,
+  adminFee,
+  serviceFee,
+  logoURL
+}) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -13,7 +28,7 @@ const Receipt: React.FC = () => {
   //   };
 
   return (
-    <div className="pt-10">
+    <div className="">
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-2 rounded-xl shadow-md flex flex-col gap-5">
           <div className="flex items-center justify-center rounded-xl w-full ">
@@ -49,10 +64,12 @@ const Receipt: React.FC = () => {
                 </Typography>
                 <div className="flex items-center justify-center mb-9 mt-3">
                   {/* Placeholder untuk gambar */}
-                  <img
-                    src="/placeholder-image.png"
+                  <Image
+                    src={logoURL}
                     alt="logo"
-                    className="w-12 h-12 rounded-full"
+                    className="object-cover"
+                    width={100}
+                    height={100}
                   />
                 </div>
                 <hr className="border-t-2 border-dashed" />
@@ -66,15 +83,23 @@ const Receipt: React.FC = () => {
                     Cost Seeds Academy
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    $120.00
+                    IDR {amount}
                   </Typography>
                 </div>
                 <div className="flex flex-row justify-between mb-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    Discount
+                    Admin Fee
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    $120.00
+                    IDR {adminFee}
+                  </Typography>
+                </div>
+                <div className="flex flex-row justify-between mb-5">
+                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                    Service Fee
+                  </Typography>
+                  <Typography className="text-sm font-semibold text-[#262626]">
+                    IDR {serviceFee}
                   </Typography>
                 </div>
                 <hr className="mb-5 border border-t-3" />
@@ -83,26 +108,24 @@ const Receipt: React.FC = () => {
                     Total Amount
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    $120.00
+                    IDR {amount + adminFee + serviceFee}
                   </Typography>
                 </div>
-                <div className="flex flex-row justify-between mb-5">
+                {/* <div className="flex flex-row justify-between mb-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     Transaction ID
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     $120.00
                   </Typography>
-                </div>
+                </div> */}
               </Card>
 
               <div className="w-full flex items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-[#3AC4A0] mt-20 rounded-full capitalize"
                   onClick={() => {
-                    void router.replace(
-                      `/academy/course/${id as string}/learn`
-                    );
+                    void router.replace(`/academy/course/${id as string}`);
                   }}
                 >
                   Close

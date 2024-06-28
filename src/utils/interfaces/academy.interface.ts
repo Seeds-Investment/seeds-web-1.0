@@ -100,3 +100,20 @@ export interface EnrollClassI {
   is_use_coins?: boolean;
   is_free_voucher_claimed?: boolean;
 }
+
+export interface PaymentStatus {
+  orderId: string;
+  transactionId: string;
+  fraudStatus: string;
+  transactionStatus: string;
+  currency: string;
+  merchantId: string;
+  paymentGateway: string;
+  itemName: string;
+  itemId: string;
+  quantity: number;
+  grossAmount: number;
+  paymentMethod: string;
+  vaNumber: string;
+  howToPayApi: string;
+}

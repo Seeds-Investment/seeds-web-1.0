@@ -1,55 +1,156 @@
+import Receipt from '@/components/academy/Receipt';
 import SummaryPay from '@/components/academy/SummaryPay';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { enrollClass, getClassDetail } from '@/repository/academy.repository';
+import { getPaymentList } from '@/repository/payment.repository';
+import { getPaymentById } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import {
+  type DetailClassI,
+  type EnrollClassI,
+  type PaymentStatus
+} from '@/utils/interfaces/academy.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const VAList = [
-  { id: 1, bank_name: 'BCA', icon: '/assets/academy/payment/bca.svg' },
-  { id: 2, bank_name: 'BRI', icon: '/assets/academy/payment/bri.svg' },
-  {
-    id: 3,
-    bank_name: 'CIMB Niaga',
-    icon: '/assets/academy/payment/cimbniaga.svg'
-  },
-  {
-    id: 4,
-    bank_name: 'Permata Bank',
-    icon: '/assets/academy/payment/permata.svg'
-  },
-  { id: 5, bank_name: 'Mandiri', icon: '/assets/academy/payment/mandiri.svg' }
-];
-
-const WalletList = [
-  { id: 1, bank_name: 'Gopay', icon: '/assets/academy/payment/gopay.svg' },
-  { id: 2, bank_name: 'Dana', icon: '/assets/academy/payment/dana.svg' },
-  { id: 3, bank_name: 'OVO', icon: '/assets/academy/payment/ovo.svg' }
-];
-
-const OtherList = [
-  {
-    id: 1,
-    bank_name: 'Google Pay',
-    icon: '/assets/academy/payment/googlepay.svg'
-  }
-];
+import { toast } from 'react-toastify';
 
 const Payment: React.FC = () => {
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [namePayment, setNamePayment] = useState('');
   const { t } = useTranslation();
+  const [eWalletList, setEWalletList] = useState([]);
+  const [qRisList, setQRisList] = useState([]);
+  const [virtualList, setVirtualList] = useState([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const router = useRouter();
+  const { id } = router.query;
+  const [formData, setFormData] = useState<EnrollClassI>({
+    phone_number: '',
+    payment_gateway: '',
+    payment_method: ''
+  });
+  const [paymentGateway, setPaymentGateway] = useState<string>('');
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const [paymentLogo, setPaymentLogo] = useState<string>('');
+  const [paymentAdminFee, setPaymentAdminFee] = useState<number>(0);
+  // const [paymentPromoPrice, setPaymentPromoPrice] = useState<number>(0);
+  const [paymentServiceFee, setPaymentServiceFee] = useState<number>(0);
+  const [data, setData] = useState<DetailClassI | undefined>(undefined);
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
+  const formattedPrice = data?.price?.idr;
+  // setPaymentStatus(resp);
+
+  const handleGetClass = async (): Promise<void> => {
+    try {
+      const responseClass = await getClassDetail(id as string);
+      setData(responseClass);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetClass();
+    }
+  }, [id]);
+
+  const handleSelect = (
+    id: string,
+    gateway: string,
+    method: string,
+    adminFee: number,
+    // promoPrice: number,
+    serviceFee: number,
+    paymentLogo: string
+  ): void => {
+    setSelectedPayment(id);
+    setPaymentGateway(gateway);
+    setPaymentMethod(method);
+    setPaymentAdminFee(adminFee);
+    // setPaymentPromoPrice(promoPrice);
+    setPaymentServiceFee(serviceFee);
+    setPaymentLogo(paymentLogo);
+  };
+
+  const handlePaymentList = async (): Promise<void> => {
+    try {
+      const payList = await getPaymentList(
+        userInfo?.preferredCurrency?.toUpperCase()
+      );
+      setQRisList(payList.type_qris);
+      setEWalletList(payList.type_ewallet);
+      setVirtualList(payList.type_va);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const handleGetUserInfo = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+      setFormData({ phone_number: response?.phoneNumber });
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
 
   const togglePopup = (): void => {
     setShowPopup(!showPopup);
   };
 
-  const handleSelect = (id: string): void => {
-    setSelectedPayment(id);
+  useEffect(() => {
+    void handleGetUserInfo();
+  }, []);
+
+  useEffect(() => {
+    void handlePaymentList();
+  }, [userInfo?.preferredCurrency]);
+
+  const handlePayment = async (): Promise<void> => {
+    if (selectedPayment === null) {
+      toast('Select payment method!', { type: 'warning' });
+      return;
+    }
+
+    try {
+      const response = await enrollClass(id as string, {
+        ...formData,
+        payment_gateway: paymentGateway,
+        payment_method: paymentMethod
+      });
+      const statusOrder = await getPaymentById(response?.order_id);
+      setPaymentStatus(statusOrder);
+      if (response?.payment_url !== '') {
+        window.open(response.payment_url, '_blank');
+      } else {
+        toast('Payment url not found!', { type: 'warning' });
+      }
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const handleConfirm = async (): Promise<void> => {
+    await handlePayment();
+    togglePopup();
   };
 
   const renderOptions = (
-    list: Array<{ id: number; bank_name: string; icon: string }>,
+    list: Array<{
+      id: string;
+      payment_method: string;
+      payment_gateway: string;
+      logo_url: string;
+      admin_fee: number;
+      promo_price: number;
+      service_fee: number;
+    }>,
     prefix: string
   ): JSX.Element[] => {
     return list.map(item => (
@@ -59,15 +160,23 @@ const Payment: React.FC = () => {
           selectedPayment === `${prefix}-${item.id}` ? 'bg-gray-200' : ''
         }`}
         onClick={() => {
-          handleSelect(`${prefix}-${item.id}`);
-          setNamePayment(item.bank_name);
+          handleSelect(
+            `${prefix}-${item.id}`,
+            item.payment_gateway,
+            item.payment_method,
+            item.admin_fee,
+            // item.promo_price,
+            item.service_fee,
+            item.logo_url
+          );
+          setNamePayment(item.payment_method);
         }}
       >
         <Image
-          src={item.icon}
+          src={item.logo_url}
           width={100}
           height={100}
-          alt={`${item.bank_name} icon`}
+          alt={`${item.payment_method} icon`}
           className="h-5 object-cover w-auto"
         />
         <input
@@ -76,7 +185,15 @@ const Payment: React.FC = () => {
           name="payment"
           checked={selectedPayment === `${prefix}-${item.id}`}
           onChange={() => {
-            handleSelect(`${prefix}-${item.id}`);
+            handleSelect(
+              `${prefix}-${item.id}`,
+              item.payment_gateway,
+              item.payment_method,
+              item.admin_fee,
+              // item.promo_price,
+              item.service_fee,
+              item.logo_url
+            );
           }}
           className="mr-2"
         />
@@ -86,7 +203,10 @@ const Payment: React.FC = () => {
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="bg-white p-3 rounded-xl shadow-md">
+      <div
+        className="bg-white p-3 rounded-xl shadow-md"
+        hidden={paymentStatus?.transactionStatus === 'CREATED'}
+      >
         <div className="text-2xl font-bold text-center mb-4">
           {t('academy.payment.method')}
         </div>
@@ -95,21 +215,21 @@ const Payment: React.FC = () => {
           <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
             {t('academy.payment.va')}
           </div>
-          {renderOptions(VAList, 'va')}
+          {renderOptions(virtualList, 'va')}
         </div>
 
         <div className="mb-4">
           <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
             {t('academy.payment.ew')}
           </div>
-          {renderOptions(WalletList, 'wallet')}
+          {renderOptions(eWalletList, 'wallet')}
         </div>
 
         <div className="mb-4">
           <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
             {t('academy.payment.other')}
           </div>
-          {renderOptions(OtherList, 'other')}
+          {renderOptions(qRisList, 'other')}
         </div>
 
         <button
@@ -128,7 +248,20 @@ const Payment: React.FC = () => {
         isOpen={showPopup}
         onClose={togglePopup}
         payment={namePayment}
+        amount={formattedPrice as number}
+        adminFee={paymentAdminFee}
+        onConfirm={handleConfirm}
+        // promoPrice={paymentPromoPrice}
+        serviceFee={paymentServiceFee}
       />
+      {paymentStatus?.transactionStatus === 'CREATED' && (
+        <Receipt
+          amount={formattedPrice as number}
+          adminFee={paymentAdminFee}
+          serviceFee={paymentServiceFee}
+          logoURL={paymentLogo}
+        />
+      )}
     </PageGradient>
   );
 };

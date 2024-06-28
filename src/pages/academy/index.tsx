@@ -1,17 +1,18 @@
-import NoDataCategory from '@/assets/academy/no-data-category.svg';
+import ArtPagination from '@/components/ArtPagination';
 import CategoryCourseCard from '@/components/academy/CategoryCourseCard';
 import LanguageSelector from '@/components/academy/LanguageSelector';
+import NoDataList from '@/components/academy/NoDataList';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { getAllCategory } from '@/repository/academy.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
-  type ListCategoryAcademyI,
-  type ListParamsI
+  type CategoryAcademyI,
+  type ListParamsI,
+  type MetaDataI
 } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,12 +22,18 @@ const Academy: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
-  const [categoryList, setCategoryList] = useState<ListCategoryAcademyI[]>([]);
+  const [categoryList, setCategoryList] = useState<CategoryAcademyI[]>([]);
   const [categoryParams, setCategoryParams] = useState<ListParamsI>({
     page: 1,
-    limit: 10,
+    limit: 9,
     search: '',
     status: ''
+  });
+  const [metaData, setMetaData] = useState<MetaDataI>({
+    total: 0,
+    currentPage: 0,
+    limit: 0,
+    totalPage: 0
   });
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -48,8 +55,9 @@ const Academy: React.FC = () => {
         setLoading(true);
         const res = await getAllCategory(categoryParams);
         if (res.data !== null) {
-          const data: ListCategoryAcademyI[] = res.data;
+          const data: CategoryAcademyI[] = res.data;
           setCategoryList(data);
+          setMetaData(res.metadata);
         }
       } catch (error) {
         toast(`ERROR fetch list quiz ${error as string}`);
@@ -106,20 +114,10 @@ const Academy: React.FC = () => {
           </Typography>
         </div>
         {categoryList.length === 0 && !loading && (
-          <div className="flex flex-col justify-center items-center">
-            <Image
-              src={NoDataCategory}
-              alt="No Data Categories Yet"
-              width={200}
-              height={200}
-            />
-            <Typography className="font-semibold text-base">
-              {t('academy.noCategoriesTitle')}
-            </Typography>
-            <Typography className="text-sm text-[#7C7C7C]">
-              {t('academy.noCategoriesDescription')}
-            </Typography>
-          </div>
+          <NoDataList
+            title="academy.noCategoriesTitle"
+            description="academy.noCategoriesDescription"
+          />
         )}
         {loading ? (
           <div className="col-span-3 flex items-center justify-center">
@@ -134,6 +132,13 @@ const Academy: React.FC = () => {
             ))}
           </div>
         )}
+        <ArtPagination
+          currentPage={categoryParams.page}
+          totalPages={metaData.totalPage}
+          onPageChange={page => {
+            setCategoryParams({ ...categoryParams, page });
+          }}
+        />
       </div>
     </PageGradient>
   );

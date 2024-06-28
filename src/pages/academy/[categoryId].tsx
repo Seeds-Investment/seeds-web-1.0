@@ -1,171 +1,125 @@
-import InvestmentCourse from '@/assets/academy/investment-course.svg';
-import MoneyCourse from '@/assets/academy/money-course.svg';
-import InvestmentCoursePay from '@/assets/academy/rocket-course.svg';
-import TagPrice from '@/assets/academy/tag-price.svg';
+import ArtPagination from '@/components/ArtPagination';
+import CourseCard from '@/components/academy/CourseCard';
 import LanguageSelector from '@/components/academy/LanguageSelector';
+import NoDataList from '@/components/academy/NoDataList';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import {
+  getCategoryDetail,
+  getClassListByCategoryId
+} from '@/repository/academy.repository';
 import LanguageContext from '@/store/language/language-context';
-import { formatCurrency } from '@/utils/common/currency';
+import {
+  ClassLevelsE,
+  type CategoryAcademyI,
+  type ClassLevelsI,
+  type DetailClassI,
+  type ListParamsI,
+  type MetaDataI
+} from '@/utils/interfaces/academy.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-interface CourseLevelsI {
-  id: number;
-  level: CourseLevels;
-  title: string;
-}
-
-enum CourseLevels {
-  BASIC = 'basic',
-  INTERMEDIATE = 'intermediate',
-  ADVANCED = 'advanced'
-}
-
-interface CoursePriceI {
-  idr: number;
-  usd: number;
-}
-
-interface CourseListI {
-  id: number;
-  title: string;
-  price: CoursePriceI;
-  score: number | null;
-  image: string;
-  is_owned: boolean;
-}
+import { toast } from 'react-toastify';
 
 const CategoryById: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
   const { t } = useTranslation();
   const router = useRouter();
-  const [courseLevelActiveTab, setCourseLevelActiveTab] = useState(
-    CourseLevels.BASIC
+  const { categoryId } = router.query;
+  const [categoryDetail, setCategoryDetail] = useState<CategoryAcademyI>();
+  const [classList, setClassList] = useState<DetailClassI[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showFullAbout, setShowFullAbout] = useState(false);
+  const [classLevelActiveTab, setClassLevelActiveTab] = useState(
+    ClassLevelsE.ALL
   );
+  const [classParams, setClassParams] = useState<ListParamsI>({
+    page: 1,
+    limit: 9,
+    search: '',
+    status: '',
+    level: ''
+  });
+  const [metaData, setMetaData] = useState<MetaDataI>({
+    total: 0,
+    currentPage: 0,
+    limit: 0,
+    totalPage: 0
+  });
 
-  const courseLevels: CourseLevelsI[] = [
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      if (categoryId !== undefined) {
+        try {
+          setLoading(true);
+          const categoryDetailRes = await getCategoryDetail(
+            categoryId as string
+          );
+          const classList = await getClassListByCategoryId(
+            categoryId as string,
+            classParams
+          );
+          if (categoryDetailRes !== null) {
+            setCategoryDetail(categoryDetailRes);
+          }
+          if (classList.data.length !== 0) {
+            setClassList(classList.data);
+            setMetaData(classList.metadata);
+          }
+        } catch (error) {
+          toast(`ERROR fetch data ${error as string}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    void fetchData();
+  }, [categoryId, classParams]);
+
+  const courseLevels: ClassLevelsI[] = [
     {
       id: 1,
-      level: CourseLevels.BASIC,
-      title: t('academy.levels.basic')
+      level: ClassLevelsE.ALL,
+      title: t('academy.levels.all')
     },
     {
       id: 2,
-      level: CourseLevels.INTERMEDIATE,
+      level: ClassLevelsE.BEGINNER,
+      title: t('academy.levels.beginner')
+    },
+    {
+      id: 3,
+      level: ClassLevelsE.INTERMEDIATE,
       title: t('academy.levels.intermediate')
     },
     {
-      id: 3,
-      level: CourseLevels.ADVANCED,
-      title: t('academy.levels.advanced')
+      id: 4,
+      level: ClassLevelsE.ADVANCED,
+      title: t('academy.levels.advance')
     }
   ];
 
-  const courseList: CourseListI[] = [
-    {
-      id: 1,
-      title: 'Learn Investing from 0',
-      price: {
-        idr: 50000,
-        usd: 3.4
-      },
-      score: null,
-      image: InvestmentCoursePay,
-      is_owned: false
-    },
-    {
-      id: 2,
-      title: 'How to Manage Money',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: 90,
-      image: MoneyCourse,
-      is_owned: true
-    },
-    {
-      id: 3,
-      title: 'Safe Investment, how?',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: null,
-      image: InvestmentCourse,
-      is_owned: true
-    },
-    {
-      id: 4,
-      title: 'Learn Investing from 0',
-      price: {
-        idr: 50000,
-        usd: 3.4
-      },
-      score: null,
-      image: InvestmentCoursePay,
-      is_owned: false
-    },
-    {
-      id: 5,
-      title: 'How to Manage Money',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: 90,
-      image: MoneyCourse,
-      is_owned: true
-    },
-    {
-      id: 6,
-      title: 'Safe Investment, how?',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: null,
-      image: InvestmentCourse,
-      is_owned: true
-    },
-    {
-      id: 7,
-      title: 'Learn Investing from 0',
-      price: {
-        idr: 50000,
-        usd: 3.4
-      },
-      score: null,
-      image: InvestmentCoursePay,
-      is_owned: false
-    },
-    {
-      id: 8,
-      title: 'How to Manage Money',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: 90,
-      image: MoneyCourse,
-      is_owned: true
-    },
-    {
-      id: 9,
-      title: 'Safe Investment, how?',
-      price: {
-        idr: 0,
-        usd: 0
-      },
-      score: null,
-      image: InvestmentCourse,
-      is_owned: true
-    }
-  ];
+  const handleLevelChange = (level: ClassLevelsE): void => {
+    setClassLevelActiveTab(level);
+    setClassParams({
+      ...classParams,
+      level
+    });
+  };
+
+  const aboutText =
+    languageCtx.language === 'EN'
+      ? categoryDetail?.about.en ?? ''
+      : categoryDetail?.about.id ?? '';
+
+  const truncatedAbout = aboutText?.split(' ').slice(0, 50).join(' ');
+
+  const handleShowMore = (): void => {
+    setShowFullAbout(!showFullAbout);
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -174,13 +128,13 @@ const CategoryById: React.FC = () => {
           <Image
             src={ArrowBackwardIcon}
             alt="arrow-backward-icon"
-            onClick={() => {
-              router.back();
+            onClick={async () => {
+              await router.push('/academy');
             }}
             className="cursor-pointer"
           />
           <Typography className="text-center text-lg font-semibold text-black font-poppins">
-            Investment
+            {categoryDetail?.title}
           </Typography>
           <LanguageSelector />
         </div>
@@ -191,11 +145,20 @@ const CategoryById: React.FC = () => {
             {t('academy.categoryDetailTitle')}
           </Typography>
           <Typography className=" text-justify text-sm lg:text-base text-[#262626]">
-            In this investment course, we will learn investment refers to
-            putting your money in an asset with the aim of generating income.
-            Financial investments come in different forms, such as mutual funds,
-            unit linked investment plans, endowment plans, stocks, bonds and
-            more More Detail
+            {showFullAbout ? aboutText : truncatedAbout}
+            {aboutText !== '' && aboutText.split(' ').length > 50 && (
+              <>
+                {' '}
+                <button
+                  onClick={handleShowMore}
+                  className="text-[#3AC4A0] font-semibold underline focus:outline-none"
+                >
+                  {showFullAbout
+                    ? t('academy.categoryDetailShowLess')
+                    : t('academy.categoryDetailMoreDetail')}
+                </button>
+              </>
+            )}
           </Typography>
         </div>
         <div className="flex flex-col gap-4">
@@ -205,10 +168,10 @@ const CategoryById: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => {
-                  setCourseLevelActiveTab(item.level);
+                  handleLevelChange(item.level);
                 }}
                 className={`px-4 py-1 font-poppins rounded-full text-sm text-nowrap ${
-                  item.level === courseLevelActiveTab
+                  item.level === classLevelActiveTab
                     ? 'bg-[#3AC4A0] text-white'
                     : 'bg-[#DCFCE4] text-seeds-button-green'
                 }`}
@@ -218,71 +181,35 @@ const CategoryById: React.FC = () => {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {courseList.map(item => (
-            <div
-              key={item.id}
-              className={`py-4 px-3 flex justify-between items-center bg-[#DCFCE4] rounded-2xl relative overflow-hidden`}
-            >
-              <div className="flex flex-col gap-2">
-                <Typography className="text-base lg:text-sm font-semibold">
-                  {item.title}
-                </Typography>
-                <div className="flex items-center gap-2">
-                  {!item.is_owned && item.price.idr !== 0 && (
-                    <>
-                      <Image src={TagPrice} alt="tag" />
-                      <Typography className="text-xs">
-                        <span className="font-semibold">
-                          {t('academy.courseFee')}
-                        </span>{' '}
-                        :{' '}
-                        {languageCtx.language === 'EN'
-                          ? `${item.price.usd} USD`
-                          : `IDR ${formatCurrency(item.price.idr)}`}
-                      </Typography>
-                    </>
-                  )}
-                </div>
-                <button
-                  onClick={async () => {
-                    await router.push(`/academy/course/${item.id}`);
-                  }}
-                  className="text-xs text-white bg-[#3AC4A0] py-1 px-4 rounded-full self-start"
-                >
-                  {item.is_owned
-                    ? item.score !== null
-                      ? t('academy.courseButtonDetail')
-                      : t('academy.courseButtonOpenClass')
-                    : t('academy.courseButtonBuy')}
-                </button>
+        {classList.length === 0 && !loading && (
+          <NoDataList
+            title="academy.noClassesTitle"
+            description="academy.noClassesDescription"
+          />
+        )}
+        {loading ? (
+          <div className="col-span-3 flex items-center justify-center">
+            <div className="animate-spinner w-5 h-5" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {classList.map(item => (
+              <div
+                key={item.id}
+                className={`py-4 px-3 flex justify-between items-center bg-[#DCFCE4] rounded-2xl relative overflow-hidden`}
+              >
+                <CourseCard item={item} />
               </div>
-              <div>
-                <Image
-                  src={item.image}
-                  alt="course-image"
-                  width={90}
-                  height={90}
-                />
-              </div>
-              {item.score !== null && (
-                <div className="absolute top-0 right-0 bg-white rounded-bl-lg rounded-tr-2xl px-3 border-[1.5px] border-[#3AC4A0]">
-                  <Typography className="text-[10px] text-[#3AC4A0] font-semibold">
-                    {`Score : ${item.score}`}
-                  </Typography>
-                </div>
-              )}
-              {item.score !== null && (
-                <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-full h-1">
-                  <div
-                    className="bg-[#3AC4A0] h-1 rounded-full"
-                    style={{ width: `${item.score}%` }}
-                  ></div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+        <ArtPagination
+          currentPage={classParams.page}
+          totalPages={metaData.totalPage}
+          onPageChange={page => {
+            setClassParams({ ...classParams, page });
+          }}
+        />
       </div>
     </PageGradient>
   );

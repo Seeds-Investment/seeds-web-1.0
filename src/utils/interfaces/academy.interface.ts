@@ -3,9 +3,17 @@ export interface ListParamsI {
   limit: number;
   search: string;
   status: string;
+  level?: string;
 }
 
-export interface ListCategoryAcademyI {
+export interface MetaDataI {
+  total: number;
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+}
+
+export interface CategoryAcademyI {
   id: string;
   title: string;
   about: {
@@ -20,19 +28,35 @@ export interface ListCategoryAcademyI {
 
 export interface DetailClassI {
   id: string;
-  banner?: string;
-  level?: string;
-  module?: string;
   title: string;
   description: {
     en: string;
     id: string;
   };
-  video: string;
   price?: {
     idr?: number;
     usd?: number;
   };
+  level?: string;
+  is_owned: boolean;
+  pre_test_score?: number;
+  post_test_score?: number;
+  banner?: string;
+  module?: string;
+  video: string;
+}
+
+export interface ClassLevelsI {
+  id: number;
+  level: ClassLevelsE;
+  title: string;
+}
+
+export enum ClassLevelsE {
+  ALL = '',
+  BEGINNER = 'Beginner',
+  INTERMEDIATE = 'Intermediate',
+  ADVANCED = 'Advanced'
 }
 
 export interface PriceDataI {

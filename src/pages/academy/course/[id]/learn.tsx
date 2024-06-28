@@ -41,6 +41,12 @@ const LearnCourse: React.FC = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (data?.is_owned === false) {
+      void router.push(`/academy/course/${id as string}`);
+    }
+  }, [data]);
+
   return (
     <>
       {isShareModal && (

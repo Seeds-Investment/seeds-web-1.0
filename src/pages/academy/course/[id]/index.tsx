@@ -30,6 +30,12 @@ const DetailCourse: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { t } = useTranslation();
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+  const formattedPrice = data?.price?.[
+    userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+  ]?.toLocaleString('id-ID', {
+    currency: userInfo?.preferredCurrency ?? 'IDR',
+    style: 'currency'
+  });
 
   const togglePopup = (): void => {
     if (data?.is_owned === false && data?.price?.idr !== 0) {
@@ -174,34 +180,26 @@ const DetailCourse: React.FC = () => {
             </>
           )}
           <div className="grid grid-cols-2 sm:grid-cols-1 gap-5">
-            <div>
+            <div hidden={data?.is_owned === true}>
               <div className="text-xs text-[#7C7C7C]">
                 {t('academy.detailCourse.entrance')}
               </div>
               <div className="font-bold">
                 {data?.price?.idr !== 0
-                  ? data?.price?.[
-                      userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-                    ]?.toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency ?? 'IDR',
-                      style: 'currency'
-                    }) ?? <span className="text-red-500">IDR or USD</span>
+                  ? formattedPrice ?? (
+                      <span className="text-red-500">IDR or USD</span>
+                    )
                   : t('academy.detailCourse.free')}
               </div>
             </div>
             <button
               className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
               onClick={togglePopup}
-              hidden={
-                data?.price?.[
-                  userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-                ]?.toLocaleString('id-ID', {
-                  currency: userInfo?.preferredCurrency ?? 'IDR',
-                  style: 'currency'
-                }) === undefined
-              }
+              hidden={formattedPrice === undefined}
             >
-              {t('academy.detailCourse.buttonEnroll')}
+              {data?.is_owned === true
+                ? t('academy.detailCourse.detail')
+                : t('academy.detailCourse.buttonEnroll')}
             </button>
           </div>
         </div>
@@ -209,12 +207,7 @@ const DetailCourse: React.FC = () => {
           isOpen={showPopup}
           onClose={togglePopup}
           classTitle={data?.title as string}
-          amount={data?.price?.[
-            userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-          ]?.toLocaleString('id-ID', {
-            currency: userInfo?.preferredCurrency ?? 'IDR',
-            style: 'currency'
-          })}
+          amount={formattedPrice}
         />
       </PageGradient>
     </>

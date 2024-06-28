@@ -2151,7 +2151,8 @@ export default {
       showLess: 'Show Less',
       seedsCoin: 'Redeem {{data}} Seeds Coin',
       pretestScore: 'Your Pre-Test Score',
-      free: 'Free'
+      free: 'Free',
+      detail: 'Detail Class'
     },
     pretest: {
       question: 'Questions',

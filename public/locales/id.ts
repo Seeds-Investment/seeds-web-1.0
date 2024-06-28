@@ -2078,7 +2078,8 @@ export default {
       showLess: 'Tampilkan lebih sedikit',
       seedsCoin: 'Tukarkan {{data}} Seeds Coin',
       pretestScore: 'Skor Pre-Test Kamu',
-      free: 'Gratis'
+      free: 'Gratis',
+      detail: 'Detail Kelas'
     },
     pretest: {
       question: 'Pertanyaan',

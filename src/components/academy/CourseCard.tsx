@@ -31,8 +31,8 @@ const CourseCard: React.FC<{ item: DetailClassI }> = ({ item }) => {
                   </span>{' '}
                   :{' '}
                   {languageCtx.language === 'EN'
-                    ? `${item?.price?.usd} USD`
-                    : `IDR ${formatCurrency(item?.price?.idr)}`}
+                    ? `${item?.price?.usd as number} USD`
+                    : `IDR ${formatCurrency(item?.price?.idr as number)}`}
                 </Typography>
               </>
             )}
@@ -65,7 +65,7 @@ const CourseCard: React.FC<{ item: DetailClassI }> = ({ item }) => {
       {item?.is_owned && item?.post_test_score !== 0 && (
         <div className="absolute top-0 right-0 bg-white rounded-bl-lg rounded-tr-2xl px-3 border-[1.5px] border-[#3AC4A0]">
           <Typography className="text-[10px] text-[#3AC4A0] font-semibold">
-            {`Score : ${item?.post_test_score}`}
+            {`Score : ${item?.post_test_score as number}`}
           </Typography>
         </div>
       )}
@@ -73,7 +73,7 @@ const CourseCard: React.FC<{ item: DetailClassI }> = ({ item }) => {
         <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-full h-1">
           <div
             className="bg-[#3AC4A0] h-1 rounded-full"
-            style={{ width: `${item?.post_test_score}%` }}
+            style={{ width: `${item?.post_test_score as number}%` }}
           ></div>
         </div>
       )}

@@ -1,7 +1,10 @@
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { getClassDetail } from '@/repository/academy.repository';
+import {
+  getClassDetail,
+  getPretestScore
+} from '@/repository/academy.repository';
 import i18n from '@/utils/common/i18n';
 import {
   type DetailClassI,
@@ -19,11 +22,14 @@ const LearnCourse: React.FC = () => {
   const { id } = router.query;
   const { t } = useTranslation();
   const [data, setData] = useState<DetailClassI | undefined>(undefined);
+  const [score, setScore] = useState<number | undefined>(undefined);
 
   const handleGetClass = async (): Promise<void> => {
     try {
       const responseClass = await getClassDetail(id as string);
       setData(responseClass);
+      const responseScore = await getPretestScore(id as string);
+      setScore(responseScore?.pre_test_score);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     }
@@ -34,6 +40,12 @@ const LearnCourse: React.FC = () => {
       void handleGetClass();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (data?.is_owned === false) {
+      void router.push(`/academy/course/${id as string}`);
+    }
+  }, [data]);
 
   return (
     <>
@@ -83,7 +95,9 @@ const LearnCourse: React.FC = () => {
             <div className="text-lg">
               {t('academy.detailCourse.pretestScore')}
             </div>
-            <div className="text-2xl font-bold text-[#27A590]">90</div>
+            <div className="text-2xl font-bold text-[#27A590]">
+              {score ?? 0}
+            </div>
           </div>
           <div className="text-lg">
             {

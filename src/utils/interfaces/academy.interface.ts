@@ -68,3 +68,26 @@ export interface LanguageDataI {
   id: string;
   en: string;
 }
+
+export interface SubmitAnswerI {
+  class_id: string;
+  question_id: string;
+  answer_id: string;
+}
+
+export interface ParticipantI {
+  answer_id: string;
+  id: string;
+  question_id: string;
+  class_id: string;
+  answer_lang_id: string;
+  answer_lang_en: string;
+}
+
+export interface QuestionI {
+  id: string;
+  class_id: string;
+  question_lang_id: string;
+  question_lang_en: string;
+  participant_id: ParticipantI[];
+}

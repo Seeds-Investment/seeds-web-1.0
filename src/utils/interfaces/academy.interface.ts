@@ -91,3 +91,12 @@ export interface QuestionI {
   question_lang_en: string;
   participant_id: ParticipantI[];
 }
+
+export interface EnrollClassI {
+  payment_gateway?: string;
+  payment_method?: string;
+  phone_number: string;
+  promo_code?: string;
+  is_use_coins?: boolean;
+  is_free_voucher_claimed?: boolean;
+}

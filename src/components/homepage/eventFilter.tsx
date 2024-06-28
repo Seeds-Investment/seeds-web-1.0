@@ -36,7 +36,7 @@ const EventFilter: React.FC<EventFilterProps> = ({
       <div>
         {monthYear ?? ''}
       </div>
-      <div className="relative w-full md:w-[120px] rounded-lg text-center">
+      <div className="relative w-[120px] rounded-lg text-center">
         <div
           onClick={() => {
             handleOpenCloseDrowndown();

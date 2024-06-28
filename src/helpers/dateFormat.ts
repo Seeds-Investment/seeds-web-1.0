@@ -60,7 +60,7 @@ const formatDate = (date: Date, locale: string, options: Intl.DateTimeFormatOpti
 export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string => {
   const currentYear = date.getFullYear();
   const currentMonth = formatDate(date, locale, { month: 'long' });
-  const currentDay = date.getDate();
+  const currentDay = date.getDate().toString().padStart(2, '0');;
   const currentHours = date.getHours().toString().padStart(2, '0');
   const currentMinutes = date.getMinutes().toString().padStart(2, '0');
 
@@ -72,19 +72,19 @@ export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string =>
 export const getEventDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
   const currentYear = date.getFullYear();
   const currentMonth = formatDate(date, locale, { month: 'long' });
-  const currentDay = date.getDate();
+  const currentDay = date.getDate().toString().padStart(2, '0');;
   const currentHours = date.getHours().toString().padStart(2, '0');
   const currentMinutes = date.getMinutes().toString().padStart(2, '0');
 
   return locale === 'id-ID'
-    ? `${currentDay} ${currentMonth} ${currentYear} | ${currentHours}:${currentMinutes}`
-    : `${currentMonth} ${currentDay}, ${currentYear} | ${currentHours}:${currentMinutes}`;
+    ? `${currentDay} ${currentMonth} ${currentYear} - ${currentHours}:${currentMinutes}`
+    : `${currentMonth} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
 };
 
 export const getEventDetailsDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
   const currentYear = date.getFullYear();
   const currentMonth = formatDate(date, locale, { month: 'long' });
-  const currentDay = date.getDate();
+  const currentDay = date.getDate().toString().padStart(2, '0');;
   const dayName = formatDate(date, locale, { weekday: 'long' });
 
   return locale === 'id-ID'

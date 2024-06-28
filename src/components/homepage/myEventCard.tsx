@@ -1,39 +1,24 @@
 import EventImage from '@/assets/event/default.png';
-import { standartCurrency } from '@/helpers/currency';
 import { getEventClock, getEventDetailsDate } from '@/helpers/dateFormat';
 import LanguageContext from '@/store/language/language-context';
-import { type EventList, type UserInfo } from '@/utils/interfaces/event.interface';
+import { type EventList } from '@/utils/interfaces/event.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 
-interface EventListCardProps {
+interface MyEventCardProps {
   item: EventList;
-  userInfo: UserInfo;
 }
 
-const EventListCard: React.FC<EventListCardProps> = ({
+const MyEventCard: React.FC<MyEventCardProps> = ({
   item,
-  userInfo,
 }) => {
   const router = useRouter();
-  const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
 
   const redirectPage = async(id: string): Promise<void> => {
     await router.push(`/homepage/event/${id}`)
   }
-
-  const isPastEvent = (): boolean => {
-    const startDateObject = new Date(item?.event_date ?? '');
-    const startDateTimestamp = startDateObject.getTime();
-
-    const currentDateObject = new Date();
-    const currentDateTimestamp = currentDateObject.getTime();
-
-    return startDateTimestamp < currentDateTimestamp;
-  };
   
   return (
     <div
@@ -97,26 +82,9 @@ const EventListCard: React.FC<EventListCardProps> = ({
             </Typography>
           </div>
         </div>
-        <div className='w-full gap-2 md:gap-8 lg:gap-4 2xl:gap-8 flex justify-between mt-4 mb-2'>
-          <Typography className='w-full 2xl:w-[125x] flex justify-center items-center bg-white py-2 px-2 md:px-4 xl:px-2 font-poppins font-semibold text-[#3C49D6] border border-[#3C49D6] rounded-md lg:text-sm'>
-            {(item?.event_price ?? 0) === 0 ? (t('seedsEvent.free')).toUpperCase() : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(item?.event_price ?? 0).replace('Rp', '')}`}
-          </Typography>
-          <Typography
-            onClick={async () => { await redirectPage(item?.id); }}
-            className='w-[200px] 2xl:w-[125x] md:w-full flex justify-center items-center bg-seeds-button-green py-2 px-2 md:px-6 xl:px-2 font-poppins font-semibold text-xs md:text-sm xl:text-xs 2xl:text-sm text-white rounded-full'
-          >
-            {
-              item?.is_joined
-                ? t('seedsEvent.booking.seeTicket')
-                : isPastEvent()
-                  ? t('seedsEvent.seeEvent')
-                  : t('seedsEvent.booking.bookNow')
-            }
-          </Typography>
-        </div>
       </div>
     </div>
   );
 };
 
-export default EventListCard;
+export default MyEventCard;

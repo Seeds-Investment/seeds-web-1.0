@@ -4,12 +4,17 @@ import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
-import { getClassDetail, startPretest } from '@/repository/academy.repository';
+import {
+  enrollClass,
+  getClassDetail,
+  startPretest
+} from '@/repository/academy.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import i18n from '@/utils/common/i18n';
 import {
   type DetailClassI,
+  type EnrollClassI,
   type LanguageDataI,
   type PriceDataI
 } from '@/utils/interfaces/academy.interface';
@@ -37,11 +42,21 @@ const DetailCourse: React.FC = () => {
     style: 'currency'
   });
 
-  const togglePopup = (): void => {
+  const [enrollData, setEnrollData] = useState<EnrollClassI>({
+    phone_number: ''
+  });
+  const togglePopup = async (): Promise<void> => {
     if (data?.is_owned === false && data?.price?.idr !== 0) {
       setShowPopup(!showPopup);
     } else {
-      void router.push(`/academy/course/${id as string}/learn`);
+      if (data?.is_owned === false) {
+        const response = await enrollClass(id as string, enrollData);
+        if (response?.payment_status === 'SUCCESS') {
+          void router.push(`/academy/course/${id as string}/learn`);
+        }
+      } else {
+        void router.push(`/academy/course/${id as string}/learn`);
+      }
     }
   };
 
@@ -51,6 +66,9 @@ const DetailCourse: React.FC = () => {
       setData(responseClass);
       const responseUser = await getUserInfo();
       setUserInfo(responseUser);
+      setEnrollData({
+        phone_number: responseUser?.phoneNumber ?? ''
+      });
       const dataCoins = await getTransactionSummary();
       setTotalAvailableCoins(dataCoins?.data?.total_available_coins ?? 0);
     } catch (error: any) {

@@ -1,5 +1,6 @@
 import baseAxios from '@/utils/common/axios';
 import {
+  type EnrollClassI,
   type ListParamsI,
   type SubmitAnswerI
 } from '@/utils/interfaces/academy.interface';
@@ -159,6 +160,28 @@ export const getClassDetail = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const enrollClass = async (
+  id: string,
+  formData: EnrollClassI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.post(
+      `/class/${id}/enroll`,
+      formData,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
     return response;
   } catch (error: any) {
     toast(error.message, { type: 'error' });

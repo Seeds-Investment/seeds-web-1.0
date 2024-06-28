@@ -14,13 +14,14 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Typography } from '@material-tailwind/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const Academy: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { t } = useTranslation();
+  const searchRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [categoryList, setCategoryList] = useState<CategoryAcademyI[]>([]);
   const [categoryParams, setCategoryParams] = useState<ListParamsI>({
@@ -54,11 +55,8 @@ const Academy: React.FC = () => {
       try {
         setLoading(true);
         const res = await getAllCategory(categoryParams);
-        if (res.data !== null) {
-          const data: CategoryAcademyI[] = res.data;
-          setCategoryList(data);
-          setMetaData(res.metadata);
-        }
+        setCategoryList(res.data);
+        setMetaData(res.metadata);
       } catch (error) {
         toast(`ERROR fetch list quiz ${error as string}`);
       } finally {
@@ -67,6 +65,19 @@ const Academy: React.FC = () => {
     };
     void fetchCategoryList();
   }, [categoryParams]);
+
+  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    const keyword = searchRef.current?.value.trim();
+    if (event.key === 'Enter' && keyword !== undefined) {
+      event.preventDefault();
+      setCategoryParams({
+        ...categoryParams,
+        page: 1,
+        limit: 9,
+        search: keyword
+      });
+    }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -91,15 +102,10 @@ const Academy: React.FC = () => {
           <div className="relative w-full">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#BDBDBD] w-5 h-5" />
             <input
+              ref={searchRef}
               id="search"
               type="text"
-              value={categoryParams.search}
-              onChange={e => {
-                setCategoryParams(prev => ({
-                  ...prev,
-                  search: e.target.value
-                }));
-              }}
+              onKeyDown={handleSearch}
               name="search"
               placeholder={t('academy.courseSearchPlaceholder') ?? ''}
               className="block w-full text-[#262626] text-sm h-10 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-2 pl-10 rounded-xl border border-[#BDBDBD]"
@@ -120,8 +126,8 @@ const Academy: React.FC = () => {
           />
         )}
         {loading ? (
-          <div className="col-span-3 flex items-center justify-center">
-            <div className="animate-spinner w-5 h-5" />
+          <div className="flex items-center justify-center my-4">
+            <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 grid-cols-2 gap-6 lg:gap-x-8 gap-y-4">

@@ -9,9 +9,7 @@ import {
 } from '@/repository/academy.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
-  ClassLevelsE,
   type CategoryAcademyI,
-  type ClassLevelsI,
   type DetailClassI,
   type ListParamsI,
   type MetaDataI
@@ -33,9 +31,7 @@ const CategoryById: React.FC = () => {
   const [classList, setClassList] = useState<DetailClassI[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
-  const [classLevelActiveTab, setClassLevelActiveTab] = useState(
-    ClassLevelsE.ALL
-  );
+  const [classLevelActiveTab, setClassLevelActiveTab] = useState<string>('All');
   const [classParams, setClassParams] = useState<ListParamsI>({
     page: 1,
     limit: 9,
@@ -62,13 +58,9 @@ const CategoryById: React.FC = () => {
             categoryId as string,
             classParams
           );
-          if (categoryDetailRes !== null) {
-            setCategoryDetail(categoryDetailRes);
-          }
-          if (classList.data.length !== 0) {
-            setClassList(classList.data);
-            setMetaData(classList.metadata);
-          }
+          setCategoryDetail(categoryDetailRes);
+          setClassList(classList.data);
+          setMetaData(classList.metadata);
         } catch (error) {
           toast(`ERROR fetch data ${error as string}`);
         } finally {
@@ -77,37 +69,21 @@ const CategoryById: React.FC = () => {
       }
     };
     void fetchData();
-  }, [categoryId, classParams]);
+  }, [categoryId, classParams, classParams.level]);
 
-  const courseLevels: ClassLevelsI[] = [
-    {
-      id: 1,
-      level: ClassLevelsE.ALL,
-      title: t('academy.levels.all')
-    },
-    {
-      id: 2,
-      level: ClassLevelsE.BEGINNER,
-      title: t('academy.levels.beginner')
-    },
-    {
-      id: 3,
-      level: ClassLevelsE.INTERMEDIATE,
-      title: t('academy.levels.intermediate')
-    },
-    {
-      id: 4,
-      level: ClassLevelsE.ADVANCED,
-      title: t('academy.levels.advance')
+  const handleLevelChange = (selectedLevel: string): void => {
+    if (selectedLevel === 'All') {
+      setClassParams({
+        ...classParams,
+        level: ''
+      });
+    } else {
+      setClassParams({
+        ...classParams,
+        level: selectedLevel
+      });
     }
-  ];
-
-  const handleLevelChange = (level: ClassLevelsE): void => {
-    setClassLevelActiveTab(level);
-    setClassParams({
-      ...classParams,
-      level
-    });
+    setClassLevelActiveTab(selectedLevel);
   };
 
   const aboutText =
@@ -164,19 +140,32 @@ const CategoryById: React.FC = () => {
         <div className="flex flex-col gap-4">
           <Typography className="font-semibold text-lg">Level</Typography>
           <div className="flex gap-2 mb-4">
-            {courseLevels.map(item => (
+            <button
+              key="All"
+              onClick={() => {
+                handleLevelChange('All');
+              }}
+              className={`px-4 py-1 font-poppins rounded-full text-sm text-nowrap ${
+                classLevelActiveTab === 'All'
+                  ? 'bg-[#3AC4A0] text-white'
+                  : 'bg-[#DCFCE4] text-seeds-button-green'
+              }`}
+            >
+              <Typography className="text-xs">All</Typography>
+            </button>
+            {categoryDetail?.level.map(item => (
               <button
-                key={item.id}
+                key={item}
                 onClick={() => {
-                  handleLevelChange(item.level);
+                  handleLevelChange(item);
                 }}
                 className={`px-4 py-1 font-poppins rounded-full text-sm text-nowrap ${
-                  item.level === classLevelActiveTab
+                  item === classLevelActiveTab
                     ? 'bg-[#3AC4A0] text-white'
                     : 'bg-[#DCFCE4] text-seeds-button-green'
                 }`}
               >
-                <Typography className="text-xs">{item.title}</Typography>
+                <Typography className="text-xs">{item}</Typography>
               </button>
             ))}
           </div>
@@ -188,8 +177,10 @@ const CategoryById: React.FC = () => {
           />
         )}
         {loading ? (
-          <div className="col-span-3 flex items-center justify-center">
-            <div className="animate-spinner w-5 h-5" />
+          <div className="flex items-center justify-center">
+            <div className="my-4">
+              <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

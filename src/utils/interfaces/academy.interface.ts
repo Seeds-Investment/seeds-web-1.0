@@ -46,19 +46,6 @@ export interface DetailClassI {
   video: string;
 }
 
-export interface ClassLevelsI {
-  id: number;
-  level: ClassLevelsE;
-  title: string;
-}
-
-export enum ClassLevelsE {
-  ALL = '',
-  BEGINNER = 'Beginner',
-  INTERMEDIATE = 'Intermediate',
-  ADVANCED = 'Advanced'
-}
-
 export interface PriceDataI {
   idr?: number;
   usd?: number;
@@ -100,7 +87,6 @@ export interface EnrollClassI {
   is_use_coins?: boolean;
   is_free_voucher_claimed?: boolean;
 }
-
 export interface PaymentStatus {
   orderId: string;
   transactionId: string;

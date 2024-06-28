@@ -14,7 +14,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <div>
       <div className="flex flex-row justify-between text-white font-medium text-lg">
-        <div>{t('academy.pretest.question')}</div>
+        <div>{t('academy.test.question')}</div>
         <div>{questionNumber}</div>
       </div>
       <div className="text-white text-lg my-10">{question}</div>

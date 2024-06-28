@@ -1,7 +1,7 @@
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { getClassDetail } from '@/repository/academy.repository';
+import { getClassDetail, startPosttest } from '@/repository/academy.repository';
 import i18n from '@/utils/common/i18n';
 import {
   type DetailClassI,
@@ -34,6 +34,19 @@ const LearnCourse: React.FC = () => {
       void handleGetClass();
     }
   }, [id]);
+
+  const handleStartPosttest = async (): Promise<void> => {
+    try {
+      const response = await startPosttest(id as string);
+      if (response?.message === 'maximum posttest count already reached') {
+        toast(response?.message, { type: 'warning' });
+      } else {
+        await router.push(`/academy/course/${id as string}/posttest`);
+      }
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
 
   useEffect(() => {
     if (data?.is_owned === false) {
@@ -101,13 +114,11 @@ const LearnCourse: React.FC = () => {
             }
           </div>
         </div>
-        <div
-          className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5"
-          onClick={async () =>
-            await router.push(`/academy/course/${id as string}/posttest`)
-          }
-        >
-          <button className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold">
+        <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
+          <button
+            onClick={handleStartPosttest}
+            className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
+          >
             Post-Test
           </button>
         </div>

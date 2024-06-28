@@ -2086,7 +2086,7 @@ export default {
       free: 'Gratis',
       detail: 'Detail Kelas'
     },
-    pretest: {
+    test: {
       question: 'Pertanyaan',
       next: 'Selanjutnya',
       submit: 'Kirim',
@@ -2094,6 +2094,13 @@ export default {
       grade: 'Nilai',
       desc: 'Kamu telah menyelesaikan pre test.',
       back: 'Kembali ke Detail Kelas'
+    },
+    score: {
+      title: 'SELAMAT !',
+      description: 'Anda baru saja menyelesaikan',
+      totalScore: 'Skor Total',
+      OtherClass: 'Kelas Lain',
+      ReTest: 'Tes Ulang'
     },
     payment: {
       enroll: 'Daftar',

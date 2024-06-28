@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 const Pretest: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [qeuestions, setQeuestions] = useState<QuestionI[]>([]);
+  const [questions, setQuestions] = useState<QuestionI[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [answerData, setAnswerData] = useState<SubmitAnswerI>({
@@ -33,7 +33,7 @@ const Pretest: React.FC = () => {
   const fetchPretestQuestions = async (): Promise<void> => {
     try {
       const data = await getPretestQuestion(id as string);
-      setQeuestions(data?.qeuestions);
+      setQuestions(data?.questions);
       setIsLoading(false);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -47,7 +47,7 @@ const Pretest: React.FC = () => {
   }, [id]);
 
   const handleNextQuestion = (): void => {
-    if (currentQuestionIndex < qeuestions.length - 1) {
+    if (currentQuestionIndex < questions.length - 1) {
       if (selectedOptionId !== null) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
@@ -62,7 +62,7 @@ const Pretest: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  const currentQuestion = qeuestions?.[currentQuestionIndex];
+  const currentQuestion = questions?.[currentQuestionIndex];
   const questionText =
     currentQuestion[`question_lang_${i18n.language}` as keyof QuestionI] ??
     currentQuestion.question_lang_id;
@@ -75,7 +75,7 @@ const Pretest: React.FC = () => {
     if (selectedParticipant != null) {
       setAnswerData({
         class_id: id as string,
-        question_id: qeuestions[currentQuestionIndex].id,
+        question_id: questions[currentQuestionIndex].id,
         answer_id: selectedParticipant.id
       });
     }
@@ -127,9 +127,7 @@ const Pretest: React.FC = () => {
           <div className="p-5">
             <QuestionCard
               question={questionText as string}
-              questionNumber={`${currentQuestionIndex + 1}/${
-                qeuestions.length
-              }`}
+              questionNumber={`${currentQuestionIndex + 1}/${questions.length}`}
             />
             <OptionsList
               options={currentQuestion?.participant_id}
@@ -149,7 +147,7 @@ const Pretest: React.FC = () => {
               handleNextQuestion();
             }}
           >
-            {currentQuestionIndex === qeuestions?.length - 1
+            {currentQuestionIndex === questions?.length - 1
               ? t('academy.pretest.submit')
               : t('academy.pretest.next')}
           </button>

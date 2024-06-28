@@ -54,7 +54,9 @@ const Pretest: React.FC = () => {
         setCurrentQuestionIndex(currentQuestionIndex);
       }
     } else {
-      void router.replace(`/academy/course/${id as string}/score`);
+      void router.replace(
+        `/academy/course/${id as string}/score?testType=pretest`
+      );
     }
   };
 
@@ -148,8 +150,8 @@ const Pretest: React.FC = () => {
             }}
           >
             {currentQuestionIndex === questions?.length - 1
-              ? t('academy.pretest.submit')
-              : t('academy.pretest.next')}
+              ? t('academy.test.submit')
+              : t('academy.test.next')}
           </button>
         </div>
       </div>

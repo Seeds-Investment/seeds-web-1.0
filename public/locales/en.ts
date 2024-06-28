@@ -2159,7 +2159,7 @@ export default {
       free: 'Free',
       detail: 'Detail Class'
     },
-    pretest: {
+    test: {
       question: 'Questions',
       next: 'Next',
       submit: 'Submit',
@@ -2167,6 +2167,13 @@ export default {
       grade: 'Grade',
       desc: 'You’ve completed the pre test.',
       back: 'Back to Detail Class'
+    },
+    score: {
+      title: 'CONGRATS !',
+      description: 'You just completed',
+      totalScore: 'Total Score',
+      OtherClass: 'Other Classes',
+      ReTest: 'Re-Test'
     },
     payment: {
       enroll: 'Enroll',

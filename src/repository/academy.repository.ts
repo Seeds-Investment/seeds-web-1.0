@@ -97,11 +97,48 @@ export const startPretest = async (id: string): Promise<any> => {
   }
 };
 
+export const startPosttest = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.post(
+      `/class/${id}/post-test`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    console.error(error);
+    toast(error.message, { type: 'error' });
+  }
+};
+
 export const getPretestQuestion = async (id: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const response = await academyService.get(
       `/class/${id}/pre-test/questions`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const getPosttestQuestion = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(
+      `/class/${id}/post-test/questions`,
       {
         headers: {
           Accept: 'application/json',
@@ -136,10 +173,46 @@ export const submitPretestAnswer = async (
   }
 };
 
+export const submitPosttestAnswer = async (
+  formData: SubmitAnswerI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.post(
+      '/post-test/submit-answer',
+      formData,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
 export const getPretestScore = async (id: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const response = await academyService.get(`/class/${id}/pre-test/score`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const getPosttestScore = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(`/class/${id}/post-test/score`, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

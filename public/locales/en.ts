@@ -2198,7 +2198,8 @@ export default {
       success: 'Successful',
       success1: 'Your payment was successful',
       success2: 'Now you can start learning',
-      closeReceipt: 'Close'
+      closeReceipt: 'Close',
+      discountCoins: 'Discount Coins'
     }
   },
   seedsEvent: {

@@ -2125,7 +2125,8 @@ export default {
       success: 'Berhasil',
       success1: 'Pembayaranmu berhasil',
       success2: 'Sekarang kamu bisa mulai belajar',
-      closeReceipt: 'Tutup'
+      closeReceipt: 'Tutup',
+      discountCoins: 'Diskon Koin'
     }
   },
   seedsEvent: {

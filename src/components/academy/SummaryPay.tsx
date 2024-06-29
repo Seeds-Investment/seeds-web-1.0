@@ -14,6 +14,7 @@ interface SummaryPayProps {
   promoPrice: number;
   currency: string;
   onConfirm: () => void;
+  coins: number;
 }
 
 const SummaryPay: React.FC<SummaryPayProps> = ({
@@ -26,7 +27,8 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
   promoAvailable,
   promoPrice,
   currency,
-  onConfirm
+  onConfirm,
+  coins
 }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const { t } = useTranslation();
@@ -74,6 +76,9 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   <div className="mb-4">{t('academy.payment.adminFee')}</div>
                   <div className="mb-4">{t('academy.payment.serviceFee')}</div>
                   <div className="mb-4">Promo</div>
+                  <div className="mb-4">
+                    {t('academy.payment.discountCoins')}
+                  </div>
                 </div>
                 <div>
                   <div className="text-right mt-4 mb-4">
@@ -88,6 +93,9 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   <div className="text-right mb-4">
                     {currency} {promoAvailable ? promoPrice : 0}
                   </div>
+                  <div className="text-right mb-4">
+                    {currency} {coins}
+                  </div>
                 </div>
               </div>
               <hr className="border-t-2" />
@@ -100,7 +108,8 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   {amount +
                     adminFee +
                     serviceFee -
-                    (promoAvailable ? promoPrice : 0)}
+                    (promoAvailable ? promoPrice : 0) -
+                    coins}
                 </div>
               </div>
               <div className="mb-10 relative">
@@ -113,6 +122,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   />
                 </div>
                 <input
+                  disabled
                   type="text"
                   className="pl-10 pr-4 py-3 rounded-xl border-2 w-full"
                   placeholder="Input Promo Code"
@@ -157,6 +167,9 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   <div className="mb-4">{t('academy.payment.adminFee')}</div>
                   <div className="mb-4">{t('academy.payment.serviceFee')}</div>
                   <div className="mb-4">Promo</div>
+                  <div className="mb-4">
+                    {t('academy.payment.discountCoins')}
+                  </div>
                 </div>
                 <div>
                   <div className="text-right mt-4 mb-4">
@@ -171,6 +184,9 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   <div className="text-right mb-4">
                     {currency} {promoAvailable ? promoPrice : 0}
                   </div>
+                  <div className="text-right mb-4">
+                    {currency} {coins}
+                  </div>
                 </div>
               </div>
               <hr className="border-t-2" />
@@ -183,7 +199,8 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   {amount +
                     adminFee +
                     serviceFee -
-                    (promoAvailable ? promoPrice : 0)}
+                    (promoAvailable ? promoPrice : 0) -
+                    coins}
                 </div>
               </div>
               <div className="mb-10 relative">
@@ -196,6 +213,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                   />
                 </div>
                 <input
+                  disabled
                   type="text"
                   className="pl-10 pr-4 py-3 rounded-xl border-2 w-full"
                   placeholder="Input Promo Code"

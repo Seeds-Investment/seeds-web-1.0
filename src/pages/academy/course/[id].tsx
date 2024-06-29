@@ -1,4 +1,5 @@
 import PaymentPopup from '@/components/academy/PaymentPopup';
+import VoucherPromo from '@/components/academy/PromoCode';
 import ShortDescription from '@/components/academy/ShortDescription';
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
@@ -24,6 +25,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { RiErrorWarningLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 const DetailCourse: React.FC = () => {
@@ -41,6 +43,7 @@ const DetailCourse: React.FC = () => {
     currency: userInfo?.preferredCurrency ?? 'IDR',
     style: 'currency'
   });
+  const [isUseCoins, setIsUseCoins] = useState<boolean>(false);
 
   const [enrollData, setEnrollData] = useState<EnrollClassI>({
     phone_number: ''
@@ -93,6 +96,10 @@ const DetailCourse: React.FC = () => {
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     }
+  };
+
+  const handleUseCoins = (): void => {
+    setIsUseCoins(!isUseCoins);
   };
 
   return (
@@ -161,25 +168,7 @@ const DetailCourse: React.FC = () => {
         <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
           {data?.is_owned === false && data?.price?.idr !== 0 && (
             <>
-              <div className="flex flex-row items-center justify-between p-2 rounded-xl bg-[#F0FFF4] border border-[#3AC4A0] shadow-md cursor-pointer">
-                <div className="flex flex-row items-center">
-                  <Image
-                    src={'/assets/academy/voucher-icon.svg'}
-                    alt="voucher-icon"
-                    width={100}
-                    height={100}
-                    className="w-10"
-                  />
-                  Voucher & Promo
-                </div>
-                <Image
-                  src={'/assets/academy/arrow-icon.svg'}
-                  alt="arrow-icon"
-                  width={100}
-                  height={100}
-                  className="w-7"
-                />
-              </div>
+              <VoucherPromo detailClass={data} userInfo={userInfo} />
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center">
                   <Image
@@ -193,7 +182,7 @@ const DetailCourse: React.FC = () => {
                     data: totalAvailableCoins
                   })}
                 </div>
-                <Switch />
+                <Switch onClick={handleUseCoins} />
               </div>
             </>
           )}
@@ -205,7 +194,15 @@ const DetailCourse: React.FC = () => {
               <div className="font-bold">
                 {data?.price?.idr !== 0
                   ? formattedPrice ?? (
-                      <span className="text-red-500">IDR or USD</span>
+                      <div className="text-[#3ac4a0] flex flex-row gap-1">
+                        <RiErrorWarningLine />
+                        <span className="text-xs">
+                          {t('tournament.detailCurrency')}{' '}
+                          {userInfo?.preferredCurrency !== undefined
+                            ? userInfo?.preferredCurrency
+                            : 'IDR'}
+                        </span>
+                      </div>
                     )
                   : t('academy.detailCourse.free')}
               </div>
@@ -226,6 +223,7 @@ const DetailCourse: React.FC = () => {
           onClose={togglePopup}
           classTitle={data?.title as string}
           amount={formattedPrice}
+          isUseCoins={isUseCoins}
         />
       </PageGradient>
     </>

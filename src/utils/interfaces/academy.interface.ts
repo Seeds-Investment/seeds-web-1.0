@@ -118,3 +118,14 @@ export interface PaymentList {
   service_fee: number;
   promo_price: number;
 }
+
+export interface PromoCodeI {
+  id: string;
+  promo_code: string;
+  start_date: string;
+  end_date: string;
+  discount_percentage: number;
+  quantity: number;
+  initial_quantity: number;
+  institution: string;
+}

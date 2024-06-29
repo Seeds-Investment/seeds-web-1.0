@@ -6,6 +6,8 @@ import { enrollClass, getClassDetail } from '@/repository/academy.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getPaymentById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type DetailClassI,
   type EnrollClassI,
@@ -18,6 +20,7 @@ import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const Payment: React.FC = () => {
@@ -32,11 +35,12 @@ const Payment: React.FC = () => {
   );
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const router = useRouter();
-  const { id } = router.query;
+  const { id, coins } = router.query;
   const [formData, setFormData] = useState<EnrollClassI>({
     phone_number: '',
     payment_gateway: '',
-    payment_method: ''
+    payment_method: '',
+    is_use_coins: false
   });
   const [paymentGateway, setPaymentGateway] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
@@ -50,13 +54,15 @@ const Payment: React.FC = () => {
     detailClass?.price?.[
       userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
     ];
+  const promoCodeValidation = useSelector(selectPromoCodeValidationResult);
+  const [amountCoins, setAmountCoins] = useState<number>(0);
 
   const handleGetPayment = async (): Promise<void> => {
     try {
       const response = await getPaymentById(id as string);
       setData(response);
     } catch (error: any) {
-      toast('Please, select your payment.', { type: 'warning' });
+      console.warn('Please select your Payment!');
     } finally {
       setIsLoading(false);
     }
@@ -114,6 +120,15 @@ const Payment: React.FC = () => {
     }
   };
 
+  const handleGetCoins = async (): Promise<void> => {
+    try {
+      const responseCoins = await getTransactionSummary();
+      setAmountCoins(responseCoins?.data?.total_available_coins);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
   const handleGetUserInfo = async (): Promise<void> => {
     try {
       const response = await getUserInfo();
@@ -134,6 +149,9 @@ const Payment: React.FC = () => {
 
   useEffect(() => {
     void handlePaymentList();
+    if (coins === 'true') {
+      void handleGetCoins();
+    }
   }, [userInfo?.preferredCurrency, id]);
 
   const handlePayment = async (): Promise<void> => {
@@ -146,11 +164,15 @@ const Payment: React.FC = () => {
       const response = await enrollClass(id as string, {
         ...formData,
         payment_gateway: paymentGateway,
-        payment_method: paymentMethod
+        payment_method: paymentMethod,
+        promo_code: promoCodeValidation?.promo_code,
+        is_use_coins: coins === 'true'
       });
       const statusOrder = await getPaymentById(response?.order_id);
       void router.push(
-        `/academy/course/${statusOrder?.orderId as string}/payment`,
+        `/academy/course/${statusOrder?.orderId as string}/payment?coins=${
+          coins as string
+        }`,
         undefined,
         { shallow: true }
       );
@@ -265,6 +287,7 @@ const Payment: React.FC = () => {
         promoAvailable={promoAvailable}
         promoPrice={promoPrice}
         currency={userInfo?.preferredCurrency?.toUpperCase() as string}
+        coins={amountCoins}
       />
       <Receipt
         isHidden={dynamicPrice !== undefined}

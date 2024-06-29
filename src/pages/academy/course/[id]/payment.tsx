@@ -1,3 +1,4 @@
+import ListPayment from '@/components/academy/ListPayment';
 import Receipt from '@/components/academy/Receipt';
 import SummaryPay from '@/components/academy/SummaryPay';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -8,23 +9,27 @@ import { getUserInfo } from '@/repository/profile.repository';
 import {
   type DetailClassI,
   type EnrollClassI,
-  type PaymentStatus
+  type PaymentList,
+  type PaymentStatus,
+  type PriceDataI
 } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { Radio } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const Payment: React.FC = () => {
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [namePayment, setNamePayment] = useState('');
-  const { t } = useTranslation();
   const [eWalletList, setEWalletList] = useState([]);
-  const [qRisList, setQRisList] = useState([]);
-  const [virtualList, setVirtualList] = useState([]);
+  const [qRisList, setQRisList] = useState<PaymentList[]>([]);
+  const [virtualList, setVirtualList] = useState<PaymentList[]>([]);
+  const [detailClass, setDetailClass] = useState<DetailClassI | undefined>(
+    undefined
+  );
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const router = useRouter();
   const { id } = router.query;
@@ -35,58 +40,77 @@ const Payment: React.FC = () => {
   });
   const [paymentGateway, setPaymentGateway] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
-  const [paymentLogo, setPaymentLogo] = useState<string>('');
-  const [paymentAdminFee, setPaymentAdminFee] = useState<number>(0);
-  // const [paymentPromoPrice, setPaymentPromoPrice] = useState<number>(0);
-  const [paymentServiceFee, setPaymentServiceFee] = useState<number>(0);
-  const [data, setData] = useState<DetailClassI | undefined>(undefined);
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>();
-  const formattedPrice = data?.price?.idr;
-  // setPaymentStatus(resp);
+  const [adminFee, setAdminFee] = useState<number>(0);
+  const [serviceFee, setServiceFee] = useState<number>(0);
+  const [promoAvailable, setPromoAvailable] = useState<boolean>(false);
+  const [promoPrice, setPromoPrice] = useState<number>(0);
+  const [data, setData] = useState<PaymentStatus | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const dynamicPrice =
+    detailClass?.price?.[
+      userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+    ];
 
-  const handleGetClass = async (): Promise<void> => {
+  const handleGetPayment = async (): Promise<void> => {
     try {
-      const responseClass = await getClassDetail(id as string);
-      setData(responseClass);
+      const response = await getPaymentById(id as string);
+      setData(response);
     } catch (error: any) {
-      toast(error.message, { type: 'error' });
+      toast('Please, select your payment.', { type: 'warning' });
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (id !== undefined) {
-      void handleGetClass();
-    }
-  }, [id]);
 
   const handleSelect = (
     id: string,
     gateway: string,
     method: string,
     adminFee: number,
-    // promoPrice: number,
     serviceFee: number,
-    paymentLogo: string
+    promoAvailable: boolean,
+    promoPrice: number
   ): void => {
     setSelectedPayment(id);
     setPaymentGateway(gateway);
     setPaymentMethod(method);
-    setPaymentAdminFee(adminFee);
-    // setPaymentPromoPrice(promoPrice);
-    setPaymentServiceFee(serviceFee);
-    setPaymentLogo(paymentLogo);
+    setAdminFee(adminFee);
+    setServiceFee(serviceFee);
+    setPromoAvailable(promoAvailable);
+    setPromoPrice(promoPrice);
   };
+
+  const paymentSelectedEWallet: PaymentList[] = eWalletList?.filter(
+    (el: undefined | PaymentList): any => {
+      return el?.payment_method === data?.paymentMethod;
+    }
+  );
+  const paymentSelectedVirtual: PaymentList[] = virtualList?.filter(
+    (el: undefined | PaymentList): any => {
+      return el?.payment_method === data?.paymentMethod;
+    }
+  );
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetPayment();
+    }
+  }, [id]);
 
   const handlePaymentList = async (): Promise<void> => {
     try {
       const payList = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
+      const responseClass = await getClassDetail(id as string);
+      setDetailClass(responseClass);
       setQRisList(payList.type_qris);
       setEWalletList(payList.type_ewallet);
       setVirtualList(payList.type_va);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -110,7 +134,7 @@ const Payment: React.FC = () => {
 
   useEffect(() => {
     void handlePaymentList();
-  }, [userInfo?.preferredCurrency]);
+  }, [userInfo?.preferredCurrency, id]);
 
   const handlePayment = async (): Promise<void> => {
     if (selectedPayment === null) {
@@ -125,7 +149,11 @@ const Payment: React.FC = () => {
         payment_method: paymentMethod
       });
       const statusOrder = await getPaymentById(response?.order_id);
-      setPaymentStatus(statusOrder);
+      void router.push(
+        `/academy/course/${statusOrder?.orderId as string}/payment`,
+        undefined,
+        { shallow: true }
+      );
       if (response?.payment_url !== '') {
         window.open(response.payment_url, '_blank');
       } else {
@@ -133,10 +161,13 @@ const Payment: React.FC = () => {
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleConfirm = async (): Promise<void> => {
+    void router.push(`/academy/course/${id as string}/payment`);
     await handlePayment();
     togglePopup();
   };
@@ -150,6 +181,7 @@ const Payment: React.FC = () => {
       admin_fee: number;
       promo_price: number;
       service_fee: number;
+      is_promo_available: boolean;
     }>,
     prefix: string
   ): JSX.Element[] => {
@@ -165,9 +197,9 @@ const Payment: React.FC = () => {
             item.payment_gateway,
             item.payment_method,
             item.admin_fee,
-            // item.promo_price,
             item.service_fee,
-            item.logo_url
+            item.is_promo_available,
+            item.promo_price
           );
           setNamePayment(item.payment_method);
         }}
@@ -179,10 +211,12 @@ const Payment: React.FC = () => {
           alt={`${item.payment_method} icon`}
           className="h-5 object-cover w-auto"
         />
-        <input
+        <Radio
           type="radio"
           id={`${prefix}-${item.id}`}
           name="payment"
+          className="rounded-xl border"
+          color="teal"
           checked={selectedPayment === `${prefix}-${item.id}`}
           onChange={() => {
             handleSelect(
@@ -190,78 +224,90 @@ const Payment: React.FC = () => {
               item.payment_gateway,
               item.payment_method,
               item.admin_fee,
-              // item.promo_price,
               item.service_fee,
-              item.logo_url
+              item.is_promo_available,
+              item.promo_price
             );
           }}
-          className="mr-2"
         />
       </div>
     ));
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="my-4">
+          <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <PageGradient defaultGradient className="w-full">
-      <div
-        className="bg-white p-3 rounded-xl shadow-md"
-        hidden={paymentStatus?.transactionStatus === 'CREATED'}
-      >
-        <div className="text-2xl font-bold text-center mb-4">
-          {t('academy.payment.method')}
-        </div>
-
-        <div className="mb-4">
-          <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
-            {t('academy.payment.va')}
-          </div>
-          {renderOptions(virtualList, 'va')}
-        </div>
-
-        <div className="mb-4">
-          <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
-            {t('academy.payment.ew')}
-          </div>
-          {renderOptions(eWalletList, 'wallet')}
-        </div>
-
-        <div className="mb-4">
-          <div className="text-sm font-semibold mb-2 text-[#7C7C7C]">
-            {t('academy.payment.other')}
-          </div>
-          {renderOptions(qRisList, 'other')}
-        </div>
-
-        <button
-          disabled={selectedPayment === null}
-          className={`${
-            selectedPayment !== null
-              ? 'bg-[#3AC4A0] text-white'
-              : 'bg-[#BDBDBD] text-[#7C7C7C]'
-          } mb-4 p-3 rounded-3xl w-full font-medium`}
-          onClick={togglePopup}
-        >
-          {t('academy.payment.pay')}
-        </button>
-      </div>
+      <ListPayment
+        isHidden={dynamicPrice === undefined}
+        virtualList={renderOptions(virtualList, 'va')}
+        ewalletList={renderOptions(eWalletList, 'wallet')}
+        qrisList={renderOptions(qRisList, 'other')}
+        paymentIsSelected={selectedPayment === null}
+        showPopUp={togglePopup}
+      />
       <SummaryPay
         isOpen={showPopup}
         onClose={togglePopup}
         payment={namePayment}
-        amount={formattedPrice as number}
-        adminFee={paymentAdminFee}
+        amount={dynamicPrice as number}
+        adminFee={adminFee}
         onConfirm={handleConfirm}
-        // promoPrice={paymentPromoPrice}
-        serviceFee={paymentServiceFee}
+        serviceFee={serviceFee}
+        promoAvailable={promoAvailable}
+        promoPrice={promoPrice}
+        currency={userInfo?.preferredCurrency?.toUpperCase() as string}
       />
-      {paymentStatus?.transactionStatus === 'CREATED' && (
-        <Receipt
-          amount={formattedPrice as number}
-          adminFee={paymentAdminFee}
-          serviceFee={paymentServiceFee}
-          logoURL={paymentLogo}
-        />
-      )}
+      <Receipt
+        isHidden={dynamicPrice !== undefined}
+        amount={data?.grossAmount as number}
+        adminFee={
+          paymentSelectedEWallet[0]?.admin_fee !== undefined
+            ? paymentSelectedEWallet[0]?.admin_fee
+            : paymentSelectedVirtual[0]?.admin_fee !== undefined
+            ? paymentSelectedVirtual[0]?.admin_fee
+            : qRisList[0]?.admin_fee
+        }
+        serviceFee={
+          paymentSelectedEWallet[0]?.service_fee !== undefined
+            ? paymentSelectedEWallet[0]?.service_fee
+            : paymentSelectedVirtual[0]?.service_fee !== undefined
+            ? paymentSelectedVirtual[0]?.service_fee
+            : qRisList[0]?.service_fee
+        }
+        logoURL={
+          paymentSelectedEWallet[0]?.logo_url !== undefined
+            ? paymentSelectedEWallet[0]?.logo_url
+            : paymentSelectedVirtual[0]?.logo_url !== undefined
+            ? paymentSelectedVirtual[0]?.logo_url
+            : qRisList[0]?.logo_url
+        }
+        orderDetail={data?.transactionStatus as string}
+        orderItem={data?.itemId as string}
+        currency={userInfo?.preferredCurrency?.toUpperCase() as string}
+        promoAvailable={
+          paymentSelectedEWallet[0]?.is_promo_available !== undefined
+            ? paymentSelectedEWallet[0]?.is_promo_available
+            : paymentSelectedVirtual[0]?.is_promo_available !== undefined
+            ? paymentSelectedVirtual[0]?.is_promo_available
+            : qRisList[0]?.is_promo_available
+        }
+        promoPrice={
+          paymentSelectedEWallet[0]?.promo_price !== undefined
+            ? paymentSelectedEWallet[0]?.promo_price
+            : paymentSelectedVirtual[0]?.promo_price !== undefined
+            ? paymentSelectedVirtual[0]?.promo_price
+            : qRisList[0]?.promo_price
+        }
+      />
     </PageGradient>
   );
 };

@@ -61,7 +61,13 @@ const Pretest: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <div className="my-4">
+          <div className="animate-spinner w-14 h-14 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+        </div>
+      </div>
+    );
   }
 
   const currentQuestion = questions?.[currentQuestionIndex];

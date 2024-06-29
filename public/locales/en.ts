@@ -2184,7 +2184,21 @@ export default {
       pay: 'Pay',
       va: 'Virtual Account',
       ew: 'E-Wallet',
-      other: 'Other'
+      other: 'Other',
+      summary: 'Summary of Payment',
+      payWith: 'Pay With',
+      costAcademy: 'Cost Seeds Academy',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      totalCost: 'Total Cost',
+      amount: 'Total Amount',
+      pending: 'Pending',
+      pending1: 'We have not received your payment yet',
+      pending2: 'Please complete the payment to continue',
+      success: 'Successful',
+      success1: 'Your payment was successful',
+      success2: 'Now you can start learning',
+      closeReceipt: 'Close'
     }
   },
   seedsEvent: {

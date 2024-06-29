@@ -2111,7 +2111,21 @@ export default {
       pay: 'Bayar',
       va: 'Akun Virtual',
       ew: 'Dompet Digital',
-      other: 'Lainnya'
+      other: 'Lainnya',
+      summary: 'Ringkasan Pembayaran',
+      payWith: 'Bayar Dengan',
+      costAcademy: 'Harga Seeds Academy',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      totalCost: 'Total Pembayaran',
+      amount: 'Jumlah Total',
+      pending: 'Ditunda',
+      pending1: 'Kami belum menerima pembayaranmu',
+      pending2: 'Selesaikan pembayaran untuk melanjutkan',
+      success: 'Berhasil',
+      success1: 'Pembayaranmu berhasil',
+      success2: 'Sekarang kamu bisa mulai belajar',
+      closeReceipt: 'Tutup'
     }
   },
   seedsEvent: {

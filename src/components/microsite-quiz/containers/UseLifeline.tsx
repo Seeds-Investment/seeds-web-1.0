@@ -18,6 +18,7 @@ import {
   type QuestionI,
   type UseLifelineState
 } from '@/utils/interfaces/quiz.interfaces';
+import { Typography } from '@material-tailwind/react';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -77,7 +78,7 @@ const UseLifeline = ({
 
   useEffect(() => {
     timeOut();
-    const countDownTime = expiryInSecond ?? 6000 * 1000;
+    const countDownTime = Math.floor(expiryInSecond ?? 0) * 1000;
     setCountDown(countDownTime);
     const interval = setInterval(() => {
       setCountDown(prev => prev - 1000);
@@ -95,7 +96,7 @@ const UseLifeline = ({
   };
 
   return showAnimation ? (
-    <div className="w-full h-screen lg:h-auto lg:aspect-[947/685] bg-[#F9F9F9] rounded-3xl">
+    <div className="w-full h-screen bg-[#F9F9F9]">
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="text-5xl font-semibold text-[#3AC4A0] text-center w-72">
           Hello,
@@ -109,23 +110,14 @@ const UseLifeline = ({
       </div>
     </div>
   ) : (
-    <MicrositeQuizLayout withButton={false} enableScroll>
-      <div className="w-full h-full flex flex-col justify-center items-center gap-7 lg:gap-8 lg:p-0 p-4">
-        <div className="flex flex-col items-center justify-center font-poppins gap-2 lg:gap-4">
-          <div className="text-white lg:text-2xl text-base">
-            {t('quiz.remainingTime')}
-          </div>
-          <div className="flex flex-row gap-2 items-center justify-center">
-            <div className="bg-white rounded-xl p-4 text-[#27A590] text-2xl">
-              {generateTimer().minutes}
-            </div>
-            <div className="text-white text-2xl">:</div>
-            <div className="bg-white rounded-xl p-4 text-[#27A590] text-2xl">
-              {generateTimer().seconds}
-            </div>
-          </div>
-        </div>
-        <div className="lg:w-[325px] w-full h-[560px] flex items-center justify-center">
+    <MicrositeQuizLayout withButton={false}>
+      <div className="w-full h-full flex flex-col justify-center items-center gap-4">
+        <Typography className="bg-white rounded-lg p-2 text-[#27A590] text-lg font-poppins">
+          {`${t('quiz.remainingTime')} ${generateTimer().minutes} : ${
+            generateTimer().seconds
+          }`}
+        </Typography>
+        <div className="w-full sm:w-1/2 xl:w-3/12 flex items-center justify-center">
           {useLifelineState?.lifeline === LifelinesEnum.PHONE ? (
             <Phone
               useLifelineState={useLifelineState}
@@ -140,7 +132,7 @@ const UseLifeline = ({
             />
           )}
         </div>
-        <div className="w-full lg:w-1/3">
+        <div className="w-full sm:w-1/2 md:w-3/12">
           <QuizButton
             title="Ok"
             background="#C286FF"
@@ -201,27 +193,27 @@ const Phone = ({
     return `${prefix}. ${option?.option}`;
   };
   return (
-    <div className="lg:w-[325px] w-full h-[560px] flex items-center justify-center relative bg-white rounded-2xl p-3.5 mt-14">
-      <div className="w-[380px] absolute -top-14">
+    <div className="flex items-center justify-center relative bg-white rounded-2xl p-3.5 mt-12">
+      <div className="absolute -top-12">
         <Image
           src={TheAnswer}
           alt="Answer"
-          width={500}
-          height={500}
+          width={400}
+          height={400}
           className="object-contain"
         />
       </div>
-      <div className="rounded-2xl bg-white border border-[#FDBA22] w-full h-full flex flex-col items-center justify-center p-2 gap-2">
-        <div className="w-full mb-2">
+      <div className="rounded-2xl bg-white border border-[#FDBA22] w-full flex flex-col items-center justify-center p-2 gap-2">
+        <div className="w-full flex justify-center">
           <Image
             src={SeedyAnswer}
             alt="The answer"
             width={500}
             height={500}
-            className="object-contain"
+            className="object-contain !w-[200px] sm:w-6/12"
           />
         </div>
-        <div className="font-poppins font-semibold text-[#3AC4A0] text-xl">
+        <div className="font-poppins font-semibold text-[#3AC4A0] text-lg">
           {generateAnswerText()}
         </div>
         <div className="w-full bg-[#E9E9E9] px-4 py-2.5 rounded-xl">

@@ -53,21 +53,20 @@ const AuthRef: React.FC<AuthRefI> = ({
     await dispatch(fetchUserData());
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
-    TrackerEvent({
-      event: 'Seeds_login_web',
-      userId: responseUser.id
-    });
-    handleOpen();
-    if (isQuery) {
-      await withRedirect(router, router.query);
-    } else {
-      await router.push('/homepage');
-      TrackerEvent({
-        event: `Seeds_view_home_page_web`,
-        userId: responseUser.id,
-        pageName: 'homepage'
-      });
-    }
+     TrackerEvent({
+       event: 'SW_auth_login',
+       userData: responseUser
+     });
+     handleOpen();
+     if (isQuery) {
+       await withRedirect(router, router.query);
+     } else {
+       await router.push('/homepage');
+       TrackerEvent({
+         event: `SW_homepage_page`,
+         userData: responseUser
+       });
+     }
   };
 
   const handleSubmit = async (): Promise<void> => {

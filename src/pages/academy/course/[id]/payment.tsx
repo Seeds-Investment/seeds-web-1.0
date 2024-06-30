@@ -56,11 +56,20 @@ const Payment: React.FC = () => {
     ];
   const promoCodeValidation = useSelector(selectPromoCodeValidationResult);
   const [amountCoins, setAmountCoins] = useState<number>(0);
+  const [classAfterPay, setClassAfterPay] = useState<DetailClassI | undefined>(
+    undefined
+  );
 
   const handleGetPayment = async (): Promise<void> => {
     try {
       const response = await getPaymentById(id as string);
       setData(response);
+      if (response?.itemId !== '') {
+        const responseClassAfterPay = await getClassDetail(
+          response?.itemId as string
+        );
+        setClassAfterPay(responseClassAfterPay);
+      }
     } catch (error: any) {
       console.warn('Please select your Payment!');
     } finally {
@@ -168,14 +177,16 @@ const Payment: React.FC = () => {
         promo_code: promoCodeValidation?.promo_code,
         is_use_coins: coins === 'true'
       });
-      const statusOrder = await getPaymentById(response?.order_id);
-      void router.push(
-        `/academy/course/${statusOrder?.orderId as string}/payment?coins=${
-          coins as string
-        }`,
-        undefined,
-        { shallow: true }
-      );
+      if (response?.order_id !== undefined) {
+        const statusOrder = await getPaymentById(response?.order_id);
+        void router.push(
+          `/academy/course/${statusOrder?.orderId as string}/payment?coins=${
+            coins as string
+          }`,
+          undefined,
+          { shallow: true }
+        );
+      }
       if (response?.payment_url !== '') {
         window.open(response.payment_url, '_blank');
       } else {
@@ -189,7 +200,6 @@ const Payment: React.FC = () => {
   };
 
   const handleConfirm = async (): Promise<void> => {
-    void router.push(`/academy/course/${id as string}/payment`);
     await handlePayment();
     togglePopup();
   };
@@ -291,6 +301,11 @@ const Payment: React.FC = () => {
       />
       <Receipt
         isHidden={dynamicPrice !== undefined}
+        amountClass={
+          classAfterPay?.price?.[
+            userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+          ] as number
+        }
         amount={data?.grossAmount as number}
         adminFee={
           paymentSelectedEWallet[0]?.admin_fee !== undefined

@@ -17,6 +17,7 @@ interface ReceiptProps {
   promoAvailable: boolean;
   promoPrice: number;
   isHidden: boolean;
+  amountClass: number;
 }
 
 const Receipt: React.FC<ReceiptProps> = ({
@@ -29,7 +30,8 @@ const Receipt: React.FC<ReceiptProps> = ({
   currency,
   promoAvailable,
   promoPrice,
-  isHidden
+  isHidden,
+  amountClass
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -103,11 +105,7 @@ const Receipt: React.FC<ReceiptProps> = ({
                   {t('academy.payment.costAcademy')}
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
-                  {currency}{' '}
-                  {amount -
-                    serviceFee -
-                    adminFee +
-                    (promoAvailable ? promoPrice : 0)}
+                  {currency} {amountClass}
                 </Typography>
               </div>
               <div className="flex flex-row justify-between mb-5">
@@ -132,6 +130,18 @@ const Receipt: React.FC<ReceiptProps> = ({
                 </Typography>
                 <Typography className="text-sm font-semibold text-[#262626]">
                   {currency} {promoAvailable ? promoPrice : 0}
+                </Typography>
+              </div>
+              <div className="flex flex-row justify-between mb-5">
+                <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                  {t('academy.payment.discountCoins')}
+                </Typography>
+                <Typography className="text-sm font-semibold text-[#262626]">
+                  {currency}{' '}
+                  {serviceFee +
+                    adminFee -
+                    (amount - amountClass) -
+                    (promoAvailable ? promoPrice : 0)}
                 </Typography>
               </div>
               <hr className="mb-5 border border-t-3" />

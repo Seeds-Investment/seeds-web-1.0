@@ -94,7 +94,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                     {currency} {promoAvailable ? promoPrice : 0}
                   </div>
                   <div className="text-right mb-4">
-                    {currency} {coins}
+                    {currency} {Math.min(0.8 * amount, coins)}
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                     adminFee +
                     serviceFee -
                     (promoAvailable ? promoPrice : 0) -
-                    coins}
+                    Math.min(0.8 * amount, coins)}
                 </div>
               </div>
               <div className="mb-10 relative">
@@ -185,7 +185,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                     {currency} {promoAvailable ? promoPrice : 0}
                   </div>
                   <div className="text-right mb-4">
-                    {currency} {coins}
+                    {currency} {Math.min(0.8 * amount, coins)}
                   </div>
                 </div>
               </div>
@@ -200,7 +200,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                     adminFee +
                     serviceFee -
                     (promoAvailable ? promoPrice : 0) -
-                    coins}
+                    Math.min(0.8 * amount, coins)}
                 </div>
               </div>
               <div className="mb-10 relative">

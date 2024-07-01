@@ -20,8 +20,9 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+
 export const SlideTournament: React.FC = () => {
-  const [tournament, setTournament] = useState<any>([]);
+  const [tournament, setTournament] = useState<TopTournament[]>([]);
   const [buttonChange, setButtonChange] = useState(true);
   const router = useRouter();
 
@@ -75,7 +76,7 @@ export const SlideTournament: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const tournamentResponse = await getTrendingPlayList();
-        setTournament(tournamentResponse);
+        setTournament(tournamentResponse.data);
       } catch (error: any) {
         toast.warning('error fetching data: ', error.message);
       }
@@ -120,7 +121,7 @@ export const SlideTournament: React.FC = () => {
           speed={1000}
         >
           {tournament?.length !== 0
-            ? tournament?.data?.map((item: TopTournament, idx: any) => {
+            ? tournament?.map((item: TopTournament, idx: any) => {
                 const formatDate = (isoDate: string): string => {
                   return moment(isoDate).format('D MMM YYYY, HH:mm');
                 };

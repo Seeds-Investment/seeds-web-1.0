@@ -311,74 +311,6 @@ const TournamentDetail: React.FC = () => {
             ) : null}
           </div>
           <div className="mt-4">
-            <Typography className="text-lg font-semibold font-poppins">
-              {t('tournament.detailPrize')}
-            </Typography>
-            <table className="mt-2">
-              {detailTournament?.prize?.map((item, index) => (
-                <tr key={index}>
-                  <td className="inline-flex gap-2 border p-3 w-full">
-                    <Image
-                      src={
-                        index === 0
-                          ? FirstMedal
-                          : index === 1
-                          ? SecondMedal
-                          : ThirdMedal
-                      }
-                      alt={`${index}-medal`}
-                      width={200}
-                      height={200}
-                      className="object-contain max-h-5 max-w-5"
-                    />
-                    {t(
-                      `tournament.${
-                        index === 0 ? 'first' : index === 1 ? 'second' : 'third'
-                      }`
-                    )}
-                  </td>
-                  <td className="border p-3 w-full">
-                    {userInfo?.preferredCurrency !== undefined
-                      ? userInfo?.preferredCurrency
-                      : 'IDR'}
-                    {standartCurrency(item).replace('Rp', '')}
-                  </td>
-                </tr>
-              ))}
-            </table>
-          </div>
-          <div className="mt-4">
-            <Typography className="text-lg font-semibold font-poppins">
-              {t('tournament.participants')}
-            </Typography>
-            <div className="flex gap-2">
-              <Typography className="text-lg text-[#7C7C7C] font-poppins font-semibold">
-                {detailTournament?.total_participants} /{' '}
-                {detailTournament?.max_participant}
-              </Typography>
-              <Typography className="text-lg text-[#7C7C7C] font-poppins">
-                {moment(detailTournament?.play_time).format('D MMM YYYY, h a')}{' '}
-                Jakarta -{' '}
-                {moment(detailTournament?.end_time).format('D MMM YYYY, h a')}{' '}
-                Jakarta
-              </Typography>
-            </div>
-            <div className="mt-4 flex flex-row gap-8">
-              {detailTournament?.community?.image_url ? (
-                <div className="flex flex-col justify-center items-center gap-4">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {'Community'}
-                  </Typography>
-                  <Image
-                    src={detailTournament?.community?.image_url}
-                    alt=""
-                    width={200}
-                    height={200}
-                    className="object-contain max-h-16 max-w-16"
-                  />
-                </div>
-              ) : null}
-            </div>
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}
@@ -424,6 +356,12 @@ const TournamentDetail: React.FC = () => {
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.participants')}
               </Typography>
+              <div className="flex gap-2">
+                <Typography className="text-lg text-[#7C7C7C] font-poppins font-semibold">
+                  {detailTournament?.total_participants} /{' '}
+                  {detailTournament?.max_participant}
+                </Typography>
+              </div>
             </div>
             <div className="w-full flex justify-start mt-2 gap-2">
               {detailTournament?.participants

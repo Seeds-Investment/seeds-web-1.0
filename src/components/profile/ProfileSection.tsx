@@ -92,7 +92,6 @@ const Profile = ({
       setEarning(result)
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
-      console.log('ererning: ', error)
     } finally {
       setIsLoadingEarn(false);
     }

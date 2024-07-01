@@ -184,7 +184,7 @@ const MyEarnings = (): React.ReactElement => {
                                   ? getEarningDate(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')), 'id-ID')
                                   : getEarningDate(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')), 'en-US')
                                 }
-                              </Typography>  
+                              </Typography>
                               <Typography className='hidden md:flex text-xs md:text-base font-poppins text-[#BDBDBD]'>                         
                                 {`- ${moment(item?.created_at).format('HH:mm:ss')}`}
                               </Typography>

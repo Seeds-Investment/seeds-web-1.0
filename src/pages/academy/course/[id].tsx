@@ -115,7 +115,7 @@ const DetailCourse: React.FC = () => {
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
           <div className="relative">
-            <div className="bg-white bg-opacity-40 w-full h-full z-50 absolute"></div>
+            <div className="bg-white bg-opacity-40 w-full h-full z-30 absolute"></div>
             <VideoPlayer
               videoSrc={data?.video as string}
               title={data?.title as string}

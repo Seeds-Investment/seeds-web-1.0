@@ -75,7 +75,7 @@ const Payment: React.FC = () => {
         setClassAfterPay(responseClassAfterPay);
       }
     } catch (error: any) {
-      console.warn('Please select your Payment!');
+      toast('Please select your Payment!');
     } finally {
       setIsLoading(false);
     }

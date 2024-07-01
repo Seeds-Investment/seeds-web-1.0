@@ -92,7 +92,6 @@ export const startPretest = async (id: string): Promise<any> => {
     );
     return response;
   } catch (error: any) {
-    console.error(error);
     toast(error.message, { type: 'error' });
   }
 };
@@ -111,7 +110,6 @@ export const startPosttest = async (id: string): Promise<any> => {
     );
     return response;
   } catch (error: any) {
-    console.error(error);
     toast(error.message, { type: 'error' });
   }
 };
@@ -235,7 +233,7 @@ export const getClassDetail = async (id: string): Promise<any> => {
     });
     return response;
   } catch (error: any) {
-    console.error(error.message);
+    toast(error.message, { type: 'error' });
   }
 };
 

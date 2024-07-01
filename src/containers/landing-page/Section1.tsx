@@ -31,27 +31,7 @@ export default function Section1(): React.ReactElement {
     t('landingV2.section1.text9')
   ];
 
-  //   className: 'center mx-[140px]',
-  //   centerMode: true,
-  //   infinite: true,
-  //   focusOnSelect: true,
-  //   slidesToShow: 1,
-  //   speed: 500,
-  //   autoplay: true,
-  //   autoplaySpeed: 3000,
-  //   centerPadding: '33%',
-  //   beforeChange: (current: number, next: number) => {
-  //     setCurrentSlide(next);
-  //   },
-  //   responsive: [
-  //     {
-  //       breakpoint: 768,
-  //       settings: {
-  //         slidesToShow: 1,
-  //         centerMode: true
-  //       }
-  //     }
-  //
+
   return (
     <section
       ref={ref}

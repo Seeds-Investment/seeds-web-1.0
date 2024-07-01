@@ -14,27 +14,19 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 interface Item {
-  banner?: any;
+  banner: string;
   type?: string;
   image?: string;
   name?: string;
-  total_like?: any;
-  totalMember?: any;
-  totalPost?: any;
+  total_like?: number;
+  totalMember?: number;
+  totalPost?: number;
   percentage?: number;
-  logo?: any;
-  ticker?: any;
-  exchange?: any;
-  admission_fee?: any;
-  participants?: any;
-  play_time?: any;
-  end_time?: any;
-  currency?: any;
-  category?: any;
 }
 
 interface MyStyle extends React.CSSProperties {
@@ -43,16 +35,16 @@ interface MyStyle extends React.CSSProperties {
 
 export const SlideCircle: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [circleData, setCircleData] = useState<any>([]);
+  const [circleData, setCircleData] = useState<Item[]>([]);
   const [isChange, setChange] = useState(true);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const circleResponse = await getTrendingCircle();
-        setCircleData(circleResponse);
+        setCircleData(circleResponse.result);
       } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        toast.warning('Error fetching data:', error.message);
       }
     };
 
@@ -149,19 +141,17 @@ export const SlideCircle: React.FC = () => {
         centeredSlidesBounds={true}
       >
         {circleData?.length !== 0
-          ? circleData?.result?.map((item: Item, index: any) => {
+          ? circleData?.map((item: Item, index: any) => {
               const myStyle: MyStyle = {
                 '--image-url': `url(${
-                  (item.banner.split('.')[0] as string) ===
-                  'https://seeds-bucket-new'
+                  item.banner.split('.')[0] === 'https://seeds-bucket-new'
                     ? 'https://res.cloudinary.com/dafjb9vn7/image/upload/v1702374211/defaultBannerCircle_kp04b9.svg'
-                    : (item.banner as string)
+                    : item.banner
                 })`
               };
               return (
                 <SwiperSlide
                   key={index}
-                  //   style={myStyle}
                   className="flex justify-center items-center"
                 >
                   <Card
@@ -186,10 +176,12 @@ export const SlideCircle: React.FC = () => {
                       >
                         {item.type !== 'free' ? (
                           <div className="flex lg:w-[98.54px] lg:h-[29px] w-[46.66px] h-[13.76px] absolute top-0 right-0 lg:mr-[20.22px] lg:mt-[20.22px] mr-[9.56px] mt-[9.56px] bg-white rounded-full lg:gap-[5px] gap-[2.39px] items-center justify-center">
-                            <img
+                            <Image
                               src={chrownCirclePremium.src}
                               alt="crown"
                               className="lg:w-[15.1px] lg:h-[15.1px] w-[7.17px] h-[7.17px]"
+                              width={300}
+                              height={300}
                             />
                             <Typography className="lg:text-[10.10px] lg:leading-[20.22px] text-[4.79px] leading-[9.56px] text-[#3AC4A0] font-semibold font-poppins">
                               Premium

@@ -75,10 +75,9 @@ export const SlideTournament: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const tournamentResponse = await getTrendingPlayList();
-        console.log(tournamentResponse);
         setTournament(tournamentResponse);
       } catch (error: any) {
-        console.log('error fetching data: ', error.message);
+        toast.warning('error fetching data: ', error.message);
       }
     };
     fetchData()

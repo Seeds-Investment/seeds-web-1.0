@@ -98,9 +98,9 @@ const WithdrawValue = (): React.ReactElement => {
 
   const withdrawTotal = (
     (withdrawValue ?? 0) 
-    + (bankAccount?.admin_fee ?? 0) 
-    + (bankAccount?.service_fee ?? 0) 
-    - ((bankAccount?.is_promo_available ?? 0) 
+    - (bankAccount?.admin_fee ?? 0) 
+    - (bankAccount?.service_fee ?? 0) 
+    + ((bankAccount?.is_promo_available ?? false)
       ? (bankAccount?.promo_price ?? 0) : 0))
 
   return (
@@ -120,7 +120,7 @@ const WithdrawValue = (): React.ReactElement => {
           </div>
           <div className='w-full flex justify-between items-center mt-2 z-10'>
             <Typography className='font-semibold font-poppins text-white text-base md:text-lg lg:text-xl z-10'>
-              {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
+              {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(earning?.balance ?? 0).replace('Rp', '')}
             </Typography>
           </div>
           <Image
@@ -189,8 +189,8 @@ const WithdrawValue = (): React.ReactElement => {
               <div className='text-[#BDBDBD] font-semibold text-sm'>
                 {t('earning.withdrawAmount')}
               </div>
-              <div className={`${(withdrawValue ?? 0) < 10000 ? 'text-[#DA2D1F]' : 'text-[#262626]'} text-sm font-semibold text-right`}>
-                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(withdrawValue ?? 0).replace('Rp', '')}
+              <div className={`${(((withdrawValue ?? 0) < 10000) || ((withdrawValue ?? 0) > (earning?.balance ?? 0))) ? 'text-[#DA2D1F]' : 'text-[#262626]'} text-sm font-semibold text-right`}>
+                {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(withdrawValue ?? 0).replace('Rp', '')}
               </div>
             </div>
             
@@ -200,7 +200,7 @@ const WithdrawValue = (): React.ReactElement => {
                 {t('earning.adminFee')}
               </div>
               <div className='text-sm font-semibold text-right'>
-                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(bankAccount?.admin_fee ?? 0).replace('Rp', '')}
+                {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(bankAccount?.admin_fee ?? 0).replace('Rp', '')}
               </div>
             </div>
             
@@ -210,7 +210,7 @@ const WithdrawValue = (): React.ReactElement => {
                 {t('earning.serviceFee')}
               </div>
               <div className='text-sm font-semibold text-right'>
-                {userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}{standartCurrency(bankAccount?.service_fee ?? 0).replace('Rp', '')}
+                {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(bankAccount?.service_fee ?? 0).replace('Rp', '')}
               </div>
             </div>
             
@@ -222,7 +222,7 @@ const WithdrawValue = (): React.ReactElement => {
                     {t('earning.discount')}
                   </div>
                   <div className='text-sm font-semibold text-right'>
-                    {`- ${userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR'}${standartCurrency(bankAccount?.promo_price ?? 0).replace('Rp', '')}`}
+                    {`- ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(bankAccount?.promo_price ?? 0).replace('Rp', '')}`}
                   </div>
                 </div>
             }
@@ -230,13 +230,14 @@ const WithdrawValue = (): React.ReactElement => {
             {/* Total Amount */}
             <div className='flex w-full justify-between items-center py-2 pt-4 border-t border-[#BDBDBD] mt-2'>
               <div className='text-[#BDBDBD] font-semibold text-sm'>
-                {t('earning.totalAmount')}
+                {
+                  withdrawTotal < 0
+                    ? t('earning.balanceWithdrawn')
+                    : t('earning.totalAmount')
+                }
               </div>
-              <div className={`${withdrawTotal > (earning?.balance ?? 0) ? 'text-[#DA2D1F]' : 'text-[#262626]'} text-sm font-semibold text-right`}>
-                {userInfo?.preferredCurrency !== undefined
-                  ? userInfo?.preferredCurrency
-                  : 'IDR'}
-                {standartCurrency(withdrawTotal ?? 0).replace('Rp', '')}
+              <div className={`${(withdrawValue ?? 0) > (earning?.balance ?? 0) ? 'text-[#DA2D1F]' : 'text-[#262626]'} text-sm font-semibold text-right`}>
+                {userInfo?.preferredCurrency ?? 'IDR'}{standartCurrency(withdrawTotal ?? 0).replace('Rp', '')}
               </div>
             </div>
           </div>
@@ -247,10 +248,10 @@ const WithdrawValue = (): React.ReactElement => {
           onClick={() => { void handleRequestWithdraw(); }}
           disabled={
             !(((withdrawValue ?? 0) >= 10000) 
-            && ((withdrawTotal ?? 0) <= (earning?.balance ?? 0)))}
+            && ((withdrawValue ?? 0) <= (earning?.balance ?? 0)))}
           className={`${
             (((withdrawValue ?? 0) >= 10000) 
-            && ((withdrawTotal ?? 0) <= (earning?.balance ?? 0)) 
+            && ((withdrawValue ?? 0) <= (earning?.balance ?? 0)) 
               ? 'bg-seeds-button-green' 
               : 'bg-[#BDBDBD] disabled')} w-full py-2 md:py-4 flex justify-center items-center hover:shadow-lg text-white duration-300 cursor-pointer rounded-full font-poppins`}
         >
@@ -258,7 +259,7 @@ const WithdrawValue = (): React.ReactElement => {
         </button>
         <div
           onClick={async() => { await router.push('/my-profile/my-earnings/withdraw') }}
-          className='w-full py-2 md:py-4 flex justify-center items-center bg-white hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-full font-poppins'
+          className='w-full py-2 md:py-4 flex justify-center items-center bg-white hover:bg-[#E2E2E2] border border-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-full font-poppins'
         >
           {t('earning.back')}
         </div>

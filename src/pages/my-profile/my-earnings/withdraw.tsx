@@ -228,7 +228,7 @@ const Withdraw = (): React.ReactElement => {
         <div onClick={async() => { await router.push('/my-profile/my-earnings/withdraw-value') }} className='w-full py-2 md:py-4 flex justify-center items-center bg-seeds-button-green hover:shadow-lg text-white duration-300 cursor-pointer rounded-full font-poppins'>
           {t('earning.continue')}
         </div>
-        <div onClick={async() => { await router.push('/my-profile/my-earnings') }}className='w-full py-2 md:py-4 flex justify-center items-center bg-white hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-full font-poppins'>
+        <div onClick={async() => { await router.push('/my-profile/my-earnings') }}className='w-full py-2 md:py-4 flex justify-center items-center bg-white border border-[#E2E2E2] hover:bg-[#E2E2E2] hover:shadow-lg duration-300 cursor-pointer rounded-full font-poppins'>
           {t('earning.back')}
         </div>
       </div>

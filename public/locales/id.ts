@@ -2079,6 +2079,7 @@ export default {
     free: "Gratis",
     seeYourTicket: "Lihat Tiket",
     seeEventLink: "Lihat Link Event",
+    checkCertificate: "Cek Sertifikat",
     seeEvent: "Lihat Event",
     booking: {
       bookNow: "Pesan Tiket",
@@ -2163,8 +2164,10 @@ export default {
         pending: 'Menunggu Pembayaran',
         recurringSaved: 'Pembayaran anda telah tersimpan',
         seeDetail: "Lihat Detail Event",
-        seeEventDetail: "Lihat Detail Event",
-        message: "Selesaikan pembayaran untuk melihat detail event",
+        seeTicket: "Lihat Tiket",
+        refreshPage: "Refresh Status Pembayaran",
+        messageUncomplete: "Selesaikan pembayaran untuk melihat detail tiket",
+        messageComplete: "Pembayaran Berhasil.",
       },
     },
     ticket: {

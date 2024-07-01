@@ -2152,6 +2152,7 @@ export default {
     free: "Free",
     seeYourTicket: "See Your Ticket",
     seeEventLink: "See Event's Link",
+    checkCertificate: "Check Certificate",
     seeEvent: "See Event",
     booking: {
       bookNow: "Book Now",
@@ -2237,8 +2238,10 @@ export default {
         pending: 'Pending Paid Event',
         recurringSaved: 'Your recurring has been saved!',
         seeDetail: "See Detail Event",
-        seeEventDetail: "See Event's Detail",
-        message: "Complete the payment to see event's details",
+        seeTicket: "See Ticket",
+        refreshPage: "Refresh Payment Status",
+        messageUncomplete: "Complete the payment to see ticket's details",
+        messageComplete: "Payment completed.",
       },
     },
     ticket: {

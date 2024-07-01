@@ -5,9 +5,9 @@ import { CeklisCircle } from '@/constants/assets/icons';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
-    getHowToPay,
-    getPaymentDetail,
-    getPaymentList
+  getHowToPay,
+  getPaymentDetail,
+  getPaymentList
 } from '@/repository/payment.repository';
 import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
@@ -149,6 +149,14 @@ const SuccessPaymentPage: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const isPaid = (): boolean => {
+    if (orderDetail?.transactionStatus === 'SUCCEEDED') {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className="pt-10">
       {isLoading && <Loading />}
@@ -177,7 +185,7 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SUCCEEDED' ? (
+                {isPaid() ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -198,19 +206,19 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus !== 'SUCCEEDED'
-                  ? t('seedsEvent.payment.receipt.pendingPaidEvent')
-                  : 'Successful'}
+                {isPaid()
+                  ? 'Successful'
+                  : t('seedsEvent.payment.receipt.pendingPaidEvent')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus !== 'SUCCEEDED'
-                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                {isPaid()
+                  ? t('seedsEvent.payment.receipt.successful')
+                  : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
-                    )}`
-                  : t('seedsEvent.payment.receipt.successful')}
+                    )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
+                {isPaid() &&
                   t('seedsEvent.payment.receipt.recurringSaved')}
               </Typography>
 
@@ -547,16 +555,21 @@ const SuccessPaymentPage: React.FC = () => {
                   </svg>
                 </div>
                 <Typography className='font-poppins text-sm text-[#3C49D6]'>
-                  {t('seedsEvent.payment.receipt.message')}
+                  {
+                    isPaid()
+                      ? t('seedsEvent.payment.receipt.messageComplete')
+                      : t('seedsEvent.payment.receipt.messageUncomplete')
+                  }
                 </Typography>
               </div>
 
+              {/* Navigation Button */}
               <div className="w-full flex flex-col gap-4 items-center justify-center">
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
                   onClick={() => {
                     if (
-                      orderDetail?.transactionStatus === 'SUCCEEDED'
+                      isPaid()
                     ) {
                       void router.replace(
                         `/homepage/event/${id}/${orderId}/booking-success-details`
@@ -568,17 +581,11 @@ const SuccessPaymentPage: React.FC = () => {
                     }
                   }}
                 >
-                  {t('seedsEvent.payment.receipt.seeEventDetail')}
-                </Button>
-                <Button
-                  className="w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
-                  onClick={() => {
-                    void router.replace(
-                      `/homepage/event`
-                    );
-                  }}
-                >
-                  {t('seedsEvent.payment.receipt.close')}
+                  {
+                    isPaid()
+                      ? t('seedsEvent.payment.receipt.seeTicket')
+                      : t('seedsEvent.payment.receipt.refreshPage')
+                  }
                 </Button>
               </div>
             </Card>

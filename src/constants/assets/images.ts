@@ -245,6 +245,27 @@ export const AboutUsSectionFourBG: AssetsInterface = {
   alt: 'bg'
 };
 
+// Our expert
+export const SectionSevenImagePerson1: AssetsInterface = {
+  src: '/assets/landing-page/Johnny.jpg',
+  alt: 'image'
+};
+
+export const SectionSevenImagePerson2: AssetsInterface = {
+  src: '/assets/landing-page/Willy.jpg',
+  alt: 'image'
+};
+
+export const SectionSevenImagePerson3: AssetsInterface = {
+  src: '/assets/landing-page/arvin.jpg',
+  alt: 'image'
+};
+
+export const SectionSevenImagePerson4: AssetsInterface = {
+  src: '/assets/landing-page/syanne.jpg',
+  alt: 'image'
+};
+
 const Images: Record<string, AssetsInterface> = {
   HelloHero,
   Sprout,
@@ -286,7 +307,11 @@ const Images: Record<string, AssetsInterface> = {
   AboutUsSectionThreeIcon2,
   AboutUsSectionThreeIcon3,
   AboutUsSectionFourBG,
-  PromoIcon
+  PromoIcon,
+  SectionSevenImagePerson1,
+  SectionSevenImagePerson2,
+  SectionSevenImagePerson3,
+  SectionSevenImagePerson4
 };
 
 export default Images;

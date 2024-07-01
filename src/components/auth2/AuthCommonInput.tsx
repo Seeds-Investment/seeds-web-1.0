@@ -1,18 +1,7 @@
+import type { AuthCommonInputI } from '@/utils/interfaces/auth.interface';
 import { Input } from '@material-tailwind/react';
 
-interface IAuthCommonInput {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  formData: string;
-  placeholder: string;
-  label: string;
-  type: string;
-  name: string;
-  error: boolean;
-  required: boolean;
-  handleSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-}
-
-const AuthCommonInput: React.FC<IAuthCommonInput> = ({
+const AuthCommonInput: React.FC<AuthCommonInputI> = ({
   handleChange,
   formData,
   placeholder,
@@ -22,7 +11,7 @@ const AuthCommonInput: React.FC<IAuthCommonInput> = ({
   error,
   required,
   handleSubmit
-}: IAuthCommonInput) => {
+}: AuthCommonInputI) => {
   return (
     <div
       className={`rounded-xl p-[2px] h-full w-full ${

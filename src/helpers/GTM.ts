@@ -3,38 +3,21 @@ import DeviceDetector from 'device-detector-js';
 
 interface Tracker {
   event: string;
-  userId?: string;
-  postId?: string;
-  statusLike?: boolean;
-  circleId?: string;
-  personId?: string;
-  pageName?: string;
+  [key: string]: any;
 }
 
-const TrackerEvent = ({
-  event,
-  userId,
-  postId,
-  statusLike,
-  circleId,
-  personId,
-  pageName
-}: Tracker): void => {
-  const deviceDetector = new DeviceDetector();
+const TrackerEvent = ({ event, ...additionalData }: Tracker): void => {
+  const detector = new DeviceDetector();
 
   trackEvent({
     event,
     data: {
-      user_id: userId,
-      post: { post_id: postId, status_like: statusLike },
-      circle_id: circleId,
-      person_id: personId,
-      page_name: pageName,
+      ...additionalData,
       created_at: new Date().toString(),
       device: {
-        user_device: deviceDetector.parse(navigator.userAgent).device?.type,
-        user_type: deviceDetector.parse(navigator.userAgent).client?.type,
-        user_os: deviceDetector.parse(navigator.userAgent).os?.name
+        user_device: detector.parse(navigator.userAgent).device?.type,
+        user_type: detector.parse(navigator.userAgent).client?.type,
+        user_os: detector.parse(navigator.userAgent).os?.name
       }
     }
   });

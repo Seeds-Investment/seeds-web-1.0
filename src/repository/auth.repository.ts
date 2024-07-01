@@ -1,12 +1,14 @@
 import Endpoints from '@/utils/_static/endpoint';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
+import type { AuthFormData } from '@/utils/interfaces/auth.interface';
 import { type SearchUserChat } from '@/utils/interfaces/chat.interface';
 import type {
   IGetOtp,
   IVerifyOtp
 } from '@/utils/interfaces/payload.interfaces';
 import { type SearchUserParams } from '@/utils/interfaces/user.interface';
+import { toast } from 'react-toastify';
 
 const authService = baseAxios(
   `${
@@ -41,7 +43,7 @@ interface RegistForm {
   password: string;
   provider: {
     provider: string;
-    identifer: string;
+    identifier: string;
   };
 }
 
@@ -63,20 +65,8 @@ interface IQuickLogin {
 interface IQuickRegister {
   phone_number: string;
   name: string;
-  method: string;
-  otp: string;
-}
-
-interface IEditForm {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin?: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  myAccessToken: string;
+  method?: string;
+  otp?: string;
 }
 
 export const loginPhoneNumber = async (formData: LoginForm): Promise<any> => {
@@ -225,15 +215,15 @@ export const quickRegister = async (payload: IQuickRegister): Promise<any> => {
   }
 };
 
-export const editGuestInfo = async (formData: IEditForm): Promise<any> => {
+export const editGuestInfo = async (formData: AuthFormData): Promise<any> => {
   try {
-    const accessToken = formData.myAccessToken;
+    const accessToken = formData.token;
 
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
 
-    const { myAccessToken, ...formDataWithoutToken } = formData;
+    const { token, ...formDataWithoutToken } = formData;
 
     const response = await userService.patch('', formDataWithoutToken, {
       headers: {
@@ -294,8 +284,8 @@ export const getOtp = async (payload: IGetOtp): Promise<any> => {
       return await Promise.resolve(null);
     }
     return await authService.put(`/otp`, { ...payload });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    toast.error(error?.response?.data?.message);
   }
 };
 
@@ -379,7 +369,7 @@ export const registerNewUser = async (formData: {
   avatar?: string;
   provider: {
     provider: string;
-    identifer: string;
+    identifier: string;
   };
 }): Promise<any> => {
   try {

@@ -37,9 +37,14 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [selectedLL, setSelectedLL] = useState<LifelinesEnum>();
   const [showLifelineDesc, setShowLifelineDesc] = useState(false);
   const [showAlertPrice, setShowAlertPrice] = useState(false);
+  const [redeemCoin, setRedeemCoin] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const invitationCode = router.query.invitationCode ?? '';
+
+  useEffect(() => {
+    setRedeemCoin(router.query.useCoins === 'true');
+  }, [router.query.useCoins]);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -120,7 +125,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           payment_method: '',
           phone_number: phoneNumber,
           promo_code: '',
-          invitation_code: ''
+          invitation_code: '',
+          is_use_coins: false
         },
         quiz: {
           lifelines: detailQuiz?.lifelines ?? [],
@@ -169,7 +175,8 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           payment_method: '',
           phone_number: phoneNumber,
           promo_code: '',
-          invitation_code: invitationCode as string
+          invitation_code: invitationCode as string,
+          is_use_coins: redeemCoin
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
       } catch (error) {
@@ -331,7 +338,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           onClose={() => {
             setShowAlertPrice(false);
           }}
-          modalClasses="z-30 animate-slide-down fixed top-[35%] left-[40%] mt-[-12.35rem] w-80 h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
+          modalClasses="z-30 animate-slide-down fixed top-[35%] left-0 right-0 m-auto md:left-[40%] md:right-[40%] mt-[-12.35rem] w-80 h-fit p-4 text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white"
         >
           <div className="w-full flex flex-col gap-6 justify-center items-center">
             <Image

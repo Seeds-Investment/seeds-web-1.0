@@ -1,49 +1,32 @@
+import Backward from '@/assets/auth/Backward.svg';
 import Info from '@/assets/auth/Info.png';
 import SeedyLock from '@/assets/auth/SeedyLock.png';
 import AuthPassword from '@/components/auth2/AuthPassword';
 import { forgotPassword } from '@/repository/auth.repository';
+import type { AuthForgotPassNewI } from '@/utils/interfaces/auth.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-interface IAuthForgotPassNew {
-  className: string;
-  setSelect: (value: number) => void;
-  formData: {
-    oldPassword: string;
-    password: string;
-    phoneNumber: string;
-  };
-  setFormData: (value: {
-    phoneNumber: string;
-    password: string;
-    oldPassword: string;
-  }) => void;
-  handleOpen: () => void;
-}
 
-interface FormInputChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-  target: HTMLInputElement & {
-    name: string;
-    value: string;
-  };
-}
-const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
+const AuthForgotPassNew: React.FC<AuthForgotPassNewI> = ({
   className,
   formData,
   setFormData,
   handleOpen
-}: IAuthForgotPassNew) => {
+}: AuthForgotPassNewI) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const [errorPass, setErrorPass] = useState(false);
   const [errorRepass, setErrorRepass] = useState(false);
   const regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  const handlePass = (e: FormInputChangeEvent): void => {
+  const handlePass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setErrorPass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleRepass = (e: FormInputChangeEvent): void => {
+  const handleRepass = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setErrorRepass(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -73,11 +56,19 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       className={`${className} flex-col md:w-[78%] w-full items-center md:gap-8 gap-6 md:p-8 p-4`}
     >
       <Image
+        src={Backward}
+        alt="Backward"
+        className="absolute left-5 top-5 cursor-pointer"
+        onClick={() => {
+          router.back();
+        }}
+      />
+      <Image
         src={SeedyLock}
         alt="SeedyLock"
         className="w-[141.8px] md:flex hidden"
       />
-      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522]">
+      <Typography className="w-full font-poppins font-semibold md:text-2xl text-base text-[#050522] pt-10 md:p-0">
         <span className="font-poppins font-normal md:text-xl text-sm text-[#7C7C7C]">
           {t('authForgotPass.title3')}
         </span>
@@ -87,12 +78,12 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handlePass}
-          formData={formData.password}
+          value={formData.password}
           error={errorPass}
           name="password"
           label={t('authForgotPass.newPassword.label')}
           placeholder={t('authForgotPass.newPassword.placeholder')}
-          handleSubmit={async (e: any) => {
+          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               await handleNext();
             }
@@ -105,12 +96,12 @@ const AuthForgotPassNew: React.FC<IAuthForgotPassNew> = ({
       <div className="w-full">
         <AuthPassword
           handleChange={handleRepass}
-          formData={formData.oldPassword}
+          value={formData.oldPassword}
           error={errorRepass}
           name="oldPassword"
           label={t('authForgotPass.matchPassword.label')}
           placeholder={t('authForgotPass.matchPassword.placeholder')}
-          handleSubmit={async (e: any) => {
+          handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter') {
               await handleNext();
             }

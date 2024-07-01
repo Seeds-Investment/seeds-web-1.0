@@ -47,10 +47,16 @@ export interface Payment {
 interface props {
   dataPost?: any;
   monthVal?: string;
-  invitationCode?:string
+  invitationCode?: string;
+  useCoins?: boolean;
 }
 
-const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): JSX.Element => {
+const PaymentList: React.FC<props> = ({
+  dataPost,
+  monthVal,
+  invitationCode,
+  useCoins
+}): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -59,7 +65,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): J
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);  
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -127,7 +133,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): J
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
           promo_code: '',
-          invitation_code: invitationCode as string
+          invitation_code: invitationCode as string,
+          is_use_coins: useCoins as boolean
         });
 
         if (response) {
@@ -238,7 +245,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal, invitationCode }): J
   );
 
   return (
-    <PageGradient defaultGradient className="w-full md:px-20 my-10">
+    <PageGradient defaultGradient className="w-full md:px-20 my-10 h-screen">
       {loading ? renderLoading() : renderContent()}
       <Dialog
         title={

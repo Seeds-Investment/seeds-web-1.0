@@ -443,13 +443,17 @@ const CommentSection: React.FC<props> = ({
       <div className="w-full flex justify-between">
         <div className="flex gap-4 md:gap-8">
           <div className="hidden md:flex">
-            <div>
+            <div
+              onClick={() => {
+                void router.push(`/social/${dataPost?.user_id}`);
+              }}
+            >
               <img
                 src={dataPost.avatar}
                 alt="AVATAR"
                 width={48}
                 height={48}
-                className="rounded-full object-cover"
+                className="rounded-full object-cover cursor-pointer"
               />
             </div>
           </div>
@@ -467,7 +471,12 @@ const CommentSection: React.FC<props> = ({
             </div>
             <div className="w-full">
               <div className="flex justify-start gap-2">
-                <Typography className="font-semibold md:text-lg font-poppins">
+                <Typography
+                  onClick={() => {
+                    void router.push(`/social/${dataPost?.user_id}`);
+                  }}
+                  className="font-semibold md:text-lg font-poppins cursor-pointer"
+                >
                   @{dataPost.user_name}
                 </Typography>
                 <Typography className="text-xs md:text-sm text-neutral-soft font-poppins items-center flex">

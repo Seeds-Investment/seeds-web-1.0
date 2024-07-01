@@ -1,8 +1,10 @@
 import { getPlaySimulation } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import rank1Medal from '../../../public/assets/images/rank1Medal.svg';
 import rank2Medal from '../../../public/assets/images/rank2Medal.svg';
 import rank3Medal from '../../../public/assets/images/rank3Medal.svg';
@@ -36,14 +38,14 @@ const LastMonthPage = (): React.ReactElement => {
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [leaderBoard, setLeaderBoard] = useState<LeaderData[]>([]);
 
-  const [userInfo, setUserInfo] = useState<any>([]);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const dataInfo = await getUserInfo();
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -69,12 +71,12 @@ const LastMonthPage = (): React.ReactElement => {
       setPlayerData(res.user_rank);
       setLeaderBoard(res.leaderboard);
     } catch (error) {
-      console.error('Error fetching play simulation:', error);
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
   useEffect(() => {
     if (userInfo !== undefined) {
-      void fetchPlaySimulation(userInfo.preferredCurrency);
+      void fetchPlaySimulation(userInfo?.preferredCurrency);
     }
   }, [userInfo]);
 
@@ -85,8 +87,8 @@ const LastMonthPage = (): React.ReactElement => {
           className={'border-2 rounded-xl border-[#3AC4A0] w-full p-3 mb-2 '}
         >
           <div className="flex justify-between">
-            <div className="flex w-full items-center">
-              <div>
+            <div className="flex w-full items-center gap-2 md:gap-4">
+              <div className="flex flex-col justify-center items-center">
                 <p className="font-semibold text-[22px] font-poppins">
                   {playerData?.rank}
                 </p>
@@ -110,10 +112,14 @@ const LastMonthPage = (): React.ReactElement => {
                 alt={playerData?.name}
                 className="w-10 h-10 rounded-full"
               />
-              <div className="ml-3">
-                <h2 className="font-bold">{playerData?.name}</h2>
-                <p>{playerData?.seeds_tag}</p>
-                <p className="text-[#3AC4A0]">
+              <div>
+                <p className="font-bold text-md md:text-xl">
+                  {playerData?.name}
+                </p>
+                <p className="text-sm md:text-[16px] my-1">
+                  @{playerData?.seeds_tag}
+                </p>
+                <p className="text-[#3AC4A0] text-sm md:text-md">
                   {t('homepage.section2.text2')} ({playerData?.gain}%)
                 </p>
               </div>
@@ -130,7 +136,7 @@ const LastMonthPage = (): React.ReactElement => {
             }`}
           >
             <div className="flex justify-between">
-              <div className="flex w-full items-center">
+              <div className="flex w-full items-center gap-2 md:gap-4">
                 {leader.rank === 1 && (
                   <Image src={rank1Medal} alt="Next" width={32} height={32} />
                 )}
@@ -146,44 +152,17 @@ const LastMonthPage = (): React.ReactElement => {
                 <img
                   src={leader.avatar_url}
                   alt={leader.name}
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full shadow"
                 />
-                <div className="ml-3">
+                <div>
                   <div className="flex">
-                    <h2 className="font-bold me-2">{leader.name}</h2>
-                    <div className="mt-[7px] ">
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clipPath="url(#clip0_2012_74470)">
-                          <path
-                            d="M6 12C9.31371 12 12 9.31371 12 6C12 2.68629 9.31371 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12Z"
-                            fill="#5E44FF"
-                          />
-                          <path
-                            d="M3 6L5 8L9 4"
-                            stroke="white"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_2012_74470">
-                            <rect width="12" height="12" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
-                    </div>
-                    <div className="text-[#1A857D] text-sm ms-2 px-1 bg-[#DCFCE4] rounded-full py-1">
-                      Investor
-                    </div>
+                    <p className="font-bold me-2 text-md md:text-xl">
+                      {leader.name}
+                    </p>
                   </div>
-                  <p>{leader.seeds_tag}</p>
+                  <p className="text-sm md:text-[16px] my-1">
+                    @{leader.seeds_tag}
+                  </p>
                   {leader.rank !== 1 &&
                   leader.rank !== 2 &&
                   leader.rank !== 3 ? (

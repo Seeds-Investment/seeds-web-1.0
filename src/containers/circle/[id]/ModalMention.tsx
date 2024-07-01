@@ -32,6 +32,19 @@ import Toast from './Toast';
 import UniqueInputButton from './UniqueInputButton';
 import { VoiceRecorder } from './VoiceRecording';
 
+interface SuccessOrderData {
+  id: string;
+  play_id: string;
+  user_id: string;
+  asset: any;
+  type: 'BUY' | 'SELL';
+  lot: number;
+  bid_price: number;
+  stop_loss: number;
+  pnl: number;
+  created_at: string;
+  updated_at: string;
+}
 interface props {
   open: boolean;
   handleOpen: () => void;
@@ -42,6 +55,7 @@ interface props {
   setFilter?: any;
   setData?: any;
   setGolId: any;
+  assetShare?: SuccessOrderData;
 }
 
 interface typeOfPost {
@@ -147,6 +161,10 @@ const tagOption = [
   {
     id: 3,
     name: 'Play'
+  },
+  {
+    id: 4,
+    name: 'Quiz'
   }
 ];
 interface typeOfSelected {
@@ -162,7 +180,8 @@ const ModalMention: React.FC<props> = ({
   setData,
   setGolId,
   dataPost,
-  setDataPost
+  setDataPost,
+  assetShare
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -204,7 +223,8 @@ const ModalMention: React.FC<props> = ({
   const [otherTagList, setOtherTagList] = useState<any>({
     peopleList: [],
     circleList: [],
-    playList: []
+    playList: [],
+    quizList: []
   });
   const [form, setForm] = useState<form>({
     content_text: '',
@@ -265,6 +285,7 @@ const ModalMention: React.FC<props> = ({
 
     void fetchData();
   }, []);
+
   useEffect(() => {
     if (dataPost !== undefined) {
       setForm(prevState => ({
@@ -478,7 +499,7 @@ const ModalMention: React.FC<props> = ({
       setForm(prevForm => ({ ...prevForm, content_text: newActualValue }));
       setForm(prevForm => ({ ...prevForm, [name]: newActualValue }));
     }
-    const API_TYPE = ['people', 'plays', 'circles'];
+    const API_TYPE = ['people', 'plays', 'circles', 'quizes'];
     const matches: any = value.match(/[@#$]\[.*?\]\(.*?\)|[@#$]\w+/g);
     const words = value.split(' ');
     const circleFind = value.split('@');
@@ -553,6 +574,11 @@ const ModalMention: React.FC<props> = ({
                       ...item,
                       id: `${item.id as string}-circle`,
                       display: item.name
+                    })),
+                    quizList: results[3]?.data?.map((item: any) => ({
+                      ...item,
+                      id: `${item.id as string}-quiz`,
+                      display: item.name
                     }))
                   });
                   setTimeout(() => {
@@ -580,6 +606,14 @@ const ModalMention: React.FC<props> = ({
                           id: `${item.id as string}-circle`
                         }))
                       );
+                    } else if (results[3]?.data?.length > 0) {
+                      setOtherTagId(4);
+                      setTagLists(
+                        results[3].data.map((item: any) => ({
+                          ...item,
+                          id: `${item.id as string}-quiz`
+                        }))
+                      );
                     }
                   }, 500);
                 }
@@ -603,6 +637,9 @@ const ModalMention: React.FC<props> = ({
     }
     if (type?.id === 3) {
       setTagLists(otherTagList?.playList);
+    }
+    if (type?.id === 4) {
+      setTagLists(otherTagList?.quizList);
     }
   };
 
@@ -716,14 +753,26 @@ const ModalMention: React.FC<props> = ({
           hashtags
         };
       } else {
-        payload = {
-          content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
-          media_urls: form.media_urls,
-          privacy: form.privacy,
-          is_pinned: false,
-          user_id: userInfo?.id,
-          hashtags
-        };
+        if (assetShare !== undefined) {
+          payload = {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            content_text: `%[${assetShare?.asset?.asset_ticker}](${assetShare?.asset?.asset_id}) &[${assetShare?.type}](${assetShare?.bid_price}) *[asset_icon](${assetShare?.asset?.asset_icon})`,
+            media_urls: form.media_urls,
+            privacy: form.privacy,
+            is_pinned: false,
+            user_id: userInfo?.id,
+            hashtags
+          };
+        } else {
+          payload = {
+            content_text: form.content_text.replace(/#\[(.*?)\]\(\)/g, '#$1'),
+            media_urls: form.media_urls,
+            privacy: form.privacy,
+            is_pinned: false,
+            user_id: userInfo?.id,
+            hashtags
+          };
+        }
       }
       if (form.polling.options.length > 0) {
         payload.pollings = form.polling.options;
@@ -795,6 +844,7 @@ const ModalMention: React.FC<props> = ({
         }
       } else {
         await createPostCircleDetail(payload);
+        void router.push('/social');
       }
 
       setForm({
@@ -831,7 +881,8 @@ const ModalMention: React.FC<props> = ({
       setOtherTagList({
         peopleList: [],
         circleList: [],
-        playList: []
+        playList: [],
+        quizList: []
       });
       setDollarLists([]);
       setHashtags([]);
@@ -925,7 +976,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -934,10 +986,15 @@ const ModalMention: React.FC<props> = ({
                     }}
                   >
                     {el?.avatar !== undefined
-                      ? renderAvatar(el?.avatar)
+                      ? renderAvatar(el.avatar)
                       : el?.banner !== undefined
-                      ? renderAvatar(el?.banner)
+                      ? renderAvatar(
+                          el?.banner?.image_url !== undefined
+                            ? el?.banner?.image_url
+                            : el?.banner
+                        )
                       : null}
+
                     {el?.tag !== undefined ? (
                       renderNameAndTag(el?.name, el?.tag)
                     ) : el?.members !== undefined ? (
@@ -994,7 +1051,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setFindId((prevState: number) => prevState + 1);
                       setLastWordsWithChar('');
@@ -1164,6 +1222,27 @@ const ModalMention: React.FC<props> = ({
               style={{ color: '#4FE6AF' }}
             />
           </MentionsInput>
+          {assetShare !== undefined && (
+            <div className="bg-[#b9fae2] text-[#2e745a] rounded-xl p-2 flex justify-between ">
+              <div className="flex gap-2">
+                <p className="font-poppins ">{assetShare?.type as string}</p>
+                <p className="font-semibold font-poppins">
+                  {assetShare?.asset?.asset_ticker as string}
+                </p>
+                <p className="font-poppins">at</p>
+                <p className="font-semibold font-poppins">
+                  IDR {assetShare?.bid_price}
+                </p>
+              </div>
+              <img
+                src={assetShare?.asset?.asset_icon}
+                alt="icon"
+                className="w-[40px] rounded-full object-scale-down"
+                width={40}
+                height={40}
+              />
+            </div>
+          )}
           {renderUserSuggestion()}
           {renderDollarSuggestion()}
           {renderUserHashtags()}
@@ -1288,7 +1367,8 @@ const ModalMention: React.FC<props> = ({
             setOtherTagList({
               peopleList: [],
               circleList: [],
-              playList: []
+              playList: [],
+              quizList: []
             });
             setDollarLists([]);
             setHashtags([]);
@@ -1355,7 +1435,8 @@ const ModalMention: React.FC<props> = ({
                       setOtherTagList({
                         peopleList: [],
                         circleList: [],
-                        playList: []
+                        playList: [],
+                        quizList: []
                       });
                       setDollarLists([]);
                       setHashtags([]);
@@ -1633,18 +1714,35 @@ const ModalMention: React.FC<props> = ({
                             setOtherTagList({
                               peopleList: [],
                               circleList: [],
-                              playList: []
+                              playList: [],
+                              quizList: []
                             });
                             setDollarLists([]);
                             setHashtags([]);
                           }}
                         >
-                          <Image
-                            src={XIcon}
-                            alt="close"
-                            width={30}
-                            height={30}
-                          />
+                          <div className="flex gap-2">
+                            <div className="sm:hidden flex justify-end">
+                              <button
+                                type="submit"
+                                disabled={isEmpty || isError}
+                                onClick={handlePostCircle}
+                                className={`flex justify-center py-2 items-center rounded-full px-6 font-semibold font-poppins h-fit ${
+                                  isEmpty || isError
+                                    ? 'bg-neutral-ultrasoft text-neutral-soft cursor-not-allowed'
+                                    : 'bg-seeds-button-green text-white'
+                                }`}
+                              >
+                                Post
+                              </button>
+                            </div>
+                            <Image
+                              src={XIcon}
+                              alt="close"
+                              width={30}
+                              height={30}
+                            />
+                          </div>
                         </div>
                       </div>
                     )}

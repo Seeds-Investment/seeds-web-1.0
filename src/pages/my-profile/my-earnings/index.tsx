@@ -9,7 +9,7 @@ import WithdrawCoin from '@/assets/my-profile/earning/withdrawCoin.svg';
 import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import { standartCurrency } from '@/helpers/currency';
-import { getEarningDateEN, getEarningDateID } from '@/helpers/dateFormat';
+import { getEarningDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getEarningBalance, getEarningHistory } from '@/repository/earning.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -181,8 +181,8 @@ const MyEarnings = (): React.ReactElement => {
                             <div className='flex gap-1'>
                               <Typography className='text-xs md:text-base font-poppins text-[#BDBDBD]'>
                                 {languageCtx.language === 'ID'
-                                  ? getEarningDateID(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')))
-                                  : getEarningDateEN(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')))
+                                  ? getEarningDate(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')), 'id-ID')
+                                  : getEarningDate(new Date(new Date(item?.created_at ?? '2024-12-31T23:59:00Z')), 'en-US')
                                 }
                               </Typography>  
                               <Typography className='hidden md:flex text-xs md:text-base font-poppins text-[#BDBDBD]'>                         
@@ -195,8 +195,8 @@ const MyEarnings = (): React.ReactElement => {
                           <Typography className='text-xs md:text-base font-poppins text-[#BDBDBD]'>
                             + {`${ userInfo?.preferredCurrency !== undefined ? userInfo?.preferredCurrency : 'IDR' }${standartCurrency(item?.amount ?? 0).replace('Rp','')}`}
                           </Typography>
-                          <Typography className={`${(item?.status ?? 'Completed') === 'Completed' ? 'text-[#4DA81C]' : 'text-[#D89918]'} text-xs md:text-base font-poppins font-semibold`}>
-                            {(item?.status ?? 'Loading...') === 'Completed' ? t('earning.completed') : ((item?.status ?? 'Loading...') === 'Need Approval' ? t('earning.onProgress') : 'Loading...')}
+                          <Typography className={`${(item?.status ?? 'Completed') === 'Completed' ? 'text-[#4DA81C]' : (item?.status ?? 'Completed') === 'Need Approval' ? 'text-[#D89918]' : 'text-[#DA2D1F]'} text-xs md:text-base font-poppins font-semibold`}>
+                            {(item?.status ?? 'Loading...') === 'Completed' ? t('earning.completed') : ((item?.status ?? 'Loading...') === 'Need Approval' ? t('earning.onProgress') : (item?.status ?? 'Loading...') === 'Rejected' ? t('earning.rejected') : 'Loading...')}
                           </Typography>
                         </div>
                       </div>

@@ -123,7 +123,7 @@ export default function Section2(): React.ReactElement {
             </div>
           </div>
         </div>
-        <div className="flex flex-col lg:p-5 items-center justify-center">
+        <div className="flex relative flex-col lg:p-5 items-center justify-center">
           <div className="flex flex-row w-full items-center justify-center md:mb-8 lg:mb-6 xl:mb-4 mb-5 sm:mb-20 font-poppins">
             <span className="xl:text-[72px] text-[30px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 md:text-5xl lg:text-7xl xl:pb-4">
               {t('landing.section2.text1a')}
@@ -134,25 +134,6 @@ export default function Section2(): React.ReactElement {
             <span className="xl:text-[72px] text-[30px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] md:text-5xl lg:text-7xl xl:pb-4">
               {t('landing.section2.text1c')}
             </span>
-
-            {/* <Image
-            alt="img"
-            className="fixed w-[30%] z-[99] translate-y-[15rem] translate-x-[8rem]
-                2xl:w-[15%] 2xl:-translate-y-[20rem] 2xl:translate-x-[35rem]
-                lg:w-[15%] lg:-translate-y-[10rem] lg:translate-x-[30rem]
-                md:w-[15%] md:-translate-y-[4rem] md:translate-x-[14rem]
-                sm:w-[7%] sm:-translate-y-[6rem] sm:translate-x-[10rem]"
-            src={chat}
-          /> */}
-            <Image
-              alt="img"
-              className="absolute w-[30%] translate-y-[8rem]  translate-x-[10rem]
-                2xl:w-[15%] 2xl:translate-y-[26rem] 2xl:translate-x-[35rem]
-                lg:w-[15%] lg:translate-y-[34rem] lg:translate-x-[30rem]
-                md:w-[15%] md:translate-y-[34rem] md:translate-x-[14rem]
-                sm:w-[7%] sm:translate-y-[36rem] sm:translate-x-[20rem]"
-              src={earth}
-            />
           </div>
 
           <div
@@ -160,6 +141,11 @@ export default function Section2(): React.ReactElement {
               width !== undefined && width >= 1690 ? '2xl:mt-2' : ''
             }`}
           >
+            <Image
+              alt="img"
+              className="absolute w-[128px] top-10 lg:top-[10%] translate-x-3/4 2xl:top-1/2 xl:right-52 xl:w-[240px]"
+              src={earth}
+            />
             <div className="flex flex-col xl:flex-row gap-16 mx-auto mt-[15vh]">
               <section className="bg-[#FFF] border-[#DADADA] border-2 px-[33px] pb-[76px] xl:mt-5 w-[331px] h-[356px] text-center font-poppins rounded-[45px] shadow-lg shadow-[#5e44ff66]">
                 <Image

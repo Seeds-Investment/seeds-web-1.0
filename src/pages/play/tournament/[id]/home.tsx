@@ -21,7 +21,7 @@ import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
-import { type AssetItemType } from '@/pages/homepage/play-assets';
+import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getMarketList } from '@/repository/market.repository';
 import {
@@ -339,25 +339,40 @@ const TournamentHome: React.FC = () => {
         portfolio === null && <Loading />}
       <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
         <div className="flex justify-start w-full gap-2">
-          <Typography className="text-xl font-semibold">
-            {detailTournament?.name ?? 'Tournament'}
-          </Typography>
-          <Image
-            onClick={() => {
-              setIsDetailModal(true);
-            }}
-            alt=""
-            src={IconWarning}
-            className="w-[20px] cursor-pointer"
-          />
+            {
+              detailTournament !== undefined ?
+                <>
+                  <Typography className="text-xl font-semibold">
+                    {detailTournament?.name ?? 'Tournament'}
+                  </Typography>
+                  <Image
+                    onClick={() => {
+                      setIsDetailModal(true);
+                    }}
+                    alt=""
+                    src={IconWarning}
+                    className="w-[20px] cursor-pointer"
+                  />
+                </>
+                :
+                <div className='bg-gray-300 animate-pulse h-[20px] w-[200px] rounded-full'/>
+
+            }
         </div>
         <div className="text-[14px] flex justify-start items-center gap-2 py-2 w-full">
-          <Typography className="font-poppins">
-            Play ID : {detailTournament?.play_id ?? '...'}
-          </Typography>
-          <button onClick={handleCopyClick}>
-            <Image alt="" src={IconCopy} className="w-[20px]" />
-          </button>
+            {
+              detailTournament !== undefined ?
+                <>
+                  <Typography className="font-poppins">
+                    Play ID : {detailTournament?.play_id ?? '...'}
+                  </Typography>
+                  <button onClick={handleCopyClick}>
+                    <Image alt="" src={IconCopy} className="w-[20px]" />
+                  </button>
+                </>
+                :
+                <div className='bg-gray-300 animate-pulse h-[20px] w-[160px] rounded-full'/>
+            }
         </div>
         <div className="w-full p-5 bg-gradient-to-br from-[#50D4B2] from-50% to-[#E2E2E2] rounded-xl h-[250px] relative">
           <div className="flex flex-col justify-start gap-2 md:gap-0">
@@ -376,9 +391,9 @@ const TournamentHome: React.FC = () => {
                 ? userInfo?.preferredCurrency
                 : 'IDR'}{' '}
               {standartCurrency(ballance?.return_value ?? 0).replace('Rp', '')}
-              {` (${
-                ballance?.return_value < 0 ? '' : '+'
-              }${ballance?.return_percentage?.toFixed(2)}%)`}
+              {` (${ballance?.return_value < 0 ? '' : '+'}${(
+                ballance?.return_percentage ?? 0
+              ).toFixed(2)}%)`}
             </Typography>
             <Typography className="text-white font-poppins z-10 text-sm md:text-lg">
               {`${t('tournament.assets.virtualBalance')}: `}
@@ -454,14 +469,20 @@ const TournamentHome: React.FC = () => {
             <div className="text-lg font-semibold">
               {t('tournament.detailRemaining')}
             </div>
-            <CountdownTimer
-              className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
-              deadline={
-                detailTournament?.end_time
-                  ? detailTournament.end_time.toString()
-                  : ''
-              }
-            />
+            {detailTournament?.end_time !== undefined ? (
+              <CountdownTimer
+                className="text-md text-[#FDBA22] font-semibold mt-2 font-poppins"
+                deadline={
+                  detailTournament?.end_time
+                    ? detailTournament.end_time.toString()
+                    : ''
+                }
+              />
+            ) : (
+              <Typography className="text-lg text-[#FDBA22] mt-2 font-semibold font-poppins">
+                Loading...
+              </Typography>
+            )}
           </div>
         </div>
         <div className="bg-gradient-to-br from-[#E9E9E9] from-70% to-white w-full flex justify-between items-center relative mt-4 cursor-pointer rounded-xl p-4">

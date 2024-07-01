@@ -29,6 +29,7 @@ import { SearchMember } from 'public/assets/circle';
 import { TripleDots } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import ModalMention from './ModalMention';
 import PostSection from './PostSection';
 interface props {
@@ -185,8 +186,8 @@ const CirclePostSection2: React.FC<props> = ({
     try {
       const { data } = await getStatusCircle({ circleId });
       setRole(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     }
   };
 
@@ -209,7 +210,7 @@ const CirclePostSection2: React.FC<props> = ({
         const response = await getUserInfo();
         setUserInfo(response);
       } catch (error) {
-        console.log(error);
+        toast.error(`${error as string}`);
       }
     };
     void fetchData();
@@ -242,14 +243,14 @@ const CirclePostSection2: React.FC<props> = ({
           setIsLoadingPost(false);
         })
         .catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
           setIsIncrease(false);
           setIsLoadingPost(false);
         });
-    } catch (error: any) {
+    } catch (error) {
       setIsIncrease(false);
       setIsLoadingPost(false);
-      console.error('Error fetching Circle Post:', error.message);
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     }
   };
 
@@ -279,14 +280,14 @@ const CirclePostSection2: React.FC<props> = ({
           setIsLoadingPost(false);
         })
         .catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
           setIsIncrease(false);
           setIsLoadingPost(false);
         });
-    } catch (error: any) {
+    } catch (error) {
       setIsIncrease(false);
       setIsLoadingPost(false);
-      console.error('Error fetching Circle Recommend:', error.message);
+      toast.error(`Error fetching Circle Recommendation: ${error as string}`);
     }
   };
 
@@ -297,8 +298,8 @@ const CirclePostSection2: React.FC<props> = ({
       const { data } = await getMemberCircle({ circleId });
 
       setMember(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Recommend:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Recommendation: ${error as string}`);
     } finally {
       setIsLoadingMember(false);
     }
@@ -398,7 +399,7 @@ const CirclePostSection2: React.FC<props> = ({
           {/* navigation */}
           <Tabs value={tabs}>
             <TabsHeader
-              className="w-full lg:w-1/2 text-center justify-center rounded-none bg-transparent p-0"
+              className="w-full xl:w-2/3 2xl:w-1/2 text-center justify-center rounded-none bg-transparent p-0"
               indicatorProps={{
                 className: 'shadow-none rounded-none bg-transparent'
               }}
@@ -502,7 +503,7 @@ const CirclePostSection2: React.FC<props> = ({
                             router
                               .push(`/connect/add-member/${circleId}`)
                               .catch(err => {
-                                console.log(err);
+                                toast.error(`${err as string}`);
                               });
                           }}
                           className="flex items-center gap-2 bg-seeds-green/20 px-4 py-2 rounded-full border cursor-pointer border-seeds-button-green"

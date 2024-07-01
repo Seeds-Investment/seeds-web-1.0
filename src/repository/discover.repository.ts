@@ -70,7 +70,8 @@ export const likeEvent = async (eventId: string): Promise<any> => {
       return await Promise.resolve('Access token not found');
     }
 
-    return await discoverService.post(`/event/subscription`,
+    return await discoverService.post(
+      `/event/subscription`,
       {
         event_id: eventId
       },
@@ -100,6 +101,81 @@ export const getEventById = async (id: string): Promise<any> => {
         Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const getEventTicketById = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.get(`/event/${id}/ticket`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const bookEvent = async (params: {
+  event_id: string;
+  payment_gateway?: string;
+  payment_method?: string;
+  name: string;
+  phone_number: string;
+  email: string;
+  promo_code?: string;
+  is_use_coins?: boolean;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.post(`/event/buy-ticket`,
+      params,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
+export const updateEventNotification = async (payload: string[], id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.patch(
+      `/event/${id}/ticket/notification`,
+      {
+        notification_type: payload
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
   } catch (error) {
     await Promise.reject(error);
   }

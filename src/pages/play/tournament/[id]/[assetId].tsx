@@ -1,10 +1,21 @@
+import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Slider from 'react-slick';
+import { toast } from 'react-toastify';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+
 import CCard from '@/components/CCard';
 import LineChart from '@/components/LineChart';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Card1 from '@/containers/homepage/asset/Card1';
 import KeystatCard from '@/containers/play/asset/Card2';
 import KeyStatistic from '@/containers/play/asset/KeyStatistic';
+import OverviewItem from '@/containers/play/asset/OverviewItem';
 import SocialCard from '@/containers/play/asset/SocialCard';
+import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
@@ -16,14 +27,8 @@ import {
   type IPortfolioSummary,
   type IUserData
 } from '@/utils/interfaces/play.interface';
-import { Button, Tab, Tabs, TabsHeader } from '@material-tailwind/react';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Slider from 'react-slick';
-import { toast } from 'react-toastify';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
+import Image from 'next/image';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 
 const dataTab = [
   { label: '1d', value: 'daily' },
@@ -47,19 +52,9 @@ const initialPortfolioSummary: IPortfolioSummary = {
   currency: ''
 };
 
-const menu = [
-  // 'Overview',
-  // 'Analysis',
-  // 'Financials',
-  'Key statistic'
-  // 'Profile'
-  // 'News'
-];
-
 const AssetDetailPage: React.FC = () => {
   const router = useRouter();
-  const { assetId } = router.query;
-  const { id } = router.query;
+  const { assetId, id } = router.query;
   const { t } = useTranslation();
   const [data, setData] = useState<AssetI>();
   const [params, setParams] = useState({
@@ -76,15 +71,12 @@ const AssetDetailPage: React.FC = () => {
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayAssets(
-        id as string,
-        assetId as string
-      );
+      const response = await getPlayAssets(id as string, assetId as string);
       if (typeof response === 'object') {
         setPortfolio(response.data);
       }
     } catch (error) {
-      toast('Failed to get Portfoio data');
+      toast('Failed to get Portfolio data');
     }
   };
 
@@ -100,15 +92,6 @@ const AssetDetailPage: React.FC = () => {
       toast('Failed to get Social data');
     }
   };
-
-  const tabsComponents = [
-    // <OverviewItem key={1} />,
-    // <AnalysisItem key={2} />,
-    // <FinancialItem key={3} />,
-    <KeyStatistic key={1} />
-    // <Profile key={2} />
-    // <NewsItem key={6} />
-  ];
 
   const settings = {
     dots: true,
@@ -129,6 +112,7 @@ const AssetDetailPage: React.FC = () => {
       toast('Failed to get user info');
     }
   }, []);
+
   useEffect(() => {
     void fetchData();
   }, [fetchData]);
@@ -148,7 +132,7 @@ const AssetDetailPage: React.FC = () => {
         setAssetType(response.marketAsset.assetType);
       }
     } catch (error) {
-      toast('Faied to fetch asset');
+      toast('Failed to fetch asset');
     }
   };
 
@@ -160,14 +144,46 @@ const AssetDetailPage: React.FC = () => {
     }
   }, [assetId, userInfo, params]);
 
+  const menu = ['Overview'];
+  const tabsComponents = [<OverviewItem key={1} />];
+
+  if (data?.assetType === 'ID_STOCK') {
+    menu.push('Key statistic');
+    tabsComponents.push(<KeyStatistic key={2} />);
+  }
+
   return (
     <PageGradient defaultGradient className="w-full">
-      <div className="flex flex-col md:flex-row gap-5">
-        <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
-        <KeystatCard
-          data={data as AssetI}
-          currency={userInfo?.preferredCurrency as string}
+      <CCard className="flex flex-row justify-between p-4 mt-5 md:rounded-lg border-none rounded-none">
+        <Image
+          src={ArrowBackwardIcon}
+          alt="Back"
+          width={30}
+          height={30}
+          className="cursor-pointer"
+          onClick={() => {
+            router.back();
+          }}
         />
+        <p className="font-bold text-black text-lg">
+          {t('playSimulation.assetDetail')}
+        </p>
+        <div></div>
+      </CCard>
+      <div className="flex flex-col md:flex-row gap-5">
+        {data !== undefined ? (
+          <Card1 data={data} currency={userInfo?.preferredCurrency as string} />
+        ) : (
+          <Card2Skeleton />
+        )}
+        {data !== undefined ? (
+          <KeystatCard
+            data={data}
+            currency={userInfo?.preferredCurrency as string}
+          />
+        ) : (
+          <Card2Skeleton />
+        )}
       </div>
 
       <CCard className="flex p-2 mt-5 md:rounded-lg border-none rounded-none">
@@ -201,36 +217,28 @@ const AssetDetailPage: React.FC = () => {
           </TabsHeader>
         </Tabs>
       </CCard>
-      <div className="flex gap-4">
-        {data?.assetType === 'ID_STOCK' && (
-          <CCard className="flex flex-col gap-4 w-full md:w-7/12 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
-            <div className="flex w-full justify-between gap-2">
-              {menu.map((data, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setSelectedTab(index);
-                  }}
-                  className={
-                    selectedTab === index
-                      ? 'bg-[#3AC4A0] rounded-md p-2 text-white font-semibold grow'
-                      : 'border border-[#BDBDBD] rounded-md p-2 text-[#BDBDBD] font-semibold grow'
-                  }
-                >
-                  {data}
-                </button>
-              ))}
-            </div>
-            {tabsComponents[selectedTab]}
-          </CCard>
-        )}
-        <div
-          className={
-            data?.assetType === 'ID_STOCK'
-              ? 'flex flex-col w-full md:w-5/12'
-              : 'flex flex-col w-full'
-          }
-        >
+      <div className="flex flex-col lg:flex-row gap-4">
+        <CCard className="flex flex-col gap-4 w-full md:w-7/12 p-4 md:mt-5 md:rounded-lg border-none rounded-none">
+          <div className="flex w-full justify-between gap-2">
+            {menu.map((data, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setSelectedTab(index);
+                }}
+                className={
+                  selectedTab === index
+                    ? 'bg-[#3AC4A0] rounded-md p-2 text-white font-semibold grow'
+                    : 'border border-[#BDBDBD] rounded-md p-2 text-[#BDBDBD] font-semibold grow'
+                }
+              >
+                {data}
+              </button>
+            ))}
+          </div>
+          {tabsComponents[selectedTab]}
+        </CCard>
+        <div className="flex flex-col w-full md:w-5/12">
           <CCard className="flex w-full p-4 md:mt-5 md:rounded-lg border-none rounded-none">
             <p className="font-bold text-black text-lg">Your Portfolio</p>
             <div className="border border-[#E9E9E9] rounded-md flex justify-between gap-2 p-2">

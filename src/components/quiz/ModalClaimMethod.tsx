@@ -25,7 +25,7 @@ const ModalClaimMethod: React.FC<IModalClaimMethod> = ({
     {
       name: t('quiz.eWallet'),
       subtitle: t('quiz.transferEWallet'),
-      click: 'eWallet'
+      click: 'e-wallet'
     }
   ];
   return (

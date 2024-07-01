@@ -1,10 +1,12 @@
 import type { NextRouter } from 'next/router';
 
 interface QueryType extends Record<string, string | string[] | undefined> {}
+
 interface RedirectItem {
   logic: boolean;
   redirect: string;
 }
+
 interface RedirectList extends Array<RedirectItem> {}
 
 const withRedirect = async <T extends QueryType>(
@@ -16,23 +18,31 @@ const withRedirect = async <T extends QueryType>(
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
   );
-  // Add logic and redirect pathname in here
+
   const redirectList: RedirectList = [
     {
-      logic: query?.lead !== undefined && query?.quizId !== undefined,
-      redirect: `/play/quiz/${query?.quizId as string}/leaderboard`
+      logic: query?.l !== undefined && query?.qi !== undefined,
+      redirect: `/play/quiz/${query?.qi as string}/leaderboard`
+    },
+    {
+      logic: query?.withdrawal !== undefined && query?.quizId !== undefined,
+      redirect: `/withdrawal?quizId=${query?.quizId as string}`
     },
     {
       logic: query?.quizId !== undefined,
       redirect: `/play/quiz/${query?.quizId as string}`
     },
     {
-      logic: query?.withdrawal !== undefined,
-      redirect: `/withdrawal`
+      logic: query?.qi !== undefined,
+      redirect: `/play/quiz/${query?.qi as string}`
     },
     {
-      logic: query?.circleId !== undefined,
-      redirect: `/connect/post/${query?.circleId as string}`
+      logic: query?.ci !== undefined,
+      redirect: `/connect/post/${query?.ci as string}`
+    },
+    {
+      logic: query?.ti !== undefined,
+      redirect: `/play/tournament/${query?.ti as string}`
     }
   ];
 
@@ -50,7 +60,9 @@ const withRedirect = async <T extends QueryType>(
   ) {
     const redirectItem = redirectList.find(item => item.logic);
     if (redirectItem !== undefined && redirectItem !== null) {
-      await router.push({ pathname: redirectItem.redirect });
+      await router.push(redirectItem.redirect);
+    } else {
+      await router.push('/homepage');
     }
   }
 };

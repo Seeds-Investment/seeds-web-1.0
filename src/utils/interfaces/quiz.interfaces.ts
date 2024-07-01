@@ -7,6 +7,7 @@ export interface JoinQuizI {
   phone_number: string;
   promo_code: string;
   invitation_code: string;
+  is_use_coins: boolean;
 }
 
 export enum QuizStatus {
@@ -68,6 +69,7 @@ export interface IDetailQuiz {
   participant_status: string;
   created_at: Date;
   is_need_invitation_code: boolean;
+  quiz_unique_id: string;
 }
 
 export const initialDetailQuiz = {
@@ -118,6 +120,8 @@ export interface IQuiz {
   ended_at: Date;
   admission_fee: number;
   is_played: boolean;
+  status: string;
+  quiz_unique_id: string;
 }
 
 export interface IQuizSettings {
@@ -155,7 +159,10 @@ export interface QuestionDataI {
 
 export interface Answer {
   question: string;
+  question_image: string;
+  question_video: string;
   options: Options;
+  option_image: Options;
   description?: string;
 }
 

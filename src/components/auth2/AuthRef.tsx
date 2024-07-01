@@ -1,8 +1,11 @@
 import SeedyAuthRef from '@/assets/auth/SeedyAuthRef.png';
+import Toast from '@/containers/circle/[id]/Toast';
+import { AuthLocalStorage } from '@/helpers/authLocalStorage';
 import TrackerEvent from '@/helpers/GTM';
 import withRedirect from '@/helpers/withRedirect';
 import {
   checkRefCode,
+  editGuestInfo,
   loginPhoneNumber,
   loginSSO,
   register
@@ -11,6 +14,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { fetchExpData } from '@/store/redux/features/exp';
 import { fetchUserData } from '@/store/redux/features/user';
 import { useAppDispatch } from '@/store/redux/store';
+import type { AuthRefI } from '@/utils/interfaces/auth.interface';
 import {
   Button,
   Dialog,
@@ -23,135 +27,96 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import AuthCommonInput from './AuthCommonInput';
 
-interface IAuthRef {
-  open: boolean;
-  handleOpen: () => void;
-  setFormData: React.Dispatch<
-    React.SetStateAction<{
-      oldPassword: string;
-      phoneNumber: string;
-      birthDate: string;
-      name: string;
-      seedsTag: string;
-      refCode: string;
-      password: string;
-      provider: { provider: string; identifer: string };
-      token: string;
-    }>
-  >;
-  formData: {
-    oldPassword: string;
-    phoneNumber: string;
-    birthDate: string;
-    name: string;
-    seedsTag: string;
-    refCode: string;
-    password: string;
-    provider: {
-      provider: string;
-      identifer: string;
-    };
-    token: string;
-  };
-  loginForm: {
-    phoneNumber: string;
-    password: string;
-    platform: string;
-    os_name: string;
-  };
-}
-
-interface EventObject {
-  target: {
-    name: string;
-    value: string;
-  };
-}
-
-const AuthRef: React.FC<IAuthRef> = ({
+const AuthRef: React.FC<AuthRefI> = ({
   open,
   handleOpen,
   setFormData,
   formData,
-  loginForm
-}: IAuthRef) => {
+  loginForm,
+  guest
+}: AuthRefI) => {
   const dispatch = useAppDispatch();
   const { data } = useSession();
   const { t } = useTranslation();
   const [loadingSkip, setLoadingSkip] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const isQuery = Object.keys(router.query).length < 0;
+  const isQuery = Object.keys(router.query).length > 0;
   const [error, setError] = useState(false);
+  const [openToast, setOpenToast] = useState<{ status: boolean; text: string }>(
+    { status: false, text: '' }
+  );
 
   const handleTracker = async (): Promise<void> => {
     await dispatch(fetchUserData());
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
-    TrackerEvent({
-      event: 'Seeds_login_web',
-      userId: responseUser.id
-    });
-    handleOpen();
-    if (isQuery) {
-      await withRedirect(router, router.query);
-    } else {
-      await router.push('/homepage');
-      TrackerEvent({
-        event: `Seeds_view_home_page_web`,
-        userId: responseUser.id,
-        pageName: 'homepage'
-      });
-    }
+     TrackerEvent({
+       event: 'SW_auth_login',
+       userData: responseUser
+     });
+     handleOpen();
+     if (isQuery) {
+       await withRedirect(router, router.query);
+     } else {
+       await router.push('/homepage');
+       TrackerEvent({
+         event: `SW_homepage_page`,
+         userData: responseUser
+       });
+     }
   };
 
   const handleSubmit = async (): Promise<void> => {
     try {
-      const response = await loginPhoneNumber(loginForm);
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         const SSOresponse = await loginSSO({
           identifier: data.accessToken,
           provider: data.provider
         });
-        window.localStorage.setItem('accessToken', SSOresponse.accessToken);
-        window.localStorage.setItem('refreshToken', SSOresponse.refreshToken);
-        window.localStorage.setItem('expiresAt', SSOresponse.expiresAt);
-        window.localStorage.setItem('isBannerOpen', 'true');
+        AuthLocalStorage(SSOresponse);
         await handleTracker();
-      } else if (response.status === 200) {
-        window.localStorage.setItem('accessToken', response.accessToken);
-        window.localStorage.setItem('refreshToken', response.refreshToken);
-        window.localStorage.setItem('expiresAt', response.expiresAt);
-        window.localStorage.setItem('isBannerOpen', 'true');
-        setFormData({ ...formData, phoneNumber: '', password: '' });
+      } else {
+        const response = await loginPhoneNumber(loginForm);
+        AuthLocalStorage(response);
         await handleTracker();
-      } else if (response.data.message === 'wrong phone number or password') {
-        setLoading(false);
-        setLoadingSkip(false);
-        setError(true);
       }
     } catch (error: any) {
       setLoading(false);
       setLoadingSkip(false);
-      toast(error, { type: 'error' });
+      setOpenToast({
+        status: true,
+        text: error?.response?.data?.message
+      });
     }
   };
 
   const handleSkip = async (): Promise<void> => {
     try {
       setLoadingSkip(true);
-      const response = await register(formData);
-      if (response === null) {
-        throw new Error(response);
+      if (guest === 'guest-normal-register') {
+        const response = await editGuestInfo(formData);
+        if (response === null) {
+          throw new Error(response);
+        }
+      } else if (guest === 'register') {
+        const response = await register(formData);
+        if (response === null) {
+          throw new Error(response);
+        }
       }
       await handleSubmit();
       setError(false);
     } catch (error: any) {
+      setOpenToast({
+        status: true,
+        text: error?.response?.data?.message
+      });
       setLoadingSkip(false);
-      toast(error, { type: 'error' });
+    } finally {
+      setLoadingSkip(false);
     }
   };
 
@@ -159,20 +124,30 @@ const AuthRef: React.FC<IAuthRef> = ({
     try {
       setLoading(true);
       await checkRefCode(formData.refCode);
-      const response = await register(formData);
-      if (response === null) {
-        throw new Error(response);
+      if (guest === 'guest-normal-register') {
+        const response = await editGuestInfo(formData);
+        if (response === null) {
+          throw new Error(response);
+        }
+      } else if (guest === 'register') {
+        const response = await register(formData);
+        if (response === null) {
+          throw new Error(response);
+        }
       }
       await handleSubmit();
       setError(false);
     } catch (error: any) {
+      setOpenToast({ status: true, text: error?.response?.data?.message });
       setLoading(true);
-      toast(error, { type: 'error' });
       setError(true);
+      setFormData(prev => ({ ...prev, refCode: '' }));
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (e: EventObject): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setError(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -183,7 +158,15 @@ const AuthRef: React.FC<IAuthRef> = ({
       handler={handleOpen}
       size="sm"
       className="flex flex-col items-center rounded-3xl min-w-full"
+      dismiss={{ enabled: !(loading || loadingSkip) }}
     >
+      <Toast
+        message={openToast.text}
+        show={openToast.status}
+        onClose={() => {
+          setOpenToast({ ...openToast, status: false });
+        }}
+      />
       <DialogBody className="flex flex-col gap-4 p-10 items-center">
         <Image src={SeedyAuthRef} alt="SeedyAuthRef" className="w-[242px]" />
         <div className="flex flex-col gap-2">
@@ -204,7 +187,7 @@ const AuthRef: React.FC<IAuthRef> = ({
             type="text"
             error={error}
             required={false}
-            handleSubmit={async (e: any) => {
+            handleSubmit={async (e: React.KeyboardEvent<HTMLInputElement>) => {
               if (e.key === 'Enter') {
                 await handleConfirm();
               }
@@ -218,7 +201,7 @@ const AuthRef: React.FC<IAuthRef> = ({
           <Button
             className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-[#3AC4A0] bg-[#E0E0E091] rounded-full"
             onClick={handleSkip}
-            disabled={loading}
+            disabled={loading || loadingSkip}
           >
             {loadingSkip ? (
               <Spinner className=" h-6 w-6" />
@@ -229,7 +212,7 @@ const AuthRef: React.FC<IAuthRef> = ({
           <Button
             className="w-full flex justify-center capitalize font-poppins font-semibold text-sm text-white bg-[#3AC4A0] rounded-full"
             onClick={handleConfirm}
-            disabled={loadingSkip}
+            disabled={loading || loadingSkip}
           >
             {loading ? (
               <Spinner className=" h-6 w-6" />

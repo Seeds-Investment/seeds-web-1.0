@@ -1,9 +1,10 @@
-import { formatCurrency } from '@/helpers/currency';
+import { formatCurrency, standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import {
   getPlaySimulation,
   getPlaySimulationDetail
 } from '@/repository/play.repository';
+import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import {
   Button,
   Menu,
@@ -40,7 +41,19 @@ interface DataPlay {
 }
 
 interface props {
-  userInfo: any;
+  userInfo: UserInfo;
+}
+
+interface UserInfo {
+  preferredCurrency: string;
+  seedsTag: string;
+  id: string;
+}
+
+interface DataCoins {
+  closest_expiration_date: string;
+  total_available_coins: number;
+  total_closest_expiring_coins: number;
 }
 
 const month = [
@@ -64,6 +77,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
   const router = useRouter();
   const [playerData, setPlayerData] = useState<DataPlayer | null>(null);
   const [monthNowString, setMonthNowString] = useState<string>('');
+  const [userCoins, setUserCoins] = useState<DataCoins>();
   const [playDetail, setPlayDetail] = useState<DataPlay>({
     play_id: '08e1bdf9-d618-408b-8a2e-9fe98f66de8e',
     user_detail: {
@@ -72,13 +86,12 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
     },
     prize: [150000, 100000, 50000]
   });
-
   const fetchPlaySimulationDetail = async (currency: string): Promise<void> => {
     try {
       const res = await getPlaySimulationDetail(currency);
       setPlayDetail(res.data);
     } catch (error) {
-      console.error('Error fetching play simulation detail:', error);
+      toast.error(`Error fetching play simulation detail: ${error as string}`);
     }
   };
 
@@ -98,7 +111,16 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
       const res = await getPlaySimulation(formattedDate, currency);
       setPlayerData(res.user_rank);
     } catch (error) {
-      console.error('Error fetching play simulation:', error);
+      toast.error(`Error fetching play simulation: ${error as string}`);
+    }
+  };
+
+  const fetchTransactionSummary = async (): Promise<void> => {
+    try {
+      const res = await getTransactionSummary();
+      setUserCoins(res.data);
+    } catch (error) {
+      toast.error(`Error fetching play simulation detail: ${error as string}`);
     }
   };
 
@@ -107,6 +129,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
       if (userInfo !== undefined) {
         void fetchPlaySimulation(userInfo.preferredCurrency);
         void fetchPlaySimulationDetail(userInfo.preferredCurrency);
+        void fetchTransactionSummary();
       }
     }
   }, [userInfo]);
@@ -289,7 +312,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                     <MenuList className="rounded-2xl">
                       <div className="flex flex-col p-2 max-w-[200px]">
                         <Typography className="font-normal text-xs font-poppins text-[#262626] mt-2">
-                          Virtual cash is virtual money available for play game
+                          {t('homepage.section2.text17')}
                         </Typography>
                       </div>
                     </MenuList>
@@ -297,12 +320,12 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                 </div>
                 <h1 className="text-xl font-semibold mt-2 text-[#262626]">
                   {userInfo?.preferredCurrency ?? 'IDR'}{' '}
-                  {formatCurrency(
-                    `${playerData?.asset.toFixed(0) as string}`
-                  ) ?? 0}
+                  {formatCurrency((playerData?.asset ?? 0).toFixed(0))}
                 </h1>
                 <h3 className="text-xs mt-2 text-[#7C7C7C]">
-                  {t('homepage.section2.text2')} {playerData?.gain ?? 0}
+                  {t('homepage.section2.text2')}:{' '}
+                  {userInfo?.preferredCurrency ?? 'IDR'}{' '}
+                  {standartCurrency(playerData?.gain ?? 0).replace('Rp', '')}
                 </h3>
               </div>
               <div className="flex-row">
@@ -373,7 +396,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
                     </defs>
                   </svg>
                   <h1 className="text-base ms-2 text-[#27A590]">
-                    #{playerData?.rank}
+                    #{playerData?.rank ?? 1}
                   </h1>
                 </div>
               </div>
@@ -386,7 +409,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
               <div className="flex">
                 <Image src={goldHome} alt="Next" width={24} height={24} />
                 <h1 className="text-sm ms-2 font-bold text-[#000000]">
-                  {playerData?.prize}
+                  {userCoins?.total_available_coins ?? 0}
                 </h1>
               </div>
             </div>
@@ -395,7 +418,7 @@ const Section2: React.FC<props> = ({ userInfo }): React.ReactElement => {
               className="border border-1 rounded-full justify-center text-center py-2 mt-6 w-full bg-[#3AC4A0] text-white text-base font-semibold normal-case"
               onClick={() => {
                 router
-                  .push(`/homepage/play-assets?playId=${playDetail.play_id}`)
+                  .push(`/homepage/play/${playDetail.play_id}`)
                   .catch(err => {
                     toast(err, { type: 'error' });
                   });

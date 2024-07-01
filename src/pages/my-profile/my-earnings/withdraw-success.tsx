@@ -4,7 +4,7 @@ import BlueWarning from '@/assets/my-profile/earning/blueWarning.svg';
 import SuccessIcon from '@/assets/my-profile/earning/successIcon.svg';
 import UpperMotive from '@/assets/my-profile/earning/upperMotive.svg';
 import { standartCurrency } from '@/helpers/currency';
-import { getEarningReceiptDateEN, getEarningReceiptDateID } from '@/helpers/dateFormat';
+import { getEarningReceiptDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/earnings';
@@ -93,8 +93,8 @@ const WithdrawSuccess = (): React.ReactElement => {
                 </div>
                 <div className='text-sm md:text-base font-semibold text-right'>
                   {languageCtx?.language === 'ID'
-                    ? getEarningReceiptDateID(new Date(withdrawReceipt?.created_at ?? '2024-12-31T00:00:00.314412Z'))
-                    : getEarningReceiptDateEN(new Date(withdrawReceipt?.created_at ?? '2024-12-31T00:00:00.314412Z'))
+                    ? getEarningReceiptDate(new Date(withdrawReceipt?.created_at ?? '2024-12-31T00:00:00.314412Z'), 'id-ID')
+                    : getEarningReceiptDate(new Date(withdrawReceipt?.created_at ?? '2024-12-31T00:00:00.314412Z'), 'en-US')
                   }
                 </div>
               </div>

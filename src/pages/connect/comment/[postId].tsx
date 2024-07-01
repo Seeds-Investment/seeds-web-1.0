@@ -19,6 +19,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 interface typeOfCommentForm {
   post_id: string;
   user_id: string;
@@ -28,7 +29,7 @@ interface typeOfCommentForm {
   media_type: string;
 }
 
-interface typeOfForm {
+export interface typeOfForm {
   content_text: string;
   media_url: string;
   media_type: string;
@@ -146,7 +147,6 @@ const Comment: React.FC = () => {
     circleList: [],
     playList: []
   });
-  console.log(parent);
 
   const fetchDetailCirclePost = async (): Promise<void> => {
     try {
@@ -154,8 +154,8 @@ const Comment: React.FC = () => {
       const { data } = await getDetailCirclePost({ postId });
 
       setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Detail: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -166,8 +166,8 @@ const Comment: React.FC = () => {
       setIsLoadingComment(true);
       const { data } = await getAllComment({ postId });
       setDataComment(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Detail: ${error as string}`);
     } finally {
       setIsLoadingComment(false);
     }
@@ -184,7 +184,7 @@ const Comment: React.FC = () => {
         const response = await getUserInfo();
         setUserInfo(response);
       } catch (error) {
-        console.log(error);
+        toast.error(`Error fetching data: ${error as string}`);
       } finally {
         setIsLoading(false);
       }
@@ -410,8 +410,8 @@ const Comment: React.FC = () => {
                     }
                   }, 500);
                 }
-              } catch (_) {
-                console.log(_);
+              } catch (err) {
+                toast.error(`${err as string}`);
               }
             })();
           }, 500)
@@ -460,8 +460,8 @@ const Comment: React.FC = () => {
         mediaFile
       );
       mediaArr.push(data.path);
-    } catch (error: any) {
-      console.error('Error Post Media:', error.message);
+    } catch (error) {
+      toast.error(`Error Post Media: ${error as string}`);
     }
   };
 
@@ -512,8 +512,8 @@ const Comment: React.FC = () => {
       setHashtags([]);
       await fetchDetailCirclePost();
       await fetchComment();
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Detail: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -857,6 +857,7 @@ const Comment: React.FC = () => {
                             setPages={setPages}
                             setMedia={setMedia}
                             setForm={setForm}
+                            form={form}
                           />
                         )}
                       </form>

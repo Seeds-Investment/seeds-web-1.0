@@ -1,5 +1,5 @@
-import AuthBoarding from '@/components/auth/AuthBoarding';
-import AuthCarousel from '@/components/auth/AuthCarousel';
+import AuthBoarding from '@/components/auth2/AuthBoarding';
+import AuthCarousel from '@/components/auth2/AuthCarousel';
 import AuthLayout from '@/containers/auth/AuthLayout';
 
 const AuthIndex: React.FC = () => {

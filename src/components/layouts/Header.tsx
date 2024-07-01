@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Redirecting from '../popup/Redirecting';
 
 interface VariableHeader {
-  className?: any;
+  className?: string;
 }
 
 const pathUrl = [
@@ -79,11 +79,13 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
       localStorage.getItem('accessToken') !== null &&
       parseInt(localStorage.getItem('expiresAt') as string) > Date.now() / 1000
     ) {
-      router
-        .push('/homepage')
-        .then()
-        .catch(() => {});
-      handleOpen();
+      if (window.location.pathname !== '/auth/change-phone-number') {
+        router
+          .push('/homepage')
+          .then()
+          .catch(() => {});
+        handleOpen();
+      }
     } else {
       localStorage.removeItem('accessToken');
     }
@@ -116,8 +118,9 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                 key={item.id}
                 onClick={() => {
                   TrackerEvent({
-                    event: `Seeds_view_landing_page_web`,
-                    pageName: item.name
+                    event: `SW_landing_${item.name
+                      .toLowerCase()
+                      .replace(' ', '_')}_page`
                   });
                 }}
               >
@@ -128,7 +131,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
         </section>
         <section className="flex items-center gap-8">
           <Link
-            href="/auth2"
+            href="/auth"
             className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
           >
             {t('header.join')}
@@ -183,7 +186,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </Menu>
         </section>
       </section>
-      {/* TODO: END NEW HEADER */}
+      ;{/* TODO: END NEW HEADER */}
       <section className="flex xl:hidden justify-between mx-4 items-center h-20">
         <Link href="https://seeds.finance">
           <Image alt="SeedsLogo" src={SeedLogo} height={46} />
@@ -218,11 +221,10 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
                         ? 'text-[#3AC4A0]'
                         : 'text-[#7C7C7C]'
                     }`}
-                    onClick={() => {
+                    onClick={async () => {
                       setOpenMenu(false);
                       TrackerEvent({
-                        event: `Seeds_view_landing_page_web`,
-                        pageName: item.name
+                        event: `SW_landing_${item.name.toLowerCase()}_page`
                       });
                     }}
                   >
@@ -233,7 +235,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
             })}
             <MenuItem className="flex justify-center hover:bg-transparent focus:bg-transparent">
               <Link
-                href="/auth2"
+                href="/auth"
                 className=" flex justify-center items-center cursor-pointer text-base font-semibold font-poppins text-white w-[140px] h-[42px] bg-[#3AC4A0] rounded-full"
               >
                 {t('header.join')}
@@ -291,6 +293,7 @@ const Header: React.FC<VariableHeader> = ({ className }: VariableHeader) => {
           </MenuList>
         </Menu>
       </section>
+      ;
     </nav>
   );
 };

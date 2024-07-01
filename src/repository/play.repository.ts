@@ -69,15 +69,9 @@ export const getLeaderboardByPlayId = async (playId: string): Promise<any> => {
 
 export const getPlayById = async (id: string): Promise<any> => {
   try {
-    const accessToken = localStorage.getItem('accessToken');
-
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
     return await playService(`/${id}`, {
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Accept: 'application/json'
       }
     });
   } catch (error) {
@@ -224,7 +218,7 @@ export const getTrendingPlayList = async (): Promise<any> => {
     if (accessToken === null || accessToken === '') {
       return await Promise.resolve('Access token not found');
     }
-    
+
     return await playService.get(`/trending`, {
       headers: {
         Accept: 'application/json',
@@ -336,7 +330,6 @@ export const createOrderPlay = async (
 export const getOperOrderList = async (
   id: string,
   params: { currency: string }
-
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -357,11 +350,9 @@ export const getOperOrderList = async (
 };
 
 export const cancelOrderList = async (
- 
   playId: string,
- 
-  orderId: string
 
+  orderId: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -415,7 +406,9 @@ export const getActiveAsset = async (params: AssetParams): Promise<any> => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const timeoutId = setTimeout(() => { controller.abort(); }, timeoutDuration);
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, timeoutDuration);
 
     const response = await playService(`/assets/active`, {
       params,
@@ -715,5 +708,60 @@ export const validateInvitationCode = async (
   } catch (error) {
     console.error('Error validating invitation code:', error);
     throw error;
+  }
+};
+
+export const getAllPlayCenter = async (
+  page: number,
+  limit: number,
+  currency: string,
+  search: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+
+    const response = await playCenterService.get(`/list`, {
+      params: {
+        page,
+        limit,
+        currency,
+        search
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching play list:', error);
+    throw error;
+  }
+};
+
+export const getUserRankLeaderboard = async (
+  userId: string,
+  playId: string,
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await playService(`/rank/${userId}?play_id=${playId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };

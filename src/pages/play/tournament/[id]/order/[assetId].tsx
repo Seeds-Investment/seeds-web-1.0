@@ -17,6 +17,7 @@ import {
   getPlayBallance
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
 import {
   Avatar,
   Button,
@@ -69,27 +70,6 @@ interface LastPrice {
   open: number;
 }
 
-export interface SuccessOrderData {
-  id: string;
-  play_id: string;
-  user_id: string;
-  asset: AssetCreate;
-  type: 'BUY' | 'SELL';
-  lot: number;
-  bid_price: number;
-  stop_loss: number;
-  pnl: number;
-  created_at: string;
-  updated_at: string;
-}
-
-interface AssetCreate {
-  id: string;
-  play_id: string;
-  user_id: string;
-  limit_type: string;
-}
-
 interface AssetPortfolio {
   asset_id: string;
   play_id: string;
@@ -129,10 +109,12 @@ const BuyPage: React.FC = () => {
     play_id: '',
     user_id: '',
     asset: {
-      id: '',
-      play_id: '',
-      user_id: '',
-      limit_type: ''
+      asset_id: '',
+      asset_name: '',
+      asset_icon: '',
+      asset_ticker: '',
+      asset_exchange: '',
+      asset_type: ''
     },
     type: 'BUY',
     lot: 0,
@@ -504,7 +486,7 @@ const BuyPage: React.FC = () => {
       {isLoading && <Loading />}
       <CCard className="flex flex-col w-full border-none rounded-xl">
         {router.query.transaction === 'buy' && (
-          <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px]">
+          <div className="relative flex flex-col bg-gradient-to-r from-[#3AC4A0] from-50% to-[#9CFFE5] rounded-[12px] p-[24px] overflow-hidden">
             <Image
               alt=""
               src={BannerCircle}
@@ -516,9 +498,9 @@ const BuyPage: React.FC = () => {
             <Typography className="z-10 text-3xl font-poppins font-semibold  text-[#FFFFFF]">
               {`${standartCurrency(
                 router.query?.transaction === 'buy'
-                  ? ballance?.balance
-                  : portfolio?.total_lot * (data?.lastPrice?.open ?? 0)
-              ).replace('Rp', userInfo?.preferredCurrency as string)}`}{' '}
+                  ? ballance?.balance ?? 0
+                  : (portfolio?.total_lot ?? 0) * (data?.lastPrice?.open ?? 0)
+              ).replace('Rp', userInfo?.preferredCurrency ?? 'IDR')}`}{' '}
             </Typography>
           </div>
         )}
@@ -576,7 +558,7 @@ const BuyPage: React.FC = () => {
                       );
                     }}
                     className="w-full border rounded-xl py-3 px-4 border-[#7C7C7C] text-base text-[#7C7C7C] focus:border-seeds-button-green font-poppins outline-none pr-16"
-                    placeholder={`Total “${data?.realTicker as string}”`}
+                    placeholder={`Total ${data?.realTicker ?? ''}`}
                   />
                 </div>
                 <Typography className="mt-2 flex gap-1 font-poppins text-xs font-normal text-[#3C49D6]">

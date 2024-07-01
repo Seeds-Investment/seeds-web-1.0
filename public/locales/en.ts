@@ -9,7 +9,7 @@ export default {
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
-    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
+    company: { title: 'Company', list1: 'About Us', seedsEventlist2: 'Career' },
 
     support: { title: 'Support' },
     legal: {
@@ -328,9 +328,11 @@ export default {
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
-        title: ['Refund Policy'],
+        title: ['Refund Policy', 'General Policy', 'Refund Procedure'],
         desc: [
-          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.'
+          'Refund Policy is a provision and/or mechanism for refunding user funds by Seeds resulting from the reasons mentioned in these Terms and Conditions.\t',
+          "This Refund Policy is applied to the features provided by the Seeds Party. This policy constitutes the steps and methods regarding the refund procedures carried out by SEEDS towards Users.\t Events that can be categorized as Refund:\n a. When there is a problem with the application caused by SEEDS Parties\n b. In the event of the Play Arena Feature being unilaterally canceled by SEEDS due to noncompliance with the following requirements\n c. Refunds do not apply to Users who have :\t i. Paid for tickets in the SEEDS application and due to their negligence wish to apply for a refund\n ii. Set the premium circle price and want to apply for a refund for the user's negligence in setting the premium circle feature price.\t",
+          "Refund applied to paid features within the Seeds application including but not limited to:\na. Premium Circle\n b. Play Arena\n c. Play Quiz\t User who would like to refund are required to send 'Refund Request' via Email info@seeds.finance\t Refund Request includes:\n a. User's Full Name\n b. Phone Number\n c. User Account Name\n d. Email Address\n e. Refund Request Amount\n f. Evidence and reason for refund\t Seeds will verify the proof of application and proof of payment submited by user who have failed to make a payment for 3 working days.\t After verification by SEEDS Parties and the application cant be proven correct, SEEDS parties will transfer the refund either through banking institutions or through non-bank institutions (E-Money and / or e-wallet) based on the nominal value of the verification results by SEEDS.\t If it is proven that the refund application is not an authentic application from the verification by SEEDS, the application will get rejected and SEEDS reserves the right not to respond to the refund application.\t SEEDS reserves the right to take necessary legal action against any unauthentic refund requests by users."
         ]
       }
     },
@@ -518,6 +520,7 @@ export default {
       }
     },
     circleMembership: {
+      reply: 'Reply...',
       title: 'Circle Membership',
       announcement:
         'This Terms and Condition (“Terms”) is entered into force as of the date you click the “Accept Terms” button, or other equivalent button, indicating your acceptance of these terms (the “Effective Date”) between PT Benih Investasi Teknologi, a company having its domicile at Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and the entity agreeing to these terms (“Circle Owner”).',
@@ -656,14 +659,10 @@ export default {
     }
   },
   authBoarding: {
-    guest1: 'Login',
-    guest2: ' as ',
-    guest3: 'Guest',
+    guest: 'Login as Guest',
     term: 'By clicking sign up, you agree to Seeds',
     term2: 'Terms and Conditions',
-    login: 'Login',
-    signup: 'Sign up',
-    or: ' or '
+    login: 'Login or Sign up'
   },
   authLogin: {
     title1: 'Let’s Input!',
@@ -708,7 +707,7 @@ export default {
       month: 'MM',
       year: 'YYYY',
       validation: {
-        seedsTag: 'Seeds Tag alredy used',
+        seedsTag: 'SeedsTag already used',
         regex: 'SeedsTag cannot contain spaces or symbols, please delete!',
         dob: 'Minimun  age 12 Years old'
       }
@@ -946,7 +945,8 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
-      button: 'Pay'
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -1052,7 +1052,9 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Find or create a Circle that matches your interests in Seeds.',
+      join: 'Joined',
+      sort: 'Sort by:'
     },
     list: {
       title: 'Circle List',
@@ -1065,13 +1067,15 @@ export default {
       title3: 'Circle Balance'
     },
     create: {
-      title: 'Create Cirlce',
+      title: 'Create Circle',
       cover: 'Add Cover',
       image: 'Add Image',
       name: {
         label: 'Circle Name',
         placeholder: 'type circle name',
-        error: 'Input Circle Name'
+        error: 'Input Circle Name',
+        duplicate1: 'The name',
+        duplicate2: 'is already in use!',
       },
       hashtag: {
         label: 'Hashtag',
@@ -1214,6 +1218,25 @@ export default {
           option4: 'On Progress'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidCircle: 'Pending Paid Membership',
+      circleFee: 'Membership Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      paymentSuccessDescription:
+        'Your premium circle payment has been successfully processed',
+      paymentFailed: 'Payment Failed',
+      paymentFailedDescription:
+        'We can’t process your payment, Check your internet connection and try again.',
+      paymentFailedWarning: 'Payment Failed Circle Premium'
     }
   },
   articleList: {
@@ -1224,7 +1247,14 @@ export default {
     text5: "Don't miss popular financial news here!",
     text6: 'You may like',
     text7: 'News',
-    text8: 'See all'
+    text8: 'See all',
+    article: {
+      sort: {
+        all: 'All',
+        relevant: 'Most Relevant',
+        recent: 'Most Recent'
+      }
+    }
   },
   validationErrors: {
     required: 'This field is required',
@@ -1241,6 +1271,8 @@ export default {
     invalidConfirmPassword: 'Invalid Confirm Password'
   },
   landingPageV2: {
+    placeHolder1: 'What do you want to discuss?',
+    placeHolder2: 'Start a post',
     redirectError: 'Please Re-login',
     product: {
       section1: {
@@ -1298,7 +1330,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Report Cirlce',
+      title: 'Report Circle',
       subtitle1: 'This circle will be reported',
       subtitle2: 'Why are you reporting this circle?',
       option1: 'Spam',
@@ -1523,7 +1555,21 @@ export default {
     },
     placeholder1: 'What do you want to discuss? ...',
     placeholder2:
-      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets'
+      'Use @ to tag user, @ to tag circle, # to add hashtags user, $ to tag assets',
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidSocial: 'Pending Paid Post',
+      socialFee: 'Content Premium',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
+    }
   },
   landingV2: {
     section1: {
@@ -1651,7 +1697,8 @@ export default {
       text13: 'Now in',
       text14: 'See More',
       text15: 'Please Login to enter the arena simulation',
-      text16: 'Login to enter arena simulation'
+      text16: 'Login to enter arena simulation',
+      text17: 'Virtual cash is virtual money available for play game'
     },
     section3: {
       text1: 'Your all-in-one source for financial updates',
@@ -1695,6 +1742,7 @@ export default {
     questionsAmount: '{{questions}} Questions',
     questions: 'Questions',
     quiz: 'Quiz',
+    invitationCode: 'Invitation Code',
     entranceFee: 'Entrance Fee',
     played: 'Played',
     duration: 'Duration',
@@ -1707,6 +1755,7 @@ export default {
     sponsors: 'Sponsor(s)',
     community: 'Community',
     join: 'Join',
+    loading: 'Loading...',
     reviewQuiz: 'Review Quiz',
     continue: 'Continue',
     start: 'start',
@@ -1726,10 +1775,18 @@ export default {
     phone:
       "It's like calling a friend for help, and they are always ready to help you.",
     vote: 'Display a bar chart that shows the highest percentage of correct answers.',
+    questionLevel: 'Question Level',
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    questionDescription1: 'You will do',
+    questionDescription2:
+      'questions in this Quiz! There are 3 levels: easy, medium, and hard. Set your pace for the best score!',
     incorrect: 'Incorrect',
     correct: 'Correct',
     anotherQuiz: 'Another Quiz',
     leaderboard: 'Leaderboard',
+    leaderboardEmpty: 'Leaderboard data is empty.',
     remainingTime: 'Your remaining time',
     currentRank: 'Your Current Rank',
     currentScore: 'Your Current Score',
@@ -1850,10 +1907,43 @@ export default {
     earn: ' You earn IDR ',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
     text1: 'Challenge your finance knowledge with these quizzes.',
-    text2: 'Check out the latest rankings for top quizzes!'
+    text2: 'Check out the latest rankings for top quizzes!',
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidQuiz: 'Pending Paid Quiz',
+      quizFee: 'Quiz Fee',
+      lifelinesFee: 'Lifeline Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
+    },
+    shareQuiz: 'Share This Quiz',
+    playId: 'Quiz ID',
+    shareLinks: 'Share Link'
+  },
+  micrositeQuiz: {
+    errorEmailIncorrect: 'Please input your email correctly',
+    errorEmailAlready: 'Oops,  Your email already registered',
+    errorPhone: 'Oops, Your number already registered',
+    name: 'Name',
+    placeName: 'Enter your name',
+    email: 'Email',
+    placeEmail: 'Enter your email',
+    save: 'Save',
+    rank: 'Rank',
+    player: 'Players',
+    point: 'Total Point'
   },
   tournament: {
     myPlay: 'My Play',
+    open: 'Open',
     active: 'Active',
     ended: 'Ended',
     canceled: 'Canceled',
@@ -1871,9 +1961,9 @@ export default {
     detailAccessCode: 'Input Access Code',
     detailBannerTotalRewards: 'Total Rewards',
     entranceFee: 'Entrance Fee',
-    shareArena: "Share This Arena",
-    shareLinks: "Share Link",
-    playId: "Play ID",
+    shareArena: 'Share This Arena',
+    shareLinks: 'Share Link',
+    playId: 'Play ID',
     free: 'Free',
     join: 'Join',
     start: 'Start',
@@ -1886,6 +1976,24 @@ export default {
     leaderboardBanner4: 'Leaderboard',
     tutorialTournament: 'Tournament Tutorial',
     remainingTimeText: 'Tournament was ended!',
+    winnerModalTitle: 'Congrats you won the Tournament!',
+    looseModalTitle: 'Not bad! You made it to',
+    payment: {
+      paymentMethod: 'Payment Method',
+      pendingPaidTournament: 'Pending Paid Tournament',
+      tournamentFee: 'Tournament Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      virtualNumber: 'Your Virtual Account Number',
+      successful: 'Successful',
+      pending: 'Pending Paid Tournament',
+      recurringSaved: 'Your recurring has been saved!'
+    },
     clock: {
       days: 'd',
       hours: 'h',
@@ -1893,14 +2001,19 @@ export default {
       seconds: 's'
     },
     tournamentCard: {
-      player: 'Player(s)',
+      player: 'Player',
+      players: 'Players',
       duration: 'Duration',
       joined: 'Joined',
       fee: 'Fee',
       openButton: 'In Game',
       joinButton: 'Get Ticket',
+      leaderboard: 'Leaderboard',
+      ended: 'Ended',
+      canceled: 'Canceled',
       share: 'Share',
-      days: 'Day(s)'
+      day: 'Day',
+      days: 'Days'
     },
     leaderboard: {
       lastUpdated: 'Last updated: ',
@@ -1988,9 +2101,12 @@ export default {
       }
     },
     floatingButton: {
-      text1: "Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!",
-      text2: "Have good news in the play arena? Share it with your friends and find experts for more insights.",
-      text3: "Don't forget to read Play Arena's terms and conditions before you start playing.",
+      text1:
+        'Still not sure about how to play in Play Arena? Check out the video tutorial here and follow the steps! Learn more about play arenas and get rewards!',
+      text2:
+        'Have good news in the play arena? Share it with your friends and find experts for more insights.',
+      text3:
+        "Don't forget to read Play Arena's terms and conditions before you start playing."
     },
     watchlist: {
       watchlist: 'Watchlist',
@@ -2020,14 +2136,126 @@ export default {
     }
   },
   seedsEvent: {
-    search: "Search",
-    enter: "Enter",
-    past: "PAST",
-    today: "TODAY",
-    thisMonth: "THIS MONTH",
-    upcoming: "UPCOMING",
+    myEvent: "My Event",
+    search: 'Search',
+    enter: 'Enter',
+    past: 'Past Event',
+    today: 'Today',
+    thisMonth: 'This Month',
+    upcoming: 'Upcoming Event',
+    myActive: "Active Event",
+    myPast: "Past Event",
     blank1: 'Opps,  There’s No Event Yet',
     blank2: 'Stay tuned for more updates!',
+    eventDetails: "Event Details",
+    entranceFee: "Entrance Fee",
+    free: "Free",
+    seeYourTicket: "See Your Ticket",
+    seeEventLink: "See Event's Link",
+    checkCertificate: "Check Certificate",
+    seeEvent: "See Event",
+    booking: {
+      bookNow: "Book Now",
+      seeTicket: "See Ticket",
+      bookingDetails: "Booking Details",
+      name: "Name",
+      phone: "Phone Number",
+      email: "Email Address",
+      inputName: "Input your name",
+      inputPhone: "Input your phone number",
+      inputEmail: "Input your email address",
+      bookInfo: "Tickets that have been purchased will be sent to the email that has been filled in.",
+      continue: "Continue",
+    },
+    pay: "Pay",
+    eWalletLabel: "",
+    payment: {
+      title: 'Payment Method',
+      virtualAccountLabel: 'Virtual Account',
+      eWalletLabel: 'E-Wallet',
+      button: 'Pay',
+      eventFee: "Event's Fee",
+      howToPay: "How to Pay",
+      WalletForm: {
+        title: 'Enter {{wallet}} Number',
+        phoneLabel: '{{wallet}} Number',
+        phonePlaceholder: '8xxxxxxxx',
+        paymentDeadline: 'Pay before {{date}}',
+        admissionFeeLabel: "Event's Fee",
+        adminFeeLabel: 'Admin Fee',
+        serviceFeeLabel: 'Service Fee',
+        adminFeeDiscountLabel: 'Admin Fee Discount ',
+        button: 'Pay',
+        seedsCoin: 'Seeds Coin Redeemed'
+      },
+      VirtualAccountGuide: {
+        title: '{{bank}} Virtual Account',
+        bankName: 'Bank {{bank}}',
+        accountNumberLabel: 'No. rekening',
+        copy: 'Copy',
+        continue: 'Continue',
+        accountNameLabel: 'Virtual Account Name',
+        admissionFeeLabel: "Event's Fee",
+        adminFeeLabel: 'Admin',
+        note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours.',
+        instructionMessage: 'Click "Continue" to start the process and get payment instructions.',
+        instructionLabel: 'mBanking Transfer Instructions',
+        step1: {
+          1: 'Choose',
+          2: 'm-Transfer > {{provider}} Virtual Account.'
+        },
+        step2: {
+          1: 'Enter',
+          2: 'nomor Virtual Account',
+          3: 'and choose',
+          4: 'Send'
+        },
+        step3: {
+          1: 'Check the information shown on the screen. Make sure the Merchant is',
+          2: 'Seeds, Total bill',
+          3: 'is correct and your username',
+          4: 'If true, Select',
+          5: 'Ya'
+        },
+        step4: {
+          1: 'Enter your m-{{provider}} PIN and select',
+          2: 'OK'
+        }
+      },
+      receipt: {
+        paymentMethod: 'Payment Method',
+        pendingPaidEvent: 'Pending Paid Event',
+        tournamentFee: 'Event Fee',
+        adminFee: 'Admin Fee',
+        serviceFee: 'Service Fee',
+        discountFee: 'Discount Fee',
+        discountCoins: 'Discount Coins',
+        totalAmount: 'Total Amount',
+        idTransaction: 'ID Transaction',
+        close: 'Close',
+        virtualNumber: 'Your Virtual Account Number',
+        successful: 'Successful',
+        pending: 'Pending Paid Event',
+        recurringSaved: 'Your recurring has been saved!',
+        seeDetail: "See Detail Event",
+        seeTicket: "See Ticket",
+        refreshPage: "Refresh Payment Status",
+        messageUncomplete: "Complete the payment to see ticket's details",
+        messageComplete: "Payment completed.",
+      },
+    },
+    ticket: {
+      nameEvent: "Name Event",
+      name: "Name",
+      phoneNumber: "Phone Number",
+      emailAddress: "Email Address",
+      totalPrice: "Total Price",
+      myEvents: "My Events",
+      checkIn: "Check In",
+      checkOut: "Check Out",
+      notificationMethod: "Notification Method",
+      notificationModalMessage: "Let’s kept up to date!  Choose your preference in notifications.",
+    }
   },
   earning: {
     noData: "There is no data yet",
@@ -2037,6 +2265,7 @@ export default {
     withdraw: "Withdraw",
     completed: "Completed",
     onProgress: "On Progress",
+    rejected: "Rejected",
     myEarnings: "My Earnings",
     earningHistory: "Earning History",
     bankTransfer: "Bank Transfer",
@@ -2179,5 +2408,29 @@ export default {
   },
   play: {
     keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Oops, No Account Opened Yet',
+    stayTuned: 'Stay tuned for the next update!',
+    register: 'Register Now'
+  },
+  playCenter: {
+    text1: 'My Latest Play',
+    text2: 'Leaderboards',
+    text3: 'Let’s check your detailed score!',
+    text4: 'Duration',
+    text5: 'days',
+    text6: 'Search',
+    text7: 'List Quiz',
+    text8: 'Top Quiz',
+    text9: 'Last Update : ',
+    text10: 'Your Current Rank',
+    text11: 'Scoring System',
+    text12: '1st winner getting 500 points',
+    text13: '2nd winner getting 300 points',
+    text14: '3rd winner getting 100 points',
+    text15: 'Participant 50 points',
+    text16: 'Season',
+    text17: 'All Time'
   }
 };

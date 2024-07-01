@@ -37,14 +37,14 @@ const Withdrawal: React.FC = () => {
       window.localStorage.getItem('accessToken') === null ||
       expiredUnixTime < currentUnixTime
     ) {
-      await withRedirect(router, { withdrawal: 'true' }, '/auth');
+      await withRedirect(router, { wti: quizId }, '/auth');
       toast.error(t('landingPageV2.redirectError'));
     }
   };
 
   useEffect(() => {
     void redirect();
-  }, []);
+  }, [quizId]);
 
   const handleSubmit = async () => {
     const res = await submitQuizCashout({

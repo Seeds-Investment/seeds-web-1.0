@@ -188,7 +188,13 @@ const CategoryById: React.FC = () => {
             {classList.map(item => (
               <div
                 key={item.id}
-                className={`py-4 px-3 flex justify-between items-center bg-[#DCFCE4] rounded-2xl relative overflow-hidden`}
+                className={`py-4 px-3 flex justify-between items-center rounded-2xl relative overflow-hidden ${
+                  item?.is_owned
+                    ? item.post_test_score !== 0
+                      ? 'bg-[#D8F9A8]'
+                      : 'bg-[#FFEBEB]'
+                    : 'bg-[#DCFCE4]'
+                }`}
               >
                 <CourseCard item={item} />
               </div>

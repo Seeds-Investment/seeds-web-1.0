@@ -1,18 +1,36 @@
 import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import TagPrice from '@/assets/academy/tag-price.svg';
-import LanguageContext from '@/store/language/language-context';
-import { formatCurrency } from '@/utils/common/currency';
+import { getUserInfo } from '@/repository/profile.repository';
 import { type DetailClassI } from '@/utils/interfaces/academy.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
-const CourseCard: React.FC<{ item: DetailClassI }> = ({ item }) => {
+const CourseCard: React.FC<{
+  item: DetailClassI;
+}> = ({ item }) => {
   const { t } = useTranslation();
-  const languageCtx = useContext(LanguageContext);
   const router = useRouter();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error) {
+        toast(`Error fetching data user: ${error as string}`);
+      }
+    };
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -30,9 +48,9 @@ const CourseCard: React.FC<{ item: DetailClassI }> = ({ item }) => {
                     {t('academy.courseFee')}
                   </span>{' '}
                   :{' '}
-                  {languageCtx.language === 'EN'
-                    ? `${item?.price?.usd as number} USD`
-                    : `IDR ${formatCurrency(item?.price?.idr as number)}`}
+                  {userInfo?.preferredCurrency !== undefined
+                    ? userInfo?.preferredCurrency
+                    : 'IDR'}
                 </Typography>
               </>
             )}

@@ -43,7 +43,7 @@ const Academy: React.FC = () => {
         const dataInfo = await getUserInfo();
         setUserInfo(dataInfo);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        toast(`Error fetching data user: ${error as string}`);
       }
     };
     fetchData()

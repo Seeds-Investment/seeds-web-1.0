@@ -11,6 +11,7 @@ import Image from 'next/image';
 import IDFlag from 'public/assets/images/flags/ID.png';
 import USFlag from 'public/assets/images/flags/US.png';
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 const LanguageSelector: React.FC = () => {
   const languageCtx = useContext(LanguageContext);
@@ -18,7 +19,7 @@ const LanguageSelector: React.FC = () => {
   const handleLanguageChange = (language: 'EN' | 'ID'): void => {
     languageCtx.languageHandler(language);
     setTranslationToLocalStorage(language).catch(err => {
-      console.log(err);
+      toast(`Error setting language: ${err as string}`);
     });
   };
 

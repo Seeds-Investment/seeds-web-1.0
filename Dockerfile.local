@@ -1,7 +1,7 @@
 # How to BUILD
 # YOU MUST GO TO next.config.js & READ LINE 10!
 # run script `npm run build`
-# run script `docker build --platform linux/amd64 -t registry.quadrakaryasantosa.com/seeds-[change-with-your-name]:v0.1 .` DON'T FORGET TO INCREMENTAL THE VERSION!
+# run script `docker build -f Dockerfile.local --platform linux/amd64 -t registry.quadrakaryasantosa.com/seeds-[change-with-your-name]:v0.1 .` Version is incremental. DON'T FORGET TO INCREMENTAL THE VERSION!
 # run script `docker push registry.quadrakaryasantosa.com/seeds-[change-with-your-name]:v0.1`
 # you already build docker image with name registry.quadrakaryasantosa.com/seeds-[change-with-your-name]:v0.1
 

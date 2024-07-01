@@ -7,8 +7,8 @@ import AssetPagination from '@/components/AssetPagination';
 import MyEventCard from '@/components/homepage/myEventCard';
 import withAuth from '@/helpers/withAuth';
 import {
-    type EventListParams,
-    getEventList,
+  type EventListParams,
+  getEventList,
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -17,6 +17,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { EventIcon } from 'public/assets/vector';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -185,9 +186,12 @@ const MyEvent: React.FC = () => {
             onClick={ async() => await router.push('/homepage/event')}
             className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]'
           >
-            <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 6.093V1H17V3.093L20 6.093ZM24 12L12 0L0 12H3V22H10V17H14V22H21V12H24ZM19 20H16V15H8V20H5V9.74L12 2.828L19 9.818V20Z" fill="white"/>
-            </svg>
+            <Image
+              src={EventIcon}
+              alt={'EventIcon'}
+              width={20}
+              height={20}
+            />
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">

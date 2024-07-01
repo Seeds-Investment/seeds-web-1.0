@@ -2,8 +2,9 @@ import ListPayment from '@/components/academy/ListPayment';
 import Receipt from '@/components/academy/Receipt';
 import SummaryPay from '@/components/academy/SummaryPay';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { enrollClass, getClassDetail } from '@/repository/academy.repository';
-import { getPaymentList } from '@/repository/payment.repository';
+import { getHowToPay, getPaymentList } from '@/repository/payment.repository';
 import { getPaymentById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
@@ -59,11 +60,14 @@ const Payment: React.FC = () => {
   const [classAfterPay, setClassAfterPay] = useState<DetailClassI | undefined>(
     undefined
   );
+  const [steps, setSteps] = useState<string[]>([]);
 
   const handleGetPayment = async (): Promise<void> => {
     try {
       const response = await getPaymentById(id as string);
       setData(response);
+      const responseHowToPay = await getHowToPay(response?.howToPayApi);
+      setSteps(responseHowToPay?.payment_instruction[0]?.step);
       if (response?.itemId !== '') {
         const responseClassAfterPay = await getClassDetail(
           response?.itemId as string
@@ -189,8 +193,6 @@ const Payment: React.FC = () => {
       }
       if (response?.payment_url !== '') {
         window.open(response.payment_url, '_blank');
-      } else {
-        toast('Payment url not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -345,9 +347,11 @@ const Payment: React.FC = () => {
             ? paymentSelectedVirtual[0]?.promo_price
             : qRisList[0]?.promo_price
         }
+        vaNumber={data?.vaNumber as string}
+        howPay={steps}
       />
     </PageGradient>
   );
 };
 
-export default Payment;
+export default withAuth(Payment);

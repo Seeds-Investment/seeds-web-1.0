@@ -1,7 +1,7 @@
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaCheck } from 'react-icons/fa';
 import { MdOutlinePendingActions } from 'react-icons/md';
@@ -18,7 +18,72 @@ interface ReceiptProps {
   promoPrice: number;
   isHidden: boolean;
   amountClass: number;
+  vaNumber: string;
+  howPay: string[];
 }
+
+interface HowToPayProps {
+  steps: string[];
+  vaNumber: string;
+}
+
+const HowToPay: React.FC<HowToPayProps> = ({ steps }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function parseStrongText(text: string): React.ReactNode[] {
+    const regex = /"(.*?)"/g;
+    const splitText = text.split(regex);
+
+    return splitText.map((part: string, index: number) => {
+      if (index % 2 === 1) {
+        return (
+          <strong className="font-semibold font-poppins" key={index}>
+            {part}
+          </strong>
+        );
+      } else {
+        return part;
+      }
+    });
+  }
+
+  const toggleDropdown = (): void => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <Card className="p-5 mt-8 bg-white">
+      <div className="flex justify-between">
+        <h1 className="text-xl font-bold mb-4">How to Pay</h1>
+        <button className="ml-2" onClick={toggleDropdown}>
+          {isOpen ? '▲' : '▼'}
+        </button>
+      </div>
+      <div
+        className={`overflow-hidden transition-max-height duration-700 ${
+          isOpen ? 'max-h-[1000px]' : 'max-h-0'
+        }`}
+      >
+        {steps.map((step: string, index: number) => (
+          <div className="flex items-start mb-3 relative" key={index}>
+            <div className="flex-shrink-0 w-6 h-6 z-50 rounded-full bg-seeds-purple-2 text-white flex items-center justify-center mr-3">
+              {index + 1}
+            </div>
+            <Typography className="font-poppins text-black">
+              {parseStrongText(step)}
+            </Typography>
+            {index < steps.length - 1 && (
+              <div
+                className="w-0.5 bg-seeds-purple-2 absolute left-3"
+                style={{ height: 'calc(100% + 1.5rem)' }}
+              ></div>
+            )}
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+};
 
 const Receipt: React.FC<ReceiptProps> = ({
   amount,
@@ -31,7 +96,9 @@ const Receipt: React.FC<ReceiptProps> = ({
   promoAvailable,
   promoPrice,
   isHidden,
-  amountClass
+  amountClass,
+  vaNumber,
+  howPay
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -41,7 +108,7 @@ const Receipt: React.FC<ReceiptProps> = ({
       <div className="bg-white p-2 rounded-xl shadow-md flex flex-col gap-5">
         <div className="flex items-center justify-center rounded-xl w-full ">
           <Card
-            className="py-3 px-4 xl:px-24 border rounded-xl shadow-none w-full md:w-2/3 lg:w-1/2 h-full"
+            className="py-3 px-4 xl:px-24 border rounded-xl shadow-none w-full md:w-2/3 lg:w-2/3 h-full"
             style={{
               backgroundImage: "url('/assets/academy/top-bg-receipt.svg')",
               backgroundRepeat: 'no-repeat',
@@ -155,9 +222,13 @@ const Receipt: React.FC<ReceiptProps> = ({
               </div>
             </Card>
 
+            {vaNumber !== undefined && howPay.length > 0 && (
+              <HowToPay steps={howPay} vaNumber={vaNumber} />
+            )}
+
             <div className="w-full flex items-center justify-center">
               <Button
-                className="w-full text-sm font-semibold bg-[#3AC4A0] mt-20 rounded-full capitalize"
+                className="w-full text-sm font-semibold bg-[#3AC4A0] mt-10 rounded-full capitalize"
                 onClick={() => {
                   void router.replace(`/academy/course/${orderItem}`);
                 }}

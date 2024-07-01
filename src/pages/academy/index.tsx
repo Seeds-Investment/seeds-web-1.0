@@ -3,6 +3,7 @@ import CategoryCourseCard from '@/components/academy/CategoryCourseCard';
 import LanguageSelector from '@/components/academy/LanguageSelector';
 import NoDataList from '@/components/academy/NoDataList';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { getAllCategory } from '@/repository/academy.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -150,4 +151,4 @@ const Academy: React.FC = () => {
   );
 };
 
-export default Academy;
+export default withAuth(Academy);

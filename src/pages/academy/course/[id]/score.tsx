@@ -1,4 +1,5 @@
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import {
   getPosttestScore,
   getPretestScore
@@ -117,4 +118,4 @@ const Score: React.FC = () => {
   );
 };
 
-export default Score;
+export default withAuth(Score);

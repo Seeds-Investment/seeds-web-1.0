@@ -1,6 +1,7 @@
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import { getClassDetail, startPosttest } from '@/repository/academy.repository';
 import i18n from '@/utils/common/i18n';
 import {
@@ -127,4 +128,4 @@ const LearnCourse: React.FC = () => {
   );
 };
 
-export default LearnCourse;
+export default withAuth(LearnCourse);

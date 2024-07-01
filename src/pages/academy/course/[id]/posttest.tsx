@@ -1,6 +1,7 @@
 import OptionsList from '@/components/academy/OptionsList';
 import QuestionCard from '@/components/academy/QuestionCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
 import {
   getPosttestQuestion,
   submitPosttestAnswer
@@ -164,4 +165,4 @@ const Posttest: React.FC = () => {
   );
 };
 
-export default Posttest;
+export default withAuth(Posttest);

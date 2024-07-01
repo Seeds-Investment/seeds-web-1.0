@@ -33,7 +33,6 @@ export const SlideQuiz: React.FC = () => {
           localStorage.getItem('translation') === 'ID' ? 'IDR' : 'USD'
         );
         setQuizData(quizResponse);
-        console.log(quizResponse);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }

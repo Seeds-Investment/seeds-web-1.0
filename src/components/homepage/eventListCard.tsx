@@ -26,13 +26,13 @@ const EventListCard: React.FC<EventListCardProps> = ({
   }
 
   const isPastEvent = (): boolean => {
-    const startDateObject = new Date(item?.event_date ?? '');
-    const startDateTimestamp = startDateObject.getTime();
+    const endDateObject = new Date(item?.ended_at ?? '');
+    const endDateTimestamp = endDateObject.getTime();
 
     const currentDateObject = new Date();
     const currentDateTimestamp = currentDateObject.getTime();
 
-    return startDateTimestamp < currentDateTimestamp;
+    return endDateTimestamp < currentDateTimestamp;
   };
   
   return (

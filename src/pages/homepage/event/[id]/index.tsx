@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import { EventDescription } from '@/components/homepage/eventDescription';
 import Loading from '@/components/popup/Loading';
 import ModalShowEventTicket from '@/components/popup/ModalShowEventTicket';
 import { standartCurrency } from '@/helpers/currency';
@@ -123,21 +124,6 @@ const SeedsEventDetail: React.FC = () => {
     return endDateTimestamp < currentDateTimestamp;
   };
 
-  const addSpacingBetweenParagraphs = (
-    textWithParagraphs: string
-  ): JSX.Element[] => {
-    const paragraphs = textWithParagraphs.split('</p><p>');
-
-    return paragraphs.map((paragraph, index) => (
-      <React.Fragment key={index}>
-        <p dangerouslySetInnerHTML={{ __html: paragraph }}></p>
-        {index < paragraphs.length - 1 && (
-          <div style={{ marginBottom: '20px' }}></div>
-        )}
-      </React.Fragment>
-    ));
-  };
-
   return (
     <>
       {loading && <Loading />}
@@ -234,9 +220,7 @@ const SeedsEventDetail: React.FC = () => {
                   </Typography> 
             }
           </div>
-          <div className="text-[#7C7C7C] mt-4">
-            {addSpacingBetweenParagraphs(eventData?.description ?? '')}
-          </div>
+          <EventDescription description={eventData?.description as string} />
         </div>
         {
           (eventData?.is_joined) &&

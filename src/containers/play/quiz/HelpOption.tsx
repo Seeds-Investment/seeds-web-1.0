@@ -4,6 +4,7 @@ import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import Modal from '@/components/ui/modal/Modal';
+import TrackerEvent from '@/helpers/GTM';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
@@ -40,6 +41,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [redeemCoin, setRedeemCoin] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [userInfo, setUserInfo] = useState();
   const invitationCode = router.query.invitationCode ?? '';
 
   useEffect(() => {
@@ -84,6 +86,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     try {
       const dataInfo = await getUserInfo();
       setPhoneNumber(dataInfo.phoneNumber);
+      setUserInfo(dataInfo);
       const resp: IDetailQuiz = await getQuizById({
         id: id as string,
         currency:
@@ -177,6 +180,11 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           promo_code: '',
           invitation_code: invitationCode as string,
           is_use_coins: redeemCoin
+        });
+        TrackerEvent({
+          event: 'SW_quiz_payment',
+          userData: userInfo,
+          paymentData: { statusPayment: 'FREE' }
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
       } catch (error) {

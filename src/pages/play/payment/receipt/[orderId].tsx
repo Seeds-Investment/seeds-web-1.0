@@ -79,6 +79,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QrisDetail[]>([]);

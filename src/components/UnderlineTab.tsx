@@ -169,10 +169,9 @@ const UnderLineTab = ({
                       toast(error, { type: 'error' });
                     });
                   TrackerEvent({
-                    event: `Seeds_view_circle_detail_page_web`,
-                    userId,
-                    pageName: 'circle_detail_web',
-                    circleId: item?.id
+                    event: `SW__circle_page_detail`,
+                    userData: myInfo,
+                    circleData: item
                   });
                 }}
               >

@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -82,7 +83,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QrisDetail[]>([]);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
-  console.log(_);
+  const [userInfo, setUserInfo] = useState();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -161,6 +162,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     try {
       setIsLoading(true);
       const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
       const resp: IDetailQuiz = await getQuizById({
         id: orderDetail?.itemId as string,
         currency:
@@ -599,6 +601,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
+                    TrackerEvent({
+                      event: 'SW_quiz_payment',
+                      userData: userInfo,
+                      paymentData: { ...orderDetail, statusPayment: 'PAID' }
+                    });
                     void router.replace(
                       `/play/quiz/${orderDetail?.itemId as string}/start`
                     );

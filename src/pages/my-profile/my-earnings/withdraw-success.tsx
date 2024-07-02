@@ -8,18 +8,20 @@ import { getEarningReceiptDate } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/earnings';
+import { resetWithdrawReceipt } from '@/store/earnings/successReceiptSlice';
 import LanguageContext from '@/store/language/language-context';
 import { type UserInfo } from '@/utils/interfaces/earning.interfaces';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const WithdrawSuccess = (): React.ReactElement => {
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { withdrawReceipt } = useSelector((state: RootState) => state?.successReceipt ?? {});
@@ -29,6 +31,10 @@ const WithdrawSuccess = (): React.ReactElement => {
     fetchData()
       .then()
       .catch(() => {});
+
+    return () => {
+      dispatch(resetWithdrawReceipt());
+    };
   }, []);
 
   const fetchData = async (): Promise<void> => {

@@ -40,10 +40,13 @@ const successReceiptSlice = createSlice({
   reducers: {
     setWithdrawReceipt(state, action) {
       state.withdrawReceipt = action.payload;
-    }
+    },
+    resetWithdrawReceipt(state) {
+      state.withdrawReceipt = initialState.withdrawReceipt;
+    },
   },
 });
 
-export const { setWithdrawReceipt } = successReceiptSlice.actions;
+export const { setWithdrawReceipt, resetWithdrawReceipt } = successReceiptSlice.actions;
 
 export default successReceiptSlice.reducer;

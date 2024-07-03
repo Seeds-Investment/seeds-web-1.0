@@ -81,7 +81,8 @@ const LearnCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              100 {t('academy.detailCourse.participants')}
+              {data?.total_participants ?? 0}{' '}
+              {t('academy.detailCourse.participants')}
             </div>
             <div
               onClick={() => {

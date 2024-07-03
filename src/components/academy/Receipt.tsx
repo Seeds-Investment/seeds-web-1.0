@@ -105,10 +105,10 @@ const Receipt: React.FC<ReceiptProps> = ({
 
   return (
     <div hidden={isHidden}>
-      <div className="bg-white p-2 rounded-xl shadow-md flex flex-col gap-5">
-        <div className="flex items-center justify-center rounded-xl w-full ">
+      <div className="bg-white py-10 rounded-xl shadow-md flex flex-col gap-5">
+        <div className="flex items-center justify-center rounded-xl w-full">
           <Card
-            className="py-3 px-4 xl:px-24 border rounded-xl shadow-none w-full md:w-2/3 lg:w-2/3 h-full"
+            className="py-3 px-10 rounded-3xl shadow-none w-full sm:w-10/12 md:w-10/12 lg:w-8/12 xl:w-6/12 h-full border-2"
             style={{
               backgroundImage: "url('/assets/academy/top-bg-receipt.svg')",
               backgroundRepeat: 'no-repeat',

@@ -77,12 +77,12 @@ const Withdraw = (): React.ReactElement => {
   };
 
   const handleInputAccountName = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value;
+    const value = event.target.value.replace(/[^a-zA-Z\s]/g, '');
     dispatch(setAccountName(value));
   };
 
   const handleInputAccountNumber = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value;
+    const value = event.target.value.replace(/\D/g, '');
     dispatch(setAccountNumber(value));
   };
 

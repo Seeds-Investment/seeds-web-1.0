@@ -14,7 +14,8 @@ import { toast } from 'react-toastify';
 const Score: React.FC = () => {
   const router = useRouter();
   const { id, testType } = router.query;
-  const [data, setData] = useState('');
+  const [dataPreTest, setDataPreTest] = useState('');
+  const [dataPostTest, setDataPostTest] = useState('');
   const { t } = useTranslation();
 
   const handleGetScore = async (): Promise<void> => {
@@ -22,17 +23,17 @@ const Score: React.FC = () => {
       let response;
       if (testType === 'pretest') {
         response = await getPretestScore(id as string);
-        setData(response?.pre_test_score);
-      } else if (testType === 'posttest') {
+        setDataPreTest(response?.pre_test_score);
+      } else if (testType === 'posttest' || testType === undefined) {
         response = await getPosttestScore(id as string);
-        setData(response?.post_test_score);
+        setDataPostTest(response?.post_test_score);
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     }
   };
   useEffect(() => {
-    if (id !== undefined && testType !== undefined) {
+    if (id !== undefined) {
       void handleGetScore();
     }
   }, [id, testType]);
@@ -53,7 +54,7 @@ const Score: React.FC = () => {
                 className="h-60 w-60"
               />
               <div className="font-bold text-xl">
-                {t('academy.test.grade')}: {data}
+                {t('academy.test.grade')}: {dataPreTest}
               </div>
               <div className="text-[#7C7C7C]">{t('academy.test.desc')}</div>
               <button
@@ -91,7 +92,9 @@ const Score: React.FC = () => {
               <Typography className="text-base font-normal">
                 {t('academy.score.totalScore')}
               </Typography>
-              <Typography className="text-5xl font-semibold">{data}</Typography>
+              <Typography className="text-5xl font-semibold">
+                {dataPostTest}
+              </Typography>
             </div>
           </div>
           <div className="flex flex-col justify-center items-center gap-4">

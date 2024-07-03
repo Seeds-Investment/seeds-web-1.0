@@ -1,7 +1,10 @@
 import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import TagPrice from '@/assets/academy/tag-price.svg';
 import { getUserInfo } from '@/repository/profile.repository';
-import { type DetailClassI } from '@/utils/interfaces/academy.interface';
+import {
+  type DetailClassI,
+  type PriceDataI
+} from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -48,9 +51,12 @@ const CourseCard: React.FC<{
                     {t('academy.courseFee')}
                   </span>{' '}
                   :{' '}
-                  {userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'}
+                  {item?.price?.[
+                    userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+                  ]?.toLocaleString('id-ID', {
+                    currency: userInfo?.preferredCurrency ?? 'IDR',
+                    style: 'currency'
+                  })}
                 </Typography>
               </>
             )}
@@ -68,7 +74,7 @@ const CourseCard: React.FC<{
             : t('academy.courseButtonBuy')}
         </button>
       </div>
-      <div>
+      <div className="w-1/2 flex justify-end">
         <Image
           src={
             item?.banner === 'https://example.com' || item?.banner === ''
@@ -78,6 +84,7 @@ const CourseCard: React.FC<{
           alt="course-image"
           width={90}
           height={90}
+          className="w-24 h-24"
         />
       </div>
       {item?.is_owned && item?.post_test_score !== 0 && (

@@ -90,7 +90,7 @@ const CourseCard: React.FC<{
       {item?.is_owned && item?.post_test_score !== 0 && (
         <div className="absolute top-0 right-0 bg-white rounded-bl-lg rounded-tr-2xl px-3 border-[1.5px] border-[#3AC4A0]">
           <Typography className="text-[10px] text-[#3AC4A0] font-semibold">
-            {`Score : ${item?.post_test_score as number}`}
+            {`${t('academy.courseScore')} : ${item?.post_test_score as number}`}
           </Typography>
         </div>
       )}

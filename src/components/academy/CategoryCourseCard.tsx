@@ -1,3 +1,4 @@
+import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import { type CategoryAcademyI } from '@/utils/interfaces/academy.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -13,7 +14,7 @@ const CategoryCourseCard: React.FC<{ data: CategoryAcademyI }> = ({ data }) => {
         {data.level.length} levels
       </Typography>
       <Image
-        src={data?.banner}
+        src={data?.banner === '' ? NoDataSeedy : data?.banner}
         alt={data.title}
         width={125}
         height={125}

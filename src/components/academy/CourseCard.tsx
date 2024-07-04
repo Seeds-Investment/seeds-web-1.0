@@ -80,11 +80,7 @@ const CourseCard: React.FC<{
         </div>
         <div className="flex justify-end col-span-2">
           <Image
-            src={
-              item?.banner === 'https://example.com' || item?.banner === ''
-                ? NoDataSeedy
-                : item?.banner
-            }
+            src={item?.banner === '' ? NoDataSeedy : item?.banner}
             alt="course-image"
             width={90}
             height={90}

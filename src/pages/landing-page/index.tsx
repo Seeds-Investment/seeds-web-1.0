@@ -1,4 +1,3 @@
-import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Section1 from '@/containers/landing/Section1';
@@ -20,7 +19,6 @@ export default function Home(): React.ReactElement {
 
   return (
     <>
-      <GoogleAnalyticsScript />
       <PageGradient
         customGradient={customGradient}
         className="absolute overflow-hidden w-full"

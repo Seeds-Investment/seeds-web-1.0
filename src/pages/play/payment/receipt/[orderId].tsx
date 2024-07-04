@@ -602,10 +602,25 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
+                    const formattedText = (text: string): string => {
+                      return text
+                        .split('|')[1]
+                        .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+                    };
                     TrackerEvent({
                       event: 'SW_quiz_payment',
                       userData: userInfo,
-                      paymentData: { ...orderDetail, statusPayment: 'PAID' }
+                      paymentData: {
+                        ...orderDetail,
+                        itemName:
+                          formattedText(orderDetail?.itemName as string)
+                            .length > 50
+                            ? formattedText(
+                                orderDetail?.itemName as string
+                              ).substring(0, 50)
+                            : formattedText(orderDetail?.itemName as string),
+                        statusPayment: 'PAID'
+                      }
                     });
                     void router.replace(
                       `/play/quiz/${orderDetail?.itemId as string}/start`

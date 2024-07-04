@@ -181,9 +181,16 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           invitation_code: invitationCode as string,
           is_use_coins: redeemCoin
         });
+        const formattedText = (text: string): string => {
+          return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+        };
         TrackerEvent({
           event: 'SW_quiz_payment',
           userData: userInfo,
+          quizData: {
+            ...detailQuiz,
+            name: formattedText(detailQuiz?.name as string)
+          },
           paymentData: { statusPayment: 'FREE' }
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);

@@ -87,11 +87,15 @@ const DetailCourse: React.FC = () => {
 
   const handleStartPretest = async (): Promise<void> => {
     try {
-      const response = await startPretest(id as string);
-      if (response?.message === 'maximum pretest count already reached') {
-        toast(response?.message, { type: 'warning' });
+      if (data?.total_question !== undefined && data?.total_question > 0) {
+        const response = await startPretest(id as string);
+        if (response?.message === 'maximum pretest count already reached') {
+          toast(response?.message, { type: 'warning' });
+        } else {
+          await router.push(`/academy/course/${id as string}/pretest`);
+        }
       } else {
-        await router.push(`/academy/course/${id as string}/pretest`);
+        toast('Questions not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -160,7 +164,9 @@ const DetailCourse: React.FC = () => {
             />
           </div>
           <button
-            className="p-3 bg-[#7555DA] rounded-3xl w-full text-white font-bold"
+            className={`p-3 ${
+              data?.total_question === 0 ? 'bg-[#CCCCCC]' : 'bg-[#7555DA]'
+            }  rounded-3xl w-full text-white font-bold`}
             onClick={handleStartPretest}
           >
             {t('academy.detailCourse.buttonPretest')}

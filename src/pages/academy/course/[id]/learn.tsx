@@ -38,11 +38,15 @@ const LearnCourse: React.FC = () => {
 
   const handleStartPosttest = async (): Promise<void> => {
     try {
-      const response = await startPosttest(id as string);
-      if (response?.message === 'maximum posttest count already reached') {
-        toast(response?.message, { type: 'warning' });
+      if (data?.total_question !== undefined && data?.total_question > 0) {
+        const response = await startPosttest(id as string);
+        if (response?.message === 'maximum posttest count already reached') {
+          toast(response?.message, { type: 'warning' });
+        } else {
+          await router.push(`/academy/course/${id as string}/posttest`);
+        }
       } else {
-        await router.push(`/academy/course/${id as string}/posttest`);
+        toast('Questions not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -119,7 +123,9 @@ const LearnCourse: React.FC = () => {
         <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
           <button
             onClick={handleStartPosttest}
-            className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
+            className={`p-3 ${
+              data?.total_question === 0 ? 'bg-[#CCCCCC]' : 'bg-[#3AC4A0]'
+            } rounded-3xl w-full text-white font-bold`}
           >
             Post-Test
           </button>

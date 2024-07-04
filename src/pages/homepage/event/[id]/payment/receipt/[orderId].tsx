@@ -141,12 +141,29 @@ const SuccessPaymentPage: React.FC = () => {
   }
 
   useEffect(() => {
-    void fetchOrderDetail();
+    let timer: NodeJS.Timeout;
+
+    const fetchOrderDetailAndRepeat = async (): Promise<void> => {
+      await fetchOrderDetail();
+
+      timer = setTimeout(() => {
+        void (async () => {
+          await fetchOrderDetail();
+        })();
+      }, 5000);
+    };
+
+    void fetchOrderDetailAndRepeat();
     void fetchPaymentList();
+
     if (orderDetail?.howToPayApi !== undefined) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
-  }, [orderId, orderDetail?.howToPayApi]);
+
+    return (): void => {
+      clearTimeout(timer);
+    };
+  }, []);
   
   const getSelectedPayment = (
     eWalletList: PaymentList[],

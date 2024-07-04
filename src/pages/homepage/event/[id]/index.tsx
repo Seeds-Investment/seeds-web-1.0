@@ -21,7 +21,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-const initialTicketData: TicketData = {
+export const initialTicketData: TicketData = {
   email: '',
   event_id: '',
   id: '',
@@ -70,6 +70,13 @@ const SeedsEventDetail: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
+  
+  useEffect(() => {
+    if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {
+      toast.success(`Check In Successful`);
+      router.push(`/homepage/event/${eventData?.id}/check-in-out`)
+    }
+  }, [eventData, ticketData]);
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {

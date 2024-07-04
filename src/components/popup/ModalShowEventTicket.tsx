@@ -6,6 +6,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import QRCode from 'react-qr-code';
 import { toast } from 'react-toastify';
 import Modal from '../ui/modal/Modal';
@@ -19,6 +20,7 @@ interface Props {
 
 const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const handleCopyClick = async (): Promise<void> => {
     const textToCopy = `${eventData?.external_url}`;
     await navigator.clipboard.writeText(textToCopy).then(() => {
@@ -101,7 +103,11 @@ const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData 
                 </div>
               </div>
               <button onClick={() => { setIsCheckInModal(true); }} className='w-full rounded-full bg-seeds-button-green font-poppins text-white py-2 cursor-pointer'>
-                Check In
+                {
+                  ticketData?.status === 'CHECKED_IN'
+                    ? t('seedsEvent.checkInOut.checkOut')
+                    : t('seedsEvent.checkInOut.checkIn')
+                }
               </button>
             </div>
         }

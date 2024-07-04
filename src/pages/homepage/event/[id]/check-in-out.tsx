@@ -73,7 +73,6 @@ const SeedsEventCheckInOut: React.FC = () => {
   
   useEffect(() => {
     if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_OUT')) {
-      toast.success(`Check Out Successful`);
       router.push(`/homepage/event/${eventData?.id}`)
     }
   }, [eventData, ticketData]);

@@ -50,7 +50,7 @@ const EventListCard: React.FC<EventListCardProps> = ({
           item?.image_url !== undefined ?
             <img
               src={item?.image_url ?? EventImage}
-              className="w-full h-auto max-h-[150px] object-cover"
+              className="w-full h-[150px] object-cover"
               width={1000}
               height={1000}
             />

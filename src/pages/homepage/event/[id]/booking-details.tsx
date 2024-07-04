@@ -97,7 +97,7 @@ const SeedsEventBookingDetail: React.FC = () => {
   };
 
   const emailValidation = async(): Promise<boolean> => {
-    const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const validRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (validRegex.test(form.email)) {
       return true
     } else {

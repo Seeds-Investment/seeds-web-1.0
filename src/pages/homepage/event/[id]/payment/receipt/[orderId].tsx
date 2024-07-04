@@ -10,7 +10,7 @@ import {
   getPaymentList
 } from '@/repository/payment.repository';
 import { formatCurrency } from '@/utils/common/currency';
-import { Button, Card, Typography } from '@material-tailwind/react';
+import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Pending } from 'public/assets/circle';
@@ -592,8 +592,8 @@ const SuccessPaymentPage: React.FC = () => {
 
               {/* Navigation Button */}
               <div className="w-full flex flex-col gap-4 items-center justify-center">
-                <Button
-                  className="w-full text-sm font-semibold bg-seeds-button-green rounded-full capitalize"
+                <button
+                  className="w-full font-semibold text-white bg-seeds-button-green rounded-full py-2 capitalize"
                   onClick={() => {
                     if (
                       orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
@@ -613,7 +613,7 @@ const SuccessPaymentPage: React.FC = () => {
                       ? t('seedsEvent.payment.receipt.seeTicket')
                       : t('seedsEvent.payment.receipt.refreshPage')
                   }
-                </Button>
+                </button>
               </div>
             </Card>
           </div>

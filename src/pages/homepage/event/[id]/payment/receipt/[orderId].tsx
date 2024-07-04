@@ -74,7 +74,9 @@ const SuccessPaymentPage: React.FC = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const orderId = router.query.orderId as string;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingOrder, setIsLoadingOrder] = useState<boolean>(false);
+  const [isLoadingPayment, setIsLoadingPayment] = useState<boolean>(false);
+  const [isLoadingHowToPay, setIsLoadingHowToPay] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
@@ -85,19 +87,19 @@ const SuccessPaymentPage: React.FC = () => {
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
-      setIsLoading(true);
+      setIsLoadingOrder(true);
       const response = await getPaymentDetail(orderId);
       setOrderDetail(response);
     } catch (error) {
       toast.error(`Error fetching order detail ${error as string}`);
     } finally {
-      setIsLoading(false);
+      setIsLoadingOrder(false);
     }
   };
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
-      setIsLoading(true);
+      setIsLoadingPayment(true);
       const data = await getPaymentList();
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
@@ -105,16 +107,19 @@ const SuccessPaymentPage: React.FC = () => {
     } catch (error) {
       toast.error(`Error fetching order detail ${error as string}`);
     } finally {
-      setIsLoading(false);
+      setIsLoadingPayment(false);
     }
   };
 
   const fetchHowToPay = async (url: string): Promise<void> => {
     try {
+      setIsLoadingHowToPay(true);
       const data = await getHowToPay(url);
       setSteps(data.payment_instruction[0].step);
     } catch (error) {
       toast.error(`Error fetching Payment List ${error as string}`);
+    } finally {
+      setIsLoadingHowToPay(false);
     }
   };
 
@@ -181,7 +186,7 @@ const SuccessPaymentPage: React.FC = () => {
 
   return (
     <div className="pt-10">
-      {isLoading && <Loading />}
+      {(isLoadingOrder && isLoadingPayment && isLoadingHowToPay) && <Loading />}
       <PageGradient
         defaultGradient
         className="relative overflow-hidden h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
@@ -271,7 +276,7 @@ const SuccessPaymentPage: React.FC = () => {
                   </div>
                 )}
                 <hr className="border-t-2 border-dashed" />
-                <div className="flex justify-between relative bottom-3 z-50">
+                <div className="flex justify-between relative bottom-3 z-10">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                 </div>

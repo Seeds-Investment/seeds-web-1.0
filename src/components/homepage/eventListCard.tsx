@@ -44,12 +44,19 @@ const EventListCard: React.FC<EventListCardProps> = ({
     >
       <div
         onClick={async () => { await redirectPage(item?.id); }}
-        className="w-full max-h-[250px] overflow-hidden border-b-2 border-[#E9E9E9]"
+        className="w-full h-fit max-h-[150px] overflow-hidden border-b-2 border-[#E9E9E9]"
       >
-        <img
-          src={item?.image_url ?? EventImage}
-          className="w-full h-full"
-        />
+        {
+          item?.image_url !== undefined ?
+            <img
+              src={item?.image_url ?? EventImage}
+              className="w-full h-auto max-h-[150px] object-cover"
+              width={1000}
+              height={1000}
+            />
+            :
+            <div className='bg-gray-400 animate-pulse w-full h-[150px]'/>
+        }
       </div>
       <div className="w-full gap-2 px-4 py-2">
         <div

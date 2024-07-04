@@ -78,7 +78,7 @@ const SeedsEventBookingDetail: React.FC = () => {
   });
 
   const handleInputUserName = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value;
+    const value = event.target.value.replace(/[^a-zA-Z\s]/g, '');
     dispatch(setUserName(value));
     setForm({ ...form, name: value})
   };
@@ -96,17 +96,34 @@ const SeedsEventBookingDetail: React.FC = () => {
     setForm({ ...form, email: value})
   };
 
+  const emailValidation = async(): Promise<boolean> => {
+    const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (validRegex.test(form.email)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   const handleBookEvent = async (): Promise<void> => {
     try {
-      const response = await bookEvent(form);
-      router.push(`/homepage/event/${id as string}/${response?.id as string}/booking-success-details`)
+      if (await emailValidation()) {
+        const response = await bookEvent(form);
+        router.push(`/homepage/event/${id as string}/${response?.id as string}/booking-success-details`)
+      } else {
+        toast.error('Invalid email format !');
+      }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
   const handleBookPaidEvent = async (): Promise<void> => {
-    router.push(`/homepage/event/${id as string}/payment`)
+    if (await emailValidation()) {
+      router.push(`/homepage/event/${id as string}/payment`)
+    } else {
+      toast.error('Invalid email format !');
+    }
   };
 
   return (
@@ -157,7 +174,7 @@ const SeedsEventBookingDetail: React.FC = () => {
             </Typography>
             <input
               id="search"
-              type="text"
+              type="email"
               name="search"
               value={form.email}
               onChange={e => {

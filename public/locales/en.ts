@@ -2304,6 +2304,7 @@ export default {
       },
       receipt: {
         paymentMethod: 'Payment Method',
+        successPaidEvent: 'Successful',
         pendingPaidEvent: 'Pending Paid Event',
         tournamentFee: 'Event Fee',
         adminFee: 'Admin Fee',

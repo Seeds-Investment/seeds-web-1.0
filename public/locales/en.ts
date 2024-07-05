@@ -9,7 +9,7 @@ export default {
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
-    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
+    company: { title: 'Company', list1: 'About Us', seedsEventlist2: 'Career' },
 
     support: { title: 'Support' },
     legal: {
@@ -1075,7 +1075,7 @@ export default {
         placeholder: 'type circle name',
         error: 'Input Circle Name',
         duplicate1: 'The name',
-        duplicate2: 'is already in use!',
+        duplicate2: 'is already in use!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -2135,15 +2135,212 @@ export default {
       seeAll: 'See All'
     }
   },
+  academy: {
+    greeting: 'Hello',
+    courseTitle: 'Let’s found your favorite course',
+    courseSearchPlaceholder: 'What you want to learn today?',
+    categoryTitle: 'Categories',
+    noCategoriesTitle: 'Oops, There’s No Categories Yet',
+    noCategoriesDescription: 'Stay tuned for more updates!',
+    categoryDetailTitle: 'About Course',
+    categoryDetailMoreDetail: 'More Detail',
+    categoryDetailShowLess: 'Show Less',
+    levels: {
+      all: 'All',
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advance: 'Advanced'
+    },
+    noClassesTitle: 'Oops, There’s No Classes Yet',
+    noClassesDescription: 'Stay tuned for more updates!',
+    courseFee: 'Fee',
+    courseButtonBuy: 'Buy Now',
+    courseButtonDetail: 'See Detail',
+    courseButtonOpenClass: 'Open Class',
+    shareCourse: 'Share This Course',
+    shareLinks: 'Share Links',
+    courseScore: 'Score',
+    detailCourse: {
+      participants: 'Participants',
+      share: 'Share',
+      buttonPretest: 'Try Pre-Test',
+      entrance: 'Entrance Fee',
+      buttonEnroll: 'Enroll Course',
+      moreDetail: 'More Detail',
+      showLess: 'Show Less',
+      seedsCoin: 'Redeem {{data}} Seeds Coin',
+      pretestScore: 'Your Pre-Test Score',
+      free: 'Free',
+      detail: 'Detail Class'
+    },
+    test: {
+      question: 'Questions',
+      next: 'Next',
+      submit: 'Submit',
+      score: 'Score',
+      grade: 'Grade',
+      desc: 'You’ve completed the pre test.',
+      back: 'Back to Detail Class'
+    },
+    score: {
+      title: 'CONGRATS !',
+      description: 'You just completed',
+      totalScore: 'Total Score',
+      OtherClass: 'Other Classes',
+      ReTest: 'Re-Test'
+    },
+    payment: {
+      enroll: 'Enroll',
+      class: 'Class',
+      desc: 'or subscribe for cheaper price!',
+      buttonPay: 'Make Payment',
+      method: 'Payment Method',
+      pay: 'Pay',
+      va: 'Virtual Account',
+      ew: 'E-Wallet',
+      other: 'Other',
+      summary: 'Summary of Payment',
+      payWith: 'Pay With',
+      costAcademy: 'Cost Seeds Academy',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      totalCost: 'Total Cost',
+      amount: 'Total Amount',
+      pending: 'Pending',
+      pending1: 'We have not received your payment yet',
+      pending2: 'Please complete the payment to continue',
+      success: 'Successful',
+      success1: 'Your payment was successful',
+      success2: 'Now you can start learning',
+      closeReceipt: 'Close',
+      discountCoins: 'Discount Coins'
+    }
+  },
   seedsEvent: {
+    myEvent: 'My Event',
     search: 'Search',
     enter: 'Enter',
-    past: 'PAST',
-    today: 'TODAY',
-    thisMonth: 'THIS MONTH',
-    upcoming: 'UPCOMING',
+    past: 'Past Event',
+    today: 'Today',
+    thisMonth: 'This Month',
+    upcoming: 'Upcoming Event',
+    myActive: 'Active Event',
+    myPast: 'Past Event',
     blank1: 'Opps,  There’s No Event Yet',
-    blank2: 'Stay tuned for more updates!'
+    blank2: 'Stay tuned for more updates!',
+    eventDetails: 'Event Details',
+    entranceFee: 'Entrance Fee',
+    free: 'Free',
+    seeYourTicket: 'See Your Ticket',
+    seeEventLink: "See Event's Link",
+    checkCertificate: 'Check Certificate',
+    seeEvent: 'See Event',
+    booking: {
+      bookNow: 'Book Now',
+      seeTicket: 'See Ticket',
+      bookingDetails: 'Booking Details',
+      name: 'Name',
+      phone: 'Phone Number',
+      email: 'Email Address',
+      inputName: 'Input your name',
+      inputPhone: 'Input your phone number',
+      inputEmail: 'Input your email address',
+      bookInfo:
+        'Tickets that have been purchased will be sent to the email that has been filled in.',
+      continue: 'Continue'
+    },
+    pay: 'Pay',
+    eWalletLabel: '',
+    payment: {
+      title: 'Payment Method',
+      virtualAccountLabel: 'Virtual Account',
+      eWalletLabel: 'E-Wallet',
+      button: 'Pay',
+      eventFee: "Event's Fee",
+      howToPay: 'How to Pay',
+      WalletForm: {
+        title: 'Enter {{wallet}} Number',
+        phoneLabel: '{{wallet}} Number',
+        phonePlaceholder: '8xxxxxxxx',
+        paymentDeadline: 'Pay before {{date}}',
+        admissionFeeLabel: "Event's Fee",
+        adminFeeLabel: 'Admin Fee',
+        serviceFeeLabel: 'Service Fee',
+        adminFeeDiscountLabel: 'Admin Fee Discount ',
+        button: 'Pay',
+        seedsCoin: 'Seeds Coin Redeemed'
+      },
+      VirtualAccountGuide: {
+        title: '{{bank}} Virtual Account',
+        bankName: 'Bank {{bank}}',
+        accountNumberLabel: 'No. rekening',
+        copy: 'Copy',
+        continue: 'Continue',
+        accountNameLabel: 'Virtual Account Name',
+        admissionFeeLabel: "Event's Fee",
+        adminFeeLabel: 'Admin',
+        note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours.',
+        instructionMessage:
+          'Click "Continue" to start the process and get payment instructions.',
+        instructionLabel: 'mBanking Transfer Instructions',
+        step1: {
+          1: 'Choose',
+          2: 'm-Transfer > {{provider}} Virtual Account.'
+        },
+        step2: {
+          1: 'Enter',
+          2: 'nomor Virtual Account',
+          3: 'and choose',
+          4: 'Send'
+        },
+        step3: {
+          1: 'Check the information shown on the screen. Make sure the Merchant is',
+          2: 'Seeds, Total bill',
+          3: 'is correct and your username',
+          4: 'If true, Select',
+          5: 'Ya'
+        },
+        step4: {
+          1: 'Enter your m-{{provider}} PIN and select',
+          2: 'OK'
+        }
+      },
+      receipt: {
+        paymentMethod: 'Payment Method',
+        successPaidEvent: 'Successful',
+        pendingPaidEvent: 'Pending Paid Event',
+        tournamentFee: 'Event Fee',
+        adminFee: 'Admin Fee',
+        serviceFee: 'Service Fee',
+        discountFee: 'Discount Fee',
+        discountCoins: 'Discount Coins',
+        totalAmount: 'Total Amount',
+        idTransaction: 'ID Transaction',
+        close: 'Close',
+        virtualNumber: 'Your Virtual Account Number',
+        successful: 'Successful',
+        pending: 'Pending Paid Event',
+        recurringSaved: 'Your recurring has been saved!',
+        seeDetail: 'See Detail Event',
+        seeTicket: 'See Ticket',
+        refreshPage: 'Refresh Payment Status',
+        messageUncomplete: "Complete the payment to see ticket's details",
+        messageComplete: 'Payment completed.'
+      }
+    },
+    ticket: {
+      nameEvent: 'Name Event',
+      name: 'Name',
+      phoneNumber: 'Phone Number',
+      emailAddress: 'Email Address',
+      totalPrice: 'Total Price',
+      myEvents: 'My Events',
+      checkIn: 'Check In',
+      checkOut: 'Check Out',
+      notificationMethod: 'Notification Method',
+      notificationModalMessage:
+        'Let’s kept up to date!  Choose your preference in notifications.'
+    }
   },
   buyAsset: {
     text1: 'Assets to be purchased',

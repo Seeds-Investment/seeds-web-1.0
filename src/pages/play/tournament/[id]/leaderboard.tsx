@@ -1,6 +1,6 @@
 import Loading from '@/components/popup/Loading';
 import { standartCurrency } from '@/helpers/currency';
-import { getLastUpdatedEN, getLastUpdatedID } from '@/helpers/dateFormat';
+import { getLastUpdated } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import {
   getLeaderboardByPlayId,
@@ -131,8 +131,8 @@ const LeaderBoardPage: React.FC = () => {
             <Typography className="text-sm font-poppins text-white">
               {t('tournament.leaderboard.lastUpdated')}
               {languageCtx.language === 'ID'
-                ? getLastUpdatedID(new Date())
-                : getLastUpdatedEN(new Date())}
+                ? getLastUpdated(new Date(), 'id-ID')
+                : getLastUpdated(new Date(), 'en-US')}
             </Typography>
           </div>
           <div className="flex justify-center pt-3">

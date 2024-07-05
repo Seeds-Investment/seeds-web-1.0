@@ -7,6 +7,9 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true
   },
+  // uncomment script below before run build script
+  // dont push this file with uncomment output property
+  // output: 'standalone',
   reactStrictMode: false,
   images: {
     domains: [

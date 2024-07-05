@@ -2163,6 +2163,7 @@ export default {
     seeEvent: "Lihat Event",
     booking: {
       bookNow: "Pesan Tiket",
+      booked: "Lihat Tiket",
       seeTicket: "Lihat Tiket",
       bookingDetails: "Detail Pemesanan",
       name: "Nama",

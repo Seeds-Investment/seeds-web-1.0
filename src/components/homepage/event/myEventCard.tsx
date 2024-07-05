@@ -1,12 +1,14 @@
 import EventImage from '@/assets/event/default.png';
 import { getEventClock, getEventDetailsDate } from '@/helpers/dateFormat';
+import { getEventTicketById } from '@/repository/discover.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type EventList } from '@/utils/interfaces/event.interface';
+import { type EventList, type TicketData } from '@/utils/interfaces/event.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { EventCalendar, EventClock } from 'public/assets/vector';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface MyEventCardProps {
   item: EventList;
@@ -17,10 +19,40 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
 }) => {
   const router = useRouter();
   const languageCtx = useContext(LanguageContext);
+  const [ticketData, setTicketData] = useState<TicketData>();
+  const [id, setId] = useState<string>('');
+  const [redirectTrigger, setRedirectTrigger] = useState(false);
 
   const redirectPage = async(id: string): Promise<void> => {
-    await router.push(`/homepage/event/${id}`)
+    try {
+      setId(id)
+      if ((item?.is_joined !== undefined) && item?.is_joined) {
+        await fetchEventTicketById(item?.id);
+      }
+      setRedirectTrigger(!redirectTrigger);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
   }
+
+  useEffect(() => {
+    if (redirectTrigger) {
+      if (ticketData?.status === 'ISSUED' || ticketData?.status === 'CHECKED_OUT') {
+        void router.push(`/homepage/event/${id}`);
+      } else {
+        void router.push(`/homepage/event/${id}/check-in-out`);
+      }
+    }
+  }, [redirectTrigger]);
+
+  const fetchEventTicketById = async (id: string): Promise<void> => {
+    try {
+      const response = await getEventTicketById(id);
+      setTicketData(response)
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
   
   return (
     <div

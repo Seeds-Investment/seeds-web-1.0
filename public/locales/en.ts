@@ -2236,6 +2236,7 @@ export default {
     seeEvent: "See Event",
     booking: {
       bookNow: "Book Now",
+      booked: "Booked",
       seeTicket: "See Ticket",
       bookingDetails: "Booking Details",
       name: "Name",

@@ -4,7 +4,7 @@
 
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import AssetPagination from '@/components/AssetPagination';
-import MyEventCard from '@/components/homepage/myEventCard';
+import MyEventCard from '@/components/homepage/event/myEventCard';
 import withAuth from '@/helpers/withAuth';
 import {
   type EventListParams,
@@ -59,6 +59,9 @@ const MyEvent: React.FC = () => {
     section: eventStatus,
     year: new Date().getFullYear()
   });
+
+  console.log('eventList', eventList)
+  console.log('eventMetadata', eventMetadata)
 
   useEffect(() => {
     fetchData()

@@ -16,6 +16,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -76,9 +77,6 @@ const SeedsEventCheckInOut: React.FC = () => {
       router.push(`/homepage/event/${eventData?.id}`)
     } else if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_OUT')) {
       toast.success('Check Out Successful!');
-      setTimeout(() => {
-        router.push(`/homepage/event/${eventData?.id}`);
-      }, 5000);
     }
   }, [eventData, ticketData]);
 
@@ -144,10 +142,24 @@ const SeedsEventCheckInOut: React.FC = () => {
       )}
       {loading && <Loading />}
       <div className="bg-white flex flex-col justify-center items-center rounded-xl font-poppins p-5 mb-16">
-        <div className="flex justify-center w-full">
+        <div className="flex justify-center w-full relative">
           <Typography className="text-lg font-semibold">
             {t('seedsEvent.checkInOut.ticketDetails')}
           </Typography>
+          {
+            ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_OUT')) &&
+              <div
+                onClick={async() => await router.push(`/homepage/event/${eventData?.id}`)}
+                className='absolute left-0 top-[-3px] w-[35px] h-[35px] flex justify-center items-center cursor-pointer'
+              >
+                <Image
+                  src={ArrowBackwardIcon}
+                  alt={'ArrowBackwardIcon'}
+                  width={30}
+                  height={30}
+                />
+              </div>
+          }
         </div>
         <div className='w-full h-[200px] flex justify-center items-center mt-4'>
           <Image
@@ -216,23 +228,20 @@ const SeedsEventCheckInOut: React.FC = () => {
             </Typography>
           </div>
         </div>
-        <button
-          onClick={() => { eventData?.event_status === 'OFFLINE' ? setIsShowTicket(true) : setIsCheckInModal(true) }}
-          className='w-full bg-[#7555DA] rounded-full py-2 text-white font-semibold mt-4 text-sm cursor-pointer'
-        >
-          {
-            ((ticketData?.status === 'CHECKED_IN') || (ticketData?.status === 'ISSUED'))
-              ? t('seedsEvent.checkInOut.checkOut')
-              : t('seedsEvent.checkInOut.checkIn')
-          }
-        </button>
         {
-          ticketData?.status === 'CHECKED_OUT' &&
+          ticketData?.status === 'CHECKED_OUT' ?
             <button
               onClick={async() => await router.push(`/homepage/event/${id as string}`)}
               className='w-full bg-seeds-button-green rounded-full py-2 text-white font-semibold mt-4 text-sm cursor-pointer'
             >
               {t('seedsEvent.eventDetails')}
+            </button>
+            :
+            <button
+              onClick={() => { eventData?.event_status === 'OFFLINE' ? setIsShowTicket(true) : setIsCheckInModal(true) }}
+              className='w-full bg-[#7555DA] rounded-full py-2 text-white font-semibold mt-4 text-sm cursor-pointer'
+            >
+              {t('seedsEvent.checkInOut.checkOut')}
             </button>
         }
       </div>

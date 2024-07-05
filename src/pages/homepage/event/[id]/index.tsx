@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import { EventDescription } from '@/components/homepage/eventDescription';
+import { EventDescription } from '@/components/homepage/event/eventDescription';
+import DetailEventSkeleton from '@/components/homepage/event/skeleton/detailEventSkeleton';
 import Loading from '@/components/popup/Loading';
 import ModalShowEventTicket from '@/components/popup/ModalShowEventTicket';
 import { standartCurrency } from '@/helpers/currency';
@@ -74,9 +75,7 @@ const SeedsEventDetail: React.FC = () => {
   useEffect(() => {
     if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {
       toast.success('Check In Successful!');
-      setTimeout(() => {
-        router.push(`/homepage/event/${eventData?.id}/check-in-out`)
-      }, 3000);
+      router.push(`/homepage/event/${eventData?.id}/check-in-out`)
     }
   }, [eventData, ticketData]);
 
@@ -176,75 +175,80 @@ const SeedsEventDetail: React.FC = () => {
             <div className='bg-gray-400 animate-pulse w-full h-[200px]'/>
         }
         </div>
-        <div className="w-full mt-4 flex flex-col justify-start items-start">
-          <Typography className="text-lg font-semibold font-poppins mt-4 mb-6">
-            {eventData?.name ?? 'Seeds Event'}
-          </Typography>
-          <div className="flex gap-2 justify-center items-center">
-            <div className='w-[35px] h-[35px] flex justify-center items-center'>
-              <Image
-                src={EventCalendar}
-                alt={'EventCalendar'}
-                width={20}
-                height={20}
-              />
-            </div>
-            <Typography className='font-poppins'>
-              {languageCtx.language === 'ID'
-                ? getEventDetailsDate(
-                    new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'id-ID'
-                  )
-                : getEventDetailsDate(
-                    new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'en-US'
-                  )}
+        {
+          eventData ?
+          <div className="w-full mt-4 flex flex-col justify-start items-start">
+            <Typography className="text-lg font-semibold font-poppins mt-4 mb-6">
+              {eventData?.name ?? 'Seeds Event'}
             </Typography>
-          </div>
-          <div className="flex gap-2 justify-center items-center">
-            <div className='w-[35px] h-[35px] flex justify-center items-center'>
-              <Image
-                src={EventClock}
-                alt={'EventClock'}
-                width={25}
-                height={25}
-              />
+            <div className="flex gap-2 justify-center items-center">
+              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+                <Image
+                  src={EventCalendar}
+                  alt={'EventCalendar'}
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <Typography className='font-poppins'>
+                {languageCtx.language === 'ID'
+                  ? getEventDetailsDate(
+                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'id-ID'
+                    )
+                  : getEventDetailsDate(
+                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'en-US'
+                    )}
+              </Typography>
             </div>
-            <Typography className='font-poppins'>
-              {getEventClock(
-                new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'),
-                new Date(eventData?.ended_at ?? '2024-12-31T23:59:00Z')
-              )}
-            </Typography>
-          </div>
-          <div className="flex gap-2 justify-center items-center">
-            <div className='w-[35px] h-[35px] flex justify-center items-center'>
-              <Image
-                src={EventLocation}
-                alt={'EventLocation'}
-                width={25}
-                height={25}
-              />
+            <div className="flex gap-2 justify-center items-center">
+              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+                <Image
+                  src={EventClock}
+                  alt={'EventClock'}
+                  width={25}
+                  height={25}
+                />
+              </div>
+              <Typography className='font-poppins'>
+                {getEventClock(
+                  new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'),
+                  new Date(eventData?.ended_at ?? '2024-12-31T23:59:00Z')
+                )}
+              </Typography>
             </div>
-            {
-              eventData?.event_status === 'OFFLINE' ?
-                <a href={`${eventData?.external_url}`} target="_blank" className='underline'>
-                  <Typography className='font-poppins'>
-                    {eventData?.location_name}
-                  </Typography>
-                </a>
-                : eventData?.is_joined ?
+            <div className="flex gap-2 justify-center items-center">
+              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+                <Image
+                  src={EventLocation}
+                  alt={'EventLocation'}
+                  width={25}
+                  height={25}
+                />
+              </div>
+              {
+                eventData?.event_status === 'OFFLINE' ?
                   <a href={`${eventData?.external_url}`} target="_blank" className='underline'>
                     <Typography className='font-poppins'>
                       {eventData?.location_name}
                     </Typography>
                   </a>
-                  :
-                  <Typography className='font-poppins'>
-                    {eventData?.location_name}
-                  </Typography> 
-            }
+                  : eventData?.is_joined ?
+                    <a href={`${eventData?.external_url}`} target="_blank" className='underline'>
+                      <Typography className='font-poppins'>
+                        {eventData?.location_name}
+                      </Typography>
+                    </a>
+                    :
+                    <Typography className='font-poppins'>
+                      {eventData?.location_name}
+                    </Typography> 
+              }
+            </div>
+            <EventDescription description={eventData?.description } />
           </div>
-          <EventDescription description={eventData?.description as string} />
-        </div>
+          :
+          <DetailEventSkeleton/>
+        }
         {
           (eventData?.is_joined) &&
             <div className='bg-[#F9F9F9] w-full mt-4 rounded-lg py-4 px-2 md:px-4 flex flex-col gap-2'>

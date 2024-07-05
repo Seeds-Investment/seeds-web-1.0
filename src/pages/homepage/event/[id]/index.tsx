@@ -17,7 +17,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIcon, EventCalendar, EventCertificate, EventClock, EventLocation, EventTicket } from 'public/assets/vector';
+import { ArrowBackwardIcon, EventCalendar, EventClock, EventLocation, EventTicket } from 'public/assets/vector';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -277,9 +277,28 @@ const SeedsEventDetail: React.FC = () => {
                 </Typography>
               </div>
               {
+                (ticketData?.check_in_time !== '0001-01-01T00:00:00Z') &&
+                <>
+                  <hr className='my-2'/>
+                    <div className='w-full flex justify-between items-center'>
+                      <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
+                        {t('seedsEvent.ticket.checkIn')}
+                      </Typography>
+                      <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
+                        {languageCtx.language === 'ID'
+                          ? getEventDate(
+                              new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'id-ID'
+                            )
+                          : getEventDate(
+                              new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'en-US'
+                            )}
+                      </Typography>
+                    </div>
+                </>
+              }
+              {
                 (ticketData?.check_out_time !== '0001-01-01T00:00:00Z') &&
                   <>
-                    <hr className='my-2'/>
                     <div className='w-full flex justify-between items-center'>
                       <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
                         {t('seedsEvent.ticket.checkOut')}
@@ -295,23 +314,6 @@ const SeedsEventDetail: React.FC = () => {
                       </Typography>
                     </div>
                   </>
-              }
-              {
-                (ticketData?.check_in_time !== '0001-01-01T00:00:00Z') &&
-                  <div className='w-full flex justify-between items-center'>
-                    <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                      {t('seedsEvent.ticket.checkIn')}
-                    </Typography>
-                    <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                      {languageCtx.language === 'ID'
-                        ? getEventDate(
-                            new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'id-ID'
-                          )
-                        : getEventDate(
-                            new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'en-US'
-                          )}
-                    </Typography>
-                  </div>
               }
               <hr className='my-2'/>
               <div className='w-full flex justify-between items-center'>
@@ -354,32 +356,34 @@ const SeedsEventDetail: React.FC = () => {
               {t('seedsEvent.booking.bookNow')}
             </button>
           </div>
-          :
-          <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-            <button
-              disabled={isPastEvent()}
-              onClick={() => { setIsShowTicket(true); }}
-              className={`${isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'} flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
-            >
-              <div className='flex justify-center items-center'>
-                <Image
-                  src={isPastEvent() ? EventCertificate : EventTicket}
-                  alt={isPastEvent() ? 'EventCertificate' : 'EventTicket'}
-                  width={20}
-                  height={20}
-                />
-              </div>
-              <div className='flex justify-center items-center'>
-                {
-                  isPastEvent()
-                  ? t('seedsEvent.checkCertificate')
-                  : eventData?.event_status === 'OFFLINE'
-                    ? t('seedsEvent.seeYourTicket')
-                    : t('seedsEvent.seeEventLink')
-                }
-              </div>
-            </button>
-          </div>
+          : ticketData?.check_out_time === '0001-01-01T00:00:00Z' &&
+            <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+              <button
+                disabled={isPastEvent()}
+                onClick={async() => {
+                  ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN'))
+                  ? await router.push(`/homepage/event/${id as string}/check-in-out`)
+                  : setIsShowTicket(true);
+                }}
+                className={`${isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'} flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
+              >
+                <div className='flex justify-center items-center'>
+                  <Image
+                    src={EventTicket}
+                    alt={'EventTicket'}
+                    width={20}
+                    height={20}
+                  />
+                </div>
+                <div className='flex justify-center items-center'>
+                  {
+                    eventData?.event_status === 'OFFLINE'
+                      ? t('seedsEvent.seeYourTicket')
+                      : t('seedsEvent.seeEventLink')
+                  }
+                </div>
+              </button>
+            </div>
       }
     </>
   );

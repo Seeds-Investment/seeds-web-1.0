@@ -2,7 +2,7 @@ import Connect from '@/assets/event/connect.svg';
 import Event from '@/assets/event/event.svg';
 import OpenTrading from '@/assets/event/openTradingAccount.svg';
 import PlayArena from '@/assets/event/playArena.svg';
-import SeedsAcademy from '@/assets/event/seeds-academy-icon.svg';
+// import SeedsAcademy from '@/assets/event/seeds-academy-icon.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -11,7 +11,7 @@ const FeatureSection: React.FC = (): React.ReactElement => {
 
   return (
     <div className="flex justify-between gap-2 lg:px-4 py-2 xl:px-8 xl:gap-4">
-      <div
+      {/* <div
         onClick={async () => await router.push('/academy')}
         className="w-full flex flex-col lg:gap-2 justify-center items-center border border-[#E9E9E9] rounded-lg px-2 py-2 lg:p-4 hover:border-[#3AC4A0] hover:shadow-lg duration-300 cursor-pointer"
       >
@@ -25,7 +25,7 @@ const FeatureSection: React.FC = (): React.ReactElement => {
         <div className="flex justify-center items-center text-center text-[#262626] text-[9px] lg:text-[16px] mt-1 lg:mt-0">
           Seeds Academy
         </div>
-      </div>
+      </div> */}
       <div
         onClick={async () => await router.push('/play')}
         className="w-full flex flex-col lg:gap-2 justify-center items-center border border-[#E9E9E9] rounded-lg px-2 py-2 lg:p-4 hover:border-[#3AC4A0] hover:shadow-lg duration-300 cursor-pointer"

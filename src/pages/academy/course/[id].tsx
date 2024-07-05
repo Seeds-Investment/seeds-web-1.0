@@ -1,5 +1,6 @@
 import PaymentPopup from '@/components/academy/PaymentPopup';
-import VoucherPromo from '@/components/academy/PromoCode';
+// import VoucherPromo from '@/components/academy/PromoCode';
+import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import ShortDescription from '@/components/academy/ShortDescription';
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
@@ -49,7 +50,10 @@ const DetailCourse: React.FC = () => {
     phone_number: ''
   });
   const togglePopup = async (): Promise<void> => {
-    if (data?.is_owned === false && data?.price?.idr !== 0) {
+    if (
+      data?.is_owned === false &&
+      (data?.price?.idr !== 0 || data?.price?.usd !== 0)
+    ) {
       setShowPopup(!showPopup);
     } else {
       if (data?.is_owned === false) {
@@ -119,11 +123,25 @@ const DetailCourse: React.FC = () => {
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
           <div className="relative">
-            <div className="bg-white bg-opacity-40 w-full h-full z-30 absolute"></div>
-            <VideoPlayer
-              videoSrc={data?.video as string}
-              title={data?.title as string}
-            />
+            {data?.video !== '' ? (
+              <>
+                <div className="bg-white bg-opacity-40 w-full h-full z-30 absolute"></div>
+                <VideoPlayer
+                  videoSrc={data?.video as string}
+                  title={data?.title as string}
+                />
+              </>
+            ) : (
+              <div className='flex justify-center items-center'>
+                <Image
+                  src={NoDataSeedy}
+                  alt="no video"
+                  width={500}
+                  height={500}
+                  className="w-1/3 h-full"
+                />
+              </div>
+            )}
           </div>
           <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
@@ -175,7 +193,8 @@ const DetailCourse: React.FC = () => {
         <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
           {data?.is_owned === false && data?.price?.idr !== 0 && (
             <>
-              <VoucherPromo detailClass={data} userInfo={userInfo} />
+              {/* develop when feature api is ready */}
+              {/* <VoucherPromo detailClass={data} userInfo={userInfo} /> */}
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center">
                   <Image

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+// import Image from 'next/image';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoCloseSharp } from 'react-icons/io5';
@@ -102,7 +102,8 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                 {currency} {totalCost}
               </div>
             </div>
-            <div className="mb-10 relative">
+            {/* develop later when feature is ready */}
+            {/* <div className="mb-10 relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Image
                   src="/assets/academy/promo-icon.svg"
@@ -117,7 +118,7 @@ const SummaryPay: React.FC<SummaryPayProps> = ({
                 className="pl-10 pr-4 py-3 rounded-xl border-2 w-full"
                 placeholder="Input Promo Code"
               />
-            </div>
+            </div> */}
           </div>
           <div className="px-4 py-4 flex flex-col gap-3">
             <button

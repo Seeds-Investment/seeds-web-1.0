@@ -1,3 +1,4 @@
+import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -71,10 +72,22 @@ const LearnCourse: React.FC = () => {
       )}
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
-          <VideoPlayer
-            videoSrc={data?.video as string}
-            title={data?.title as string}
-          />
+          {data?.video !== '' ? (
+            <VideoPlayer
+              videoSrc={data?.video as string}
+              title={data?.title as string}
+            />
+          ) : (
+            <div className="flex justify-center items-center">
+              <Image
+                src={NoDataSeedy}
+                alt="no video"
+                width={500}
+                height={500}
+                className="w-1/3 h-full"
+              />
+            </div>
+          )}
           <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">

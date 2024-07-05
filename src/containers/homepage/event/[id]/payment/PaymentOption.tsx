@@ -59,36 +59,74 @@ const PaymentOption = ({
     void fetchData();
   }, []);
   return (
-    <label
-      htmlFor={option?.id}
-      className="flex justify-between rounded-xl border items-center p-2 pl-4"
-    >
-      <div>
-        <Image
-          src={option?.logo_url}
-          width={200}
-          height={200}
-          className="w-auto h-[20px] object-contain object-[center_center]"
-          alt={option?.payment_method}
-        />
-        <div className="text-[#27A590] text-xs mt-1">
-          {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${
-            option?.admin_fee
-          }`}
-        </div>
-      </div>
-      <Radio
-        id={option?.id}
-        value={option?.id}
-        name="paymentOption"
-        className="rounded-xl border"
-        color="teal"
-        checked={option?.id === currentValue?.id}
-        onChange={() => {
-          onChange(option);
-        }}
-      />
-    </label>
+    <>
+      {
+        option?.payment_type === 'va' ?
+          option?.payment_method === 'BCA_VA' && (
+            <label
+              htmlFor={option?.id}
+              className="flex justify-between rounded-xl border items-center p-2 pl-4"
+            >
+              <div>
+                <Image
+                  src={option?.logo_url}
+                  width={200}
+                  height={200}
+                  className="w-auto h-[20px] object-contain object-[center_center]"
+                  alt={option?.payment_method}
+                />
+                <div className="text-[#27A590] text-xs mt-1">
+                  {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${
+                    option?.admin_fee
+                  }`}
+                </div>
+              </div>
+              <Radio
+                id={option?.id}
+                value={option?.id}
+                name="paymentOption"
+                className="rounded-xl border"
+                color="teal"
+                checked={option?.id === currentValue?.id}
+                onChange={() => {
+                  onChange(option);
+                }}
+              />
+            </label>
+          )
+        :
+        <label
+          htmlFor={option?.id}
+          className="flex justify-between rounded-xl border items-center p-2 pl-4"
+        >
+          <div>
+            <Image
+              src={option?.logo_url}
+              width={200}
+              height={200}
+              className="w-auto h-[20px] object-contain object-[center_center]"
+              alt={option?.payment_method}
+            />
+            <div className="text-[#27A590] text-xs mt-1">
+              {`Admin fee ${userInfo?.preferredCurrency.toUpperCase()} ${
+                option?.admin_fee
+              }`}
+            </div>
+          </div>
+          <Radio
+            id={option?.id}
+            value={option?.id}
+            name="paymentOption"
+            className="rounded-xl border"
+            color="teal"
+            checked={option?.id === currentValue?.id}
+            onChange={() => {
+              onChange(option);
+            }}
+          />
+        </label>
+      }
+    </>
   );
 };
 

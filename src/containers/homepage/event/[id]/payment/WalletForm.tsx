@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
-    type Payment,
-    type UserData
+  type Payment,
+  type UserData
 } from './PaymentList';
 import InlineText from './components/InlineText';
 

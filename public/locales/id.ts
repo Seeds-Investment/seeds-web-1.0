@@ -2233,6 +2233,7 @@ export default {
       },
       receipt: {
         paymentMethod: 'Metode Pembayaran',
+        successPaidEvent: 'Berhasil',
         pendingPaidEvent: 'Menunggu Event Dibayar',
         tournamentFee: 'Biaya Event',
         adminFee: 'Biaya Admin',

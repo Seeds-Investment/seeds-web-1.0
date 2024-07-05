@@ -4,8 +4,8 @@
 
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import AssetPagination from '@/components/AssetPagination';
-import EventFilter from '@/components/homepage/eventFilter';
-import EventListCard from '@/components/homepage/eventListCard';
+import EventFilter from '@/components/homepage/event/eventFilter';
+import EventListCard from '@/components/homepage/event/eventListCard';
 import withAuth from '@/helpers/withAuth';
 import {
   type EventListParams,

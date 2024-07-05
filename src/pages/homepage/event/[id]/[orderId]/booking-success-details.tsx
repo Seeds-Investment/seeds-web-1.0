@@ -10,7 +10,7 @@ import { getEventById, getEventTicketById } from '@/repository/discover.reposito
 import { getUserInfo } from '@/repository/profile.repository';
 import { type EventList, type TicketData } from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -151,12 +151,12 @@ const SeedsEventBookingSuccessDetail: React.FC = () => {
         </div>
       </div>
       <div className="bg-white flex flex-col justify-center items-center rounded-xl font-poppins p-5 mt-4">
-        <Button
+        <button
           onClick={ async() => await router.push('/homepage/event/my-event')}
-          className='w-full rounded-full bg-seeds-button-green text-xs md:text-base'
+          className='w-full rounded-full bg-seeds-button-green text-white py-2 text-xs md:text-base cursor-pointer font-semibold'
         >
           {t('seedsEvent.ticket.myEvents')}
-        </Button>
+        </button>
       </div>
     </>
   );

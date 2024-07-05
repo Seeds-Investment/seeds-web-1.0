@@ -4,7 +4,7 @@
 
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import AssetPagination from '@/components/AssetPagination';
-import MyEventCard from '@/components/homepage/myEventCard';
+import MyEventCard from '@/components/homepage/event/myEventCard';
 import withAuth from '@/helpers/withAuth';
 import {
   type EventListParams,

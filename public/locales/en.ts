@@ -2236,6 +2236,7 @@ export default {
     seeEvent: "See Event",
     booking: {
       bookNow: "Book Now",
+      booked: "Booked",
       seeTicket: "See Ticket",
       bookingDetails: "Booking Details",
       name: "Name",
@@ -2304,6 +2305,7 @@ export default {
       },
       receipt: {
         paymentMethod: 'Payment Method',
+        successPaidEvent: 'Successful',
         pendingPaidEvent: 'Pending Paid Event',
         tournamentFee: 'Event Fee',
         adminFee: 'Admin Fee',
@@ -2335,6 +2337,21 @@ export default {
       checkOut: "Check Out",
       notificationMethod: "Notification Method",
       notificationModalMessage: "Let’s kept up to date!  Choose your preference in notifications.",
+      checkInMessage1: "Are you sure to check-in?",
+      checkInMessage2: "Will you check in now? Your data will be recorded.",
+      checkOutMessage1: "Are you sure to check-out?",
+      checkOutMessage2: "Will you check out now? Your data will be recorded.",
+      yes: "Yes",
+      no: "No",
+    },
+    checkInOut: {
+      ticketDetails: "Ticket Details",
+      checkInSuccessful: "Check In Successful",
+      checkOutSuccessful: "Check Out Successful",
+      name: "Name",
+      event: "Event",
+      checkIn: "Check In",
+      checkOut: "Check Out",
     }
   },
   buyAsset: {

@@ -26,16 +26,6 @@ const EventListCard: React.FC<EventListCardProps> = ({
   const redirectPage = async(id: string): Promise<void> => {
     await router.push(`/homepage/event/${id}`)
   }
-
-  const isPastEvent = (): boolean => {
-    const endDateObject = new Date(item?.ended_at ?? '');
-    const endDateTimestamp = endDateObject.getTime();
-
-    const currentDateObject = new Date();
-    const currentDateTimestamp = currentDateObject.getTime();
-
-    return endDateTimestamp < currentDateTimestamp;
-  };
   
   return (
     <div
@@ -44,12 +34,19 @@ const EventListCard: React.FC<EventListCardProps> = ({
     >
       <div
         onClick={async () => { await redirectPage(item?.id); }}
-        className="w-full max-h-[250px] overflow-hidden border-b-2 border-[#E9E9E9]"
+        className="w-full h-fit max-h-[150px] overflow-hidden border-b-2 border-[#E9E9E9]"
       >
-        <img
-          src={item?.image_url ?? EventImage}
-          className="w-full h-full"
-        />
+        {
+          item?.image_url !== undefined ?
+            <img
+              src={item?.image_url ?? EventImage}
+              className="w-full h-[150px] object-cover"
+              width={1000}
+              height={1000}
+            />
+            :
+            <div className='bg-gray-400 animate-pulse w-full h-[150px]'/>
+        }
       </div>
       <div className="w-full gap-2 px-4 py-2">
         <div
@@ -103,14 +100,12 @@ const EventListCard: React.FC<EventListCardProps> = ({
           </Typography>
           <Typography
             onClick={async () => { await redirectPage(item?.id); }}
-            className='w-[200px] 2xl:w-[125x] md:w-full flex justify-center items-center bg-seeds-button-green py-2 px-2 md:px-6 xl:px-2 font-poppins font-semibold text-xs md:text-sm xl:text-xs 2xl:text-sm text-white rounded-full'
+            className={`${item?.is_joined ? 'bg-white border border-seeds-button-green text-seeds-button-green' : 'text-white bg-seeds-button-green'} w-[200px] 2xl:w-[125x] md:w-full flex justify-center items-center py-2 px-2 md:px-6 xl:px-2 font-poppins font-semibold text-xs md:text-sm xl:text-xs 2xl:text-sm rounded-full`}
           >
             {
               item?.is_joined
-                ? t('seedsEvent.booking.seeTicket')
-                : isPastEvent()
-                  ? t('seedsEvent.seeEvent')
-                  : t('seedsEvent.booking.bookNow')
+                ? t('seedsEvent.booking.booked')
+                : t('seedsEvent.booking.bookNow')
             }
           </Typography>
         </div>

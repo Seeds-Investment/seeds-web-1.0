@@ -9,7 +9,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { bookEvent, getEventById } from '@/repository/discover.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import {
-    getPaymentById
+  getPaymentById
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/event';

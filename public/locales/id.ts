@@ -2163,6 +2163,7 @@ export default {
     seeEvent: "Lihat Event",
     booking: {
       bookNow: "Pesan Tiket",
+      booked: "Lihat Tiket",
       seeTicket: "Lihat Tiket",
       bookingDetails: "Detail Pemesanan",
       name: "Nama",
@@ -2230,6 +2231,7 @@ export default {
       },
       receipt: {
         paymentMethod: 'Metode Pembayaran',
+        successPaidEvent: 'Berhasil',
         pendingPaidEvent: 'Menunggu Event Dibayar',
         tournamentFee: 'Biaya Event',
         adminFee: 'Biaya Admin',
@@ -2261,6 +2263,21 @@ export default {
       checkOut: "Check Out",
       notificationMethod: "Pilih Notifikasi",
       notificationModalMessage: "Ayo up-to-date! Pilih preferensi notifikasimu.",
+      checkInMessage1: "Apa kamu yakin untuk check-in?",
+      checkInMessage2: "Apakah kamu ingin check-in sekarang? Datamu akan langsung tercatat.",
+      checkOutMessage1: "Apa kamu yakin untuk check-out?",
+      checkOutMessage2: "Apakah kamu ingin check-out sekarang? Datamu akan langsung tercatat.",
+      yes: "Ya",
+      no: "Tidak",
+    },
+    checkInOut: {
+      ticketDetails: "Detail Tiket",
+      checkInSuccessful: "Check In Sukses",
+      checkOutSuccessful: "Check Out Sukses",
+      name: "Nama",
+      event: "Event",
+      checkIn: "Check In",
+      checkOut: "Check Out",
     }
   },
   buyAsset: {

@@ -180,3 +180,28 @@ export const updateEventNotification = async (payload: string[], id: string): Pr
     await Promise.reject(error);
   }
 };
+
+export const checkInOutEvent = async (params: {
+  ticket_id: string;
+  action: string;
+}): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.post(`/event/check-in-out`,
+      params,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

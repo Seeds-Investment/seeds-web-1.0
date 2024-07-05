@@ -72,8 +72,13 @@ const SeedsEventCheckInOut: React.FC = () => {
   }, []);
   
   useEffect(() => {
-    if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_OUT')) {
+    if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'ISSUED')) {
       router.push(`/homepage/event/${eventData?.id}`)
+    } else if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_OUT')) {
+      toast.success('Check Out Successful!');
+      setTimeout(() => {
+        router.push(`/homepage/event/${eventData?.id}`);
+      }, 5000);
     }
   }, [eventData, ticketData]);
 

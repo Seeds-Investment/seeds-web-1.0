@@ -16,7 +16,7 @@ import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { EventCalendar, EventCertificate, EventClock, EventLocation, EventTicket } from 'public/assets/vector';
+import { ArrowBackwardIcon, EventCalendar, EventCertificate, EventClock, EventLocation, EventTicket } from 'public/assets/vector';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -73,7 +73,10 @@ const SeedsEventDetail: React.FC = () => {
   
   useEffect(() => {
     if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {
-      router.push(`/homepage/event/${eventData?.id}/check-in-out`)
+      toast.success('Check In Successful!');
+      setTimeout(() => {
+        router.push(`/homepage/event/${eventData?.id}/check-in-out`)
+      }, 3000);
     }
   }, [eventData, ticketData]);
 
@@ -145,10 +148,21 @@ const SeedsEventDetail: React.FC = () => {
         />
       )}
       <div className="bg-white flex flex-col justify-center items-center rounded-xl font-poppins p-5">
-        <div className="flex justify-center w-full gap-2">
+        <div className="flex justify-center w-full gap-2 relative">
           <Typography className="text-lg font-semibold">
             {t('seedsEvent.eventDetails')}
           </Typography>
+          <div
+            onClick={async() => await router.push('/homepage/event')}
+            className='absolute left-0 top-[-3px] w-[35px] h-[35px] flex justify-center items-center cursor-pointer'
+          >
+            <Image
+              src={ArrowBackwardIcon}
+              alt={'ArrowBackwardIcon'}
+              width={30}
+              height={30}
+            />
+          </div>
         </div>
         <div className="w-full lg:w-2/3 2xl:w-1/2 h-auto rounded-xl mt-4 overflow-hidden">
         {

@@ -156,14 +156,16 @@ const SuccessPaymentPage: React.FC = () => {
     void fetchOrderDetailAndRepeat();
     void fetchPaymentList();
 
-    if (orderDetail?.howToPayApi !== undefined) {
-      void fetchHowToPay(orderDetail.howToPayApi);
-    }
-
     return (): void => {
       clearTimeout(timer);
     };
   }, []);
+
+  useEffect(() => {
+    if (orderDetail?.howToPayApi !== undefined) {
+      void fetchHowToPay(orderDetail.howToPayApi);
+    }
+  }, [orderId, orderDetail?.howToPayApi]);
   
   const getSelectedPayment = (
     eWalletList: PaymentList[],

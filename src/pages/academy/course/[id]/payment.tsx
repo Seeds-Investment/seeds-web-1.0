@@ -61,21 +61,27 @@ const Payment: React.FC = () => {
     undefined
   );
   const [steps, setSteps] = useState<string[]>([]);
+  const [isListPaymentHidden, setIsListPaymentHidden] =
+    useState<boolean>(false);
 
   const handleGetPayment = async (): Promise<void> => {
     try {
-      const response = await getPaymentById(id as string);
-      setData(response);
-      const responseHowToPay = await getHowToPay(response?.howToPayApi);
-      setSteps(responseHowToPay?.payment_instruction[0]?.step);
-      if (response?.itemId !== '') {
-        const responseClassAfterPay = await getClassDetail(
-          response?.itemId as string
-        );
-        setClassAfterPay(responseClassAfterPay);
+      if (id !== undefined) {
+        const response = await getPaymentById(id as string);
+        setData(response);
+        if (response?.itemId !== '') {
+          const responseClassAfterPay = await getClassDetail(
+            response?.itemId as string
+          );
+          setClassAfterPay(responseClassAfterPay);
+        }
+        if (response?.howToPayApi !== undefined) {
+          const responseHowToPay = await getHowToPay(response?.howToPayApi);
+          setSteps(responseHowToPay?.payment_instruction[0]?.step);
+        }
       }
     } catch (error: any) {
-      toast('Please select your Payment!');
+      // toast('Complete your payment!');
     } finally {
       setIsLoading(false);
     }
@@ -110,22 +116,17 @@ const Payment: React.FC = () => {
     }
   );
 
-  useEffect(() => {
-    if (id !== undefined) {
-      void handleGetPayment();
-    }
-  }, [id]);
-
   const handlePaymentList = async (): Promise<void> => {
     try {
       const payList = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
-      const responseClass = await getClassDetail(id as string);
-      setDetailClass(responseClass);
       setQRisList(payList.type_qris);
       setEWalletList(payList.type_ewallet);
       setVirtualList(payList.type_va);
+      if (coins === 'true') {
+        void handleGetCoins();
+      }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     } finally {
@@ -137,6 +138,17 @@ const Payment: React.FC = () => {
     try {
       const responseCoins = await getTransactionSummary();
       setAmountCoins(responseCoins?.data?.total_available_coins);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const handleGetClass = async (): Promise<void> => {
+    try {
+      if (id !== undefined) {
+        const responseClass = await getClassDetail(id as string);
+        setDetailClass(responseClass);
+      }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     }
@@ -162,10 +174,13 @@ const Payment: React.FC = () => {
 
   useEffect(() => {
     void handlePaymentList();
-    if (coins === 'true') {
-      void handleGetCoins();
-    }
-  }, [userInfo?.preferredCurrency, id]);
+    void handleGetPayment();
+    void handleGetClass();
+  }, [id]);
+
+  useEffect(() => {
+    setIsListPaymentHidden(detailClass?.id === undefined);
+  }, [detailClass?.id]);
 
   const handlePayment = async (): Promise<void> => {
     if (selectedPayment === null) {
@@ -192,7 +207,7 @@ const Payment: React.FC = () => {
         );
       }
       if (response?.payment_url !== '') {
-        window.open(response.payment_url, '_blank');
+        window.open(response?.payment_url, '_blank');
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -281,7 +296,7 @@ const Payment: React.FC = () => {
   return (
     <PageGradient defaultGradient className="w-full">
       <ListPayment
-        isHidden={dynamicPrice === undefined}
+        isHidden={isListPaymentHidden}
         virtualList={renderOptions(virtualList, 'va')}
         ewalletList={renderOptions(eWalletList, 'wallet')}
         qrisList={renderOptions(qRisList, 'other')}
@@ -302,7 +317,7 @@ const Payment: React.FC = () => {
         coins={amountCoins}
       />
       <Receipt
-        isHidden={dynamicPrice !== undefined}
+        isHidden={!isListPaymentHidden}
         amountClass={
           classAfterPay?.price?.[
             userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
@@ -355,3 +370,4 @@ const Payment: React.FC = () => {
 };
 
 export default withAuth(Payment);
+

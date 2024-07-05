@@ -44,6 +44,8 @@ export interface DetailClassI {
   banner?: string;
   module?: string;
   video: string;
+  total_participants?: number;
+  total_question?: number;
 }
 
 export interface PriceDataI {

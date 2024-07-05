@@ -1,3 +1,4 @@
+import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import VideoPlayer from '@/components/academy/VideoPlayer';
 import ModalShareCourse from '@/components/popup/ModalShareCourse';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -38,11 +39,15 @@ const LearnCourse: React.FC = () => {
 
   const handleStartPosttest = async (): Promise<void> => {
     try {
-      const response = await startPosttest(id as string);
-      if (response?.message === 'maximum posttest count already reached') {
-        toast(response?.message, { type: 'warning' });
+      if (data?.total_question !== undefined && data?.total_question > 0) {
+        const response = await startPosttest(id as string);
+        if (response?.message === 'maximum posttest count already reached') {
+          toast(response?.message, { type: 'warning' });
+        } else {
+          await router.push(`/academy/course/${id as string}/posttest`);
+        }
       } else {
-        await router.push(`/academy/course/${id as string}/posttest`);
+        toast('Questions not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -67,10 +72,22 @@ const LearnCourse: React.FC = () => {
       )}
       <PageGradient defaultGradient className="w-full">
         <div className="bg-white p-4 rounded-xl shadow-md flex flex-col gap-5">
-          <VideoPlayer
-            videoSrc={data?.video as string}
-            title={data?.title as string}
-          />
+          {data?.video !== '' ? (
+            <VideoPlayer
+              videoSrc={data?.video as string}
+              title={data?.title as string}
+            />
+          ) : (
+            <div className="flex justify-center items-center">
+              <Image
+                src={NoDataSeedy}
+                alt="no video"
+                width={500}
+                height={500}
+                className="w-1/3 h-full"
+              />
+            </div>
+          )}
           <div className="font-bold text-2xl">{data?.title}</div>
           <div className="flex flex-row gap-5">
             <div className="flex flex-row items-center gap-2">
@@ -81,7 +98,8 @@ const LearnCourse: React.FC = () => {
                 height={100}
                 className="w-7"
               />
-              100 {t('academy.detailCourse.participants')}
+              {data?.total_participants ?? 0}{' '}
+              {t('academy.detailCourse.participants')}
             </div>
             <div
               onClick={() => {
@@ -118,7 +136,9 @@ const LearnCourse: React.FC = () => {
         <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
           <button
             onClick={handleStartPosttest}
-            className="p-3 bg-[#3AC4A0] rounded-3xl w-full text-white font-bold"
+            className={`p-3 ${
+              data?.total_question === 0 ? 'bg-[#CCCCCC]' : 'bg-[#3AC4A0]'
+            } rounded-3xl w-full text-white font-bold`}
           >
             Post-Test
           </button>

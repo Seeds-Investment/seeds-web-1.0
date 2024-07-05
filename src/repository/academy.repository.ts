@@ -233,7 +233,7 @@ export const getClassDetail = async (id: string): Promise<any> => {
     });
     return response;
   } catch (error: any) {
-    toast(error.message, { type: 'error' });
+    // toast(error.message, { type: 'error' });
   }
 };
 

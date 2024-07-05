@@ -1,9 +1,19 @@
+import PaymentPopup from '@/components/academy/PaymentPopup';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import {
+  enrollClass,
+  getClassDetail,
   getPosttestScore,
   getPretestScore
 } from '@/repository/academy.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import {
+  type DetailClassI,
+  type EnrollClassI,
+  type PriceDataI
+} from '@/utils/interfaces/academy.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -14,25 +24,63 @@ import { toast } from 'react-toastify';
 const Score: React.FC = () => {
   const router = useRouter();
   const { id, testType } = router.query;
-  const [data, setData] = useState('');
+  const [dataPreTest, setDataPreTest] = useState('');
+  const [dataPostTest, setDataPostTest] = useState('');
+  const [dataClass, setDataClass] = useState<DetailClassI | undefined>(
+    undefined
+  );
   const { t } = useTranslation();
+  const [enrollData, setEnrollData] = useState<EnrollClassI>({
+    phone_number: ''
+  });
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleGetScore = async (): Promise<void> => {
     try {
       let response;
       if (testType === 'pretest') {
         response = await getPretestScore(id as string);
-        setData(response?.pre_test_score);
-      } else if (testType === 'posttest') {
+        setDataPreTest(response?.pre_test_score);
+        const responseClass = await getClassDetail(id as string);
+        setDataClass(responseClass);
+        const responseUser = await getUserInfo();
+        setUserInfo(responseUser);
+        setEnrollData({
+          phone_number: responseUser?.phoneNumber ?? ''
+        });
+        if (responseClass?.is_owned === false) {
+          setShowPopup(true);
+        }
+      } else if (testType === 'posttest' || testType === undefined) {
         response = await getPosttestScore(id as string);
-        setData(response?.post_test_score);
+        setDataPostTest(response?.post_test_score);
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     }
   };
+
+  const togglePopup = async (): Promise<void> => {
+    if (
+      dataClass?.is_owned === false &&
+      (dataClass?.price?.idr !== 0 || dataClass?.price?.usd !== 0)
+    ) {
+      setShowPopup(!showPopup);
+    } else {
+      if (dataClass?.is_owned === false) {
+        const response = await enrollClass(id as string, enrollData);
+        if (response?.payment_status === 'SUCCESS') {
+          void router.push(`/academy/course/${id as string}/learn`);
+        }
+      } else {
+        void router.push(`/academy/course/${id as string}/learn`);
+      }
+    }
+  };
+
   useEffect(() => {
-    if (id !== undefined && testType !== undefined) {
+    if (id !== undefined) {
       void handleGetScore();
     }
   }, [id, testType]);
@@ -53,7 +101,7 @@ const Score: React.FC = () => {
                 className="h-60 w-60"
               />
               <div className="font-bold text-xl">
-                {t('academy.test.grade')}: {data}
+                {t('academy.test.grade')}: {dataPreTest}
               </div>
               <div className="text-[#7C7C7C]">{t('academy.test.desc')}</div>
               <button
@@ -91,7 +139,9 @@ const Score: React.FC = () => {
               <Typography className="text-base font-normal">
                 {t('academy.score.totalScore')}
               </Typography>
-              <Typography className="text-5xl font-semibold">{data}</Typography>
+              <Typography className="text-5xl font-semibold">
+                {dataPostTest}
+              </Typography>
             </div>
           </div>
           <div className="flex flex-col justify-center items-center gap-4">
@@ -114,6 +164,18 @@ const Score: React.FC = () => {
           </div>
         </div>
       )}
+      <PaymentPopup
+        isOpen={showPopup}
+        onClose={togglePopup}
+        classTitle={dataClass?.title as string}
+        amount={dataClass?.price?.[
+          userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
+        ]?.toLocaleString('id-ID', {
+          currency: userInfo?.preferredCurrency ?? 'IDR',
+          style: 'currency'
+        })}
+        isUseCoins={false}
+      />
     </PageGradient>
   );
 };

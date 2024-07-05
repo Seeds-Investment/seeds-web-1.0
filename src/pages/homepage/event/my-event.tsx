@@ -60,9 +60,6 @@ const MyEvent: React.FC = () => {
     year: new Date().getFullYear()
   });
 
-  console.log('eventList', eventList)
-  console.log('eventMetadata', eventMetadata)
-
   useEffect(() => {
     fetchData()
       .then()

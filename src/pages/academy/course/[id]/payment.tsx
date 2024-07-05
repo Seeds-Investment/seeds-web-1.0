@@ -81,7 +81,7 @@ const Payment: React.FC = () => {
         }
       }
     } catch (error: any) {
-      toast('Complete your payment!');
+      // toast('Complete your payment!');
     } finally {
       setIsLoading(false);
     }

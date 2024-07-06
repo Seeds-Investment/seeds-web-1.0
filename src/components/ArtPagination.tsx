@@ -61,12 +61,11 @@ const ArtPagination: React.FC<PaginationProps> = ({
       buttons.push(
         <a
           key={i}
-          href="#"
           className={`${
             i.toString() === currentPage.toString()
               ? 'text-white bg-[#3AC4A0]'
               : 'text-[#262626]'
-          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs`}
+          } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs cursor-pointer`}
           onClick={() => {
             handlePageButtonClick(i);
           }}
@@ -85,21 +84,23 @@ const ArtPagination: React.FC<PaginationProps> = ({
         <div className="col-span-2" />
         <div className="col-span-6 pt-[1px]">
           <div className="flex justify-center items-center">
-            <a
-              href="#"
-              onClick={handlePreviousPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-            >
-              <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            {currentPage > 1 && (
+              <button
+                onClick={handlePreviousPage}
+                className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              >
+                <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
+              </button>
+            )}
             {generatePageButtons()}
-            <a
-              href="#"
-              onClick={handleNextPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-            >
-              <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            {currentPage < totalPages && (
+              <button
+                onClick={handleNextPage}
+                className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              >
+                <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
+              </button>
+            )}
           </div>
         </div>
         <div className="col-span-2 me-12">
@@ -132,21 +133,23 @@ const ArtPagination: React.FC<PaginationProps> = ({
       <div className="lg:hidden grid grid-cols-1">
         <div className="col-span-1 pt-[1px]">
           <div className="flex justify-center items-center">
-            <a
-              href="#"
-              onClick={handlePreviousPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-            >
-              <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            {currentPage > 1 && (
+              <button
+                onClick={handlePreviousPage}
+                className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              >
+                <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
+              </button>
+            )}
             {generatePageButtons()}
-            <a
-              href="#"
-              onClick={handleNextPage}
-              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-            >
-              <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-            </a>
+            {currentPage < totalPages && (
+              <button
+                onClick={handleNextPage}
+                className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+              >
+                <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
+              </button>
+            )}
           </div>
           <div className="flex justify-center pt-2">
             <div className="flex justify-center items-center gap-4">

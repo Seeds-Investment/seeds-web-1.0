@@ -1,10 +1,13 @@
 import NewsCard from '@/components/homepage/newsCard';
 import { getArticle } from '@/repository/article.repository';
 import LanguageContext from '@/store/language/language-context';
+import { Card, Typography } from '@material-tailwind/react';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Slider from 'react-slick';
+import 'swiper/css';
+import { Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export interface ArticleListRoot {
   promoCodeList: Article[];
@@ -139,237 +142,199 @@ export default function NewsPage(): React.ReactElement {
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');
   }
+
+  const classNameSwiper =
+    'items-center lg:flex lg:flex-col lg:w-full lg:justify-center ';
+
+  const responsiveBreakpointsSwiper = {
+    320: { slidesPerView: 1, centeredSlides: true },
+    480: { slidesPerView: 1, centeredSlides: true },
+    640: { slidesPerView: 1, centeredSlides: true },
+    1024: { slidePerView: 1, centeredSlides: true }
+  };
   return (
     <>
-      <div className="lg:hidden mt-4 ">
-        <Slider
-          slidesToShow={4}
-          speed={500}
-          initialSlide={0}
-          responsive={[
-            {
-              breakpoint: 768,
-              settings: {
-                dots: false,
-                slidesToShow: 4,
-                slidesToScroll: 1
-              }
-            }
-          ]}
-        >
-          {categories.map((category, key) => (
-            <div
-              key={key}
-              className={`${categoryItemClass} ${
-                activeCategory === category
-                  ? 'bg-[#3AC4A0] text-white text-xs'
-                  : 'text-[#3AC4A0] bg-[#F9F9F9] text-xs'
-              }`}
-              onClick={() => {
-                updateCategory(category);
-              }}
-            >
-              {category}
-            </div>
-          ))}
-        </Slider>
-      </div>
-      <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
-        <button
-          className={`py-1 rounded-full text-xs px-4 ${
-            activeCategory === 'All'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('All');
-          }}
-        >
-          All
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'business'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('business');
-          }}
-        >
-          Business
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'entertainment'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('entertainment');
-          }}
-        >
-          Entertainment
-        </button>
-
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'health'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('health');
-          }}
-        >
-          Health
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'politics'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('politics');
-          }}
-        >
-          Politics
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'science'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('science');
-          }}
-        >
-          Science
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'sports'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('sports');
-          }}
-        >
-          Sports
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'technology'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('technology');
-          }}
-        >
-          Technology
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'top'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('top');
-          }}
-        >
-          Top
-        </button>
-        <button
-          className={`py-1 rounded-full text-xs px-2 ${
-            activeCategory === 'world'
-              ? 'bg-[#3AC4A0] text-white'
-              : 'text-[#3AC4A0] bg-[#F9F9F9]'
-          }`}
-          onClick={() => {
-            updateCategory('world');
-          }}
-        >
-          World
-        </button>
-      </div>
-      <Slider
-        slidesToShow={2}
-        speed={500}
-        className="my-12"
-        initialSlide={0}
-        // slidesToScroll={1}
-        responsive={[
-          {
-            breakpoint: 1024,
-            settings: {
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              dots: true,
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 480,
-            settings: {
-              dots: true,
-              slidesToShow: 1
-            }
-          }
-        ]}
-      >
-        {hotNews.map((data, key) => (
-          <div
-            key={key}
-            className={` lg:pe-5 w-[200px] flex flex-col items-start bg-transparent cursor-pointer hover:shadow-lg transition-all relative bg-opacity-70 ${hotNewsItemClass}`}
+      <div className="flex flex-col gap-10">
+        <div className="hidden lg:flex  justify-center mt-4 gap-2 ">
+          <button
+            className={`py-1 rounded-full text-xs px-4 ${
+              activeCategory === 'All'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('All');
+            }}
           >
-            <Link href={`/homepage/news/${data?.id ?? 0}`}>
-              {isImageUrlValid(data.imageUrl) ? (
-                <img
-                  src={data.imageUrl}
-                  alt={data.title}
-                  className="w-full rounded-xl h-[240px]"
-                />
-              ) : (
-                <img
-                  src={defaultHotNewsImage}
-                  alt={data.title}
-                  className="w-full rounded-xl h-[240px]"
-                />
-              )}
-            </Link>
-            <div className="absolute top-0 right-5 bg-[#5E44FF] rounded-3xl text-white px-3 py-2 m-2 text-center">
-              Hot News
-            </div>
-            <h3 className="absolute bottom-0 left-0 right-0 bg-transparent text-white p-2 text-left">
-              {data.title}
-            </h3>
-          </div>
-        ))}
-      </Slider>
-      <div className="grid z-10 lg:grid-cols-4 gap-4 mt-8">
-        {articles.map(article => {
-          return <NewsCard key={article.id} articleId={article.id} />;
-        })}
-      </div>
-      <div className="text-center justify-center mt-3">
-        <Link
-          href={'/homepage/articles'}
-          className="text-md mt-3 font-normal text-[#3AC4A0]"
-        >
-          {t('homepage.section2.text14')}
-        </Link>
+            All
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'business'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('business');
+            }}
+          >
+            Business
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'entertainment'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('entertainment');
+            }}
+          >
+            Entertainment
+          </button>
+
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'health'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('health');
+            }}
+          >
+            Health
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'politics'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('politics');
+            }}
+          >
+            Politics
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'science'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('science');
+            }}
+          >
+            Science
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'sports'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('sports');
+            }}
+          >
+            Sports
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'technology'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('technology');
+            }}
+          >
+            Technology
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'top'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('top');
+            }}
+          >
+            Top
+          </button>
+          <button
+            className={`py-1 rounded-full text-xs px-2 ${
+              activeCategory === 'world'
+                ? 'bg-[#3AC4A0] text-white'
+                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+            }`}
+            onClick={() => {
+              updateCategory('world');
+            }}
+          >
+            World
+          </button>
+        </div>
+        {/* ----swiper slide image---- */}
+        <div className="lg:w-full lg:h-[300px] w-full h-[200px] lg:justify-center">
+          <Swiper
+            className={classNameSwiper}
+            spaceBetween={0}
+            loop={true}
+            centeredSlides={true}
+            slidesPerView={1}
+            breakpoints={responsiveBreakpointsSwiper}
+            modules={[Autoplay]}
+            autoplay={{ delay: 1300, disableOnInteraction: false }}
+          >
+            {hotNews.map((data, key) => (
+              <SwiperSlide key={key}>
+                <Card className="w-full h-full p-0 relative overflow-hidden">
+                  {/* store image on swiper slide */}
+                  <Link
+                    href={`/homepage/news/${data?.id ?? 0}`}
+                    className="block w-full h-full"
+                  >
+                    {isImageUrlValid(data.imageUrl) ? (
+                      <img
+                        src={data.imageUrl}
+                        alt={data.title}
+                        className="object-cover w-full lg:h-[300px] h-[200px]"
+                      />
+                    ) : (
+                      <img
+                        src={defaultHotNewsImage}
+                        alt={data.title}
+                        className="object-cover w-full lg:h-[300px] h-[200px]"
+                      />
+                    )}
+                    <Typography className=" absolute bottom-0 left-0 right-0 bg-gradient-to-b from-transparent to-black bg-opacity-50 text-white py-3 px-2 rounded-b-xl">
+                      {data.title}
+                    </Typography>
+                  </Link>
+                </Card>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        {/* -------Box Card news------- */}
+        <div className="grid z-10 lg:grid-cols-4 gap-4">
+          {articles.map(article => {
+            return <NewsCard key={article.id} articleId={article.id} />;
+          })}
+        </div>
+        {/* ------"show more" text------ */}
+        <div className="text-center justify-center">
+          <Link
+            href={'/homepage/news'}
+            className="text-md mt-3 font-normal text-[#3AC4A0]"
+          >
+            {t('homepage.section2.text14')}
+          </Link>
+        </div>
       </div>
     </>
   );

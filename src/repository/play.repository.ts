@@ -215,14 +215,14 @@ export const getTrendingPlayList = async (): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
 
-    if (accessToken === null || accessToken === '') {
-      return await Promise.resolve('Access token not found');
-    }
+    // if (accessToken === null || accessToken === '') {
+    //   return await Promise.resolve('Access token not found');
+    // }
 
     return await playService.get(`/trending`, {
       headers: {
         Accept: 'application/json',
-        Authorization: `Bearer ${accessToken ?? ''}`
+        Authorization: accessToken === null ? '' : `Bearer ${accessToken ?? ''}`
       }
     });
   } catch (error) {
@@ -746,7 +746,7 @@ export const getAllPlayCenter = async (
 
 export const getUserRankLeaderboard = async (
   userId: string,
-  playId: string,
+  playId: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

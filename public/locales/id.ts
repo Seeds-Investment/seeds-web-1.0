@@ -997,7 +997,7 @@ export default {
         placeholder: 'Ketik nama Circle',
         error: 'Masukan Nama Circle',
         duplicate1: 'Nama',
-        duplicate2: 'telah digunakan!',
+        duplicate2: 'telah digunakan!'
       },
       hashtag: {
         label: 'Hashtag',

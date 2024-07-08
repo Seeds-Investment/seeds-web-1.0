@@ -1075,7 +1075,7 @@ export default {
         placeholder: 'type circle name',
         error: 'Input Circle Name',
         duplicate1: 'The name',
-        duplicate2: 'is already in use!',
+        duplicate2: 'is already in use!'
       },
       hashtag: {
         label: 'Hashtag',

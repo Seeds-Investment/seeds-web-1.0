@@ -237,3 +237,62 @@ export interface Pie {
   real_ticker: string;
   seeds_ticker: string;
 }
+
+export interface Participant {
+  photo_url: string;
+  id: string;
+  verified: false;
+  label: string;
+  name: string;
+  seeds_tag: string;
+  total_play: number;
+  total_win: number;
+  total_lose: number;
+  win_rate: number;
+}
+
+export interface SponsorCom {
+  name: string;
+  image_url: string;
+}
+export interface TopTournament {
+  id: string;
+  play_id: string;
+  name: string;
+  category: string;
+  all_category: string[];
+  type: string;
+  publish_time: string;
+  open_registration_time: string;
+  play_time: string;
+  end_time: string;
+  min_participant: number;
+  max_participant: number;
+  currency: string;
+  opening_balance: number;
+  admission_fee: number;
+  fee_percentage: number;
+  gain_percentage: number;
+  prize_fix_amount: number;
+  prize_fix_percentages: number[];
+  prize_pool_amount: number;
+  prize_pool_percentages: number[];
+  participants: Participant[];
+  is_joined: boolean;
+  created_by_user_id: string;
+  created_by_admin_id: string;
+  status: string;
+  tnc: string;
+  banner: string;
+  rank: number;
+  created_at: string;
+  updated_at: string;
+  updated_by: string;
+  sponsorship: SponsorCom[];
+  featured_link: string;
+  reward_url: string;
+  promo_id: string;
+  is_need_invitation_code: boolean;
+  payment_method: string[];
+  is_free_voucher_claimed: boolean;
+}

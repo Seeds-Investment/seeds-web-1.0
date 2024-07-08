@@ -104,9 +104,9 @@ const CreateCirclePage = ({
 
   useEffect(() => {
     const isDuplicate = (): boolean => {
-      return circleNameArray.some((item) => item?.name === formRequest?.name);
+      return circleNameArray.some(item => item?.name === formRequest?.name);
     };
-    setIsNameDuplicate(isDuplicate())
+    setIsNameDuplicate(isDuplicate());
   }, [circleNameArray, formRequest]);
 
   const handleOpenModalMembership = (): void => {
@@ -163,7 +163,7 @@ const CreateCirclePage = ({
       setIsLoadingCircle(true);
       const response = await getCircle({ ...initialFilter });
       const newData = response.data !== null ? response.data : [];
-      setCircleNameArray(newData)
+      setCircleNameArray(newData);
     } catch (error) {
       toast.error(`Error fetching circle data: ${error as string}`);
     } finally {
@@ -173,7 +173,7 @@ const CreateCirclePage = ({
 
   return (
     <div>
-      {((formRequest !== undefined) && !isLoadingCircle) && (
+      {formRequest !== undefined && !isLoadingCircle && (
         <>
           <ModalMembershipType
             openModal={openModalMembership}
@@ -256,12 +256,13 @@ const CreateCirclePage = ({
                         : 'Nama Circle'
                     }
                   />
-                  {
-                    isNameDuplicate &&
-                      <div className='mt-1 text-[#DD2525] text-sm'>
-                        {t('circle.create.name.duplicate1')} {formRequest?.name ?? ''} {t('circle.create.name.duplicate2')}
-                      </div>
-                  }
+                  {isNameDuplicate && (
+                    <div className="mt-1 text-[#DD2525] text-sm">
+                      {t('circle.create.name.duplicate1')}{' '}
+                      {formRequest?.name ?? ''}{' '}
+                      {t('circle.create.name.duplicate2')}
+                    </div>
+                  )}
                   {error.name !== null ? (
                     <Typography color="red" className="text-xs mt-2">
                       {error.name}
@@ -444,7 +445,7 @@ const CreateCirclePage = ({
                   Terms and Conditions
                 </a>
 
-                {((isAgree === true) && !isNameDuplicate) ? (
+                {isAgree === true && !isNameDuplicate ? (
                   <Button
                     className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
                     onClick={() =>

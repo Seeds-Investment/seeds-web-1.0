@@ -14,11 +14,13 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 export const SlideQuiz: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [activeSlide, setActiveSlide] = useState(0);
   const [quizData, setQuizData] = useState<any>([]);
@@ -173,31 +175,31 @@ export const SlideQuiz: React.FC = () => {
                             <Image src={shareButton} alt="share" />
                           </button>
                         </div>
-                        <div className="border-dashed border-2 border-separate-500"></div>
+                        <div className="border-dashed border border-separate-500"></div>
                         <div className="lg:w-full w-full p-1 flex flex-row justify-between items-end">
                           <div className="flex gap-3 text-white ">
                             <div className="flex flex-col items-start justify-start">
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                Entry Fee
+                                {`${t('quiz.entryFee')}`}
                               </Typography>
                               <Typography className="text-[15px] lg:text-lg">
                                 {item.admission_fee === 0
-                                  ? 'FREE'
+                                  ? t('quiz.free')
                                   : item.admission_fee}
                               </Typography>
                             </div>
                             <div className="flex flex-col items-start">
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                Duration
+                                {`${t('quiz.duration')}`}
                               </Typography>
                               <Typography className="text-[15px] lg:text-lg">
                                 {durationInDays(item.started_at, item.ended_at)}{' '}
-                                Days
+                                {`${t('tournament.tournamentCard.days')}`}
                               </Typography>
                             </div>
                             <div className="flex flex-col items-start">
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
-                                Players
+                                {`${t('quiz.players')}`}
                               </Typography>
                               <Typography className=" text-[15px] lg:text-lg">
                                 {item.participants}
@@ -215,7 +217,7 @@ export const SlideQuiz: React.FC = () => {
                             }
                             className="w-[65px] h-[25px] lg:w-[100px] lg:h-[40px] bg-white rounded-full text-[#3AC4A0] capitalize flex items-center justify-center"
                           >
-                            Play
+                            {`${t('quiz.play')}`}
                           </Button>
                         </div>
                       </CardBody>

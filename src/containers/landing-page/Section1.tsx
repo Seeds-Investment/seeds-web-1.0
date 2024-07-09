@@ -1,6 +1,7 @@
-import iphone from '@/assets/landing-page/iphone14_section1.svg';
+import animationAppsSeedsWeb from '@/constants/animationAppsSeedsWeb.json';
 import { downloadOurApp } from '@/utils/_static';
 import { Button } from '@material-tailwind/react';
+import Lottie from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -31,7 +32,6 @@ export default function Section1(): React.ReactElement {
     t('landingV2.section1.text9')
   ];
 
-
   return (
     <section
       ref={ref}
@@ -54,12 +54,9 @@ export default function Section1(): React.ReactElement {
         <div className="flex flex-col md:flex-row">
           <div className="lg:hidden  ">
             <div className="lg:flex lg:min-w-full lg:justify-center lg:h-auto flex justify-center w-min-full h-auto">
-              <Image
-                src={iphone}
-                alt={iphone}
-                width={300}
-                height={300}
-                className="lg:min-h-full"
+              <Lottie
+                animationData={animationAppsSeedsWeb}
+                className="h-[450px]"
               />
             </div>
           </div>
@@ -117,12 +114,9 @@ export default function Section1(): React.ReactElement {
           </div>
           <div className="hidden lg:block lg:w-1/2">
             <div className="lg:flex lg:min-w-full lg:justify-center lg:h-auto w-min-full h-auto">
-              <Image
-                src={iphone}
-                alt={iphone}
-                width={300}
-                height={300}
-                className="lg:min-h-full"
+              <Lottie
+                animationData={animationAppsSeedsWeb}
+                className="h-[450px]"
               />
             </div>
           </div>

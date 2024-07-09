@@ -1,34 +1,30 @@
 import moment from 'moment';
 
-const monthsID: string[] = [
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember'
-];
+moment.updateLocale('id-ID', {
+  months: [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ],
+  monthsShort: [
+    'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+  ],
+  weekdays: [
+    'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'
+  ]
+});
 
-const monthsEN: string[] = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
+moment.updateLocale('en-US', {
+  months: [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ],
+  monthsShort: [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ],
+  weekdays: [
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  ]
+});
 
 export const generateFormattedDate = (
   dateString: string,
@@ -55,15 +51,18 @@ export const getShortDate = (date: string): string => {
   return result;
 };
 
-export const getTournamentTime = (
-  dateString: string,
-  showZone = false
-): string => {
-  const startDate = moment(dateString);
-  const result = startDate.format(
-    `D ${showZone ? 'MMMM' : 'MMM'} YYYY, HH:mm ${showZone ? '(z)' : ''}`
-  );
-  return result;
+export const getTournamentTime = (dateStart: Date, dateEnd: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
+
+  const startTimeID = moment(dateStart).format('DD MMM YYYY, HH:mm');
+  const endTimeID = moment(dateEnd).format('DD MMM YYYY, HH:mm');
+
+  const startTimeEN = moment(dateStart).format('MMM DD, YYYY, HH:mm');
+  const endTimeEN = moment(dateEnd).format('MMM DD, YYYY, HH:mm');
+  
+  return locale === 'id-ID'
+    ? `${startTimeID} - ${endTimeID}`
+    : `${startTimeEN} - ${endTimeEN}`
 };
 
 export const formatMonthlyChart = (date: Date): string[] => {
@@ -83,46 +82,43 @@ export const formatMonthlyChart = (date: Date): string[] => {
   return months.reverse();
 };
 
-export const getLastUpdatedID = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
-
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} - ${currentHours}:${currentMinutes}`;
+export const getLastUpdated = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
+  
+  return locale === 'id-ID'
+    ? moment(date).format('DD MMMM YYYY - HH:mm')
+    : moment(date).format('MMMM DD, YYYY - HH:mm');
 };
 
-export const getLastUpdatedEN = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
-
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} - ${currentHours}:${currentMinutes}`;
+export const getEventDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
+  
+  return locale === 'id-ID'
+    ? moment(date).format('DD MMMM YYYY - HH:mm')
+    : moment(date).format('MMMM DD, YYYY - HH:mm');
 };
 
-export const getEventDateID = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+export const getEventDetailsDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
 
-  return `${currentDay} ${monthsID[currentMonth]} ${currentYear} | ${currentHours}:${currentMinutes}`;
+  return locale === 'id-ID'
+    ? moment(date).format('dddd, DD MMMM YYYY')
+    : moment(date).format('dddd, MMMM DD, YYYY');
 };
 
-export const getEventDateEN = (date: Date): string => {
-  const currentDate = date;
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-  const currentHours = currentDate.getHours();
-  const currentMinutes = currentDate.getMinutes().toString().padStart(2, '0');
+export const getEventClock = (eventDate: Date, endedAt: Date ): string => {
+  const startTime = moment(eventDate).format('HH:mm')
+  const endTime = moment(endedAt).format('HH:mm')
 
-  return `${monthsEN[currentMonth]} ${currentDay}, ${currentYear} | ${currentHours}:${currentMinutes}`;
+  return `${startTime} - ${endTime}`
+};
+
+export const getEarningDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
+  return moment(date).format('DD MMMM YYYY');
+};
+
+export const getEarningReceiptDate = (date: Date, locale: 'id-ID' | 'en-US'): string => {
+  moment.locale(locale);
+  return moment(date).format('DD MMMM YYYY HH:mm:ss');
 };

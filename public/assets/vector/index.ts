@@ -4,6 +4,7 @@ export { default as ArrowLeftBlack } from 'public/assets/vector/arrow-left-black
 export { default as ArrowLeft } from 'public/assets/vector/arrow-left.svg';
 export { default as ArrowRightCollapseIcon } from 'public/assets/vector/arrow-right-collapse.svg';
 export { default as ArrowRight } from 'public/assets/vector/arrow-right.svg';
+export { default as ArrowTaillessRight } from 'public/assets/vector/arrow-tailless-right.svg';
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
@@ -25,6 +26,13 @@ export { default as EarphoneIcon } from 'public/assets/vector/earphone-icon.svg'
 export { default as Ellipse } from 'public/assets/vector/ellipse.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
 export { default as Ethereum } from 'public/assets/vector/ethereum.svg';
+export { default as EventBookInfo } from 'public/assets/vector/event-booking-info.svg';
+export { default as EventCalendar } from 'public/assets/vector/event-calendar.svg';
+export { default as EventCertificate } from 'public/assets/vector/event-certificate.svg';
+export { default as EventClock } from 'public/assets/vector/event-clock.svg';
+export { default as EventIcon } from 'public/assets/vector/event-icon.svg';
+export { default as EventLocation } from 'public/assets/vector/event-location.svg';
+export { default as EventTicket } from 'public/assets/vector/event-ticket.svg';
 export { default as EyePurple } from 'public/assets/vector/eye-purple.svg';
 export { default as EyeSlash } from 'public/assets/vector/eye-slash.svg';
 export { default as Eye } from 'public/assets/vector/eye.svg';
@@ -42,6 +50,7 @@ export { default as Loader } from 'public/assets/vector/loader.svg';
 export { default as LogOutIcon } from 'public/assets/vector/log-out.svg';
 export { default as Logo } from 'public/assets/vector/logo.svg';
 export { default as LogoutIcon } from 'public/assets/vector/logout-icon.svg';
+export { default as MyEvent } from 'public/assets/vector/my-event-icon.svg';
 export { default as Pin } from 'public/assets/vector/pin.svg';
 export { default as PrivacyPolicy } from 'public/assets/vector/privacy.png';
 export { default as RateUs } from 'public/assets/vector/rate-us.svg';
@@ -64,3 +73,4 @@ export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
+

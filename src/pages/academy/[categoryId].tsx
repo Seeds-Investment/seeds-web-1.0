@@ -32,7 +32,7 @@ const CategoryById: React.FC = () => {
   const [classList, setClassList] = useState<DetailClassI[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
-  const [classLevelActiveTab, setClassLevelActiveTab] = useState<string>('All');
+  const [classLevelActiveTab, setClassLevelActiveTab] = useState<string>('');
   const [classParams, setClassParams] = useState<ListParamsI>({
     page: 1,
     limit: 9,
@@ -55,6 +55,7 @@ const CategoryById: React.FC = () => {
           const categoryDetailRes = await getCategoryDetail(
             categoryId as string
           );
+          const initialLevel = categoryDetailRes.level[0];
           const classList = await getClassListByCategoryId(
             categoryId as string,
             classParams
@@ -62,6 +63,8 @@ const CategoryById: React.FC = () => {
           setCategoryDetail(categoryDetailRes);
           setClassList(classList.data);
           setMetaData(classList.metadata);
+          setClassLevelActiveTab(initialLevel);
+          setClassParams(params => ({ ...params, level: initialLevel }));
         } catch (error) {
           toast(`ERROR fetch data ${error as string}`);
         } finally {
@@ -70,20 +73,34 @@ const CategoryById: React.FC = () => {
       }
     };
     void fetchData();
-  }, [categoryId, classParams, classParams.level]);
+  }, [categoryId]);
+
+  useEffect(() => {
+    const fetchClassList = async (): Promise<void> => {
+      if (categoryId !== undefined && classParams.level !== '') {
+        try {
+          setLoading(true);
+          const classList = await getClassListByCategoryId(
+            categoryId as string,
+            classParams
+          );
+          setClassList(classList.data);
+          setMetaData(classList.metadata);
+        } catch (error) {
+          toast(`ERROR fetch class list ${error as string}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    void fetchClassList();
+  }, [categoryId, classParams]);
 
   const handleLevelChange = (selectedLevel: string): void => {
-    if (selectedLevel === 'All') {
-      setClassParams({
-        ...classParams,
-        level: ''
-      });
-    } else {
-      setClassParams({
-        ...classParams,
-        level: selectedLevel
-      });
-    }
+    setClassParams({
+      ...classParams,
+      level: selectedLevel
+    });
     setClassLevelActiveTab(selectedLevel);
   };
 
@@ -141,19 +158,6 @@ const CategoryById: React.FC = () => {
         <div className="flex flex-col gap-4">
           <Typography className="font-semibold text-lg">Level</Typography>
           <div className="flex gap-2 mb-4">
-            <button
-              key="All"
-              onClick={() => {
-                handleLevelChange('All');
-              }}
-              className={`px-4 py-1 font-poppins rounded-full text-sm text-nowrap ${
-                classLevelActiveTab === 'All'
-                  ? 'bg-[#3AC4A0] text-white'
-                  : 'bg-[#DCFCE4] text-seeds-button-green'
-              }`}
-            >
-              <Typography className="text-xs">All</Typography>
-            </button>
             {categoryDetail?.level.map(item => (
               <button
                 key={item}

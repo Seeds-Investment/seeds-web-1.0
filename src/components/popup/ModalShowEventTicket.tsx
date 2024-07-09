@@ -16,9 +16,10 @@ interface Props {
   onClose: () => void;
   ticketData: TicketData;
   eventData: EventList;
+  isCheckAble: boolean;
 }
 
-const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData }) => {
+const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData, isCheckAble }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const handleCopyClick = async (): Promise<void> => {
@@ -102,7 +103,11 @@ const ModalShowEventTicket: React.FC<Props> = ({ onClose, ticketData, eventData 
                   <Image alt="" src={CopyLink} className="w-[20px]" />
                 </div>
               </div>
-              <button onClick={() => { setIsCheckInModal(true); }} className='w-full rounded-full bg-seeds-button-green font-poppins text-white py-2 cursor-pointer'>
+              <button
+                disabled={!isCheckAble}
+                onClick={() => { setIsCheckInModal(true); }}
+                className={`${isCheckAble ? 'bg-seeds-button-green cursor-pointer text-white' : 'bg-[#E9E9E9] text-[#262626]'} w-full rounded-full font-poppins py-2`}
+              >
                 {
                   ticketData?.status === 'CHECKED_IN'
                     ? t('seedsEvent.checkInOut.checkOut')

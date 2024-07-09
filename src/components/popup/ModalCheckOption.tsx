@@ -71,14 +71,14 @@ const ModalCheckOption: React.FC<Props> = ({ onClose, ticketId, ticketStatus }) 
       </div>
       <Typography className='mt-4 font-poppins font-semibold text-[#262626]'>
         {
-          ((ticketStatus === 'CHECKED_IN') || (ticketStatus === 'ISSUED'))
+          (ticketStatus === 'CHECKED_IN')
             ? t('seedsEvent.ticket.checkOutMessage1')
             : t('seedsEvent.ticket.checkInMessage1')
         }
       </Typography>
       <Typography className='font-poppins text-sm text-[#7C7C7C]'>
         {
-          ((ticketStatus === 'CHECKED_IN') || (ticketStatus === 'ISSUED'))
+          (ticketStatus === 'CHECKED_IN')
             ? t('seedsEvent.ticket.checkOutMessage2')
             : t('seedsEvent.ticket.checkInMessage2')
         }

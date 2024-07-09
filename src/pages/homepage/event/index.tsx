@@ -270,6 +270,7 @@ const SeedsEvent: React.FC = () => {
                           userInfo={userInfo}
                           key={item?.id}
                           item={item}
+                          eventStatus={eventStatus}
                         />
                       ))}
                     </div>

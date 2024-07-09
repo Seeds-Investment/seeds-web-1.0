@@ -120,6 +120,21 @@ const SeedsEventCheckInOut: React.FC = () => {
     }
   };
 
+  const isCheckAble = (): boolean => {
+    const startDateObject = new Date(eventData?.event_date ?? '');
+    const startDateTimestamp = startDateObject.getTime();
+    const endDateObject = new Date(eventData?.ended_at ?? '');
+    const endDateTimestamp = endDateObject.getTime();
+
+    const currentDateObject = new Date();
+    const currentDateTimestamp = currentDateObject.getTime();
+
+    const oneHourBeforeStart = startDateTimestamp - 60 * 60 * 1000;
+    const twoHoursAfterEnd = endDateTimestamp + 2 * 60 * 60 * 1000;
+
+    return currentDateTimestamp >= oneHourBeforeStart && currentDateTimestamp <= twoHoursAfterEnd;
+  };
+
   return (
     <>
       {isCheckInModal && (
@@ -138,6 +153,7 @@ const SeedsEventCheckInOut: React.FC = () => {
           }}
           ticketData={ticketData ?? initialTicketData}
           eventData={eventData ?? initialEventData}
+          isCheckAble={isCheckAble()}
         />
       )}
       {loading && <Loading />}

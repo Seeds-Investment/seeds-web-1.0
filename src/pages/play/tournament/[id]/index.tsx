@@ -34,9 +34,10 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
+import FirstMedal from '../../../../assets/play/quiz/Medal-1.svg';
+import SecondMedal from '../../../../assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '../../../../assets/play/quiz/Medal-3.svg';
+import OtherMedal from '../../../../assets/play/quiz/Medal-4-10.svg';
 
 const TournamentDetail: React.FC = () => {
   const router = useRouter();
@@ -316,7 +317,7 @@ const TournamentDetail: React.FC = () => {
                 {t('tournament.detailPrize')}
               </Typography>
               <table className="mt-2">
-                {detailTournament?.prize?.map((item, index) => (
+                {detailTournament?.prize?.slice(0, 3)?.map((item, index) => (
                   <tr key={index}>
                     <td className="inline-flex gap-2 border p-3 w-full">
                       <Image
@@ -341,6 +342,26 @@ const TournamentDetail: React.FC = () => {
                             : 'third'
                         }`
                       )}
+                    </td>
+                    <td className="border p-3 w-full">
+                      {userInfo?.preferredCurrency !== undefined
+                        ? userInfo?.preferredCurrency
+                        : 'IDR'}
+                      {standartCurrency(item).replace('Rp', '')}
+                    </td>
+                  </tr>
+                ))}
+                {detailTournament?.prize?.slice(3, 10)?.map((item, index) => (
+                  <tr key={index}>
+                    <td className="inline-flex gap-2 border p-3 w-full">
+                      <Image
+                        src={OtherMedal}
+                        alt={`${index}-medal`}
+                        width={200}
+                        height={200}
+                        className="object-contain max-h-5 max-w-5"
+                      />
+                      {`${index + 4}th`}
                     </td>
                     <td className="border p-3 w-full">
                       {userInfo?.preferredCurrency !== undefined

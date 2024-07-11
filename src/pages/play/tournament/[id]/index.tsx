@@ -9,7 +9,6 @@ import IconCircle from '@/assets/play/tournament/seedsPrizesCircle.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
-import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -21,6 +20,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type IDetailTournament,
   type UserInfo
@@ -32,8 +32,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
+import Voucher from '../../../../../public/assets/vector/voucher.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
 import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
@@ -42,6 +44,7 @@ const TournamentDetail: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -51,6 +54,10 @@ const TournamentDetail: React.FC = () => {
   const [validInvit, setValidInvit] = useState<boolean>(false);
   const [useCoins, setUseCoins] = useState<boolean>(false);
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+  
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const handleGetSeedsCoin = async (): Promise<void> => {
     try {
@@ -135,7 +142,7 @@ const TournamentDetail: React.FC = () => {
     } catch (error) {
       toast.error('Error joining tournament');
     }
-  };
+  }; 
 
   const handleJoinFreeTournament = async (): Promise<void> => {
     try {
@@ -474,8 +481,30 @@ const TournamentDetail: React.FC = () => {
             </Typography>
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-2">
-          <PromoCodeSelection detailTournament={detailTournament} />
+        <div className="w-full h-[300px] bg-white rounded-xl p-4">
+          <div
+            onClick={async() => await router.push(`/play/tournament/${id as string}/promo`)}
+            className='flex justify-start items-center border border-[#3AC4A0] rounded-lg bg-[#F0FFF4] py-2 px-4 gap-2 cursor-pointer hover:bg-[#d3ffdf] hover:shadow-md duration-300'
+          >
+            <div className='w-[30px] h-[30px] flex justify-center items-center'>
+              <Image
+                src={Voucher}
+                alt="Voucher"
+                width={100}
+                height={100}
+                className="object-contain h-full w-full"
+              />
+            </div>
+            <Typography className='font-poppins text-[#27A590] flex justify-center items-center font-semibold'>
+              Voucher & Promo
+            </Typography>
+          </div>
+          {
+            ((promoCodeValidationResult !== undefined) && (promoCodeValidationResult !== 0)) &&
+              <Typography className='font-poppins text-sm text-[#27A590] font-semibold mt-2'>
+                {t(`promo.totalDiscount`)} {userInfo?.preferredCurrency ?? 'IDR'}{`${standartCurrency(promoCodeValidationResult?.total_discount ?? 0).replace('Rp', '')}`}
+              </Typography>
+          }
           {detailTournament?.is_need_invitation_code && (
             <div>
               <input
@@ -519,6 +548,7 @@ const TournamentDetail: React.FC = () => {
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);
+                  dispatch(setPromoCodeValidationResult(0));
                 }}
               />
             </div>
@@ -562,7 +592,6 @@ const TournamentDetail: React.FC = () => {
                 detailTournament?.is_need_invitation_code === true) ||
               isStarted()
             }
-            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
               invitationCode === '' &&
               detailTournament?.is_need_invitation_code === true

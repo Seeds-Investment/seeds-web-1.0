@@ -71,5 +71,6 @@ export { default as TreeIcon } from 'public/assets/vector/tree-icon.svg';
 export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
+export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
 

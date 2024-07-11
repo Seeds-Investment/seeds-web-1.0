@@ -167,13 +167,13 @@ const WalletForm = ({
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`${userInfo?.preferredCurrency} ${payment.promo_price}`}
+          value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
           className="mb-2"
         />
       ) : null}
       {promoCodeValidationResult ? (
         <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- ${userInfo?.preferredCurrency} ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount

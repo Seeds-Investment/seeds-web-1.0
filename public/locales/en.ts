@@ -945,6 +945,7 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Redeemed'
     },
@@ -980,6 +981,19 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Purchase:',
+    endsIn: 'Ends in',
+    daysRemain: 'days',
+    dayRemain: 'day',
+    hoursRemain: 'hours',
+    hourRemain: 'hour',
+    minutesRemain: 'minutes',
+    minuteRemain: 'minute',
+    lessThanMinute: 'a minute',
+    promoOver: 'Promo is over',
+    totalDiscount: 'Total Discount:'
   },
   temporary: {
     welcome: {

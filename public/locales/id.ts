@@ -864,6 +864,7 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Digunakan'
     },
@@ -899,6 +900,19 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Pembelian:',
+    endsIn: 'Berakhir dalam',
+    daysRemain: 'hari',
+    dayRemain: 'hari',
+    hoursRemain: 'jam',
+    hourRemain: 'jam',
+    minutesRemain: 'menit',
+    minuteRemain: 'menit',
+    lessThanMinute: 'satu menit',
+    promoOver: 'Promo sudah berakhir',
+    totalDiscount: 'Total Diskon:'
   },
   temporary: {
     welcome: {

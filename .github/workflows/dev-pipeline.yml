@@ -28,8 +28,8 @@ jobs:
           service_account: github-action@lithe-window-387706.iam.gserviceaccount.com
           create_credentials_file: true
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.3.0
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v0.3.0
 
       - name: Configure docker credential helper artifact registry
         run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev

@@ -953,6 +953,7 @@ export default {
       title: '{{bank}} Virtual Account',
       bankName: 'Bank {{bank}}',
       accountNumberLabel: 'No. rekening',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
@@ -993,7 +994,9 @@ export default {
     minuteRemain: 'minute',
     lessThanMinute: 'a minute',
     promoOver: 'Promo is over',
-    totalDiscount: 'Total Discount:'
+    totalDiscount: 'Promo Discount:',
+    emptyVoucher1: "Opps, There's No Voucher",
+    emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
   },
   temporary: {
     welcome: {

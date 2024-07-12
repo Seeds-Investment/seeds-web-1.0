@@ -145,7 +145,7 @@ const VirtualAccountGuide = ({
       ) : null}
       {promoCodeValidationResult !== undefined ? (
         <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             promoCodeValidationResult?.total_discount ?? 0

@@ -1,70 +1,207 @@
-import {
-  getPromocodeActive,
-  promoValidate
-} from '@/repository/promo.repository';
-import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
-import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import IconNoData from '@/assets/play/tournament/noData.svg';
+import Seedy from '@/assets/promo/seedy.svg';
+import TournamentPagination from '@/components/TournmentPagination';
+import { standartCurrency } from '@/helpers/currency';
+import { getDetailCircle } from '@/repository/circleDetail.repository';
+import { getPlayById } from '@/repository/play.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { getPromocodeActive, promoValidate } from '@/repository/promo.repository';
+import { getQuizById } from '@/repository/quiz.repository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
+import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
+import { Typography } from '@material-tailwind/react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { ArrowBackwardIcon } from 'public/assets/vector';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-interface PromoCodeSelectionProps {
-  detailTournament: IDetailTournament | undefined;
-}
-
-interface PromoCode {
-  id: string;
-  promo_code: string;
-  start_date: string;
-  end_date: string;
+interface IPromoCode {
+  QuantityRunsOutDate: string;
+  category: string;
+  description: string;
   discount_percentage: number;
-  quantity: number;
+  discount_type: string;
+  end_date: string;
+  expired_date: string;
+  feature_ids: string;
+  id: string;
   initial_quantity: number;
-  institution: string;
+  is_active: boolean;
+  is_eligible: boolean;
+  max_redeem: number;
+  min_exp: number;
+  min_transaction: number;
+  promo_code: string;
+  quantity: number;
+  ref_code: string;
+  start_date: string;
+  tnc: string;
+  type: string;
 }
 
-const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
-  detailTournament
-}) => {
-  const [activePromoCodes, setActivePromoCodes] = useState<PromoCode[]>([]);
-  const [showRadioButtons, setShowRadioButtons] = useState(false);
-  const [promoCode, setPromoCode] = useState<string>('');
-  const [totalDiscount, setTotalDiscount] = useState<number>(0);
-  const dispatch = useDispatch();
+interface Metadata {
+  currentPage: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+}
 
-  const handleDropdownClick = (): void => {
-    setShowRadioButtons(!showRadioButtons);
-  };
+interface CircleData {
+  admin_fee: number;
+  avatar: string;
+  categories: string[];
+  cover: string;
+  created_at: string;
+  description: string;
+  description_rules: string;
+  id: string;
+  is_liked: boolean;
+  name: string;
+  premium_fee: number;
+  type: string;
+  user_id: string;
+}
+
+interface PromoProps {
+  spotType: string;
+}
+
+const PromoCode: React.FC<PromoProps> = ({
+  spotType
+}) => {
+  const router = useRouter();
+  const id = router.query.id;
+  const circleId = router.query.circleId;
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [promoCode, setPromoCode] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [activePromoCodes, setActivePromoCodes] = useState<IPromoCode[]>([]);
+  const [dataCircle, setDataCircle] = useState<CircleData>();
+  const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+
+  const [promoParams, setPromoParams] = useState({
+    page: 1,
+    limit: 10
+  });
+  const [metadata, setMetadata] = useState<Metadata>();
+  
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const activePromoCodesResponse = await getPromocodeActive(1, 10);
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        setActivePromoCodes(activePromoCodesResponse?.data || []);
-      } catch (error) {
-        toast.error('Error fetching promo codes:');
-      }
-    };
+    fetchData()
+      .then()
+      .catch(() => {});
 
-    void fetchData();
+    setPromoCode(promoCodeValidationResult?.promo_code)
   }, []);
+
+  useEffect(() => {
+    if (spotType === 'Paid Tournament') {
+      if (id !== null) {
+        void getDetailTournament();
+      }
+    } else if (spotType === 'Paid Quiz') {
+      void getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR')
+    } else if (spotType === 'Paid Circle') {
+      void fetchDetailCircle(circleId as string)
+    }
+    void fetchPromoData();
+  }, [id, circleId, userInfo, promoParams]);
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const fetchPromoData = async (): Promise<void> => {
+    try {
+      setLoading(true)
+      const activePromoCodesResponse = await getPromocodeActive(promoParams.page, promoParams.limit);
+      setActivePromoCodes(activePromoCodesResponse?.data);
+      setMetadata(activePromoCodesResponse?.metadata)
+    } catch (error) {
+      toast.error('Error fetching promo codes:');
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  const getDetailTournament = useCallback(async () => {
+    try {
+      const resp: IDetailTournament = await getPlayById(id as string);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`Error fetch tournament ${error as string}`);
+    }
+  }, [id]);
+
+  const getDetailQuiz = useCallback(async (currency: string) => {
+    try {
+      const resp: IDetailQuiz = await getQuizById({
+        id: id as string,
+        currency
+      });
+      setDetailQuiz(resp);
+    } catch (error) {
+      toast(`Error fetch quiz: ${error as string}`);
+    }
+  }, [id]);
+
+  const fetchDetailCircle = async (circleId: string): Promise<void> => {
+    try {
+      const { data } = await getDetailCircle({ circleId });
+      setDataCircle(data);
+    } catch (error) {
+      toast(`Error fetching Circle Post: ${error as string}`);
+    }
+  };
 
   const handlePromoCodeSelection = async (promoCode: string): Promise<void> => {
     setPromoCode(promoCode);
     try {
-      const response = await promoValidate({
-        promo_code: promoCode,
-        spot_type: 'Paid Tournament',
-        item_price: detailTournament?.admission_fee,
-        item_id: detailTournament?.id,
-        currency: detailTournament?.currency
-      });
+      let response;
+      if (spotType === 'Paid Tournament') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: detailTournament?.admission_fee,
+          item_id: detailTournament?.id,
+          currency: detailTournament?.currency
+        });
+      } else if (spotType === 'Paid Quiz') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: detailQuiz?.admission_fee,
+          item_id: detailQuiz?.id
+        });
+      } else if (spotType === 'Paid Circle') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: dataCircle?.premium_fee,
+          item_id: dataCircle?.id
+        });
+      }
 
-      if (response.total_discount !== undefined) {
+      if (promoCodeValidationResult.promo_code === promoCode) {
+        setPromoCode('');
+        dispatch(setPromoCodeValidationResult(0));
+      } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
-        setTotalDiscount(response.total_discount);
-
         dispatch(setPromoCodeValidationResult(response));
       } else {
         toast.error('Error Promo Code:', response.message);
@@ -76,99 +213,154 @@ const PromoCodeSelection: React.FC<PromoCodeSelectionProps> = ({
     }
   };
 
+  const getRemainingTime = (endDate: string): string => {
+    const end = new Date(endDate);
+    const now = new Date();
+    const diffInMs = end.getTime() - now.getTime();
+    const diffInMinutes = diffInMs / (1000 * 60);
+    const diffInHours = diffInMinutes / 60;
+    const diffInDays = diffInHours / 24;
+
+    if (diffInDays >= 2) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t('promo.daysRemain')}`;
+    } else if ((diffInDays >= 1) && (diffInDays < 2)) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInDays)} ${t('promo.dayRemain')}`;
+    } else if ((diffInHours < 24) && (diffInHours >= 2)) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t('promo.hoursRemain')}`;
+    } else if ((diffInHours >= 1) && (diffInHours < 2)) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInHours)} ${t('promo.hourRemain')}`;
+    } else if ((diffInMinutes < 60) && (diffInMinutes >= 2)) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t('promo.minutesRemain')}`;
+    } else if ((diffInMinutes >= 1) && (diffInMinutes < 2)) {
+      return `${t('promo.endsIn')} ${Math.floor(diffInMinutes)} ${t('promo.minuteRemain')}`;
+    } else if ((diffInMinutes < 1) && (diffInMinutes > 0)) {
+      return `${t('promo.endsIn')} ${t('promo.lessThanMinute')}`
+    } else {
+      return `${t('promo.promoOver')}`
+    }
+  }
+
+  const routeOptions = (spotType: string, id: string): string => {
+    if (spotType === 'Paid Tournament') {
+      return `/play/tournament/${id}`;
+    } else if (spotType === 'Paid Quiz') {
+      return `/play/quiz/${id}`
+    } else if (spotType === 'Paid Circle') {
+      return `/connect/payment/${circleId as string}`
+    }
+    return '';
+  };
+
   return (
-    <div>
-      <div
-        className="w-full p-2 bg-white justify-between rounded-xl flex border-[#3AC4A0] border border-1"
-        onClick={handleDropdownClick}
-        id="radiobtn"
-      >
-        <div className="px-2 flex" id="radioSelect">
-          <span className="px-2">
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 22 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11 19.9374C15.936 19.9374 19.9374 15.936 19.9374 11C19.9374 6.06394 15.936 2.0625 11 2.0625C6.06394 2.0625 2.0625 6.06394 2.0625 11C2.0625 15.936 6.06394 19.9374 11 19.9374Z"
-                fill="#7555DA"
-              />
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11 1.375C5.68769 1.375 1.375 5.68769 1.375 11C1.375 16.3123 5.68769 20.625 11 20.625C16.3123 20.625 20.625 16.3123 20.625 11C20.625 5.68769 16.3123 1.375 11 1.375ZM11 2.75C15.5533 2.75 19.25 6.44669 19.25 11C19.25 15.5533 15.5533 19.25 11 19.25C6.44669 19.25 2.75 15.5533 2.75 11C2.75 6.44669 6.44669 2.75 11 2.75ZM13.9948 12.397C14.7414 12.5324 15.2384 13.2481 15.103 13.9948C14.9676 14.7414 14.2519 15.2384 13.5052 15.103C12.7586 14.9676 12.2616 14.2519 12.397 13.5052C12.5324 12.7586 13.2481 12.2616 13.9948 12.397ZM13.9514 7.07644L7.07644 13.9514C6.80831 14.2196 6.80831 14.6554 7.07644 14.9236C7.34456 15.1917 7.78044 15.1917 8.04856 14.9236L14.9236 8.04856C15.1917 7.78044 15.1917 7.34456 14.9236 7.07644C14.6554 6.80831 14.2196 6.80831 13.9514 7.07644ZM8.49475 6.897C9.24138 7.03244 9.73844 7.74812 9.603 8.49475C9.46756 9.24137 8.75187 9.73844 8.00525 9.603C7.25862 9.46756 6.76156 8.75188 6.897 8.00525C7.03244 7.25863 7.74813 6.76156 8.49475 6.897Z"
-                fill="#3AC4A0"
-              />
-            </svg>
-          </span>
-          Kode Promo
+    <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+      <div className='w-full relative'>
+        <Typography className='font-poppins text-2xl lg:text-3xl text-center font-semibold'>
+          Choose Voucher & Promo
+        </Typography>
+        <div
+          onClick={async() => await router.push(routeOptions(spotType, id as string))}
+          className='absolute left-0 top-0 w-[35px] h-[35px] flex justify-center items-center cursor-pointer'
+        >
+          <Image
+            src={ArrowBackwardIcon}
+            alt={'ArrowBackwardIcon'}
+            width={30}
+            height={30}
+          />
         </div>
-        <div className="mt-2">
-          <svg
-            width="6"
-            height="12"
-            viewBox="0 0 6 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.5 11L5.5 6L0.5 1"
-              stroke="#262626"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+      </div>
+      <div className='flex flex-col md:flex-row gap-4 w-full justify-center items-center mt-4'>
+        <input
+          id="search"
+          type="text"
+          name="search"
+          placeholder="Have a promo code? Enter it here!"
+          className="block w-full md:w-[300px] text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-4 rounded-xl border border-[#BDBDBD]"
+        />
+        <div className='bg-[#BDBDBD] w-full md:w-[100px] py-2 rounded-full text-white px-8 flex justify-center items-center'>
+          Apply
         </div>
-        <i className="fa fa-angle-down" />
       </div>
 
-      <div
-        className={showRadioButtons ? 'BudgetRadioDd' : 'BudgetRadioDd hidden'}
-        id="RadioDd"
-      >
-        <fieldset>
-          <div className="flex justify-between">
-            <label className="flex items-center p-2 w-full justify-between rounded-lg border border-1 border-[#3AC4A0] bg-white mb-1">
-              <span>Tanpa Promo Code</span>
-              <input
-                className="ml-auto"
-                type="radio"
-                name="promoCodes"
-                value=""
-                checked={promoCode === ''}
-                onChange={() => {
-                  void handlePromoCodeSelection('');
-                }}
-              />
-            </label>
+      {!loading ? (
+        activePromoCodes?.length !== 0 ? (
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
+            {activePromoCodes.map((item, index) => (
+              <div
+                key={index}
+                onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
+                className={`${item?.promo_code === promoCode ? 'from-[#BDFFE5] to-white border-[#27A590]' : 'from-[#FDD059] to-white border-[#B57A12]'} flex justify-start items-center rounded-xl bg-gradient-to-r relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300`}
+              >
+                <div className='flex justify-center items-center'>
+                  <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
+                    <Image
+                      alt="Seedy"
+                      src={Seedy}
+                      className="w-full h-full"
+                    />
+                  </div>
+                </div>
+                <div className={`${item?.promo_code === promoCode ? 'bg-[#27A590]' : 'bg-[#D89918]'} w-[20px] h-full absolute left-0`}/>
+                <div className='flex flex-col justify-center p-4 w-full h-full border-l border-dashed border-[#B57A12]'>
+                  <div className='font-semibold text-base md:text-xl'>
+                    {item?.promo_code}
+                  </div>
+                  {
+                    item?.min_transaction > 0 &&
+                      <div className='text-sm'>
+                        {t('promo.minimumPurchase')} {`${userInfo?.preferredCurrency ?? 'IDR'}`}{`${standartCurrency(item?.min_transaction ?? 0).replace('Rp', '')}`}
+                      </div>
+                  }
+                  {
+                    item?.end_date !== '0001-01-01T00:00:00Z' &&
+                      <div className='text-[#7C7C7C] text-sm'>
+                        {getRemainingTime(item?.end_date)}
+                      </div>
+                  }
+                </div>
+                <div className={`${item?.promo_code === promoCode ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
+                  {item?.quantity}x
+                </div>
+              </div>
+            ))}
           </div>
-          {activePromoCodes?.map((promo, index) => (
-            <div key={index} className="flex justify-between">
-              <label className="flex items-center p-2 w-full justify-between  rounded-lg border border-1 border-[#3AC4A0] bg-white mb-1">
-                <span>{promo.promo_code}</span>
-                <input
-                  className="ml-auto"
-                  type="radio"
-                  name="promoCodes"
-                  value={promo.promo_code}
-                  checked={promoCode === promo.promo_code}
-                  onChange={() => {
-                    void handlePromoCodeSelection(promo.promo_code);
-                  }}
-                />
-              </label>
-            </div>
-          ))}
-        </fieldset>
-      </div>
-      {totalDiscount > 0 && (
-        <div className="text-green-500">Hooray! hemat {totalDiscount}</div>
+        ) : (
+          <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
+            <Image alt="" src={IconNoData} className="w-[250px]" />
+            <p className="font-semibold text-black">
+              {t('promo.emptyVoucher1')}
+            </p>
+            <p className="text-[#7C7C7C]">{t('promo.emptyVoucher2')}</p>
+          </div>
+        )
+      ) : (
+        <div className="w-full flex justify-center h-fit mt-8">
+          <div className="h-[60px]">
+            <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
+          </div>
+        </div>
       )}
+
+      {/* Pagination */}
+      <div className="flex justify-center mx-auto my-4">
+        <TournamentPagination
+          currentPage={promoParams.page}
+          totalPages={metadata?.totalPage ?? 0}
+          onPageChange={page => {
+            setPromoParams({ ...promoParams, page });
+          }}
+        />
+      </div>
+
+      <button
+        disabled={(promoCode === '') || (promoCode === undefined)}
+        onClick={async() => await router.push(routeOptions(spotType, id as string))}
+        className={`${((promoCode === '') || (promoCode === undefined)) ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green cursor-pointer'} flex w-full rounded-full justify-center items-center text-white text-lg py-4 mt-8`}
+      >
+        Use Promo
+      </button>
     </div>
   );
 };
 
-export default PromoCodeSelection;
+export default PromoCode;

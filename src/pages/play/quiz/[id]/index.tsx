@@ -3,6 +3,7 @@
 'use-client';
 
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
+import PromoCode from '@/components/promocode/promoCode';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -294,8 +295,12 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-6">
-          <div className="flex flex-row justify-between items-start gap-2">
+        <div className="w-full h-[300px] bg-white rounded-xl p-4">
+          {
+            userInfo !== undefined &&
+              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'}/>
+          }
+          <div className="flex flex-row justify-between items-start gap-2 mt-4">
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>

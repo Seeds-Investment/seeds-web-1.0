@@ -875,6 +875,7 @@ export default {
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
       note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
       instructionLabel: 'mBanking Transfer Instructions',
@@ -912,7 +913,9 @@ export default {
     minuteRemain: 'menit',
     lessThanMinute: 'satu menit',
     promoOver: 'Promo sudah berakhir',
-    totalDiscount: 'Total Diskon:'
+    totalDiscount: 'Diskon Promo:',
+    emptyVoucher1: 'Ups, Belum Ada Voucher',
+    emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
   },
   temporary: {
     welcome: {

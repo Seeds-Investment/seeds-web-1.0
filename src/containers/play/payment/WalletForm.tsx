@@ -3,10 +3,13 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { type Payment } from './PaymentList';
 import InlineText from './components/InlineText';
 
@@ -21,7 +24,7 @@ interface WalletFormProps {
   ) => Promise<void>;
   dataPost: any;
   numberMonth?: number;
-  userInfo: any;
+  userInfo: UserInfo;
 }
 
 const WalletForm = ({
@@ -39,6 +42,9 @@ const WalletForm = ({
   const [totalFee, setTotalFee] = useState(0);
   const [coinsDiscount, setCoinsDiscount] = useState(0);
   const router = useRouter();
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleGetCoinsUser = async () => {
@@ -63,6 +69,10 @@ const WalletForm = ({
       _discount = payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0);
     } else {
       _discount = coinsDiscount > 0 ? coinsDiscount : 0;
+    }
+
+    if (promoCodeValidationResult) {
+      _discount += promoCodeValidationResult?.total_discount as number;
     }
 
     if (dataPost.quiz) {
@@ -99,7 +109,7 @@ const WalletForm = ({
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, numberMonth, payment, coinsDiscount]);
+  }, [dataPost, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -150,13 +160,13 @@ const WalletForm = ({
             ? 'Circle Membership'
             : t(`${translationId}.admissionFeeLabel`)
         }
-        value={`${userInfo?.preferredCurrency as string} ${admissionFee}`}
+        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${admissionFee}`}
         className="mb-2"
       />
       {dataPost.quiz ? (
         <InlineText
           label={t('quiz.lifeline')}
-          value={`${userInfo?.preferredCurrency as string} ${Number(
+          value={`${userInfo?.preferredCurrency ?? 'IDR'} ${Number(
             dataPost?.quiz?.fee
           )}`}
           className="mb-2"
@@ -164,21 +174,31 @@ const WalletForm = ({
       ) : null}
       <InlineText
         label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency as string} ${
+        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
           payment.service_fee
         }`}
         className="mb-2"
       />
       <InlineText
         label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency as string} ${adminFee}`}
+        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${adminFee}`}
         className="mb-2"
       />
       {payment.is_promo_available ? (
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency as string} ${
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
             payment.promo_price
+          }`}
+          className="mb-2"
+        />
+      ) : null}
+      {promoCodeValidationResult ? (
+        <InlineText
+          label={t(`${translationId}.promoCodeDiscountLabel`)}
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            promoCodeValidationResult?.total_discount
           }`}
           className="mb-2"
         />
@@ -186,13 +206,13 @@ const WalletForm = ({
       {coinsDiscount > 0 && (
         <InlineText
           label={t(`${translationId}.seedsCoin`)}
-          value={`- ${userInfo?.preferredCurrency as string} ${coinsDiscount}`}
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${coinsDiscount}`}
           className="mb-2"
         />
       )}
       <hr />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right my-6">
-        {`${userInfo?.preferredCurrency as string} ${totalFee}`}
+        {`${userInfo?.preferredCurrency ?? 'IDR'} ${totalFee}`}
       </Typography>
       <hr />
       <SubmitButton

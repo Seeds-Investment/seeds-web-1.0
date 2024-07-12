@@ -1,6 +1,7 @@
 import EventImage from '@/assets/event/default.png';
 import { standartCurrency } from '@/helpers/currency';
 import { getEventClock, getEventDetailsDate } from '@/helpers/dateFormat';
+import { type EventStatus } from '@/pages/homepage/event';
 import LanguageContext from '@/store/language/language-context';
 import { type EventList, type UserInfo } from '@/utils/interfaces/event.interface';
 import { Typography } from '@material-tailwind/react';
@@ -13,11 +14,13 @@ import { useTranslation } from 'react-i18next';
 interface EventListCardProps {
   item: EventList;
   userInfo: UserInfo;
+  eventStatus: EventStatus;
 }
 
 const EventListCard: React.FC<EventListCardProps> = ({
   item,
   userInfo,
+  eventStatus,
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -94,21 +97,24 @@ const EventListCard: React.FC<EventListCardProps> = ({
             </Typography>
           </div>
         </div>
-        <div className='w-full gap-2 md:gap-8 lg:gap-4 2xl:gap-8 flex justify-between mt-4 mb-2'>
-          <Typography className='w-full 2xl:w-[125x] flex justify-center items-center bg-white py-2 px-2 md:px-4 xl:px-2 font-poppins font-semibold text-[#3C49D6] border border-[#3C49D6] rounded-md lg:text-sm'>
-            {(item?.event_price ?? 0) === 0 ? (t('seedsEvent.free')).toUpperCase() : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(item?.event_price ?? 0).replace('Rp', '')}`}
-          </Typography>
-          <Typography
-            onClick={async () => { await redirectPage(item?.id); }}
-            className={`${item?.is_joined ? 'bg-white border border-seeds-button-green text-seeds-button-green' : 'text-white bg-seeds-button-green'} w-[200px] 2xl:w-[125x] md:w-full flex justify-center items-center py-2 px-2 md:px-6 xl:px-2 font-poppins font-semibold text-xs md:text-sm xl:text-xs 2xl:text-sm rounded-full`}
-          >
-            {
-              item?.is_joined
-                ? t('seedsEvent.booking.booked')
-                : t('seedsEvent.booking.bookNow')
-            }
-          </Typography>
-        </div>
+        {
+          (eventStatus !== 'past') &&
+            <div className='w-full gap-2 md:gap-8 lg:gap-4 2xl:gap-8 flex justify-between mt-4 mb-2'>
+              <Typography className='w-full 2xl:w-[125x] flex justify-center items-center bg-white py-2 px-2 md:px-4 xl:px-2 font-poppins font-semibold text-[#3C49D6] border border-[#3C49D6] rounded-md lg:text-sm'>
+                {(item?.event_price ?? 0) === 0 ? (t('seedsEvent.free')).toUpperCase() : `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(item?.event_price ?? 0).replace('Rp', '')}`}
+              </Typography>
+              <Typography
+                onClick={async () => { await redirectPage(item?.id); }}
+                className={`${item?.is_joined ? 'bg-white border border-seeds-button-green text-seeds-button-green' : 'text-white bg-seeds-button-green'} w-[200px] 2xl:w-[125x] md:w-full flex justify-center items-center py-2 px-2 md:px-6 xl:px-2 font-poppins font-semibold text-xs md:text-sm xl:text-xs 2xl:text-sm rounded-full`}
+              >
+                {
+                  item?.is_joined
+                    ? t('seedsEvent.booking.booked')
+                    : t('seedsEvent.booking.bookNow')
+                }
+              </Typography>
+            </div>
+        }
       </div>
     </div>
   );

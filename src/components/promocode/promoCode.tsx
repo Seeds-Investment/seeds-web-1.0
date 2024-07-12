@@ -42,8 +42,6 @@ const PromoCodeButton: React.FC<PromoProps> = ({
       return `/play/tournament/${id}/promo`;
     } else if (spotType === 'Paid Quiz') {
       return `/play/quiz/${id}/promo`
-    } else if (spotType === 'Paid Circle') {
-      return `/connect/payment/${id}/promo`
     }
     return '';
   };

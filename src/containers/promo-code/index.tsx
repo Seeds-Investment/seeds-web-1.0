@@ -81,10 +81,15 @@ const PromoCode: React.FC<PromoProps> = ({
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [promoCode, setPromoCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [addPromo, setAddPromo] = useState<string>('');
   const [activePromoCodes, setActivePromoCodes] = useState<IPromoCode[]>([]);
   const [dataCircle, setDataCircle] = useState<CircleData>();
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+
+  const handleAddPromo = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setAddPromo(event.target.value);
+  };
 
   const [promoParams, setPromoParams] = useState({
     page: 1,
@@ -203,6 +208,7 @@ const PromoCode: React.FC<PromoProps> = ({
       } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
         dispatch(setPromoCodeValidationResult(response));
+        toast.success(t('promo.applied'))
       } else {
         toast.error('Error Promo Code:', response.message);
       }
@@ -245,8 +251,6 @@ const PromoCode: React.FC<PromoProps> = ({
       return `/play/tournament/${id}`;
     } else if (spotType === 'Paid Quiz') {
       return `/play/quiz/${id}`
-    } else if (spotType === 'Paid Circle') {
-      return `/connect/payment/${circleId as string}`
     }
     return '';
   };
@@ -271,15 +275,23 @@ const PromoCode: React.FC<PromoProps> = ({
       </div>
       <div className='flex flex-col md:flex-row gap-4 w-full justify-center items-center mt-4'>
         <input
-          id="search"
+          id="addPromo"
           type="text"
-          name="search"
+          name="addPromo"
+          value={addPromo}
+          onChange={e => {
+            handleAddPromo(e);
+          }}
           placeholder="Have a promo code? Enter it here!"
           className="block w-full md:w-[300px] text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-4 rounded-xl border border-[#BDBDBD]"
         />
-        <div className='bg-[#BDBDBD] w-full md:w-[100px] py-2 rounded-full text-white px-8 flex justify-center items-center'>
-          Apply
-        </div>
+        <button
+          disabled={addPromo === ''}
+          onClick={() => { void handlePromoCodeSelection(addPromo); }}
+          className={`${addPromo === '' ? 'bg-[#BDBDBD]' : 'bg-seeds-button-green cursor-pointer'} w-full md:w-[100px] py-2 rounded-full text-white px-8 flex justify-center items-center`}
+        >
+          {t('promo.apply')}
+        </button>
       </div>
 
       {!loading ? (

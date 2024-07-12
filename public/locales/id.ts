@@ -916,6 +916,8 @@ export default {
     totalDiscount: 'Diskon Promo:',
     emptyVoucher1: 'Ups, Belum Ada Voucher',
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
+    applied: 'Kode promo berhasil diterapkan!',
+    apply: "Terapkan",
   },
   temporary: {
     welcome: {

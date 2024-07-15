@@ -1,10 +1,7 @@
 import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import TagPrice from '@/assets/academy/tag-price.svg';
 import { getUserInfo } from '@/repository/profile.repository';
-import {
-  type DetailClassI,
-  type PriceDataI
-} from '@/utils/interfaces/academy.interface';
+import { type DetailClassI } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -44,24 +41,21 @@ const CourseCard: React.FC<{
               : item?.title}
           </Typography>
           <div className="flex items-center gap-2">
-            {!item?.is_owned &&
-              (item?.price?.idr !== 0 || item?.price?.usd !== 0) && (
-                <>
-                  <Image src={TagPrice} alt="tag" />
-                  <Typography className="text-xs">
-                    <span className="font-semibold">
-                      {t('academy.courseFee')}
-                    </span>{' '}
-                    :{' '}
-                    {item?.price?.[
-                      userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-                    ]?.toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency ?? 'IDR',
-                      style: 'currency'
-                    })}
-                  </Typography>
-                </>
-              )}
+            {!item?.is_owned && item?.price !== 0 && (
+              <>
+                <Image src={TagPrice} alt="tag" />
+                <Typography className="text-xs">
+                  <span className="font-semibold">
+                    {t('academy.courseFee')}
+                  </span>{' '}
+                  :{' '}
+                  {item?.price?.toLocaleString('id-ID', {
+                    currency: userInfo?.preferredCurrency ?? 'IDR',
+                    style: 'currency'
+                  })}
+                </Typography>
+              </>
+            )}
           </div>
           <button
             onClick={async () => {
@@ -73,7 +67,7 @@ const CourseCard: React.FC<{
               ? item?.post_test_score !== 0
                 ? t('academy.courseButtonDetail')
                 : t('academy.courseButtonOpenClass')
-              : item?.price?.idr === 0 && item?.price?.usd === 0
+              : item?.price === 0
               ? t('academy.detailCourse.free')
               : t('academy.courseButtonBuy')}
           </button>

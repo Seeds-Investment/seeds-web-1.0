@@ -33,10 +33,7 @@ export interface DetailClassI {
     en: string;
     id: string;
   };
-  price?: {
-    idr?: number;
-    usd?: number;
-  };
+  price?: number;
   level?: string;
   is_owned: boolean;
   pre_test_score?: number;
@@ -46,6 +43,8 @@ export interface DetailClassI {
   video: string;
   total_participants?: number;
   total_question?: number;
+  is_post_test_done?: boolean;
+  is_pre_test_done?: boolean;
 }
 
 export interface PriceDataI {
@@ -78,7 +77,7 @@ export interface QuestionI {
   class_id: string;
   question_lang_id: string;
   question_lang_en: string;
-  participant_id: ParticipantI[];
+  participant_answers: ParticipantI[];
 }
 
 export interface EnrollClassI {

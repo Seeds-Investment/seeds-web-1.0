@@ -10,8 +10,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   type DetailClassI,
-  type EnrollClassI,
-  type PriceDataI
+  type EnrollClassI
 } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -62,10 +61,7 @@ const Score: React.FC = () => {
   };
 
   const togglePopup = async (): Promise<void> => {
-    if (
-      dataClass?.is_owned === false &&
-      (dataClass?.price?.idr !== 0 || dataClass?.price?.usd !== 0)
-    ) {
+    if (dataClass?.is_owned === false && dataClass?.price !== 0) {
       setShowPopup(!showPopup);
     } else {
       if (dataClass?.is_owned === false) {
@@ -168,9 +164,7 @@ const Score: React.FC = () => {
         isOpen={showPopup}
         onClose={togglePopup}
         classTitle={dataClass?.title as string}
-        amount={dataClass?.price?.[
-          userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-        ]?.toLocaleString('id-ID', {
+        amount={dataClass?.price?.toLocaleString('id-ID', {
           currency: userInfo?.preferredCurrency ?? 'IDR',
           style: 'currency'
         })}

@@ -15,7 +15,7 @@ const OptionsList: React.FC<OptionsListProps> = ({
 }) => {
   return (
     <div className="text-lg flex flex-col gap-5">
-      {options.map((participant, index) => {
+      {options?.map((participant, index) => {
         const answerText =
           participant[`answer_lang_${i18n.language}` as keyof ParticipantI] ??
           participant.answer_lang_id;

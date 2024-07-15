@@ -13,8 +13,7 @@ import {
   type DetailClassI,
   type EnrollClassI,
   type PaymentList,
-  type PaymentStatus,
-  type PriceDataI
+  type PaymentStatus
 } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Radio } from '@material-tailwind/react';
@@ -51,10 +50,7 @@ const Payment: React.FC = () => {
   const [promoPrice, setPromoPrice] = useState<number>(0);
   const [data, setData] = useState<PaymentStatus | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
-  const dynamicPrice =
-    detailClass?.price?.[
-      userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-    ];
+  const dynamicPrice = detailClass?.price;
   const promoCodeValidation = useSelector(selectPromoCodeValidationResult);
   const [amountCoins, setAmountCoins] = useState<number>(0);
   const [classAfterPay, setClassAfterPay] = useState<DetailClassI | undefined>(
@@ -318,11 +314,7 @@ const Payment: React.FC = () => {
       />
       <Receipt
         isHidden={!isListPaymentHidden}
-        amountClass={
-          classAfterPay?.price?.[
-            userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-          ] as number
-        }
+        amountClass={classAfterPay?.price as number}
         amount={data?.grossAmount as number}
         adminFee={
           paymentSelectedEWallet[0]?.admin_fee !== undefined

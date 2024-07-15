@@ -17,8 +17,7 @@ import i18n from '@/utils/common/i18n';
 import {
   type DetailClassI,
   type EnrollClassI,
-  type LanguageDataI,
-  type PriceDataI
+  type LanguageDataI
 } from '@/utils/interfaces/academy.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Switch } from '@material-tailwind/react';
@@ -26,7 +25,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RiErrorWarningLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 
 const DetailCourse: React.FC = () => {
@@ -38,9 +36,7 @@ const DetailCourse: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { t } = useTranslation();
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
-  const formattedPrice = data?.price?.[
-    userInfo?.preferredCurrency?.toLowerCase() as keyof PriceDataI
-  ]?.toLocaleString('id-ID', {
+  const formattedPrice = data?.price?.toLocaleString('id-ID', {
     currency: userInfo?.preferredCurrency ?? 'IDR',
     style: 'currency'
   });
@@ -50,10 +46,7 @@ const DetailCourse: React.FC = () => {
     phone_number: ''
   });
   const togglePopup = async (): Promise<void> => {
-    if (
-      data?.is_owned === false &&
-      (data?.price?.idr !== 0 || data?.price?.usd !== 0)
-    ) {
+    if (data?.is_owned === false && data?.price !== 0) {
       setShowPopup(!showPopup);
     } else {
       if (data?.is_owned === false) {
@@ -91,15 +84,16 @@ const DetailCourse: React.FC = () => {
 
   const handleStartPretest = async (): Promise<void> => {
     try {
-      if (data?.total_question !== undefined && data?.total_question > 0) {
+      if (
+        (data?.total_question !== undefined && data?.total_question > 0) ||
+        data?.is_pre_test_done === false
+      ) {
         const response = await startPretest(id as string);
         if (response?.message === 'maximum pretest count already reached') {
           toast(response?.message, { type: 'warning' });
         } else {
           await router.push(`/academy/course/${id as string}/pretest`);
         }
-      } else {
-        toast('Questions not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -132,7 +126,7 @@ const DetailCourse: React.FC = () => {
                 />
               </>
             ) : (
-              <div className='flex justify-center items-center'>
+              <div className="flex justify-center items-center">
                 <Image
                   src={NoDataSeedy}
                   alt="no video"
@@ -183,15 +177,20 @@ const DetailCourse: React.FC = () => {
           </div>
           <button
             className={`p-3 ${
-              data?.total_question === 0 ? 'bg-[#CCCCCC]' : 'bg-[#7555DA]'
+              data?.total_question === 0 || data?.is_pre_test_done === true
+                ? 'bg-[#CCCCCC]'
+                : 'bg-[#7555DA]'
             }  rounded-3xl w-full text-white font-bold`}
             onClick={handleStartPretest}
+            disabled={
+              data?.total_question === 0 || data?.is_pre_test_done === true
+            }
           >
             {t('academy.detailCourse.buttonPretest')}
           </button>
         </div>
         <div className="bg-white p-4 rounded-xl mt-4 shadow-md flex flex-col gap-5">
-          {data?.is_owned === false && data?.price?.idr !== 0 && (
+          {data?.is_owned === false && data?.price !== 0 && (
             <>
               {/* develop when feature api is ready */}
               {/* <VoucherPromo detailClass={data} userInfo={userInfo} /> */}
@@ -218,18 +217,8 @@ const DetailCourse: React.FC = () => {
                 {t('academy.detailCourse.entrance')}
               </div>
               <div className="font-bold">
-                {data?.price?.idr !== 0
-                  ? formattedPrice ?? (
-                      <div className="text-[#3ac4a0] flex flex-row gap-1">
-                        <RiErrorWarningLine />
-                        <span className="text-xs">
-                          {t('tournament.detailCurrency')}{' '}
-                          {userInfo?.preferredCurrency !== undefined
-                            ? userInfo?.preferredCurrency
-                            : 'IDR'}
-                        </span>
-                      </div>
-                    )
+                {data?.price !== 0
+                  ? formattedPrice
                   : t('academy.detailCourse.free')}
               </div>
             </div>

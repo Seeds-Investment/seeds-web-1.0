@@ -76,7 +76,7 @@ const Posttest: React.FC = () => {
     currentQuestion.question_lang_id;
 
   const handleSelectOption = (selectedOptionId: string): void => {
-    const selectedParticipant = currentQuestion?.participant_id.find(
+    const selectedParticipant = currentQuestion?.participant_answers.find(
       participant => participant.id === selectedOptionId
     );
 
@@ -138,7 +138,7 @@ const Posttest: React.FC = () => {
               questionNumber={`${currentQuestionIndex + 1}/${questions.length}`}
             />
             <OptionsList
-              options={currentQuestion?.participant_id}
+              options={currentQuestion?.participant_answers}
               selectedOptionId={selectedOptionId}
               onSelectOption={(selectedOptionId: string) => {
                 setSelectedOptionId(selectedOptionId);

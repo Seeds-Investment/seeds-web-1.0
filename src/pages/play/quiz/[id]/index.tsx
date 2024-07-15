@@ -13,6 +13,7 @@ import {
   validateInvitationCode
 } from '@/repository/quiz.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -23,6 +24,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
@@ -35,6 +37,7 @@ const QuizDetail = (): React.ReactElement => {
   const id = router.query.id;
   const count = useRef(0);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -68,20 +71,29 @@ const QuizDetail = (): React.ReactElement => {
       window.localStorage.removeItem('refreshToken');
     }
   }, []);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
 
+  useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
+    
+    if (promoCodeValidationResult.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const handleInvitationCode = async (): Promise<void> => {
     try {
@@ -133,6 +145,7 @@ const QuizDetail = (): React.ReactElement => {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
+
   useEffect(() => {
     if (
       detailQuiz !== undefined &&

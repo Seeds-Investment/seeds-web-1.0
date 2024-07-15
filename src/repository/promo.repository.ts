@@ -25,6 +25,8 @@ export const promoValidate = async (params: any): Promise<any> => {
 export const getPromocodeActive = async (
   page: number,
   limit: number,
+  featureType?: string,
+  featureId?: string
 ): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -36,7 +38,9 @@ export const getPromocodeActive = async (
     const response = await promoService.get('/list/active', {
       params: {
         page,
-        limit
+        limit,
+        feature_type: featureType,
+        feature_id: featureId
       },
       headers: {
         Accept: 'application/json',

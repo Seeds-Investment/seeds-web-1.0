@@ -69,7 +69,7 @@ const PromoCodeButton: React.FC<PromoProps> = ({
         ((promoCodeValidationResult !== undefined) && (promoCodeValidationResult !== 0)) &&
           <div className='flex gap-2 justify-between items-center mt-2'>
             <Typography className='w-full font-poppins text-sm text-[#27A590] font-semibold'>
-              {t(`promo.totalDiscount`)} {userInfo?.preferredCurrency ?? 'IDR'}{`${standartCurrency(promoCodeValidationResult?.total_discount ?? 0).replace('Rp', '')}`}
+              {t(`promo.totalDiscount`)} {userInfo?.preferredCurrency ?? 'IDR'}{`${standartCurrency(promoCodeValidationResult?.response?.total_discount ?? 0).replace('Rp', '')}`}
             </Typography>
             
             <div className='flex justify-center items-center'>

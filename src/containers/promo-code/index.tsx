@@ -1,5 +1,6 @@
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import Seedy from '@/assets/promo/seedy.svg';
+import SeedyBNW from '@/assets/promo/seedy_bnw.svg';
 import TournamentPagination from '@/components/TournmentPagination';
 import { standartCurrency } from '@/helpers/currency';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
@@ -134,7 +135,12 @@ const PromoCode: React.FC<PromoProps> = ({
   const fetchPromoData = async (): Promise<void> => {
     try {
       setLoading(true)
-      const activePromoCodesResponse = await getPromocodeActive(promoParams.page, promoParams.limit);
+      const activePromoCodesResponse = await getPromocodeActive(
+        promoParams.page, 
+        promoParams.limit, 
+        spotType, 
+        ((spotType === 'Paid Quiz') || (spotType === 'Paid Tournament') ? id as string : circleId as string)
+      );
       setActivePromoCodes(activePromoCodesResponse?.data);
       setMetadata(activePromoCodesResponse?.metadata)
     } catch (error) {
@@ -207,7 +213,7 @@ const PromoCode: React.FC<PromoProps> = ({
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
-        dispatch(setPromoCodeValidationResult(response));
+        dispatch(setPromoCodeValidationResult({ id, response }));
         toast.success(t('promo.applied'))
       } else {
         toast.error('Error Promo Code:', response.message);
@@ -301,19 +307,89 @@ const PromoCode: React.FC<PromoProps> = ({
               <div
                 key={index}
                 onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
-                className={`${item?.promo_code === promoCode ? 'from-[#BDFFE5] to-white border-[#27A590]' : 'from-[#FDD059] to-white border-[#B57A12]'} flex justify-start items-center rounded-xl bg-gradient-to-r relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300`}
+                className={`
+                  ${item?.promo_code === promoCode
+                    ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
+                    : spotType === 'Paid Tournament'
+                      ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                        ? 'bg-white border-[#BDBDBD]'
+                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+                      : spotType === 'Paid Quiz'
+                      ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                        ? 'bg-white border-[#BDBDBD]'
+                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+                      : spotType === 'Paid Circle'
+                      ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                        ? 'bg-white border-[#BDBDBD]'
+                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+                      : ''}
+                  flex justify-start items-center rounded-xl relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300`
+                }
               >
                 <div className='flex justify-center items-center'>
                   <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
                     <Image
                       alt="Seedy"
-                      src={Seedy}
+                      src={
+                        spotType === 'Paid Tournament'
+                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? SeedyBNW
+                          : Seedy
+                        : spotType === 'Paid Quiz'
+                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? SeedyBNW
+                          : Seedy
+                        : spotType === 'Paid Circle'
+                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? SeedyBNW
+                          : Seedy
+                        : ''
+                      }
                       className="w-full h-full"
                     />
                   </div>
                 </div>
-                <div className={`${item?.promo_code === promoCode ? 'bg-[#27A590]' : 'bg-[#D89918]'} w-[20px] h-full absolute left-0`}/>
-                <div className='flex flex-col justify-center p-4 w-full h-full border-l border-dashed border-[#B57A12]'>
+                <div
+                  className={`
+                    ${item?.promo_code === promoCode
+                      ? 'bg-[#27A590]'
+                      : spotType === 'Paid Tournament'
+                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'bg-[#BDBDBD]'
+                          : 'bg-[#D89918]'
+                        : spotType === 'Paid Quiz'
+                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'bg-[#BDBDBD]'
+                          : 'bg-[#D89918]'
+                        : spotType === 'Paid Circle'
+                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'bg-[#BDBDBD]'
+                          : 'bg-[#D89918]'
+                        : ''
+                      } w-[20px] h-full absolute left-0
+                  `}
+                />
+                <div
+                  className={`
+                    ${item?.promo_code === promoCode
+                      ? 'border-[#27A590]'
+                      : spotType === 'Paid Tournament'
+                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'border-[#BDBDBD]'
+                          : 'border-[#D89918]'
+                        : spotType === 'Paid Quiz'
+                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'border-[#BDBDBD]'
+                          : 'border-[#D89918]'
+                        : spotType === 'Paid Circle'
+                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'border-[#BDBDBD]'
+                          : 'border-[#D89918]'
+                        : ''
+                      }
+                    flex flex-col justify-center p-4 w-full h-full border-l border-dashed`
+                  }
+                >
                   <div className='font-semibold text-base md:text-xl'>
                     {item?.promo_code}
                   </div>

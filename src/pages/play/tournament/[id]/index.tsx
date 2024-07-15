@@ -21,7 +21,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
-import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type IDetailTournament,
   type UserInfo
@@ -33,7 +33,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
@@ -70,7 +70,15 @@ const TournamentDetail: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
+    
+    if (promoCodeValidationResult.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const fetchData = async (): Promise<void> => {
     try {

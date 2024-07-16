@@ -107,7 +107,7 @@ const PromoCode: React.FC<PromoProps> = ({
       .then()
       .catch(() => {});
 
-    setPromoCode(promoCodeValidationResult?.promo_code)
+    setPromoCode(promoCodeValidationResult?.response?.promo_code)
   }, []);
 
   useEffect(() => {
@@ -208,7 +208,7 @@ const PromoCode: React.FC<PromoProps> = ({
         });
       }
 
-      if (promoCodeValidationResult.promo_code === promoCode) {
+      if (promoCodeValidationResult.response?.promo_code === promoCode) {
         setPromoCode('');
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {

@@ -11,27 +11,18 @@ import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
-// import { useAppSelector } from '@/store/redux/store';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
 import WalletForm from './WalletForm';
-interface UserData {
-  name: string;
-  seedsTag: string;
-  email: string;
-  pin: string;
-  avatar: string;
-  bio: string;
-  birthDate: string;
-  phone: string;
-  _pin: string;
-  preferredCurrency: string;
-}
+
 export interface Payment {
   id: string;
   payment_method: string;
@@ -51,6 +42,49 @@ interface props {
   useCoins?: boolean;
 }
 
+const userDefault: UserInfo = {
+  avatar: '',
+  badge: '',
+  bio: '',
+  birthDate: '',
+  claims: {
+    aud: [],
+    avatar: '',
+    birthDate: '',
+    email: '',
+    exp: 0,
+    iat: 0,
+    iss: '',
+    nbf: '',
+    phoneNumber: '',
+    preferredCurrency: '',
+    preferredLanguage: '',
+    refCode: '',
+    role: '',
+    seedsTag: '',
+    sub: ''
+  },
+  currentExp: 0,
+  email: '',
+  email_verification: '',
+  followers: 0,
+  following: 0,
+  id: '',
+  isPasswordExists: false,
+  label: '',
+  name: '',
+  phoneNumber: '',
+  pin: false,
+  posts: 0,
+  preferredCurrency: '',
+  preferredLanguage: '',
+  refCode: '',
+  refCodeUsage: 0,
+  region: '',
+  seedsTag: '',
+  verified: false,
+};
+
 const PaymentList: React.FC<props> = ({
   dataPost,
   monthVal,
@@ -64,8 +98,11 @@ const PaymentList: React.FC<props> = ({
   const [qRisList, setQRisList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
-  const [userInfo, setUserInfo] = useState<UserData | null>(null);
-  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
@@ -75,8 +112,8 @@ const PaymentList: React.FC<props> = ({
       );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
-    } catch (error: any) {
-      toast(`Error fetching Payment List: ${error.message as string}`);
+    } catch (error) {
+      toast(`Error fetching Payment List: ${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -112,15 +149,15 @@ const PaymentList: React.FC<props> = ({
     paymentGateway: string,
     paymentMethod: string,
     totalAmount: number,
-    phoneNumber: string | undefined = userInfo?.phone
+    phoneNumber: string | undefined = userInfo?.phoneNumber
   ): Promise<void> => {
     try {
       setLoading(true);
       if (
         type === 'ewallet' &&
-        (phoneNumber === userInfo?.phone || phoneNumber === '')
+        (phoneNumber === userInfo?.phoneNumber || phoneNumber === '')
       ) {
-        console.error('Please fill the phone number');
+        toast(`Please fill the phone number`);
       }
       const replaceDataPost: PaymentData = dataPost;
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -132,7 +169,7 @@ const PaymentList: React.FC<props> = ({
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
-          promo_code: '',
+          promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
           invitation_code: invitationCode as string,
           is_use_coins: useCoins as boolean
         });
@@ -144,7 +181,7 @@ const PaymentList: React.FC<props> = ({
           await router
             .replace(`/play/payment/receipt/${response.order_id as string}`)
             .catch(error => {
-              console.log(error);
+              toast(`${error as string}`);
             });
         }
       } else {
@@ -178,12 +215,12 @@ const PaymentList: React.FC<props> = ({
               }`
             )
             .catch(error => {
-              console.log(error);
+              toast(`${error as string}`);
             });
         }
       }
     } catch (error) {
-      console.log(error);
+      toast(`${error as string}`);
     } finally {
       setLoading(false);
     }
@@ -269,7 +306,7 @@ const PaymentList: React.FC<props> = ({
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
-            userInfo={userInfo}
+            userInfo={userInfo ?? userDefault}
           />
         ) : (
           <VirtualAccountGuide

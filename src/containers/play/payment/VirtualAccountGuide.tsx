@@ -37,7 +37,10 @@ const VirtualAccountGuide = ({
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const discount = promoCodeValidationResult?.total_discount ?? 0;
+  const discount =
+    promoCodeValidationResult !== 0
+      ? promoCodeValidationResult?.response?.total_discount
+      : 0;
   const totalFee = parseInt(`${admissionFee + adminFee - discount}`);
   
   return (
@@ -95,7 +98,7 @@ const VirtualAccountGuide = ({
           label={t(`${translationsId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount ?? 0
+            promoCodeValidationResult?.response?.total_discount ?? 0
           }`}
           className="mb-2"
         />

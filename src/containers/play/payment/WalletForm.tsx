@@ -65,14 +65,13 @@ const WalletForm = ({
     let _totalFee = 0;
     let _discount = 0;
 
-    if (payment.is_promo_available) {
-      _discount = payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0);
-    } else {
-      _discount = coinsDiscount > 0 ? coinsDiscount : 0;
-    }
-
+    _discount = payment.is_promo_available
+      ? payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0)
+      : coinsDiscount > 0
+      ? coinsDiscount
+      : 0;
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.total_discount as number;
+      _discount += promoCodeValidationResult?.response?.total_discount as number;
     }
 
     if (dataPost.quiz) {
@@ -198,7 +197,7 @@ const WalletForm = ({
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount
+            promoCodeValidationResult?.response?.total_discount
           }`}
           className="mb-2"
         />

@@ -208,7 +208,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           paymentGateway,
           paymentMethod,
           `+62${phoneNumber as string}`,
-          promoCodeValidationResult?.promo_code ?? '',
+          promoCodeValidationResult?.response?.promo_code ?? '',
           (invitationCode as string) || '',
           useCoins
         );

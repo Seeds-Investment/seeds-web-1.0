@@ -75,7 +75,7 @@ const WalletForm = ({
       ? coinsDiscount
       : 0;
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.total_discount as number;
+      _discount += promoCodeValidationResult?.response?.total_discount as number;
     }
 
     if (dataPost) {
@@ -176,7 +176,7 @@ const WalletForm = ({
           label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- ${userInfo?.preferredCurrency} ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount
+            promoCodeValidationResult?.response?.total_discount
           }`}
           className="mb-2"
         />

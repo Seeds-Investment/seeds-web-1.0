@@ -13,7 +13,6 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/event';
-import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type EventList } from '@/utils/interfaces/event.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -96,11 +95,6 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const useCoinsParam = router.query.useCoins;
   const useCoins = useCoinsParam === 'true';
   const { userName, userPhone, userEmail } = useSelector((state: RootState) => state?.booking ?? {});
-
-  const promoCodeValidationResult = useSelector(
-    selectPromoCodeValidationResult
-  );
-
   const userDefault = {
     name: '',
     seedsTag: '',
@@ -224,7 +218,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             name: userName,
             phone_number: userPhone,
             email: userEmail,
-            promo_code: promoCodeValidationResult?.promo_code ?? '',
+            promo_code: '',
             is_use_coins: useCoins
           }
         );

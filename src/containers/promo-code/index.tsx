@@ -274,6 +274,7 @@ const PromoCode: React.FC<PromoProps> = ({
 
       if (promoCodeValidationResult.response?.promo_code === promoCode) {
         setPromoCode('');
+        toast.success(t(`promo.unApplied`))
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);

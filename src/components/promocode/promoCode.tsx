@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import Voucher from '../../../public/assets/vector/voucher.svg';
 
 interface PromoProps {
@@ -81,6 +82,7 @@ const PromoCodeButton: React.FC<PromoProps> = ({
                 className="checked:bg-[#3AC4A0]"
                 checked={usePromo}
                 onChange={() => {
+                  toast.success(t(`promo.unApplied`))
                   setUsePromo(false)
                   setTimeout(() => {
                     dispatch(setPromoCodeValidationResult(0));

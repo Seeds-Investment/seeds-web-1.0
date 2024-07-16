@@ -998,6 +998,7 @@ export default {
     emptyVoucher1: "Opps, There's No Voucher",
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
+    unApplied: 'Promo code has been removed successfully!',
     apply: "Apply",
   },
   temporary: {

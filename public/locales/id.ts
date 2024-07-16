@@ -917,6 +917,7 @@ export default {
     emptyVoucher1: 'Ups, Belum Ada Voucher',
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
+    unApplied: 'Kode promo berhasil dihapus!',
     apply: "Terapkan",
   },
   temporary: {

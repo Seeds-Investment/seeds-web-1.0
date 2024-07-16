@@ -199,7 +199,7 @@ const PaymentList: React.FC<props> = ({
             quantity: 1,
             name: userInfo?.name,
             email: userInfo?.email,
-            promo_code: '',
+            promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
             spot_type: 'Join Circle Premium'
           }
         });

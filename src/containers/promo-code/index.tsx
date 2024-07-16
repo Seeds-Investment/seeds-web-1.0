@@ -8,6 +8,7 @@ import { getPlayById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getPromocodeActive, promoValidate } from '@/repository/promo.repository';
 import { getQuizById } from '@/repository/quiz.repository';
+import { getDetailPostSocial } from '@/repository/social.respository';
 import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -42,6 +43,44 @@ interface IPromoCode {
   start_date: string;
   tnc: string;
   type: string;
+}
+
+interface IDetailPost {
+  circle_id: string;
+  content_text: string;
+  created_at: string;
+  id: string;
+  is_pinned: boolean;
+  media_urls: {
+    id: string;
+  }
+  owner: {
+    avatar: string;
+    name: string;
+    username: string;
+    verified: boolean;
+  }
+  parent_id: string;
+  pie_amount: number;
+  pie_title: string;
+  play_id: string;
+  polling_date: string;
+  polling_multiple: boolean;
+  polling_new_option: boolean;
+  premium_fee: number;
+  privacy: string;
+  quiz_id: string;
+  slug: string;
+  status_like: boolean;
+  status_payment: boolean;
+  status_saved: boolean;
+  status_unlike: boolean;
+  total_comment: number;
+  total_downvote: number;
+  total_polling: number;
+  total_upvote: number;
+  updated_at: string;
+  user_id: string;
 }
 
 interface Metadata {
@@ -79,6 +118,7 @@ const PromoCode: React.FC<PromoProps> = ({
   const circleId = router.query.circleId;
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [detailPost, setDetailPost] = useState<IDetailPost>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [promoCode, setPromoCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -117,8 +157,10 @@ const PromoCode: React.FC<PromoProps> = ({
       }
     } else if (spotType === 'Paid Quiz') {
       void getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR')
-    } else if (spotType === 'Paid Circle') {
+    } else if (spotType === 'Premium Circle') {
       void fetchDetailCircle(circleId as string)
+    } else if (spotType === 'Premium Content') {
+      void fetchDetailPost()
     }
     void fetchPromoData();
   }, [id, circleId, userInfo, promoParams]);
@@ -139,7 +181,11 @@ const PromoCode: React.FC<PromoProps> = ({
         promoParams.page, 
         promoParams.limit, 
         spotType, 
-        ((spotType === 'Paid Quiz') || (spotType === 'Paid Tournament') ? id as string : circleId as string)
+        (
+          (spotType === 'Paid Quiz')
+          || (spotType === 'Paid Tournament') 
+            ? id as string : circleId as string
+        )
       );
       setActivePromoCodes(activePromoCodesResponse?.data);
       setMetadata(activePromoCodesResponse?.metadata)
@@ -180,6 +226,17 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
+  const fetchDetailPost = async (): Promise<void> => {
+    try {
+      if (typeof id === 'string') {
+        const response = await getDetailPostSocial(id);
+        setDetailPost(response.data);
+      }
+    } catch (error) {
+      toast(`${error as string}`);
+    }
+  };
+
   const handlePromoCodeSelection = async (promoCode: string): Promise<void> => {
     setPromoCode(promoCode);
     try {
@@ -199,12 +256,19 @@ const PromoCode: React.FC<PromoProps> = ({
           item_price: detailQuiz?.admission_fee,
           item_id: detailQuiz?.id
         });
-      } else if (spotType === 'Paid Circle') {
+      } else if (spotType === 'Premium Circle') {
         response = await promoValidate({
           promo_code: promoCode,
           spot_type: spotType,
           item_price: dataCircle?.premium_fee,
           item_id: dataCircle?.id
+        });
+      } else if (spotType === 'Premium Content') {
+        response = await promoValidate({
+          promo_code: promoCode,
+          spot_type: spotType,
+          item_price: detailPost?.premium_fee,
+          item_id: detailPost?.id
         });
       }
 
@@ -213,7 +277,11 @@ const PromoCode: React.FC<PromoProps> = ({
         dispatch(setPromoCodeValidationResult(0));
       } else if (response.total_discount !== undefined) {
         setPromoCode(promoCode);
-        dispatch(setPromoCodeValidationResult({ id, response }));
+        if (spotType === 'Premium Circle') {
+          dispatch(setPromoCodeValidationResult({ circleId, response }));
+        } else {
+          dispatch(setPromoCodeValidationResult({ id, response }));
+        }
         toast.success(t('promo.applied'))
       } else {
         toast.error('Error Promo Code:', response.message);
@@ -257,6 +325,10 @@ const PromoCode: React.FC<PromoProps> = ({
       return `/play/tournament/${id}`;
     } else if (spotType === 'Paid Quiz') {
       return `/play/quiz/${id}`
+    } else if (spotType === 'Premium Circle') {
+      return `/connect/payment/${circleId as string}`
+    } else if (spotType === 'Premium Content') {
+      return `/social/payment/${id}`
     }
     return '';
   };
@@ -303,7 +375,7 @@ const PromoCode: React.FC<PromoProps> = ({
       {!loading ? (
         activePromoCodes?.length !== 0 ? (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
-            {activePromoCodes.map((item, index) => (
+            {activePromoCodes?.map((item, index) => (
               <div
                 key={index}
                 onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
@@ -318,8 +390,12 @@ const PromoCode: React.FC<PromoProps> = ({
                       ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
                         ? 'bg-white border-[#BDBDBD]'
                         : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
-                      : spotType === 'Paid Circle'
+                      : spotType === 'Premium Circle'
                       ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                        ? 'bg-white border-[#BDBDBD]'
+                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+                      : spotType === 'Premium Content'
+                      ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
                         ? 'bg-white border-[#BDBDBD]'
                         : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
                       : ''}
@@ -339,8 +415,12 @@ const PromoCode: React.FC<PromoProps> = ({
                         ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? SeedyBNW
                           : Seedy
-                        : spotType === 'Paid Circle'
+                        : spotType === 'Premium Circle'
                         ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? SeedyBNW
+                          : Seedy
+                        : spotType === 'Premium Content'
+                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? SeedyBNW
                           : Seedy
                         : ''
@@ -361,8 +441,12 @@ const PromoCode: React.FC<PromoProps> = ({
                         ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? 'bg-[#BDBDBD]'
                           : 'bg-[#D89918]'
-                        : spotType === 'Paid Circle'
+                        : spotType === 'Premium Circle'
                         ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'bg-[#BDBDBD]'
+                          : 'bg-[#D89918]'
+                        : spotType === 'Premium Content'
+                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? 'bg-[#BDBDBD]'
                           : 'bg-[#D89918]'
                         : ''
@@ -381,8 +465,12 @@ const PromoCode: React.FC<PromoProps> = ({
                         ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? 'border-[#BDBDBD]'
                           : 'border-[#D89918]'
-                        : spotType === 'Paid Circle'
+                        : spotType === 'Premium Circle'
                         ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
+                          ? 'border-[#BDBDBD]'
+                          : 'border-[#D89918]'
+                        : spotType === 'Premium Content'
+                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
                           ? 'border-[#BDBDBD]'
                           : 'border-[#D89918]'
                         : ''

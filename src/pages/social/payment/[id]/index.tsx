@@ -3,10 +3,15 @@ import FeeMembership from '@/containers/social/payment/FeeMembership';
 import PaymentMethod from '@/containers/social/payment/PaymentMethod';
 import TnC from '@/containers/social/payment/TnC';
 import withAuth from '@/helpers/withAuth';
+import { getUserInfo } from '@/repository/profile.repository';
 import { promoValidate } from '@/repository/promo.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface paramsValidatePromo {
   promo_code: string;
@@ -18,10 +23,12 @@ interface paramsValidatePromo {
 const PaymentContent: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
+  const dispatch = useDispatch();
   const [step, setStep] = useState<string>('fee');
   const [data, setData] = useState<any>({});
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [promo, setPromo] = useState<any>({
     final_price: 0,
     promo_code: '',
@@ -33,6 +40,10 @@ const PaymentContent: React.FC = () => {
     spot_type: 'PREMIUM CONTENT',
     item_id: ''
   });
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const fetchDetailAsset = async (): Promise<void> => {
     try {
@@ -46,7 +57,7 @@ const PaymentContent: React.FC = () => {
         }));
       }
     } catch (error) {
-      console.log(error);
+      toast.error(`${error as string}`);
     }
   };
 
@@ -67,7 +78,16 @@ const PaymentContent: React.FC = () => {
       setErrorMessage('');
     } catch (error) {
       setErrorMessage('Invalid Promo Code');
-      console.error(error);
+      toast.error(`${error as string}`);
+    }
+  };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -93,15 +113,27 @@ const PaymentContent: React.FC = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+    
+    if (promoCodeValidationResult.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
+  }, []);
+
   return (
     <PageGradient defaultGradient className="w-full">
       {step === 'fee' ? (
-        <FeeMembership
-          setStep={setStep}
-          detailPost={data}
-          changeValue={handleChangeValue}
-          errorMessage={errorMessage}
-        />
+        userInfo !== undefined &&
+          <FeeMembership
+            setStep={setStep}
+            detailPost={data}
+            changeValue={handleChangeValue}
+            errorMessage={errorMessage}
+            userInfo={userInfo}
+          />
       ) : step === 'tnc' ? (
         <div className="lg:mx-20">
           <TnC

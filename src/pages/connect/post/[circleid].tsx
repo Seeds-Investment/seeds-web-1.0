@@ -9,10 +9,12 @@ import {
   getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import MainPostLayout from '../../../components/layouts/MainPostLayout';
 
@@ -31,6 +33,7 @@ interface UserData {
 const CirclePost = (): JSX.Element => {
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
@@ -65,17 +68,26 @@ const CirclePost = (): JSX.Element => {
   };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response = await getUserInfo();
-        setUserInfo(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
     void fetchData();
+    
+    if (promoCodeValidationResult.circleId !== circleId) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+  
+  const fetchData = async (): Promise<void> => {
+    try {
+      const response = await getUserInfo();
+      setUserInfo(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const fetchUserInfo = async (): Promise<void> => {
     try {
@@ -89,8 +101,8 @@ const CirclePost = (): JSX.Element => {
       } else {
         setIsJoined(false);
       }
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -103,8 +115,8 @@ const CirclePost = (): JSX.Element => {
       const { data } = await getDetailCircle({ circleId });
 
       setData(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Detail:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Detail: ${error as string}`);
     } finally {
       setIsLoading(false);
     }

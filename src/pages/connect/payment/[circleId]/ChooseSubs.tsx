@@ -1,3 +1,4 @@
+import PromoCode from '@/components/promocode/promoCode';
 import Button from '@/components/ui/button/Button';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -6,6 +7,7 @@ import { formatCurrency } from '@/utils/common/currency';
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface props {
   dataPost: any;
@@ -27,8 +29,8 @@ const ChooseSubs: React.FC<props> = ({
         const dataInfo = await getUserInfo();
 
         setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error(`Error fetching data: ${error as string}`);
       }
     };
 
@@ -140,6 +142,17 @@ const ChooseSubs: React.FC<props> = ({
             </div>
           </div>
         </div>
+
+        {/* Promo Code */}
+        <div className='w-full flex justify-center items-center mt-6'>
+          <div className='w-full max-w-[350px] px-4'>
+            {
+              userInfo !== undefined &&
+                <PromoCode userInfo={userInfo} id={dataPost?.id as string} spotType={'Premium Circle'}/>
+            }
+          </div>
+        </div>
+
         <div className="flex justify-center mt-6">
           <Button
             props={{

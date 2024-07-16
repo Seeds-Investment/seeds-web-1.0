@@ -4,11 +4,12 @@ import TermConditionPage from '@/containers/circle/create-circle/termConditionPa
 import PaymentList from '@/containers/play/payment/PaymentList';
 import withAuth from '@/helpers/withAuth';
 import {
-  getDetailCircle,
-  getStatusCircle
+    getDetailCircle,
+    getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import ChooseSubs from './ChooseSubs';
 
 const CirclePayment: React.FC = () => {
@@ -28,8 +29,8 @@ const CirclePayment: React.FC = () => {
       const { data } = await getDetailCircle({ circleId });
 
       setDataPost(data);
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -42,11 +43,11 @@ const CirclePayment: React.FC = () => {
       const { status }: any = data;
       if (status === 'accepted') {
         router.push(`/connect`).catch(error => {
-          console.log(error);
+          toast.error(`${error as string}`);
         });
       }
-    } catch (error: any) {
-      console.error('Error fetching Circle Post:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching Circle Post: ${error as string}`);
     } finally {
       setIsLoading(false);
     }

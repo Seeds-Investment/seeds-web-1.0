@@ -287,8 +287,8 @@ const PromoCode: React.FC<PromoProps> = ({
       } else {
         toast.error('Error Promo Code:', response.message);
       }
-    } catch (error) {
-      toast.error('Error Promo Code only for New User');
+    } catch (error: any) {
+      toast.error(`${error.response.data.message as string}`);
       setPromoCode('');
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -337,7 +337,7 @@ const PromoCode: React.FC<PromoProps> = ({
   return (
     <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
       <div className='w-full relative'>
-        <Typography className='font-poppins text-2xl lg:text-3xl text-center font-semibold'>
+        <Typography className='mt-8 md:mt-0 font-poppins text-2xl lg:text-3xl text-center font-semibold'>
           Choose Voucher & Promo
         </Typography>
         <div
@@ -361,7 +361,7 @@ const PromoCode: React.FC<PromoProps> = ({
           onChange={e => {
             handleAddPromo(e);
           }}
-          placeholder="Have a promo code? Enter it here!"
+          placeholder={`${t('promo.havePromo')}`}
           className="block w-full md:w-[300px] text-[#262626] h-11 leading-4 placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9] p-3 pl-4 rounded-xl border border-[#BDBDBD]"
         />
         <button
@@ -483,20 +483,32 @@ const PromoCode: React.FC<PromoProps> = ({
                     {item?.promo_code}
                   </div>
                   {
-                    item?.min_transaction > 0 &&
-                      <div className='text-sm'>
+                    (item?.min_transaction > 0) ?
+                      <div className='text-sm text-black'>
                         {t('promo.minimumPurchase')} {`${userInfo?.preferredCurrency ?? 'IDR'}`}{`${standartCurrency(item?.min_transaction ?? 0).replace('Rp', '')}`}
+                      </div>
+                      :
+                      <div className='text-sm text-black'>
+                        {t('promo.noMinimumPurchase')}
                       </div>
                   }
                   {
-                    item?.end_date !== '0001-01-01T00:00:00Z' &&
+                    (item?.end_date !== '0001-01-01T00:00:00Z') ?
                       <div className='text-[#7C7C7C] text-sm'>
                         {getRemainingTime(item?.end_date)}
+                      </div>
+                      :
+                      <div className='text-[#7C7C7C] text-sm'>
+                        {t('promo.noExpired')}
                       </div>
                   }
                 </div>
                 <div className={`${item?.promo_code === promoCode ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
-                  {item?.quantity}x
+                  {
+                    (item?.initial_quantity ?? 0) === 0
+                      ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div>
+                      : `${item?.quantity}x`
+                  }
                 </div>
               </div>
             ))}

@@ -985,6 +985,7 @@ export default {
   },
   promo: {
     minimumPurchase: 'Min. Purchase:',
+    noMinimumPurchase: 'No minimum purchase',
     endsIn: 'Ends in',
     daysRemain: 'days',
     dayRemain: 'day',
@@ -1000,6 +1001,8 @@ export default {
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
     apply: "Apply",
+    noExpired: "No expired date",
+    havePromo: "Have a promo code? Enter it here!",
   },
   temporary: {
     welcome: {

@@ -310,10 +310,10 @@ const QuizDetail = (): React.ReactElement => {
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-4">
           {
-            userInfo !== undefined &&
+            ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
               <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'}/>
           }
-          <div className="flex flex-row justify-between items-start gap-2 mt-4">
+          <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>

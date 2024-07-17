@@ -904,6 +904,7 @@ export default {
   },
   promo: {
     minimumPurchase: 'Min. Pembelian:',
+    noMinimumPurchase: 'Tidak ada limit pembelian',
     endsIn: 'Berakhir dalam',
     daysRemain: 'hari',
     dayRemain: 'hari',
@@ -919,6 +920,8 @@ export default {
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
     apply: "Terapkan",
+    noExpired: "Tidak ada tanggal kadaluarsa",
+    havePromo: "Punya kode promo? Masukan disini!",
   },
   temporary: {
     welcome: {

@@ -490,7 +490,7 @@ const TournamentDetail: React.FC = () => {
         </div>
         <div className="w-full h-[300px] bg-white rounded-xl p-4">
           {
-            userInfo !== undefined &&
+            ((userInfo !== undefined) && ((detailTournament?.admission_fee ?? 0) > 0)) &&
               <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Tournament'}/>
           }
           {detailTournament?.is_need_invitation_code && (
@@ -502,7 +502,7 @@ const TournamentDetail: React.FC = () => {
                   setInvitationCode(e.target.value);
                 }}
                 placeholder="Invitation Code"
-                className="w-full border p-2 rounded-md mt-2"
+                className={`w-full border p-2 rounded-md ${((detailTournament?.admission_fee ?? 0) > 0) ? 'mt-2' : ''}`}
               />
             </div>
           )}

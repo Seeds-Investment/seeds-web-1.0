@@ -41,7 +41,7 @@ const FeeMembership: React.FC<props> = ({
       <div className='w-full flex justify-center items-center mt-6'>
         <div className='w-full max-w-[400px]'>
           {
-            userInfo !== undefined &&
+            ((userInfo !== undefined) && ((detailPost?.premium_fee ?? 0) > 0)) &&
               <PromoCode userInfo={userInfo} id={detailPost?.id as string} spotType={'Premium Content'}/>
           }
         </div>

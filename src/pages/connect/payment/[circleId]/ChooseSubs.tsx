@@ -147,7 +147,7 @@ const ChooseSubs: React.FC<props> = ({
         <div className='w-full flex justify-center items-center mt-6'>
           <div className='w-full max-w-[350px] px-4'>
             {
-              userInfo !== undefined &&
+              ((userInfo !== undefined) && ((dataPost?.premium_fee ?? 0) > 0)) &&
                 <PromoCode userInfo={userInfo} id={dataPost?.id as string} spotType={'Premium Circle'}/>
             }
           </div>

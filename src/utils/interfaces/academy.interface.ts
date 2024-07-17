@@ -43,8 +43,8 @@ export interface DetailClassI {
   video: string;
   total_participants?: number;
   total_question?: number;
-  is_post_test_done?: boolean;
-  is_pre_test_done?: boolean;
+  is_post_test_done: boolean;
+  is_pre_test_done: boolean;
 }
 
 export interface PriceDataI {

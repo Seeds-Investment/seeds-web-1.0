@@ -76,47 +76,6 @@ export default function Section6(): React.ReactElement {
     { image: SectionSixImageEvent10.src }
   ];
 
-  // const settings = {
-  //   // centerMode: true,
-  //   slidesToShow: 3,
-  //   speed: 500,
-  //   slidesToScroll: 1,
-  //   autoplay: true,
-  //   autoplaySpeed: 3000,
-  //   infinite: true,
-  //   dots: true,
-  //   // nextArrow: <NextBtn />,
-  //   // prevArrow: <PrevBtn />,
-  //   responsive: [
-  //     {
-  //       breakpoint: 1024,
-  //       settings: {
-  //         slidesToShow: 3,
-  //         slidesToScroll: 3,
-  //         infinite: true,
-  //         dots: true
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 600,
-  //       settings: {
-  //         slidesToShow: 2,
-  //         slidesToScroll: 1,
-  //         initialSlide: 2,
-  //         dots: false
-  //       }
-  //     },
-  //     {
-  //       breakpoint: 480,
-  //       settings: {
-  //         slidesToShow: 1,
-  //         slidesToScroll: 1,
-  //         dots: false
-  //       }
-  //     }
-  //   ]
-  // };
-
   const autoplaySwiper = {
     delay: 1000
   };
@@ -125,8 +84,10 @@ export default function Section6(): React.ReactElement {
 
   const breakpointsSwiper = {
     320: { slidesPerView: 1 },
-    480: { slidesPerView: 3 },
-    640: { slidesPerView: 3 }
+    480: { slidesPerView: 2 },
+    620: { slidesPerView: 3 },
+    640: { slidesPerView: 3 },
+    1024: { slidesPerView: 3 }
   };
   return (
     <section
@@ -154,7 +115,7 @@ export default function Section6(): React.ReactElement {
             className="w-[300px] h-[117px] top-7 md:w-[629px] md:top-7 relative z-1"
           />
         </div>
-        <div className="w-full lg:flex-col lg:justify-center mt-6 md:px-[250px] mb-20 md:mt-16">
+        <div className="w-full h-full lg:flex-col lg:justify-center mt-6 mb-20 md:mt-16">
           <Swiper
             modules={modulesSwiper}
             slidesPerView={3}
@@ -165,27 +126,30 @@ export default function Section6(): React.ReactElement {
             loop={true}
             breakpoints={breakpointsSwiper}
             allowSlideNext={true}
+            className="lg:flex lg:max-w-[1000px] md:max-w-full md:h-auto md:flex sm:max-w-[1000px] flex flex-col gap-6"
           >
             {events?.length !== 0
               ? events?.map((data, idx) => (
                   <SwiperSlide
                     key={idx}
-                    className="w-full lg:w-1/3 !flex !justify-center !items-center lg:mb-[25px] md:mb-[25px] sm:mb-[25px]"
+                    className="w-full lg:w-1/3 !flex !justify-center !items-center lg:mb-[25px] md:mb-[25px] sm:mb-[25px] lg:object-contain"
                   >
-                    <div className="!object-none border">
+                    <div className="flex flex-col object-fill">
                       <Image
                         src={data.image}
                         alt={`event banner${idx + 1}`}
                         width={300}
                         height={300}
-                        className="lg:!w-[300px] lg:!h-[300px] !w-[300px] !h-[400px] sm:!w-[200px] sm:!h-[200px]"
+                        className="lg:max-h-72 md:max-h-60 md:w-80 sm:max-h-48 sm:max-w-1/2 max-h-52 w-80"
                       />
                     </div>
                   </SwiperSlide>
                 ))
               : null}
-            <SwiperPrevButton />
-            <SwiperNextButton />
+            <div className="lg:items-start md:items-start sm:items-start flex h-20 items-center justify-center">
+              <SwiperPrevButton />
+              <SwiperNextButton />
+            </div>
           </Swiper>
         </div>
       </div>

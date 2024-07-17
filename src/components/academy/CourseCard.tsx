@@ -1,35 +1,17 @@
 import NoDataSeedy from '@/assets/academy/no-data-category.svg';
 import TagPrice from '@/assets/academy/tag-price.svg';
-import { getUserInfo } from '@/repository/profile.repository';
 import { type DetailClassI } from '@/utils/interfaces/academy.interface';
-import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 const CourseCard: React.FC<{
   item: DetailClassI;
-}> = ({ item }) => {
+  preferredCurrency: string | undefined;
+}> = ({ item, preferredCurrency }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast(`Error fetching data user: ${error as string}`);
-      }
-    };
-    fetchData()
-      .then()
-      .catch(() => {});
-  }, []);
 
   return (
     <>
@@ -50,7 +32,7 @@ const CourseCard: React.FC<{
                   </span>{' '}
                   :{' '}
                   {item?.price?.toLocaleString('id-ID', {
-                    currency: userInfo?.preferredCurrency ?? 'IDR',
+                    currency: preferredCurrency ?? 'IDR',
                     style: 'currency'
                   })}
                 </Typography>
@@ -64,7 +46,7 @@ const CourseCard: React.FC<{
             className="text-xs text-white bg-[#3AC4A0] py-1 px-4 rounded-full self-start"
           >
             {item?.is_owned
-              ? item?.post_test_score !== 0
+              ? item?.is_post_test_done
                 ? t('academy.courseButtonDetail')
                 : t('academy.courseButtonOpenClass')
               : item?.price === 0
@@ -81,7 +63,7 @@ const CourseCard: React.FC<{
             className="w-24 h-24"
           />
         </div>
-        {item?.is_owned && item?.post_test_score !== 0 && (
+        {item?.is_owned && item?.is_post_test_done && (
           <div className="absolute top-0 right-0 bg-white rounded-bl-lg rounded-tr-2xl px-3 border-[1.5px] border-[#3AC4A0]">
             <Typography className="text-[10px] text-[#3AC4A0] font-semibold">
               {`${t('academy.courseScore')} : ${
@@ -90,7 +72,7 @@ const CourseCard: React.FC<{
             </Typography>
           </div>
         )}
-        {item?.is_owned && item?.post_test_score !== 0 && (
+        {item?.is_owned && item?.is_post_test_done && (
           <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-full h-1">
             <div
               className="bg-[#3AC4A0] h-1 rounded-full"

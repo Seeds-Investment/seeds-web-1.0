@@ -8,6 +8,7 @@ import {
   getCategoryDetail,
   getClassListByCategoryId
 } from '@/repository/academy.repository';
+import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import {
   type CategoryAcademyI,
@@ -15,6 +16,7 @@ import {
   type ListParamsI,
   type MetaDataI
 } from '@/utils/interfaces/academy.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -28,6 +30,7 @@ const CategoryById: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { categoryId } = router.query;
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [categoryDetail, setCategoryDetail] = useState<CategoryAcademyI>();
   const [classList, setClassList] = useState<DetailClassI[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -46,6 +49,20 @@ const CategoryById: React.FC = () => {
     limit: 0,
     totalPage: 0
   });
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const dataInfo = await getUserInfo();
+        setUserInfo(dataInfo);
+      } catch (error) {
+        toast(`Error fetching data user: ${error as string}`);
+      }
+    };
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -200,7 +217,10 @@ const CategoryById: React.FC = () => {
                     : 'bg-[#DCFCE4]'
                 }`}
               >
-                <CourseCard item={item} />
+                <CourseCard
+                  item={item}
+                  preferredCurrency={userInfo?.preferredCurrency}
+                />
               </div>
             ))}
           </div>

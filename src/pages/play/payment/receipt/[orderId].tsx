@@ -280,84 +280,19 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 {/* Quiz Fee */}
                 <div className="flex flex-row justify-between my-5">
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('quiz.payment.quizFee')}
+                    {t('quiz.payment.quizFeeTotal')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
+                    {((orderDetail?.currency !== undefined) && (paymentSelectedEWallet !== undefined)) &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                          detailQuiz?.admission_fee ?? 0
+                          (orderDetail?.grossAmount ?? 0)
+                          - paymentSelectedEWallet[0]?.admin_fee
+                          - paymentSelectedEWallet[0]?.service_fee
                         )}`
                       : ''}
                   </Typography>
                 </div>
-
-                {/* Lifelines Fee */}
-                {orderDetail?.currency !== undefined &&
-                orderDetail.grossAmount !== undefined &&
-                detailQuiz?.admission_fee !== undefined &&
-                paymentSelectedEWallet.length > 0 &&
-                orderDetail.grossAmount +
-                  (paymentSelectedEWallet[0]?.is_promo_available
-                    ? paymentSelectedEWallet[0]?.promo_price
-                    : 0) -
-                  (detailQuiz?.admission_fee +
-                    paymentSelectedEWallet[0]?.service_fee +
-                    paymentSelectedEWallet[0]?.admin_fee) >
-                  0 ? (
-                  <div className="flex flex-row justify-between mb-5">
-                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('quiz.payment.lifelinesFee')}
-                    </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount +
-                          (paymentSelectedEWallet[0]?.is_promo_available
-                            ? paymentSelectedEWallet[0]?.promo_price
-                            : 0) -
-                          (detailQuiz?.admission_fee +
-                            paymentSelectedEWallet[0]?.service_fee +
-                            paymentSelectedEWallet[0]?.admin_fee)
-                      )}`}
-                    </Typography>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {/* Lifelines Fee QRIS */}
-                {orderDetail?.currency !== undefined &&
-                orderDetail.grossAmount !== undefined &&
-                detailQuiz?.admission_fee !== undefined &&
-                qRisList !== undefined &&
-                orderDetail?.paymentMethod === 'OTHER_QRIS' &&
-                orderDetail.grossAmount +
-                  (qRisList[0]?.is_promo_available
-                    ? qRisList[0]?.promo_price
-                    : 0) -
-                  (detailQuiz?.admission_fee +
-                    qRisList[0]?.service_fee +
-                    qRisList[0]?.admin_fee) >
-                  0 ? (
-                  <div className="flex flex-row justify-between mb-5">
-                    <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                      {t('quiz.payment.lifelinesFee')}
-                    </Typography>
-                    <Typography className="text-sm font-semibold text-[#262626]">
-                      {`${orderDetail.currency} ${formatCurrency(
-                        orderDetail.grossAmount +
-                          (qRisList[0]?.is_promo_available
-                            ? qRisList[0]?.promo_price
-                            : 0) -
-                          (detailQuiz?.admission_fee +
-                            qRisList[0]?.service_fee +
-                            qRisList[0]?.admin_fee)
-                      )}`}
-                    </Typography>
-                  </div>
-                ) : (
-                  ''
-                )}
 
                 {/* Admin Fee */}
                 {paymentSelectedEWallet !== undefined &&

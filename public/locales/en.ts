@@ -1933,6 +1933,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
+      quizFeeTotal: 'Quiz Fee + Lifelines',
       lifelinesFee: 'Lifeline Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',

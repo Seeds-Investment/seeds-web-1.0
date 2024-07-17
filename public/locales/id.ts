@@ -1860,6 +1860,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
+      quizFeeTotal: 'Biaya Kuis + Bantuan Tambahan',
       lifelinesFee: 'Biaya Bantuan Tambahan',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',

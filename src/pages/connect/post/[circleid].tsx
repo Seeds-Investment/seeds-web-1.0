@@ -71,7 +71,7 @@ const CirclePost = (): JSX.Element => {
 
     void fetchData();
     
-    if (promoCodeValidationResult.circleId !== circleId) {
+    if (promoCodeValidationResult?.circleId !== circleId) {
       dispatch(setPromoCodeValidationResult(0));
     }
   }, []);

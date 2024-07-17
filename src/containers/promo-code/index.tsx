@@ -272,7 +272,7 @@ const PromoCode: React.FC<PromoProps> = ({
         });
       }
 
-      if (promoCodeValidationResult.response?.promo_code === promoCode) {
+      if (promoCodeValidationResult?.response?.promo_code === promoCode) {
         setPromoCode('');
         toast.success(t(`promo.unApplied`))
         dispatch(setPromoCodeValidationResult(0));

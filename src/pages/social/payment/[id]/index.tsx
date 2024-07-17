@@ -118,7 +118,7 @@ const PaymentContent: React.FC = () => {
       .then()
       .catch(() => {});
     
-    if (promoCodeValidationResult.id !== id) {
+    if (promoCodeValidationResult?.id !== id) {
       dispatch(setPromoCodeValidationResult(0));
     }
   }, []);

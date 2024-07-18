@@ -1,7 +1,11 @@
+import { getActiveSubscriptionList } from '@/repository/academy.repository';
+import { getUserInfo } from '@/repository/profile.repository';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoCloseSharp } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 interface PaymentPopupProps {
   isOpen: boolean;
@@ -9,6 +13,12 @@ interface PaymentPopupProps {
   classTitle: string;
   amount?: string;
   isUseCoins?: string | boolean;
+}
+
+interface GetSubscriptionI {
+  id: string;
+  price: number;
+  duration_month: number;
 }
 
 const PaymentPopup: React.FC<PaymentPopupProps> = ({
@@ -21,6 +31,8 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
   const router = useRouter();
   const { id } = router.query;
   const { t } = useTranslation();
+  const [data, setData] = useState<GetSubscriptionI[] | undefined>(undefined);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const handleSubmit = (): void => {
     void router.push(
@@ -28,6 +40,21 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
     );
     onClose();
   };
+
+  const handleGetListSubscription = async (): Promise<void> => {
+    try {
+      const response = await getActiveSubscriptionList();
+      setData(response?.data);
+      const responseUser = await getUserInfo();
+      setUserInfo(responseUser);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  useEffect(() => {
+    void handleGetListSubscription();
+  }, []);
 
   if (!isOpen) return null;
 
@@ -65,19 +92,21 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
               {t('academy.payment.desc')}
             </div>
             {/* Feature below not developed yet */}
-            <div className="flex flex-col gap-1 text-[#D89918] cursor-not-allowed opacity-30">
-              <div className="bg-[#FFF7D2] py-3 w-full text-center rounded-lg">
-                IDR 75.000 /Month
-              </div>
-              <div className="bg-[#FFF7D2] py-3 w-full text-center rounded-lg">
-                IDR 150.000 /3 Month
-              </div>
-              <div className="bg-[#FFF7D2] py-3 w-full text-center rounded-lg">
-                IDR 250.000 /6 Month
-              </div>
-              <div className="bg-[#FFF7D2] py-3 w-full text-center rounded-lg">
-                IDR 350.000 /12 Month
-              </div>
+            <div className="flex flex-col gap-1 text-[#D89918]">
+              {data?.map((item, index) => {
+                return (
+                  <div
+                    className="bg-[#FFF7D2] py-3 w-full text-center rounded-lg"
+                    key={index}
+                  >
+                    {item.price.toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}{' '}
+                    / {item.duration_month} Month
+                  </div>
+                );
+              })}
             </div>
             <button
               onClick={handleSubmit}

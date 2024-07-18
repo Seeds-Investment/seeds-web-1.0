@@ -258,3 +258,21 @@ export const enrollClass = async (
     toast(error.message, { type: 'error' });
   }
 };
+
+export const getActiveSubscriptionList = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await academyService.get(
+      `/subscription/list?page=1&limit=4&search`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};

@@ -5,7 +5,8 @@ import {
   enrollClass,
   getClassDetail,
   getPosttestScore,
-  getPretestScore
+  getPretestScore,
+  startPosttest
 } from '@/repository/academy.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -72,6 +73,17 @@ const Score: React.FC = () => {
       } else {
         void router.push(`/academy/course/${id as string}/learn`);
       }
+    }
+  };
+
+  const handleStartPosttest = async (): Promise<void> => {
+    try {
+      const response = await startPosttest(id as string);
+      if (response?.message === 'posttest started') {
+        await router.push(`/academy/course/${id as string}/posttest`);
+      }
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
     }
   };
 
@@ -150,9 +162,7 @@ const Score: React.FC = () => {
               {t('academy.score.OtherClass')}
             </button>
             <button
-              onClick={async () =>
-                await router.push(`/academy/course/${id as string}/posttest`)
-              }
+              onClick={handleStartPosttest}
               className="py-2 lg:w-[545px] w-[328px] border-2 border-[#3AC4A0] text-white font-semibold rounded-full transition duration-300 ease-in-out hover:border-[#5ED6BA] hover:shadow-lg"
             >
               {t('academy.score.ReTest')}

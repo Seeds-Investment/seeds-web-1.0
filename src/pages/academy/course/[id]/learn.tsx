@@ -41,9 +41,7 @@ const LearnCourse: React.FC = () => {
     try {
       if (data?.total_question !== undefined && data?.total_question > 0) {
         const response = await startPosttest(id as string);
-        if (response?.message === 'maximum posttest count already reached') {
-          toast(response?.message, { type: 'warning' });
-        } else {
+        if (response?.message === 'posttest started') {
           await router.push(`/academy/course/${id as string}/posttest`);
         }
       } else {

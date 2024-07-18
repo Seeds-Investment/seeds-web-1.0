@@ -89,11 +89,11 @@ const DetailCourse: React.FC = () => {
         data?.is_pre_test_done === false
       ) {
         const response = await startPretest(id as string);
-        if (response?.message === 'maximum pretest count already reached') {
-          toast(response?.message, { type: 'warning' });
-        } else {
+        if (response?.message === 'pretest started') {
           await router.push(`/academy/course/${id as string}/pretest`);
         }
+      } else {
+        toast('Questions not found!', { type: 'warning' });
       }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
@@ -182,9 +182,7 @@ const DetailCourse: React.FC = () => {
                 : 'bg-[#7555DA]'
             }  rounded-3xl w-full text-white font-bold`}
             onClick={handleStartPretest}
-            disabled={
-              data?.total_question === 0 || data?.is_pre_test_done === true
-            }
+            disabled={data?.total_question === 0 || data?.is_pre_test_done}
           >
             {t('academy.detailCourse.buttonPretest')}
           </button>

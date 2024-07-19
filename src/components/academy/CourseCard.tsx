@@ -46,7 +46,7 @@ const CourseCard: React.FC<{
             className="text-xs text-white bg-[#3AC4A0] py-1 px-4 rounded-full self-start"
           >
             {item?.is_owned
-              ? item?.is_post_test_done
+              ? item?.is_post_test_done === true
                 ? t('academy.courseButtonDetail')
                 : t('academy.courseButtonOpenClass')
               : item?.price === 0
@@ -63,7 +63,7 @@ const CourseCard: React.FC<{
             className="w-24 h-24"
           />
         </div>
-        {item?.is_owned && item?.is_post_test_done && (
+        {item?.is_owned && item?.is_post_test_done === true && (
           <div className="absolute top-0 right-0 bg-white rounded-bl-lg rounded-tr-2xl px-3 border-[1.5px] border-[#3AC4A0]">
             <Typography className="text-[10px] text-[#3AC4A0] font-semibold">
               {`${t('academy.courseScore')} : ${
@@ -72,7 +72,7 @@ const CourseCard: React.FC<{
             </Typography>
           </div>
         )}
-        {item?.is_owned && item?.is_post_test_done && (
+        {item?.is_owned && item?.is_post_test_done === true && (
           <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-full h-1">
             <div
               className="bg-[#3AC4A0] h-1 rounded-full"

@@ -51,20 +51,23 @@ const Academy: React.FC = () => {
       .catch(() => {});
   }, []);
 
+  const fetchCategoryList = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const res = await getAllCategory(categoryParams);
+      setCategoryList(res.data);
+      setMetaData(res.metadata);
+    } catch (error) {
+      toast(`ERROR fetch list quiz ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCategoryList = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        const res = await getAllCategory(categoryParams);
-        setCategoryList(res.data);
-        setMetaData(res.metadata);
-      } catch (error) {
-        toast(`ERROR fetch list quiz ${error as string}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    void fetchCategoryList();
+    if (categoryParams !== undefined) {
+      void fetchCategoryList();
+    }
   }, [categoryParams]);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>): void => {

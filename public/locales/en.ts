@@ -1003,6 +1003,7 @@ export default {
     apply: "Apply",
     noExpired: "No expired date",
     havePromo: "Have a promo code? Enter it here!",
+    notFound: 'Promo code not found. Make sure you entered a valid promo code.',
   },
   temporary: {
     welcome: {

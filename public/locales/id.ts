@@ -922,6 +922,7 @@ export default {
     apply: "Terapkan",
     noExpired: "Tidak ada tanggal kadaluarsa",
     havePromo: "Punya kode promo? Masukan disini!",
+    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
   },
   temporary: {
     welcome: {

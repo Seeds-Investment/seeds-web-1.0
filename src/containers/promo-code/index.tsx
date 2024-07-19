@@ -15,7 +15,7 @@ import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tourna
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIcon } from 'public/assets/vector';
+import { ArrowBackwardIcon, ErrorPromo } from 'public/assets/vector';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -121,6 +121,9 @@ const PromoCode: React.FC<PromoProps> = ({
   const [detailPost, setDetailPost] = useState<IDetailPost>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [promoCode, setPromoCode] = useState<string>('');
+  const [isManual, setIsManual] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
+  const [responseError, setResponseError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [addPromo, setAddPromo] = useState<string>('');
   const [activePromoCodes, setActivePromoCodes] = useState<IPromoCode[]>([]);
@@ -149,6 +152,14 @@ const PromoCode: React.FC<PromoProps> = ({
 
     setPromoCode(promoCodeValidationResult?.response?.promo_code)
   }, []);
+
+  useEffect(() => {
+    if (addPromo !== '') {
+      setIsManual(true)
+    } else {
+      setIsManual(false)
+    }
+  }, [addPromo]);
 
   useEffect(() => {
     if (spotType === 'Paid Tournament') {
@@ -254,21 +265,24 @@ const PromoCode: React.FC<PromoProps> = ({
           promo_code: promoCode,
           spot_type: spotType,
           item_price: detailQuiz?.admission_fee,
-          item_id: detailQuiz?.id
+          item_id: detailQuiz?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
         });
       } else if (spotType === 'Premium Circle') {
         response = await promoValidate({
           promo_code: promoCode,
           spot_type: spotType,
           item_price: dataCircle?.premium_fee,
-          item_id: dataCircle?.id
+          item_id: dataCircle?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
         });
       } else if (spotType === 'Premium Content') {
         response = await promoValidate({
           promo_code: promoCode,
           spot_type: spotType,
           item_price: detailPost?.premium_fee,
-          item_id: detailPost?.id
+          item_id: detailPost?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR'
         });
       }
 
@@ -288,7 +302,16 @@ const PromoCode: React.FC<PromoProps> = ({
         toast.error('Error Promo Code:', response.message);
       }
     } catch (error: any) {
-      toast.error(`${error.response.data.message as string}`);
+      if (isManual) {
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+          setAddPromo('')
+        }, 5000);
+        setResponseError(error.response.data.message as string)
+      } else {
+        toast.error(`${(error.response.data.message as string)}`);
+      }
       setPromoCode('');
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -372,6 +395,26 @@ const PromoCode: React.FC<PromoProps> = ({
           {t('promo.apply')}
         </button>
       </div>
+      {
+        showError &&
+          <div className='flex flex-row md:flex-row gap-2 md:gap-4 w-full md:w-[400px] justify-center items-start mt-4'>
+            <div className='w-[25px] h-[25px] flex justify-center items-center'>
+              <Image
+                src={ErrorPromo}
+                alt={'ErrorPromo'}
+                width={20}
+                height={20}
+              />
+            </div>
+            <div className='text-sm text-[#DD2525]'>
+              {
+                responseError === 'promo code invalid'
+                 ? t('promo.notFound')
+                 : responseError
+              }
+            </div>
+          </div>
+      }
 
       {!loading ? (
         activePromoCodes?.length !== 0 ? (

@@ -8,18 +8,21 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import VoucherInvalid from '../../../public/assets/vector/voucher-invalid.svg';
 import Voucher from '../../../public/assets/vector/voucher.svg';
 
 interface PromoProps {
   userInfo: UserInfo;
   id: string;
   spotType: string;
+  useCoins?: boolean;
 }
 
 const PromoCodeButton: React.FC<PromoProps> = ({
   userInfo,
   id,
-  spotType
+  spotType,
+  useCoins
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -54,19 +57,23 @@ const PromoCodeButton: React.FC<PromoProps> = ({
   return (
     <>
       <div
-        onClick={async() => await router.push(routeOptions(spotType, id))}
-        className='flex justify-start items-center border border-[#3AC4A0] rounded-lg bg-[#F0FFF4] py-2 px-4 gap-2 cursor-pointer hover:bg-[#d3ffdf] hover:shadow-md duration-300'
+        onClick={async () => {
+          if (!(useCoins ?? false)) {
+            await router.push(routeOptions(spotType, id));
+          }
+        }}
+        className={`${(useCoins ?? false) ? 'border-[#BDBDBD] bg-white' : 'border-[#3AC4A0] bg-[#F0FFF4] hover:bg-[#d3ffdf] cursor-pointer hover:shadow-md duration-300'} flex justify-start items-center border rounded-lg py-2 px-4 gap-2`}
       >
         <div className='w-[30px] h-[30px] flex justify-center items-center'>
           <Image
-            src={Voucher}
+            src={(useCoins ?? false) ? VoucherInvalid : Voucher}
             alt="Voucher"
             width={100}
             height={100}
             className="object-contain h-full w-full"
           />
         </div>
-        <Typography className='font-poppins text-[#27A590] flex justify-center items-center font-semibold'>
+        <Typography className={`${(useCoins ?? false) ? 'text-[#BDBDBD]' : 'text-[#27A590]' } font-poppins flex justify-center items-center font-semibold`}>
           Voucher & Promo
         </Typography>
       </div>

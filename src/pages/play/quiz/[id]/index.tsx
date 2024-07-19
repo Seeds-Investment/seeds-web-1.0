@@ -311,7 +311,7 @@ const QuizDetail = (): React.ReactElement => {
         <div className="w-full h-[300px] bg-white rounded-xl p-4">
           {
             ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'}/>
+              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
           }
           <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
@@ -364,6 +364,7 @@ const QuizDetail = (): React.ReactElement => {
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);
+                  dispatch(setPromoCodeValidationResult(0));
                 }}
               />
             </div>

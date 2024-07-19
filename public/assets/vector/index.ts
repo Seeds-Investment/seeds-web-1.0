@@ -24,6 +24,7 @@ export { default as Dot } from 'public/assets/vector/dot.svg';
 export { default as EarphoneIcon } from 'public/assets/vector/earphone-icon.svg';
 export { default as Ellipse } from 'public/assets/vector/ellipse.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
+export { default as ErrorPromo } from 'public/assets/vector/error-promocode.svg';
 export { default as Ethereum } from 'public/assets/vector/ethereum.svg';
 export { default as EventBookInfo } from 'public/assets/vector/event-booking-info.svg';
 export { default as EventCalendar } from 'public/assets/vector/event-calendar.svg';
@@ -71,6 +72,7 @@ export { default as TreeIcon } from 'public/assets/vector/tree-icon.svg';
 export { default as TripleDots } from 'public/assets/vector/triple-dots.svg';
 export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
+export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.svg';
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
 

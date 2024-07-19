@@ -491,7 +491,7 @@ const TournamentDetail: React.FC = () => {
         <div className="w-full h-[300px] bg-white rounded-xl p-4">
           {
             ((userInfo !== undefined) && ((detailTournament?.admission_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Tournament'}/>
+              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Tournament'} useCoins={useCoins}/>
           }
           {detailTournament?.is_need_invitation_code && (
             <div>

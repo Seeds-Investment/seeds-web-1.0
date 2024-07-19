@@ -182,7 +182,7 @@ const DetailCourse: React.FC = () => {
                 : 'bg-[#7555DA]'
             }  rounded-3xl w-full text-white font-bold`}
             onClick={handleStartPretest}
-            disabled={data?.total_question === 0 || data?.is_pre_test_done}
+            disabled={data?.total_question === 0}
           >
             {t('academy.detailCourse.buttonPretest')}
           </button>

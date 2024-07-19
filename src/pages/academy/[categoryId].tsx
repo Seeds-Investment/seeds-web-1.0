@@ -64,52 +64,52 @@ const CategoryById: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      if (categoryId !== undefined) {
-        try {
-          setLoading(true);
-          const categoryDetailRes = await getCategoryDetail(
-            categoryId as string
-          );
-          const initialLevel = categoryDetailRes.level[0];
-          const classList = await getClassListByCategoryId(
-            categoryId as string,
-            classParams
-          );
-          setCategoryDetail(categoryDetailRes);
-          setClassList(classList.data);
-          setMetaData(classList.metadata);
-          setClassLevelActiveTab(initialLevel);
-          setClassParams(params => ({ ...params, level: initialLevel }));
-        } catch (error) {
-          toast(`ERROR fetch data ${error as string}`);
-        } finally {
-          setLoading(false);
-        }
+  const fetchData = async (): Promise<void> => {
+    if (categoryId !== undefined) {
+      try {
+        setLoading(true);
+        const categoryDetailRes = await getCategoryDetail(categoryId as string);
+        const initialLevel = categoryDetailRes.level[0];
+        const classList = await getClassListByCategoryId(
+          categoryId as string,
+          classParams
+        );
+        setCategoryDetail(categoryDetailRes);
+        setClassList(classList.data);
+        setMetaData(classList.metadata);
+        setClassLevelActiveTab(initialLevel);
+        setClassParams(params => ({ ...params, level: initialLevel }));
+      } catch (error) {
+        toast(`ERROR fetch data ${error as string}`);
+      } finally {
+        setLoading(false);
       }
-    };
+    }
+  };
+
+  useEffect(() => {
     void fetchData();
   }, [categoryId]);
 
-  useEffect(() => {
-    const fetchClassList = async (): Promise<void> => {
-      if (categoryId !== undefined && classParams.level !== '') {
-        try {
-          setLoading(true);
-          const classList = await getClassListByCategoryId(
-            categoryId as string,
-            classParams
-          );
-          setClassList(classList.data);
-          setMetaData(classList.metadata);
-        } catch (error) {
-          toast(`ERROR fetch class list ${error as string}`);
-        } finally {
-          setLoading(false);
-        }
+  const fetchClassList = async (): Promise<void> => {
+    if (categoryId !== undefined && classParams.level !== '') {
+      try {
+        setLoading(true);
+        const classList = await getClassListByCategoryId(
+          categoryId as string,
+          classParams
+        );
+        setClassList(classList.data);
+        setMetaData(classList.metadata);
+      } catch (error) {
+        toast(`ERROR fetch class list ${error as string}`);
+      } finally {
+        setLoading(false);
       }
-    };
+    }
+  };
+
+  useEffect(() => {
     void fetchClassList();
   }, [categoryId, classParams]);
 

@@ -1,3 +1,4 @@
+import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,11 @@ import Johnny from '../../assets/landing-page/Johnny.jpg';
 import Willy from '../../assets/landing-page/Willy.jpg';
 import arvin from '../../assets/landing-page/arvin.jpg';
 import Syanne from '../../assets/landing-page/syanne.jpg';
+
+interface badges {
+  name: string;
+  desc: string;
+}
 export default function Section6(): React.ReactElement {
   const { t } = useTranslation();
 
@@ -55,8 +61,25 @@ export default function Section6(): React.ReactElement {
   const breakpointsSwiper = {
     320: { slidesPerView: 1 },
     480: { slidesPerView: 2 },
-    640: { slidesPerView: 3 }
+    640: { slidesPerView: 3 },
+    840: { slidesPerView: 4 }
   };
+
+  const BadgesBottom = ({ name, desc }: badges): any => {
+    return (
+      <div className="flex rounded-b-[25px] p-8 h-24 bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] py-3 px-2">
+        <div className="flex flex-col items-start justify-center text-start py-3 px-2">
+          <Typography className="font-poppins text-white font-bold">
+            {name}
+          </Typography>
+          <Typography className="font-poppins text-white font-bold">
+            {desc}
+          </Typography>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section
       ref={ref}
@@ -82,7 +105,7 @@ export default function Section6(): React.ReactElement {
           </div>
         </div>
 
-        <div className="lg:flex-col lg:justify-center lg:items-center md:px-[250px] mb-20 md:mt-16">
+        <div className="lg:flex-col lg:flex lg:justify-evenly lg:items-center mb-20 md:mt-16 max-w-full">
           <Swiper
             modules={[Autoplay, Pagination]}
             pagination={{ dynamicBullets: true }}
@@ -91,6 +114,8 @@ export default function Section6(): React.ReactElement {
             slidesPerView={3}
             spaceBetween={25}
             breakpoints={breakpointsSwiper}
+            className="max-w-[1000px]"
+            centeredSlides={true}
           >
             {persons?.length !== 0
               ? persons?.map((data, idx) => (
@@ -107,14 +132,7 @@ export default function Section6(): React.ReactElement {
                         className="w-[300px] h-[300px] lg:mx-8"
                       />
                     </div>
-                    <div className="text-left rounded-b-3xl p-3 h-[85px] bg-gradient-to-r from-[#9A76FE] flex flex-col justify-center to-[#4FE6AF]">
-                      <h1 className="font-poppins font-semibold text-[#FFFFFF]">
-                        {data.name}
-                      </h1>
-                      <h1 className="font-poppins font-normal text-[#FFFFFF]">
-                        {data.desc}
-                      </h1>
-                    </div>
+                    <BadgesBottom name={data.name} desc={data.desc} />
                   </SwiperSlide>
                 ))
               : null}

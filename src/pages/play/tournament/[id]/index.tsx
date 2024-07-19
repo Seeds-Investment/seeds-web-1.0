@@ -227,14 +227,9 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${
-                  userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'
-                }${standartCurrency(detailTournament?.fixed_prize ?? 0).replace(
-                  'Rp',
-                  ''
-                )}`}
+                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+                  detailTournament?.fixed_prize ?? 0
+                ).replace('Rp', '')}`}
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -344,9 +339,7 @@ const TournamentDetail: React.FC = () => {
                       )}
                     </td>
                     <td className="border p-3 w-full">
-                      {userInfo?.preferredCurrency !== undefined
-                        ? userInfo?.preferredCurrency
-                        : 'IDR'}
+                      {userInfo?.preferredCurrency ?? 'IDR'}
                       {standartCurrency(item).replace('Rp', '')}
                     </td>
                   </tr>
@@ -364,9 +357,7 @@ const TournamentDetail: React.FC = () => {
                       {`${index + 4}th`}
                     </td>
                     <td className="border p-3 w-full">
-                      {userInfo?.preferredCurrency !== undefined
-                        ? userInfo?.preferredCurrency
-                        : 'IDR'}
+                      {userInfo?.preferredCurrency ?? 'IDR'}
                       {standartCurrency(item).replace('Rp', '')}
                     </td>
                   </tr>
@@ -455,11 +446,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${
-                  userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'
-                }${standartCurrency(
+                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
@@ -537,9 +524,7 @@ const TournamentDetail: React.FC = () => {
             <Image alt="" src={IconWarning} className="w-[14px]" />
             <Typography className="text-[#3C49D6] text-[14px] font-poppins">
               {t('tournament.detailCurrency')}{' '}
-              {userInfo?.preferredCurrency !== undefined
-                ? userInfo?.preferredCurrency
-                : 'IDR'}
+              {userInfo?.preferredCurrency ?? 'IDR'}
             </Typography>
           </div>
         </div>

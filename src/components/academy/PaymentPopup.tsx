@@ -103,7 +103,7 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
                       currency: userInfo?.preferredCurrency ?? 'IDR',
                       style: 'currency'
                     })}{' '}
-                    / {item.duration_month} Month
+                    / {item.duration_month} {t('academy.payment.month')}
                   </div>
                 );
               })}

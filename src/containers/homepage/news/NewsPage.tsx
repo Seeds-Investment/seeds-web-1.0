@@ -125,18 +125,18 @@ export default function NewsPage(): React.ReactElement {
 
   const categoryItemClass = 'py-1 rounded-full text-center w-full text-md px-2';
 
-  const categories = [
-    'All',
-    'Business',
-    'Entertainment',
-    'Health',
-    'Politics',
-    'Science',
-    'Sports',
-    'Technology',
-    'Top',
-    'World'
-  ];
+  // const categories = [
+  //   'All',
+  //   'Business',
+  //   'Entertainment',
+  //   'Health',
+  //   'Politics',
+  //   'Science',
+  //   'Sports',
+  //   'Technology',
+  //   'Top',
+  //   'World'
+  // ];
 
   const defaultHotNewsImage = '/assets/default-news.png';
   function isImageUrlValid(url: string): boolean {

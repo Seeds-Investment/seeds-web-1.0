@@ -182,7 +182,6 @@ const CreateCirclePage = ({
     } else {
       setSelectedCategories(newCategories.slice(0, 5));
       setLimitReached(true);
-      return;
     }
   };
 

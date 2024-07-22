@@ -34,9 +34,10 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
+import FirstMedal from '../../../../assets/play/quiz/Medal-1.svg';
+import SecondMedal from '../../../../assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '../../../../assets/play/quiz/Medal-3.svg';
+import OtherMedal from '../../../../assets/play/quiz/Medal-4-10.svg';
 
 const TournamentDetail: React.FC = () => {
   const router = useRouter();
@@ -226,14 +227,9 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.fixed_prize === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${
-                  userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'
-                }${standartCurrency(detailTournament?.fixed_prize ?? 0).replace(
-                  'Rp',
-                  ''
-                )}`}
+                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
+                  detailTournament?.fixed_prize ?? 0
+                ).replace('Rp', '')}`}
           </Typography>
           <Image alt="" src={IconPrizes} className="w-[250px]" />
         </div>
@@ -316,7 +312,7 @@ const TournamentDetail: React.FC = () => {
                 {t('tournament.detailPrize')}
               </Typography>
               <table className="mt-2">
-                {detailTournament?.prize?.map((item, index) => (
+                {detailTournament?.prize?.slice(0, 3)?.map((item, index) => (
                   <tr key={index}>
                     <td className="inline-flex gap-2 border p-3 w-full">
                       <Image
@@ -343,9 +339,25 @@ const TournamentDetail: React.FC = () => {
                       )}
                     </td>
                     <td className="border p-3 w-full">
-                      {userInfo?.preferredCurrency !== undefined
-                        ? userInfo?.preferredCurrency
-                        : 'IDR'}
+                      {userInfo?.preferredCurrency ?? 'IDR'}
+                      {standartCurrency(item).replace('Rp', '')}
+                    </td>
+                  </tr>
+                ))}
+                {detailTournament?.prize?.slice(3, 10)?.map((item, index) => (
+                  <tr key={index}>
+                    <td className="inline-flex gap-2 border p-3 w-full">
+                      <Image
+                        src={OtherMedal}
+                        alt={`${index}-medal`}
+                        width={200}
+                        height={200}
+                        className="object-contain max-h-5 max-w-5"
+                      />
+                      {`${index + 4}th`}
+                    </td>
+                    <td className="border p-3 w-full">
+                      {userInfo?.preferredCurrency ?? 'IDR'}
                       {standartCurrency(item).replace('Rp', '')}
                     </td>
                   </tr>
@@ -434,11 +446,7 @@ const TournamentDetail: React.FC = () => {
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${
-                  userInfo?.preferredCurrency !== undefined
-                    ? userInfo?.preferredCurrency
-                    : 'IDR'
-                }${standartCurrency(
+                `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
@@ -516,9 +524,7 @@ const TournamentDetail: React.FC = () => {
             <Image alt="" src={IconWarning} className="w-[14px]" />
             <Typography className="text-[#3C49D6] text-[14px] font-poppins">
               {t('tournament.detailCurrency')}{' '}
-              {userInfo?.preferredCurrency !== undefined
-                ? userInfo?.preferredCurrency
-                : 'IDR'}
+              {userInfo?.preferredCurrency ?? 'IDR'}
             </Typography>
           </div>
         </div>

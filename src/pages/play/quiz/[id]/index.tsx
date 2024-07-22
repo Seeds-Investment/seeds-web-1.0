@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
+import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
+import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
@@ -24,10 +28,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
@@ -123,7 +124,7 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-  
+
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
@@ -154,7 +155,7 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
-  
+
   return (
     <>
       {isShareModal && (
@@ -246,16 +247,22 @@ const QuizDetail = (): React.ReactElement => {
                           ? FirstMedal
                           : i === 1
                           ? SecondMedal
-                          : ThirdMedal
+                          : i === 2
+                          ? ThirdMedal
+                          : SubsequentMedal
                       }
                       alt={`${i}-medal`}
                       width={200}
                       height={200}
                       className="object-contain max-h-5 max-w-5"
                     />
-                    {t(
-                      `quiz.${i === 0 ? 'first' : i === 1 ? 'second' : 'third'}`
-                    )}
+                    {i <= 2
+                      ? t(
+                          `quiz.${
+                            i === 0 ? 'first' : i === 1 ? 'second' : 'third'
+                          }`
+                        )
+                      : `${i + 1}th`}
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {

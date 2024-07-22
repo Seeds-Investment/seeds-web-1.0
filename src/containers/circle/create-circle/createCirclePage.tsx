@@ -123,7 +123,7 @@ const CreateCirclePage = ({
   };
 
   const fetchHashtags = async (): Promise<void> => {
-    //Get API for Hashtags
+    //  Get API for Hashtags
     try {
       getHashtag(initialFilterHashtags)
         .then(res => {
@@ -143,7 +143,7 @@ const CreateCirclePage = ({
   };
 
   const fetchCircleCategory = async (): Promise<void> => {
-    //Get API for Categories option
+    // Get API for Categories option
     try {
       getCircleCategories(initialFilterHashtags)
         .then(res => {
@@ -182,6 +182,7 @@ const CreateCirclePage = ({
     } else {
       setSelectedCategories(newCategories.slice(0, 5));
       setLimitReached(true);
+      return;
     }
   };
 

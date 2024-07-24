@@ -506,7 +506,9 @@ export const UseUploadMedia = async (media: any): Promise<any> => {
   formData.append('type', 'OTHER_URL');
 
   return await post(
-    `https://seeds-dev-gcp.seeds.finance/v1/storage/cloud`,
+    `${
+      process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+    }/v1/storage/cloud`,
     formData,
     {
       headers: {

@@ -62,7 +62,7 @@ export default function Section6(): React.ReactElement {
     320: { slidesPerView: 1 },
     480: { slidesPerView: 2 },
     640: { slidesPerView: 3 },
-    840: { slidesPerView: 4 }
+    840: { slidesPerView: 3 }
   };
 
   const BadgesBottom = ({ name, desc }: badges): any => {

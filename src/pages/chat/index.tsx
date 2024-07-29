@@ -1434,9 +1434,11 @@ const ChatPages: React.FC = () => {
       ) : (
         <div className="flex justify-start gap-4">
           <CCard
-            className={`flex flex-col border-none rounded-xl bg-white max-h-[90vh] ${
-              chatList?.length !== 0 || isChatActive ? 'w-1/3' : 'w-full'
-            }`}
+            className={`lg:flex flex-col border-none rounded-xl bg-white max-h-[90vh] ${
+              chatList?.length !== 0 || isChatActive
+                ? 'lg:w-1/3 w-full'
+                : 'w-full'
+            } ${isChatActive ? 'hidden' : 'flex'}`}
           >
             <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 justify-between py-5 px-4 border-b-2 border-[#E9E9E9]">
               <div className="flex items-center">
@@ -1599,7 +1601,11 @@ const ChatPages: React.FC = () => {
             </div>
           </CCard>
           {(chatList?.length !== 0 || isChatActive) && (
-            <CCard className="flex flex-col w-2/3 border-none rounded-xl bg-white">
+            <CCard
+              className={`lg:flex lg:flex-col border-none rounded-xl bg-white ${
+                isChatActive ? 'lg:w-2/3 w-full flex' : 'w-full hidden'
+              }`}
+            >
               {roomId !== undefined && isChatActive ? (
                 <>
                   {isSearchActive ? (

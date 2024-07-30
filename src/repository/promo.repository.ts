@@ -26,7 +26,8 @@ export const getPromocodeActive = async (
   page: number,
   limit: number,
   featureType?: string,
-  featureId?: string
+  featureId?: string,
+  totalTransaction?: number
 ): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -40,7 +41,8 @@ export const getPromocodeActive = async (
         page,
         limit,
         feature_type: featureType,
-        feature_id: featureId
+        feature_id: featureId,
+        total_transaction: totalTransaction
       },
       headers: {
         Accept: 'application/json',

@@ -132,6 +132,11 @@ const PromoCode: React.FC<PromoProps> = ({
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
+  const [tournamentFee, setTournamentFee] = useState<number>();
+  const [quizFee, setQuizFee] = useState<number>();
+  const [circleFee, setCircleFee] = useState<number>();
+  const [postFee, setPostFee] = useState<number>();
+
   const [metadata, setMetadata] = useState<Metadata>();
 
   const handleAddPromo = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -226,21 +231,58 @@ const PromoCode: React.FC<PromoProps> = ({
     const fetchDetails = async (): Promise<void> => {
       if (spotType === 'Paid Tournament' && typeof id === 'string') {
         await getDetailTournament();
-        await fetchPromoData(id);
+        setTournamentFee(detailTournament?.admission_fee);
       } else if (spotType === 'Paid Quiz' && typeof id === 'string') {
         await getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR');
-        await fetchPromoData(id);
+        setQuizFee(detailQuiz?.admission_fee);
       } else if (spotType === 'Premium Circle' && typeof circleId === 'string') {
         await fetchDetailCircle(circleId);
-        await fetchPromoData(circleId);
-      } else if (spotType === 'Premium Content' && typeof circleId === 'string') {
+        setCircleFee(dataCircle?.premium_fee);
+      } else if (spotType === 'Premium Content' && typeof id === 'string') {
         await fetchDetailPost();
-        await fetchPromoData(circleId);
+        setPostFee(detailPost?.premium_fee);
       }
     };
 
     void fetchDetails();
-  }, [id, circleId, promoParams]);
+
+  }, [id, circleId, spotType]);
+
+  useEffect(() => {
+    if (detailTournament?.admission_fee !== undefined) {
+      setTournamentFee(detailTournament.admission_fee);
+    }
+  }, [detailTournament]);
+
+  useEffect(() => {
+    if (detailQuiz?.admission_fee !== undefined) {
+      setQuizFee(detailQuiz.admission_fee);
+    }
+  }, [detailQuiz]);
+
+  useEffect(() => {
+    if (dataCircle?.premium_fee !== undefined) {
+      setCircleFee(dataCircle.premium_fee);
+    }
+  }, [dataCircle]);
+
+  useEffect(() => {
+    if (detailPost?.premium_fee !== undefined) {
+      setPostFee(detailPost.premium_fee);
+    }
+  }, [detailPost]);
+
+  useEffect(() => {
+    if (spotType === 'Paid Tournament' && tournamentFee !== undefined) {
+      void fetchPromoData(id as string, tournamentFee);
+    } else if (spotType === 'Paid Quiz' && quizFee !== undefined) {
+      void fetchPromoData(id as string, quizFee);
+    } else if (spotType === 'Premium Circle' && circleFee !== undefined) {
+      void fetchPromoData(circleId as string, circleFee);
+    } else if (spotType === 'Premium Content' && postFee !== undefined) {
+      void fetchPromoData(circleId as string, postFee);
+    }
+  }, [tournamentFee, quizFee, circleFee, postFee, promoParams]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -251,14 +293,15 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
-  const fetchPromoData = async (fetchId: string): Promise<void> => {
+  const fetchPromoData = async (fetchId: string, totalTransaction: number): Promise<void> => {
     try {
       setLoading(true);
       const activePromoCodesResponse = await getPromocodeActive(
         promoParams.page, 
         promoParams.limit, 
         spotType,
-        fetchId
+        fetchId,
+        totalTransaction
       );
       if (Array.isArray(activePromoCodesResponse?.data)) {
         if (activePromoCodesResponse?.data !== null) {

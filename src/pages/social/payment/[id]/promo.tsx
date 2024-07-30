@@ -1,4 +1,5 @@
 import PromoCode from "@/containers/promo-code";
+import withAuth from "@/helpers/withAuth";
 
 const PromoCodeContent: React.FC = () => {
   return (
@@ -8,4 +9,4 @@ const PromoCodeContent: React.FC = () => {
   );
 };
 
-export default PromoCodeContent;
+export default withAuth(PromoCodeContent);

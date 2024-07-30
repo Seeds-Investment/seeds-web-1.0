@@ -1,4 +1,5 @@
 import PromoCode from "@/containers/promo-code";
+import withAuth from "@/helpers/withAuth";
 
 const PromoCodeQuiz: React.FC = () => {
   return (
@@ -8,4 +9,4 @@ const PromoCodeQuiz: React.FC = () => {
   );
 };
 
-export default PromoCodeQuiz;
+export default withAuth(PromoCodeQuiz);

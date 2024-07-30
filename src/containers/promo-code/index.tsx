@@ -1,7 +1,6 @@
 import IconNoData from '@/assets/play/tournament/noData.svg';
 import Seedy from '@/assets/promo/seedy.svg';
 import SeedyBNW from '@/assets/promo/seedy_bnw.svg';
-import TournamentPagination from '@/components/TournmentPagination';
 import { standartCurrency } from '@/helpers/currency';
 import { getDetailCircle } from '@/repository/circleDetail.repository';
 import { getPlayById } from '@/repository/play.repository';
@@ -16,7 +15,7 @@ import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ArrowBackwardIcon, ErrorPromo } from 'public/assets/vector';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -37,8 +36,10 @@ interface IPromoCode {
   max_redeem: number;
   min_exp: number;
   min_transaction: number;
+  name_promo_code: string;
   promo_code: string;
   quantity: number;
+  promo_redeemed: number;
   ref_code: string;
   start_date: string;
   tnc: string;
@@ -131,19 +132,79 @@ const PromoCode: React.FC<PromoProps> = ({
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
+  const [metadata, setMetadata] = useState<Metadata>();
+
   const handleAddPromo = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setAddPromo(event.target.value);
   };
+
 
   const [promoParams, setPromoParams] = useState({
     page: 1,
     limit: 10
   });
-  const [metadata, setMetadata] = useState<Metadata>();
+
+  const scrollPositionRef = useRef(window.scrollY);
+  const [isIncrease, setIsIncrease] = useState(false);
+  const handleScroll = (): void => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (metadata !== undefined) {
+      if (scrollTop + clientHeight >= scrollHeight - 20 && !loading) {
+        if (((metadata?.currentPage ?? 0) !== (metadata?.totalPage ?? 0)) && ((metadata?.currentPage ?? 0) < (metadata?.totalPage ?? 0))) {
+          scrollPositionRef.current = window.scrollY;
+
+          if (!isIncrease) {
+            setIsIncrease(true);
+            if (promoParams?.page < metadata?.totalPage) {
+              setPromoParams(prevParams => ({
+                ...prevParams,
+                page: prevParams.page + 1
+              }));
+            }
+          }
+        }
+      }
+    }
+  };
+  
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (containerRef.current !== null) {
+      const { clientHeight } = containerRef.current;
+      const clientHeightDocument = document.documentElement.clientHeight;
+      
+      if (metadata !== undefined) {
+        if (activePromoCodes?.length < metadata.total) {
+          if ((((clientHeightDocument) > clientHeight) && metadata.total > metadata.limit) && (metadata?.currentPage <= metadata?.totalPage)) {
+            if (!isIncrease) {
+              setIsIncrease(true);
+              setPromoParams(prevParams => ({
+                ...prevParams,
+                page: prevParams.page + 1
+              }));
+            }
+          }
+        }
+      }
+    }
+  }, [activePromoCodes]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
   
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
+
+    useEffect(() => {
+    window.scrollTo(0, scrollPositionRef.current);
+  }, [activePromoCodes]);
 
   useEffect(() => {
     fetchData()
@@ -161,20 +222,25 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   }, [addPromo]);
 
-  useEffect(() => {
-    if (spotType === 'Paid Tournament') {
-      if (id !== null) {
-        void getDetailTournament();
+  useEffect((): void => {
+    const fetchDetails = async (): Promise<void> => {
+      if (spotType === 'Paid Tournament' && typeof id === 'string') {
+        await getDetailTournament();
+        await fetchPromoData(id);
+      } else if (spotType === 'Paid Quiz' && typeof id === 'string') {
+        await getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR');
+        await fetchPromoData(id);
+      } else if (spotType === 'Premium Circle' && typeof circleId === 'string') {
+        await fetchDetailCircle(circleId);
+        await fetchPromoData(circleId);
+      } else if (spotType === 'Premium Content' && typeof circleId === 'string') {
+        await fetchDetailPost();
+        await fetchPromoData(circleId);
       }
-    } else if (spotType === 'Paid Quiz') {
-      void getDetailQuiz(userInfo?.preferredCurrency ?? 'IDR')
-    } else if (spotType === 'Premium Circle') {
-      void fetchDetailCircle(circleId as string)
-    } else if (spotType === 'Premium Content') {
-      void fetchDetailPost()
-    }
-    void fetchPromoData();
-  }, [id, circleId, userInfo, promoParams]);
+    };
+
+    void fetchDetails();
+  }, [id, circleId, promoParams]);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -185,25 +251,33 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
-  const fetchPromoData = async (): Promise<void> => {
+  const fetchPromoData = async (fetchId: string): Promise<void> => {
     try {
-      setLoading(true)
+      setLoading(true);
       const activePromoCodesResponse = await getPromocodeActive(
         promoParams.page, 
         promoParams.limit, 
-        spotType, 
-        (
-          (spotType === 'Paid Quiz')
-          || (spotType === 'Paid Tournament') 
-            ? id as string : circleId as string
-        )
+        spotType,
+        fetchId
       );
-      setActivePromoCodes(activePromoCodesResponse?.data);
-      setMetadata(activePromoCodesResponse?.metadata)
+      if (Array.isArray(activePromoCodesResponse?.data)) {
+        if (activePromoCodesResponse?.data !== null) {
+          setActivePromoCodes(prevPromoCodes => [
+            ...prevPromoCodes, 
+            ...activePromoCodesResponse?.data
+          ]);
+        }
+      } else {
+        setMetadata(undefined);
+      }
+      setIsIncrease(false);
+      setMetadata(activePromoCodesResponse?.metadata);
     } catch (error) {
+      setIsIncrease(false);
       toast.error('Error fetching promo codes:');
     } finally {
-      setLoading(false)
+      setIsIncrease(false);
+      setLoading(false);
     }
   };
 
@@ -308,9 +382,18 @@ const PromoCode: React.FC<PromoProps> = ({
           setShowError(false);
           setAddPromo('')
         }, 5000);
-        setResponseError(error.response.data.message as string)
+        setResponseError(error?.response?.data?.message as string)
       } else {
-        toast.error(`${(error.response.data.message as string)}`);
+        const errorMessage = error?.response?.data?.message;
+        if (typeof errorMessage === 'string') {
+          if (errorMessage.includes('minimum transaction')) {
+            toast.error(t('promo.limitPurchaseMessage'));
+          } else if (errorMessage.includes('already exceeding today’s limit')) {
+            toast.error(t('promo.limitDailyMessage'));
+          }
+        } else {
+          toast.error(`${(error?.response?.data?.message as string)}`);
+        }
       }
       setPromoCode('');
       dispatch(setPromoCodeValidationResult(0));
@@ -358,7 +441,7 @@ const PromoCode: React.FC<PromoProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+    <div ref={containerRef} className="flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
       <div className='w-full relative'>
         <Typography className='mt-8 md:mt-0 font-poppins text-2xl lg:text-3xl text-center font-semibold'>
           Choose Voucher & Promo
@@ -417,151 +500,76 @@ const PromoCode: React.FC<PromoProps> = ({
       }
 
       {!loading ? (
-        activePromoCodes?.length !== 0 ? (
+        ((activePromoCodes?.length) !== 0) ? (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 xl:mt-8 font-poppins">
-            {activePromoCodes?.map((item, index) => (
-              <div
-                key={index}
-                onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
-                className={`
-                  ${item?.promo_code === promoCode
-                    ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
-                    : spotType === 'Paid Tournament'
-                      ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                        ? 'bg-white border-[#BDBDBD]'
-                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
-                      : spotType === 'Paid Quiz'
-                      ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                        ? 'bg-white border-[#BDBDBD]'
-                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
-                      : spotType === 'Premium Circle'
-                      ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                        ? 'bg-white border-[#BDBDBD]'
-                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
-                      : spotType === 'Premium Content'
-                      ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                        ? 'bg-white border-[#BDBDBD]'
-                        : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
-                      : ''}
-                  flex justify-start items-center rounded-xl relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300`
-                }
-              >
-                <div className='flex justify-center items-center'>
-                  <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
-                    <Image
-                      alt="Seedy"
-                      src={
-                        spotType === 'Paid Tournament'
-                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? SeedyBNW
-                          : Seedy
-                        : spotType === 'Paid Quiz'
-                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? SeedyBNW
-                          : Seedy
-                        : spotType === 'Premium Circle'
-                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? SeedyBNW
-                          : Seedy
-                        : spotType === 'Premium Content'
-                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? SeedyBNW
-                          : Seedy
-                        : ''
-                      }
-                      className="w-full h-full"
-                    />
-                  </div>
-                </div>
-                <div
-                  className={`
-                    ${item?.promo_code === promoCode
-                      ? 'bg-[#27A590]'
-                      : spotType === 'Paid Tournament'
-                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'bg-[#BDBDBD]'
-                          : 'bg-[#D89918]'
-                        : spotType === 'Paid Quiz'
-                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'bg-[#BDBDBD]'
-                          : 'bg-[#D89918]'
-                        : spotType === 'Premium Circle'
-                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'bg-[#BDBDBD]'
-                          : 'bg-[#D89918]'
-                        : spotType === 'Premium Content'
-                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'bg-[#BDBDBD]'
-                          : 'bg-[#D89918]'
-                        : ''
-                      } w-[20px] h-full absolute left-0
-                  `}
-                />
-                <div
-                  className={`
-                    ${item?.promo_code === promoCode
-                      ? 'border-[#27A590]'
-                      : spotType === 'Paid Tournament'
-                        ? ((detailTournament?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'border-[#BDBDBD]'
-                          : 'border-[#D89918]'
-                        : spotType === 'Paid Quiz'
-                        ? ((detailQuiz?.admission_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'border-[#BDBDBD]'
-                          : 'border-[#D89918]'
-                        : spotType === 'Premium Circle'
-                        ? ((dataCircle?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'border-[#BDBDBD]'
-                          : 'border-[#D89918]'
-                        : spotType === 'Premium Content'
-                        ? ((detailPost?.premium_fee ?? 0) < (item?.min_transaction ?? 0))
-                          ? 'border-[#BDBDBD]'
-                          : 'border-[#D89918]'
-                        : ''
-                      }
-                    flex flex-col justify-center p-4 w-full h-full border-l border-dashed`
-                  }
-                >
-                  <div className='font-semibold text-base md:text-xl'>
-                    {item?.promo_code}
-                  </div>
+            {activePromoCodes?.map((item, index) => {
+              const isPromoSelected = item?.promo_code === promoCode;
+              const isPaidTournament = spotType === 'Paid Tournament';
+              const isPaidQuiz = spotType === 'Paid Quiz';
+              const isPremiumCircle = spotType === 'Premium Circle';
+              const isPremiumContent = spotType === 'Premium Content';
+
+              const minTransaction = item?.min_transaction ?? 0;
+              const admissionFee = 
+                isPaidTournament ? detailTournament?.admission_fee ?? 0 :
+                isPaidQuiz ? detailQuiz?.admission_fee ?? 0 :
+                isPremiumCircle ? dataCircle?.premium_fee ?? 0 :
+                isPremiumContent ? detailPost?.premium_fee ?? 0 : 0;
+
+              const itemUnavailable = (admissionFee < minTransaction) || !(item?.is_eligible ?? false);
+              const bgColor = 
+                isPromoSelected 
+                  ? 'bg-gradient-to-r from-[#BDFFE5] to-white border-[#27A590]'
+                  : itemUnavailable
+                    ? 'bg-white border-[#BDBDBD]'
+                    : 'bg-gradient-to-r from-[#FDD059] to-white border-[#B57A12]'
+
+              const imgSrc = itemUnavailable ? SeedyBNW : Seedy;
+              const sideBarBgColor = isPromoSelected ? 'bg-[#27A590]' : (itemUnavailable ? 'bg-[#BDBDBD]' : 'bg-[#D89918]');
+              const borderColor = isPromoSelected ? 'border-[#27A590]' : (itemUnavailable ? 'border-[#BDBDBD]' : 'border-[#D89918]');
+
+              const showQuantityDiv = 
+                item?.QuantityRunsOutDate === "0001-01-01T00:00:00Z"
+                ? !!item?.is_eligible
+                : (!((((new Date().getTime()) - (new Date(item?.QuantityRunsOutDate).getTime())) > 259200000)))
+
+              return (
+                <>
                   {
-                    (item?.min_transaction > 0) ?
-                      <div className='text-sm text-black'>
-                        {t('promo.minimumPurchase')} {`${userInfo?.preferredCurrency ?? 'IDR'}`}{`${standartCurrency(item?.min_transaction ?? 0).replace('Rp', '')}`}
-                      </div>
-                      :
-                      <div className='text-sm text-black'>
-                        {t('promo.noMinimumPurchase')}
+                    showQuantityDiv &&
+                      <div
+                        key={index}
+                        onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
+                        className={`flex justify-start items-center rounded-xl relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`}
+                      >
+                        <div className='flex justify-center items-center'>
+                          <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
+                            <Image alt="Seedy" src={imgSrc} className="w-full h-full" />
+                          </div>
+                        </div>
+                        <div className={`w-[20px] h-full absolute left-0 ${sideBarBgColor}`} />
+                        <div className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}>
+                          <div className='font-semibold text-base md:text-xl'>{item?.name_promo_code}</div>
+                          <div className='text-sm text-black'>
+                            {item?.min_transaction > 0 ? `${t('promo.minimumPurchase')} ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(minTransaction).replace('Rp', '')}` : t('promo.noMinimumPurchase')}
+                          </div>
+                          <div className='text-[#7C7C7C] text-sm'>
+                            {item?.end_date !== '0001-01-01T00:00:00Z' ? getRemainingTime(item?.end_date) : t('promo.noExpired')}
+                          </div>
+                        </div>
+                        <div className={`${isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
+                          {item?.max_redeem === 0 ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div> : `${(item?.max_redeem ?? 0) - (item?.promo_redeemed ?? 0)}x`}
+                        </div>
                       </div>
                   }
-                  {
-                    (item?.end_date !== '0001-01-01T00:00:00Z') ?
-                      <div className='text-[#7C7C7C] text-sm'>
-                        {getRemainingTime(item?.end_date)}
-                      </div>
-                      :
-                      <div className='text-[#7C7C7C] text-sm'>
-                        {t('promo.noExpired')}
-                      </div>
-                  }
-                </div>
-                <div className={`${item?.promo_code === promoCode ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
-                  {
-                    (item?.initial_quantity ?? 0) === 0
-                      ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div>
-                      : `${item?.quantity}x`
-                  }
-                </div>
-              </div>
-            ))}
+                </>
+              );
+            })}
           </div>
         ) : (
           <div className="bg-white flex flex-col justify-center items-center text-center lg:px-0">
             <Image alt="" src={IconNoData} className="w-[250px]" />
-            <p className="font-semibold text-black">
-              {t('promo.emptyVoucher1')}
-            </p>
+            <p className="font-semibold text-black">{t('promo.emptyVoucher1')}</p>
             <p className="text-[#7C7C7C]">{t('promo.emptyVoucher2')}</p>
           </div>
         )
@@ -572,17 +580,6 @@ const PromoCode: React.FC<PromoProps> = ({
           </div>
         </div>
       )}
-
-      {/* Pagination */}
-      <div className="flex justify-center mx-auto my-4">
-        <TournamentPagination
-          currentPage={promoParams.page}
-          totalPages={metadata?.totalPage ?? 0}
-          onPageChange={page => {
-            setPromoParams({ ...promoParams, page });
-          }}
-        />
-      </div>
 
       <button
         disabled={(promoCode === '') || (promoCode === undefined)}

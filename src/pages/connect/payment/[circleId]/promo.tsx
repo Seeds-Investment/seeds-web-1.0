@@ -1,4 +1,5 @@
 import PromoCode from "@/containers/promo-code";
+import withAuth from "@/helpers/withAuth";
 
 const PromoCodeCircle: React.FC = () => {
   return (
@@ -8,4 +9,4 @@ const PromoCodeCircle: React.FC = () => {
   );
 };
 
-export default PromoCodeCircle;
+export default withAuth(PromoCodeCircle);

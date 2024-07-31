@@ -12,6 +12,7 @@ import {
   getEventList
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import socketEventService from '@/repository/socketEvent.repository';
 import LanguageContext from '@/store/language/language-context';
 import { type EventList } from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -63,6 +64,25 @@ const SeedsEvent: React.FC = () => {
     section: eventStatus,
     year: new Date().getFullYear()
   });
+
+  useEffect(() => {
+    if (id === null) {
+      return;
+    }
+
+    // socketEventService.addListener(`chat.personal.${roomId as string}`, () => {
+    socketEventService.addListener(`${id as string}`, () => {
+      // void fetchChat(false);
+      console.log('fetchChat jalan')
+    });
+
+    return () => {};
+  }, [userInfo]);
+
+  useEffect(() => {
+    socketEventService.connect(userInfo?.id as string);
+    return () => {};
+  }, [userInfo]);
 
   useEffect(() => {
     fetchData()

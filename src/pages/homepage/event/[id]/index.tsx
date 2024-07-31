@@ -11,6 +11,7 @@ import { getEventClock, getEventDate, getEventDetailsDate } from '@/helpers/date
 import withAuth from '@/helpers/withAuth';
 import { getEventById, getEventTicketById } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import socketEventService from '@/repository/socketEvent.repository';
 import LanguageContext from '@/store/language/language-context';
 import { type EventList, type TicketData } from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -71,6 +72,20 @@ const SeedsEventDetail: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    socketEventService.addListener(`user.${userInfo?.id as string}`, handleCheckInStatus);
+  }, []);
+
+  const handleCheckInStatus = ({
+    body
+  }: {
+    body: { status_online: boolean };
+  }): void => {
+    // setIsOnline(body.status_online);
+    // Set Checked IN
+    // Handle Navigate to page
+  };
   
   useEffect(() => {
     if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {

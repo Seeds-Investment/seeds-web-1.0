@@ -118,7 +118,8 @@ export const SlideCircle: React.FC = () => {
     320: { slidesPerView: 1, centeredSlides: true },
     480: { slidesPerView: 1, centeredSlides: true },
     640: { slidesPerView: 2, centeredSlides: true },
-    1024: { slidesPerView: 3 }
+    1024: { slidesPerView: 3, centeredSlides: true },
+    2380: { slidesPerView: 5, centeredSlides: true }
   };
 
   return (
@@ -156,9 +157,7 @@ export const SlideCircle: React.FC = () => {
                 >
                   <Card
                     shadow={false}
-                    className={`${
-                      activeSlide === index ? 'scale-[1]' : 'scale-[0.9]'
-                    } rounded-full lg:w-[466.9px] lg:h-[269px] w-full h-[169.31px] flex justify-center`}
+                    className={`rounded-full lg:w-96 lg:h-48 w-full h-[169.31px] flex justify-center`}
                     key={index}
                   >
                     <CardHeader
@@ -171,7 +170,11 @@ export const SlideCircle: React.FC = () => {
                         className={`${
                           activeSlide === index
                             ? ''
-                            : 'bg-white bg-opacity-50 absolute  h-full w-full'
+                            : 'bg-opacity-50 bg-white w-full h-full'
+                        }${
+                          activeSlide !== index
+                            ? 'bg-opacity-50 bg-white w-full h-full'
+                            : ''
                         }`}
                       >
                         {item.type !== 'free' ? (

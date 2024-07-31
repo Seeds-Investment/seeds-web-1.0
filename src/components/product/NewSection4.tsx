@@ -52,7 +52,7 @@ const NewSection4: React.FC = () => {
 
   return (
     <section ref={ref} className="relative md:bg-[#F9F9F9]">
-      <Image src={BlurTop} alt="BlurTop" className="absolute bottom-0" />
+      <Image src={BlurTop} alt="BlurTop" className="w-full absolute bottom-0" />
       <div
         className={`lg:pt-20 lg:pb-[59px] py-10 sm:mx-5 ${
           inView && isBottom >= measurement

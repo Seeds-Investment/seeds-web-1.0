@@ -104,9 +104,9 @@ export const SlideQuiz: React.FC = () => {
   const coverFlowEffectSwiper = {
     rotate: 0,
     slideShadows: false,
-    stretch: 25,
+    stretch: 0,
     modifier: 2.5,
-    depth: 300
+    depth: 150
   };
 
   /* -----Handle responsive breakpoint swiper----- */
@@ -128,7 +128,8 @@ export const SlideQuiz: React.FC = () => {
         coverflowEffect={coverFlowEffectSwiper}
         effect={'coverflow'}
         className={classNameSwiper}
-        autoplay={{ delay: 1000 }}
+        autoplay={{ delay: 2000 }}
+        speed={1500}
         modules={[EffectCoverflow, Autoplay]}
         autoFocus={true}
       >
@@ -146,27 +147,24 @@ export const SlideQuiz: React.FC = () => {
                 return durationDays;
               };
               return (
-                <SwiperSlide
-                  key={index}
-                  className="w-full lg:w-1/3 md:w-1/2 flex h-[180px]"
-                >
+                <SwiperSlide key={index} className="w-full lg:w-1/3 md:w-1/2">
                   <div className="flex w-full items-start gap-5 justify-center lg:w-full">
-                    <Card className="flex flex-col items-center lg:w-[440px] lg:h-[250px] rounded-t-[22.7px] w-[300px]">
+                    <Card className="flex flex-col items-center lg:w-[440px] lg:h-[260px] w-[400px] h-[250px]">
                       <CardHeader /* --------to store Banner image-------- */
                         floated={false}
                         shadow={false}
                         color="transparent"
-                        className="lg:w-auto lg:h-[154px]"
+                        className="m-0 w-full h-full object-cover rounded-none rounded-t-[18px]"
                       >
-                        <Image
+                        <img
                           src={item.banner.image_url}
                           alt={item.name}
-                          width={300}
-                          height={300}
+                          className="object-cover w-full h-full "
                         />
                       </CardHeader>
-                      <CardBody className="p-1 lg:w-full lg:h-[125px] w-full h-full bg-gradient-to-r from-[#106B6E] to-[#96F7C1]">
-                        {/* -------------to store the details of the quiz------------ */}
+                      <CardBody /* -------to store details of the quiz------- */
+                        className="p-1 lg:w-full lg:h-[125px] w-full h-[125px] bg-gradient-to-r from-[#106B6E] to-[#96F7C1]"
+                      >
                         <div className="p-2 flex flex-row  justify-between items-center">
                           <Typography className="text-white lg:text-xl text-[17px]">
                             {item.name}
@@ -182,10 +180,21 @@ export const SlideQuiz: React.FC = () => {
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                                 {`${t('quiz.entryFee')}`}
                               </Typography>
-                              <Typography className="text-[15px] lg:text-lg">
+                              <Typography
+                                className={`${item.admission_fee.toLocaleString(
+                                  'id-ID',
+                                  {
+                                    style: 'currency',
+                                    currency: 'IDR'
+                                  }
+                                )}text-[15px] lg:text-lg`}
+                              >
                                 {item.admission_fee === 0
                                   ? t('quiz.free')
-                                  : item.admission_fee}
+                                  : item.admission_fee.toLocaleString('id-ID', {
+                                      style: 'currency',
+                                      currency: 'IDR'
+                                    })}
                               </Typography>
                             </div>
                             <div className="flex flex-col items-start">

@@ -123,7 +123,7 @@ const CreateCirclePage = ({
   };
 
   const fetchHashtags = async (): Promise<void> => {
-    //Get API for Hashtags
+    //  Get API for Hashtags
     try {
       getHashtag(initialFilterHashtags)
         .then(res => {
@@ -143,7 +143,7 @@ const CreateCirclePage = ({
   };
 
   const fetchCircleCategory = async (): Promise<void> => {
-    //Get API for Categories option
+    // Get API for Categories option
     try {
       getCircleCategories(initialFilterHashtags)
         .then(res => {
@@ -174,7 +174,7 @@ const CreateCirclePage = ({
       setIsLoadingCircle(false);
     }
   };
-  const handleCategoryChange = (newCategories: any) => {
+  const handleCategoryChange = (newCategories: any): void => {
     // Handle Category option, set limit to just 5 options
     if (newCategories.length <= 5) {
       setSelectedCategories(newCategories);

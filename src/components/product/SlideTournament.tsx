@@ -1,8 +1,8 @@
 import admission from '@/assets/admission_tournament.svg';
 import duration from '@/assets/duration_tournament.svg';
 import GrayArrow from '@/assets/product/GrayArrow.svg';
+import share from '@/assets/product/ShareButtonTopTournament.svg';
 import WhiteArrow from '@/assets/product/WhiteArrow.svg';
-import share from '@/assets/share_tournament.svg';
 import user from '@/assets/usericon_toptournament.svg';
 import { getTrendingPlayList } from '@/repository/play.repository';
 import { type TopTournament } from '@/utils/interfaces/tournament.interface';
@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Typography
 } from '@material-tailwind/react';
@@ -24,6 +25,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 export const SlideTournament: React.FC = () => {
   const [tournament, setTournament] = useState<TopTournament[]>([]);
   const [buttonChange, setButtonChange] = useState(true);
+
   const router = useRouter();
 
   const HandlePrev: React.FC = () => {
@@ -77,6 +79,7 @@ export const SlideTournament: React.FC = () => {
       try {
         const tournamentResponse = await getTrendingPlayList();
         setTournament(tournamentResponse.data);
+        console.log(tournamentResponse);
       } catch (error: any) {
         toast.warning('error fetching data: ', error.message);
       }
@@ -87,24 +90,24 @@ export const SlideTournament: React.FC = () => {
   }, []);
 
   const classNameSwiper =
-    '!lg:w-full !lg:flex-col !lg:flex !flex !flex-col w-[1500px] lg:gap-3 gap-3 justify-center';
+    'md:w-full !flex !flex-col w-full md:gap-3 gap-3 justify-center items-center';
   const breakpointsSwiper = {
     320: { slidesPerView: 1, centeredSlides: true },
-    480: { slidesPerView: 1, centeredSlides: true },
-    640: { slidesPerView: 2, centeredSlides: true },
-    1024: { slidesPerView: 3, centeredSlides: true }
+    640: { slidesPerView: 3, centeredSlides: true },
+    1124: { slidesPerView: 3, centeredSLides: true },
+    2380: { slidesPerView: 5, centeredSlides: true }
   };
   const coverFlowEffectSwiper = {
     rotate: 0,
     modifier: 3,
-    depth: 50,
-    stretch: 20,
+    depth: 100,
+    stretch: 0,
     slideShadows: false
   };
 
   return (
-    <div className="lg:flex-col lg:flex lg:items-center lg:justify-center justify-center lg:w-full flex flex-col">
-      <div className="flex flex-col lg:flex-col gap-5 mt-[25px] lg:w-full w-full">
+    <div className="items-center justify-center w-full flex flex-col">
+      <div className="flex flex-col w-full">
         <Swiper
           centeredSlides={true}
           grabCursor={true}
@@ -113,17 +116,18 @@ export const SlideTournament: React.FC = () => {
           className={classNameSwiper}
           breakpoints={breakpointsSwiper}
           effect={'coverflow'}
+          spaceBetween={150}
           modules={[EffectCoverflow, Autoplay]}
-          spaceBetween={250}
           coverflowEffect={coverFlowEffectSwiper}
           loop={true}
           autoplay={{ delay: 1000 }}
           speed={1000}
+          onAutoplay={() => {}}
         >
           {tournament?.length !== 0
             ? tournament?.map((item: TopTournament, idx: any) => {
                 const formatDate = (isoDate: string): string => {
-                  return moment(isoDate).format('D MMM YYYY, HH:mm');
+                  return moment(isoDate).format('lll');
                 };
                 const formatPublishMonth = (isoDate: string): string => {
                   return moment(isoDate).format('MMM');
@@ -138,51 +142,62 @@ export const SlideTournament: React.FC = () => {
                   return `${Math.floor(Duration.asDays())} day`;
                 };
                 return (
-                  <SwiperSlide key={idx}>
-                    <div className="flex items-start gap-5 justify-center lg:w-full">
-                      <div className="flex flex-col text-center items-center gap-2">
+                  <SwiperSlide
+                    key={idx}
+                    className={`${
+                      idx !== idx.current
+                        ? ''
+                        : 'bg-opacity-50 bg-white w-full h-full'
+                    }`}
+                  >
+                    <div className="flex lg:gap-3 gap-1 justify-center w-full">
+                      <div className="md:flex md:flex-col items-center text-center">
                         <Typography>{`${formatPublishMonth(
                           item.publish_time
                         )}`}</Typography>
-                        <Typography className="text-[45px] font-bold font-sans">
+                        <Typography className="md:text-[45px] text-[30px] font-bold font-sans">
                           {`${formatPublishDay(item.publish_time)}`}
                         </Typography>
                       </div>
                       <Card
-                        className={`flex justify-center items-center lg:rounded-t-[13.37px] lg:rounded-b-none rounded-t-[13.37px] rounded-b-none lg:w-[420px] lg:p-3 w-[340px] gap-[13.37px] lg:h-[309px] h-[310px]`}
+                        className={`flex justify-center items-center lg:rounded-b-none rounded-b-none md:w-[420px] h-[250px] gap-[13.37px]`}
                       >
                         <CardHeader
                           floated={false}
                           shadow={false}
                           color="transparent"
-                          className="lg:w-full lg:p-0 lg:m-0 flex w-full h-full justify-center items-center p-0 m-0"
+                          className="m-0 p-0 flex justify-center h-full w-full items-center rounded-t-[13.37px] lg:rounded-t-[13.37px] rounded-b-none"
                         >
                           <Image
                             src={item.banner}
                             alt={item.name}
                             width={300}
                             height={300}
+                            className="w-full h-full"
                           />
                         </CardHeader>
-                        <CardBody className="flex flex-col m-0 p-0 gap-3 justify-center items-center">
-                          <div className="lg:flex lg:justify-end lg:w-full flex w-[300px] gap-16 p-0">
-                            <div className="flex w-full flex-col overflow-hidden">
-                              <Typography className="font-bold m-0 text-[#262626]">
+                        <CardBody className="flex h-24 px-2 flex-col md:gap-1.5 gap-0.5 justify-center items-center">
+                          <div className="flex flex-col w-full">
+                            <div className="flex justify-between w-full items-start">
+                              <Typography className="font-bold font-poppins text-[13.91px] text-[#262626]">
                                 {item.name}
+                                <Typography className="text-[#BDBDBD] text-[11.59px]">
+                                  {`${formatDate(
+                                    item.created_at.split('T')[0]
+                                  )}`}{' '}
+                                  -{' '}
+                                  {`${formatDate(item.end_time.split('T')[0])}`}
+                                </Typography>
                               </Typography>
-                              <Typography className="text-[#BDBDBD] w-full text-[11.59px]">
-                                {`${formatDate(item.created_at.split('T')[0])}`}{' '}
-                                - {`${formatDate(item.end_time.split('T')[0])}`}
-                              </Typography>
+                              <button className="capitalize w-[75px] h-[25px] rounded-[4.64px] bg-[#F7F7F7] text-[#553BB8]">
+                                {item.type.toLocaleLowerCase()}
+                              </button>
                             </div>
-                            <button className="capitalize w-[75px] h-[25px] rounded-[4.64px] bg-[#F7F7F7] text-[#553BB8]">
-                              {item.type.toLocaleLowerCase()}
-                            </button>
                           </div>
-                          <div className="lg:w-full w-[400px] flex justify-center">
-                            <div className="flex flex-col lg:w-[130px] w-[115px] border rounded-l-[15px] p-2 bg-[#F5F5F5]  items-center">
-                              <div className="flex justify-center gap-1">
-                                <Image src={duration} alt="duration" />
+                          <div className="rounded-[15px] bg-[#F5F5F5] border-none w-80 flex justify-center">
+                            <div className="flex flex-col w-full items-center justify-center">
+                              <div className="flex justify-center gap-2">
+                                <Image src={duration} alt={duration} />
                                 <Typography>duration</Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
@@ -193,9 +208,9 @@ export const SlideTournament: React.FC = () => {
                                 }`}
                               </Typography>
                             </div>
-                            <div className="flex lg:w-[100px] flex-col items-center border p-2 bg-[#F5F5F5]">
-                              <div className="flex justify-center gap-1">
-                                <Image src={user} alt="usericon" />
+                            <div className="w-full flex flex-col border-x-2 items-center justify-center">
+                              <div className="flex justify-center gap-2">
+                                <Image src={user} alt={user} />
                                 <Typography>joined</Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
@@ -204,25 +219,27 @@ export const SlideTournament: React.FC = () => {
                                   : `${item.participants?.length}`}
                               </Typography>
                             </div>
-                            <div className="flex lg:w-[130px] w-[115px] flex-col justify-start items-start border rounded-r-[15px] p-2 bg-[#F5F5F5]">
-                              <div className="flex gap-1">
-                                <Image src={admission} alt="admission_fee" />
+                            <div className="w-full flex flex-col justify-center items-start">
+                              <div className="flex gap-2">
+                                <Image src={admission} alt={admission} />
                                 <Typography>fee</Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
-                                {item.admission_fee.toLocaleString('id-ID', {
-                                  style: 'currency',
-                                  currency: item.currency
-                                })}
+                                {item.admission_fee === 0
+                                  ? 'free'
+                                  : item.admission_fee.toLocaleString('id-ID', {
+                                      style: 'currency',
+                                      currency: item.currency
+                                    })}
                               </Typography>
                             </div>
                           </div>
-                          <div className="flex justify-between gap-10 lg:w-full p-0">
-                            <div className="flex lg:gap-3 gap-2 items-center">
-                              <button className="border flex items-center justify-center rounded-[10px] w-[90px] h-[30px] p-2 bg-[#DCFCE4]">
-                                <Typography className="text-[#27A590]">
-                                  {item.category}
-                                </Typography>
+                        </CardBody>
+                        <CardFooter className="m-0 p-0 h-20">
+                          <div className="flex md:gap-10 gap-5 justify-center items-center w-full">
+                            <div className="flex w-full lg:gap-3 gap-2 items-center">
+                              <button className="border-none rounded-[10px] md:w-[75px] md:h-[25px] w-[75px] h-[25px] overflow-hidden bg-[#DCFCE4] text-[#27A590]">
+                                {item.category}
                               </button>
                               <div
                                 className="flex gap-2 items-center cursor-pointer"
@@ -245,18 +262,30 @@ export const SlideTournament: React.FC = () => {
                                       }
                                     );
                                   }}
-                                  className="border flex justify-center items-center p-2 rounded-full h-[30px] bg-[#DCFCE4]"
+                                  className="border-none flex items-center p-2 rounded-full w-6 h-5 bg-[#DCFCE4] "
                                 >
-                                  <Image src={share} alt="share_button" />
+                                  <Image src={share} alt={share} />
                                 </button>
-                                <Typography className="text-[#262626] text-[18px] capitalize">
+                                <Typography
+                                  className="text-[#262626] text-[16px] font-normal font-poppins capitalize"
+                                  onClick={() => {
+                                    toast.success(
+                                      `${item.name} succesful copied`,
+                                      {
+                                        position: 'top-center',
+                                        draggable: true,
+                                        autoClose: 2000
+                                      }
+                                    );
+                                  }}
+                                >
                                   share
                                 </Typography>
                               </div>
                             </div>
                             <Button
                               color="green"
-                              className="w-[110px] h-[35px] flex items-center justify-center border rounded-[30px] bg-[#3AC4A0]"
+                              className="w-[110px] md:h-[25px] h-[10px] flex items-center justify-center border-none rounded-[30px] bg-[#3AC4A0]"
                               onClick={async () => {
                                 await router.push(
                                   `${
@@ -269,7 +298,7 @@ export const SlideTournament: React.FC = () => {
                               open
                             </Button>
                           </div>
-                        </CardBody>
+                        </CardFooter>
                       </Card>
                     </div>
                   </SwiperSlide>

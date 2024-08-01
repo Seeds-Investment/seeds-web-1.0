@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'swiper/css';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper, type SwiperClass } from 'swiper/react';
 interface Item {
   banner: string;
   type?: string;
@@ -37,12 +37,18 @@ export const SlideCircle: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [circleData, setCircleData] = useState<Item[]>([]);
   const [isChange, setChange] = useState(true);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
+
+  const HandleSlideChange = (swiper: SwiperClass): any => {
+    setActiveIdx(swiper.realIndex);
+  };
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const circleResponse = await getTrendingCircle();
         setCircleData(circleResponse.result);
+        console.log(circleResponse);
       } catch (error: any) {
         toast.warning('Error fetching data:', error.message);
       }
@@ -112,13 +118,14 @@ export const SlideCircle: React.FC = () => {
     slideShadows: false,
     stretch: 0,
     modifier: 2.5,
-    depth: 100
+    depth: 150
   };
   const responsiveBreakpointsSwiper = {
     320: { slidesPerView: 1, centeredSlides: true },
     480: { slidesPerView: 1, centeredSlides: true },
     640: { slidesPerView: 2, centeredSlides: true },
-    1024: { slidesPerView: 3 }
+    1024: { slidesPerView: 3, centeredSlides: true },
+    2380: { slidesPerView: 5, centeredSlides: true }
   };
 
   return (
@@ -139,9 +146,10 @@ export const SlideCircle: React.FC = () => {
         autoplay={{ delay: 1000 }}
         speed={1000}
         centeredSlidesBounds={true}
+        onSlideChange={HandleSlideChange}
       >
         {circleData?.length !== 0
-          ? circleData?.map((item: Item, index: any) => {
+          ? circleData?.map((item: Item, index: number) => {
               const myStyle: MyStyle = {
                 '--image-url': `url(${
                   item.banner.split('.')[0] === 'https://seeds-bucket-new'
@@ -157,8 +165,10 @@ export const SlideCircle: React.FC = () => {
                   <Card
                     shadow={false}
                     className={`${
-                      activeSlide === index ? 'scale-[1]' : 'scale-[0.9]'
-                    } rounded-full lg:w-[466.9px] lg:h-[269px] w-full h-[169.31px] flex justify-center`}
+                      activeIdx !== index
+                        ? 'scale-[0.8] bg-opacity-50 '
+                        : 'scale-[2]'
+                    }rounded-full lg:w-96 lg:h-48 w-full h-[169.31px] flex justify-center`}
                     key={index}
                   >
                     <CardHeader
@@ -168,24 +178,28 @@ export const SlideCircle: React.FC = () => {
                       style={myStyle}
                     >
                       <div
-                        className={`${
-                          activeSlide === index
-                            ? ''
-                            : 'bg-white bg-opacity-50 absolute  h-full w-full'
-                        }`}
+                        className={`
+                          ${
+                            activeIdx !== index
+                              ? 'bg-white bg-opacity-50 w-full h-full'
+                              : ''
+                          }
+                        `}
                       >
                         {item.type !== 'free' ? (
-                          <div className="flex lg:w-[98.54px] lg:h-[29px] w-[46.66px] h-[13.76px] absolute top-0 right-0 lg:mr-[20.22px] lg:mt-[20.22px] mr-[9.56px] mt-[9.56px] bg-white rounded-full lg:gap-[5px] gap-[2.39px] items-center justify-center">
-                            <Image
-                              src={chrownCirclePremium.src}
-                              alt="crown"
-                              className="lg:w-[15.1px] lg:h-[15.1px] w-[7.17px] h-[7.17px]"
-                              width={300}
-                              height={300}
-                            />
-                            <Typography className="lg:text-[10.10px] lg:leading-[20.22px] text-[4.79px] leading-[9.56px] text-[#3AC4A0] font-semibold font-poppins">
-                              Premium
-                            </Typography>
+                          <div className="flex w-full h-20 pe-6 justify-end items-center">
+                            <div className="flex lg:w-[98.54px] lg:h-[29px] w-[46.66px] h-[13.76px] absolute overflow-hidden bg-white rounded-full lg:gap-[5px] gap-[2.39px] items-center justify-center border">
+                              <Image
+                                src={chrownCirclePremium.src}
+                                alt="crown"
+                                className="lg:w-[15.1px] lg:h-[15.1px] w-[7.17px] h-[7.17px]"
+                                width={300}
+                                height={300}
+                              />
+                              <Typography className="lg:text-[10.10px] lg:leading-[20.22px] text-[4.79px] leading-[9.56px] text-[#3AC4A0] font-semibold font-poppins">
+                                Premium
+                              </Typography>
+                            </div>
                           </div>
                         ) : null}
                       </div>

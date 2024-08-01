@@ -1,6 +1,6 @@
 import animationAppsSeedsWeb from '@/constants/animationAppsSeedsWeb.json';
 import { downloadOurApp } from '@/utils/_static';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import Lottie from 'lottie-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -51,7 +51,7 @@ export default function Section1(): React.ReactElement {
         <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[450px] w-[750px] h-[750px] left-[-18rem] top-[-15rem] rounded-full z-0"></div>
         <div className="hidden lg:block absolute bg-[#C5ACFF] blur-[150px] w-[350px] h-[350px] right-[-10rem] top-[14rem] rounded-full z-0"></div>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row ">
           <div className="lg:hidden  ">
             <div className="lg:flex lg:min-w-full lg:justify-center lg:h-auto flex justify-center w-min-full h-auto">
               <Lottie
@@ -60,56 +60,68 @@ export default function Section1(): React.ReactElement {
               />
             </div>
           </div>
-          <div className="lg:w-1/2 lg:text-left text-center z-10 relative">
-            <h1 className="font-poppins text-3xl lg:text-[48px] font-semibold xl:mb-3 md:mb-8">
-              {t('landingV2.section1.text1')}{' '}
-              <span className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:py-3">
-                {t('landingV2.section1.text2')}{' '}
-              </span>{' '}
-              {t('landingV2.section1.text3')} <br></br>
-              <p className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:py-3">
-                {t('landingV2.section1.text4')}
-              </p>{' '}
-            </h1>
-            <Swiper
-              direction={'vertical'}
-              grabCursor={true}
-              autoplay={{ delay: 1000 }}
-              modules={[Autoplay]}
-              speed={1500}
-              className="lg:w-full lg:flex lg:flex-col lg:h-20 flex flex-col h-[30px]"
-              loop={true}
-            >
-              {titles.length !== 0
-                ? titles.map((title, index) => {
-                    return (
-                      <SwiperSlide key={index}>
-                        <h1 className="font-poppins text-xl lg:w-full w-full lg:text-4xl mb-3 font-semibold text-[#3AC4A0] ">
-                          {title}
-                        </h1>
-                      </SwiperSlide>
-                    );
-                  })
-                : null}
-            </Swiper>
-            <Button
-              className="text-xs lg:absolute z-10 lg:mb-20 px-20 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
-              onClick={() => {
-                void router.push('/auth');
-              }}
-            >
-              {t('landingV2.section1.text6')}
-            </Button>
-            <div className="flex mt-5 lg:absolute lg:z-10 lg:mt-20 justify-around md:justify-start">
-              {downloadOurApp
-                .filter((_, i) => i <= 1)
-                .map((data, key) => (
-                  <div key={key} className="flex flex-col items-center md:mr-5">
-                    <Link key={key} href={data.url}>
-                      <Image alt="" src={data.icon} />
-                    </Link>
-                  </div>
-                ))}
+
+          <div className="lg:justify-start lg:items-start pt-10 flex lg:w-1/2 z-10 w-full justify-center items-center">
+            <div className="flex flex-col">
+              <div className="lg:text-start lg:justify-start text-center flex justify-center overflow-hidden">
+                <h1 className="font-poppins text-3xl lg:text-[48px] font-semibold xl:mb-3 md:mb-8">
+                  {t('landingV2.section1.text1')}{' '}
+                  <span className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:py-3">
+                    {t('landingV2.section1.text2')}{' '}
+                  </span>{' '}
+                  {t('landingV2.section1.text3')} <br></br>
+                  <p className="font-poppins text-3xl lg:text-[48px] font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#9A76FE] to-[#4FE6AF] mr-2 xl:py-3">
+                    {t('landingV2.section1.text4')}
+                  </p>{' '}
+                </h1>
+              </div>
+              <div className="flex flex-col gap-3 lg:items-start justify-end items-center max-w-full">
+                <Swiper
+                  direction={'vertical'}
+                  grabCursor={true}
+                  autoplay={{ delay: 1000 }}
+                  modules={[Autoplay]}
+                  speed={1500}
+                  className="lg:flex lg:w-[550px] overflow-hidden lg:text-start lg:h-[85px] h-7 text-center"
+                  loop={true}
+                >
+                  {titles.length !== 0
+                    ? titles.map((title, index) => {
+                        return (
+                          <SwiperSlide key={index} className="">
+                            <Typography className="font-poppins md:text-xl text-base lg:w-full w-full lg:text-4xl font-semibold text-[#3AC4A0] break-words whitespace-normal overflow-hidden">
+                              {title}
+                            </Typography>
+                          </SwiperSlide>
+                        );
+                      })
+                    : null}
+                </Swiper>
+                <Button
+                  className="text-xs w-1/2 z-10 font-semibold capitalize text-md bg-[#3AC4A0] rounded-full"
+                  onClick={() => {
+                    void router.push('/auth');
+                  }}
+                >
+                  <Typography className="w-full">
+                    {t('landingV2.section1.text6')}
+                  </Typography>
+                </Button>
+              </div>
+              <div className="flex py-5 lg:z-10 justify-around items-center lg:justify-start lg:items-start">
+                {downloadOurApp
+                  .filter((_, i) => i <= 1)
+                  .map((data, key) => (
+                    <div
+                      key={key}
+                      className="flex flex-col items-center md:mr-5"
+                    >
+                      <Link key={key} href={data.url}>
+                        <Image alt="" src={data.icon} />
+                      </Link>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
           <div className="hidden lg:block lg:w-1/2">

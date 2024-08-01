@@ -174,7 +174,7 @@ const CreateCirclePage = ({
       setIsLoadingCircle(false);
     }
   };
-  const handleCategoryChange = (newCategories: any) => {
+  const handleCategoryChange = (newCategories: any): void => {
     // Handle Category option, set limit to just 5 options
     if (newCategories.length <= 5) {
       setSelectedCategories(newCategories);

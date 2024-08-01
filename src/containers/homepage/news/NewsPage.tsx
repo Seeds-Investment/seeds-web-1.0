@@ -122,11 +122,7 @@ export default function NewsPage(): React.ReactElement {
 
     setActiveCategory(newCategory);
   };
-<<<<<<< HEAD
-
-=======
   
->>>>>>> 3faa352217fe1f727af6df57911a5317fff80648
   const defaultHotNewsImage = '/assets/default-news.png';
   function isImageUrlValid(url: string): boolean {
     return url?.startsWith('http://') || url?.startsWith('https://');

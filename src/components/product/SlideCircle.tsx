@@ -164,7 +164,11 @@ export const SlideCircle: React.FC = () => {
                 >
                   <Card
                     shadow={false}
-                    className={`rounded-full lg:w-96 lg:h-48 w-full h-[169.31px] flex justify-center`}
+                    className={`${
+                      activeIdx !== index
+                        ? 'scale-[0.8] bg-opacity-50 '
+                        : 'scale-[2]'
+                    }rounded-full lg:w-96 lg:h-48 w-full h-[169.31px] flex justify-center`}
                     key={index}
                   >
                     <CardHeader

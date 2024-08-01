@@ -13,6 +13,7 @@ export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
 }
+
 interface Article {
   id: string;
   title: string;

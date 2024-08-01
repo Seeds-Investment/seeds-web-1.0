@@ -40,7 +40,7 @@ export const SlideTournament: React.FC = () => {
           buttonChange
             ? 'bg-transparent '
             : 'bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF]'
-        } rounded-full h-9 w-9 border cursor-pointer flex justify-center items-center`}
+        } rounded-full h-9 w-9 cursor-pointer flex justify-center items-center`}
       >
         <Image
           src={buttonChange ? GrayArrow : WhiteArrow}
@@ -63,7 +63,7 @@ export const SlideTournament: React.FC = () => {
           buttonChange
             ? 'bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF]'
             : 'bg-transparent'
-        } rounded-full h-9 w-9 border cursor-pointer flex justify-center items-center`}
+        } rounded-full h-9 w-9 cursor-pointer flex justify-center items-center`}
       >
         <Image
           src={buttonChange ? WhiteArrow : GrayArrow}
@@ -122,7 +122,6 @@ export const SlideTournament: React.FC = () => {
           loop={true}
           autoplay={{ delay: 1000 }}
           speed={1000}
-          onAutoplay={() => {}}
         >
           {tournament?.length !== 0
             ? tournament?.map((item: TopTournament, idx: any) => {
@@ -142,14 +141,7 @@ export const SlideTournament: React.FC = () => {
                   return `${Math.floor(Duration.asDays())} day`;
                 };
                 return (
-                  <SwiperSlide
-                    key={idx}
-                    className={`${
-                      idx !== idx.current
-                        ? ''
-                        : 'bg-opacity-50 bg-white w-full h-full'
-                    }`}
-                  >
+                  <SwiperSlide key={idx}>
                     <div className="flex lg:gap-3 gap-1 justify-center w-full">
                       <div className="md:flex md:flex-col items-center text-center">
                         <Typography>{`${formatPublishMonth(
@@ -160,7 +152,7 @@ export const SlideTournament: React.FC = () => {
                         </Typography>
                       </div>
                       <Card
-                        className={`flex justify-center items-center lg:rounded-b-none rounded-b-none md:w-[420px] h-[250px] gap-[13.37px]`}
+                        className={`flex justify-center items-center lg:rounded-b-none rounded-b-none md:w-[420px] w-[335px] h-[250px] gap-[13.37px]`}
                       >
                         <CardHeader
                           floated={false}
@@ -305,7 +297,7 @@ export const SlideTournament: React.FC = () => {
                 );
               })
             : null}
-          <div className="flex gap-3 justify-center items-center w-full">
+          <div className="flex justify-center items-center w-full">
             <HandlePrev />
             <HandleNext />
           </div>

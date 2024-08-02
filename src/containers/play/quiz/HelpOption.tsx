@@ -3,6 +3,7 @@
 import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import VerifyCompanion from '@/components/quiz/verify-companion.component';
 import Modal from '@/components/ui/modal/Modal';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useSoundEffect from '@/hooks/useSoundEffects';
@@ -41,6 +42,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const invitationCode = router.query.invitationCode ?? '';
+
+  const [verifyCompanionVisibility, setVerifyCompanionVisibility] =
+    useState<boolean>(false);
 
   useEffect(() => {
     setRedeemCoin(router.query.useCoins === 'true');
@@ -217,6 +221,14 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     setShowLifelineDesc(true);
   }, []);
 
+  const continueHandler = useCallback(async () => {
+    if (lifelines.length < 3) {
+      setVerifyCompanionVisibility(true);
+    } else {
+      await submitHandler();
+    }
+  }, [lifelines]);
+
   return (
     <>
       <QuizLayoutComponent>
@@ -272,7 +284,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               title={t('quiz.continue')}
               background="#67EB00"
               darkBackground="#4EC307"
-              onClick={submitHandler}
+              onClick={continueHandler}
             />
           </div>
         </div>
@@ -383,7 +395,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           </div>
         </Modal>
       )}
-      {/* add modal here */}
+      {verifyCompanionVisibility && (
+        <VerifyCompanion setVisible={setVerifyCompanionVisibility} />
+      )}
     </>
   );
 };

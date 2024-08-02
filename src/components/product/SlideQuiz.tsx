@@ -166,7 +166,7 @@ export const SlideQuiz: React.FC = () => {
                         className="p-1 lg:w-full lg:h-[125px] w-full h-[125px] bg-gradient-to-r from-[#106B6E] to-[#96F7C1]"
                       >
                         <div className="p-2 flex flex-row  justify-between items-center">
-                          <Typography className="text-white lg:text-xl text-[17px]">
+                          <Typography className="text-white font-bold lg:text-xl text-[17px]">
                             {item.name}
                           </Typography>
                           <button>
@@ -180,15 +180,7 @@ export const SlideQuiz: React.FC = () => {
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                                 {`${t('quiz.entryFee')}`}
                               </Typography>
-                              <Typography
-                                className={`${item.admission_fee.toLocaleString(
-                                  'id-ID',
-                                  {
-                                    style: 'currency',
-                                    currency: 'IDR'
-                                  }
-                                )}text-[15px] lg:text-lg`}
-                              >
+                              <Typography className="font-bold text-[15px] lg:text-lg">
                                 {item.admission_fee === 0
                                   ? t('quiz.free')
                                   : item.admission_fee.toLocaleString('id-ID', {
@@ -201,7 +193,7 @@ export const SlideQuiz: React.FC = () => {
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                                 {`${t('quiz.duration')}`}
                               </Typography>
-                              <Typography className="text-[15px] lg:text-lg">
+                              <Typography className="text-[15px] lg:text-lg font-bold">
                                 {durationInDays(item.started_at, item.ended_at)}{' '}
                                 {`${t('tournament.tournamentCard.days')}`}
                               </Typography>
@@ -210,7 +202,7 @@ export const SlideQuiz: React.FC = () => {
                               <Typography className="text-[#E9E9E9] text-[15px] lg:text-lg">
                                 {`${t('quiz.players')}`}
                               </Typography>
-                              <Typography className=" text-[15px] lg:text-lg">
+                              <Typography className=" text-[15px] lg:text-lg font-bold">
                                 {item.participants}
                               </Typography>
                             </div>

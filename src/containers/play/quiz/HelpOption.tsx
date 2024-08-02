@@ -383,6 +383,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           </div>
         </Modal>
       )}
+      {/* add modal here */}
     </>
   );
 };

@@ -2,8 +2,9 @@
 
 import blackClose from '@/assets/blackClose.svg';
 import Modal from '@/components/ui/modal/Modal';
+import { type LifelinesEnum } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
-import { memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import QuizButton from './button.component';
 import MorePowerupButton from './more-powerup-button.component';
@@ -14,6 +15,25 @@ interface Props {
 
 const VerifyCompanion: React.FC<Props> = ({ setVisible }) => {
   const { t } = useTranslation();
+
+  const [selected, setSelected] = useState<number | LifelinesEnum | null>(null);
+  const [disableConfirmButton, setDisableConfirmButton] =
+    useState<boolean>(true);
+
+  const onSelectOpt = useCallback(
+    (val: number | LifelinesEnum) => {
+      if (val !== selected) {
+        setSelected(val);
+
+        // add condition here
+        setDisableConfirmButton(false);
+      } else {
+        setSelected(null);
+        setDisableConfirmButton(true);
+      }
+    },
+    [selected]
+  );
 
   return (
     <>
@@ -37,13 +57,35 @@ const VerifyCompanion: React.FC<Props> = ({ setVisible }) => {
         </div>
         {/* add conditional here */}
         <div className="mb-4">
-          <MorePowerupButton />
-          <MorePowerupButton />
-          <MorePowerupButton />
+          <MorePowerupButton
+            selected={selected}
+            value={1}
+            price="IDR 5,000"
+            onClick={() => {
+              onSelectOpt(1);
+            }}
+          />
+          <MorePowerupButton
+            selected={selected}
+            value={2}
+            price="IDR 5,000"
+            onClick={() => {
+              onSelectOpt(2);
+            }}
+          />
+          <MorePowerupButton
+            isPowerUpOpt={false}
+            value={0}
+            selected={selected}
+            text={'No more power up'}
+            onClick={() => {
+              onSelectOpt(0);
+            }}
+          />
         </div>
 
         <QuizButton
-          disabled={true}
+          disabled={disableConfirmButton}
           title={'Ok'}
           background="#67EB00"
           darkBackground="#4EC307"

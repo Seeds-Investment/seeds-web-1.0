@@ -1,71 +1,99 @@
-import { memo } from 'react';
+import { type LifelinesEnum } from '@/utils/interfaces/quiz.interfaces';
+import { memo, useMemo } from 'react';
 
-const MorePowerUpButton: React.FC = () => {
-  const darkBackgroundDisabled = '#BDBDBD';
-  const backgroundDisabled = '#E9E9E9';
+interface Props {
+  isPowerUpOpt?: boolean;
+  value?: number | LifelinesEnum;
+  text?: string | LifelinesEnum;
+  selected: number | LifelinesEnum | null;
+  onClick: () => void;
+  price?: string;
+}
+
+const MorePowerUpButton: React.FC<Props> = ({
+  isPowerUpOpt = true,
+  selected,
+  onClick,
+  value,
+  text
+}) => {
+  const colorBackground = useMemo(() => {
+    return {
+      disabled: {
+        background: '#BDBDBD',
+        innerBackground: '#E9E9E9'
+      },
+      enabled: {
+        background: '#9975FE',
+        innerBackground: '#B798FF'
+      }
+    };
+  }, []);
+
+  const isSelected = selected === value;
 
   return (
     <div
       className="rounded-xl mb-3 w-full h-[53px] cursor-pointer hover:opacity-80"
       style={{
-        backgroundColor: darkBackgroundDisabled
+        backgroundColor: isSelected
+          ? colorBackground.enabled.background
+          : colorBackground.disabled.background
       }}
+      onClick={onClick}
     >
       <div
-        className="rounded-xl mb-3 w-full h-[46px] flex justify-between items-center px-4"
+        className="rounded-xl mb-3 w-full h-[46px] flex justify-center items-center px-4"
         style={{
-          backgroundColor: backgroundDisabled
+          backgroundColor: isSelected
+            ? colorBackground.enabled.innerBackground
+            : colorBackground.disabled.innerBackground
         }}
       >
-        <div className="flex items-center gap-3">
-          <div
-            className="rounded-full h-7 w-7 flex justify-center items-center text-base text-white font-bold"
-            style={{
-              backgroundColor: '#7C7C7C'
-            }}
-          >
-            +1
-          </div>
-          <span
-            className="text-base text-white font-bold"
-            style={{ color: darkBackgroundDisabled }}
-          >
-            POWER UP
-          </span>
-        </div>
+        {isPowerUpOpt ? (
+          <div className="w-full flex justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className="rounded-full h-7 w-7 flex justify-center items-center text-base text-white font-bold"
+                style={{
+                  backgroundColor: isSelected ? '#7555DA' : '#7C7C7C'
+                }}
+              >
+                +{value}
+              </div>
+              <span
+                className="text-base text-white font-bold"
+                style={{
+                  color: isSelected
+                    ? 'white'
+                    : colorBackground.disabled.background
+                }}
+              >
+                POWER UP
+              </span>
+            </div>
 
-        {/* 
-        <View
-              style={[
-                Layout.round,
-                Layout.rowHCenter,
-                Gutters.regularHPadding,
-                {
-                  backgroundColor: isSelected
-                    ? Colors.sunOrange
-                    : darkBackgroundDisabled,
-                  borderColor: isSelected
-                    ? Colors.goldenYellow
-                    : Colors.neutral[400],
-                  borderWidth: 3,
-                  paddingVertical: 2,
-                },
-              ]}>
-              <Text color={Colors.white} size={'sm'}>
-                {price}
-              </Text>
-            </View>
-        */}
-        <div
-          className="rounded-full flex justify-center text-white py-1 px-3 text-sm"
-          style={{
-            backgroundColor: darkBackgroundDisabled,
-            border: '2px solid',
-            borderColor: '#7C7C7C'
-          }}
-        >
-          <span>IDR 5,000</span>
-        </div>
+            <div
+              className="rounded-full flex justify-center text-white py-1 px-3 text-sm"
+              style={{
+                backgroundColor: isSelected
+                  ? '#FFAC33'
+                  : colorBackground.disabled.background,
+                border: '2px solid',
+                borderColor: isSelected ? '#FFCC4D' : '#7C7C7C'
+              }}
+            >
+              <span>IDR 5,000</span>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="flex justify-center text-lg"
+            style={{ color: isSelected ? 'white' : 'black' }}
+          >
+            No other power up
+          </div>
+        )}
       </div>
     </div>
   );

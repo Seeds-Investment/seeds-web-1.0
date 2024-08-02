@@ -396,7 +396,10 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
         </Modal>
       )}
       {verifyCompanionVisibility && (
-        <VerifyCompanion setVisible={setVerifyCompanionVisibility} />
+        <VerifyCompanion
+          setVisible={setVerifyCompanionVisibility}
+          lifelines={lifelines}
+        />
       )}
     </>
   );

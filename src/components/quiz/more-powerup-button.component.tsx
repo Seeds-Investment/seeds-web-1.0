@@ -91,7 +91,7 @@ const MorePowerUpButton: React.FC<Props> = ({
             className="flex justify-center text-lg"
             style={{ color: isSelected ? 'white' : 'black' }}
           >
-            No other power up
+            {text}
           </div>
         )}
       </div>

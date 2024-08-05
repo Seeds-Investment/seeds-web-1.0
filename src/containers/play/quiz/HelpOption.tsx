@@ -233,11 +233,11 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     <>
       <QuizLayoutComponent>
         <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12 px-3 md:p-8">
-          <div>
-            <div className="text-3xl lg:text-4xl font-semibold">
+          <div className="lg:w-7/12">
+            <div className="text-3xl lg:text-4xl font-semibold text-yellow-500 mb-2">
               {t('quiz.quizCompanion')}
             </div>
-            <div className="text-base lg:text-lg">
+            <div className="text-base lg:text-lg drop-shadow-[0_1px_1px_#27A590]">
               {t('quiz.chooseOptions')}
             </div>
           </div>
@@ -274,9 +274,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
                 darkBackground="#7555DA"
               />
             </div>
-            <div className="text-sm lg:text-base mt-6">
+            {/* <div className="text-sm lg:text-base mt-6">
               {t('quiz.freeOptions')}
-            </div>
+            </div> */}
           </div>
           <div className="mt-24 w-full lg:w-1/3">
             <QuizButton

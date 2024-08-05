@@ -8,7 +8,8 @@ import {
   type LifelinesI
 } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import QuizButton from './button.component';
 import MorePowerupButton from './more-powerup-button.component';
 
@@ -36,11 +37,10 @@ const RenderRemainingLifelines: React.FC<ReminingLifeLineProps> = ({
   selected,
   onClick
 }) => {
-  const lifelineList: LifelinesEnum[] = [
-    LifelinesEnum['50_50'],
-    LifelinesEnum.PHONE,
-    LifelinesEnum.VOTE
-  ];
+  const lifelineList: LifelinesEnum[] = useMemo(
+    () => [LifelinesEnum['50_50'], LifelinesEnum.PHONE, LifelinesEnum.VOTE],
+    []
+  );
 
   const generateTitle = useCallback((val: LifelinesEnum) => {
     switch (val) {
@@ -80,7 +80,7 @@ const VerifyCompanion: React.FC<Props> = ({
   lifelinesPrice,
   onSubmit
 }) => {
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const [selected, setSelected] = useState<number | LifelinesEnum | null>(null);
   const [disableConfirmButton, setDisableConfirmButton] =
@@ -154,7 +154,7 @@ const VerifyCompanion: React.FC<Props> = ({
       >
         <div className="w-full flex justify-between items-center mb-5">
           <div className="w-4 h-4 md:w-5 md:h-5" />
-          <span className="text-xl font-semibold">Add more power up</span>
+          <span className="text-xl font-semibold">{t('quiz.addMore')}</span>
           <Image
             src={blackClose}
             alt="blackClose"
@@ -177,7 +177,7 @@ const VerifyCompanion: React.FC<Props> = ({
                   onSelectOpt(1);
                 }}
               />
-              {lifelines.length !== 2 ? (
+              {lifelines.length !== 2 && (
                 <MorePowerupButton
                   selected={selected}
                   value={2}
@@ -186,13 +186,13 @@ const VerifyCompanion: React.FC<Props> = ({
                     onSelectOpt(2);
                   }}
                 />
-              ) : null}
+              )}
 
               <MorePowerupButton
                 isPowerUpOpt={false}
                 value={0}
                 selected={selected}
-                text={'No more power up'}
+                text={`${t('quiz.noMore')}`}
                 onClick={() => {
                   onSelectOpt(0);
                 }}

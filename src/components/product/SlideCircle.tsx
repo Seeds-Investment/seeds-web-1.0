@@ -125,7 +125,7 @@ export const SlideCircle: React.FC = () => {
     480: { slidesPerView: 1, centeredSlides: true },
     640: { slidesPerView: 2, centeredSlides: true },
     1024: { slidesPerView: 3, centeredSlides: true },
-    2380: { slidesPerView: 5, centeredSlides: true }
+    2380: { slidesPerView: 3, centeredSlides: true }
   };
 
   return (
@@ -139,12 +139,12 @@ export const SlideCircle: React.FC = () => {
         effect={'coverflow'}
         parallax={true}
         coverflowEffect={coverFlowEffectSwiper}
-        spaceBetween={50}
         centeredSlides={true}
         autoFocus={true}
         breakpoints={responsiveBreakpointsSwiper}
         autoplay={{ delay: 1000 }}
         speed={1000}
+        spaceBetween={100}
         centeredSlidesBounds={true}
         onSlideChange={HandleSlideChange}
       >
@@ -166,8 +166,8 @@ export const SlideCircle: React.FC = () => {
                     shadow={false}
                     className={`${
                       activeIdx !== index
-                        ? 'scale-[0.8] bg-opacity-50 '
-                        : 'scale-[2]'
+                        ? 'scale-[0.9] bg-opacity-50'
+                        : 'scale-[1]'
                     }rounded-full lg:w-96 lg:h-48 w-full h-[169.31px] flex justify-center`}
                     key={index}
                   >

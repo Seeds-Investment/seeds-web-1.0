@@ -15,7 +15,8 @@ const MorePowerUpButton: React.FC<Props> = ({
   selected,
   onClick,
   value,
-  text
+  text,
+  price
 }) => {
   const colorBackground = useMemo(() => {
     return {
@@ -83,7 +84,7 @@ const MorePowerUpButton: React.FC<Props> = ({
                 borderColor: isSelected ? '#FFCC4D' : '#7C7C7C'
               }}
             >
-              <span>IDR 5,000</span>
+              <span>IDR {price}</span>
             </div>
           </div>
         ) : (

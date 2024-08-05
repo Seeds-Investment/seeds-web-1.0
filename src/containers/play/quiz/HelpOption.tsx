@@ -399,6 +399,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
         <VerifyCompanion
           setVisible={setVerifyCompanionVisibility}
           lifelines={lifelines}
+          setLifelines={setLifelines}
+          lifelinesPrice={detailQuiz?.lifelines}
+          onSubmit={submitHandler}
         />
       )}
     </>

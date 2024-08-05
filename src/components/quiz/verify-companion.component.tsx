@@ -2,10 +2,13 @@
 
 import blackClose from '@/assets/blackClose.svg';
 import Modal from '@/components/ui/modal/Modal';
-import { LifelinesEnum } from '@/utils/interfaces/quiz.interfaces';
+import { formatCurrency } from '@/utils/common/currency';
+import {
+  LifelinesEnum,
+  type LifelinesI
+} from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
-import { memo, useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { memo, useCallback, useEffect, useState } from 'react';
 import QuizButton from './button.component';
 import MorePowerupButton from './more-powerup-button.component';
 
@@ -23,6 +26,9 @@ interface ReminingLifeLineProps {
 interface Props {
   setVisible: (val: boolean) => void;
   lifelines: LifelinesEnum[];
+  setLifelines: (lifelines: any) => void;
+  lifelinesPrice?: LifelinesI[];
+  onSubmit: () => void;
 }
 
 const RenderRemainingLifelines: React.FC<ReminingLifeLineProps> = ({
@@ -67,8 +73,14 @@ const RenderRemainingLifelines: React.FC<ReminingLifeLineProps> = ({
   );
 };
 
-const VerifyCompanion: React.FC<Props> = ({ setVisible, lifelines }) => {
-  const { t } = useTranslation();
+const VerifyCompanion: React.FC<Props> = ({
+  setVisible,
+  lifelines,
+  setLifelines,
+  lifelinesPrice,
+  onSubmit
+}) => {
+  // const { t } = useTranslation();
 
   const [selected, setSelected] = useState<number | LifelinesEnum | null>(null);
   const [disableConfirmButton, setDisableConfirmButton] =
@@ -97,21 +109,40 @@ const VerifyCompanion: React.FC<Props> = ({ setVisible, lifelines }) => {
     setDisableConfirmButton(true);
   }, []);
 
+  const playQuiz = useCallback(() => {
+    setDisableConfirmButton(true);
+    onSubmit();
+  }, [onSubmit]);
+
+  const addAllLiflines = useCallback(() => {
+    setLifelines(_ => [
+      LifelinesEnum['50_50'],
+      LifelinesEnum.PHONE,
+      LifelinesEnum.VOTE
+    ]);
+  }, []);
+
   function onConfirm(): void {
     if (selected === 0) {
-      // playQuiz();
+      playQuiz();
     } else if (selected === 2) {
-      // addAllLiflines();
+      addAllLiflines();
     } else if (
       Object.values(LifelinesEnum).includes(selected as LifelinesEnum)
     ) {
-      // setIsLoading(true);
-      // setLifelines((item: LifelinesEnum) => [...item, selected]);
+      setLifelines((item: LifelinesEnum) => [...item, selected]);
     } else {
       setQuestionQueue(QuestionQueueEnum.second);
       setDisableConfirmButton(true);
     }
   }
+
+  // make sure to add all lifelines then run play submit handler
+  useEffect(() => {
+    if (lifelines.length > 1 && selected) {
+      playQuiz();
+    }
+  }, [lifelines]);
 
   return (
     <>
@@ -139,19 +170,24 @@ const VerifyCompanion: React.FC<Props> = ({ setVisible, lifelines }) => {
               <MorePowerupButton
                 selected={selected}
                 value={1}
-                price="IDR 5,000"
+                price={formatCurrency(
+                  lifelinesPrice?.[lifelines.length === 1 ? 1 : 2].price ?? 0
+                )}
                 onClick={() => {
                   onSelectOpt(1);
                 }}
               />
-              <MorePowerupButton
-                selected={selected}
-                value={2}
-                price="IDR 5,000"
-                onClick={() => {
-                  onSelectOpt(2);
-                }}
-              />
+              {lifelines.length !== 2 ? (
+                <MorePowerupButton
+                  selected={selected}
+                  value={2}
+                  price={formatCurrency(lifelinesPrice?.[2].price ?? 0)}
+                  onClick={() => {
+                    onSelectOpt(2);
+                  }}
+                />
+              ) : null}
+
               <MorePowerupButton
                 isPowerUpOpt={false}
                 value={0}

@@ -882,7 +882,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 ${
+                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -903,7 +903,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-2 bg-[#DD2525]`}
+                className={`mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}

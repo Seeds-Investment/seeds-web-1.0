@@ -348,7 +348,7 @@ const TournamentDetail: React.FC = () => {
             </table>
           </div>
           <div className="mt-4">
-            <Typography className="text-lg font-semibold font-poppins">
+            {/* <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.participants')}
             </Typography>
             <div className="flex gap-2">
@@ -362,7 +362,7 @@ const TournamentDetail: React.FC = () => {
                 {moment(detailTournament?.end_time).format('D MMM YYYY, h a')}{' '}
                 Jakarta
               </Typography>
-            </div>
+            </div> */}
             <div className="mt-4 flex flex-row gap-8">
               {detailTournament?.community?.image_url ? (
                 <div className="flex flex-col justify-center items-center gap-4">
@@ -379,7 +379,7 @@ const TournamentDetail: React.FC = () => {
                 </div>
               ) : null}
             </div>
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}
               </Typography>
@@ -419,7 +419,7 @@ const TournamentDetail: React.FC = () => {
                   </tr>
                 ))}
               </table>
-            </div>
+            </div> */}
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.participants')}

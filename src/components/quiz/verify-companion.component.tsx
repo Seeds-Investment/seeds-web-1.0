@@ -8,7 +8,15 @@ import {
   type LifelinesI
 } from '@/utils/interfaces/quiz.interfaces';
 import Image from 'next/image';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  type Dispatch,
+  memo,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import QuizButton from './button.component';
 import MorePowerupButton from './more-powerup-button.component';
@@ -27,7 +35,7 @@ interface ReminingLifeLineProps {
 interface Props {
   setVisible: (val: boolean) => void;
   lifelines: LifelinesEnum[];
-  setLifelines: (lifelines: any) => void;
+  setLifelines: Dispatch<SetStateAction<LifelinesEnum[]>>;
   lifelinesPrice?: LifelinesI[];
   onSubmit: () => void;
 }
@@ -115,7 +123,7 @@ const VerifyCompanion: React.FC<Props> = ({
   }, [onSubmit]);
 
   const addAllLiflines = useCallback(() => {
-    setLifelines(_ => [
+    setLifelines((_: SetStateAction<LifelinesEnum[]>) => [
       LifelinesEnum['50_50'],
       LifelinesEnum.PHONE,
       LifelinesEnum.VOTE
@@ -130,7 +138,10 @@ const VerifyCompanion: React.FC<Props> = ({
     } else if (
       Object.values(LifelinesEnum).includes(selected as LifelinesEnum)
     ) {
-      setLifelines((item: LifelinesEnum) => [...item, selected]);
+      setLifelines((item: SetStateAction<LifelinesEnum[]>) => [
+        ...item,
+        selected
+      ]);
     } else {
       setQuestionQueue(QuestionQueueEnum.second);
       setDisableConfirmButton(true);

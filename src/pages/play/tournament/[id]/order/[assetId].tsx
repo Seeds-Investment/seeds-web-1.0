@@ -623,6 +623,7 @@ const BuyPage: React.FC = () => {
                     onClick={() => {
                       if (parseFloat(lotSell) > 0) {
                         const newLotSell = parseFloat(lotSell) - 0.1;
+
                         setLotSell(newLotSell.toFixed(1));
                       }
                     }}
@@ -631,7 +632,7 @@ const BuyPage: React.FC = () => {
                   </Button>
                   <input
                     type="text"
-                    value={lotSell}
+                    value={parseFloat(lotSell).toFixed(1)}
                     className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
                     onChange={handleLotSellChange}
                   />
@@ -881,7 +882,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 ${
+                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -902,7 +903,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-2 bg-[#DD2525]`}
+                className={`mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}

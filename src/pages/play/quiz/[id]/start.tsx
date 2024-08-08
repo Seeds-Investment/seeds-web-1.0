@@ -6,6 +6,7 @@ import useSoundEffect from '@/hooks/useSoundEffects';
 import { startQuiz } from '@/repository/quiz.repository';
 import Lottie from 'lottie-react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import StartAnimation from '../../../../assets/play/quiz/Start.json';
 
@@ -13,6 +14,7 @@ const StartQuiz = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -30,10 +32,12 @@ const StartQuiz = () => {
   useSoundEffect(audioConfig);
 
   const handleContinue = async () => {
+    setLoading(true);
     const start = await startQuiz(id as string);
     if (start) {
       void router.replace(`/play/quiz/${id as string}/description`);
     }
+    setLoading(false);
   };
   return (
     <QuizLayoutComponent hideBackButton>
@@ -51,6 +55,7 @@ const StartQuiz = () => {
             background="#67EB00"
             darkBackground="#4EC307"
             onClick={handleContinue}
+            disabled={loading}
           />
         </div>
       </div>

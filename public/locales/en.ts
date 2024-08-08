@@ -1811,6 +1811,7 @@ export default {
     playAgain: 'Play Again',
     admissionFee: 'IDR {{amount}}',
     dayDuration: '{{duration}} days',
+    seedsCoin: 'Redeem {{data}} seeds coin',
     quizCategory: {
       all: 'All',
       allDesc:

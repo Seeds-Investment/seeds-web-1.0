@@ -1657,7 +1657,7 @@ export default {
   },
   quiz: {
     explanation: 'Penjelasan',
-    invitationCodePlaceholder: 'Input your invitation code',
+    invitationCodePlaceholder: 'Masukan kode undangan anda',
     enter: 'Enter',
     topQuiz: 'Top Quiz',
     topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
@@ -1682,8 +1682,8 @@ export default {
     second: '2nd',
     third: '3rd',
     sponsors: 'Sponsor(s)',
-    community: 'Community',
-    join: 'Join',
+    community: 'Komunitas',
+    join: 'Gabung',
     loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
@@ -1738,6 +1738,7 @@ export default {
     playAgain: 'Main Lagi',
     admissionFee: 'Rp {{amount}}',
     dayDuration: '{{duration}} hari',
+    seedsCoin: 'Tukarkan {{data}} seeds coin',
     quizCategory: {
       all: 'Semua',
       allDesc:

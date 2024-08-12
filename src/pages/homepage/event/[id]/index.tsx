@@ -86,6 +86,52 @@ const SeedsEventDetail: React.FC = () => {
     // Set Checked IN
     // Handle Navigate to page
   };
+
+  useEffect(() => {
+    if (id === null) {
+      return;
+    }
+
+    socketEventService.addListener(`${id as string}`, () => {
+      console.log('fetch checkIN jalan')
+    });
+
+    return () => {};
+  }, [userInfo]);
+
+  useEffect(() => {
+    socketEventService.connect(userInfo?.id as string);
+    return () => {};
+  }, [userInfo]);
+
+  // useEffect(() => {
+  //   if (id === null) {
+  //     return;
+  //   }
+
+  //   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  //   socketEventService.addListener(`check.in.${id}`, () => {
+  //     console.log('fetch checkIN jalan');
+  //   });
+
+  //   console.log('listener jalan');
+
+  //   return () => {
+  //     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  //     socketEventService.removeListener(`check.in.${id}`, () => {
+  //       console.log('Listener removed');
+  //     });
+  //   };
+  // }, [id]);
+
+  // useEffect(() => {
+  //   if (userInfo?.id) {
+  //     socketEventService.connect(userInfo.id);
+  //   }
+
+  //   return () => {
+  //   };
+  // }, [userInfo]);
   
   useEffect(() => {
     if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {

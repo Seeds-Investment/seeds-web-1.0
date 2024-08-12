@@ -11,6 +11,7 @@ class SocketService {
         query: { uuid: id }
       }
     );
+    console.log('connect chat: ', this.socket)
   }
 
   disconnect(id: string): void {

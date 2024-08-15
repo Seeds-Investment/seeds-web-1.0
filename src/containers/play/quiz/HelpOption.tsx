@@ -3,6 +3,7 @@
 import QuizButton from '@/components/quiz/button.component';
 import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
+import VerifyCompanion from '@/components/quiz/verify-companion.component';
 import Modal from '@/components/ui/modal/Modal';
 import TrackerEvent from '@/helpers/GTM';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
@@ -43,6 +44,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userInfo, setUserInfo] = useState();
   const invitationCode = router.query.invitationCode ?? '';
+
+  const [verifyCompanionVisibility, setVerifyCompanionVisibility] =
+    useState<boolean>(false);
 
   useEffect(() => {
     setRedeemCoin(router.query.useCoins === 'true');
@@ -232,15 +236,23 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     setShowLifelineDesc(true);
   }, []);
 
+  const continueHandler = useCallback(async () => {
+    if (lifelines.length < 3) {
+      setVerifyCompanionVisibility(true);
+    } else {
+      await submitHandler();
+    }
+  }, [lifelines]);
+
   return (
     <>
       <QuizLayoutComponent>
         <div className="w-full h-full flex flex-col justify-center items-center font-poppins text-white text-center gap-12 px-3 md:p-8">
-          <div>
-            <div className="text-3xl lg:text-4xl font-semibold">
+          <div className="lg:w-7/12">
+            <div className="text-3xl lg:text-4xl font-semibold text-yellow-500 mb-2">
               {t('quiz.quizCompanion')}
             </div>
-            <div className="text-base lg:text-lg">
+            <div className="text-base lg:text-lg drop-shadow-[0_1px_1px_#27A590]">
               {t('quiz.chooseOptions')}
             </div>
           </div>
@@ -277,9 +289,9 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
                 darkBackground="#7555DA"
               />
             </div>
-            <div className="text-sm lg:text-base mt-6">
+            {/* <div className="text-sm lg:text-base mt-6">
               {t('quiz.freeOptions')}
-            </div>
+            </div> */}
           </div>
           <div className="mt-24 w-full lg:w-1/3">
             <QuizButton
@@ -287,7 +299,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
               title={t('quiz.continue')}
               background="#67EB00"
               darkBackground="#4EC307"
-              onClick={submitHandler}
+              onClick={continueHandler}
             />
           </div>
         </div>
@@ -397,6 +409,15 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
             </div>
           </div>
         </Modal>
+      )}
+      {verifyCompanionVisibility && (
+        <VerifyCompanion
+          setVisible={setVerifyCompanionVisibility}
+          lifelines={lifelines}
+          setLifelines={setLifelines}
+          lifelinesPrice={detailQuiz?.lifelines}
+          onSubmit={submitHandler}
+        />
       )}
     </>
   );

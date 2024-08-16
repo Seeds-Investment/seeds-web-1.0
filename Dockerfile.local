@@ -27,8 +27,8 @@ LABEL author="asb"
 WORKDIR /app
 
 # if you use npm, comment `COPY yarn.lock ./`, uncomment `COPY package-lock.json ./`
-# COPY yarn.lock ./
-COPY package-lock.json ./
+COPY yarn.lock ./
+# COPY package-lock.json ./
 COPY node_modules ./node_modules
 COPY public ./public
 COPY next.config.js ./

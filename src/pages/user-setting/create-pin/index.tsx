@@ -17,24 +17,14 @@ import {
 } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
 
-const customGradient = (
-  <>
-    <span className="z-0 fixed bottom-10 -left-10 w-60 h-48 bg-seeds-green blur-[90px] rotate-45" />
-    <span className="z-0 fixed bottom-0 left-0 w-24 h-24 bg-seeds-green blur-[90px]" />
-    <span className="z-0 fixed -bottom-28 left-16 w-48 h-32 bg-seeds-purple-2 blur-[90px] rotate-45" />
-    <span className="z-0 fixed top-64 -right-4 w-60 h-48 bg-seeds-green blur-[90px] rotate-45 rounded-full" />
-    <span className="z-0 fixed bottom-36 right-0 w-32 h-32 bg-seeds-purple-2 blur-[90px] rotate-90 rounded-full" />
-  </>
-);
-
 interface FormCheckPassword {
   phoneNumber: string;
   password: string;
 }
 
 interface FormCreatePin {
-  pin: any;
-  old_pin: '';
+  new_pin: any;
+  password: '';
 }
 
 const initialFormCheckPassword = {
@@ -52,10 +42,11 @@ const CreatePin = (): JSX.Element => {
     initialFormCheckPassword
   );
   const [formCreatePin, setFormCreatePin] = useState<FormCreatePin>({
-    pin: [],
-    old_pin: ''
+    new_pin: [],
+    password: ''
   });
   const [errorPassword, setErrorPassword] = useState<string>('');
+  const [errorPin, setErrorPin] = useState<string>('');
   const [step, setStep] = useState<string>('password');
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -71,19 +62,24 @@ const CreatePin = (): JSX.Element => {
       ...prevState,
       password: value
     }));
+
+    setFormCreatePin(prevState => ({
+      ...prevState,
+      password: value
+    }));
   };
 
   const handleAddPin = (value: string): void => {
     setFormCreatePin(prevState => ({
       ...prevState,
-      pin: [...prevState.pin, value]
+      new_pin: [...prevState.new_pin, value]
     }));
   };
 
   const handleRemovePin = (): void => {
     setFormCreatePin(prevState => ({
       ...prevState,
-      pin: prevState.pin.slice(0, formCreatePin.pin.length - 1)
+      new_pin: prevState.new_pin.slice(0, formCreatePin.new_pin.length - 1)
     }));
   };
 
@@ -130,18 +126,20 @@ const CreatePin = (): JSX.Element => {
 
   const SubmitCreatePin = async (): Promise<void> => {
     try {
-      formCreatePin.pin = formCreatePin.pin.join('');
+      formCreatePin.new_pin = formCreatePin.new_pin.join('');
 
       createPin(formCreatePin)
         .then(res => {
           if (res.status === 401) {
             setErrorPassword('Wrong Password');
           } else {
+            setErrorPin('');
             setIsSuccess(true);
           }
         })
         .catch(err => {
           console.log(err);
+          setErrorPin(err.response.data.message);
         });
     } catch (error: any) {
       console.error('Error submit pin:', error.message);
@@ -153,18 +151,15 @@ const CreatePin = (): JSX.Element => {
       .then()
       .catch(() => {});
 
-    if (formCreatePin.pin.length === 6) {
+    if (formCreatePin.new_pin.length === 6) {
       void SubmitCreatePin();
     }
-  }, [formCreatePin.pin]);
+  }, [formCreatePin.new_pin]);
 
   return (
     <>
       {step === 'password' ? (
-        <PageGradient
-          customGradient={customGradient}
-          className="z-0 relative overflow-hidden flex flex-col items-center"
-        >
+        <PageGradient defaultGradient className="w-full">
           <button
             onClick={cancelHandler}
             className="sm:hidden mr-auto ml-6 mb-2 pr-4 rounded-md hover:bg-gray-200 active:bg-gray-300 focus:outline-0 focus:bg-gray-200 transition-colors duration-300"
@@ -265,6 +260,7 @@ const CreatePin = (): JSX.Element => {
           deletePinHandler={handleRemovePin}
           title="Create Your Pin"
           subtitle="Please enter your PIN number correctly"
+          error={errorPin}
         />
       ) : null}
 

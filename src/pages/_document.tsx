@@ -1,9 +1,11 @@
+import SeedsPixel from '@/components/TiktokPixel/SeedsPixel';
 import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document(): React.ReactElement {
   return (
     <Html lang="en">
       <Head>
+        <SeedsPixel />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -11,6 +13,10 @@ export default function Document(): React.ReactElement {
           rel="stylesheet"
         ></link>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          name="google-site-verification"
+          content="K5f6uNahkVFJ_uojt9wTyfpwCG00fXK1nVCEs1movuc"
+        />
         <title>Seeds</title>
       </Head>
       <body>

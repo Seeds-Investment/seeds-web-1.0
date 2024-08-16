@@ -46,7 +46,7 @@ export const Dot: AssetsInterface = {
 };
 
 export const Share: AssetsInterface = {
-  src: '/assets/images/share.png',
+  src: '/assets/images/share.svg',
   alt: 'share'
 };
 
@@ -223,6 +223,16 @@ export const CircleLineBoldSmall: AssetsInterface = {
 export const CircleDot: AssetsInterface = {
   src: '/assets/circle/circleDot.svg',
   alt: 'chrown'
+};
+
+export const CircleBold: AssetsInterface = {
+  src: '/assets/tournament/circleBold.svg',
+  alt: 'circle'
+};
+
+export const CircleSmall: AssetsInterface = {
+  src: '/assets/tournament/circleSmall.svg',
+  alt: 'circle'
 };
 
 const Icons: Record<string, AssetsInterface> = {

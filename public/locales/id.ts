@@ -1,6 +1,23 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  header: { join: 'Yuk! Gabung' },
   // greeting: 'Hello, {{name}}',
+  footer: {
+    description:
+      'Situs ini tidak berisi rekomendasi untuk berinvestasi. Seeds tidak menawarkan konsultasi keuangan untuk kamu. Jika kamu masih ragu untuk  berinvestasi, mulailah berkomunikasi dengan konsultan keuangan. Tetap waspada sebelum mulai berinvetasi!',
+    download: 'Unduh Aplikasi Kami',
+    regist: 'Terdaftar di',
+    company: { title: 'Perusahaan', list1: 'Tentang Kami', list2: 'Karir' },
+
+    support: { title: 'Dukungan' },
+    legal: {
+      title: 'Hukum',
+      list1: 'Syarat & Ketentuan',
+      list2: 'Kebijakan Privasi',
+      list3: 'Panduan Sosial'
+    },
+    contactUs: { title: 'Hubungi Kami' }
+  },
   landing: {
     section1: {
       text1: '#MainbarengSeeds',
@@ -8,13 +25,13 @@ export default {
     },
     section2: {
       text1a: 'Bersama',
-      text1b: '',
+      text1b: 'Dengan',
       text1c: 'Seeds',
       text2:
         'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
       text3a: 'Play',
       text3b:
-        'Tanding jual beli saham bersama temanmu. Belajar apapun tentang jual beli saham, kripto, dan komoditas tanpa takut resiko! ',
+        'Bertransaksi secara online bersama teman menggunakan uang virtual tanpa risiko dan uji pengetahuan finansial kamu dengan kuis-kuis menarik kami',
       text3c: 'Learn',
       text3d:
         'Belajar apa pun tentang dunia Finansial bersama Seeds. Bareng teman dan banyak profesional lainnya.',
@@ -47,10 +64,10 @@ export default {
         'Temukan berita yang sedang tren dan dapatkan ilmu tentang finansial dan investasi terbaru.'
     },
     section6: {
-      text1: 'Komunitas',
-      text2: 'Kita',
-      text3:
-        'Kami berkomitmen untuk meningkatkan literasi finansial para Gen-Z dan millennials di Asia Tenggara.'
+      text1: 'Investasi, bersama',
+      text2:
+        'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice. If you are unsure about investing we encourage you to speak to a financial advisor. Your capital is at risk.',
+      text3: 'Unduh App Kami'
     }
   },
   second: 'detik',
@@ -156,7 +173,8 @@ export default {
     editImage: 'Ubah Foto',
     linkedAccount: 'Akun Tertaut',
     changePin: 'Ganti PIN',
-    telephoneNumber: 'Nomor Telepon'
+    telephoneNumber: 'Nomor Telepon',
+    email: 'Email'
   },
   input: {
     label: {
@@ -187,10 +205,10 @@ export default {
       optional: '(tidak wajib)'
     },
     poll: {
-      optionPlaceholder: '{{index}}. Enter an option',
-      endDateLabel: 'Set ending date',
+      optionPlaceholder: '{{index}}. Masukkan opsi',
+      endDateLabel: 'Tentukan tanggal akhir',
       multivoteLabel: 'Multivote',
-      allowNewOptionLabel: 'Allow new options'
+      allowNewOptionLabel: 'Izinkan opsi baru'
     }
   },
   button: {
@@ -204,6 +222,7 @@ export default {
       confirm: 'Konfirmasi',
       tryAgain: 'Coba Lagi',
       next: 'Lanjut',
+      save: 'Simpan',
       done: 'Selesai',
       deleteAccount: 'Hapus Akun'
     }
@@ -276,6 +295,23 @@ export default {
           'Seeds akan melakukan yang terbaik untuk membantu Anda memastikan bahwa informasi yang Anda terima akurat, lengkap, dan diperbarui. Kami akan menyimpan data pribadi Anda untuk jangka waktu yang diperlukan untuk memenuhi berbagai tujuan yang ditetapkan dalam Kebijakan Privasi ini kecuali waktu penyimpanan diizinkan atau diwajibkan lebih lama oleh undang-undang. Anda dapat membantu memastikan bahwa informasi kontak dan referensi Anda akurat, lengkap, dan terus diperbarui dengan masuk ke aplikasi Seeds. Untuk informasi pribadi lainnya, kami melakukan upaya itikad baik untuk memberikan akses kepada Anda sehingga Anda dapat meminta kami untuk memperbaiki data jika aplikasi Seeds tidak harus disimpan oleh hukum atau untuk tujuan bisnis yang sah. Kami dapat menolak untuk memproses permintaan irasional yang dibuat berulang kali, membutuhkan upaya teknis yang berlebihan, mengancam privasi orang lain, itu sama sekali tidak praktis atau jika akses tidak diwajibkan oleh hukum setempat. Permintaan akses, koreksi atau penghapusan dapat dilakukan melalui aplikasi Seeds.',
           'Untuk membantu Seeds meningkatkan layanan dan produk kami memberikan pengalaman khusus bagi pengguna di situs mereka menggunakan “cookies”. Cookie adalah file teks kecil yang disimpan di komputer/smartphone Anda yang memberi kami informasi tentang penggunaan situs Anda secara online untuk membantu kami menyesuaikan pengalaman pengguna Anda dan menjadikan situs kami lebih ramah pengguna.',
           'Kami telah menerapkan teknologi dan kebijakan yang konsisten dengan aturan yang berlaku di Indonesia dengan tujuan melindungi privasi Anda dari akses yang tidak sah dan penggunaan yang tidak benar dan kami akan memperbarui langkah-langkah ini seiring perkembangan teknologi baru sesuai kebutuhan.'
+        ]
+      }
+    },
+    refundPolicy: {
+      title: 'Kebijakan Pengembalian Dana',
+      lastUpdated: 'Terakhir Perbarui: ',
+      date: '26 April 2022',
+      overview: {
+        title: [
+          'Kebijakan Pengembalian Dana',
+          'Kebijakan Umum',
+          'Prosedur Pengembalian Dana'
+        ],
+        desc: [
+          'Refund Policy atau Kebijakan Pengembalian dana adalah Ketentuan dan/atau mekanisme pengembalian dana milik user oleh Seeds yang diakibatkan karena alasan alasan yang disebutkan dalam Syarat dan Ketentuan ini.\t',
+          'Kebijakan Pengembalian dana ini berlaku terhadap fitur-fitur yang disediakan oleh Pihak Seeds. Kebijakan ini merupakan langkah dan metode tentang prosedur pengembalian dana yang dilakukan oleh SEEDS terhadap Pengguna\t Kejadian yang dapat dikategorikan sebagai Pengembalian Dana :\n a. Saat terjadi kendala pada aplikasi yang diakibatkan oleh Pihak SEEDS\n b. Dalam hal Fitur Play Arena dibatalkan secara sepihak oleh SEEDS karena tidak memenuhi persyaratan\n c. Pengembalian dana tidak berlaku terhadap Pengguna yang telah :\n i. membayar tiket dalam aplikasi SEEDS dan karena kelalaiannya ingin mengajukan pengembalian dana\n ii.menetapkan harga premium circle dan ingin mengajukan pengembalian dana atas kelalaian pengguna menetapkan harga fitur premium circle.\t',
+          "Pengembalian dana berlaku terhadap fitur berbayar dalam aplikasi SEEDS termasuk namun tidak terbatas pada:\n a. Premium Circle\n b. Play Arena\n c. Play Quiz\t Pengguna yang hendak mengajukan pengembalian dana wajib untuk mengirimkan 'Permohonan Pengembalian Dana' melalui email info@seeds.finance\t Permohonan Pengembalian dana mencakup :\n a.Nama Lengkap Pengguna\n b. Nomor Telepon\n c. Nama Akun Pengguna\n d. Alamat Email\n e. Nominal Permohonan Pengembalian Dana\n f. Bukti dan alasan pengembalian dana\t Pihak SEEDS akan melakukan verifikasi terhadap bukti permohonan dan bukti pembayaran yang diajukan oleh user yang mengalami gagal bayar selama 3 hari kerja.\t Setelah dilakukan verifikasi oleh Pihak SEEDS dan permohonan tersebut dapat dibuktikan kebenarannya, Pihak SEEDS akan melakukan pengembalian dana dengan cara transfer baik melalui lembaga perbankan atau melalui lembaga non bank (E-Money dan/atau e-wallet) berdasarkan nilai nominal dari hasil verifikasi oleh SEEDS.\t Jika terbukti permohonan pengembalian dana bukan merupakan permohonan yang otentik dari hasil verifikasi oleh SEEDS, Permohonan akan ditolak dan SEEDS berhak untuk tidak merespon permohonan pengembalian dana.\t SEEDS berhak untuk mengambil langkah hukum yang diperlukan terhadap permohonan pengembalian dana yang tidak otentik oleh pengguna."
         ]
       }
     }
@@ -401,6 +437,7 @@ export default {
       }
     },
     circleMembership: {
+      reply: 'Balas...',
       title: 'KETENTUAN PEMILIK CIRCLE ',
       announcement:
         'Syarat dan Ketentuan ini (“Ketentuan”) berlaku pada tanggal dimana anda mengeklik tombol “Terima Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini (“Tanggal Efektif”) antara PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and entity yang menyetujui ketentuan-ketentuan ini (“Pemilik Circle ”).',
@@ -527,15 +564,122 @@ export default {
     keepMeLoggedIn: 'Biarkan saya tetap masuk',
     forgotPassword: 'Lupa Kata Sandi'
   },
+  authCarousel: {
+    title: {
+      1: 'Selamat Datang di Seeds',
+      2: 'Jelajahi',
+      3: 'Yuk! Mainkan',
+      4: 'Perluas Koneksi'
+    },
+    subtitle: {
+      1: 'Mulai investasi dengan teman dan lihat benih kamu berkembang!',
+      2: 'Pelajari hal-hal tentang investasi dan financial dari ahlinya!',
+      3: 'Ikuti turnamen yang menantang dan menangkan hadiah uang tunainya!',
+      4: 'Temui  individu  dengan passion yang sama dalam dunia finansial'
+    }
+  },
+  authBoarding: {
+    guest: 'Masuk sebagai Tamu',
+    term: 'Dengan mengklik daftar, Kamu menyetujui',
+    term2: 'Syarat dan Ketentuan di Seeds',
+    login: 'Masuk atau Daftar'
+  },
+  authLogin: {
+    title1: 'Yuk, Masukan!',
+    title2: 'Nomor telepon & kata sandi',
+    title3: 'Nomor telepon',
+    title4: 'Nama & nomor telepon',
+    phone: 'Nomor Telepon',
+    name: 'Nama',
+    namePlaceholder: 'Tolong, masukan nama anda',
+    password: 'Kata Sandi',
+    createPassword: 'Buat Kata Sandi',
+    passwordPlaceholder: 'Yuk, masukan kata sandi kamu',
+    forgotPass: 'Lupa kata sandi?',
+    login: 'Masuk',
+    validation: {
+      login: 'Nomor telepon atau kata sandimu salah',
+      blank: 'Kamu harus mengisi kolom ini',
+      number: 'Oops, nomormu sudah dipakai nih',
+      password:
+        'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+    },
+    next: 'Selanjutnya',
+    SSO: 'Akunmu sudah terdaftar',
+    unSSO: 'Akun belum terdaftar'
+  },
+  authRegister: {
+    authOTP: {
+      title1: 'Yuk, Masukan Kode OTP',
+      title2: 'Kode-nya kami kirim ke ',
+      title3: '',
+      resend: 'Kirim ulang kode OTP',
+      otherMethod1: 'Belum dapet kodenya? ',
+      otherMethod3: 'Coba',
+      otherMethod4: ' lewat',
+      validation: 'Yah, OTPmu salah, yuk coba lagi'
+    },
+    authPersonalData: {
+      title: 'Data Diri Kamu',
+      name: 'Nama Kamu',
+      namePlaceholder: 'Tuliskan nama kamu',
+      dob: 'Tanggal Lahir',
+      day: 'HH',
+      month: 'BB',
+      year: 'TTTT',
+      validation: {
+        seedsTag: 'SeedsTag sudah dipakai, nih',
+        regex: 'SeedsTag tidak boleh berisi spasi atau simbol, harap dihapus!',
+        dob: 'Kamu harus berusia minimal 12 tahun'
+      }
+    },
+    authRef: {
+      title1: 'Masukan Kode Referralnya',
+      title2: 'Dan dapetin hadiah menarik',
+      referral: 'Kode Referral',
+      referralPlaceholder: 'Masukan kode referralnya',
+      skip: 'Lewati',
+      confirm: 'Konfirmasi',
+      validation: 'Kode referralmu nggak valid, nih'
+    }
+  },
+  authForgotPass: {
+    title1: 'Masukkan Nomor Telepon',
+    title2: 'Untuk dapat kode OTP',
+    title3: 'Buat Kata Sandi Baru',
+    title4: 'Yuk, buat kata sandi yang aman',
+    validation: {
+      number: 'Ups, nomor telepon kamu tidak terdaftar',
+      password:
+        'Ups, kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+      match: 'Ups, kata sandi tidak cocok'
+    },
+    newPassword: {
+      label: 'Buat Kata Sandi Baru',
+      placeholder: 'Tolong buat kata sandimu'
+    },
+    matchPassword: {
+      label: 'Konfirmasi Kata Sandi Baru',
+      placeholder: 'Tolong konfirmasi kata sandimu'
+    },
+    information:
+      'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.',
+    modal: {
+      title1: 'Yeay, sukses',
+      title2: 'Password barumu sudah dibuat',
+      title3: 'Tolong cek emailmu'
+    }
+  },
   validation: {
     phoneNumberEmpty:
       'Nomor telepon diperlukan, silakan masukkan nomor telepon Anda!',
     wrongPhoneNumber:
       'Nomor telepon yang Anda masukkan salah. Silakan coba lagi',
     passwordEmpty: 'Kata sandi diperlukan, silakan masukkan kata sandi Anda!',
-    wrongPassword: 'Kata sandi salah'
+    wrongPassword: 'Kata sandi salah',
+    invalid: 'Nomor Telepon atau password salah'
   },
-  or: 'atau',
+  or: 'Atau',
   registerPage: {
     title: {
       personalInfo: 'Daftar',
@@ -575,7 +719,96 @@ export default {
     removeButton: 'Hapus',
     cancelButton: 'Batal'
   },
+
   setting: {
+    setting: {
+      title: 'Pengaturan',
+      accountInfo: {
+        title: 'Informasi Akun',
+        name: 'Nama',
+        edit: 'Ubah Gambar',
+        DoB: 'Tanggal Lahir'
+      },
+      accountSecure: {
+        title: 'Pusat Keamanan Akun',
+        titleCard1: 'Pengaturan Keamanan',
+        label1Card1: 'Nomor Telepon',
+        blank1Card1: 'tambah nomor teleponmu',
+        label2Card1: 'Kata Sandi',
+        blank2Card1: 'Buat kata sandi baru',
+        label3Card1: 'Email',
+        blank3Card1: 'tambah emailmu',
+        titleCard2: 'Akun yang Terhubung',
+        titleCard3: 'Hapus Akun',
+        descriptionCard3: 'Menghapus akunmu akan menghapus semua informasimu.',
+        confirm: 'Konfirmasi',
+        titleMail1: 'Yuk, tambahin Emailmu!',
+        titleMail2:
+          'Untuk keamanan verifikasi, tambahkan email Kamu terlebih dahulu',
+        titleChangeMail1: 'Yuk, ganti Email kamu!',
+        titleChangeMail2: 'Masukan email barumu',
+        placeholderMail: 'Masukan email kamu',
+        titleNumber1: 'Yuk, tambahin nomor telepon',
+        titleNumber2: 'Masukan nomor teleponmu',
+        titleChangeNumber1: 'Yuk, ganti nomor teleponmu',
+        titleChangeNumber2: 'Masukin nomor telepon barumu',
+        validationNumber1: 'Oops, nomormu sudah dipakai nih',
+        validationNumber2: 'Nomor telepon minimal terdiri dari 6 angka',
+        validationEmail: 'Oops, email kamu sudah terdaftar',
+        prevent: {
+          title: 'Pembaruan Keamanan Akun',
+          password: 'Pastiin nomor kamu sudah terhubung di akun ini',
+          unlink:
+            'Pastiin nomor dan kata sandi kamu sudah terhubung di akun ini'
+        },
+        delete: {
+          title1: 'Yakin nih mau hapus akun?',
+          title2: `Kalo kamu pilih ‘Iya’, akunmu akan dihapus dalam jangka waktu 30 hari kedepan`,
+          yes: 'Iya',
+          no: 'Nggak'
+        },
+        modalUnlink: {
+          title1: 'Masukkan Kata Sandi Kamu',
+          title2: 'Biar lebih aman, konfirmasi kata sandimu',
+          validation: 'Yah, kata sandi Kamu salah'
+        },
+        settingPassword: {
+          title1: 'Buat Kata Sandi Baru',
+          title2: 'Yuk, buat kata sandi yang aman',
+          title3: 'Masukan Kata Sandi Baru',
+          title4: 'Yuk, ubah kata sandi',
+          createPassword: {
+            label: 'Buat Kata Sandi Baru',
+            placeholder: 'Tolong buat kata sandi'
+          },
+          matchPassword: {
+            label: 'Konfirmasi Kata Sandi Baru',
+            placeholder: 'Tolong konfirmasi kata sandi'
+          },
+          newPassword: {
+            label: 'Kata Sandi Baru',
+            placeholder: 'Tolong buat kata sandi',
+            validation:
+              'Kata sandi harus terdiri dari 8 karakter dan terdiri dari huruf besar dan huruf kecil.'
+          },
+          oldPassword: {
+            label: 'Kata Sandi Saat Ini',
+            placeholder: 'Tolong masukan kata sandi',
+            validation: 'Opps, kata sandi kamu salah'
+          }
+        }
+      },
+      createPin: { title: 'Buat PIN' },
+      changePin: { title: 'Ganti PIN' },
+      language: { title: 'Bahasa' },
+      currency: { title: 'Mata Uang' },
+      block: { title: 'Daftar Blokir' },
+      legal: { title: 'Hukum' },
+      faq: { title: 'FAQ & Bantuan' },
+      rate: { title: 'Nilai Aplikasi' },
+      chat: { title: 'Berbincang Dengan Seedy' },
+      logout: { title: 'Keluar' }
+    },
     changeAvatar: {
       title: 'Galeri',
       content: {
@@ -589,6 +822,7 @@ export default {
       }
     }
   },
+  AppAds: { title: 'Buka di aplikasi Seeds', button: 'Unduh App' },
   DeleteAccount: {
     title: 'Apakah kamu yakin ingin menghapus akun ini?',
     description:
@@ -602,13 +836,19 @@ export default {
     confirmButton: 'Keluar',
     cancelButton: 'Batal'
   },
-  ReferalCode: {
+  ReferralCode: {
+    total: 'Total Referral Dipakai',
     title: 'Referensikan teman anda',
     subtitle: 'Dapatkan lebih banyak XP',
-    referal: 'Bagaimana Link Bekerja',
-    option1: 'Undang teman anda untuk menginstal aplikasi dengan tautannya',
+    referal: 'Referensikan teman Anda & Dapatkan lebih banyak XP',
+    referralHistory: 'Riwayat Referensi Anda',
+    option1: 'Undang temanmu',
+    option1desc:
+      'Ajak teman Anda untuk menginstal aplikasi menggunakan link referral Anda.',
     option2: 'Pakai referal kode yang telah diberikan',
-    option3: 'Dapatkan ekstra XP setiap kode referalmu dipakai'
+    option3: 'Raih XP Anda',
+    option3desc: 'Hasilkan lebih banyak XP saat teman Anda mendaftarkan Seeds.',
+    used: 'telah menggunakan kode Anda'
   },
   PlayPayment: {
     title: 'Payment Method',
@@ -621,8 +861,11 @@ export default {
       phonePlaceholder: '8xxxxxxxx',
       paymentDeadline: 'Bayar sebelum {{date}}',
       admissionFeeLabel: 'Play Membership',
-      adminFeeLabel: 'Admin',
-      button: 'Pay'
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
     },
     VirtualAccountGuide: {
       title: '{{bank}} Virtual Account',
@@ -731,12 +974,14 @@ export default {
     leaderBoard: {
       title: 'Circle Leaderboard',
       description:
-        'Find or create a Circle that matches your interests in Seeds.'
+        'Cari atau buat Circle yang sesuai dengan minat kamu di Seeds.',
+      join: 'Bergabung',
+      sort: 'Urutkan berdasarkan:'
     },
     list: {
-      title: 'Circle List',
+      title: 'Daftar Circle',
       description:
-        'Explore our list of communities, find the ones that match with your interest, or create one.'
+        'Jelajahi daftar komunitas kami, cari yang sesuai dengan minat kamu, atau buat yang baru.'
     },
     banner: {
       title1: 'Tarik Keuntungan',
@@ -744,13 +989,15 @@ export default {
       title3: 'Saldo Circle'
     },
     create: {
-      title: 'Buat Cirlce',
+      title: 'Buat Circle',
       cover: 'Tambah Cover',
       image: 'Tambah Gambar',
       name: {
         label: 'Nama Circle',
-        placeholder: 'Ketik nama Cirlce',
-        error: 'Masukan Nama Circle'
+        placeholder: 'Ketik nama Circle',
+        error: 'Masukan Nama Circle',
+        duplicate1: 'Nama',
+        duplicate2: 'telah digunakan!'
       },
       hashtag: {
         label: 'Hashtag',
@@ -892,18 +1139,44 @@ export default {
           option4: 'Dalam Proses'
         }
       }
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidCircle: 'Menunggu Pembayaran',
+      circleFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      paymentSuccessDescription:
+        'Pembayaran langganan premium anda telah berhasil diproses.',
+      paymentFailed: 'Pembayaran Gagal',
+      paymentFailedDescription:
+        'Kami tidak bisa memproses pembayaran anda. Cek koneksi internet anda dan coba lagi.',
+      paymentFailedWarning: 'Pembayaran Langganan Premium Gagal'
     }
   },
 
   articleList: {
     text1: 'Daftar Artikel',
     text2: 'Jelajahi artikel keuangan pilihan kami',
-    text3: 'Sort by :',
+    text3: 'Urutkan :',
     text4: 'Cari',
     text5: 'Jangan lewatkan berita finansial populer disini !',
     text6: 'Kamu mungkin suka',
     text7: 'Daftar Berita',
-    text8: 'lihat semua'
+    text8: 'lihat semua',
+    article: {
+      sort: {
+        all: 'Semua',
+        relevant: 'Paling Relevan',
+        recent: 'Paling Baru'
+      }
+    }
   },
 
   validationErrors: {
@@ -921,34 +1194,33 @@ export default {
     invalidConfirmPassword: 'Konfirmasi Password tidak valid'
   },
   landingPageV2: {
+    placeHolder1: 'Apa yang ingin kamu diskusikan?',
+    placeHolder2: 'Mulai posting',
+    redirectError: 'Tolong Login Ulang',
     product: {
       section1: {
-        title1: 'Bagikan & Pengaruhi',
-        title2: 'Orang Lain untuk Memulai Perjalanan Finansial Mereka',
+        title1: 'Mainkan & Menangkan',
+        title2: 'Hadiah Nyata Sambil Belajar',
         subtitle:
-          'Buat threads dan sosialisasi bersama komunitas Seeds. Temukan teman baru dan mulai perjalanan finansial bersama.'
+          'Tantang pengetahuan finansialmu dengan permainan menarik dan menangkan uang tunai'
       },
       section2: {
-        title1: 'Leaderboard',
-        title2: 'Tiga pemain bintang yang mendominasi Play.'
+        title1: 'Raih Posisi Puncak & Jadilah Juara!'
       },
       section3: {
-        title1: 'Explore'
-      },
-      section4: {
-        title1: 'Featured Profile',
-        title2:
-          'A list of our featured finance pro to help your financial journey'
+        title1: 'Berinvestasi Dalam Pengetahuan',
+        title2: 'Berinvestasi Dalam Kesuksesan',
+        subtitle: 'Perluas Kemampuan Investasi Melalui Pembelajaran'
       },
       section5: {
-        title1: 'Bagaimana Cara Bermain',
+        title1: 'Cara Bermain',
         title2: 'Turnamen',
         title3:
-          'Tonton dan dengarkan cuplikan video tentang bagaimana bermain turnamen disini hingga kamu bisa menantang orang lain dan menangkan banyak hadiah.'
+          'Yuk, Tonton untuk mempelajari semua tentang turnamen dan trading virtual di sini!'
       },
       section6: {
-        title1: 'Unggah Sekarang!',
-        title2: 'Mulai perjalanan investasimu sekarang.',
+        title1: 'Unduh Sekarang!',
+        title2: 'Mulai Perjalanan Investasimu!',
         title3:
           'Perluas koneksi, belajar finansial dan tingkatkan portfolio kamu bersama Seeds.'
       }
@@ -981,7 +1253,7 @@ export default {
       }
     },
     reportCirlce: {
-      title: 'Laporkan Cirlce',
+      title: 'Laporkan Circle',
       subtitle1: 'Circle ini akan dilaporkan',
       subtitle2: 'Mengapa kamu melaporkan circle ini?',
       option1: 'Spam',
@@ -1006,5 +1278,1123 @@ export default {
         subtitle: 'Silakan bergabung dengan circle lain yang menarik.'
       }
     }
+  },
+  circleDetail: {
+    member: 'Anggota',
+    statusJoined: 'Bergabung',
+    statusNotJoined: 'Gabung',
+    textAreaPlaceholder:
+      'Apa yang ingin kamu diskusikan? ...\nGunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
+    navigator: {
+      post: 'Post',
+      recomend: 'Rekomendasi',
+      listMembers: 'Anggota',
+      about: 'Tentang'
+    }
+  },
+  partner: {
+    section1: {
+      title: 'Berkolaborasi dengan Seeds & Bentuk Masa Depan Edukasi Investasi',
+      text: 'Adakan turnamen investasi eksklusif, menangkan hadiah, dan promosikan edukasi investasi bebas risiko bersama Seeds untuk dunia investasi yang lebih baik. Yuk, berkembang bersama kami!',
+      button: 'Hubungi Kami'
+    },
+    section2: {
+      option1: 'Komunitas dan Universitas',
+      option2: 'Pendaftar',
+      option3: 'Acara Diselenggarakan'
+    },
+    section3: {
+      title: 'Berkolaborasi untuk Menyelesaikan Masalah'
+    },
+    section4: {
+      title: 'Bangun Generasi Mendatang Bersama',
+      subtitle:
+        'Bergabunglah dengan misi kami untuk membuat pengetahuan finansial menjadi lebih menyenangkan dan dapat diakses untuk semua orang',
+      option1: {
+        title: 'Komunitas',
+        text: 'Akses Konten Eksklusif, Diakui Komunitas, Peluang Keterlibatan',
+        button: 'Contact Us'
+      },
+      option2: {
+        title: 'KOL',
+        text: 'Peluang Networking, Pelatihan Eksklusif, dan Insentif bulanan',
+        button: 'Contact Us'
+      },
+      option3: {
+        title: 'Merek',
+        text: 'Eksposure brand, Peluang Sponsorship, Kolaborasi Khusus',
+        button: 'Contact Us'
+      }
+    },
+    section6: {
+      title: 'Acara Seeds'
+    }
+  },
+  aboutUsV3: {
+    section1: {
+      title: 'Seeds, Where Gaming Meets Investing!',
+      text: 'Masuki dunia investasi lewat Play Arena yang kami miliki. Capai peringkat tertinggi, menangkan hadiah menarik, dan sempurnakan strategi investasi Kamu dengan ZERO RISK. Yuk, berinterkasi dengan para ahli finansial dan individu yang berpikiran sama di komunitas interaktif kami.'
+    },
+    section2: {
+      title: 'Visi dan Misi',
+      option1: {
+        title: 'Ride the Wave',
+        subtitle: `Capai pasar milenial dan Gen Z yang berkembang pesat di Indonesia, seperti universitas, sekolah, komunitas, influencer keuangan, dan media. Semua perhatian tertuju pada komunitas, acara, atau merek Kamu!`
+      },
+      option2: {
+        title: 'Game On and Make a Difference!',
+        subtitle:
+          'Dapatkan keuntungan saat tumbuh bersama, mulai dari Play Arena, Premium Circle, dan masih banyak lagi. Ada berbagai peluang untuk pertumbuhan finansial bersama.'
+      },
+      option3: {
+        title: 'Monetize & Prosper',
+        subtitle: `Hasilkan keuntungan bersama ketika berkembang. Di antara Play Arena, Premium Circle, dan banyak lagi, ada banyak peluang untuk pertumbuhan finansial bersama.`
+      },
+      option4: {
+        title: 'Community Powerhouse',
+        subtitle: `Dengan rata-rata 4.000 pengguna per bulan dan engagement rate 5%, di Seeds Finance, pesan kamu tidak hanya akan terlihat, tetapi juga akan beresonansi.`
+      },
+      option5: {
+        title: 'Learn & Lead',
+        subtitle:
+          'Berkolaborasi dengan para influencer keuangan terkemuka dan menjadi yang terdepan dalam edukasi dan tren keuangan di Indonesia.'
+      }
+    },
+    section3: {
+      title: 'Apa yang Membuat Kami Berbeda',
+      button: 'Join Now',
+      option1: {
+        title: 'Learn',
+        subtitle:
+          'Belajar lebih banyak tentang investasi dan keuangan dari para Profesional'
+      },
+      option2: {
+        title: 'Meet',
+        subtitle: 'Berbicara dengan orang-orang yang memiliki pemikiran sama'
+      },
+      option3: {
+        title: 'Play',
+        subtitle: 'Mainkan turnamen dan menangkan hadiah tunai!'
+      }
+    },
+    section4: {
+      subtitle: `Podcast dimana obrolan tentang keuangan jadi menyenangkan! Kami di sini berbagi tips keren, berita terbaru, hingga wawasan yang bisa membuka mata tentang uang dan investasi.`
+    }
+  },
+  social: {
+    postSetting: {
+      publicTitle: 'Publik',
+      publicDesc: 'Semua orang bisa melihat postinganmu',
+      privateTitle: 'Pribadi',
+      privateDesc: 'Hanya kamu yang bisa melihat postinganmu',
+      friendsTitle: 'Hanya Teman',
+      friendsDesc: 'Pengikut yang kamu ikuti balik',
+      premiumTitle: 'Premium',
+      premiumDesc:
+        'Hanya pembeli konten premium yang bisa melihat detail postingan'
+    },
+    pieSection: {
+      title: 'Judul',
+      detail: 'Tambahkan judul berdasarkan tujuan keuanganmu',
+      placeholder: 'Buat judul Pie kamu',
+      amount: 'Jumlah',
+      amountError: 'Masukkan jumlah alokasi kamu',
+      selectAsset: 'Pilih Asset',
+      overview: 'Ringkasan',
+      stocks: 'Saham',
+      crypto: 'Kripto'
+    },
+    errorState: {
+      image1: 'Gambar kamu melebihi batas ukuran 5MB.',
+      image2:
+        'Kamu hanya bisa memasukan gambar dalam format JPG, JPEG, PNG, .HEIC, .HEIF',
+      video1: 'Kamu hanya bisa memasukan video dalam format .MOV dan .MP4.',
+      video2:
+        'Kamu hanya bisa memasukan video dengan durasi maksimum 60 detik.',
+      video3: 'Video kamu melebihi batas ukuran 20MB.',
+      thread1: 'Teks melebihi 500 karakter.',
+      thread2:
+        'Maaf, kami tidak bisa menemukan URL kamu. Silakan masukkan URL yang benar.',
+      thread3: 'Thread kamu melebihi batas karakter maksimum.',
+      poll1:
+        'Pertanyaan kamu melebihi batas karakter maksimum. Mohon ketik ulang pertanyaan kamu.',
+      poll2: 'Tanggal akhir tidak boleh kurang dari tanggal hari ini.'
+    },
+    reportUser: {
+      text1: 'Laporkan Pengguna',
+      text2: 'Akun ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan akun ini?',
+      text4: 'Posting tertentu yang seharusnya tidak ada di Seeds.',
+      text5: 'Ada sesuatu yang aneh tentang akun ini.',
+      text6:
+        'Apakah kamu yakin ingin melaporkan akun ini? Setelah itu, kamu tidak akan lagi melihat status atau thread yang diposting oleh profil ini.',
+      text7:
+        'Kamu telah melaporkan akun ini. Kamu tidak akan melihat status atau thread yang diposting oleh profil ini lagi.'
+    },
+    reportPost: {
+      text1: 'Laporkan Posting',
+      text2: 'Posting ini akan dilaporkan.',
+      text3: 'Mengapa kamu melaporkan posting ini?',
+      option1: 'Spam',
+      option2: 'Konten dewasa atau aktivitas seksual',
+      option3: 'Ujaran kebencian atau simbol kebencian',
+      option4: 'Pengejaran atau pelecehan',
+      option5: 'Saya tidak suka ini',
+      option6: 'Penipuan atau kecurangan',
+      option7: 'Lainnya',
+      success1: 'Laporan telah diajukan.',
+      success2: 'Terima kasih telah membantu kami.'
+    },
+    blockUser: {
+      block: 'Blokir',
+      text: 'Mereka tidak akan dapat mengirim pesan kepada kamu atau menemukan profil, posting, atau cerita kamu di Seeds'
+    },
+    gif: 'GIF',
+    pdf: 'PDF',
+    gallery: 'Gallery',
+    talk: 'Talk',
+    pie: 'Pie',
+    poll: 'Poll',
+    navbar: {
+      following: 'Mengikuti',
+      foryou: 'Untukmu',
+      space: 'Space'
+    },
+    filterType: {
+      all: 'Semua',
+      allDesc: 'Semua Orang',
+      circle: 'Circle',
+      circleDesc: 'Berdasarkan Circle',
+      personal: 'Teman',
+      personalDesc: 'Hanya Teman'
+    },
+    fiterSortBy: {
+      all: 'Semua',
+      allDesc: 'Seluruh postingan',
+      recent: 'Terbaru',
+      recentDesc: 'Berdasarkan waktu di posting',
+      relevant: 'Paling Relevan',
+      relevantDesc: 'Berdasarkan preferensi pengguna',
+      like: 'Paling disukai',
+      likeDesc: 'Berdasarkan yang paling disukai',
+      trending: 'Paling Tren',
+      trendingDesc: 'Berdasarkan keterlibatan tertinggi'
+    },
+    placeholder1: 'Apa yang ingin kamu diskusikan? ...',
+    placeholder2:
+      'Gunakan @ untuk menandai pengguna, @ untuk menandai circle, # untuk menambahkan hashtag pengguna, $ untuk menandai aset.',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidSocial: 'Menunggu Pembayaran',
+      socialFee: 'Konten Premium',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    }
+  },
+  landingV2: {
+    section1: {
+      text1: 'Where',
+      text2: 'Gaming',
+      text3: 'Meets',
+      text4: 'Investing',
+      text6: 'Main Sekarang',
+      text7: 'Tingkatkan Kemampuan Investasimu dari ahli!',
+      text8: 'Mainkan Gamenya & Dapatkan Uangnya!',
+      text9: 'Tingkatkan Pengetahuanmu & Jadilah Yang Terbaik!'
+    },
+    section2: {
+      text1: 'Social',
+      text2:
+        'Berdiskusi dan berkoneksi dengan berbagai ahli keuangan untuk memulai perjalanan finansial yang sukses.'
+    },
+    section3: {
+      text1: 'Bagaimana Seeds Meningkatkan',
+      text2: 'Perjalanan Keuangan Kamu',
+      text3: 'Belajar keuangan untuk mencapai investasi yang sukses',
+      text4:
+        'Cari informasi dasar tentang keuangan dan miliki pertanyaan terkait keuangan.',
+      text5: 'Siap untuk mengadopsi strategi keuangan.',
+      text6: 'Tingkatkan kepercayaan diri dalam membuat keputusan keuangan.',
+      text7: 'Capai level tertinggi dari literasi keuangan'
+    },
+    section5: {
+      text1: 'Total Hadiah yang Telah Diklaim'
+    },
+    section6: {
+      text1: 'Acara Seeds'
+    },
+    section7: {
+      text1: 'Berkenalan dengan Ahli Keuangan Kami!',
+      text2: 'Capai Kesuksesan Finansial Bersama'
+    },
+    section8: {
+      text1: 'Tetap Update dengan Informasi',
+      text2: 'Keuangan Pilihan Kami'
+    },
+    section9: {
+      text1: 'Apa Kata Mereka Tentang '
+    },
+    section10: {
+      text1: 'Lebih dari 1000+ orang mempercayai kami',
+      text2: 'Profesional, universitas, dan masih banyak lagi!'
+    },
+    section11: {
+      text1: 'Ingin Berkolaborasi dengan Seeds?',
+      text2:
+        'Buat investasi jadi  menyenangkan, untuk masa depan. Bergabunglah dengan perkembangan Seeds sekarang!',
+      text3:
+        'Bergabunglah dengan kami, ikut terlibat, dan bersama-sama mari kita bentuk masa depan investasi!',
+      text4: 'Hubungi Kami'
+    },
+    section12: {
+      text1: 'Komunitas Kami',
+      text2:
+        'Kami berkomitmen untuk meningkatkan literasi finansial Generasi Z dan milenial di Asia Tenggara.',
+      text3: 'Program Mitra'
+    }
+  },
+  playSimulation: {
+    assetList: 'Daftar Aset',
+    seedsCash: 'Dana Seeds',
+    cashBalance: 'Saldo Virtual',
+    portfolio: 'Portofolio',
+    assetDetail: 'Detail Aset',
+    today: 'Hari Ini',
+    remainingTime: 'Sisa Waktu',
+    open: 'Open',
+    dayHigh: 'Day High',
+    dayLow: 'Day Low',
+    sell: 'Jual',
+    buy: 'Beli',
+    balance: 'Saldo',
+    takeProfit1: 'Aktifkan Take Profit dan Stop Loss',
+    takeProfit2: 'Tingkatkan strategimu dan menangkan Arena.',
+    purchaseAmount: 'Jumlah Pembelian',
+    cashAmount: 'Jumlah Uang',
+    purchaseConfirmation: 'Konfirmasi Pembelian',
+    confirmation: 'Konfirmasi',
+    orderReview: 'Tinjauan Pembelian',
+    orderType: 'Tipe Order',
+    buyMarketOrder: 'Pembelian - Market Order',
+    sellMarketOrder: 'Penjualan - Market Order',
+    marketPrice: 'Harga Pasar',
+    amount: 'Jumlah',
+    transactionFee: 'Biaya Transaksi',
+    totalCost: 'Total Biaya',
+    footerOrderDetail1:
+      'Investasi ini bebas risiko karena kamu menggunakan saldo virtual untuk transaksi ini. Silakan lihat informasi',
+    footerOrderDetail2: 'pada pemberitahuan ini.',
+    disclosure: 'selengkapnya',
+    orderCompleted: 'Pesanan Selesai',
+    orderCompletedBuy: 'Kamu membeli',
+    orderCompletedSell: 'Anda telah berhasil menjual ',
+    investmentValue: 'Nilai Investasi',
+    totalPortfolio: 'Total Portofolio',
+    yourAssetsPortfolio: 'Portofolio aset kamu',
+    joinArena1: 'Apakah kamu siap untuk bergabung dalam Arena?',
+    joinArena2:
+      'Bersiaplah bertanding untuk menguji keterampilan trading-mu dan memenangkan hadiahnya.',
+    sellAssetText1: 'Kamu bisa memilih jumlah aset yang akan dijual.',
+    sellAmount: 'Jumlah Penjualan',
+    cashAvailable: 'Dana Tersedia',
+    cashUsed: 'Dana Digunakan',
+    historyTransaction: 'Riwayat Transaksi',
+    transactionDetail: 'Detail Transaksi'
+  },
+  homepage: {
+    section2: {
+      text1: 'Dana Virtual',
+      text2: 'Keuntungan',
+      text3: 'Koin Seeds',
+      text4: 'Kode Referral',
+      text5: 'Tidak ada rekomendasi profil untuk dibagikan',
+      text6: 'Penawaran Eksklusif',
+      text7: 'Nikmati berbagai promosi khusus hanya untuk kamu! ',
+      text8: 'Trending hari ini',
+      text9: 'Cek apa yang sedang populer sekarang',
+      text10: 'SeedsPedia',
+      text11: 'Peringkat Kamu',
+      text12: 'Menangkan Hadiah setiap Bulan',
+      text13: 'Sekarang di',
+      text14: 'Lihat lebih banyak',
+      text15: 'Masuk untuk menuju arena bermain',
+      text16: 'Masuk untuk menuju permainan',
+      text17:
+        'Dana Virtual adalah dana virtual yang tersedia untuk Simulasi permainan saham'
+    },
+    section3: {
+      text1: 'Sumber semua utama berita keuangan terbaru',
+      text2: 'Saat Ini',
+      text3: 'Bulan Lalu',
+      text4: 'Peringkatmu Saat Ini',
+      text5: 'Cari dan ikuti profil yang menarik.',
+      text6: 'Daftar Profile'
+    }
+  },
+  chooseCurrency: {
+    header: 'Pilih mata uangmu',
+    body: 'Mata uang pilihanmu akan digunakan untuk semua transaksi di Seeds',
+    successHeader: 'Mata uangmu adalah',
+    successBody1: 'Selamat! Kamu telah memilih',
+    successBody2:
+      'sebagai preferensi mata uangmu. Mulai sekarang, semua transaksi kamu di Seeds akan dalam',
+    successBody3: ', kamu bisa mengubahnya kapan pun di pengaturan.',
+    defaultHeader: 'Mata uang bawaan kamu adalah USD',
+    defaultBody:
+      'Saat ini mata uang bawaan kamu adalah USD, tapi jangan khawatir, kamu bisa mengubahnya kapan pun di pengaturan.',
+    button: 'Simpan',
+    buttonSuccess: 'OK',
+    yourCurrencyIs: 'Kurs mata uang Anda adalah',
+    successChangeCurrency:
+      'Kerja bagus! Anda telah memilih ## sebagai preferensi mata uang Anda. Mulai sekarang, semua transaksi Anda di Seeds akan menggunakan ##. Anda dapat mengubahnya kapan saja dalam pengaturan.'
+  },
+  quiz: {
+    explanation: 'Penjelasan',
+    invitationCodePlaceholder: 'Input your invitation code',
+    enter: 'Enter',
+    topQuiz: 'Top Quiz',
+    topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
+    play: 'Main',
+    listQuiz: 'List Quiz',
+    listQuizDesc: 'Tantang pengetahuan finansial Kamu dengan quiz ini.',
+    search: 'Cari',
+    qs: '{{amount}} Qs',
+    durationInDays: 'Durasi {{days}} hari',
+    playersJoined: '{{players}} Pemain Bergabung',
+    questionsAmount: '{{questions}} Pertanyaan',
+    questions: 'Pertanyaan',
+    quiz: 'Quiz',
+    invitationCode: 'Kode Masuk',
+    entranceFee: 'Biaya Pendaftaran',
+    played: 'Main',
+    duration: 'Durasi',
+    quizPeriod: 'Periode Quiz',
+    tnc: 'Syarat & Ketentuan',
+    quizPrize: 'Hadiah Quiz',
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    sponsors: 'Sponsor(s)',
+    community: 'Community',
+    join: 'Join',
+    loading: 'Memuat...',
+    reviewQuiz: 'Review Quiz',
+    continue: 'Lanjutkan',
+    start: 'Mulai',
+    startTheGame: 'Mulai Permainan!',
+    yourCurrentlyRank: 'Peringkat Anda Saat Ini',
+    cancel: 'Batal',
+    notification: 'Pemberitahuan',
+    extraCash:
+      'Oops, jika kamu ingin extra bantuan, kamu harus membayar Rp {{amount}}',
+    select: 'Pilih',
+    quizCompanion: 'Pilih power-up kamu!',
+    chooseOptions:
+      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
+    freeOptions:
+      '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
+    fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
+    phone: 'Seperti telepon teman, dan mereka selalu siap membantumu.',
+    vote: 'Menampilkan grafik batang dengan persentasi tertinggi dari jawaban yang benar.',
+    questionLevel: 'Level Pertanyaan',
+    easy: 'Mudah',
+    medium: 'Sedang',
+    hard: 'Sulit',
+    questionDescription1: 'Kamu akan mengerjakan',
+    questionDescription2:
+      'level pertanyaan dalam Quiz ini! Ada 3 level: mudah, sedang, dan sulit. Atur kecepatanmu untuk skor terbaik!',
+    incorrect: 'Salah',
+    correct: 'Benar',
+    anotherQuiz: 'Quiz Lainnya',
+    leaderboard: 'Klasemen',
+    leaderboardEmpty: 'Data leaderboard kosong.',
+    remainingTime: 'Sisa waktumu',
+    currentRank: 'Peringkatmu sekarang',
+    currentScore: 'Skor Kamu Sekarang',
+    submit: 'Kirim',
+    finish: 'Selesai',
+    sureSubmit: 'Kamu yakin akan kirim Quiz ini?',
+    sureSubmitDesc: 'Setelah kirim, Kamu tidak bisa ganti jawaban.',
+    yes: 'Ya',
+    theQuestion: 'Pertanyaan',
+    understand: 'Mengerti',
+    payAttention:
+      'Perhatikan response Seedy, Kamu tidak bisa melihatnya lagi setelah menekan Mengerti.',
+    beMindful:
+      "Harap perhatikan vote dari Seedy's friends, Kamu tidak bisa melihatnya lagi setelah menekan Mengerti.",
+    sureNeedHelp: 'Kamu yakin ingin menggunakan bantuan ini?',
+    description: 'Penjelasan',
+    wantLeave: 'Kamu yakin mau keluar?',
+    dontGiveUp: 'Jangan menyerah! Kamu lebih baik dari ini.',
+    quizInformation:
+      'Kami akan memberikan serangkaian pertanyaan terkait cryptocurrency. Jawab semua pertanyaan dengan benar untuk mendapatkan poin, dan Kamu juga dapat menggunakan bantuan Seedy.',
+    playAgain: 'Main Lagi',
+    admissionFee: 'Rp {{amount}}',
+    dayDuration: '{{duration}} hari',
+    quizCategory: {
+      all: 'Semua',
+      allDesc:
+        'Selamat datang di Kuis Keuangan & Investasi Umum! Coba pengetahuan keuanganmu dengan pertanyaan seputar investasi sehari-hari kayak Reksa Dana, Saham Amerika, Saham Indonesia, Obligasi Keuangan, Emas, Kripto, Forex, dan investasi P2P. Cara yang seru buat ngetes pengetahuan finansialmu sambil belajar lebih banyak tentang dunia keuangan! Siap buat mencoba?',
+      mutualFunds: 'Reksadana',
+      mutualFundsDesc:
+        'Uji pengetahuanmu tentang reksadana dengan kuis ini! Pelajari dasar-dasar investasi reksadana, jenis-jenis reksadana, dan bagaimana mereka dapat membantu kamu mencapai tujuan keuanganmu.',
+      investment: 'Investasi',
+      investmentDesc:
+        'Uji pengetahuanmu tentang berinvestasi dan pelajari cara memilih produk terbaik untuk tujuan keuanganmu. Kuis ini mencakup topik seperti risiko, hasil, diversifikasi, evaluasi, dan regulasi.',
+      stock: 'Saham',
+      stockDesc:
+        'Seberapa baik Anda mengetahui pasar saham dan investasi? Ikuti kuis ini dan cari tahu! Kuis ini akan membantu Anda meningkatkan literasi keuangan dan keterampilan Anda dalam menganalisis data pasar saham',
+      usStock: 'Saham AS',
+      usStockDesc:
+        'Tantang dirimu sendiri dengan pertanyaan tentang sejarah, kinerja, dan regulasi pasar saham AS. Pelajari bagaimana NYSE dan NASDAQ berkembang, bagaimana indeks saham dihitung, dan faktor-faktor apa yang memengaruhi harga saham.',
+      idStock: 'Saham ID',
+      idStockDesc:
+        'Uji pengetahuanmu tentang Bursa Efek Indonesia dan perusahaan yang terdaftar di dalamnya. Pelajari bagaimana Indeks Harga Saham Jakarta dihitung, sektor dan industri apa yang mendominasi perekonomian, dan faktor-faktor apa yang memengaruhi harga saham.',
+      financial: 'Keuangan',
+      financialDesc:
+        'Uji literasi keuangan kamu dan tingkatkan keterampilan pengelolaan uangmu. Pelajari cara membuat anggaran, menabung, menggunakan kredit, dan merencanakan masa depanmu.',
+      gold: 'Logam Mulia',
+      goldDesc:
+        'Uji pengetahuanmu tentang logam-logam mulia paling berharga di Bumi. Pelajari tentang sifat-sifatnya, penggunaan, sejarah, dan sumber-sumbernya.',
+      crypto: 'Kripto',
+      cryptoDesc:
+        'Uji pengetahuanmu tentang mata uang kripto, aset digital yang sedang merevolusi dunia keuangan. Pelajari tentang sejarah, teknologi, regulasi, dan trennya.',
+      forex: 'Forex',
+      forexDesc:
+        'Pelajari tentang pasar valuta asing, pasar terbesar dan paling likuid di dunia. Kuis ini mencakup topik seperti pasangan mata uang, nilai tukar, strategi perdagangan, bank sentral, dan risiko forex.',
+      p2p: 'P2P (Peer-to-Peer)',
+      p2pDesc:
+        'Masuki dunia Peer-to-Peer Lending dengan kuis kami! Jelajahi bagaimana platform P2P bekerja, risiko dan manfaatnya, serta seluk-beluk meminjam dan meminjam langsung dari individu. Uji pengetahuanmu tentang P2P lending dan temukan apakah pendekatan inovatif keuangan ini cocok untukmu.',
+      financialBonds: 'Obligasi Keuangan',
+      financialBondsDesc:
+        'Pelajari tentang berbagai jenis obligasi, instrumen utang yang memungkinkan entitas untuk meminjam uang dari investor. Kuis ini mencakup topik seperti karakteristik obligasi, penilaian, risiko, dan strategi.'
+    },
+    free: 'Gratis',
+    lifeline: 'Bantuan Tambahan',
+    tryInfo:
+      'Oopss, kesempatan kamu bermain quiz gratis cuma bisa 1 kali aja nih. Cobain quiz menarik lainnya yuk!',
+    day: '{{days}} hari',
+    players: 'Pemain',
+    entryFee: 'Tiket Kuis',
+    entFee: 'Tiket masuk',
+    myQuiz: 'My Quiz',
+    open: 'Terbuka',
+    active: 'Berjalan',
+    ended: 'Berakhir',
+    canceled: 'Dibatalkan',
+    quizDone1: 'Selangkah lagi menuju kemenangan.',
+    quizDone2:
+      'Ini rekomendasi circle yang akan membantu performa kamu di turnamen!',
+    testInvestment: 'Uji kemampuan finansialmu dan dapatkan hadiahnya!',
+    welcome: 'Selamat datang di Seeds Quiz',
+    areYouReady: 'Kamu siap?',
+    millionaire: 'Siapa yang mau jadi miliarder Seeds!',
+    incorrectWord: 'Belum tepat, fyuhh sedikit lagi',
+    correctWord: 'Benar, kamu dapat {{point}} poin',
+    congratulation: 'Selamat!',
+    cashOut: 'Cairkan hadiahmu!',
+    claimMethod: 'Metode Klaim',
+    account: 'Akun',
+    accountName: 'Nama Akun',
+    accountNumber: 'Nomor Akun',
+    placeholderMethod: 'Pilih metodemu',
+    placeholderAccount: 'Pilih akunmu',
+    placeholderAccountName: 'Nama akunmu',
+    placeholderAccountNumber: 'Nomor akunmu',
+    transferBank: 'Transfer dengan Bank',
+    eWallet: 'Dompet Digital',
+    transferEWallet: 'Transfer dengan Dompet Digital',
+    bankList: 'Daftar Akun Bank',
+    eWalletList: 'Daftar Dompet Digital',
+    thankyou: 'Terima Kasih!',
+    withdrawalRequest:
+      'Permintaan penarikan sedang diproses. Mohon tunggu maksimal 1x24 jam.',
+    transactionDetails: 'Detail Transaksi',
+    date: 'Tanggal',
+    refNum: 'Nomor Referensi',
+    withdraw: 'Penarikan',
+    admin: 'Admin',
+    adminFee: 'Biaya Admin',
+    adminFeeDiscount: 'Diskon Biaya Admin',
+    serviceFee: 'Biaya Layanan',
+    totalAmount: 'Jumlah Total',
+    paymentMethod: 'Metode Pembayaran',
+    id: 'Id Transaksi',
+    nominal: 'Nominal',
+    total: 'Total',
+    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    score: 'Skor Kamu : ',
+    earn: ' Kamu Mendapatkan IDR ',
+    tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
+    text1: 'Tantang pengetahuan finansialmu dengan daftar kuis dibawah.',
+    text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidQuiz: 'Menunggu Kuis Dibayar',
+      quizFee: 'Biaya Kuis',
+      lifelinesFee: 'Biaya Bantuan Tambahan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
+    shareQuiz: 'Bagikan Kuis Ini',
+    playId: 'ID Kuis',
+    shareLinks: 'Bagikan Link'
+  },
+  micrositeQuiz: {
+    errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
+    errorEmailAlready: 'Aduh, emailmu udah terdaftar nih',
+    errorPhone: 'Aduh nomormu udah terdaftar nih',
+    name: 'Nama',
+    placeName: 'Masukin namamu',
+    email: 'Email',
+    placeEmail: 'Masukin emailmu',
+    save: 'Simpan',
+    rank: 'Peringkat',
+    player: 'Pemain',
+    point: 'Total Poin'
+  },
+  tournament: {
+    myPlay: 'Permainan Saya',
+    open: 'Terbuka',
+    active: 'Aktif',
+    ended: 'Berakhir',
+    canceled: 'Dibatalkan',
+    banner1: 'Hai! Baru Bergabung di Play Arena?',
+    banner2: 'Tonton video tutorialnya di sini!',
+    banner3: 'Tutorial',
+    blank1: 'Ups,  Belum Ada Turnamen',
+    blank2: 'Yuk, ikuti turnamennya dan menangkan hadiahnya!',
+    detailRemaining: 'Sisa Waktu',
+    detailPeriod: 'Periode Turnamen',
+    detailPrize: 'Hadiah Turnamen',
+    detailTerms: 'Syarat dan Ketentuan',
+    detailResponsibility: 'Tanggung Jawab Seeds',
+    detailCurrency: 'Mata uang Kamu saat ini: ',
+    detailAccessCode: 'Masukan Access Code',
+    detailBannerTotalRewards: 'Total Hadiah',
+    entranceFee: 'Biaya Pendaftaran',
+    shareArena: 'Bagikan Arena Ini',
+    shareLinks: 'Bagikan Link',
+    playId: 'ID Permainan',
+    free: 'Gratis',
+    join: 'Join',
+    start: 'Mulai',
+    participants: 'Peserta',
+    categoryAsset: 'Kategori Aset',
+    circleRecommendation: 'Rekomendasi Circle',
+    leaderboardBanner1: 'Kamu di posisi atas?',
+    leaderboardBanner2: 'Periksa',
+    leaderboardBanner3: 'Cek Papan Peringkat',
+    leaderboardBanner4: 'Cek Papan Peringkat!',
+    tutorialTournament: 'Tutorial Turnamen',
+    remainingTimeText: 'Turnamen telah berakhir!',
+    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Turnamen!',
+    looseModalTitle: 'Tidak buruk! Anda berhasil di peringkat',
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      pendingPaidTournament: 'Menunggu Turnamen Dibayar',
+      tournamentFee: 'Biaya Turnamen',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      successful: 'Pembayaran Berhasil',
+      pending: 'Menunggu Pembayaran',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
+    clock: {
+      days: 'h',
+      hours: 'j',
+      minutes: 'm',
+      seconds: 'd'
+    },
+    tournamentCard: {
+      player: 'Pemain',
+      players: 'Pemain',
+      duration: 'Durasi',
+      joined: 'Bergabung',
+      fee: 'Biaya',
+      openButton: 'Dalam Game',
+      joinButton: 'Dapatkan Tiket',
+      leaderboard: 'Leaderboard',
+      ended: 'Berakhir',
+      canceled: 'Dibatalkan',
+      share: 'Share',
+      day: 'Hari',
+      days: 'Hari'
+    },
+    leaderboard: {
+      lastUpdated: 'Update terakhir: ',
+      currentRank: 'Peringkat Anda Sekarang',
+      player: 'Pemain',
+      totalGain: 'Pendapatan',
+      totalPoint: 'Total Poin'
+    },
+    assets: {
+      text1: 'tidak ditemukan!',
+      text2: 'Temukan asetmu dengan keyword yang lain!',
+      totalInvestment: 'Total Investasi',
+      portfolio: 'Portofolio',
+      virtualBalance: 'Saldo Virtual',
+      watchList: 'Daftar Tonton',
+      transaction: 'Transaksi',
+      openOrder: 'Pesanan',
+      historyTransaction: 'Riwayat Transaksi',
+      pending: 'Menunggu - Limit Pembelian',
+      sorry: 'Maaf!',
+      noData: 'Data yang Kamu cari tidak ada.',
+      amount: 'Nilai',
+      price: 'Harga',
+      cashAvailable: 'Dana Tersedia',
+      cashUsed: 'Dana Terpakai',
+      cancelOrder: 'Apakah Kamu ingin membatalkan pesanan?',
+      yesCancel: 'Batalkan pesanan',
+      noCancel: 'Kembali',
+      cancel: 'Batalkan',
+      totalCash: 'Dana Total'
+    },
+    portfolio: {
+      investmentValue: 'Nilai Investasi',
+      today: 'Hari Ini',
+      yourAssetPortfolio: 'Aset Portfoliomu',
+      detailPortfolio: 'Detail Portofolio',
+      totalValue: 'Nilai Total',
+      totalInvested: 'Total Investasi',
+      returnValue: 'Nilai Return',
+      returnPercentage: 'Persentase Return',
+      ownedLot: 'Lot Dimiliki',
+      averagePrice: 'Harga Rata-Rata',
+      currentPrice: 'Harga Saat Ini',
+      buy: 'Beli',
+      sell: 'Jual'
+    },
+    first: '1st',
+    second: '2nd',
+    third: '3rd',
+    seedsResponsibility1:
+      'Seeds merupakan Pihak yang menyediakan fitur Play Arena Tournament pada aplikasi Seeds',
+    seedsResponsibility2:
+      'Google dan Apple bukan merupakan pihak yang memfasilitasi, menyediakan, dan mensponsori fitur dalam Play Arena Tournament pada aplikasi Seeds',
+    asset: {
+      totalInvestment: 'Total Investasi',
+      portfolio: 'Portofolio',
+      tournamentAsset: 'Aset Turnamen',
+      seeAll: 'Lihat Lebih'
+    },
+    guidance: {
+      guidanceTitle: 'Petunjuk',
+      goals: 'Tujuan',
+      goalsDescription:
+        'Bangun portofolio terbaikmu menggunakan virtual balance yang disediakan.',
+      howToPlay: {
+        title: 'Cara Bermain',
+        text1: 'Mulai dengan melihat portofolio dan virtual balance.',
+        text2: "Klik 'Lihat Lebih' untuk melihat daftar aset yang tersedia.",
+        text3: 'Klik pada aset untuk melihat hasil analisis data.',
+        text4:
+          "Untuk membeli aset, klik tombol 'Beli'. Untuk menjual aset, klik tombol 'Jual'.",
+        text5: 'Anda dapat membuat transaksi dalam spesifik waktu tertentu.',
+        text6:
+          'Lihat posisi anda pada leaderboard untuk melihat persaingan dengan pemain lain.'
+      },
+      winner: 'Pemenang',
+      winnerDescription:
+        'Pemenang akhir akan ditentukan pada leaderboard berdasarkan portofolio terbaik.',
+      tips: {
+        title: 'Tips',
+        text1: 'Lakukan analisa anda sendiri sebelum melakukan transaksi.',
+        text2:
+          'Pelajari analisa saham dan aset untuk membantu membuat keputusan.',
+        text3: 'Selalu bersiap untuk menghadapi perubahan harga.'
+      }
+    },
+    floatingButton: {
+      text1:
+        'Masih kurang yakin dengan cara main di Play Arena? Check video tutorialnya di sini dan ikutin step-stepnya! Yuk, belajar lebih banyak di play arena, buat dapetin hadiahnya!',
+      text2:
+        'Yuk, sharing bareng teman dan temukan ahli buat ningkatin informasi',
+      text3:
+        'Jangan lupa buat baca syarat dan ketentuan Play Arena sebelum memulai permainannya'
+    },
+    watchlist: {
+      watchlist: 'Daftar Pantau',
+      noData: 'Belum Ada Daftar Pantau',
+      create: 'Yuk buat Daftar Pantau sekarang!',
+      createWatchlist: 'Buat Daftar Pantau',
+      add: 'Tambah Daftar Pantau',
+      name: 'Nama Daftar Pantau',
+      photo: 'Foto Daftar Pantau',
+      addAsset: 'Tambah Aset',
+      save: 'Simpan',
+      delete: 'Hapus',
+      cancel: 'Batalkan',
+      editWatchlist: 'Ubah Daftar Pantau',
+      deleteConfirm: 'Apa Kamu yakin ingin menghapus Daftar Pantau ini?',
+      changeAsset: 'Ubah Aset',
+      enter: 'Masukan nama Daftar Pantau...',
+      search: 'Cari'
+    },
+    social: {
+      sorry: 'Maaf, data postingan tidak ada!',
+      noData: 'Ayo buat postinganmu!',
+      member: 'peserta',
+      members: 'peserta',
+      description: 'Temukan ahlinya untuk informasi yang lebih banyak',
+      seeAll: 'Lihat Lebih'
+    }
+  },
+  academy: {
+    greeting: 'Hai',
+    courseTitle: 'Yuk, temukan kursus favorit kamu',
+    courseSearchPlaceholder: 'Apa yang ingin kamu pelajari hari ini?',
+    categoryTitle: 'Kategori',
+    noCategoriesTitle: 'Ups, Belum Ada Kategori',
+    noCategoriesDescription: 'Nantikan pembaruan lainnya!',
+    categoryDetailTitle: 'Tentang Kursus',
+    categoryDetailMoreDetail: 'Lebih Detail',
+    categoryDetailShowLess: 'Tampilkan Lebih Sedikit',
+    levels: {
+      all: 'Semua',
+      beginner: 'Dasar',
+      intermediate: 'Menengah',
+      advance: 'Tingkat Lanjut'
+    },
+    noClassesTitle: 'Ups, Belum Ada Kelas',
+    noClassesDescription: 'Nantikan pembaruan lainnya!',
+    courseFee: 'Biaya',
+    courseButtonBuy: 'Beli Sekarang',
+    courseButtonDetail: 'Lihat Detail',
+    courseButtonOpenClass: 'Kelas Terbuka',
+    shareCourse: 'Bagikan Kursus Ini',
+    shareLinks: 'Bagikan Link',
+    courseScore: 'Nilai',
+    detailCourse: {
+      participants: 'Peserta',
+      share: 'Bagikan',
+      buttonPretest: 'Coba Pre-Test',
+      entrance: 'Biaya Masuk',
+      buttonEnroll: 'Daftar Kursus',
+      moreDetail: 'Selengkapnya',
+      showLess: 'Tampilkan lebih sedikit',
+      seedsCoin: 'Tukarkan {{data}} Seeds Coin',
+      pretestScore: 'Skor Pre-Test Kamu',
+      free: 'Gratis',
+      detail: 'Detail Kelas'
+    },
+    test: {
+      question: 'Pertanyaan',
+      next: 'Selanjutnya',
+      submit: 'Kirim',
+      score: 'Skor',
+      grade: 'Nilai',
+      desc: 'Kamu telah menyelesaikan pre test.',
+      back: 'Kembali ke Detail Kelas'
+    },
+    score: {
+      title: 'SELAMAT !',
+      description: 'Anda baru saja menyelesaikan',
+      totalScore: 'Skor Total',
+      OtherClass: 'Kelas Lain',
+      ReTest: 'Tes Ulang'
+    },
+    payment: {
+      enroll: 'Daftar',
+      class: 'Kelas',
+      desc: 'atau langganan buat harga yang lebih murah!',
+      buttonPay: 'Lakukan Pembayaran',
+      method: 'Metode Pembayaran',
+      pay: 'Bayar',
+      va: 'Akun Virtual',
+      ew: 'Dompet Digital',
+      other: 'Lainnya',
+      summary: 'Ringkasan Pembayaran',
+      payWith: 'Bayar Dengan',
+      costAcademy: 'Harga Seeds Academy',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      totalCost: 'Total Pembayaran',
+      amount: 'Jumlah Total',
+      pending: 'Ditunda',
+      pending1: 'Kami belum menerima pembayaranmu',
+      pending2: 'Selesaikan pembayaran untuk melanjutkan',
+      success: 'Berhasil',
+      success1: 'Pembayaranmu berhasil',
+      success2: 'Sekarang kamu bisa mulai belajar',
+      closeReceipt: 'Tutup',
+      discountCoins: 'Diskon Koin'
+    }
+  },
+  seedsEvent: {
+    myEvent: 'Event Saya',
+    search: 'Cari event',
+    enter: 'Cari',
+    past: 'Event Berakhir',
+    today: 'Hari Ini',
+    thisMonth: 'Bulan Ini',
+    upcoming: 'Event Akan Datang',
+    myActive: 'Event Aktif',
+    myPast: 'Event Berakhir',
+    blank1: 'Ups,  Belum Ada Event',
+    blank2: 'Nantikan untuk update lainnya!',
+    eventDetails: 'Detail Event',
+    entranceFee: 'Biaya Masuk',
+    free: 'Gratis',
+    seeYourTicket: 'Lihat Tiket',
+    seeEventLink: 'Lihat Link Event',
+    checkCertificate: 'Cek Sertifikat',
+    seeEvent: 'Lihat Event',
+    booking: {
+      bookNow: 'Pesan Tiket',
+      seeTicket: 'Lihat Tiket',
+      bookingDetails: 'Detail Pemesanan',
+      name: 'Nama',
+      phone: 'Nomor Telepon',
+      email: 'Alamat Email',
+      inputName: 'Masukan nama anda',
+      inputPhone: 'Masukan nomor telepon anda',
+      inputEmail: 'Masukan alamat email anda',
+      bookInfo:
+        'Tiket yang telah dipesan akan dikirimkan ke email yang telah diisi.',
+      continue: 'Lanjutkan'
+    },
+    pay: 'Bayar',
+    payment: {
+      title: 'Metode Pembayaran',
+      virtualAccountLabel: 'Virtual Account',
+      eWalletLabel: 'E-Wallet',
+      button: 'Bayar',
+      eventFee: 'Biaya Event',
+      howToPay: 'Cara Pembayaran',
+      WalletForm: {
+        title: 'Masukkan nomor {{wallet}}',
+        phoneLabel: 'Nomor {{wallet}}',
+        phonePlaceholder: '8xxxxxxxx',
+        paymentDeadline: 'Bayar sebelum {{date}}',
+        admissionFeeLabel: 'Biaya Event',
+        adminFeeLabel: 'Biaya Admin',
+        serviceFeeLabel: 'Biaya Layanan',
+        adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+        button: 'Bayar',
+        seedsCoin: 'Seeds Coin Digunakan'
+      },
+      VirtualAccountGuide: {
+        title: '{{bank}} Virtual Account',
+        bankName: 'Bank {{bank}}',
+        accountNumberLabel: 'No. rekening',
+        copy: 'Copy',
+        continue: 'Lanjutkan',
+        accountNameLabel: 'Virtual Account Name',
+        admissionFeeLabel: 'Biaya Event',
+        adminFeeLabel: 'Admin',
+        note: 'Selesaikan pembayaran dalam 24 jam. Pesanan akan otomatis dibatalkan jika pembayaran tidak diselesaikan dalam 24 jam kedepan.',
+        instructionMessage:
+          'Klik "Lanjutkan" untuk melanjutkan proses dan melihat instruksi pembayaran.',
+        instructionLabel: 'mBanking Transfer Instructions',
+        step1: {
+          1: 'Pilih',
+          2: 'm-Transfer > {{provider}} Virtual Account.'
+        },
+        step2: {
+          1: 'Masukan',
+          2: 'nomor Virtual Account',
+          3: 'dan pilih',
+          4: 'Send'
+        },
+        step3: {
+          1: 'Periksa Informasi yang tertera. pastikan Merchant tertulis adalah',
+          2: 'Seeds, Total bill',
+          3: 'dan username',
+          4: 'Jika benar, Pilih',
+          5: 'Ya'
+        },
+        step4: {
+          1: 'Masukan m-{{provider}} PIN kamu dan pilih',
+          2: 'OK'
+        }
+      },
+      receipt: {
+        paymentMethod: 'Metode Pembayaran',
+        successPaidEvent: 'Berhasil',
+        pendingPaidEvent: 'Menunggu Event Dibayar',
+        tournamentFee: 'Biaya Event',
+        adminFee: 'Biaya Admin',
+        serviceFee: 'Biaya Layanan',
+        discountFee: 'Diskon',
+        discountCoins: 'Diskon Koin',
+        totalAmount: 'Total Biaya',
+        idTransaction: 'ID Transaksi',
+        close: 'Tutup',
+        virtualNumber: 'Nomor Virtual Akun Anda',
+        successful: 'Pembayaran Berhasil',
+        pending: 'Menunggu Pembayaran',
+        recurringSaved: 'Pembayaran anda telah tersimpan',
+        seeDetail: 'Lihat Detail Event',
+        seeTicket: 'Lihat Tiket',
+        refreshPage: 'Refresh Status Pembayaran',
+        messageUncomplete: 'Selesaikan pembayaran untuk melihat detail tiket',
+        messageComplete: 'Pembayaran Berhasil.'
+      }
+    },
+    ticket: {
+      nameEvent: 'Nama Event',
+      name: 'Nama',
+      phoneNumber: 'Nomor Telepon',
+      emailAddress: 'Alamat Email',
+      totalPrice: 'Harga Tiket',
+      myEvents: 'Event Saya',
+      checkIn: 'Check In',
+      checkOut: 'Check Out',
+      notificationMethod: 'Pilih Notifikasi',
+      notificationModalMessage: 'Ayo up-to-date! Pilih preferensi notifikasimu.'
+    }
+  },
+  buyAsset: {
+    text1: 'Aset yang akan di beli',
+    text2: 'Aset yang akan di jual',
+    text3: 'Lihat Portofolio',
+    text4: 'Beli Aset',
+    text5: 'Saldo Virtual',
+    text6: 'Aktifkan Take Profit dan Stop Loss',
+    text7: 'Tingkatkan strategimu dan menangkan arenanya',
+    text8: 'Total',
+    text9: 'Total tunai',
+    text10: 'Harga',
+    text11: 'Konfirmasi',
+    text12: 'Kamu bisa memilih jumlah aset yang mau dijual',
+    text13: 'Lot Tersedia',
+    text14: 'Harga rata-rata',
+    text15: 'Total Jual',
+    text16: 'Jumlah Anda saat ini',
+    text17: 'Set Harga (IDR)',
+    text18:
+      'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
+    text19:
+      'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
+    text20: 'Berapa persen yang Anda inginkan',
+    text21: 'Harga Aktivasi Hentikan Kerugian',
+    text22: 'Harga aktivasi Take Profit'
+  },
+  discover: {
+    hotNews: 'Hot News',
+    newsList: 'News',
+    findMoreYouMighLike: 'Find more news you might like.',
+    youMayLike: 'You May Like',
+    seeAll: 'Semua',
+    trendingToday: 'Sedang Tren Hari Ini',
+    whatIsTrendingToday: 'Apa yang sedang tren hari ini?',
+    circleList: 'Daftar Circle',
+    exploreCircleList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    assetList: 'Daftar Asset',
+    exploreAssetList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    merchantBannerText: 'Nikmati berbagai promo spesial hanya untuk Anda!',
+    playList: 'Daftar Permainan',
+    explorePlayList:
+      'Jelajahi daftar komunitas kami. Temukan yang menarik bagi Anda atau buat sendiri.',
+    clearHistory: 'Hapuskan Histori',
+    search: 'Cari',
+    recentSearch: 'Pencarian Terbaru',
+    peopleList: 'Daftar Orang',
+    explorePeopleList: 'Temukan pengguna yang cocok dengan Anda',
+    dataNotFound: 'Data Tidak Ditemukan'
+  },
+  chat: {
+    personalEmptyState: 'Tidak ada percakapan',
+    communityEmptyState: 'Tidak ada percakapan komunitas',
+    selectUsername: 'Kamu belum membuat percakapan. Yuk, pilih nama pengguna.',
+    chatPeople: 'Chat People',
+    createCommunity: 'Create Community',
+    popUpLeave: {
+      Title: 'Keluar dari grup?',
+      Description: 'Kamu yakin ingin meninggalkan grup?',
+      helpUs: 'Bantu kami untuk memahami masalahmu',
+      continue: 'Lanjutkan'
+    },
+    tapAndHold: 'Ketuk dan tahan untuk merekam dan mengirim pesan suara',
+    newChat: 'Percakapan Baru',
+    willHelp: 'Seeds akan membantu kamu 🙌',
+    startConversation: 'Mulai percakapan sekarang!',
+    textInputPlaceholder: 'Ketik Pesan…',
+    seeMore: 'Lihat Lebih Banyak',
+    links: 'Tautan',
+    commonGroup: `Grup yang sama`,
+    personal: 'Pribadi',
+    community: 'Komunitas',
+    request: 'Request',
+    reject: 'Tolak',
+    accept: 'Terima',
+    newGroup: 'Grup Baru',
+    groupName: 'Nama Grup',
+    enterGroupName: 'Masukan nama grup',
+    description: 'Deskripsi',
+    enterGroupDescription: 'Masukan deskripsi grup',
+    typeGroup: 'Tipe Grup',
+    public: 'Publik',
+    private: 'Pribadi',
+    next: 'Berikutnya',
+    createGroupPopUpText1: 'Yakin ingin membuat group ini?',
+    createGroupPopUpText2: 'Yuk, konfirmasi untuk membuat grup kamu',
+    elaborate: 'Yuk, tulis dan jelaskan masalahmu',
+    emptyChat: 'Opps, belum ada pesan. Mulai percakapan sekarang!',
+    deleteChatTitle: 'Yakin mau menghapus chat ini?',
+    deleteChatSubtitle:
+      'Jika kamu  mengklik ya, riwayat obrolanmu  tidak dapat ditelusuri kembali setelah menghapus obrolan',
+    search: 'Telusuri',
+    mute: 'Bisukan Notifikasi',
+    deleteChat: 'Hapus Pesan',
+    participants: 'Peserta',
+    notes: 'Catatan',
+    seen: 'Dilihat',
+    muteNotificationTitle: 'Yakin mau membisukan notifikasi ini?',
+    muteNotificationSubtitle:
+      'Peserta lain tidak akan tau jika kamu membisukan chat ini'
+  },
+  play: {
+    keystat: 'Key Stats'
+  },
+  openAccount: {
+    noAccountYet: 'Opps, Belum Ada Akun yang Terbuka',
+    stayTuned: 'Nantikan update selanjutnya!',
+    register: 'Daftar Sekarang'
+  },
+
+  playCenter: {
+    text1: 'Permainan Terakhir Saya',
+    text2: 'Papan Peringkat',
+    text3: 'Yuk, cek detail skormu di sini!',
+    text4: 'Durasi',
+    text5: 'hari',
+    text6: 'Cari',
+    text7: 'Daftar Quiz',
+    text8: 'Quiz Teratas',
+    text9: 'Terakhir diupdate : ',
+    text10: 'Peringkatmu saat ini',
+    text11: 'Sistem Penilaian',
+    text12: 'Juara pertama mendapat 500 poin',
+    text13: 'Juara kedua mendapat 300 poin',
+    text14: 'Juara ketiga mendapat 100 poin',
+    text15: 'Peserta 50 poin',
+    text16: 'Musim',
+    text17: 'Kapan saja'
   }
 };

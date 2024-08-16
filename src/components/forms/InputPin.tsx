@@ -21,6 +21,7 @@ interface props {
   title: string;
   subtitle?: string;
   error?: any;
+  isInputPin?: boolean;
 }
 
 const InputPin: React.FC<props> = ({
@@ -30,11 +31,12 @@ const InputPin: React.FC<props> = ({
   deletePinHandler,
   title,
   subtitle,
-  error = ''
+  error = '',
+  isInputPin = true
 }) => {
   const width = useWindowInnerWidth();
 
-  const pin = formRequest.pin;
+  const pin = isInputPin ? formRequest.new_pin : formRequest.pin;
 
   const dotClasses = `absolute w-7 h-7 lg:w-9 lg:h-9 rounded-full border-4 ${
     error !== '' ? 'border-warning-hard' : 'border-[#CCDCDC]'
@@ -44,7 +46,7 @@ const InputPin: React.FC<props> = ({
     !isDisabled ? 'active:bg-gray-300' : 'cursor-not-allowed'
   }`;
 
-  const defaultClasses = `relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:h-[36rem] bg-white ${
+  const defaultClasses = `relative overflow-hidden w-full sm:rounded-[18px] sm:h-[36rem] bg-white ${
     width !== undefined && width < 370
       ? 'h-[38rem]'
       : width !== undefined && width < 400

@@ -3,6 +3,7 @@ import CardCircle from '@/components/circle/CardCircle';
 import { SearchCircle } from '@/components/forms/searchCircle';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import BannerCircleList from '@/containers/circle/main/Banner';
+import { isGuest } from '@/helpers/guest';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -26,7 +27,7 @@ import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
 
-interface CircleInterface {
+export interface CircleInterface {
   id: string;
   name: string;
   avatar: string;
@@ -54,7 +55,7 @@ interface Filter {
 
 const initialFilter = {
   search: '',
-  limit: 10,
+  limit: 15,
   page: 1,
   sort_by: '',
   type: 'my_circle'
@@ -79,9 +80,11 @@ const dropdownValue = [
   }
 ];
 
+const categoryItemClass =
+  'py-1 rounded-full text-center w-fit text-md px-2 mr-8';
+
 const settings: Settings = {
-  centerMode: true,
-  slidesToShow: 4,
+  slidesToShow: 3,
   speed: 500,
   slidesToScroll: 1,
   dots: true,
@@ -116,33 +119,42 @@ const Circle = (): React.ReactElement => {
   const [isLoadingCircle, setIsLoadingCircle] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
   const [circle, setCircle] = useState<CircleInterface[]>([]);
+  // const [circleCategory, setCircleCategory] = useState<any[]>([]);
   const [filter, setFilter] = useState<Filter>(initialFilter);
-  const [activeTab, setActiveTab] = useState<string>('my_circle');
+  const [activeTab, setActiveTab] = useState<string>(
+    isGuest() ? 'all' : 'my_circle'
+  );
+  const [userInfo, setUserInfo] = useState<any>([]);
   const { t } = useTranslation();
   const width = useWindowInnerWidth();
   const router = useRouter();
   const [hasMore, setHasMore] = useState(true);
-  // const [isOpen, setIsOpen] = useState(true);
-  // const handleOpen = (): void => {
-  //   setIsOpen(!isOpen);
-  // };
-  const dataTab = [
-    {
-      label: 'MyCircle',
-      value: 'my_circle',
-      data: circle
-    },
-    {
-      label: 'Joined',
-      value: 'joined',
-      data: circle
-    },
-    {
-      label: 'Circle',
-      value: 'all',
-      data: circle
-    }
-  ];
+  const [activeCategory, setActiveCategory] = useState('All');
+  const dataTab = isGuest()
+    ? [
+        {
+          label: 'Circle',
+          value: 'all',
+          data: circle
+        }
+      ]
+    : [
+        {
+          label: 'MyCircle',
+          value: 'my_circle',
+          data: circle
+        },
+        {
+          label: t('circle.leaderBoard.join'),
+          value: 'joined',
+          data: circle
+        },
+        {
+          label: 'Circle',
+          value: 'all',
+          data: circle
+        }
+      ];
 
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
@@ -151,8 +163,13 @@ const Circle = (): React.ReactElement => {
 
     setFilter(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: value,
+      page: 1
     }));
+
+    if (value === '') {
+      setHasMore(true);
+    }
   };
 
   const handleChangeTab = (value: any): void => {
@@ -166,15 +183,21 @@ const Circle = (): React.ReactElement => {
     }));
   };
 
+  const updateCategory = (newCategory: string): void => {
+    setFilter(prevParams => ({
+      ...prevParams,
+      category: newCategory.toLowerCase(),
+      page: 1
+    }));
+
+    setActiveCategory(newCategory);
+  };
+
   const handleSortBy = (event: any): void => {
     setFilter(prevState => ({
       ...prevState,
       sort_by: event.target.value
     }));
-
-    fetchCircle()
-      .then()
-      .catch(() => {});
   };
 
   const fetchCircleLeaderBoard = async (): Promise<void> => {
@@ -195,75 +218,94 @@ const Circle = (): React.ReactElement => {
     }
   };
 
-  const fetchCircle = async (): Promise<void> => {
+  const fetchCircle = async (page: number, search: string): Promise<void> => {
     try {
-      setIsLoadingCircle(true);
-      getCircle(filter)
-        .then(res => {
-          const data: any[] = res.data;
-          const total = res.metadata.total;
+      const response = await getCircle({ ...filter, page, search });
+      const newData = response.data !== null ? response.data : [];
 
-          if (res.data !== null) {
-            setCircle(prevState => [...prevState, ...data]);
-            if (circle.length + data.length < total) {
-              setHasMore(true);
-            } else {
-              setHasMore(false);
-            }
-          } else {
-            setHasMore(false);
-          }
+      if (filter.page === 1) {
+        setCircle(newData);
+      } else {
+        setCircle(prevData => [...prevData, ...newData]);
+      }
 
-          setIsLoadingCircle(false);
-        })
-        .catch(err => {
-          console.log(err);
-          setIsLoadingCircle(false);
-        });
-    } catch (error: any) {
+      if (newData.length < filter.limit) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching circle data:', error);
+    } finally {
       setIsLoadingCircle(false);
-      console.error('Error fetching circle data:', error.message);
     }
   };
+
+  // Fitur belum berjalan. Creator: Redika
+
+  // const fetchCircleCategory = async (): Promise<void> => {
+  //   try {
+  //     const response = await getCircleCategories({ page: 1, limit: 200 });
+  //     console.log('rez : ', response)
+  //     if (response.data === null) {
+  //       setCircleCategory([]);
+  //     } else {
+  //       setCircleCategory(response.data);
+  //     }
+  //   } catch (error) {
+  //     toast(error, { type: 'error' });
+  //   }
+  // };
+
+  useEffect(() => {
+    void fetchCircleLeaderBoard();
+    setUserInfo([]);
+  }, []);
+
+  // useEffect(() => {
+  //   void fetchCircleCategory();
+  // }, [activeCategory]);
+
+  useEffect(() => {
+    void fetchCircle(1, filter.search);
+  }, [filter, activeTab]);
 
   const handleScroll = (): void => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 20 && !isLoadingCircle) {
-      setFilter(prevState => ({
-        ...prevState,
-        page: prevState.page + 1
-      }));
+    if (
+      scrollTop + clientHeight >= scrollHeight - 10 &&
+      !isLoadingCircle &&
+      hasMore
+    ) {
+      setIsLoadingCircle(true);
+      void fetchCircle(filter.page + 1, filter.search);
+      setFilter(prevFilter => ({ ...prevFilter, page: prevFilter.page + 1 }));
     }
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
 
-  useEffect(() => {
-    fetchCircleLeaderBoard()
-      .then()
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (hasMore) {
-      fetchCircle()
-        .then()
-        .catch(() => {});
-    }
-  }, [activeTab, filter.search, filter.page]);
+  const categories = [
+    'All',
+    'General',
+    'Crypto',
+    'Us Stocks',
+    'Indo Stocks',
+    'Commodities',
+    'Indices',
+    'Forex',
+    'Finance'
+  ];
 
   return (
     <PageGradient defaultGradient className="w-full">
-      <BannerCircleList />
+      {!isGuest() && <BannerCircleList />}
 
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none">
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.leaderBoard.title')}
         </Typography>
@@ -283,15 +325,19 @@ const Circle = (): React.ReactElement => {
           ) : (
             <Slider {...settings}>
               {leaderBoards?.map((data, idx) => (
-                <div key={idx} className="w-full lg:w-1/4">
-                  <CardCircle data={data} cover={data.cover} />
+                <div key={idx} className="w-full lg:w-1/3">
+                  <CardCircle data={data} cover={data.cover} userInfo={null} />
                 </div>
               ))}
             </Slider>
           )}
         </div>
       </CCard>
-      <CCard className="p-5 md:mt-5 md:rounded-lg border-none rounded-none md:mx-7 lg:mx-12">
+      <CCard className="p-5 md:p-5 md:mt-5 md:rounded-lg border-none rounded-none">
+        {width !== undefined && width >= 768 ? (
+          <div className="absolute bg-[#9A76FE] blur-[130px] w-[200px] h-[200px] left-0 top-0 rounded-full"></div>
+        ) : null}
+
         <Typography className="text-base font-semibold text-[#262626] text-left items-start lg:text-xl">
           {t('circle.list.title')}
         </Typography>
@@ -299,7 +345,7 @@ const Circle = (): React.ReactElement => {
           {t('circle.list.description')}
         </Typography>
 
-        {width !== undefined && width < 768 ? (
+        {/* {width !== undefined && width < 768 ? (
           <SearchCircle
             name="search"
             type="outline"
@@ -310,17 +356,22 @@ const Circle = (): React.ReactElement => {
             placeholder="Search"
             value={filter.search}
           />
-        ) : null}
+        ) : null} */}
         <div className="">
           <Tabs value={activeTab}>
-            <TabsHeader
-              className="bg-transparent max-w-sm w-full items-start justify-start left-0 md:max-w-lg"
-              indicatorProps={{
-                className:
-                  'bg-transparent mt-2 border-b-4 border-[#3AC4A0] shadow-none rounded-sm'
-              }}
-            >
-              <div className="flex w-full mx-auto md:mr-10">
+            {/* Tab */}
+            <div className="w-full justify-center">
+              <TabsHeader
+                className={
+                  isGuest()
+                    ? 'bg-transparent w-full mx-auto p-0 rounded-none border-b border-blue-gray-50'
+                    : 'bg-transparent w-full md:w-1/2 mx-auto p-0 rounded-none border-b border-blue-gray-50'
+                }
+                indicatorProps={{
+                  className:
+                    'bg-transparent border-b-2 border-[#3AC4A0] shadow-none rounded-none'
+                }}
+              >
                 {dataTab.map(({ label, value }) => (
                   <Tab
                     key={value}
@@ -328,33 +379,19 @@ const Circle = (): React.ReactElement => {
                     onClick={() => {
                       handleChangeTab(value);
                     }}
-                    className={`${activeTab === value ? 'text-[#3AC4A0]' : ''}`}
+                    className={`${
+                      activeTab === value ? 'text-[#3AC4A0] z-0' : ''
+                    }`}
                   >
                     {label}
                   </Tab>
                 ))}
-              </div>
-              <Button
-                className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full md:w-1/2"
-                onClick={() => {
-                  void router.push('/connect/create-circle');
-                }}
-              >
-                Create Circle +
-              </Button>
-            </TabsHeader>
-            <div className="flex flex-row">
-              <div className="ml-auto mt-3 md:w-1/4">
-                <label htmlFor="sort_by">Sort by:</label>
-                <select name="sort_by" id="sort_by" onChange={handleSortBy}>
-                  {dropdownValue?.map((data, idx) => (
-                    <option key={idx} value={data.value}>
-                      {data.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {width !== undefined && width >= 768 ? (
+              </TabsHeader>
+            </div>
+
+            {/* Searchbar */}
+            {!isGuest() && (
+              <div className="w-full md:w-3/4 justify-center mx-auto mt-5">
                 <SearchCircle
                   name="search"
                   type="outline"
@@ -367,23 +404,103 @@ const Circle = (): React.ReactElement => {
                   placeholder="Search"
                   value={filter.search}
                 />
-              ) : null}
+              </div>
+            )}
+
+            {/* Sort By Create */}
+            <div className="flex flex-row w-full justify-between mt-5">
+              <div>
+                <label htmlFor="sort_by">{t('circle.leaderBoard.sort')}</label>
+                <select name="sort_by" id="sort_by" onChange={handleSortBy}>
+                  {dropdownValue?.map((data, idx) => (
+                    <option key={idx} value={data.value}>
+                      {data.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <Button
+                  className="w-full text-xs font-semibold capitalize bg-[#3AC4A0] rounded-full"
+                  onClick={() => {
+                    void router.push(
+                      isGuest() ? '/auth' : '/connect/create-circle'
+                    );
+                  }}
+                >
+                  Create Circle +
+                </Button>
+              </div>
             </div>
 
-            <TabsBody>
+            {/* Categories */}
+            <div className="mt-4">
+              <Slider
+                slidesToShow={5}
+                slidesToScroll={2}
+                speed={500}
+                infinite={false}
+                className="center"
+                // initialSlide={1}
+                responsive={[
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      dots: false,
+                      slidesToShow: 2,
+                      slidesToScroll: 2
+                    }
+                  },
+                  {
+                    breakpoint: 480,
+                    settings: {
+                      dots: false,
+                      slidesToShow: 2,
+                      slidesToScroll: 1
+                    }
+                  }
+                ]}
+              >
+                {categories.length !== 0
+                  ? categories.map((data, key) => (
+                      <div
+                        key={key}
+                        style={{ marginRight: '-25px', marginLeft: '-25px' }}
+                        className={`${categoryItemClass} ${
+                          activeCategory === data
+                            ? 'bg-[#3AC4A0] text-white'
+                            : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                        }`}
+                        onClick={() => {
+                          updateCategory(data);
+                        }}
+                      >
+                        {data}
+                      </div>
+                    ))
+                  : null}
+              </Slider>
+            </div>
+
+            <TabsBody className="mt-10">
               {dataTab.map(({ value, data }) => (
                 <TabPanel key={value} value={value}>
                   <div className="">
                     <div className="flex flex-wrap">
-                      {circle.length !== 0 ? (
+                      {circle?.length !== 0 ? (
                         circle?.map((data, idx) => (
                           <div
                             className={`w-${
                               idx === 0 ? 'full' : '1/2'
-                            } mb-3 md:w-1/4`}
+                            } mb-3 md:w-1/3`}
                             key={idx}
                           >
-                            <CardCircle data={data} cover={data.cover} />
+                            <CardCircle
+                              data={data}
+                              cover={data.cover}
+                              userInfo={userInfo}
+                            />
                           </div>
                         ))
                       ) : (
@@ -404,7 +521,6 @@ const Circle = (): React.ReactElement => {
           </Tabs>
         </div>
       </CCard>
-      {/* <ModalPost open={isOpen} handleOpen={handleOpen} /> */}
     </PageGradient>
   );
 };

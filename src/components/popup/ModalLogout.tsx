@@ -1,6 +1,8 @@
 'use client';
 import { Logout } from '@/constants/assets/images';
+import TrackerEvent from '@/helpers/GTM';
 import { Typography } from '@material-tailwind/react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { XIcon } from 'public/assets/vector';
@@ -9,18 +11,24 @@ import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
+  userInfo: any;
 }
 
-const ModalLogout: React.FC<Props> = ({ onClose }) => {
+const ModalLogout: React.FC<Props> = ({ onClose, userInfo }) => {
   const { t } = useTranslation();
   const router = useRouter();
-
   const _handleLogout = async (): Promise<void> => {
     window.localStorage.removeItem('accessToken');
     window.localStorage.removeItem('keepMeLoggedIn');
     window.localStorage.removeItem('refreshToken');
     window.localStorage.removeItem('expiresAt');
-    await router.push('/story-boarding');
+    window.localStorage.removeItem('isBannerOpen');
+    await signOut();
+    TrackerEvent({
+      event: `SW_auth_logout`,
+      userData: userInfo
+    });
+    await router.push('/');
   };
 
   return (
@@ -56,7 +64,7 @@ const ModalLogout: React.FC<Props> = ({ onClose }) => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-green-700 rounded-full hover:scale-105 transition ease-out">
+        <div className="bg-[#3AC4A0] mt-5 w-full hover:bg-green-700 rounded-full hover:scale-105 transition ease-out cursor-pointer">
           <Typography
             onClick={_handleLogout}
             className="text-white text-lg font-bold text-center p-2"

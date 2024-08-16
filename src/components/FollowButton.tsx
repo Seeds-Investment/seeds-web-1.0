@@ -7,15 +7,17 @@ import { useTranslation } from 'react-i18next';
 interface Props {
   isFollowed: boolean;
   userId: string;
+  customClass?: string;
 }
 
 export default function FollowButton({
-  isFollowed: isFollowedProp,
-  userId
+  isFollowed,
+  userId,
+  customClass
 }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(isFollowedProp);
+  const [isFollowedd, setIsFollowed] = useState<boolean>(isFollowed);
 
   const onFollow = async (): Promise<void> => {
     try {
@@ -29,15 +31,21 @@ export default function FollowButton({
     }
   };
 
+  const defaultClass = 'mx-auto px-16 rounded-full normal-case mt-5';
+
   return (
     <Button
       disabled={isLoading}
       onClick={onFollow}
-      className={`mx-auto px-16 rounded-full normal-case ${
-        isFollowed || isLoading ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
-      } mt-5`}
+      className={`${customClass === undefined ? defaultClass : customClass}  ${
+        (isFollowedd === undefined ? isFollowed : isFollowedd) || isLoading
+          ? 'bg-[#BDBDBD]'
+          : 'bg-[#3AC4A0]'
+      }`}
     >
-      {isFollowed ? t('followButton.following') : t('followButton.follow')}
+      {(isFollowedd === undefined ? isFollowed : isFollowedd)
+        ? t('followButton.following')
+        : t('followButton.follow')}
     </Button>
   );
 }

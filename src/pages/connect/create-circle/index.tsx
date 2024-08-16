@@ -2,6 +2,7 @@ import FinalModalCircle from '@/components/circle/FinalModalCircle';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { failedCircle } from '@/constants/assets/icons';
+import Toast from '@/containers/circle/[id]/Toast';
 import CirclePremiumChoicePage from '@/containers/circle/create-circle/circlePremiumChoicePage';
 import CreateCirclePage from '@/containers/circle/create-circle/createCirclePage';
 import MembershipPage from '@/containers/circle/create-circle/membershipPage';
@@ -10,6 +11,7 @@ import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { createCircle } from '@/repository/circle.repository';
 import { uploadCloud } from '@/repository/storage';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CircleMembershipFeePage from '../../../containers/circle/create-circle/circleMembershipFeePage';
 import SuccessPage from '../../../containers/circle/create-circle/successPage';
 import TermConditionPage from '../../../containers/circle/create-circle/termConditionPage';
@@ -43,8 +45,11 @@ const initialFormRequest = {
 };
 
 const CreateCircle = (): React.ReactElement => {
+  const { t } = useTranslation();
   const [formRequest, setFormRequest] =
     useState<FormRequestInterface>(initialFormRequest);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [step, setStep] = useState('');
   const [isLoadingSubmit, setIsloadingSubmit] = useState(false);
   const [error, setError] = useState({
@@ -57,10 +62,22 @@ const CreateCircle = (): React.ReactElement => {
   });
   const width = useWindowInnerWidth();
 
-  const handleUploadImage = (event: any): void => {
+  const handleUploadImage = (event: any): any => {
     const target = event.target;
     const name = target.name;
     const files = target.files;
+    const fileMedia = event.target.files[0];
+    const maxFileMediaSize = 5;
+    const sizeFileOnMB: any = parseFloat(
+      (fileMedia?.size / 1024 / 1024).toFixed(20)
+    );
+
+    if (sizeFileOnMB > maxFileMediaSize) {
+      target.value = null;
+      setIsError(true);
+      setErrorMessage(`${t('social.errorState.image1')}`);
+      return null;
+    }
 
     const formData = new FormData();
     formData.append('file', files[0]);
@@ -204,6 +221,14 @@ const CreateCircle = (): React.ReactElement => {
       defaultGradient
       className="relative overflow-hidden flex flex-col items-center sm:p-0 sm:pb-16 w-full"
     >
+      <Toast
+        message={errorMessage}
+        show={isError}
+        type="errorFixed"
+        onClose={(): void => {
+          setIsError(false);
+        }}
+      />
       <CardGradient
         defaultGradient
         className={`relative overflow-hidden w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] bg-white sm:px-20 py-8 ${

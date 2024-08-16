@@ -3,6 +3,7 @@ import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
+import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -30,7 +31,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
   const fetchGif = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await getGifFromGhipy();
+      const { data } = (await getGifFromGhipy()) as GiphyI;
       setData(data);
     } catch (error: any) {
       console.error('Error fetching Gif from ghipy', error);
@@ -80,7 +81,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
   };
 
   return (
-    <div className="hidden md:block bg-white pb-4 w-full">
+    <div className="block bg-white pb-4 w-full">
       <div className="flex h-14 w-[375px]">
         <div className="flex flex-col justify-center">
           <button type="button" onClick={cancelHandler}>
@@ -109,7 +110,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
       {isLoading ? (
         renderLoading()
       ) : (
-        <div className="grid grid-cols-5 gap-3 mt-8">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-8">
           {dataGif?.map((el: any, i: number) => {
             return (
               <div

@@ -1,11 +1,11 @@
 import ArtPagination from '@/components/ArtPagination';
+import Footer from '@/components/layouts/Footer';
 import ArticleCard from '@/components/seedsPedia/articleCard';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import { getArticle } from '@/repository/article.repository';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import Slider from 'react-slick';
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -57,7 +57,7 @@ export default function ArticleList(): React.ReactElement {
       });
 
       if (response.status === 200) {
-        setArticles(response.news);
+        setArticles(response.data);
       } else {
         console.error('Failed to fetch articles:', response);
       }
@@ -65,6 +65,21 @@ export default function ArticleList(): React.ReactElement {
       console.error('Error fetching articles:', error);
     }
   }
+
+  const categoryItemClass =
+    'py-1 rounded-full text-center w-full text-base font-semibold px-2';
+
+  const categories = [
+    'All',
+    'General',
+    'Crypto',
+    'Us Stocks',
+    'Indo Stocks',
+    'Commodities',
+    'Indices',
+    'Forex',
+    'Finance'
+  ];
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -89,7 +104,7 @@ export default function ArticleList(): React.ReactElement {
   const updateCategory = (newCategory: string): void => {
     setParams(prevParams => ({
       ...prevParams,
-      category: newCategory
+      category: newCategory.toLowerCase()
     }));
 
     setActiveCategory(newCategory);
@@ -117,45 +132,43 @@ export default function ArticleList(): React.ReactElement {
   //   }
   // };
 
-  const customGradient = (
-    <>
-      <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
-      {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
-      <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
-      <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
-    </>
-  );
+  // const customGradient = (
+  //   <>
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-6 -left-10 w-64 h-48 bg-seeds-green blur-[110px] rotate-45" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-0 left-6 w-64 h-24 bg-seeds-green blur-[110px]" />
+  //     {/* <span className="-z-10  hidden lg:block -bottom-28 left-16 w-[15rem] h-64 bg-seeds-purple-2 blur-[90px] rotate-45" /> */}
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-[11rem] -right-1 w-96 h-64 bg-seeds-purple-2 blur-[160px] rotate-45 rounded-full" />
+  //     <span className="-z-10 lg:fixed hidden lg:block bottom-36 right-0 w-[10rem] h-64 bg-seeds-purple-2 blur-[160px] rotate-60 rounded-full" />
+  //   </>
+  // );
 
   return (
     <>
       <PageGradient
-        customGradient={customGradient}
+        // customGradient={customGradient}
         className="z-0 relative overflow-hidden flex flex-col justify-center mx-5 lg:mx-20"
       >
-        <div className="flex z-10 flex-col lg:flex-row justify-between">
+        <div className="flex z-10 flex-col lg:flex-col justify-center text-center">
           <div className="flex flex-col">
             <div className="text-3xl font-semibold bg-clip-text text-black">
               {t('articleList.text1')}
             </div>
-            <div className=" text-md font-normal text-gray-500">
+            <div className=" text-base font-normal text-gray-500">
               {t('articleList.text2')}
             </div>
           </div>
-          <div className="lg:flex-col  justify-end mt-4  ">
-            <div className="w-full lg:w-[300px] lg:h-[40px] bg-white rounded-3xl flex border-black border-[1px] px-[8px] justify-between ">
+          <div className="lg:flex-col mb-2 justify-center items-center mt-4">
+            <div className="w-full lg:w-[50%] lg:mx-auto  bg-white rounded-3xl flex border-black border-[1px] p-[8px] justify-between ">
               <input
-                type="search"
-                className=" text-[#7C7C7C] w-full border-none rounded-3xl lg:w-[340px] px-[8px] focus:outline-none lg:h-[38px] "
+                type="text"
+                className=" text-[#7C7C7C] border-none rounded-3xl  px-[8px] focus:outline-none  "
                 placeholder="Search"
-                aria-label="Search"
-                aria-describedby="button-addon2"
                 onChange={e => {
                   setSearchInput(e.target.value);
                 }}
               />
               <svg
-                className="mt-2 me-3"
+                className="mt-1 me-3"
                 width="18"
                 height="18"
                 viewBox="0 0 18 18"
@@ -168,38 +181,48 @@ export default function ArticleList(): React.ReactElement {
                 />
               </svg>
             </div>
-            <div className="lg:flex  justify-end mt-4 ">
-              <div className="hidden lg:block mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-                {t('articleList.text3')}
-              </div>
-              <select
-                className="me-5 bg-transparent mt-1 hidden lg:block text-base font-semibold"
-                aria-label="All"
-              >
-                <option value="option1">All</option>
-                <option value="option2">All</option>
-              </select>
-            </div>
           </div>
         </div>
-        <div className="lg:hidden z-10 flex justify-end mt-5">
-          <div className=" justify-end lg:hidden first-line:mt-2 font-normal text-base mx-3 text-[#7C7C7C]">
-            {t('articleList.text3')}
-          </div>
-          <select
-            className="me-5 justify-end bg-transparent mt-1 lg:hidden text-base font-semibold"
-            aria-label="All"
+        <div className="lg:hidden mt-4 ">
+          <Slider
+            slidesToShow={4}
+            speed={500}
+            initialSlide={0}
+            responsive={[
+              {
+                breakpoint: 768,
+                settings: {
+                  dots: false,
+                  slidesToShow: 4,
+                  slidesToScroll: 1
+                }
+              }
+            ]}
           >
-            <option value="option1">All</option>
-            <option value="option2">All</option>
-          </select>
+            {categories.map((category, key) => (
+              <div
+                key={key}
+                className={`${categoryItemClass} ${
+                  activeCategory === category
+                    ? 'bg-[#3AC4A0] text-white'
+                    : 'text-[#3AC4A0] bg-[#DCFCE4]'
+                }`}
+                onClick={() => {
+                  updateCategory(category);
+                }}
+              >
+                {category}
+              </div>
+            ))}
+          </Slider>
         </div>
-        <div className="lg:flex  justify-center mt-4 gap-2 ">
+
+        <div className="hidden lg:flex  justify-center mt-4 gap-4 ">
           <button
-            className={`py-1 rounded-full text-md px-4 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-4 ${
               activeCategory === 'All'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('All');
@@ -208,10 +231,10 @@ export default function ArticleList(): React.ReactElement {
             All
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'general'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('general');
@@ -220,10 +243,10 @@ export default function ArticleList(): React.ReactElement {
             General
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'crypto'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('crypto');
@@ -233,10 +256,10 @@ export default function ArticleList(): React.ReactElement {
           </button>
 
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'usstocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('usstocks');
@@ -245,10 +268,10 @@ export default function ArticleList(): React.ReactElement {
             Us Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'indostocks'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('indostocks');
@@ -257,10 +280,10 @@ export default function ArticleList(): React.ReactElement {
             Indo Stocks
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'commodities'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('commodities');
@@ -269,10 +292,10 @@ export default function ArticleList(): React.ReactElement {
             Commodities
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'indices'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('indices');
@@ -281,10 +304,10 @@ export default function ArticleList(): React.ReactElement {
             Indices
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'forex'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('forex');
@@ -293,10 +316,10 @@ export default function ArticleList(): React.ReactElement {
             Forex
           </button>
           <button
-            className={`py-1 rounded-full text-md px-2 ${
+            className={`py-1 rounded-full text-base font-semibold mx-2 px-2 ${
               activeCategory === 'finance'
                 ? 'bg-[#3AC4A0] text-white'
-                : 'text-[#3AC4A0] bg-[#F9F9F9]'
+                : 'text-[#3AC4A0] bg-[#DCFCE4]'
             }`}
             onClick={() => {
               updateCategory('finance');
@@ -307,7 +330,13 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="grid z-10 lg:grid-cols-6 gap-4 mt-8">
           {articles.map(article => {
-            return <ArticleCard key={article.id} articleId={article.id} />;
+            return (
+              <ArticleCard
+                key={article.id}
+                articleId={article.id}
+                articleName={article.title}
+              />
+            );
           })}
         </div>
 
@@ -321,7 +350,7 @@ export default function ArticleList(): React.ReactElement {
           />
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

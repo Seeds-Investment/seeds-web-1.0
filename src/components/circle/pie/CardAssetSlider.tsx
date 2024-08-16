@@ -9,17 +9,31 @@ import {
 } from '@material-tailwind/react';
 
 interface props {
-  data: any;
-  changeSlider: any;
+  data: Data;
+  changeSlider: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   index: number;
-  changeIsLock: any;
+  changeIsLock: (e: React.MouseEvent<HTMLInputElement>, index: number) => void;
+  sumAsset: number;
+}
+
+interface Data {
+  exchangeRate: number;
+  exchange_currency: string;
+  id: string;
+  isLock: boolean;
+  logo: string;
+  name: string;
+  price: number;
+  realTicker: string;
+  value: number;
 }
 
 const CardAssetSlider: React.FC<props> = ({
   data,
   changeSlider,
   index,
-  changeIsLock
+  changeIsLock,
+  sumAsset
 }) => {
   return (
     <Card shadow={false} className="w-full my-3 bg-[#F9F9F9]">
@@ -28,27 +42,54 @@ const CardAssetSlider: React.FC<props> = ({
           <Avatar
             size="md"
             variant="circular"
-            src={data.image}
+            src={data.logo}
             alt="tania andrew"
           />
 
           <div className="flex ml-5 w-1/2 flex-col gap-0.5">
-            <Typography className="font-semibold text-base text-[#262626]">
-              {data.quote} / {data.currency}
-            </Typography>
+            <div className="flex flex-row">
+              <Typography className="font-semibold text-base text-[#262626]">
+                {data.realTicker} /
+              </Typography>
+              <Typography className="font-normal ml-1 text-base text-[#262626]">
+                {data.exchange_currency}
+              </Typography>
+            </div>
             <Typography className="font-normal text-sm text-[#7C7C7C]">
               {data.name}
             </Typography>
           </div>
 
           <div className="ml-auto flex flex-col gap-0.5">
-            <Typography className="font-semibold text-base text-[#262626]">
-              Rp {new Intl.NumberFormat().format(data.price)}
-            </Typography>
-            <Typography className="flex font-normal text-sm text-[#3AC4A0]">
-              <ArrowTrendingUpIcon height={20} width={20} className="mr-2" />
-              {data.regularPercentage.toString().substring(0, 4)}
-            </Typography>
+            {data?.price === undefined ? (
+              <>
+                <Typography className="font-semibold text-base text-[#262626]">
+                  Rp {new Intl.NumberFormat().format(data?.price ?? 0)}
+                </Typography>
+                <Typography className="flex font-normal text-sm text-[#3AC4A0]">
+                  <ArrowTrendingUpIcon
+                    height={20}
+                    width={20}
+                    className="mr-2"
+                  />
+                  {data.exchangeRate.toString().substring(0, 4)}
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Typography className="font-semibold text-base text-[#262626]">
+                  Rp {new Intl.NumberFormat().format(data?.price ?? 0)}
+                </Typography>
+                <Typography className="flex font-normal text-sm text-[#3AC4A0]">
+                  <ArrowTrendingUpIcon
+                    height={20}
+                    width={20}
+                    className="mr-2"
+                  />
+                  {data.exchangeRate.toString().substring(0, 4)}
+                </Typography>
+              </>
+            )}
             <div className="bg-white inline-block rounded-full border-gray-300 border px-3 py-1">
               <p className="font-bold text-gray-500 text-center text-sm">
                 {data.value} %
@@ -60,9 +101,11 @@ const CardAssetSlider: React.FC<props> = ({
         <Slider
           color="green"
           className={`text-[#3AC4A0] mt-5 ${
-            data.isLock === true ? 'opacity-50 pointer-events-none' : ''
+            data.isLock ? 'opacity-50 pointer-events-none' : ''
           }`}
-          onChange={e => changeSlider(e, index)}
+          onChange={e => {
+            changeSlider(e, index);
+          }}
           min={0}
           max={100}
           defaultValue={data.value}
@@ -79,7 +122,9 @@ const CardAssetSlider: React.FC<props> = ({
             circleProps={{
               className: 'before:hidden left-0.5 border-none'
             }}
-            onClick={e => changeIsLock(e, index)}
+            onClick={e => {
+              changeIsLock(e, index);
+            }}
             defaultChecked={data.isLock}
           />
         </div>

@@ -1,8 +1,15 @@
 import { chrownCirclePremium } from '@/constants/assets/icons';
-import { DocumentIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import TrackerEvent from '@/helpers/GTM';
+import { isGuest } from '@/helpers/guest';
+import {
+  DocumentTextIcon,
+  HandThumbUpIcon,
+  UsersIcon
+} from '@heroicons/react/24/outline';
 import { Avatar, Card, CardBody, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 interface Circle {
   id: string;
@@ -24,10 +31,12 @@ interface Circle {
 
 export default function CardCircle({
   data,
-  cover
+  cover,
+  userInfo
 }: {
   data: Circle;
   cover: string;
+  userInfo: any;
 }): React.ReactElement {
   const router = useRouter();
   return (
@@ -38,8 +47,15 @@ export default function CardCircle({
       {data?.cover !== undefined && (
         <div
           onClick={() => {
-            router.push(`/connect/post/${data.id}`).catch(error => {
-              console.log(error);
+            router
+              .push(isGuest() ? '/auth' : `/connect/post/${data.id}`)
+              .catch(error => {
+                toast(error, { type: 'error' });
+              });
+            TrackerEvent({
+              event: `SW_circle_page_detail`,
+              userData: userInfo,
+              circleData: data
             });
           }}
           className="cursor-pointer"
@@ -83,20 +99,20 @@ export default function CardCircle({
               </Typography>
 
               <div className="flex flex-row text-center">
-                <div className="flex flex-row mr-3">
-                  <UserGroupIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <HandThumbUpIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_rating}
                   </Typography>
                 </div>
-                <div className="flex flex-row mr-3">
-                  <UserGroupIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <UsersIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_member}
                   </Typography>
                 </div>
-                <div className="flex flex-row mr-3">
-                  <DocumentIcon className="w-5 h-5 text-[#27A590] mr-2" />
+                <div className="flex flex-row items-center mr-3">
+                  <DocumentTextIcon className="w-5 h-5 text-[#27A590] mr-1" />
                   <Typography className="text-xs font-normal text-white">
                     {data.total_post}
                   </Typography>

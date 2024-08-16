@@ -1,6 +1,8 @@
 import dot_menu from '@/assets/circle-page/3dot.svg';
 import notification from '@/assets/circle-page/notification.svg';
 import pencil from '@/assets/circle-page/pencil.svg';
+import Loading from '@/components/popup/Loading';
+import TrackerEvent from '@/helpers/GTM';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import {
   ArrowPathIcon,
@@ -16,7 +18,10 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
 interface props {
   setIsLoading: any;
   dataCircle: any;
@@ -26,22 +31,24 @@ interface props {
   handleEdit: any;
   isJoined: boolean;
   setIsJoined: any;
+  userInfo: any;
+  circleId: any;
 }
 
 const CirclePostSection1: React.FC<props> = ({
   dataCircle,
-  setIsLoading,
   openModalDelete,
   openModalLeave,
   openModalReport,
   handleEdit,
   isJoined,
-  setIsJoined
+  setIsJoined,
+  userInfo,
+  circleId
 }) => {
   const { t } = useTranslation();
-
-  // const [payment, setPayment] = useState<any>({});
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleJoin = async (): Promise<void> => {
     setIsLoading(true);
@@ -59,11 +66,11 @@ const CirclePostSection1: React.FC<props> = ({
         router
           .push(`/connect/payment/${dataCircle?.id as string}`)
           .catch(error => {
-            console.log(error);
+            toast.error(`${error as string}`);
           });
       }
-    } catch (error: any) {
-      console.error('Error Join Circle:', error.message);
+    } catch (error) {
+      toast.error(`Error Join Circle: ${error as string}`);
     } finally {
       setIsLoading(false);
     }
@@ -71,14 +78,15 @@ const CirclePostSection1: React.FC<props> = ({
 
   return (
     <div className="flex flex-col bg-white rounded-xl">
-      <div className="flex flex-col rounded-b-3xl px-14 py-8">
+      {isLoading && <Loading />}
+      <div className="flex flex-col rounded-b-3xl md:px-14 pt-4">
         <button className="sm:block hidden bg-white rounded-full relative top-10 w-fit left-[90%] md:left-[92%] lg:left-[93%] xl:left-[94%] 2xl:left-[95%] p-1">
           <Image alt="pencil-edit" src={pencil} className="h-[13px] w-[14px]" />
         </button>
         <img
           alt="bg-circle"
           src={dataCircle?.cover}
-          className="md:max-h-[300px] max-h-[200px] 2xl:w-[100%] object-cover sm:rounded-t-3xl"
+          className="md:max-h-[200px] max-h-[150px] 2xl:w-[100%] object-cover sm:rounded-t-3xl"
         />
         <div className="bg-white left-5 rounded-full relative bottom-14 w-fit">
           <img
@@ -90,14 +98,14 @@ const CirclePostSection1: React.FC<props> = ({
         <div className="md:hidden flex justify-end h-fit gap-4 relative bottom-20">
           {isJoined ? (
             <button className="cursor-default bg-neutral-ultrasoft w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-              Joined
+              {t('circleDetail.statusJoined')}
             </button>
           ) : (
             <button
               onClick={handleJoin}
               className="bg-seeds-button-green w-[30%] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
             >
-              Join
+              {t('circleDetail.statusNotJoined')}
             </button>
           )}
           <div className="flex flex-col justify-center">
@@ -118,33 +126,42 @@ const CirclePostSection1: React.FC<props> = ({
                   </button>
                 </MenuHandler>
                 <MenuList>
-                  <MenuItem onClick={handleEdit}>
-                    <div className="flex flex-row">
-                      <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                      {t('circleSetting.popUpCircle.option1')}
-                    </div>
-                  </MenuItem>
-                  <hr />
-                  <MenuItem onClick={openModalDelete}>
-                    <div className="flex flex-row text-[#DD2525]">
-                      <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                      {t('circleSetting.popUpCircle.option2')}
-                    </div>
-                  </MenuItem>
-                  <hr />
+                  {userInfo?.id === dataCircle?.owner?.id && (
+                    <>
+                      <MenuItem onClick={handleEdit}>
+                        <div className="flex flex-row">
+                          <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                          {t('circleSetting.popUpCircle.option1')}
+                        </div>
+                      </MenuItem>
+                      <hr />
+                      <MenuItem onClick={openModalDelete}>
+                        <div className="flex flex-row text-[#DD2525]">
+                          <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                          {t('circleSetting.popUpCircle.option2')}
+                        </div>
+                      </MenuItem>
+                      <hr />
+                    </>
+                  )}
                   <MenuItem onClick={openModalReport}>
                     <div className="flex flex-row text-[#DD2525]">
                       <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                       {t('circleSetting.popUpCircle.option3')}
                     </div>
-                  </MenuItem>
-                  <hr />
-                  <MenuItem onClick={openModalLeave}>
-                    <div className="flex flex-row text-[#DD2525]">
-                      <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                      {t('circleSetting.popUpCircle.option4')}
-                    </div>
-                  </MenuItem>
+                  </MenuItem>=
+                  {
+                    ((userInfo?.id !== dataCircle?.owner?.id) && isJoined) &&
+                      <>
+                        <hr />
+                        <MenuItem onClick={openModalLeave}>
+                          <div className="flex flex-row text-[#DD2525]">
+                            <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                            {t('circleSetting.popUpCircle.option4')}
+                          </div>
+                        </MenuItem>
+                      </>
+                  }
                 </MenuList>
               </Menu>
             </div>
@@ -162,7 +179,7 @@ const CirclePostSection1: React.FC<props> = ({
               </h1>
             </div>
             {/* avatar and members section */}
-            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-8">
+            <div className="flex justify-between md:max-w-[360px] xl:max-w-[500px] pb-4">
               <div className="flex justify-start">
                 <img
                   alt="bg-avatar-sm"
@@ -175,7 +192,9 @@ const CirclePostSection1: React.FC<props> = ({
               </div>
               <div className="flex justify-center flex-col">
                 <h1 className="text-neutral-soft text-xs font-normal font-poppins pl-2">
-                  {dataCircle?.total_member}
+                  {`${dataCircle?.total_member as string} ${t(
+                    'circleDetail.member'
+                  )}`}
                 </h1>
               </div>
             </div>
@@ -210,7 +229,7 @@ const CirclePostSection1: React.FC<props> = ({
                       </h1>
                     </div>
                     <h1 className="font-poppins text-seeds-purple">
-                      IDR {dataCircle.premium_fee}
+                      {userInfo?.preferredCurrency} {dataCircle.premium_fee}
                     </h1>
                   </div>
                 </div>
@@ -218,14 +237,21 @@ const CirclePostSection1: React.FC<props> = ({
               <div className="flex gap-2">
                 {isJoined ? (
                   <button className="bg-neutral-ultrasoft cursor-default w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-neutral-soft">
-                    Joined
+                    {t('circleDetail.statusJoined')}
                   </button>
                 ) : (
                   <button
-                    onClick={handleJoin}
+                    onClick={async () => {
+                      await handleJoin();
+                       TrackerEvent({
+                         event: `SW_circle_btn_join_circle`,
+                         userData: userInfo,
+                         circleData: dataCircle
+                       });
+                    }}
                     className="bg-seeds-button-green w-[150px] lg:w-[260px] py-2 rounded-full font-poppins font-semibold text-xs text-white"
                   >
-                    Join
+                    {t('circleDetail.statusNotJoined')}
                   </button>
                 )}
                 <div className="flex flex-col justify-center">
@@ -246,33 +272,42 @@ const CirclePostSection1: React.FC<props> = ({
                         </button>
                       </MenuHandler>
                       <MenuList>
-                        <MenuItem onClick={handleEdit}>
-                          <div className="flex flex-row">
-                            <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
-                            {t('circleSetting.popUpCircle.option1')}
-                          </div>
-                        </MenuItem>
-                        <hr />
-                        <MenuItem onClick={openModalDelete}>
-                          <div className="flex flex-row text-[#DD2525]">
-                            <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
-                            {t('circleSetting.popUpCircle.option2')}
-                          </div>
-                        </MenuItem>
-                        <hr />
+                        {userInfo?.id === dataCircle?.owner?.id && (
+                          <>
+                            <MenuItem onClick={handleEdit}>
+                              <div className="flex flex-row">
+                                <PencilSquareIcon className="w-5 h-5 text-[#3AC4A0] mr-2" />
+                                {t('circleSetting.popUpCircle.option1')}
+                              </div>
+                            </MenuItem>
+                            <hr />
+                            <MenuItem onClick={openModalDelete}>
+                              <div className="flex flex-row text-[#DD2525]">
+                                <TrashIcon className="w-5 h-5 text-[#DD2525] mr-2 " />
+                                {t('circleSetting.popUpCircle.option2')}
+                              </div>
+                            </MenuItem>
+                            <hr />
+                          </>
+                        )}
                         <MenuItem onClick={openModalReport}>
                           <div className="flex flex-row text-[#DD2525]">
                             <ExclamationCircleIcon className="w-5 h-5 text-[#DD2525] mr-2" />
                             {t('circleSetting.popUpCircle.option3')}
                           </div>
                         </MenuItem>
-                        <hr />
-                        <MenuItem onClick={openModalLeave}>
-                          <div className="flex flex-row text-[#DD2525]">
-                            <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
-                            {t('circleSetting.popUpCircle.option4')}
-                          </div>
-                        </MenuItem>
+                        {
+                          ((userInfo?.id !== dataCircle?.owner?.id) && isJoined) &&
+                            <>
+                              <hr />
+                              <MenuItem onClick={openModalLeave}>
+                                <div className="flex flex-row text-[#DD2525]">
+                                  <ArrowPathIcon className="w-5 h-5 text-[#DD2525] mr-2" />
+                                  {t('circleSetting.popUpCircle.option4')}
+                                </div>
+                              </MenuItem>
+                            </>
+                        }
                       </MenuList>
                     </Menu>
                   </div>

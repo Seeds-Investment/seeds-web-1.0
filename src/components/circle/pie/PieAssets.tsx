@@ -1,9 +1,10 @@
 import { SearchCircle } from '@/components/forms/searchCircle';
-import { assetAll } from '@/repository/asset.repository';
+import { getMarketList } from '@/repository/market.repository';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Avatar, Button, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CardAsset from './CardAsset';
 
 interface props {
@@ -24,27 +25,14 @@ interface AssetInterface {
   regularPercentage: number;
 }
 
-const initialFilterAsset = {
-  limit: 10,
+const initialFilterMarket = {
   page: 1,
-  sortBy: '',
-  search: ''
+  limit: 10,
+  currency: '',
+  search: '',
+  type: 'ALL',
+  sub_type: 'ALL'
 };
-
-const tabValue = [
-  {
-    label: 'Overview',
-    value: ''
-  },
-  {
-    label: 'Stocks',
-    value: 'stock'
-  },
-  {
-    label: 'Cryptos',
-    value: 'crypto'
-  }
-];
 
 const PieAssets: React.FC<props> = ({
   changeToAsset,
@@ -53,10 +41,24 @@ const PieAssets: React.FC<props> = ({
   removeSelectedAsset,
   setPages
 }) => {
-  const [asset, setAsset] = useState<AssetInterface[]>();
-  const [filterAsset, setFilterAsset] = useState(initialFilterAsset);
+  const { t } = useTranslation();
+  const [asset, setAsset] = useState<any[]>();
+  const [filterAsset, setFilterAsset] = useState(initialFilterMarket);
   const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(false);
-
+  const tabValue = [
+    {
+      label: t('social.pieSection.overview'),
+      value: 'ALL'
+    },
+    {
+      label: t('social.pieSection.stocks'),
+      value: 'STOCK'
+    },
+    {
+      label: t('social.pieSection.crypto'),
+      value: 'CRYPTO'
+    }
+  ];
   const handleChangeFilter = (event: any): void => {
     const target = event.target;
     const value = target.value;
@@ -71,9 +73,9 @@ const PieAssets: React.FC<props> = ({
   const fetchTopAsset = async (): Promise<void> => {
     try {
       setIsLoadingAsset(true);
-      assetAll(filterAsset)
+      getMarketList(filterAsset)
         .then(res => {
-          setAsset(res.result);
+          setAsset(res.marketAssetList);
           setIsLoadingAsset(false);
         })
         .catch(err => {
@@ -104,7 +106,9 @@ const PieAssets: React.FC<props> = ({
   return (
     <div>
       <div>
-        <h1 className="font-bold text-xl text-black">Select Asset</h1>
+        <h1 className="font-bold text-xl text-black">
+          {t('social.pieSection.selectAsset')}
+        </h1>
       </div>
       <button
         className="absolute top-5 right-5 text-gray-600 hover:text-gray-800 text-md"
@@ -123,7 +127,7 @@ const PieAssets: React.FC<props> = ({
                 <Avatar
                   size="md"
                   variant="circular"
-                  src={data.image}
+                  src={data.logo}
                   alt="Avatar"
                   className="mb-2"
                 />
@@ -140,13 +144,11 @@ const PieAssets: React.FC<props> = ({
         <div className="flex flex-row w-full gap-2 items-center justify-start my-2 text-sm">
           {tabValue.map((data, idx) => (
             <Button
-              variant={
-                filterAsset.sortBy === data.value ? 'filled' : 'outlined'
-              }
-              name="sortBy"
+              variant={filterAsset.type === data.value ? 'filled' : 'outlined'}
+              name="type"
               value={data.value}
               className={`${
-                filterAsset.sortBy === data.value
+                filterAsset.type === data.value
                   ? 'bg-[#3AC4A0] text-white'
                   : 'border-[#3AC4A0] text-[#3AC4A0]'
               }`}

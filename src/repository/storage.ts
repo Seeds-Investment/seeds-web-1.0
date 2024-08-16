@@ -22,8 +22,8 @@ export const uploadCloud = async (formData: any): Promise<any> => {
 const post = async (url: string, payload: any, headers = {}): Promise<any> => {
   return await axios({
     method: 'POST',
-    url: url,
+    url,
     data: payload,
-    headers: headers
+    headers
   });
 };

@@ -3,6 +3,7 @@ import {
   getGifFromGhipy,
   searchGifFromGhipy
 } from '@/repository/circleDetail.repository';
+import { type GiphyI } from '@/utils/interfaces/chat.interface';
 import Image from 'next/image';
 import { Search } from 'public/assets/vector';
 import { useEffect, useState } from 'react';
@@ -14,9 +15,18 @@ interface form {
 interface props {
   setPages: any;
   form: form;
+  isTooMuch: boolean;
+  setErrorMessage: any;
+  setIsError: any;
 }
 
-const GifPost: React.FC<props> = ({ setPages, form }) => {
+const GifPost: React.FC<props> = ({
+  setPages,
+  form,
+  isTooMuch,
+  setErrorMessage,
+  setIsError
+}) => {
   const [dataGif, setData]: any = useState();
   const [search, setSearch] = useState({
     searchGif: ''
@@ -29,7 +39,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   const fetchGif = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { data } = await getGifFromGhipy();
+      const { data } = (await getGifFromGhipy()) as GiphyI;
       setData(data);
     } catch (error: any) {
       console.error('Error fetching Gif from ghipy', error);
@@ -50,7 +60,12 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
   }, []);
 
   const handlePostGif = (url: any): any => {
-    form.media_urls.push(url);
+    if (isTooMuch) {
+      setIsError(true);
+      setErrorMessage('You can only post maximum 4 images, video and gif');
+    } else {
+      form.media_urls.push(url);
+    }
     setPages('text');
   };
 
@@ -61,8 +76,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
     setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
   };
 
-  const searchGhipy = async (event: any): Promise<void> => {
-    event.preventDefault();
+  const searchGhipy = async (): Promise<void> => {
     try {
       setIsLoading(true);
       const { data } = await searchGifFromGhipy(search.searchGif);
@@ -74,8 +88,17 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
     }
   };
 
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      void searchGhipy();
+    }
+  };
+
   return (
-    <div className="hidden md:block bg-white pl-[5vh] w-full">
+    <div className="block bg-white pl-[5vh] w-full">
       <div className="flex h-14 w-[375px]">
         <div className="flex flex-col justify-center">
           <button type="button" onClick={cancelHandler}>
@@ -90,7 +113,7 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
         <div className="flex justify-center flex-col relative left-10">
           <Image alt="Search" src={Search} className="h-6 w-6 object-cover" />
         </div>
-        <form onSubmit={searchGhipy}>
+        <form>
           <input
             type="text"
             name="searchGif"
@@ -98,13 +121,14 @@ const GifPost: React.FC<props> = ({ setPages, form }) => {
             onChange={handleFormChange}
             className="h-10 pl-12 focus:outline-none placeholder:text-neutral-soft rounded-xl w-[350px] border border-neutral-ultrasoft"
             placeholder="Memes Stock"
+            onKeyDown={handleKeyDown}
           />
         </form>
       </div>
       {isLoading ? (
         renderLoading()
       ) : (
-        <div className="grid grid-cols-5 gap-3 mt-8">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-8">
           {dataGif?.map((el: any, i: number) => {
             return (
               <div

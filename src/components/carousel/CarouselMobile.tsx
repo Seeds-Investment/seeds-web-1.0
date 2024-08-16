@@ -6,7 +6,25 @@ const handleItemClick = (link: string): void => {
   window.open(link, '_blank');
 };
 
-const CarouselMobile: React.FC = () => {
+interface Banner {
+  id: string;
+  name: string;
+  external_url: string;
+  image_url: string;
+  type: string;
+  title: string;
+  description: string;
+  tnc: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+}
+interface props {
+  banner: Banner[];
+}
+
+const CarouselMobile: React.FC<props> = ({ banner }) => {
   return (
     <Carousel
       loop={true}
@@ -77,66 +95,21 @@ const CarouselMobile: React.FC = () => {
         </IconButton>
       )}
     >
-      <Image
-        src={`/assets/mobile/carousel-1.png`}
-        alt={`image 1`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-        onClick={(): void => {
-          handleItemClick(
-            'https://play.google.com/store/apps/details?id=com.seeds.investment'
-          );
-        }}
-      />
-      <Image
-        src={`/assets/mobile/carousel-2.png`}
-        alt={`image 2`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-        onClick={(): void => {
-          handleItemClick('https://gplfantasy.app.link/SeedsGB');
-        }}
-      />
-      <Image
-        src={`/assets/mobile/carousel-3.png`}
-        alt={`image 3`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-        onClick={(): void => {
-          handleItemClick('https://gplfantasy.app.link/SeedsB');
-        }}
-      />
-      <Image
-        src={`/assets/mobile/carousel-4.png`}
-        alt={`image 4`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-      />
-      <Image
-        src={`/assets/mobile/carousel-5.png`}
-        alt={`image 5`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-      />
-      <Image
-        src={`/assets/mobile/carousel-6.png`}
-        alt={`image 6`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-      />
-      <Image
-        src={`/assets/mobile/carousel-7.png`}
-        alt={`image 7`}
-        width={300}
-        height={500}
-        className="h-full w-full object-cover"
-      />
+      {banner?.map((el: Banner, i: number) => {
+        return (
+          <Image
+            key={`${el.id} ${i} `}
+            src={el.image_url}
+            alt={el.name}
+            width={300}
+            height={500}
+            className="h-full w-full object-cover"
+            onClick={(): void => {
+              handleItemClick(el.external_url);
+            }}
+          />
+        );
+      })}
     </Carousel>
   );
 };

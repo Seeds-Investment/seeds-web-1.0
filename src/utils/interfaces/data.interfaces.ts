@@ -27,3 +27,15 @@ export interface INewsExternal {
   url: string;
   urlToImage: string;
 }
+
+export interface UserData {
+  name: string;
+  seedsTag: string;
+  email: string;
+  pin: string;
+  avatar: string;
+  bio: string;
+  birthDate: string;
+  phone: string;
+  _pin: string;
+}

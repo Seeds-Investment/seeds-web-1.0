@@ -15,24 +15,20 @@ import type { ISeedsInformationList } from '../interfaces/data.interfaces';
 
 export const socialMedia = [
   {
-    icon: facebook,
-    url: 'https://www.facebook.com'
-  },
-  {
     icon: linkedin,
     url: 'https://www.linkedin.com/company/finance-seeds/'
   },
   // {
   //   icon: telegram,
-  //   url: ''
+  //   url: '/'
   // },
-  {
-    icon: whatsapp,
-    url: 'https://wa.me/08118883519'
-  },
   {
     icon: instagram,
     url: 'https://instagram.com/seeds_finance'
+  },
+  {
+    icon: facebook,
+    url: 'https://facebook.com/seeds.finance'
   },
   {
     icon: twitter,
@@ -44,7 +40,7 @@ export const socialMedia = [
   },
   {
     icon: youtube,
-    url: 'https://youtube.com/@seeds1234'
+    url: 'https://www.youtube.com/@seeds_id'
   }
 ];
 
@@ -53,6 +49,10 @@ export const seedsInformation: ISeedsInformationList = {
     {
       name: 'About Us',
       url: '/about-us'
+    },
+    {
+      name: 'Career',
+      url: 'https://bit.ly/CareerSeeds'
     }
     // {
     //   name: 'Refferal Program',
@@ -82,10 +82,10 @@ export const seedsInformation: ISeedsInformationList = {
     }
   ],
   Support: [
-    {
-      name: 'Ask Seeds',
-      url: ''
-    },
+    // {
+    //   name: 'Ask Seeds',
+    //   url: ''
+    // },
     {
       name: 'FAQs',
       url: '/faq'
@@ -116,10 +116,10 @@ export const downloadOurApp = [
     url: 'https://play.google.com/store/apps/details?id=com.seeds.investment',
     icon: playstore,
     rate: '5.0',
-    reviews: '1000k+'
+    reviews: '2k+'
   },
   {
-    url: '',
+    url: 'https://pse.kominfo.go.id/tdpse-detail/3709',
     icon: kominfo
   },
   {

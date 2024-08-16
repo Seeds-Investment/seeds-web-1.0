@@ -1,5 +1,5 @@
-import { ArrowUpCircleIcon } from '@heroicons/react/24/outline';
 import { Card, Typography } from '@material-tailwind/react';
+import Image from 'next/image';
 
 interface props {
   data: Income;
@@ -17,7 +17,13 @@ const CardIncome: React.FC<props> = ({ data }) => {
     <Card className="flex flex-row w-full p-4 mb-5 shadow-none rounded-none bg-[#F9F9F9]">
       <div className="w-1/2 flex flex-row items-center justify-start">
         <div>
-          <ArrowUpCircleIcon className="w-7 h-7 text-[#27A590] mr-2" />
+          <Image
+            src={data.avatar}
+            alt={data.name}
+            width={100}
+            height={100}
+            className="w-7 h-7 mr-2 rounded-full"
+          />
         </div>
         <div>
           <Typography className="text-sm text-left font-semibold text-[#262626]">

@@ -1,7 +1,12 @@
+import { isGuest } from '@/helpers/guest';
 import baseAxios from '@/utils/common/axios';
 import { isEmptyString, isUndefindOrNull } from '@/utils/common/utils';
 
-const authService = baseAxios(`https://seeds-dev-gcp.seeds.finance/circle/v1`);
+const authService = baseAxios(
+  `${
+    process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
+  }/circle/v1`
+);
 const circleService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
@@ -20,14 +25,14 @@ export const getTrendingCircle = async (): Promise<any> => {
 export const getCircleLeaderBoard = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
+  if (!isGuest() && (accessToken === null || accessToken === '')) {
     return await Promise.resolve('Access token not found');
   }
 
   return await circleService.get(`/list/leaderboard`, {
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+      Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
     }
   });
 };
@@ -35,7 +40,7 @@ export const getCircleLeaderBoard = async (): Promise<any> => {
 export const getCircle = async (params: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
+  if (!isGuest() && (accessToken === null || accessToken === '')) {
     return await Promise.resolve('Access token not found');
   }
 
@@ -47,7 +52,7 @@ export const getCircle = async (params: any): Promise<any> => {
     params,
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+      Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
     }
   });
 };
@@ -88,7 +93,7 @@ export const updateCircle = async (
 export const getCircleCategories = async (params: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
+  if (!isGuest() && (accessToken === null || accessToken === '')) {
     return await Promise.resolve('Access token not found');
   }
 
@@ -100,7 +105,7 @@ export const getCircleCategories = async (params: any): Promise<any> => {
     params,
     headers: {
       Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+      Authorization: isGuest() ? '' : `Bearer ${accessToken ?? ''}`
     }
   });
 };

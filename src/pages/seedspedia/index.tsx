@@ -18,7 +18,7 @@ const SeedsPedia: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center mt-20">
       <Tabs value={activeTab}>
         <TabsHeader
           className="w-[15%] text-center justify-center mx-auto  rounded-none bg-transparent p-0"

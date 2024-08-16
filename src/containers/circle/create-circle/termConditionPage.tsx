@@ -26,7 +26,7 @@ const TermConditionPage = ({
         </button>
       </div>
       <div
-        className={`relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 md:mx-3 lg:mx-[8rem] xl:mx-[22rem] bg-white`}
+        className={`relative justify-center text-justify bg-opacity-100 border-white border-4 p-6 bg-white`}
       >
         <div className="font-poppins font-normal leading-7 text-base text-neutral-500 flex flex-col items-center">
           {t('termAndCondition.title')}

@@ -44,7 +44,8 @@ jobs:
           file: Dockerfile.prod
           push: true
           tags:
-            asia-southeast2-docker.pkg.dev/project-01-387706/seeds/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
+            asia-southeast2-docker.pkg.dev/project-01-387706/seeds/${{
+            env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
 
       - name: get-credentials GKE
         uses: google-github-actions/get-gke-credentials@v1
@@ -59,7 +60,7 @@ jobs:
           export CONTAINER_NAME=web
           kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n production
 
-      - name: Update secret
-        run: |
-          kubectl delete secret web-secret -n production
-          kubectl create secret generic web-secret --from-file=environment/.env-prod -n production
+      # - name: Update secret
+      #   run: |
+      #     kubectl delete secret web-secret -n production
+      #     kubectl create secret generic web-secret --from-file=environment/.env-prod -n production

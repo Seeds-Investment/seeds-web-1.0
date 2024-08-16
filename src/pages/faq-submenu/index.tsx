@@ -12,6 +12,7 @@ import {
   Disclosure,
   FileTextIcon,
   PrivacyPolicy,
+  Refund,
   SosmedGuide
 } from 'public/assets/vector';
 import type { ReactNode } from 'react';
@@ -73,6 +74,19 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
       },
       {
         label: t('legal.title4'),
+        altStartAdornment: 'refund-policy',
+        startAdornment: Refund,
+        onClick: async (): Promise<void> => {
+          try {
+            await router.push('/faq-submenu/refund-policy');
+          } catch (error) {
+            console.error('Error navigating to FAQ:', error);
+          }
+        },
+        extraClasses: submenuClasses
+      },
+      {
+        label: t('legal.title5'),
         altStartAdornment: 'social-media-guide',
         startAdornment: SosmedGuide,
         onClick: async (): Promise<void> => {
@@ -85,7 +99,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         extraClasses: submenuClasses
       },
       {
-        label: t('legal.title5'),
+        label: t('legal.title6'),
         altStartAdornment: 'circle-membership',
         startAdornment: CircleMembership,
         onClick: async (): Promise<void> => {

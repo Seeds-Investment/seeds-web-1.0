@@ -7,8 +7,8 @@ const relativeUrl = 'payment/v1';
 
 const paymentService = baseAxios(`${baseUrl}/${relativeUrl}`);
 
-export const getPaymentList = async (): Promise<any> => {
-  return await paymentService.get(`/list`);
+export const getPaymentList = async (currency?: string): Promise<any> => {
+  return await paymentService.get(`/payment/list?currency=${currency ?? ''}`);
 };
 
 export const getPaymentDetail = async (id: string): Promise<any> => {
@@ -27,4 +27,10 @@ export const getPaymentDetail = async (id: string): Promise<any> => {
 export const getHowToPay = async (url: string): Promise<any> => {
   const axios = baseAxios(url);
   return await axios.get('');
+};
+
+export const getWithdrawalList = async (currency?: string): Promise<any> => {
+  return await paymentService.get(
+    `/withdrawal/list?currency=${currency ?? 'IDR'}`
+  );
 };

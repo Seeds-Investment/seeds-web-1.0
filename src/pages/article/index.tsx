@@ -1,10 +1,11 @@
 import ArticleCard from '@/components/article/ArticleList';
+import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import Section6 from '@/containers/landing/Section6';
 import useService from '@/hooks/useFetch';
 import { getArticle } from '@/repository/article.repository';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 export interface ArticleListRoot {
   promoCodeList: Article[];
   metadata: Metadata;
@@ -178,8 +179,8 @@ export default function ArticleList(): React.ReactElement {
                   <path
                     d="M12.5 15L7.5 10L12.5 5"
                     stroke="#7C7C7C"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>
@@ -199,8 +200,8 @@ export default function ArticleList(): React.ReactElement {
                   <path
                     d="M7.5 15L12.5 10L7.5 5"
                     stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </div>
@@ -208,7 +209,7 @@ export default function ArticleList(): React.ReactElement {
           </div>
         </div>
       </PageGradient>
-      <Section6 />
+      <Footer />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import CCard from '@/components/CCard';
 import { freeCircle, premiumCircle } from '@/constants/assets/icons';
-import { getCircleCategories } from '@/repository/circle.repository';
+import { type CircleInterface } from '@/pages/connect';
+import { getCircle, getCircleCategories } from '@/repository/circle.repository';
 import { getHashtag } from '@/repository/hashtag';
 import LanguageContext from '@/store/language/language-context';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
@@ -16,6 +17,7 @@ import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CreatableSelect from 'react-select/creatable';
+import { toast } from 'react-toastify';
 import ModalMembershipType from './modalMembershipType';
 
 interface HashtagInterface {
@@ -33,6 +35,14 @@ interface OptionType {
   value: string;
   label: string;
 }
+
+const initialFilter = {
+  search: '',
+  limit: 20,
+  page: 1,
+  sort_by: '',
+  type: 'my_circle'
+};
 
 const customStyles = {
   multiValue: (base: any, state: any) => ({
@@ -74,6 +84,30 @@ const CreateCirclePage = ({
   const [isAgree, setIsAgree] = useState();
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
+  const [isLoadingCircle, setIsLoadingCircle] = useState<boolean>(false);
+  const [isNameDuplicate, setIsNameDuplicate] = useState<boolean>(false);
+  const [circleNameArray, setCircleNameArray] = useState<CircleInterface[]>([]);
+
+  useEffect(() => {
+    fetchHashtags()
+      .then()
+      .catch(() => {});
+
+    fetchCircleCategory()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    void fetchMyCircle();
+  }, []);
+
+  useEffect(() => {
+    const isDuplicate = (): boolean => {
+      return circleNameArray.some((item) => item?.name === formRequest?.name);
+    };
+    setIsNameDuplicate(isDuplicate())
+  }, [circleNameArray, formRequest]);
 
   const handleOpenModalMembership = (): void => {
     setOpenModalMembership(!openModalMembership);
@@ -98,10 +132,10 @@ const CreateCirclePage = ({
           setHashtag(mappedOptions);
         })
         .catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
         });
-    } catch (error: any) {
-      console.error('Error fetching circle data:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching circle data: ${error as string}`);
     }
   };
 
@@ -117,26 +151,29 @@ const CreateCirclePage = ({
           setCategories(mappedOptions);
         })
         .catch(err => {
-          console.log(err);
+          toast.error(`${err as string}`);
         });
-    } catch (error: any) {
-      console.error('Error fetching circle data:', error.message);
+    } catch (error) {
+      toast.error(`Error fetching circle data: ${error as string}`);
     }
   };
 
-  useEffect(() => {
-    fetchHashtags()
-      .then()
-      .catch(() => {});
-
-    fetchCircleCategory()
-      .then()
-      .catch(() => {});
-  }, []);
+  const fetchMyCircle = async (): Promise<void> => {
+    try {
+      setIsLoadingCircle(true);
+      const response = await getCircle({ ...initialFilter });
+      const newData = response.data !== null ? response.data : [];
+      setCircleNameArray(newData)
+    } catch (error) {
+      toast.error(`Error fetching circle data: ${error as string}`);
+    } finally {
+      setIsLoadingCircle(false);
+    }
+  };
 
   return (
     <div>
-      {formRequest !== undefined && (
+      {((formRequest !== undefined) && !isLoadingCircle) && (
         <>
           <ModalMembershipType
             openModal={openModalMembership}
@@ -150,7 +187,7 @@ const CreateCirclePage = ({
                 {t('circle.create.title')}
               </h6>
             </div>
-            <div className="flex items-center justify-center rounded-xl md:mx-8 lg:mx-20 xl:mx-[13rem]">
+            <div className="flex items-center justify-center rounded-xl">
               <label className="relative w-full h-44">
                 <Image
                   height={0}
@@ -176,7 +213,7 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
-            <div className="absolute z-10 flex items-center justify-center top-52 left-[43%] xl:left-[46%]">
+            <div className="absolute z-10 flex items-center justify-center top-52 left-[43%] xl:left-[45%]">
               <label className="relative rounded-full w-24 h-24 overflow-hidden">
                 <Image
                   height={0}
@@ -201,7 +238,7 @@ const CreateCirclePage = ({
                 />
               </label>
             </div>
-            <CCard className="p-9 border-none rounded-none shadow-none bg-white md:mx-8 lg:mx-20 xl:mx-[13rem]">
+            <CCard className="p-9 border-none rounded-none shadow-none bg-white">
               <div className="mb-10 pt-10 bg-white">
                 <div className="mb-8">
                   <label className="font-semibold text-base text-[#262626]">
@@ -219,6 +256,12 @@ const CreateCirclePage = ({
                         : 'Nama Circle'
                     }
                   />
+                  {
+                    isNameDuplicate &&
+                      <div className='mt-1 text-[#DD2525] text-sm'>
+                        {t('circle.create.name.duplicate1')} {formRequest?.name ?? ''} {t('circle.create.name.duplicate2')}
+                      </div>
+                  }
                   {error.name !== null ? (
                     <Typography color="red" className="text-xs mt-2">
                       {error.name}
@@ -253,9 +296,8 @@ const CreateCirclePage = ({
                   <CreatableSelect
                     isMulti
                     onChange={changeCategory}
-                    // value={formRequest.categories}
                     options={categories}
-                    placeholder="Chosose Categories"
+                    placeholder="Choose Categories"
                   />
                   {error.hashtags !== null ? (
                     <Typography color="red" className="text-xs mt-2">
@@ -402,7 +444,7 @@ const CreateCirclePage = ({
                   Terms and Conditions
                 </a>
 
-                {isAgree === true ? (
+                {((isAgree === true) && !isNameDuplicate) ? (
                   <Button
                     className="w-full bg-seeds-button-green mt-10 rounded-full capitalize"
                     onClick={() =>

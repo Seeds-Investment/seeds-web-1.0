@@ -1,12 +1,42 @@
-'use client';
+// store.js
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  useDispatch,
+  useSelector,
+  type TypedUseSelectorHook
+} from 'react-redux';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import bookingSlice from '../event/bookingSlice';
+import expSlice from './features/exp';
+import { promoCodeSlice } from './features/promo-code';
+import soundSlice from './features/sound';
+import userSlice from './features/user';
 
-import { configureStore } from '@reduxjs/toolkit';
+const reducers = combineReducers({
+  exp: expSlice,
+  user: userSlice,
+  soundSlice,
+  promoCode: promoCodeSlice.reducer,
+  booking: bookingSlice
+});
 
-import userSlice from './features/user-data/user-slice';
+const persistConfig = {
+  key: 'root',
+  storage
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
 
 export const store = configureStore({
-  reducer: { user: userSlice }
+  reducer: persistedReducer
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch: () => AppDispatch = () =>
+  useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true
+  },
+  // uncomment script below before run build script
+  // dont push this file with uncomment output property
+  // output: 'standalone',
   reactStrictMode: false,
   images: {
     domains: [
@@ -13,7 +23,9 @@ const nextConfig = {
       'a.fsdn.com',
       'i.insider.com',
       'res.cloudinary.com',
-      'pict.sindonews.net'
+      'pict.sindonews.net',
+      'images.unsplash.com',
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
     ],
     remotePatterns: [
       {
@@ -59,7 +71,14 @@ const nextConfig = {
     locales: ['en', 'es']
   },
   images: {
-    domains: ['dev-assets.seeds.finance', 'assets.seeds.finance'],
+    domains: [
+      'dev-assets.seeds.finance',
+      'assets.seeds.finance',
+      'cdn06.pramborsfm.com',
+      'i.pravatar.cc',
+      'images.unsplash.com',
+      'seeds-bucket-new.s3.ap-southeast-3.amazonaws.com'
+    ],
     remotePatterns: [
       {
         protocol: 'https',

@@ -63,7 +63,9 @@ const ArtPagination: React.FC<PaginationProps> = ({
           key={i}
           href="#"
           className={`${
-            i === currentPage ? 'text-white bg-[#3AC4A0]' : 'text-[#262626]'
+            i.toString() === currentPage.toString()
+              ? 'text-white bg-[#3AC4A0]'
+              : 'text-[#262626]'
           } rounded-full w-6 h-6 mx-2 inline-flex justify-center items-center text-xs`}
           onClick={() => {
             handlePageButtonClick(i);
@@ -78,54 +80,103 @@ const ArtPagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-10 gap-4 mt-16">
-      <div className="col-span-2" />
-      <div className="col-span-6 pt-[1px]">
-        <div className="flex justify-center items-center">
-          <a
-            href="#"
-            onClick={handlePreviousPage}
-            className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-          >
-            <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
-          </a>
-          {generatePageButtons()}
-          <a
-            href="#"
-            onClick={handleNextPage}
-            className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
-          >
-            <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
-          </a>
+    <>
+      <div className="hidden lg:grid grid-cols-10 gap-4 mt-16">
+        <div className="col-span-2" />
+        <div className="col-span-6 pt-[1px]">
+          <div className="flex justify-center items-center">
+            <a
+              href="#"
+              onClick={handlePreviousPage}
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+            >
+              <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
+            </a>
+            {generatePageButtons()}
+            <a
+              href="#"
+              onClick={handleNextPage}
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+            >
+              <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
+            </a>
+          </div>
         </div>
-      </div>
-      <div className="col-span-2 me-12">
-        <div className="flex justify-center items-center gap-4">
-          <div className="flex-none">
-            <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
-              Go to page
+        <div className="col-span-2 me-12">
+          <div className="flex justify-center items-center gap-4">
+            <div className="flex-none">
+              <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
+                Go to page
+              </div>
+            </div>
+            <div className="flex-1">
+              <input
+                onChange={handleInputChange}
+                value={inputPage}
+                type="text"
+                className="rounded-full w-12 border border-[#3AC4A0] block  px-2 text-[#262626] text-sm h-[23px] placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
+              />
+            </div>
+            <div className="flex-1">
+              <button
+                type="button"
+                onClick={handlePageChange}
+                className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0]"
+              >
+                Go
+              </button>
             </div>
           </div>
-          <div className="flex-1">
-            <input
-              onChange={handleInputChange}
-              value={inputPage}
-              type="text"
-              className="rounded-full border border-[#3AC4A0] block w-full px-2 text-[#262626] text-sm h-[23px] placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
-            />
-          </div>
-          <div className="flex-1">
-            <button
-              type="button"
-              onClick={handlePageChange}
-              className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0]"
+        </div>
+      </div>
+      <div className="lg:hidden grid grid-cols-1">
+        <div className="col-span-1 pt-[1px]">
+          <div className="flex justify-center items-center">
+            <a
+              href="#"
+              onClick={handlePreviousPage}
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
             >
-              Go
-            </button>
+              <ChevronLeftIcon className="h-4 w-4 text-[#262626]" />
+            </a>
+            {generatePageButtons()}
+            <a
+              href="#"
+              onClick={handleNextPage}
+              className="w-6 h-6 mx-2 text-[#262626] inline-flex justify-center items-center"
+            >
+              <ChevronRightIcon className="h-4 w-4 text-[#262626]" />
+            </a>
+          </div>
+          <div className="flex justify-center pt-2">
+            <div className="flex justify-center items-center gap-4">
+              <div className="flex-none">
+                <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
+                  Go to page
+                </div>
+              </div>
+              <div className="flex-1">
+                <input
+                  onChange={handleInputChange}
+                  value={inputPage}
+                  type="text"
+                  className="rounded-full w-12 border border-[#3AC4A0] block  px-2 text-[#262626] text-sm h-[23px] placeholder:text-[#BDBDBD] focus:outline-0 disabled:bg-[#E9E9E9]"
+                />
+              </div>
+              <div className="flex-1">
+                <button
+                  type="button"
+                  onClick={handlePageChange}
+                  className="inline-flex items-center px-4 h-[23px] border border-transparent text-xs font-semibold rounded-full text-white bg-[#3AC4A0]"
+                >
+                  Go
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,132 +1,120 @@
-import AuthLayout from '@/components/layouts/AuthLayout';
-import CreateNewPassword from '@/containers/auth/CreateNewPassword';
-import MethodCard from '@/containers/auth/MethodCard';
-import OTPCard from '@/containers/auth/OTPCard';
-import SuccessCard from '@/containers/auth/SuccessCard';
-import { useSlick } from '@/hooks/useSlick';
-import {
-  postForgotPasswordByEmail,
-  verifyForgotPasswordByEmail
-} from '@/repository/email.repository';
-import { patchChangePassword } from '@/repository/user.repository';
-import type {
-  ICreateNewPassword,
-  IFormMethod,
-  IOTPHandler
-} from '@/utils/interfaces/form.interfaces';
-import type { IUseSlick } from '@/utils/interfaces/slick.interface';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import { useSearchParams } from 'next/navigation';
+import SeedyAuthPass from '@/assets/auth/SeedyAuthPass.png';
+import SeedyLock from '@/assets/auth/SeedyLock.png';
+import SeedySMSOTP from '@/assets/auth/SeedySMSOTP.png';
+import SeedyWAOTP from '@/assets/auth/SeedyWAOTP.png';
+import AuthForgotPassNew from '@/components/auth2/AuthForgotPassNew';
+import AuthForgotPassNumber from '@/components/auth2/AuthForgotPassNumber';
+import AuthModalPass from '@/components/auth2/AuthModalPass';
+import AuthOTP from '@/components/auth2/AuthOTP';
+import countries from '@/constants/countries.json';
+import AuthLayout from '@/containers/auth/AuthLayout';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-export default function ForgotPassword(): React.ReactElement {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const emailParam = searchParams.get('email');
-  const emailCode = searchParams.get('code');
-  const { changeStep, settings, slickRef }: IUseSlick = useSlick();
+const ForgotPassword: React.FC = () => {
+  const [select, setSelect] = useState(0);
+  const [method, setMethod] = useState('sms');
+  const [countdown, setCountdown] = useState(0);
+  const [country, setCountry] = useState<number>(101);
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    phoneNumber: '',
+    password: '',
+    oldPassword: ''
+  });
 
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [selectedCode, setSelectedCode] = useState<string>('+62');
-  const [email, setEmail] = useState<any>('');
-  const [errorResponse, setErrorResponse] = useState<string>('');
+  const [formOTPData, setFormOTPData] = useState({
+    phoneNumber: '',
+    method,
+    otp: ''
+  });
+  const handleOpen = (): void => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
-    if (!(emailParam == null) && !(emailCode == null)) {
-      changeStep(2);
-    }
-  }, [emailParam, emailCode]);
-
-  const methodHandler = async (payload: IFormMethod): Promise<void> => {
-    if (payload.method === 'email') {
-      setEmail(payload.email);
-      const response = await postForgotPasswordByEmail(payload.email);
-      if (response.status !== 200) {
-        setErrorResponse(response.data.message);
-        return;
+    const interval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(interval);
       }
-      changeStep(4);
-      return;
-    }
+    }, 1000);
 
-    setPhoneNumber(payload.phoneNumber ?? '');
-    changeStep(1);
-  };
-
-  const otpHandler = (value: IOTPHandler): void => {
-    if (value?.status === false) return;
-    changeStep(2);
-  };
-
-  const createNewPasswordHandler = async (
-    payload: ICreateNewPassword
-  ): Promise<void> => {
-    if (!(emailParam == null) && !(emailCode == null)) {
-      await verifyForgotPasswordByEmail({
-        email: emailParam,
-        code: emailCode,
-        password: payload.password
-      });
-    } else {
-      await patchChangePassword({
-        password: payload.password,
-        phoneNumber: `${String(selectedCode).replace('+', '')}${String(
-          phoneNumber
-        )}`,
-        email
-      });
-    }
-    changeStep(3);
-  };
-
-  // const successHandler = (value: IOTPMethod): void => {
-  //   changeStep(2);
-  // };
-
-  return (
-    <div className="flex justify-center">
-      <Slider
-        ref={slickRef}
-        className="w-3/4 flex justify-center"
-        {...settings}
-      >
-        <MethodCard
-          onSubmit={methodHandler}
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          errorResponse={errorResponse}
-        />
-        <OTPCard
-          onSubmit={otpHandler}
-          phoneNumber={`${selectedCode.replace('+', '')}${phoneNumber.replace(
-            /\s/g,
-            ''
-          )}`}
-        />
-        <CreateNewPassword onSubmit={createNewPasswordHandler} />
-        <SuccessCard
-          onSubmit={() => {
-            router
-              .push('/auth/login')
-              .then()
-              .catch(() => {});
-          }}
-        />
-        <SuccessCard
-          isSuccessSendEmail
-          onSubmit={() => {
-            router
-              .push('/auth/login')
-              .then()
-              .catch(() => {});
-          }}
-        />
-      </Slider>
-    </div>
+    return () => {
+      clearInterval(interval);
+    };
+  }, [countdown]);
+  const element = (
+    <>
+      <Image
+        src={SeedyAuthPass}
+        alt="SeedyAuthPass"
+        className={`${
+          select === 0 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedyWAOTP}
+        alt="SeedyWAOTP"
+        className={`${
+          select === 1 && method === 'whatsapp' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedySMSOTP}
+        alt="SeedySMSOTP"
+        className={`${
+          select === 1 && method === 'sms' ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+      <Image
+        src={SeedyLock}
+        alt="SeedyLock"
+        className={`${
+          select === 2 ? 'flex' : 'hidden'
+        } md:hidden self-center w-1/2`}
+      />
+    </>
   );
-}
-
-ForgotPassword.getLayout = function getLayout(page: JSX.Element) {
-  return <AuthLayout title="Forgot Password">{page}</AuthLayout>;
+  const form = (
+    <>
+      <AuthForgotPassNumber
+        setSelect={setSelect}
+        className={select === 0 ? 'flex' : 'hidden'}
+        formData={formData}
+        setFormData={setFormData}
+        setCountdown={setCountdown}
+        countries={countries}
+        method={method}
+        country={country}
+        setCountry={setCountry}
+        otpForm={formOTPData}
+        setOTPForm={setFormOTPData}
+      />
+      <AuthOTP
+        select={select}
+        method={method}
+        setMethod={setMethod}
+        countdown={countdown}
+        setCountdown={setCountdown}
+        setSelect={setSelect}
+        image={method === 'whatsapp' ? SeedyWAOTP : SeedySMSOTP}
+        otpForm={formOTPData}
+        setOTPForm={setFormOTPData}
+        country={country}
+      />
+      <AuthForgotPassNew
+        setSelect={setSelect}
+        className={select === 2 ? 'flex' : 'hidden'}
+        formData={formData}
+        setFormData={setFormData}
+        handleOpen={handleOpen}
+      />
+      <AuthModalPass handleOpen={handleOpen} open={open} />
+    </>
+  );
+  return <AuthLayout elementChild={element} formChild={form} />;
 };
+
+export default ForgotPassword;

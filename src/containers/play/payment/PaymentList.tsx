@@ -1,15 +1,22 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import Loading from '@/components/popup/Loading';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { joinQuiz } from '@/repository/quiz.repository';
+// import { useAppSelector } from '@/store/redux/store';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import PaymentOptions from './PaymentOptions';
 import VirtualAccountGuide from './VirtualAccountGuide';
 import WalletForm from './WalletForm';
@@ -23,37 +30,53 @@ interface UserData {
   birthDate: string;
   phone: string;
   _pin: string;
+  preferredCurrency: string;
 }
-interface Payment {
-  id?: string;
-  payment_method?: string;
-  logo_url?: string;
-  payment_type?: string;
+export interface Payment {
+  id: string;
+  payment_method: string;
+  logo_url: string;
+  payment_type: string;
+  admin_fee: number;
+  is_promo_available: boolean;
+  promo_price: number;
+  service_fee: number;
+  payment_gateway?: string;
 }
 
 interface props {
   dataPost?: any;
   monthVal?: string;
+  invitationCode?: string;
+  useCoins?: boolean;
 }
 
-const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
+const PaymentList: React.FC<props> = ({
+  dataPost,
+  monthVal,
+  invitationCode,
+  useCoins
+}): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [option, setOption] = useState<Payment>({});
-  const [virtualAccountList, setVirtualAccountList] = useState([]);
+  const [qRisList, setQRisList] = useState([]);
+  const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
+  // const { preferredCurrency } = useAppSelector(state => state.user.dataUser);
 
   const fetchPaymentList = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data = await getPaymentList();
-      setVirtualAccountList(data.type_va);
+      const data = await getPaymentList(
+        userInfo?.preferredCurrency?.toUpperCase()
+      );
+      setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
     } catch (error: any) {
-      console.error('Error fetching Payment List', error.message);
+      toast(`Error fetching Payment List: ${error.message as string}`);
     } finally {
       setLoading(false);
     }
@@ -63,7 +86,7 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       const response = await getUserInfo();
       setUserInfo(response);
     } catch (error) {
-      console.log(error);
+      toast(`ERROR fetch user info ${error as string}`);
     }
   };
 
@@ -77,8 +100,12 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
 
   useEffect(() => {
     void fetchData();
-    void fetchPaymentList();
+    // void fetchPaymentList();
   }, []);
+
+  useEffect(() => {
+    void fetchPaymentList();
+  }, [userInfo?.preferredCurrency]);
 
   const handlePay = async (
     type: string,
@@ -95,43 +122,94 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       ) {
         console.error('Please fill the phone number');
       }
-
-      const response = await joinCirclePost({
-        circle_id: dataPost?.id,
-        duration: numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
-        payment_request: {
-          amount: totalAmount,
+      const replaceDataPost: PaymentData = dataPost;
+      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      if (replaceDataPost.quiz) {
+        const response = await joinQuiz({
+          quiz_id: replaceDataPost?.payment?.quiz_id,
+          lifelines: replaceDataPost?.payment?.lifelines,
+          language: replaceDataPost?.payment?.language,
           payment_gateway: paymentGateway,
           payment_method: paymentMethod,
           phone_number: `+62${phoneNumber as string}`,
-          item_id: dataPost?.id,
-          item_name: dataPost?.name,
-          quantity: 1,
-          name: userInfo?.name,
-          email: userInfo?.email,
           promo_code: '',
-          spot_type: 'Join Circle Premium'
-        }
-      });
+          invitation_code: invitationCode as string,
+          is_use_coins: useCoins as boolean
+        });
 
-      if (response.success === true) {
-        if (response.data.Response.payment_url !== undefined) {
-          window.open(response.data.Response.payment_url as string, '_blank');
+        if (response) {
+          if (response.payment_url !== '') {
+            window.open(response.payment_url as string, '_blank');
+          }
+          await router
+            .replace(`/play/payment/receipt/${response.order_id as string}`)
+            .catch(error => {
+              console.log(error);
+            });
         }
-        await router
-          .push(
-            `/connect/payment/receipt/${
-              response.data.Response.order_id as string
-            }`
-          )
-          .catch(error => {
-            console.log(error);
-          });
+      } else {
+        const response = await joinCirclePost({
+          circle_id: dataPost?.id,
+          duration:
+            numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
+          payment_request: {
+            amount: parseInt(`${totalAmount}`),
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            item_id: dataPost?.id,
+            item_name: dataPost?.name,
+            quantity: 1,
+            name: userInfo?.name,
+            email: userInfo?.email,
+            promo_code: '',
+            spot_type: 'Join Circle Premium'
+          }
+        });
+
+        if (response.success === true) {
+          if (response.data.Response.payment_url !== undefined) {
+            window.open(response.data.Response.payment_url as string, '_blank');
+          }
+          await router
+            .push(
+              `/connect/payment/receipt/${
+                response.data.Response.order_id as string
+              }`
+            )
+            .catch(error => {
+              console.log(error);
+            });
+        }
       }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onSubmit = () => {
+    let _admissionFee = 0;
+    let _adminFee = 0;
+    let _totalFee = 0;
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (dataPost.quiz) {
+      _admissionFee = dataPost?.quiz?.admission_fee;
+      _adminFee = 0;
+      _totalFee =
+        Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
+    } else {
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
+      _adminFee = dataPost?.admin_fee as number;
+      _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
+    }
+
+    if (option?.payment_type === 'qris') {
+      void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else {
+      setOpenDialog(true);
     }
   };
 
@@ -144,8 +222,8 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
         <PaymentOptions
-          label={t('PlayPayment.virtualAccountLabel')}
-          options={virtualAccountList}
+          label="QRIS"
+          options={qRisList}
           onChange={setOption}
           currentValue={option}
         />
@@ -156,11 +234,9 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           currentValue={option}
         />
         <SubmitButton
-          disabled={option.id == null}
+          disabled={option?.id == null}
           fullWidth
-          onClick={() => {
-            setOpenDialog(true);
-          }}
+          onClick={onSubmit}
         >
           {t('PlayPayment.button')}
         </SubmitButton>
@@ -169,16 +245,16 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
   );
 
   return (
-    <PageGradient defaultGradient className="w-full md:px-20 my-10">
+    <PageGradient defaultGradient className="w-full md:px-20 my-10 h-screen">
       {loading ? renderLoading() : renderContent()}
       <Dialog
         title={
-          option.payment_type === 'ewallet'
+          option?.payment_type === 'ewallet'
             ? t('PlayPayment.WalletForm.title', {
                 wallet: option.payment_method
               })
             : t('PlayPayment.VirtualAccountGuide.title', {
-                bank: option.payment_method?.split('_')[0]
+                bank: option?.payment_method?.split('_')[0]
               })
         }
         isOpen={openDialog}
@@ -187,12 +263,13 @@ const PaymentList: React.FC<props> = ({ dataPost, monthVal }): JSX.Element => {
           setOpenDialog(false);
         }}
       >
-        {option.payment_type === 'ewallet' ? (
+        {option?.payment_type === 'ewallet' ? (
           <WalletForm
             payment={option}
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
+            userInfo={userInfo}
           />
         ) : (
           <VirtualAccountGuide

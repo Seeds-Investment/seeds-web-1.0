@@ -1,15 +1,18 @@
 'use client';
 import Modal from '@/components/ui/modal/Modal';
-import { getRefreshToken } from '@/repository/auth.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { isGuest } from './guest';
 
 const withAuth = (
   WrappedComponent: React.ComponentType
 ): React.ComponentType => {
   const WrapperComponent = (props: any): JSX.Element => {
+    const { t } = useTranslation();
     const router = useRouter();
     const [isLoading, setLoading] = useState(true);
 
@@ -17,38 +20,49 @@ const withAuth = (
       const checkAuth = async (): Promise<void> => {
         try {
           const response = await getUserInfo();
-          if (response === 'Access token not found') {
-            await router
-              .push('/auth/login')
-              .then()
-              .catch(() => {});
+          if (response === 'Access token not found' && !isGuest()) {
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
           }
         } catch (error: any) {
           if (error.response.status === 401) {
-            const fetchNewAccessToken = await getRefreshToken();
-            if (
-              fetchNewAccessToken === 'Please Login again' ||
-              fetchNewAccessToken === 'Refresh token not found'
-            ) {
-              router
-                .push('/auth/login')
-                .then()
-                .catch(() => []);
-            } else {
-              localStorage.setItem(
-                'accessToken',
-                fetchNewAccessToken.accessToken
-              );
-              localStorage.setItem(
-                'refreshToken',
-                fetchNewAccessToken.refreshToken
-              );
-            }
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
+            toast.error(t('landingPageV2.redirectError'));
+            // const fetchNewAccessToken = await getRefreshToken();
+            // if (
+            //   fetchNewAccessToken === 'Please Login again' ||
+            //   fetchNewAccessToken === 'Refresh token not found'
+            // ) {
+            //   await router.push('/');
+            // } else {
+            //   localStorage.setItem(
+            //     'accessToken',
+            //     fetchNewAccessToken.accessToken
+            //   );
+            //   localStorage.setItem(
+            //     'refreshToken',
+            //     fetchNewAccessToken.refreshToken
+            //   );
+            // }
           } else {
-            router
-              .push('/auth/login')
-              .then()
-              .catch(() => []);
+            await router.push(
+              `${
+                !router.pathname.includes('/microsite-quiz')
+                  ? '/'
+                  : '/microsite-quiz'
+              }`
+            );
           }
         } finally {
           setLoading(false);

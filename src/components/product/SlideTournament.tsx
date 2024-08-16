@@ -124,7 +124,7 @@ export const SlideTournament: React.FC = () => {
           speed={1000}
         >
           {tournament?.length !== 0
-            ? tournament?.map((item: TopTournament, idx: any) => {
+            ? tournament?.map((item: TopTournament, idx: number) => {
                 const formatDate = (isoDate: string): string => {
                   return moment(isoDate).format('lll');
                 };

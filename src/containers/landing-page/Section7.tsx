@@ -1,6 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import 'slick-carousel/slick/slick-theme.css';
@@ -65,7 +65,7 @@ export default function Section6(): React.ReactElement {
     840: { slidesPerView: 3 }
   };
 
-  const BadgesBottom = ({ name, desc }: badges): any => {
+  const BadgesBottom = ({ name, desc }: badges): ReactElement => {
     return (
       <div className="flex rounded-b-[25px] p-8 h-24 bg-gradient-to-tr from-[#9A76FE] to-[#4FE6AF] py-3 px-2">
         <div className="flex flex-col items-start justify-center text-start py-3 px-2">

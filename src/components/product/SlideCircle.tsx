@@ -39,16 +39,15 @@ export const SlideCircle: React.FC = () => {
   const [isChange, setChange] = useState(true);
   const [activeIdx, setActiveIdx] = useState<number>(0);
 
-  const HandleSlideChange = (swiper: SwiperClass): any => {
-    setActiveIdx(swiper.realIndex);
-  };
+const HandleSlideChange = (swiper: SwiperClass): void => {
+  setActiveIdx(swiper.realIndex);
+};
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const circleResponse = await getTrendingCircle();
         setCircleData(circleResponse.result);
-        console.log(circleResponse);
       } catch (error: any) {
         toast.warning('Error fetching data:', error.message);
       }

@@ -18,13 +18,15 @@ interface VirtualAccountGuideProps {
     phoneNumber?: string | undefined
   ) => Promise<void>;
   numberMonth: number;
+  newPromoCodeDiscount: number;
 }
 
 const VirtualAccountGuide = ({
   payment,
   dataPost,
   handlePay,
-  numberMonth
+  numberMonth,
+  newPromoCodeDiscount
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
@@ -39,7 +41,7 @@ const VirtualAccountGuide = ({
   );
   const discount =
     promoCodeValidationResult !== 0
-      ? promoCodeValidationResult?.response?.total_discount
+      ? newPromoCodeDiscount
       : 0;
   const totalFee = parseInt(`${admissionFee + adminFee - discount}`);
   
@@ -98,7 +100,7 @@ const VirtualAccountGuide = ({
           label={t(`${translationsId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.response?.total_discount ?? 0
+            newPromoCodeDiscount ?? 0
           }`}
           className="mb-2"
         />

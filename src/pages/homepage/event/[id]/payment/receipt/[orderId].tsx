@@ -162,7 +162,7 @@ const SuccessPaymentPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (orderDetail?.howToPayApi !== undefined) {
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [orderId, orderDetail?.howToPayApi]);
@@ -534,7 +534,7 @@ const SuccessPaymentPage: React.FC = () => {
                     {t('seedsEvent.payment.receipt.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626] text-right">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                    {orderDetail?.transactionId ?? 'Loading...'}
                   </Typography>
                 </div>
               </Card>

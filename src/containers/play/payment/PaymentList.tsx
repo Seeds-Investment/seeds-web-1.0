@@ -10,6 +10,7 @@ import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { promoValidate } from '@/repository/promo.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -99,6 +100,7 @@ const PaymentList: React.FC<props> = ({
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [newPromoCodeDiscount, setNewPromoCodeDIscount] = useState<number>(0);
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -144,6 +146,28 @@ const PaymentList: React.FC<props> = ({
     void fetchPaymentList();
   }, [userInfo?.preferredCurrency]);
 
+  useEffect(() => {
+    const validatePromo = async () => {
+      if (dataPost.quiz) {
+        const admissionFee = Number(dataPost.quiz.admission_fee ?? 0);
+        const fee = Number(dataPost.quiz.fee ?? 0);
+        const totalItemPrice = admissionFee + fee;
+
+        const response = await promoValidate({
+          promo_code: promoCodeValidationResult.response.promo_code,
+          spot_type: 'Paid Quiz',
+          item_price: totalItemPrice,
+          item_id: dataPost.payment.quiz_id,
+          currency: userInfo?.preferredCurrency ?? 'IDR',
+        });
+        
+        setNewPromoCodeDIscount(response?.total_discount)
+      }
+    };
+
+    void validatePromo();
+  }, []);
+  
   const handlePay = async (
     type: string,
     paymentGateway: string,
@@ -237,8 +261,7 @@ const PaymentList: React.FC<props> = ({
       _totalFee =
         Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
     } else {
-      _admissionFee =
-        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1 ?? 1);
+      _admissionFee = dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
       _adminFee = dataPost?.admin_fee as number;
       _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
@@ -307,6 +330,7 @@ const PaymentList: React.FC<props> = ({
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
             userInfo={userInfo ?? userDefault}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         ) : (
           <VirtualAccountGuide
@@ -314,6 +338,7 @@ const PaymentList: React.FC<props> = ({
             handlePay={handlePay}
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         )}
       </Dialog>

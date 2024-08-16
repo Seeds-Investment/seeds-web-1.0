@@ -25,6 +25,7 @@ interface WalletFormProps {
   dataPost: any;
   numberMonth?: number;
   userInfo: UserInfo;
+  newPromoCodeDiscount: number;
 }
 
 const WalletForm = ({
@@ -32,7 +33,8 @@ const WalletForm = ({
   handlePay,
   dataPost,
   numberMonth,
-  userInfo
+  userInfo,
+  newPromoCodeDiscount
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
@@ -71,7 +73,7 @@ const WalletForm = ({
       ? coinsDiscount
       : 0;
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.response?.total_discount as number;
+      _discount += newPromoCodeDiscount;
     }
 
     if (dataPost.quiz) {
@@ -195,10 +197,7 @@ const WalletForm = ({
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.response?.total_discount
-          }`}
+          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${newPromoCodeDiscount}`}
           className="mb-2"
         />
       ) : null}

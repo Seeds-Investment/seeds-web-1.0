@@ -341,7 +341,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
-          <div className="font-semibold text-xl">
+          <div className={`${promoCodeValidationResult ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
@@ -349,6 +349,17 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
+          {
+            promoCodeValidationResult &&
+              <div className="font-semibold text-xl">
+                {detailQuiz?.admission_fee === 0
+                  ? t('quiz.free')
+                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}
+              </div>
+          }
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />

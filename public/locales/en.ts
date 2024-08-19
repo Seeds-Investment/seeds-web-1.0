@@ -780,7 +780,8 @@ export default {
     nextButton: 'Continue'
   },
   ProfilePage: {
-    title: 'My Profile'
+    title: 'My Profile',
+    subscriptionButton: 'Subscribe to My Seeds Plan'
   },
   DeleteAccount: {
     title: 'Are you sure to delete this account?',

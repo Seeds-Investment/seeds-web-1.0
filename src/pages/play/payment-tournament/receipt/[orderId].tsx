@@ -49,7 +49,7 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-interface QRList {
+export interface QRList {
   admin_fee: number;
   id: string;
   is_active: boolean;

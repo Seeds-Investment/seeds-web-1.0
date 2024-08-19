@@ -21,10 +21,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-interface props {
-  data?: any;
-}
-
 interface PaymentList {
   admin_fee: number;
   id: string;
@@ -73,7 +69,7 @@ interface QrisDetail {
   service_fee: number;
 }
 
-const SuccessPaymentPage: React.FC<props> = ({ data }) => {
+const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { t } = useTranslation();

@@ -4,6 +4,7 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { type QRList } from '@/pages/play/payment-tournament/receipt/[orderId]';
 import {
   getHowToPay,
   getPaymentDetail,
@@ -17,10 +18,6 @@ import { Pending, receiptXIcon } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-
-interface props {
-  data?: any;
-}
 
 interface PaymentList {
   admin_fee: number;
@@ -51,7 +48,7 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-const SuccessPaymentPage: React.FC<props> = ({ data }) => {
+const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { t } = useTranslation();
@@ -60,10 +57,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [qRisList, setQRisList] = useState<any>([]);
-  console.log(_, orderDetail?.transactionStatus);
+  const [qRisList, setQRisList] = useState<QRList[]>([]);
   const bigText = 'text-2xl font-semibold text-white text-center';
   const normalText = 'text-sm font-normal text-white text-center';
 
@@ -97,7 +92,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(true);
       const data = await getHowToPay(url);
       setSteps(data.payment_instruction[0].step);
-      setVirtualAccountInfo(data.virtual_account_info);
     } catch (error) {
       toast.error(`Error fetching payment list: ${error as string}`);
     } finally {
@@ -105,7 +99,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     }
   };
 
-  function parseStrongText(text: string): any {
+  function parseStrongText(text: string): React.ReactNode[] {
     const regex = /"(.*?)"/g;
     const splitText = text.split(regex);
 
@@ -130,11 +124,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
-    if (orderDetail?.howToPayApi !== undefined) {
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
-
+  
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
     (el: undefined | PaymentList): any => {
       return el?.payment_method === orderDetail?.paymentMethod;

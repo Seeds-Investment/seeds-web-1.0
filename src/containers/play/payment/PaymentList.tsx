@@ -100,7 +100,7 @@ const PaymentList: React.FC<props> = ({
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [newPromoCodeDiscount, setNewPromoCodeDIscount] = useState<number>(0);
+  const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -139,7 +139,6 @@ const PaymentList: React.FC<props> = ({
 
   useEffect(() => {
     void fetchData();
-    // void fetchPaymentList();
   }, []);
 
   useEffect(() => {
@@ -148,20 +147,33 @@ const PaymentList: React.FC<props> = ({
 
   useEffect(() => {
     const validatePromo = async () => {
-      if (dataPost.quiz) {
-        const admissionFee = Number(dataPost.quiz.admission_fee ?? 0);
-        const fee = Number(dataPost.quiz.fee ?? 0);
-        const totalItemPrice = admissionFee + fee;
+      if (promoCodeValidationResult) {
+        if (dataPost.quiz) {
+          const admissionFee = Number(dataPost.quiz.admission_fee ?? 0);
+          const fee = Number(dataPost.quiz.fee ?? 0);
+          const totalItemPrice = admissionFee + fee;
 
-        const response = await promoValidate({
-          promo_code: promoCodeValidationResult.response.promo_code,
-          spot_type: 'Paid Quiz',
-          item_price: totalItemPrice,
-          item_id: dataPost.payment.quiz_id,
-          currency: userInfo?.preferredCurrency ?? 'IDR',
-        });
-        
-        setNewPromoCodeDIscount(response?.total_discount)
+          const response = await promoValidate({
+            promo_code: promoCodeValidationResult?.response?.promo_code,
+            spot_type: 'Paid Quiz',
+            item_price: totalItemPrice,
+            item_id: dataPost.payment.quiz_id,
+            currency: userInfo?.preferredCurrency ?? 'IDR',
+          });
+          
+          setNewPromoCodeDiscount(response?.total_discount)
+        } else {
+          const admissionFee = Number(dataPost?.premium_fee ?? 0);
+          const response = await promoValidate({
+            promo_code: promoCodeValidationResult?.response?.promo_code,
+            spot_type: 'Premium Circle',
+            item_price: admissionFee,
+            item_id: dataPost.id,
+            currency: userInfo?.preferredCurrency ?? 'IDR',
+          });
+          
+          setNewPromoCodeDiscount(response?.total_discount)
+        }
       }
     };
 

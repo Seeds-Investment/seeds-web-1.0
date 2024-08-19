@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
+import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
+import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import PromoCode from '@/components/promocode/promoCode';
 import TrackerEvent from '@/helpers/GTM';
@@ -27,10 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
@@ -260,7 +261,9 @@ const QuizDetail = (): React.ReactElement => {
                           ? FirstMedal
                           : i === 1
                           ? SecondMedal
-                          : ThirdMedal
+                          : i === 2
+                          ? ThirdMedal
+                          : SubsequentMedal
                       }
                       alt={`${i}-medal`}
                       width={200}
@@ -308,11 +311,7 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-4">
-          {
-            ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
-          }
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
           <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
@@ -325,19 +324,27 @@ const QuizDetail = (): React.ReactElement => {
               <ShareIcon width={24} height={24} />
             </button>
           </div>
-          {detailQuiz?.is_need_invitation_code && (
-            <div>
-              <input
-                type="text"
-                value={invitationCode}
-                onChange={e => {
-                  setInvitationCode(e.target.value);
-                }}
-                placeholder="Invitation Code"
-                className="w-full border p-2 rounded-md mt-2"
-              />
-            </div>
-          )}
+          <div className='my-4'>
+            {
+              ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
+                <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
+            }
+          </div>
+          <div className='my-4'>
+            {detailQuiz?.is_need_invitation_code && (
+              <div>
+                <input
+                  type="text"
+                  value={invitationCode}
+                  onChange={e => {
+                    setInvitationCode(e.target.value);
+                  }}
+                  placeholder="Invitation Code"
+                  className="w-full border p-2 rounded-md"
+                />
+              </div>
+            )}
+          </div>
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
@@ -350,7 +357,7 @@ const QuizDetail = (): React.ReactElement => {
                 })}
           </div>
           {
-            promoCodeValidationResult &&
+            promoCodeValidationResult !== 0 &&
               <div className="font-semibold text-xl">
                 {detailQuiz?.admission_fee === 0
                   ? t('quiz.free')
@@ -363,7 +370,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
-              <div className="text-xs text-[#7C7C7C]">
+              <div className="text-xs text-[#7C7C7C] lg:px-2">
                 {totalAvailableCoins > 0
                   ? `Redeem ${totalAvailableCoins} seeds coin`
                   : `Coin cannot be redeemed`}

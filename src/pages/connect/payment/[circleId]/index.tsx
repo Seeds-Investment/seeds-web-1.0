@@ -4,8 +4,8 @@ import TermConditionPage from '@/containers/circle/create-circle/termConditionPa
 import PaymentList from '@/containers/play/payment/PaymentList';
 import withAuth from '@/helpers/withAuth';
 import {
-    getDetailCircle,
-    getStatusCircle
+  getDetailCircle,
+  getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

@@ -986,6 +986,7 @@ export default {
   promo: {
     minimumPurchase: 'Min. Purchase:',
     noMinimumPurchase: 'No minimum purchase',
+    limitReached: 'Quota limit reached',
     endsIn: 'Ends in',
     daysRemain: 'days',
     dayRemain: 'day',

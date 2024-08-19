@@ -905,6 +905,7 @@ export default {
   promo: {
     minimumPurchase: 'Min. Pembelian:',
     noMinimumPurchase: 'Tidak ada limit pembelian',
+    limitReached: 'Telah mencapai batas penggunaan kuota',
     endsIn: 'Berakhir dalam',
     daysRemain: 'hari',
     dayRemain: 'hari',

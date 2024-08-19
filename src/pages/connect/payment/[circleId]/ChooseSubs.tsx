@@ -3,6 +3,7 @@ import Button from '@/components/ui/button/Button';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
@@ -22,25 +23,25 @@ const ChooseSubs: React.FC<props> = ({
   monthVal,
   setMonthVal
 }) => {
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
+  const height = useWindowInnerHeight();
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
   }, []);
 
-  const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
-  const height = useWindowInnerHeight();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -54,7 +55,9 @@ const ChooseSubs: React.FC<props> = ({
       setPages('chooseSubs');
     }
     setPages('terms');
+    console.log('handleSubmit ')
   };
+
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
       return parseInt(monthVal.substring(0, 2));

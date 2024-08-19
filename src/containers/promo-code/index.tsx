@@ -14,7 +14,7 @@ import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tourna
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIcon, ErrorPromo } from 'public/assets/vector';
+import { ArrowBackwardIcon, ErrorPromo, PromoCodeWarning } from 'public/assets/vector';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -131,6 +131,8 @@ const PromoCode: React.FC<PromoProps> = ({
   const [dataCircle, setDataCircle] = useState<CircleData>();
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+  const [choosenIndex, setChoosenIndex] = useState<number>();
+  const [isExceedingLimit, setIsExceedingLimit] = useState<boolean>(false);
 
   const [tournamentFee, setTournamentFee] = useState<number>();
   const [quizFee, setQuizFee] = useState<number>();
@@ -283,7 +285,6 @@ const PromoCode: React.FC<PromoProps> = ({
       void fetchPromoData(circleId as string, postFee);
     }
   }, [tournamentFee, quizFee, circleFee, postFee, promoParams]);
-
   const fetchData = async (): Promise<void> => {
     try {
       const dataInfo = await getUserInfo();
@@ -365,8 +366,10 @@ const PromoCode: React.FC<PromoProps> = ({
     }
   };
 
-  const handlePromoCodeSelection = async (promoCode: string): Promise<void> => {
+  const handlePromoCodeSelection = async (promoCode: string, index?: number): Promise<void> => {
+    setChoosenIndex(index ?? 0)
     setPromoCode(promoCode);
+    setIsExceedingLimit(false)
     try {
       let response;
       if (spotType === 'Paid Tournament') {
@@ -432,6 +435,7 @@ const PromoCode: React.FC<PromoProps> = ({
           if (errorMessage.includes('minimum transaction')) {
             toast.error(t('promo.limitPurchaseMessage'));
           } else if (errorMessage.includes('already exceeding today’s limit')) {
+            setIsExceedingLimit(true)
             toast.error(t('promo.limitDailyMessage'));
           }
         } else {
@@ -580,29 +584,50 @@ const PromoCode: React.FC<PromoProps> = ({
                 <>
                   {
                     showQuantityDiv &&
-                      <div
-                        key={index}
-                        onClick={async () => { await handlePromoCodeSelection(item?.promo_code); }}
-                        className={`flex justify-start items-center rounded-xl relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`}
-                      >
-                        <div className='flex justify-center items-center'>
-                          <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
-                            <Image alt="Seedy" src={imgSrc} className="w-full h-full" />
+                      <div className='flex flex-col justify-start items-start w-full'>
+                        <div
+                          key={index}
+                          onClick={async () => { await handlePromoCodeSelection(item?.promo_code, index); }}
+                          className={
+                            `${(index === choosenIndex) && isExceedingLimit ? 'rounded-t-xl' : 'rounded-xl'} 
+                            flex w-full justify-start items-center relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`
+                          }
+                        >
+                          <div className='flex justify-center items-center'>
+                            <div className='w-[80px] h-[80px] md:w-[100px] md:h-[100px] ml-[20px] flex justify-center items-center p-2'>
+                              <Image alt="Seedy" src={imgSrc} className="w-full h-full" />
+                            </div>
+                          </div>
+                          <div className={`w-[20px] h-full absolute left-0 ${sideBarBgColor}`} />
+                          <div className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}>
+                            <div className='font-semibold text-base md:text-xl'>{item?.name_promo_code}</div>
+                            <div className='text-sm text-black'>
+                              {item?.min_transaction > 0 ? `${t('promo.minimumPurchase')} ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(minTransaction).replace('Rp', '')}` : t('promo.noMinimumPurchase')}
+                            </div>
+                            <div className='text-[#7C7C7C] text-sm'>
+                              {item?.end_date !== '0001-01-01T00:00:00Z' ? getRemainingTime(item?.end_date) : t('promo.noExpired')}
+                            </div>
+                          </div>
+                          <div className={`${isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
+                            {item?.max_redeem === 0 ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div> : `${(item?.max_redeem ?? 0) - (item?.promo_redeemed ?? 0)}x`}
                           </div>
                         </div>
-                        <div className={`w-[20px] h-full absolute left-0 ${sideBarBgColor}`} />
-                        <div className={`flex flex-col justify-center p-4 w-full h-full border-l border-dashed ${borderColor}`}>
-                          <div className='font-semibold text-base md:text-xl'>{item?.name_promo_code}</div>
-                          <div className='text-sm text-black'>
-                            {item?.min_transaction > 0 ? `${t('promo.minimumPurchase')} ${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(minTransaction).replace('Rp', '')}` : t('promo.noMinimumPurchase')}
-                          </div>
-                          <div className='text-[#7C7C7C] text-sm'>
-                            {item?.end_date !== '0001-01-01T00:00:00Z' ? getRemainingTime(item?.end_date) : t('promo.noExpired')}
-                          </div>
-                        </div>
-                        <div className={`${isPromoSelected ? 'bg-[#27A590]' : 'bg-[#FDBA22]'} absolute right-[-10px] bottom-[10px] text-white text-sm md:text-base lg:text-sm px-4 rounded-full`}>
-                          {item?.max_redeem === 0 ? <div className='text-[35px] flex justify-center items-center'>&#8734;</div> : `${(item?.max_redeem ?? 0) - (item?.promo_redeemed ?? 0)}x`}
-                        </div>
+                        {
+                          ((index === choosenIndex) && isExceedingLimit) &&
+                            <div className='bg-[#FFEBEB] w-full p-1 flex gap-2 justify-start items-center'>
+                              <div className='flex justify-center items-center'>
+                                <Image
+                                  src={PromoCodeWarning}
+                                  alt={'PromoCodeWarning'}
+                                  width={26}
+                                  height={26}
+                                />
+                              </div>
+                              <div className='text-sm text-[#BB1616]'>
+                                {t('promo.limitReached')}
+                              </div>
+                            </div>
+                        }
                       </div>
                   }
                 </>

@@ -10,6 +10,7 @@ import {
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -17,6 +18,7 @@ import { useRouter } from 'next/router';
 import { Pending, receiptXIcon } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface PaymentList {
@@ -52,6 +54,7 @@ const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const id = router.query.orderId as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -124,6 +127,7 @@ const SuccessPaymentPage: React.FC = () => {
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
+    dispatch(setPromoCodeValidationResult(0));
     if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }

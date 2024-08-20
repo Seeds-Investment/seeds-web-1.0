@@ -1,8 +1,10 @@
 import BgSeeds from '@/assets/seedsplan/BgSeeds.svg';
 import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
+import CurveLower from '@/assets/seedsplan/curveLower.svg';
+import CurveUpper from '@/assets/seedsplan/curveUpper.svg';
+import SeedsPlanSilver from '@/assets/seedsplan/seedsPlanSilver.svg';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
-// import SeedsVoucher from '@/assets/seedsplan/VoucherSeeds.svg';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -14,6 +16,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import { IoGameController } from 'react-icons/io5';
 
 const SeedsPlan: React.FC = () => {
+  const [subscription, setSubscription] = useState<string>('');
   const [category, setCategory] = useState('All');
   const [packagePlan, setPackagePlan] = useState('Silver');
   const [showTnc, setShowTnc] = useState(false);
@@ -87,6 +90,14 @@ const SeedsPlan: React.FC = () => {
     setHowToUse(!showHowToUse);
   };
 
+  const handleView = (): void => {
+    if (subscription === '') {
+      setSubscription('a')
+    } else {
+      setSubscription('')
+    }
+  };
+
   return (
     <>
       <PageGradient defaultGradient className="w-full">
@@ -109,7 +120,7 @@ const SeedsPlan: React.FC = () => {
             </div>
             <div className="text-xl md:text-2xl font-bold">MySeeds Plan</div>
             <div className="border-4 border-white text-white bg-[#487209] rounded-full p-2">
-              <GiBackwardTime size={25} style={{ strokeWidth: 10 }} />
+              <GiBackwardTime size={25} style={{ strokeWidth: 10 }} onClick={() => { handleView(); }} />
             </div>
           </div>
           <Image
@@ -123,46 +134,88 @@ const SeedsPlan: React.FC = () => {
             Choose the package to get unlimited savings and fun!
           </div>
         </div>
-        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins">
-          <div
-            className={`col-span-2 w-full bg-gradient-to-b from-[#9ec849] ${
-              packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'
-            } rounded-none md:rounded-xl px-2 py-4`}
-          >
-            <div className="flex justify-center items-center">
-              <div className="rounded-3xl bg-white w-11/12 lg:w-10/12">
-                <button
-                  className={`text-xl p-3 w-1/2 rounded-3xl ${
-                    packagePlan === 'Silver'
-                      ? 'bg-[#3AC4A0]'
-                      : 'bg-[#f9f9f9] text-[#bdbdbd]'
-                  } font-semibold border-white border-2`}
-                  onClick={() => {
-                    setPackagePlan('Silver');
-                    setCategory('All');
-                  }}
-                >
-                  Silver
-                </button>
-                <button
-                  className={`text-xl p-3 w-1/2 rounded-3xl ${
-                    packagePlan === 'Gold'
-                      ? 'bg-[#3AC4A0]'
-                      : 'bg-[#f9f9f9] text-[#bdbdbd]'
-                  } font-semibold border-white border-2 relative`}
-                  onClick={() => {
-                    setPackagePlan('Gold');
-                    setCategory('All');
-                  }}
-                >
-                  Gold
-                  <span className="px-2 py-1 bg-[#ff3838] text-white rounded-3xl text-xs absolute top-0 right-0 2xl:right-16 font-normal">
-                    Best
-                  </span>
-                </button>
+        {
+          subscription !== '' &&
+            <div className='bg-[#F6F6F6] w-full p-2 md:mt-4 md:rounded-t-xl flex justify-center items-center'>
+              <div className='w-full md:w-3/4 flex py-4 gap-2 rounded-xl border border-[#27A590] justify-center items-center'>
+                <div className='w-[50px] h-[50px]'>
+                  <Image
+                    src={SeedsPlanSilver}
+                    width={500}
+                    height={500}
+                    alt="seedsplan"
+                    className="w-full h-full"
+                  />
+                </div>
+                <div className='md:flex md:items-center md:justify-center md:gap-4'>
+                  <div className='w-full md:w-fit flex justify-between mb-2 md:mb-0 md:justify-normal md:flex-col'>
+                    <div className='text-sm font-semibold order-1 md:order-2'>
+                      Your Package: Silver
+                    </div>
+                    <div className='w-fit md:mb-1 flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4 order-2 md:order-1'>
+                      Active
+                    </div>
+                  </div>
+                  <div className='text-[9px] px-4 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-nowrap'>
+                    Your plan will expire on January 25, 2025. 13:08
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="flex flex-row gap-3 flex-wrap justify-center my-4">
+        }
+        <div className={
+          subscription === ''
+           ? 'flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins'
+           : 'w-full'
+        }>
+          <div
+            className={`
+              col-span-2 w-full rounded-none px-2 pb-4
+              ${
+                packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'
+              }
+              ${
+                subscription === '' ? 'md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4' : 'md:rounded-b-xl bg-[#F6F6F6] flex flex-col justify-center items-center'
+              }
+            `}
+          >
+          {
+            subscription === '' &&
+              <div className="flex justify-center items-center">
+                <div className="rounded-3xl bg-white w-11/12 lg:w-10/12">
+                  <button
+                    className={`text-xl p-3 w-1/2 rounded-3xl ${
+                      packagePlan === 'Silver'
+                        ? 'bg-[#3AC4A0]'
+                        : 'bg-[#f9f9f9] text-[#bdbdbd]'
+                    } font-semibold border-white border-2`}
+                    onClick={() => {
+                      setPackagePlan('Silver');
+                      setCategory('All');
+                    }}
+                  >
+                    Silver
+                  </button>
+                  <button
+                    className={`text-xl p-3 w-1/2 rounded-3xl ${
+                      packagePlan === 'Gold'
+                        ? 'bg-[#3AC4A0]'
+                        : 'bg-[#f9f9f9] text-[#bdbdbd]'
+                    } font-semibold border-white border-2 relative`}
+                    onClick={() => {
+                      setPackagePlan('Gold');
+                      setCategory('All');
+                    }}
+                  >
+                    Gold
+                    <span className="px-2 py-1 bg-[#ff3838] text-white rounded-3xl text-xs absolute top-0 right-0 2xl:right-16 font-normal">
+                      Best
+                    </span>
+                  </button>
+                </div>
+              </div>
+          }
+            <div className={`${subscription === '' ? 'mt-4' : 'w-full md:w-3/4 mt-2'} flex flex-row gap-3 flex-wrap justify-center mb-4`}>
               {categorySeedsPlan?.map((item, index) => {
                 return (
                   <button
@@ -181,7 +234,7 @@ const SeedsPlan: React.FC = () => {
                 );
               })}
             </div>
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+            <div className={`${subscription === '' ? '' : 'w-full md:w-3/4'} grid grid-cols-1 xl:grid-cols-2 gap-3`}>
               {packagePlan === 'Silver'
                 ? (category !== 'All'
                     ? filteredDataSilver
@@ -217,11 +270,30 @@ const SeedsPlan: React.FC = () => {
                               {item.benefit}
                             </div>
                           </div>
-                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C] relative">
                             <div className="font-bold text-2xl">
                               {item.amount}
                             </div>
                             <div className="font-light">Voucher</div>
+                            {
+                              subscription !== '' &&
+                              <>
+                                <Image
+                                  src={CurveUpper}
+                                  width={500}
+                                  height={500}
+                                  alt="seedsplan"
+                                  className="w-[50px] h-fit absolute top-0 left-[-26px]"
+                                />
+                                <Image
+                                  src={CurveLower}
+                                  width={500}
+                                  height={500}
+                                  alt="seedsplan"
+                                  className="w-[50px] h-fit absolute bottom-0 left-[-26px]"
+                                />
+                              </>
+                            }
                           </div>
                         </div>
                       </>
@@ -272,78 +344,103 @@ const SeedsPlan: React.FC = () => {
                     );
                   })}
             </div>
+            {
+              subscription !== '' &&
+                <div className='hidden md:flex w-full px-2 py-4 justify-center items-center'>
+                  <div
+                    onClick={async() => await router.push('/seedsplan/detail')}
+                    className='bg-[#3AC4A0] w-1/2 max-w-[300px] text-center py-2 font-semibold rounded-full cursor-pointer'
+                  >
+                    See Details
+                  </div>
+                </div>
+            }
           </div>
-          <div className="col-span-1 w-full h-fit bg-white rounded-none md:rounded-xl p-6">
-            <div>
-              <div
-                className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
-                onClick={togglePopupTnc}
-              >
-                <div>Terms & Conditions</div>
-                <div>
-                  <FaChevronRight />
+          {
+            subscription !== '' &&
+              <div className='md:hidden bg-white w-full px-2 py-4 flex justify-center items-center'>
+                <div
+                  onClick={async() => await router.push('/seedsplan/detail')}
+                  className='bg-[#3AC4A0] w-full md:w-1/2 text-center py-2 font-semibold rounded-full cursor-pointer'
+                >
+                  See Details
                 </div>
               </div>
-              <div
-                className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
-                onClick={togglePopupHowToUse}
-              >
-                <div>How to Use Voucher</div>
-                <div>
-                  <FaChevronRight />
+          }
+          {
+            subscription === '' &&
+            <div className="col-span-1 w-full h-fit bg-white rounded-none md:rounded-xl p-6">
+              <div>
+                <div
+                  className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
+                  onClick={togglePopupTnc}
+                >
+                  <div>Terms & Conditions</div>
+                  <div>
+                    <FaChevronRight />
+                  </div>
+                </div>
+                <div
+                  className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
+                  onClick={togglePopupHowToUse}
+                >
+                  <div>How to Use Voucher</div>
+                  <div>
+                    <FaChevronRight />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
-              {packagePlan === 'Silver' ? (
-                <>
-                  <div className="flex flex-col gap-2 mb-10">
-                    <div className="text-[#7C7C7C] text-sm">
-                      Subscription Fee
-                      <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
-                        Discount
-                      </span>
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                      <div>
-                        <span className="line-through">IDR 30.000</span>/month
+              <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
+                {packagePlan === 'Silver' ? (
+                  <>
+                    <div className="flex flex-col gap-2 mb-10">
+                      <div className="text-[#7C7C7C] text-sm">
+                        Subscription Fee
+                        <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                          Discount
+                        </span>
                       </div>
-                      <div>IDR 10.000</div>
-                    </div>
-                    <div className="font-light text-xs text-[#7C7C7C]">
-                      Auto-renews 1 month from time of purchase
-                    </div>
-                  </div>
-                  <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
-                    Subscribe Now!
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-2 mb-10">
-                    <div className="text-[#7C7C7C] text-sm">
-                      Subscription Fee
-                      <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
-                        Discount
-                      </span>
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                      <div>
-                        <span className="line-through">IDR 50.000</span>/month
+                      <div className="flex flex-row items-center justify-between">
+                        <div>
+                          <span className="line-through">IDR 30.000</span>/month
+                        </div>
+                        <div>IDR 10.000</div>
                       </div>
-                      <div>IDR 30.000</div>
+                      <div className="font-light text-xs text-[#7C7C7C]">
+                        Auto-renews 1 month from time of purchase
+                      </div>
                     </div>
-                    <div className="font-light text-xs text-[#7C7C7C]">
-                      Auto-renews 1 month from time of purchase
+                    <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                      Subscribe Now!
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex flex-col gap-2 mb-10">
+                      <div className="text-[#7C7C7C] text-sm">
+                        Subscription Fee
+                        <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                          Discount
+                        </span>
+                      </div>
+                      <div className="flex flex-row items-center justify-between">
+                        <div>
+                          <span className="line-through">IDR 50.000</span>/month
+                        </div>
+                        <div>IDR 30.000</div>
+                      </div>
+                      <div className="font-light text-xs text-[#7C7C7C]">
+                        Auto-renews 1 month from time of purchase
+                      </div>
                     </div>
-                  </div>
-                  <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
-                    Subscribe Now!
-                  </button>
-                </>
-              )}
+                    <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                      Subscribe Now!
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          }
         </div>
       </PageGradient>
       <TncSeedsplan isOpen={showTnc} onClose={togglePopupTnc} />

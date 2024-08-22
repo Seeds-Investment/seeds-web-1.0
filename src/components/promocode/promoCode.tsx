@@ -1,4 +1,5 @@
 import { standartCurrency } from '@/helpers/currency';
+import { isGuest } from '@/helpers/guest';
 import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Switch, Typography } from '@material-tailwind/react';
@@ -58,8 +59,12 @@ const PromoCodeButton: React.FC<PromoProps> = ({
     <>
       <div
         onClick={async () => {
-          if (!(useCoins ?? false)) {
-            await router.push(routeOptions(spotType, id));
+          if (localStorage.getItem('accessToken') === null || isGuest()) {
+            await router.push('/auth/verification');
+          } else {
+            if (!(useCoins ?? false)) {
+              await router.push(routeOptions(spotType, id));
+            }
           }
         }}
         className={`${(useCoins ?? false) ? 'border-[#BDBDBD] bg-white' : 'border-[#3AC4A0] bg-[#F0FFF4] hover:bg-[#d3ffdf] cursor-pointer hover:shadow-md duration-300'} flex justify-start items-center border rounded-lg py-2 px-4 gap-2`}

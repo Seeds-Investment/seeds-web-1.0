@@ -461,7 +461,7 @@ const TournamentDetail: React.FC = () => {
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
           </Typography>
-          <Typography className={`${promoCodeValidationResult ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'} font-poppins`}>
+          <Typography className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'} font-poppins`}>
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -470,7 +470,7 @@ const TournamentDetail: React.FC = () => {
                 ).replace('Rp', '')}`}
           </Typography>
           {
-            promoCodeValidationResult !== 0 &&
+            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
               <Typography className="font-semibold text-xl font-poppins">
                 {detailTournament?.admission_fee === 0
                   ? t('tournament.free')

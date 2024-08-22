@@ -348,7 +348,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
-          <div className={`${promoCodeValidationResult ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
+          <div className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
@@ -357,7 +357,7 @@ const QuizDetail = (): React.ReactElement => {
                 })}
           </div>
           {
-            promoCodeValidationResult !== 0 &&
+            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
               <div className="font-semibold text-xl">
                 {detailQuiz?.admission_fee === 0
                   ? t('quiz.free')

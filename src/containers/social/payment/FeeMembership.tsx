@@ -1,24 +1,21 @@
 import CCard from '@/components/CCard';
 import PromoCode from '@/components/promocode/promoCode';
 import { standartCurrency } from '@/helpers/currency';
+import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
 
 interface props {
-  setStep: any;
-  detailPost: any;
-  changeValue: any;
-  errorMessage: string;
+  setStep: React.Dispatch<React.SetStateAction<string>>;
+  detailPost: DataPost;
   userInfo: UserInfo;
 }
 
 const FeeMembership: React.FC<props> = ({
   setStep,
   detailPost,
-  changeValue,
-  errorMessage,
   userInfo
 }) => {
   return (
@@ -42,7 +39,7 @@ const FeeMembership: React.FC<props> = ({
         <div className='w-full max-w-[400px]'>
           {
             ((userInfo !== undefined) && ((detailPost?.premium_fee ?? 0) > 0)) &&
-              <PromoCode userInfo={userInfo} id={detailPost?.id as string} spotType={'Premium Content'}/>
+              <PromoCode userInfo={userInfo} id={detailPost?.id} spotType={'Premium Content'}/>
           }
         </div>
       </div>

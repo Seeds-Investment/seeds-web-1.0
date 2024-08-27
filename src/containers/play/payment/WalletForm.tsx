@@ -47,6 +47,7 @@ const WalletForm = ({
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleGetCoinsUser = async () => {
@@ -62,16 +63,30 @@ const WalletForm = ({
   }, []);
 
   useEffect(() => {
+    if (dataPost.quiz) {
+      if (dataPost.quiz.fee === 0) {
+        if ((dataPost.quiz.admission_fee - newPromoCodeDiscount) === 0) {
+          setShowOtherFees(false)
+        } else {
+          setShowOtherFees(true)
+        }
+      } else {
+        setShowOtherFees(true)
+      }
+    }
+  }, [dataPost, newPromoCodeDiscount]);
+
+  useEffect(() => {
     let _admissionFee = 0;
     let _adminFee = 0;
     let _totalFee = 0;
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0)
+      ? (showOtherFees ? payment.promo_price : 0) + (coinsDiscount > 0 ? coinsDiscount : 0)
       : coinsDiscount > 0
-      ? coinsDiscount
-      : 0;
+        ? coinsDiscount
+        : 0;
     if (promoCodeValidationResult) {
       _discount += newPromoCodeDiscount;
     }
@@ -81,11 +96,11 @@ const WalletForm = ({
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee) +
-          Number(_adminFee) +
-          Number(dataPost?.quiz?.fee) +
-          Number(payment.service_fee) -
-          Number(_discount)
+          Number(_admissionFee)
+          + Number(dataPost?.quiz?.fee)
+          - Number(_discount)
+          + (showOtherFees ? Number(_adminFee) : 0)
+          + (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     } else {
@@ -93,10 +108,10 @@ const WalletForm = ({
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(
-          _admissionFee +
-          _adminFee +
-          payment.service_fee -
-          _discount
+          Number(_admissionFee)
+          - Number(_discount)
+          + (showOtherFees ? Number(_adminFee) : 0)
+          + (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     }
@@ -173,27 +188,32 @@ const WalletForm = ({
           className="mb-2"
         />
       ) : null}
-      <InlineText
-        label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
-          payment.service_fee
-        }`}
-        className="mb-2"
-      />
-      <InlineText
-        label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency ?? 'IDR'} ${adminFee}`}
-        className="mb-2"
-      />
-      {payment.is_promo_available ? (
-        <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
-            payment.promo_price
-          }`}
-          className="mb-2"
-        />
-      ) : null}
+      {
+        showOtherFees &&
+          <>
+            <InlineText
+              label={t(`${translationId}.serviceFeeLabel`)}
+              value={`${userInfo?.preferredCurrency ?? 'IDR'} ${
+                payment.service_fee
+              }`}
+              className="mb-2"
+            />
+            <InlineText
+              label={t(`${translationId}.adminFeeLabel`)}
+              value={`${userInfo?.preferredCurrency ?? 'IDR'} ${adminFee}`}
+              className="mb-2"
+            />
+            {payment.is_promo_available ? (
+              <InlineText
+                label={t(`${translationId}.adminFeeDiscountLabel`)}
+                value={`- ${userInfo?.preferredCurrency ?? 'IDR'} ${
+                  payment.promo_price
+                }`}
+                className="mb-2"
+              />
+            ) : null}
+          </>
+      }
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}

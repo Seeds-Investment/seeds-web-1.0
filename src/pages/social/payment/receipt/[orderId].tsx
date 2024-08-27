@@ -11,6 +11,7 @@ import {
 } from '@/repository/payment.repository';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
+import { type QrisDetail } from '@/utils/interfaces/social.interfaces';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -19,10 +20,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-
-interface props {
-  data?: any;
-}
 
 interface PaymentList {
   admin_fee: number;
@@ -53,7 +50,7 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-const SuccessPaymentPage: React.FC<props> = ({ data }) => {
+const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { t } = useTranslation();
@@ -63,10 +60,8 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [qRisList, setQRisList] = useState<any>([]);
-  console.log(_);
+  const [qRisList, setQRisList] = useState<QrisDetail[]>([]);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -98,7 +93,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(true);
       const data = await getHowToPay(url);
       setSteps(data.payment_instruction[0].step);
-      setVirtualAccountInfo(data.virtual_account_info);
     } catch (error) {
       toast.error(`Error fetching Payment List: ${error as string}`);
     } finally {
@@ -110,7 +104,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     const regex = /"(.*?)"/g;
     const splitText = text.split(regex);
 
-    return splitText.map((part: string, index: number) => {
+    return splitText?.map((part: string, index: number) => {
       if (index % 2 === 1) {
         return (
           <strong className="font-semibold font-poppins" key={index}>
@@ -127,7 +121,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
-    if (orderDetail?.howToPayApi !== undefined) {
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
@@ -141,7 +135,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const toggleDropdown = (): void => {
     setIsOpen(!isOpen);
   };
-
+  
   return (
     <div className="pt-10">
       {isLoading && <Loading />}
@@ -170,7 +164,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus === 'PENDING' ? (
+                {(orderDetail?.transactionStatus !== 'SETTLEMENT' && orderDetail?.transactionStatus !== 'SUCCESS') ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -191,19 +185,19 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'PENDING'
+                {(orderDetail?.transactionStatus !== 'SETTLEMENT' && orderDetail?.transactionStatus !== 'SUCCESS')
                   ? t('social.payment.pendingPaidSocial')
                   : t('social.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'PENDING'
-                  ? `${orderDetail?.currency} ${formatCurrency(
-                      orderDetail?.grossAmount
+                {(orderDetail?.transactionStatus !== 'SETTLEMENT' && orderDetail?.transactionStatus !== 'SUCCESS')
+                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
                     )}`
                   : t('social.payment.paymentSuccessful')}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus !== 'PENDING' &&
+                {(orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCESS') &&
                   t('social.payment.recurringSaved')}
               </Typography>
 
@@ -234,7 +228,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   </div>
                 )}
                 <hr className="border-t-2 border-dashed" />
-                <div className="flex justify-between relative bottom-3 z-50">
+                <div className="flex justify-between relative bottom-3 z-10">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                 </div>
@@ -247,48 +241,58 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) +
-                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                            : 0) -
-                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
-                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          : (orderDetail?.grossAmount ?? 0)
+                            + ((paymentSelectedEWallet[0]?.is_promo_available ?? true)
+                              ? paymentSelectedEWallet[0]?.promo_price ?? 0
+                              : 0)
+                            - (paymentSelectedEWallet[0]?.admin_fee ?? 0)
+                            - (paymentSelectedEWallet[0]?.service_fee ?? 0)
                       )}`}
                   </Typography>
                 </div>
 
                 {/* Admin Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('social.payment.adminFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.admin_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('social.payment.adminFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.admin_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Service Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('social.payment.serviceFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('social.payment.serviceFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Discount Fee */}
-                {paymentSelectedEWallet.length > 0 && (
+                {
+                  ((orderDetail?.grossAmount ?? 0) > 0 &&
+                  paymentSelectedEWallet.length > 0) && (
                   <div>
                     {paymentSelectedEWallet[0]?.is_promo_available && (
                       <div className="flex flex-row justify-between mb-5">
@@ -329,7 +333,11 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     {t('social.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                    {
+                      (orderDetail?.transactionId ?? '') === ''
+                        ? '-'
+                        : orderDetail?.transactionId
+                    }
                   </Typography>
                 </div>
               </Card>
@@ -346,7 +354,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       isOpen ? 'max-h-[1000px]' : 'max-h-0'
                     }`}
                   >
-                    {steps.map((step: string, index: number) => (
+                    {steps?.map((step: string, index: number) => (
                       <div
                         className="flex items-start mb-3 relative"
                         key={index}

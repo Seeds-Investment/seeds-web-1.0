@@ -474,10 +474,10 @@ const TournamentDetail: React.FC = () => {
               <Typography className="font-semibold text-xl font-poppins">
                 {detailTournament?.admission_fee === 0
                   ? t('tournament.free')
-                  : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    `${userInfo?.preferredCurrency ?? 'IDR'}${standartCurrency(
-                      detailTournament?.admission_fee ?? 0
-                    ).replace('Rp', '')}`}
+                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}
               </Typography>
           }
           <div className="flex flex-row items-center justify-between mt-2.5">

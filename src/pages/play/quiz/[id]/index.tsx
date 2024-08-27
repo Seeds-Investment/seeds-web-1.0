@@ -211,7 +211,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-sm text-[#7C7C7C]">{t('quiz.played')}</div>
               </div>
               <div className="flex flex-col justify-center items-center p-4">
-                <div className="text-xl font-semibold">
+                <div className="text-xl font-semibold text-center">
                   {t('quiz.dayDuration', {
                     duration: Math.floor(
                       moment(detailQuiz?.ended_at).diff(

@@ -28,6 +28,7 @@ interface WalletFormProps {
   dataPost: DetailTournament;
   numberMonth?: number;
   userInfo: UserData;
+  newPromoCodeDiscount: number;
 }
 
 const WalletForm = ({
@@ -35,7 +36,8 @@ const WalletForm = ({
   handlePay,
   dataPost,
   numberMonth,
-  userInfo
+  userInfo,
+  newPromoCodeDiscount
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
@@ -45,6 +47,7 @@ const WalletForm = ({
   const [totalFee, setTotalFee] = useState(0);
   const [coinsDiscount, setCoinsDiscount] = useState(0);
   const router = useRouter();
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
   // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -64,18 +67,28 @@ const WalletForm = ({
   }, []);
 
   useEffect(() => {
+    if (dataPost) {
+      if ((dataPost.admission_fee - newPromoCodeDiscount) === 0) {
+        setShowOtherFees(false)
+      } else {
+        setShowOtherFees(true)
+      }
+    }
+  }, [dataPost, newPromoCodeDiscount]);
+
+  useEffect(() => {
     let _admissionFee = 0;
     let _adminFee = 0;
     let _totalFee = 0;
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? payment.promo_price + (coinsDiscount > 0 ? coinsDiscount : 0)
+      ? (showOtherFees ? payment.promo_price : 0) + (coinsDiscount > 0 ? coinsDiscount : 0)
       : coinsDiscount > 0
       ? coinsDiscount
       : 0;
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.response?.total_discount as number;
+      _discount += newPromoCodeDiscount;
     }
 
     if (dataPost) {
@@ -83,10 +96,10 @@ const WalletForm = ({
       _adminFee = payment?.admin_fee;
       _totalFee = parseFloat(
         `${(
-          Number(_admissionFee) +
-          Number(_adminFee) +
-          Number(payment.service_fee) -
-          Number(_discount)
+          Number(_admissionFee)
+          - Number(_discount)
+          + (showOtherFees ? Number(_adminFee) : 0)
+          + (showOtherFees ? Number(payment.service_fee) : 0)
         ).toFixed(2)}`
       );
     }
@@ -154,30 +167,32 @@ const WalletForm = ({
         value={`${userInfo?.preferredCurrency} ${admissionFee}`}
         className="mb-2"
       />
-      <InlineText
-        label={t(`${translationId}.serviceFeeLabel`)}
-        value={`${userInfo?.preferredCurrency} ${payment.service_fee}`}
-        className="mb-2"
-      />
-      <InlineText
-        label={t(`${translationId}.adminFeeLabel`)}
-        value={`${userInfo?.preferredCurrency} ${adminFee}`}
-        className="mb-2"
-      />
-      {payment.is_promo_available ? (
-        <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
-          className="mb-2"
-        />
-      ) : null}
+      {
+        showOtherFees &&
+        <>
+          <InlineText
+            label={t(`${translationId}.serviceFeeLabel`)}
+            value={`${userInfo?.preferredCurrency} ${payment.service_fee}`}
+            className="mb-2"
+          />
+          <InlineText
+            label={t(`${translationId}.adminFeeLabel`)}
+            value={`${userInfo?.preferredCurrency} ${adminFee}`}
+            className="mb-2"
+          />
+          {payment.is_promo_available ? (
+            <InlineText
+              label={t(`${translationId}.adminFeeDiscountLabel`)}
+              value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
+              className="mb-2"
+            />
+          ) : null}
+        </>
+      }
       {promoCodeValidationResult ? (
         <InlineText
           label={t(`${translationId}.promoCodeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency} ${
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.response?.total_discount
-          }`}
+          value={`- ${userInfo?.preferredCurrency} ${newPromoCodeDiscount}`}
           className="mb-2"
         />
       ) : null}

@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import CCard from '@/components/CCard';
 import Dialog from '@/components/ui/dialog/Dialog';
 import PaymentOptions from '@/containers/play/payment/PaymentOptions';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { promoValidate } from '@/repository/promo.repository';
 import { postPaymentPremiumContent } from '@/repository/social.respository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -27,11 +30,10 @@ export interface Payment {
 }
 
 interface props {
-  data: any;
-  promo: any;
+  data: DataPost;
 }
 
-const PaymentMethod: React.FC<props> = ({ data, promo }) => {
+const PaymentMethod: React.FC<props> = ({ data }) => {
   const router = useRouter();
   const [eWalletList, setEWalletList] = useState([]);
   const [qRisList, setQRisList] = useState([]);
@@ -39,7 +41,7 @@ const PaymentMethod: React.FC<props> = ({ data, promo }) => {
   const [option, setOption] = useState<Payment>();
   const [openDialog, setOpenDialog] = useState(false);
   const { t } = useTranslation();
-
+  const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
@@ -87,12 +89,15 @@ const PaymentMethod: React.FC<props> = ({ data, promo }) => {
         item_name: 'Social Post Premium',
         quantity: 1,
         name: userInfo?.name,
-        email: userInfo?.email
+        email: userInfo?.email,
+        promo_code: promoCodeValidationResult !== 0 ? promoCodeValidationResult?.response?.promo_code : '',
+        spot_type: 'Premium Content'
       });
 
-      if (response.payment_url !== undefined) {
+      if ((response?.payment_url !== undefined) && (response?.payment_url !== '')) {
         window.open(response.payment_url as string, '_blank');
       }
+      
       await router
         .push(`/social/payment/receipt/${response.order_id as string}`)
         .catch(error => {
@@ -107,6 +112,26 @@ const PaymentMethod: React.FC<props> = ({ data, promo }) => {
     void fetchUserInfo();
     void fetchPaymentList();
   }, []);
+
+  useEffect(() => {
+    const validatePromo = async (): Promise<void> => {
+      if (promoCodeValidationResult) {
+        const admissionFee = Number(data?.premium_fee ?? 0);
+
+        const response = await promoValidate({
+          promo_code: promoCodeValidationResult?.response?.promo_code,
+          spot_type: 'Premium Content',
+          item_price: admissionFee,
+          item_id: data?.id,
+          currency: userInfo?.preferredCurrency ?? 'IDR',
+        });
+        
+        setNewPromoCodeDiscount(response?.total_discount)
+      }
+    };
+
+    void validatePromo();
+  }, [data]);
 
   const handleOpenDialog = (value: boolean): void => {
     if (option?.payment_type === 'qris') {
@@ -174,8 +199,7 @@ const PaymentMethod: React.FC<props> = ({ data, promo }) => {
               payment={option}
               handlePay={handlePay}
               dataPost={data}
-              promo={promoCodeValidationResult}
-              userInfo={userInfo}
+              newPromoCodeDiscount={newPromoCodeDiscount}
             />
         }
       </Dialog>

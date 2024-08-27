@@ -143,7 +143,7 @@ const SuccessPaymentPage: React.FC = () => {
     void fetchOrderDetail();
     void fetchPaymentList();
     dispatch(setPromoCodeValidationResult(0));
-    if (orderDetail?.howToPayApi !== undefined) {
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
@@ -212,7 +212,7 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
+                {(orderDetail?.transactionStatus !== 'SETTLEMENT' && orderDetail?.transactionStatus !== 'SUCCESS' && orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -233,19 +233,19 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS'
                   ? ''
                   : t('tournament.payment.pendingPaidTournament')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS'
                   ? t('tournament.payment.successful')
                   : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' &&
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS' &&
                   t('tournament.payment.recurringSaved')}
               </Typography>
 
@@ -291,11 +291,13 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
-                        orderDetail?.grossAmount
-                          - ((paymentSelected[0]?.admin_fee ?? 0)
-                          + (paymentSelected[0]?.service_fee ?? 0))
-                          + ((paymentSelected[0]?.is_promo_available ?? false)
-                            ? (paymentSelected[0]?.promo_price ?? 0) : 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          : orderDetail?.grossAmount
+                              - ((paymentSelected[0]?.admin_fee ?? 0)
+                              + (paymentSelected[0]?.service_fee ?? 0))
+                              + ((paymentSelected[0]?.is_promo_available ?? false)
+                                ? (paymentSelected[0]?.promo_price ?? 0) : 0)
                       )}`}
                     </Typography>
                   </div>
@@ -313,11 +315,13 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
-                        orderDetail?.grossAmount
-                          - ((qRisList[0]?.admin_fee ?? 0)
-                          + (qRisList[0]?.service_fee ?? 0))
-                          + ((paymentSelected[0]?.is_promo_available ?? false)
-                            ? (paymentSelected[0]?.promo_price ?? 0) : 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          :  orderDetail?.grossAmount
+                            - ((qRisList[0]?.admin_fee ?? 0)
+                            + (qRisList[0]?.service_fee ?? 0))
+                            + ((paymentSelected[0]?.is_promo_available ?? false)
+                              ? (paymentSelected[0]?.promo_price ?? 0) : 0)
                       )}`}
                     </Typography>
                   </div>
@@ -326,7 +330,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Admin Fee */}
-                {paymentSelected !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected !== undefined &&
                 paymentSelected[0]?.admin_fee > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
@@ -344,7 +350,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Admin Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                 qRisList[0]?.admin_fee > 0 &&
                 orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between mb-5">
@@ -363,7 +371,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Service Fee */}
-                {paymentSelected[0]?.service_fee > 0 ? (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected[0]?.service_fee > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('tournament.payment.serviceFee')}
@@ -382,7 +392,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Service Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                 qRisList[0]?.service_fee > 0 &&
                 orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between mb-5">
@@ -403,7 +415,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Discount Fee */}
-                {paymentSelected.length > 0 && (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected.length > 0 && (
                   <div>
                     {paymentSelected[0]?.is_promo_available && (
                       <div className="flex flex-row justify-between mb-5">
@@ -425,7 +439,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Discount Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                   orderDetail?.paymentMethod === 'OTHER_QRIS' && (
                     <div>
                       {qRisList[0]?.is_promo_available && (
@@ -449,7 +465,8 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Discount Coins */}
                 <div>
-                  {orderDetail?.currency !== undefined
+                  {(orderDetail?.grossAmount ?? 0) > 0 &&
+                  orderDetail?.currency !== undefined
                     ? paymentSelected[0]?.admin_fee +
                         paymentSelected[0]?.service_fee -
                         orderDetail.grossAmount -
@@ -475,6 +492,7 @@ const SuccessPaymentPage: React.FC = () => {
                 <div>
                   {orderDetail?.currency !== undefined &&
                   orderDetail?.paymentMethod === 'OTHER_QRIS' &&
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
                   qRisList !== undefined
                     ? qRisList[0]?.admin_fee +
                         qRisList[0]?.service_fee -
@@ -517,7 +535,11 @@ const SuccessPaymentPage: React.FC = () => {
                     {t('tournament.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                    {
+                      (orderDetail?.transactionId ?? '') === ''
+                        ? '-'
+                        : orderDetail?.transactionId
+                    }
                   </Typography>
                 </div>
               </Card>

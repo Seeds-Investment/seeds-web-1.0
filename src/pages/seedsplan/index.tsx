@@ -222,7 +222,7 @@ const SeedsPlan: React.FC = () => {
                               className="text-[#7C7C7C] font-light text-xs truncate"
                               dangerouslySetInnerHTML={{
                                 __html:
-                                  item?.tnc?.[
+                                  item?.description?.[
                                     i18n.language === 'id' ? 'id' : 'en'
                                   ]
                               }}
@@ -285,7 +285,7 @@ const SeedsPlan: React.FC = () => {
                               className="text-[#7C7C7C] font-light text-xs truncate"
                               dangerouslySetInnerHTML={{
                                 __html:
-                                  item?.tnc?.[
+                                  item?.description?.[
                                     i18n.language === 'id' ? 'id' : 'en'
                                   ]
                               }}

@@ -55,7 +55,6 @@ const ChooseSubs: React.FC<props> = ({
       setPages('chooseSubs');
     }
     setPages('terms');
-    console.log('handleSubmit ')
   };
 
   const numberMonth = (): number => {

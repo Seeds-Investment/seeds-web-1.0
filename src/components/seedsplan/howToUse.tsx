@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoCloseSharp } from 'react-icons/io5';
 
 interface HowToUseProps {
@@ -7,6 +8,7 @@ interface HowToUseProps {
 }
 
 const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -15,7 +17,7 @@ const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
       <div className="fixed inset-0 flex items-end justify-center md:items-center z-50">
         <div className="bg-white rounded-t-2xl md:rounded-2xl overflow-hidden w-full md:w-3/4 lg:w-1/2 border-2">
           <div className="flex justify-between p-4">
-            <div className="font-semibold">How to Use The Voucher</div>
+            <div className="font-semibold">{t('seedsPlan.button2')}</div>
             <button
               onClick={onClose}
               className="transform scale-100 hover:scale-110 transition-transform duration-300"
@@ -25,23 +27,15 @@ const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
           </div>
           <div className="px-4 pb-4">
             <ol className="flex flex-col gap-2">
-              <li>1. Open the Seeds Finance app</li>
-              <li>
-                2. Select the Quiz and Play Tournament in the &quot;Play&quot;
-                section or select &quot;Circle&quot; and &quot;Premium
-                Post&quot; in the &quot;Social&quot; section according to your
-                choice.
-              </li>
-              <li>
-                3. On the payment page, select payment method and voucher
-                (including the Seeds Unlimited voucher you purchased)
-              </li>
-              <li>
-                4. If the voucher is already active, you will be able to
-                participate in variety of premium discount for free, depending
-                on the type of voucher you purchased
-              </li>
-              <li>5. Yay! Now you can join and enjoy multiple savings</li>
+              {t('seedsPlan.howToUse')
+                .split('.')
+                .map((item, i) => {
+                  return (
+                    <li key={i}>
+                      {i + 1}. {item}
+                    </li>
+                  );
+                })}
             </ol>
           </div>
           <div className="px-4 py-4 flex flex-col gap-3 items-center">
@@ -49,7 +43,7 @@ const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
               onClick={onClose}
               className="w-full md:w-1/2 bg-[#3AC4A0] font-semibold py-2 px-4 rounded-3xl transform scale-100 hover:scale-105 transition-transform duration-300"
             >
-              I Understand
+              {t('seedsPlan.button4')}
             </button>
           </div>
         </div>

@@ -2469,6 +2469,21 @@ export default {
     text16: 'Musim',
     text17: 'Kapan saja'
   },
+  seedsPlan: {
+    desc: 'Pilih paket untuk mendapatkan penghematan dan kesenangan tanpa batas!',
+    button1: 'Ketentuan & Kebijakan',
+    button2: 'Cara Menggunakan Voucher',
+    howToUse:
+      'Buka aplikasi Seeds Finance. Pilih Kuis dan Mainkan Turnamen di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
+    button3: 'Langganan Sekarang!',
+    button4: 'Saya Mengerti',
+    text1: 'Terbaik',
+    text2: 'Biaya Langganan',
+    text3: 'Diskon',
+    text4: 'bulan',
+    text5: 'Otomatis diperbarui 1 bulan setelah pembelian',
+    text6: 'Total diskon'
+  },
   subscription: {
     transactionHistory: 'Riwayat Transaksi'
   }

@@ -42,7 +42,8 @@ const SeedsPlan: React.FC = () => {
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
     { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' }
+    { label: 'Circle Premium', category: 'Premium Circle' },
+    { label: 'Content Premium', category: 'Premium Content' }
   ];
 
   const getPlanList = async (): Promise<void> => {
@@ -198,18 +199,19 @@ const SeedsPlan: React.FC = () => {
                     return (
                       <>
                         <div
-                          className="bg-white rounded-2xl w-full h-32 grid grid-cols-5"
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
                           key={index}
                         >
                           <div className="col-span-1 flex justify-center items-center">
-                            {item?.voucher_type === 'Premium Circle' ? (
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
                               <HiUserGroup
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             ) : (
                               <IoGameController
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             )}
@@ -248,7 +250,7 @@ const SeedsPlan: React.FC = () => {
                             <div className="font-bold text-xl">
                               {item?.quantity}
                             </div>
-                            <div className="font-light text-sm">Voucher</div>
+                            <div className="font-light text-xs">Voucher</div>
                           </div>
                         </div>
                       </>
@@ -261,18 +263,19 @@ const SeedsPlan: React.FC = () => {
                     return (
                       <>
                         <div
-                          className="bg-white rounded-2xl w-full h-32 grid grid-cols-5"
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
                           key={index}
                         >
                           <div className="col-span-1 flex justify-center items-center">
-                            {item?.voucher_type === 'Premium Circle' ? (
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
                               <HiUserGroup
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             ) : (
                               <IoGameController
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             )}
@@ -311,7 +314,7 @@ const SeedsPlan: React.FC = () => {
                             <div className="font-bold text-xl">
                               {item?.quantity}
                             </div>
-                            <div className="font-light text-sm">Voucher</div>
+                            <div className="font-light text-xs">Voucher</div>
                           </div>
                         </div>
                       </>

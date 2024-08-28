@@ -2538,5 +2538,20 @@ export default {
     text15: 'Participant 50 points',
     text16: 'Season',
     text17: 'All Time'
+  },
+  seedsPlan: {
+    desc: 'Choose the package to get unlimited savings and fun!',
+    button1: 'Terms & Conditions',
+    button2: 'How to Use Voucher',
+    howToUse:
+      'Open the Seeds Finance app. Select the Quiz and Play Tournament in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
+    button3: 'Subscribe Now!',
+    button4: 'I Understand',
+    text1: 'Best',
+    text2: 'Subscription Fee',
+    text3: 'Discount',
+    text4: 'month',
+    text5: 'Auto-renews 1 month from time of purchase',
+    text6: 'Total discount'
   }
 };

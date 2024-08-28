@@ -1,19 +1,29 @@
 import BgSeeds from '@/assets/seedsplan/BgSeeds.svg';
 import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
-import CurveLower from '@/assets/seedsplan/curveLower.svg';
-import CurveUpper from '@/assets/seedsplan/curveUpper.svg';
-import SeedsPlanSilver from '@/assets/seedsplan/seedsPlanSilver.svg';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getUserInfo } from '@/repository/profile.repository';
+import {
+  getSubscriptionPlan,
+  getSubscriptionVoucher
+} from '@/repository/subscription.repository';
+import i18n from '@/utils/common/i18n';
+import {
+  type DataPlanI,
+  type DataVoucherI
+} from '@/utils/interfaces/subscription.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { GiBackwardTime } from 'react-icons/gi';
 import { HiUserGroup } from 'react-icons/hi2';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { IoGameController } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 const SeedsPlan: React.FC = () => {
   const [subscription, setSubscription] = useState<string>('');
@@ -22,72 +32,38 @@ const SeedsPlan: React.FC = () => {
   const [showTnc, setShowTnc] = useState(false);
   const [showHowToUse, setHowToUse] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
+  const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
+  const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
+    undefined
+  );
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const categorySeedsPlan = [
-    'All',
-    'Play Arena',
-    'Play Quiz',
-    'Circle Premium'
+    { label: 'All', category: 'All' },
+    { label: 'Play Arena', category: 'Paid Tournament' },
+    { label: 'Play Quiz', category: 'Paid Quiz' },
+    { label: 'Circle Premium', category: 'Premium Circle' },
+    { label: 'Content Premium', category: 'Premium Content' }
   ];
 
-  const voucherSeedsPlanSilver = [
-    {
-      title: 'Quiz',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 1,
-      category: 'Play Quiz'
-    },
-    {
-      title: 'Play Arena',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 3,
-      category: 'Play Arena'
-    },
-    {
-      title: 'Circle',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 7,
-      category: 'Circle Premium'
+  const getPlanList = async (): Promise<void> => {
+    try {
+      const response = await getSubscriptionPlan();
+      setDataPlan(response);
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast(error as string, { type: 'error' });
     }
-  ];
-  const voucherSeedsPlanGold = [
-    {
-      title: 'Quiz Gold',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 1,
-      category: 'Play Quiz'
-    },
-    {
-      title: 'Play Arena Gold',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 3,
-      category: 'Play Arena'
-    },
-    {
-      title: 'Circle Gold',
-      description: 'Free to join 3 circle',
-      benefit: 'Total benefit 80 rb',
-      amount: 7,
-      category: 'Circle Premium'
-    }
-  ];
-
-  const filteredDataSilver = voucherSeedsPlanSilver?.filter(
-    item => item.category === category
-  );
-  const filteredDataGold = voucherSeedsPlanGold?.filter(
-    item => item.category === category
-  );
-
-  const togglePopupTnc = (): void => {
-    setShowTnc(!showTnc);
   };
-  const togglePopupHowToUse = (): void => {
-    setHowToUse(!showHowToUse);
+
+  const getVoucherList = async (id: string): Promise<void> => {
+    try {
+      const response = await getSubscriptionVoucher(id);
+      setDataVoucher(response);
+    } catch (error) {
+      toast(error as string, { type: 'error' });
+    }
   };
 
   const handleView = (): void => {
@@ -97,6 +73,36 @@ const SeedsPlan: React.FC = () => {
       setSubscription('')
     }
   };
+
+  useEffect(() => {
+    void getPlanList();
+  }, []);
+
+  const togglePopupTnc = (): void => {
+    setShowTnc(!showTnc);
+  };
+  const togglePopupHowToUse = (): void => {
+    setHowToUse(!showHowToUse);
+  };
+
+  const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
+  const filterTnc =
+    filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
+      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en'].replace(
+          /\n/g,
+          '<br />'
+        )
+      : '-';
+
+  useEffect(() => {
+    if (filterPlan !== undefined) {
+      void getVoucherList(filterPlan?.id);
+    }
+  }, [filterPlan?.id]);
+
+  const filteredDataVoucher = dataVoucher?.data?.filter(
+    item => item?.voucher_type === category
+  );
 
   return (
     <>
@@ -131,38 +137,9 @@ const SeedsPlan: React.FC = () => {
             className="w-60"
           />
           <div className="font-semibold text-sm md:text-lg text-center">
-            Choose the package to get unlimited savings and fun!
+            {t('seedsPlan.desc')}
           </div>
         </div>
-        {
-          subscription !== '' &&
-            <div className='bg-[#F6F6F6] w-full p-2 md:mt-4 md:rounded-t-xl flex justify-center items-center'>
-              <div className='w-full md:w-3/4 flex py-4 gap-2 rounded-xl border border-[#27A590] justify-center items-center'>
-                <div className='w-[50px] h-[50px]'>
-                  <Image
-                    src={SeedsPlanSilver}
-                    width={500}
-                    height={500}
-                    alt="seedsplan"
-                    className="w-full h-full"
-                  />
-                </div>
-                <div className='md:flex md:items-center md:justify-center md:gap-4'>
-                  <div className='w-full md:w-fit flex justify-between mb-2 md:mb-0 md:justify-normal md:flex-col'>
-                    <div className='text-sm font-semibold order-1 md:order-2'>
-                      Your Package: Silver
-                    </div>
-                    <div className='w-fit md:mb-1 flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4 order-2 md:order-1'>
-                      Active
-                    </div>
-                  </div>
-                  <div className='text-[9px] px-4 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-nowrap'>
-                    Your plan will expire on January 25, 2025. 13:08
-                  </div>
-                </div>
-              </div>
-            </div>
-        }
         <div className={
           subscription === ''
            ? 'flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins'
@@ -221,15 +198,15 @@ const SeedsPlan: React.FC = () => {
                   <button
                     key={index}
                     className={`px-3 py-1 rounded-3xl ${
-                      category === item
+                      category === item.category
                         ? 'bg-[#3ac4a0] text-black'
                         : 'bg-[#ffffff] text-[#bdbdbd]'
                     }`}
                     onClick={() => {
-                      setCategory(item);
+                      setCategory(item.category);
                     }}
                   >
-                    {item}
+                    {item.label}
                   </button>
                 );
               })}
@@ -237,107 +214,128 @@ const SeedsPlan: React.FC = () => {
             <div className={`${subscription === '' ? '' : 'w-full md:w-3/4'} grid grid-cols-1 xl:grid-cols-2 gap-3`}>
               {packagePlan === 'Silver'
                 ? (category !== 'All'
-                    ? filteredDataSilver
-                    : voucherSeedsPlanSilver
-                  ).map((item, index) => {
+                    ? filteredDataVoucher
+                    : dataVoucher?.data
+                  )?.map((item, index) => {
                     return (
                       <>
                         <div
-                          className="bg-white rounded-2xl w-full h-32 grid grid-cols-4"
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
                           key={index}
                         >
                           <div className="col-span-1 flex justify-center items-center">
-                            {item.category === 'Circle Premium' ? (
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
                               <HiUserGroup
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             ) : (
                               <IoGameController
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             )}
                           </div>
-                          <div className="col-span-2 flex flex-col justify-center">
-                            <div className="text-[#3AC4A0] font-bold truncate">
-                              {item.title}
+                          <div className="col-span-3 flex flex-col justify-center">
+                            <div className="text-[#3AC4A0] font-bold text-sm truncate">
+                              {item?.name_promo_code}
                             </div>
-                            <div className="text-[#7C7C7C] font-light truncate">
-                              {item.description}
-                            </div>
-                            <div className="font-bold truncate">
-                              {item.benefit}
+                            <div
+                              className="text-[#7C7C7C] font-light text-xs truncate"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item?.description?.[
+                                    i18n.language === 'id' ? 'id' : 'en'
+                                  ]
+                              }}
+                            />
+                            <div className="font-bold text-sm truncate">
+                              {t('seedsPlan.text6')}{' '}
+                              {`${
+                                item?.is_percentage
+                                  ? `${item?.discount_percentage}%`
+                                  : item?.discount_amount?.toLocaleString(
+                                      'id-ID',
+                                      {
+                                        currency:
+                                          userInfo?.preferredCurrency ?? 'IDR',
+                                        style: 'currency',
+                                        maximumFractionDigits: 0
+                                      }
+                                    )
+                              }`}
                             </div>
                           </div>
-                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C] relative">
-                            <div className="font-bold text-2xl">
-                              {item.amount}
+                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                            <div className="font-bold text-xl">
+                              {item?.quantity}
                             </div>
-                            <div className="font-light">Voucher</div>
-                            {
-                              subscription !== '' &&
-                              <>
-                                <Image
-                                  src={CurveUpper}
-                                  width={500}
-                                  height={500}
-                                  alt="seedsplan"
-                                  className="w-[50px] h-fit absolute top-0 left-[-26px]"
-                                />
-                                <Image
-                                  src={CurveLower}
-                                  width={500}
-                                  height={500}
-                                  alt="seedsplan"
-                                  className="w-[50px] h-fit absolute bottom-0 left-[-26px]"
-                                />
-                              </>
-                            }
+                            <div className="font-light text-xs">Voucher</div>
                           </div>
                         </div>
                       </>
                     );
                   })
                 : (category !== 'All'
-                    ? filteredDataGold
-                    : voucherSeedsPlanGold
-                  ).map((item, index) => {
+                    ? filteredDataVoucher
+                    : dataVoucher?.data
+                  )?.map((item, index) => {
                     return (
                       <>
                         <div
-                          className="bg-white rounded-2xl w-full h-32 grid grid-cols-4"
+                          className="bg-white rounded-2xl w-full h-28 grid grid-cols-5 px-1"
                           key={index}
                         >
                           <div className="col-span-1 flex justify-center items-center">
-                            {item.category === 'Circle Premium' ? (
+                            {item?.voucher_type === 'Premium Circle' ||
+                            item?.voucher_type === 'Premium Content' ? (
                               <HiUserGroup
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             ) : (
                               <IoGameController
-                                size={60}
+                                size={50}
                                 className="p-3 bg-[#3AC4A0] text-[#487209] rounded-full"
                               />
                             )}
                           </div>
-                          <div className="col-span-2 flex flex-col justify-center">
-                            <div className="text-[#3AC4A0] font-bold truncate">
-                              {item.title}
+                          <div className="col-span-3 flex flex-col justify-center">
+                            <div className="text-[#3AC4A0] font-bold text-sm truncate">
+                              {item?.name_promo_code}
                             </div>
-                            <div className="text-[#7C7C7C] font-light truncate">
-                              {item.description}
-                            </div>
-                            <div className="font-bold truncate">
-                              {item.benefit}
+                            <div
+                              className="text-[#7C7C7C] font-light text-xs truncate"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item?.description?.[
+                                    i18n.language === 'id' ? 'id' : 'en'
+                                  ]
+                              }}
+                            />
+                            <div className="font-bold text-sm truncate">
+                              {t('seedsPlan.text6')}{' '}
+                              {`${
+                                item?.is_percentage
+                                  ? `${item?.discount_percentage}%`
+                                  : item?.discount_amount?.toLocaleString(
+                                      'id-ID',
+                                      {
+                                        currency:
+                                          userInfo?.preferredCurrency ?? 'IDR',
+                                        style: 'currency',
+                                        maximumFractionDigits: 0
+                                      }
+                                    )
+                              }`}
                             </div>
                           </div>
                           <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
-                            <div className="font-bold text-2xl">
-                              {item.amount}
+                            <div className="font-bold text-xl">
+                              {item?.quantity}
                             </div>
-                            <div className="font-light">Voucher</div>
+                            <div className="font-light text-xs">Voucher</div>
                           </div>
                         </div>
                       </>
@@ -357,93 +355,116 @@ const SeedsPlan: React.FC = () => {
             }
           </div>
           {
-            subscription !== '' &&
-              <div className='md:hidden bg-white w-full px-2 py-4 flex justify-center items-center'>
-                <div
-                  onClick={async() => await router.push('/seedsplan/detail')}
-                  className='bg-[#3AC4A0] w-full md:w-1/2 text-center py-2 font-semibold rounded-full cursor-pointer'
-                >
-                  See Details
-                </div>
-              </div>
-          }
-          {
             subscription === '' &&
-            <div className="col-span-1 w-full h-fit bg-white rounded-none md:rounded-xl p-6">
-              <div>
-                <div
-                  className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
-                  onClick={togglePopupTnc}
-                >
-                  <div>Terms & Conditions</div>
-                  <div>
-                    <FaChevronRight />
+              <div className="col-span-1 w-full h-fit bg-white rounded-none md:rounded-xl p-6">
+                <div>
+                  <div
+                    className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
+                    onClick={togglePopupTnc}
+                  >
+                    <div>{t('seedsPlan.button1')}</div>
+                    <div>
+                      <FaChevronRight />
+                    </div>
+                  </div>
+                  <div
+                    className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
+                    onClick={togglePopupHowToUse}
+                  >
+                    <div>{t('seedsPlan.button2')}</div>
+                    <div>
+                      <FaChevronRight />
+                    </div>
                   </div>
                 </div>
-                <div
-                  className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
-                  onClick={togglePopupHowToUse}
-                >
-                  <div>How to Use Voucher</div>
-                  <div>
-                    <FaChevronRight />
-                  </div>
+                <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
+                  {packagePlan === 'Silver' ? (
+                    <>
+                      <div className="flex flex-col gap-2 mb-10">
+                        <div className="text-[#7C7C7C] text-sm">
+                          {t('seedsPlan.text2')}
+                          <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                            {t('seedsPlan.text3')}
+                          </span>
+                        </div>
+                        <div className="flex flex-row items-center justify-between">
+                          <div>
+                            <span className="line-through">
+                              {(
+                                (filterPlan?.price as number) + 20000
+                              )?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /{t('seedsPlan.text4')}
+                          </div>
+                          <div>
+                            {filterPlan?.price?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
+                          </div>
+                        </div>
+                        <div className="font-light text-xs text-[#7C7C7C]">
+                          {t('seedsPlan.text5')}
+                        </div>
+                      </div>
+                      <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                        {t('seedsPlan.button3')}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex flex-col gap-2 mb-10">
+                        <div className="text-[#7C7C7C] text-sm">
+                          {t('seedsPlan.text2')}
+                          <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                            {t('seedsPlan.text3')}
+                          </span>
+                        </div>
+                        <div className="flex flex-row items-center justify-between">
+                          <div>
+                            <span className="line-through">
+                              {(
+                                (filterPlan?.price as number) + 20000
+                              )?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /{t('seedsPlan.text4')}
+                          </div>
+                          <div>
+                            {filterPlan?.price?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
+                          </div>
+                        </div>
+                        <div className="font-light text-xs text-[#7C7C7C]">
+                          {t('seedsPlan.text5')}
+                        </div>
+                      </div>
+                      <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                        {t('seedsPlan.button3')}
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
-              <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
-                {packagePlan === 'Silver' ? (
-                  <>
-                    <div className="flex flex-col gap-2 mb-10">
-                      <div className="text-[#7C7C7C] text-sm">
-                        Subscription Fee
-                        <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
-                          Discount
-                        </span>
-                      </div>
-                      <div className="flex flex-row items-center justify-between">
-                        <div>
-                          <span className="line-through">IDR 30.000</span>/month
-                        </div>
-                        <div>IDR 10.000</div>
-                      </div>
-                      <div className="font-light text-xs text-[#7C7C7C]">
-                        Auto-renews 1 month from time of purchase
-                      </div>
-                    </div>
-                    <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
-                      Subscribe Now!
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex flex-col gap-2 mb-10">
-                      <div className="text-[#7C7C7C] text-sm">
-                        Subscription Fee
-                        <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
-                          Discount
-                        </span>
-                      </div>
-                      <div className="flex flex-row items-center justify-between">
-                        <div>
-                          <span className="line-through">IDR 50.000</span>/month
-                        </div>
-                        <div>IDR 30.000</div>
-                      </div>
-                      <div className="font-light text-xs text-[#7C7C7C]">
-                        Auto-renews 1 month from time of purchase
-                      </div>
-                    </div>
-                    <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
-                      Subscribe Now!
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
           }
         </div>
       </PageGradient>
-      <TncSeedsplan isOpen={showTnc} onClose={togglePopupTnc} />
+      <TncSeedsplan
+        isOpen={showTnc}
+        onClose={togglePopupTnc}
+        tnc={filterTnc as string}
+      />
       <HowToUseSeedsplan isOpen={showHowToUse} onClose={togglePopupHowToUse} />
     </>
   );

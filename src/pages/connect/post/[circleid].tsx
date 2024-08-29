@@ -123,9 +123,11 @@ const CirclePost = (): JSX.Element => {
   };
 
   useEffect(() => {
-    void fetchUserInfo();
-    void fetchDetailCircle();
-    void redirect();
+    if (circleId !== undefined) {
+      void fetchUserInfo();
+      void fetchDetailCircle();
+      void redirect();
+    }
   }, [circleId]);
 
   const handlePages = (): any => {

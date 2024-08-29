@@ -15,7 +15,7 @@ import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Pending, receiptXIcon } from 'public/assets/circle';
+import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -122,6 +122,8 @@ const SuccessPaymentPage: React.FC = () => {
   const validationError: boolean =
     orderDetail?.transactionStatus !== 'PENDING' &&
     orderDetail?.transactionStatus !== 'CREATED' &&
+    orderDetail?.transactionStatus !== 'SUCCESS' &&
+    orderDetail?.transactionStatus !== 'SETTLEMENT' &&
     orderDetail?.transactionStatus !== 'SUCCEEDED';
 
   useEffect(() => {
@@ -171,8 +173,10 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') && (
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' && 
+                  orderDetail?.transactionStatus !== 'SUCCESS' && 
+                  orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -183,8 +187,7 @@ const SuccessPaymentPage: React.FC = () => {
                       />
                     </div>
                   </div>
-                )}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' && (
+                ) : (
                   <Image
                     src={CeklisCircle.src}
                     alt="AVATAR"
@@ -192,29 +195,26 @@ const SuccessPaymentPage: React.FC = () => {
                     height={80}
                   />
                 )}
-                {validationError && (
-                  <Image
-                    src={receiptXIcon.src}
-                    alt="AVATAR"
-                    width={80}
-                    height={80}
-                  />
-                )}
               </div>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? normalText
-                    : bigText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  t('circle.payment.pendingPaidCircle')}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  t('circle.payment.paymentSuccessful')}
-                {validationError && t('circle.payment.paymentFailed')}
+              <Typography className="text-sm font-normal text-white text-center">
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                  orderDetail?.transactionStatus !== 'SUCCESS' &&
+                  orderDetail?.transactionStatus !== 'SUCCEEDED'
+                )
+                  ? t('circle.payment.pendingPaidCircle')
+                  : t('circle.payment.paymentSuccessful')}
+              </Typography>
+              <Typography className="text-2xl font-semibold text-white text-center">
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                  orderDetail?.transactionStatus !== 'SUCCESS' &&
+                  orderDetail?.transactionStatus !== 'SUCCEEDED'
+                )
+                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
+                    )}`
+                  : t('quiz.payment.paymentSuccessful')}
               </Typography>
               <Typography
                 className={
@@ -229,8 +229,8 @@ const SuccessPaymentPage: React.FC = () => {
                   `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                     orderDetail?.grossAmount
                   )}`}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  t('circle.payment.paymentSuccessDescription')}
+              </Typography>
+              <Typography className="text-sm font-normal text-white text-center">
                 {validationError &&
                   t('circle.payment.paymentFailedDescription')}
               </Typography>
@@ -266,7 +266,7 @@ const SuccessPaymentPage: React.FC = () => {
                   </div>
                 )}
                 <hr className="border-t-2 border-dashed" />
-                <div className="flex justify-between relative bottom-3 z-50">
+                <div className="flex justify-between relative bottom-3 z-10">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                 </div>
@@ -276,51 +276,60 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('circle.payment.circleFee')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) +
-                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                            : 0) -
-                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
-                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          :  (orderDetail?.grossAmount ?? 0)
+                            - (paymentSelectedEWallet[0]?.admin_fee ?? 0)
+                            - (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                            + (paymentSelectedEWallet[0]?.is_promo_available ?? true
+                              ? paymentSelectedEWallet[0]?.promo_price ?? 0 : 0)
                       )}`}
                   </Typography>
                 </div>
 
                 {/* Admin Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('circle.payment.adminFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.admin_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('circle.payment.adminFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.admin_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Service Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('circle.payment.serviceFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('circle.payment.serviceFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Discount Fee */}
-                {paymentSelectedEWallet.length > 0 && (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelectedEWallet.length > 0 && (
                   <div>
                     {paymentSelectedEWallet[0]?.is_promo_available && (
                       <div className="flex flex-row justify-between mb-5">
@@ -358,8 +367,12 @@ const SuccessPaymentPage: React.FC = () => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('circle.payment.idTransaction')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626] truncate w-[110px] md:w-fit">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
+                    {
+                      (orderDetail?.transactionId ?? '') === ''
+                        ? '-'
+                        : orderDetail?.transactionId
+                    }
                   </Typography>
                 </div>
               </Card>

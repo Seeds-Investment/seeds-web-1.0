@@ -590,7 +590,7 @@ const PromoCode: React.FC<PromoProps> = ({
                           onClick={async () => { await handlePromoCodeSelection(item?.promo_code, index); }}
                           className={
                             `${(index === choosenIndex) && isExceedingLimit ? 'rounded-t-xl' : 'rounded-xl'} 
-                            flex w-full justify-start items-center relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`
+                            flex w-full h-full justify-start items-center relative border overflow-hidden cursor-pointer hover:shadow-lg duration-300 ${bgColor}`
                           }
                         >
                           <div className='flex justify-center items-center'>

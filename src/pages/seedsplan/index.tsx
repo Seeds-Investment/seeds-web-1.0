@@ -42,8 +42,8 @@ const SeedsPlan: React.FC = () => {
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
     { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' },
-    { label: 'Content Premium', category: 'Premium Content' }
+    { label: 'Circle Premium', category: 'Premium Circle' }
+    // { label: 'Content Premium', category: 'Premium Content' }
   ];
 
   const getPlanList = async (): Promise<void> => {

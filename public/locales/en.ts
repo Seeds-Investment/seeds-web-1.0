@@ -781,7 +781,9 @@ export default {
   },
   ProfilePage: {
     title: 'My Profile',
-    subscriptionButton: 'Subscribe to My Seeds Plan'
+    subscriptionButton: 'Subscribe to My Seeds Plan',
+    yourPackage: 'Your Package',
+    active: "Active",
   },
   DeleteAccount: {
     title: 'Are you sure to delete this account?',
@@ -2558,4 +2560,4 @@ export default {
   subscription: {
     transactionHistory: 'Transaction History'
   }
-};
+};  

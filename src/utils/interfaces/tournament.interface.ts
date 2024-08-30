@@ -1,6 +1,6 @@
 export enum TournamentStatus {
   MYPLAY = 'JOINED',
-  OPEN = 'CREATED',
+  OPEN = 'OPEN',
   ACTIVE = 'ACTIVE',
   PAST = 'PAST',
   CANCELED = 'CANCELED'

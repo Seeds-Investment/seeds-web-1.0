@@ -42,8 +42,8 @@ const SeedsPlan: React.FC = () => {
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
     { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' },
-    { label: 'Content Premium', category: 'Premium Content' }
+    { label: 'Circle Premium', category: 'Premium Circle' }
+    // { label: 'Content Premium', category: 'Premium Content' }
   ];
 
   const getPlanList = async (): Promise<void> => {
@@ -80,10 +80,7 @@ const SeedsPlan: React.FC = () => {
   const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
   const filterTnc =
     filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
-      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en'].replace(
-          /\n/g,
-          '<br />'
-        )
+      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
 
   useEffect(() => {
@@ -352,29 +349,48 @@ const SeedsPlan: React.FC = () => {
                   <div className="flex flex-col gap-2 mb-10">
                     <div className="text-[#7C7C7C] text-sm">
                       {t('seedsPlan.text2')}
-                      <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                      <span
+                        className={`ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs ${
+                          filterPlan?.is_promo === true ? '' : 'hidden'
+                        }`}
+                      >
                         {t('seedsPlan.text3')}
                       </span>
                     </div>
                     <div className="flex flex-row items-center justify-between">
                       <div>
-                        <span className="line-through">
-                          {(
-                            (filterPlan?.price as number) + 20000
-                          )?.toLocaleString('id-ID', {
+                        {filterPlan?.is_promo === true ? (
+                          <>
+                            <span className="line-through">
+                              {filterPlan?.price?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /{t('seedsPlan.text4')}
+                          </>
+                        ) : (
+                          filterPlan?.price?.toLocaleString('id-ID', {
                             currency: userInfo?.preferredCurrency ?? 'IDR',
                             style: 'currency',
                             maximumFractionDigits: 0
-                          })}
-                        </span>
-                        /{t('seedsPlan.text4')}
+                          })
+                        )}
                       </div>
-                      <div>
-                        {filterPlan?.price?.toLocaleString('id-ID', {
-                          currency: userInfo?.preferredCurrency ?? 'IDR',
-                          style: 'currency',
-                          maximumFractionDigits: 0
-                        })}
+                      <div
+                        className={`${
+                          filterPlan?.is_promo === true ? 'block' : 'hidden'
+                        }`}
+                      >
+                        {filterPlan?.price_after_promo?.toLocaleString(
+                          'id-ID',
+                          {
+                            currency: userInfo?.preferredCurrency ?? 'IDR',
+                            style: 'currency',
+                            maximumFractionDigits: 0
+                          }
+                        )}
                       </div>
                     </div>
                     <div className="font-light text-xs text-[#7C7C7C]">
@@ -390,29 +406,48 @@ const SeedsPlan: React.FC = () => {
                   <div className="flex flex-col gap-2 mb-10">
                     <div className="text-[#7C7C7C] text-sm">
                       {t('seedsPlan.text2')}
-                      <span className="ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs">
+                      <span
+                        className={`ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs ${
+                          filterPlan?.is_promo === true ? '' : 'hidden'
+                        }`}
+                      >
                         {t('seedsPlan.text3')}
                       </span>
                     </div>
                     <div className="flex flex-row items-center justify-between">
                       <div>
-                        <span className="line-through">
-                          {(
-                            (filterPlan?.price as number) + 20000
-                          )?.toLocaleString('id-ID', {
+                        {filterPlan?.is_promo === true ? (
+                          <>
+                            <span className="line-through">
+                              {filterPlan?.price?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /{t('seedsPlan.text4')}
+                          </>
+                        ) : (
+                          filterPlan?.price?.toLocaleString('id-ID', {
                             currency: userInfo?.preferredCurrency ?? 'IDR',
                             style: 'currency',
                             maximumFractionDigits: 0
-                          })}
-                        </span>
-                        /{t('seedsPlan.text4')}
+                          })
+                        )}
                       </div>
-                      <div>
-                        {filterPlan?.price?.toLocaleString('id-ID', {
-                          currency: userInfo?.preferredCurrency ?? 'IDR',
-                          style: 'currency',
-                          maximumFractionDigits: 0
-                        })}
+                      <div
+                        className={`${
+                          filterPlan?.is_promo === true ? 'block' : 'hidden'
+                        }`}
+                      >
+                        {filterPlan?.price_after_promo?.toLocaleString(
+                          'id-ID',
+                          {
+                            currency: userInfo?.preferredCurrency ?? 'IDR',
+                            style: 'currency',
+                            maximumFractionDigits: 0
+                          }
+                        )}
                       </div>
                     </div>
                     <div className="font-light text-xs text-[#7C7C7C]">

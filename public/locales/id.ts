@@ -700,7 +700,8 @@ export default {
     nextButton: 'Lanjut'
   },
   ProfilePage: {
-    title: 'Profil Saya'
+    title: 'Profil Saya',
+    subscriptionButton: 'Berlangganan Paket Benih Saya'
   },
   DeleteReasonAccountPopUp: {
     title: 'Apa alasan kamu menghapus akun ini?',

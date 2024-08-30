@@ -10,6 +10,7 @@ import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface LoginFormData {
@@ -21,6 +22,7 @@ interface LoginFormData {
 
 const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
+  const { rc } = useRouter().query;
   const { data } = useSession();
   const [select, setSelect] = useState<number>(0);
   const [guest, setGuest] = useState<string>('');
@@ -40,7 +42,6 @@ const Register: React.FC = () => {
       identifier: ''
     }
   });
-  console.log(formData);
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',
     password: '',
@@ -101,6 +102,7 @@ const Register: React.FC = () => {
       }_web`,
       os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
     });
+    if (rc !== undefined) setFormData({ ...formData, refCode: rc as string });
   }, []);
   const element = (
     <>

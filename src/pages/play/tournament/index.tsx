@@ -169,7 +169,7 @@ const PlayTournament = (): React.ReactElement => {
             toast.error(error);
           });
       }
-    } else if (status === 'ACTIVE' || status === 'CREATED') {
+    } else if (status === 'ACTIVE' || status === 'OPEN') {
       await router.push(`/play/tournament/${id}`).catch(error => {
         toast.error(error);
       });
@@ -177,24 +177,25 @@ const PlayTournament = (): React.ReactElement => {
   };
 
   const isDisabled = (isJoined: boolean, status: string): boolean => {
+    console.log(status);
     if (isJoined) {
       if (status === 'ACTIVE') {
-        return false
+        return false;
       } else if (status === 'PAST') {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     } else {
-      if ((status === 'ACTIVE') || (status === 'CREATED')) {
-        return false
+      if (status === 'ACTIVE' || status === 'OPEN') {
+        return false;
       } else if (status === 'PAST') {
-        return true
+        return true;
       } else {
-        return true
+        return true;
       }
     }
-  }
+  };
 
   return (
     <PageGradient defaultGradient className="w-full">
@@ -477,7 +478,7 @@ const PlayTournament = (): React.ReactElement => {
                                 ? t('tournament.tournamentCard.leaderboard')
                                 : t('tournament.tournamentCard.canceled')
                               : item?.status === 'ACTIVE' ||
-                                item?.status === 'CREATED'
+                                item?.status === 'OPEN'
                               ? t('tournament.tournamentCard.joinButton')
                               : item?.status === 'CANCELED'
                               ? t('tournament.tournamentCard.canceled')

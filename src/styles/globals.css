@@ -290,7 +290,7 @@ h3 {
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: auto; 
+  height: auto;
 }
 
 .video-container.fullscreen {
@@ -317,7 +317,7 @@ h3 {
 }
 
 .tnc-seedsplan-custom-scroll {
-  scrollbar-width: thin; 
+  scrollbar-width: thin;
   scrollbar-color: #27a590 #ffffff;
 }
 
@@ -331,6 +331,20 @@ h3 {
 }
 
 .tnc-seedsplan-custom-scroll::-webkit-scrollbar-thumb {
-  background: #27a590; 
+  background: #27a590;
   border-radius: 10px;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+}
+
+li {
+  margin-bottom: 0.5em;
 }

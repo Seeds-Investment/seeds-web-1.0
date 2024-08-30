@@ -80,10 +80,7 @@ const SeedsPlan: React.FC = () => {
   const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
   const filterTnc =
     filterPlan?.tnc?.[i18n.language === 'id' ? 'id' : 'en'] !== ''
-      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en'].replace(
-          /\n/g,
-          '<br />'
-        )
+      ? filterPlan?.tnc[i18n.language === 'id' ? 'id' : 'en']
       : '-';
 
   useEffect(() => {

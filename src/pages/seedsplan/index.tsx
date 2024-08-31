@@ -1,22 +1,27 @@
 import BgSeeds from '@/assets/seedsplan/BgSeeds.svg';
+import SeedsPlanSilver from '@/assets/seedsplan/seedsPlanSilver.svg';
 import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import { getEventDate } from '@/helpers/dateFormat';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getSubscriptionPlan,
+  getSubscriptionStatus,
   getSubscriptionVoucher
 } from '@/repository/subscription.repository';
+import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
 import {
+  type ActiveSubscriptionStatus,
   type DataPlanI,
   type DataVoucherI
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { GiBackwardTime } from 'react-icons/gi';
@@ -33,7 +38,9 @@ const SeedsPlan: React.FC = () => {
   const [showHowToUse, setHowToUse] = useState(false);
   const router = useRouter();
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<ActiveSubscriptionStatus>();
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
   );
@@ -66,16 +73,24 @@ const SeedsPlan: React.FC = () => {
     }
   };
 
-  const handleView = (): void => {
-    if (subscription === '') {
-      setSubscription('a')
-    } else {
-      setSubscription('')
+  const getStatus = async (): Promise<void> => {
+    try {
+      const response = await getSubscriptionStatus();
+      setSubscriptionStatus(response?.active_subscription)
+    } catch (error) {
+      toast(error as string, { type: 'error' });
     }
   };
 
   useEffect(() => {
     void getPlanList();
+    void getStatus()
+
+    if (subscriptionStatus !== null) {
+      setSubscription('active')
+    } else {
+      setSubscription('non-active')
+    }
   }, []);
 
   const togglePopupTnc = (): void => {
@@ -126,7 +141,7 @@ const SeedsPlan: React.FC = () => {
             </div>
             <div className="text-xl md:text-2xl font-bold">MySeeds Plan</div>
             <div className="border-4 border-white text-white bg-[#487209] rounded-full p-2">
-              <GiBackwardTime size={25} style={{ strokeWidth: 10 }} onClick={() => { handleView(); }} />
+              <GiBackwardTime size={25} style={{ strokeWidth: 10 }}/>
             </div>
           </div>
           <Image
@@ -141,10 +156,46 @@ const SeedsPlan: React.FC = () => {
           </div>
         </div>
         <div className={
-          subscription === ''
+          subscription === 'non-active'
            ? 'flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins'
            : 'w-full'
         }>
+          {
+            subscription === 'active' &&
+              <div className='bg-[#F6F6F6] w-full py-2 px-2 md:px-0 md:mt-4 md:rounded-t-xl flex justify-center items-center'>
+                <div className='w-full md:w-3/4 flex py-4 px-2 gap-2 rounded-xl border border-[#27A590] bg-white justify-center items-center'>
+                  <div className='w-[50px] h-[50px] md:mx-4'>
+                    <Image
+                      src={SeedsPlanSilver}
+                      width={500}
+                      height={500}
+                      alt="seedsplan"
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className='md:w-full'>
+                    <div className='w-full flex justify-between'>
+                      <div className='text-sm font-semibold'>
+                        {t('seedsPlan.text7')}{subscriptionStatus?.subscription_type_id ?? 'Silver'}
+                      </div>
+                      <div className='w-fit flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4'>
+                        {t('seedsPlan.text8')}
+                      </div>
+                    </div>
+                    <div className='text-[9px] md:text-xs px-4 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-wrap mt-2'>
+                      {t('seedsPlan.text11')}
+                      {languageCtx.language === 'ID'
+                        ? getEventDate(
+                          new Date(subscriptionStatus?.ended_at ?? '2024-12-31T23:59:00Z'), 'id-ID'
+                        )
+                        : getEventDate(
+                          new Date(subscriptionStatus?.ended_at ?? '2024-12-31T23:59:00Z'), 'en-US'
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          }
           <div
             className={`
               col-span-2 w-full rounded-none px-2 pb-4
@@ -152,13 +203,13 @@ const SeedsPlan: React.FC = () => {
                 packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'
               }
               ${
-                subscription === '' ? 'md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4' : 'md:rounded-b-xl bg-[#F6F6F6] flex flex-col justify-center items-center'
+                subscription === 'non-active' ? 'md:rounded-xl bg-gradient-to-b from-[#9ec849] py-4' : 'md:rounded-b-xl bg-[#F6F6F6] flex flex-col justify-center items-center'
               }
             `}
           >
           {
-            subscription === '' &&
-              <div className="flex justify-center items-center">
+            subscription === 'non-active' &&
+              <div className={`${subscription === 'non-active' ? 'mt-4' : 'w-full md:w-3/4 mt-2'} flex flex-row gap-3 flex-wrap justify-center mb-4`}>
                 <div className="rounded-3xl bg-white w-11/12 lg:w-10/12">
                   <button
                     className={`text-xl p-3 w-1/2 rounded-3xl ${
@@ -186,13 +237,13 @@ const SeedsPlan: React.FC = () => {
                   >
                     Gold
                     <span className="px-2 py-1 bg-[#ff3838] text-white rounded-3xl text-xs absolute top-0 right-0 2xl:right-16 font-normal">
-                      Best
+                      {t('seedsPlan.text9')}
                     </span>
                   </button>
                 </div>
               </div>
           }
-            <div className={`${subscription === '' ? 'mt-4' : 'w-full md:w-3/4 mt-2'} flex flex-row gap-3 flex-wrap justify-center mb-4`}>
+            <div className={`${subscription === 'non-active' ? 'mt-4' : 'w-full md:w-3/4 mt-2'} flex flex-row gap-3 flex-wrap justify-center mb-4`}>
               {categorySeedsPlan?.map((item, index) => {
                 return (
                   <button
@@ -211,7 +262,7 @@ const SeedsPlan: React.FC = () => {
                 );
               })}
             </div>
-            <div className={`${subscription === '' ? '' : 'w-full md:w-3/4'} grid grid-cols-1 xl:grid-cols-2 gap-3`}>
+            <div className={`${subscription === 'non-active' ? '' : 'w-full md:w-3/4'} grid grid-cols-1 xl:grid-cols-2 gap-3`}>
               {packagePlan === 'Silver'
                 ? (category !== 'All'
                     ? filteredDataVoucher
@@ -343,19 +394,30 @@ const SeedsPlan: React.FC = () => {
                   })}
             </div>
             {
-              subscription !== '' &&
+              subscription === 'active' &&
                 <div className='hidden md:flex w-full px-2 py-4 justify-center items-center'>
                   <div
                     onClick={async() => await router.push('/seedsplan/detail')}
                     className='bg-[#3AC4A0] w-1/2 max-w-[300px] text-center py-2 font-semibold rounded-full cursor-pointer'
                   >
-                    See Details
+                    {t('seedsPlan.text10')}
                   </div>
                 </div>
             }
           </div>
           {
-            subscription === '' &&
+            subscription === 'active' &&
+              <div className='md:hidden bg-white w-full px-2 py-4 flex justify-center items-center'>
+                <div
+                  onClick={async() => await router.push('/seedsplan/detail')}
+                  className='bg-[#3AC4A0] w-full md:w-1/2 text-center py-2 font-semibold rounded-full cursor-pointer'
+                >
+                  {t('seedsPlan.text10')}
+                </div>
+              </div>
+          }
+          {
+            subscription === 'non-active' &&
               <div className="col-span-1 w-full h-fit bg-white rounded-none md:rounded-xl p-6">
                 <div>
                   <div
@@ -412,7 +474,10 @@ const SeedsPlan: React.FC = () => {
                           {t('seedsPlan.text5')}
                         </div>
                       </div>
-                      <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                      <button
+                        onClick={async() => await router.push(`/seedsplan/payment?type=${packagePlan}`)}
+                        className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                      >
                         {t('seedsPlan.button3')}
                       </button>
                     </>
@@ -450,7 +515,10 @@ const SeedsPlan: React.FC = () => {
                           {t('seedsPlan.text5')}
                         </div>
                       </div>
-                      <button className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300">
+                      <button
+                        onClick={async() => await router.push(`/seedsplan/payment?type=${packagePlan}`)}
+                        className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                      >
                         {t('seedsPlan.button3')}
                       </button>
                     </>

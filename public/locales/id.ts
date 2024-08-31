@@ -2481,6 +2481,49 @@ export default {
     text3: 'Diskon',
     text4: 'bulan',
     text5: 'Otomatis diperbarui 1 bulan setelah pembelian',
-    text6: 'Total diskon'
+    text6: 'Total diskon',
+    text7: 'Paket Anda: ',
+    text8: 'Aktif',
+    text9: 'Terbaik',
+    text10: 'Lihat Detail',
+    text11: 'Layanan anda akan berakhir pada ',
+    WalletForm: {
+      title: 'Masukkan nomor {{wallet}}',
+      phoneLabel: 'Nomor {{wallet}}',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Bayar sebelum {{date}}',
+      admissionFeeLabel: 'Biaya Langganan',
+      adminFeeLabel: 'Biaya Admin',
+      serviceFeeLabel: 'Biaya Layanan',
+      adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Digunakan'
+    },
+    payment: {
+      paymentMethod: 'Metode Pembayaran',
+      virtualNumber: 'Nomor Virtual Akun Anda',
+      pendingPaidSubscription: 'Menunggu Pembayaran',
+      subscriptionFee: 'Biaya Langganan',
+      adminFee: 'Biaya Admin',
+      serviceFee: 'Biaya Layanan',
+      discountFee: 'Diskon',
+      discountCoins: 'Diskon Koin',
+      totalAmount: 'Total Biaya',
+      idTransaction: 'ID Transaksi',
+      close: 'Tutup',
+      paymentSuccessful: 'Berhasil',
+      recurringSaved: 'Pembayaran anda telah tersimpan'
+    },
+    modalUnsubscribe: {
+      text1: 'Apakah Anda yakin untuk berhenti berlangganan?',
+      text2: 'Dengan berhenti berlangganan, keuntungan berikut akan dinonaktifkan',
+      text3: 'Voucher akan dinonaktifkan',
+      text4: 'Dengan berlangganan ini, anda mendapatkan keuntungan ',
+      text5: ' voucher ',
+      text6: ' voucher ',
+      text7: ' untuk Quiz, Tournament, dan Circle',
+      text8: 'Ya, saya yakin untuk berhenti berlangganan',
+      text9: 'Kembali',
+    }
   }
 };

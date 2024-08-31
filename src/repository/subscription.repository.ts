@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { type JoinSubscriptionI } from '@/utils/interfaces/subscription.interface';
 import { toast } from 'react-toastify';
 
 const subscriptionService = baseAxios(
@@ -38,4 +39,47 @@ export const getSubscriptionVoucher = async (id: string): Promise<any> => {
   } catch (error: any) {
     toast(error.message, { type: 'error' });
   }
+};
+
+export const getSubscriptionStatus = async (): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await subscriptionService.get(`/status`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const joinSubscription = async (data: JoinSubscriptionI): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await subscriptionService.post(`/join`, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
+};
+
+export const stopSubscription = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found');
+  }
+  return await subscriptionService.post(`/stop`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken ?? ''}`
+    }
+  });
 };

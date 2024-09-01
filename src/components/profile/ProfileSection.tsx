@@ -3,15 +3,19 @@ import Wallet from '@/assets/my-profile/earning/wallet.svg';
 import message from '@/assets/profile/message.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
+import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { updateBlockUser } from '@/repository/user.repository';
 import { type Experience } from '@/utils/interfaces/earning.interfaces';
+import { type ActiveSubscription } from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import ChevronRightSubs from 'public/assets/subscription/arrow.svg';
+import GoldPlan from 'public/assets/subscription/gold-plan.svg';
+import SilverPlan from 'public/assets/subscription/silver-plan.svg';
 import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import FollowButton from '../FollowButton';
@@ -35,12 +39,23 @@ const Profile = ({
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
+  const [dataSubscription, setDataSubscription] =
+    useState<ActiveSubscription | null>(null);
   const router = useRouter();
   const _handleReferalCode = async (): Promise<boolean> => {
     return await router.push({
       pathname: `/my-profile/referralCode`,
       query: { refCode: profileData.refCode, referralHistory: 'true' }
     });
+  };
+
+  const getSubscriptionPlanStatus = async (): Promise<void> => {
+    try {
+      const response = await getSubscriptionStatus();
+      setDataSubscription(response.active_subscription);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
   };
 
   const onBlock = async (): Promise<void> => {
@@ -58,6 +73,10 @@ const Profile = ({
   const _handleEditProfile = async (): Promise<boolean> => {
     return await router.push('/my-profile/edit-profile');
   };
+
+  useEffect(() => {
+    void getSubscriptionPlanStatus();
+  }, []);
 
   return (
     <>
@@ -185,7 +204,6 @@ const Profile = ({
           <div className="xl:flex hidden">
             <ExpInfo data={expData} profileData={profileData} id={id} />
           </div>
-
           <div
             onClick={async () => await router.push('/seedsplan')}
             className="hidden w-full mt-2 bg-[#65D8B9] xl:flex justify-between items-center px-8 py-1 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300 border border-[#27A590]"
@@ -195,17 +213,46 @@ const Profile = ({
                 <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[50px] h-[50px] rounded-full"></div>
                 <div className="relative left-1">
                   <Image
-                    src={SubsSeedy}
+                    src={
+                      dataSubscription?.subscription_type_id === 'Silver'
+                        ? SilverPlan
+                        : dataSubscription?.subscription_type_id === 'Gold'
+                        ? GoldPlan
+                        : SubsSeedy
+                    }
                     alt={'subscription-image'}
                     width={100}
                     height={100}
-                    className="w-[50px] h-50px]"
+                    className={`${
+                      dataSubscription === null
+                        ? 'w-[50px] h-50px]'
+                        : 'w-[40px] h-40px]'
+                    }`}
                   />
                 </div>
               </div>
-              <p className="font-semibold text-lg text-black">
-                {t('ProfilePage.subscriptionButton')}
-              </p>
+              <Typography className="text-black font-semibold font-poppins text-lg capitalize">
+                {t(
+                  `${
+                    dataSubscription === null
+                      ? 'ProfilePage.subscriptionButton'
+                      : 'ProfilePage.yourPackage'
+                  }`
+                )}
+                {`${
+                  dataSubscription !== null
+                    ? ' : ' +
+                      dataSubscription?.subscription_type_id.toLocaleLowerCase()
+                    : ''
+                }`}
+              </Typography>
+              {dataSubscription !== null && (
+                <div className="bg-[#BAFBD0] border border-[#27A590] px-2 py-1 rounded-3xl">
+                  <Typography className="text-[#27A590] text-xs font-normal font-poppins">
+                    {t('ProfilePage.active')}
+                  </Typography>
+                </div>
+              )}
             </div>
             <div className="flex justify-center items-center h-[16px]">
               <Image
@@ -332,19 +379,41 @@ const Profile = ({
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[60px] h-[60px] rounded-full"></div>
-            <div className="relative left-1">
+            <div className="relative left-2">
               <Image
-                src={SubsSeedy}
+                src={
+                  dataSubscription?.subscription_type_id === 'Silver'
+                    ? SilverPlan
+                    : dataSubscription?.subscription_type_id === 'Gold'
+                    ? GoldPlan
+                    : SubsSeedy
+                }
                 alt={'subscription-image'}
                 width={120}
                 height={120}
-                className="w-[60px] h-[60px]"
+                className={`${
+                  dataSubscription === null
+                    ? 'w-[60px] h-60px]'
+                    : 'w-[45px] h-45px]'
+                }`}
               />
             </div>
           </div>
-          <p className="font-semibold text-sm text-black">
-            {t('ProfilePage.subscriptionButton')}
-          </p>
+          <Typography className="text-black font-semibold font-poppins text-sm capitalize">
+            {t(
+              `${
+                dataSubscription === null
+                  ? 'ProfilePage.subscriptionButton'
+                  : 'ProfilePage.yourPackage'
+              }`
+            )}
+            {`${
+              dataSubscription !== null
+                ? ' : ' +
+                  dataSubscription?.subscription_type_id.toLocaleLowerCase()
+                : ''
+            }`}
+          </Typography>
         </div>
         <div className="flex justify-center items-center h-[18px]">
           <Image

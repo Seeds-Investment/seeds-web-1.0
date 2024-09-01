@@ -114,7 +114,10 @@ const SeedsPlan: React.FC = () => {
               <IoMdArrowRoundBack size={35} />
             </div>
             <div className="text-xl md:text-2xl font-bold">MySeeds Plan</div>
-            <div className="border-4 border-white text-white bg-[#487209] rounded-full p-2">
+            <div
+              className="border-4 border-white text-white bg-[#487209] rounded-full p-2 cursor-pointer"
+              onClick={async () => await router.push('/seedsplan/history')}
+            >
               <GiBackwardTime size={25} style={{ strokeWidth: 10 }} />
             </div>
           </div>

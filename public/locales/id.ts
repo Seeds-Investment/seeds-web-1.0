@@ -701,7 +701,9 @@ export default {
   },
   ProfilePage: {
     title: 'Profil Saya',
-    subscriptionButton: 'Berlangganan Paket Benih Saya'
+    subscriptionButton: 'Berlangganan Seeds Plan',
+    yourPackage: 'Paket Anda',
+    active: 'Aktif'
   },
   DeleteReasonAccountPopUp: {
     title: 'Apa alasan kamu menghapus akun ini?',
@@ -2483,5 +2485,8 @@ export default {
     text4: 'bulan',
     text5: 'Otomatis diperbarui 1 bulan setelah pembelian',
     text6: 'Total diskon'
+  },
+  subscription: {
+    transactionHistory: 'Riwayat Transaksi'
   }
 };

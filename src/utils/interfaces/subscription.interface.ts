@@ -51,3 +51,31 @@ export interface DataVoucherI {
   data: VoucherI[];
   total: number;
 }
+
+export interface ActiveSubscription {
+  id: string;
+  subscription_type_id: string;
+  user_id: string;
+  price: number;
+  ended_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TransactionHistory {
+  id: string;
+  subscription_type_id: string;
+  user_id: string;
+  started_at: string;
+  ended_at: string;
+  payment_status: string;
+  subscription_type: string;
+  paid_price: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TransactionHistoryRes {
+  data: TransactionHistory[];
+  total: number;
+}

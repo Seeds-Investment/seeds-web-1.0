@@ -61,16 +61,16 @@ const ConfirmationUnsubscribe: React.FC<TncProps> = ({
               </div>
             </div>
           </div>
-          <div className='flex flex-col my-4 gap-4 mx-4'>
+          <div className='flex justify-center items-center flex-col my-4 gap-4 mx-4'>
             <div
               onClick={handleStopSubscription}
-              className='text-[#262626] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer'
+              className='w-full md:w-[90%] text-[#262626] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer transform scale-100 hover:scale-105 transition-transform duration-300'
             >
               {translation('seedsPlan.modalUnsubscribe.text8')}
             </div>
             <div
               onClick={onClose}
-              className='text-[#262626] bg-[#3AC4A0] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer'
+              className='w-full md:w-[90%] text-[#262626] bg-[#3AC4A0] border border-[#3AC4A0] font-semibold text-center rounded-full py-2 cursor-pointer transform scale-100 hover:scale-105 transition-transform duration-300'
             >
               {translation('seedsPlan.modalUnsubscribe.text9')}
             </div>

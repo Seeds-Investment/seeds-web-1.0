@@ -38,8 +38,7 @@ const SeedsPlanDetail: React.FC = () => {
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
     { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' },
-    { label: 'Content Premium', category: 'Premium Content' }
+    { label: 'Circle Premium', category: 'Premium Circle' }
   ];
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
@@ -393,11 +392,25 @@ const SeedsPlanDetail: React.FC = () => {
                               }`}
                             </div>
                           </div>
-                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C] relative">
                             <div className="font-bold text-xl">
                               {item?.quantity}
                             </div>
                             <div className="font-light text-xs">Voucher</div>
+                            <Image
+                              src={CurveUpper}
+                              width={500}
+                              height={500}
+                              alt="seedsplan"
+                              className="w-[50px] h-fit absolute top-0 left-[-26px]"
+                            />
+                            <Image
+                              src={CurveLower}
+                              width={500}
+                              height={500}
+                              alt="seedsplan"
+                              className="w-[50px] h-fit absolute bottom-0 left-[-26px]"
+                            />
                           </div>
                         </div>
                       </>

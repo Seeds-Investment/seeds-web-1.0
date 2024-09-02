@@ -315,3 +315,22 @@ h3 {
   height: 100%;
   object-fit: contain;
 }
+
+.tnc-seedsplan-custom-scroll {
+  scrollbar-width: thin; 
+  scrollbar-color: #27a590 #ffffff;
+}
+
+.tnc-seedsplan-custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.tnc-seedsplan-custom-scroll::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.tnc-seedsplan-custom-scroll::-webkit-scrollbar-thumb {
+  background: #27a590; 
+  border-radius: 10px;
+}

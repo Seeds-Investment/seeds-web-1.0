@@ -12,7 +12,8 @@ export interface PlanI {
   is_subscribe: boolean;
   created_at: string;
   updated_at: string;
-  is_promo?: boolean;
+  is_promo: boolean;
+  price_after_promo: number;
 }
 
 export interface DataPlanI {

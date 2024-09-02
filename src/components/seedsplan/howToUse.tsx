@@ -26,7 +26,7 @@ const HowToUseSeedsplan: React.FC<HowToUseProps> = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className="overflow-y-auto h-60 pe-2 tnc-seedsplan-custom-scroll">
-            <ol className="flex flex-col">
+            <ol className="flex flex-col gap-2">
               {t('seedsPlan.howToUse')
                 .split('.')
                 .map((item, i) => {

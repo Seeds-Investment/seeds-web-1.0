@@ -1,5 +1,6 @@
 import CurveLower from '@/assets/seedsplan/curveLower.svg';
 import CurveUpper from '@/assets/seedsplan/curveUpper.svg';
+import SeedsPlanGold from '@/assets/seedsplan/seedsPlanGold.svg';
 import SeedsPlanSilver from '@/assets/seedsplan/seedsPlanSilver.svg';
 import ConfirmationUnsubscribe from '@/components/seedsplan/confirmation-unsubscribe';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
@@ -77,6 +78,11 @@ const SeedsPlanDetail: React.FC = () => {
     try {
       const response = await stopSubscription();
       console.log('RES STOP ', response)
+      if (response !== undefined) {
+        toast('Subscription has stopped successfully');
+        setUnsubscribeModal(!unsubscribeModal);
+        await router.push('/seedsplan')
+      }
     } catch (error) {
       toast(error as string, { type: 'error' });
     }
@@ -86,6 +92,14 @@ const SeedsPlanDetail: React.FC = () => {
     void getPlanList();
     void getStatus()
   }, []);
+
+  useEffect(() => {
+    if (subscriptionStatus?.subscription_type_id === 'Silver') {
+      setPackagePlan('Silver')
+    } else {
+      setPackagePlan('Gold')
+    }
+  }, [subscriptionStatus]);
 
   const togglePopupTnc = (): void => {
     setShowTnc(!showTnc);
@@ -178,7 +192,7 @@ const SeedsPlanDetail: React.FC = () => {
               <div className='w-full md:fit md:max-w-3/4 flex py-4 px-2 gap-2 rounded-xl border border-[#27A590] bg-white justify-center items-center'>
                 <div className='w-[50px] h-[50px] md:mx-4'>
                   <Image
-                    src={SeedsPlanSilver}
+                    src={packagePlan === 'Silver' ? SeedsPlanSilver : SeedsPlanGold}
                     width={500}
                     height={500}
                     alt="seedsplan"
@@ -416,12 +430,11 @@ const SeedsPlanDetail: React.FC = () => {
               {
                 (subscriptionStatus === null) || (subscriptionStatus?.subscription_type_id !== packagePlan) &&
                   <button
-                    // onClick={async() => 
-                    //   subscriptionStatus !== null
-                    //     ? toast.error('Unsubscribe your active subscription first!')
-                    //     : await router.push(`/seedsplan/payment?type=${packagePlan}`)
-                    // }
-                    onClick={async() => await router.push(`/seedsplan/payment?type=${packagePlan}`)}
+                    onClick={async() => 
+                      subscriptionStatus !== null
+                        ? toast.error('Unsubscribe your active subscription first!')
+                        : await router.push(`/seedsplan/payment?type=${packagePlan}`)
+                    }
                     className='w-full py-3 rounded-3xl font-semibold bg-[#3ac4a0] transform scale-100 hover:scale-105 transition-transform duration-300'
                   >
                     Subscribe Now!

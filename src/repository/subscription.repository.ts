@@ -59,27 +59,37 @@ export const getSubscriptionStatus = async (): Promise<any> => {
 export const joinSubscription = async (data: JoinSubscriptionI): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  if (accessToken === null || accessToken === '') {
-    toast('Access token not found');
-  }
-  return await subscriptionService.post(`/join`, data, {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
+  try {
+    if (accessToken === null || accessToken === '') {
+      toast('Access token not found');
     }
-  });
+    return await subscriptionService.post(`/join`, data, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
 };
 
 export const stopSubscription = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken === null || accessToken === '') {
-    toast('Access token not found');
+    toast('Access token not found', { type: 'error' });
+    throw new Error('Access token not found');
   }
-  return await subscriptionService.post(`/stop`, {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken ?? ''}`
-    }
-  });
+
+  try {
+    return await subscriptionService.post('/stop', null, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
 };

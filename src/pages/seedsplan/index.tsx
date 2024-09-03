@@ -77,26 +77,26 @@ const SeedsPlan: React.FC = () => {
 
   const getStatus = async (): Promise<void> => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response?.active_subscription)
+      setSubscriptionStatus(response?.active_subscription);
     } catch (error) {
       toast(error as string, { type: 'error' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     void getPlanList();
-    void getStatus()
+    void getStatus();
   }, []);
 
   useEffect(() => {
     if (subscriptionStatus !== null) {
-      setSubscription('active')
+      setSubscription('active');
     } else {
-      setSubscription('non-active')
+      setSubscription('non-active');
     }
   }, [subscriptionStatus]);
 
@@ -510,11 +510,15 @@ const SeedsPlan: React.FC = () => {
                                 /{t('seedsPlan.text4')}
                               </>
                             ) : (
-                              filterPlan?.price?.toLocaleString('id-ID', {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              })
+                              <>
+                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                  currency:
+                                    userInfo?.preferredCurrency ?? 'IDR',
+                                  style: 'currency',
+                                  maximumFractionDigits: 0
+                                })}
+                                /{t('seedsPlan.text4')}
+                              </>
                             )}
                           </div>
                           <div
@@ -531,6 +535,9 @@ const SeedsPlan: React.FC = () => {
                               }
                             )}
                           </div>
+                        </div>
+                        <div className="font-light text-xs text-[#7C7C7C]">
+                          {t('seedsPlan.text5')}
                         </div>
                         <button
                           onClick={async () =>
@@ -572,11 +579,15 @@ const SeedsPlan: React.FC = () => {
                                 /{t('seedsPlan.text4')}
                               </>
                             ) : (
-                              filterPlan?.price?.toLocaleString('id-ID', {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              })
+                              <>
+                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                  currency:
+                                    userInfo?.preferredCurrency ?? 'IDR',
+                                  style: 'currency',
+                                  maximumFractionDigits: 0
+                                })}
+                                /{t('seedsPlan.text4')}
+                              </>
                             )}
                           </div>
                           <div
@@ -593,6 +604,9 @@ const SeedsPlan: React.FC = () => {
                               }
                             )}
                           </div>
+                        </div>
+                        <div className="font-light text-xs text-[#7C7C7C]">
+                          {t('seedsPlan.text5')}
                         </div>
                         <button
                           onClick={async () =>

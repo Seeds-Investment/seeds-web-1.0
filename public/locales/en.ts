@@ -948,6 +948,7 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Redeemed'
     },
@@ -955,6 +956,7 @@ export default {
       title: '{{bank}} Virtual Account',
       bankName: 'Bank {{bank}}',
       accountNumberLabel: 'No. rekening',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
@@ -983,6 +985,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Purchase:',
+    noMinimumPurchase: 'No minimum purchase',
+    limitReached: 'Quota limit reached',
+    endsIn: 'Ends in',
+    daysRemain: 'days',
+    dayRemain: 'day',
+    hoursRemain: 'hours',
+    hourRemain: 'hour',
+    minutesRemain: 'minutes',
+    minuteRemain: 'minute',
+    lessThanMinute: 'a minute',
+    promoOver: 'Promo is over',
+    totalDiscount: 'Promo Discount:',
+    emptyVoucher1: "Opps, There's No Voucher",
+    emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
+    applied: 'Promo code successfully applied!',
+    unApplied: 'Promo code has been removed successfully!',
+    apply: "Apply",
+    noExpired: "No expired date",
+    havePromo: "Have a promo code? Enter it here!",
+    notFound: 'Promo code not found. Make sure you entered a valid promo code.',
+    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
   },
   temporary: {
     welcome: {
@@ -1917,6 +1944,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
+      quizFeeTotal: 'Quiz Fee + Lifelines',
       lifelinesFee: 'Lifeline Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',

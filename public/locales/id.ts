@@ -867,6 +867,7 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Digunakan'
     },
@@ -877,6 +878,7 @@ export default {
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
       note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
       instructionLabel: 'mBanking Transfer Instructions',
@@ -902,6 +904,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Pembelian:',
+    noMinimumPurchase: 'Tidak ada limit pembelian',
+    limitReached: 'Telah mencapai batas penggunaan kuota',
+    endsIn: 'Berakhir dalam',
+    daysRemain: 'hari',
+    dayRemain: 'hari',
+    hoursRemain: 'jam',
+    hourRemain: 'jam',
+    minutesRemain: 'menit',
+    minuteRemain: 'menit',
+    lessThanMinute: 'satu menit',
+    promoOver: 'Promo sudah berakhir',
+    totalDiscount: 'Diskon Promo:',
+    emptyVoucher1: 'Ups, Belum Ada Voucher',
+    emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
+    applied: 'Kode promo berhasil diterapkan!',
+    unApplied: 'Kode promo berhasil dihapus!',
+    apply: "Terapkan",
+    noExpired: "Tidak ada tanggal kadaluarsa",
+    havePromo: "Punya kode promo? Masukan disini!",
+    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
   },
   temporary: {
     welcome: {
@@ -1844,6 +1871,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
+      quizFeeTotal: 'Biaya Kuis + Bantuan Tambahan',
       lifelinesFee: 'Biaya Bantuan Tambahan',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',

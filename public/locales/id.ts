@@ -2479,6 +2479,7 @@ export default {
       'Buka aplikasi Seeds Finance. Pilih Kuis dan Mainkan Turnamen di bagian "Play" atau pilih "Circle" dan "Premium" di bagian "Social" sesuai pilihan Anda. Pada halaman pembayaran, pilih metode pembayaran dan voucher ( termasuk voucher Seeds Unlimited yang Anda beli). Jika voucher sudah aktif, anda bisa mengikuti berbagai diskon premium secara gratis, tergantung jenis voucher yang anda beli. Yay! Sekarang anda dapat bergabung dan menikmati banyak penghematan',
     button3: 'Langganan Sekarang!',
     button4: 'Saya Mengerti',
+    button5: 'Berhenti Langganan',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',
@@ -2490,6 +2491,8 @@ export default {
     text9: 'Terbaik',
     text10: 'Lihat Detail',
     text11: 'Layanan anda akan berakhir pada ',
+    text12: 'Non-Aktif',
+    text13: 'Bisa hemat hingga Rp 150.000, setiap bulannya',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
       phoneLabel: 'Nomor {{wallet}}',

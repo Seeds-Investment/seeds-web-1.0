@@ -2550,6 +2550,7 @@ export default {
       'Open the Seeds Finance app. Select the Quiz and Play Tournament in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
     button3: 'Subscribe Now!',
     button4: 'I Understand',
+    button5: 'Unsubscribe',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',
@@ -2561,6 +2562,8 @@ export default {
     text9: 'Best',
     text10: 'See Details',
     text11: 'Your plan will expire on ',
+    text12: 'Non-Active',
+    text13: 'You can save up to Rp 150.000 every month',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',

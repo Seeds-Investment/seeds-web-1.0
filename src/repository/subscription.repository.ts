@@ -1,4 +1,5 @@
 import baseAxios from '@/utils/common/axios';
+import { type JoinSubscriptionI } from '@/utils/interfaces/subscription.interface';
 import { toast } from 'react-toastify';
 
 const subscriptionService = baseAxios(
@@ -65,6 +66,45 @@ export const getTransactionHistory = async (): Promise<any> => {
       }
     });
     return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+export const joinSubscription = async (
+  data: JoinSubscriptionI
+): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  try {
+    if (accessToken === null || accessToken === '') {
+      toast('Access token not found');
+    }
+    return await subscriptionService.post(`/join`, data, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};
+
+export const stopSubscription = async (): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    toast('Access token not found', { type: 'error' });
+    throw new Error('Access token not found');
+  }
+
+  try {
+    return await subscriptionService.post('/stop', null, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
   } catch (error: any) {
     toast(error.message, { type: 'error' });
   }

@@ -783,7 +783,7 @@ export default {
     title: 'My Profile',
     subscriptionButton: 'Subscribe to My Seeds Plan',
     yourPackage: 'Your Package',
-    active: "Active",
+    active: 'Active'
   },
   DeleteAccount: {
     title: 'Are you sure to delete this account?',
@@ -2555,9 +2555,52 @@ export default {
     text3: 'Discount',
     text4: 'month',
     text5: 'Auto-renews 1 month from time of purchase',
-    text6: 'Total discount'
+    text6: 'Total discount',
+    text7: 'Your package: ',
+    text8: 'Active',
+    text9: 'Best',
+    text10: 'See Details',
+    text11: 'Your plan will expire on ',
+    WalletForm: {
+      title: 'Enter {{wallet}} Number',
+      phoneLabel: '{{wallet}} Number',
+      phonePlaceholder: '8xxxxxxxx',
+      paymentDeadline: 'Pay before {{date}}',
+      admissionFeeLabel: 'Subscription Fee',
+      adminFeeLabel: 'Admin Fee',
+      serviceFeeLabel: 'Service Fee',
+      adminFeeDiscountLabel: 'Admin Fee Discount ',
+      button: 'Pay',
+      seedsCoin: 'Seeds Coin Redeemed'
+    },
+    payment: {
+      paymentMethod: 'Payment Method',
+      virtualNumber: 'Your Virtual Account Number',
+      pendingPaidSubscription: 'Pending Paid Subscription',
+      subscriptionFee: 'Subscription Fee',
+      adminFee: 'Admin Fee',
+      serviceFee: 'Service Fee',
+      discountFee: 'Discount Fee',
+      discountCoins: 'Discount Coins',
+      totalAmount: 'Total Amount',
+      idTransaction: 'ID Transaction',
+      close: 'Close',
+      paymentSuccessful: 'Successful',
+      recurringSaved: 'Your recurring has been saved!'
+    },
+    modalUnsubscribe: {
+      text1: 'Are You Sure to Unsubscribe?',
+      text2: 'By unsubscribing, the following benefits will be deactivated',
+      text3: 'Voucher will be deactivated',
+      text4: 'This subscription contains ',
+      text5: ' voucher',
+      text6: ' vouchers ',
+      text7: ' on Quiz, Tournament, and Circle',
+      text8: 'Yes, I am sure to unsubscribe',
+      text9: 'Back'
+    }
   },
   subscription: {
     transactionHistory: 'Transaction History'
   }
-};  
+};

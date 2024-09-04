@@ -2467,5 +2467,8 @@ export default {
     text15: 'Peserta 50 poin',
     text16: 'Musim',
     text17: 'Kapan saja'
+  },
+  teamBattle: {
+    chooseCategory: 'Silakan Pilih Kategori'
   }
 };

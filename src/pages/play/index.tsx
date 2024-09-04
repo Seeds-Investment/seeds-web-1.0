@@ -25,8 +25,9 @@ import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import PlayButton from '../../../public/assets/playButton.svg';
-import QuizButton from '../../../public/assets/quizButton.svg';
+import PlayButton from '../../../public/assets/arena.svg';
+import BattleButton from '../../../public/assets/battle.svg';
+import QuizButton from '../../../public/assets/quiz.svg';
 interface Banner {
   no: number;
   id: string;
@@ -461,9 +462,18 @@ const Player = (): React.ReactElement => {
                 Play Arena
               </Typography>
             </button>
+            <button
+              onClick={() => {
+                void router.push('/play/team-battle');
+              }}
+            >
+              <Image alt="" src={BattleButton} className="mb-2" />
+              <Typography className="text-center text-xl font-normal text-[#262626] font-poppins">
+                Team Battle
+              </Typography>
+            </button>
           </div>
         </div>
-        
       </div>
 
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl md:mt-4">

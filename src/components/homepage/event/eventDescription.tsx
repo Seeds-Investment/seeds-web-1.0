@@ -11,8 +11,8 @@ const components = {
   p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p style={{ marginBottom: '20px' }} {...props} />,
 };
 
-const convertNewlinesToBreaks = (text: string): string => {
-  return text.replace(/\n/g, '\n\n');
+const convertNewlinesAndBrsToBreaks = (text: string): string => {
+  return text.replace(/<br>/g, '<br />').replace(/\n/g, '\n\n');
 };
 
 export const EventDescription: React.FC<EventDescriptionProps> = ({ description }) => {
@@ -21,7 +21,7 @@ export const EventDescription: React.FC<EventDescriptionProps> = ({ description 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       if (description !== undefined) {
-        const convertedDescription = convertNewlinesToBreaks(description);
+        const convertedDescription = convertNewlinesAndBrsToBreaks(description);
         const mdxSource = await serialize(convertedDescription);
         setMdxContent(mdxSource);
       }
@@ -32,7 +32,7 @@ export const EventDescription: React.FC<EventDescriptionProps> = ({ description 
 
   return (
     <div className="text-[#7C7C7C] mt-4">
-      {(mdxContent != null) ? (
+      {mdxContent != null ? (
         <MDXProvider components={components}>
           <MDXRemote {...mdxContent} />
         </MDXProvider>

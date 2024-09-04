@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
+import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
+import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
@@ -24,10 +28,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
@@ -220,14 +221,14 @@ const QuizDetail = (): React.ReactElement => {
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Quiz Period</div>
+            <div className="text-lg font-semibold">{t('quiz.quizPeriod')}</div>
             <div className="text-lg text-[#7C7C7C]">
               {moment(detailQuiz?.started_at).format('D MMM YYYY, h a')} Jakarta
               - {moment(detailQuiz?.ended_at).format('D MMM YYYY, h a')} Jakarta
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Terms & Conditions</div>
+            <div className="text-lg font-semibold">{t('quiz.tnc')}</div>
 
             <div
               className="text-lg text-[#7C7C7C]"
@@ -241,7 +242,7 @@ const QuizDetail = (): React.ReactElement => {
             />
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Quiz Prize</div>
+            <div className="text-lg font-semibold">{t('quiz.quizPrize')}</div>
             <table className="mt-2">
               {detailQuiz?.prizes?.map((item, i) => (
                 <tr key={i}>
@@ -252,16 +253,22 @@ const QuizDetail = (): React.ReactElement => {
                           ? FirstMedal
                           : i === 1
                           ? SecondMedal
-                          : ThirdMedal
+                          : i === 2
+                          ? ThirdMedal
+                          : SubsequentMedal
                       }
                       alt={`${i}-medal`}
                       width={200}
                       height={200}
                       className="object-contain max-h-5 max-w-5"
                     />
-                    {t(
-                      `quiz.${i === 0 ? 'first' : i === 1 ? 'second' : 'third'}`
-                    )}
+                    {i <= 2
+                      ? t(
+                          `quiz.${
+                            i === 0 ? 'first' : i === 1 ? 'second' : 'third'
+                          }`
+                        )
+                      : `${i + 1}th`}
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {
@@ -276,7 +283,9 @@ const QuizDetail = (): React.ReactElement => {
           <div className="mt-4 flex flex-row gap-8">
             {detailQuiz?.sponsors?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
+                <div className="text-lg font-semibold">
+                  {t('quiz.sponsors')}
+                </div>
                 <Image
                   src={detailQuiz?.sponsors?.image_url}
                   alt=""
@@ -288,7 +297,9 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
             {detailQuiz?.communities?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Community'}</div>
+                <div className="text-lg font-semibold">
+                  {t('quiz.community')}
+                </div>
                 <Image
                   src={detailQuiz?.communities?.image_url}
                   alt=""
@@ -321,7 +332,7 @@ const QuizDetail = (): React.ReactElement => {
                 onChange={e => {
                   setInvitationCode(e.target.value);
                 }}
-                placeholder="Invitation Code"
+                placeholder={`${t('quiz.invitationCodePlaceholder')}`}
                 className="w-full border p-2 rounded-md mt-2"
               />
             </div>
@@ -342,7 +353,7 @@ const QuizDetail = (): React.ReactElement => {
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
               <div className="text-xs text-[#7C7C7C]">
                 {totalAvailableCoins > 0
-                  ? `Redeem ${totalAvailableCoins} seeds coin`
+                  ? t('quiz.seedsCoin', { data: totalAvailableCoins })
                   : `Coin cannot be redeemed`}
               </div>
             </div>

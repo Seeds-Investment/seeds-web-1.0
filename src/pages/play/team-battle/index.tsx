@@ -1,4 +1,3 @@
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -53,118 +52,109 @@ const TeamBattle = (): React.ReactElement => {
   };
 
   return (
-    <PageGradient defaultGradient className="w-full">
-      <div
-        className="w-full h-full py-4 bg-cover"
-        style={{
-          backgroundImage: "url('/assets/team-battle/bg-team-battle.svg')"
-        }}
-      >
-        <div className="flex justify-between items-center py-4 px-6">
-          <Image
-            className="cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px]"
-            src={ArrowBackWhite}
-            alt="back-button"
-            onClick={async () => {
-              await router.replace('/play');
-            }}
-          />
-          <Typography className="lg:hidden text-white font-poppins text-xl font-semibold">
-            Team Battle
-          </Typography>
-          <Typography className="lg:block hidden text-white font-poppins text-2xl font-normal">
-            {t('teamBattle.chooseCategory')}
-          </Typography>
-          <Image
-            className="cursor-pointer lg:w-[45px] lg:h-[45px] w-[30px] h-[30px]"
-            src={HistoryBattle}
-            alt="history-battle"
-          />
+    <div className="w-full h-full py-4">
+      <div className="flex justify-between items-center py-4 px-6">
+        <Image
+          className="cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px]"
+          src={ArrowBackWhite}
+          alt="back-button"
+          onClick={async () => {
+            await router.replace('/play');
+          }}
+        />
+        <Typography className="lg:hidden text-white font-poppins text-xl font-semibold">
+          Team Battle
+        </Typography>
+        <Typography className="lg:block hidden text-white font-poppins text-2xl font-normal">
+          {t('teamBattle.chooseCategory')}
+        </Typography>
+        <Image
+          className="cursor-pointer lg:w-[45px] lg:h-[45px] w-[30px] h-[30px]"
+          src={HistoryBattle}
+          alt="history-battle"
+        />
+      </div>
+      <div className="flex flex-col justify-center items-center gap-4 lg:mt-4 mt-6">
+        <Typography className="lg:hidden block text-white font-poppins text-2xl font-semibold">
+          {t('teamBattle.chooseCategory')}
+        </Typography>
+        <div className="lg:w-full w-[400px] flex lg:justify-center justify-start lg:gap-[22px] lg:overflow-x-hidden overflow-x-auto no-scroll">
+          {categoryBattle.map((item, index) => (
+            <div
+              key={index}
+              className={`border-[2.8px] ${
+                activeCategory?.value === item?.value
+                  ? 'border-[#5E44FF]'
+                  : 'border-white'
+              } rounded-2xl cursor-pointer lg:mx-2 mx-3 min-w-[99px]`}
+              onClick={() => {
+                setActiveCategory(item);
+              }}
+            >
+              <Image
+                src={item?.image}
+                alt={item.title}
+                className="lg:w-[97px] lg:h-[87px] w-[99px] h-[89px]"
+              />
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col justify-center items-center gap-4 lg:mt-4 mt-6">
-          <Typography className="lg:hidden block text-white font-poppins text-2xl font-semibold">
-            {t('teamBattle.chooseCategory')}
-          </Typography>
-          <div className="lg:w-full w-[400px] flex lg:justify-center justify-start lg:gap-[22px] lg:overflow-x-hidden overflow-x-auto no-scroll">
-            {categoryBattle.map((item, index) => (
+        <div className="flex flex-col justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-4 mt-4">
+            {activeCategory !== null && (
               <div
-                key={index}
-                className={`border-[2.8px] ${
-                  activeCategory?.value === item?.value
-                    ? 'border-[#5E44FF]'
-                    : 'border-white'
-                } rounded-2xl cursor-pointer lg:mx-2 mx-3 min-w-[99px]`}
-                onClick={() => {
-                  setActiveCategory(item);
-                }}
+                className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
+                onClick={handlePreviousCategory}
               >
-                <Image
-                  src={item?.image}
-                  alt={item.title}
-                  className="lg:w-[97px] lg:h-[87px] w-[99px] h-[89px]"
+                <ChevronLeftIcon
+                  width={16}
+                  height={24}
+                  className="text-white"
                 />
               </div>
-            ))}
-          </div>
-          <div className="flex flex-col justify-center items-center gap-4">
-            <div className="flex justify-center items-center gap-4 mt-4">
-              {activeCategory !== null && (
-                <div
-                  className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
-                  onClick={handlePreviousCategory}
-                >
-                  <ChevronLeftIcon
-                    width={16}
-                    height={24}
-                    className="text-white"
-                  />
-                </div>
-              )}
-              <Image
-                src={
-                  activeCategory !== null ? activeCategory?.image : CategoryAll
-                }
-                alt={
-                  activeCategory !== null
-                    ? activeCategory?.title
-                    : 'Selected Category'
-                }
-                className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
-              />
-              {activeCategory !== null && (
-                <div
-                  className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
-                  onClick={handleNextCategory}
-                >
-                  <ChevronRightIcon
-                    width={16}
-                    height={24}
-                    className="text-white"
-                  />
-                </div>
-              )}
-            </div>
-            <div>
-              <Typography className="text-white font-poppins text-[27px] font-semibold">
-                {activeCategory !== null
+            )}
+            <Image
+              src={
+                activeCategory !== null ? activeCategory?.image : CategoryAll
+              }
+              alt={
+                activeCategory !== null
                   ? activeCategory?.title
-                  : 'All Category'}
-              </Typography>
-            </div>
+                  : 'Selected Category'
+              }
+              className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
+            />
+            {activeCategory !== null && (
+              <div
+                className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
+                onClick={handleNextCategory}
+              >
+                <ChevronRightIcon
+                  width={16}
+                  height={24}
+                  className="text-white"
+                />
+              </div>
+            )}
           </div>
-          <div className="mt-6">
-            <Button
-              disabled={activeCategory === null}
-              className={`w-[345px] lg:h-[60px] h-[45px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
-                activeCategory === null ? '#E9E9E9' : 'bg-[#2934B2]'
-              }`}
-            >
-              Next
-            </Button>
+          <div>
+            <Typography className="text-white font-poppins text-[27px] font-semibold">
+              {activeCategory !== null ? activeCategory?.title : 'All Category'}
+            </Typography>
           </div>
         </div>
+        <div className="mt-6">
+          <Button
+            disabled={activeCategory === null}
+            className={`w-[345px] lg:h-[60px] h-[45px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
+              activeCategory === null ? '#E9E9E9' : 'bg-[#2934B2]'
+            }`}
+          >
+            Next
+          </Button>
+        </div>
       </div>
-    </PageGradient>
+    </div>
   );
 };
 

@@ -28,7 +28,9 @@ module.exports = withMT({
         'neutral-medium': '#262626',
         'neutral-soft': '#7C7C7C',
         'neutral-ultrasoft': '#CCCCCC',
-        'warning-hard': '#DD2525'
+        'warning-hard': '#DD2525',
+        'seeds-battle-1': '#66e1b7',
+        'seeds-battle-2': '#5987ca'
       },
       backgroundImage: {
         hello: "url('../src/assets/hello.png')",

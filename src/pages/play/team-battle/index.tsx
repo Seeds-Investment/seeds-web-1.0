@@ -1,5 +1,4 @@
 import BattleList from '@/components/team-battle/BattleList';
-import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import withAuth from '@/helpers/withAuth';
 import { type CategoryBattleItem } from '@/utils/interfaces/team-battle.interface';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -55,7 +54,7 @@ const TeamBattle = (): React.ReactElement => {
   };
 
   return (
-    <PageGradient defaultGradient className="w-full">
+    <>
       <div
         className={`w-full h-full py-4 bg-cover ${
           select === 0 ? 'block' : 'hidden'
@@ -181,7 +180,7 @@ const TeamBattle = (): React.ReactElement => {
         fetchTrigger={fetchTrigger}
         setFetchTrigger={setFetchTrigger}
       />
-    </PageGradient>
+    </>
   );
 };
 

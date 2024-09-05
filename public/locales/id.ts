@@ -2490,6 +2490,7 @@ export default {
     text11: 'Layanan anda akan berakhir pada ',
     text12: 'Non-Aktif',
     text13: 'Bisa hemat hingga Rp 150.000, setiap bulannya',
+    text14: 'Gunakan Voucher!',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
       phoneLabel: 'Nomor {{wallet}}',

@@ -2561,6 +2561,7 @@ export default {
     text11: 'Your plan will expire on ',
     text12: 'Non-Active',
     text13: 'You can save up to Rp 150.000 every month',
+    text14: 'Use it Now!',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',

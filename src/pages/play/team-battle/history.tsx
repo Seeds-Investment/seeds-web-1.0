@@ -1,11 +1,13 @@
 import HistoryNotFound from '@/components/team-battle/historynotfound.component';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { CiSquareChevDown } from 'react-icons/ci';
 import { IoArrowBack } from 'react-icons/io5';
 
 const HistoryBattle: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('active');
+  const router = useRouter();
   const categoryBattle = [
     { label: 'Active Battle', key: 'active' },
     { label: 'Past Battle', key: 'past' }
@@ -67,11 +69,16 @@ const HistoryBattle: React.FC = () => {
   return (
     <div className="px-2 my-5">
       <div className="text-xl text-white grid grid-cols-3">
-        <div className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
+        <div
+          className="flex justify-start items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+          onClick={() => {
+            router.back();
+          }}
+        >
           <IoArrowBack size={30} />
         </div>
         <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-          Please Choose Category
+          My Battle
         </div>
       </div>
       <div className="w-full flex justify-center items-center">

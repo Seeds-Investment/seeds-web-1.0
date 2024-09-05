@@ -19,7 +19,7 @@ const TeamBattle = (): React.ReactElement => {
   const router = useRouter();
   const [activeCategory, setActiveCategory] =
     useState<CategoryBattleItem | null>(null);
-  const [select, setSelect] = useState<number>(0);
+  const [show, setShow] = useState<boolean>(true);
   const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
 
   const categoryBattle: CategoryBattleItem[] = [
@@ -56,16 +56,11 @@ const TeamBattle = (): React.ReactElement => {
   return (
     <>
       <div
-        className={`w-full h-full py-4 bg-cover ${
-          select === 0 ? 'block' : 'hidden'
-        }`}
-        style={{
-          backgroundImage: "url('/assets/team-battle/bg-team-battle.svg')"
-        }}
+        className={`w-full h-full py-4 bg-cover ${show ? 'block' : 'hidden'}`}
       >
         <div className="flex justify-between items-center py-4 px-6">
           <Image
-            className="cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px]"
+            className="cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transition duration-300"
             src={ArrowBackWhite}
             alt="back-button"
             onClick={async () => {
@@ -79,9 +74,12 @@ const TeamBattle = (): React.ReactElement => {
             {t('teamBattle.chooseCategory')}
           </Typography>
           <Image
-            className="cursor-pointer lg:w-[45px] lg:h-[45px] w-[30px] h-[30px]"
+            className="cursor-pointer lg:w-[45px] lg:h-[45px] w-[30px] h-[30px] hover:opacity-80 transition duration-300"
             src={HistoryBattle}
             alt="history-battle"
+            onClick={async () => {
+              await router.push('/play/team-battle/history');
+            }}
           />
         </div>
         <div className="flex flex-col justify-center items-center gap-4 lg:mt-4 mt-6">
@@ -162,7 +160,7 @@ const TeamBattle = (): React.ReactElement => {
                 activeCategory === null ? '#E9E9E9' : 'bg-[#2934B2]'
               }`}
               onClick={() => {
-                setSelect(1);
+                setShow(!show);
                 setFetchTrigger(true);
               }}
             >
@@ -172,8 +170,8 @@ const TeamBattle = (): React.ReactElement => {
         </div>
       </div>
       <BattleList
-        classname={select === 1 ? 'block' : 'hidden'}
-        setSelect={setSelect}
+        classname={show ? 'hidden' : 'block'}
+        setShow={setShow}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         categoryBattle={categoryBattle}

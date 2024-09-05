@@ -67,10 +67,10 @@ const HistoryBattle: React.FC = () => {
   return (
     <div className="px-2 my-5">
       <div className="text-xl text-white grid grid-cols-3">
-        <div className="flex justify-center items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
+        <div className="flex justify-start sm:justify-center items-center transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
           <IoArrowBack size={30} />
         </div>
-        <div className="text-center text-xl sm:text-2xl col-span-2 sm:col-span-1 font-poppins">
+        <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
           Please Choose Category
         </div>
       </div>

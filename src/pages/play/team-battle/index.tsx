@@ -1,4 +1,7 @@
+import BattleList from '@/components/team-battle/BattleList';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
+import withAuth from '@/helpers/withAuth';
+import { type CategoryBattleItem } from '@/utils/interfaces/team-battle.interface';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -12,18 +15,13 @@ import HistoryBattle from 'public/assets/team-battle/history-battle.svg';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface CategoryBattleItem {
-  id: number;
-  image: string;
-  title: string;
-  value: string;
-}
-
 const TeamBattle = (): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const [activeCategory, setActiveCategory] =
     useState<CategoryBattleItem | null>(null);
+  const [select, setSelect] = useState<number>(0);
+  const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
 
   const categoryBattle: CategoryBattleItem[] = [
     { id: 1, image: CategoryAll, title: 'All Category', value: '' },
@@ -36,7 +34,9 @@ const TeamBattle = (): React.ReactElement => {
     if (activeCategory === null) {
       setActiveCategory(categoryBattle[0]);
     } else {
-      const nextIndex = activeCategory?.id % categoryBattle.length;
+      const nextIndex =
+        (categoryBattle.findIndex(cat => cat.id === activeCategory.id) + 1) %
+        categoryBattle.length;
       setActiveCategory(categoryBattle[nextIndex]);
     }
   };
@@ -46,7 +46,9 @@ const TeamBattle = (): React.ReactElement => {
       setActiveCategory(categoryBattle[categoryBattle.length - 1]);
     } else {
       const prevIndex =
-        (activeCategory?.id - 2 + categoryBattle.length) %
+        (categoryBattle.findIndex(cat => cat.id === activeCategory.id) -
+          1 +
+          categoryBattle.length) %
         categoryBattle.length;
       setActiveCategory(categoryBattle[prevIndex]);
     }
@@ -55,7 +57,9 @@ const TeamBattle = (): React.ReactElement => {
   return (
     <PageGradient defaultGradient className="w-full">
       <div
-        className="w-full h-full py-4 bg-cover"
+        className={`w-full h-full py-4 bg-cover ${
+          select === 0 ? 'block' : 'hidden'
+        }`}
         style={{
           backgroundImage: "url('/assets/team-battle/bg-team-battle.svg')"
         }}
@@ -93,7 +97,7 @@ const TeamBattle = (): React.ReactElement => {
                   activeCategory?.value === item?.value
                     ? 'border-[#5E44FF]'
                     : 'border-white'
-                } rounded-2xl cursor-pointer lg:mx-2 mx-3 min-w-[99px]`}
+                } rounded-2xl cursor-pointer lg:mx-2 mx-3 min-w-[99px] bg-white/20`}
                 onClick={() => {
                   setActiveCategory(item);
                 }}
@@ -158,14 +162,27 @@ const TeamBattle = (): React.ReactElement => {
               className={`w-[345px] lg:h-[60px] h-[45px] rounded-full border-[2px] border-white text-sm font-semibold font-poppins ${
                 activeCategory === null ? '#E9E9E9' : 'bg-[#2934B2]'
               }`}
+              onClick={() => {
+                setSelect(1);
+                setFetchTrigger(true);
+              }}
             >
               Next
             </Button>
           </div>
         </div>
       </div>
+      <BattleList
+        classname={select === 1 ? 'block' : 'hidden'}
+        setSelect={setSelect}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        categoryBattle={categoryBattle}
+        fetchTrigger={fetchTrigger}
+        setFetchTrigger={setFetchTrigger}
+      />
     </PageGradient>
   );
 };
 
-export default TeamBattle;
+export default withAuth(TeamBattle);

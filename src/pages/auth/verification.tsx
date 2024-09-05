@@ -42,7 +42,6 @@ const Register: React.FC = () => {
       identifier: ''
     }
   });
-  console.log(formData);
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',
     password: '',
@@ -70,25 +69,27 @@ const Register: React.FC = () => {
     };
   }, [countdown]);
   useEffect(() => {
-    if (data !== null && data !== undefined) {
-      setFormData({
-        ...formData,
-        birthDate: `${new Date(
-          new Date().getFullYear() - 17,
-          new Date().getMonth(),
-          new Date().getDate()
-        ).toISOString()}`,
+    setFormData({
+      ...formData,
+      birthDate: `${new Date(
+        new Date().getFullYear() - 17,
+        new Date().getMonth(),
+        new Date().getDate()
+      ).toISOString()}`,
 
-        name: data?.user?.name ?? '',
-        seedsTag: `${
-          data?.user?.name?.split(' ').join('') as string
-        }${Math.round(Math.random() * 1000)}`,
-        provider: {
-          provider: data?.provider ?? '',
-          identifier: data?.accessToken ?? ''
-        }
-      });
-    }
+      name:
+        data !== null && data !== undefined ? (data?.user?.name as string) : '',
+      seedsTag:
+        data !== null && data !== undefined
+          ? `${data?.user?.name?.split(' ').join('') as string}${Math.round(
+              Math.random() * 1000
+            )}`
+          : '',
+      provider: {
+        provider: data !== null && data !== undefined ? data?.provider : '',
+        identifier: data !== null && data !== undefined ? data?.accessToken : ''
+      }
+    });
   }, [data]);
 
   useEffect(() => {

@@ -320,7 +320,9 @@ const SuccessPaymentPage: React.FC = () => {
                     {orderDetail?.currency !== undefined &&
                     orderDetail.grossAmount !== undefined
                       ? `${orderDetail.currency} ${formatCurrency(
-                          dataPlan?.price ?? 0
+                          ((dataPlan?.is_promo) ?? false)
+                            ? dataPlan?.price_after_promo ?? 0
+                            : dataPlan?.price ?? 0
                         )}`
                       : ''}
                   </Typography>
@@ -452,22 +454,25 @@ const SuccessPaymentPage: React.FC = () => {
                 <div>
                   {orderDetail?.currency !== undefined &&
                   dataPlan !== undefined
-                    ? dataPlan?.price +
-                        paymentSelected[0]?.admin_fee +
-                        paymentSelected[0]?.service_fee -
-                        orderDetail.grossAmount -
-                        paymentSelected[0]?.promo_price >
-                        0 && (
+                    ? (dataPlan?.is_promo
+                      ? (dataPlan?.price_after_promo ?? 0)
+                      : (dataPlan?.price ?? 0))
+                        + paymentSelected[0]?.admin_fee
+                        + paymentSelected[0]?.service_fee
+                        - orderDetail.grossAmount
+                        - paymentSelected[0]?.promo_price > 0 && (
                         <div className="flex flex-row justify-between mb-5">
                           <Typography className="text-sm font-semibold text-[#BDBDBD]">
                             {t('seedsPlan.payment.discountCoins')}
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626] text-right">
                             {`- ${orderDetail.currency} ${formatCurrency(
-                              dataPlan?.price +
-                                paymentSelected[0]?.admin_fee +
-                                paymentSelected[0]?.service_fee -
-                                orderDetail.grossAmount
+                              (dataPlan?.is_promo
+                                ? (dataPlan?.price_after_promo ?? 0)
+                                : (dataPlan?.price ?? 0))
+                                  + paymentSelected[0]?.admin_fee
+                                  + paymentSelected[0]?.service_fee
+                                  - orderDetail.grossAmount
                             )}`}
                           </Typography>
                         </div>
@@ -481,26 +486,29 @@ const SuccessPaymentPage: React.FC = () => {
                   dataPlan !== undefined &&
                   orderDetail?.paymentMethod === 'OTHER_QRIS' &&
                   qRisList !== undefined
-                    ? dataPlan?.price +
-                        qRisList[0]?.admin_fee +
-                        qRisList[0]?.service_fee -
-                        orderDetail.grossAmount -
-                        qRisList[0]?.promo_price >
-                        0 && (
-                        <div className="flex flex-row justify-between mb-5">
-                          <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                            {t('seedsPlan.payment.discountCoins')}
-                          </Typography>
-                          <Typography className="text-sm font-semibold text-[#262626] text-right">
-                            {`- ${orderDetail.currency} ${formatCurrency(
-                              dataPlan?.price +
-                                qRisList[0]?.admin_fee +
-                                qRisList[0]?.service_fee -
-                                orderDetail.grossAmount
-                            )}`}
-                          </Typography>
-                        </div>
-                      )
+                    ? (dataPlan?.is_promo
+                      ? (dataPlan?.price_after_promo ?? 0)
+                      : (dataPlan?.price ?? 0))
+                        + qRisList[0]?.admin_fee
+                        + qRisList[0]?.service_fee
+                        - orderDetail.grossAmount
+                        - qRisList[0]?.promo_price > 0 && (
+                          <div className="flex flex-row justify-between mb-5">
+                            <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                              {t('seedsPlan.payment.discountCoins')}
+                            </Typography>
+                            <Typography className="text-sm font-semibold text-[#262626] text-right">
+                              {`- ${orderDetail.currency} ${formatCurrency(
+                                (dataPlan?.is_promo
+                                  ? (dataPlan?.price_after_promo ?? 0)
+                                  : (dataPlan?.price ?? 0))
+                                    + qRisList[0]?.admin_fee
+                                    + qRisList[0]?.service_fee
+                                    - orderDetail.grossAmount
+                              )}`}
+                            </Typography>
+                          </div>
+                        )
                     : ''}
                 </div>
                 <hr />

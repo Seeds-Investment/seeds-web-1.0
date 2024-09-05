@@ -59,7 +59,7 @@ const VirtualAccountGuide = ({
     promoCodeValidationResult !== 0
       ? promoCodeValidationResult?.total_discount
       : 0;
-  const admissionFee = dataPlan?.price;
+  const admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0);
   const adminFee = payment?.admin_fee;
   const serviceFee = payment?.service_fee;
   const promoPrice = payment?.promo_price;

@@ -2,13 +2,16 @@ import HistoryNotFound from '@/components/team-battle/historynotfound.component'
 import PopupInformation from '@/components/team-battle/popupInformation.component';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiSquareChevDown, CiSquareChevUp } from 'react-icons/ci';
 import { IoArrowBack } from 'react-icons/io5';
 
 const HistoryBattle: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('active');
   const [activeBattleId, setActiveBattleId] = useState<string | null>(null);
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  );
   const router = useRouter();
   const categoryBattle = [
     { label: 'Active Battle', key: 'active' },
@@ -75,12 +78,23 @@ const HistoryBattle: React.FC = () => {
   };
 
   const handleMoreInfoClick = (id: string): void => {
-    if (window.innerWidth <= 640) {
+    if (windowWidth <= 539) {
       setActiveBattleId(activeBattleId === id ? null : id);
     } else {
       togglePopup();
     }
   };
+
+  const handleResize = (): void => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -140,7 +154,7 @@ const HistoryBattle: React.FC = () => {
                   </div>
                   <div
                     className={`w-full flex justify-center items-center flex-col bg-gradient-to-r from-[#227e7f] to-[#4760a8] py-5 px-2 ${
-                      window.innerWidth <= 640 && activeBattleId === item.id
+                      windowWidth <= 539 && activeBattleId === item.id
                         ? 'h-auto'
                         : 'min-h-24 max-h-28'
                     }`}
@@ -155,14 +169,13 @@ const HistoryBattle: React.FC = () => {
                       }}
                     >
                       <span className="text-xs">More Information</span>
-                      {window.innerWidth <= 640 &&
-                      activeBattleId === item.id ? (
+                      {windowWidth <= 539 && activeBattleId === item.id ? (
                         <CiSquareChevUp size={15} />
                       ) : (
                         <CiSquareChevDown size={15} />
                       )}
                     </div>
-                    {window.innerWidth <= 640 && activeBattleId === item.id && (
+                    {windowWidth <= 539 && activeBattleId === item.id && (
                       <div className="py-2 px-5 text-white text-xs mt-2">
                         <div className="py-2 px-5 border-white border-2 rounded-3xl text-white text-xs">
                           Periode : 01 Mei 2025 - 02 Mei 2025

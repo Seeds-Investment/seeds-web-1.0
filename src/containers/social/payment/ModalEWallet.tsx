@@ -1,14 +1,19 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable-next-line @typescript-eslint/restrict-plus-operands */
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import InlineText from '@/containers/play/payment/components/InlineText';
 import { standartCurrency } from '@/helpers/currency';
-import { TicketIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type DataPost } from '@/utils/interfaces/social.interfaces';
 import { Input, Typography } from '@material-tailwind/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { type Payment } from './PaymentMethod';
 
 interface WalletFormProps {
-  payment: any;
+  payment: Payment;
   handlePay: (
     type: string,
     paymentGateway: string,
@@ -16,19 +21,67 @@ interface WalletFormProps {
     totalAmount: number,
     phoneNumber?: string | undefined
   ) => Promise<void>;
-  dataPost: any;
-  promo: any;
+  dataPost: DataPost;
+  newPromoCodeDiscount: number;
 }
 
 const ModalEWallet = ({
   payment,
   handlePay,
   dataPost,
-  promo
+  newPromoCodeDiscount
 }: WalletFormProps): JSX.Element => {
   const translationId = 'PlayPayment.WalletForm';
   const { t } = useTranslation();
   const [phone, setPhone] = useState('');
+  const [totalFee, setTotalFee] = useState(0);
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+
+  useEffect(() => {
+    let _admissionFee = 0;
+    let _adminFee = 0;
+    let _totalFee = 0;
+    let _discount = 0;
+
+    _discount = payment.is_promo_available
+      ? payment.promo_price
+      : 0;
+    if (promoCodeValidationResult) {
+      _discount += promoCodeValidationResult?.response?.total_discount as number;
+    }
+
+    if (dataPost) {
+      _admissionFee = dataPost?.premium_fee;
+      _adminFee = payment?.admin_fee;
+      _totalFee = parseFloat(
+        `${(
+          Number(_admissionFee)
+          - Number(_discount)
+          + (showOtherFees ? Number(_adminFee) : 0)
+          + (showOtherFees ? Number(payment.service_fee) : 0)
+        ).toFixed(2)}`
+      );
+    }
+    setTotalFee(_totalFee);
+  }, [
+    dataPost,
+    payment,
+    promoCodeValidationResult
+  ]);
+
+  useEffect(() => {
+    if (dataPost) {
+      if ((dataPost?.premium_fee - newPromoCodeDiscount) === 0) {
+        setShowOtherFees(false)
+      } else {
+        setShowOtherFees(true)
+      }
+    }
+  }, [dataPost, newPromoCodeDiscount]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -58,53 +111,57 @@ const ModalEWallet = ({
     </div>
   );
 
-  console.log(promo);
-
   return (
     <div className="">
       {renderPhoneInput()}
       <InlineText
         label="Content Premium"
-        value={standartCurrency(dataPost?.premium_fee)}
+        value={standartCurrency(dataPost?.premium_fee ?? 0)}
         className="mb-2"
       />
-      {promo.promo_code !== '' ? (
+      {
+        showOtherFees &&
+          <>
+            <InlineText
+              label={t(`${translationId}.serviceFeeLabel`)}
+              value={`${standartCurrency(payment.service_fee ?? 0)}`}
+              className="mb-2"
+            />
+            <InlineText
+              label={t(`${translationId}.adminFeeLabel`)}
+              value={`${standartCurrency(payment?.admin_fee ?? 0)}`}
+              className="mb-2"
+            />
+            {payment.is_promo_available ? (
+              <InlineText
+                label={t(`${translationId}.adminFeeDiscountLabel`)}
+                value={`- ${standartCurrency(payment.promo_price ?? 0)}`}
+                className="mb-2"
+              />
+            ) : null}
+          </>
+      }
+      {promoCodeValidationResult? (
         <>
           <InlineText
             label="Promo Code"
-            value={`- ${standartCurrency(promo.total_discount)}`}
+            value={`- ${standartCurrency(promoCodeValidationResult?.response?.total_discount)}`}
             className="mb-4"
           />
-          <div className="bg-[#DCFCE4] flex flex-row items-center py-1 px-3 rounded-lg mb-4 border border-[#96F7C1] w-fit">
-            <TicketIcon
-              width={20}
-              height={20}
-              className="mr-1 text-[#3AC4A0]"
-            />
-            <p className="text-xs font-semibold text-[#3AC4A0]">
-              {promo.promo_code}
-            </p>
-            <XMarkIcon width={17} height={17} className="ml-2 text-black" />
-          </div>
         </>
       ) : null}
-      <InlineText
-        label={t(`${translationId}.adminFeeLabel`)}
-        value={`Rp 0`}
-        className="mb-4"
-      />
       <hr />
       <div className="flex justify-between">
         <Typography className="text-xl text-black font-semibold text-right my-5">
           Total Cost
         </Typography>
-        {promo.final_price !== 0 ? (
+        {promoCodeValidationResult?.response?.final_price !== 0 ? (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
-            {standartCurrency(dataPost?.premium_fee - promo?.total_discount)}
+            {standartCurrency(totalFee ?? 0)}
           </Typography>
         ) : (
           <Typography className="text-xl text-[#3AC4A0] font-semibold text-right my-5">
-            {standartCurrency(dataPost?.premium_fee)}
+            {standartCurrency(totalFee ?? 0)}
           </Typography>
         )}
       </div>
@@ -119,10 +176,10 @@ const ModalEWallet = ({
         onClick={async () => {
           await handlePay(
             payment?.payment_type,
-            payment?.payment_gateway,
+            payment?.payment_gateway ?? '',
             payment?.payment_method,
-            promo.total_discount !== null
-              ? dataPost?.premium_fee - promo.total_discount
+            promoCodeValidationResult?.response?.total_discount !== null
+              ? dataPost?.premium_fee - promoCodeValidationResult?.response?.total_discount
               : dataPost?.premium_fee,
             phone
           );

@@ -484,7 +484,7 @@ const SeedsPlan: React.FC = () => {
                 <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
                   {packagePlan === 'Silver' ? (
                     <>
-                      <div className="flex flex-col gap-2 mb-10">
+                      <div className="flex flex-col gap-2">
                         <div className="text-[#7C7C7C] text-sm">
                           {t('seedsPlan.text2')}
                           <span
@@ -536,16 +536,13 @@ const SeedsPlan: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        <div className="font-light text-xs text-[#7C7C7C]">
-                          {t('seedsPlan.text5')}
-                        </div>
                         <button
                           onClick={async () =>
                             await router.push(
                               `/seedsplan/payment?type=${packagePlan}`
                             )
                           }
-                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
                         >
                           {t('seedsPlan.button3')}
                         </button>
@@ -553,7 +550,7 @@ const SeedsPlan: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <div className="flex flex-col gap-2 mb-10">
+                      <div className="flex flex-col gap-2">
                         <div className="text-[#7C7C7C] text-sm">
                           {t('seedsPlan.text2')}
                           <span
@@ -605,16 +602,13 @@ const SeedsPlan: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        <div className="font-light text-xs text-[#7C7C7C]">
-                          {t('seedsPlan.text5')}
-                        </div>
                         <button
                           onClick={async () =>
                             await router.push(
                               `/seedsplan/payment?type=${packagePlan}`
                             )
                           }
-                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
                         >
                           {t('seedsPlan.button3')}
                         </button>

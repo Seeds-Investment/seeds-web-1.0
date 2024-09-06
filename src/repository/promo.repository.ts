@@ -24,17 +24,33 @@ export const promoValidate = async (params: any): Promise<any> => {
 
 export const getPromocodeActive = async (
   page: number,
-  limit: number
+  limit: number,
+  featureType?: string,
+  featureId?: string,
+  totalTransaction?: number
 ): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+  
   try {
     const response = await promoService.get('/list/active', {
       params: {
         page,
-        limit
+        limit,
+        feature_type: featureType,
+        feature_id: featureId,
+        total_transaction: totalTransaction
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
     });
     return response;
   } catch (error) {
-    console.log(error);
+    await Promise.reject(error);
   }
 };

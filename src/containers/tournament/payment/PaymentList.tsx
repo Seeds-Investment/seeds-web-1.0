@@ -241,7 +241,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
-
+        
         if (response) {
           if (response.payment_url !== '') {
             window.open(response.payment_url as string, '_blank');

@@ -115,7 +115,7 @@ const ModalEWallet = ({
     <div className="">
       {renderPhoneInput()}
       <InlineText
-        label="Content Premium"
+        label={t('social.payment.socialFee')}
         value={standartCurrency(dataPost?.premium_fee ?? 0)}
         className="mb-2"
       />

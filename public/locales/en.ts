@@ -1587,7 +1587,7 @@ export default {
       paymentMethod: 'Payment Method',
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidSocial: 'Pending Paid Post',
-      socialFee: 'Content Premium',
+      socialFee: 'Premium Content',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',

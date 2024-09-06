@@ -28,8 +28,8 @@ jobs:
           service_account: github-action@lithe-window-387706.iam.gserviceaccount.com
           create_credentials_file: true
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.3.0
+      # - name: Set up Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v0.3.0
 
       - name: Configure docker credential helper artifact registry
         run: gcloud auth configure-docker asia-southeast2-docker.pkg.dev
@@ -45,20 +45,40 @@ jobs:
           tags: |
             asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
 
-      - name: get-credentials GKE
-        uses: google-github-actions/get-gke-credentials@v1
-        with:
-          cluster_name: non-production-cluster
-          location: asia-southeast2
-
-      - name: Update Image GKE
-        run: |
-          export IMAGE_TAG=asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
-          export DEPLOYMENT_NAME=web
-          export CONTAINER_NAME=dev-web-1
-          kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n dev
-
-      # - name: Update secret
+      # - name: get-credentials GKE
+      #   uses: google-github-actions/get-gke-credentials@v1
+      #   with:
+      #     cluster_name: non-production-cluster
+      #     location: asia-southeast2 
+        
+      # - name: Update Image GKE
       #   run: |
-      #     kubectl delete secret web-secret -n dev
-      #     kubectl create secret generic web-secret --from-file=environment/.env-dev -n dev
+      #     export IMAGE_TAG=asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
+      #     export DEPLOYMENT_NAME=b2b
+      #     export CONTAINER_NAME=b2b
+      #     kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG -n dev
+
+      - name: Setup ssh key
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+
+      - name: Download docker image
+        run:  |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'gcloud auth configure-docker asia-southeast2-docker.pkg.dev'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'docker pull asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}'
+
+      - name: Update Docker Compose
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'versi="$(cat /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml | grep image | cut -d ":" -f 3)" && sed -i "s#image: asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${versi}#image: asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}#g" /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml'
+
+      - name: Running container
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'docker compose -f /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml up -d'
+
+      - name: Clean up old Docker images on server 
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} './cleanup-docker-images.sh '${{ env.GITHUB_REGISTRY_IMAGE_NAME }}' '${{ env.GITHUB_SHA_SHORT }}''
+
+      - name: Clean up ssh key
+        run: rm -rf $HOME/.ssh/*

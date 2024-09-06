@@ -1768,7 +1768,7 @@ export default {
     select: 'Select',
     quizCompanion: 'Pick your power-up!',
     chooseOptions:
-      'Struggling? This power-up will guide you towards the correct answer',
+      'Choose your assistance options, and of course you can even choose more than one!',
     freeOptions:
       '1 Free Power-Up! Choose wisely, using more comes at a additional cost',
     fiftyfifty: 'This option will eliminate two wrong answers.',
@@ -1811,6 +1811,7 @@ export default {
     playAgain: 'Play Again',
     admissionFee: 'IDR {{amount}}',
     dayDuration: '{{duration}} days',
+    seedsCoin: 'Redeem {{data}} seeds coin',
     quizCategory: {
       all: 'All',
       allDesc:
@@ -1926,7 +1927,9 @@ export default {
     },
     shareQuiz: 'Share This Quiz',
     playId: 'Quiz ID',
-    shareLinks: 'Share Link'
+    shareLinks: 'Share Link',
+    addMore: 'Add more power up',
+    noMore: 'No more power up'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
@@ -2237,6 +2240,7 @@ export default {
     seeEvent: 'See Event',
     booking: {
       bookNow: 'Book Now',
+      booked: 'Booked',
       seeTicket: 'See Ticket',
       bookingDetails: 'Booking Details',
       name: 'Name',
@@ -2339,8 +2343,73 @@ export default {
       checkOut: 'Check Out',
       notificationMethod: 'Notification Method',
       notificationModalMessage:
-        'Let’s kept up to date!  Choose your preference in notifications.'
+        'Let’s kept up to date!  Choose your preference in notifications.',
+      checkInMessage1: 'Are you sure to check-in?',
+      checkInMessage2: 'Will you check in now? Your data will be recorded.',
+      checkOutMessage1: 'Are you sure to check-out?',
+      checkOutMessage2: 'Will you check out now? Your data will be recorded.',
+      yes: 'Yes',
+      no: 'No'
+    },
+    checkInOut: {
+      ticketDetails: 'Ticket Details',
+      checkInSuccessful: 'Check In Successful',
+      checkOutSuccessful: 'Check Out Successful',
+      name: 'Name',
+      event: 'Event',
+      checkIn: 'Check In',
+      checkOut: 'Check Out'
     }
+  },
+  earning: {
+    noData: 'There is no data yet',
+    noDataDescription: "Let's win the rewards and get the prize!",
+    earnings: 'Earnings',
+    withdrawal: 'Withdrawal',
+    withdraw: 'Withdraw',
+    completed: 'Completed',
+    onProgress: 'On Progress',
+    rejected: 'Rejected',
+    myEarnings: 'My Earnings',
+    earningHistory: 'Earning History',
+    bankTransfer: 'Bank Transfer',
+    accountName: 'Account Name',
+    walletAccount: 'E-Wallet Account',
+    bankAccount: 'Bank Account',
+    accountNumber: 'Account Number',
+    continue: 'Continue',
+    back: 'Back',
+    bankAccountList: 'Bank Account List',
+    eWalletList: 'E-Wallet List',
+    searchBankAccount: 'Search Bank Account',
+    searchWallet: 'Search E-Wallet Account',
+    adminFee: 'Admin Fee',
+    notFound: 'not found',
+    otherKeyword: 'Find payment method with another keyword!',
+    withdrawAmount: 'Withdraw Amount',
+    nominalTransfer: 'Nominal Transfer',
+    minimumWithdrawal: 'Minimum Withdrawal',
+    addOnsFee: 'Add-Ons Fee',
+    accountProvider: 'Account',
+    serviceFee: 'Service Fee',
+    discount: 'Discount',
+    totalAmount: 'Total Amount to Earn',
+    balanceWithdrawn: 'Balance Withdrawn',
+    confirm: 'Confirm',
+    thankYou: 'Thank You',
+    withdrawalProcessed:
+      'Your withdrawal request is being processed. Please wait max 1x24 hours.',
+    transactionDetails: 'Transaction Details',
+    date: 'Date',
+    referenceNumber: 'Reference Number',
+    withdrawalWarning: 'The withdrawal request would take one business day.',
+    checkStatus: 'Check Withdrawal Status',
+    withdrawOnProgress: 'Withdraw On Progress',
+    withdrawOnProgressDescription:
+      'Your withdrawal request is being processed, please wait.',
+    enterAccountName: 'Enter your account name...',
+    enterBankAccount: 'Enter your bank account...',
+    enterAccountNumber: 'Enter your account number...'
   },
   buyAsset: {
     text1: 'Assets to be purchased',

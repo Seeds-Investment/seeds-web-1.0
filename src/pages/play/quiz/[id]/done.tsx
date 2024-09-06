@@ -134,15 +134,19 @@ const DoneQuiz: React.FC = () => {
     if (
       detailQuiz?.status === 'ENDED' &&
       QuizReview?.rank != null &&
-      QuizReview?.rank < 4
+      QuizReview?.rank <= detailQuiz?.winners.length
     ) {
       setIsWinnerModalOpen(true);
     }
-  }, [QuizReview?.rank, detailQuiz?.status, id, router]);
+  }, [QuizReview?.rank, detailQuiz?.status, id, router, detailQuiz?.winners]);
 
   useEffect(() => {
     // Check if both detailQuiz and QuizReview are defined and valid
-    if (detailQuiz != null && QuizReview != null) {
+    if (
+      detailQuiz != null &&
+      QuizReview != null &&
+      QuizReview.rank <= detailQuiz.prizes.length
+    ) {
       const calculatedPrizeForRank = detailQuiz.prizes[QuizReview.rank - 1];
       setPrize(calculatedPrizeForRank);
     }

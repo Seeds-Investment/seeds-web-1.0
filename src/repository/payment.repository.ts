@@ -34,3 +34,24 @@ export const getWithdrawalList = async (currency?: string): Promise<any> => {
     `/withdrawal/list?currency=${currency ?? 'IDR'}`
   );
 };
+
+export const getWithdrawalMyEarning = async (
+  params: { currency: string; search: string; }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.reject(new Error('Access token not found'));
+    }
+    return await paymentService.get(`/withdrawal/list`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

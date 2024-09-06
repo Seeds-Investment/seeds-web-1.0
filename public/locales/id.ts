@@ -1684,7 +1684,7 @@ export default {
   },
   quiz: {
     explanation: 'Penjelasan',
-    invitationCodePlaceholder: 'Input your invitation code',
+    invitationCodePlaceholder: 'Masukan kode undangan anda',
     enter: 'Enter',
     topQuiz: 'Top Quiz',
     topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
@@ -1709,8 +1709,8 @@ export default {
     second: '2nd',
     third: '3rd',
     sponsors: 'Sponsor(s)',
-    community: 'Community',
-    join: 'Join',
+    community: 'Komunitas',
+    join: 'Gabung',
     loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
@@ -1724,7 +1724,7 @@ export default {
     select: 'Pilih',
     quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
+      'Pilih Power-up bantuan Anda, Anda bahkan dapat memilih lebih dari satu!',
     freeOptions:
       '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
@@ -1765,6 +1765,7 @@ export default {
     playAgain: 'Main Lagi',
     admissionFee: 'Rp {{amount}}',
     dayDuration: '{{duration}} hari',
+    seedsCoin: 'Tukarkan {{data}} seeds coin',
     quizCategory: {
       all: 'Semua',
       allDesc:
@@ -1881,7 +1882,9 @@ export default {
     },
     shareQuiz: 'Bagikan Kuis Ini',
     playId: 'ID Kuis',
-    shareLinks: 'Bagikan Link'
+    shareLinks: 'Bagikan Link',
+    addMore: 'Tambah power up lagi',
+    noMore: 'No more power up'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -2192,6 +2195,7 @@ export default {
     seeEvent: 'Lihat Event',
     booking: {
       bookNow: 'Pesan Tiket',
+      booked: 'Lihat Tiket',
       seeTicket: 'Lihat Tiket',
       bookingDetails: 'Detail Pemesanan',
       name: 'Nama',
@@ -2292,8 +2296,77 @@ export default {
       checkIn: 'Check In',
       checkOut: 'Check Out',
       notificationMethod: 'Pilih Notifikasi',
-      notificationModalMessage: 'Ayo up-to-date! Pilih preferensi notifikasimu.'
+      notificationModalMessage:
+        'Ayo up-to-date! Pilih preferensi notifikasimu.',
+      checkInMessage1: 'Apa kamu yakin untuk check-in?',
+      checkInMessage2:
+        'Apakah kamu ingin check-in sekarang? Datamu akan langsung tercatat.',
+      checkOutMessage1: 'Apa kamu yakin untuk check-out?',
+      checkOutMessage2:
+        'Apakah kamu ingin check-out sekarang? Datamu akan langsung tercatat.',
+      yes: 'Ya',
+      no: 'Tidak'
+    },
+    checkInOut: {
+      ticketDetails: 'Detail Tiket',
+      checkInSuccessful: 'Check In Sukses',
+      checkOutSuccessful: 'Check Out Sukses',
+      name: 'Nama',
+      event: 'Event',
+      checkIn: 'Check In',
+      checkOut: 'Check Out'
     }
+  },
+  earning: {
+    noData: 'Belum ada data',
+    noDataDescription: 'Yuk menangkan permainan dan dapatkan hadiahnya!',
+    earnings: 'Penghasilan',
+    withdrawal: 'Pendapatan',
+    withdraw: 'Penarikan',
+    completed: 'Selesai',
+    onProgress: 'Disetujui',
+    rejected: 'Ditolak',
+    myEarnings: 'Penghasilan Saya',
+    earningHistory: 'Riwayat Penghasilan',
+    bankTransfer: 'Transfer Bank',
+    accountName: 'Nama Rekening',
+    walletAccount: 'Rekening E-Wallet',
+    bankAccount: 'Rekening Bank',
+    accountNumber: 'Nomor Rekening',
+    continue: 'Lanjutkan',
+    back: 'Kembali',
+    bankAccountList: 'Daftar Rekening Bank',
+    eWalletList: 'Daftar Rekening E-Wallet',
+    searchBankAccount: 'Cari Rekening Bank',
+    searchWallet: 'Cari Rekening E-Wallet',
+    adminFee: 'Biaya Admin',
+    notFound: 'tidak ditemukan',
+    otherKeyword: 'Cari metode pembayaran dengan keyword lain!',
+    withdrawAmount: 'Jumlah Penarikan',
+    nominalTransfer: 'Transfer Nominal',
+    minimumWithdrawal: 'Minimum Penarikan',
+    addOnsFee: 'Biaya Tambahan',
+    accountProvider: 'Rekening',
+    serviceFee: 'Biaya Layanan',
+    discount: 'Diskon',
+    totalAmount: 'Total Penarikan Diterima',
+    balanceWithdrawn: 'Saldo Tertarik',
+    confirm: 'Konfirmasi',
+    thankYou: 'Terima Kasih',
+    withdrawalProcessed:
+      'Permintaan penarikan dana kamu sedang diproses. Mohon tunggu maksimal 1x24 jam.',
+    transactionDetails: 'Detail Transaksi',
+    date: 'Tanggal',
+    referenceNumber: 'Nomor Referensi',
+    withdrawalWarning:
+      'Permintaan penarikan dana akan diproses dalam satu hari kerja.',
+    checkStatus: 'Cek Status Penarikan Dana',
+    withdrawOnProgress: 'Penarikan Dalam Proses',
+    withdrawOnProgressDescription:
+      'Permintaan penarikanmu sedang diproses. Mohon tunggu.',
+    enterAccountName: 'Masukan nama rekening anda...',
+    enterBankAccount: 'Masukan rekening anda...',
+    enterAccountNumber: 'Masukan nomor rekening anda...'
   },
   buyAsset: {
     text1: 'Aset yang akan di beli',
@@ -2317,7 +2390,9 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20: 'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan',
+    text21: 'Harga Aktivasi Hentikan Kerugian',
+    text22: 'Harga aktivasi Take Profit'
   },
   discover: {
     hotNews: 'Hot News',

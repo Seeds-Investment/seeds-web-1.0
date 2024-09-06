@@ -30,12 +30,13 @@ import { Card, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 const MicrositeQuiz = (): React.ReactElement => {
   const router = useRouter();
+  const count = useRef(0);
   const id = process.env.NEXT_PUBLIC_DOMAIN
     ? 'c404a480-9088-4b0d-bb4f-c88b32cc3a74'
     : 'c9b630dc-217d-4454-b602-3c78ecc3c212';
@@ -176,14 +177,17 @@ const MicrositeQuiz = (): React.ReactElement => {
   }, [id, userInfo]);
 
   useEffect(() => {
-    if (detailQuiz !== undefined && userInfo !== undefined) {
+    if (
+      detailQuiz !== undefined &&
+      userInfo !== undefined &&
+      count.current === 0
+    ) {
       TrackerEvent({
-        event: 'SW_quiz_detail_page',
-        quiz_name: detailQuiz.name,
-        user_id: userInfo.id,
-        user_name: userInfo.name,
-        user_phone: userInfo.phoneNumber
+        event: 'SW_micorsite_quiz_page_detail',
+        quizData: detailQuiz,
+        userData: userInfo
       });
+      count.current = 1;
     }
   }, [detailQuiz]);
 

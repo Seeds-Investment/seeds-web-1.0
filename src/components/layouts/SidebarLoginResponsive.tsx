@@ -1,29 +1,30 @@
 import { isGuest } from '@/helpers/guest';
 import { setTranslationToLocalStorage } from '@/helpers/translation';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
-import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
 import { getLocalStorage } from '@/utils/common/localStorage';
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
 import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
+import notification from 'public/assets/social/notification.svg';
 import profile from 'public/assets/social/people.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import ModalLogout from '../popup/ModalLogout';
 import Logo from '../ui/vector/Logo';
 
 interface props {
   open: boolean;
-  handleOpen: any;
+  handleOpen: () => void;
+  handleLogout: () => void;
 }
 
 const menu = isGuest()
@@ -39,18 +40,20 @@ const menu = isGuest()
       { title: 'Connect', url: '/connect', image: connect },
       { title: 'Play', url: '/play', image: play },
       { title: 'Setting', url: '/user-setting', image: setting },
-      // { title: 'Notification', url: '/setting', image: notification },
-      // { title: 'Chat', url: '/setting', image: chat },
+      {
+        title: 'Notification',
+        url: '/social/notification',
+        image: notification
+      },
+      { title: 'Chat', url: '/chat', image: chat },
       { title: 'Profile', url: '/my-profile', image: profile }
     ];
 
-const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
+const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen, handleLogout }) => {
   const width = useWindowInnerWidth();
   const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState<any>([]);
   const languageCtx = useContext(LanguageContext);
-  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const isLinkActive = (href: string): string => {
     return router.asPath.startsWith(href) ? 'active' : '';
@@ -58,18 +61,6 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
 
   useEffect(() => {
     setAccessToken(localStorage.getItem('accessToken') ?? '');
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        toast(error.message, { type: 'error' });
-      }
-    };
-
-    fetchData()
-      .then()
-      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -80,24 +71,16 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
           languageCtx.languageHandler(translation as 'EN' | 'ID');
         }
       } catch (error) {
-        console.log(error);
+        toast.error(`${error as string}`);
       }
     };
     getLastTranslation().catch(err => {
-      console.log(err);
+      toast.error(`${err as string}`);
     });
   }, []);
 
   return (
     <aside className="absolute z-40 right-0 w-2/3 h-[50rem] py-6 bg-white">
-      {isLogoutModal && (
-        <ModalLogout
-          onClose={() => {
-            setIsLogoutModal(prev => !prev);
-          }}
-          userInfo={userInfo}
-        />
-      )}
       <div className="absolute -left-4 bg-white border-[#E9E9E9] border-2 w-fit px-2 py-1 rounded-xl">
         <ChevronDoubleRightIcon width={20} height={20} onClick={handleOpen} />
       </div>
@@ -142,7 +125,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   onClick={() => {
                     languageCtx.languageHandler('ID');
                     setTranslationToLocalStorage('ID').catch(err => {
-                      console.log(err);
+                      toast.error(`${err as string}`);
                     });
                   }}
                 >
@@ -176,7 +159,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                   onClick={() => {
                     languageCtx.languageHandler('EN');
                     setTranslationToLocalStorage('EN').catch(err => {
-                      console.log(err);
+                      toast.error(`${err as string}`);
                     });
                   }}
                 >
@@ -210,7 +193,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen }) => {
                 <button
                   className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
                   onClick={() => {
-                    setIsLogoutModal(true);
+                    handleLogout()
                   }}
                 >
                   Logout

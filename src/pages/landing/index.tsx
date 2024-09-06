@@ -1,4 +1,3 @@
-import GoogleAnalyticsScript from '@/components/GoogleAnaliticsScript';
 // import Header from '@/components/layouts/Header';
 import Footer from '@/components/layouts/Footer';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
@@ -41,7 +40,6 @@ export default function Landing(): React.ReactElement {
 
   return (
     <>
-      <GoogleAnalyticsScript />
       {/* <Header /> */}
       <PageGradient
         customGradient={customGradient}

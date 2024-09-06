@@ -2,6 +2,7 @@ import Loading from '@/components/popup/Loading';
 import CardGradient from '@/components/ui/card/CardGradient';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
+import TrackerEvent from '@/helpers/GTM';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import {
@@ -84,6 +85,9 @@ const SuccessPaymentPage: React.FC = () => {
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QrisDetail[]>([]);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setVirtualAccountInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -161,6 +165,7 @@ const SuccessPaymentPage: React.FC = () => {
     try {
       setIsLoading(true);
       const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
       const resp: IDetailQuiz = await getQuizById({
         id: orderDetail?.itemId as string,
         currency:
@@ -569,6 +574,26 @@ const SuccessPaymentPage: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
+                    const formattedText = (text: string): string => {
+                      return text
+                        .split('|')[1]
+                        .replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+                    };
+                    TrackerEvent({
+                      event: 'SW_quiz_payment',
+                      userData: userInfo,
+                      paymentData: {
+                        ...orderDetail,
+                        itemName:
+                          formattedText(orderDetail?.itemName as string)
+                            .length > 50
+                            ? formattedText(
+                                orderDetail?.itemName as string
+                              ).substring(0, 50)
+                            : formattedText(orderDetail?.itemName as string),
+                        statusPayment: 'PAID'
+                      }
+                    });
                     void router.replace(
                       `/play/quiz/${orderDetail?.itemId as string}/start`
                     );

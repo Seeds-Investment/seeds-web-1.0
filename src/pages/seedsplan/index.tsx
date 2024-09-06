@@ -573,7 +573,7 @@ const SeedsPlan: React.FC = () => {
                                     maximumFractionDigits: 0
                                   })}
                                 </span>
-                                /{t('seedsPlan.text4')}
+                                /3 {t('seedsPlan.text4')}
                               </>
                             ) : (
                               <>
@@ -583,7 +583,7 @@ const SeedsPlan: React.FC = () => {
                                   style: 'currency',
                                   maximumFractionDigits: 0
                                 })}
-                                /{t('seedsPlan.text4')}
+                                /3 {t('seedsPlan.text4')}
                               </>
                             )}
                           </div>

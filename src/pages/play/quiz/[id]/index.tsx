@@ -139,9 +139,15 @@ const QuizDetail = (): React.ReactElement => {
       userInfo !== undefined &&
       count.current === 0
     ) {
+      const formattedText = (text: string): string => {
+        return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+      };
       TrackerEvent({
         event: 'SW_quiz_page_detail',
-        quizData: detailQuiz,
+        quizData: {
+          ...detailQuiz,
+          name: formattedText(detailQuiz?.name)
+        },
         userData: userInfo
       });
       count.current = 1;

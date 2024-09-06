@@ -1,4 +1,5 @@
 import IconClock from '@/assets/play/tournament/clock.svg';
+import FollowButton from '@/components/FollowButton';
 import { getLeaderGlobal, getUserRank } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
@@ -451,7 +452,12 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                   {leader?.current_rank}.
                 </td>
                 <td className="px-2 py-5 text-start flex">
-                  <div className="my-auto">
+                  <div
+                    className="my-auto me-2"
+                    onClick={() => {
+                      void router.push(`/social/${leader?.user_id}`);
+                    }}
+                  >
                     <Image
                       src={leader?.avatar_url}
                       alt={leader?.user_full_name}
@@ -498,14 +504,11 @@ const LeaderBoardGlobalPage = (): React.ReactElement => {
                     <h1 className="text-xs md:text-sm font-normal font-poppins text-[#7C7C7C]">
                       @{leader?.user_seeds_tag}
                     </h1>
-                    <button
-                      className="bg-[#3AC4A0] my-2 text-white text-[10px] rounded-full px-4 py-1"
-                      onClick={() => {
-                        void router.push(`/social/${leader?.user_id}`);
-                      }}
-                    >
-                      {leader?.is_followed ? 'Following' : 'Follow'}
-                    </button>
+                    <FollowButton
+                      userId={leader?.user_id}
+                      isFollowed={leader?.is_followed}
+                      customClass="bg-[#3AC4A0]  my-2 text-white text-[10px] rounded-full px-4 py-1"
+                    />
                   </div>
                 </td>
                 <td className="px-2 py-5 text-center text-sm md:text-base font-normal font-poppins">

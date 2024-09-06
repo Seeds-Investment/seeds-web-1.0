@@ -123,7 +123,7 @@ const AuthOTP: React.FC<AuthOTPI> = ({
           {t('authRegister.authOTP.title3')} +{formattedData.phoneNumber}.
         </Typography>
         <div className="w-full">
-          <div className="flex justify-center gap-[150px] md:mb-8 mb-6">
+          <div className="flex justify-between md:mb-8 mb-6">
             <Button
               onClick={async () => {
                 setBlank(false);

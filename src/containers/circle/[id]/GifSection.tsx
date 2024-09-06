@@ -81,7 +81,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
   };
 
   return (
-    <div className="hidden md:block bg-white pb-4 w-full">
+    <div className="block bg-white pb-4 w-full">
       <div className="flex h-14 w-[375px]">
         <div className="flex flex-col justify-center">
           <button type="button" onClick={cancelHandler}>
@@ -110,7 +110,7 @@ const GifSection: React.FC<props> = ({ setPages, setForm, setMedia }) => {
       {isLoading ? (
         renderLoading()
       ) : (
-        <div className="grid grid-cols-5 gap-3 mt-8">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-8">
           {dataGif?.map((el: any, i: number) => {
             return (
               <div

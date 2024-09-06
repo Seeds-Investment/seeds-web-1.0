@@ -97,7 +97,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
       const accessToken = localStorage.getItem('accessToken');
 
       if (accessToken === null) {
-        void router.push('/auth/login');
+        void router.push('/auth/verification');
         return;
       }
       const response = await postLike(formRequest, articleId);

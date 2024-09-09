@@ -29,28 +29,16 @@ const TeamBattle = (): React.ReactElement => {
     { id: 4, image: CategoryCrypto, title: 'Crypto', value: 'CRYPTO' }
   ];
 
-  const handleNextCategory = (): void => {
-    if (activeCategory === null) {
-      setActiveCategory(categoryBattle[0]);
-    } else {
-      const nextIndex =
-        (categoryBattle.findIndex(cat => cat.id === activeCategory.id) + 1) %
-        categoryBattle.length;
-      setActiveCategory(categoryBattle[nextIndex]);
-    }
-  };
-
-  const handlePreviousCategory = (): void => {
-    if (activeCategory === null) {
-      setActiveCategory(categoryBattle[categoryBattle.length - 1]);
-    } else {
-      const prevIndex =
-        (categoryBattle.findIndex(cat => cat.id === activeCategory.id) -
-          1 +
-          categoryBattle.length) %
-        categoryBattle.length;
-      setActiveCategory(categoryBattle[prevIndex]);
-    }
+  const handleCategoryChange = (direction: 'next' | 'previous'): void => {
+    const index =
+      activeCategory != null
+        ? categoryBattle.findIndex(cat => cat.id === activeCategory.id)
+        : -1;
+    const newIndex =
+      direction === 'next'
+        ? (index + 1) % categoryBattle.length
+        : (index - 1 + categoryBattle.length) % categoryBattle.length;
+    setActiveCategory(categoryBattle[newIndex] ?? categoryBattle[0]);
   };
 
   return (
@@ -112,7 +100,9 @@ const TeamBattle = (): React.ReactElement => {
               {activeCategory !== null && (
                 <div
                   className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
-                  onClick={handlePreviousCategory}
+                  onClick={() => {
+                    handleCategoryChange('previous');
+                  }}
                 >
                   <ChevronLeftIcon
                     width={16}
@@ -122,20 +112,16 @@ const TeamBattle = (): React.ReactElement => {
                 </div>
               )}
               <Image
-                src={
-                  activeCategory !== null ? activeCategory?.image : CategoryAll
-                }
-                alt={
-                  activeCategory !== null
-                    ? activeCategory?.title
-                    : 'Selected Category'
-                }
+                src={activeCategory?.image ?? CategoryAll}
+                alt={activeCategory?.title ?? 'Selected Category'}
                 className="lg:w-[240px] lg:h-[240px] w-[280px] h-[280px]"
               />
               {activeCategory !== null && (
                 <div
                   className="cursor-pointer p-1 bg-white/50 backdrop-blur-sm rounded-lg hover:bg-white/70 duration-300"
-                  onClick={handleNextCategory}
+                  onClick={() => {
+                    handleCategoryChange('next');
+                  }}
                 >
                   <ChevronRightIcon
                     width={16}
@@ -147,9 +133,7 @@ const TeamBattle = (): React.ReactElement => {
             </div>
             <div>
               <Typography className="text-white font-poppins text-[27px] font-semibold">
-                {activeCategory !== null
-                  ? activeCategory?.title
-                  : 'All Category'}
+                {activeCategory?.title ?? 'All Category'}
               </Typography>
             </div>
           </div>

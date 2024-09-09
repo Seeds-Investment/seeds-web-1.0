@@ -84,9 +84,6 @@ const WalletForm = ({
     }
   }, [dataPost, newPromoCodeDiscount]);
 
-  console.log('dataPost ', dataPost)
-
-
   useEffect(() => {
     let _admissionFee = 0;
     let _adminFee = 0;

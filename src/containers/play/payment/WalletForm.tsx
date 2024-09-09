@@ -49,8 +49,7 @@ const WalletForm = ({
   );
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleGetCoinsUser = async () => {
+  const handleGetCoinsUser = async (): Promise<void> => {
     const useCoins = router.query.useCoins;
     if (useCoins === 'true') {
       const resCoins = await getTransactionSummary();
@@ -64,17 +63,29 @@ const WalletForm = ({
 
   useEffect(() => {
     if (dataPost.quiz) {
-      if (dataPost.quiz.fee === 0) {
-        if ((dataPost.quiz.admission_fee - newPromoCodeDiscount) === 0) {
-          setShowOtherFees(false)
-        } else {
-          setShowOtherFees(true)
-        }
+      const admissionFee = Number(dataPost.quiz.admission_fee || 0);
+      const fee = Number(dataPost.quiz.fee || 0);
+      const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
+
+      if ((admissionFee + fee - promoCodeDiscount) === 0) {
+        setShowOtherFees(false);
       } else {
-        setShowOtherFees(true)
+        setShowOtherFees(true);
+      }
+    } else {
+      const admissionFee = Number(dataPost.premium_fee || 0);
+      const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
+
+      if ((admissionFee - promoCodeDiscount) === 0) {
+        setShowOtherFees(false);
+      } else {
+        setShowOtherFees(true);
       }
     }
   }, [dataPost, newPromoCodeDiscount]);
+
+  console.log('dataPost ', dataPost)
+
 
   useEffect(() => {
     let _admissionFee = 0;
@@ -125,8 +136,11 @@ const WalletForm = ({
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
-
+  }, [dataPost, showOtherFees, newPromoCodeDiscount, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
+console.log('datapost ', dataPost)
+console.log('showOtherFees ', showOtherFees)
+console.log('newPromoCodeDiscount ', newPromoCodeDiscount)
+console.log('totalFee ', totalFee)
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">

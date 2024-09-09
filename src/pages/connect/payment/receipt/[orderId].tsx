@@ -62,8 +62,6 @@ const SuccessPaymentPage: React.FC = () => {
   const [steps, setSteps] = useState<string[]>([]);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QRList[]>([]);
-  const bigText = 'text-2xl font-semibold text-white text-center';
-  const normalText = 'text-sm font-normal text-white text-center';
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -215,20 +213,6 @@ const SuccessPaymentPage: React.FC = () => {
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('quiz.payment.paymentSuccessful')}
-              </Typography>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? bigText
-                    : normalText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                    orderDetail?.grossAmount
-                  )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {validationError &&

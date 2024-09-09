@@ -137,10 +137,7 @@ const WalletForm = ({
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
   }, [dataPost, showOtherFees, newPromoCodeDiscount, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
-console.log('datapost ', dataPost)
-console.log('showOtherFees ', showOtherFees)
-console.log('newPromoCodeDiscount ', newPromoCodeDiscount)
-console.log('totalFee ', totalFee)
+  
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">

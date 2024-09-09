@@ -9,7 +9,7 @@ import { CiSquareChevUp } from 'react-icons/ci';
 interface PopupInformationProps {
   isOpen: boolean;
   onClose: () => void;
-  infoBattle: TeamBattleDetail;
+  infoBattle?: TeamBattleDetail;
 }
 
 const PopupInformation: React.FC<PopupInformationProps> = ({
@@ -31,7 +31,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
           <div className="rounded-3xl bg-gradient-to-r from-[#227e7f]/85 to-[#4760a8]/85 overflow-hidden h-[450px] w-[450px]">
             <div className="relative w-full h-40 overflow-hidden">
               <Image
-                src={infoBattle?.banner}
+                src={infoBattle?.banner ?? ''}
                 alt="battle-banner"
                 fill
                 style={{ objectFit: 'cover' }}
@@ -57,7 +57,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
                 className="text-sm text-white font-normal py-2 px-4"
                 dangerouslySetInnerHTML={{
                   __html:
-                    infoBattle.tnc?.[
+                    infoBattle?.tnc?.[
                       i18n.language === 'id' ? 'id' : 'en'
                     ]?.replace(/\n/g, '<br />') ?? '-'
                 }}

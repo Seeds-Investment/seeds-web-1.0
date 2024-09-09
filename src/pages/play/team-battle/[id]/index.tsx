@@ -5,21 +5,20 @@ import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
 import { ArrowTailessDown, ArrowTailessUp, BattleVersus, BronzeMedal, GoldCrown, GreenGift, GroupIcon, SeedyBattleLeft, SeedyBattleRight, SilverMedal } from 'public/assets/vector';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Amar from './../../../../assets/play/battle/amar.png';
 import Jago from './../../../../assets/play/battle/jago.png';
 import WeBull from './../../../../assets/play/battle/webull.png';
 
 const MainTeamBattle = (): React.ReactElement => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const router = useRouter();
 
-  const [showTnc, setShowTnc] = useState<boolean>(false)
+  const [showTnc, setShowTnc] = useState<boolean>(false);
 
   return (
     <>
-      <div className='w-full h-full p-4'>
-        <div className='flex justify-center items-center relative'>
+      <div className="w-full h-full p-4">
+        <div className="flex justify-center items-center relative">
           <Image
             className="absolute left-0 cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transition duration-300"
             src={ArrowBackWhite}
@@ -33,10 +32,10 @@ const MainTeamBattle = (): React.ReactElement => {
           </Typography>
         </div>
 
-        <div className='flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4'>
-          <div className='flex flex-col justify-center items-center'>
-            <div className='flex gap-2'>
-              <div className='flex justify-center items-center'>
+        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4">
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex gap-2">
+              <div className="flex justify-center items-center">
                 <Image
                   className="w-[20px] h-[20px]"
                   src={SilverMedal}
@@ -45,17 +44,13 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'SilverMedal'}
                 />
               </div>
-              <div>
-                2nd
-              </div>
+              <div>2nd</div>
             </div>
-            <div className='font-semibold'>
-              5.000.000
-            </div>
+            <div className="font-semibold">5.000.000</div>
           </div>
-          <div className='flex flex-col justify-center items-center border-x-2 border-white px-2'>
-            <div className='flex gap-2 justify-center items-end'>
-              <div className='flex justify-center items-center'>
+          <div className="flex flex-col justify-center items-center border-x-2 border-white px-2">
+            <div className="flex gap-2 justify-center items-end">
+              <div className="flex justify-center items-center">
                 <Image
                   className="w-[35px] h-[35px]"
                   src={GoldCrown}
@@ -64,17 +59,13 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'GoldCrown'}
                 />
               </div>
-              <div>
-                1st
-              </div>
+              <div>1st</div>
             </div>
-            <div className='font-semibold'>
-              10.000.000
-            </div>
+            <div className="font-semibold">10.000.000</div>
           </div>
-          <div className='flex flex-col justify-center items-center'>
-            <div className='flex gap-2'>
-              <div className='flex justify-center items-center'>
+          <div className="flex flex-col justify-center items-center">
+            <div className="flex gap-2">
+              <div className="flex justify-center items-center">
                 <Image
                   className="w-[20px] h-[20px]"
                   src={BronzeMedal}
@@ -83,15 +74,11 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'BronzeMedal'}
                 />
               </div>
-              <div>
-                3rd
-              </div>
+              <div>3rd</div>
             </div>
-            <div className='font-semibold'>
-              3.000.000
-            </div>
+            <div className="font-semibold">3.000.000</div>
           </div>
-          <div className='absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300'>
+          <div className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
             <Image
               className="w-[20px] h-[20px]"
               src={GreenGift}
@@ -101,10 +88,10 @@ const MainTeamBattle = (): React.ReactElement => {
             />
           </div>
         </div>
-        
-        <div className='lg:flex lg:gap-8 lg:mt-4'>
-          <div className='flex flex-col lg:w-full justify-center items-center gap-2 border-2 mt-16 border-white rounded-2xl py-8 px-2 bg-white bg-opacity-20 relative'>
-            <div className='flex flex-col justify-center items-center'>
+
+        <div className="lg:flex lg:gap-8 lg:mt-4">
+          <div className="flex flex-col lg:w-full justify-center items-center gap-2 border-2 mt-16 border-white rounded-2xl py-8 px-2 bg-white bg-opacity-20 relative">
+            <div className="flex flex-col justify-center items-center">
               <Typography className="text-[#3D3D3D] font-poppins text-xl font-semibold">
                 It`s time to
               </Typography>
@@ -112,55 +99,33 @@ const MainTeamBattle = (): React.ReactElement => {
                 Battle!
               </Typography>
             </div>
-            <div className='text-xs lg:text-lg text-[#3D3D3D] font-semibold'>
-              <div className='w-full'>
-                <div className='flex gap-2 justify-between'>
-                  <div className='w-[70px] lg:w-[110px]'>
-                    Periode
-                  </div>
-                  <div>
-                    : 12/04/2024 - 30/08/2023
-                  </div>
+            <div className="text-xs lg:text-lg text-[#3D3D3D] font-semibold">
+              <div className="w-full">
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[70px] lg:w-[110px]">Periode</div>
+                  <div>: 12/04/2024 - 30/08/2023</div>
                 </div>
-                <div className='flex gap-2 justify-between'>
-                  <div className='w-[70px] lg:w-[110px]'>
-                    Registration
-                  </div>
-                  <div>
-                    : 12/04/2024 - 30/08/2023
-                  </div>
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[70px] lg:w-[110px]">Registration</div>
+                  <div>: 12/04/2024 - 30/08/2023</div>
                 </div>
-                <div className='flex gap-2 justify-between'>
-                  <div className='w-[70px] lg:w-[110px]'>
-                    Elimination
-                  </div>
-                  <div>
-                    : 12/04/2024 - 30/08/2023
-                  </div>
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[70px] lg:w-[110px]">Elimination</div>
+                  <div>: 12/04/2024 - 30/08/2023</div>
                 </div>
-                <div className='flex gap-2 justify-between'>
-                  <div className='w-[70px] lg:w-[110px]'>
-                    Semifinal
-                  </div>
-                  <div>
-                    : 12/04/2024 - 30/08/2023
-                  </div>
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[70px] lg:w-[110px]">Semifinal</div>
+                  <div>: 12/04/2024 - 30/08/2023</div>
                 </div>
-                <div className='flex gap-2 justify-between'>
-                  <div className='w-[70px] lg:w-[110px]'>
-                    Final
-                  </div>
-                  <div>
-                    : 12/04/2024 - 30/08/2023
-                  </div>
+                <div className="flex gap-2 justify-between">
+                  <div className="w-[70px] lg:w-[110px]">Final</div>
+                  <div>: 12/04/2024 - 30/08/2023</div>
                 </div>
               </div>
-              <div className='flex flex-col justify-center items-center text-sm mt-4'>
-                <div>
-                  Participants
-                </div>
-                <div className='flex justify-center items-start gap-1 mt-2'>
-                  <div className='w-[30px] h-[30px]'>
+              <div className="flex flex-col justify-center items-center text-sm mt-4">
+                <div>Participants</div>
+                <div className="flex justify-center items-start gap-1 mt-2">
+                  <div className="w-[30px] h-[30px]">
                     <Image
                       className="w-full h-full"
                       src={GroupIcon}
@@ -169,20 +134,16 @@ const MainTeamBattle = (): React.ReactElement => {
                       alt={'GroupIcon'}
                     />
                   </div>
-                  <div>
-                    20
-                  </div>
+                  <div>20</div>
                 </div>
               </div>
               <div className="mt-4 hidden lg:flex">
-                <Button
-                  className='w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins'
-                >
+                <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
                   Join
                 </Button>
               </div>
             </div>
-            <div className='absolute left-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]'>
+            <div className="absolute left-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]">
               <Image
                 className="w-auto h-full"
                 src={SeedyBattleLeft}
@@ -191,7 +152,7 @@ const MainTeamBattle = (): React.ReactElement => {
                 alt={'SeedyBattleLeft'}
               />
             </div>
-            <div className='absolute right-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]'>
+            <div className="absolute right-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]">
               <Image
                 className="w-auto h-full"
                 src={SeedyBattleRight}
@@ -200,7 +161,7 @@ const MainTeamBattle = (): React.ReactElement => {
                 alt={'SeedyBattleRight'}
               />
             </div>
-            <div className='absolute top-[-40px] flex justify-center items-center w-[150px] lg:w-[250px] h-auto'>
+            <div className="absolute top-[-40px] flex justify-center items-center w-[150px] lg:w-[250px] h-auto">
               <Image
                 className="w-auto h-full"
                 src={BattleVersus}
@@ -211,10 +172,10 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
           </div>
 
-          <div className='hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4'>
-            <div className='w-full flex flex-col justify-center items-center px-2'>
-              <div className='flex gap-2 justify-center items-end'>
-                <div className='flex justify-center items-center'>
+          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4">
+            <div className="w-full flex flex-col justify-center items-center px-2">
+              <div className="flex gap-2 justify-center items-end">
+                <div className="flex justify-center items-center">
                   <Image
                     className="w-[35px] h-[35px]"
                     src={GoldCrown}
@@ -223,18 +184,14 @@ const MainTeamBattle = (): React.ReactElement => {
                     alt={'GoldCrown'}
                   />
                 </div>
-                <div>
-                  1st
-                </div>
+                <div>1st</div>
               </div>
-              <div className='font-bold text-lg'>
-                10.000.000
-              </div>
+              <div className="font-bold text-lg">10.000.000</div>
             </div>
-            <div className='w-full flex justify-between px-2'>
-              <div className='flex flex-col justify-center items-center'>
-                <div className='flex gap-2'>
-                  <div className='flex justify-center items-center'>
+            <div className="w-full flex justify-between px-2">
+              <div className="flex flex-col justify-center items-center">
+                <div className="flex gap-2">
+                  <div className="flex justify-center items-center">
                     <Image
                       className="w-[20px] h-[20px]"
                       src={SilverMedal}
@@ -243,17 +200,13 @@ const MainTeamBattle = (): React.ReactElement => {
                       alt={'SilverMedal'}
                     />
                   </div>
-                  <div>
-                    2nd
-                  </div>
+                  <div>2nd</div>
                 </div>
-                <div className='font-bold text-lg'>
-                  5.000.000
-                </div>
+                <div className="font-bold text-lg">5.000.000</div>
               </div>
-              <div className='flex flex-col justify-center items-center'>
-                <div className='flex gap-2'>
-                  <div className='flex justify-center items-center'>
+              <div className="flex flex-col justify-center items-center">
+                <div className="flex gap-2">
+                  <div className="flex justify-center items-center">
                     <Image
                       className="w-[20px] h-[20px]"
                       src={BronzeMedal}
@@ -262,21 +215,17 @@ const MainTeamBattle = (): React.ReactElement => {
                       alt={'BronzeMedal'}
                     />
                   </div>
-                  <div>
-                    3rd
-                  </div>
+                  <div>3rd</div>
                 </div>
-                <div className='font-bold text-lg'>
-                  3.000.000
-                </div>
+                <div className="font-bold text-lg">3.000.000</div>
               </div>
             </div>
-            <div className='flex flex-col justify-center items-center gap-2'>
-              <div className='text-lg text-[#3D3D3D] font-semibold'>
+            <div className="flex flex-col justify-center items-center gap-2">
+              <div className="text-lg text-[#3D3D3D] font-semibold">
                 Sponsor
               </div>
-              <div className='flex gap-2 justify-center items-center'>
-                <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+              <div className="flex gap-2 justify-center items-center">
+                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                   <Image
                     className="w-[50px] h-auto"
                     src={Amar}
@@ -285,7 +234,7 @@ const MainTeamBattle = (): React.ReactElement => {
                     alt={'Amar'}
                   />
                 </div>
-                <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                   <Image
                     className="w-[50px] h-auto"
                     src={WeBull}
@@ -294,7 +243,7 @@ const MainTeamBattle = (): React.ReactElement => {
                     alt={'WeBull'}
                   />
                 </div>
-                <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                   <Image
                     className="w-[50px] h-auto"
                     src={Jago}
@@ -307,32 +256,24 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
 
             <div
-              onClick={() => {setShowTnc(!showTnc)}}
-              className='flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]'
+              onClick={() => {
+                setShowTnc(!showTnc);
+              }}
+              className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]"
             >
-              <div>
-                Term and Condition
-              </div>
-              <div className='flex flex-col justify-start items-start gap-2 mt-2 text-xs overflow-y-scroll h-[100px]'>
+              <div>Term and Condition</div>
+              <div className="flex flex-col justify-start items-start gap-2 mt-2 text-xs overflow-y-scroll h-[100px]">
                 <div>
                   1. Single competition, participants compete for prizes.
                 </div>
-                <div>
-                  2. Start with 50 million virtual capital.
-                </div>
-                <div>
-                  3. Winner based on highest equity score.
-                </div>
-                <div>
-                  4. Participants must follow Instagram @seeds_finance.
-                </div>
-                <div>
-                  5. Ticket fee: 100,000/entry (no promo code).
-                </div>
+                <div>2. Start with 50 million virtual capital.</div>
+                <div>3. Winner based on highest equity score.</div>
+                <div>4. Participants must follow Instagram @seeds_finance.</div>
+                <div>5. Ticket fee: 100,000/entry (no promo code).</div>
               </div>
             </div>
 
-            <div className='absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300'>
+            <div className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
               <Image
                 className="w-[20px] h-[20px]"
                 src={GreenGift}
@@ -344,13 +285,11 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
         </div>
 
-        <div className='flex flex-col lg:hidden'>
-          <div className='flex flex-col justify-center items-center gap-2 mt-4'>
-            <div className='text-md text-[#3D3D3D] font-semibold'>
-              Sponsor
-            </div>
-            <div className='flex gap-2 justify-center items-center'>
-              <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+        <div className="flex flex-col lg:hidden">
+          <div className="flex flex-col justify-center items-center gap-2 mt-4">
+            <div className="text-md text-[#3D3D3D] font-semibold">Sponsor</div>
+            <div className="flex gap-2 justify-center items-center">
+              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                 <Image
                   className="w-[50px] h-auto"
                   src={Amar}
@@ -359,7 +298,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'Amar'}
                 />
               </div>
-              <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                 <Image
                   className="w-[50px] h-auto"
                   src={WeBull}
@@ -368,7 +307,7 @@ const MainTeamBattle = (): React.ReactElement => {
                   alt={'WeBull'}
                 />
               </div>
-              <div className='flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg'>
+              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
                 <Image
                   className="w-[50px] h-auto"
                   src={Jago}
@@ -381,13 +320,13 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
 
           <div
-            onClick={() => {setShowTnc(!showTnc)}}
-            className='flex gap-2 justify-center items-center mt-4'
+            onClick={() => {
+              setShowTnc(!showTnc);
+            }}
+            className="flex gap-2 justify-center items-center mt-4"
           >
-            <div>
-              Term and Condition
-            </div>
-            <div className='bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300'>
+            <div>Term and Condition</div>
+            <div className="bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
               <Image
                 className="w-[15px] h-[15px]"
                 src={showTnc ? ArrowTailessUp : ArrowTailessDown}
@@ -398,31 +337,18 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
           </div>
 
-          {
-            showTnc &&
-              <div className='flex flex-col justify-center items-start gap-2 border-2 mt-4 text-xs border-white rounded-2xl py-4 px-8 bg-white bg-opacity-20 relative'>
-                <div>
-                  1. Single competition, participants compete for prizes.
-                </div>
-                <div>
-                  2. Start with 50 million virtual capital.
-                </div>
-                <div>
-                  3. Winner based on highest equity score.
-                </div>
-                <div>
-                  4. Participants must follow Instagram @seeds_finance.
-                </div>
-                <div>
-                  5. Ticket fee: 100,000/entry (no promo code).
-                </div>
-              </div>
-          }
+          {showTnc && (
+            <div className="flex flex-col justify-center items-start gap-2 border-2 mt-4 text-xs border-white rounded-2xl py-4 px-8 bg-white bg-opacity-20 relative">
+              <div>1. Single competition, participants compete for prizes.</div>
+              <div>2. Start with 50 million virtual capital.</div>
+              <div>3. Winner based on highest equity score.</div>
+              <div>4. Participants must follow Instagram @seeds_finance.</div>
+              <div>5. Ticket fee: 100,000/entry (no promo code).</div>
+            </div>
+          )}
 
           <div className="mt-6">
-            <Button
-              className='w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins'
-            >
+            <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
               Join
             </Button>
           </div>

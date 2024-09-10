@@ -25,3 +25,19 @@ export const getBattleList = async (
     toast.error(error.message, { type: 'error' });
   }
 };
+
+
+export const getBattleDetail = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.get(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error.message, { type: 'error' });
+  }
+};

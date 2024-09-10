@@ -43,6 +43,7 @@ export interface TeamBattleDetail {
   initial_balance: number;
   is_joined: boolean;
   type: string;
+  participants?: number;
 }
 
 export interface Sponsor {

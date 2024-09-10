@@ -1,74 +1,26 @@
+import BattleCountdown from '@/components/team-battle/CountdownTimerBattle';
+import { getBattleDetail } from '@/repository/team-battle.repository';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
-import WaitingLogo from '../../../../public/assets/team-battle/waiting-battle.svg';
+import { toast } from 'react-toastify';
+import WaitingLogo from '../../../../../public/assets/team-battle/waiting-battle.svg';
 
 const WaitingBattle: React.FC = () => {
   const router = useRouter();
+  const { id } = router.query;
   const [selectedSponsor, setSelectedSponsor] = useState('');
-  const dummyData = {
-    id: 'c7c7d3c1-86f6-4473-8507-118161ded4f6',
-    title: 'UGM vs Stanford',
-    category: ['ID_STOCKS'],
-    min_participant: 0,
-    semifinal_participant: 50,
-    final_participant: 20,
-    sponsors: [
-      {
-        name: 'Redbull',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Cocacola',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Hyundai',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Honda',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Suzuki',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      }
-    ],
-    registration_start: '2024-09-04T13:30:53.807Z',
-    registration_end: '2024-09-05T13:30:53.807Z',
-    elimination_start: '2024-09-06T15:30:53.807Z',
-    elimination_end: '2024-09-07T13:30:53.807Z',
-    semifinal_start: '2024-09-08T15:30:53.807Z',
-    semifinal_end: '2024-09-09T13:30:53.807Z',
-    final_start: '2024-09-10T15:30:53.807Z',
-    final_end: '2024-09-11T13:30:53.807Z',
-    banner:
-      'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg',
-    prize: [
-      {
-        amount: 1000000,
-        description: 'satu juta'
-      }
-    ],
-    tnc: {
-      id: 'bebas',
-      en: 'bebas'
-    },
-    status: 'OPEN',
-    initial_balance: 1000000000,
-    public_max_participant: 100,
-    community_max_participant: 100,
-    university_max_participant: 100,
-    created_at: '2024-09-04T12:59:48.691476Z',
-    updated_at: '2024-09-04T12:59:48.691476Z',
-    deleted_at: '0001-01-01T00:00:00Z',
-    is_joined: true,
-    is_eliminated: false,
-    my_last_stage: 'PRE_ELIMINATION',
-    participants: 3,
-    type: 'UNIKOM'
+  const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
+
+  const handleGetDetailBattle = async (): Promise<void> => {
+    try {
+      const response = await getBattleDetail(id as string);
+      setData(response);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
   };
 
   const handleSelectedSponsor = (sponsor: string): void => {
@@ -78,6 +30,17 @@ const WaitingBattle: React.FC = () => {
       setSelectedSponsor(sponsor);
     }
   };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetDetailBattle();
+    }
+  }, [id]);
+
+  const isPastEliminationStart =
+    data !== undefined
+      ? new Date(data?.elimination_start) >= new Date()
+      : false;
 
   return (
     <>
@@ -107,14 +70,19 @@ const WaitingBattle: React.FC = () => {
             You&#39;re successfully registered for the competition.
           </div>
           <div className="font-semibold text-lg lg:text-xl">
-            The competition will begin in:
+            {isPastEliminationStart ? 'The competition will begin in:' : ''}
           </div>
-          <div className="text-3xl font-semibold text-[#407F74]">
-            23d : 40h : 12m : 10s
+          <div>
+            <BattleCountdown
+              deadline={
+                data !== undefined ? data?.elimination_start.toString() : ''
+              }
+              className="text-3xl font-semibold text-[#407F74] font-poppins"
+            />
           </div>
           <div className="text-base lg:text-lg font-semibold">Sponsor</div>
           <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-2/5 justify-center">
-            {dummyData?.sponsors?.map((item, i) => {
+            {data?.sponsors?.map((item, i) => {
               return (
                 <div
                   key={i}
@@ -127,7 +95,7 @@ const WaitingBattle: React.FC = () => {
                     alt="sponsor-logo"
                     width={300}
                     height={300}
-                    className={`w-24 xl:w-28 2xl:w-32 rounded-xl bg-white cursor-pointer ${
+                    className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
                       selectedSponsor === item.name ? 'border-8' : 'border-4'
                     } border-[#76a5d0]`}
                   />
@@ -145,8 +113,17 @@ const WaitingBattle: React.FC = () => {
               );
             })}
           </div>
-          <button className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white">
-            Back to Play Center
+          <button
+            onClick={async () => {
+              if (isPastEliminationStart) {
+                await router.push(`/play/team-battle/${id as string}`);
+              } else {
+                await router.push(`/play/team-battle/${id as string}/stage`);
+              }
+            }}
+            className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
+          >
+            {isPastEliminationStart ? 'Back to Play Center' : 'Enter Stage'}
           </button>
         </div>
       </div>

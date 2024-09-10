@@ -1,86 +1,34 @@
 import Triangle from '@/components/team-battle/triangle.component';
+import { getBattleDetail } from '@/repository/team-battle.repository';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaChevronRight, FaStar } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
-import Crown from '../../../../public/assets/team-battle/battle-crown.svg';
-import BlueSeedy from '../../../../public/assets/team-battle/blueseedy.svg';
-import Versus from '../../../../public/assets/team-battle/vsicon.svg';
-import YellowSeedy from '../../../../public/assets/team-battle/yellowseedy.svg';
+import { toast } from 'react-toastify';
+import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
+import BlueSeedy from '../../../../../public/assets/team-battle/blueseedy.svg';
+import Versus from '../../../../../public/assets/team-battle/vsicon.svg';
+import YellowSeedy from '../../../../../public/assets/team-battle/yellowseedy.svg';
 
 const StageBattle: React.FC = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<string>('elimination');
   const [selectedSponsor, setSelectedSponsor] = useState('');
+  const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
+  const [dateScheduleStart, setDateScheduleStart] = useState('');
+  const [dateScheduleEnd, setDateScheduleEnd] = useState('');
   const categoryBattle = [
     { label: 'Elimination', key: 'elimination' },
     { label: 'Semifinal', key: 'semifinal' },
     { label: 'Final', key: 'final' }
   ];
-  const dummyData = {
-    id: 'c7c7d3c1-86f6-4473-8507-118161ded4f6',
-    title: 'UGM vs Stanford',
-    category: ['ID_STOCKS'],
-    min_participant: 0,
-    semifinal_participant: 50,
-    final_participant: 20,
-    sponsors: [
-      {
-        name: 'Redbull',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Cocacola',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Hyundai',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Honda',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      },
-      {
-        name: 'Suzuki',
-        logo: 'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg'
-      }
-    ],
-    registration_start: '2024-09-04T13:30:53.807Z',
-    registration_end: '2024-09-05T13:30:53.807Z',
-    elimination_start: '2024-09-06T15:30:53.807Z',
-    elimination_end: '2024-09-07T13:30:53.807Z',
-    semifinal_start: '2024-09-08T15:30:53.807Z',
-    semifinal_end: '2024-09-09T13:30:53.807Z',
-    final_start: '2024-09-10T15:30:53.807Z',
-    final_end: '2024-09-11T13:30:53.807Z',
-    banner:
-      'https://dev-assets.seeds.finance/storage/cloud/80ead0a5-d0b7-4e01-942a-a691697c3317.jpeg',
-    prize: [
-      {
-        amount: 1000000,
-        description: 'satu juta'
-      }
-    ],
-    tnc: {
-      id: 'bebas',
-      en: 'bebas'
-    },
-    status: 'OPEN',
-    initial_balance: 1000000000,
-    public_max_participant: 100,
-    community_max_participant: 100,
-    university_max_participant: 100,
-    created_at: '2024-09-04T12:59:48.691476Z',
-    updated_at: '2024-09-04T12:59:48.691476Z',
-    deleted_at: '0001-01-01T00:00:00Z',
-    is_joined: true,
-    is_eliminated: false,
-    my_last_stage: 'PRE_ELIMINATION',
-    participants: 3,
-    type: 'UNIKOM'
+
+  const formatDate = (dateString: string): string => {
+    return moment(dateString).format('D MMMM YYYY');
   };
 
   const handleSelectedSponsor = (sponsor: string): void => {
@@ -91,6 +39,47 @@ const StageBattle: React.FC = () => {
     }
   };
   const router = useRouter();
+  const { id } = router.query;
+  const handleGetDetailBattle = async (): Promise<void> => {
+    try {
+      const response = await getBattleDetail(id as string);
+      setData(response);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const handleDateChanging = (): void => {
+    if (data != null) {
+      switch (selectedCategory) {
+        case 'elimination':
+          setDateScheduleStart(formatDate(data.elimination_start));
+          setDateScheduleEnd(formatDate(data.elimination_end));
+          break;
+        case 'semifinal':
+          setDateScheduleStart(formatDate(data.semifinal_start));
+          setDateScheduleEnd(formatDate(data.semifinal_end));
+          break;
+        case 'final':
+          setDateScheduleStart(formatDate(data.final_start));
+          setDateScheduleEnd(formatDate(data.final_end));
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetDetailBattle();
+    }
+  }, [id]);
+
+  useEffect(() => {
+    handleDateChanging();
+  }, [data, selectedCategory]);
+
   return (
     <>
       <div className="px-2 my-5 font-poppins">
@@ -151,12 +140,13 @@ const StageBattle: React.FC = () => {
                       key={i}
                       onClick={() => {
                         setSelectedCategory(item.key);
+                        handleDateChanging();
                       }}
                       className={`${
                         item.key === selectedCategory
-                          ? 'border-b-8 border-[#65d8c3] text-[#2934B2] font-bold'
+                          ? 'border-b-4 border-[#65d8c3] text-[#2934B2] font-bold'
                           : 'font-semibold text-[#3D3D3D]'
-                      } py-3 px-5 text-2xl mt-10 font-poppins`}
+                      } py-3 px-3 text-xl mt-10 font-poppins`}
                     >
                       <p className="transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer">
                         {item.label}
@@ -168,11 +158,11 @@ const StageBattle: React.FC = () => {
             </div>
             <div>
               <div className="flex flex-col items-center justify-center gap-5">
-                <div className="font-semibold text-lg lg:text-xl text-[#3D3D3D] my-10">
-                  Periode Game : 12 April 2024 - 30 Agustus 2024
+                <div className="font-semibold text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
+                  Periode Game : {dateScheduleStart} - {dateScheduleEnd}
                 </div>
                 <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
-                  {dummyData?.sponsors?.map((item, i) => {
+                  {data?.sponsors?.map((item, i) => {
                     return (
                       <div
                         key={i}
@@ -185,7 +175,7 @@ const StageBattle: React.FC = () => {
                           alt="sponsor-logo"
                           width={300}
                           height={300}
-                          className={`w-24 xl:w-28 2xl:w-32 rounded-xl bg-white cursor-pointer ${
+                          className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
                             selectedSponsor === item.name
                               ? 'border-8'
                               : 'border-4'
@@ -205,25 +195,64 @@ const StageBattle: React.FC = () => {
                     );
                   })}
                 </div>
-                <div className="font-semibold text-lg sm:text-xl text-[#3D3D3D]">
+                <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
                   Participants
                 </div>
                 <div className="flex flex-row text-[#407F74] relative">
                   <FaUserGroup size={50} />
-                  <span className="text-2xl">20</span>
+                  <span className="text-2xl">{data?.participants}</span>
                   <FaChevronRight
                     size={25}
                     className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                   />
                 </div>
-                <button className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white">
+                <button className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block">
                   Enter
                 </button>
+                <div className="grid grid-cols-7 items-center lg:hidden">
+                  <div className="col-span-2">
+                    <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
+                      <Image
+                        src={Crown}
+                        width={300}
+                        height={300}
+                        alt="crown-icon"
+                        className="w-12 md:w-14"
+                      />
+                      <div className="flex flex-col">
+                        <div className="text-xs">Rank</div>
+                        <div className="font-bold text-sm">120</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 flex flex-row items-center">
+                    <FaStar size={40} className="text-[#ffc107]" />
+                    <div>
+                      <div className="font-medium text-xs md:text-sm">
+                        Let&#39;s Check
+                      </div>
+                      <div className="font-semibold text-base md:text-xl">
+                        full leaderboard
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
+                    onClick={async () =>
+                      await router.push('/play/team-battle/leaderboard')
+                    }
+                  >
+                    <FaChevronRight
+                      size={25}
+                      className="text-white bg-[#407f74] p-1 rounded"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3">
-            <div className="font-semibold text-[#3D3D3D] text-2xl font-poppins text-center">
+          <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
+            <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
               Leaderboard
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
@@ -244,7 +273,7 @@ const StageBattle: React.FC = () => {
                 </div>
                 <div className="col-span-3 flex flex-col justify-center">
                   <p className="font-medium text-sm">Let&#39;s Check</p>
-                  <p className="font-semibold text-xl">full leaderboard</p>
+                  <p className="font-semibold text-lg">full leaderboard</p>
                 </div>
                 <div
                   className="col-span-1 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"

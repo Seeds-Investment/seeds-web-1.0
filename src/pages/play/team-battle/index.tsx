@@ -24,8 +24,8 @@ const TeamBattle = (): React.ReactElement => {
 
   const categoryBattle: CategoryBattleItem[] = [
     { id: 1, image: CategoryAll, title: 'All Category', value: '' },
-    { id: 2, image: CategoryIDStocks, title: 'ID Stock', value: 'ID_STOCKS' },
-    { id: 3, image: CategoryUSStocks, title: 'US Stock', value: 'US_STOCKS' },
+    { id: 2, image: CategoryIDStocks, title: 'ID Stock', value: 'ID_STOCK' },
+    { id: 3, image: CategoryUSStocks, title: 'US Stock', value: 'US_STOCK' },
     { id: 4, image: CategoryCrypto, title: 'Crypto', value: 'CRYPTO' }
   ];
 

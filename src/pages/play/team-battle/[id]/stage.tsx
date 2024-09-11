@@ -206,7 +206,14 @@ const StageBattle: React.FC = () => {
                     className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                   />
                 </div>
-                <button className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block">
+                <button
+                  onClick={async () => {
+                    await router.push(
+                      `/play/team-battle/${id as string}/arena`
+                    );
+                  }}
+                  className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
+                >
                   Enter
                 </button>
                 <div className="grid grid-cols-7 items-center lg:hidden">
@@ -250,6 +257,16 @@ const StageBattle: React.FC = () => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="flex justify-center items-center lg:hidden">
+            <button
+              onClick={async () => {
+                await router.push(`/play/team-battle/${id as string}/arena`);
+              }}
+              className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
+            >
+              Enter
+            </button>
           </div>
           <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
             <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">

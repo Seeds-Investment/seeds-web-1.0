@@ -1,19 +1,36 @@
+import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import withAuth from '@/helpers/withAuth';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
-import { ArrowTailessDown, ArrowTailessUp, BattleVersus, BronzeMedal, GoldCrown, GreenGift, GroupIcon, SeedyBattleLeft, SeedyBattleRight, SilverMedal } from 'public/assets/vector';
+import {
+  ArrowTailessDown,
+  ArrowTailessUp,
+  BattleVersus,
+  BronzeMedal,
+  GoldCrown,
+  GreenGift,
+  GroupIcon,
+  SeedyBattleLeft,
+  SeedyBattleRight,
+  SilverMedal
+} from 'public/assets/vector';
 import { useState } from 'react';
 import Amar from './../../../../assets/play/battle/amar.png';
 import Jago from './../../../../assets/play/battle/jago.png';
 import WeBull from './../../../../assets/play/battle/webull.png';
 
 const MainTeamBattle = (): React.ReactElement => {
-  // const { t } = useTranslation();
   const router = useRouter();
-
+  const { id } = router.query;
   const [showTnc, setShowTnc] = useState<boolean>(false);
+  const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
+    useState<boolean>(false);
+
+  const handleShowPopUpJoinBattle = (): void => {
+    setShowPopUpJoinBattle(!showPopUpJoinBattle);
+  };
 
   return (
     <>
@@ -23,8 +40,8 @@ const MainTeamBattle = (): React.ReactElement => {
             className="absolute left-0 cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transition duration-300"
             src={ArrowBackWhite}
             alt="back-button"
-            onClick={async () => {
-              await router.replace('/play');
+            onClick={() => {
+              router.back();
             }}
           />
           <Typography className="text-white font-poppins text-2xl">
@@ -138,7 +155,10 @@ const MainTeamBattle = (): React.ReactElement => {
                 </div>
               </div>
               <div className="mt-4 hidden lg:flex">
-                <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
+                <Button
+                  onClick={handleShowPopUpJoinBattle}
+                  className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                >
                   Join
                 </Button>
               </div>
@@ -348,12 +368,20 @@ const MainTeamBattle = (): React.ReactElement => {
           )}
 
           <div className="mt-6">
-            <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
+            <Button
+              onClick={handleShowPopUpJoinBattle}
+              className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+            >
               Join
             </Button>
           </div>
         </div>
       </div>
+      <PopUpJoinBattle
+        isOpen={showPopUpJoinBattle}
+        onClose={handleShowPopUpJoinBattle}
+        battleId={id as string}
+      />
     </>
   );
 };

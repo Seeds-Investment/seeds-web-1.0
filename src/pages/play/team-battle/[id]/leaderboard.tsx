@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import { MdOutlineTrendingDown, MdOutlineTrendingUp } from 'react-icons/md';
-import First from '../../../../public/assets/team-battle/leaderboard-1st.svg';
-import Other from '../../../../public/assets/team-battle/leaderboard-other.svg';
-import RankUser from '../../../../public/assets/team-battle/rank-battle-icon.svg';
+import First from '../../../../../public/assets/team-battle/leaderboard-1st.svg';
+import Other from '../../../../../public/assets/team-battle/leaderboard-other.svg';
+import RankUser from '../../../../../public/assets/team-battle/rank-battle-icon.svg';
 
 const LeaderboardBattle: React.FC = () => {
   const router = useRouter();

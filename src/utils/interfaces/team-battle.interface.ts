@@ -74,3 +74,28 @@ export interface GroupBattle {
   type: string;
   logo: string;
 }
+
+export interface ArenaBattleI {
+  id: string;
+  play_id: string;
+  name: string;
+  category: string[];
+  open_registration_time: string;
+  play_time: string;
+  end_time: string;
+  opening_balance: number;
+  fixed_prize: number;
+  fixed_prize_percentages: number[];
+  currency: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  total_participants: number;
+  tnc: string;
+  assets_sub_type: AssetsSubType[];
+}
+
+export interface AssetsSubType {
+  type: string;
+  items: string[];
+}

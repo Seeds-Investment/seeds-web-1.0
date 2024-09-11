@@ -6,9 +6,9 @@ import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack } from 'react-icons/io5';
 import { LuDot } from 'react-icons/lu';
 import { RiGiftFill } from 'react-icons/ri';
-import Second from '../../../../public/assets/team-battle/2nd-battle.svg';
-import Third from '../../../../public/assets/team-battle/3rd-battle.svg';
-import Crown from '../../../../public/assets/team-battle/battle-crown.svg';
+import Second from '../../../../../public/assets/team-battle/2nd-battle.svg';
+import Third from '../../../../../public/assets/team-battle/3rd-battle.svg';
+import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
 
 const BattleInformation: React.FC = () => {
   const [showTnc, setShowTnc] = useState<boolean>(false);

@@ -99,7 +99,9 @@ const StageBattle: React.FC = () => {
             <div
               className="rounded-full p-1 bg-[#407F74] w-8 h-8 flex items-center justify-center text-sm transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer font-medium"
               onClick={async () =>
-                await router.push('/play/team-battle/information')
+                await router.push(
+                  `/play/team-battle/${id as string}/information`
+                )
               }
             >
               i
@@ -246,7 +248,9 @@ const StageBattle: React.FC = () => {
                   <div
                     className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                     onClick={async () =>
-                      await router.push('/play/team-battle/leaderboard')
+                      await router.push(
+                        `/play/team-battle/${id as string}/leaderboard`
+                      )
                     }
                   >
                     <FaChevronRight
@@ -295,7 +299,9 @@ const StageBattle: React.FC = () => {
                 <div
                   className="col-span-1 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                   onClick={async () =>
-                    await router.push('/play/team-battle/leaderboard')
+                    await router.push(
+                      `/play/team-battle/${id as string}/leaderboard`
+                    )
                   }
                 >
                   <FaChevronRight

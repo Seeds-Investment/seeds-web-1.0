@@ -1,10 +1,14 @@
+import Triangle from '@/components/team-battle/triangle.component';
 import withAuth from '@/helpers/withAuth';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import ArrowBackWhite from 'public/assets/team-battle/arrow-back.svg';
-import { ArrowTailessDown, ArrowTailessUp, BattleVersus, BronzeMedal, GoldCrown, GreenGift, GroupIcon, SeedyBattleLeft, SeedyBattleRight, SilverMedal } from 'public/assets/vector';
+import BlueSeedy from 'public/assets/team-battle/blueseedy.svg';
+import Versus from 'public/assets/team-battle/vsicon.svg';
+import YellowSeedy from 'public/assets/team-battle/yellowseedy.svg';
+import { ArrowTailessDown, ArrowTailessUp, BronzeMedal, GoldCrown, GreenGift, GroupIcon, SilverMedal } from 'public/assets/vector';
 import { useState } from 'react';
+import { IoArrowBack } from 'react-icons/io5';
 import Amar from './../../../../assets/play/battle/amar.png';
 import Jago from './../../../../assets/play/battle/jago.png';
 import WeBull from './../../../../assets/play/battle/webull.png';
@@ -19,20 +23,20 @@ const MainTeamBattle = (): React.ReactElement => {
     <>
       <div className="w-full h-full p-4">
         <div className="flex justify-center items-center relative">
-          <Image
-            className="absolute left-0 cursor-pointer lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transition duration-300"
-            src={ArrowBackWhite}
-            alt="back-button"
-            onClick={async () => {
-              await router.replace('/play');
+          <div
+            className="absolute text-white left-0 lg:w-[50px] lg:h-[50px] w-[24px] h-[24px] hover:opacity-80 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
+            onClick={() => {
+              router.back();
             }}
-          />
+          >
+            <IoArrowBack size={30} />
+          </div>
           <Typography className="text-white font-poppins text-2xl">
             Battle Competition
           </Typography>
         </div>
 
-        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4">
+        <div className="flex lg:hidden justify-center items-end gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
           <div className="flex flex-col justify-center items-center">
             <div className="flex gap-2">
               <div className="flex justify-center items-center">
@@ -90,7 +94,31 @@ const MainTeamBattle = (): React.ReactElement => {
         </div>
 
         <div className="lg:flex lg:gap-8 lg:mt-4">
-          <div className="flex flex-col lg:w-full justify-center items-center gap-2 border-2 mt-16 border-white rounded-2xl py-8 px-2 bg-white bg-opacity-20 relative">
+          <div className="flex flex-col lg:w-full justify-center items-center gap-2 border-2 mt-28 lg:mt-24 border-white rounded-b-2xl py-8 px-2 bg-white/50 relative">
+            <div className="absolute w-full left-0 -top-20 flex justify-center items-center">
+              <Triangle />
+              <Image
+                src={Versus}
+                alt="versus-icon"
+                width={300}
+                height={300}
+                className="absolute -top-6 lg:-top-6 w-52"
+              />
+              <Image
+                src={BlueSeedy}
+                alt="blue-seedy"
+                width={300}
+                height={300}
+                className="absolute w-28 h-32 -left-9 -bottom-14"
+              />
+              <Image
+                src={YellowSeedy}
+                alt="yellow-seedy"
+                width={300}
+                height={300}
+                className="absolute w-28 h-32 -right-6 -bottom-14"
+              />
+            </div>
             <div className="flex flex-col justify-center items-center">
               <Typography className="text-[#3D3D3D] font-poppins text-xl font-semibold">
                 It`s time to
@@ -143,36 +171,9 @@ const MainTeamBattle = (): React.ReactElement => {
                 </Button>
               </div>
             </div>
-            <div className="absolute left-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]">
-              <Image
-                className="w-auto h-full"
-                src={SeedyBattleLeft}
-                width={100}
-                height={100}
-                alt={'SeedyBattleLeft'}
-              />
-            </div>
-            <div className="absolute right-[-10px] top-[-60px] flex justify-center items-center w-auto h-[120px] lg:h-[140px]">
-              <Image
-                className="w-auto h-full"
-                src={SeedyBattleRight}
-                width={100}
-                height={100}
-                alt={'SeedyBattleRight'}
-              />
-            </div>
-            <div className="absolute top-[-40px] flex justify-center items-center w-[150px] lg:w-[250px] h-auto">
-              <Image
-                className="w-auto h-full"
-                src={BattleVersus}
-                width={100}
-                height={100}
-                alt={'BattleVersus'}
-              />
-            </div>
           </div>
 
-          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white bg-opacity-20 relative mt-4">
+          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
             <div className="w-full flex flex-col justify-center items-center px-2">
               <div className="flex gap-2 justify-center items-end">
                 <div className="flex justify-center items-center">
@@ -338,7 +339,7 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
 
           {showTnc && (
-            <div className="flex flex-col justify-center items-start gap-2 border-2 mt-4 text-xs border-white rounded-2xl py-4 px-8 bg-white bg-opacity-20 relative">
+            <div className="flex flex-col justify-center items-start gap-2 border-2 mt-4 text-xs border-white rounded-2xl py-4 px-8 bg-white/50 relative">
               <div>1. Single competition, participants compete for prizes.</div>
               <div>2. Start with 50 million virtual capital.</div>
               <div>3. Winner based on highest equity score.</div>

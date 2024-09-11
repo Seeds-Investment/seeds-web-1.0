@@ -67,3 +67,10 @@ export interface Metadata {
   limit: number;
   total_page: number;
 }
+
+export interface GroupBattle {
+  id: string;
+  name: string;
+  type: string;
+  logo: string;
+}

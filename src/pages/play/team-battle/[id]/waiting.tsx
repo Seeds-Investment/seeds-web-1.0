@@ -38,9 +38,7 @@ const WaitingBattle: React.FC = () => {
   }, [id]);
 
   const isPastEliminationStart =
-    data !== undefined
-      ? new Date(data?.elimination_start) >= new Date()
-      : false;
+    data !== undefined ? new Date(data?.registration_end) >= new Date() : false;
 
   return (
     <>
@@ -75,7 +73,7 @@ const WaitingBattle: React.FC = () => {
           <div>
             <BattleCountdown
               deadline={
-                data !== undefined ? data?.elimination_start.toString() : ''
+                data !== undefined ? data?.registration_end.toString() : ''
               }
               className="text-3xl font-semibold text-[#407F74] font-poppins"
             />

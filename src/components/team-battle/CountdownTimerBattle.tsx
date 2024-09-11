@@ -20,14 +20,11 @@ const defaultDeadline = '2099-12-31T00:00:00Z';
 
 const BattleCountdown: React.FC<CountDownProps> = ({ deadline, className }) => {
   const { t } = useTranslation();
+  const deadlineDate = new Date(deadline ?? defaultDeadline);
+  const currentDate = new Date();
 
-  const calculateTimeLeft = (): {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-  } => {
-    const difference = +new Date(deadline ?? defaultDeadline) - +new Date();
+  const calculateTimeLeft = (): TimeLeft => {
+    const difference = deadlineDate.getTime() - currentDate.getTime();
     let timeLeft = {
       days: 0,
       hours: 0,
@@ -50,12 +47,12 @@ const BattleCountdown: React.FC<CountDownProps> = ({ deadline, className }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const interval = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => {
-      clearTimeout(timer);
+      clearInterval(interval);
     };
   }, [timeLeft]);
 
@@ -78,17 +75,15 @@ const BattleCountdown: React.FC<CountDownProps> = ({ deadline, className }) => {
     );
   } else {
     return (
-      <>
-        <div>
-          <Typography className={className ?? defaultClassName}>
-            {formatTime(timeLeft.days)}
-            {t('tournament.clock.days')} : {formatTime(timeLeft.hours)}
-            {t('tournament.clock.hours')} : {formatTime(timeLeft.minutes)}
-            {t('tournament.clock.minutes')} : {formatTime(timeLeft.seconds)}
-            {t('tournament.clock.seconds')}
-          </Typography>
-        </div>
-      </>
+      <div>
+        <Typography className={className ?? defaultClassName}>
+          {formatTime(timeLeft.days)}
+          {t('tournament.clock.days')} : {formatTime(timeLeft.hours)}
+          {t('tournament.clock.hours')} : {formatTime(timeLeft.minutes)}
+          {t('tournament.clock.minutes')} : {formatTime(timeLeft.seconds)}
+          {t('tournament.clock.seconds')}
+        </Typography>
+      </div>
     );
   }
 };

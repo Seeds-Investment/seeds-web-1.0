@@ -10,6 +10,7 @@ import {
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
@@ -132,6 +133,11 @@ const SuccessPaymentPage: React.FC = () => {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
+
+  useEffect(() => {
+    dispatch(setPrice(0));
+    dispatch(setMonth(''));
+  }, []);
   
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
     (el: undefined | PaymentList): any => {

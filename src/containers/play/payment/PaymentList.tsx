@@ -11,6 +11,7 @@ import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -101,6 +102,7 @@ const PaymentList: React.FC<props> = ({
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isFreeQuiz, setIsFreeQuiz] = useState<boolean>(false);
   const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
+  const { premiumCircleFee, premiumCircleMonth } = useSelector((state: RootState) => state?.premiumCircle ?? {});
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -164,6 +166,21 @@ const PaymentList: React.FC<props> = ({
       setNewPromoCodeDiscount(promoCodeValidationResult?.response?.total_discount ?? 0)
     }
   }, [promoCodeValidationResult]);
+
+  const getMonthValue = (premiumCircleMonth: string): number => {
+    switch (premiumCircleMonth) {
+      case "1 month":
+          return 1;
+      case "3 month":
+          return 2;
+      case "6 month":
+          return 3;
+      case "12 month":
+          return 4;
+      default:
+          return 1;
+    }
+  }
   
   const handlePay = async (
     type: string,
@@ -208,10 +225,9 @@ const PaymentList: React.FC<props> = ({
       } else {
         const response = await joinCirclePost({
           circle_id: dataPost?.id,
-          duration:
-            numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
+          duration: getMonthValue(premiumCircleMonth ?? '1 month'),
           payment_request: {
-            amount: parseInt(`${totalAmount}`),
+            amount: parseInt(`${premiumCircleFee}`),
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
@@ -327,7 +343,6 @@ const PaymentList: React.FC<props> = ({
           <WalletForm
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
             userInfo={userInfo ?? userDefault}
             newPromoCodeDiscount={newPromoCodeDiscount}
@@ -336,7 +351,6 @@ const PaymentList: React.FC<props> = ({
           <VirtualAccountGuide
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
             newPromoCodeDiscount={newPromoCodeDiscount}
           />

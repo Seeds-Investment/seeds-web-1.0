@@ -3,6 +3,7 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
@@ -48,6 +49,8 @@ const WalletForm = ({
     selectPromoCodeValidationResult
   );
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+
 
   const handleGetCoinsUser = async (): Promise<void> => {
     const useCoins = router.query.useCoins;
@@ -73,7 +76,7 @@ const WalletForm = ({
         setShowOtherFees(true);
       }
     } else {
-      const admissionFee = Number(dataPost.premium_fee || 0);
+      const admissionFee = Number(premiumCircleFee || 0);
       const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
 
       if ((admissionFee - promoCodeDiscount) === 0) {
@@ -112,7 +115,7 @@ const WalletForm = ({
         ).toFixed(2)}`
       );
     } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth ?? 1);
+      _admissionFee = premiumCircleFee
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(

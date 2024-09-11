@@ -2540,5 +2540,8 @@ export default {
     text15: 'Participant 50 points',
     text16: 'Season',
     text17: 'All Time'
+  },
+  teamBattle: {
+    chooseCategory: 'Please Choose Category'
   }
 };

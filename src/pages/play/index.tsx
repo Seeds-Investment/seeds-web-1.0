@@ -25,8 +25,9 @@ import Slider from 'react-slick';
 import { toast } from 'react-toastify';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import PlayButton from '../../../public/assets/playButton.svg';
-import QuizButton from '../../../public/assets/quizButton.svg';
+import PlayButton from '../../../public/assets/arena.svg';
+import BattleButton from '../../../public/assets/battle.svg';
+import QuizButton from '../../../public/assets/quiz.svg';
 interface Banner {
   no: number;
   id: string;
@@ -440,14 +441,19 @@ const Player = (): React.ReactElement => {
           <Typography className="text-center mb-5 text-xl font-semibold text-[#262626] font-poppins">
             Seeds Play
           </Typography>
-          <div className="justify-center flex gap-4">
+          <div className="flex flex-row justify-between sm:gap-4 w-full sm:w-auto">
             <button
               onClick={() => {
                 void router.push('/play/quiz');
               }}
+              className="flex flex-col items-center text-center"
             >
-              <Image alt="" src={QuizButton} className="mb-2" />
-              <Typography className="text-center text-xl font-normal text-[#262626] font-poppins">
+              <Image
+                alt=""
+                src={QuizButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
                 Seeds Quiz
               </Typography>
             </button>
@@ -455,10 +461,30 @@ const Player = (): React.ReactElement => {
               onClick={() => {
                 void router.push('/play/tournament');
               }}
+              className="flex flex-col items-center text-center"
             >
-              <Image alt="" src={PlayButton} className="mb-2" />
-              <Typography className="text-center text-xl font-normal text-[#262626] font-poppins">
+              <Image
+                alt=""
+                src={PlayButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
                 Play Arena
+              </Typography>
+            </button>
+            <button
+              onClick={() => {
+                void router.push('/play/team-battle');
+              }}
+              className="flex flex-col items-center text-center"
+            >
+              <Image
+                alt=""
+                src={BattleButton}
+                className="mb-2 w-28 h-28 sm:w-32 sm:h-32 object-contain"
+              />
+              <Typography className="text-base sm:text-xl font-normal text-[#262626] font-poppins">
+                Team Battle
               </Typography>
             </button>
           </div>

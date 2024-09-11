@@ -2540,6 +2540,11 @@ export default {
     text17: 'All Time'
   },
   teamBattle: {
-    chooseCategory: 'Please Choose Category'
+    chooseCategory: 'Please Choose Category',
+    joinAsPublicConfirm: 'Are you sure you want to join as public?',
+    joinAsInvitation: 'Input your code invitation',
+    placeholderInvitation: 'Input here',
+    chooseUniversity: 'Choose Your University',
+    chooseCommunity: 'Choose Your Community'
   }
 };

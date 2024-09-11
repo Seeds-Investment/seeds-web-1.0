@@ -1,3 +1,4 @@
+import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import Triangle from '@/components/team-battle/triangle.component';
 import withAuth from '@/helpers/withAuth';
 import { Button, Typography } from '@material-tailwind/react';
@@ -6,7 +7,15 @@ import { useRouter } from 'next/router';
 import BlueSeedy from 'public/assets/team-battle/blueseedy.svg';
 import Versus from 'public/assets/team-battle/vsicon.svg';
 import YellowSeedy from 'public/assets/team-battle/yellowseedy.svg';
-import { ArrowTailessDown, ArrowTailessUp, BronzeMedal, GoldCrown, GreenGift, GroupIcon, SilverMedal } from 'public/assets/vector';
+import {
+  ArrowTailessDown,
+  ArrowTailessUp,
+  BronzeMedal,
+  GoldCrown,
+  GreenGift,
+  GroupIcon,
+  SilverMedal
+} from 'public/assets/vector';
 import { useState } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import Amar from './../../../../assets/play/battle/amar.png';
@@ -14,10 +23,15 @@ import Jago from './../../../../assets/play/battle/jago.png';
 import WeBull from './../../../../assets/play/battle/webull.png';
 
 const MainTeamBattle = (): React.ReactElement => {
-  // const { t } = useTranslation();
   const router = useRouter();
-
+  const { id } = router.query;
   const [showTnc, setShowTnc] = useState<boolean>(false);
+  const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
+    useState<boolean>(false);
+
+  const handleShowPopUpJoinBattle = (): void => {
+    setShowPopUpJoinBattle(!showPopUpJoinBattle);
+  };
 
   return (
     <>
@@ -166,7 +180,10 @@ const MainTeamBattle = (): React.ReactElement => {
                 </div>
               </div>
               <div className="mt-4 hidden lg:flex">
-                <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
+                <Button
+                  onClick={handleShowPopUpJoinBattle}
+                  className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                >
                   Join
                 </Button>
               </div>
@@ -349,12 +366,20 @@ const MainTeamBattle = (): React.ReactElement => {
           )}
 
           <div className="mt-6">
-            <Button className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins">
+            <Button
+              onClick={handleShowPopUpJoinBattle}
+              className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+            >
               Join
             </Button>
           </div>
         </div>
       </div>
+      <PopUpJoinBattle
+        isOpen={showPopUpJoinBattle}
+        onClose={handleShowPopUpJoinBattle}
+        battleId={id as string}
+      />
     </>
   );
 };

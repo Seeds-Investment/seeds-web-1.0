@@ -41,3 +41,53 @@ export const getBattleDetail = async (id: string): Promise<any> => {
     toast.error(error.message, { type: 'error' });
   }
 };
+
+export const joinBattle = async (
+  battleId: string,
+  groupId?: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.post(
+      `/join`,
+      {
+        battle_id: battleId,
+        group_id: groupId
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message, {
+      type: 'error'
+    });
+  }
+};
+
+export const getGroupBattle = async (
+  battleId: string,
+  invitationCode: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.get(`/${battleId}/groups`, {
+      params: {
+        invitation_code: invitationCode
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message, {
+      type: 'error'
+    });
+  }
+};

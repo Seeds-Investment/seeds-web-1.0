@@ -1,3 +1,4 @@
+import OnGoingStage from '@/components/team-battle/OnGoing.component';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
@@ -70,6 +71,19 @@ const StageBattle: React.FC = () => {
     }
   };
 
+  const today = moment().startOf('day');
+  const determineCurrentCategory = (): void => {
+    if (data != null) {
+      if (today.isBefore(moment(data.elimination_end).startOf('day'))) {
+        setSelectedCategory('elimination');
+      } else if (today.isBefore(moment(data.semifinal_end).startOf('day'))) {
+        setSelectedCategory('semifinal');
+      } else if (today.isBefore(moment(data.final_end).startOf('day'))) {
+        setSelectedCategory('final');
+      }
+    }
+  };
+
   useEffect(() => {
     if (id !== undefined) {
       void handleGetDetailBattle();
@@ -79,6 +93,12 @@ const StageBattle: React.FC = () => {
   useEffect(() => {
     handleDateChanging();
   }, [data, selectedCategory]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      determineCurrentCategory();
+    }
+  }, [data]);
 
   return (
     <>
@@ -159,110 +179,122 @@ const StageBattle: React.FC = () => {
               </div>
             </div>
             <div>
-              <div className="flex flex-col items-center justify-center gap-5">
-                <div className="font-semibold text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
-                  Periode Game : {dateScheduleStart} - {dateScheduleEnd}
-                </div>
-                <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
-                  {data?.sponsors?.map((item, i) => {
-                    return (
-                      <div
-                        key={i}
-                        onClick={() => {
-                          handleSelectedSponsor(item.name);
-                        }}
-                      >
-                        <Image
-                          src={item.logo}
-                          alt="sponsor-logo"
-                          width={300}
-                          height={300}
-                          className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
-                            selectedSponsor === item.name
-                              ? 'border-8'
-                              : 'border-4'
-                          } border-[#76a5d0]`}
-                        />
+              {today.isSameOrBefore(dateScheduleStart) ? (
+                <OnGoingStage
+                  startDate={dateScheduleStart}
+                  endDate={dateScheduleEnd}
+                  stageName={selectedCategory}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-5">
+                  <div className="font-semibold text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
+                    Periode Game : {dateScheduleStart} - {dateScheduleEnd}
+                  </div>
+                  <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
+                    {data?.sponsors?.map((item, i) => {
+                      return (
                         <div
-                          className={`relative flex-col justify-center items-center mt-1 ${
-                            selectedSponsor === item.name ? 'flex' : 'hidden'
-                          }`}
+                          key={i}
+                          onClick={() => {
+                            handleSelectedSponsor(item.name);
+                          }}
                         >
-                          <IoTriangleSharp className="text-white absolute -top-2" />
-                          <div className="w-auto rounded p-2 bg-white border-none text-xs">
-                            {item.name}
+                          <Image
+                            src={item.logo}
+                            alt="sponsor-logo"
+                            width={300}
+                            height={300}
+                            className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
+                              selectedSponsor === item.name
+                                ? 'border-8'
+                                : 'border-4'
+                            } border-[#76a5d0]`}
+                          />
+                          <div
+                            className={`relative flex-col justify-center items-center mt-1 ${
+                              selectedSponsor === item.name ? 'flex' : 'hidden'
+                            }`}
+                          >
+                            <IoTriangleSharp className="text-white absolute -top-2" />
+                            <div className="w-auto rounded p-2 bg-white border-none text-xs">
+                              {item.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
-                  Participants
-                </div>
-                <div className="flex flex-row text-[#407F74] relative">
-                  <FaUserGroup size={50} />
-                  <span className="text-2xl">{data?.participants}</span>
-                  <FaChevronRight
-                    size={25}
-                    className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <button
-                  onClick={async () => {
-                    await router.push(
-                      `/play/team-battle/${id as string}/arena`
-                    );
-                  }}
-                  className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
-                >
-                  Enter
-                </button>
-                <div className="grid grid-cols-7 items-center lg:hidden">
-                  <div className="col-span-2">
-                    <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
-                      <Image
-                        src={Crown}
-                        width={300}
-                        height={300}
-                        alt="crown-icon"
-                        className="w-12 md:w-14"
-                      />
-                      <div className="flex flex-col">
-                        <div className="text-xs">Rank</div>
-                        <div className="font-bold text-sm">120</div>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
-                  <div className="col-span-4 flex flex-row items-center">
-                    <FaStar size={40} className="text-[#ffc107]" />
-                    <div>
-                      <div className="font-medium text-xs md:text-sm">
-                        Let&#39;s Check
-                      </div>
-                      <div className="font-semibold text-base md:text-xl">
-                        full leaderboard
-                      </div>
-                    </div>
+                  <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
+                    Participants
                   </div>
-                  <div
-                    className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
-                    onClick={async () =>
-                      await router.push(
-                        `/play/team-battle/${id as string}/leaderboard`
-                      )
-                    }
-                  >
+                  <div className="flex flex-row text-[#407F74] relative">
+                    <FaUserGroup size={50} />
+                    <span className="text-2xl">{data?.participants}</span>
                     <FaChevronRight
                       size={25}
-                      className="text-white bg-[#407f74] p-1 rounded"
+                      className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                     />
                   </div>
+                  <button
+                    onClick={async () => {
+                      await router.push(
+                        `/play/team-battle/${id as string}/arena`
+                      );
+                    }}
+                    className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
+                  >
+                    Enter
+                  </button>
+                  <div className="grid grid-cols-7 items-center lg:hidden">
+                    <div className="col-span-2">
+                      <div className="flex flex-row items-center gap-2 border-r-2 border-[#407F74]">
+                        <Image
+                          src={Crown}
+                          width={300}
+                          height={300}
+                          alt="crown-icon"
+                          className="w-12 md:w-14"
+                        />
+                        <div className="flex flex-col">
+                          <div className="text-xs">Rank</div>
+                          <div className="font-bold text-sm">120</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-4 flex flex-row items-center">
+                      <FaStar size={40} className="text-[#ffc107]" />
+                      <div>
+                        <div className="font-medium text-xs md:text-sm">
+                          Let&#39;s Check
+                        </div>
+                        <div className="font-semibold text-base md:text-xl">
+                          full leaderboard
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
+                      onClick={async () =>
+                        await router.push(
+                          `/play/team-battle/${id as string}/leaderboard`
+                        )
+                      }
+                    >
+                      <FaChevronRight
+                        size={25}
+                        className="text-white bg-[#407f74] p-1 rounded"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
-          <div className="flex justify-center items-center lg:hidden">
+          <div
+            className={`flex justify-center items-center ${
+              today.isSameOrBefore(dateScheduleStart) ? 'hidden' : 'lg:hidden'
+            }`}
+          >
             <button
               onClick={async () => {
                 await router.push(`/play/team-battle/${id as string}/arena`);

@@ -52,20 +52,28 @@ const BattleList: React.FC<BattleListI> = ({
   const [teamBattleList, setTeamBattleList] =
     useState<TeamBattleListRes | null>(null);
   const [selectedBattle, setSelectedBattle] = useState<string | null>(null);
-  const [openPopupId, setOpenPopupId] = useState<string | null>(null);
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [toggleInformation, setToggleInformation] = useState<{
+    popup: string;
+    dropdown: string;
+  }>({
+    popup: '',
+    dropdown: ''
+  });
 
-  const handleTogglePopup = (id: string): void => {
-    setOpenPopupId(prev => (prev === id ? null : id));
-  };
-  const handleToggleDropdown = (id: string): void => {
-    setOpenDropdownId(prev => (prev === id ? null : id));
+  const handleToggle = (type: 'popup' | 'dropdown', id: string): void => {
+    setToggleInformation(prev => ({
+      ...prev,
+      [type]: prev[type] === id ? '' : id
+    }));
   };
 
   useEffect(() => {
     const handleResize = (): void => {
       if (window.innerWidth >= 1024) {
-        setOpenDropdownId(null);
+        setToggleInformation(prev => ({
+          ...prev,
+          dropdown: ''
+        }));
       }
     };
 
@@ -195,15 +203,15 @@ const BattleList: React.FC<BattleListI> = ({
                       size={20}
                       className="lg:block hidden cursor-pointer hover:scale-110 transition-transform duration-300"
                       onClick={() => {
-                        handleTogglePopup(teamBattle.id);
+                        handleToggle('popup', teamBattle.id);
                       }}
                     />
-                    {openDropdownId === teamBattle.id ? (
+                    {toggleInformation?.dropdown === teamBattle.id ? (
                       <CiSquareChevUp
                         size={20}
                         className="cursor-pointer hover:scale-110 transition-transform duration-300"
                         onClick={() => {
-                          handleToggleDropdown(teamBattle.id);
+                          handleToggle('dropdown', teamBattle.id);
                         }}
                       />
                     ) : (
@@ -211,12 +219,12 @@ const BattleList: React.FC<BattleListI> = ({
                         size={20}
                         className="lg:hidden block cursor-pointer hover:scale-110 transition-transform duration-300"
                         onClick={() => {
-                          handleToggleDropdown(teamBattle.id);
+                          handleToggle('dropdown', teamBattle.id);
                         }}
                       />
                     )}
                   </div>
-                  {openDropdownId === teamBattle.id && (
+                  {toggleInformation?.dropdown === teamBattle.id && (
                     <div
                       className="text-sm text-white font-normal py-2 px-4"
                       dangerouslySetInnerHTML={{
@@ -229,9 +237,9 @@ const BattleList: React.FC<BattleListI> = ({
                   )}
                 </div>
                 <PopupInformation
-                  isOpen={openPopupId === teamBattle?.id}
+                  isOpen={toggleInformation?.popup === teamBattle?.id}
                   onClose={() => {
-                    handleTogglePopup(teamBattle?.id);
+                    handleToggle('popup', teamBattle?.id);
                   }}
                   infoBattle={teamBattle}
                 />

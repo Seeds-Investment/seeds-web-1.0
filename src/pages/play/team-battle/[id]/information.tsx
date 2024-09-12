@@ -1,3 +1,4 @@
+import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -6,17 +7,22 @@ import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack } from 'react-icons/io5';
 import { LuDot } from 'react-icons/lu';
 import { RiGiftFill } from 'react-icons/ri';
-import Second from '../../../../public/assets/team-battle/2nd-battle.svg';
-import Third from '../../../../public/assets/team-battle/3rd-battle.svg';
-import Crown from '../../../../public/assets/team-battle/battle-crown.svg';
+import Second from '../../../../../public/assets/team-battle/2nd-battle.svg';
+import Third from '../../../../../public/assets/team-battle/3rd-battle.svg';
+import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
 
 const BattleInformation: React.FC = () => {
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
   const router = useRouter();
 
   const handleShowTnc = (): void => {
     setShowTnc(!showTnc);
+  };
+
+  const handleShowPopUpPrizeBattle = (): void => {
+    setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
   };
 
   useEffect(() => {
@@ -31,6 +37,10 @@ const BattleInformation: React.FC = () => {
 
   return (
     <>
+      <PopUpPrizeBattle
+        isOpen={showPopUpPrizeBattle}
+        onClose={handleShowPopUpPrizeBattle}
+      />
       <div className="px-2 my-5 font-poppins">
         <div className="text-xl text-white grid grid-cols-3">
           <div
@@ -49,6 +59,7 @@ const BattleInformation: React.FC = () => {
           <div className="col-span-2 border-2 border-white rounded-2xl p-1 lg:p-3 bg-white/50 relative">
             <RiGiftFill
               size={50}
+              onClick={handleShowPopUpPrizeBattle}
               className="text-[#27a590] p-2 bg-white/50 rounded-xl absolute right-2 top-2 transform scale-100 hover:scale-110 transition-transform duration-300 cursor-pointer"
             />
             <div className="lg:hidden font-semibold text-xl text-center mt-3">

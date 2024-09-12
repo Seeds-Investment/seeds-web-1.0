@@ -41,3 +41,140 @@ export const getBattleDetail = async (id: string): Promise<any> => {
     toast.error(error.message, { type: 'error' });
   }
 };
+
+export const joinBattle = async (
+  battleId: string,
+  groupId?: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.post(
+      `/join`,
+      {
+        battle_id: battleId,
+        group_id: groupId
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message, {
+      type: 'error'
+    });
+  }
+};
+
+export const getGroupBattle = async (
+  battleId: string,
+  invitationCode: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.get(`/${battleId}/groups`, {
+      params: {
+        invitation_code: invitationCode
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast.error(error.response.data.message, {
+      type: 'error'
+    });
+  }
+};
+
+export const getBattleBalance = async (
+  id: string,
+  params: { currency: string }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/balance`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
+export const getBattlePortfolio = async (
+  id: string,
+  currency: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/portfolio-summary`, {
+      params: {
+        currency
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
+export const getBattleArena = async (id: string): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/arena`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
+export const getBattleAssets = async (
+  id: string,
+  assetId: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/assets/${assetId}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};
+
+export const getBattleHistoryTransaction = async (
+  id: string,
+  params: { limit: number; page: number; currency: string }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/history`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

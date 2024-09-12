@@ -2471,6 +2471,11 @@ export default {
     text17: 'Kapan saja'
   },
   teamBattle: {
-    chooseCategory: 'Silakan Pilih Kategori'
+    chooseCategory: 'Silakan Pilih Kategori',
+    joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
+    joinAsInvitation: 'Masukkan kode undangan Anda',
+    placeholderInvitation: 'Masukkan di sini',
+    chooseUniversity: 'Pilih Universitas Anda',
+    chooseCommunity: 'Pilih Komunitas Anda'
   }
 };

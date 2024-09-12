@@ -16,22 +16,30 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
-import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
+// import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import FloatingButtonBattle from '@/components/team-battle/FloatingButtonBattle';
+import ModalDetailBattle from '@/components/team-battle/ModalDetailBattle';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getMarketList } from '@/repository/market.repository';
-import {
-  getPlayBallance,
-  getPlayById,
-  getPlayPortfolio
-} from '@/repository/play.repository';
+// import {
+//   getPlayBallance,
+//   getPlayPortfolio,
+//   getPlayById
+// } from '@/repository/play.repository';
+
 import { getUserInfo } from '@/repository/profile.repository';
+import {
+  getBattleArena,
+  getBattleBalance,
+  getBattlePortfolio
+} from '@/repository/team-battle.repository';
+import { type ArenaBattleI } from '@/utils/interfaces/team-battle.interface';
 import {
   SortingFilter,
   type BallanceTournament,
-  type IDetailTournament,
+  // type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -41,24 +49,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { calculatePercentageChange } from '../../../../helpers/assetPercentageChange';
-
-export interface CircleInterface {
-  id: string;
-  name: string;
-  avatar: string;
-  cover: string;
-  description: string;
-  description_rules: string;
-  type: string;
-  premium_fee: number;
-  admin_fee: number;
-  monthly_time: number;
-  total_rating: number;
-  total_member: number;
-  total_post: number;
-  created_at: string;
-  updated_at: string;
-}
 
 interface itemPortfolioSummaryType {
   value: number;
@@ -101,7 +91,7 @@ const BattleHome: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
+  const [detailTournament, setDetailTournament] = useState<ArenaBattleI>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
 
@@ -171,7 +161,7 @@ const BattleHome: React.FC = () => {
   const getDetail = useCallback(async () => {
     try {
       setLoading(true);
-      const resp: IDetailTournament = await getPlayById(id as string);
+      const resp: ArenaBattleI = await getBattleArena(id as string);
       setDetailTournament(resp);
     } catch (error) {
       toast(`ERROR fetch tournament ${error as string}`);
@@ -199,7 +189,7 @@ const BattleHome: React.FC = () => {
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
       setIsLoading(true);
-      const response = await getPlayPortfolio(id as string, currency);
+      const response = await getBattlePortfolio(id as string, currency);
       setPortfolio(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -210,7 +200,7 @@ const BattleHome: React.FC = () => {
 
   const fetchPlayBallance = async (currency: string): Promise<void> => {
     try {
-      const response = await getPlayBallance(id as string, { currency });
+      const response = await getBattleBalance(id as string, { currency });
       setBallance(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
@@ -264,15 +254,15 @@ const BattleHome: React.FC = () => {
   return (
     <>
       {isDetailModal && (
-        <ModalDetailTournament
+        <ModalDetailBattle
           onClose={() => {
             setIsDetailModal(prev => !prev);
           }}
           playTime={detailTournament?.play_time ?? ''}
           endTime={detailTournament?.end_time ?? ''}
-          category={detailTournament?.category ?? ''}
-          prize={detailTournament?.prize ?? []}
-          tnc={detailTournament?.tnc ?? { en: '', id: '' }}
+          category={detailTournament?.category ?? []}
+          // prize={detailTournament?.fixed_prize}
+          // tnc={detailTournament?.tnc ?? { en: '', id: '' }}
           length={detailTournament?.total_participants ?? 0}
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
         />
@@ -353,7 +343,7 @@ const BattleHome: React.FC = () => {
           <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg">
             <div
               onClick={async () =>
-                await router.push(`/play/tournament/${id as string}/portfolio`)
+                await router.push(`/play/team-battle/${id as string}/portfolio`)
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
@@ -371,7 +361,7 @@ const BattleHome: React.FC = () => {
             <div
               onClick={async () =>
                 await router.push(
-                  `/play/tournament/${id as string}/virtual-balance`
+                  `/play/team-battle/${id as string}/virtual-balance`
                 )
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
@@ -389,7 +379,7 @@ const BattleHome: React.FC = () => {
             </div>
             <div
               onClick={async () =>
-                await router.push(`/play/tournament/${id as string}/watchlist`)
+                await router.push(`/play/team-battle/${id as string}/watchlist`)
               }
               className="flex flex-col justify-center items-center gap-2 cursor-pointer"
             >
@@ -439,7 +429,7 @@ const BattleHome: React.FC = () => {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             onClick={async () =>
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(`/play/tournament/${id}/leaderboard`)
+              await router.push(`/play/team-battle/${id}/leaderboard`)
             }
             className="w-full lg:flex lg:justify-between ml-2"
           >
@@ -515,7 +505,7 @@ const BattleHome: React.FC = () => {
                   key={index}
                   onClick={async () =>
                     await router.push(
-                      `/play/tournament/${id as string}/${data?.id}`
+                      `/play/team-battle/${id as string}/${data?.id}`
                     )
                   }
                   className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg"
@@ -585,7 +575,7 @@ const BattleHome: React.FC = () => {
           <div
             className="w-full flex justify-center items-center mt-4"
             onClick={async () =>
-              await router.push(`/play/tournament/${id as string}/asset-list`)
+              await router.push(`/play/team-battle/${id as string}/asset-list`)
             }
           >
             <div className="bg-seeds-button-green w-[150px] p-2 rounded-full flex justify-center items-center hover:shadow-lg duration-300 cursor-pointer">

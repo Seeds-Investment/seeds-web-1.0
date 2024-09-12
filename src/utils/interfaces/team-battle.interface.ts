@@ -99,3 +99,14 @@ export interface AssetsSubType {
   type: string;
   items: string[];
 }
+
+export interface ICreateOrderBattle {
+  stage: string;
+  asset_id: string;
+  type: 'BUY' | 'SELL' | string;
+  amount: number;
+  limit_type: string;
+  bid_price?: number;
+  take_profit?: number;
+  stop_loss?: number;
+}

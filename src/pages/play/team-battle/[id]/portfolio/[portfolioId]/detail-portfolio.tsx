@@ -316,19 +316,19 @@ const DetailPortfolio = (): React.ReactElement => {
           onClick={() => {
             if (assetType === 'CRYPTO') {
               void router.push(
-                `/play/tournament/${id as string}/order/crypto/${
+                `/play/team-battle/${id as string}/order/crypto/${
                   assetId as string
                 }?transaction=sell`
               );
             } else if (assetType === 'COMMODITIES') {
               void router.push(
-                `/play/tournament/${id as string}/order/comodities/${
+                `/play/team-battle/${id as string}/order/comodities/${
                   assetId as string
                 }?transaction=sell`
               );
             } else {
               void router.push(
-                `/play/tournament/${id as string}/order/${
+                `/play/team-battle/${id as string}/order/${
                   assetId as string
                 }?transaction=sell`
               );
@@ -342,19 +342,19 @@ const DetailPortfolio = (): React.ReactElement => {
           onClick={() => {
             if (assetType === 'CRYPTO') {
               void router.push(
-                `/play/tournament/${id as string}/order/crypto/${
+                `/play/team-battle/${id as string}/order/crypto/${
                   assetId as string
                 }?transaction=buy`
               );
             } else if (assetType === 'COMMODITIES') {
               void router.push(
-                `/play/tournament/${id as string}/order/comodities/${
+                `/play/team-battle/${id as string}/order/comodities/${
                   assetId as string
                 }?transaction=buy`
               );
             } else {
               void router.push(
-                `/play/tournament/${id as string}/order/${
+                `/play/team-battle/${id as string}/order/${
                   assetId as string
                 }?transaction=buy`
               );

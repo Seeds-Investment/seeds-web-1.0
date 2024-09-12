@@ -190,8 +190,7 @@ const TournamentDetail: React.FC = () => {
     const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
     const timeStart = new Date(playTime).getTime();
     const timeNow = Date.now();
-
-    return timeStart > timeNow;
+    return timeStart < timeNow;
   };
 
   return (
@@ -240,30 +239,33 @@ const TournamentDetail: React.FC = () => {
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
-          <div className="mt-4 flex justify-between">
-            <div className="flex flex-col">
-              <Typography className="text-lg font-semibold font-poppins">
-                {t('tournament.detailRemaining')}
-              </Typography>
-              <CountdownTimer
-                deadline={
-                  detailTournament?.end_time
-                    ? detailTournament.end_time.toString()
-                    : ''
-                }
-              />
-            </div>
-            <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
-              <ShareIcon
-                onClick={() => {
-                  setIsShareModal(true);
-                }}
-                width={24}
-                height={24}
-                className="text-[#3AC4A0]"
-              />
-            </button>
-          </div>
+            {
+              detailTournament !== undefined &&
+                <div className="mt-4 flex justify-between">
+                  <div className="flex flex-col">
+                    <Typography className="text-lg font-semibold font-poppins">
+                      {t('tournament.detailRemaining')}
+                    </Typography>
+                    <CountdownTimer
+                      deadline={
+                        detailTournament?.end_time
+                          ? detailTournament.end_time.toString()
+                          : ''
+                      }
+                    />
+                  </div>
+                  <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+                    <ShareIcon
+                      onClick={() => {
+                        setIsShareModal(true);
+                      }}
+                      width={24}
+                      height={24}
+                      className="text-[#3AC4A0]"
+                    />
+                  </button>
+                </div>
+            }
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.detailPeriod')}
@@ -343,94 +345,6 @@ const TournamentDetail: React.FC = () => {
             </table>
           </div>
           <div className="mt-4">
-            {/* <Typography className="text-lg font-semibold font-poppins">
-              {t('tournament.participants')}
-            </Typography>
-            <div className="flex gap-2">
-              <Typography className="text-lg text-[#7C7C7C] font-poppins font-semibold">
-                {detailTournament?.total_participants} /{' '}
-                {detailTournament?.max_participant}
-              </Typography>
-              <Typography className="text-lg text-[#7C7C7C] font-poppins">
-                {moment(detailTournament?.play_time).format('D MMM YYYY, h a')}{' '}
-                Jakarta -{' '}
-                {moment(detailTournament?.end_time).format('D MMM YYYY, h a')}{' '}
-                Jakarta
-              </Typography>
-            </div> */}
-            <div className="mt-4 flex flex-row gap-8">
-              {detailTournament?.community?.image_url ? (
-                <div className="flex flex-col justify-center items-center gap-4">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {'Community'}
-                  </Typography>
-                  <Image
-                    src={detailTournament?.community?.image_url}
-                    alt=""
-                    width={200}
-                    height={200}
-                    className="object-contain max-h-16 max-w-16"
-                  />
-                </div>
-              ) : null}
-            </div>
-            {/* <div className="mt-4">
-              <Typography className="text-lg font-semibold font-poppins">
-                {t('tournament.detailPrize')}
-              </Typography>
-              <table className="mt-2">
-                {detailTournament?.prize?.slice(0, 3)?.map((item, index) => (
-                  <tr key={index}>
-                    <td className="inline-flex gap-2 border p-3 w-full">
-                      <Image
-                        src={
-                          index === 0
-                            ? FirstMedal
-                            : index === 1
-                            ? SecondMedal
-                            : ThirdMedal
-                        }
-                        alt={`${index}-medal`}
-                        width={200}
-                        height={200}
-                        className="object-contain max-h-5 max-w-5"
-                      />
-                      {t(
-                        `tournament.${
-                          index === 0
-                            ? 'first'
-                            : index === 1
-                            ? 'second'
-                            : 'third'
-                        }`
-                      )}
-                    </td>
-                    <td className="border p-3 w-full">
-                      {userInfo?.preferredCurrency ?? 'IDR'}
-                      {standartCurrency(item).replace('Rp', '')}
-                    </td>
-                  </tr>
-                ))}
-                {detailTournament?.prize?.slice(3, 10)?.map((item, index) => (
-                  <tr key={index}>
-                    <td className="inline-flex gap-2 border p-3 w-full">
-                      <Image
-                        src={OtherMedal}
-                        alt={`${index}-medal`}
-                        width={200}
-                        height={200}
-                        className="object-contain max-h-5 max-w-5"
-                      />
-                      {`${index + 4}th`}
-                    </td>
-                    <td className="border p-3 w-full">
-                      {userInfo?.preferredCurrency ?? 'IDR'}
-                      {standartCurrency(item).replace('Rp', '')}
-                    </td>
-                  </tr>
-                ))}
-              </table>
-            </div> */}
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.participants')}
@@ -543,10 +457,12 @@ const TournamentDetail: React.FC = () => {
                   router.push(`/play/tournament/${id as string}/home`);
                 } else {
                   if (detailTournament?.admission_fee === 0) {
-                    if (invitationCode === '') {
-                      await handleJoinFreeTournament();
-                    } else {
-                      handleInvitationCodeFree();
+                    if (isStarted()) {
+                      if (invitationCode === '') {
+                        await handleJoinFreeTournament();
+                      } else {
+                        handleInvitationCodeFree();
+                      }
                     }
                   } else {
                     if (invitationCode === '' && !validInvit) {
@@ -570,21 +486,24 @@ const TournamentDetail: React.FC = () => {
                 withRedirect(router, { ti: id as string }, '/auth');
               }
             }}
+            // disabled={
+            //   (invitationCode === '' &&
+            //     detailTournament?.is_need_invitation_code === true) ||
+            //   isStarted()
+            // }
             disabled={
-              (invitationCode === '' &&
-                detailTournament?.is_need_invitation_code === true) ||
-              isStarted()
+              (invitationCode === '' && detailTournament?.is_need_invitation_code === true)
             }
-            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
+              invitationCode === '' && detailTournament?.is_need_invitation_code === true
                 ? 'bg-[#7d7d7d]'
                 : 'bg-seeds-button-green text-white'
             }`}
           >
-            {detailTournament?.participant_status === 'JOINED'
-              ? t('tournament.start')
+            {detailTournament?.is_joined === true
+              ? isStarted()
+                ? t('tournament.start')
+                : t('tournament.waiting')
               : t('tournament.join')}
           </button>
           <div className="flex gap-2 mt-4">

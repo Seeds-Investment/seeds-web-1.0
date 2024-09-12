@@ -1970,6 +1970,7 @@ export default {
     free: 'Free',
     join: 'Join',
     start: 'Start',
+    waiting: 'Waiting',
     participants: 'Participants',
     categoryAsset: 'Category Asset',
     circleRecommendation: 'Circle Recommendation',

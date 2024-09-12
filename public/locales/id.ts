@@ -1897,6 +1897,7 @@ export default {
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
+    waiting: 'Menunggu',
     participants: 'Peserta',
     categoryAsset: 'Kategori Aset',
     circleRecommendation: 'Rekomendasi Circle',

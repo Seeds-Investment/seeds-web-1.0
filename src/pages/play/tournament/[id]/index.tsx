@@ -12,6 +12,7 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCodeSelection from '@/containers/promo-code';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
+import { useIsStarted } from '@/helpers/useIsStarted';
 import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
@@ -54,6 +55,7 @@ const TournamentDetail: React.FC = () => {
   const [useCoins, setUseCoins] = useState<boolean>(false);
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
   const accessToken = localStorage.getItem('accessToken');
+  const isStarted = useIsStarted(detailTournament?.play_time);
 
   const handleGetSeedsCoin = async (): Promise<void> => {
     try {
@@ -153,7 +155,7 @@ const TournamentDetail: React.FC = () => {
         false
       );
       if (response) {
-        if (isStarted()) {
+        if (isStarted) {
           await router.push(`/play/tournament/${id as string}/home`);
         } else {
           toast.success('Join tournament successful');
@@ -208,22 +210,15 @@ const TournamentDetail: React.FC = () => {
     });
   };
 
-  const isStarted = (): boolean => {
-    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
-    const timeStart = new Date(playTime).getTime();
-    const timeNow = Date.now();
-    return timeStart < timeNow;
-  };
-
   const handleRedirectPage = async (): Promise<void> => {
     if (localStorage.getItem('accessToken') !== null) {
       if (detailTournament?.is_joined === true) {
-        if (isStarted()) {
+        if (isStarted) {
           router.push(`/play/tournament/${id as string}/home`);
         }
       } else {
         if (detailTournament?.admission_fee === 0) {
-          if (isStarted()) {
+          if (isStarted) {
             if (detailTournament?.is_need_invitation_code) {
               if (invitationCode !== '') {
                 handleInvitationCodeFree();
@@ -232,7 +227,12 @@ const TournamentDetail: React.FC = () => {
               await handleJoinFreeTournament();
             }
           } else {
-            await handleJoinFreeTournament();
+            try {
+              await handleJoinFreeTournament();
+              window.location.reload();
+            } catch (error) {
+              toast.error(`Error joining free tournament: ${error as string}`);
+            }
           }
         } else {
           if (detailTournament?.is_need_invitation_code) {
@@ -257,14 +257,14 @@ const TournamentDetail: React.FC = () => {
   const isDisabled = (): boolean => {
     if (localStorage.getItem('accessToken') !== null) {
       if (detailTournament?.is_joined === true) {
-        if (isStarted()) {
+        if (isStarted) {
           return false;
         } else {
           return true;
         }
       } else {
         if (detailTournament?.admission_fee === 0) {
-          if (isStarted()) {
+          if (isStarted) {
             if (detailTournament?.is_need_invitation_code) {
               if (invitationCode !== '') {
                 return false;
@@ -286,9 +286,9 @@ const TournamentDetail: React.FC = () => {
             }
           } else {
             if (!validInvit) {
-              return true;
-            } else {
               return false;
+            } else {
+              return true;
             }
           }
         }
@@ -303,14 +303,14 @@ const TournamentDetail: React.FC = () => {
   const buttonColor = (): string => {
     if (localStorage.getItem('accessToken') !== null) {
       if (detailTournament?.is_joined === true) {
-        if (isStarted()) {
+        if (isStarted) {
           return 'bg-seeds-button-green text-white';
         } else {
           return 'bg-[#7d7d7d] text-[#262626]';
         }
       } else {
         if (detailTournament?.admission_fee === 0) {
-          if (isStarted()) {
+          if (isStarted) {
             if (detailTournament?.is_need_invitation_code) {
               if (invitationCode !== '') {
                 return 'bg-seeds-button-green text-white';
@@ -332,9 +332,9 @@ const TournamentDetail: React.FC = () => {
             }
           } else {
             if (!validInvit) {
-              return 'bg-[#7d7d7d] text-[#262626]';
-            } else {
               return 'bg-seeds-button-green text-white';
+            } else {
+              return 'bg-[#7d7d7d] text-[#262626]';
             }
           }
         }
@@ -397,11 +397,11 @@ const TournamentDetail: React.FC = () => {
                 <div className="mt-4 flex justify-between">
                   <div className="flex flex-col">
                     <Typography className="text-lg font-semibold font-poppins">
-                      {isStarted() ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
+                      {isStarted ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
                     </Typography>
                     <CountdownTimer
                       deadline={
-                        isStarted()
+                        isStarted
                           ? detailTournament?.end_time
                             ? detailTournament.end_time.toString()
                             : ''
@@ -608,12 +608,12 @@ const TournamentDetail: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={async () => handleRedirectPage}
+            onClick={async () => { await handleRedirectPage(); }}
             disabled={isDisabled()}
             className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${buttonColor()}`}
           >
             {detailTournament?.is_joined === true
-              ? isStarted()
+              ? isStarted
                 ? t('tournament.start')
                 : t('tournament.waiting')
               : t('tournament.join')}

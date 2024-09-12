@@ -1,7 +1,15 @@
+import { TeamBattleTnC } from '@/components/play/team-battle-tnc';
 import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import Triangle from '@/components/team-battle/triangle.component';
+import { standartCurrency } from '@/helpers/currency';
+import { getBattlePeriod } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
+import { getUserInfo } from '@/repository/profile.repository';
+import { getBattleDetail } from '@/repository/team-battle.repository';
+import LanguageContext from '@/store/language/language-context';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -17,18 +25,21 @@ import {
   GroupIcon,
   SilverMedal
 } from 'public/assets/vector';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoArrowBack } from 'react-icons/io5';
-import Amar from './../../../../assets/play/battle/amar.png';
-import Jago from './../../../../assets/play/battle/jago.png';
-import WeBull from './../../../../assets/play/battle/webull.png';
+import { toast } from 'react-toastify';
 
 const MainTeamBattle = (): React.ReactElement => {
   const router = useRouter();
   const { id } = router.query;
+  const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [showPopUpJoinBattle, setShowPopUpJoinBattle] = useState<boolean>(false);
   const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
+  const [data, setData] = useState<TeamBattleDetail>();
 
   const handleShowPopUpJoinBattle = (): void => {
     setShowPopUpJoinBattle(!showPopUpJoinBattle);
@@ -37,6 +48,56 @@ const MainTeamBattle = (): React.ReactElement => {
   const handleShowPopUpPrizeBattle = (): void => {
     setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
   };
+
+  const handleGetDetailBattle = async (): Promise<void> => {
+    try {
+      const response = await getBattleDetail(id as string);
+      setData(response);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
+  const handleRedirectJoin = async (): Promise<void> => {
+    if ((data?.is_joined) ?? false) {
+      if (isStarted()) {
+        await router.push(`/play/team-battle/${id as string}/stage`)
+      } else {
+        await router.push(`/play/team-battle/${id as string}/waiting`)
+      }
+    } else {
+      handleShowPopUpJoinBattle()
+    }
+  };
+
+  const isStarted = (): boolean => {
+    const playTime = data?.registration_end ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart < timeNow;
+  };
+
+  useEffect(() => {
+    fetchData()
+      .then()
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetDetailBattle();
+    }
+  }, [id]);
 
   return (
     <>
@@ -69,7 +130,9 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
               <div>2nd</div>
             </div>
-            <div className="font-semibold">5.000.000</div>
+            <div className="font-semibold">
+              {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace('Rp', '')}`}
+            </div>
           </div>
           <div className="flex flex-col justify-center items-center border-x-2 border-white px-2">
             <div className="flex gap-2 justify-center items-end">
@@ -84,7 +147,9 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
               <div>1st</div>
             </div>
-            <div className="font-semibold">10.000.000</div>
+            <div className="font-semibold">
+              {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace('Rp', '')}`}
+            </div>
           </div>
           <div className="flex flex-col justify-center items-center">
             <div className="flex gap-2">
@@ -99,7 +164,9 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
               <div>3rd</div>
             </div>
-            <div className="font-semibold">3.000.000</div>
+            <div className="font-semibold">
+              {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace('Rp', '')}`}
+            </div>
           </div>
           <div
             onClick={handleShowPopUpPrizeBattle}
@@ -152,28 +219,53 @@ const MainTeamBattle = (): React.ReactElement => {
             <div className="text-xs lg:text-lg text-[#3D3D3D] font-semibold">
               <div className="w-full">
                 <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">Periode</div>
-                  <div>: 12/04/2024 - 30/08/2023</div>
+                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.period')}</div>
+                  <div>
+                    : {`
+                        ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
+                        ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
+                      }
+                  </div>
                 </div>
                 <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">Registration</div>
-                  <div>: 12/04/2024 - 30/08/2023</div>
+                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.registration')}</div>
+                  <div>
+                    : {`
+                        ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
+                        ${getBattlePeriod(new Date(data?.registration_end ?? '2024-12-31T23:59:00Z'))}`
+                      }
+                  </div>
                 </div>
                 <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">Elimination</div>
-                  <div>: 12/04/2024 - 30/08/2023</div>
+                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.elimination')}</div>
+                  <div>
+                    : {`
+                        ${getBattlePeriod(new Date(data?.elimination_start ?? '2024-12-31T23:59:00Z'))} -
+                        ${getBattlePeriod(new Date(data?.elimination_end ?? '2024-12-31T23:59:00Z'))}`
+                      }
+                  </div>
                 </div>
                 <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">Semifinal</div>
-                  <div>: 12/04/2024 - 30/08/2023</div>
+                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.semifinal')}</div>
+                  <div>
+                    : {`
+                        ${getBattlePeriod(new Date(data?.semifinal_start ?? '2024-12-31T23:59:00Z'))} -
+                        ${getBattlePeriod(new Date(data?.semifinal_end ?? '2024-12-31T23:59:00Z'))}`
+                      }
+                  </div>
                 </div>
                 <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">Final</div>
-                  <div>: 12/04/2024 - 30/08/2023</div>
+                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.final')}</div>
+                  <div>
+                    : {`
+                        ${getBattlePeriod(new Date(data?.final_start ?? '2024-12-31T23:59:00Z'))} -
+                        ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
+                      }
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col justify-center items-center text-sm mt-4">
-                <div>Participants</div>
+                <div>{t('teamBattle.mainPage.participants')}</div>
                 <div className="flex justify-center items-start gap-1 mt-2">
                   <div className="w-[30px] h-[30px]">
                     <Image
@@ -184,15 +276,19 @@ const MainTeamBattle = (): React.ReactElement => {
                       alt={'GroupIcon'}
                     />
                   </div>
-                  <div>20</div>
+                  <div>{data?.participants ?? 0}</div>
                 </div>
               </div>
               <div className="mt-4 hidden lg:flex">
                 <Button
-                  onClick={handleShowPopUpJoinBattle}
+                  onClick={handleRedirectJoin}
                   className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
                 >
-                  Join
+                  {
+                    ((data?.is_joined) ?? false)
+                      ? t('teamBattle.mainPage.play')
+                      : t('teamBattle.mainPage.join')
+                  }
                 </Button>
               </div>
             </div>
@@ -212,7 +308,9 @@ const MainTeamBattle = (): React.ReactElement => {
                 </div>
                 <div>1st</div>
               </div>
-              <div className="font-bold text-lg">10.000.000</div>
+              <div className="font-bold text-lg">
+                {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace('Rp', '')}`}
+              </div>
             </div>
             <div className="w-full flex justify-between px-2">
               <div className="flex flex-col justify-center items-center">
@@ -228,7 +326,9 @@ const MainTeamBattle = (): React.ReactElement => {
                   </div>
                   <div>2nd</div>
                 </div>
-                <div className="font-bold text-lg">5.000.000</div>
+                <div className="font-bold text-lg">
+                  {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace('Rp', '')}`}
+                </div>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <div className="flex gap-2">
@@ -243,41 +343,35 @@ const MainTeamBattle = (): React.ReactElement => {
                   </div>
                   <div>3rd</div>
                 </div>
-                <div className="font-bold text-lg">3.000.000</div>
+                <div className="font-bold text-lg">
+                  {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace('Rp', '')}`}
+                </div>
               </div>
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="text-lg text-[#3D3D3D] font-semibold">
-                Sponsor
+                {(data?.sponsors?.length ?? 0) > 1 ? t('teamBattle.mainPage.sponsors') : t('teamBattle.mainPage.sponsor')}
               </div>
-              <div className="flex gap-2 justify-center items-center">
-                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                  <Image
-                    className="w-[50px] h-auto"
-                    src={Amar}
-                    width={100}
-                    height={100}
-                    alt={'Amar'}
-                  />
-                </div>
-                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                  <Image
-                    className="w-[50px] h-auto"
-                    src={WeBull}
-                    width={100}
-                    height={100}
-                    alt={'WeBull'}
-                  />
-                </div>
-                <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                  <Image
-                    className="w-[50px] h-auto"
-                    src={Jago}
-                    width={100}
-                    height={100}
-                    alt={'Jago'}
-                  />
-                </div>
+              <div className="flex flex-wrap justify-center items-center gap-2">
+                {data?.sponsors?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
+                  >
+                    {
+                      item?.logo === '' ?
+                        <div className='w-[65px] h-[65px] bg-white animate-pulse rounded-lg'/>
+                        :
+                        <Image
+                          className="w-[65px] h-auto rounded-lg"
+                          src={item?.logo}
+                          width={100}
+                          height={100}
+                          alt={'item?.logo'}
+                        />
+                    }
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -287,15 +381,9 @@ const MainTeamBattle = (): React.ReactElement => {
               }}
               className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]"
             >
-              <div>Term and Condition</div>
-              <div className="flex flex-col justify-start items-start gap-2 mt-2 text-xs overflow-y-scroll h-[100px]">
-                <div>
-                  1. Single competition, participants compete for prizes.
-                </div>
-                <div>2. Start with 50 million virtual capital.</div>
-                <div>3. Winner based on highest equity score.</div>
-                <div>4. Participants must follow Instagram @seeds_finance.</div>
-                <div>5. Ticket fee: 100,000/entry (no promo code).</div>
+              <div className='font-semibold'>{t('teamBattle.mainPage.tnc')}</div>
+              <div className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]">
+                <TeamBattleTnC description={languageCtx?.language === 'ID' ? data?.tnc?.id ?? '' : data?.tnc?.en ?? ''} />
               </div>
             </div>
 
@@ -316,35 +404,29 @@ const MainTeamBattle = (): React.ReactElement => {
 
         <div className="flex flex-col lg:hidden">
           <div className="flex flex-col justify-center items-center gap-2 mt-4">
-            <div className="text-md text-[#3D3D3D] font-semibold">Sponsor</div>
-            <div className="flex gap-2 justify-center items-center">
-              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                <Image
-                  className="w-[50px] h-auto"
-                  src={Amar}
-                  width={100}
-                  height={100}
-                  alt={'Amar'}
-                />
-              </div>
-              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                <Image
-                  className="w-[50px] h-auto"
-                  src={WeBull}
-                  width={100}
-                  height={100}
-                  alt={'WeBull'}
-                />
-              </div>
-              <div className="flex justify-center items-center border boder-[#76A5D0] w-[65px] h-[65px] bg-white rounded-lg">
-                <Image
-                  className="w-[50px] h-auto"
-                  src={Jago}
-                  width={100}
-                  height={100}
-                  alt={'Jago'}
-                />
-              </div>
+            <div className="text-md text-[#3D3D3D] font-semibold">
+              {(data?.sponsors?.length ?? 0) > 1 ? t('teamBattle.mainPage.sponsors') : t('teamBattle.mainPage.sponsor')}
+            </div>
+            <div className="flex flex-wrap justify-center items-center gap-2 max-w-[400px]">
+              {data?.sponsors?.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
+                >
+                  {
+                    item?.logo === '' ?
+                      <div className='w-[65px] h-[65px] bg-white animate-pulse rounded-lg'/>
+                      :
+                      <Image
+                        className="w-[65px] h-auto rounded-lg"
+                        src={item?.logo}
+                        width={100}
+                        height={100}
+                        alt={'item?.logo'}
+                      />
+                  }
+                </div>
+              ))}
             </div>
           </div>
 
@@ -354,7 +436,7 @@ const MainTeamBattle = (): React.ReactElement => {
             }}
             className="flex gap-2 justify-center items-center mt-4"
           >
-            <div>Term and Condition</div>
+            <div>{t('teamBattle.mainPage.tnc')}</div>
             <div className="bg-[#407F74] w-[25px] h-[25px] flex justify-center items-center rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
               <Image
                 className="w-[15px] h-[15px]"
@@ -367,21 +449,21 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
 
           {showTnc && (
-            <div className="flex flex-col justify-center items-start gap-2 border-2 mt-4 text-xs border-white rounded-2xl py-4 px-8 bg-white/50 relative">
-              <div>1. Single competition, participants compete for prizes.</div>
-              <div>2. Start with 50 million virtual capital.</div>
-              <div>3. Winner based on highest equity score.</div>
-              <div>4. Participants must follow Instagram @seeds_finance.</div>
-              <div>5. Ticket fee: 100,000/entry (no promo code).</div>
+            <div className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll">
+              <TeamBattleTnC description={languageCtx?.language === 'ID' ? data?.tnc?.id ?? '' : data?.tnc?.en ?? ''} />
             </div>
           )}
 
           <div className="mt-6">
             <Button
-              onClick={handleShowPopUpJoinBattle}
+              onClick={handleRedirectJoin}
               className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
             >
-              Join
+              {
+                ((data?.is_joined) ?? false)
+                  ? t('teamBattle.mainPage.play')
+                  : t('teamBattle.mainPage.join')
+              }
             </Button>
           </div>
         </div>
@@ -391,10 +473,15 @@ const MainTeamBattle = (): React.ReactElement => {
         onClose={handleShowPopUpJoinBattle}
         battleId={id as string}
       />
-      <PopUpPrizeBattle
-        isOpen={showPopUpPrizeBattle}
-        onClose={handleShowPopUpPrizeBattle}
-      />
+      {
+        ((userInfo !== undefined) && (data !== undefined)) &&
+          <PopUpPrizeBattle
+            isOpen={showPopUpPrizeBattle}
+            onClose={handleShowPopUpPrizeBattle}
+            userInfo={userInfo}
+            data={data}
+          />
+      }
     </>
   );
 };

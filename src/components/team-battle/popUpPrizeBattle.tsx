@@ -1,3 +1,6 @@
+import { standartCurrency } from '@/helpers/currency';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
 import { CloseBattlePrize, GreenGift } from 'public/assets/vector';
 import React from 'react';
@@ -5,11 +8,15 @@ import React from 'react';
 interface PopUpJoinBattleProps {
   isOpen: boolean;
   onClose: () => void;
+  userInfo: UserInfo;
+  data: TeamBattleDetail;
 }
 
 const PopUpPrizeBattle: React.FC<PopUpJoinBattleProps> = ({
   isOpen,
-  onClose
+  onClose,
+  userInfo,
+  data
 }) => {
 
   const handleClose = (): void => {
@@ -50,26 +57,26 @@ const PopUpPrizeBattle: React.FC<PopUpJoinBattleProps> = ({
           <div className='mt-4 flex flex-col gap-2 font-semibold'>
             <div className='border border-[#407F74] rounded-lg flex flex-col justify-center items-center p-2'>
               <div>
-                1. Rp 10.000.000,-
+                1. {`${(userInfo?.preferredCurrency ?? 'Rp') === 'IDR' ? 'Rp' : userInfo?.preferredCurrency}${standartCurrency(data?.prize[0]?.amount ?? 0).replace('Rp', '')}`}
               </div>
               <div>
-                Uang Sepuluh Juta + Crypto
-              </div>
-            </div>
-            <div className='border border-[#407F74] rounded-lg flex flex-col justify-center items-center p-2'>
-              <div>
-                2. Rp 8.000.000,-
-              </div>
-              <div>
-                Uang Delapan Juta + Crypto
+                {data?.prize[0]?.description ?? 'Loading ...'}
               </div>
             </div>
             <div className='border border-[#407F74] rounded-lg flex flex-col justify-center items-center p-2'>
               <div>
-                3. Rp 5.000.000,-
+                2. {`${(userInfo?.preferredCurrency ?? 'Rp') === 'IDR' ? 'Rp' : userInfo?.preferredCurrency}${standartCurrency(data?.prize[1]?.amount ?? 0).replace('Rp', '')}`}
               </div>
               <div>
-                Uang Lima Juta + Crypto
+                {data?.prize[1]?.description ?? 'Loading ...'}
+              </div>
+            </div>
+            <div className='border border-[#407F74] rounded-lg flex flex-col justify-center items-center p-2'>
+              <div>
+                3. {`${(userInfo?.preferredCurrency ?? 'Rp') === 'IDR' ? 'Rp' : userInfo?.preferredCurrency}${standartCurrency(data?.prize[2]?.amount ?? 0).replace('Rp', '')}`}
+              </div>
+              <div>
+                {data?.prize[2]?.description ?? 'Loading ...'}
               </div>
             </div>
           </div>

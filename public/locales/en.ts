@@ -2545,6 +2545,19 @@ export default {
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',
     chooseUniversity: 'Choose Your University',
-    chooseCommunity: 'Choose Your Community'
+    chooseCommunity: 'Choose Your Community',
+    mainPage: {
+      period: "Period",
+      registration: "Registration",
+      elimination: "Elimination",
+      semifinal: "Semifinal",
+      final: "Final",
+      participants: "Participants",
+      join: "Join",
+      play: "Play",
+      sponsor: "Sponsor",
+      sponsors: "Sponsors",
+      tnc: "Terms and Conditions",
+    }
   }
 };

@@ -2474,6 +2474,19 @@ export default {
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',
     chooseUniversity: 'Pilih Universitas Anda',
-    chooseCommunity: 'Pilih Komunitas Anda'
+    chooseCommunity: 'Pilih Komunitas Anda',
+    mainPage: {
+      period: "Periode",
+      registration: "Registrasi",
+      elimination: "Eliminasi",
+      semifinal: "Semifinal",
+      final: "Final",
+      participants: "Peserta",
+      join: "Gabung",
+      play: "Mulai Permainan",
+      sponsor: "Sponsor",
+      sponsors: "Sponsor",
+      tnc: "Syarat dan Ketentuan",
+    }
   }
 };

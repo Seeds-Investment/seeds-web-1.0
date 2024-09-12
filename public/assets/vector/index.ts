@@ -19,6 +19,7 @@ export { default as ChangeEmailIcon } from 'public/assets/vector/change-email.sv
 export { default as ChangeTelephoneIcon } from 'public/assets/vector/change-telephone.svg';
 export { default as ChatBubble } from 'public/assets/vector/chat-bubble.svg';
 export { default as CircleMembership } from 'public/assets/vector/circle-membership.png';
+export { default as CloseBattlePrize } from 'public/assets/vector/close-battle-prize.svg';
 export { default as CloseCircleIcon } from 'public/assets/vector/close-circle.svg';
 export { default as Copy } from 'public/assets/vector/copy.svg';
 export { default as CreatePinIcon } from 'public/assets/vector/create-pin.svg';

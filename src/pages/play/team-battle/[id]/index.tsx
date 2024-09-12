@@ -1,4 +1,5 @@
 import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
+import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import Triangle from '@/components/team-battle/triangle.component';
 import withAuth from '@/helpers/withAuth';
 import { Button, Typography } from '@material-tailwind/react';
@@ -26,11 +27,15 @@ const MainTeamBattle = (): React.ReactElement => {
   const router = useRouter();
   const { id } = router.query;
   const [showTnc, setShowTnc] = useState<boolean>(false);
-  const [showPopUpJoinBattle, setShowPopUpJoinBattle] =
-    useState<boolean>(false);
+  const [showPopUpJoinBattle, setShowPopUpJoinBattle] = useState<boolean>(false);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
 
   const handleShowPopUpJoinBattle = (): void => {
     setShowPopUpJoinBattle(!showPopUpJoinBattle);
+  };
+
+  const handleShowPopUpPrizeBattle = (): void => {
+    setShowPopUpPrizeBattle(!showPopUpPrizeBattle);
   };
 
   return (
@@ -96,7 +101,10 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
             <div className="font-semibold">3.000.000</div>
           </div>
-          <div className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
+          <div
+            onClick={handleShowPopUpPrizeBattle}
+            className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
+          >
             <Image
               className="w-[20px] h-[20px]"
               src={GreenGift}
@@ -108,7 +116,7 @@ const MainTeamBattle = (): React.ReactElement => {
         </div>
 
         <div className="lg:flex lg:gap-8 lg:mt-4">
-          <div className="flex flex-col lg:w-full justify-center items-center gap-2 border-2 mt-28 lg:mt-24 border-white rounded-b-2xl py-8 px-2 bg-white/50 relative">
+          <div className="flex flex-col lg:w-full justify-center items-center gap-2 mt-28 lg:mt-24 border-b-2 border-x-2 border-white rounded-b-2xl py-8 px-2 bg-white/50 relative">
             <div className="absolute w-full left-0 -top-20 flex justify-center items-center">
               <Triangle />
               <Image
@@ -190,7 +198,7 @@ const MainTeamBattle = (): React.ReactElement => {
             </div>
           </div>
 
-          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
+          <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
             <div className="w-full flex flex-col justify-center items-center px-2">
               <div className="flex gap-2 justify-center items-end">
                 <div className="flex justify-center items-center">
@@ -291,7 +299,10 @@ const MainTeamBattle = (): React.ReactElement => {
               </div>
             </div>
 
-            <div className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300">
+            <div
+              onClick={handleShowPopUpPrizeBattle}
+              className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
+            >
               <Image
                 className="w-[20px] h-[20px]"
                 src={GreenGift}
@@ -379,6 +390,10 @@ const MainTeamBattle = (): React.ReactElement => {
         isOpen={showPopUpJoinBattle}
         onClose={handleShowPopUpJoinBattle}
         battleId={id as string}
+      />
+      <PopUpPrizeBattle
+        isOpen={showPopUpPrizeBattle}
+        onClose={handleShowPopUpPrizeBattle}
       />
     </>
   );

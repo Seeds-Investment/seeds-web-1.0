@@ -13,7 +13,7 @@ import {
 } from '@material-tailwind/react';
 import Image from 'next/image';
 // import { useTranslation } from 'react-i18next';
-import PlayAssetsList from '@/containers/tournament/asset';
+import PlayAssetsList from '@/containers/team-battle/asset';
 import {
   AssetFilter,
   SortingFilter

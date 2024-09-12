@@ -1,5 +1,9 @@
 import baseAxios from '@/utils/common/axios';
-import { type TeamBattleListParams } from '@/utils/interfaces/team-battle.interface';
+import { isUndefindOrNull } from '@/utils/common/utils';
+import {
+  type ICreateOrderBattle,
+  type TeamBattleListParams
+} from '@/utils/interfaces/team-battle.interface';
 import { toast } from 'react-toastify';
 
 const teamBattleService = baseAxios(
@@ -25,7 +29,6 @@ export const getBattleList = async (
     toast.error(error.message, { type: 'error' });
   }
 };
-
 
 export const getBattleDetail = async (id: string): Promise<any> => {
   try {
@@ -176,5 +179,35 @@ export const getBattleHistoryTransaction = async (
     });
   } catch (error) {
     await Promise.reject(error);
+  }
+};
+
+export const createOrderBattle = async (
+  body: ICreateOrderBattle,
+  id: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+    if (
+      isUndefindOrNull(body.amount) ||
+      isUndefindOrNull(body.asset_id) ||
+      isUndefindOrNull(body.type)
+    ) {
+      return await Promise.resolve(null);
+    }
+
+    const response = await teamBattleService.post(`/${id}/order/create`, body, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error) {
+    return error;
   }
 };

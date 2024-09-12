@@ -19,7 +19,6 @@ import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
-// import { getPlayAssets } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleAssets } from '@/repository/team-battle.repository';
 import {
@@ -322,19 +321,19 @@ const AssetDetailPage: React.FC = () => {
               onClick={() => {
                 if (assetType === 'CRYPTO') {
                   void router.push(
-                    `/play/tournament/${id as string}/order/crypto/${
+                    `/play/team-battle/${id as string}/order/crypto/${
                       assetId as string
                     }?transaction=sell`
                   );
                 } else if (assetType === 'COMMODITIES') {
                   void router.push(
-                    `/play/tournament/${id as string}/order/comodities/${
+                    `/play/team-battle/${id as string}/order/comodities/${
                       assetId as string
                     }?transaction=sell`
                   );
                 } else {
                   void router.push(
-                    `/play/tournament/${id as string}/order/${
+                    `/play/team-battle/${id as string}/order/${
                       assetId as string
                     }?transaction=sell`
                   );
@@ -349,19 +348,19 @@ const AssetDetailPage: React.FC = () => {
               onClick={() => {
                 if (assetType === 'CRYPTO') {
                   void router.push(
-                    `/play/tournament/${id as string}/order/crypto/${
+                    `/play/team-battle/${id as string}/order/crypto/${
                       assetId as string
                     }?transaction=buy`
                   );
                 } else if (assetType === 'COMMODITIES') {
                   void router.push(
-                    `/play/tournament/${id as string}/order/comodities/${
+                    `/play/team-battle/${id as string}/order/comodities/${
                       assetId as string
                     }?transaction=buy`
                   );
                 } else {
                   void router.push(
-                    `/play/tournament/${id as string}/order/${
+                    `/play/team-battle/${id as string}/order/${
                       assetId as string
                     }?transaction=buy`
                   );

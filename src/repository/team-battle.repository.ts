@@ -6,6 +6,11 @@ import {
 } from '@/utils/interfaces/team-battle.interface';
 import { toast } from 'react-toastify';
 
+export interface BattleParticipantsI {
+  page: number;
+  limit: number;
+}
+
 const teamBattleService = baseAxios(
   `${
     process.env.NEXT_PUBLIC_URL ?? 'https://seeds-dev-gcp.seeds.finance'
@@ -209,5 +214,28 @@ export const createOrderBattle = async (
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const getBattleParticipants = async (
+  battleId: string,
+  params: BattleParticipantsI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await teamBattleService.get(`${battleId}/participants`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
   }
 };

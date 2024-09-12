@@ -2487,6 +2487,13 @@ export default {
       sponsor: "Sponsor",
       sponsors: "Sponsor",
       tnc: "Syarat dan Ketentuan",
+    },
+    participant: {
+      participant: "Peserta",
+      noData: "Belum ada data",
+      emptyTitle: "Peserta",
+      frontTitle: "Babak ",
+      backTitle: ""
     }
   }
 };

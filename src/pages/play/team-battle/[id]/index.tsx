@@ -37,6 +37,7 @@ const MainTeamBattle = (): React.ReactElement => {
   const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPopUpJoinBattle, setShowPopUpJoinBattle] = useState<boolean>(false);
   const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
   const [data, setData] = useState<TeamBattleDetail>();
@@ -51,10 +52,13 @@ const MainTeamBattle = (): React.ReactElement => {
 
   const handleGetDetailBattle = async (): Promise<void> => {
     try {
+      setIsLoading(true);
       const response = await getBattleDetail(id as string);
       setData(response);
     } catch (error: any) {
       toast(error.message, { type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -208,197 +212,219 @@ const MainTeamBattle = (): React.ReactElement => {
                 className="absolute w-28 h-32 -right-6 -bottom-14"
               />
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <Typography className="text-[#3D3D3D] font-poppins text-xl font-semibold">
-                It`s time to
-              </Typography>
-              <Typography className="text-[#407F74] font-poppins text-5xl font-bold">
-                Battle!
-              </Typography>
-            </div>
-            <div className="text-xs lg:text-lg text-[#3D3D3D] font-semibold">
-              <div className="w-full">
-                <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.period')}</div>
-                  <div>
-                    : {`
-                        ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
-                        ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
-                      }
+            {
+              isLoading ?
+                <div className="w-full flex justify-center h-fit my-8">
+                  <div className="h-[60px]">
+                    <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
                   </div>
                 </div>
-                <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.registration')}</div>
-                  <div>
-                    : {`
-                        ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
-                        ${getBattlePeriod(new Date(data?.registration_end ?? '2024-12-31T23:59:00Z'))}`
-                      }
+                :
+                <>
+                  <div className="flex flex-col justify-center items-center">
+                    <Typography className="text-[#3D3D3D] font-poppins text-xl font-semibold">
+                      It`s time to
+                    </Typography>
+                    <Typography className="text-[#407F74] font-poppins text-5xl font-bold">
+                      Battle!
+                    </Typography>
                   </div>
-                </div>
-                <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.elimination')}</div>
-                  <div>
-                    : {`
-                        ${getBattlePeriod(new Date(data?.elimination_start ?? '2024-12-31T23:59:00Z'))} -
-                        ${getBattlePeriod(new Date(data?.elimination_end ?? '2024-12-31T23:59:00Z'))}`
-                      }
+                  <div className="text-xs lg:text-lg text-[#3D3D3D] font-semibold">
+                    <div className="w-full">
+                      <div className="flex gap-2 justify-between">
+                        <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.period')}</div>
+                        <div>
+                          : {`
+                              ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
+                              ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
+                            }
+                        </div>
+                      </div>
+                      <div className="flex gap-2 justify-between">
+                        <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.registration')}</div>
+                        <div>
+                          : {`
+                              ${getBattlePeriod(new Date(data?.registration_start ?? '2024-12-31T23:59:00Z'))} -
+                              ${getBattlePeriod(new Date(data?.registration_end ?? '2024-12-31T23:59:00Z'))}`
+                            }
+                        </div>
+                      </div>
+                      <div className="flex gap-2 justify-between">
+                        <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.elimination')}</div>
+                        <div>
+                          : {`
+                              ${getBattlePeriod(new Date(data?.elimination_start ?? '2024-12-31T23:59:00Z'))} -
+                              ${getBattlePeriod(new Date(data?.elimination_end ?? '2024-12-31T23:59:00Z'))}`
+                            }
+                        </div>
+                      </div>
+                      <div className="flex gap-2 justify-between">
+                        <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.semifinal')}</div>
+                        <div>
+                          : {`
+                              ${getBattlePeriod(new Date(data?.semifinal_start ?? '2024-12-31T23:59:00Z'))} -
+                              ${getBattlePeriod(new Date(data?.semifinal_end ?? '2024-12-31T23:59:00Z'))}`
+                            }
+                        </div>
+                      </div>
+                      <div className="flex gap-2 justify-between">
+                        <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.final')}</div>
+                        <div>
+                          : {`
+                              ${getBattlePeriod(new Date(data?.final_start ?? '2024-12-31T23:59:00Z'))} -
+                              ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
+                            }
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-center items-center text-sm mt-4">
+                      <div>{t('teamBattle.mainPage.participants')}</div>
+                      <div className="flex justify-center items-start gap-1 mt-2">
+                        <div className="w-[30px] h-[30px]">
+                          <Image
+                            className="w-full h-full"
+                            src={GroupIcon}
+                            width={100}
+                            height={100}
+                            alt={'GroupIcon'}
+                          />
+                        </div>
+                        <div>{data?.participants ?? 0}</div>
+                      </div>
+                    </div>
+                    <div className="mt-4 hidden lg:flex">
+                      <Button
+                        onClick={handleRedirectJoin}
+                        className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
+                      >
+                        {
+                          ((data?.is_joined) ?? false)
+                            ? t('teamBattle.mainPage.play')
+                            : t('teamBattle.mainPage.join')
+                        }
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.semifinal')}</div>
-                  <div>
-                    : {`
-                        ${getBattlePeriod(new Date(data?.semifinal_start ?? '2024-12-31T23:59:00Z'))} -
-                        ${getBattlePeriod(new Date(data?.semifinal_end ?? '2024-12-31T23:59:00Z'))}`
-                      }
-                  </div>
-                </div>
-                <div className="flex gap-2 justify-between">
-                  <div className="w-[70px] lg:w-[110px]">{t('teamBattle.mainPage.final')}</div>
-                  <div>
-                    : {`
-                        ${getBattlePeriod(new Date(data?.final_start ?? '2024-12-31T23:59:00Z'))} -
-                        ${getBattlePeriod(new Date(data?.final_end ?? '2024-12-31T23:59:00Z'))}`
-                      }
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center items-center text-sm mt-4">
-                <div>{t('teamBattle.mainPage.participants')}</div>
-                <div className="flex justify-center items-start gap-1 mt-2">
-                  <div className="w-[30px] h-[30px]">
-                    <Image
-                      className="w-full h-full"
-                      src={GroupIcon}
-                      width={100}
-                      height={100}
-                      alt={'GroupIcon'}
-                    />
-                  </div>
-                  <div>{data?.participants ?? 0}</div>
-                </div>
-              </div>
-              <div className="mt-4 hidden lg:flex">
-                <Button
-                  onClick={handleRedirectJoin}
-                  className="w-full rounded-full border-[2px] bg-[#2934B2] border-white text-sm font-semibold font-poppins"
-                >
-                  {
-                    ((data?.is_joined) ?? false)
-                      ? t('teamBattle.mainPage.play')
-                      : t('teamBattle.mainPage.join')
-                  }
-                </Button>
-              </div>
-            </div>
+                </>
+            }
           </div>
 
           <div className="hidden lg:flex flex-col w-[400px] justify-center items-center gap-2 border-2 border-x-white border-b-white rounded-lg py-8 px-2 bg-white/50 relative mt-4">
-            <div className="w-full flex flex-col justify-center items-center px-2">
-              <div className="flex gap-2 justify-center items-end">
-                <div className="flex justify-center items-center">
-                  <Image
-                    className="w-[35px] h-[35px]"
-                    src={GoldCrown}
-                    width={100}
-                    height={100}
-                    alt={'GoldCrown'}
-                  />
+          {
+            isLoading ?
+              <div className="w-full flex justify-center h-fit my-8">
+                <div className="h-[60px]">
+                  <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
                 </div>
-                <div>1st</div>
               </div>
-              <div className="font-bold text-lg">
-                {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace('Rp', '')}`}
-              </div>
-            </div>
-            <div className="w-full flex justify-between px-2">
-              <div className="flex flex-col justify-center items-center">
-                <div className="flex gap-2">
-                  <div className="flex justify-center items-center">
-                    <Image
-                      className="w-[20px] h-[20px]"
-                      src={SilverMedal}
-                      width={100}
-                      height={100}
-                      alt={'SilverMedal'}
-                    />
+              :
+              <>
+                <div className="w-full flex flex-col justify-center items-center px-2">
+                  <div className="flex gap-2 justify-center items-end">
+                    <div className="flex justify-center items-center">
+                      <Image
+                        className="w-[35px] h-[35px]"
+                        src={GoldCrown}
+                        width={100}
+                        height={100}
+                        alt={'GoldCrown'}
+                      />
+                    </div>
+                    <div>1st</div>
                   </div>
-                  <div>2nd</div>
-                </div>
-                <div className="font-bold text-lg">
-                  {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace('Rp', '')}`}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <div className="flex gap-2">
-                  <div className="flex justify-center items-center">
-                    <Image
-                      className="w-[20px] h-[20px]"
-                      src={BronzeMedal}
-                      width={100}
-                      height={100}
-                      alt={'BronzeMedal'}
-                    />
+                  <div className="font-bold text-lg">
+                    {`${standartCurrency(data?.prize[0]?.amount ?? 0).replace('Rp', '')}`}
                   </div>
-                  <div>3rd</div>
                 </div>
-                <div className="font-bold text-lg">
-                  {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace('Rp', '')}`}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center items-center gap-2">
-              <div className="text-lg text-[#3D3D3D] font-semibold">
-                {(data?.sponsors?.length ?? 0) > 1 ? t('teamBattle.mainPage.sponsors') : t('teamBattle.mainPage.sponsor')}
-              </div>
-              <div className="flex flex-wrap justify-center items-center gap-2">
-                {data?.sponsors?.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
-                  >
-                    {
-                      item?.logo === '' ?
-                        <div className='w-[65px] h-[65px] bg-white animate-pulse rounded-lg'/>
-                        :
+                <div className="w-full flex justify-between px-2">
+                  <div className="flex flex-col justify-center items-center">
+                    <div className="flex gap-2">
+                      <div className="flex justify-center items-center">
                         <Image
-                          className="w-[65px] h-auto rounded-lg"
-                          src={item?.logo}
+                          className="w-[20px] h-[20px]"
+                          src={SilverMedal}
                           width={100}
                           height={100}
-                          alt={'item?.logo'}
+                          alt={'SilverMedal'}
                         />
-                    }
+                      </div>
+                      <div>2nd</div>
+                    </div>
+                    <div className="font-bold text-lg">
+                      {`${standartCurrency(data?.prize[1]?.amount ?? 0).replace('Rp', '')}`}
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="flex flex-col justify-center items-center">
+                    <div className="flex gap-2">
+                      <div className="flex justify-center items-center">
+                        <Image
+                          className="w-[20px] h-[20px]"
+                          src={BronzeMedal}
+                          width={100}
+                          height={100}
+                          alt={'BronzeMedal'}
+                        />
+                      </div>
+                      <div>3rd</div>
+                    </div>
+                    <div className="font-bold text-lg">
+                      {`${standartCurrency(data?.prize[2]?.amount ?? 0).replace('Rp', '')}`}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <div className="text-lg text-[#3D3D3D] font-semibold">
+                    {(data?.sponsors?.length ?? 0) > 1 ? t('teamBattle.mainPage.sponsors') : t('teamBattle.mainPage.sponsor')}
+                  </div>
+                  <div className="flex flex-wrap justify-center items-center gap-2">
+                    {data?.sponsors?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-center items-center border-2 hover:border-4 duration-200 border-[#76A5D0] w-[65px] h-[65px] rounded-lg cursor-pointer"
+                      >
+                        {
+                          item?.logo === '' ?
+                            <div className='w-[65px] h-[65px] bg-white animate-pulse rounded-lg'/>
+                            :
+                            <Image
+                              className="w-[65px] h-auto rounded-lg"
+                              src={item?.logo}
+                              width={100}
+                              height={100}
+                              alt={'item?.logo'}
+                            />
+                        }
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-            <div
-              onClick={() => {
-                setShowTnc(!showTnc);
-              }}
-              className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]"
-            >
-              <div className='font-semibold'>{t('teamBattle.mainPage.tnc')}</div>
-              <div className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]">
-                <TeamBattleTnC description={languageCtx?.language === 'ID' ? data?.tnc?.id ?? '' : data?.tnc?.en ?? ''} />
-              </div>
-            </div>
+                <div
+                  onClick={() => {
+                    setShowTnc(!showTnc);
+                  }}
+                  className="flex flex-col gap-2 justify-center items-center mt-4 border-2 rounded-lg p-2 border-dashed border-[#2934B2]"
+                >
+                  <div className='font-semibold'>{t('teamBattle.mainPage.tnc')}</div>
+                  <div className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]">
+                    <TeamBattleTnC description={languageCtx?.language === 'ID' ? data?.tnc?.id ?? '' : data?.tnc?.en ?? ''} />
+                  </div>
+                </div>
 
-            <div
-              onClick={handleShowPopUpPrizeBattle}
-              className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
-            >
-              <Image
-                className="w-[20px] h-[20px]"
-                src={GreenGift}
-                width={100}
-                height={100}
-                alt={'GreenGift'}
-              />
-            </div>
+                <div
+                  onClick={handleShowPopUpPrizeBattle}
+                  className="absolute right-[10px] top-[10px] flex justify-center items-center bg-white bg-opacity-35 w-[30px] h-[30px] rounded-md cursor-pointer hover:bg-opacity-70 duration-300"
+                >
+                  <Image
+                    className="w-[20px] h-[20px]"
+                    src={GreenGift}
+                    width={100}
+                    height={100}
+                    alt={'GreenGift'}
+                  />
+                </div>
+              </>
+          }
           </div>
         </div>
 

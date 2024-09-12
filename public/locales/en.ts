@@ -2558,6 +2558,13 @@ export default {
       sponsor: "Sponsor",
       sponsors: "Sponsors",
       tnc: "Terms and Conditions",
+    },
+    participant: {
+      participant: "Participant",
+      noData: "There is no data yet",
+      emptyTitle: "Participant",
+      frontTitle: "",
+      backTitle: " Stage"
     }
   }
 };

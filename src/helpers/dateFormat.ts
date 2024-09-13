@@ -126,3 +126,7 @@ export const getEarningReceiptDate = (date: Date, locale: 'id-ID' | 'en-US'): st
 export const getBattlePeriod = (date: Date): string => {
   return moment(date).format('DD/MM/YYYY')
 };
+
+export const getBattleStageDate = (date: string): string => {
+  return moment(date).format('D MMMM YYYY');
+};

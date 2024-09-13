@@ -1,5 +1,6 @@
 import OnGoingStage from '@/components/team-battle/OnGoing.component';
 import Triangle from '@/components/team-battle/triangle.component';
+import { getBattleStageDate } from '@/helpers/dateFormat';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import moment from 'moment';
@@ -29,10 +30,6 @@ const StageBattle: React.FC = () => {
     { label: 'Final', key: 'final' }
   ];
 
-  const formatDate = (dateString: string): string => {
-    return moment(dateString).format('D MMMM YYYY');
-  };
-
   const handleSelectedSponsor = (sponsor: string): void => {
     if (selectedSponsor === sponsor) {
       setSelectedSponsor('');
@@ -58,16 +55,16 @@ const StageBattle: React.FC = () => {
     if (data != null) {
       switch (selectedCategory) {
         case 'elimination':
-          setDateScheduleStart(formatDate(data.elimination_start));
-          setDateScheduleEnd(formatDate(data.elimination_end));
+          setDateScheduleStart(getBattleStageDate(data.elimination_start));
+          setDateScheduleEnd(getBattleStageDate(data.elimination_end));
           break;
         case 'semifinal':
-          setDateScheduleStart(formatDate(data.semifinal_start));
-          setDateScheduleEnd(formatDate(data.semifinal_end));
+          setDateScheduleStart(getBattleStageDate(data.semifinal_start));
+          setDateScheduleEnd(getBattleStageDate(data.semifinal_end));
           break;
         case 'final':
-          setDateScheduleStart(formatDate(data.final_start));
-          setDateScheduleEnd(formatDate(data.final_end));
+          setDateScheduleStart(getBattleStageDate(data.final_start));
+          setDateScheduleEnd(getBattleStageDate(data.final_end));
           break;
         default:
           break;
@@ -80,9 +77,9 @@ const StageBattle: React.FC = () => {
     if (data != null) {
       if (today.isBefore(moment(data.elimination_end).startOf('day'))) {
         setSelectedCategory('elimination');
-      } else if (today.isBefore(moment(data.semifinal_end).startOf('day'))) {
+      } else if (today.isAfter(moment(data.elimination_end).startOf('day'))) {
         setSelectedCategory('semifinal');
-      } else if (today.isBefore(moment(data.final_end).startOf('day'))) {
+      } else if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
         setSelectedCategory('final');
       }
     }

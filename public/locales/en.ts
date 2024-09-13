@@ -1956,6 +1956,7 @@ export default {
     blank1: 'Opps,  There’s No Tournament Yet',
     blank2: 'Let’s join the tournament and win  prize!',
     detailRemaining: 'Remaining Time',
+    detailStarting: 'Waiting Time',
     detailPeriod: 'Tournament Period',
     detailPrize: 'Tournament Prize',
     detailTerms: 'Terms and Conditions',
@@ -1970,6 +1971,7 @@ export default {
     free: 'Free',
     join: 'Join',
     start: 'Start',
+    waiting: 'Waiting',
     participants: 'Participants',
     categoryAsset: 'Category Asset',
     circleRecommendation: 'Circle Recommendation',
@@ -2014,6 +2016,7 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Ended',
       canceled: 'Canceled',
+      joinedWaiting: 'Waiting',
       share: 'Share',
       day: 'Day',
       days: 'Days'

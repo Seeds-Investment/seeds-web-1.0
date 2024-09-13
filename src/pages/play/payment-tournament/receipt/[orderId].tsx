@@ -9,7 +9,9 @@ import {
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { getPlayById } from '@/repository/play.repository';
 import { formatCurrency } from '@/utils/common/currency';
+import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -80,6 +82,8 @@ const SuccessPaymentPage: React.FC = () => {
   const [qRisList, setQRisList] = useState<QRList[]>([]);
   const [vaList, setVaList] = useState<QRList[]>([]);
   const { t } = useTranslation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -137,9 +141,10 @@ const SuccessPaymentPage: React.FC = () => {
   }
 
   useEffect(() => {
+    void fetchTournamentData()
     void fetchOrderDetail();
     void fetchPaymentList();
-    if (orderDetail?.howToPayApi !== undefined) {
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
@@ -180,9 +185,29 @@ const SuccessPaymentPage: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const fetchTournamentData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const resp: IDetailTournament = await getPlayById(id);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`Error fetch tournament ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isStarted = (): boolean => {
+    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart < timeNow;
+  };
+
   return (
     <div className="pt-10">
-      {isLoading && <Loading />}
+      {isLoading || loading && <Loading />}
       <PageGradient
         defaultGradient
         className="relative overflow-hidden h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
@@ -557,14 +582,20 @@ const SuccessPaymentPage: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
-                    if (
-                      orderDetail?.transactionStatus === 'SUCCESS' ||
-                      orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                      orderDetail?.transactionStatus === 'SUCCEEDED'
-                    ) {
-                      void router.replace(
-                        `/play/tournament/${orderDetail?.itemId}/home`
-                      );
+                    if (isStarted()) {
+                      if (
+                        orderDetail?.transactionStatus === 'SUCCESS' ||
+                        orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                        orderDetail?.transactionStatus === 'SUCCEEDED'
+                      ) {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId}/home`
+                        );
+                      } else {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId as string}`
+                        );
+                      }
                     } else {
                       void router.replace(
                         `/play/tournament/${orderDetail?.itemId as string}`

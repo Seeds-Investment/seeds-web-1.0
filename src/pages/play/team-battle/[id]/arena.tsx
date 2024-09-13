@@ -249,8 +249,6 @@ const BattleHome: React.FC = () => {
     }
   }, [filter, userInfo, assetActiveSort, searchQuery]);
 
-  console.log(assets);
-
   return (
     <>
       {isDetailModal && (

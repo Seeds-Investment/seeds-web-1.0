@@ -171,7 +171,7 @@ export const getBattleAssets = async (
 
 export const getBattleHistoryTransaction = async (
   id: string,
-  params: { limit: number; page: number; currency: string }
+  params: { limit: number; page: number; currency: string; stage: string }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

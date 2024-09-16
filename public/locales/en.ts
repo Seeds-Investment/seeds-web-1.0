@@ -9,7 +9,7 @@ export default {
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
-    company: { title: 'Company', list1: 'About Us', seedsEventlist2: 'Career' },
+    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
 
     support: { title: 'Support' },
     legal: {

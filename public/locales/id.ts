@@ -2474,6 +2474,7 @@ export default {
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',
     chooseUniversity: 'Pilih Universitas Anda',
-    chooseCommunity: 'Pilih Komunitas Anda'
+    chooseCommunity: 'Pilih Komunitas Anda',
+    chooseRegion: 'Pilih Wilayah Anda'
   }
 };

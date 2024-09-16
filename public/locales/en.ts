@@ -2545,6 +2545,7 @@ export default {
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',
     chooseUniversity: 'Choose Your University',
-    chooseCommunity: 'Choose Your Community'
+    chooseCommunity: 'Choose Your Community',
+    chooseRegion: 'Choose Your Region'
   }
 };

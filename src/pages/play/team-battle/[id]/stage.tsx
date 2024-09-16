@@ -232,6 +232,7 @@ const StageBattle: React.FC = () => {
                     <span className="text-2xl">{data?.participants}</span>
                     <FaChevronRight
                       size={25}
+                      onClick={async() => await router.push(`/play/team-battle/${id as string}/participants`)}
                       className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                     />
                   </div>

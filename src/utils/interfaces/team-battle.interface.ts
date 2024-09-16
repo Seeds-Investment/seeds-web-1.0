@@ -110,3 +110,29 @@ export interface ICreateOrderBattle {
   take_profit?: number;
   stop_loss?: number;
 }
+
+export interface ParticipantsDataI {
+  id: string
+  user_id: string
+  name: string
+  seeds_tag: string
+  avatar: string
+  label: string
+  verified: boolean
+  battle_id: string
+  group_id: string
+  group_name: string
+  current_balance: number
+  assets_amount: number
+  rank: number
+  stage: string
+  created_at: string
+  updated_at: string
+}
+
+export interface ParticipantsMetadata {
+  total: number
+  current_page: number
+  limit: number
+  total_page: number
+}

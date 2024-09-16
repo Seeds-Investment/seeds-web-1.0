@@ -2546,6 +2546,26 @@ export default {
     placeholderInvitation: 'Input here',
     chooseUniversity: 'Choose Your University',
     chooseCommunity: 'Choose Your Community',
-    chooseRegion: 'Choose Your Region'
+    chooseRegion: 'Choose Your Region',
+    mainPage: {
+      period: "Period",
+      registration: "Registration",
+      elimination: "Elimination",
+      semifinal: "Semifinal",
+      final: "Final",
+      participants: "Participants",
+      join: "Join",
+      play: "Play",
+      sponsor: "Sponsor",
+      sponsors: "Sponsors",
+      tnc: "Terms and Conditions",
+    },
+    participant: {
+      participant: "Participant",
+      noData: "There is no data yet",
+      emptyTitle: "Participant",
+      frontTitle: "",
+      backTitle: " Stage"
+    }
   }
 };

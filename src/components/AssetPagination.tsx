@@ -5,12 +5,14 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  colorGoTo?: string;
 }
 
 const AssetPagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  onPageChange
+  onPageChange,
+  colorGoTo
 }) => {
   const [inputPage, setInputPage] = useState(currentPage);
 
@@ -102,7 +104,7 @@ const AssetPagination: React.FC<PaginationProps> = ({
         <div className="col-span-2 me-12" id="#">
           <div className="flex justify-center items-center gap-4">
             <div className="flex-none">
-              <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
+              <div className={`text-xs h-[23px] leading-[23px] block text-[${colorGoTo ?? '#BDBDBD'}]`}>
                 Go to page
               </div>
             </div>
@@ -146,7 +148,7 @@ const AssetPagination: React.FC<PaginationProps> = ({
           <div className="flex justify-center pt-2">
             <div className="flex justify-center items-center gap-4">
               <div className="flex-none">
-                <div className="text-xs h-[23px] leading-[23px] block text-[#BDBDBD]">
+                <div className={`text-xs h-[23px] leading-[23px] block text-[${colorGoTo ?? '#BDBDBD'}]`}>
                   Go to page
                 </div>
               </div>

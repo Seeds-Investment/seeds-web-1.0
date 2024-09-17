@@ -144,3 +144,7 @@ export interface MyRankBattleI {
   gain: number;
   rank: number;
 }
+
+export interface MyRankParamsI {
+  stage: string;
+}

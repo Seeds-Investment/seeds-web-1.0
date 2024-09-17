@@ -52,10 +52,9 @@ const StageBattle: React.FC = () => {
       const response = await getBattleDetail(id as string);
       setData(response);
       if (response !== undefined) {
-        const responseMyRank = await getMyRankBattle(
-          id as string,
-          response?.status
-        );
+        const responseMyRank = await getMyRankBattle(id as string, {
+          stage: response?.status
+        });
         setMyRank(responseMyRank);
       }
     } catch (error: any) {
@@ -272,6 +271,7 @@ const StageBattle: React.FC = () => {
                           );
                         }}
                         className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
+                        disabled={data?.status === 'ENDED'}
                       >
                         Enter
                       </button>
@@ -288,7 +288,7 @@ const StageBattle: React.FC = () => {
                             <div className="flex flex-col">
                               <div className="text-xs">Rank</div>
                               <div className="font-bold text-sm">
-                                {myRank?.rank}
+                                {myRank?.rank ?? 0}
                               </div>
                             </div>
                           </div>
@@ -334,6 +334,7 @@ const StageBattle: React.FC = () => {
                 await router.push(`/play/team-battle/${id as string}/arena`);
               }}
               className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
+              disabled={data?.status === 'ENDED'}
             >
               Enter
             </button>
@@ -352,7 +353,7 @@ const StageBattle: React.FC = () => {
               />
               <p className="text-sm">Your Rank</p>
               <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
-                {myRank?.rank}
+                {myRank?.rank ?? 0}
               </div>
               <div className="grid grid-cols-5 items-center gap-3 mt-10">
                 <div className="col-span-1">

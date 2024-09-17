@@ -2,6 +2,7 @@ import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import {
   type ICreateOrderBattle,
+  type MyRankParamsI,
   type TeamBattleListParams
 } from '@/utils/interfaces/team-battle.interface';
 import { toast } from 'react-toastify';
@@ -242,11 +243,12 @@ export const getBattleParticipants = async (
 
 export const getMyRankBattle = async (
   id: string,
-  stage: string
+  params: MyRankParamsI
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
-    return await teamBattleService(`/${id}/my-rank?stage=${stage}`, {
+    return await teamBattleService(`/${id}/my-rank`, {
+      params,
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${accessToken ?? ''}`

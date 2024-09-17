@@ -1884,7 +1884,13 @@ export default {
     playId: 'ID Kuis',
     shareLinks: 'Bagikan Link',
     addMore: 'Tambah power up lagi',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Selamat!',
+    winnerAlertMessage2: 'Kamu menjadi',
+    winnerAlertMessage3: 'juara',
+    winnerAlertMessage4: 'kuis',
+    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage6: 'Klaim Hadiah'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',

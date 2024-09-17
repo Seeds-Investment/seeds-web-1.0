@@ -1957,7 +1957,13 @@ export default {
     playId: 'Quiz ID',
     shareLinks: 'Share Link',
     addMore: 'Add more power up',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Congratulations!',
+    winnerAlertMessage2: 'You won the',
+    winnerAlertMessage3: '',
+    winnerAlertMessage4: 'position of',
+    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage6: 'Claim Prize'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',

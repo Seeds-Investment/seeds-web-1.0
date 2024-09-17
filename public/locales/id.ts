@@ -865,6 +865,7 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Digunakan'
     },
@@ -875,6 +876,7 @@ export default {
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
       note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
       instructionLabel: 'mBanking Transfer Instructions',
@@ -900,6 +902,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Pembelian:',
+    noMinimumPurchase: 'Tidak ada limit pembelian',
+    limitReached: 'Telah mencapai batas penggunaan kuota',
+    endsIn: 'Berakhir dalam',
+    daysRemain: 'hari',
+    dayRemain: 'hari',
+    hoursRemain: 'jam',
+    hourRemain: 'jam',
+    minutesRemain: 'menit',
+    minuteRemain: 'menit',
+    lessThanMinute: 'satu menit',
+    promoOver: 'Promo sudah berakhir',
+    totalDiscount: 'Diskon Promo:',
+    emptyVoucher1: 'Ups, Belum Ada Voucher',
+    emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
+    applied: 'Kode promo berhasil diterapkan!',
+    unApplied: 'Kode promo berhasil dihapus!',
+    apply: "Terapkan",
+    noExpired: "Tidak ada tanggal kadaluarsa",
+    havePromo: "Punya kode promo? Masukan disini!",
+    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
   },
   temporary: {
     welcome: {
@@ -1658,7 +1685,7 @@ export default {
   },
   quiz: {
     explanation: 'Penjelasan',
-    invitationCodePlaceholder: 'Input your invitation code',
+    invitationCodePlaceholder: 'Masukan kode undangan anda',
     enter: 'Enter',
     topQuiz: 'Top Quiz',
     topQuizDesc: 'Lihat peringkat terbaru untuk kuis teratas!',
@@ -1683,8 +1710,8 @@ export default {
     second: '2nd',
     third: '3rd',
     sponsors: 'Sponsor(s)',
-    community: 'Community',
-    join: 'Join',
+    community: 'Komunitas',
+    join: 'Gabung',
     loading: 'Memuat...',
     reviewQuiz: 'Review Quiz',
     continue: 'Lanjutkan',
@@ -1698,7 +1725,7 @@ export default {
     select: 'Pilih',
     quizCompanion: 'Pilih power-up kamu!',
     chooseOptions:
-      'Kesulitan? Power-up ini akan memandu kamu untuk menemukan jawaban yang tepat',
+      'Pilih Power-up bantuan Anda, Anda bahkan dapat memilih lebih dari satu!',
     freeOptions:
       '1 Power-Up Gratis! Pilihlah dengan tepat, menggukan lebih banyak akan ada biaya tambahan',
     fiftyfifty: 'Pilihan ini akan eliminasi dua jawaban yang salah.',
@@ -1739,6 +1766,7 @@ export default {
     playAgain: 'Main Lagi',
     admissionFee: 'Rp {{amount}}',
     dayDuration: '{{duration}} hari',
+    seedsCoin: 'Tukarkan {{data}} seeds coin',
     quizCategory: {
       all: 'Semua',
       allDesc:
@@ -1841,6 +1869,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
+      quizFeeTotal: 'Biaya Kuis + Bantuan Tambahan',
       lifelinesFee: 'Biaya Bantuan Tambahan',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
@@ -1854,7 +1883,9 @@ export default {
     },
     shareQuiz: 'Bagikan Kuis Ini',
     playId: 'ID Kuis',
-    shareLinks: 'Bagikan Link'
+    shareLinks: 'Bagikan Link',
+    addMore: 'Tambah power up lagi',
+    noMore: 'No more power up'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -2360,7 +2391,9 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20: 'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan',
+    text21: 'Harga Aktivasi Hentikan Kerugian',
+    text22: 'Harga aktivasi Take Profit'
   },
   discover: {
     hotNews: 'Hot News',

@@ -2,7 +2,12 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
+import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
+import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
+import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
+import PromoCode from '@/components/promocode/promoCode';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -12,6 +17,7 @@ import {
   validateInvitationCode
 } from '@/repository/quiz.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -22,18 +28,17 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
-import ThirdMedal from '../../../../assets/play/quiz/bronze-medal.png';
-import FirstMedal from '../../../../assets/play/quiz/gold-medal.png';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
-import SecondMedal from '../../../../assets/play/quiz/silver-medal.png';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
   const count = useRef(0);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -67,20 +72,29 @@ const QuizDetail = (): React.ReactElement => {
       window.localStorage.removeItem('refreshToken');
     }
   }, []);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
 
+  useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
+    
+    if (promoCodeValidationResult?.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const handleInvitationCode = async (): Promise<void> => {
     try {
@@ -123,7 +137,7 @@ const QuizDetail = (): React.ReactElement => {
     },
     [id]
   );
-  
+
   useEffect(() => {
     if (id) {
       getDetail(userInfo?.preferredCurrency ?? '');
@@ -132,15 +146,22 @@ const QuizDetail = (): React.ReactElement => {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
+
   useEffect(() => {
     if (
       detailQuiz !== undefined &&
       userInfo !== undefined &&
       count.current === 0
     ) {
+      const formattedText = (text: string): string => {
+        return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+      };
       TrackerEvent({
         event: 'SW_quiz_page_detail',
-        quizData: detailQuiz,
+        quizData: {
+          ...detailQuiz,
+          name: formattedText(detailQuiz?.name)
+        },
         userData: userInfo
       });
       count.current = 1;
@@ -154,7 +175,7 @@ const QuizDetail = (): React.ReactElement => {
       </div>
     );
   }
-  
+
   return (
     <>
       {isShareModal && (
@@ -196,7 +217,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-sm text-[#7C7C7C]">{t('quiz.played')}</div>
               </div>
               <div className="flex flex-col justify-center items-center p-4">
-                <div className="text-xl font-semibold">
+                <div className="text-xl font-semibold text-center">
                   {t('quiz.dayDuration', {
                     duration: Math.floor(
                       moment(detailQuiz?.ended_at).diff(
@@ -214,14 +235,14 @@ const QuizDetail = (): React.ReactElement => {
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Quiz Period</div>
+            <div className="text-lg font-semibold">{t('quiz.quizPeriod')}</div>
             <div className="text-lg text-[#7C7C7C]">
               {moment(detailQuiz?.started_at).format('D MMM YYYY, h a')} Jakarta
               - {moment(detailQuiz?.ended_at).format('D MMM YYYY, h a')} Jakarta
             </div>
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Terms & Conditions</div>
+            <div className="text-lg font-semibold">{t('quiz.tnc')}</div>
 
             <div
               className="text-lg text-[#7C7C7C]"
@@ -235,7 +256,7 @@ const QuizDetail = (): React.ReactElement => {
             />
           </div>
           <div className="mt-4">
-            <div className="text-lg font-semibold">Quiz Prize</div>
+            <div className="text-lg font-semibold">{t('quiz.quizPrize')}</div>
             <table className="mt-2">
               {detailQuiz?.prizes?.map((item, i) => (
                 <tr key={i}>
@@ -246,16 +267,22 @@ const QuizDetail = (): React.ReactElement => {
                           ? FirstMedal
                           : i === 1
                           ? SecondMedal
-                          : ThirdMedal
+                          : i === 2
+                          ? ThirdMedal
+                          : SubsequentMedal
                       }
                       alt={`${i}-medal`}
                       width={200}
                       height={200}
                       className="object-contain max-h-5 max-w-5"
                     />
-                    {t(
-                      `quiz.${i === 0 ? 'first' : i === 1 ? 'second' : 'third'}`
-                    )}
+                    {i <= 2
+                      ? t(
+                          `quiz.${
+                            i === 0 ? 'first' : i === 1 ? 'second' : 'third'
+                          }`
+                        )
+                      : `${i + 1}th`}
                   </td>
                   <td className="border p-3 w-full">
                     {item?.toLocaleString('id-ID', {
@@ -270,7 +297,9 @@ const QuizDetail = (): React.ReactElement => {
           <div className="mt-4 flex flex-row gap-8">
             {detailQuiz?.sponsors?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Sponsor(s)'}</div>
+                <div className="text-lg font-semibold">
+                  {t('quiz.sponsors')}
+                </div>
                 <Image
                   src={detailQuiz?.sponsors?.image_url}
                   alt=""
@@ -282,7 +311,9 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
             {detailQuiz?.communities?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
-                <div className="text-lg font-semibold">{'Community'}</div>
+                <div className="text-lg font-semibold">
+                  {t('quiz.community')}
+                </div>
                 <Image
                   src={detailQuiz?.communities?.image_url}
                   alt=""
@@ -294,8 +325,8 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-6">
-          <div className="flex flex-row justify-between items-start gap-2">
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
+          <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>
@@ -307,6 +338,27 @@ const QuizDetail = (): React.ReactElement => {
               <ShareIcon width={24} height={24} />
             </button>
           </div>
+          <div className='my-4'>
+            {
+              ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
+                <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
+            }
+          </div>
+          <div className='my-4'>
+            {detailQuiz?.is_need_invitation_code && (
+              <div>
+                <input
+                  type="text"
+                  value={invitationCode}
+                  onChange={e => {
+                    setInvitationCode(e.target.value);
+                  }}
+                  placeholder="Invitation Code"
+                  className="w-full border p-2 rounded-md"
+                />
+              </div>
+            )}
+          </div>
           {detailQuiz?.is_need_invitation_code && (
             <div>
               <input
@@ -315,7 +367,7 @@ const QuizDetail = (): React.ReactElement => {
                 onChange={e => {
                   setInvitationCode(e.target.value);
                 }}
-                placeholder="Invitation Code"
+                placeholder={`${t('quiz.invitationCodePlaceholder')}`}
                 className="w-full border p-2 rounded-md mt-2"
               />
             </div>
@@ -323,7 +375,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
-          <div className="font-semibold text-xl">
+          <div className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
@@ -331,12 +383,23 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
+          {
+            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
+              <div className="font-semibold text-xl">
+                {detailQuiz?.admission_fee === 0
+                  ? t('quiz.free')
+                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}
+              </div>
+          }
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
-              <div className="text-xs text-[#7C7C7C]">
+              <div className="text-xs text-[#7C7C7C] lg:px-2">
                 {totalAvailableCoins > 0
-                  ? `Redeem ${totalAvailableCoins} seeds coin`
+                  ? t('quiz.seedsCoin', { data: totalAvailableCoins })
                   : `Coin cannot be redeemed`}
               </div>
             </div>
@@ -346,6 +409,7 @@ const QuizDetail = (): React.ReactElement => {
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);
+                  dispatch(setPromoCodeValidationResult(0));
                 }}
               />
             </div>

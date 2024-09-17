@@ -658,7 +658,7 @@ const CommentSection: React.FC<props> = ({
                   <Typography className="text-xs md:text-sm text-neutral-soft font-poppins">
                     {dataReplyComment.length > 0 && !isDrop
                       ? `View ${dataReplyComment.length} more replies`
-                      : 'Reply'}
+                      : `${t('termAndCondition.circleMembership.reply')}`}
                   </Typography>
                 </button>
               )}

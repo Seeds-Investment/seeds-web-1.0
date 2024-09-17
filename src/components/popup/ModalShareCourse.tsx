@@ -55,11 +55,13 @@ const ModalShareCourse: React.FC<Props> = ({ onClose, url }) => {
                 value={`${baseUrl}/academy/course/${url}`}
                 className="block w-full text-[#262626] h-10 leading-4 placeholder-text-[#BDBDBD] focus:outline-none disabled:bg-[#E9E9E9] p-4 rounded-xl border border-[#BDBDBD]"
               />
-              <div
-                onClick={handleCopyClick}
-                className="w-12 lg:w-[50px] cursor-pointer flex justify-center items-center"
-              >
-                <Image alt="copy-link" src={CopyLink} className="w-[20px]" />
+              <div className="w-12 lg:w-[50px] flex justify-center items-center">
+                <Image
+                  onClick={handleCopyClick}
+                  alt="copy-link"
+                  src={CopyLink}
+                  className="w-[20px] cursor-pointer"
+                />
               </div>
             </div>
           </div>

@@ -14,6 +14,7 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 // import { useAppSelector } from '@/store/redux/store';
+import { promoValidate } from '@/repository/promo.repository';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -98,6 +99,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const invitationCode = router.query.invitationCode;
   const useCoinsParam = router.query.useCoins;
   const useCoins = useCoinsParam === 'true';
+  const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -149,6 +151,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       setLoading(false);
     }
   };
+
   const fetchData = async (): Promise<void> => {
     try {
       const response = await getUserInfo();
@@ -174,6 +177,28 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
     void fetchPaymentList();
   }, [userInfo?.preferredCurrency]);
 
+  useEffect(() => {
+    const validatePromo = async (): Promise<void> => {
+      if (promoCodeValidationResult) {
+        if (detailTournament) {
+          const admissionFee = Number(detailTournament?.admission_fee ?? 0);
+
+          const response = await promoValidate({
+            promo_code: promoCodeValidationResult?.response?.promo_code,
+            spot_type: 'Paid Tournament',
+            item_price: admissionFee,
+            item_id: detailTournament?.id,
+            currency: userInfo?.preferredCurrency ?? 'IDR',
+          });
+          
+          setNewPromoCodeDiscount(response?.total_discount)
+        }
+      }
+    };
+
+    void validatePromo();
+  }, [detailTournament]);
+
   const getDetail = useCallback(async () => {
     try {
       const resp: DetailTournament = await getPlayById(id as string);
@@ -183,6 +208,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       toast(`ERROR fetch tournament ${error as string}`);
     }
   }, [id]);
+
   useEffect(() => {
     void getDetail();
   }, [id]);
@@ -233,7 +259,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
-
+        
         if (response) {
           if (response.payment_url !== '') {
             window.open(response.payment_url as string, '_blank');
@@ -344,6 +370,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={detailTournament ?? defaultTournament}
             userInfo={userInfo ?? userDefault}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         ) : (
           <VirtualAccountGuide
@@ -353,6 +380,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             dataPost={detailTournament ?? defaultTournament}
             paymentStatus={paymentStatus}
             user_name={userInfo?.name}
+            newPromoCodeDiscount={newPromoCodeDiscount}
           />
         )}
       </Dialog>

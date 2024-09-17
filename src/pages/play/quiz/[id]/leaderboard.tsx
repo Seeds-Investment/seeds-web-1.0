@@ -61,6 +61,15 @@ const LeaderBoardPage = (): React.ReactElement => {
     }
   };
 
+  const truncateText = (text: string): string => {
+    const maxLength = window.screen.width <= 414 ? 13 : text?.length;
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  };
+
   useEffect(() => {
     if (id !== undefined) {
       void fetchPlaySimulation();
@@ -259,9 +268,9 @@ const LeaderBoardPage = (): React.ReactElement => {
                     />
                     <div className="ml-3">
                       <h2 className="font-bold">
-                        {leaderBoard[myRank - 1]?.name}
+                        {truncateText(leaderBoard[myRank - 1]?.name)}
                       </h2>
-                      <p>@{dataUser?.seedsTag}</p>
+                      <p>@{truncateText(dataUser?.seedsTag)}</p>
                       <p className="text-[#3AC4A0]">
                         {leaderBoard[myRank - 1]?.score}
                       </p>
@@ -301,10 +310,10 @@ const LeaderBoardPage = (): React.ReactElement => {
                   </div>
                   <div className="mx-3">
                     <h1 className="text-base font-normal font-poppins text-[#262626]">
-                      {leader?.name}
+                      {truncateText(leader?.name)}
                     </h1>
                     <h1 className="text-sm font-normal font-poppins text-[#7C7C7C]">
-                      @{leader?.seeds_tag}
+                      @{truncateText(leader?.seeds_tag)}
                     </h1>
                   </div>
                 </td>

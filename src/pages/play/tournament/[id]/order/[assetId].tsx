@@ -125,6 +125,7 @@ const BuyPage: React.FC = () => {
     updated_at: ''
   });
   const [sellPercent, setSellPercent] = useState<number>(0);
+  const [buyPercent, setBuyPercent] = useState<number>(0);
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingAsset, setIsLoadingAsset] = useState<boolean>(true);
@@ -159,18 +160,18 @@ const BuyPage: React.FC = () => {
         setLotSell(`${(portfolio?.total_lot * sellPercent) / 100}`);
       }
     } else {
-      if (sellPercent !== 0) {
-        setAmount(`${(ballance?.balance * sellPercent) / 100}`);
+      if (buyPercent !== 0) {
+        setAmount(`${(ballance?.balance * buyPercent) / 100}`);
         setAssetsAmount(
           (
-            (ballance?.balance * sellPercent) /
+            (ballance?.balance * buyPercent) /
             100 /
             (data?.lastPrice?.open ?? 0)
           ).toFixed(1)
         );
       }
     }
-  }, [sellPercent]);
+  }, [sellPercent, buyPercent]);
 
   useEffect(() => {
     if (
@@ -589,15 +590,15 @@ const BuyPage: React.FC = () => {
                       <Button
                         key={el.value + i}
                         variant={
-                          el.value === sellPercent ? 'filled' : 'outlined'
+                          el.value === buyPercent ? 'filled' : 'outlined'
                         }
                         className={`normal-case rounded-lg p-2 flex ite ${
-                          el.value !== sellPercent
+                          el.value !== buyPercent
                             ? 'border border-[#D9D9D9] text-black'
                             : 'bg-[#3AC4A0] text-white'
                         } font-poppins`}
                         onClick={() => {
-                          setSellPercent(el.value);
+                          setBuyPercent(el.value);
                         }}
                       >
                         {el.name}
@@ -622,6 +623,7 @@ const BuyPage: React.FC = () => {
                     onClick={() => {
                       if (parseFloat(lotSell) > 0) {
                         const newLotSell = parseFloat(lotSell) - 0.1;
+
                         setLotSell(newLotSell.toFixed(1));
                       }
                     }}
@@ -630,7 +632,7 @@ const BuyPage: React.FC = () => {
                   </Button>
                   <input
                     type="text"
-                    value={lotSell}
+                    value={parseFloat(lotSell).toFixed(1)}
                     className="focus:border-none focus:outline-none text-center min-w-[50px] max-w-[90px] text-[#BB1616] font-semibold caret-black"
                     onChange={handleLotSellChange}
                   />
@@ -880,7 +882,7 @@ const BuyPage: React.FC = () => {
                 type="button"
                 disabled={isDisable}
                 variant="filled"
-                className={`rounded-full w-full lg:w-1/5 ml-auto justify-items-end items-end py-2 ${
+                className={`rounded-full w-full lg:w-[200px] ml-auto justify-items-end items-end py-3 mb-5 ${
                   isDisable ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0]'
                 }`}
                 onClick={() => {
@@ -901,7 +903,7 @@ const BuyPage: React.FC = () => {
               <Button
                 type="button"
                 variant="filled"
-                className={`rounded-full w-full ml-auto justify-items-end items-end py-2 bg-[#DD2525]`}
+                className={`mb-5 rounded-full w-full ml-auto justify-items-end items-end py-3 bg-[#DD2525]`}
                 onClick={() => {
                   handleModal();
                 }}
@@ -1084,8 +1086,8 @@ const BuyPage: React.FC = () => {
                         </Typography>
                         {router.query.transaction === 'buy' ? (
                           <Typography className="text-[#262626] font-semibold text-xs">
-                            {sellPercent !== 0
-                              ? `${sellPercent}%`
+                            {buyPercent !== 0
+                              ? `${buyPercent}%`
                               : `${
                                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                   userInfo?.preferredCurrency
@@ -1116,9 +1118,9 @@ const BuyPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
+                                  ? `${parseFloat(limitOrder.profit)}`
                                   : limitOrder.type === 'nominal'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
+                                  ? `${parseFloat(limitOrder.profit)}`
                                   : `${
                                       userInfo?.preferredCurrency as string
                                     } ${standartCurrency(
@@ -1132,9 +1134,9 @@ const BuyPage: React.FC = () => {
                               </Typography>
                               <Typography className="text-[#262626] font-semibold text-xs">
                                 {limitOrder.type === 'percent'
-                                  ? `${parseFloat(limitOrder.loss)}0 `
+                                  ? `${parseFloat(limitOrder.loss)} `
                                   : limitOrder.type === 'nominal'
-                                  ? `${parseFloat(limitOrder.profit)}0 `
+                                  ? `${parseFloat(limitOrder.loss)} `
                                   : `${
                                       userInfo?.preferredCurrency as string
                                     } ${standartCurrency(

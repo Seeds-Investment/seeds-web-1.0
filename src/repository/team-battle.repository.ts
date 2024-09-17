@@ -239,3 +239,20 @@ export const getBattleParticipants = async (
     await Promise.reject(error);
   }
 };
+
+export const getMyRankBattle = async (
+  id: string,
+  stage: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/my-rank?stage=${stage}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
+  }
+};

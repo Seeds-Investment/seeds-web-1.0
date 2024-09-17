@@ -1,8 +1,14 @@
 import OnGoingStage from '@/components/team-battle/OnGoing.component';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
-import { getBattleDetail } from '@/repository/team-battle.repository';
-import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import {
+  getBattleDetail,
+  getMyRankBattle
+} from '@/repository/team-battle.repository';
+import {
+  type MyRankBattleI,
+  type TeamBattleDetail
+} from '@/utils/interfaces/team-battle.interface';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -21,6 +27,7 @@ const StageBattle: React.FC = () => {
     useState<string>('elimination');
   const [selectedSponsor, setSelectedSponsor] = useState('');
   const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
+  const [myRank, setMyRank] = useState<MyRankBattleI | undefined>(undefined);
   const [dateScheduleStart, setDateScheduleStart] = useState('');
   const [dateScheduleEnd, setDateScheduleEnd] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -44,6 +51,13 @@ const StageBattle: React.FC = () => {
       setIsLoading(true);
       const response = await getBattleDetail(id as string);
       setData(response);
+      if (response !== undefined) {
+        const responseMyRank = await getMyRankBattle(
+          id as string,
+          response?.status
+        );
+        setMyRank(responseMyRank);
+      }
     } catch (error: any) {
       toast(error.message, { type: 'error' });
     } finally {
@@ -75,12 +89,12 @@ const StageBattle: React.FC = () => {
   const today = moment().startOf('day');
   const determineCurrentCategory = (): void => {
     if (data != null) {
-      if (today.isBefore(moment(data.elimination_end).startOf('day'))) {
-        setSelectedCategory('elimination');
+      if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
+        setSelectedCategory('final');
       } else if (today.isAfter(moment(data.elimination_end).startOf('day'))) {
         setSelectedCategory('semifinal');
-      } else if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
-        setSelectedCategory('final');
+      } else if (today.isAfter(moment(data.registration_end).startOf('day'))) {
+        setSelectedCategory('elimination');
       }
     }
   };
@@ -273,7 +287,9 @@ const StageBattle: React.FC = () => {
                             />
                             <div className="flex flex-col">
                               <div className="text-xs">Rank</div>
-                              <div className="font-bold text-sm">120</div>
+                              <div className="font-bold text-sm">
+                                {myRank?.rank}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -336,7 +352,7 @@ const StageBattle: React.FC = () => {
               />
               <p className="text-sm">Your Rank</p>
               <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
-                120
+                {myRank?.rank}
               </div>
               <div className="grid grid-cols-5 items-center gap-3 mt-10">
                 <div className="col-span-1">

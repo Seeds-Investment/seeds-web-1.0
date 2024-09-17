@@ -127,7 +127,9 @@ export const joinTournament = async (
   phoneNumber: string,
   promoCode: string,
   invitationCode: string,
-  isUseCoins: boolean
+  isUseCoins: boolean,
+  successUrl?: string,
+  cancelUrl?: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -146,7 +148,9 @@ export const joinTournament = async (
         phone_number: phoneNumber,
         promo_code: promoCode,
         invitation_code: invitationCode,
-        is_use_coins: isUseCoins
+        is_use_coins: isUseCoins,
+        success_url: successUrl ?? '',
+        cancel_url: cancelUrl ?? ''
       },
       {
         headers: {
@@ -746,7 +750,7 @@ export const getAllPlayCenter = async (
 
 export const getUserRankLeaderboard = async (
   userId: string,
-  playId: string,
+  playId: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

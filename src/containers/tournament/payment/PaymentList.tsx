@@ -87,6 +87,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [virtualList, setVirtualList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
@@ -140,6 +141,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       );
       setVirtualList(data.type_va);
       setQRisList(data.type_qris);
+      setCcList(data.type_cc);
       setEWalletList(data.type_ewallet);
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
@@ -202,16 +204,32 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       }
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       if (detailTournament) {
-        const response = await joinTournament(
-          detailTournament.id,
-          userInfo?.preferredCurrency ?? '',
-          paymentGateway,
-          paymentMethod,
-          `+62${phoneNumber as string}`,
-          promoCodeValidationResult?.promo_code ?? '',
-          (invitationCode as string) || '',
-          useCoins
-        );
+        let response;
+        if (option?.payment_type === 'cc') {
+          response = await joinTournament(
+            detailTournament.id,
+            userInfo?.preferredCurrency ?? '',
+            paymentGateway,
+            paymentMethod,
+            `+62${phoneNumber as string}`,
+            promoCodeValidationResult?.promo_code ?? '',
+            (invitationCode as string) || '',
+            useCoins,
+            `https://seeds.finance/play/tournament/${detailTournament.id}/`,
+            `https://seeds.finance/play/tournament/${detailTournament.id}/`
+          );
+        } else {
+          response = await joinTournament(
+            detailTournament.id,
+            userInfo?.preferredCurrency ?? '',
+            paymentGateway,
+            paymentMethod,
+            `+62${phoneNumber as string}`,
+            promoCodeValidationResult?.promo_code ?? '',
+            (invitationCode as string) || '',
+            useCoins
+          );
+        }
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
@@ -250,6 +268,8 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -278,6 +298,12 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
+          onChange={setOption}
+          currentValue={option}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.eWalletLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option}
         />

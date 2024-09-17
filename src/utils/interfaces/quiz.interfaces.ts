@@ -8,6 +8,8 @@ export interface JoinQuizI {
   promo_code: string;
   invitation_code: string;
   is_use_coins: boolean;
+  success_url?: string;
+  cancel_url?: string;
 }
 
 export enum QuizStatus {

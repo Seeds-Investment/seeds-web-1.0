@@ -62,6 +62,7 @@ const PaymentList: React.FC<props> = ({
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserData | null>(null);
@@ -75,6 +76,7 @@ const PaymentList: React.FC<props> = ({
       );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
+      setCcList(data.type_cc);
     } catch (error: any) {
       toast(`Error fetching Payment List: ${error.message as string}`);
     } finally {
@@ -124,18 +126,35 @@ const PaymentList: React.FC<props> = ({
       }
       const replaceDataPost: PaymentData = dataPost;
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      let response;
       if (replaceDataPost.quiz) {
-        const response = await joinQuiz({
-          quiz_id: replaceDataPost?.payment?.quiz_id,
-          lifelines: replaceDataPost?.payment?.lifelines,
-          language: replaceDataPost?.payment?.language,
-          payment_gateway: paymentGateway,
-          payment_method: paymentMethod,
-          phone_number: `+62${phoneNumber as string}`,
-          promo_code: '',
-          invitation_code: invitationCode as string,
-          is_use_coins: useCoins as boolean
-        });
+        if (option?.payment_type === 'cc') {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean,
+            success_url: `https://seeds.finance/play/quiz/${replaceDataPost?.payment?.quiz_id}`,
+            cancel_url: `https://seeds.finance/play/quiz/${replaceDataPost?.payment?.quiz_id}`
+          });
+        } else {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean
+          });
+        }
 
         if (response) {
           if (response.payment_url !== '') {
@@ -208,6 +227,8 @@ const PaymentList: React.FC<props> = ({
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -230,6 +251,12 @@ const PaymentList: React.FC<props> = ({
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
+          onChange={setOption}
+          currentValue={option}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.eWalletLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option}
         />

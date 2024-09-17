@@ -1,10 +1,10 @@
 'use client';
 
-import Modal from '@/pages/play/quiz/[id]/section/modal-winner';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { QuizWinnerAlert, XIcon } from 'public/assets/vector';
 import { useTranslation } from 'react-i18next';
+import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
@@ -28,6 +28,7 @@ const ModalQuizWinnerAlert: React.FC<Props> = ({
   return (
     <Modal
       onClose={onClose}
+      topPlacement='top-[40%]'
       backdropClasses="z-40 fixed top-0 left-0 w-full h-screen bg-black/50 flex justify-start items-start"
     >
       <div className="w-full flex justify-end items-end">

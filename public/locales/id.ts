@@ -1919,7 +1919,6 @@ export default {
     blank1: 'Ups,  Belum Ada Turnamen',
     blank2: 'Yuk, ikuti turnamennya dan menangkan hadiahnya!',
     detailRemaining: 'Sisa Waktu',
-    detailStarting: 'Waktu Menunggu',
     detailPeriod: 'Periode Turnamen',
     detailPrize: 'Hadiah Turnamen',
     detailTerms: 'Syarat dan Ketentuan',
@@ -1934,7 +1933,6 @@ export default {
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
-    waiting: 'Menunggu',
     participants: 'Peserta',
     categoryAsset: 'Kategori Aset',
     circleRecommendation: 'Rekomendasi Circle',
@@ -1979,7 +1977,6 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Berakhir',
       canceled: 'Dibatalkan',
-      joinedWaiting: 'Menunggu',
       share: 'Share',
       day: 'Hari',
       days: 'Hari'

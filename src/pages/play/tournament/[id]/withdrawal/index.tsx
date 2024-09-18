@@ -2,7 +2,6 @@
 import ValidatePin from '@/components/forms/ValidatePin';
 import Loading from '@/components/popup/Loading';
 import IndexWithdrawal from '@/components/quiz/Withdrawal';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withRedirect from '@/helpers/withRedirect';
 import useQuizCashout from '@/hooks/useCashoutQuiz';
 import { useRouter } from 'next/router';
@@ -20,8 +19,6 @@ export interface IWithdrawalAccount {
 const Withdrawal: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { id } = router.query;
-  useGetDetailTournament(id as string);
   const [select, setSelect] = useState(0);
   const [pin, setPin] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState(false);

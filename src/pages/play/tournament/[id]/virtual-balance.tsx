@@ -9,7 +9,6 @@ import ModalCancelOrder from '@/components/popup/ModalCancelOrder';
 import VirtualBalanceChart from '@/containers/tournament/portfolio-chart/VirtualBalanceChart';
 import { standartCurrency } from '@/helpers/currency';
 import { getShortDate } from '@/helpers/dateFormat';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import {
   getHistoryTransaction,
@@ -74,7 +73,6 @@ interface UserInfo {
 const VirtualBalance = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
-  useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const [loadingBallance, setLoadingBallance] = useState<boolean>(false);
   const [loadingOpenOrder, setLoadingOpenOrder] = useState<boolean>(false);

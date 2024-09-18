@@ -1,7 +1,6 @@
 import Loading from '@/components/popup/Loading';
 import { standartCurrency } from '@/helpers/currency';
 import { getLastUpdated } from '@/helpers/dateFormat';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import {
   getLeaderboardByPlayId,
@@ -53,7 +52,6 @@ const LeaderBoardPage: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { id } = router.query;
-  useGetDetailTournament(id as string);
   const [loading, setLoading] = useState(false);
   const [loadingUserRank, setLoadingUserRank] = useState<boolean>(false);
   const [currentRank, setCurrentRank] = useState<number>(0);

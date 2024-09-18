@@ -15,7 +15,6 @@ import AssetPagination from '@/components/AssetPagination';
 import Loading from '@/components/popup/Loading';
 import TournamentPortfolioChart from '@/containers/tournament/portfolio-chart/TournamentPortfolioChart';
 import { standartCurrency } from '@/helpers/currency';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import {
   getActiveAsset,
@@ -48,7 +47,6 @@ interface StatusPortfolio {
 const Portfolio = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
-  useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const [loadingBallance, setLoadingBallance] = useState<boolean>(false);
   const [loadingPortfolio, setLoadingPortfolio] = useState<boolean>(false);

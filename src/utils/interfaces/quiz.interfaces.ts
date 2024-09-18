@@ -70,9 +70,6 @@ export interface IDetailQuiz {
   created_at: Date;
   is_need_invitation_code: boolean;
   quiz_unique_id: string;
-  prize_type: string
-  winner_link_url: string[]
-  winner_image_url: string[]
 }
 
 export const initialDetailQuiz = {

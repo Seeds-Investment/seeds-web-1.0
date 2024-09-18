@@ -188,10 +188,10 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             spot_type: 'Paid Tournament',
             item_price: admissionFee,
             item_id: detailTournament?.id,
-            currency: userInfo?.preferredCurrency ?? 'IDR',
+            currency: userInfo?.preferredCurrency ?? 'IDR'
           });
-          
-          setNewPromoCodeDiscount(response?.total_discount)
+
+          setNewPromoCodeDiscount(response?.total_discount);
         }
       }
     };
@@ -241,8 +241,12 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
             promoCodeValidationResult?.promo_code ?? '',
             (invitationCode as string) || '',
             useCoins,
-            `https://seeds.finance/play/tournament/${detailTournament.id}/`,
-            `https://seeds.finance/play/tournament/${detailTournament.id}/`
+            `${process.env.NEXT_PUBLIC_DOMAIN as string}/play/tournament/${
+              detailTournament.id
+            }/`,
+            `${process.env.NEXT_PUBLIC_DOMAIN as string}/play/tournament/${
+              detailTournament.id
+            }/`
           );
         } else {
           response = await joinTournament(
@@ -259,7 +263,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
-        
+
         if (response) {
           if (response.payment_url !== '') {
             window.open(response.payment_url as string, '_blank');

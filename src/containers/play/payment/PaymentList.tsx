@@ -83,7 +83,7 @@ const userDefault: UserInfo = {
   refCodeUsage: 0,
   region: '',
   seedsTag: '',
-  verified: false,
+  verified: false
 };
 
 const PaymentList: React.FC<props> = ({
@@ -160,10 +160,10 @@ const PaymentList: React.FC<props> = ({
             spot_type: 'Paid Quiz',
             item_price: totalItemPrice,
             item_id: dataPost.payment.quiz_id,
-            currency: userInfo?.preferredCurrency ?? 'IDR',
+            currency: userInfo?.preferredCurrency ?? 'IDR'
           });
-          
-          setNewPromoCodeDiscount(response?.total_discount)
+
+          setNewPromoCodeDiscount(response?.total_discount);
         } else {
           const admissionFee = Number(dataPost?.premium_fee ?? 0);
           const response = await promoValidate({
@@ -171,17 +171,17 @@ const PaymentList: React.FC<props> = ({
             spot_type: 'Premium Circle',
             item_price: admissionFee,
             item_id: dataPost.id,
-            currency: userInfo?.preferredCurrency ?? 'IDR',
+            currency: userInfo?.preferredCurrency ?? 'IDR'
           });
-          
-          setNewPromoCodeDiscount(response?.total_discount)
+
+          setNewPromoCodeDiscount(response?.total_discount);
         }
       }
     };
 
     void validatePromo();
   }, []);
-  
+
   const handlePay = async (
     type: string,
     paymentGateway: string,
@@ -212,8 +212,12 @@ const PaymentList: React.FC<props> = ({
             promo_code: '',
             invitation_code: invitationCode as string,
             is_use_coins: useCoins as boolean,
-            success_url: `https://seeds.finance/play/quiz/${replaceDataPost?.payment?.quiz_id}`,
-            cancel_url: `https://seeds.finance/play/quiz/${replaceDataPost?.payment?.quiz_id}`
+            success_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`,
+            cancel_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`
           });
         } else {
           response = await joinQuiz({
@@ -292,7 +296,8 @@ const PaymentList: React.FC<props> = ({
       _totalFee =
         Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
     } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
       _adminFee = dataPost?.admin_fee as number;
       _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }

@@ -12,9 +12,11 @@ import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import PromoCode from '@/components/promocode/promoCode';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
+import { useIsStarted } from '@/helpers/useIsStarted';
 import withRedirect from '@/helpers/withRedirect';
 import {
   getPlayById,
+  getPlayByIdWithAuth,
   joinTournament,
   validateInvitationCode
 } from '@/repository/play.repository';
@@ -46,7 +48,8 @@ const TournamentDetail: React.FC = () => {
   const id = router.query.id;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingDetailAuth, setLoadingDetailAuth] = useState<boolean>(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
@@ -55,6 +58,8 @@ const TournamentDetail: React.FC = () => {
   const [validInvit, setValidInvit] = useState<boolean>(false);
   const [useCoins, setUseCoins] = useState<boolean>(false);
   const [totalAvailableCoins, setTotalAvailableCoins] = useState<number>(0);
+  const accessToken = localStorage.getItem('accessToken');
+  const isStarted = useIsStarted(detailTournament?.play_time);
 
   const handleGetSeedsCoin = async (): Promise<void> => {
     try {
@@ -162,7 +167,11 @@ const TournamentDetail: React.FC = () => {
         false
       );
       if (response) {
-        router.push(`/play/tournament/${id as string}/home`);
+        if (isStarted) {
+          await router.push(`/play/tournament/${id as string}/home`);
+        } else {
+          toast.success('Join tournament successful');
+        }
       }
     } catch (error) {
       toast.error('Error joining tournament');
@@ -181,15 +190,30 @@ const TournamentDetail: React.FC = () => {
     }
   }, [id]);
 
+  const getDetailWithAuth = useCallback(async () => {
+    try {
+      setLoadingDetailAuth(true);
+      const resp: IDetailTournament = await getPlayByIdWithAuth(id as string);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`Error fetch tournament ${error as string}`);
+    } finally {
+      setLoadingDetailAuth(false);
+    }
+  }, [id]);
+
   useEffect(() => {
-    if (id !== null) {
-      getDetail();
+    if ((id !== null) && (id !== undefined)) {
+      if (accessToken === null) {
+        getDetail();
+      } else {
+        getDetailWithAuth();
+      }
     }
     if (userInfo?.preferredCurrency !== undefined) {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
-
   const handleCopyClick = async (): Promise<void> => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const textToCopy = `${detailTournament?.play_id}`;
@@ -198,12 +222,140 @@ const TournamentDetail: React.FC = () => {
     });
   };
 
-  const isStarted = (): boolean => {
-    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
-    const timeStart = new Date(playTime).getTime();
-    const timeNow = Date.now();
+  const handleRedirectPage = async (): Promise<void> => {
+    if (localStorage.getItem('accessToken') !== null) {
+      if (detailTournament?.is_joined === true) {
+        if (isStarted) {
+          router.push(`/play/tournament/${id as string}/home`);
+        }
+      } else {
+        if (detailTournament?.admission_fee === 0) {
+          if (isStarted) {
+            if (detailTournament?.is_need_invitation_code) {
+              if (invitationCode !== '') {
+                handleInvitationCodeFree();
+              }
+            } else {
+              await handleJoinFreeTournament();
+            }
+          } else {
+            try {
+              await handleJoinFreeTournament();
+              window.location.reload();
+            } catch (error) {
+              toast.error(`Error joining free tournament: ${error as string}`);
+            }
+          }
+        } else {
+          if (detailTournament?.is_need_invitation_code) {
+            if (invitationCode !== '') {
+              handleInvitationCode();
+            }
+          } else {
+            if (!validInvit) {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              await router.push(`/play/tournament/${id as string}/payment?useCoins=${useCoins}`);
+            }
+          }
+        }
+      }
+    } else if (localStorage.getItem('accessToken') === null && isGuest()) {
+      router.push('/auth');
+    } else {
+      withRedirect(router, { ti: id as string }, '/auth');
+    }
+  };
 
-    return timeStart > timeNow;
+  const isDisabled = (): boolean => {
+    if (localStorage.getItem('accessToken') !== null) {
+      if (detailTournament?.is_joined === true) {
+        if (isStarted) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        if (detailTournament?.admission_fee === 0) {
+          if (isStarted) {
+            if (detailTournament?.is_need_invitation_code) {
+              if (invitationCode !== '') {
+                return false;
+              } else {
+                return true;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          if (detailTournament?.is_need_invitation_code) {
+            if (invitationCode !== '') {
+              return false;
+            } else {
+              return true;
+            }
+          } else {
+            if (!validInvit) {
+              return false;
+            } else {
+              return true;
+            }
+          }
+        }
+      }
+    } else if (localStorage.getItem('accessToken') === null && isGuest()) {
+      return false;
+    } else {
+      return false;
+    }
+  };
+
+  const buttonColor = (): string => {
+    if (localStorage.getItem('accessToken') !== null) {
+      if (detailTournament?.is_joined === true) {
+        if (isStarted) {
+          return 'bg-seeds-button-green text-white';
+        } else {
+          return 'bg-[#7d7d7d] text-[#262626]';
+        }
+      } else {
+        if (detailTournament?.admission_fee === 0) {
+          if (isStarted) {
+            if (detailTournament?.is_need_invitation_code) {
+              if (invitationCode !== '') {
+                return 'bg-seeds-button-green text-white';
+              } else {
+                return 'bg-[#7d7d7d] text-[#262626]';
+              }
+            } else {
+              return 'bg-seeds-button-green text-white';
+            }
+          } else {
+            return 'bg-seeds-button-green text-white';
+          }
+        } else {
+          if (detailTournament?.is_need_invitation_code) {
+            if (invitationCode !== '') {
+              return 'bg-seeds-button-green text-white';
+            } else {
+              return 'bg-[#7d7d7d] text-[#262626]';
+            }
+          } else {
+            if (!validInvit) {
+              return 'bg-seeds-button-green text-white';
+            } else {
+              return 'bg-[#7d7d7d] text-[#262626]';
+            }
+          }
+        }
+      }
+    } else if (localStorage.getItem('accessToken') === null && isGuest()) {
+      return 'bg-seeds-button-green text-white';
+    } else {
+      return 'bg-seeds-button-green text-white';
+    }
   };
 
   return (
@@ -217,7 +369,7 @@ const TournamentDetail: React.FC = () => {
           playId={detailTournament?.play_id ?? ''}
         />
       )}
-      {detailTournament === undefined && loading && <Loading />}
+      {detailTournament === undefined && (accessToken !== null ? loadingDetailAuth : loading) && <Loading />}
       <div className="bg-gradient-to-bl from-[#50D4B2] to-[#E2E2E2] flex flex-col justify-center items-center relative overflow-hidden h-[420px] rounded-xl font-poppins">
         <div className="absolute bottom-[-25px] text-center">
           <Typography className="text-[26px] font-semibold font-poppins">
@@ -252,33 +404,37 @@ const TournamentDetail: React.FC = () => {
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
-          {
-            detailTournament?.end_time &&
-              <div className="mt-4 flex justify-between">
-                <div className="flex flex-col">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {t('tournament.detailRemaining')}
-                  </Typography>
-                  <CountdownTimer
-                    deadline={
-                      detailTournament?.end_time
-                        ? detailTournament.end_time.toString()
-                        : ''
-                    }
-                  />
+            {
+              detailTournament !== undefined &&
+                <div className="mt-4 flex justify-between">
+                  <div className="flex flex-col">
+                    <Typography className="text-lg font-semibold font-poppins">
+                      {isStarted ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
+                    </Typography>
+                    <CountdownTimer
+                      deadline={
+                        isStarted
+                          ? detailTournament?.end_time
+                            ? detailTournament.end_time.toString()
+                            : ''
+                          : detailTournament?.play_time
+                            ? detailTournament.play_time.toString()
+                            : ''
+                      }
+                    />
+                  </div>
+                  <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+                    <ShareIcon
+                      onClick={() => {
+                        setIsShareModal(true);
+                      }}
+                      width={24}
+                      height={24}
+                      className="text-[#3AC4A0]"
+                    />
+                  </button>
                 </div>
-                <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
-                  <ShareIcon
-                    onClick={() => {
-                      setIsShareModal(true);
-                    }}
-                    width={24}
-                    height={24}
-                    className="text-[#3AC4A0]"
-                  />
-                </button>
-              </div>
-          }
+            }
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.detailPeriod')}
@@ -517,54 +673,14 @@ const TournamentDetail: React.FC = () => {
             </div>
           </div>
           <button
-            onClick={async () => {
-              if (localStorage.getItem('accessToken') !== null) {
-                if (detailTournament?.is_joined === true) {
-                  router.push(`/play/tournament/${id as string}/home`);
-                } else {
-                  if (detailTournament?.admission_fee === 0) {
-                    if (invitationCode === '') {
-                      await handleJoinFreeTournament();
-                    } else {
-                      handleInvitationCodeFree();
-                    }
-                  } else {
-                    if (invitationCode === '' && !validInvit) {
-                      router.push(
-                        `/play/tournament/${
-                          id as string
-                          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        }/payment?useCoins=${useCoins}`
-                      );
-                    } else {
-                      handleInvitationCode();
-                    }
-                  }
-                }
-              } else if (
-                localStorage.getItem('accessToken') === null &&
-                isGuest()
-              ) {
-                router.push('/auth');
-              } else {
-                withRedirect(router, { ti: id as string }, '/auth');
-              }
-            }}
-            disabled={
-              (invitationCode === '' &&
-                detailTournament?.is_need_invitation_code === true) ||
-              isStarted()
-            }
-            // className="bg-seeds-button-green text-white px-10 py-2 rounded-full font-semibold mt-4 w-full"
-            className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${
-              invitationCode === '' &&
-              detailTournament?.is_need_invitation_code === true
-                ? 'bg-[#7d7d7d]'
-                : 'bg-seeds-button-green text-white'
-            }`}
+            onClick={async () => { await handleRedirectPage(); }}
+            disabled={isDisabled()}
+            className={`px-10 py-2 rounded-full font-semibold mt-4 w-full ${buttonColor()}`}
           >
-            {detailTournament?.participant_status === 'JOINED'
-              ? t('tournament.start')
+            {detailTournament?.is_joined === true
+              ? isStarted
+                ? t('tournament.start')
+                : t('tournament.waiting')
               : t('tournament.join')}
           </button>
           <div className="flex gap-2 mt-4">

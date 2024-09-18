@@ -370,7 +370,7 @@ const DoneQuiz: React.FC = () => {
           isShowWinnerAlert={isShowWinnerAlert}
           winningPosition={winningPosition}
           winningLink={winningLink}
-          winningImageSrc={detailQuiz?.winner_image_url[winningPosition-1] ?? ''}
+          winningImageSrc={winningPosition !== 0 ? detailQuiz?.winner_image_url[winningPosition] ?? '' : ''}
           ordinalName={ordinalName}
           language={languageCtx?.language ?? 'EN'}
           prizeType={detailQuiz?.prize_type ?? 'CASH'}

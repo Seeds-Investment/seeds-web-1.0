@@ -123,13 +123,13 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             </Typography>
           </div>
           {
-            prizeType === 'CASH' &&
+            ((prizeType === 'CASH') || (prizeType === '')) &&
               <Typography className="font-poppins font-semibold text-lg text-[#262626] mb-4">
                 {t('quiz.earn')} {preferredCurrency} {prize?.toLocaleString('id-ID')}
               </Typography>
           }
           {
-            prizeType === 'CASH' &&
+            ((prizeType === 'CASH') || (prizeType === '')) &&
               <Typography className="font-poppins text-lg text-[#262626] mb-4 text-center px-8">
                 {t('quiz.tax')}
               </Typography>
@@ -169,7 +169,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           }
           <div className="w-2/3 gap-4 flex flex-col py-4">
             {
-              prizeType === 'CASH' ?
+              ((prizeType === 'CASH') || (prizeType === '')) ?
                 <button
                   onClick={() => {
                     router.push(`/withdrawal?quizId=${quizId}`).catch(err => {

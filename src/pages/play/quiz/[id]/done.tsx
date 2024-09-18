@@ -13,14 +13,16 @@ import useSoundEffect from '@/hooks/useSoundEffects';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, getQuizReview } from '@/repository/quiz.repository';
+import LanguageContext from '@/store/language/language-context';
 import {
   type IDetailQuiz,
   type QuizReviewDTO
 } from '@/utils/interfaces/quiz.interfaces';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -42,6 +44,11 @@ const DoneQuiz: React.FC = () => {
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [QuizReview, setQuizReview] = useState<QuizReviewDTO | null>(null);
   const [prize, setPrize] = useState<number>(0);
+  const [isShowWinnerAlert, setIsShowWinnerAlert] = useState<boolean>(false);
+  const [winningPosition, setWinningPosition] = useState<number>(0);
+  const [winningLink, setWinningLink] = useState<string>('');
+  const [ordinalName, setOrdinalName] = useState<string>('');
+  const languageCtx = useContext(LanguageContext);
 
   const baseUrl =
     process.env.NEXT_PUBLIC_DOMAIN ?? 'https://user-dev-gcp.seeds.finance';
@@ -89,7 +96,7 @@ const DoneQuiz: React.FC = () => {
     }, 2000);
   }, []);
 
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -176,6 +183,33 @@ const DoneQuiz: React.FC = () => {
       Math.abs(minutes) < 10 ? `0${Math.abs(minutes)}` : Math.abs(minutes)
     }:${Math.abs(seconds) < 10 ? `0${Math.abs(seconds)}` : Math.abs(seconds)}`;
   }
+
+  useEffect(() => {
+    if ((
+      detailQuiz !== undefined)
+      && (userInfo !== undefined)
+      && (detailQuiz?.status === 'ENDED')
+      && (detailQuiz?.prize_type === 'LINK')
+    ) {
+      const index = detailQuiz?.winners.indexOf(userInfo.id);
+      if ((detailQuiz?.winners).includes(userInfo?.id)) {
+        setIsShowWinnerAlert(true)
+      }
+      if (index !== -1) {
+        setWinningPosition(index+1);
+        setWinningLink(detailQuiz?.winner_link_url[index] ?? '')
+      }
+      if (winningPosition === 1) {
+        setOrdinalName('st')
+      } else if (winningPosition === 2) {
+        setOrdinalName('nd')
+      } else if (winningPosition === 3) {
+        setOrdinalName('rd')
+      } else {
+        setOrdinalName('th')
+      }
+    }
+  }, [detailQuiz, userInfo, ordinalName, winningLink]);
 
   return (
     <PageGradient
@@ -333,6 +367,15 @@ const DoneQuiz: React.FC = () => {
           handleOpen={handleWinnerModalOpen}
           score={QuizReview?.score as number}
           prize={prize}
+          isShowWinnerAlert={isShowWinnerAlert}
+          winningPosition={winningPosition}
+          winningLink={winningLink}
+          winningImageSrc={winningPosition !== 0 ? detailQuiz?.winner_image_url[winningPosition] ?? '' : ''}
+          ordinalName={ordinalName}
+          language={languageCtx?.language ?? 'EN'}
+          prizeType={detailQuiz?.prize_type ?? 'CASH'}
+          preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}
+          quizName={detailQuiz?.name ?? ''}
         />
       </QuizLayoutComponent>
     </PageGradient>

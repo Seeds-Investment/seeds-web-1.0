@@ -1930,9 +1930,10 @@ export default {
     id: 'Id Transaction',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Congrats you won the Quiz!',
+    winnerModalTitle: 'Congratulations!',
     score: 'Your Score : ',
-    earn: ' You earn IDR ',
+    earn: ' You earn ',
+    claimPrize: 'Claim Prize',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
     text1: 'Challenge your finance knowledge with these quizzes.',
     text2: 'Check out the latest rankings for top quizzes!',
@@ -1963,7 +1964,8 @@ export default {
     winnerAlertMessage3: '',
     winnerAlertMessage4: 'position of',
     winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
-    winnerAlertMessage6: 'Claim Prize'
+    winnerAlertMessage6: 'Claim Prize',
+    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',

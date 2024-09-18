@@ -187,7 +187,7 @@ const QuizWinnerSection: React.FC<QuizWinnerProps> = ({ detailQuiz, preferredCur
                       >
                         {(imageUrl.length > 0) ? (
                           ((linkUrl !== null) && (linkUrl !== "")) ? (
-                            <a href={linkUrl} target="_blank" className={`${containerClasses} cursor-pointer shadow-2xl shadow-yellow-600 animate-shadow-move`}>
+                            <a href={linkUrl} target="_blank" className={`${containerClasses} cursor-pointer shadow-2xl animate-shadow-move`}>
                               <img src={imageUrl} alt="" width={200} height={200} className="object-contain w-full border-2 border-seeds-button-green" />
                             </a>
                           ) : (

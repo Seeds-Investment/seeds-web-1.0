@@ -79,6 +79,25 @@ export const getPlayById = async (id: string): Promise<any> => {
   }
 };
 
+export const getPlayByIdWithAuth = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  try {
+    return await playService(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
 export const getPlayAll = async (params: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 

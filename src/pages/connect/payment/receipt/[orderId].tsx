@@ -4,23 +4,23 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { CeklisCircle } from '@/constants/assets/icons';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerWidth from '@/hooks/useWindowInnerWidth';
+import { type QRList } from '@/pages/play/payment-tournament/receipt/[orderId]';
 import {
   getHowToPay,
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
+import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Pending, receiptXIcon } from 'public/assets/circle';
+import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-
-interface props {
-  data?: any;
-}
 
 interface PaymentList {
   admin_fee: number;
@@ -51,21 +51,18 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-const SuccessPaymentPage: React.FC<props> = ({ data }) => {
+const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const id = router.query.orderId as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [eWalletList, setEWalletList] = useState([]);
   const [steps, setSteps] = useState<string[]>([]);
-  const [_, setVirtualAccountInfo] = useState<any>();
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
-  const [qRisList, setQRisList] = useState<any>([]);
-  console.log(_, orderDetail?.transactionStatus);
-  const bigText = 'text-2xl font-semibold text-white text-center';
-  const normalText = 'text-sm font-normal text-white text-center';
+  const [qRisList, setQRisList] = useState<QRList[]>([]);
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -97,7 +94,6 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
       setIsLoading(true);
       const data = await getHowToPay(url);
       setSteps(data.payment_instruction[0].step);
-      setVirtualAccountInfo(data.virtual_account_info);
     } catch (error) {
       toast.error(`Error fetching payment list: ${error as string}`);
     } finally {
@@ -105,7 +101,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
     }
   };
 
-  function parseStrongText(text: string): any {
+  function parseStrongText(text: string): React.ReactNode[] {
     const regex = /"(.*?)"/g;
     const splitText = text.split(regex);
 
@@ -125,16 +121,24 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
   const validationError: boolean =
     orderDetail?.transactionStatus !== 'PENDING' &&
     orderDetail?.transactionStatus !== 'CREATED' &&
+    orderDetail?.transactionStatus !== 'SUCCESS' &&
+    orderDetail?.transactionStatus !== 'SETTLEMENT' &&
     orderDetail?.transactionStatus !== 'SUCCEEDED';
 
   useEffect(() => {
     void fetchOrderDetail();
     void fetchPaymentList();
-    if (orderDetail?.howToPayApi !== undefined) {
+    dispatch(setPromoCodeValidationResult(0));
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
 
+  useEffect(() => {
+    dispatch(setPrice(0));
+    dispatch(setMonth(''));
+  }, []);
+  
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
     (el: undefined | PaymentList): any => {
       return el?.payment_method === orderDetail?.paymentMethod;
@@ -173,8 +177,10 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') && (
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' && 
+                  orderDetail?.transactionStatus !== 'SUCCESS' && 
+                  orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -185,8 +191,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                       />
                     </div>
                   </div>
-                )}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' && (
+                ) : (
                   <Image
                     src={CeklisCircle.src}
                     alt="AVATAR"
@@ -194,45 +199,28 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                     height={80}
                   />
                 )}
-                {validationError && (
-                  <Image
-                    src={receiptXIcon.src}
-                    alt="AVATAR"
-                    width={80}
-                    height={80}
-                  />
-                )}
               </div>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? normalText
-                    : bigText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  t('circle.payment.pendingPaidCircle')}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  t('circle.payment.paymentSuccessful')}
-                {validationError && t('circle.payment.paymentFailed')}
+              <Typography className="text-sm font-normal text-white text-center">
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                  orderDetail?.transactionStatus !== 'SUCCESS' &&
+                  orderDetail?.transactionStatus !== 'SUCCEEDED'
+                )
+                  ? t('circle.payment.pendingPaidCircle')
+                  : t('circle.payment.paymentSuccessful')}
               </Typography>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? bigText
-                    : normalText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                    orderDetail?.grossAmount
-                  )}`}
-                {orderDetail?.transactionStatus === 'SUCCEEDED' &&
-                  t('circle.payment.paymentSuccessDescription')}
+              <Typography className="text-2xl font-semibold text-white text-center">
+                {(
+                  orderDetail?.transactionStatus !== 'SETTLEMENT' &&
+                  orderDetail?.transactionStatus !== 'SUCCESS' &&
+                  orderDetail?.transactionStatus !== 'SUCCEEDED'
+                )
+                  ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
+                      orderDetail?.grossAmount ?? 0
+                    )}`
+                  : t('quiz.payment.paymentSuccessful')}
+              </Typography>
+              <Typography className="text-sm font-normal text-white text-center">
                 {validationError &&
                   t('circle.payment.paymentFailedDescription')}
               </Typography>
@@ -268,7 +256,7 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   </div>
                 )}
                 <hr className="border-t-2 border-dashed" />
-                <div className="flex justify-between relative bottom-3 z-50">
+                <div className="flex justify-between relative bottom-3 z-10">
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                   <div className="bg-[#3AC4A0] h-6 rounded-full w-6 -mx-8 outline-none" />
                 </div>
@@ -278,51 +266,60 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('circle.payment.circleFee')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
                     {orderDetail?.currency !== undefined &&
                       `${orderDetail.currency} ${formatCurrency(
-                        (orderDetail?.grossAmount ?? 0) +
-                          (paymentSelectedEWallet[0]?.is_promo_available ?? true
-                            ? paymentSelectedEWallet[0]?.promo_price ?? 0
-                            : 0) -
-                          (paymentSelectedEWallet[0]?.admin_fee ?? 0) -
-                          (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          :  (orderDetail?.grossAmount ?? 0)
+                            - (paymentSelectedEWallet[0]?.admin_fee ?? 0)
+                            - (paymentSelectedEWallet[0]?.service_fee ?? 0)
+                            + (paymentSelectedEWallet[0]?.is_promo_available ?? true
+                              ? paymentSelectedEWallet[0]?.promo_price ?? 0 : 0)
                       )}`}
                   </Typography>
                 </div>
 
                 {/* Admin Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('circle.payment.adminFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.admin_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('circle.payment.adminFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.admin_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Service Fee */}
-                <div className="flex flex-row justify-between mb-5">
-                  <Typography className="text-sm font-semibold text-[#BDBDBD]">
-                    {t('circle.payment.serviceFee')}
-                  </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
-                        paymentSelectedEWallet.length > 0
-                          ? paymentSelectedEWallet[0]?.service_fee ?? 0
-                          : 0
-                      )}`}
-                  </Typography>
-                </div>
+                {
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
+                    <div className="flex flex-row justify-between mb-5">
+                      <Typography className="text-sm font-semibold text-[#BDBDBD]">
+                        {t('circle.payment.serviceFee')}
+                      </Typography>
+                      <Typography className="text-sm font-semibold text-[#262626]">
+                        {orderDetail?.currency !== undefined &&
+                          `${orderDetail.currency} ${formatCurrency(
+                            paymentSelectedEWallet.length > 0
+                              ? paymentSelectedEWallet[0]?.service_fee ?? 0
+                              : 0
+                          )}`}
+                      </Typography>
+                    </div>
+                }
 
                 {/* Discount Fee */}
-                {paymentSelectedEWallet.length > 0 && (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelectedEWallet.length > 0 && (
                   <div>
                     {paymentSelectedEWallet[0]?.is_promo_available && (
                       <div className="flex flex-row justify-between mb-5">
@@ -360,8 +357,12 @@ const SuccessPaymentPage: React.FC<props> = ({ data }) => {
                   <Typography className="text-sm font-semibold text-[#BDBDBD]">
                     {t('circle.payment.idTransaction')}
                   </Typography>
-                  <Typography className="text-sm font-semibold text-[#262626] truncate w-[110px] md:w-fit">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                  <Typography className="text-sm font-semibold text-[#262626] text-right">
+                    {
+                      (orderDetail?.transactionId ?? '') === ''
+                        ? '-'
+                        : orderDetail?.transactionId
+                    }
                   </Typography>
                 </div>
               </Card>

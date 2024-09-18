@@ -16,6 +16,7 @@ import KeyStatistic from '@/containers/play/asset/KeyStatistic';
 import OverviewItem from '@/containers/play/asset/OverviewItem';
 import SocialCard from '@/containers/play/asset/SocialCard';
 import Card2Skeleton from '@/containers/play/asset/skeleton/Card2Skeleton';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
@@ -68,6 +69,7 @@ const AssetDetailPage: React.FC = () => {
   );
   const [forYouData, setForYouData] = useState<ForYouPostI[]>();
   const [assetType, setAssetType] = useState<string>('');
+  useGetDetailTournament(id as string);
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {

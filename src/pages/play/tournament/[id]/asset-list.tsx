@@ -14,12 +14,10 @@ import {
 import Image from 'next/image';
 // import { useTranslation } from 'react-i18next';
 import PlayAssetsList from '@/containers/tournament/asset';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import {
   AssetFilter,
   SortingFilter
 } from '@/utils/interfaces/tournament.interface';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 interface FilterAsset {
@@ -35,9 +33,7 @@ interface FilterSorting {
 }
 
 const AssetList = (): React.ReactElement => {
-  const router = useRouter();
-  const { id } = router.query;
-  useGetDetailTournament(id as string);
+  // const { t } = useTranslation();
   const [activeNavbar, setActiveNavbar] = useState('All');
   const [assetActiveTab, setAssetActiveTab] = useState(AssetFilter.ID_STOCK);
   const [searchTerm, setSearchTerm] = useState('');

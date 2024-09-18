@@ -6,7 +6,6 @@ import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import CardPrice from '@/containers/tournament/order/CardPrice';
 import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
 import { standartCurrency } from '@/helpers/currency';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getDetailAsset } from '@/repository/asset.repository';
@@ -81,7 +80,6 @@ const BuyPage: React.FC = () => {
   const router = useRouter();
   const { assetId } = router.query;
   const { id } = router.query;
-  useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const height = useWindowInnerHeight();
 

@@ -20,25 +20,26 @@ import FloatingButton from '@/components/play/FloatingButton';
 import Loading from '@/components/popup/Loading';
 import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import { standartCurrency } from '@/helpers/currency';
-import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getCircleLeaderBoard } from '@/repository/circle.repository';
 import { getMarketList } from '@/repository/market.repository';
 import {
   getPlayBallance,
+  getPlayById,
   getPlayPortfolio
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   SortingFilter,
   type BallanceTournament,
+  type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Settings } from 'react-slick';
 import Slider from 'react-slick';
@@ -132,12 +133,15 @@ const TournamentHome: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);
   const [isLoadingLeaderBoard, setIsLoadingLeaderBoard] = useState(false);
   const [leaderBoards, setLeaderBoard] = useState<CircleInterface[]>();
-  const { detailTournament } = useGetDetailTournament(id as string);
+
   const [assets, setAssets] = useState<AssetItemType[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filter, setFilter] = useState({
@@ -164,7 +168,6 @@ const TournamentHome: React.FC = () => {
   const [assetActiveSort, setAssetActiveSort] = useState(
     SortingFilter.ASCENDING
   );
-  
 
   const handleShowFilters = (): void => {
     setShowFilter(!showFilter);
@@ -204,20 +207,21 @@ const TournamentHome: React.FC = () => {
     }
   };
 
-  // const getDetail = useCallback(async () => {
-  //   try {
-  //     setLoading(true);
-  //     const resp: IDetailTournament = await getPlayById(id as string);
-  //     setDetailTournament(resp);
-  //   } catch (error) {
-  //     toast(`ERROR fetch tournament ${error as string}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [id]);
+  const getDetail = useCallback(async () => {
+    try {
+      setLoading(true);
+      const resp: IDetailTournament = await getPlayById(id as string);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`ERROR fetch tournament ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
+      getDetail();
       void fetchPlayBallance(userInfo.preferredCurrency);
       void fetchPlayPortfolio(userInfo.preferredCurrency);
     }
@@ -329,6 +333,7 @@ const TournamentHome: React.FC = () => {
         />
       )}
       {detailTournament === undefined &&
+        loading &&
         isLoading &&
         assets &&
         portfolio === null && <Loading />}

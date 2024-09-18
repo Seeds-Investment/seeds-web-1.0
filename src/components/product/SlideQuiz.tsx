@@ -134,7 +134,7 @@ export const SlideQuiz: React.FC = () => {
         autoFocus={true}
       >
         {quizData?.length !== 0
-          ? quizData?.data?.map((item: TopQuiz, index: any) => {
+          ? quizData?.data?.map((item: TopQuiz, index: number) => {
               const durationInDays = (
                 startedAt: string,
                 endedAt: string

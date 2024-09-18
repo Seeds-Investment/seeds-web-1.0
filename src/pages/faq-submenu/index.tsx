@@ -158,7 +158,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   }, [isMenuActive, menus, currentRoute, width]);
 
   return (
-    <PageGradient defaultGradient className="flex flex-col sm:flex-row">
+    <PageGradient defaultGradient className="flex flex-col sm:flex-row gap-4">
       <div
         className={`flex w-full sm:w-2/5
         ${
@@ -178,7 +178,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
         >
           <CardGradient
             defaultGradient
-            className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:w-[90%] sm:rounded-[18px] sm:min-h-[36rem] ${
+            className={`relative overflow-hidden flex flex-col items-center py-4 w-full sm:rounded-[18px] sm:min-h-[36rem] ${
               width !== undefined && width < 370
                 ? 'w-[38rem]'
                 : width !== undefined && width < 400
@@ -261,42 +261,13 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
           </CardGradient>
         </PageGradient>
       </div>
-      <div className="flex w-full sm:w-3/5">
+      <div className="flex w-full mx-auto sm:w-3/5">
         <div
-          className={`z-0 sm:relative sm:pb-20  overflow-hidden flex flex-col items-center w-full bottom-0  ${
-            width !== undefined && width < 370
-              ? 'w-[90%]'
-              : width !== undefined && width < 500
-              ? 'w-[90%]'
-              : width !== undefined && width < 400
-              ? 'w-[40%]'
-              : width !== undefined && width > 600
-              ? 'w-[600px]'
-              : ''
-          } ${
-            width !== undefined && width < 370
-              ? 'h-[50rem]'
-              : width !== undefined && width < 400
-              ? 'h-[50rem]'
-              : width !== undefined && width < 415
-              ? 'h-[48rem]'
-              : ''
-          }`}
+          className={`z-0 sm:relative overflow-hidden flex flex-col items-center w-full bottom-0 h-auto`}
         >
           <div
-            className={`z-1 relative overflow-hidden flex flex-col justify-center items-center py-4  sm:w-[90%] sm:rounded-md sm:min-h-[36rem] ${
-              width !== undefined && width < 600
-                ? 'w-full'
-                : width !== undefined && width < 500
-                ? 'w-[90%]'
-                : width !== undefined && width < 400
-                ? 'w-[40%]'
-                : width !== undefined && width > 600
-                ? 'w-[600px]'
-                : ''
-            }`}
+            className={`z-1 relative overflow-hidden flex flex-col justify-center items-center sm:rounded-md w-full h-auto`}
           >
-            {/* -----Page Content----- */}
             {children}
           </div>
         </div>

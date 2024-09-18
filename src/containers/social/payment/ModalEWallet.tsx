@@ -35,11 +35,21 @@ const ModalEWallet = ({
   const { t } = useTranslation();
   const [phone, setPhone] = useState('');
   const [totalFee, setTotalFee] = useState(0);
-  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+  const [showOtherFees, setShowOtherFees] = useState(false);
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
+
+  useEffect(() => {
+    if (dataPost) {
+      if (dataPost?.premium_fee - newPromoCodeDiscount === 0) {
+        setShowOtherFees(false);
+      } else {
+        setShowOtherFees(true);
+      }
+    }
+  }, [dataPost, newPromoCodeDiscount]);
 
   useEffect(() => {
     let _admissionFee = 0;
@@ -48,10 +58,13 @@ const ModalEWallet = ({
     let _discount = 0;
 
     _discount = payment.is_promo_available
-      ? payment.promo_price
+      ? (dataPost?.premium_fee - (promoCodeValidationResult?.response?.total_discount ?? 0)) === 0
+        ? 0
+        : payment.promo_price
       : 0;
+
     if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.response?.total_discount as number;
+      _discount += newPromoCodeDiscount;
     }
 
     if (dataPost) {
@@ -70,18 +83,10 @@ const ModalEWallet = ({
   }, [
     dataPost,
     payment,
-    promoCodeValidationResult
+    newPromoCodeDiscount,
+    promoCodeValidationResult,
+    showOtherFees
   ]);
-
-  useEffect(() => {
-    if (dataPost) {
-      if ((dataPost?.premium_fee - newPromoCodeDiscount) === 0) {
-        setShowOtherFees(false)
-      } else {
-        setShowOtherFees(true)
-      }
-    }
-  }, [dataPost, newPromoCodeDiscount]);
 
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
@@ -178,7 +183,7 @@ const ModalEWallet = ({
             payment?.payment_type,
             payment?.payment_gateway ?? '',
             payment?.payment_method,
-            promoCodeValidationResult?.response?.total_discount !== null
+            promoCodeValidationResult?.response?.total_discount !== undefined
               ? dataPost?.premium_fee - promoCodeValidationResult?.response?.total_discount
               : dataPost?.premium_fee,
             phone

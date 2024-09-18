@@ -53,8 +53,7 @@ const WalletForm = ({
     selectPromoCodeValidationResult
   );
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleGetCoinsUser = async () => {
+  const handleGetCoinsUser = async (): Promise<void> => {
     const useCoins = router.query.useCoins;
     if (useCoins === 'true') {
       const resCoins = await getTransactionSummary();
@@ -118,7 +117,9 @@ const WalletForm = ({
     numberMonth,
     payment,
     coinsDiscount,
-    promoCodeValidationResult
+    promoCodeValidationResult,
+    newPromoCodeDiscount,
+    showOtherFees
   ]);
 
   const renderPhoneInput = (): JSX.Element => (

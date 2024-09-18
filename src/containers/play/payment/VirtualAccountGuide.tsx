@@ -1,5 +1,6 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
@@ -17,7 +18,6 @@ interface VirtualAccountGuideProps {
     totalAmount: number,
     phoneNumber?: string | undefined
   ) => Promise<void>;
-  numberMonth: number;
   newPromoCodeDiscount: number;
 }
 
@@ -25,14 +25,14 @@ const VirtualAccountGuide = ({
   payment,
   dataPost,
   handlePay,
-  numberMonth,
   newPromoCodeDiscount
 }: VirtualAccountGuideProps): JSX.Element => {
+  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
   const userName = 'Jeri';
-  const admissionFee = dataPost?.premium_fee * numberMonth;
+  const admissionFee = premiumCircleFee;
   const adminFee = dataPost?.admin_fee as number;
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const bankName = payment?.payment_method?.split('_')[0];

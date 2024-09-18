@@ -6,8 +6,10 @@ import IconUsers from '@/assets/play/tournament/users.svg';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
 import { standartCurrency } from '@/helpers/currency';
 import { getTournamentTime } from '@/helpers/dateFormat';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import { getPlayAll, getPlayResult } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import LanguageContext from '@/store/language/language-context';
 import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import {
   ArrowTrendingDownIcon,
@@ -17,7 +19,7 @@ import { Button, Typography } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -41,6 +43,7 @@ interface PlayResult {
 const NotificationWinner: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
   const [sharedIndex, setSharedIndex] = useState<number>(0);
@@ -64,6 +67,7 @@ const NotificationWinner: React.FC = () => {
   const [data, setData] = useState<IDetailTournament[]>([]);
 
   const id = router.query.id;
+  useGetDetailTournament(id as string);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -374,11 +378,10 @@ const NotificationWinner: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-[#BDBDBD] px-2 text-[10px] 2xl:text-[12px]">
-                        {`${getTournamentTime(
-                          item?.play_time ?? '2024-01-01T00:00:00Z'
-                        )} - ${getTournamentTime(
-                          item?.end_time ?? '2024-12-31T23:59:59Z'
-                        )}`}
+                        {languageCtx?.language === 'ID'
+                          ? getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-01-01T00:00:00Z'), 'id-ID')
+                          : getTournamentTime(new Date(item?.play_time ?? '2024-01-01T00:00:00Z'), new Date(item?.end_time ?? '2024-12-31T23:59:59Z'), 'en-US')
+                        }
                       </div>
                     </div>
 

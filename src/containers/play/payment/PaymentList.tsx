@@ -83,7 +83,7 @@ const userDefault: UserInfo = {
   refCodeUsage: 0,
   region: '',
   seedsTag: '',
-  verified: false,
+  verified: false
 };
 
 const PaymentList: React.FC<props> = ({
@@ -97,6 +97,7 @@ const PaymentList: React.FC<props> = ({
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -116,6 +117,7 @@ const PaymentList: React.FC<props> = ({
       );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
+      setCcList(data.type_cc);
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
     } finally {
@@ -199,18 +201,39 @@ const PaymentList: React.FC<props> = ({
       }
       const replaceDataPost: PaymentData = dataPost;
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      let response;
       if (replaceDataPost.quiz) {
-        const response = await joinQuiz({
-          quiz_id: replaceDataPost?.payment?.quiz_id,
-          lifelines: replaceDataPost?.payment?.lifelines,
-          language: replaceDataPost?.payment?.language,
-          payment_gateway: paymentGateway,
-          payment_method: paymentMethod,
-          phone_number: `+62${phoneNumber as string}`,
-          promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
-          invitation_code: invitationCode as string,
-          is_use_coins: useCoins as boolean
-        });
+        if (option?.payment_type === 'cc') {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean,
+            success_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`,
+            cancel_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`
+          });
+        } else {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean
+          });
+        }
 
         if (response) {
           if (response.payment_url !== '') {
@@ -274,13 +297,16 @@ const PaymentList: React.FC<props> = ({
       _totalFee =
         Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
     } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
       _adminFee = dataPost?.admin_fee as number;
       _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -306,6 +332,12 @@ const PaymentList: React.FC<props> = ({
         <PaymentOptions
           label={t('PlayPayment.eWalletLabel')}
           options={eWalletList}
+          onChange={setOption}
+          currentValue={option}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.eWalletLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option}
         />

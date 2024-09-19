@@ -8,6 +8,8 @@ export interface JoinQuizI {
   promo_code: string;
   invitation_code: string;
   is_use_coins: boolean;
+  success_url?: string;
+  cancel_url?: string;
 }
 
 export enum QuizStatus {
@@ -70,6 +72,9 @@ export interface IDetailQuiz {
   created_at: Date;
   is_need_invitation_code: boolean;
   quiz_unique_id: string;
+  prize_type: string
+  winner_link_url: string[]
+  winner_image_url: string[]
 }
 
 export const initialDetailQuiz = {

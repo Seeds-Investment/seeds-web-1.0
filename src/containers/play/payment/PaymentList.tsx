@@ -336,7 +336,7 @@ const PaymentList: React.FC<props> = ({
           currentValue={option}
         />
         <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
+          label={t('PlayPayment.creditCardLabel')}
           options={ccList}
           onChange={setOption}
           currentValue={option}

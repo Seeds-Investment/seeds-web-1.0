@@ -18,6 +18,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
@@ -25,6 +26,7 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 export const SlideTournament: React.FC = () => {
   const [tournament, setTournament] = useState<TopTournament[]>([]);
   const [buttonChange, setButtonChange] = useState(true);
+  const { t } = useTranslation();
 
   const router = useRouter();
 
@@ -79,8 +81,9 @@ export const SlideTournament: React.FC = () => {
       try {
         const tournamentResponse = await getTrendingPlayList();
         setTournament(tournamentResponse.data);
-      } catch (error: any) {
-        toast.warning('error fetching data: ', error.message);
+        console.log(tournamentResponse);
+      } catch (error) {
+        toast.error('error fetching data: ');
       }
     };
     fetchData()
@@ -104,6 +107,20 @@ export const SlideTournament: React.FC = () => {
     slideShadows: false
   };
 
+  const formatDate = (isoDate: string): string => {
+    return moment(isoDate).format('lll');
+  };
+  const formatPublishMonth = (isoDate: string): string => {
+    return moment(isoDate).format('MMM');
+  };
+  const formatPublishDay = (isoDate: string): string => {
+    return moment(isoDate).format('DD');
+  };
+  const durationTimeTournament = (playTime: Date, endTime: Date): number => {
+    const Duration = moment(endTime).diff(moment(playTime), 'days');
+    return Duration;
+  };
+
   return (
     <div className="items-center justify-center w-full flex flex-col">
       <div className="flex flex-col w-full">
@@ -124,21 +141,6 @@ export const SlideTournament: React.FC = () => {
         >
           {tournament?.length !== 0
             ? tournament?.map((item: TopTournament, idx: number) => {
-                const formatDate = (isoDate: string): string => {
-                  return moment(isoDate).format('lll');
-                };
-                const formatPublishMonth = (isoDate: string): string => {
-                  return moment(isoDate).format('MMM');
-                };
-                const formatPublishDay = (isoDate: string): string => {
-                  return moment(isoDate).format('DD');
-                };
-                const durationTimeTournament = (playTime: string): string => {
-                  const Duration = moment.duration(
-                    moment().diff(moment(playTime))
-                  );
-                  return `${Math.floor(Duration.asDays())} day`;
-                };
                 return (
                   <SwiperSlide key={idx}>
                     <div className="flex lg:gap-3 gap-1 justify-center w-full">
@@ -189,20 +191,29 @@ export const SlideTournament: React.FC = () => {
                             <div className="flex flex-col w-full items-center justify-center">
                               <div className="flex justify-center gap-2">
                                 <Image src={duration} alt={duration} />
-                                <Typography>duration</Typography>
+                                <Typography>
+                                  {`${t('tournament.tournamentCard.duration')}`}
+                                </Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
-                                {`${
-                                  durationTimeTournament(item.play_time).split(
-                                    'T'
-                                  )[0]
-                                }`}
+                                {`${durationTimeTournament(
+                                  new Date(item.play_time),
+                                  new Date(item.end_time)
+                                )}`}{' '}
+                                {(durationTimeTournament(
+                                  new Date(item.play_time),
+                                  new Date(item.end_time)
+                                ) ?? 0) > 1
+                                  ? t('tournament.tournamentCard.days')
+                                  : t('tournament.tournamentCard.day')}
                               </Typography>
                             </div>
                             <div className="w-full flex flex-col border-x-2 items-center justify-center">
                               <div className="flex justify-center gap-2">
                                 <Image src={user} alt={user} />
-                                <Typography>joined</Typography>
+                                <Typography>
+                                  {t('tournament.tournamentCard.joined')}
+                                </Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
                                 {item.participants === null
@@ -210,10 +221,12 @@ export const SlideTournament: React.FC = () => {
                                   : `${item.participants?.length}`}
                               </Typography>
                             </div>
-                            <div className="w-full flex flex-col justify-center items-start">
+                            <div className="w-full flex flex-col justify-center items-center">
                               <div className="flex gap-2">
                                 <Image src={admission} alt={admission} />
-                                <Typography>fee</Typography>
+                                <Typography>
+                                  {t('tournament.tournamentCard.fee')}
+                                </Typography>
                               </div>
                               <Typography className="font-bold text-[#262626]">
                                 {item.admission_fee === 0
@@ -229,9 +242,9 @@ export const SlideTournament: React.FC = () => {
                         <CardFooter className="m-0 p-0 h-20">
                           <div className="flex md:gap-10 gap-5 justify-center items-center w-full">
                             <div className="flex w-full lg:gap-3 gap-2 items-center">
-                              <button className="border-none rounded-[10px] md:w-[75px] md:h-[25px] w-[75px] h-[25px] overflow-hidden bg-[#DCFCE4] text-[#27A590]">
+                              <div className="border-none flex justify-center items-center rounded-[10px] md:w-[75px] md:h-[25px] w-[75px] h-[25px] overflow-hidden bg-[#DCFCE4] text-[#27A590] text-[13.5px]">
                                 {item.category}
-                              </button>
+                              </div>
                               <div
                                 className="flex gap-2 items-center cursor-pointer"
                                 onClick={async () => {
@@ -270,7 +283,7 @@ export const SlideTournament: React.FC = () => {
                                     );
                                   }}
                                 >
-                                  share
+                                  {t('tournament.tournamentCard.share')}
                                 </Typography>
                               </div>
                             </div>
@@ -286,7 +299,7 @@ export const SlideTournament: React.FC = () => {
                                 );
                               }}
                             >
-                              open
+                              OPEN
                             </Button>
                           </div>
                         </CardFooter>

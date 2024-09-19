@@ -48,8 +48,8 @@ const HandleSlideChange = (swiper: SwiperClass): void => {
       try {
         const circleResponse = await getTrendingCircle();
         setCircleData(circleResponse.result);
-      } catch (error: any) {
-        toast.warning('Error fetching data:', error.message);
+      } catch (error) {
+        toast.error('Error fetching data:');
       }
     };
 

@@ -23,7 +23,7 @@ export const SlideQuiz: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [activeSlide, setActiveSlide] = useState(0);
-  const [quizData, setQuizData] = useState<any>([]);
+  const [quizData, setQuizData] = useState<TopQuiz[]>([]);
 
   const [isChange, setChange] = useState(true);
 
@@ -34,9 +34,9 @@ export const SlideQuiz: React.FC = () => {
         const quizResponse = await getQuizTrending(
           localStorage.getItem('translation') === 'ID' ? 'IDR' : 'USD'
         );
-        setQuizData(quizResponse);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
+        setQuizData(quizResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:');
       }
     };
 
@@ -117,6 +117,15 @@ export const SlideQuiz: React.FC = () => {
     1024: { slidePerView: 3, centeredSlides: true }
   };
 
+  const durationInDays = (startedAt: string, endedAt: string): number => {
+    const startDate = moment(startedAt);
+    const endDate = moment(endedAt);
+
+    const durationDays = endDate.diff(startDate, 'days');
+
+    return durationDays;
+  };
+
   return (
     <div className="flex lg:flex gap-5 lg:w-full w-full">
       <Swiper
@@ -134,18 +143,7 @@ export const SlideQuiz: React.FC = () => {
         autoFocus={true}
       >
         {quizData?.length !== 0
-          ? quizData?.data?.map((item: TopQuiz, index: number) => {
-              const durationInDays = (
-                startedAt: string,
-                endedAt: string
-              ): number => {
-                const startDate = moment(startedAt);
-                const endDate = moment(endedAt);
-
-                const durationDays = endDate.diff(startDate, 'days');
-
-                return durationDays;
-              };
+          ? quizData?.map((item: TopQuiz, index: number) => {
               return (
                 <SwiperSlide key={index} className="w-full lg:w-1/3 md:w-1/2">
                   <div className="flex w-full items-start gap-5 justify-center lg:w-full">

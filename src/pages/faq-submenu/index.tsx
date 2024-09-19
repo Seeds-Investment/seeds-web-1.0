@@ -27,9 +27,9 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   const width = useWindowInnerWidth();
   const { t } = useTranslation();
 
-  const submenuClasses = `lg:w-4/5 md:w-2/3 sm:w-[80%] w-full h-12 ${
+  const submenuClasses = `sm:w-[95%] w-full h-12 ${
     width !== undefined && width < 370 ? 'h-9' : ''
-  } px-6`;
+  } px-4 py-4`;
 
   const menus = useMemo(
     () => [
@@ -158,7 +158,10 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
   }, [isMenuActive, menus, currentRoute, width]);
 
   return (
-    <PageGradient defaultGradient className="flex flex-col sm:flex-row gap-4">
+    <PageGradient
+      defaultGradient
+      className="flex flex-col sm:flex-row gap-0 sm:gap-4"
+    >
       <div
         className={`flex w-full sm:w-2/5
         ${
@@ -241,7 +244,7 @@ const FaqSubmenu: React.FC<FaqSubmenuProps> = ({ children }) => {
             </div>
 
             {/* -----Submenus----- */}
-            <div className="z-10 flex flex-col items-center w-full sm:px-0 px-6">
+            <div className="z-10 flex flex-col items-center w-full min-h-96 max-h-screen sm:px-0 px-6">
               {menus.map(menu => (
                 <SubmenuButton
                   key={menu.label}

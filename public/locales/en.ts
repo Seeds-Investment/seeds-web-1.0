@@ -935,6 +935,7 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Credit / Debit Card',
     ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {

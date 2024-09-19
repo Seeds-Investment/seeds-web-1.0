@@ -935,6 +935,7 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
@@ -1965,7 +1966,8 @@ export default {
     winnerAlertMessage4: 'position of',
     winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
     winnerAlertMessage6: 'Claim Prize',
-    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.'
+    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',

@@ -153,20 +153,27 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               </div>
           }
           {
-            ((isShowWinnerAlert && prizeType === 'LINK') && (winningImageSrc !== '' && winningImageSrc !== undefined)) &&
+            ((isShowWinnerAlert && prizeType === 'LINK') && (winningImageSrc !== undefined)) &&
               <div className='w-full px-4 flex justify-center items-center'>
                 <a
                   href={winningLink ?? ''}
                   target="_blank"
                   className='w-auto h-[100px] flex justify-center items-center rounded-lg overflow-hidden cursor-pointer hover:shadow-xl duration-300 animate-shadow-move'
                 >
-                  <Image
-                    width={200}
-                    height={200}
-                    src={winningImageSrc}
-                    alt="winningImageSrc"
-                    className='w-auto h-full'
-                  />
+                  {
+                    winningImageSrc !== '' ?
+                      <Image
+                        width={200}
+                        height={200}
+                        src={winningImageSrc}
+                        alt="winningImageSrc"
+                        className='w-auto h-full'
+                      />
+                      :
+                      <div className='w-[200px] h-full bg-seeds-button-green flex justify-center items-center text-white font-semibold font-poppins italic'>
+                        {t('quiz.winnerAlertMessage8')}
+                      </div>
+                  }
                 </a>
               </div>
           }

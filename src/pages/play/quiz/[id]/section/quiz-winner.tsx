@@ -19,7 +19,7 @@ const QuizWinnerSection: React.FC<QuizWinnerProps> = ({ detailQuiz, preferredCur
   return (
     <>
       {
-        (detailQuiz?.prize_type === 'CASH') &&
+        ((detailQuiz?.prize_type === 'CASH') || (detailQuiz?.prize_type === '')) &&
           <div className="mt-4">
             <div className="text-lg font-semibold">{t('quiz.quizPrize')}</div>
             <table className="mt-2">
@@ -66,7 +66,7 @@ const QuizWinnerSection: React.FC<QuizWinnerProps> = ({ detailQuiz, preferredCur
             <div className="text-lg font-semibold">{t('quiz.quizPrize')}</div>
             {
               ((detailQuiz?.winner_link_url !== null) && (detailQuiz?.winner_link_url[0] === '')) &&
-                <div className="rounded-lg overflow-hidden relative flex justify-center items-center bg-seeds-button-green">
+                <div className="rounded-lg overflow-hidden relative flex justify-center items-center bg-seeds-button-green mt-2">
                   {
                     detailQuiz?.winner_image_url[0] !== '' ?
                       <img
@@ -99,7 +99,7 @@ const QuizWinnerSection: React.FC<QuizWinnerProps> = ({ detailQuiz, preferredCur
               ((detailQuiz?.winner_link_url !== null) && (detailQuiz?.winner_link_url[0] !== '')) &&
                 <a
                   href={detailQuiz?.winner_link_url[0] ?? ''} target="_blank"
-                  className="rounded-lg overflow-hidden relative flex justify-center items-center bg-seeds-button-green"
+                  className="rounded-lg overflow-hidden relative flex justify-center items-center bg-seeds-button-green animate-shadow-move mt-2"
                 >
                   {
                     detailQuiz?.winner_image_url[0] !== '' ?

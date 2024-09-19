@@ -404,37 +404,37 @@ const TournamentDetail: React.FC = () => {
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
-          {
-            detailTournament !== undefined &&
-              <div className="mt-4 flex justify-between">
-                <div className="flex flex-col">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {isStarted ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
-                  </Typography>
-                  <CountdownTimer
-                    deadline={
-                      isStarted
-                        ? detailTournament?.end_time
-                          ? detailTournament.end_time.toString()
-                          : ''
-                        : detailTournament?.play_time
-                          ? detailTournament.play_time.toString()
-                          : ''
-                    }
-                  />
+            {
+              detailTournament !== undefined &&
+                <div className="mt-4 flex justify-between">
+                  <div className="flex flex-col">
+                    <Typography className="text-lg font-semibold font-poppins">
+                      {isStarted ? t('tournament.detailRemaining') : t('tournament.detailStarting')}
+                    </Typography>
+                    <CountdownTimer
+                      deadline={
+                        isStarted
+                          ? detailTournament?.end_time
+                            ? detailTournament.end_time.toString()
+                            : ''
+                          : detailTournament?.play_time
+                            ? detailTournament.play_time.toString()
+                            : ''
+                      }
+                    />
+                  </div>
+                  <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+                    <ShareIcon
+                      onClick={() => {
+                        setIsShareModal(true);
+                      }}
+                      width={24}
+                      height={24}
+                      className="text-[#3AC4A0]"
+                    />
+                  </button>
                 </div>
-                <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
-                  <ShareIcon
-                    onClick={() => {
-                      setIsShareModal(true);
-                    }}
-                    width={24}
-                    height={24}
-                    className="text-[#3AC4A0]"
-                  />
-                </button>
-              </div>
-          }
+            }
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.detailPeriod')}
@@ -477,6 +477,22 @@ const TournamentDetail: React.FC = () => {
             ) : null}
           </div>
           <div className="mt-4">
+            <div className="mt-4 flex flex-row gap-8">
+              {detailTournament?.community?.image_url ? (
+                <div className="flex flex-col justify-center items-center gap-4">
+                  <Typography className="text-lg font-semibold font-poppins">
+                    {'Community'}
+                  </Typography>
+                  <Image
+                    src={detailTournament?.community?.image_url}
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="object-contain max-h-16 max-w-16"
+                  />
+                </div>
+              ) : null}
+            </div>
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}
@@ -534,8 +550,6 @@ const TournamentDetail: React.FC = () => {
                 ))}
               </table>
             </div>
-          </div>
-          <div className="mt-4">
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.participants')}

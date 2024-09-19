@@ -48,7 +48,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
       open={open}
       handler={handleOpen}
       size="md"
-      className="h-screen md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
+      className="h-[500px] md:h-screen overflow-y-auto md:p-5 flex flex-col items-center md:relative absolute bottom-0 m-0 rounded-b-none md:rounded-2xl min-w-full"
     >
       <DialogBody className="flex flex-col items-center md:gap-5 gap-4 p-0 h-full w-full">
         <div className="flex flex-row-reverse justify-between items-center w-full">
@@ -93,7 +93,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               </div>
           }
           <div
-            className="w-full flex flex-col items-center justify-center p-4"
+            className="w-full flex flex-col items-center justify-center px-4 py-2"
             style={{
               backgroundImage: "url('/assets/quiz/quizWinnerBg.png')",
               backgroundSize: 'contain'
@@ -137,7 +137,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
           }
           {
             (isShowWinnerAlert && prizeType === 'LINK') &&
-              <div className='flex gap-2 mb-8 px-4 md:px-0'>
+              <div className='flex gap-2 mb-4 px-4 md:px-0'>
                 <div className='flex justify-center items-center w-[24px] h-[24px]'>
                   <Image
                     width={200}
@@ -153,7 +153,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               </div>
           }
           {
-            (isShowWinnerAlert && prizeType === 'LINK') &&
+            ((isShowWinnerAlert && prizeType === 'LINK') && (winningImageSrc !== '' && winningImageSrc !== undefined)) &&
               <div className='w-full px-4 flex justify-center items-center'>
                 <a
                   href={winningLink ?? ''}
@@ -170,7 +170,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                 </a>
               </div>
           }
-          <div className="w-2/3 gap-4 flex flex-col py-4">
+          <div className="px-4 md:px-0 w-full md:w-2/3 gap-4 flex flex-row md:flex-col py-4 mb-32">
             {
               ((prizeType === 'CASH') || (prizeType === '')) ?
                 <button
@@ -184,7 +184,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                   <div
                     className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
                   />
-                  <div className="z-10 text-center text-xl font-semibold text-white">
+                  <div className="z-10 text-center  text-md md:text-xl font-semibold text-white">
                     {t('quiz.withdraw')}
                   </div>
                 </button>
@@ -194,7 +194,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                   target="_blank"
                   className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                 >
-                  <div className="z-10 text-center text-xl font-semibold text-white">
+                  <div className="z-10 text-center text-md md:text-xl font-semibold text-white">
                     {t('quiz.claimPrize')}
                   </div>
                 </a>
@@ -211,7 +211,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
               <div
                 className={`h-12 w-full bg-[#67EB00] rounded-full absolute inset-0`}
               />
-              <div className="z-10 text-center text-xl font-semibold text-white">
+              <div className="z-10 text-center text-md md:text-xl font-semibold text-white">
                 {t('quiz.leaderboard')}
               </div>
             </button>

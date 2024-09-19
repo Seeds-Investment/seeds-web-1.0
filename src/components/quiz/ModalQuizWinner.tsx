@@ -63,7 +63,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
         </div>
 
         <div className="overflow-auto flex flex-col items-center h-full w-full">
-          <Typography className="block font-poppins font-semibold text-xl text-center text-wrap text-[#262626] mb-4">
+          <Typography className="block font-poppins font-semibold text-xl text-center text-wrap text-[#262626] mb-2">
             {t('quiz.winnerModalTitle')}
           </Typography>
           {
@@ -100,10 +100,11 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
             }}
           >
             <Image
-              width={78}
-              height={78}
+              width={100}
+              height={100}
               src="/assets/quiz/crown-duotone.png"
               alt="crown"
+              className='w-[50px] h-[50px] md:w-[80px] md:h-[80px]'
             />
             <Image
               width={162}
@@ -112,25 +113,25 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                 objectFit: 'contain'
               }}
               src={dataUser?.avatar}
-              className="rounded-full mb-4 w-[140px] h-[140px]"
+              className="rounded-full mb-4 w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
               alt="profile"
             />
-            <Typography className="font-poppins font-semibold text-lg text-[#262626]">
+            <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626]">
               {dataUser?.name}
             </Typography>
-            <Typography className="font-poppins text-lg text-[#262626]">
+            <Typography className="font-poppins text-md md:text-lg text-[#262626]">
               {t('quiz.score')} {score}
             </Typography>
           </div>
           {
             ((prizeType === 'CASH') || (prizeType === '')) &&
-              <Typography className="font-poppins font-semibold text-lg text-[#262626] mb-4">
+              <Typography className="font-poppins font-semibold text-md md:text-lg text-[#262626] mb-4">
                 {t('quiz.earn')} {preferredCurrency} {prize?.toLocaleString('id-ID')}
               </Typography>
           }
           {
             ((prizeType === 'CASH') || (prizeType === '')) &&
-              <Typography className="font-poppins text-lg text-[#262626] mb-4 text-center px-8">
+              <Typography className="font-poppins text-md md:text-lg text-[#262626] mb-4 text-center px-8">
                 {t('quiz.tax')}
               </Typography>
           }
@@ -146,26 +147,28 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                     className='w-full h-full'
                   />
                 </div>
-                <Typography className="font-poppins text-md text-[#262626] text-center">
+                <Typography className="font-poppins text-sm text-[#262626] text-center">
                   {t('quiz.winnerAlertMessage7')}
                 </Typography>
               </div>
           }
           {
             (isShowWinnerAlert && prizeType === 'LINK') &&
-              <a
-                href={winningLink ?? ''}
-                target="_blank"
-                className='w-auto h-[130px] flex justify-center items-center rounded-lg overflow-hidden cursor-pointer hover:shadow-xl duration-300 animate-shadow-move'
-              >
-                <Image
-                  width={200}
-                  height={200}
-                  src={winningImageSrc}
-                  alt="winningImageSrc"
-                  className='w-auto h-full'
-                />
-              </a>
+              <div className='w-full px-4 flex justify-center items-center'>
+                <a
+                  href={winningLink ?? ''}
+                  target="_blank"
+                  className='w-auto h-[100px] flex justify-center items-center rounded-lg overflow-hidden cursor-pointer hover:shadow-xl duration-300 animate-shadow-move'
+                >
+                  <Image
+                    width={200}
+                    height={200}
+                    src={winningImageSrc}
+                    alt="winningImageSrc"
+                    className='w-auto h-full'
+                  />
+                </a>
+              </div>
           }
           <div className="w-2/3 gap-4 flex flex-col py-4">
             {
@@ -176,7 +179,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                       toast(`Error: ${err as string}`);
                     });
                   }}
-                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                 >
                   <div
                     className={`h-12 w-full bg-[#C286FF] rounded-full absolute inset-0`}
@@ -189,7 +192,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                 <a
                   href={winningLink ?? ''}
                   target="_blank"
-                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+                  className={`bg-[#A75CF4] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
                 >
                   <div className="z-10 text-center text-xl font-semibold text-white">
                     {t('quiz.claimPrize')}
@@ -203,7 +206,7 @@ const ModalQuizWinner: React.FC<IModalQuizWinner> = ({
                   toast(`Error: ${err as string}`);
                 });
               }}
-              className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-14 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
+              className={`bg-[#4EC307] relative flex items-center justify-center border-2 border-white w-full h-12 rounded-full shadow-sm shadow-gray-600 drop-shadow-sm hover:opacity-90`}
             >
               <div
                 className={`h-12 w-full bg-[#67EB00] rounded-full absolute inset-0`}

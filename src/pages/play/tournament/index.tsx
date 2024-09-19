@@ -170,6 +170,12 @@ const PlayTournament = (): React.ReactElement => {
           .catch(error => {
             toast.error(error);
           });
+      } else if (status === 'OPEN') {
+        await router
+          .push(`/play/tournament/${id}`)
+          .catch(error => {
+            toast.error(error);
+          });
       }
     } else if (status === 'ACTIVE' || status === 'OPEN') {
       await router.push(`/play/tournament/${id}`).catch(error => {
@@ -179,11 +185,12 @@ const PlayTournament = (): React.ReactElement => {
   };
 
   const isDisabled = (isJoined: boolean, status: string): boolean => {
-    console.log(status);
     if (isJoined) {
       if (status === 'ACTIVE') {
         return false;
       } else if (status === 'PAST') {
+        return false;
+      } else if (status === 'OPEN') {
         return false;
       } else {
         return true;
@@ -476,14 +483,16 @@ const PlayTournament = (): React.ReactElement => {
                               ? item?.status === 'ACTIVE'
                                 ? t('tournament.tournamentCard.openButton')
                                 : item?.status === 'PAST'
-                                ? t('tournament.tournamentCard.leaderboard')
-                                : t('tournament.tournamentCard.canceled')
+                                  ? t('tournament.tournamentCard.leaderboard')
+                                  : item?.status === 'OPEN'
+                                    ? t('tournament.tournamentCard.joinedWaiting')
+                                    : t('tournament.tournamentCard.canceled')
                               : item?.status === 'ACTIVE' ||
                                 item?.status === 'OPEN'
-                              ? t('tournament.tournamentCard.joinButton')
-                              : item?.status === 'CANCELED'
-                              ? t('tournament.tournamentCard.canceled')
-                              : t('tournament.tournamentCard.ended')}
+                                  ? t('tournament.tournamentCard.joinButton')
+                                  : item?.status === 'CANCELED'
+                                    ? t('tournament.tournamentCard.canceled')
+                                    : t('tournament.tournamentCard.ended')}
                           </Button>
                         </div>
                       </div>

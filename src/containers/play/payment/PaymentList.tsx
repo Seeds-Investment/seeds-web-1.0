@@ -13,6 +13,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { getQuizById, joinQuiz } from '@/repository/quiz.repository';
 import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
+import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -108,21 +109,32 @@ const PaymentList: React.FC<props> = ({
   const { premiumCircleFee, premiumCircleMonth } = useSelector(
     (state: RootState) => state?.premiumCircle ?? {}
   );
+  const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
 
+  const fetchDetailQuiz = async (): Promise<void> => {
+    if (!userInfo) return;
+    try {
+      const quizDetails = await getQuizById({
+        id: id as string,
+        currency: userInfo?.preferredCurrency?.toUpperCase()
+      });
+      setDetailQuiz(quizDetails);
+    } catch (error) {
+      toast(`Error fetching quiz details: ${error as string}`);
+    }
+  };
+
   const fetchPaymentList = async (): Promise<void> => {
     try {
       setLoading(true);
-      const detailQuiz = await getQuizById({
-        id: id as string,
-        currency: userInfo?.preferredCurrency?.toUpperCase() as string
-      });
       const data = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
+
       setQRisList(
         data?.type_qris?.filter((item: { payment_method: string }) =>
           detailQuiz?.payment_method?.includes(item?.payment_method)
@@ -171,8 +183,14 @@ const PaymentList: React.FC<props> = ({
   }, []);
 
   useEffect(() => {
+    if (userInfo) {
+      void fetchDetailQuiz();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
     void fetchPaymentList();
-  }, [userInfo?.preferredCurrency]);
+  }, [detailQuiz]);
 
   useEffect(() => {
     if (dataPost.quiz) {

@@ -192,7 +192,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
   useEffect(() => {
     void fetchPaymentList();
-  }, [userInfo?.preferredCurrency]);
+  }, [detailTournament]);
 
   useEffect(() => {
     const validatePromo = async (): Promise<void> => {

@@ -42,6 +42,7 @@ export interface UserData {
 export interface DetailTournament {
   id: string;
   admission_fee: number;
+  payment_method?: string[];
 }
 export interface Tournament {
   fee: number;
@@ -141,10 +142,26 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       const data = await getPaymentList(
         userInfo?.preferredCurrency?.toUpperCase()
       );
-      setVirtualList(data.type_va);
-      setQRisList(data.type_qris);
-      setCcList(data.type_cc);
-      setEWalletList(data.type_ewallet);
+      setVirtualList(
+        data?.type_va?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setQRisList(
+        data?.type_qris?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setCcList(
+        data?.type_cc?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
+      setEWalletList(
+        data?.type_ewallet?.filter((item: { payment_method: string }) =>
+          detailTournament?.payment_method?.includes(item?.payment_method)
+        )
+      );
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
     } finally {
@@ -313,30 +330,38 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        <PaymentOptions
-          label="Virtual Account"
-          options={virtualList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label="QRIS"
-          options={qRisList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
-          options={eWalletList}
-          onChange={setOption}
-          currentValue={option}
-        />
-        <PaymentOptions
-          label={t('PlayPayment.creditCardLabel')}
-          options={ccList}
-          onChange={setOption}
-          currentValue={option}
-        />
+        {virtualList?.length > 0 && (
+          <PaymentOptions
+            label="Virtual Account"
+            options={virtualList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {qRisList?.length > 0 && (
+          <PaymentOptions
+            label="QRIS"
+            options={qRisList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {eWalletList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.eWalletLabel')}
+            options={eWalletList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
+        {ccList?.length > 0 && (
+          <PaymentOptions
+            label={t('PlayPayment.creditCardLabel')}
+            options={ccList}
+            onChange={setOption}
+            currentValue={option}
+          />
+        )}
         <SubmitButton
           disabled={option?.id == null}
           fullWidth

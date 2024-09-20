@@ -14,6 +14,7 @@ export interface EventList {
   location_name: string;
   name: string;
   updated_at: string;
+  reward: string;
 }
 
 export interface BookEvent {
@@ -94,4 +95,14 @@ export interface TicketData {
   user_id: string;
   check_in_time: string;
   check_out_time: string;
+}
+
+export interface CertificateI {
+  event_ticket_id: string
+  serial_number: string
+  user_name: string
+  event_name: string
+  pdf_data: string
+  created_at: string
+  updated_at: string
 }

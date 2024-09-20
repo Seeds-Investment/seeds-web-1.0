@@ -22,6 +22,7 @@ export { default as DeleteIcon } from 'public/assets/vector/delete.svg';
 export { default as Disclosure } from 'public/assets/vector/disclosure.png';
 export { default as Dogecoin } from 'public/assets/vector/doggo.svg';
 export { default as Dot } from 'public/assets/vector/dot.svg';
+export { default as DownloadIcon } from 'public/assets/vector/download-icon.svg';
 export { default as EarphoneIcon } from 'public/assets/vector/earphone-icon.svg';
 export { default as Ellipse } from 'public/assets/vector/ellipse.svg';
 export { default as Email } from 'public/assets/vector/email.svg';
@@ -77,5 +78,6 @@ export { default as UserIcon } from 'public/assets/vector/user.svg';
 export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.svg';
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
+export { default as XIconWhite } from 'public/assets/vector/x-icon-white.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
 

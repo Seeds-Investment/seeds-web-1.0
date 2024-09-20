@@ -423,6 +423,7 @@ const PaymentList: React.FC<props> = ({
             handlePay={handlePay}
             dataPost={dataPost}
             newPromoCodeDiscount={newPromoCodeDiscount}
+            username={userInfo?.name}
           />
         )}
       </Dialog>

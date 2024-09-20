@@ -294,7 +294,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {((orderDetail?.currency !== undefined) && (paymentSelectedEWallet !== undefined)) &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             (orderDetail?.grossAmount ?? 0) === 0
                               ? 0
                               : (orderDetail?.grossAmount ?? 0)
@@ -319,7 +319,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {((orderDetail?.currency !== undefined) && (paymentSelectedEWallet !== undefined)) &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             (orderDetail?.grossAmount ?? 0) === 0
                              ? 0
                              : (orderDetail?.grossAmount ?? 0)
@@ -343,7 +343,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                           orderDetail.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -364,7 +364,7 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
-                        `${orderDetail.currency} ${formatCurrency(
+                        `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                           qRisList[0]?.admin_fee ?? 0
                         )}`}
                     </Typography>
@@ -384,7 +384,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             paymentSelectedEWallet[0]?.service_fee ?? 0
                           )}`
                         : ''}
@@ -407,7 +407,7 @@ const SuccessPaymentPage: React.FC = () => {
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {orderDetail?.currency !== undefined &&
                       orderDetail.grossAmount !== undefined
-                        ? `${orderDetail.currency} ${formatCurrency(
+                        ? `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             qRisList[0]?.service_fee ?? 0
                           )}`
                         : ''}
@@ -429,7 +429,7 @@ const SuccessPaymentPage: React.FC = () => {
                         </Typography>
                         <Typography className="text-sm font-semibold text-[#262626]">
                           {orderDetail?.currency !== undefined
-                            ? `- ${orderDetail.currency} ${formatCurrency(
+                            ? `- ${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                                 paymentSelectedEWallet.length > 0
                                   ? paymentSelectedEWallet[0]?.promo_price ?? 0
                                   : 0
@@ -453,7 +453,7 @@ const SuccessPaymentPage: React.FC = () => {
                           </Typography>
                           <Typography className="text-sm font-semibold text-[#262626]">
                             {orderDetail?.currency !== undefined
-                              ? `- ${orderDetail.currency} ${formatCurrency(
+                              ? `- ${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                                   qRisList !== undefined
                                     ? qRisList[0]?.promo_price ?? 0
                                     : 0
@@ -479,7 +479,7 @@ const SuccessPaymentPage: React.FC = () => {
                           {t('quiz.payment.discountCoins')}
                         </Typography>
                         <Typography className="text-sm font-semibold text-[#262626]">
-                          {`- ${orderDetail.currency} ${formatCurrency(
+                          {`- ${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             (orderDetail?.seeds_coin ?? 0)
                           )}`}
                         </Typography>
@@ -500,7 +500,7 @@ const SuccessPaymentPage: React.FC = () => {
                           {t('quiz.payment.discountCoins')}
                         </Typography>
                         <Typography className="text-sm font-semibold text-[#262626]">
-                          {`- ${orderDetail.currency} ${formatCurrency(
+                          {`- ${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                             (orderDetail?.seeds_coin ?? 0)
                           )}`}
                         </Typography>
@@ -516,7 +516,7 @@ const SuccessPaymentPage: React.FC = () => {
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
                     {orderDetail?.currency !== undefined &&
-                      `${orderDetail.currency} ${formatCurrency(
+                      `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                         orderDetail.grossAmount
                       )}`}
                   </Typography>

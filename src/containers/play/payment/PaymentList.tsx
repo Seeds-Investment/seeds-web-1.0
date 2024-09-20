@@ -10,8 +10,8 @@ import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
 import { joinCirclePost } from '@/repository/circleDetail.repository';
 import { getPaymentList } from '@/repository/payment.repository';
 import { getUserInfo } from '@/repository/profile.repository';
-import { promoValidate } from '@/repository/promo.repository';
 import { joinQuiz } from '@/repository/quiz.repository';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -83,7 +83,7 @@ const userDefault: UserInfo = {
   refCodeUsage: 0,
   region: '',
   seedsTag: '',
-  verified: false,
+  verified: false
 };
 
 const PaymentList: React.FC<props> = ({
@@ -97,10 +97,13 @@ const PaymentList: React.FC<props> = ({
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [qRisList, setQRisList] = useState([]);
+  const [ccList, setCcList] = useState([]);
   const [option, setOption] = useState<Payment>();
   const [eWalletList, setEWalletList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [isFreeQuiz, setIsFreeQuiz] = useState<boolean>(false);
   const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
+  const { premiumCircleFee, premiumCircleMonth } = useSelector((state: RootState) => state?.premiumCircle ?? {});
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -114,6 +117,7 @@ const PaymentList: React.FC<props> = ({
       );
       setQRisList(data.type_qris);
       setEWalletList(data.type_ewallet);
+      setCcList(data.type_cc);
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
     } finally {
@@ -146,39 +150,39 @@ const PaymentList: React.FC<props> = ({
   }, [userInfo?.preferredCurrency]);
 
   useEffect(() => {
-    const validatePromo = async () => {
-      if (promoCodeValidationResult) {
-        if (dataPost.quiz) {
-          const admissionFee = Number(dataPost.quiz.admission_fee ?? 0);
-          const fee = Number(dataPost.quiz.fee ?? 0);
-          const totalItemPrice = admissionFee + fee;
+    if (dataPost.quiz) {
+      const admissionFee = Number(dataPost?.quiz?.admission_fee);
+      const promoDiscount = Number(newPromoCodeDiscount);
+      const fee = Number(dataPost?.quiz?.fee);
 
-          const response = await promoValidate({
-            promo_code: promoCodeValidationResult?.response?.promo_code,
-            spot_type: 'Paid Quiz',
-            item_price: totalItemPrice,
-            item_id: dataPost.payment.quiz_id,
-            currency: userInfo?.preferredCurrency ?? 'IDR',
-          });
-          
-          setNewPromoCodeDiscount(response?.total_discount)
-        } else {
-          const admissionFee = Number(dataPost?.premium_fee ?? 0);
-          const response = await promoValidate({
-            promo_code: promoCodeValidationResult?.response?.promo_code,
-            spot_type: 'Premium Circle',
-            item_price: admissionFee,
-            item_id: dataPost.id,
-            currency: userInfo?.preferredCurrency ?? 'IDR',
-          });
-          
-          setNewPromoCodeDiscount(response?.total_discount)
-        }
+      if ((admissionFee - promoDiscount + fee) > 0) {
+        setIsFreeQuiz(false);
+      } else {
+        setIsFreeQuiz(true);
       }
-    };
+    }
+  }, [dataPost, newPromoCodeDiscount]);
 
-    void validatePromo();
-  }, []);
+  useEffect(() => {
+    if (promoCodeValidationResult) {
+      setNewPromoCodeDiscount(promoCodeValidationResult?.response?.total_discount ?? 0)
+    }
+  }, [promoCodeValidationResult]);
+
+  const getMonthValue = (premiumCircleMonth: string): number => {
+    switch (premiumCircleMonth) {
+      case "1 month":
+          return 1;
+      case "3 month":
+          return 2;
+      case "6 month":
+          return 3;
+      case "12 month":
+          return 4;
+      default:
+          return 1;
+    }
+  }
   
   const handlePay = async (
     type: string,
@@ -197,18 +201,39 @@ const PaymentList: React.FC<props> = ({
       }
       const replaceDataPost: PaymentData = dataPost;
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      let response;
       if (replaceDataPost.quiz) {
-        const response = await joinQuiz({
-          quiz_id: replaceDataPost?.payment?.quiz_id,
-          lifelines: replaceDataPost?.payment?.lifelines,
-          language: replaceDataPost?.payment?.language,
-          payment_gateway: paymentGateway,
-          payment_method: paymentMethod,
-          phone_number: `+62${phoneNumber as string}`,
-          promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
-          invitation_code: invitationCode as string,
-          is_use_coins: useCoins as boolean
-        });
+        if (option?.payment_type === 'cc') {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean,
+            success_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`,
+            cancel_url: `${
+              process.env.NEXT_PUBLIC_DOMAIN as string
+            }/play/quiz/${replaceDataPost?.payment?.quiz_id}`
+          });
+        } else {
+          response = await joinQuiz({
+            quiz_id: replaceDataPost?.payment?.quiz_id,
+            lifelines: replaceDataPost?.payment?.lifelines,
+            language: replaceDataPost?.payment?.language,
+            payment_gateway: paymentGateway,
+            payment_method: paymentMethod,
+            phone_number: `+62${phoneNumber as string}`,
+            promo_code: '',
+            invitation_code: invitationCode as string,
+            is_use_coins: useCoins as boolean
+          });
+        }
 
         if (response) {
           if (response.payment_url !== '') {
@@ -223,10 +248,9 @@ const PaymentList: React.FC<props> = ({
       } else {
         const response = await joinCirclePost({
           circle_id: dataPost?.id,
-          duration:
-            numberMonth() === 1 ? numberMonth() : (numberMonth() % 3) + 1,
+          duration: getMonthValue(premiumCircleMonth ?? '1 month'),
           payment_request: {
-            amount: parseInt(`${totalAmount}`),
+            amount: parseInt(`${premiumCircleFee}`),
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
@@ -273,13 +297,16 @@ const PaymentList: React.FC<props> = ({
       _totalFee =
         Number(_admissionFee) + Number(_adminFee) + Number(dataPost?.quiz?.fee);
     } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
+      _admissionFee =
+        dataPost?.premium_fee * (numberMonth() > 0 ? numberMonth() : 1);
       _adminFee = dataPost?.admin_fee as number;
       _totalFee = parseFloat(`${(_admissionFee + _adminFee).toFixed(2)}`);
     }
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -293,15 +320,24 @@ const PaymentList: React.FC<props> = ({
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-[white] max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
+        {
+          !isFreeQuiz &&
+            <PaymentOptions
+              label="QRIS"
+              options={qRisList}
+              onChange={setOption}
+              currentValue={option}
+            />
+        }
         <PaymentOptions
-          label="QRIS"
-          options={qRisList}
+          label={t('PlayPayment.eWalletLabel')}
+          options={eWalletList}
           onChange={setOption}
           currentValue={option}
         />
         <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
-          options={eWalletList}
+          label={t('PlayPayment.creditCardLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option}
         />
@@ -339,7 +375,6 @@ const PaymentList: React.FC<props> = ({
           <WalletForm
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
             userInfo={userInfo ?? userDefault}
             newPromoCodeDiscount={newPromoCodeDiscount}
@@ -348,7 +383,6 @@ const PaymentList: React.FC<props> = ({
           <VirtualAccountGuide
             payment={option}
             handlePay={handlePay}
-            numberMonth={numberMonth() > 0 ? numberMonth() : 1}
             dataPost={dataPost}
             newPromoCodeDiscount={newPromoCodeDiscount}
           />

@@ -8,6 +8,7 @@ import { getUserInfo } from '@/repository/profile.repository';
 import { getPromocodeActive, promoValidate } from '@/repository/promo.repository';
 import { getQuizById } from '@/repository/quiz.repository';
 import { getDetailPostSocial } from '@/repository/social.respository';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type IDetailTournament, type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -145,7 +146,6 @@ const PromoCode: React.FC<PromoProps> = ({
     setAddPromo(event.target.value);
   };
 
-
   const [promoParams, setPromoParams] = useState({
     page: 1,
     limit: 10
@@ -249,6 +249,8 @@ const PromoCode: React.FC<PromoProps> = ({
     void fetchDetails();
 
   }, [id, circleId, spotType]);
+  
+  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
 
   useEffect(() => {
     if (detailTournament?.admission_fee !== undefined) {
@@ -392,7 +394,7 @@ const PromoCode: React.FC<PromoProps> = ({
         response = await promoValidate({
           promo_code: promoCode,
           spot_type: spotType,
-          item_price: dataCircle?.premium_fee,
+          item_price: premiumCircleFee,
           item_id: dataCircle?.id,
           currency: userInfo?.preferredCurrency ?? 'IDR'
         });

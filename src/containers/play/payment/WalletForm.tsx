@@ -3,6 +3,7 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import { type RootState } from '@/store/premium-circle';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Input, Typography } from '@material-tailwind/react';
@@ -48,9 +49,10 @@ const WalletForm = ({
     selectPromoCodeValidationResult
   );
   const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
+  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleGetCoinsUser = async () => {
+
+  const handleGetCoinsUser = async (): Promise<void> => {
     const useCoins = router.query.useCoins;
     if (useCoins === 'true') {
       const resCoins = await getTransactionSummary();
@@ -64,14 +66,23 @@ const WalletForm = ({
 
   useEffect(() => {
     if (dataPost.quiz) {
-      if (dataPost.quiz.fee === 0) {
-        if ((dataPost.quiz.admission_fee - newPromoCodeDiscount) === 0) {
-          setShowOtherFees(false)
-        } else {
-          setShowOtherFees(true)
-        }
+      const admissionFee = Number(dataPost.quiz.admission_fee || 0);
+      const fee = Number(dataPost.quiz.fee || 0);
+      const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
+
+      if ((admissionFee + fee - promoCodeDiscount) === 0) {
+        setShowOtherFees(false);
       } else {
-        setShowOtherFees(true)
+        setShowOtherFees(true);
+      }
+    } else {
+      const admissionFee = Number(premiumCircleFee || 0);
+      const promoCodeDiscount = Number(newPromoCodeDiscount || 0);
+
+      if ((admissionFee - promoCodeDiscount) === 0) {
+        setShowOtherFees(false);
+      } else {
+        setShowOtherFees(true);
       }
     }
   }, [dataPost, newPromoCodeDiscount]);
@@ -104,7 +115,7 @@ const WalletForm = ({
         ).toFixed(2)}`
       );
     } else {
-      _admissionFee = dataPost?.premium_fee * (numberMonth ?? 1);
+      _admissionFee = premiumCircleFee
       _adminFee = payment.admin_fee;
       _totalFee = parseFloat(
         `${(
@@ -125,8 +136,8 @@ const WalletForm = ({
     setAdmissionFee(_admissionFee);
     setAdminFee(_adminFee);
     setTotalFee(_totalFee);
-  }, [dataPost, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
-
+  }, [dataPost, showOtherFees, newPromoCodeDiscount, numberMonth, payment, coinsDiscount, promoCodeValidationResult]);
+  
   const renderPhoneInput = (): JSX.Element => (
     <div className="mb-2">
       <Typography className="mb-2 text-[#B9B7B7] font-semibold">

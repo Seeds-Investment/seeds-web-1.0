@@ -1,32 +1,28 @@
 'use client';
 
 import PDFViewerCertificate from '@/pages/homepage/event/[id]/section/pdf-viewer-certificate';
-import { type CertificateI, type EventList, type TicketData } from '@/utils/interfaces/event.interface';
+import { type CertificateI, type EventList } from '@/utils/interfaces/event.interface';
 import Image from 'next/image';
 import { DownloadIcon, XIconWhite } from 'public/assets/vector';
 import { useState } from 'react';
 import Modal from '../ui/modal/Modal';
-import ModalCheckOption from './ModalCheckOption';
 
 interface Props {
   onClose: () => void;
-  ticketData: TicketData;
-  eventData: EventList;
-  isCheckAble: boolean;
+  eventData?: EventList;
+  eventName?: string;
   certificateData: CertificateI;
   file: string;
 }
 
 const ModalShowCertificate: React.FC<Props> = ({
   onClose,
-  ticketData,
   eventData,
-  isCheckAble,
+  eventName,
   certificateData,
   file
 }) => {
   const [preview, setPreview] = useState<boolean>(false);
-  const [isCheckInModal, setIsCheckInModal] = useState<boolean>(false);
   const modalDefaultClasses = `
     z-50 animate-slide-down fixed
     h-screen w-screen text-center
@@ -35,15 +31,6 @@ const ModalShowCertificate: React.FC<Props> = ({
 
   return (
     <>
-      {isCheckInModal && (
-        <ModalCheckOption
-          onClose={() => {
-            setIsCheckInModal(prev => !prev);
-          }}
-          ticketId={ticketData?.id ?? ''}
-          ticketStatus={ticketData?.status ?? ''}
-        />
-      )}
       <Modal
         onClose={onClose}
         modalClasses={modalDefaultClasses}
@@ -52,7 +39,7 @@ const ModalShowCertificate: React.FC<Props> = ({
         <div className='w-screen h-screen flex flex-col'>
           <div className='bg-seeds-button-green h-fit'>
             <div className='py-4 font-semibold font-poppins text-white'>
-              {eventData?.name ?? 'Seeds Event'}
+              {eventData !== undefined ? eventData?.name ?? 'Seeds Event' : eventName}
             </div>
             <div className='px-8 pb-4'>
               <div className='flex justify-between items-center'>

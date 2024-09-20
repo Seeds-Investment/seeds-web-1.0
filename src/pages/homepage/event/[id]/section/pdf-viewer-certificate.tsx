@@ -41,7 +41,6 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
               className="w-full h-screen relative"
             />
             <button
-              // className="z-[10000] fixed text-white top-3 -right-14 bg-red-500"
               className="z-[10000] absolute text-white top-[70px] left-[13px] m-auto shadow-lg hover:scale-110 transition ease-out bg-[#262626] rounded-full"
               onClick={() => {
                 setDocModal(false);
@@ -100,26 +99,22 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
           </Modal>
         </>
       )}
-      <div className="flex justify-center items-center h-full w-full lg:w-[80%]">
-        <Document
-          file={file}
-          onError={(error: any) => {
-            toast.error('Error while loading document!', error.message);
-          }}
-          className='w-full lg:w-[80%] flex justify-center items-center text-center'
-        >
-          <div className="flex w-full lg:w-[80%] justify-center items-center shadow-[rgba(0,_0,_0,_0.5)_80px_30px_90px]">
-            {Array.from({ length: 1 }, (_, index) => (
-              <Page
-                key={`page_${index + 1}`}
-                pageNumber={index + 1}
-                renderAnnotationLayer={false}
-                renderTextLayer={false}
-              />
-            ))}
-          </div>
-        </Document>
-      </div>
+      <Document
+        file={file}
+        onError={(error: any) => {
+          toast.error('Error while loading document!', error.message);
+        }}
+        className='w-full lg:w-[80%] flex justify-center items-center text-center'
+      >
+        {Array.from({ length: 1 }, (_, index) => (
+          <Page
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+          />
+        ))}
+      </Document>
     </div>
   );
 };

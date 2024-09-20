@@ -223,3 +223,28 @@ export const getCertificateById = async (id: string): Promise<any> => {
     await Promise.reject(error);
   }
 };
+
+export const getMyCertificate = async (
+  params: {
+    page: number,
+    limit: number
+  }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken === null || accessToken === '') {
+      return await Promise.resolve('Access token not found');
+    }
+
+    return await discoverService.get(`/my-certificates/event`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};

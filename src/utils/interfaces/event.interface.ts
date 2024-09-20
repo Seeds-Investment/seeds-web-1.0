@@ -106,3 +106,10 @@ export interface CertificateI {
   created_at: string
   updated_at: string
 }
+
+export interface MyCertificateI {
+  ticket_id: string
+  event_name: string
+  user_id: string
+  created_at: string
+}

@@ -57,7 +57,7 @@ const initialEventData: EventList = {
   reward: ''
 }
 
-const initialCertificate: CertificateI = {
+export const initialCertificate: CertificateI = {
   event_ticket_id: '',
   serial_number: '',
   user_name: '',
@@ -227,9 +227,7 @@ const SeedsEventDetail: React.FC = () => {
           onClose={() => {
             setIsShowCertificate(prev => !prev);
           }}
-          ticketData={ticketData ?? initialTicketData}
           eventData={eventData ?? initialEventData}
-          isCheckAble={isCheckAble()}
           certificateData={certificateData ?? initialCertificate}
           file={URL.createObjectURL(base64ToBlob(certificateData?.pdf_data ?? ''))}
         />

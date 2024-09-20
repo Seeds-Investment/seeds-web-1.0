@@ -52,6 +52,7 @@ export { default as Loader } from 'public/assets/vector/loader.svg';
 export { default as LogOutIcon } from 'public/assets/vector/log-out.svg';
 export { default as Logo } from 'public/assets/vector/logo.svg';
 export { default as LogoutIcon } from 'public/assets/vector/logout-icon.svg';
+export { default as MyCertificateIcon } from 'public/assets/vector/my-certificate-icon.svg';
 export { default as MyEvent } from 'public/assets/vector/my-event-icon.svg';
 export { default as Pin } from 'public/assets/vector/pin.svg';
 export { default as PrivacyPolicy } from 'public/assets/vector/privacy.png';

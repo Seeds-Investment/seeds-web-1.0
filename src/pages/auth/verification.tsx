@@ -6,6 +6,7 @@ import AuthPersonalData from '@/components/auth2/AuthPersonalData';
 import AuthVerification from '@/components/auth2/AuthVerification';
 import countries from '@/constants/countries.json';
 import AuthLayout from '@/containers/auth/AuthLayout';
+import queryList from '@/helpers/queryList';
 import type { OTPDataI } from '@/utils/interfaces/otp.interface';
 import DeviceDetector from 'device-detector-js';
 import { useSession } from 'next-auth/react';
@@ -21,6 +22,7 @@ interface LoginFormData {
 
 const Register: React.FC = () => {
   const deviceDetector = new DeviceDetector();
+  const { queries } = queryList();
   const { data } = useSession();
   const [select, setSelect] = useState<number>(0);
   const [guest, setGuest] = useState<string>('');
@@ -40,7 +42,6 @@ const Register: React.FC = () => {
       identifier: ''
     }
   });
-  console.log(formData);
   const [loginForm, setLoginForm] = useState<LoginFormData>({
     phoneNumber: '',
     password: '',
@@ -68,25 +69,27 @@ const Register: React.FC = () => {
     };
   }, [countdown]);
   useEffect(() => {
-    if (data !== null && data !== undefined) {
-      setFormData({
-        ...formData,
-        birthDate: `${new Date(
-          new Date().getFullYear() - 17,
-          new Date().getMonth(),
-          new Date().getDate()
-        ).toISOString()}`,
+    setFormData({
+      ...formData,
+      birthDate: `${new Date(
+        new Date().getFullYear() - 17,
+        new Date().getMonth(),
+        new Date().getDate()
+      ).toISOString()}`,
 
-        name: data?.user?.name ?? '',
-        seedsTag: `${
-          data?.user?.name?.split(' ').join('') as string
-        }${Math.round(Math.random() * 1000)}`,
-        provider: {
-          provider: data?.provider ?? '',
-          identifier: data?.accessToken ?? ''
-        }
-      });
-    }
+      name:
+        data !== null && data !== undefined ? (data?.user?.name as string) : '',
+      seedsTag:
+        data !== null && data !== undefined
+          ? `${data?.user?.name?.split(' ').join('') as string}${Math.round(
+              Math.random() * 1000
+            )}`
+          : '',
+      provider: {
+        provider: data !== null && data !== undefined ? data?.provider : '',
+        identifier: data !== null && data !== undefined ? data?.accessToken : ''
+      }
+    });
   }, [data]);
 
   useEffect(() => {
@@ -101,6 +104,9 @@ const Register: React.FC = () => {
       }_web`,
       os_name: `${deviceDetector.parse(navigator.userAgent).os?.name as string}`
     });
+    if (queries.rc !== undefined) {
+      setFormData({ ...formData, refCode: queries.rc });
+    }
   }, []);
   const element = (
     <>

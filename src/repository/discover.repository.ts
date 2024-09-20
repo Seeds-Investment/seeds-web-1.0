@@ -134,6 +134,8 @@ export const bookEvent = async (params: {
   email: string;
   promo_code?: string;
   is_use_coins?: boolean;
+  succes_url?: string;
+  cancel_url?: string;
 }): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -142,15 +144,12 @@ export const bookEvent = async (params: {
       return await Promise.resolve('Access token not found');
     }
 
-    return await discoverService.post(`/event/buy-ticket`,
-      params,
-      {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${accessToken ?? ''}`
-        }
+    return await discoverService.post(`/event/buy-ticket`, params, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
       }
-    );
+    });
   } catch (error) {
     await Promise.reject(error);
   }

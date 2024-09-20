@@ -2,11 +2,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 'use-client';
 
-import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
-import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
-import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
-import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
+import ModalQuizWinnerAlert from '@/components/popup/ModalQuizWinnerAlert';
 import ModalShareQuiz from '@/components/popup/ModalShareQuiz';
+import PromoCode from '@/components/promocode/promoCode';
 import TrackerEvent from '@/helpers/GTM';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -16,6 +14,8 @@ import {
   validateInvitationCode
 } from '@/repository/quiz.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
+import LanguageContext from '@/store/language/language-context';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import i18n from '@/utils/common/i18n';
 import { type IDetailQuiz } from '@/utils/interfaces/quiz.interfaces';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
@@ -24,22 +24,30 @@ import { Switch } from '@material-tailwind/react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import ListQuizEmpty from '../../../../assets/play/quiz/list-quiz-empty.jpg';
+import QuizWinnerSection from './section/quiz-winner';
 
 const QuizDetail = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
   const count = useRef(0);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [invitationCode, setInvitationCode] = useState<string>('');
   const [isShareModal, setIsShareModal] = useState<boolean>(false);
+  const [isShowWinnerAlert, setIsShowWinnerAlert] = useState<boolean>(false);
+  const [winningPosition, setWinningPosition] = useState<number>(0);
+  const [winningLink, setWinningLink] = useState<string>('');
+  const [ordinalName, setOrdinalName] = useState<string>('');
+  const languageCtx = useContext(LanguageContext);
   const currentUnixTime = Date.now() / 1000;
   const expiredUnixTime = parseInt(
     window.localStorage.getItem('expiresAt') as string
@@ -68,20 +76,29 @@ const QuizDetail = (): React.ReactElement => {
       window.localStorage.removeItem('refreshToken');
     }
   }, []);
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-        setUserInfo(dataInfo);
-      } catch (error) {
-        toast.error(`Error fetching data: ${error as string}`);
-      }
-    };
 
+  useEffect(() => {
     fetchData()
       .then()
       .catch(() => {});
+    
+    if (promoCodeValidationResult?.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
 
   const handleInvitationCode = async (): Promise<void> => {
     try {
@@ -133,6 +150,7 @@ const QuizDetail = (): React.ReactElement => {
       handleGetSeedsCoin();
     }
   }, [id, userInfo]);
+
   useEffect(() => {
     if (
       detailQuiz !== undefined &&
@@ -154,6 +172,33 @@ const QuizDetail = (): React.ReactElement => {
     }
   }, [detailQuiz]);
 
+  useEffect(() => {
+    if ((
+      detailQuiz !== undefined)
+      && (userInfo !== undefined)
+      && (detailQuiz?.status === 'ENDED')
+      && (detailQuiz?.prize_type === 'LINK')
+    ) {
+      const index = detailQuiz?.winners.indexOf(userInfo.id);
+      if ((detailQuiz?.winners).includes(userInfo?.id)) {
+        setIsShowWinnerAlert(true)
+      }
+      if (index !== -1) {
+        setWinningPosition(index+1);
+        setWinningLink(detailQuiz?.winner_link_url[index] ?? '')
+      }
+      if (winningPosition === 1) {
+        setOrdinalName('st')
+      } else if (winningPosition === 2) {
+        setOrdinalName('nd')
+      } else if (winningPosition === 3) {
+        setOrdinalName('rd')
+      } else {
+        setOrdinalName('th')
+      }
+    }
+  }, [detailQuiz, userInfo, ordinalName, winningLink]);
+
   if (detailQuiz === undefined && loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -171,6 +216,18 @@ const QuizDetail = (): React.ReactElement => {
           }}
           url={detailQuiz?.id ?? ''}
           playId={detailQuiz?.quiz_unique_id ?? ''}
+        />
+      )}
+      {isShowWinnerAlert && (
+        <ModalQuizWinnerAlert
+          onClose={() => {
+            setIsShowWinnerAlert(prev => !prev);
+          }}
+          quizName={detailQuiz?.name ?? ''}
+          winningPosition={winningPosition ?? 0}
+          ordinalName={ordinalName ?? ''}
+          language={languageCtx?.language ?? 'EN'}
+          winningLink={winningLink}
         />
       )}
       <Image
@@ -203,7 +260,7 @@ const QuizDetail = (): React.ReactElement => {
                 <div className="text-sm text-[#7C7C7C]">{t('quiz.played')}</div>
               </div>
               <div className="flex flex-col justify-center items-center p-4">
-                <div className="text-xl font-semibold">
+                <div className="text-xl font-semibold text-center">
                   {t('quiz.dayDuration', {
                     duration: Math.floor(
                       moment(detailQuiz?.ended_at).diff(
@@ -241,45 +298,13 @@ const QuizDetail = (): React.ReactElement => {
               }}
             />
           </div>
-          <div className="mt-4">
-            <div className="text-lg font-semibold">{t('quiz.quizPrize')}</div>
-            <table className="mt-2">
-              {detailQuiz?.prizes?.map((item, i) => (
-                <tr key={i}>
-                  <td className="inline-flex gap-2 border p-3 w-full">
-                    <Image
-                      src={
-                        i === 0
-                          ? FirstMedal
-                          : i === 1
-                          ? SecondMedal
-                          : i === 2
-                          ? ThirdMedal
-                          : SubsequentMedal
-                      }
-                      alt={`${i}-medal`}
-                      width={200}
-                      height={200}
-                      className="object-contain max-h-5 max-w-5"
-                    />
-                    {i <= 2
-                      ? t(
-                          `quiz.${
-                            i === 0 ? 'first' : i === 1 ? 'second' : 'third'
-                          }`
-                        )
-                      : `${i + 1}th`}
-                  </td>
-                  <td className="border p-3 w-full">
-                    {item?.toLocaleString('id-ID', {
-                      currency: userInfo?.preferredCurrency ?? 'IDR',
-                      style: 'currency'
-                    })}
-                  </td>
-                </tr>
-              ))}
-            </table>
-          </div>
+
+          {/* Winner Section */}
+          {
+            detailQuiz !== null && detailQuiz !== undefined &&
+              <QuizWinnerSection detailQuiz={detailQuiz} preferredCurrency={userInfo?.preferredCurrency ?? 'IDR'}/>
+          }
+          
           <div className="mt-4 flex flex-row gap-8">
             {detailQuiz?.sponsors?.image_url ? (
               <div className="flex flex-col justify-center items-center gap-4">
@@ -311,8 +336,8 @@ const QuizDetail = (): React.ReactElement => {
             ) : null}
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-6">
-          <div className="flex flex-row justify-between items-start gap-2">
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
+          <div className={`flex flex-row justify-between items-start gap-2 ${((detailQuiz?.admission_fee ?? 0) > 0) ? 'mt-4' : ''}`}>
             <div className="text-2xl lg:text-xl xl:text-2xl font-semibold">
               {detailQuiz?.name}
             </div>
@@ -323,6 +348,27 @@ const QuizDetail = (): React.ReactElement => {
             >
               <ShareIcon width={24} height={24} />
             </button>
+          </div>
+          <div className='my-4'>
+            {
+              ((userInfo !== undefined) && ((detailQuiz?.admission_fee ?? 0) > 0)) &&
+                <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Quiz'} useCoins={useCoins}/>
+            }
+          </div>
+          <div className='my-4'>
+            {detailQuiz?.is_need_invitation_code && (
+              <div>
+                <input
+                  type="text"
+                  value={invitationCode}
+                  onChange={e => {
+                    setInvitationCode(e.target.value);
+                  }}
+                  placeholder="Invitation Code"
+                  className="w-full border p-2 rounded-md"
+                />
+              </div>
+            )}
           </div>
           {detailQuiz?.is_need_invitation_code && (
             <div>
@@ -340,7 +386,7 @@ const QuizDetail = (): React.ReactElement => {
           <div className="text-sm text-[#7C7C7C] mt-2.5">
             {t('quiz.entranceFee')}
           </div>
-          <div className="font-semibold text-xl">
+          <div className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'}`}>
             {detailQuiz?.admission_fee === 0
               ? t('quiz.free')
               : detailQuiz?.admission_fee?.toLocaleString('id-ID', {
@@ -348,10 +394,21 @@ const QuizDetail = (): React.ReactElement => {
                   style: 'currency'
                 })}
           </div>
+          {
+            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
+              <div className="font-semibold text-xl">
+                {detailQuiz?.admission_fee === 0
+                  ? t('quiz.free')
+                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}
+              </div>
+          }
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
-              <div className="text-xs text-[#7C7C7C]">
+              <div className="text-xs text-[#7C7C7C] lg:px-2">
                 {totalAvailableCoins > 0
                   ? t('quiz.seedsCoin', { data: totalAvailableCoins })
                   : `Coin cannot be redeemed`}
@@ -363,6 +420,7 @@ const QuizDetail = (): React.ReactElement => {
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);
+                  dispatch(setPromoCodeValidationResult(0));
                 }}
               />
             </div>

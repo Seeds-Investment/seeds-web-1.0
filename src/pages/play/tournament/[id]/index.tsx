@@ -76,7 +76,7 @@ const TournamentDetail: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
-    
+
     if (promoCodeValidationResult?.id !== id) {
       dispatch(setPromoCodeValidationResult(0));
     }
@@ -152,7 +152,7 @@ const TournamentDetail: React.FC = () => {
     } catch (error) {
       toast.error('Error joining tournament');
     }
-  }; 
+  };
 
   const handleJoinFreeTournament = async (): Promise<void> => {
     try {
@@ -203,7 +203,7 @@ const TournamentDetail: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    if ((id !== null) && (id !== undefined)) {
+    if (id !== null && id !== undefined) {
       if (accessToken === null) {
         getDetail();
       } else {
@@ -254,7 +254,10 @@ const TournamentDetail: React.FC = () => {
           } else {
             if (!validInvit) {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(`/play/tournament/${id as string}/payment?useCoins=${useCoins}`);
+              await router.push(
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
+              );
             }
           }
         }

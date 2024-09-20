@@ -77,7 +77,7 @@ const QuizDetail = (): React.ReactElement => {
     fetchData()
       .then()
       .catch(() => {});
-    
+
     if (promoCodeValidationResult?.id !== id) {
       dispatch(setPromoCodeValidationResult(0));
     }

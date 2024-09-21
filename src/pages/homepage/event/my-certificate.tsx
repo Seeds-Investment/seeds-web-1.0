@@ -127,8 +127,6 @@ const MyCertificate: React.FC = () => {
     return new Blob([view], { type });
   };
 
-  console.log(certificateList)
-
   return (
     <>
       {isShowCertificate && (

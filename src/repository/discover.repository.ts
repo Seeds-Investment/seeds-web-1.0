@@ -249,27 +249,6 @@ export const getMyCertificate = async (
   }
 };
 
-// export const sendCertificateToEmail = async (ticketId: string): Promise<any> => {
-//   try {
-//     const accessToken = localStorage.getItem('accessToken');
-
-//     if (accessToken === null || accessToken === '') {
-//       return await Promise.resolve('Access token not found');
-//     }
-
-//     return await discoverService.post(`/event/${ticketId}/certificate/send`,
-//       {
-//         headers: {
-//           Accept: 'application/json',
-//           Authorization: `Bearer ${accessToken ?? ''}`
-//         }
-//       }
-//     );
-//   } catch (error) {
-//     await Promise.reject(error);
-//   }
-// };
-
 export const sendCertificateToEmail = async (ticketId: string): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');

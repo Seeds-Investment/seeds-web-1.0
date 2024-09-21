@@ -2190,6 +2190,9 @@ export default {
   },
   seedsEvent: {
     myEvent: 'Event Saya',
+    myCertificate: 'Sertifikat Saya',
+    myCertificates: 'Sertifikat Saya',
+    sendEmailConfirm: 'Apa kamu yakin untuk mengirimkan sertifikat ke emailmu yang digunakan untuk mendaftar event ini?',
     search: 'Cari event',
     enter: 'Cari',
     past: 'Event Berakhir',

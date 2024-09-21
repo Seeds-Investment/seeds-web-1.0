@@ -5,7 +5,9 @@ import { type CertificateI, type EventList } from '@/utils/interfaces/event.inte
 import Image from 'next/image';
 import { DownloadIcon, XIconWhite } from 'public/assets/vector';
 import { useState } from 'react';
+import { MdOutlineEmail } from "react-icons/md";
 import Modal from '../ui/modal/Modal';
+import ModalConfirmSendCertificate from './ModalConfirmSendCertificate';
 
 interface Props {
   onClose: () => void;
@@ -22,15 +24,24 @@ const ModalShowCertificate: React.FC<Props> = ({
   certificateData,
   file
 }) => {
+  const [showConfirmEmail, setShowConfirmEmail] = useState<boolean>(false);
   const [preview, setPreview] = useState<boolean>(false);
   const modalDefaultClasses = `
     z-50 animate-slide-down fixed
     h-screen w-screen text-center
     shadow-[0 2px 8px rgba(0, 0, 0, 0.25)] bg-white`
   ;
-
+console.log('showConfirmEmail ', showConfirmEmail)
   return (
     <>
+      {showConfirmEmail && (
+        <ModalConfirmSendCertificate
+          onClose={() => {
+            setShowConfirmEmail(prev => !prev);
+          }}
+          ticketId={certificateData?.event_ticket_id ?? ''}
+        />
+      )}
       <Modal
         onClose={onClose}
         modalClasses={modalDefaultClasses}
@@ -53,19 +64,25 @@ const ModalShowCertificate: React.FC<Props> = ({
                     className="hover:scale-110 transition ease-out cursor-pointer w-full h-full"
                   />
                 </div>
-                <div
-                  onClick={() => {
-                    setPreview(true);
-                  }}
-                  className='flex justify-center items-center w-[24px] h-[24px]'
-                >
-                  <Image
-                    src={DownloadIcon}
-                    alt="X"
-                    width={100}
-                    height={100}
-                    className="hover:scale-110 transition ease-out cursor-pointer w-full h-full"
+                <div className='flex gap-4 justify-center items-center'>
+                  <MdOutlineEmail
+                    onClick={() => { setShowConfirmEmail(true); }}
+                    className='w-[24px] h-[24px] text-white hover:scale-110 transition ease-out cursor-pointer'
                   />
+                  <div
+                    onClick={() => {
+                      setPreview(true);
+                    }}
+                    className='flex justify-center items-center w-[24px] h-[24px]'
+                  >
+                    <Image
+                      src={DownloadIcon}
+                      alt="X"
+                      width={100}
+                      height={100}
+                      className="hover:scale-110 transition ease-out cursor-pointer w-full h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

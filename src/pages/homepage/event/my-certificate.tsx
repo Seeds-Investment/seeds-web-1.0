@@ -7,9 +7,9 @@ import AssetPagination from '@/components/AssetPagination';
 import ModalShowCertificate from '@/components/popup/ModalShowCertificate';
 import withAuth from '@/helpers/withAuth';
 import {
-    type EventListParams,
-    getCertificateById,
-    getMyCertificate
+  type EventListParams,
+  getCertificateById,
+  getMyCertificate
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type CertificateI, type MyCertificateI } from '@/utils/interfaces/event.interface';
@@ -127,6 +127,8 @@ const MyCertificate: React.FC = () => {
     return new Blob([view], { type });
   };
 
+  console.log(certificateList)
+
   return (
     <>
       {isShowCertificate && (
@@ -153,7 +155,11 @@ const MyCertificate: React.FC = () => {
             />
           </div>
           <Typography className="w-full text-xl lg:text-2xl font-semibold text-center flex justify-center items-center">
-            {t('seedsEvent.myEvent')}
+            {
+              certificateList?.length > 1
+                ? t('seedsEvent.myCertificates')
+                : t('seedsEvent.myCertificate')
+            }
           </Typography>
           <div
             onClick={ async() => await router.push('/homepage/event')}

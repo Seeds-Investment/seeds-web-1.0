@@ -31,7 +31,7 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
             onClose={() => {
               setDocModal(false);
             }}
-            modalClasses="flex md:hidden z-[10000] animate-slide-down bg-orange-400 fixed left-0 md:left-[100px] w-full h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
+            modalClasses="flex md:hidden z-[10000] animate-slide-down fixed left-0 md:left-[100px] w-full h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
           >
             <embed
               src={

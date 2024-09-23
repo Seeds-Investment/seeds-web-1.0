@@ -41,9 +41,18 @@ export interface TeamBattleDetail {
   tnc: Tnc;
   status: string;
   initial_balance: number;
+  public_max_participant: number;
+  community_max_participant: number;
+  university_max_participant: number;
+  province_max_participant: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
   is_joined: boolean;
+  is_eliminated: boolean;
+  my_last_stage: string;
+  participants: number;
   type: string;
-  participants?: number;
 }
 
 export interface Sponsor {

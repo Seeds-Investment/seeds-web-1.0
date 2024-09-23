@@ -353,3 +353,9 @@ li {
   scrollbar-width: thin;
   scrollbar-color: #2b598b #ffffff;
 }
+
+.team-battle-scroll{
+  scrollbar-width: thin;
+  scrollbar-color: #7555da #ffffff;
+  border-radius: ;
+}

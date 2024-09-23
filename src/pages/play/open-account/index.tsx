@@ -39,7 +39,7 @@ const Player = (): React.ReactElement => {
     <PageGradient defaultGradient className="w-full">
       <div className="w-full h-auto cursor-default bg-white p-5 rounded-2xl">
         <div className="bg-white w-full h-auto font-poppins my-4 flex justify-center flex-wrap gap-4">
-          {bannerData.map((item, index) => (
+          {bannerData?.map((item, index) => (
             <OpenAccountCard
               onClick={() => {
                 void router.push(`/play/open-account/${item.id}`);
@@ -48,7 +48,7 @@ const Player = (): React.ReactElement => {
               data={item}
             />
           ))}
-          {bannerData?.length === 0 && (
+          {((bannerData?.length === 0) || (bannerData === null)) && (
             <div className="flex flex-col justify-center items-center py-8">
               <Image src={seedyChatPersonal} alt="Seedy No Chat" />
               <Typography className="font-poppins font-semibold text-xl text-[#262626]">

@@ -44,7 +44,7 @@ const Profile = ({
   const _handleReferalCode = async (): Promise<boolean> => {
     return await router.push({
       pathname: `/my-profile/referralCode`,
-      query: { refCode: profileData.refCode, referralHistory: 'true' }
+      query: { referralHistory: 'true' }
     });
   };
 

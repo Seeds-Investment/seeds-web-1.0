@@ -854,6 +854,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Kartu Kredit / Debit',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
@@ -864,6 +866,7 @@ export default {
       adminFeeLabel: 'Biaya Admin',
       serviceFeeLabel: 'Biaya Layanan',
       adminFeeDiscountLabel: 'Diskon Biaya Admin ',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Digunakan'
     },
@@ -874,6 +877,7 @@ export default {
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
+      promoCodeDiscountLabel: 'Diskon Kode Promo',
       adminFeeLabel: 'Admin',
       note: 'Please complete your payment in 24 hours. Your order will be cancelled automatically if you do not make any payments in 24 hours',
       instructionLabel: 'mBanking Transfer Instructions',
@@ -899,6 +903,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Pembelian:',
+    noMinimumPurchase: 'Tidak ada limit pembelian',
+    limitReached: 'Telah mencapai batas penggunaan kuota',
+    endsIn: 'Berakhir dalam',
+    daysRemain: 'hari',
+    dayRemain: 'hari',
+    hoursRemain: 'jam',
+    hourRemain: 'jam',
+    minutesRemain: 'menit',
+    minuteRemain: 'menit',
+    lessThanMinute: 'satu menit',
+    promoOver: 'Promo sudah berakhir',
+    totalDiscount: 'Diskon Promo:',
+    emptyVoucher1: 'Ups, Belum Ada Voucher',
+    emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
+    applied: 'Kode promo berhasil diterapkan!',
+    unApplied: 'Kode promo berhasil dihapus!',
+    apply: "Terapkan",
+    noExpired: "Tidak ada tanggal kadaluarsa",
+    havePromo: "Punya kode promo? Masukan disini!",
+    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
   },
   temporary: {
     welcome: {
@@ -1830,9 +1859,10 @@ export default {
     id: 'Id Transaksi',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    winnerModalTitle: 'Selamat!',
     score: 'Skor Kamu : ',
-    earn: ' Kamu Mendapatkan IDR ',
+    earn: ' Kamu Mendapatkan ',
+    claimPrize: 'Klaim Hadiah',
     tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
     text1: 'Tantang pengetahuan finansialmu dengan daftar kuis dibawah.',
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
@@ -1841,6 +1871,7 @@ export default {
       virtualNumber: 'Nomor Virtual Akun Anda',
       pendingPaidQuiz: 'Menunggu Kuis Dibayar',
       quizFee: 'Biaya Kuis',
+      quizFeeTotal: 'Biaya Kuis + Bantuan Tambahan',
       lifelinesFee: 'Biaya Bantuan Tambahan',
       adminFee: 'Biaya Admin',
       serviceFee: 'Biaya Layanan',
@@ -1856,7 +1887,15 @@ export default {
     playId: 'ID Kuis',
     shareLinks: 'Bagikan Link',
     addMore: 'Tambah power up lagi',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Selamat!',
+    winnerAlertMessage2: 'Kamu menjadi',
+    winnerAlertMessage3: 'juara',
+    winnerAlertMessage4: 'kuis',
+    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage6: 'Klaim Hadiah',
+    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -1883,6 +1922,7 @@ export default {
     blank1: 'Ups,  Belum Ada Turnamen',
     blank2: 'Yuk, ikuti turnamennya dan menangkan hadiahnya!',
     detailRemaining: 'Sisa Waktu',
+    detailStarting: 'Waktu Menunggu',
     detailPeriod: 'Periode Turnamen',
     detailPrize: 'Hadiah Turnamen',
     detailTerms: 'Syarat dan Ketentuan',
@@ -1897,6 +1937,7 @@ export default {
     free: 'Gratis',
     join: 'Join',
     start: 'Mulai',
+    waiting: 'Menunggu',
     participants: 'Peserta',
     categoryAsset: 'Kategori Aset',
     circleRecommendation: 'Rekomendasi Circle',
@@ -1941,6 +1982,7 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Berakhir',
       canceled: 'Dibatalkan',
+      joinedWaiting: 'Menunggu',
       share: 'Share',
       day: 'Hari',
       days: 'Hari'
@@ -2362,7 +2404,9 @@ export default {
       'Order yang dilakukan dengan broker untuk membeli atau menjual saham tertentu ketika saham mencapai harga tertentu',
     text19:
       'Tingkat harga ketika kamu ingin menjual atau membeli saham atau aset untuk mendapatkan profi.',
-    text20: 'Berapa persen yang Anda inginkan'
+    text20: 'Berapa persen yang Anda inginkan',
+    text21: 'Harga Aktivasi Hentikan Kerugian',
+    text22: 'Harga aktivasi Take Profit'
   },
   discover: {
     hotNews: 'Hot News',

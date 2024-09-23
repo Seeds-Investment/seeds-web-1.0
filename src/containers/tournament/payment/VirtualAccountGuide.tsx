@@ -3,6 +3,7 @@ import SubmitButton from '@/components/SubmitButton';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { type DetailTournament, type Payment } from './PaymentList';
@@ -22,6 +23,7 @@ interface VirtualAccountGuideProps {
   numberMonth: number;
   paymentStatus: PaymentStatus | undefined;
   user_name: string | undefined;
+  newPromoCodeDiscount: number;
 }
 
 export interface PaymentStatus {
@@ -47,11 +49,13 @@ const VirtualAccountGuide = ({
   handlePay,
   numberMonth,
   paymentStatus,
+  newPromoCodeDiscount,
   // eslint-disable-next-line @typescript-eslint/naming-convention
   user_name
 }: VirtualAccountGuideProps): JSX.Element => {
   const { t } = useTranslation();
   const accountNumber = paymentStatus != null ? paymentStatus.vaNumber : '';
+  const [showOtherFees, setShowOtherFees] = useState<boolean>(false)
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
@@ -59,7 +63,7 @@ const VirtualAccountGuide = ({
   const userName = user_name;
   const discount =
     promoCodeValidationResult !== 0
-      ? promoCodeValidationResult?.total_discount
+      ? promoCodeValidationResult?.response?.total_discount
       : 0;
   const admissionFee = dataPost?.admission_fee * numberMonth;
   const adminFee = payment?.admin_fee;
@@ -68,17 +72,26 @@ const VirtualAccountGuide = ({
   const totalFee = parseInt(
     `${
       admissionFee +
-      (adminFee +
-        serviceFee -
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        (payment?.is_promo_available ? promoPrice : 0) -
-        discount)
+      (
+        + (showOtherFees ? adminFee : 0)
+        + (showOtherFees ? serviceFee : 0)
+        - (payment?.is_promo_available ? promoPrice : 0)
+        - discount
+      )
     }`
   );
 
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const translationId = 'PlayPayment.WalletForm';
   const bankName = payment?.payment_method?.split('_')[0];
+
+  useEffect(() => {
+    if (((dataPost?.admission_fee ?? 0) - newPromoCodeDiscount) === 0) {
+      setShowOtherFees(false)
+    } else {
+      setShowOtherFees(true)
+    }
+  }, [dataPost, newPromoCodeDiscount]);
 
   return (
     <div className="max-h-[70vh]">
@@ -126,29 +139,34 @@ const VirtualAccountGuide = ({
         value={`IDR ${admissionFee}`}
         className="mb-2"
       />
-      <InlineText
-        label={t(`${translationId}.serviceFeeLabel`)}
-        value={`IDR ${serviceFee}`}
-        className="mb-2"
-      />
-      <InlineText
-        label={t(`${translationsId}.adminFeeLabel`)}
-        value={`IDR ${adminFee}`}
-        className="mb-2"
-      />
-      {payment.is_promo_available ? (
-        <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- IDR ${promoPrice}`}
-          className="mb-2"
-        />
-      ) : null}
+      {
+        showOtherFees &&
+          <>
+            <InlineText
+              label={t(`${translationId}.serviceFeeLabel`)}
+              value={`IDR ${serviceFee}`}
+              className="mb-2"
+            />
+            <InlineText
+              label={t(`${translationsId}.adminFeeLabel`)}
+              value={`IDR ${adminFee}`}
+              className="mb-2"
+            />
+            {payment.is_promo_available ? (
+              <InlineText
+                label={t(`${translationId}.adminFeeDiscountLabel`)}
+                value={`- IDR ${promoPrice}`}
+                className="mb-2"
+              />
+            ) : null}
+          </>
+      }
       {promoCodeValidationResult !== undefined ? (
         <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
+          label={t(`${translationId}.promoCodeDiscountLabel`)}
           value={`- IDR ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount ?? 0
+            promoCodeValidationResult?.response?.total_discount ?? 0
           }`}
           className="mb-2"
         />

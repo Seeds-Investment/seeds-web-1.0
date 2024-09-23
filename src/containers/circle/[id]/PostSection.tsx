@@ -608,7 +608,7 @@ const PostSection: React.FC<props> = ({
                     TrackerEvent({
                       event: `SW_social_btn_unliked_post`,
                       postData: dataPost,
-                      userId: userInfo
+                      userData: userInfo
                     });
                   } else {
                     el.total_upvote++;
@@ -616,7 +616,7 @@ const PostSection: React.FC<props> = ({
                     TrackerEvent({
                       event: `SW_social_btn_liked_post`,
                       postData: dataPost,
-                      userId: userInfo
+                      userData: userInfo
                     });
                   }
                 }

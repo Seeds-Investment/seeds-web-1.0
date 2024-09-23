@@ -9,7 +9,7 @@ import IconCircle from '@/assets/play/tournament/seedsPrizesCircle.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
 import ModalShareTournament from '@/components/popup/ModalShareTournament';
-import PromoCodeSelection from '@/containers/promo-code';
+import PromoCode from '@/components/promocode/promoCode';
 import { standartCurrency } from '@/helpers/currency';
 import { isGuest } from '@/helpers/guest';
 import withRedirect from '@/helpers/withRedirect';
@@ -21,6 +21,7 @@ import {
 import { getUserInfo } from '@/repository/profile.repository';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
 import LanguageContext from '@/store/language/language-context';
+import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import {
   type IDetailTournament,
   type UserInfo
@@ -32,17 +33,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import goldSeedsCoin from '../../../../../public/assets/images/goldHome.svg';
 import FirstMedal from '../../../../assets/play/quiz/Medal-1.svg';
 import SecondMedal from '../../../../assets/play/quiz/Medal-2.svg';
 import ThirdMedal from '../../../../assets/play/quiz/Medal-3.svg';
-import OtherMedal from '../../../../assets/play/quiz/Medal-4-10.svg';
 
 const TournamentDetail: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -68,7 +70,15 @@ const TournamentDetail: React.FC = () => {
     fetchData()
       .then()
       .catch(() => {});
+    
+    if (promoCodeValidationResult?.id !== id) {
+      dispatch(setPromoCodeValidationResult(0));
+    }
   }, []);
+
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -136,7 +146,7 @@ const TournamentDetail: React.FC = () => {
     } catch (error) {
       toast.error('Error joining tournament');
     }
-  };
+  }; 
 
   const handleJoinFreeTournament = async (): Promise<void> => {
     try {
@@ -241,30 +251,33 @@ const TournamentDetail: React.FC = () => {
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-4 font-poppins">
         <div className="col-span-2 w-full bg-white rounded-xl px-8 py-4">
-          <div className="mt-4 flex justify-between">
-            <div className="flex flex-col">
-              <Typography className="text-lg font-semibold font-poppins">
-                {t('tournament.detailRemaining')}
-              </Typography>
-              <CountdownTimer
-                deadline={
-                  detailTournament?.end_time
-                    ? detailTournament.end_time.toString()
-                    : ''
-                }
-              />
-            </div>
-            <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
-              <ShareIcon
-                onClick={() => {
-                  setIsShareModal(true);
-                }}
-                width={24}
-                height={24}
-                className="text-[#3AC4A0]"
-              />
-            </button>
-          </div>
+          {
+            detailTournament?.end_time &&
+              <div className="mt-4 flex justify-between">
+                <div className="flex flex-col">
+                  <Typography className="text-lg font-semibold font-poppins">
+                    {t('tournament.detailRemaining')}
+                  </Typography>
+                  <CountdownTimer
+                    deadline={
+                      detailTournament?.end_time
+                        ? detailTournament.end_time.toString()
+                        : ''
+                    }
+                  />
+                </div>
+                <button className="bg-[#DCFCE4] rounded-full w-fit h-fit p-2">
+                  <ShareIcon
+                    onClick={() => {
+                      setIsShareModal(true);
+                    }}
+                    width={24}
+                    height={24}
+                    className="text-[#3AC4A0]"
+                  />
+                </button>
+              </div>
+          }
           <div className="mt-4">
             <Typography className="text-lg font-semibold font-poppins">
               {t('tournament.detailPeriod')}
@@ -307,7 +320,75 @@ const TournamentDetail: React.FC = () => {
             ) : null}
           </div>
           <div className="mt-4">
-            <div className="mt-4">
+            <Typography className="text-lg font-semibold font-poppins">
+              {t('tournament.detailPrize')}
+            </Typography>
+            <table className="mt-2">
+              {detailTournament?.prize?.map((item, index) => (
+                <tr key={index}>
+                  <td className="inline-flex gap-2 border p-3 w-full">
+                    <Image
+                      src={
+                        index === 0
+                          ? FirstMedal
+                          : index === 1
+                          ? SecondMedal
+                          : ThirdMedal
+                      }
+                      alt={`${index}-medal`}
+                      width={200}
+                      height={200}
+                      className="object-contain max-h-5 max-w-5"
+                    />
+                    {t(
+                      `tournament.${
+                        index === 0 ? 'first' : index === 1 ? 'second' : 'third'
+                      }`
+                    )}
+                  </td>
+                  <td className="border p-3 w-full">
+                    {userInfo?.preferredCurrency !== undefined
+                      ? userInfo?.preferredCurrency
+                      : 'IDR'}
+                    {standartCurrency(item).replace('Rp', '')}
+                  </td>
+                </tr>
+              ))}
+            </table>
+          </div>
+          <div className="mt-4">
+            {/* <Typography className="text-lg font-semibold font-poppins">
+              {t('tournament.participants')}
+            </Typography>
+            <div className="flex gap-2">
+              <Typography className="text-lg text-[#7C7C7C] font-poppins font-semibold">
+                {detailTournament?.total_participants} /{' '}
+                {detailTournament?.max_participant}
+              </Typography>
+              <Typography className="text-lg text-[#7C7C7C] font-poppins">
+                {moment(detailTournament?.play_time).format('D MMM YYYY, h a')}{' '}
+                Jakarta -{' '}
+                {moment(detailTournament?.end_time).format('D MMM YYYY, h a')}{' '}
+                Jakarta
+              </Typography>
+            </div> */}
+            <div className="mt-4 flex flex-row gap-8">
+              {detailTournament?.community?.image_url ? (
+                <div className="flex flex-col justify-center items-center gap-4">
+                  <Typography className="text-lg font-semibold font-poppins">
+                    {'Community'}
+                  </Typography>
+                  <Image
+                    src={detailTournament?.community?.image_url}
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="object-contain max-h-16 max-w-16"
+                  />
+                </div>
+              ) : null}
+            </div>
+            {/* <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}
               </Typography>
@@ -363,7 +444,7 @@ const TournamentDetail: React.FC = () => {
                   </tr>
                 ))}
               </table>
-            </div>
+            </div> */}
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.participants')}
@@ -424,25 +505,30 @@ const TournamentDetail: React.FC = () => {
             </Typography>
           </div>
         </div>
-        <div className="w-full h-[300px] bg-white rounded-xl p-2">
-          <PromoCodeSelection detailTournament={detailTournament} />
-          {detailTournament?.is_need_invitation_code && (
-            <div>
-              <input
-                type="text"
-                value={invitationCode}
-                onChange={e => {
-                  setInvitationCode(e.target.value);
-                }}
-                placeholder="Invitation Code"
-                className="w-full border p-2 rounded-md mt-2"
-              />
-            </div>
-          )}
+        <div className="w-full h-[300px] bg-white rounded-xl p-4 mb-32 md:mb-0">
+          {
+            ((userInfo !== undefined) && ((detailTournament?.admission_fee ?? 0) > 0)) &&
+              <PromoCode userInfo={userInfo} id={id as string} spotType={'Paid Tournament'} useCoins={useCoins}/>
+          }
+          <div className='my-4'>
+            {detailTournament?.is_need_invitation_code && (
+              <div>
+                <input
+                  type="text"
+                  value={invitationCode}
+                  onChange={e => {
+                    setInvitationCode(e.target.value);
+                  }}
+                  placeholder="Invitation Code"
+                  className="w-full border p-2 rounded-md"
+                />
+              </div>
+            )}
+          </div>
           <Typography className="text-sm text-[#7C7C7C] mt-2.5 font-poppins">
             {t('tournament.entranceFee')}
           </Typography>
-          <Typography className="font-semibold text-xl font-poppins">
+          <Typography className={`${((promoCodeValidationResult) && (localStorage.getItem('accessToken') !== null)) ? 'text-[#7C7C7C] line-through decoration-2 text-md' : 'text-black text-xl font-semibold'} font-poppins`}>
             {detailTournament?.admission_fee === 0
               ? t('tournament.free')
               : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -450,10 +536,21 @@ const TournamentDetail: React.FC = () => {
                   detailTournament?.admission_fee ?? 0
                 ).replace('Rp', '')}`}
           </Typography>
+          {
+            ((promoCodeValidationResult !== 0) && (localStorage.getItem('accessToken') !== null)) &&
+              <Typography className="font-semibold text-xl font-poppins">
+                {detailTournament?.admission_fee === 0
+                  ? t('tournament.free')
+                  : (promoCodeValidationResult?.response?.final_price ?? 0).toLocaleString('id-ID', {
+                      currency: userInfo?.preferredCurrency ?? 'IDR',
+                      style: 'currency'
+                    })}
+              </Typography>
+          }
           <div className="flex flex-row items-center justify-between mt-2.5">
             <div className="flex flex-row items-center">
               <Image src={goldSeedsCoin} alt="Next" width={30} height={30} />
-              <div className="text-xs text-[#7C7C7C]">
+              <div className="text-xs text-[#7C7C7C] lg:px-2">
                 {totalAvailableCoins > 0
                   ? `Redeem ${totalAvailableCoins} seeds coin`
                   : `Coin cannot be redeemed`}
@@ -465,6 +562,7 @@ const TournamentDetail: React.FC = () => {
                 checked={useCoins}
                 onChange={() => {
                   setUseCoins(!useCoins);
+                  dispatch(setPromoCodeValidationResult(0));
                 }}
               />
             </div>

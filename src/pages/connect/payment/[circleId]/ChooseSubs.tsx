@@ -1,11 +1,14 @@
+import PromoCode from '@/components/promocode/promoCode';
 import Button from '@/components/ui/button/Button';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
 import { getUserInfo } from '@/repository/profile.repository';
 import { formatCurrency } from '@/utils/common/currency';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface props {
   dataPost: any;
@@ -20,25 +23,25 @@ const ChooseSubs: React.FC<props> = ({
   monthVal,
   setMonthVal
 }) => {
-  const [userInfo, setUserInfo] = useState<any>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
+  const height = useWindowInnerHeight();
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const dataInfo = await getUserInfo();
-
-        setUserInfo(dataInfo);
-      } catch (error: any) {
-        console.error('Error fetching data:', error.message);
-      }
-    };
-
     fetchData()
       .then()
       .catch(() => {});
   }, []);
 
-  const monthSubscription = ['1 month', '3 month', '6 month', '12 month'];
-  const height = useWindowInnerHeight();
+  const fetchData = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -53,6 +56,7 @@ const ChooseSubs: React.FC<props> = ({
     }
     setPages('terms');
   };
+
   const numberMonth = (): number => {
     if (monthVal !== undefined && monthVal.length > 0) {
       return parseInt(monthVal.substring(0, 2));
@@ -140,6 +144,17 @@ const ChooseSubs: React.FC<props> = ({
             </div>
           </div>
         </div>
+
+        {/* Promo Code */}
+        <div className='w-full flex justify-center items-center mt-6'>
+          <div className='w-full max-w-[350px] px-4'>
+            {
+              ((userInfo !== undefined) && ((dataPost?.premium_fee ?? 0) > 0)) &&
+                <PromoCode userInfo={userInfo} id={dataPost?.id as string} spotType={'Premium Circle'}/>
+            }
+          </div>
+        </div>
+
         <div className="flex justify-center mt-6">
           <Button
             props={{

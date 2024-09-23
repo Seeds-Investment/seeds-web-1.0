@@ -1,31 +1,24 @@
 'use client';
+import FirstMedal from '@/assets/play/quiz/Medal-1.svg';
+import SecondMedal from '@/assets/play/quiz/Medal-2.svg';
+import ThirdMedal from '@/assets/play/quiz/Medal-3.svg';
+import SubsequentMedal from '@/assets/play/quiz/Medal-4-10.svg';
+import { standartCurrency } from '@/helpers/currency';
 import { Typography } from '@material-tailwind/react';
-import { useTranslation } from 'react-i18next';
-import Modal from '../ui/modal/Modal';
-
-// import ThirdMedal from '@/assets/play/quiz/bronze-medal.png';
-import FirstMedal from '@/assets/play/quiz/gold-medal.png';
-// import SecondMedal from '@/assets/play/quiz/silver-medal.png';
-// import { standartCurrency } from '@/helpers/currency';
-// import LanguageContext from '@/store/language/language-context';
 import moment from 'moment';
 import Image from 'next/image';
 import { XIcon } from 'public/assets/vector';
-// import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
   category: string[];
   playTime: string;
   endTime: string;
-  //   prize: {
-  //     fixedPrize: number;
-  //     percentages: number[];
-  //   };
-  //   tnc: {
-  //     id: string;
-  //     en: string;
-  //   };
+  fixedPrize: number;
+  fixedPrizePercentages: number[];
+  tnc: string;
   length: number;
   userInfoCurrency: string;
 }
@@ -36,8 +29,9 @@ const ModalDetailBattle: React.FC<Props> = ({
   playTime,
   endTime,
   category,
-  //   prize,
-  //   tnc,
+  fixedPrize,
+  fixedPrizePercentages,
+  tnc,
   userInfoCurrency
 }) => {
   const { t } = useTranslation();
@@ -92,7 +86,7 @@ const ModalDetailBattle: React.FC<Props> = ({
         </div>
         <table className="mt-2">
           {/* Fixed prize */}
-          <tr>
+          {/* <tr>
             <td className="inline-flex gap-2 border p-3 w-full">
               <Image
                 src={FirstMedal}
@@ -105,11 +99,11 @@ const ModalDetailBattle: React.FC<Props> = ({
             </td>
             <td className="border p-3 w-full">
               {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}
-              {/* {standartCurrency(prize.fixedPrize).replace('Rp', '')} */}
+              {standartCurrency(fixedPrize).replace('Rp', '')}
             </td>
-          </tr>
+          </tr> */}
           {/* Percentage prizes */}
-          {/* {prize.percentages.map((percentage, index) => (
+          {fixedPrizePercentages?.map((percentage, index) => (
             <tr key={index}>
               <td className="inline-flex gap-2 border p-3 w-full">
                 <Image
@@ -118,37 +112,42 @@ const ModalDetailBattle: React.FC<Props> = ({
                       ? FirstMedal
                       : index === 1
                       ? SecondMedal
-                      : ThirdMedal
+                      : index === 2
+                      ? ThirdMedal
+                      : SubsequentMedal
                   }
                   alt={`${index}-medal`}
                   width={200}
                   height={200}
                   className="object-contain max-h-5 max-w-5"
                 />
-                {t(
-                  `tournament.${
-                    index === 0 ? 'second' : index === 1 ? 'third' : 'fourth'
-                  }`
-                )}
+                {index + 1}
+                {index === 0
+                  ? 'st'
+                  : index === 1
+                  ? 'nd'
+                  : index === 2
+                  ? 'rd'
+                  : 'th'}
               </td>
               <td className="border p-3 w-full">
                 {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}
-                {standartCurrency(
-                  (percentage / 100) * prize.fixedPrize
-                ).replace('Rp', '')}
+                {standartCurrency((percentage / 100) * fixedPrize).replace(
+                  'Rp',
+                  ''
+                )}
               </td>
             </tr>
-          ))} */}
+          ))}
         </table>
       </div>
-      {/* <div className="mt-4">
+      <div className="mt-4">
         <p className="text-lg font-semibold">{t('tournament.detailTerms')}</p>
-        {languageCtx.language === 'ID' ? (
-          <p className="text-[#7C7C7C]">{tnc.id}</p>
-        ) : (
-          <p className="text-[#7C7C7C]">{tnc.en}</p>
-        )}
-      </div> */}
+        <div
+          className="text-[#7C7C7C]"
+          dangerouslySetInnerHTML={{ __html: tnc }}
+        />
+      </div>
       <div className="mt-4">
         <p className="text-lg font-semibold">
           {t('tournament.detailResponsibility')}

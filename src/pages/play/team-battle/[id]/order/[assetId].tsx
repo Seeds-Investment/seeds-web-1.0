@@ -672,7 +672,7 @@ const BuyPage: React.FC = () => {
               </div>
             </div>
           )}
-          <div className="flex mx-2 flex-col mt-4 gap-4">
+          <div className="flex mx-2 flex-col mt-4 gap-4 pb-4">
             {router.query.transaction === 'sell' && (
               <div className="">
                 <Typography className="font-poppins text-sm font-normal text-[#7C7C7C]">

@@ -16,15 +16,17 @@ import Loading from '@/components/popup/Loading';
 import TournamentPortfolioChart from '@/containers/tournament/portfolio-chart/TournamentPortfolioChart';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
-import { getActiveAsset } from '@/repository/play.repository';
+// import { getActiveAsset } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
+  getActiveAssetBattle,
   getBattleBalance,
   getBattlePortfolio
 } from '@/repository/team-battle.repository';
+import { type AssetActiveBattle } from '@/utils/interfaces/team-battle.interface';
 import {
   PortfolioFilter,
-  type ActiveAsset,
+  // type ActiveAsset,
   type BallanceTournament,
   type ChartProportion,
   type UserInfo
@@ -54,7 +56,7 @@ const Portfolio = (): React.ReactElement => {
   const [filterChanged, setFilterChanged] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [chartProportion, setChartProportion] = useState<ChartProportion[]>([]);
-  const [activeAsset, setActiveAsset] = useState<ActiveAsset[]>([]);
+  const [activeAsset, setActiveAsset] = useState<AssetActiveBattle[]>([]);
   const [activeAssetLength, setActiveAssetLength] = useState<number>(0);
 
   const [portfolioActiveTab, setPortfolioActiveTab] = useState(
@@ -72,10 +74,10 @@ const Portfolio = (): React.ReactElement => {
   });
 
   const [activeAssetParams, setActiveAssetParams] = useState({
-    play_id: id as string,
+    battle_id: id as string,
     category: portfolioActiveTab === 'OVERVIEW' ? null : portfolioActiveTab,
     currency: userInfo?.preferredCurrency ?? 'IDR',
-    per_page: 5,
+    limit: 5,
     page: 1
   });
 
@@ -146,7 +148,7 @@ const Portfolio = (): React.ReactElement => {
   const fetchActiveAsset = async (retries = 3): Promise<void> => {
     try {
       setLoadingActiveAsset(true);
-      const response = await getActiveAsset(activeAssetParams);
+      const response = await getActiveAssetBattle(id as string, activeAssetParams);
       setActiveAsset(response?.data);
       setActiveAssetLength(response?.metadata?.total);
     } catch (error) {
@@ -321,7 +323,7 @@ const Portfolio = (): React.ReactElement => {
                     key={data?.id}
                     onClick={async () =>
                       await router.push(
-                        `/play/tournament/${id as string}/portfolio/${
+                        `/play/team-battle/${id as string}/portfolio/${
                           data?.asset_id
                         }/detail-portfolio`
                       )
@@ -358,7 +360,7 @@ const Portfolio = (): React.ReactElement => {
                           ? userInfo?.preferredCurrency
                           : 'IDR'}{' '}
                         {standartCurrency(
-                          (data?.average_price ?? 0) * (data?.total_lot ?? 0)
+                          (data?.average_price ?? 0) * (data?.asset_amount ?? 0)
                         ).replace('Rp', '')}
                       </div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">

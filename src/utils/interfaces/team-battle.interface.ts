@@ -175,3 +175,43 @@ export interface Asset {
   asset_exchange: string;
   asset_type: string;
 }
+
+export interface AssetActiveBattleParams {
+  battle_id: string;
+  category?: string | null;
+  currency: string;
+  limit: number;
+  page: number;
+}
+
+export interface AssetActiveBattle {
+  id: string;
+  participant_id: string;
+  battle_id: string;
+  play_id: string;
+  asset_id: string;
+  asset_type: string;
+  asset_amount: number;
+  average_price: number;
+  market_price: number;
+  created_at: string;
+  updated_at: string;
+  total_invested: number;
+  total_value: number;
+  return_value: number;
+  return_percentage: number;
+  currency: string;
+  asset_detail: AssetDetail;
+}
+
+export interface AssetDetail {
+  seeds_ticker: string;
+  real_ticker: string;
+  logo: string;
+  name: string;
+  description: string;
+  exchange: string;
+  exchange_currency: string;
+  listed_country: string;
+  asset_type: string;
+}

@@ -13,6 +13,7 @@ import ID from 'public/assets/social/flag/ID.png';
 import US from 'public/assets/social/flag/US.png';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import ModalLogout from '../popup/ModalLogout';
 import ChatIcon from '../svgs/chatIcon';
 import NotificationIcon from '../svgs/notificationIcon';
 import Logo from '../ui/vector/Logo';
@@ -40,6 +41,7 @@ const HeaderLogin: React.FC = () => {
   const [openSidebarResponsive, setOpenSidebarResponsive] =
     useState<boolean>(false);
   const languageCtx = useContext(LanguageContext);
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   const handleOpenModal = (): void => {
     setOpenSidebarResponsive(!openSidebarResponsive);
@@ -75,14 +77,29 @@ const HeaderLogin: React.FC = () => {
     }
   }, []);
 
+  const handleOpenLogout = (): void => {
+    handleOpenModal()
+    setIsLogoutModal(true);
+  }
+
   return (
     <div>
       {openSidebarResponsive ? (
         <SidebarLoginResponsive
           handleOpen={handleOpenModal}
+          handleLogout={handleOpenLogout}
           open={openSidebarResponsive}
         />
       ) : null}
+
+      {isLogoutModal && (
+        <ModalLogout
+          onClose={() => {
+            setIsLogoutModal(prev => !prev);
+          }}
+          userInfo={userInfo}
+        />
+      )}
 
       {width !== undefined ? (
         width < 768 ? (

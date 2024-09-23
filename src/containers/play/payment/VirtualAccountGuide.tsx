@@ -1,8 +1,11 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
+import { type RootState } from '@/store/premium-circle';
+import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import Divider from './components/Divider';
 import InlineText from './components/InlineText';
 interface VirtualAccountGuideProps {
@@ -15,24 +18,33 @@ interface VirtualAccountGuideProps {
     totalAmount: number,
     phoneNumber?: string | undefined
   ) => Promise<void>;
-  numberMonth: number;
+  newPromoCodeDiscount: number;
 }
 
 const VirtualAccountGuide = ({
   payment,
   dataPost,
   handlePay,
-  numberMonth
+  newPromoCodeDiscount
 }: VirtualAccountGuideProps): JSX.Element => {
+  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
   const userName = 'Jeri';
-  const admissionFee = dataPost?.premium_fee * numberMonth;
+  const admissionFee = premiumCircleFee;
   const adminFee = dataPost?.admin_fee as number;
-  const totalFee = parseInt(`${admissionFee + adminFee}`);
   const translationsId = 'PlayPayment.VirtualAccountGuide';
   const bankName = payment?.payment_method?.split('_')[0];
+  const promoCodeValidationResult = useSelector(
+    selectPromoCodeValidationResult
+  );
+  const discount =
+    promoCodeValidationResult !== 0
+      ? newPromoCodeDiscount
+      : 0;
+  const totalFee = parseInt(`${admissionFee + adminFee - discount}`);
+  
   return (
     <div className="max-h-[70vh]">
       <div className="flex items-center">
@@ -83,6 +95,17 @@ const VirtualAccountGuide = ({
         label={t(`${translationsId}.adminFeeLabel`)}
         value={`IDR ${adminFee}`}
       />
+      {promoCodeValidationResult !== undefined ? (
+        <InlineText
+          label={t(`${translationsId}.promoCodeDiscountLabel`)}
+          value={`- IDR ${
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            newPromoCodeDiscount ?? 0
+          }`}
+          className="mb-2"
+        />
+      ) : null}
+      <Divider />
       <Divider />
       <Typography className="text-3xl text-[#3AC4A0] font-semibold text-right">
         {`IDR ${totalFee}`}

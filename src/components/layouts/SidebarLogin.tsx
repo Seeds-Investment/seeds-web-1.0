@@ -5,10 +5,8 @@ import { getUserInfo } from '@/repository/profile.repository';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import chat from 'public/assets/social/chat.svg';
 import connect from 'public/assets/social/connect.svg';
 import homepage from 'public/assets/social/discover.svg';
-import notification from 'public/assets/social/notification.svg';
 import play from 'public/assets/social/play.svg';
 import setting from 'public/assets/social/setting.svg';
 import social from 'public/assets/social/social.svg';
@@ -31,9 +29,9 @@ const SidebarLogin: React.FC = () => {
         { title: 'Homepage', url: '/homepage', image: homepage },
         { title: 'Connect', url: '/connect', image: connect },
         { title: 'Play', url: '/play', image: play },
-        { title: 'Setting', url: '/user-setting', image: setting },
-        { title: 'Notification', url: '/setting', image: notification },
-        { title: 'Chat', url: '/setting', image: chat }
+        { title: 'Setting', url: '/user-setting', image: setting }
+        // { title: 'Notification', url: '/setting', image: notification },
+        // { title: 'Chat', url: '/setting', image: chat }
         // { title: 'Profile', url : '/setting', image: setting},
       ];
 

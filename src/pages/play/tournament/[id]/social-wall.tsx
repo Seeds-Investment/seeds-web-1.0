@@ -8,6 +8,7 @@ import Loading from '@/components/popup/Loading';
 import SocialWallPagination from '@/components/SocialWallPagination';
 import ModalMentionPlay from '@/containers/circle/[id]/ModalMentionPlay';
 import PostSection from '@/containers/circle/[id]/PostSection';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import { getPlayById, getPlayPostList } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -93,6 +94,7 @@ const SocialWall = (): React.ReactElement => {
     limit: 10,
     page: 1
   });
+  useGetDetailTournament(id as string);
 
   useEffect(() => {
     fetchData()

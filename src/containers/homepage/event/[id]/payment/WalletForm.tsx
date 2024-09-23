@@ -3,13 +3,11 @@
 'use client';
 import SubmitButton from '@/components/SubmitButton';
 import { getTransactionSummary } from '@/repository/seedscoin.repository';
-import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { type EventList } from '@/utils/interfaces/event.interface';
 import { Input, Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import {
   type Payment,
   type UserData
@@ -45,10 +43,6 @@ const WalletForm = ({
   const [totalFee, setTotalFee] = useState(0);
   const [coinsDiscount, setCoinsDiscount] = useState(0);
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-  const promoCodeValidationResult = useSelector(
-    selectPromoCodeValidationResult
-  );
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleGetCoinsUser = async () => {
@@ -74,9 +68,6 @@ const WalletForm = ({
       : coinsDiscount > 0
       ? coinsDiscount
       : 0;
-    if (promoCodeValidationResult) {
-      _discount += promoCodeValidationResult?.total_discount as number;
-    }
 
     if (dataPost) {
       _admissionFee = dataPost?.event_price;
@@ -105,7 +96,6 @@ const WalletForm = ({
     numberMonth,
     payment,
     coinsDiscount,
-    promoCodeValidationResult
   ]);
 
   const renderPhoneInput = (): JSX.Element => (
@@ -168,16 +158,6 @@ const WalletForm = ({
         <InlineText
           label={t(`${translationId}.adminFeeDiscountLabel`)}
           value={`- ${userInfo?.preferredCurrency} ${payment.promo_price}`}
-          className="mb-2"
-        />
-      ) : null}
-      {promoCodeValidationResult ? (
-        <InlineText
-          label={t(`${translationId}.adminFeeDiscountLabel`)}
-          value={`- ${userInfo?.preferredCurrency} ${
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            promoCodeValidationResult?.total_discount
-          }`}
           className="mb-2"
         />
       ) : null}

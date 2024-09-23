@@ -61,7 +61,6 @@ const AuthPersonalData: React.FC<AuthPersonalDataI> = ({
   const handleNext = async (): Promise<void> => {
     try {
       if (data !== null && data !== undefined) {
-        console.log('tes');
         setFormData(prev => ({ ...prev, password: '', phoneNumber: '' }));
       }
       if (

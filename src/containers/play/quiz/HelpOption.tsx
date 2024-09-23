@@ -5,6 +5,7 @@ import HelpBox from '@/components/quiz/help-box.component';
 import QuizLayoutComponent from '@/components/quiz/quiz-layout.component';
 import VerifyCompanion from '@/components/quiz/verify-companion.component';
 import Modal from '@/components/ui/modal/Modal';
+import TrackerEvent from '@/helpers/GTM';
 import { useOnLeavePageConfirmation } from '@/hooks/useOnLeaveConfirmation';
 import useSoundEffect from '@/hooks/useSoundEffects';
 import { type PaymentData } from '@/pages/play/quiz/[id]/help-option';
@@ -41,6 +42,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
   const [redeemCoin, setRedeemCoin] = useState(false);
   const [detailQuiz, setDetailQuiz] = useState<IDetailQuiz>();
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [userInfo, setUserInfo] = useState();
   const invitationCode = router.query.invitationCode ?? '';
 
   const [verifyCompanionVisibility, setVerifyCompanionVisibility] =
@@ -88,6 +90,7 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
     try {
       const dataInfo = await getUserInfo();
       setPhoneNumber(dataInfo.phoneNumber);
+      setUserInfo(dataInfo);
       const resp: IDetailQuiz = await getQuizById({
         id: id as string,
         currency:
@@ -181,6 +184,18 @@ const HelpOption = ({ onPay }: { onPay: (data: PaymentData) => void }) => {
           promo_code: '',
           invitation_code: invitationCode as string,
           is_use_coins: redeemCoin
+        });
+        const formattedText = (text: string): string => {
+          return text.replaceAll(/[^a-zA-Z0-9_-]/g, '_');
+        };
+        TrackerEvent({
+          event: 'SW_quiz_payment',
+          userData: userInfo,
+          quizData: {
+            ...detailQuiz,
+            name: formattedText(detailQuiz?.name as string)
+          },
+          paymentData: { statusPayment: 'FREE' }
         });
         void router.replace(`/play/quiz/${detailQuiz?.id}/start`);
       } catch (error) {

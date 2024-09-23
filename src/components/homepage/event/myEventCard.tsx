@@ -38,10 +38,8 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
   useEffect(() => {
     if (redirectTrigger) {
       if (isEventEnded()) {
-        console.log('is event ended ', isEventEnded())
         void router.push(`/homepage/event/${id}`);
       } else {
-        console.log('2')
         if (ticketData?.status === 'ISSUED' || ticketData?.status === 'CHECKED_OUT') {
           void router.push(`/homepage/event/${id}`);
         } else {

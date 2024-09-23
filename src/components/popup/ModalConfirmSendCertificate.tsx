@@ -19,10 +19,13 @@ const ModalConfirmSendCertificate: React.FC<Props> = ({ onClose, ticketId }) => 
   const sendCertificate = async (): Promise<void> => {
     try {
       const response = await sendCertificateToEmail(ticketId);
-      console.log('response ', response)
+      
+      if (response === null) {
+        toast.success(t('seedsEvent.emailMessage'))
+        onClose()
+      }
     } catch (error) {
-      console.log('error ', error)
-      toast.error(`Error fetching data: ${error as string}`);
+      toast.error(`Error sending certificate: ${error as string}`);
     }
   };
 
@@ -52,13 +55,13 @@ const ModalConfirmSendCertificate: React.FC<Props> = ({ onClose, ticketId }) => 
             onClick={async () => { await sendCertificate(); }}
             className='w-full bg-seeds-button-green rounded-full'
           >
-            Yes
+            {t('seedsEvent.yes')}
           </Button>
           <Button
             onClick={onClose}
             className='w-full bg-[#BDBDBD] rounded-full'
           >
-            No
+            {t('seedsEvent.no')}
           </Button>
         </div>
       </div>

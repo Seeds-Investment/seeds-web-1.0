@@ -258,7 +258,7 @@ export const sendCertificateToEmail = async (ticketId: string): Promise<any> => 
       return 'Access token not found';
     }
 
-    const response = await discoverService.post(
+    return await discoverService.post(
       `/event/${ticketId}/certificate/send`,
       {},
       {
@@ -269,7 +269,6 @@ export const sendCertificateToEmail = async (ticketId: string): Promise<any> => 
       }
     );
 
-    return response.data;
   } catch (error) {
     await Promise.reject(error);
   }

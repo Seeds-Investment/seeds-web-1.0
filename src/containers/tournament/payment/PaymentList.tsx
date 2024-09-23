@@ -332,7 +332,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           currentValue={option}
         />
         <PaymentOptions
-          label={t('PlayPayment.eWalletLabel')}
+          label={t('PlayPayment.creditCardLabel')}
           options={ccList}
           onChange={setOption}
           currentValue={option}

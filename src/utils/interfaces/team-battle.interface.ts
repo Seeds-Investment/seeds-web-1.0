@@ -148,3 +148,30 @@ export interface MyRankBattleI {
 export interface MyRankParamsI {
   stage: string;
 }
+
+export interface SuccessOrderDataBattle {
+  id: string;
+  participant_id: string;
+  battle_id: string;
+  stage: string;
+  asset: Asset;
+  status: string;
+  limit_type: string;
+  type: 'BUY' | 'SELL';
+  total_assets: number;
+  bid_price: number;
+  take_profit: number;
+  stop_loss: number;
+  time_in_force: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Asset {
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+}

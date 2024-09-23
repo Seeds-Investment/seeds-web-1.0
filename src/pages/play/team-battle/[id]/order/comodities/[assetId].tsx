@@ -3,7 +3,7 @@ import BannerCircle from '@/assets/play/tournament/homeBannerCircle.svg';
 import CCard from '@/components/CCard';
 import Loading from '@/components/popup/Loading';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import SuccessOrderModal from '@/containers/tournament/order/SuccesPopup';
+import SuccessOrderModal from '@/containers/team-battle/order/SuccesPopup';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import useWindowInnerHeight from '@/hooks/useWindowInnerHeight';
@@ -15,7 +15,7 @@ import {
   getBattleAssets,
   getBattleBalance
 } from '@/repository/team-battle.repository';
-import { type SuccessOrderData } from '@/utils/interfaces/play.interface';
+import { type SuccessOrderDataBattle } from '@/utils/interfaces/team-battle.interface';
 import {
   Avatar,
   Button,
@@ -105,10 +105,11 @@ const BuyPage: React.FC = () => {
     average_price: 0,
     return_percentage: 0
   });
-  const [succesData, setSuccessData] = useState<SuccessOrderData>({
+  const [succesData, setSuccessData] = useState<SuccessOrderDataBattle>({
     id: '',
-    play_id: '',
-    user_id: '',
+    participant_id: '',
+    battle_id: '',
+    stage: '',
     asset: {
       asset_id: '',
       asset_name: '',
@@ -117,11 +118,14 @@ const BuyPage: React.FC = () => {
       asset_exchange: '',
       asset_type: ''
     },
+    status: '',
+    limit_type: '',
     type: 'BUY',
-    lot: 0,
+    total_assets: 0,
     bid_price: 0,
+    take_profit: 0,
     stop_loss: 0,
-    pnl: 0,
+    time_in_force: '',
     created_at: '',
     updated_at: ''
   });

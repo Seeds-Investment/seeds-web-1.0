@@ -201,7 +201,7 @@ const StageBattle: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  {today.isSameOrBefore(dateScheduleStart) ? (
+                  {today.isBefore(dateScheduleStart) ? (
                     <OnGoingStage
                       startDate={dateScheduleStart}
                       endDate={dateScheduleEnd}

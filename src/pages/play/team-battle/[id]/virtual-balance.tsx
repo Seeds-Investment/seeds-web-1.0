@@ -16,6 +16,7 @@ import {
 } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
+  getBattleArena,
   getBattleBalance,
   getBattleHistoryTransaction
 } from '@/repository/team-battle.repository';
@@ -79,6 +80,18 @@ interface UserInfo {
   preferredCurrency: string;
 }
 
+export interface Metadata {
+  currentPage: number;
+  limit: number;
+  totalPage: number;
+  totalRow: number;
+}
+
+interface BattleOrderResI {
+  battle_orders: HistoryTransaction[];
+  metadata: Metadata;
+}
+
 const BattleVirtualBalance = (): React.ReactElement => {
   const router = useRouter();
   const id = router.query.id;
@@ -102,8 +115,8 @@ const BattleVirtualBalance = (): React.ReactElement => {
   });
   const [openOrder, setOpenOrder] = useState<OpenOrderList[]>([]);
   const [historyTransaction, setHistoryTransaction] = useState<
-    HistoryTransaction[]
-  >([]);
+    BattleOrderResI | undefined
+  >(undefined);
   const [historyParams, setHistoryParams] = useState({
     limit: 5,
     page: 1
@@ -178,11 +191,15 @@ const BattleVirtualBalance = (): React.ReactElement => {
   const fetchHistoryTransaction = async (currency: string): Promise<void> => {
     try {
       setLoadingHistoryTransaction(true);
-      const response = await getBattleHistoryTransaction(id as string, {
-        ...historyParams,
-        currency
-      });
-      setHistoryTransaction(response?.playOrders);
+      const responseStatus = await getBattleArena(id as string);
+      if (responseStatus !== undefined) {
+        const response = await getBattleHistoryTransaction(id as string, {
+          ...historyParams,
+          currency,
+          stage: responseStatus?.status
+        });
+        setHistoryTransaction(response);
+      }
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -381,9 +398,9 @@ const BattleVirtualBalance = (): React.ReactElement => {
                   </div>
                 </TabPanel>
                 <TabPanel value="history">
-                  {historyTransaction?.length !== 0 ? (
+                  {historyTransaction !== undefined ? (
                     <>
-                      {historyTransaction?.map(data => (
+                      {historyTransaction?.battle_orders?.map(data => (
                         <div
                           key={data?.id}
                           className="bg-[#4DA81C] pl-1 rounded-lg shadow-lg text-xs md:text-sm"
@@ -481,7 +498,9 @@ const BattleVirtualBalance = (): React.ReactElement => {
                   <div className="flex justify-center mx-auto my-8">
                     <AssetPagination
                       currentPage={historyParams.page}
-                      totalPages={10}
+                      totalPages={
+                        historyTransaction?.metadata?.totalPage as number
+                      }
                       onPageChange={page => {
                         setHistoryParams({ ...historyParams, page });
                       }}

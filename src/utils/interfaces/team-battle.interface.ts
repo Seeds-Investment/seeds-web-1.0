@@ -145,3 +145,15 @@ export interface ParticipantsMetadata {
   limit: number
   total_page: number
 }
+
+export interface MyRankBattleI {
+  user_name: string;
+  user_avatar: string;
+  group_name: string;
+  gain: number;
+  rank: number;
+}
+
+export interface MyRankParamsI {
+  stage: string;
+}

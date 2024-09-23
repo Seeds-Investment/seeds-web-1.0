@@ -2,6 +2,7 @@ import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import {
   type ICreateOrderBattle,
+  type MyRankParamsI,
   type TeamBattleListParams
 } from '@/utils/interfaces/team-battle.interface';
 import { toast } from 'react-toastify';
@@ -171,7 +172,7 @@ export const getBattleAssets = async (
 
 export const getBattleHistoryTransaction = async (
   id: string,
-  params: { limit: number; page: number; currency: string }
+  params: { limit: number; page: number; currency: string; stage: string }
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -237,5 +238,23 @@ export const getBattleParticipants = async (
     });
   } catch (error) {
     await Promise.reject(error);
+  }
+};
+
+export const getMyRankBattle = async (
+  id: string,
+  params: MyRankParamsI
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    return await teamBattleService(`/${id}/my-rank`, {
+      params,
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.resolve();
   }
 };

@@ -10,6 +10,7 @@ import WatchlistProfile from '@/assets/play/tournament/watchlistProfile.svg';
 import AssetPagination from '@/components/AssetPagination';
 import ModalAddWatchlist from '@/components/popup/ModalAddWatchlist';
 import ModalEditWatchlist from '@/components/popup/ModalEditWatchlist';
+import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import withAuth from '@/helpers/withAuth';
 import { deleteWatchlist, getWatchlist } from '@/repository/market.repository';
 import { getUserInfo } from '@/repository/profile.repository';
@@ -42,6 +43,7 @@ interface Watchlist {
 const TournamentHome: React.FC = () => {
   const router = useRouter();
   const id = router.query.id;
+  useGetDetailTournament(id as string);
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [isDetailModal, setIsDetailModal] = useState<boolean>(false);

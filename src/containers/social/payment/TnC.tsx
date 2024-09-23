@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface props {
-  stepBack: any;
-  stepNext: any;
+  stepBack: () => void;
+  stepNext: () => void;
 }
 
 const TnC: React.FC<props> = ({ stepBack, stepNext }) => {

@@ -1,4 +1,7 @@
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
+import { getBattleDetail } from '@/repository/team-battle.repository';
+import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import { format } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +10,7 @@ import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack } from 'react-icons/io5';
 import { LuDot } from 'react-icons/lu';
 import { RiGiftFill } from 'react-icons/ri';
+import { toast } from 'react-toastify';
 import Second from '../../../../../public/assets/team-battle/2nd-battle.svg';
 import Third from '../../../../../public/assets/team-battle/3rd-battle.svg';
 import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
@@ -14,8 +18,10 @@ import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
 const BattleInformation: React.FC = () => {
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] =
+    useState<boolean>(false);
   const router = useRouter();
+  const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
 
   const handleShowTnc = (): void => {
     setShowTnc(!showTnc);
@@ -34,6 +40,26 @@ const BattleInformation: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const { id } = router.query;
+  const handleGetDetailBattle = async (): Promise<void> => {
+    try {
+      const response = await getBattleDetail(id as string);
+      setData(response);
+    } catch (error: any) {
+      toast(error.message, { type: 'error' });
+    }
+  };
+
+  const formatDate = (dateString: string): string => {
+    return format(new Date(dateString), 'dd MMMM yyyy');
+  };
+
+  useEffect(() => {
+    if (id !== undefined) {
+      void handleGetDetailBattle();
+    }
+  }, [id]);
 
   return (
     <>
@@ -73,7 +99,7 @@ const BattleInformation: React.FC = () => {
                   <span className="text-xl font-medium">1st</span>
                 </div>
                 <div className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl lg:block hidden">
-                  10.0000.000
+                  {data?.prize[0]?.amount}
                 </div>
               </div>
               <div></div>
@@ -84,7 +110,7 @@ const BattleInformation: React.FC = () => {
                     <span className="text-xl font-medium">2nd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
-                    5.000.000
+                    {data?.prize[1]?.amount}
                   </div>
                 </div>
               </div>
@@ -94,7 +120,7 @@ const BattleInformation: React.FC = () => {
                   <span className="text-xl font-medium">1st</span>
                 </div>
                 <div className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl lg:hidden">
-                  10.0000.000
+                  {data?.prize[0].amount}
                 </div>
               </div>
               <div className="flex flex-col items-center justify-end">
@@ -104,7 +130,7 @@ const BattleInformation: React.FC = () => {
                     <span className="text-xl font-medium">3rd</span>
                   </div>
                   <div className="font-bold text-base sm:text-lg md:text-xl lg:text-2xl">
-                    5.000.000
+                    {data?.prize[2]?.amount}
                   </div>
                 </div>
               </div>
@@ -120,35 +146,80 @@ const BattleInformation: React.FC = () => {
                       <LuDot size={30} />
                       <span>Periode</span>
                     </td>
-                    <td>: 12 April 2024 - 30 Agustus 2023</td>
+                    <td>
+                      :{' '}
+                      {data?.elimination_start !== undefined
+                        ? formatDate(data.elimination_start)
+                        : ''}{' '}
+                      -{' '}
+                      {data?.final_end !== undefined
+                        ? formatDate(data.final_end)
+                        : ''}
+                    </td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
                       <span>Registration</span>
                     </td>
-                    <td>: 12 April 2024 - 30 Agustus 2023</td>
+                    <td>
+                      :{' '}
+                      {data?.registration_start !== undefined
+                        ? formatDate(data.registration_start)
+                        : ''}{' '}
+                      -{' '}
+                      {data?.registration_end !== undefined
+                        ? formatDate(data.registration_end)
+                        : ''}
+                    </td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
                       <span>Elimination</span>
                     </td>
-                    <td>: 12 April 2024 - 30 Agustus 2023</td>
+                    <td>
+                      :{' '}
+                      {data?.elimination_start !== undefined
+                        ? formatDate(data.elimination_start)
+                        : ''}{' '}
+                      -{' '}
+                      {data?.elimination_end !== undefined
+                        ? formatDate(data.elimination_end)
+                        : ''}
+                    </td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
                       <span>Semifinal</span>
                     </td>
-                    <td>: 12 April 2024 - 30 Agustus 2023</td>
+                    <td>
+                      :{' '}
+                      {data?.semifinal_start !== undefined
+                        ? formatDate(data.semifinal_start)
+                        : ''}{' '}
+                      -{' '}
+                      {data?.semifinal_end !== undefined
+                        ? formatDate(data.semifinal_end)
+                        : ''}
+                    </td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
                       <span>Final</span>
                     </td>
-                    <td>: 12 April 2024 - 30 Agustus 2023</td>
+                    <td>
+                      :{' '}
+                      {data?.final_start !== undefined
+                        ? formatDate(data.final_start)
+                        : ''}{' '}
+                      -{' '}
+                      {data?.final_end !== undefined
+                        ? formatDate(data.final_end)
+                        : ''}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -157,7 +228,7 @@ const BattleInformation: React.FC = () => {
               </div>
               <div className="flex flex-row text-[#407F74]">
                 <FaUserGroup size={50} />
-                <span className="text-2xl">20</span>
+                <span className="text-2xl">{data?.participants}</span>
               </div>
             </div>
           </div>
@@ -191,21 +262,7 @@ const BattleInformation: React.FC = () => {
               Term & Condition
             </div>
             <div className="h-[500px] overflow-y-auto tnc-battle-custom-scroll">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Doloribus, quibusdam fugit dolore dolores velit natus enim facilis
-              ea facere fuga aliquid ex eligendi reprehenderit amet nemo quam
-              porro modi odit. Ipsum tempore fugit aspernatur, unde quam vel?
-              Sint temporibus ipsa, aspernatur sed officiis, fugiat quibusdam
-              rem veritatis modi cumque porro deleniti placeat excepturi commodi
-              tempore numquam distinctio eligendi earum. Quia. Ea corporis
-              aspernatur et est temporibus nisi modi exercitationem voluptatem.
-              Porro incidunt perferendis fugit, amet ea ad magnam hic repellat
-              recusandae cumque quisquam dolor blanditiis illum laudantium nobis
-              repellendus? Laborum? Ipsa possimus, deleniti, nihil eaque
-              repellendus dolorem tempore excepturi quisquam autem doloribus
-              rerum enim a soluta illo consectetur, quae voluptate saepe.
-              Repellat ullam similique nihil dolor eos reprehenderit aliquam
-              perspiciatis!
+              {data?.tnc?.en}
             </div>
           </div>
         </div>

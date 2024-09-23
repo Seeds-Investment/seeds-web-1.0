@@ -9,7 +9,7 @@ export default {
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
-    company: { title: 'Company', list1: 'About Us', seedsEventlist2: 'Career' },
+    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
 
     support: { title: 'Support' },
     legal: {
@@ -935,6 +935,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Credit / Debit Card',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
@@ -945,6 +947,7 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Redeemed'
     },
@@ -952,6 +955,7 @@ export default {
       title: '{{bank}} Virtual Account',
       bankName: 'Bank {{bank}}',
       accountNumberLabel: 'No. rekening',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
@@ -980,6 +984,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Purchase:',
+    noMinimumPurchase: 'No minimum purchase',
+    limitReached: 'Quota limit reached',
+    endsIn: 'Ends in',
+    daysRemain: 'days',
+    dayRemain: 'day',
+    hoursRemain: 'hours',
+    hourRemain: 'hour',
+    minutesRemain: 'minutes',
+    minuteRemain: 'minute',
+    lessThanMinute: 'a minute',
+    promoOver: 'Promo is over',
+    totalDiscount: 'Promo Discount:',
+    emptyVoucher1: "Opps, There's No Voucher",
+    emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
+    applied: 'Promo code successfully applied!',
+    unApplied: 'Promo code has been removed successfully!',
+    apply: "Apply",
+    noExpired: "No expired date",
+    havePromo: "Have a promo code? Enter it here!",
+    notFound: 'Promo code not found. Make sure you entered a valid promo code.',
+    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
   },
   temporary: {
     welcome: {
@@ -1560,7 +1589,7 @@ export default {
       paymentMethod: 'Payment Method',
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidSocial: 'Pending Paid Post',
-      socialFee: 'Content Premium',
+      socialFee: 'Premium Content',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
       discountFee: 'Discount Fee',
@@ -1903,9 +1932,10 @@ export default {
     id: 'Id Transaction',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Congrats you won the Quiz!',
+    winnerModalTitle: 'Congratulations!',
     score: 'Your Score : ',
-    earn: ' You earn IDR ',
+    earn: ' You earn ',
+    claimPrize: 'Claim Prize',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
     text1: 'Challenge your finance knowledge with these quizzes.',
     text2: 'Check out the latest rankings for top quizzes!',
@@ -1914,6 +1944,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
+      quizFeeTotal: 'Quiz Fee + Lifelines',
       lifelinesFee: 'Lifeline Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
@@ -1929,7 +1960,15 @@ export default {
     playId: 'Quiz ID',
     shareLinks: 'Share Link',
     addMore: 'Add more power up',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Congratulations!',
+    winnerAlertMessage2: 'You won the',
+    winnerAlertMessage3: '',
+    winnerAlertMessage4: 'position of',
+    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage6: 'Claim Prize',
+    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
@@ -1956,6 +1995,7 @@ export default {
     blank1: 'Opps,  There’s No Tournament Yet',
     blank2: 'Let’s join the tournament and win  prize!',
     detailRemaining: 'Remaining Time',
+    detailStarting: 'Waiting Time',
     detailPeriod: 'Tournament Period',
     detailPrize: 'Tournament Prize',
     detailTerms: 'Terms and Conditions',
@@ -1970,6 +2010,7 @@ export default {
     free: 'Free',
     join: 'Join',
     start: 'Start',
+    waiting: 'Waiting',
     participants: 'Participants',
     categoryAsset: 'Category Asset',
     circleRecommendation: 'Circle Recommendation',
@@ -2014,6 +2055,7 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Ended',
       canceled: 'Canceled',
+      joinedWaiting: 'Waiting',
       share: 'Share',
       day: 'Day',
       days: 'Days'
@@ -2433,7 +2475,9 @@ export default {
       'The order placed with a broker to buy or sell a particular stock when the stock reaches a certain price.',
     text19:
       'The price level at which you want to sell or buy a stock or asset to make a profit.',
-    text20: 'How many percent do you want'
+    text20: 'How many percent do you want',
+    text21: 'Stop Loss Activation Price',
+    text22: 'Take Profit activation price'
   },
   discover: {
     hotNews: 'Hot News',

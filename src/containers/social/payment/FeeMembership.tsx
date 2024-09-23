@@ -1,22 +1,22 @@
 import CCard from '@/components/CCard';
-import { PromoIcon } from '@/constants/assets/images';
+import PromoCode from '@/components/promocode/promoCode';
 import { standartCurrency } from '@/helpers/currency';
+import { type DataPost } from '@/utils/interfaces/social.interfaces';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button } from '@material-tailwind/react';
 import Image from 'next/image';
 import { PaymentSVG } from 'public/assets/circle';
 
 interface props {
-  setStep: any;
-  detailPost: any;
-  changeValue: any;
-  errorMessage: string;
+  setStep: React.Dispatch<React.SetStateAction<string>>;
+  detailPost: DataPost;
+  userInfo: UserInfo;
 }
 
 const FeeMembership: React.FC<props> = ({
   setStep,
   detailPost,
-  changeValue,
-  errorMessage
+  userInfo
 }) => {
   return (
     <CCard className="flex p-8 mx-5 md:rounded-lg border-none rounded-none">
@@ -34,22 +34,14 @@ const FeeMembership: React.FC<props> = ({
         </h1>
       </div>
 
-      <div className="flex justify-center">
-        <form className="w-[400px] p-2 mt-5 rounded-lg border border-black flex items-center">
-          <button type="submit" className="rounded-full">
-            <Image src={PromoIcon.src} height={30} width={30} alt="promo" />
-          </button>
-          <input
-            type="text"
-            name="promo_code"
-            onChange={changeValue}
-            className="border-none focus:outline-none flex-grow px-4"
-            placeholder="Input Promo Code"
-          />
-        </form>
-      </div>
-      <div className="flex justify-center">
-        <p className="text-red-500 w-[400px]">{errorMessage}</p>
+      {/* Promo Code */}
+      <div className='w-full flex justify-center items-center mt-6'>
+        <div className='w-full max-w-[400px]'>
+          {
+            ((userInfo !== undefined) && ((detailPost?.premium_fee ?? 0) > 0)) &&
+              <PromoCode userInfo={userInfo} id={detailPost?.id} spotType={'Premium Content'}/>
+          }
+        </div>
       </div>
 
       <div className="flex justify-center mt-5">

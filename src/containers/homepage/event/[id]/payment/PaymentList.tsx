@@ -8,9 +8,7 @@ import Dialog from '@/components/ui/dialog/Dialog';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import { bookEvent, getEventById } from '@/repository/discover.repository';
 import { getPaymentList } from '@/repository/payment.repository';
-import {
-  getPaymentById
-} from '@/repository/play.repository';
+import { getPaymentById } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import { type RootState } from '@/store/event';
 import { selectPromoCodeValidationResult } from '@/store/redux/features/promo-code';
@@ -86,6 +84,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const id = router.query.id;
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+  const [ccList, setCcList] = useState([]);
   const [qRisList, setQRisList] = useState([]);
   const [virtualList, setVirtualList] = useState([]);
   const [option, setOption] = useState<Payment>();
@@ -95,7 +94,9 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
   const [eventData, setEventData] = useState<EventList>();
   const useCoinsParam = router.query.useCoins;
   const useCoins = useCoinsParam === 'true';
-  const { userName, userPhone, userEmail } = useSelector((state: RootState) => state?.booking ?? {});
+  const { userName, userPhone, userEmail } = useSelector(
+    (state: RootState) => state?.booking ?? {}
+  );
 
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
@@ -152,6 +153,7 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
       );
       setVirtualList(data.type_va);
       setQRisList(data.type_qris);
+      setCcList(data.type_cc);
       setEWalletList(data.type_ewallet);
     } catch (error) {
       toast(`Error fetching Payment List: ${error as string}`);
@@ -216,18 +218,22 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         toast.error('Please fill the phone number');
       }
       if (eventData) {
-        const response = await bookEvent(
-          {
-            event_id: eventData.id,
-            payment_gateway: paymentGateway,
-            payment_method: paymentMethod,
-            name: userName,
-            phone_number: userPhone,
-            email: userEmail,
-            promo_code: promoCodeValidationResult?.promo_code ?? '',
-            is_use_coins: useCoins
-          }
-        );
+        const response = await bookEvent({
+          event_id: eventData.id,
+          payment_gateway: paymentGateway,
+          payment_method: paymentMethod,
+          name: userName,
+          phone_number: userPhone,
+          email: userEmail,
+          promo_code: promoCodeValidationResult?.promo_code ?? '',
+          is_use_coins: useCoins,
+          succes_url: `${
+            process.env.NEXT_PUBLIC_DOMAIN as string
+          }/homepage/event/${id as string}`,
+          cancel_url: `${
+            process.env.NEXT_PUBLIC_DOMAIN as string
+          }/homepage/event/${id as string}`
+        });
 
         const resp = await getPaymentById(response.order_id);
         setPaymentStatus(resp);
@@ -238,7 +244,9 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
           }
           await router
             .replace(
-              `/homepage/event/${id as string}/payment/receipt/${response.order_id as string}`
+              `/homepage/event/${id as string}/payment/receipt/${
+                response.order_id as string
+              }`
             )
             .catch(error => {
               toast.error(error);
@@ -265,6 +273,8 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
 
     if (option?.payment_type === 'qris') {
       void handlePay(option?.payment_type, 'MIDTRANS', 'OTHER_QRIS', _totalFee);
+    } else if (option?.payment_type === 'cc') {
+      void handlePay(option?.payment_type, 'STRIPE', 'CC', _totalFee);
     } else {
       setOpenDialog(true);
     }
@@ -293,6 +303,12 @@ const PaymentList: React.FC<props> = ({ monthVal }): JSX.Element => {
         <PaymentOptions
           label={t('seedsEvent.payment.eWalletLabel')}
           options={eWalletList}
+          onChange={setOption}
+          currentValue={option}
+        />
+        <PaymentOptions
+          label={t('PlayPayment.ccLabel')}
+          options={ccList}
           onChange={setOption}
           currentValue={option}
         />

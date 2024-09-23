@@ -9,13 +9,17 @@ import {
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { getPlayById } from '@/repository/play.repository';
+import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
+import { type IDetailTournament } from '@/utils/interfaces/tournament.interface';
 import { Button, Card, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Pending } from 'public/assets/circle';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 interface PaymentList {
@@ -49,7 +53,7 @@ interface ReceiptDetail {
   vaNumber?: string;
 }
 
-interface QRList {
+export interface QRList {
   admin_fee: number;
   id: string;
   is_active: boolean;
@@ -71,6 +75,7 @@ interface OrderDetail {
 const SuccessPaymentPage: React.FC = () => {
   const width = useWindowInnerWidth();
   const router = useRouter();
+  const dispatch = useDispatch();
   const id = router.query.orderId as string;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -80,6 +85,8 @@ const SuccessPaymentPage: React.FC = () => {
   const [qRisList, setQRisList] = useState<QRList[]>([]);
   const [vaList, setVaList] = useState<QRList[]>([]);
   const { t } = useTranslation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [detailTournament, setDetailTournament] = useState<IDetailTournament>();
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -137,9 +144,11 @@ const SuccessPaymentPage: React.FC = () => {
   }
 
   useEffect(() => {
+    void fetchTournamentData()
     void fetchOrderDetail();
     void fetchPaymentList();
-    if (orderDetail?.howToPayApi !== undefined) {
+    dispatch(setPromoCodeValidationResult(0));
+    if ((orderDetail?.howToPayApi !== undefined) && (orderDetail?.howToPayApi !== '')) {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
@@ -180,9 +189,29 @@ const SuccessPaymentPage: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const fetchTournamentData = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const resp: IDetailTournament = await getPlayById(id);
+      setDetailTournament(resp);
+    } catch (error) {
+      toast(`Error fetch tournament ${error as string}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isStarted = (): boolean => {
+    const playTime = detailTournament?.play_time ?? '2024-12-31T17:00:00Z';
+    const timeStart = new Date(playTime).getTime();
+    const timeNow = Date.now();
+
+    return timeStart < timeNow;
+  };
+
   return (
     <div className="pt-10">
-      {isLoading && <Loading />}
+      {isLoading || loading && <Loading />}
       <PageGradient
         defaultGradient
         className="relative overflow-hidden h-full flex flex-col items-center sm:p-0 sm:pb-16 w-full"
@@ -208,7 +237,7 @@ const SuccessPaymentPage: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-center mb-4 mt-3">
-                {orderDetail?.transactionStatus !== 'SETTLEMENT' ? (
+                {(orderDetail?.transactionStatus !== 'SETTLEMENT' && orderDetail?.transactionStatus !== 'SUCCESS' && orderDetail?.transactionStatus !== 'SUCCEEDED') ? (
                   <div className="rounded-full bg-white/20 p-4">
                     <div className="bg-white rounded-full ">
                       <Image
@@ -229,19 +258,19 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
               </div>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS'
                   ? ''
                   : t('tournament.payment.pendingPaidTournament')}
               </Typography>
               <Typography className="text-2xl font-semibold text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED'
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS'
                   ? t('tournament.payment.successful')
                   : `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
                       orderDetail?.grossAmount ?? 0
                     )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
-                {orderDetail?.transactionStatus === 'SETTLEMENT' &&
+                {orderDetail?.transactionStatus === 'SETTLEMENT' || orderDetail?.transactionStatus === 'SUCCEEDED' || orderDetail?.transactionStatus === 'SUCCESS' &&
                   t('tournament.payment.recurringSaved')}
               </Typography>
 
@@ -287,11 +316,13 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
-                        orderDetail?.grossAmount
-                          - ((paymentSelected[0]?.admin_fee ?? 0)
-                          + (paymentSelected[0]?.service_fee ?? 0))
-                          + ((paymentSelected[0]?.is_promo_available ?? false)
-                            ? (paymentSelected[0]?.promo_price ?? 0) : 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          : orderDetail?.grossAmount
+                              - ((paymentSelected[0]?.admin_fee ?? 0)
+                              + (paymentSelected[0]?.service_fee ?? 0))
+                              + ((paymentSelected[0]?.is_promo_available ?? false)
+                                ? (paymentSelected[0]?.promo_price ?? 0) : 0)
                       )}`}
                     </Typography>
                   </div>
@@ -309,11 +340,13 @@ const SuccessPaymentPage: React.FC = () => {
                     </Typography>
                     <Typography className="text-sm font-semibold text-[#262626]">
                       {`${orderDetail?.currency} ${formatCurrency(
-                        orderDetail?.grossAmount
-                          - ((qRisList[0]?.admin_fee ?? 0)
-                          + (qRisList[0]?.service_fee ?? 0))
-                          + ((paymentSelected[0]?.is_promo_available ?? false)
-                            ? (paymentSelected[0]?.promo_price ?? 0) : 0)
+                        (orderDetail?.grossAmount ?? 0) === 0
+                          ? 0
+                          :  orderDetail?.grossAmount
+                            - ((qRisList[0]?.admin_fee ?? 0)
+                            + (qRisList[0]?.service_fee ?? 0))
+                            + ((paymentSelected[0]?.is_promo_available ?? false)
+                              ? (paymentSelected[0]?.promo_price ?? 0) : 0)
                       )}`}
                     </Typography>
                   </div>
@@ -322,7 +355,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Admin Fee */}
-                {paymentSelected !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected !== undefined &&
                 paymentSelected[0]?.admin_fee > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
@@ -340,7 +375,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Admin Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                 qRisList[0]?.admin_fee > 0 &&
                 orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between mb-5">
@@ -359,7 +396,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Service Fee */}
-                {paymentSelected[0]?.service_fee > 0 ? (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected[0]?.service_fee > 0 ? (
                   <div className="flex flex-row justify-between mb-5">
                     <Typography className="text-sm font-semibold text-[#BDBDBD]">
                       {t('tournament.payment.serviceFee')}
@@ -378,7 +417,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Service Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                 qRisList[0]?.service_fee > 0 &&
                 orderDetail?.paymentMethod === 'OTHER_QRIS' ? (
                   <div className="flex flex-row justify-between mb-5">
@@ -399,7 +440,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Discount Fee */}
-                {paymentSelected.length > 0 && (
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                paymentSelected.length > 0 && (
                   <div>
                     {paymentSelected[0]?.is_promo_available && (
                       <div className="flex flex-row justify-between mb-5">
@@ -421,7 +464,9 @@ const SuccessPaymentPage: React.FC = () => {
                 )}
 
                 {/* Discount Fee QRIS */}
-                {qRisList !== undefined &&
+                {
+                (orderDetail?.grossAmount ?? 0) > 0 &&
+                qRisList !== undefined &&
                   orderDetail?.paymentMethod === 'OTHER_QRIS' && (
                     <div>
                       {qRisList[0]?.is_promo_available && (
@@ -445,7 +490,8 @@ const SuccessPaymentPage: React.FC = () => {
 
                 {/* Discount Coins */}
                 <div>
-                  {orderDetail?.currency !== undefined
+                  {(orderDetail?.grossAmount ?? 0) > 0 &&
+                  orderDetail?.currency !== undefined
                     ? paymentSelected[0]?.admin_fee +
                         paymentSelected[0]?.service_fee -
                         orderDetail.grossAmount -
@@ -471,6 +517,7 @@ const SuccessPaymentPage: React.FC = () => {
                 <div>
                   {orderDetail?.currency !== undefined &&
                   orderDetail?.paymentMethod === 'OTHER_QRIS' &&
+                  (orderDetail?.grossAmount ?? 0) > 0 &&
                   qRisList !== undefined
                     ? qRisList[0]?.admin_fee +
                         qRisList[0]?.service_fee -
@@ -513,7 +560,11 @@ const SuccessPaymentPage: React.FC = () => {
                     {t('tournament.payment.idTransaction')}
                   </Typography>
                   <Typography className="text-sm font-semibold text-[#262626]">
-                    {orderDetail?.merchantId ?? 'Loading...'}
+                    {
+                      (orderDetail?.transactionId ?? '') === ''
+                        ? '-'
+                        : orderDetail?.transactionId
+                    }
                   </Typography>
                 </div>
               </Card>
@@ -557,14 +608,20 @@ const SuccessPaymentPage: React.FC = () => {
                 <Button
                   className="w-full text-sm font-semibold bg-seeds-button-green mt-10 rounded-full capitalize"
                   onClick={() => {
-                    if (
-                      orderDetail?.transactionStatus === 'SUCCESS' ||
-                      orderDetail?.transactionStatus === 'SETTLEMENT' ||
-                      orderDetail?.transactionStatus === 'SUCCEEDED'
-                    ) {
-                      void router.replace(
-                        `/play/tournament/${orderDetail?.itemId}/home`
-                      );
+                    if (isStarted()) {
+                      if (
+                        orderDetail?.transactionStatus === 'SUCCESS' ||
+                        orderDetail?.transactionStatus === 'SETTLEMENT' ||
+                        orderDetail?.transactionStatus === 'SUCCEEDED'
+                      ) {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId}/home`
+                        );
+                      } else {
+                        void router.replace(
+                          `/play/tournament/${orderDetail?.itemId as string}`
+                        );
+                      }
                     } else {
                       void router.replace(
                         `/play/tournament/${orderDetail?.itemId as string}`

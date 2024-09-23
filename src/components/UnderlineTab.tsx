@@ -68,7 +68,6 @@ const UnderLineTab = ({
   handleSubmitBlockUser
 }: Params): JSX.Element => {
   const [myInfo, setMyInfo] = useState();
-  const [userId, setUserId] = useState<string>('');
   const { t } = useTranslation();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('post');
@@ -169,10 +168,9 @@ const UnderLineTab = ({
                       toast(error, { type: 'error' });
                     });
                   TrackerEvent({
-                    event: `Seeds_view_circle_detail_page_web`,
-                    userId,
-                    pageName: 'circle_detail_web',
-                    circleId: item?.id
+                    event: `SW__circle_page_detail`,
+                    userData: myInfo,
+                    circleData: item
                   });
                 }}
               >
@@ -339,7 +337,6 @@ const UnderLineTab = ({
       try {
         const myData = await getUserInfo();
         setMyInfo(myData);
-        setUserId(myData?.id);
       } catch (error: any) {
         console.error('Error fetching data:', error.message);
       }

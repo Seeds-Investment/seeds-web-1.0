@@ -1,5 +1,7 @@
 import OnGoingStage from '@/components/team-battle/OnGoing.component';
+import PopUpQualifiedStage from '@/components/team-battle/PopUpQualifiedStage';
 import Triangle from '@/components/team-battle/triangle.component';
+import withAuth from '@/helpers/withAuth';
 import { getBattleDetail } from '@/repository/team-battle.repository';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import moment from 'moment';
@@ -27,6 +29,12 @@ const StageBattle: React.FC = () => {
     { label: 'Semifinal', key: 'semifinal' },
     { label: 'Final', key: 'final' }
   ];
+  const [isOpenPopUp, setIsOpenPopUp] = useState(false);
+  const [userRank, setUserRank] = useState<number>(0);
+
+  const handleShowPopUpQualified = (): void => {
+    setIsOpenPopUp(!isOpenPopUp);
+  };
 
   const formatDate = (dateString: string): string => {
     return moment(dateString).format('D MMMM YYYY');
@@ -81,6 +89,12 @@ const StageBattle: React.FC = () => {
       } else if (today.isBefore(moment(data.final_end).startOf('day'))) {
         setSelectedCategory('final');
       }
+    }
+  };
+
+  const handlePopUpQualified = (data: TeamBattleDetail): void => {
+    if (data.is_eliminated) {
+      setIsOpenPopUp(true);
     }
   };
 
@@ -232,7 +246,11 @@ const StageBattle: React.FC = () => {
                     <span className="text-2xl">{data?.participants}</span>
                     <FaChevronRight
                       size={25}
-                      onClick={async() => await router.push(`/play/team-battle/${id as string}/participants`)}
+                      onClick={async () =>
+                        await router.push(
+                          `/play/team-battle/${id as string}/participants`
+                        )
+                      }
                       className="text-white bg-[#407f74] p-1 rounded absolute -right-8 bottom-2 cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                     />
                   </div>
@@ -347,8 +365,12 @@ const StageBattle: React.FC = () => {
           </div>
         </div>
       </div>
+      <PopUpQualifiedStage
+        isOpen={isOpenPopUp}
+        onClose={handleShowPopUpQualified}
+      />
     </>
   );
 };
 
-export default StageBattle;
+export default withAuth(StageBattle);

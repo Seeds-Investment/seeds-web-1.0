@@ -45,7 +45,7 @@ const BattleList: React.FC<BattleListI> = ({
     limit: 9,
     category: '',
     status: '',
-    play_status: '',
+    play_status: 'ACTIVE',
     search: '',
     type: ''
   });

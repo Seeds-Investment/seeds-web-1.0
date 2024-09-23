@@ -79,6 +79,25 @@ export const getPlayById = async (id: string): Promise<any> => {
   }
 };
 
+export const getPlayByIdWithAuth = async (id: string): Promise<any> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken === null || accessToken === '') {
+    return await Promise.resolve('Access token not found');
+  }
+
+  try {
+    return await playService(`/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+  } catch (error) {
+    await Promise.reject(error);
+  }
+};
+
 export const getPlayAll = async (params: any): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -127,7 +146,9 @@ export const joinTournament = async (
   phoneNumber: string,
   promoCode: string,
   invitationCode: string,
-  isUseCoins: boolean
+  isUseCoins: boolean,
+  successUrl?: string,
+  cancelUrl?: string
 ): Promise<any> => {
   try {
     const accessToken = localStorage.getItem('accessToken');
@@ -146,7 +167,9 @@ export const joinTournament = async (
         phone_number: phoneNumber,
         promo_code: promoCode,
         invitation_code: invitationCode,
-        is_use_coins: isUseCoins
+        is_use_coins: isUseCoins,
+        success_url: successUrl ?? '',
+        cancel_url: cancelUrl ?? ''
       },
       {
         headers: {

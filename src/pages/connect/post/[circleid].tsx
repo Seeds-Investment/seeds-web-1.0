@@ -9,6 +9,7 @@ import {
   getStatusCircle
 } from '@/repository/circleDetail.repository';
 import { getUserInfo } from '@/repository/profile.repository';
+import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { selectPromoCodeValidationResult, setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
@@ -128,6 +129,8 @@ const CirclePost = (): JSX.Element => {
       void fetchDetailCircle();
       void redirect();
     }
+    dispatch(setPrice(0));
+    dispatch(setMonth(''));
   }, [circleId]);
 
   const handlePages = (): any => {

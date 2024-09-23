@@ -10,6 +10,7 @@ import {
   getPaymentDetail,
   getPaymentList
 } from '@/repository/payment.repository';
+import { setMonth, setPrice } from '@/store/premium-circle/premiumCircleSlice';
 import { setPromoCodeValidationResult } from '@/store/redux/features/promo-code';
 import { formatCurrency } from '@/utils/common/currency';
 import { Button, Card, Typography } from '@material-tailwind/react';
@@ -62,8 +63,6 @@ const SuccessPaymentPage: React.FC = () => {
   const [steps, setSteps] = useState<string[]>([]);
   const [orderDetail, setOrderDetail] = useState<undefined | ReceiptDetail>();
   const [qRisList, setQRisList] = useState<QRList[]>([]);
-  const bigText = 'text-2xl font-semibold text-white text-center';
-  const normalText = 'text-sm font-normal text-white text-center';
 
   const fetchOrderDetail = async (): Promise<void> => {
     try {
@@ -134,6 +133,11 @@ const SuccessPaymentPage: React.FC = () => {
       void fetchHowToPay(orderDetail.howToPayApi);
     }
   }, [id, orderDetail?.howToPayApi]);
+
+  useEffect(() => {
+    dispatch(setPrice(0));
+    dispatch(setMonth(''));
+  }, []);
   
   const paymentSelectedEWallet: PaymentList[] = eWalletList.filter(
     (el: undefined | PaymentList): any => {
@@ -215,20 +219,6 @@ const SuccessPaymentPage: React.FC = () => {
                       orderDetail?.grossAmount ?? 0
                     )}`
                   : t('quiz.payment.paymentSuccessful')}
-              </Typography>
-              <Typography
-                className={
-                  orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED'
-                    ? bigText
-                    : normalText
-                }
-              >
-                {(orderDetail?.transactionStatus === 'PENDING' ||
-                  orderDetail?.transactionStatus === 'CREATED') &&
-                  `${orderDetail?.currency ?? 'IDR'} ${formatCurrency(
-                    orderDetail?.grossAmount
-                  )}`}
               </Typography>
               <Typography className="text-sm font-normal text-white text-center">
                 {validationError &&

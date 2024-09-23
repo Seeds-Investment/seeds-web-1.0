@@ -9,7 +9,7 @@ export default {
       'Nothing on this site is a recommendation to invest. Seeds does not offer financial advice for you. If you are still unsure about investing, start communicating with a financial consultant Be careful before starting to invest!',
     download: 'Download Our App',
     regist: 'Registered in',
-    company: { title: 'Company', list1: 'About Us', seedsEventlist2: 'Career' },
+    company: { title: 'Company', list1: 'About Us', list2: 'Career' },
 
     support: { title: 'Support' },
     legal: {
@@ -935,6 +935,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Credit / Debit Card',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
@@ -1930,9 +1932,10 @@ export default {
     id: 'Id Transaction',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Congrats you won the Quiz!',
+    winnerModalTitle: 'Congratulations!',
     score: 'Your Score : ',
-    earn: ' You earn IDR ',
+    earn: ' You earn ',
+    claimPrize: 'Claim Prize',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
     text1: 'Challenge your finance knowledge with these quizzes.',
     text2: 'Check out the latest rankings for top quizzes!',
@@ -1957,7 +1960,15 @@ export default {
     playId: 'Quiz ID',
     shareLinks: 'Share Link',
     addMore: 'Add more power up',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Congratulations!',
+    winnerAlertMessage2: 'You won the',
+    winnerAlertMessage3: '',
+    winnerAlertMessage4: 'position of',
+    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage6: 'Claim Prize',
+    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
@@ -1984,6 +1995,7 @@ export default {
     blank1: 'Opps,  There’s No Tournament Yet',
     blank2: 'Let’s join the tournament and win  prize!',
     detailRemaining: 'Remaining Time',
+    detailStarting: 'Waiting Time',
     detailPeriod: 'Tournament Period',
     detailPrize: 'Tournament Prize',
     detailTerms: 'Terms and Conditions',
@@ -1998,6 +2010,7 @@ export default {
     free: 'Free',
     join: 'Join',
     start: 'Start',
+    waiting: 'Waiting',
     participants: 'Participants',
     categoryAsset: 'Category Asset',
     circleRecommendation: 'Circle Recommendation',
@@ -2042,6 +2055,7 @@ export default {
       leaderboard: 'Leaderboard',
       ended: 'Ended',
       canceled: 'Canceled',
+      joinedWaiting: 'Waiting',
       share: 'Share',
       day: 'Day',
       days: 'Days'

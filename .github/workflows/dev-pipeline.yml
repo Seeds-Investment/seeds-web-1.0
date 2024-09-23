@@ -49,8 +49,8 @@ jobs:
       #   uses: google-github-actions/get-gke-credentials@v1
       #   with:
       #     cluster_name: non-production-cluster
-      #     location: asia-southeast2 
-        
+      #     location: asia-southeast2
+
       # - name: Update Image GKE
       #   run: |
       #     export IMAGE_TAG=asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}
@@ -65,7 +65,7 @@ jobs:
           chmod 600 $HOME/.ssh/id_rsa
 
       - name: Download docker image
-        run:  |
+        run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'gcloud auth configure-docker asia-southeast2-docker.pkg.dev'
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'docker pull asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}'
 
@@ -74,9 +74,12 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'versi="$(cat /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml | grep image | cut -d ":" -f 3)" && sed -i "s#image: asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${versi}#image: asia-southeast2-docker.pkg.dev/lithe-window-387706/seeds-dev/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}:${{ env.GITHUB_SHA_SHORT }}#g" /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml'
 
       - name: Running container
-        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} 'docker compose -f /home/ubuntu/dev-compose/${{ env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml up -d'
+        run:
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{
+          secrets.SSH_IP_DEV }} 'docker compose -f /home/ubuntu/dev-compose/${{
+          env.GITHUB_REGISTRY_IMAGE_NAME }}/docker-compose.yaml up -d'
 
-      - name: Clean up old Docker images on server 
+      - name: Clean up old Docker images on server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME_DEV }}@${{ secrets.SSH_IP_DEV }} './cleanup-docker-images.sh '${{ env.GITHUB_REGISTRY_IMAGE_NAME }}' '${{ env.GITHUB_SHA_SHORT }}''
 

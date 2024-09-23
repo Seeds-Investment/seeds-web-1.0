@@ -15,7 +15,6 @@ import ChooseSubs from './ChooseSubs';
 const CirclePayment: React.FC = () => {
   const router = useRouter();
   const circleId: string | any = router.query.circleId;
-  const [monthVal, setMonthVal] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [pages, setPages] = useState<string>('chooseSubs');
@@ -63,8 +62,6 @@ const CirclePayment: React.FC = () => {
         <ChooseSubs
           setPages={setPages}
           dataPost={dataPost}
-          monthVal={monthVal}
-          setMonthVal={setMonthVal}
         />
       );
     } else if (pages === 'terms') {
@@ -94,7 +91,7 @@ const CirclePayment: React.FC = () => {
     <>
       {isLoading ? <Loading /> : <></>}
       {pages === 'choosePayment' ? (
-        <PaymentList dataPost={dataPost} monthVal={monthVal} />
+        <PaymentList dataPost={dataPost} />
       ) : (
         <CirclePaymentLayout>
           <div className=" w-screen sm:w-full h-fit mb-10 rounded-xl">

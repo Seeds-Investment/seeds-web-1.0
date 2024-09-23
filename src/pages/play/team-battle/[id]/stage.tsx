@@ -39,7 +39,7 @@ const StageBattle: React.FC = () => {
     { label: 'Final', key: 'final' }
   ];
   const [isOpenPopUp, setIsOpenPopUp] = useState(false);
-  const [userRank, setUserRank] = useState<number>(0);
+  const [categoryPopUp, setCategoryPopUp] = useState<string>('');
 
   const handleShowPopUpQualified = (): void => {
     setIsOpenPopUp(!isOpenPopUp);
@@ -94,25 +94,38 @@ const StageBattle: React.FC = () => {
   };
 
   const today = moment().startOf('day');
-  const determineCurrentCategory = (): void => {
-    if (data != null) {
-      if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
-        setSelectedCategory('final');
-      } else if (today.isAfter(moment(data.elimination_end).startOf('day'))) {
-        setSelectedCategory('semifinal');
-      } else if (today.isAfter(moment(data.registration_end).startOf('day'))) {
-        setSelectedCategory('elimination');
-      } else if (today.isBefore(moment(data.semifinal_end).startOf('day'))) {
-        setSelectedCategory('semifinal');
-      } else if (today.isBefore(moment(data.final_end).startOf('day'))) {
-        setSelectedCategory('final');
-      }
-    }
-  };
 
-  const handlePopUpQualified = (data: TeamBattleDetail): void => {
-    if (data.is_eliminated) {
+  const determineCurrentCategory = (): void => {
+    if (data == null) return;
+
+    const endDates = {
+      final: moment(data.final_end).startOf('day'),
+      semifinal: moment(data.semifinal_end).startOf('day'),
+      elimination: moment(data.elimination_end).startOf('day'),
+      registration: moment(data.registration_end).startOf('day')
+    };
+
+    const handlePopUp = (popUpType: string): void => {
       setIsOpenPopUp(true);
+      setCategoryPopUp(popUpType);
+    };
+
+    if (today.isAfter(endDates.final)) {
+      setSelectedCategory('final');
+      if (data.is_joined && myRank !== undefined)
+        handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+    } else if (today.isAfter(endDates.semifinal)) {
+      setSelectedCategory('final');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.elimination)) {
+      setSelectedCategory('semifinal');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.registration)) {
+      setSelectedCategory('elimination');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
     }
   };
 
@@ -402,6 +415,8 @@ const StageBattle: React.FC = () => {
       <PopUpQualifiedStage
         isOpen={isOpenPopUp}
         onClose={handleShowPopUpQualified}
+        categoryPopUp={categoryPopUp}
+        rank={myRank?.rank}
       />
     </>
   );

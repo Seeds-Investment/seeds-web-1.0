@@ -254,7 +254,6 @@ export const sendCertificateToEmail = async (ticketId: string): Promise<any> => 
     const accessToken = localStorage.getItem('accessToken');
 
     if (accessToken === null) {
-      console.error('Access token not found');
       return 'Access token not found';
     }
 

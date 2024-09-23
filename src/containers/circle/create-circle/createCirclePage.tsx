@@ -16,6 +16,7 @@ import {
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MultiValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { toast } from 'react-toastify';
 import ModalMembershipType from './modalMembershipType';
@@ -80,7 +81,9 @@ const CreateCirclePage = ({
 }: any): JSX.Element => {
   const [hashtags, setHashtag] = useState<HashtagInterface[]>();
   const [categories, setCategories] = useState<any[]>();
-  const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    MultiValue<string>
+  >([]);
   const [limitReached, setLimitReached] = useState(false);
   const [openModalMembership, setOpenModalMembership] = useState(false);
   const [isAgree, setIsAgree] = useState();
@@ -174,7 +177,7 @@ const CreateCirclePage = ({
       setIsLoadingCircle(false);
     }
   };
-  const handleCategoryChange = (newCategories: any): void => {
+  const handleCategoryChange = (newCategories: MultiValue<string>): void => {
     // Handle Category option, set limit to just 5 options
     if (newCategories.length <= 5) {
       setSelectedCategories(newCategories);

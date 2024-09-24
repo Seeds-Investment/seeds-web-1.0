@@ -45,7 +45,19 @@ export interface TeamBattleDetail {
   type: string;
   participants?: number;
 }
+export interface LeaderboardBattle {
+  user_id: string;
+  avatar: string;
+  name: string;
+  group_name: string;
+  rank: number;
+  gain: number;
+}
 
+export interface LeaderboardBattleRes {
+  data: LeaderboardBattle[];
+  metadata: Metadata;
+}
 export interface Sponsor {
   name: string;
   logo: string;

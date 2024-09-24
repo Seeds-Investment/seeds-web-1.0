@@ -258,3 +258,26 @@ export const getMyRankBattle = async (
     await Promise.resolve();
   }
 };
+
+export const getBattleLeaderboard = async (
+  battle_id: string,
+  stage: string,
+  params?: { page: number; limit: number }
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await teamBattleService.get(
+      `/${battle_id}/leaderboard/${stage.toUpperCase()}`,
+      {
+        params,
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        }
+      }
+    );
+    return response;
+  } catch (error: any) {
+    toast.error(error.message, { type: 'error' });
+  }
+};

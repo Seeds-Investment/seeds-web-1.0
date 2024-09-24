@@ -3,10 +3,12 @@ import PopupInformation from '@/components/team-battle/popupInformation.componen
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CiSquareChevDown, CiSquareChevUp } from 'react-icons/ci';
 import { IoArrowBack } from 'react-icons/io5';
 
 const HistoryBattle: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('active');
   const [activeBattleId, setActiveBattleId] = useState<string | null>(null);
   const [windowWidth, setWindowWidth] = useState<number>(
@@ -14,8 +16,8 @@ const HistoryBattle: React.FC = () => {
   );
   const router = useRouter();
   const categoryBattle = [
-    { label: 'Active Battle', key: 'active' },
-    { label: 'Past Battle', key: 'past' }
+    { label: t('teamBattle.history.activeBattle'), key: 'active' },
+    { label: t('teamBattle.history.pastBattle'), key: 'past' }
   ];
   const dummyBattle = [
     {
@@ -109,7 +111,7 @@ const HistoryBattle: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-            My Battle
+            {t('teamBattle.history.myBattle')}
           </div>
         </div>
         <div className="w-full flex justify-center items-center">

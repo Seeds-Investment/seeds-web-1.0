@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import OnGoingIcon from '../../../public/assets/team-battle/stage-ongoing.svg';
 
 interface OnGoingStageProps {
@@ -13,6 +14,7 @@ const OnGoingStage: React.FC<OnGoingStageProps> = ({
   endDate,
   stageName
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex flex-col gap-3 items-center justify-center font-semibold text-lg">
@@ -24,7 +26,7 @@ const OnGoingStage: React.FC<OnGoingStageProps> = ({
           className="w-60"
         />
         <div className="text-center">
-          Oops! It&#39;s not ongoing yet. The {stageName} stage will be held on
+          {t('teamBattle.stagePage.onGoing', { data: stageName })}
         </div>
         <div className="text-center">
           {startDate} - {endDate}

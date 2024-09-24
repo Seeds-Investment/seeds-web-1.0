@@ -1,6 +1,9 @@
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
+import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
+import i18n from '@/utils/common/i18n';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
+import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -24,6 +27,7 @@ const BattleInformation: React.FC = () => {
     useState<boolean>(false);
   const router = useRouter();
   const [data, setData] = useState<TeamBattleDetail | undefined>(undefined);
+  const [userInfo, setUserInfo] = useState<UserInfo>();
 
   const handleShowTnc = (): void => {
     setShowTnc(!showTnc);
@@ -57,18 +61,32 @@ const BattleInformation: React.FC = () => {
     return format(new Date(dateString), 'dd MMMM yyyy');
   };
 
+  const fetchUser = async (): Promise<void> => {
+    try {
+      const dataInfo = await getUserInfo();
+      setUserInfo(dataInfo);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     if (id !== undefined) {
       void handleGetDetailBattle();
+      void fetchUser();
     }
   }, [id]);
 
   return (
     <>
-      <PopUpPrizeBattle
-        isOpen={showPopUpPrizeBattle}
-        onClose={handleShowPopUpPrizeBattle}
-      />
+      {userInfo !== undefined && data !== undefined && (
+        <PopUpPrizeBattle
+          isOpen={showPopUpPrizeBattle}
+          onClose={handleShowPopUpPrizeBattle}
+          userInfo={userInfo}
+          data={data}
+        />
+      )}
       <div className="px-2 my-5 font-poppins">
         <div className="text-xl text-white grid grid-cols-3">
           <div
@@ -263,9 +281,14 @@ const BattleInformation: React.FC = () => {
             <div className="hidden lg:block font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D] text-center">
               {t('teamBattle.mainPage.tnc')}
             </div>
-            <div className="h-[500px] overflow-y-auto tnc-battle-custom-scroll">
-              {data?.tnc?.en}
-            </div>
+            <div
+              className="h-[500px] overflow-y-auto tnc-battle-custom-scroll"
+              dangerouslySetInnerHTML={{
+                __html: data?.tnc?.[
+                  i18n.language === 'id' ? 'id' : 'en'
+                ] as string
+              }}
+            />
           </div>
         </div>
       </div>

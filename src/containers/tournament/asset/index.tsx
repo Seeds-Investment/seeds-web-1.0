@@ -17,7 +17,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 interface Props {
   assetType: string;
@@ -40,17 +39,13 @@ const PlayAssetsList: React.FC<Props> = ({
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const fetchAssets = async () => {
-    try {
-      const assetsData = await getMarketList({
-        type: assetType,
-        sub_type: subType,
-        search: searchValue,
-        sort_by: sortBy
-      });
-      setAssets(assetsData.marketAssetList);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
+    const assetsData = await getMarketList({
+      type: assetType,
+      sub_type: subType,
+      search: searchValue,
+      sort_by: sortBy
+    });
+    setAssets(assetsData.marketAssetList);
   };
 
   useEffect(() => {
@@ -58,14 +53,10 @@ const PlayAssetsList: React.FC<Props> = ({
   }, [assetType, subType, searchValue, sortBy]);
 
   const fetchData = async (): Promise<void> => {
-    try {
-      const dataInfo = await getUserInfo();
-
-      setUserInfo(dataInfo);
-    } catch (error) {
-      toast.error(`Error fetching data: ${error as string}`);
-    }
+    const dataInfo = await getUserInfo();
+    setUserInfo(dataInfo);
   };
+  
   useEffect(() => {
     fetchData()
       .then()

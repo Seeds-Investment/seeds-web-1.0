@@ -89,7 +89,7 @@ const PlayAssetsList: React.FC<Props> = ({
               assets?.map((asset, index) => (
                 <div
                   key={index}
-                  className="flex justify-between w-full items-center p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg"
+                  className="flex justify-between w-full items-center p-2 md:p-4 mt-4 bg-[#F9F9F9] border border-[#E9E9E9] md:border-none rounded-lg"
                   onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                     router.push(`/play/tournament/${id}/${asset.id}`);
@@ -97,20 +97,22 @@ const PlayAssetsList: React.FC<Props> = ({
                   style={{ cursor: 'pointer' }}
                 >
                   <div className="flex gap-4">
-                    <img
-                      alt=""
-                      src={asset.logo}
-                      className="w-[40px]"
-                      width={40}
-                      height={40}
-                    />
+                    <div className='flex justify-center items-center w-[40px] h-auto'>
+                      <img
+                        alt=""
+                        src={asset.logo}
+                        className="w-[35px] h-auto"
+                        width={100}
+                        height={100}
+                      />
+                    </div>
                     <div className="flex flex-col justify-center items-start">
-                      <div className="flex gap-1">
+                      <div className="flex justify-start items-center gap-1">
                         <Typography className="text-sm md:text-lg text-black font-poppins font-semibold">
                           {asset.seedsTicker} /
                         </Typography>
                         {asset?.assetType !== 'FOREX' ? (
-                          <Typography className="font-normal ml-1 text-base text-[#262626]">
+                          <Typography className="font-normal ml-1 text-sm md:text-lg text-[#262626]">
                             {asset?.assetType === 'CRYPTO' && 'B'}
                             {userInfo?.preferredCurrency}
                           </Typography>

@@ -69,7 +69,7 @@ const BattleCountdown: React.FC<CountDownProps> = ({ deadline, className }) => {
     return (
       <div>
         <Typography className="text-3xl font-semibold text-[#407F74] font-poppins">
-          Battle started!
+          {t('teamBattle.waitingPage.battleDesc')}
         </Typography>
       </div>
     );

@@ -2,6 +2,7 @@ import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack } from 'react-icons/io5';
@@ -12,9 +13,11 @@ import Third from '../../../../../public/assets/team-battle/3rd-battle.svg';
 import Crown from '../../../../../public/assets/team-battle/battle-crown.svg';
 
 const BattleInformation: React.FC = () => {
+  const { t } = useTranslation();
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] = useState<boolean>(false);
+  const [showPopUpPrizeBattle, setShowPopUpPrizeBattle] =
+    useState<boolean>(false);
   const router = useRouter();
 
   const handleShowTnc = (): void => {
@@ -52,7 +55,7 @@ const BattleInformation: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-            Battle Competition
+            {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-5 my-10">
@@ -111,49 +114,49 @@ const BattleInformation: React.FC = () => {
             </div>
             <div className="flex flex-col justify-center items-center mt-5">
               <div className="text-lg sm:text-xl font-semibold text-[#3D3D3D]">
-                Periode Game
+                {t('teamBattle.stagePage.gamePeriod')}
               </div>
               <table className="w-fit border-collapse border-none my-4 text-[#3D3D3D]">
                 <tbody className="text-sm sm:text-lg font-semibold">
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
-                      <span>Periode</span>
+                      <span>{t('teamBattle.mainPage.period')}</span>
                     </td>
                     <td>: 12 April 2024 - 30 Agustus 2023</td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
-                      <span>Registration</span>
+                      <span>{t('teamBattle.mainPage.registration')}</span>
                     </td>
                     <td>: 12 April 2024 - 30 Agustus 2023</td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
-                      <span>Elimination</span>
+                      <span>{t('teamBattle.mainPage.elimination')}</span>
                     </td>
                     <td>: 12 April 2024 - 30 Agustus 2023</td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
-                      <span>Semifinal</span>
+                      <span>{t('teamBattle.mainPage.semifinal')}</span>
                     </td>
                     <td>: 12 April 2024 - 30 Agustus 2023</td>
                   </tr>
                   <tr>
                     <td className="flex items-center space-x-1">
                       <LuDot size={30} />
-                      <span>Final</span>
+                      <span>{t('teamBattle.mainPage.final')}</span>
                     </td>
                     <td>: 12 April 2024 - 30 Agustus 2023</td>
                   </tr>
                 </tbody>
               </table>
               <div className="font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D]">
-                Participants
+                {t('teamBattle.mainPage.participants')}
               </div>
               <div className="flex flex-row text-[#407F74]">
                 <FaUserGroup size={50} />
@@ -167,7 +170,7 @@ const BattleInformation: React.FC = () => {
               handleShowTnc();
             }}
           >
-            <div>Term & Condition</div>
+            <div>{t('teamBattle.mainPage.tnc')}</div>
             {showTnc ? (
               <FaChevronUp
                 size={25}
@@ -188,7 +191,7 @@ const BattleInformation: React.FC = () => {
             } col-span-1 border-2 border-white rounded-2xl p-3 bg-white/50 flex-col`}
           >
             <div className="hidden lg:block font-semibold text-lg sm:text-xl mb-4 text-[#3D3D3D] text-center">
-              Term & Condition
+              {t('teamBattle.mainPage.tnc')}
             </div>
             <div className="h-[500px] overflow-y-auto tnc-battle-custom-scroll">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.

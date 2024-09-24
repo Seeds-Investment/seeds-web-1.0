@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoArrowBack } from 'react-icons/io5';
 import { MdOutlineTrendingDown, MdOutlineTrendingUp } from 'react-icons/md';
 import First from '../../../../../public/assets/team-battle/leaderboard-1st.svg';
@@ -8,6 +9,7 @@ import Other from '../../../../../public/assets/team-battle/leaderboard-other.sv
 import RankUser from '../../../../../public/assets/team-battle/rank-battle-icon.svg';
 
 const LeaderboardBattle: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   return (
     <>
@@ -22,13 +24,13 @@ const LeaderboardBattle: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-            Battle Competition
+            {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-9 gap-4 my-10">
           <div className="col-span-1 lg:col-span-4 lg:border-2 border-white rounded-2xl p-3 lg:bg-white/50 flex flex-col justiy-center items-center">
             <div className="font-semibold text-xl text-[#0F1577] text-center">
-              The Winner
+              {t('teamBattle.theWinner')}
             </div>
             <div className="grid grid-cols-3 w-full mt-5">
               <div />
@@ -117,7 +119,7 @@ const LeaderboardBattle: React.FC = () => {
               </div>
             </div>
             <div className="w-full mt-20 font-semibold text-xl text-[#2934B2] hidden lg:flex">
-              Your rank
+              {t('teamBattle.stagePage.yourRank')}
             </div>
             <div className="hidden lg:grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center">
@@ -155,10 +157,10 @@ const LeaderboardBattle: React.FC = () => {
               <thead className="text-white font-semibold">
                 <tr className="h-14">
                   <td className="text-center w-fit bg-[#2934B2] rounded-s-2xl p-3 text-xs sm:text=sm xl:text-base">
-                    Rank
+                    {t('teamBattle.rank')}
                   </td>
                   <td className="text-center w-fit bg-[#2934B2] p-3 text-xs sm:text=sm xl:text-base">
-                    Name & Team
+                    {t('teamBattle.nameTeam')}
                   </td>
                   <td className="text-center w-fit bg-[#2934B2] rounded-e-2xl p-3 text-xs sm:text=sm xl:text-base">
                     Return
@@ -213,7 +215,7 @@ const LeaderboardBattle: React.FC = () => {
               </tbody>
             </table>
             <div className="w-full mt-20 font-semibold text-sm sm:text-base lg:text-lg text-[#2934B2] flex lg:hidden">
-              Current Rank
+              {t('teamBattle.currentRank')}
             </div>
             <div className="lg:hidden grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center text-xs sm:text-sm lg:text-base">

@@ -42,6 +42,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
 
   const handleClose = (): void => {
     setJoinMode(null);
+    setInvitationCode('');
     setGroupList([]);
     setFilteredGroupList([]);
     setSelectedGroup(null);
@@ -197,7 +198,9 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                   `teamBattle.${
                     groupList[0]?.type === 'COMMUNITY'
                       ? 'chooseCommunity'
-                      : 'chooseUniversity'
+                      : groupList[0]?.type === 'UNIVERSITY'
+                      ? 'chooseUniversity'
+                      : 'chooseRegion'
                   }`
                 )}
               </Typography>
@@ -217,7 +220,7 @@ const PopUpJoinBattle: React.FC<PopUpJoinBattleProps> = ({
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-2 lg:w-[430px] w-full max-h-[290px] shadow-md overflow-y-scroll p-4 rounded-xl">
+              <div className="flex flex-col gap-2 lg:w-[430px] w-full max-h-[290px] shadow-md overflow-y-scroll team-battle-scroll p-4 rounded-xl">
                 {filteredGroupList.map((group, index) => (
                   <div
                     key={index}

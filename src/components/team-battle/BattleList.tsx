@@ -39,19 +39,22 @@ const BattleList: React.FC<BattleListI> = ({
   setFetchTrigger
 }: BattleListI) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [listParams, setListParams] = useState<TeamBattleListParams>({
     page: 1,
     limit: 9,
     category: '',
-    status: 'OPEN',
+    status: '',
     play_status: 'ACTIVE',
     search: '',
     type: ''
   });
   const [teamBattleList, setTeamBattleList] =
     useState<TeamBattleListRes | null>(null);
-  const [selectedBattle, setSelectedBattle] = useState<string | null>(null);
+  const [selectedBattle, setSelectedBattle] = useState<{
+    id: string;
+    is_joined: boolean;
+  }>({ id: '', is_joined: false });
   const [toggleInformation, setToggleInformation] = useState<{
     popup: string;
     dropdown: string;
@@ -93,7 +96,7 @@ const BattleList: React.FC<BattleListI> = ({
         ? (index + 1) % categoryBattle.length
         : (index - 1 + categoryBattle.length) % categoryBattle.length;
     setActiveCategory(categoryBattle[newIndex] ?? categoryBattle[0]);
-    setSelectedBattle(null);
+    setSelectedBattle({ id: '', is_joined: false });
     setListParams(prev => ({ ...prev, page: 1 }));
   };
 
@@ -174,12 +177,15 @@ const BattleList: React.FC<BattleListI> = ({
               <div
                 key={teamBattle?.id}
                 className={`rounded-t-3xl hover:cursor-pointer ${
-                  selectedBattle === teamBattle?.id
+                  selectedBattle.id === teamBattle?.id
                     ? 'border-[3px] border-white'
                     : ''
                 }`}
                 onClick={() => {
-                  setSelectedBattle(teamBattle?.id);
+                  setSelectedBattle({
+                    id: teamBattle?.id,
+                    is_joined: teamBattle?.is_joined
+                  });
                 }}
               >
                 <div className="w-full max-h-36">
@@ -261,7 +267,11 @@ const BattleList: React.FC<BattleListI> = ({
           }`}
           disabled={selectedBattle === null}
           onClick={async () => {
-            await router.push(`/play/team-battle/${selectedBattle ?? ''}`);
+            await router.push(
+              `/play/team-battle/${selectedBattle?.id}/${
+                selectedBattle?.is_joined ? 'stage' : ''
+              }`
+            );
           }}
         >
           OK

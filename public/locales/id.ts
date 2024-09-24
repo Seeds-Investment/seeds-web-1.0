@@ -2519,25 +2519,41 @@ export default {
     placeholderInvitation: 'Masukkan di sini',
     chooseUniversity: 'Pilih Universitas Anda',
     chooseCommunity: 'Pilih Komunitas Anda',
+    chooseRegion: 'Pilih Wilayah Anda',
     mainPage: {
-      period: "Periode",
-      registration: "Registrasi",
-      elimination: "Eliminasi",
-      semifinal: "Semifinal",
-      final: "Final",
-      participants: "Peserta",
-      join: "Gabung",
-      play: "Mulai Permainan",
-      sponsor: "Sponsor",
-      sponsors: "Sponsor",
-      tnc: "Syarat dan Ketentuan",
+      period: 'Periode',
+      registration: 'Registrasi',
+      elimination: 'Eliminasi',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Peserta',
+      join: 'Gabung',
+      play: 'Mulai Permainan',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsor',
+      tnc: 'Syarat dan Ketentuan'
     },
     participant: {
-      participant: "Peserta",
-      noData: "Belum ada data",
-      emptyTitle: "Peserta",
-      frontTitle: "Babak ",
-      backTitle: ""
+      participant: 'Peserta',
+      noData: 'Belum ada data',
+      emptyTitle: 'Peserta',
+      frontTitle: 'Babak ',
+      backTitle: ''
+    },
+    popUpStage: {
+      winTitle: 'Kamu Menang!',
+      qualifiedTitle: 'Selamat!',
+      failTitle: 'Kamu Kalah!',
+      eliminatedTitle: 'Yah, Sayangnya',
+      winDescription:
+        'Kerja Bagus! Kamu telah berhasil memenangkan tahap akhir! Tetap semangat!',
+      qualifiedDescription:
+        'Kamu berhasil masuk ke tahap selanjutnya. Pertahankan kerja keras kamu!',
+      failDescription:
+        'Hampir saja! Kamu hampir mencapai puncak! Terus berjuang untuk menang!',
+      eliminatedDescription:
+        'Kali ini kamu tidak bisa lanjut ke tahap selanjutnya. Terus berjuang! Kamu lebih dari ini!',
+      yourRank: 'Peringkat Kamu'
     }
   }
 };

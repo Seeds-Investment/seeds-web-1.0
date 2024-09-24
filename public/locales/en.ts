@@ -2590,25 +2590,40 @@ export default {
     placeholderInvitation: 'Input here',
     chooseUniversity: 'Choose Your University',
     chooseCommunity: 'Choose Your Community',
+    chooseRegion: 'Choose Your Region',
     mainPage: {
-      period: "Period",
-      registration: "Registration",
-      elimination: "Elimination",
-      semifinal: "Semifinal",
-      final: "Final",
-      participants: "Participants",
-      join: "Join",
-      play: "Play",
-      sponsor: "Sponsor",
-      sponsors: "Sponsors",
-      tnc: "Terms and Conditions",
+      period: 'Period',
+      registration: 'Registration',
+      elimination: 'Elimination',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Participants',
+      join: 'Join',
+      play: 'Play',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsors',
+      tnc: 'Terms and Conditions'
     },
     participant: {
-      participant: "Participant",
-      noData: "There is no data yet",
-      emptyTitle: "Participant",
-      frontTitle: "",
-      backTitle: " Stage"
+      participant: 'Participant',
+      noData: 'There is no data yet',
+      emptyTitle: 'Participant',
+      frontTitle: '',
+      backTitle: ' Stage'
+    },
+    popUpStage: {
+      winTitle: 'You Win!',
+      qualifiedTitle: 'Congratulations!',
+      failTitle: 'You Lose!',
+      eliminatedTitle: 'Unfortunately',
+      winDescription: 'Well done! You’ve successfully won the final stage!',
+      qualifiedDescription:
+        'You made it to the next stage. Keep up the good work!',
+      failDescription:
+        'So close! You almost made it to the top! Keep pushing for winning!',
+      eliminatedDescription:
+        "You didn't make it through to the next stage this time.",
+      yourRank: 'Your Rank'
     }
   }
 };

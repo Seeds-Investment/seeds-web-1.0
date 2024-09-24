@@ -1,6 +1,8 @@
 import OnGoingStage from '@/components/team-battle/OnGoing.component';
+import PopUpQualifiedStage from '@/components/team-battle/PopUpQualifiedStage';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import {
   getBattleDetail,
   getMyRankBattle
@@ -36,6 +38,12 @@ const StageBattle: React.FC = () => {
     { label: 'Semifinal', key: 'semifinal' },
     { label: 'Final', key: 'final' }
   ];
+  const [isOpenPopUp, setIsOpenPopUp] = useState(false);
+  const [categoryPopUp, setCategoryPopUp] = useState<string>('');
+
+  const handleShowPopUpQualified = (): void => {
+    setIsOpenPopUp(!isOpenPopUp);
+  };
 
   const handleSelectedSponsor = (sponsor: string): void => {
     if (selectedSponsor === sponsor) {
@@ -86,15 +94,38 @@ const StageBattle: React.FC = () => {
   };
 
   const today = moment().startOf('day');
+
   const determineCurrentCategory = (): void => {
-    if (data != null) {
-      if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
-        setSelectedCategory('final');
-      } else if (today.isAfter(moment(data.elimination_end).startOf('day'))) {
-        setSelectedCategory('semifinal');
-      } else if (today.isAfter(moment(data.registration_end).startOf('day'))) {
-        setSelectedCategory('elimination');
-      }
+    if (data == null) return;
+
+    const endDates = {
+      final: moment(data.final_end).startOf('day'),
+      semifinal: moment(data.semifinal_end).startOf('day'),
+      elimination: moment(data.elimination_end).startOf('day'),
+      registration: moment(data.registration_end).startOf('day')
+    };
+
+    const handlePopUp = (popUpType: string): void => {
+      setIsOpenPopUp(true);
+      setCategoryPopUp(popUpType);
+    };
+
+    if (today.isAfter(endDates.final)) {
+      setSelectedCategory('final');
+      if (data.is_joined && myRank !== undefined)
+        handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+    } else if (today.isAfter(endDates.semifinal)) {
+      setSelectedCategory('final');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.elimination)) {
+      setSelectedCategory('semifinal');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.registration)) {
+      setSelectedCategory('elimination');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
     }
   };
 
@@ -226,7 +257,7 @@ const StageBattle: React.FC = () => {
                                 alt="sponsor-logo"
                                 width={300}
                                 height={300}
-                                className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
+                                className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                                   selectedSponsor === item.name
                                     ? 'border-8'
                                     : 'border-4'
@@ -381,8 +412,14 @@ const StageBattle: React.FC = () => {
           </div>
         </div>
       </div>
+      <PopUpQualifiedStage
+        isOpen={isOpenPopUp}
+        onClose={handleShowPopUpQualified}
+        categoryPopUp={categoryPopUp}
+        rank={myRank?.rank}
+      />
     </>
   );
 };
 
-export default StageBattle;
+export default withAuth(StageBattle);

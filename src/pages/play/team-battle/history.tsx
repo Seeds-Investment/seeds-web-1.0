@@ -14,11 +14,13 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CiSquareChevDown, CiSquareChevUp } from 'react-icons/ci';
 import { IoArrowBack } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 const HistoryBattle: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string>('MY_ACTIVE');
   const [activeBattleId, setActiveBattleId] = useState<string | null>(null);
   const [windowWidth, setWindowWidth] = useState<number>(
@@ -27,8 +29,8 @@ const HistoryBattle: React.FC = () => {
   const [infoBattle, setInfoBattle] = useState<TeamBattleDetail>();
   const router = useRouter();
   const categoryBattle = [
-    { label: 'Active Battle', key: 'MY_ACTIVE' },
-    { label: 'Past Battle', key: 'MY_PAST' }
+    { label: t('teamBattle.history.activeBattle'), key: 'MY_ACTIVE' },
+    { label: t('teamBattle.history.pastBattle'), key: 'MY_PAST' }
   ];
   const [isLoading, setIsLoading] = useState(false);
   const [selectedBattle, setSelectedBattle] = useState<string | null>(null);
@@ -106,7 +108,7 @@ const HistoryBattle: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-            My Battle
+            {t('teamBattle.history.myBattle')}
           </div>
         </div>
         <div className="w-full flex justify-center items-center">

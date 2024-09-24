@@ -259,10 +259,13 @@ const BattleHome: React.FC = () => {
           playTime={detailTournament?.play_time ?? ''}
           endTime={detailTournament?.end_time ?? ''}
           category={detailTournament?.category ?? []}
-          // prize={detailTournament?.fixed_prize}
-          // tnc={detailTournament?.tnc ?? { en: '', id: '' }}
           length={detailTournament?.total_participants ?? 0}
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
+          fixedPrize={detailTournament?.fixed_prize ?? 0}
+          fixedPrizePercentages={
+            detailTournament?.fixed_prize_percentages ?? []
+          }
+          tnc={detailTournament?.tnc ?? ''}
         />
       )}
       {detailTournament === undefined &&

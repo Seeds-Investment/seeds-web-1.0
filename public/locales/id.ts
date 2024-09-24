@@ -922,12 +922,14 @@ export default {
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
-    apply: "Terapkan",
-    noExpired: "Tidak ada tanggal kadaluarsa",
-    havePromo: "Punya kode promo? Masukan disini!",
-    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
-    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    apply: 'Terapkan',
+    noExpired: 'Tidak ada tanggal kadaluarsa',
+    havePromo: 'Punya kode promo? Masukan disini!',
+    notFound:
+      'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage:
+      'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
   },
   temporary: {
     welcome: {
@@ -1892,9 +1894,11 @@ export default {
     winnerAlertMessage2: 'Kamu menjadi',
     winnerAlertMessage3: 'juara',
     winnerAlertMessage4: 'kuis',
-    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage5:
+      'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
     winnerAlertMessage6: 'Klaim Hadiah',
-    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage7:
+      'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {
@@ -2513,31 +2517,74 @@ export default {
     text17: 'Kapan saja'
   },
   teamBattle: {
+    battleCompetition: 'Kompetisi Pertandingan',
     chooseCategory: 'Silakan Pilih Kategori',
     joinAsPublicConfirm: 'Apakah Anda yakin ingin bergabung sebagai publik?',
     joinAsInvitation: 'Masukkan kode undangan Anda',
     placeholderInvitation: 'Masukkan di sini',
     chooseUniversity: 'Pilih Universitas Anda',
     chooseCommunity: 'Pilih Komunitas Anda',
+    chooseRegion: 'Pilih Wilayah Anda',
+    leaderBoard: 'Klasemen',
+    fullLeaderboard: 'semua klasemen',
+    theWinner: 'Pemenang',
+    rank: 'Peringkat',
+    nameTeam: 'Nama & Tim',
+    currentRank: 'Peringkat Sekarang',
     mainPage: {
-      period: "Periode",
-      registration: "Registrasi",
-      elimination: "Eliminasi",
-      semifinal: "Semifinal",
-      final: "Final",
-      participants: "Peserta",
-      join: "Gabung",
-      play: "Mulai Permainan",
-      sponsor: "Sponsor",
-      sponsors: "Sponsor",
-      tnc: "Syarat dan Ketentuan",
+      period: 'Periode',
+      registration: 'Registrasi',
+      elimination: 'Penyisihan',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Peserta',
+      join: 'Gabung',
+      play: 'Mulai Permainan',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsor',
+      tnc: 'Syarat dan Ketentuan'
     },
     participant: {
-      participant: "Peserta",
-      noData: "Belum ada data",
-      emptyTitle: "Peserta",
-      frontTitle: "Babak ",
-      backTitle: ""
+      participant: 'Peserta',
+      noData: 'Belum ada data',
+      emptyTitle: 'Peserta',
+      frontTitle: 'Babak ',
+      backTitle: ''
+    },
+    popUpStage: {
+      winTitle: 'Kamu Menang!',
+      qualifiedTitle: 'Selamat!',
+      failTitle: 'Kamu Kalah!',
+      eliminatedTitle: 'Yah, Sayangnya',
+      winDescription:
+        'Kerja Bagus! Kamu telah berhasil memenangkan tahap akhir! Tetap semangat!',
+      qualifiedDescription:
+        'Kamu berhasil masuk ke tahap selanjutnya. Pertahankan kerja keras kamu!',
+      failDescription:
+        'Hampir saja! Kamu hampir mencapai puncak! Terus berjuang untuk menang!',
+      eliminatedDescription:
+        'Kali ini kamu tidak bisa lanjut ke tahap selanjutnya. Terus berjuang! Kamu lebih dari ini!',
+      yourRank: 'Peringkat Kamu'
+    },
+    stagePage: {
+      gamePeriod: 'Periode Permainan',
+      letsCheck: 'Yuk Cek',
+      yourRank: 'Peringkat Kamu',
+      enter: 'Masuk',
+      onGoing:
+        'Opps! Pertandingan belum dimulai. Babak {{data}} akan diadakan pada'
+    },
+    waitingPage: {
+      success: 'Kamu berhasil didaftarkan untuk mengikuti kompetisi ini.',
+      enter: 'Masuk Stage',
+      battleDesc: 'Pertandingan telah dimulai!',
+      back: 'Kembali ke Play Center',
+      begin: 'Kompetisi akan dimulai pada:'
+    },
+    history: {
+      myBattle: 'Battle Saya',
+      activeBattle: 'Battle Aktif',
+      pastBattle: 'Battle Sebelumnya'
     }
   }
 };

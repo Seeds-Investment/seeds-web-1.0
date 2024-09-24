@@ -41,9 +41,18 @@ export interface TeamBattleDetail {
   tnc: Tnc;
   status: string;
   initial_balance: number;
+  public_max_participant: number;
+  community_max_participant: number;
+  university_max_participant: number;
+  province_max_participant: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
   is_joined: boolean;
+  is_eliminated: boolean;
+  my_last_stage: string;
+  participants: number;
   type: string;
-  participants?: number;
 }
 export interface LeaderboardBattle {
   user_id: string;
@@ -159,4 +168,71 @@ export interface MyRankBattleI {
 
 export interface MyRankParamsI {
   stage: string;
+}
+
+export interface SuccessOrderDataBattle {
+  id: string;
+  participant_id: string;
+  battle_id: string;
+  stage: string;
+  asset: Asset;
+  status: string;
+  limit_type: string;
+  type: 'BUY' | 'SELL';
+  total_assets: number;
+  bid_price: number;
+  take_profit: number;
+  stop_loss: number;
+  time_in_force: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Asset {
+  asset_id: string;
+  asset_name: string;
+  asset_icon: string;
+  asset_ticker: string;
+  asset_exchange: string;
+  asset_type: string;
+}
+
+export interface AssetActiveBattleParams {
+  battle_id: string;
+  category?: string | null;
+  currency: string;
+  limit: number;
+  page: number;
+}
+
+export interface AssetActiveBattle {
+  id: string;
+  participant_id: string;
+  battle_id: string;
+  play_id: string;
+  asset_id: string;
+  asset_type: string;
+  asset_amount: number;
+  average_price: number;
+  market_price: number;
+  created_at: string;
+  updated_at: string;
+  total_invested: number;
+  total_value: number;
+  return_value: number;
+  return_percentage: number;
+  currency: string;
+  asset_detail: AssetDetail;
+}
+
+export interface AssetDetail {
+  seeds_ticker: string;
+  real_ticker: string;
+  logo: string;
+  name: string;
+  description: string;
+  exchange: string;
+  exchange_currency: string;
+  listed_country: string;
+  asset_type: string;
 }

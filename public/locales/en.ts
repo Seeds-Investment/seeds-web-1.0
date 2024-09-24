@@ -1003,12 +1003,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -1965,9 +1966,11 @@ export default {
     winnerAlertMessage2: 'You won the',
     winnerAlertMessage3: '',
     winnerAlertMessage4: 'position of',
-    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage5:
+      'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
     winnerAlertMessage6: 'Claim Prize',
-    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage7:
+      'Click the image or Claim Button to be redirected to the prize.',
     winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
@@ -2584,31 +2587,70 @@ export default {
     text17: 'All Time'
   },
   teamBattle: {
+    battleCompetition: 'Battle Competition',
     chooseCategory: 'Please Choose Category',
     joinAsPublicConfirm: 'Are you sure you want to join as public?',
     joinAsInvitation: 'Input your code invitation',
     placeholderInvitation: 'Input here',
     chooseUniversity: 'Choose Your University',
     chooseCommunity: 'Choose Your Community',
+    chooseRegion: 'Choose Your Region',
+    leaderBoard: 'Leaderboard',
+    fullLeaderboard: 'full leaderboard',
+    theWinner: 'The Winner',
+    rank: 'Rank',
+    nameTeam: 'Name & Team',
+    currentRank: 'Current Rank',
     mainPage: {
-      period: "Period",
-      registration: "Registration",
-      elimination: "Elimination",
-      semifinal: "Semifinal",
-      final: "Final",
-      participants: "Participants",
-      join: "Join",
-      play: "Play",
-      sponsor: "Sponsor",
-      sponsors: "Sponsors",
-      tnc: "Terms and Conditions",
+      period: 'Period',
+      registration: 'Registration',
+      elimination: 'Elimination',
+      semifinal: 'Semifinal',
+      final: 'Final',
+      participants: 'Participants',
+      join: 'Join',
+      play: 'Play',
+      sponsor: 'Sponsor',
+      sponsors: 'Sponsors',
+      tnc: 'Terms and Conditions'
     },
     participant: {
-      participant: "Participant",
-      noData: "There is no data yet",
-      emptyTitle: "Participant",
-      frontTitle: "",
-      backTitle: " Stage"
+      participant: 'Participant',
+      noData: 'There is no data yet',
+      emptyTitle: 'Participant',
+      frontTitle: '',
+      backTitle: ' Stage'
+    },
+    popUpStage: {
+      winTitle: 'You Win!',
+      qualifiedTitle: 'Congratulations!',
+      failTitle: 'You Lose!',
+      eliminatedTitle: 'Unfortunately',
+      winDescription: 'Well done! You’ve successfully won the final stage!',
+      qualifiedDescription:
+        'You made it to the next stage. Keep up the good work!',
+      failDescription:
+        'So close! You almost made it to the top! Keep pushing for winning!',
+      eliminatedDescription:
+        "You didn't make it through to the next stage this time.",
+      yourRank: 'Your Rank'
+    },
+    stagePage: {
+      gamePeriod: 'Game Period',
+      letsCheck: `Let's Check`,
+      yourRank: 'Your Rank',
+      enter: 'Enter',
+      onGoing: `Oops! It's not ongoing yet. The {{data}} stage will be held on`
+    },
+    waitingPage: {
+      success: `You're successfully registered for the competition.`,
+      enter: 'Enter Stage',
+      battleDesc: 'Battle started!',
+      back: 'Back to Play Center',
+      begin: 'The competition will begin in:'
+    },
+    history:{
+      myBattle: 'My Battle'
     }
   }
 };

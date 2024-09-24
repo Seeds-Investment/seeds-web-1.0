@@ -1,6 +1,7 @@
 import baseAxios from '@/utils/common/axios';
 import { isUndefindOrNull } from '@/utils/common/utils';
 import {
+  type AssetActiveBattleParams,
   type ICreateOrderBattle,
   type MyRankParamsI,
   type TeamBattleListParams
@@ -279,5 +280,41 @@ export const getBattleLeaderboard = async (
     return response;
   } catch (error: any) {
     toast.error(error.message, { type: 'error' });
-  }
-};
+  }}
+
+  export const getActiveAssetBattle = async (
+    id: string,
+    params: AssetActiveBattleParams
+  ): Promise<any> => {
+    const timeoutDuration = 100000;
+
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (accessToken === null || accessToken === '') {
+        return await Promise.reject(new Error('Access token not found'));
+      }
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, timeoutDuration);
+
+      const response = await teamBattleService(`/${id}/assets/active`, {
+        params,
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken ?? ''}`
+        },
+        signal
+      });
+
+      clearTimeout(timeoutId);
+
+      return response;
+    } catch (error) {
+      await Promise.reject(error);
+    }
+  };

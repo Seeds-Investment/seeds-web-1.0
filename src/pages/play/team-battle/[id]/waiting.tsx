@@ -4,11 +4,13 @@ import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import WaitingLogo from '../../../../../public/assets/team-battle/waiting-battle.svg';
 
 const WaitingBattle: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { id } = router.query;
   const [selectedSponsor, setSelectedSponsor] = useState('');
@@ -53,7 +55,7 @@ const WaitingBattle: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
-            Battle Competition
+            {t('teamBattle.battleCompetition')}
           </div>
         </div>
         <div className="flex flex-col items-center justify-center gap-5">
@@ -64,11 +66,15 @@ const WaitingBattle: React.FC = () => {
             height={500}
             className="w-2/3 lg:w-1/4"
           />
-          <div className="font-light text-lg lg:text-xl text-center">
-            You&#39;re successfully registered for the competition.
+          <div
+            className={`font-light text-lg lg:text-xl text-center ${
+              isPastEliminationStart ? '' : 'hidden'
+            }`}
+          >
+            {t('teamBattle.waitingPage.success')}
           </div>
           <div className="font-semibold text-lg lg:text-xl">
-            {isPastEliminationStart ? 'The competition will begin in:' : ''}
+            {isPastEliminationStart ? t('teamBattle.waitingPage.begin') : ''}
           </div>
           <div>
             <BattleCountdown
@@ -93,7 +99,7 @@ const WaitingBattle: React.FC = () => {
                     alt="sponsor-logo"
                     width={300}
                     height={300}
-                    className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
+                    className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                       selectedSponsor === item.name ? 'border-8' : 'border-4'
                     } border-[#76a5d0]`}
                   />
@@ -121,7 +127,9 @@ const WaitingBattle: React.FC = () => {
             }}
             className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 lg:w-1/3 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white"
           >
-            {isPastEliminationStart ? 'Back to Play Center' : 'Enter Stage'}
+            {isPastEliminationStart
+              ? t('teamBattle.waitingPage.back')
+              : t('teamBattle.waitingPage.enter')}
           </button>
         </div>
       </div>

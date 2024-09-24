@@ -1,6 +1,8 @@
 import OnGoingStage from '@/components/team-battle/OnGoing.component';
+import PopUpQualifiedStage from '@/components/team-battle/PopUpQualifiedStage';
 import Triangle from '@/components/team-battle/triangle.component';
 import { getBattleStageDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import {
   getBattleDetail,
   getMyRankBattle
@@ -13,6 +15,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaChevronRight, FaStar } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
 import { IoArrowBack, IoTriangleSharp } from 'react-icons/io5';
@@ -23,6 +26,7 @@ import Versus from '../../../../../public/assets/team-battle/vsicon.svg';
 import YellowSeedy from '../../../../../public/assets/team-battle/yellowseedy.svg';
 
 const StageBattle: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] =
     useState<string>('elimination');
   const [selectedSponsor, setSelectedSponsor] = useState('');
@@ -32,10 +36,16 @@ const StageBattle: React.FC = () => {
   const [dateScheduleEnd, setDateScheduleEnd] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const categoryBattle = [
-    { label: 'Elimination', key: 'elimination' },
-    { label: 'Semifinal', key: 'semifinal' },
-    { label: 'Final', key: 'final' }
+    { label: t('teamBattle.mainPage.elimination'), key: 'elimination' },
+    { label: t('teamBattle.mainPage.semifinal'), key: 'semifinal' },
+    { label: t('teamBattle.mainPage.final'), key: 'final' }
   ];
+  const [isOpenPopUp, setIsOpenPopUp] = useState(false);
+  const [categoryPopUp, setCategoryPopUp] = useState<string>('');
+
+  const handleShowPopUpQualified = (): void => {
+    setIsOpenPopUp(!isOpenPopUp);
+  };
 
   const handleSelectedSponsor = (sponsor: string): void => {
     if (selectedSponsor === sponsor) {
@@ -86,15 +96,38 @@ const StageBattle: React.FC = () => {
   };
 
   const today = moment().startOf('day');
+
   const determineCurrentCategory = (): void => {
-    if (data != null) {
-      if (today.isAfter(moment(data.semifinal_end).startOf('day'))) {
-        setSelectedCategory('final');
-      } else if (today.isAfter(moment(data.elimination_end).startOf('day'))) {
-        setSelectedCategory('semifinal');
-      } else if (today.isAfter(moment(data.registration_end).startOf('day'))) {
-        setSelectedCategory('elimination');
-      }
+    if (data == null) return;
+
+    const endDates = {
+      final: moment(data.final_end).startOf('day'),
+      semifinal: moment(data.semifinal_end).startOf('day'),
+      elimination: moment(data.elimination_end).startOf('day'),
+      registration: moment(data.registration_end).startOf('day')
+    };
+
+    const handlePopUp = (popUpType: string): void => {
+      setIsOpenPopUp(true);
+      setCategoryPopUp(popUpType);
+    };
+
+    if (today.isAfter(endDates.final)) {
+      setSelectedCategory('final');
+      if (data.is_joined && myRank !== undefined)
+        handlePopUp(myRank?.rank <= data.prize.length ? 'win' : 'fail');
+    } else if (today.isAfter(endDates.semifinal)) {
+      setSelectedCategory('final');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.elimination)) {
+      setSelectedCategory('semifinal');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
+    } else if (today.isAfter(endDates.registration)) {
+      setSelectedCategory('elimination');
+      if (data.is_joined)
+        handlePopUp(data.is_eliminated ? 'eliminated' : 'qualified');
     }
   };
 
@@ -127,7 +160,7 @@ const StageBattle: React.FC = () => {
             <IoArrowBack size={30} />
           </div>
           <div className="text-center text-xl sm:text-2xl col-span-1 font-poppins">
-            Battle Competition
+            {t('teamBattle.battleCompetition')}
           </div>
           <div className="flex justify-end items-center">
             <div
@@ -201,7 +234,7 @@ const StageBattle: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  {today.isSameOrBefore(dateScheduleStart) ? (
+                  {today.isBefore(dateScheduleStart) ? (
                     <OnGoingStage
                       startDate={dateScheduleStart}
                       endDate={dateScheduleEnd}
@@ -210,7 +243,8 @@ const StageBattle: React.FC = () => {
                   ) : (
                     <div className="flex flex-col items-center justify-center gap-5">
                       <div className="font-semibold text-base lg:text-lg text-[#3D3D3D] my-10 text-center">
-                        Periode Game : {dateScheduleStart} - {dateScheduleEnd}
+                        {t('teamBattle.stagePage.gamePeriod')} :{' '}
+                        {dateScheduleStart} - {dateScheduleEnd}
                       </div>
                       <div className="flex flex-row flex-wrap gap-3 w-full sm:w-8/12 lg:w-1/2 2xl:w-3/5 justify-center">
                         {data?.sponsors?.map((item, i) => {
@@ -226,7 +260,7 @@ const StageBattle: React.FC = () => {
                                 alt="sponsor-logo"
                                 width={300}
                                 height={300}
-                                className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
+                                className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                                   selectedSponsor === item.name
                                     ? 'border-8'
                                     : 'border-4'
@@ -249,7 +283,7 @@ const StageBattle: React.FC = () => {
                         })}
                       </div>
                       <div className="font-semibold text-base sm:text-lg text-[#3D3D3D]">
-                        Participants
+                        {t('teamBattle.mainPage.participants')}
                       </div>
                       <div className="flex flex-row text-[#407F74] relative">
                         <FaUserGroup size={50} />
@@ -273,7 +307,7 @@ const StageBattle: React.FC = () => {
                         className="transform scale-100 hover:scale-105 transition-transform duration-300 cursor-pointer py-3 w-full sm:w-8/12 md:w-1/2 rounded-3xl bg-[#2934b2] text-base lg:text-lg text-white border-2 border-white hidden lg:block"
                         disabled={data?.status === 'ENDED'}
                       >
-                        Enter
+                        {t('teamBattle.stagePage.enter')}
                       </button>
                       <div className="grid grid-cols-7 items-center lg:hidden">
                         <div className="col-span-2">
@@ -297,10 +331,10 @@ const StageBattle: React.FC = () => {
                           <FaStar size={40} className="text-[#ffc107]" />
                           <div>
                             <div className="font-medium text-xs md:text-sm">
-                              Let&#39;s Check
+                              {t('teamBattle.stagePage.letsCheck')}
                             </div>
                             <div className="font-semibold text-base md:text-xl">
-                              full leaderboard
+                              {t('teamBattle.fullLeaderboard')}
                             </div>
                           </div>
                         </div>
@@ -341,7 +375,7 @@ const StageBattle: React.FC = () => {
           </div>
           <div className="col-span-1 bg-white/50 border-2 border-white rounded-2xl h-fit p-3 hidden lg:block">
             <div className="font-semibold text-[#3D3D3D] text-xl font-poppins text-center">
-              Leaderboard
+              {t('teamBattle.leaderBoard')}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <Image
@@ -351,7 +385,7 @@ const StageBattle: React.FC = () => {
                 alt="crown-icon"
                 className="w-16"
               />
-              <p className="text-sm">Your Rank</p>
+              <p className="text-sm">{t('teamBattle.stagePage.yourRank')}</p>
               <div className="text-xl px-12 py-1 border-2 border-dashed rounded-xl border-[#3D3D3D] font-bold w-fit">
                 {myRank?.rank ?? 0}
               </div>
@@ -360,8 +394,12 @@ const StageBattle: React.FC = () => {
                   <FaStar size={60} className="text-[#ffc107]" />
                 </div>
                 <div className="col-span-3 flex flex-col justify-center">
-                  <p className="font-medium text-sm">Let&#39;s Check</p>
-                  <p className="font-semibold text-lg">full leaderboard</p>
+                  <p className="font-medium text-sm">
+                    {t('teamBattle.stagePage.letsCheck')}
+                  </p>
+                  <p className="font-semibold text-lg">
+                    {t('teamBattle.fullLeaderboard')}
+                  </p>
                 </div>
                 <div
                   className="col-span-1 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
@@ -383,8 +421,14 @@ const StageBattle: React.FC = () => {
           </div>
         </div>
       </div>
+      <PopUpQualifiedStage
+        isOpen={isOpenPopUp}
+        onClose={handleShowPopUpQualified}
+        categoryPopUp={categoryPopUp}
+        rank={myRank?.rank}
+      />
     </>
   );
 };
 
-export default StageBattle;
+export default withAuth(StageBattle);

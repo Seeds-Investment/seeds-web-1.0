@@ -1993,7 +1993,7 @@ export default {
       transaction: 'Transaksi',
       openOrder: 'Pesanan',
       historyTransaction: 'Riwayat Transaksi',
-      pending: 'Menunggu - Limit Pembelian',
+      pending: 'Menunggu Pesanan',
       sorry: 'Maaf!',
       noData: 'Data yang Kamu cari tidak ada.',
       amount: 'Nilai',

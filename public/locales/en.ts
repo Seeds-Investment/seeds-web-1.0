@@ -2066,7 +2066,7 @@ export default {
       transaction: 'Transaction',
       openOrder: 'Open Order',
       historyTransaction: 'History Transaction',
-      pending: 'Pending Order - Buy Limit',
+      pending: 'Pending Order',
       sorry: 'Sorry!',
       noData: 'The data you were looking for does not exist.',
       amount: 'Amount',

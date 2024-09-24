@@ -257,7 +257,7 @@ const StageBattle: React.FC = () => {
                                 alt="sponsor-logo"
                                 width={300}
                                 height={300}
-                                className={`w-20 xl:w-24 2xl:w-28 rounded-xl bg-white cursor-pointer ${
+                                className={`w-20 xl:w-24 2xl:w-28 h-20 xl:h-24 2xl:h-28 object-contain rounded-xl bg-white cursor-pointer ${
                                   selectedSponsor === item.name
                                     ? 'border-8'
                                     : 'border-4'

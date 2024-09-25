@@ -127,7 +127,7 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
           </Document>
           :
           <div className='w-full flex md:hidden justify-center items-center'>
-            <div className="w-full flex justify-center h-fit mt-8">
+            <div className="w-full flex justify-center items-center h-screen mt-8">
               <div className="h-[60px]">
                 <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
               </div>
@@ -154,7 +154,7 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
           </Document>
           :
           <div className='hidden w-full md:flex justify-center items-center'>
-            <div className="w-full flex justify-center h-fit mt-8">
+            <div className="w-full flex justify-center items-center h-screen mt-8">
               <div className="h-[60px]">
                 <div className="animate-spinner w-16 h-16 border-8 border-gray-200 border-t-seeds-button-green rounded-full" />
               </div>

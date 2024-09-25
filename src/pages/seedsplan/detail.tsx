@@ -38,8 +38,7 @@ const SeedsPlanDetail: React.FC = () => {
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
     { label: 'Play Quiz', category: 'Paid Quiz' },
-    { label: 'Circle Premium', category: 'Premium Circle' },
-    { label: 'Content Premium', category: 'Premium Content' }
+    { label: 'Circle Premium', category: 'Premium Circle' }
   ];
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
@@ -183,7 +182,7 @@ const SeedsPlanDetail: React.FC = () => {
                 >
                   Gold
                   <span className="px-2 py-1 bg-[#ff3838] text-white rounded-3xl text-xs absolute top-0 right-0 2xl:right-16 font-normal">
-                    Best
+                    {t('seedsPlan.text9')}
                   </span>
                 </button>
               </div>
@@ -210,16 +209,16 @@ const SeedsPlanDetail: React.FC = () => {
                         (subscriptionStatus?.subscription_type_id === packagePlan
                       ) ?
                         <div className='w-fit flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4'>
-                          Active
+                          {t('seedsPlan.text8')}
                         </div>
                         :
                         <div className='w-fit flex justify-center items-center text-xs rounded-full bg-[#FBF8BA] text-[#C49D3A] px-4'>
-                          Non-Active
+                          {t('seedsPlan.text12')}
                         </div>
                     }
                   </div>
                   <div className='text-[9px] md:text-sm py-1 rounded-full md:w-fit text-nowrap'>
-                    Bisa hemat hingga Rp 150.000, setiap bulannya
+                    {t('seedsPlan.text13')}
                   </div>
                   {
                     (
@@ -227,7 +226,7 @@ const SeedsPlanDetail: React.FC = () => {
                       (subscriptionStatus?.subscription_type_id === packagePlan
                     ) &&
                       <div className='text-[9px] md:text-xs px-2 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-nowrap'>
-                        {`Your plan will expire on `}
+                        {t('seedsPlan.text11')}
                         {languageCtx.language === 'ID'
                           ? getEventDate(
                             new Date(subscriptionStatus?.ended_at ?? '2024-12-31T23:59:00Z'), 'id-ID'
@@ -393,11 +392,25 @@ const SeedsPlanDetail: React.FC = () => {
                               }`}
                             </div>
                           </div>
-                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C]">
+                          <div className="col-span-1 flex flex-col justify-center items-center border-s-2 border-dashed text-[#7C7C7C] relative">
                             <div className="font-bold text-xl">
                               {item?.quantity}
                             </div>
                             <div className="font-light text-xs">Voucher</div>
+                            <Image
+                              src={CurveUpper}
+                              width={500}
+                              height={500}
+                              alt="seedsplan"
+                              className="w-[50px] h-fit absolute top-0 left-[-26px]"
+                            />
+                            <Image
+                              src={CurveLower}
+                              width={500}
+                              height={500}
+                              alt="seedsplan"
+                              className="w-[50px] h-fit absolute bottom-0 left-[-26px]"
+                            />
                           </div>
                         </div>
                       </>
@@ -411,7 +424,7 @@ const SeedsPlanDetail: React.FC = () => {
                 className="flex justify-between flew-row items-center pb-3 border-b border-dashed cursor-pointer"
                 onClick={togglePopupTnc}
               >
-                <div>Terms & Conditions</div>
+                <div>{t('seedsPlan.button1')}</div>
                 <div>
                   <FaChevronRight />
                 </div>
@@ -420,7 +433,7 @@ const SeedsPlanDetail: React.FC = () => {
                 className="flex justify-between flew-row items-center py-3 border-b border-dashed cursor-pointer"
                 onClick={togglePopupHowToUse}
               >
-                <div>How to Use Voucher</div>
+                <div>{t('seedsPlan.button2')}</div>
                 <div>
                   <FaChevronRight />
                 </div>
@@ -437,17 +450,25 @@ const SeedsPlanDetail: React.FC = () => {
                     }
                     className='w-full py-3 rounded-3xl font-semibold bg-[#3ac4a0] transform scale-100 hover:scale-105 transition-transform duration-300'
                   >
-                    Subscribe Now!
+                    {t('seedsPlan.button3')}
                   </button>
               }
               {
                 (subscriptionStatus !== null) && (subscriptionStatus?.subscription_type_id === packagePlan) &&
-                  <button
-                    onClick={toggleUnsubscribe}
-                    className="w-full py-3 rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 mt-4 text-[#FF4A2B] border border-[#FF4A2B]"
-                  >
-                    Unsubscribe
-                  </button>
+                  <div className='flex flex-col'>
+                    <button
+                      onClick={async() => {await router.push('/play')}}
+                      className="w-full py-3 rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 mt-4 bg-[#3AC4A0] text-[#262626] border border-[#3AC4A0]"
+                    >
+                      {t('seedsPlan.text14')}
+                    </button>
+                    <button
+                      onClick={toggleUnsubscribe}
+                      className="w-full py-3 rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 mt-4 text-[#FF4A2B] border border-[#FF4A2B]"
+                    >
+                      {t('seedsPlan.button5')}
+                    </button>
+                  </div>
               }
             </div>
           </div>

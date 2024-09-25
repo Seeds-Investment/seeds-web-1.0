@@ -77,26 +77,26 @@ const SeedsPlan: React.FC = () => {
 
   const getStatus = async (): Promise<void> => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response?.active_subscription)
+      setSubscriptionStatus(response?.active_subscription);
     } catch (error) {
       toast(error as string, { type: 'error' });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     void getPlanList();
-    void getStatus()
+    void getStatus();
   }, []);
 
   useEffect(() => {
     if (subscriptionStatus !== null) {
-      setSubscription('active')
+      setSubscription('active');
     } else {
-      setSubscription('non-active')
+      setSubscription('non-active');
     }
   }, [subscriptionStatus]);
 
@@ -484,7 +484,7 @@ const SeedsPlan: React.FC = () => {
                 <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
                   {packagePlan === 'Silver' ? (
                     <>
-                      <div className="flex flex-col gap-2 mb-10">
+                      <div className="flex flex-col gap-2">
                         <div className="text-[#7C7C7C] text-sm">
                           {t('seedsPlan.text2')}
                           <span
@@ -510,11 +510,15 @@ const SeedsPlan: React.FC = () => {
                                 /{t('seedsPlan.text4')}
                               </>
                             ) : (
-                              filterPlan?.price?.toLocaleString('id-ID', {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              })
+                              <>
+                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                  currency:
+                                    userInfo?.preferredCurrency ?? 'IDR',
+                                  style: 'currency',
+                                  maximumFractionDigits: 0
+                                })}
+                                /{t('seedsPlan.text4')}
+                              </>
                             )}
                           </div>
                           <div
@@ -538,7 +542,7 @@ const SeedsPlan: React.FC = () => {
                               `/seedsplan/payment?type=${packagePlan}`
                             )
                           }
-                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
                         >
                           {t('seedsPlan.button3')}
                         </button>
@@ -546,7 +550,7 @@ const SeedsPlan: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <div className="flex flex-col gap-2 mb-10">
+                      <div className="flex flex-col gap-2">
                         <div className="text-[#7C7C7C] text-sm">
                           {t('seedsPlan.text2')}
                           <span
@@ -572,11 +576,15 @@ const SeedsPlan: React.FC = () => {
                                 /{t('seedsPlan.text4')}
                               </>
                             ) : (
-                              filterPlan?.price?.toLocaleString('id-ID', {
-                                currency: userInfo?.preferredCurrency ?? 'IDR',
-                                style: 'currency',
-                                maximumFractionDigits: 0
-                              })
+                              <>
+                                {filterPlan?.price?.toLocaleString('id-ID', {
+                                  currency:
+                                    userInfo?.preferredCurrency ?? 'IDR',
+                                  style: 'currency',
+                                  maximumFractionDigits: 0
+                                })}
+                                /{t('seedsPlan.text4')}
+                              </>
                             )}
                           </div>
                           <div
@@ -600,7 +608,7 @@ const SeedsPlan: React.FC = () => {
                               `/seedsplan/payment?type=${packagePlan}`
                             )
                           }
-                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300"
+                          className="w-full py-3 bg-[#3ac4a0] rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 my-2"
                         >
                           {t('seedsPlan.button3')}
                         </button>

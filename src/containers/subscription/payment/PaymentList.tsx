@@ -182,7 +182,7 @@ const PaymentList: React.FC = (): JSX.Element => {
     let _adminFee = 0;
     let _totalFee = 0;
     
-    _admissionFee = dataPlan?.price ?? 0
+    _admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0)
     _adminFee = 0;
     _totalFee = _admissionFee + _adminFee;
 

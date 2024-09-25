@@ -948,6 +948,7 @@ export default {
       adminFeeLabel: 'Admin Fee',
       serviceFeeLabel: 'Service Fee',
       adminFeeDiscountLabel: 'Admin Fee Discount ',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       button: 'Pay',
       seedsCoin: 'Seeds Coin Redeemed'
     },
@@ -955,6 +956,7 @@ export default {
       title: '{{bank}} Virtual Account',
       bankName: 'Bank {{bank}}',
       accountNumberLabel: 'No. rekening',
+      promoCodeDiscountLabel: 'Promo Code Discount',
       copy: 'Copy',
       accountNameLabel: 'Virtual Account Name',
       admissionFeeLabel: 'Play Membership',
@@ -983,6 +985,31 @@ export default {
         2: 'OK'
       }
     }
+  },
+  promo: {
+    minimumPurchase: 'Min. Purchase:',
+    noMinimumPurchase: 'No minimum purchase',
+    limitReached: 'Quota limit reached',
+    endsIn: 'Ends in',
+    daysRemain: 'days',
+    dayRemain: 'day',
+    hoursRemain: 'hours',
+    hourRemain: 'hour',
+    minutesRemain: 'minutes',
+    minuteRemain: 'minute',
+    lessThanMinute: 'a minute',
+    promoOver: 'Promo is over',
+    totalDiscount: 'Promo Discount:',
+    emptyVoucher1: "Opps, There's No Voucher",
+    emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
+    applied: 'Promo code successfully applied!',
+    unApplied: 'Promo code has been removed successfully!',
+    apply: "Apply",
+    noExpired: "No expired date",
+    havePromo: "Have a promo code? Enter it here!",
+    notFound: 'Promo code not found. Make sure you entered a valid promo code.',
+    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
   },
   temporary: {
     welcome: {
@@ -1917,6 +1944,7 @@ export default {
       virtualNumber: 'Your Virtual Account Number',
       pendingPaidQuiz: 'Pending Paid Quiz',
       quizFee: 'Quiz Fee',
+      quizFeeTotal: 'Quiz Fee + Lifelines',
       lifelinesFee: 'Lifeline Fee',
       adminFee: 'Admin Fee',
       serviceFee: 'Service Fee',
@@ -2550,6 +2578,7 @@ export default {
       'Open the Seeds Finance app. Select the Quiz and Play Tournament in the "Play" section or select "Circle" and "Premium Post" in the "Social" section according to your choice. On the payment page, select payment method and voucher (including the Seeds Unlimited voucher you purchased). If the voucher is already active, you will be able to participate in variety of premium discount for free, depending on the type of voucher you purchased. Yay! Now you can join and enjoy multiple savings',
     button3: 'Subscribe Now!',
     button4: 'I Understand',
+    button5: 'Unsubscribe',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',
@@ -2561,6 +2590,9 @@ export default {
     text9: 'Best',
     text10: 'See Details',
     text11: 'Your plan will expire on ',
+    text12: 'Non-Active',
+    text13: 'You can save up to Rp 150.000 every month',
+    text14: 'Use it Now!',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',

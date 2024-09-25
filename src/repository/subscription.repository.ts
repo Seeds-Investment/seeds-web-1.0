@@ -109,3 +109,27 @@ export const stopSubscription = async (): Promise<any> => {
     toast(error.message, { type: 'error' });
   }
 };
+
+export const getAvailableVoucherPlan = async (
+  page: number,
+  limit: number,
+  featureType: string
+): Promise<any> => {
+  try {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await subscriptionService.get(`/available-vouchers`, {
+      params: {
+        page,
+        limit,
+        feature_type: featureType
+      },
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken ?? ''}`
+      }
+    });
+    return response;
+  } catch (error: any) {
+    toast(error.message, { type: 'error' });
+  }
+};

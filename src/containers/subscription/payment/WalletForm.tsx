@@ -64,7 +64,7 @@ const WalletForm = ({
       _discount = coinsDiscount > 0 ? coinsDiscount : 0;
     }
 
-    _admissionFee = dataPlan?.price;
+    _admissionFee = dataPlan?.is_promo ? (dataPlan?.price_after_promo ?? 0) : (dataPlan?.price ?? 0)
     _adminFee = payment.admin_fee;
     _totalFee = parseFloat(
       `${(

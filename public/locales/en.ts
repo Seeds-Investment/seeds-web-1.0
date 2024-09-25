@@ -935,6 +935,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Credit / Debit Card',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
@@ -1930,9 +1932,10 @@ export default {
     id: 'Id Transaction',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Congrats you won the Quiz!',
+    winnerModalTitle: 'Congratulations!',
     score: 'Your Score : ',
-    earn: ' You earn IDR ',
+    earn: ' You earn ',
+    claimPrize: 'Claim Prize',
     tax: 'Congratulations on your winnings! Prizes will be taxed 10% by Seeds',
     text1: 'Challenge your finance knowledge with these quizzes.',
     text2: 'Check out the latest rankings for top quizzes!',
@@ -1957,7 +1960,15 @@ export default {
     playId: 'Quiz ID',
     shareLinks: 'Share Link',
     addMore: 'Add more power up',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Congratulations!',
+    winnerAlertMessage2: 'You won the',
+    winnerAlertMessage3: '',
+    winnerAlertMessage4: 'position of',
+    winnerAlertMessage5: 'Click the claim button or close this pop up and click the image in your winning position to be redirected to the prize.',
+    winnerAlertMessage6: 'Claim Prize',
+    winnerAlertMessage7: 'Click the image or Claim Button to be redirected to the prize.',
+    winnerAlertMessage8: 'Claim Prize Here'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Please input your email correctly',
@@ -2077,7 +2088,10 @@ export default {
       yesCancel: 'Yes, cancel this order.',
       noCancel: 'Back',
       cancel: 'Cancel',
-      totalCash: 'Total Cash'
+      totalCash: 'Total Cash',
+      assetTypeWarning: 'This asset type is not allowed in this tournament!',
+      noAsset: 'Asset not found',
+      noAssetMessage: 'Try another sub category find some asset'
     },
     portfolio: {
       investmentValue: 'Investment Value',

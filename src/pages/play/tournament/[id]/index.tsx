@@ -477,22 +477,6 @@ const TournamentDetail: React.FC = () => {
             ) : null}
           </div>
           <div className="mt-4">
-            <div className="mt-4 flex flex-row gap-8">
-              {detailTournament?.community?.image_url ? (
-                <div className="flex flex-col justify-center items-center gap-4">
-                  <Typography className="text-lg font-semibold font-poppins">
-                    {'Community'}
-                  </Typography>
-                  <Image
-                    src={detailTournament?.community?.image_url}
-                    alt=""
-                    width={200}
-                    height={200}
-                    className="object-contain max-h-16 max-w-16"
-                  />
-                </div>
-              ) : null}
-            </div>
             <div className="mt-4">
               <Typography className="text-lg font-semibold font-poppins">
                 {t('tournament.detailPrize')}

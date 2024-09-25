@@ -35,6 +35,7 @@ import {
   getBattleBalance,
   getBattlePortfolio
 } from '@/repository/team-battle.repository';
+import i18n from '@/utils/common/i18n';
 import { type ArenaBattleI } from '@/utils/interfaces/team-battle.interface';
 import {
   SortingFilter,
@@ -262,10 +263,12 @@ const BattleHome: React.FC = () => {
           length={detailTournament?.total_participants ?? 0}
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
           fixedPrize={detailTournament?.fixed_prize ?? 0}
-          fixedPrizePercentages={
-            detailTournament?.fixed_prize_percentages ?? []
+          fixedPrizePercentages={detailTournament?.prize ?? []}
+          tnc={
+            (detailTournament?.tnc?.[
+              i18n.language === 'id' ? 'id' : 'en'
+            ] as string) ?? ''
           }
-          tnc={detailTournament?.tnc ?? ''}
         />
       )}
       {detailTournament === undefined &&
@@ -341,7 +344,7 @@ const BattleHome: React.FC = () => {
             src={BannerCircle}
             className="absolute top-0 right-0 z-0"
           />
-          <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 z-10 rounded-xl shadow-lg">
+          <div className="w-full xl:w-3/4 flex justify-center items-center gap-8 bg-white absolute p-4 bottom-[-45px] m-auto left-0 right-0 rounded-xl shadow-lg">
             <div
               onClick={async () =>
                 await router.push(`/play/team-battle/${id as string}/portfolio`)

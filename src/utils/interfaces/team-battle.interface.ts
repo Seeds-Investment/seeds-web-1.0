@@ -106,13 +106,13 @@ export interface ArenaBattleI {
   end_time: string;
   opening_balance: number;
   fixed_prize: number;
-  fixed_prize_percentages: number[];
+  prize: number[];
   currency: string;
   status: string;
   created_at: string;
   updated_at: string;
   total_participants: number;
-  tnc: string;
+  tnc: Tnc;
   assets_sub_type: AssetsSubType[];
 }
 

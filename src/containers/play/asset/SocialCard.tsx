@@ -186,7 +186,6 @@ const SocialCard: React.FC<props> = ({ item }) => {
       /%\[[^\]]+\]\([^)]+\) &\[[^\]]+\]\([^)]+\) \*\[asset_icon\]\([^)]+\)$/;
 
     const isMatching = patternRegex.test(inputString);
-    console.log(inputString);
     return isMatching;
   }
 

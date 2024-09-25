@@ -2015,7 +2015,10 @@ export default {
       yesCancel: 'Batalkan pesanan',
       noCancel: 'Kembali',
       cancel: 'Batalkan',
-      totalCash: 'Dana Total'
+      totalCash: 'Dana Total',
+      assetTypeWarning: 'Tipe aset ini tidak diperbolehkan dalam turnamen ini!',
+      noAsset: 'Aset tidak ditemukan',
+      noAssetMessage: 'Coba sub kategori lain untuk menemukan aset'
     },
     portfolio: {
       investmentValue: 'Nilai Investasi',

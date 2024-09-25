@@ -4,10 +4,11 @@ import {
   getBattleLeaderboard,
   getMyRankBattle
 } from '@/repository/team-battle.repository';
+import { useAppSelector } from '@/store/redux/store';
 import {
-  LeaderboardBattle,
-  Metadata,
-  MyRankBattleI
+  type LeaderboardBattle,
+  type Metadata,
+  type MyRankBattleI
 } from '@/utils/interfaces/team-battle.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -16,9 +17,28 @@ import { useTranslation } from 'react-i18next';
 import { IoArrowBack } from 'react-icons/io5';
 import { MdOutlineTrendingDown, MdOutlineTrendingUp } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import First from '../../../../../public/assets/team-battle/leaderboard-1st.svg';
-import Other from '../../../../../public/assets/team-battle/leaderboard-other.svg';
-import RankUser from '../../../../../public/assets/team-battle/rank-battle-icon.svg';
+interface GainIconI {
+  className: string;
+  gain: number;
+}
+
+const GainIcon: React.FC<GainIconI> = ({ gain, className }) => {
+  return (
+    <>
+      {gain > 0 ? (
+        <div className="flex items-center gap-1">
+          <MdOutlineTrendingUp size={20} className="text-[#106B6E]" />
+          <span className={className}>{`(${gain.toFixed(2)}%)`}</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1">
+          <MdOutlineTrendingDown size={20} className="text-[#FF4A2B]" />
+          <span className={className}>{`(${gain.toFixed(2)}%)`}</span>
+        </div>
+      )}
+    </>
+  );
+};
 
 const LeaderboardBattlePage: React.FC = () => {
   const { t } = useTranslation();
@@ -29,6 +49,7 @@ const LeaderboardBattlePage: React.FC = () => {
     page: 1,
     limit: 10
   });
+  const { dataUser } = useAppSelector(state => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [leaderboardList, setLeaderboardList] = useState<
     LeaderboardBattle[] | null
@@ -54,8 +75,25 @@ const LeaderboardBattlePage: React.FC = () => {
       threshold: 0
     };
     const observer = new IntersectionObserver(handleObserver, option);
-    if (leaderboardRef.current) observer.observe(leaderboardRef.current);
+    if (leaderboardRef.current !== null)
+      observer.observe(leaderboardRef.current);
   }, [handleObserver]);
+
+  const firstRank = leaderboardList?.find(
+    (item: LeaderboardBattle) => item?.rank === 1
+  );
+  const secondRank = leaderboardList?.find(
+    (item: LeaderboardBattle) => item?.rank === 2
+  );
+  const thirdRank = leaderboardList?.find(
+    (item: LeaderboardBattle) => item?.rank === 3
+  );
+  const remainingRanks = leaderboardList?.filter(
+    (item: LeaderboardBattle) => item?.rank > 3
+  );
+  const myRankFromList = leaderboardList?.find(
+    (item: LeaderboardBattle) => item?.user_id === dataUser.id
+  );
 
   const FetchLeaderboardList = async (): Promise<void> => {
     try {
@@ -108,7 +146,7 @@ const LeaderboardBattlePage: React.FC = () => {
           >
             <IoArrowBack size={30} />
           </div>
-          <div className="text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
+          <div className="lg:text-center text-xl sm:text-2xl col-span-2 lg:col-span-1 font-poppins">
             {t('teamBattle.battleCompetition')}
           </div>
         </div>
@@ -119,101 +157,117 @@ const LeaderboardBattlePage: React.FC = () => {
             </div>
             <div className="grid grid-cols-3 w-full mt-5">
               <div />
-              <div className="flex flex-col justify-center items-center w-full">
-                <div className="relative flex justify-center">
-                  <Image
-                    src={First}
-                    alt="first-rank"
-                    width={300}
-                    height={300}
-                    className="w-20"
-                  />
-                  <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#FAB801] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                    1
+              {firstRank !== undefined && (
+                <div className="flex flex-col justify-center items-center w-full">
+                  <div className="relative flex justify-center">
+                    <Image
+                      src={firstRank.avatar}
+                      alt="first-rank"
+                      width={300}
+                      height={300}
+                      className="w-20"
+                    />
+                    <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#FAB801] flex justify-center items-center font-semibold text-white absolute -bottom-3">
+                      1
+                    </div>
+                  </div>
+                  <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
+                    {firstRank.name}
+                  </div>
+                  <div className="text-xs text-center text-[#2934B2]">
+                    {firstRank.group_name}
+                  </div>
+                  <div className="flex flex-row gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2]">
+                      Return
+                    </span>
+                    <GainIcon
+                      gain={firstRank.gain}
+                      className="font-light text-white text-sm"
+                    />
                   </div>
                 </div>
-                <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
-                  Lorem ipsum dolor sit
-                </div>
-                <div className="text-xs text-center text-[#2934B2]">
-                  Universitas Mercubuana
-                </div>
-                <div className="flex flex-row gap-2">
-                  <span className="text-sm font-semibold text-[#2934B2]">
-                    Return
-                  </span>
-                  <MdOutlineTrendingUp className="text-[#106B6E]" />
-                  <span className="font-light text-white text-sm">(47%)</span>
-                </div>
-              </div>
+              )}
               <div />
-              <div className="flex flex-col justify-center items-center w-full">
-                <div className="relative flex justify-center">
-                  <Image
-                    src={Other}
-                    alt="other-rank"
-                    width={300}
-                    height={300}
-                    className="w-20"
-                  />
-                  <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#9EA8B1] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                    2
+              {secondRank !== undefined && (
+                <div className="flex flex-col justify-center items-center w-full">
+                  <div className="relative flex justify-center">
+                    <Image
+                      src={secondRank.avatar}
+                      alt="other-rank"
+                      width={300}
+                      height={300}
+                      className="w-20"
+                    />
+                    <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#9EA8B1] flex justify-center items-center font-semibold text-white absolute -bottom-3">
+                      2
+                    </div>
+                  </div>
+                  <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
+                    {secondRank.name}
+                  </div>
+                  <div className="text-xs text-center text-[#2934B2]">
+                    {secondRank.group_name}
+                  </div>
+                  <div className="flex flex-row gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2]">
+                      Return
+                    </span>
+                    <GainIcon
+                      gain={secondRank.gain}
+                      className="font-light text-white text-sm"
+                    />
                   </div>
                 </div>
-                <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
-                  Lorem ipsum dolor sit
-                </div>
-                <div className="text-xs text-center text-[#2934B2]">
-                  Universitas Mercubuana
-                </div>
-                <div className="flex flex-row gap-2">
-                  <span className="text-sm font-semibold text-[#2934B2]">
-                    Return
-                  </span>
-                  <MdOutlineTrendingUp className="text-[#106B6E]" />
-                  <span className="font-light text-white text-sm">(47%)</span>
-                </div>
-              </div>
+              )}
               <div />
-              <div className="flex flex-col justify-center items-center w-full">
-                <div className="relative flex justify-center">
-                  <Image
-                    src={Other}
-                    alt="other-rank"
-                    width={300}
-                    height={300}
-                    className="w-20"
-                  />
-                  <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#D87D5D] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                    2
+              {thirdRank !== undefined && (
+                <div className="flex flex-col justify-center items-center w-full">
+                  <div className="relative flex justify-center">
+                    <Image
+                      src={thirdRank.avatar}
+                      alt="other-rank"
+                      width={300}
+                      height={300}
+                      className="w-20"
+                    />
+                    <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#D87D5D] flex justify-center items-center font-semibold text-white absolute -bottom-3">
+                      2
+                    </div>
+                  </div>
+                  <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
+                    {thirdRank.name}
+                  </div>
+                  <div className="text-xs text-center text-[#2934B2]">
+                    {thirdRank.group_name}
+                  </div>
+                  <div className="flex flex-row gap-2">
+                    <span className="text-sm font-semibold text-[#2934B2]">
+                      Return
+                    </span>
+                    <GainIcon
+                      gain={thirdRank.gain}
+                      className="font-light text-white text-sm"
+                    />
                   </div>
                 </div>
-                <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
-                  Lorem ipsum dolor sit
-                </div>
-                <div className="text-xs text-center text-[#2934B2]">
-                  Universitas Mercubuana
-                </div>
-                <div className="flex flex-row gap-2">
-                  <span className="text-sm font-semibold text-[#2934B2]">
-                    Return
-                  </span>
-                  <MdOutlineTrendingUp className="text-[#106B6E]" />
-                  <span className="font-light text-white text-sm">(47%)</span>
-                </div>
-              </div>
+              )}
             </div>
             <div className="w-full mt-20 font-semibold text-xl text-[#2934B2] hidden lg:flex">
               {t('teamBattle.stagePage.yourRank')}
             </div>
             <div className="hidden lg:grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center">
-                20.
+                {myRank !== null ? myRank.rank : myRankFromList?.rank}
               </div>
               <div className="col-span-6 grid grid-cols-4 items-center gap-3">
                 <div className="col-span-1">
                   <Image
-                    src={RankUser}
+                    src={
+                      myRank?.user_avatar !== undefined
+                        ? myRank.user_avatar
+                        : myRankFromList?.avatar!
+                    }
                     alt="rank-user"
                     width={200}
                     height={200}
@@ -222,17 +276,27 @@ const LeaderboardBattlePage: React.FC = () => {
                 </div>
                 <div className="col-span-3 flex flex-col justify-center h-full w-full truncate">
                   <div className="w-full truncate">
-                    Lorem ipsum dolor sit amet
+                    {myRank?.user_name !== undefined
+                      ? myRank.user_name
+                      : myRankFromList?.name}
                   </div>
                   <div className="text-sm truncate w-full">
-                    Universitas Satu Dua Tiga Empat Lima Enam Tujuh
+                    {myRank?.group_name !== undefined
+                      ? myRank.group_name
+                      : myRankFromList?.group_name}
                   </div>
                 </div>
               </div>
               <div className="col-span-2 flex w-full justify-end items-center text-xs h-full">
                 <div className="border-2 border-white rounded-lg p-1 flex w-fit items-center gap-2">
-                  <MdOutlineTrendingDown className="text-[#FF4A2B]" />
-                  (16%)
+                  <GainIcon
+                    gain={
+                      myRank?.gain !== undefined
+                        ? myRank.gain
+                        : myRankFromList?.gain!
+                    }
+                    className="font-light text-white text-sm"
+                  />
                 </div>
               </div>
             </div>
@@ -253,70 +317,63 @@ const LeaderboardBattlePage: React.FC = () => {
               ref={leaderboardRef}
               className="max-h-[50vh] sm:max-h-[60vh] lg:max-h-[65vh] overflow-auto"
             >
-              {Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 1, 1, 1]).map(
-                () => {
-                  return (
-                    <div className="flex items-center">
-                      <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
-                        1
-                      </p>
-                      <div className="p-3">
-                        <div className="grid grid-cols-6 justify-start items-center gap-2">
-                          <div className="col-span-1 flex justify-center items-center">
-                            <Image
-                              src={RankUser}
-                              alt="rank-user"
-                              width={200}
-                              height={200}
-                              className="min-w-8 min-h-8 object-cover p-1 rounded bg-[#A1A0DA]"
-                            />
-                          </div>
-                          <div className="col-span-5">
-                            <p className="p-0 m-0 font-medium text-xs sm:text-sm xl:text-base truncate">
-                              Lorem ipsum dolor sit amet consectetur,
-                              adipisicing elit. Necessitatibus quia, molestiae
-                              incidunt inventore aliquid voluptatibus molestias
-                              cumque et dolorum error minima corrupti vitae a
-                              ipsum, in rerum nostrum? Reiciendis, inventore!
-                            </p>
-                            <p className="p-0 m-0 text-[#0F1577] font-medium text-xs xl:text-sm truncate">
-                              Lorem ipsum dolor sit amet consectetur adipisicing
-                              elit. Quos ex ipsam nostrum tempora odio assumenda
-                              quam commodi sapiente nam, beatae consectetur in?
-                              Cum ad repellat aut perferendis maxime ratione
-                              aliquid!
-                            </p>
-                          </div>
+              {remainingRanks?.map((el: LeaderboardBattle) => {
+                return (
+                  <div className="flex items-center">
+                    <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
+                      1
+                    </p>
+                    <div className="p-3">
+                      <div className="grid grid-cols-6 justify-start items-center gap-2">
+                        <div className="col-span-1 flex justify-center items-center">
+                          <Image
+                            src={el.avatar}
+                            alt="rank-user"
+                            width={200}
+                            height={200}
+                            className="min-w-8 min-h-8 object-cover p-1 rounded bg-[#A1A0DA]"
+                          />
                         </div>
-                      </div>
-                      <div className="p-3">
-                        <div className="flex justify-center items-center">
-                          <div className="h-full flex flex-row items-center justify-center gap-1 p-1 rounded-lg border-2 border-[#2934B2] w-fit text-xs xl:text-sm">
-                            <MdOutlineTrendingDown
-                              size={20}
-                              className="text-[#FF4A2B]"
-                            />
-                            <p>(16%)</p>
-                          </div>
+                        <div className="col-span-5">
+                          <p className="p-0 m-0 font-medium text-xs sm:text-sm xl:text-base truncate">
+                            {el.name}
+                          </p>
+                          <p className="p-0 m-0 text-[#0F1577] font-medium text-xs xl:text-sm truncate">
+                            {el.group_name}
+                          </p>
                         </div>
                       </div>
                     </div>
-                  );
-                }
-              )}
+                    <div className="p-3">
+                      <div className="flex justify-center items-center">
+                        <div className="h-full flex flex-row items-center justify-center gap-1 p-1 rounded-lg border-2 border-[#2934B2] w-fit text-xs xl:text-sm">
+                          <GainIcon
+                            gain={el.gain}
+                            className="font-light text-black text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             {isLoading && <Loading />}
             <div className="w-full mt-10 font-semibold text-sm sm:text-base lg:text-lg text-[#2934B2] flex lg:hidden">
-              Current Rank
+              {t('teamBattle.stagePage.yourRank')}
             </div>
             <div className="lg:hidden grid grid-cols-9 gap-3 bg-[#2934B2] p-2 rounded-2xl text-white w-full min-h-20 mt-2">
               <div className="col-span-1 flex justify-start items-center text-xs sm:text-sm lg:text-base">
-                20.
+                {myRank !== null ? myRank.rank : myRankFromList?.rank}
               </div>
               <div className="col-span-6 grid grid-cols-4 items-center gap-3">
                 <div className="col-span-1">
                   <Image
-                    src={RankUser}
+                    src={
+                      myRank?.user_avatar !== undefined
+                        ? myRank.user_avatar!
+                        : myRankFromList?.avatar!
+                    }
                     alt="rank-user"
                     width={200}
                     height={200}
@@ -325,17 +382,27 @@ const LeaderboardBattlePage: React.FC = () => {
                 </div>
                 <div className="col-span-3 flex flex-col justify-center h-full w-full ">
                   <div className="w-full truncate text-xs sm:text-sm lg:text-base">
-                    Lorem ipsum dolor sit amet
+                    {myRank?.user_name !== undefined
+                      ? myRank.user_name
+                      : myRankFromList?.name}
                   </div>
                   <div className="text-xs lg:text-sm truncate w-full">
-                    Universitas Satu Dua Tiga Empat Lima Enam Tujuh
+                    {myRank?.group_name !== undefined
+                      ? myRank.group_name
+                      : myRankFromList?.group_name}
                   </div>
                 </div>
               </div>
               <div className="col-span-2 flex w-full justify-end items-center text-xs h-full">
                 <div className="border-2 text-xs sm:text-sm lg:text-base border-white rounded-lg p-1 flex w-fit items-center gap-2">
-                  <MdOutlineTrendingDown className="text-[#FF4A2B]" />
-                  (16%)
+                  <GainIcon
+                    gain={
+                      myRank?.gain !== undefined
+                        ? myRank.gain
+                        : myRankFromList?.gain!
+                    }
+                    className="font-light text-white text-sm"
+                  />
                 </div>
               </div>
             </div>

@@ -49,7 +49,11 @@ const menu = isGuest()
       { title: 'Profile', url: '/my-profile', image: profile }
     ];
 
-const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen, handleLogout }) => {
+const SidebarLoginResponsive: React.FC<props> = ({
+  open,
+  handleOpen,
+  handleLogout
+}) => {
   const width = useWindowInnerWidth();
   const [accessToken, setAccessToken] = useState('');
   const router = useRouter();
@@ -193,7 +197,7 @@ const SidebarLoginResponsive: React.FC<props> = ({ open, handleOpen, handleLogou
                 <button
                   className="bg-red-500 text-white font-semibold rounded-2xl py-2 px-11 w-full"
                   onClick={() => {
-                    handleLogout()
+                    handleLogout();
                   }}
                 >
                   Logout

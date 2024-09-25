@@ -2649,8 +2649,10 @@ export default {
       back: 'Back to Play Center',
       begin: 'The competition will begin in:'
     },
-    history:{
-      myBattle: 'My Battle'
+    history: {
+      myBattle: 'My Battle',
+      activeBattle: 'Active Battle',
+      pastBattle: 'Past Battle'
     }
   }
 };

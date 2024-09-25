@@ -6,8 +6,8 @@ import withAuth from '@/helpers/withAuth';
 import { getBattleList } from '@/repository/team-battle.repository';
 import i18n from '@/utils/common/i18n';
 import {
-  TeamBattleDetail,
-  TeamBattleListRes
+  type TeamBattleDetail,
+  type TeamBattleListRes
 } from '@/utils/interfaces/team-battle.interface';
 import { Button } from '@material-tailwind/react';
 import moment from 'moment';

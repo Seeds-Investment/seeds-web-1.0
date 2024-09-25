@@ -89,4 +89,3 @@ export { default as Verified } from 'public/assets/vector/verified.svg';
 export { default as VoucherInvalid } from 'public/assets/vector/voucher-invalid.svg';
 export { default as Voucher } from 'public/assets/vector/voucher.svg';
 export { default as XIcon } from 'public/assets/vector/x.svg';
-

@@ -7,17 +7,33 @@ import DetailEventSkeleton from '@/components/homepage/event/skeleton/detailEven
 import Loading from '@/components/popup/Loading';
 import ModalShowEventTicket from '@/components/popup/ModalShowEventTicket';
 import { standartCurrency } from '@/helpers/currency';
-import { getEventClock, getEventDate, getEventDetailsDate } from '@/helpers/dateFormat';
+import {
+  getEventClock,
+  getEventDate,
+  getEventDetailsDate
+} from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
-import { getEventById, getEventTicketById } from '@/repository/discover.repository';
+import {
+  getEventById,
+  getEventTicketById
+} from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
-import { type EventList, type TicketData } from '@/utils/interfaces/event.interface';
+import {
+  type EventList,
+  type TicketData
+} from '@/utils/interfaces/event.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ArrowBackwardIcon, EventCalendar, EventClock, EventLocation, EventTicket } from 'public/assets/vector';
+import {
+  ArrowBackwardIcon,
+  EventCalendar,
+  EventClock,
+  EventLocation,
+  EventTicket
+} from 'public/assets/vector';
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -35,7 +51,7 @@ export const initialTicketData: TicketData = {
   user_id: '',
   check_in_time: '',
   check_out_time: ''
-}
+};
 
 const initialEventData: EventList = {
   created_at: '',
@@ -53,7 +69,7 @@ const initialEventData: EventList = {
   location_name: '',
   name: '',
   updated_at: ''
-}
+};
 
 const SeedsEventDetail: React.FC = () => {
   const router = useRouter();
@@ -71,11 +87,14 @@ const SeedsEventDetail: React.FC = () => {
       .then()
       .catch(() => {});
   }, []);
-  
+
   useEffect(() => {
-    if ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN')) {
+    if (
+      eventData?.event_status === 'OFFLINE' &&
+      ticketData?.status === 'CHECKED_IN'
+    ) {
       toast.success('Check In Successful!');
-      router.push(`/homepage/event/${eventData?.id}/check-in-out`)
+      router.push(`/homepage/event/${eventData?.id}/check-in-out`);
     }
   }, [eventData, ticketData]);
 
@@ -86,7 +105,7 @@ const SeedsEventDetail: React.FC = () => {
   }, [id, userInfo]);
 
   useEffect(() => {
-    if ((eventData?.is_joined !== undefined) && eventData?.is_joined) {
+    if (eventData?.is_joined !== undefined && eventData?.is_joined) {
       void fetchEventTicketById(id as string);
     }
   }, [eventData]);
@@ -116,7 +135,7 @@ const SeedsEventDetail: React.FC = () => {
     try {
       setLoading(true);
       const response = await getEventTicketById(id);
-      setTicketData(response)
+      setTicketData(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     } finally {
@@ -148,7 +167,10 @@ const SeedsEventDetail: React.FC = () => {
     const oneHourBeforeStart = startDateTimestamp - 60 * 60 * 1000;
     const twoHoursAfterEnd = endDateTimestamp + 2 * 60 * 60 * 1000;
 
-    return currentDateTimestamp >= oneHourBeforeStart && currentDateTimestamp <= twoHoursAfterEnd;
+    return (
+      currentDateTimestamp >= oneHourBeforeStart &&
+      currentDateTimestamp <= twoHoursAfterEnd
+    );
   };
 
   return (
@@ -170,8 +192,8 @@ const SeedsEventDetail: React.FC = () => {
             {t('seedsEvent.eventDetails')}
           </Typography>
           <div
-            onClick={async() => await router.push('/homepage/event')}
-            className='absolute left-0 top-[-3px] w-[35px] h-[35px] flex justify-center items-center cursor-pointer'
+            onClick={async () => await router.push('/homepage/event')}
+            className="absolute left-0 top-[-3px] w-[35px] h-[35px] flex justify-center items-center cursor-pointer"
           >
             <Image
               src={ArrowBackwardIcon}
@@ -182,25 +204,23 @@ const SeedsEventDetail: React.FC = () => {
           </div>
         </div>
         <div className="w-full lg:w-2/3 2xl:w-1/2 h-auto rounded-xl mt-4 overflow-hidden">
-        {
-          eventData?.image_url !== undefined ?
+          {eventData?.image_url !== undefined ? (
             <img
               src={eventData?.image_url}
               className="w-full h-full"
               alt="event image"
             />
-            :
-            <div className='bg-gray-400 animate-pulse w-full h-[200px]'/>
-        }
+          ) : (
+            <div className="bg-gray-400 animate-pulse w-full h-[200px]" />
+          )}
         </div>
-        {
-          eventData ?
+        {eventData ? (
           <div className="w-full mt-4 flex flex-col justify-start items-start">
             <Typography className="text-lg font-semibold font-poppins mt-4 mb-6">
               {eventData?.name ?? 'Seeds Event'}
             </Typography>
             <div className="flex gap-2 justify-center items-center">
-              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+              <div className="w-[35px] h-[35px] flex justify-center items-center">
                 <Image
                   src={EventCalendar}
                   alt={'EventCalendar'}
@@ -208,18 +228,20 @@ const SeedsEventDetail: React.FC = () => {
                   height={20}
                 />
               </div>
-              <Typography className='font-poppins'>
+              <Typography className="font-poppins">
                 {languageCtx.language === 'ID'
                   ? getEventDetailsDate(
-                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'id-ID'
+                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'),
+                      'id-ID'
                     )
                   : getEventDetailsDate(
-                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'), 'en-US'
+                      new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'),
+                      'en-US'
                     )}
               </Typography>
             </div>
             <div className="flex gap-2 justify-center items-center">
-              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+              <div className="w-[35px] h-[35px] flex justify-center items-center">
                 <Image
                   src={EventClock}
                   alt={'EventClock'}
@@ -227,7 +249,7 @@ const SeedsEventDetail: React.FC = () => {
                   height={25}
                 />
               </div>
-              <Typography className='font-poppins'>
+              <Typography className="font-poppins">
                 {getEventClock(
                   new Date(eventData?.event_date ?? '2024-12-31T23:59:00Z'),
                   new Date(eventData?.ended_at ?? '2024-12-31T23:59:00Z')
@@ -235,7 +257,7 @@ const SeedsEventDetail: React.FC = () => {
               </Typography>
             </div>
             <div className="flex gap-2 justify-center items-center">
-              <div className='w-[35px] h-[35px] flex justify-center items-center'>
+              <div className="w-[35px] h-[35px] flex justify-center items-center">
                 <Image
                   src={EventLocation}
                   alt={'EventLocation'}
@@ -243,165 +265,187 @@ const SeedsEventDetail: React.FC = () => {
                   height={25}
                 />
               </div>
-              {
-                eventData?.event_status === 'OFFLINE' ?
-                  <a href={`${eventData?.external_url}`} target="_blank" className='underline'>
-                    <Typography className='font-poppins'>
-                      {eventData?.location_name}
-                    </Typography>
-                  </a>
-                  : eventData?.is_joined ?
-                    <a href={`${eventData?.external_url}`} target="_blank" className='underline'>
-                      <Typography className='font-poppins'>
-                        {eventData?.location_name}
-                      </Typography>
-                    </a>
-                    :
-                    <Typography className='font-poppins'>
-                      {eventData?.location_name}
-                    </Typography> 
-              }
+              {eventData?.event_status === 'OFFLINE' ? (
+                <a
+                  href={`${eventData?.external_url}`}
+                  target="_blank"
+                  className="underline"
+                >
+                  <Typography className="font-poppins">
+                    {eventData?.location_name}
+                  </Typography>
+                </a>
+              ) : eventData?.is_joined ? (
+                <a
+                  href={`${eventData?.external_url}`}
+                  target="_blank"
+                  className="underline"
+                >
+                  <Typography className="font-poppins">
+                    {eventData?.location_name}
+                  </Typography>
+                </a>
+              ) : (
+                <Typography className="font-poppins">
+                  {eventData?.location_name}
+                </Typography>
+              )}
             </div>
-            <EventDescription description={eventData?.description } />
+            <EventDescription description={eventData?.description} />
           </div>
-          :
-          <DetailEventSkeleton/>
-        }
-        {
-          (eventData?.is_joined) &&
-            <div className='bg-[#F9F9F9] w-full mt-4 rounded-lg py-4 px-2 md:px-4 flex flex-col gap-2'>
-              <div className='w-full flex justify-between items-center'>
-                <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                  {t('seedsEvent.ticket.name')}
-                </Typography>
-                <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                  {ticketData?.name}
-                </Typography>
-              </div>
-              <div className='w-full flex justify-between items-center'>
-                <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                  {t('seedsEvent.ticket.phoneNumber')}
-                </Typography>
-                <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                  {ticketData?.phone_number}
-                </Typography>
-              </div>
-              <div className='w-full flex justify-between items-center'>
-                <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                  {t('seedsEvent.ticket.emailAddress')}
-                </Typography>
-                <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                  {ticketData?.email}
-                </Typography>
-              </div>
-              {
-                (ticketData?.check_in_time !== '0001-01-01T00:00:00Z') &&
-                <>
-                  <hr className='my-2'/>
-                    <div className='w-full flex justify-between items-center'>
-                      <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                        {t('seedsEvent.ticket.checkIn')}
-                      </Typography>
-                      <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                        {languageCtx.language === 'ID'
-                          ? getEventDate(
-                              new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'id-ID'
-                            )
-                          : getEventDate(
-                              new Date(ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'), 'en-US'
-                            )}
-                      </Typography>
-                    </div>
-                </>
-              }
-              {
-                (ticketData?.check_out_time !== '0001-01-01T00:00:00Z') &&
-                  <>
-                    <div className='w-full flex justify-between items-center'>
-                      <Typography className='text-[10px] md:text-base text-[#7C7C7C] font-poppins'>
-                        {t('seedsEvent.ticket.checkOut')}
-                      </Typography>
-                      <Typography className='text-[10px] md:text-base font-poppins font-semibold'>
-                        {languageCtx.language === 'ID'
-                          ? getEventDate(
-                              new Date(ticketData?.check_out_time ?? '2024-12-31T23:59:00Z'), 'id-ID'
-                            )
-                          : getEventDate(
-                              new Date(ticketData?.check_out_time ?? '2024-12-31T23:59:00Z'), 'en-US'
-                            )}
-                      </Typography>
-                    </div>
-                  </>
-              }
-              <hr className='my-2'/>
-              <div className='w-full flex justify-between items-center'>
-                <Typography className='text-[10px] md:text-base font-semibold font-poppins'>
-                  {t('seedsEvent.ticket.totalPrice')}
-                </Typography>
-                <Typography className='text-[10px] md:text-base text-seeds-button-green font-semibold font-poppins'>
-                  {
-                    (eventData?.event_price ?? 0) > 0 ?
-                      `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(eventData?.event_price ?? 0).replace('Rp', '')}`
-                      :
-                      t('seedsEvent.free').toUpperCase()
-                  }
-                </Typography>
-              </div>
+        ) : (
+          <DetailEventSkeleton />
+        )}
+        {eventData?.is_joined && (
+          <div className="bg-[#F9F9F9] w-full mt-4 rounded-lg py-4 px-2 md:px-4 flex flex-col gap-2">
+            <div className="w-full flex justify-between items-center">
+              <Typography className="text-[10px] md:text-base text-[#7C7C7C] font-poppins">
+                {t('seedsEvent.ticket.name')}
+              </Typography>
+              <Typography className="text-[10px] md:text-base font-poppins font-semibold">
+                {ticketData?.name}
+              </Typography>
             </div>
-        }
+            <div className="w-full flex justify-between items-center">
+              <Typography className="text-[10px] md:text-base text-[#7C7C7C] font-poppins">
+                {t('seedsEvent.ticket.phoneNumber')}
+              </Typography>
+              <Typography className="text-[10px] md:text-base font-poppins font-semibold">
+                {ticketData?.phone_number}
+              </Typography>
+            </div>
+            <div className="w-full flex justify-between items-center">
+              <Typography className="text-[10px] md:text-base text-[#7C7C7C] font-poppins">
+                {t('seedsEvent.ticket.emailAddress')}
+              </Typography>
+              <Typography className="text-[10px] md:text-base font-poppins font-semibold">
+                {ticketData?.email}
+              </Typography>
+            </div>
+            {ticketData?.check_in_time !== '0001-01-01T00:00:00Z' && (
+              <>
+                <hr className="my-2" />
+                <div className="w-full flex justify-between items-center">
+                  <Typography className="text-[10px] md:text-base text-[#7C7C7C] font-poppins">
+                    {t('seedsEvent.ticket.checkIn')}
+                  </Typography>
+                  <Typography className="text-[10px] md:text-base font-poppins font-semibold">
+                    {languageCtx.language === 'ID'
+                      ? getEventDate(
+                          new Date(
+                            ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'
+                          ),
+                          'id-ID'
+                        )
+                      : getEventDate(
+                          new Date(
+                            ticketData?.check_in_time ?? '2024-12-31T23:59:00Z'
+                          ),
+                          'en-US'
+                        )}
+                  </Typography>
+                </div>
+              </>
+            )}
+            {ticketData?.check_out_time !== '0001-01-01T00:00:00Z' && (
+              <>
+                <div className="w-full flex justify-between items-center">
+                  <Typography className="text-[10px] md:text-base text-[#7C7C7C] font-poppins">
+                    {t('seedsEvent.ticket.checkOut')}
+                  </Typography>
+                  <Typography className="text-[10px] md:text-base font-poppins font-semibold">
+                    {languageCtx.language === 'ID'
+                      ? getEventDate(
+                          new Date(
+                            ticketData?.check_out_time ?? '2024-12-31T23:59:00Z'
+                          ),
+                          'id-ID'
+                        )
+                      : getEventDate(
+                          new Date(
+                            ticketData?.check_out_time ?? '2024-12-31T23:59:00Z'
+                          ),
+                          'en-US'
+                        )}
+                  </Typography>
+                </div>
+              </>
+            )}
+            <hr className="my-2" />
+            <div className="w-full flex justify-between items-center">
+              <Typography className="text-[10px] md:text-base font-semibold font-poppins">
+                {t('seedsEvent.ticket.totalPrice')}
+              </Typography>
+              <Typography className="text-[10px] md:text-base text-seeds-button-green font-semibold font-poppins">
+                {(eventData?.event_price ?? 0) > 0
+                  ? `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+                      eventData?.event_price ?? 0
+                    ).replace('Rp', '')}`
+                  : t('seedsEvent.free').toUpperCase()}
+              </Typography>
+            </div>
+          </div>
+        )}
       </div>
-      {
-        (eventData?.is_joined === false) ?
+      {eventData?.is_joined === false ? (
+        <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
+          <div className="w-full flex flex-col justify-start items-start">
+            <Typography className="text-sm font-poppins">
+              {t('seedsEvent.entranceFee')}
+            </Typography>
+            <Typography className="text-lg font-semibold font-poppins mb-4">
+              {(eventData?.event_price ?? 0) > 0
+                ? `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(
+                    eventData?.event_price ?? 0
+                  ).replace('Rp', '')}`
+                : t('seedsEvent.free')}
+            </Typography>
+          </div>
+          <button
+            disabled={isPastEvent()}
+            onClick={async () =>
+              await router.push(
+                `/homepage/event/${id as string}/booking-details`
+              )
+            }
+            className={`${
+              isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'
+            } flex justify-center items-center w-full text-white py-2 rounded-xl`}
+          >
+            {t('seedsEvent.booking.bookNow')}
+          </button>
+        </div>
+      ) : (
+        ticketData?.check_out_time === '0001-01-01T00:00:00Z' && (
           <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-            <div className='w-full flex flex-col justify-start items-start'>
-              <Typography className='text-sm font-poppins'>
-                {t('seedsEvent.entranceFee')}
-              </Typography>
-              <Typography className='text-lg font-semibold font-poppins mb-4'>
-                {
-                  (eventData?.event_price ?? 0) > 0 ?
-                    `${userInfo?.preferredCurrency ?? 'IDR'} ${standartCurrency(eventData?.event_price ?? 0).replace('Rp', '')}`
-                    :
-                    t('seedsEvent.free')
-                }
-              </Typography>
-            </div>
             <button
-              disabled={isPastEvent()}
-              onClick={async () => await router.push(`/homepage/event/${id as string}/booking-details`)}
-              className={`${isPastEvent() ? 'bg-[#BDBDBD]' : 'bg-[#3AC4A0] cursor-pointer'} flex justify-center items-center w-full text-white py-2 rounded-xl`}
+              onClick={async () => {
+                eventData?.event_status === 'OFFLINE' &&
+                ticketData?.status === 'CHECKED_IN'
+                  ? await router.push(
+                      `/homepage/event/${id as string}/check-in-out`
+                    )
+                  : setIsShowTicket(true);
+              }}
+              className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
             >
-              {t('seedsEvent.booking.bookNow')}
+              <div className="flex justify-center items-center">
+                <Image
+                  src={EventTicket}
+                  alt={'EventTicket'}
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className="flex justify-center items-center">
+                {eventData?.event_status === 'OFFLINE'
+                  ? t('seedsEvent.seeYourTicket')
+                  : t('seedsEvent.seeEventLink')}
+              </div>
             </button>
           </div>
-          : ticketData?.check_out_time === '0001-01-01T00:00:00Z' &&
-            <div className="mt-4 flex flex-col justify-center items-center rounded-xl font-poppins p-5 bg-white">
-              <button
-                onClick={async() => {
-                  ((eventData?.event_status === 'OFFLINE') && (ticketData?.status === 'CHECKED_IN'))
-                  ? await router.push(`/homepage/event/${id as string}/check-in-out`)
-                  : setIsShowTicket(true);
-                }}
-                className={`bg-[#3AC4A0] cursor-pointer' flex justify-center gap-2 items-center w-full text-white py-2 rounded-full`}
-              >
-                <div className='flex justify-center items-center'>
-                  <Image
-                    src={EventTicket}
-                    alt={'EventTicket'}
-                    width={20}
-                    height={20}
-                  />
-                </div>
-                <div className='flex justify-center items-center'>
-                  {
-                    eventData?.event_status === 'OFFLINE'
-                      ? t('seedsEvent.seeYourTicket')
-                      : t('seedsEvent.seeEventLink')
-                  }
-                </div>
-              </button>
-            </div>
-      }
+        )
+      )}
     </>
   );
 };

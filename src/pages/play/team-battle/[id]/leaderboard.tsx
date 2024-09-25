@@ -28,12 +28,12 @@ const GainIcon: React.FC<GainIconI> = ({ gain, className }) => {
       {gain > 0 ? (
         <div className="flex items-center gap-1">
           <MdOutlineTrendingUp size={20} className="text-[#106B6E]" />
-          <span className={className}>{`(${gain.toFixed(2)}%)`}</span>
+          <span className={className}>{`(${gain && gain.toFixed(2)}%)`}</span>
         </div>
       ) : (
         <div className="flex items-center gap-1">
           <MdOutlineTrendingDown size={20} className="text-[#FF4A2B]" />
-          <span className={className}>{`(${gain.toFixed(2)}%)`}</span>
+          <span className={className}>{`(${gain && gain.toFixed(2)}%)`}</span>
         </div>
       )}
     </>
@@ -168,7 +168,7 @@ const LeaderboardBattlePage: React.FC = () => {
                       className="w-20"
                     />
                     <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#FAB801] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                      1
+                      {firstRank.rank}
                     </div>
                   </div>
                   <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
@@ -200,7 +200,7 @@ const LeaderboardBattlePage: React.FC = () => {
                       className="w-20"
                     />
                     <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#9EA8B1] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                      2
+                      {secondRank.rank}
                     </div>
                   </div>
                   <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
@@ -232,7 +232,7 @@ const LeaderboardBattlePage: React.FC = () => {
                       className="w-20"
                     />
                     <div className="rounded-full w-8 h-8 p-2 border-2 border-white bg-[#D87D5D] flex justify-center items-center font-semibold text-white absolute -bottom-3">
-                      2
+                      {thirdRank.rank}
                     </div>
                   </div>
                   <div className="mt-3 text-sm font-semibold text-white text-center truncate w-full">
@@ -321,7 +321,7 @@ const LeaderboardBattlePage: React.FC = () => {
                 return (
                   <div className="flex items-center">
                     <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
-                      1
+                      {el.rank}
                     </p>
                     <div className="p-3">
                       <div className="grid grid-cols-6 justify-start items-center gap-2">

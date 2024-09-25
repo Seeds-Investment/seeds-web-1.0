@@ -38,7 +38,7 @@ const ModalDetailBattle: React.FC<Props> = ({
   //   const languageCtx = useContext(LanguageContext);
 
   // Handle category as a comma-separated string for display
-  const categoryString = category.join(', ');
+  // const categoryString = category.join(', ');
 
   return (
     <Modal
@@ -77,7 +77,7 @@ const ModalDetailBattle: React.FC<Props> = ({
           {t('tournament.categoryAsset')}
         </Typography>
         <Typography className="font-poppins text-[#7C7C7C]">
-          {categoryString}
+          {category}
         </Typography>
       </div>
       <div className="mt-4">
@@ -103,7 +103,7 @@ const ModalDetailBattle: React.FC<Props> = ({
             </td>
           </tr> */}
           {/* Percentage prizes */}
-          {fixedPrizePercentages?.map((percentage, index) => (
+          {fixedPrizePercentages?.map((prize, index) => (
             <tr key={index}>
               <td className="inline-flex gap-2 border p-3 w-full">
                 <Image
@@ -132,10 +132,7 @@ const ModalDetailBattle: React.FC<Props> = ({
               </td>
               <td className="border p-3 w-full">
                 {userInfoCurrency?.length > 0 ? userInfoCurrency : 'IDR'}
-                {standartCurrency((percentage / 100) * fixedPrize).replace(
-                  'Rp',
-                  ''
-                )}
+                {standartCurrency(prize).replace('Rp', '')}
               </td>
             </tr>
           ))}

@@ -24,14 +24,14 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
   }, [preview, docModal]);
 
   return (
-    <div className="flex flex-col w-full h-full justify-center items-center bg-[#DCFCE4]">
+    <div className="flex flex-col w-full h-full justify-start items-start md:justify-center md:items-center pt-4 md:pt-0 bg-[#DCFCE4] relative">
       {docModal && (
         <>
           <Modal
             onClose={() => {
               setDocModal(false);
             }}
-            modalClasses="flex md:hidden z-[10000] animate-slide-down fixed left-0 md:left-[100px] w-full h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
+            modalClasses="flex md:hidden z-50 animate-slide-down absolute left-0 right-0 m-auto w-full h-auto text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
           >
             <embed
               src={
@@ -41,7 +41,7 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
               className="w-full h-screen relative"
             />
             <button
-              className="z-[10000] absolute text-white top-[70px] left-[13px] m-auto shadow-lg hover:scale-110 transition ease-out bg-[#262626] rounded-full"
+              className="z-50 absolute text-white top-[80px] left-[13px] m-auto shadow-lg hover:scale-110 transition ease-out bg-[#262626] rounded-full"
               onClick={() => {
                 setDocModal(false);
               }}
@@ -66,17 +66,17 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
             onClose={() => {
               setDocModal(false);
             }}
-            modalClasses="hidden md:flex z-[10000] animate-slide-down fixed left-0 md:left-[100px] widthPDF h-fit text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
+            modalClasses="hidden md:flex z-50 animate-slide-down absolute left-0 right-0 m-auto w-full md:w-[80%] h-auto text-center rounded-3xl shadow-[0 2px 8px rgba(0, 0, 0, 0.25)]"
           >
             <embed
               src={
                 typeof file === 'string' ? file : URL.createObjectURL(file)
               }
               type="application/pdf"
-              className="widthPDF h-screen"
+              className="widthPDF h-screen relative"
             />
             <button
-              className="z-[10000] fixed text-white top-3 -right-14 bg-[#262626] rounded-full hover:scale-110 transition ease-out"
+              className="z-50 absolute text-white top-[80px] right-[40px] bg-[#262626] rounded-full hover:scale-110 transition ease-out"
               onClick={() => {
                 setDocModal(false);
               }}
@@ -104,7 +104,24 @@ const PDFViewer: React.FC<props> = ({ file, preview, setPreview }) => {
         onError={(error: any) => {
           toast.error('Error while loading document!', error.message);
         }}
-        className='w-full lg:w-[80%] flex justify-center items-center text-center'
+        className='md:hidden w-full h-auto md:w-[80%] flex justify-center items-center text-center'
+      >
+        {Array.from({ length: 1 }, (_, index) => (
+          <Page
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+            width={300}
+          />
+        ))}
+      </Document>
+      <Document
+        file={file}
+        onError={(error: any) => {
+          toast.error('Error while loading document!', error.message);
+        }}
+        className='hidden md:flex h-auto md:w-[80%] justify-center items-center text-center'
       >
         {Array.from({ length: 1 }, (_, index) => (
           <Page

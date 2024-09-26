@@ -16,19 +16,12 @@ import IconNoData from '@/assets/play/tournament/noData.svg';
 import IconSeeds from '@/assets/play/tournament/seedsBannerLeaderboard.svg';
 import CountdownTimer from '@/components/play/CountdownTimer';
 import Loading from '@/components/popup/Loading';
-// import ModalDetailTournament from '@/components/popup/ModalDetailTournament';
 import FloatingButtonBattle from '@/components/team-battle/FloatingButtonBattle';
 import ModalDetailBattle from '@/components/team-battle/ModalDetailBattle';
 import { standartCurrency } from '@/helpers/currency';
 import withAuth from '@/helpers/withAuth';
 import { type AssetItemType } from '@/pages/homepage/play/[id]';
 import { getMarketList } from '@/repository/market.repository';
-// import {
-//   getPlayBallance,
-//   getPlayPortfolio,
-//   getPlayById
-// } from '@/repository/play.repository';
-
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getBattleArena,
@@ -40,7 +33,6 @@ import { type ArenaBattleI } from '@/utils/interfaces/team-battle.interface';
 import {
   SortingFilter,
   type BallanceTournament,
-  // type IDetailTournament,
   type UserInfo
 } from '@/utils/interfaces/tournament.interface';
 import { Typography } from '@material-tailwind/react';
@@ -430,10 +422,12 @@ const BattleHome: React.FC = () => {
             className="w-[60px] md:w-[80px] xl:ml-8"
           />
           <div
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             onClick={async () =>
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              await router.push(`/play/team-battle/${id}/leaderboard`)
+              await router.push(
+                `/play/team-battle/${id as string}/leaderboard?stage=${
+                  detailTournament?.status as string
+                }`
+              )
             }
             className="w-full lg:flex lg:justify-between ml-2"
           >

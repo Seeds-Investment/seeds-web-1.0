@@ -200,9 +200,9 @@ export interface AssetActiveBattle {
   play_id: string;
   asset_id: string;
   asset_type: string;
-  asset_amount: number;
+  total_lot: number;
   average_price: number;
-  market_price: number;
+  current_price: number;
   created_at: string;
   updated_at: string;
   total_invested: number;

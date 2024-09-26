@@ -360,7 +360,7 @@ const Portfolio = (): React.ReactElement => {
                           ? userInfo?.preferredCurrency
                           : 'IDR'}{' '}
                         {standartCurrency(
-                          (data?.average_price ?? 0) * (data?.asset_amount ?? 0)
+                          (data?.average_price ?? 0) * (data?.total_lot ?? 0)
                         ).replace('Rp', '')}
                       </div>
                       <div className="flex justify-center gap-2 text-xs md:text-base">

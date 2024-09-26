@@ -28,12 +28,12 @@ const GainIcon: React.FC<GainIconI> = ({ gain, className }) => {
       {gain > 0 ? (
         <div className="flex items-center gap-1">
           <MdOutlineTrendingUp size={20} className="text-[#106B6E]" />
-          <span className={className}>{`(${gain && gain.toFixed(2)}%)`}</span>
+          <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       ) : (
         <div className="flex items-center gap-1">
           <MdOutlineTrendingDown size={20} className="text-[#FF4A2B]" />
-          <span className={className}>{`(${gain && gain.toFixed(2)}%)`}</span>
+          <span className={className}>{`(${gain?.toFixed(2)}%)`}</span>
         </div>
       )}
     </>
@@ -265,8 +265,8 @@ const LeaderboardBattlePage: React.FC = () => {
                   <Image
                     src={
                       myRank?.user_avatar !== undefined
-                        ? myRank.user_avatar
-                        : myRankFromList?.avatar!
+                        ? myRank?.user_avatar
+                        : (myRankFromList?.avatar as string)
                     }
                     alt="rank-user"
                     width={200}
@@ -293,7 +293,7 @@ const LeaderboardBattlePage: React.FC = () => {
                     gain={
                       myRank?.gain !== undefined
                         ? myRank.gain
-                        : myRankFromList?.gain!
+                        : (myRankFromList?.gain as number)
                     }
                     className="font-light text-white text-sm"
                   />
@@ -317,9 +317,9 @@ const LeaderboardBattlePage: React.FC = () => {
               ref={leaderboardRef}
               className="max-h-[50vh] sm:max-h-[60vh] lg:max-h-[65vh] overflow-auto"
             >
-              {remainingRanks?.map((el: LeaderboardBattle) => {
+              {remainingRanks?.map((el: LeaderboardBattle, i) => {
                 return (
-                  <div className="flex items-center">
+                  <div className="flex items-center" key={i}>
                     <p className="text-center p-3 text-xs sm:text-sm xl:text-base">
                       {el.rank}
                     </p>
@@ -371,8 +371,8 @@ const LeaderboardBattlePage: React.FC = () => {
                   <Image
                     src={
                       myRank?.user_avatar !== undefined
-                        ? myRank.user_avatar!
-                        : myRankFromList?.avatar!
+                        ? myRank.user_avatar
+                        : (myRankFromList?.avatar as string)
                     }
                     alt="rank-user"
                     width={200}
@@ -399,7 +399,7 @@ const LeaderboardBattlePage: React.FC = () => {
                     gain={
                       myRank?.gain !== undefined
                         ? myRank.gain
-                        : myRankFromList?.gain!
+                        : (myRankFromList?.gain as number)
                     }
                     className="font-light text-white text-sm"
                   />

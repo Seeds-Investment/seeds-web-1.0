@@ -258,6 +258,7 @@ const TournamentDetail: React.FC = () => {
             if (!validInvit) {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               await router.push(
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 `/play/tournament/${id as string}/payment?useCoins=${useCoins}`
               );
             }

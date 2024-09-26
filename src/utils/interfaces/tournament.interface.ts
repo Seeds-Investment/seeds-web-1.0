@@ -60,6 +60,7 @@ export interface IDetailTournament {
   id: string;
   banner: string;
   type: string;
+  all_category: string[];
   play_id: string;
   fixed_prize: number;
   category: string;
@@ -295,4 +296,32 @@ export interface TopTournament {
   is_need_invitation_code: boolean;
   payment_method: string[];
   is_free_voucher_claimed: boolean;
+  }
+export type MarketAssetI = AssetListI[]
+
+export interface AssetListI {
+  id: string
+  seedsTicker: string
+  realTicker: string
+  logo: string
+  name: string
+  exchange: string
+  exchangeCurrency: string
+  listedCountry: string
+  createdAt: string
+  updatedAt: string
+  assetType: string
+  exchangeRate: number
+  assetSubType?: string[]
+  priceBar: PriceBar
+}
+
+export interface PriceBar {
+  timestamp: string
+  open: number
+  high: number
+  low: number
+  close: number
+  vwap: number
+  volume: number
 }

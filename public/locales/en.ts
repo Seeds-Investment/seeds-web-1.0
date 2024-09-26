@@ -935,6 +935,7 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Credit / Debit Card',
     ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
@@ -2088,7 +2089,10 @@ export default {
       yesCancel: 'Yes, cancel this order.',
       noCancel: 'Back',
       cancel: 'Cancel',
-      totalCash: 'Total Cash'
+      totalCash: 'Total Cash',
+      assetTypeWarning: 'This asset type is not allowed in this tournament!',
+      noAsset: 'Asset not found',
+      noAssetMessage: 'Try another sub category find some asset'
     },
     portfolio: {
       investmentValue: 'Investment Value',

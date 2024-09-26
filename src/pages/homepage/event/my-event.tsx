@@ -8,7 +8,7 @@ import MyEventCard from '@/components/homepage/event/myEventCard';
 import withAuth from '@/helpers/withAuth';
 import {
   type EventListParams,
-  getEventList,
+  getEventList
 } from '@/repository/discover.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import LanguageContext from '@/store/language/language-context';
@@ -29,8 +29,8 @@ export interface StatusEvent {
 }
 
 export enum EventStatus {
-  MY_ACTIVE_EVENT = "my_active_event",
-  MY_PAST_EVENT = "my_past_event"
+  MY_ACTIVE_EVENT = 'my_active_event',
+  MY_PAST_EVENT = 'my_past_event'
 }
 
 interface EventMetadata {
@@ -70,13 +70,7 @@ const MyEvent: React.FC = () => {
     if (id !== null && userInfo !== undefined) {
       void fetchEventList(eventParams);
     }
-  }, [
-    id,
-    userInfo,
-    eventStatus,
-    eventParams.page,
-    eventParams.year,
-  ]);
+  }, [id, userInfo, eventStatus, eventParams.page, eventParams.year]);
 
   useEffect(() => {
     if (userInfo !== undefined) {
@@ -183,15 +177,10 @@ const MyEvent: React.FC = () => {
             {t('seedsEvent.myEvent')}
           </Typography>
           <div
-            onClick={ async() => await router.push('/homepage/event')}
-            className='bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]'
+            onClick={async () => await router.push('/homepage/event')}
+            className="bg-seeds-button-green rounded-lg flex justify-center items-center w-[40px] h-[40px] cursor-pointer absolute left-0 top-[-6px] lg:top-[-4px]"
           >
-            <Image
-              src={EventIcon}
-              alt={'EventIcon'}
-              width={20}
-              height={20}
-            />
+            <Image src={EventIcon} alt={'EventIcon'} width={20} height={20} />
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row items-center justify-start mt-4 gap-4">
@@ -206,7 +195,11 @@ const MyEvent: React.FC = () => {
                 key={item.id}
                 onClick={() => {
                   setEventStatus(item.status);
-                  setEventParams({ ...eventParams, section: item.status, page: 1 });
+                  setEventParams({
+                    ...eventParams,
+                    section: item.status,
+                    page: 1
+                  });
                 }}
               >
                 {item.title}
@@ -223,15 +216,10 @@ const MyEvent: React.FC = () => {
             <div className="w-full">
               {Object.entries(eventsByMonth).map(([monthYear, events]) => (
                 <div key={monthYear}>
-                  <div>
-                    {monthYear}
-                  </div>
+                  <div>{monthYear}</div>
                   <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-4 mb-4">
                     {events?.map(item => (
-                      <MyEventCard
-                        key={item?.id}
-                        item={item}
-                      />
+                      <MyEventCard key={item?.id} item={item} />
                     ))}
                   </div>
                 </div>

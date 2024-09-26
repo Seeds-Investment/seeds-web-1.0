@@ -27,7 +27,9 @@ const VirtualAccountGuide = ({
   handlePay,
   newPromoCodeDiscount
 }: VirtualAccountGuideProps): JSX.Element => {
-  const { premiumCircleFee } = useSelector((state: RootState) => state?.premiumCircle ?? {});
+  const { premiumCircleFee } = useSelector(
+    (state: RootState) => state?.premiumCircle ?? {}
+  );
   const { t } = useTranslation();
   const accountNumber = '123 0865 9878 9000';
   const accountName = 'Margaretha Intan Pratiwi';
@@ -39,12 +41,9 @@ const VirtualAccountGuide = ({
   const promoCodeValidationResult = useSelector(
     selectPromoCodeValidationResult
   );
-  const discount =
-    promoCodeValidationResult !== 0
-      ? newPromoCodeDiscount
-      : 0;
+  const discount = promoCodeValidationResult !== 0 ? newPromoCodeDiscount : 0;
   const totalFee = parseInt(`${admissionFee + adminFee - discount}`);
-  
+
   return (
     <div className="max-h-[70vh]">
       <div className="flex items-center">

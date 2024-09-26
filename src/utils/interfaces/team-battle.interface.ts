@@ -54,7 +54,19 @@ export interface TeamBattleDetail {
   participants: number;
   type: string;
 }
+export interface LeaderboardBattle {
+  user_id: string;
+  avatar: string;
+  name: string;
+  group_name: string;
+  rank: number;
+  gain: number;
+}
 
+export interface LeaderboardBattleRes {
+  data: LeaderboardBattle[];
+  metadata: Metadata;
+}
 export interface Sponsor {
   name: string;
   logo: string;
@@ -121,29 +133,29 @@ export interface ICreateOrderBattle {
 }
 
 export interface ParticipantsDataI {
-  id: string
-  user_id: string
-  name: string
-  seeds_tag: string
-  avatar: string
-  label: string
-  verified: boolean
-  battle_id: string
-  group_id: string
-  group_name: string
-  current_balance: number
-  assets_amount: number
-  rank: number
-  stage: string
-  created_at: string
-  updated_at: string
+  id: string;
+  user_id: string;
+  name: string;
+  seeds_tag: string;
+  avatar: string;
+  label: string;
+  verified: boolean;
+  battle_id: string;
+  group_id: string;
+  group_name: string;
+  current_balance: number;
+  assets_amount: number;
+  rank: number;
+  stage: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ParticipantsMetadata {
-  total: number
-  current_page: number
-  limit: number
-  total_page: number
+  total: number;
+  current_page: number;
+  limit: number;
+  total_page: number;
 }
 
 export interface MyRankBattleI {

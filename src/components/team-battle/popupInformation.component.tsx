@@ -27,7 +27,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
         >
           <AiOutlineClose size={15} />
         </button>
-        <div className="pt-14 px-4 pb-4">
+        <div className="pt-14 px-4 pb-4 overflow-auto">
           <div className="rounded-3xl bg-gradient-to-r from-[#227e7f]/85 to-[#4760a8]/85 overflow-hidden h-[450px] w-[450px]">
             <div className="relative w-full h-40 overflow-hidden">
               <Image
@@ -54,7 +54,7 @@ const PopupInformation: React.FC<PopupInformationProps> = ({
                 {moment(infoBattle?.final_end).format('DD MMM YYYY')}
               </div>
               <div
-                className="text-sm text-white font-normal py-2 px-4"
+                className="text-sm text-white font-normal py-2 pb-5 px-4 max-h-[180px] overflow-auto"
                 dangerouslySetInnerHTML={{
                   __html:
                     infoBattle?.tnc?.[

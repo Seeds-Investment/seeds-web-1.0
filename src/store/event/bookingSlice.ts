@@ -9,7 +9,7 @@ interface BookingState {
 const initialState: BookingState = {
   userName: '',
   userPhone: '',
-  userEmail: '',
+  userEmail: ''
 };
 
 const bookingSlice = createSlice({
@@ -24,8 +24,8 @@ const bookingSlice = createSlice({
     },
     setUserEmail(state, action) {
       state.userEmail = action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setUserName, setUserPhone, setUserEmail } = bookingSlice.actions;

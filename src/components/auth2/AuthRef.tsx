@@ -53,20 +53,20 @@ const AuthRef: React.FC<AuthRefI> = ({
     await dispatch(fetchUserData());
     await dispatch(fetchExpData());
     const responseUser = await getUserInfo();
-     TrackerEvent({
-       event: 'SW_auth_login',
-       userData: responseUser
-     });
-     handleOpen();
-     if (isQuery) {
-       await withRedirect(router, router.query);
-     } else {
-       await router.push('/homepage');
-       TrackerEvent({
-         event: `SW_homepage_page`,
-         userData: responseUser
-       });
-     }
+    TrackerEvent({
+      event: 'SW_auth_login',
+      userData: responseUser
+    });
+    handleOpen();
+    if (isQuery) {
+      await withRedirect(router, router.query);
+    } else {
+      await router.push('/homepage');
+      TrackerEvent({
+        event: `SW_homepage_page`,
+        userData: responseUser
+      });
+    }
   };
 
   const handleSubmit = async (): Promise<void> => {

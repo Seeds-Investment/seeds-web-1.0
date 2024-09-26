@@ -148,7 +148,10 @@ const Portfolio = (): React.ReactElement => {
   const fetchActiveAsset = async (retries = 3): Promise<void> => {
     try {
       setLoadingActiveAsset(true);
-      const response = await getActiveAssetBattle(id as string, activeAssetParams);
+      const response = await getActiveAssetBattle(
+        id as string,
+        activeAssetParams
+      );
       setActiveAsset(response?.data);
       setActiveAssetLength(response?.metadata?.total);
     } catch (error) {

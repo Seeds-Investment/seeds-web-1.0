@@ -342,7 +342,9 @@ const StageBattle: React.FC = () => {
                           className="col-span-1 flex items-center justify-end cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                           onClick={async () =>
                             await router.push(
-                              `/play/team-battle/${id as string}/leaderboard`
+                              `/play/team-battle/${
+                                id as string
+                              }/leaderboard?stage=${selectedCategory}`
                             )
                           }
                         >
@@ -405,7 +407,9 @@ const StageBattle: React.FC = () => {
                   className="col-span-1 flex items-center justify-center cursor-pointer scale-100 hover:scale-110 transition-transform duration-300"
                   onClick={async () =>
                     await router.push(
-                      `/play/team-battle/${id as string}/leaderboard`
+                      `/play/team-battle/${
+                        id as string
+                      }/leaderboard?stage=${selectedCategory}`
                     )
                   }
                 >

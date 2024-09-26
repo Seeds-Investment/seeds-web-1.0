@@ -8,15 +8,21 @@ interface TeamBattleTnCProps {
 }
 
 const components = {
-  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p style={{ marginBottom: '20px' }} {...props} />,
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <p style={{ marginBottom: '20px' }} {...props} />
+  )
 };
 
 const convertNewlinesAndBrsToBreaks = (text: string): string => {
   return text.replace(/<br>/g, '<br />').replace(/\n/g, '\n\n');
 };
 
-export const TeamBattleTnC: React.FC<TeamBattleTnCProps> = ({ description }) => {
-  const [mdxContent, setMdxContent] = useState<MDXRemoteSerializeResult | null>(null);
+export const TeamBattleTnC: React.FC<TeamBattleTnCProps> = ({
+  description
+}) => {
+  const [mdxContent, setMdxContent] = useState<MDXRemoteSerializeResult | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {

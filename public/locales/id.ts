@@ -854,6 +854,8 @@ export default {
     title: 'Payment Method',
     virtualAccountLabel: 'Virtual Account',
     eWalletLabel: 'E-Wallet',
+    creditCardLabel: 'Kartu Kredit / Debit',
+    ccLabel: 'Credit Card',
     button: 'Pay',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
@@ -1857,9 +1859,10 @@ export default {
     id: 'Id Transaksi',
     nominal: 'Nominal',
     total: 'Total',
-    winnerModalTitle: 'Selamat Kamu berhasil memenangkan Kuis!',
+    winnerModalTitle: 'Selamat!',
     score: 'Skor Kamu : ',
-    earn: ' Kamu Mendapatkan IDR ',
+    earn: ' Kamu Mendapatkan ',
+    claimPrize: 'Klaim Hadiah',
     tax: 'Selamat atas kemenanganmu! Hadiah akan dipotong pajak 10% dari Seeds',
     text1: 'Tantang pengetahuan finansialmu dengan daftar kuis dibawah.',
     text2: 'Yuk, cek peringkat terbaru untuk Kuis terbaik!',
@@ -1884,7 +1887,15 @@ export default {
     playId: 'ID Kuis',
     shareLinks: 'Bagikan Link',
     addMore: 'Tambah power up lagi',
-    noMore: 'No more power up'
+    noMore: 'No more power up',
+    winnerAlertMessage1: 'Selamat!',
+    winnerAlertMessage2: 'Kamu menjadi',
+    winnerAlertMessage3: 'juara',
+    winnerAlertMessage4: 'kuis',
+    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage6: 'Klaim Hadiah',
+    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {
     errorEmailIncorrect: 'Tolong masukin emailmu yang benar',
@@ -2004,7 +2015,10 @@ export default {
       yesCancel: 'Batalkan pesanan',
       noCancel: 'Kembali',
       cancel: 'Batalkan',
-      totalCash: 'Dana Total'
+      totalCash: 'Dana Total',
+      assetTypeWarning: 'Tipe aset ini tidak diperbolehkan dalam turnamen ini!',
+      noAsset: 'Aset tidak ditemukan',
+      noAssetMessage: 'Coba sub kategori lain untuk menemukan aset'
     },
     portfolio: {
       investmentValue: 'Nilai Investasi',

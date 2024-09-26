@@ -21,7 +21,7 @@ const PaymentOptions = ({
       {label}
     </Typography>
     <div className="flex flex-col gap-4">
-      {options.map(option => (
+      {options?.map(option => (
         <PaymentOption
           key={option?.id}
           option={option}

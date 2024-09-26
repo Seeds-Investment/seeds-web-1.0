@@ -55,6 +55,7 @@ export { default as MyEvent } from 'public/assets/vector/my-event-icon.svg';
 export { default as Pin } from 'public/assets/vector/pin.svg';
 export { default as PrivacyPolicy } from 'public/assets/vector/privacy.png';
 export { default as PromoCodeWarning } from 'public/assets/vector/promo-code-warning.svg';
+export { default as QuizWinnerAlert } from 'public/assets/vector/quiz-winner-alert.svg';
 export { default as RateUs } from 'public/assets/vector/rate-us.svg';
 export { default as Refund } from 'public/assets/vector/refund.svg';
 export { default as SaplingIcon } from 'public/assets/vector/sapling-icon.svg';

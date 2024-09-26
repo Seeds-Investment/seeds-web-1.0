@@ -20,7 +20,7 @@ import { useGetDetailTournament } from '@/helpers/useGetDetailTournament';
 import useLineChart from '@/hooks/useLineChart';
 import { getDetailAsset } from '@/repository/asset.repository';
 import { getPostForYou } from '@/repository/circleDetail.repository';
-import { getPlayAssets } from '@/repository/play.repository';
+import { getPlayAssets, getPlayBallance } from '@/repository/play.repository';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   type AssetI,
@@ -28,6 +28,7 @@ import {
   type IPortfolioSummary,
   type IUserData
 } from '@/utils/interfaces/play.interface';
+import { type BallanceTournament } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
 import { ArrowBackwardIcon } from 'public/assets/vector';
 
@@ -67,9 +68,19 @@ const AssetDetailPage: React.FC = () => {
   const [portfolio, setPortfolio] = useState<IPortfolioSummary>(
     initialPortfolioSummary
   );
+  const [ballance, setBallance] = useState<BallanceTournament>({
+    balance: 0,
+    portfolio: 0,
+    total_sell: 0,
+    total_buy: 0,
+    return_value: 0,
+    return_percentage: 0,
+    currency: 'IDR'
+  });
+
   const [forYouData, setForYouData] = useState<ForYouPostI[]>();
   const [assetType, setAssetType] = useState<string>('');
-  useGetDetailTournament(id as string);
+  const { detailTournament } = useGetDetailTournament(id as string);
 
   const fetchPlayPortfolio = async (currency: string): Promise<void> => {
     try {
@@ -79,6 +90,15 @@ const AssetDetailPage: React.FC = () => {
       }
     } catch (error) {
       toast('Failed to get Portfolio data');
+    }
+  };
+
+  const fetchPlayBallance = async (currency: string): Promise<void> => {
+    try {
+      const response = await getPlayBallance(id as string, { currency });
+      setBallance(response);
+    } catch (error) {
+      toast.error(`Error fetching data: ${error as string}`);
     }
   };
 
@@ -119,6 +139,19 @@ const AssetDetailPage: React.FC = () => {
     void fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    const handleRouteChange = async (): Promise<void> => {
+      if (data !== undefined && detailTournament !== null && id !== undefined) {
+        if (!detailTournament?.all_category?.includes(data?.assetType)) {
+          toast.error(t('tournament.assets.assetTypeWarning'))
+          await router.push(`/play/tournament/${id as string}/home`);
+        }
+      }
+    };
+
+    void handleRouteChange();
+  }, [data, detailTournament, id, router]);
+
   const handleChangeParams = (value: string): void => {
     setParams(prevState => ({
       ...prevState,
@@ -141,6 +174,7 @@ const AssetDetailPage: React.FC = () => {
   useEffect(() => {
     if (assetId !== null && userInfo !== undefined) {
       void fetchDetailAsset(userInfo.preferredCurrency);
+      void fetchPlayBallance(userInfo.preferredCurrency);
       void fetchPlayPortfolio(userInfo.preferredCurrency);
       void fetchForYou();
     }
@@ -303,7 +337,7 @@ const AssetDetailPage: React.FC = () => {
           <div className="flex justify-between gap-2">
             <Button
               variant="filled"
-              disabled={portfolio?.total_value === undefined}
+              disabled={portfolio?.total_value === undefined || portfolio?.total_value === 0}
               className="normal-case rounded-full w-full py-2 bg-[#DD2525] text-white font-poppins"
               onClick={() => {
                 if (assetType === 'CRYPTO') {
@@ -331,6 +365,7 @@ const AssetDetailPage: React.FC = () => {
             </Button>
             <Button
               variant="filled"
+              disabled={(ballance?.balance ?? 0) < (data?.lastPrice?.close ?? 0)}
               className="normal-case rounded-full w-full py-2 bg-[#3AC4A0] text-white font-poppins"
               onClick={() => {
                 if (assetType === 'CRYPTO') {

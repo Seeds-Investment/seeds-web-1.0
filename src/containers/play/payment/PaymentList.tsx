@@ -241,7 +241,7 @@ const PaymentList: React.FC<props> = ({
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
-            promo_code: '',
+            promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
             invitation_code: invitationCode as string,
             is_use_coins: useCoins as boolean,
             success_url: `${
@@ -259,7 +259,7 @@ const PaymentList: React.FC<props> = ({
             payment_gateway: paymentGateway,
             payment_method: paymentMethod,
             phone_number: `+62${phoneNumber as string}`,
-            promo_code: '',
+            promo_code: promoCodeValidationResult?.response?.promo_code ?? '',
             invitation_code: invitationCode as string,
             is_use_coins: useCoins as boolean
           });

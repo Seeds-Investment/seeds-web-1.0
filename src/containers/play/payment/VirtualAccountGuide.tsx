@@ -99,7 +99,7 @@ const VirtualAccountGuide = ({
         <InlineText
           label={
             dataPost !== undefined
-              ? 'Circle Membership'
+              ? 'Quiz Fee'
               : t(`${translationsId}.admissionFeeLabel`)
           }
           value={`IDR ${quizFee}`}

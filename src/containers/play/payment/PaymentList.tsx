@@ -104,7 +104,6 @@ const PaymentList: React.FC<props> = ({
   const [eWalletList, setEWalletList] = useState([]);
   const [virtualAccountList, setVirtualAccountList] = useState([]);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [isFreeQuiz, setIsFreeQuiz] = useState<boolean>(false);
   const [newPromoCodeDiscount, setNewPromoCodeDiscount] = useState<number>(0);
   const { premiumCircleFee, premiumCircleMonth } = useSelector(
     (state: RootState) => state?.premiumCircle ?? {}
@@ -191,20 +190,6 @@ const PaymentList: React.FC<props> = ({
   useEffect(() => {
     void fetchPaymentList();
   }, [detailQuiz]);
-
-  useEffect(() => {
-    if (dataPost.quiz) {
-      const admissionFee = Number(dataPost?.quiz?.admission_fee);
-      const promoDiscount = Number(newPromoCodeDiscount);
-      const fee = Number(dataPost?.quiz?.fee);
-
-      if (admissionFee - promoDiscount + fee > 0) {
-        setIsFreeQuiz(false);
-      } else {
-        setIsFreeQuiz(true);
-      }
-    }
-  }, [dataPost, newPromoCodeDiscount]);
 
   useEffect(() => {
     if (promoCodeValidationResult) {
@@ -365,7 +350,7 @@ const PaymentList: React.FC<props> = ({
         {t('PlayPayment.title')}
       </Typography>
       <div className="bg-white shadow max-w-[600px] w-full h-full flex flex-col items-center p-8 rounded-xl">
-        {qRisList?.length > 0 && !isFreeQuiz && (
+        {qRisList?.length > 0 && (
           <PaymentOptions
             label="QRIS"
             options={qRisList}
@@ -373,7 +358,7 @@ const PaymentList: React.FC<props> = ({
             currentValue={option}
           />
         )}
-        {eWalletList?.length > 0 && !isFreeQuiz && (
+        {eWalletList?.length > 0 && (
           <PaymentOptions
             label={t('PlayPayment.eWalletLabel')}
             options={eWalletList}
@@ -381,7 +366,7 @@ const PaymentList: React.FC<props> = ({
             currentValue={option}
           />
         )}
-        {virtualAccountList?.length > 0 && !isFreeQuiz && (
+        {virtualAccountList?.length > 0 && (
           <PaymentOptions
             label={t('PlayPayment.virtualAccountLabel')}
             options={virtualAccountList}
@@ -389,7 +374,7 @@ const PaymentList: React.FC<props> = ({
             currentValue={option}
           />
         )}
-        {ccList?.length > 0 && !isFreeQuiz && (
+        {ccList?.length > 0 && (
           <PaymentOptions
             label={t('PlayPayment.creditCardLabel')}
             options={ccList}

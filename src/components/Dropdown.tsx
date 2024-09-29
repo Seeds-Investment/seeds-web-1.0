@@ -34,7 +34,7 @@ export default function Dropdown({
       <Image src={selectedOption?.icon} width={25} height={25} alt="asds" />
       <p className="ml-3 font-semibold">{selectedOption?.label}</p>
       {showOption && (
-        <div className="border lg:w-36 mt-2 rounded-lg absolute bg-white z-50">
+        <div className="border lg:w-36 mt-2 rounded-lg right-0 absolute bg-white z-50">
           {options?.map((item, i) => (
             <div
               key={i}

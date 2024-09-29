@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 const CircleMembership = () => {
   const { t } = useTranslation();
   return (
-    <div className="max-h-96 overflow-auto pr-4">
+    <div className="pr-4">
       <p className="text-center font-bold">
         {t('termAndCondition.circleMembership.title')}
       </p>

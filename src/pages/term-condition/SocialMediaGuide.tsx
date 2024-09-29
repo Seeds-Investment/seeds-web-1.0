@@ -5,7 +5,7 @@ const SocialMediaGuide: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="max-h-96 overflow-auto pr-4">
+    <div className="pr-4">
       <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">
         {t('termAndCondition.socialMediaGuide.title')}
       </div>

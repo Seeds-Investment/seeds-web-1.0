@@ -4,7 +4,7 @@ const Disclosure: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="max-h-96 overflow-auto pr-4">
+    <div className="pr-4">
       <div className="w-full  rounded-2xl flex flex-col justify-center items-center">
         <div className="font-poppins font-18 leading-7 font-bold text-neutral-500 flex flex-col items-center">
           {t('faq.disclosure.title')}

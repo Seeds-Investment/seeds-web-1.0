@@ -265,14 +265,14 @@ export default {
     button: 'Hubungi kami',
     settings: 'Pengaturan',
     disclosure: {
-      title: 'Disclosure of Infromations User',
+      title: 'Keterbukaan Informasi Pengguna',
       lastUpdated: 'Terakhir Diperbarui : ',
       date: '26 April 2022',
       overview:
         'Perhatian : Pengguna wajib membaca syarat dan ketentuan “Syarat dan Ketentuan Seeds” sebelum menggunakan Seeds. Syarat dan ketentuan dapat berubah tanpa pemberitahuan terlebih dahulu. Untuk mendaftar dan menggunakan aplikasi Seeds, berarti pengguna telah membaca secara menyeluruh dan menyetujui syarat & ketentuan ini yang akan dijadikan sebagai perjanjian pengguna. Seeds berhak menghentikan atau membatasi akses pengguna tanpa pemberitahuan sebelumnya. Pengguna disarankan untuk mengunjungi aplikasi Seeds secara teratur untuk mendapatkan perubahan terkini dalam syarat dan ketentuan.'
     },
     privacy: {
-      title: 'Privacy Policy',
+      title: 'Privasi & Kebijakan',
       lastUpdated: 'Last Updated: ',
       date: '26 April 2022',
       overview: {
@@ -438,7 +438,7 @@ export default {
     },
     circleMembership: {
       reply: 'Balas...',
-      title: 'KETENTUAN PEMILIK CIRCLE ',
+      title: 'Ketentuan Pemilik Circle',
       announcement:
         'Syarat dan Ketentuan ini (“Ketentuan”) berlaku pada tanggal dimana anda mengeklik tombol “Terima Ketentuan”, atau tombol lain yang serupa, yang mengindikasikan penerimaan anda atas ketentuan-ketentuan ini (“Tanggal Efektif”) antara PT Benih Investasi Teknologi, perusahaan yang berdomisili di Apartemen Casablanca unit 17-12 Tower 2 Wing B, Jl. Casablanca Kav.12, Jakarta Selatan 12870 (“SEEDS”), and entity yang menyetujui ketentuan-ketentuan ini (“Pemilik Circle ”).',
       lastupdate: 'Terakhir Diperbarui: ',
@@ -470,7 +470,7 @@ export default {
       }
     },
     socialMediaGuide: {
-      title: 'Social Media Guidelines',
+      title: 'Pedoman Media Sosial',
       lastUpdated: 'Terakhir Diperbarui: ',
       date: '26 April 2022',
       overview:
@@ -922,12 +922,14 @@ export default {
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
-    apply: "Terapkan",
-    noExpired: "Tidak ada tanggal kadaluarsa",
-    havePromo: "Punya kode promo? Masukan disini!",
-    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
-    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    apply: 'Terapkan',
+    noExpired: 'Tidak ada tanggal kadaluarsa',
+    havePromo: 'Punya kode promo? Masukan disini!',
+    notFound:
+      'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage:
+      'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
   },
   temporary: {
     welcome: {
@@ -1892,9 +1894,11 @@ export default {
     winnerAlertMessage2: 'Kamu menjadi',
     winnerAlertMessage3: 'juara',
     winnerAlertMessage4: 'kuis',
-    winnerAlertMessage5: 'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
+    winnerAlertMessage5:
+      'Klik tombol klaim atau tutup pop-up ini dan klik gambar di posisi kemenangan Anda untuk menuju ke hadiah.',
     winnerAlertMessage6: 'Klaim Hadiah',
-    winnerAlertMessage7: 'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
+    winnerAlertMessage7:
+      'Klik gambar atau Tombol Klaim untuk menuju  ke hadiah.',
     winnerAlertMessage8: 'Klaim Hadiah Disini'
   },
   micrositeQuiz: {

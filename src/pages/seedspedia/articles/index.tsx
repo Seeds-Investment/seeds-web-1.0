@@ -188,6 +188,7 @@ export default function ArticleList(): React.ReactElement {
             slidesToShow={4}
             speed={500}
             initialSlide={0}
+            variableWidth={true}
             responsive={[
               {
                 breakpoint: 768,

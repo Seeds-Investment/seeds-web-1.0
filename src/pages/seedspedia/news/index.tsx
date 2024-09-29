@@ -38,7 +38,6 @@ export interface Metadata {
 export default function ArticleList(): React.ReactElement {
   const [articles, setArticles] = useState<Article[]>([]);
   const [searchInput, setSearchInput] = useState('');
-  console.log(articles, 'sdnjndjfdhs');
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [params, setParams] = useState({
@@ -189,6 +188,7 @@ export default function ArticleList(): React.ReactElement {
         </div>
         <div className="lg:hidden mt-4 ">
           <Slider
+            variableWidth={true}
             slidesToShow={4}
             speed={500}
             initialSlide={0}

@@ -203,18 +203,6 @@ const TournamentHome: React.FC = () => {
     }
   };
 
-  // const getDetail = useCallback(async () => {
-  //   try {
-  //     setLoading(true);
-  //     const resp: IDetailTournament = await getPlayById(id as string);
-  //     setDetailTournament(resp);
-  //   } catch (error) {
-  //     toast(`ERROR fetch tournament ${error as string}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [id]);
-
   useEffect(() => {
     if (id !== null && userInfo !== undefined) {
       void fetchPlayBallance(userInfo.preferredCurrency);
@@ -291,7 +279,7 @@ const TournamentHome: React.FC = () => {
   };
 
   useEffect(() => {
-    if (userInfo !== undefined) {
+    if (userInfo !== undefined && detailTournament !== undefined) {
       setFilter(prevState => ({
         ...prevState,
         currency: userInfo?.preferredCurrency ?? 'IDR'
@@ -560,66 +548,71 @@ const TournamentHome: React.FC = () => {
           {assets !== null ? (
             <>
               {assets?.map((data, index) => (
-                <div
-                  key={index}
-                  onClick={async () =>
-                    await router.push(
-                      `/play/tournament/${id as string}/${data?.id}`
-                    )
-                  }
-                  className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg"
-                >
-                  <div className="flex gap-4 text-sm md:text-base">
-                    <img
-                      alt=""
-                      src={data?.logo === '' ? CoinLogo : data?.logo}
-                      className="w-[40px] h-[40px] rounded-full"
-                    />
-                    <div className="flex flex-col justify-center items-start">
-                      <div className="flex gap-1">
-                        <div className="font-semibold">{data?.seedsTicker}</div>
-                        <div>/ {data?.exchangeCurrency}</div>
-                      </div>
-                      <div className="text-[#7C7C7C] text-xs md:text-base">
-                        {data?.name}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-end items-end">
-                    <div className="font-semibold text-sm md:text-base">
-                      {userInfo?.preferredCurrency !== undefined
-                        ? userInfo?.preferredCurrency
-                        : 'IDR'}
-                      {standartCurrency(data?.priceBar?.close ?? 0).replace(
-                        'Rp',
-                        ''
-                      )}
-                    </div>
-                    <div className="flex justify-center gap-2">
-                      <Image
-                        alt=""
-                        src={
-                          data?.priceBar?.close >= data?.priceBar?.open
-                            ? Bullish
-                            : Bearish
-                        }
-                        className="w-[20px]"
-                      />
+                <>
+                  {
+                    detailTournament?.all_category?.includes(data?.assetType) &&
                       <div
-                        className={`${
-                          data?.priceBar?.close >= data?.priceBar?.open
-                            ? 'text-[#3AC4A0]'
-                            : 'text-[#DD2525]'
-                        } text-sm md:text-base`}
+                        key={index}
+                        onClick={async () =>
+                          await router.push(
+                            `/play/tournament/${id as string}/${data?.id}`
+                          )
+                        }
+                        className="flex justify-between items-center p-4 mt-4 cursor-pointer bg-white hover:bg-[#F7F7F7] duration-300 rounded-lg"
                       >
-                        {`(${calculatePercentageChange(
-                          data?.priceBar?.open,
-                          data?.priceBar?.close
-                        )}%)`}
+                        <div className="flex gap-4 text-sm md:text-base">
+                          <img
+                            alt=""
+                            src={data?.logo === '' ? CoinLogo : data?.logo}
+                            className="w-[40px] h-[40px] rounded-full"
+                          />
+                          <div className="flex flex-col justify-center items-start">
+                            <div className="flex gap-1">
+                              <div className="font-semibold">{data?.seedsTicker}</div>
+                              <div>/ {data?.exchangeCurrency}</div>
+                            </div>
+                            <div className="text-[#7C7C7C] text-xs md:text-base">
+                              {data?.name}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col justify-end items-end">
+                          <div className="font-semibold text-sm md:text-base">
+                            {userInfo?.preferredCurrency !== undefined
+                              ? userInfo?.preferredCurrency
+                              : 'IDR'}
+                            {standartCurrency(data?.priceBar?.close ?? 0).replace(
+                              'Rp',
+                              ''
+                            )}
+                          </div>
+                          <div className="flex justify-center gap-2">
+                            <Image
+                              alt=""
+                              src={
+                                data?.priceBar?.close >= data?.priceBar?.open
+                                  ? Bullish
+                                  : Bearish
+                              }
+                              className="w-[20px]"
+                            />
+                            <div
+                              className={`${
+                                data?.priceBar?.close >= data?.priceBar?.open
+                                  ? 'text-[#3AC4A0]'
+                                  : 'text-[#DD2525]'
+                              } text-sm md:text-base`}
+                            >
+                              {`(${calculatePercentageChange(
+                                data?.priceBar?.open,
+                                data?.priceBar?.close
+                              )}%)`}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
+                  }
+                </>
               ))}
             </>
           ) : (

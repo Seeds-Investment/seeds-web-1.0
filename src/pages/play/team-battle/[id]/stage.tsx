@@ -63,7 +63,7 @@ const StageBattle: React.FC = () => {
       setData(response);
       if (response !== undefined) {
         const responseMyRank = await getMyRankBattle(id as string, {
-          stage: response?.status
+          stage: response?.my_last_stage
         });
         setMyRank(responseMyRank);
       }

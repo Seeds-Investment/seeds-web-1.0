@@ -2,6 +2,7 @@ import CAccordion from '@/components/CAccordion';
 import Dropdown from '@/components/Dropdown';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
 import common from '@/utils/common';
+import { type ILanguage } from '@/utils/interfaces/components.interfaces';
 import Image from 'next/image';
 import bgLine from 'public/assets/story-boarding/bg-line.png';
 import hello from 'public/assets/story-boarding/hello.png';
@@ -70,7 +71,7 @@ export default function Login(): React.ReactElement {
                 <Image src={logo} alt="" />
                 <Dropdown
                   options={common.langOptions}
-                  onClick={(v: any) => {
+                  onClick={(v: ILanguage) => {
                     changeLanguage(v.id);
                   }}
                 />

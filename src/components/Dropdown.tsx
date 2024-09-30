@@ -7,10 +7,10 @@ export default function Dropdown({
   onClick
 }: {
   options: ILanguage[];
-  onClick: any;
+  onClick: (value: ILanguage) => void;
 }): React.ReactElement {
   const [showOption, setShowOption] = useState(false);
-  const lastLanguage = 'id';
+  const lastLanguage = 'en';
 
   //   alert();
 
@@ -19,7 +19,7 @@ export default function Dropdown({
   )[0];
   const [selectedOption, setSelectedOption] = useState(defaultValue);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const dropdownHandler = (value: any) => {
+  const dropdownHandler = (value: ILanguage) => {
     setSelectedOption(value);
     Boolean(onClick) && onClick(value);
     setShowOption(false);

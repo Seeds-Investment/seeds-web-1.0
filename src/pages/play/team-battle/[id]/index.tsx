@@ -1,4 +1,3 @@
-import { TeamBattleTnC } from '@/components/play/team-battle-tnc';
 import PopUpJoinBattle from '@/components/team-battle/PopUpJoinBattle';
 import PopUpPrizeBattle from '@/components/team-battle/popUpPrizeBattle';
 import Triangle from '@/components/team-battle/triangle.component';
@@ -7,7 +6,8 @@ import { getBattlePeriod } from '@/helpers/dateFormat';
 import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import { getBattleDetail } from '@/repository/team-battle.repository';
-import LanguageContext from '@/store/language/language-context';
+// import LanguageContext from '@/store/language/language-context';
+import i18n from '@/utils/common/i18n';
 import { type TeamBattleDetail } from '@/utils/interfaces/team-battle.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import { Button, Typography } from '@material-tailwind/react';
@@ -25,7 +25,7 @@ import {
   GroupIcon,
   SilverMedal
 } from 'public/assets/vector';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoArrowBack } from 'react-icons/io5';
 import { toast } from 'react-toastify';
@@ -34,7 +34,7 @@ const MainTeamBattle = (): React.ReactElement => {
   const router = useRouter();
   const { id } = router.query;
   const { t } = useTranslation();
-  const languageCtx = useContext(LanguageContext);
+  // const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [showTnc, setShowTnc] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -481,15 +481,14 @@ const MainTeamBattle = (): React.ReactElement => {
                   <div className="font-semibold">
                     {t('teamBattle.mainPage.tnc')}
                   </div>
-                  <div className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]">
-                    <TeamBattleTnC
-                      description={
-                        languageCtx?.language === 'ID'
-                          ? data?.tnc?.id ?? ''
-                          : data?.tnc?.en ?? ''
-                      }
-                    />
-                  </div>
+                  <div
+                    className="flex flex-col justify-start items-start gap-2 text-xs overflow-y-scroll h-fit max-h-[100px]"
+                    dangerouslySetInnerHTML={{
+                      __html: data?.tnc?.[
+                        i18n.language === 'id' ? 'id' : 'en'
+                      ] as string
+                    }}
+                  />
                 </div>
 
                 <div
@@ -557,15 +556,14 @@ const MainTeamBattle = (): React.ReactElement => {
           </div>
 
           {showTnc && (
-            <div className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll">
-              <TeamBattleTnC
-                description={
-                  languageCtx?.language === 'ID'
-                    ? data?.tnc?.id ?? ''
-                    : data?.tnc?.en ?? ''
-                }
-              />
-            </div>
+            <div
+              className="flex flex-col justify-start items-start gap-2 border-2 mt-4 text-sm border-white rounded-2xl py-2 pt-4 px-8 bg-white/50 h-fit max-h-[200px] overflow-y-scroll"
+              dangerouslySetInnerHTML={{
+                __html: data?.tnc?.[
+                  i18n.language === 'id' ? 'id' : 'en'
+                ] as string
+              }}
+            />
           )}
 
           <div className="mt-6">

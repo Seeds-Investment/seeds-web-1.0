@@ -207,7 +207,8 @@ const BattleHome: React.FC = () => {
       const response = await getMarketList({
         ...filter,
         search: searchQuery,
-        sort_by: assetActiveSort
+        sort_by: assetActiveSort,
+        type: detailTournament ? detailTournament?.category : ''
       });
       if (response.result === null) {
         setAssets([]);
@@ -231,7 +232,7 @@ const BattleHome: React.FC = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    if (userInfo !== undefined && filter.currency !== '') {
+    if (detailTournament !== undefined && filter.currency !== '') {
       const fetchData = async (): Promise<void> => {
         await fetchDataAssets();
       };
@@ -240,7 +241,7 @@ const BattleHome: React.FC = () => {
         toast.error('Error fetching data:', error);
       });
     }
-  }, [filter, userInfo, assetActiveSort, searchQuery]);
+  }, [filter, assetActiveSort, searchQuery, detailTournament]);
 
   return (
     <>
@@ -251,7 +252,7 @@ const BattleHome: React.FC = () => {
           }}
           playTime={detailTournament?.play_time ?? ''}
           endTime={detailTournament?.end_time ?? ''}
-          category={detailTournament?.category ?? []}
+          category={detailTournament?.category ?? ''}
           length={detailTournament?.total_participants ?? 0}
           userInfoCurrency={userInfo?.preferredCurrency ?? ''}
           fixedPrize={detailTournament?.fixed_prize ?? 0}

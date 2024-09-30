@@ -13,7 +13,7 @@ import Modal from '../ui/modal/Modal';
 
 interface Props {
   onClose: () => void;
-  category: string[];
+  category: string;
   playTime: string;
   endTime: string;
   fixedPrize: number;

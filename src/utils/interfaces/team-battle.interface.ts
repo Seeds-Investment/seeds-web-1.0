@@ -100,7 +100,7 @@ export interface ArenaBattleI {
   id: string;
   play_id: string;
   name: string;
-  category: string[];
+  category: string;
   open_registration_time: string;
   play_time: string;
   end_time: string;

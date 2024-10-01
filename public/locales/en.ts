@@ -1004,12 +1004,13 @@ export default {
     emptyVoucher2: "Stay tuned and don't miss upcoming vouchers!",
     applied: 'Promo code successfully applied!',
     unApplied: 'Promo code has been removed successfully!',
-    apply: "Apply",
-    noExpired: "No expired date",
-    havePromo: "Have a promo code? Enter it here!",
+    apply: 'Apply',
+    noExpired: 'No expired date',
+    havePromo: 'Have a promo code? Enter it here!',
     notFound: 'Promo code not found. Make sure you entered a valid promo code.',
-    limitPurchaseMessage: 'You need to reach the minimum transaction before using the promo!',
-    limitDailyMessage: 'The promo code quota is already exceeding today’s limit',
+    limitPurchaseMessage:
+      'You need to reach the minimum transaction before using the promo!',
+    limitDailyMessage: 'The promo code quota is already exceeding today’s limit'
   },
   temporary: {
     welcome: {
@@ -2579,6 +2580,7 @@ export default {
     button3: 'Subscribe Now!',
     button4: 'I Understand',
     button5: 'Unsubscribe',
+    button6: 'Change Subscription Plan!',
     text1: 'Best',
     text2: 'Subscription Fee',
     text3: 'Discount',
@@ -2593,6 +2595,8 @@ export default {
     text12: 'Non-Active',
     text13: 'You can save up to Rp 150.000 every month',
     text14: 'Use it Now!',
+    text15: 'Your new plan will begin at ',
+    text16: 'Expired on ',
     WalletForm: {
       title: 'Enter {{wallet}} Number',
       phoneLabel: '{{wallet}} Number',
@@ -2630,6 +2634,13 @@ export default {
       text7: ' on Quiz, Tournament, and Circle',
       text8: 'Yes, I am sure to unsubscribe',
       text9: 'Back'
+    },
+    modalChangePlan: {
+      title: 'Ready to switch plan?',
+      description:
+        ' You can make the switch instantly, and your new plan automatically applied once your current plan expires',
+      button1: 'Later',
+      button2: 'Next'
     }
   },
   subscription: {

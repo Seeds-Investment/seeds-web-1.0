@@ -923,12 +923,14 @@ export default {
     emptyVoucher2: 'Yuk, nantikan voucher dan promo berikutnya!',
     applied: 'Kode promo berhasil diterapkan!',
     unApplied: 'Kode promo berhasil dihapus!',
-    apply: "Terapkan",
-    noExpired: "Tidak ada tanggal kadaluarsa",
-    havePromo: "Punya kode promo? Masukan disini!",
-    notFound: 'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
-    limitPurchaseMessage: 'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
-    limitDailyMessage: 'Kuota kode promo sudah mencapai limit',
+    apply: 'Terapkan',
+    noExpired: 'Tidak ada tanggal kadaluarsa',
+    havePromo: 'Punya kode promo? Masukan disini!',
+    notFound:
+      'Kode promo tidak ditemukan. Pastikan anda menggunakan kode promo yang valid',
+    limitPurchaseMessage:
+      'Kamu harus mencapai minimum pembelian supaya dapat menggunakan kode promo ini!',
+    limitDailyMessage: 'Kuota kode promo sudah mencapai limit'
   },
   temporary: {
     welcome: {
@@ -2508,6 +2510,7 @@ export default {
     button3: 'Langganan Sekarang!',
     button4: 'Saya Mengerti',
     button5: 'Berhenti Langganan',
+    button6: 'Ubah Paket Berlangganan!',
     text1: 'Terbaik',
     text2: 'Biaya Langganan',
     text3: 'Diskon',
@@ -2522,6 +2525,8 @@ export default {
     text12: 'Non-Aktif',
     text13: 'Bisa hemat hingga Rp 150.000, setiap bulannya',
     text14: 'Gunakan Voucher!',
+    text15: 'Paket baru Anda akan dimulai pada ',
+    text16: 'Kedaluwarsa pada ',
     WalletForm: {
       title: 'Masukkan nomor {{wallet}}',
       phoneLabel: 'Nomor {{wallet}}',
@@ -2560,6 +2565,13 @@ export default {
       text7: ' untuk Quiz, Tournament, dan Circle',
       text8: 'Ya, saya yakin untuk berhenti berlangganan',
       text9: 'Kembali'
+    },
+    modalChangePlan: {
+      title: 'Siap untuk beralih paket?',
+      description:
+        'Anda dapat beralih secara instan, dan paket baru Anda akan otomatis diterapkan setelah paket Anda yang saat ini berakhir.',
+      button1: 'Nanti',
+      button2: 'Berikutnya'
     }
   },
   subscription: {

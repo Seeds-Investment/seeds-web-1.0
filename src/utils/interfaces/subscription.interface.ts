@@ -51,11 +51,18 @@ export interface DataVoucherI {
   data: VoucherI[];
   total: number;
 }
-export interface ActiveSubscription {
+
+export interface StatusSubscription {
+  active_subscription: DetailStatusSubscription;
+  incoming_subscription: DetailStatusSubscription;
+}
+
+export interface DetailStatusSubscription {
   id: string;
   subscription_type_id: string;
   user_id: string;
   price: number;
+  started_at: string;
   ended_at: string;
   created_at: string;
   updated_at: string;
@@ -150,15 +157,5 @@ export interface PaymentStatus {
   paymentMethod: string;
   vaNumber: string;
   howToPayApi: string;
-}
-
-export interface ActiveSubscriptionStatus {
-  id: string;
-  subscription_type_id: string;
-  user_id: string;
-  price: number;
-  ended_at: string;
-  created_at: string;
-  updated_at: string;
 }
 

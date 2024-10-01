@@ -1,21 +1,23 @@
 'use client';
 import Wallet from '@/assets/my-profile/earning/wallet.svg';
 import message from '@/assets/profile/message.svg';
+import GoldPlan from '@/assets/seedsplan/seedsPlanGold.svg';
+import SilverPlan from '@/assets/seedsplan/seedsPlanSilver.svg';
 import ExpInfo from '@/components/ExpInfo';
 import { Share, Verified } from '@/constants/assets/icons';
+import { getEventDate } from '@/helpers/dateFormat';
 import { getSubscriptionStatus } from '@/repository/subscription.repository';
 import { updateBlockUser } from '@/repository/user.repository';
+import LanguageContext from '@/store/language/language-context';
 import { type Experience } from '@/utils/interfaces/earning.interfaces';
-import { type ActiveSubscription } from '@/utils/interfaces/subscription.interface';
+import { type StatusSubscription } from '@/utils/interfaces/subscription.interface';
 import { Button, Typography } from '@material-tailwind/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ID from 'public/assets/images/flags/ID.png';
 import ChevronRightSubs from 'public/assets/subscription/arrow.svg';
-import GoldPlan from 'public/assets/subscription/gold-plan.svg';
-import SilverPlan from 'public/assets/subscription/silver-plan.svg';
 import SubsSeedy from 'public/assets/subscription/subs-seedy.svg';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import FollowButton from '../FollowButton';
@@ -40,8 +42,9 @@ const Profile = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBlock, setIsBlock] = useState<boolean>(profileData?.status_blocked);
   const [dataSubscription, setDataSubscription] =
-    useState<ActiveSubscription | null>(null);
+    useState<StatusSubscription | null>(null);
   const router = useRouter();
+  const languageCtx = useContext(LanguageContext);
   const _handleReferalCode = async (): Promise<boolean> => {
     return await router.push({
       pathname: `/my-profile/referralCode`,
@@ -52,7 +55,7 @@ const Profile = ({
   const getSubscriptionPlanStatus = async (): Promise<void> => {
     try {
       const response = await getSubscriptionStatus();
-      setDataSubscription(response.active_subscription);
+      setDataSubscription(response);
     } catch (error) {
       toast.error(`Error fetching data: ${error as string}`);
     }
@@ -210,46 +213,73 @@ const Profile = ({
           >
             <div className="flex items-center justify-between gap-4">
               <div className="ml-6">
-                <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[50px] h-[50px] rounded-full"></div>
-                <div className="relative left-1">
+                {dataSubscription?.active_subscription === null && (
+                  <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[50px] h-[50px] rounded-full"></div>
+                )}
+                <div
+                  className={`${
+                    dataSubscription?.active_subscription === null
+                      ? 'relative left-1'
+                      : ''
+                  }`}
+                >
                   <Image
                     src={
-                      dataSubscription?.subscription_type_id === 'Silver'
+                      dataSubscription?.active_subscription
+                        ?.subscription_type_id === 'Silver'
                         ? SilverPlan
-                        : dataSubscription?.subscription_type_id === 'Gold'
+                        : dataSubscription?.active_subscription
+                            ?.subscription_type_id === 'Gold'
                         ? GoldPlan
                         : SubsSeedy
                     }
                     alt={'subscription-image'}
                     width={100}
                     height={100}
-                    className={`${
-                      dataSubscription === null
-                        ? 'w-[50px] h-50px]'
-                        : 'w-[40px] h-40px]'
-                    }`}
+                    className="w-[50px] h-50px]"
                   />
                 </div>
               </div>
               <Typography className="text-black font-semibold font-poppins text-lg capitalize">
                 {t(
                   `${
-                    dataSubscription === null
+                    dataSubscription?.active_subscription === null
                       ? 'ProfilePage.subscriptionButton'
                       : 'ProfilePage.yourPackage'
                   }`
                 )}
                 {`${
-                  dataSubscription !== null
+                  dataSubscription?.active_subscription !== null
                     ? ' : ' +
-                      dataSubscription?.subscription_type_id.toLocaleLowerCase()
+                      String(
+                        dataSubscription?.active_subscription
+                          ?.subscription_type_id
+                      ).toLocaleLowerCase()
                     : ''
                 }`}
               </Typography>
-              {dataSubscription !== null && (
+              {dataSubscription?.active_subscription !== null && (
                 <div className="bg-[#BAFBD0] border border-[#27A590] px-2 py-1 rounded-3xl">
                   <Typography className="text-[#27A590] text-xs font-normal font-poppins">
-                    {t('ProfilePage.active')}
+                    {dataSubscription?.incoming_subscription === null
+                      ? t('ProfilePage.active')
+                      : `${t('seedsPlan.text15')} ${
+                          languageCtx.language === 'ID'
+                            ? getEventDate(
+                                new Date(
+                                  dataSubscription?.incoming_subscription
+                                    ?.started_at ?? '2024-12-31T23:59:00Z'
+                                ),
+                                'id-ID'
+                              )
+                            : getEventDate(
+                                new Date(
+                                  dataSubscription?.incoming_subscription
+                                    ?.started_at ?? '2024-12-31T23:59:00Z'
+                                ),
+                                'en-US'
+                              )
+                        }`}
                   </Typography>
                 </div>
               )}
@@ -377,43 +407,87 @@ const Profile = ({
         className="xl:hidden w-full mt-2 bg-[#65D8B9] flex justify-between items-center px-4 py-1 rounded-xl cursor-pointer font-poppins shadow hover:shadow-lg duration-300 border border-[#27A590]"
       >
         <div className="flex items-center justify-between gap-4">
-          <div>
-            <div className="absolute bg-gradient-to-b from-[#5ab176] from-20%  w-[60px] h-[60px] rounded-full"></div>
-            <div className="relative left-2">
-              <Image
-                src={
-                  dataSubscription?.subscription_type_id === 'Silver'
-                    ? SilverPlan
-                    : dataSubscription?.subscription_type_id === 'Gold'
-                    ? GoldPlan
-                    : SubsSeedy
-                }
-                alt={'subscription-image'}
-                width={120}
-                height={120}
-                className={`${
-                  dataSubscription === null
-                    ? 'w-[60px] h-60px]'
-                    : 'w-[45px] h-45px]'
-                }`}
-              />
-            </div>
-          </div>
-          <Typography className="text-black font-semibold font-poppins text-sm capitalize">
-            {t(
-              `${
-                dataSubscription === null
-                  ? 'ProfilePage.subscriptionButton'
-                  : 'ProfilePage.yourPackage'
-              }`
-            )}
-            {`${
-              dataSubscription !== null
-                ? ' : ' +
-                  dataSubscription?.subscription_type_id.toLocaleLowerCase()
+          {dataSubscription?.active_subscription === null && (
+            <div className="absolute bg-gradient-to-b from-[#5ab176] from-20% w-[60px] h-[60px] rounded-full"></div>
+          )}
+          <div
+            className={`${
+              dataSubscription?.active_subscription === null
+                ? 'relative left-1'
                 : ''
             }`}
-          </Typography>
+          >
+            <Image
+              src={
+                dataSubscription?.active_subscription?.subscription_type_id ===
+                'Silver'
+                  ? SilverPlan
+                  : dataSubscription?.active_subscription
+                      ?.subscription_type_id === 'Gold'
+                  ? GoldPlan
+                  : SubsSeedy
+              }
+              alt={'subscription-image'}
+              width={120}
+              height={120}
+              className={`${
+                dataSubscription?.active_subscription === null
+                  ? 'w-[60px] h-60px]'
+                  : 'w-[50px] h-50px]'
+              }`}
+            />
+          </div>
+          <div
+            className={`flex ${
+              dataSubscription?.incoming_subscription === null
+                ? 'flex-row gap-2 items-center'
+                : 'flex-col'
+            }`}
+          >
+            <Typography className="text-black font-semibold font-poppins text-sm capitalize">
+              {t(
+                `${
+                  dataSubscription?.active_subscription === null
+                    ? 'ProfilePage.subscriptionButton'
+                    : 'ProfilePage.yourPackage'
+                }`
+              )}
+              {`${
+                dataSubscription?.active_subscription !== null
+                  ? ' : ' +
+                    String(
+                      dataSubscription?.active_subscription
+                        ?.subscription_type_id
+                    ).toLocaleLowerCase()
+                  : ''
+              }`}
+            </Typography>
+            {dataSubscription?.active_subscription !== null && (
+              <div className="bg-[#BAFBD0] border border-[#27A590] px-1 py-1 rounded-3xl">
+                <Typography className="text-[#27A590] text-[9px] font-normal font-poppins">
+                  {dataSubscription?.incoming_subscription === null
+                    ? t('ProfilePage.active')
+                    : `${t('seedsPlan.text15')} ${
+                        languageCtx.language === 'ID'
+                          ? getEventDate(
+                              new Date(
+                                dataSubscription?.incoming_subscription
+                                  ?.started_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'id-ID'
+                            )
+                          : getEventDate(
+                              new Date(
+                                dataSubscription?.incoming_subscription
+                                  ?.started_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'en-US'
+                            )
+                      }`}
+                </Typography>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex justify-center items-center h-[18px]">
           <Image

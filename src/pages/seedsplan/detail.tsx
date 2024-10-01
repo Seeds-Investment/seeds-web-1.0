@@ -4,14 +4,25 @@ import SeedsPlanGold from '@/assets/seedsplan/seedsPlanGold.svg';
 import SeedsPlanSilver from '@/assets/seedsplan/seedsPlanSilver.svg';
 import ConfirmationUnsubscribe from '@/components/seedsplan/confirmation-unsubscribe';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
+import ModalChangePlan from '@/components/seedsplan/ModalChangePlan';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { getEventDate } from '@/helpers/dateFormat';
+import { getEventDate, getShortEventDate } from '@/helpers/dateFormat';
 import { getUserInfo } from '@/repository/profile.repository';
-import { getSubscriptionPlan, getSubscriptionStatus, getSubscriptionVoucher, stopSubscription } from '@/repository/subscription.repository';
+import {
+  getSubscriptionPlan,
+  getSubscriptionStatus,
+  getSubscriptionVoucher,
+  stopSubscription
+} from '@/repository/subscription.repository';
 import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
-import { type ActiveSubscriptionStatus, type DataPlanI, type DataVoucherI, type UserInfo } from '@/utils/interfaces/subscription.interface';
+import {
+  type DataPlanI,
+  type DataVoucherI,
+  type StatusSubscription,
+  type UserInfo
+} from '@/utils/interfaces/subscription.interface';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
@@ -27,13 +38,15 @@ const SeedsPlanDetail: React.FC = () => {
   const [packagePlan, setPackagePlan] = useState('Silver');
   const [showTnc, setShowTnc] = useState(false);
   const [showHowToUse, setHowToUse] = useState(false);
+  const [showChangePlan, setShowChangePlan] = useState(false);
   const [unsubscribeModal, setUnsubscribeModal] = useState(false);
   const router = useRouter();
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<ActiveSubscriptionStatus>();
+  const [subscriptionStatus, setSubscriptionStatus] =
+    useState<StatusSubscription>();
   const categorySeedsPlan = [
     { label: 'All', category: 'All' },
     { label: 'Play Arena', category: 'Paid Tournament' },
@@ -67,7 +80,7 @@ const SeedsPlanDetail: React.FC = () => {
   const getStatus = async (): Promise<void> => {
     try {
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response?.active_subscription)
+      setSubscriptionStatus(response);
     } catch (error) {
       toast(error as string, { type: 'error' });
     }
@@ -76,11 +89,10 @@ const SeedsPlanDetail: React.FC = () => {
   const handleStopSubscription = async (): Promise<void> => {
     try {
       const response = await stopSubscription();
-      console.log('RES STOP ', response)
       if (response !== undefined) {
         toast('Subscription has stopped successfully');
         setUnsubscribeModal(!unsubscribeModal);
-        await router.push('/seedsplan')
+        await router.push('/seedsplan');
       }
     } catch (error) {
       toast(error as string, { type: 'error' });
@@ -89,14 +101,16 @@ const SeedsPlanDetail: React.FC = () => {
 
   useEffect(() => {
     void getPlanList();
-    void getStatus()
+    void getStatus();
   }, []);
 
   useEffect(() => {
-    if (subscriptionStatus?.subscription_type_id === 'Silver') {
-      setPackagePlan('Silver')
+    if (
+      subscriptionStatus?.active_subscription?.subscription_type_id === 'Silver'
+    ) {
+      setPackagePlan('Silver');
     } else {
-      setPackagePlan('Gold')
+      setPackagePlan('Gold');
     }
   }, [subscriptionStatus]);
 
@@ -108,6 +122,9 @@ const SeedsPlanDetail: React.FC = () => {
   };
   const toggleUnsubscribe = (): void => {
     setUnsubscribeModal(!unsubscribeModal);
+  };
+  const toggleChangePlan = (): void => {
+    setShowChangePlan(!showChangePlan);
   };
 
   const filterPlan = dataPlan?.data?.find(item => item?.name === packagePlan);
@@ -128,21 +145,19 @@ const SeedsPlanDetail: React.FC = () => {
   const filteredDataVoucher = dataVoucher?.data?.filter(
     item => item?.voucher_type === category
   );
-  
+
   return (
     <>
       <PageGradient defaultGradient className="w-full">
-        <div className='flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins'>
+        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 mt-0 md:mt-4 font-poppins">
           <div
             className={`
               col-span-2 w-full rounded-none px-2 pb-4 bg-[#F6F6F6] md:rounded-xl py-4
-              ${
-                packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'
-              }
+              ${packagePlan === 'Silver' ? 'to-[#cec9c9]' : 'to-[#f7fb43]'}
             `}
           >
-            <div className='flex justify-center items-center relative mb-4'>
-              <div className='text-xl md:text-2xl font-semibold'>
+            <div className="flex justify-center items-center relative mb-4">
+              <div className="text-xl md:text-2xl font-semibold">
                 MySeeds Plan
               </div>
               <div
@@ -187,59 +202,75 @@ const SeedsPlanDetail: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className='bg-[#F6F6F6] w-full py-2 md:mt-4 md:rounded-t-xl flex justify-center items-center'>
-              <div className='w-full md:fit md:max-w-3/4 flex py-4 px-2 gap-2 rounded-xl border border-[#27A590] bg-white justify-center items-center'>
-                <div className='w-[50px] h-[50px] md:mx-4'>
+            <div className="bg-[#F6F6F6] w-full py-2 md:mt-4 md:rounded-t-xl flex items-center">
+              <div className="w-full lg:fit lg:max-w-3/4 flex py-4 px-2 gap-2 rounded-xl border border-[#27A590] bg-white justify-center items-center">
+                <div className="w-[70px] h-[70px] lg:mx-4">
                   <Image
-                    src={packagePlan === 'Silver' ? SeedsPlanSilver : SeedsPlanGold}
+                    src={
+                      packagePlan === 'Silver' ? SeedsPlanSilver : SeedsPlanGold
+                    }
                     width={500}
                     height={500}
                     alt="seedsplan"
                     className="w-full h-full"
                   />
                 </div>
-                <div className='md:w-full'>
-                  <div className='w-full flex justify-between'>
-                    <div className='text-sm font-semibold'>
+                <div className="w-full">
+                  <div className="w-full flex justify-between">
+                    <div className="lg:text-xl text-[17px] font-semibold">
                       {packagePlan}
                     </div>
-                    {
-                      (
-                        subscriptionStatus !== null) &&
-                        (subscriptionStatus?.subscription_type_id === packagePlan
-                      ) ?
-                        <div className='w-fit flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4'>
-                          {t('seedsPlan.text8')}
+                    {subscriptionStatus !== null &&
+                      subscriptionStatus?.active_subscription
+                        ?.subscription_type_id === packagePlan && (
+                        <div className="w-fit flex justify-center items-center text-[11px] font-medium font-montserrat rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-3 py-1">
+                          {subscriptionStatus?.incoming_subscription === null
+                            ? t('seedsPlan.text8')
+                            : `${t('seedsPlan.text16')} ${getShortEventDate(
+                                new Date(
+                                  subscriptionStatus?.incoming_subscription
+                                    ?.started_at ?? '2024-12-31T23:59:00Z'
+                                )
+                              )}`}
                         </div>
-                        :
-                        <div className='w-fit flex justify-center items-center text-xs rounded-full bg-[#FBF8BA] text-[#C49D3A] px-4'>
-                          {t('seedsPlan.text12')}
-                        </div>
-                    }
+                      )}
                   </div>
-                  <div className='text-[9px] md:text-sm py-1 rounded-full md:w-fit text-nowrap'>
+                  <div
+                    className={`text-[11px] lg:text-[15px] font-semibold rounded-full lg:w-fit mt-1 text-nowrap ${
+                      subscriptionStatus?.active_subscription
+                        ?.subscription_type_id !== packagePlan
+                        ? 'text-[#378D12] border border-[#378D12] px-[13px] py-1'
+                        : ''
+                    }`}
+                  >
                     {t('seedsPlan.text13')}
                   </div>
-                  {
-                    (
-                      subscriptionStatus !== null) &&
-                      (subscriptionStatus?.subscription_type_id === packagePlan
-                    ) &&
-                      <div className='text-[9px] md:text-xs px-2 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-nowrap'>
+                  {subscriptionStatus !== null &&
+                    subscriptionStatus?.active_subscription
+                      ?.subscription_type_id === packagePlan && (
+                      <div className="text-[11px] px-[13px] py-1 rounded-full text-[#378D12] border border-[#487209] lg:w-fit text-center text-nowrap mt-1">
                         {t('seedsPlan.text11')}
                         {languageCtx.language === 'ID'
                           ? getEventDate(
-                            new Date(subscriptionStatus?.ended_at ?? '2024-12-31T23:59:00Z'), 'id-ID'
-                          )
+                              new Date(
+                                subscriptionStatus?.active_subscription
+                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'id-ID'
+                            )
                           : getEventDate(
-                            new Date(subscriptionStatus?.ended_at ?? '2024-12-31T23:59:00Z'), 'en-US'
-                          )}
+                              new Date(
+                                subscriptionStatus?.active_subscription
+                                  ?.ended_at ?? '2024-12-31T23:59:00Z'
+                              ),
+                              'en-US'
+                            )}
                       </div>
-                  }
+                    )}
                 </div>
               </div>
             </div>
-            <div className='flex flex-row gap-3 flex-wrap justify-center mb-4 w-full mt-2'>
+            <div className="flex flex-row gap-3 flex-wrap justify-center mb-4 w-full mt-2">
               {categorySeedsPlan?.map((item, index) => {
                 return (
                   <button
@@ -258,7 +289,7 @@ const SeedsPlanDetail: React.FC = () => {
                 );
               })}
             </div>
-            <div className='grid grid-cols-1 xl:grid-cols-2 gap-3'>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
               {packagePlan === 'Silver'
                 ? (category !== 'All'
                     ? filteredDataVoucher
@@ -440,24 +471,146 @@ const SeedsPlanDetail: React.FC = () => {
               </div>
             </div>
             <div className="mt-10 pt-5 border-t-2 border-[#EDE3FE]">
-              {
-                (subscriptionStatus === null) || (subscriptionStatus?.subscription_type_id !== packagePlan) &&
+              {packagePlan === 'Silver' &&
+                subscriptionStatus?.active_subscription
+                  ?.subscription_type_id !== packagePlan && (
+                  <div className="flex flex-col gap-2">
+                    <div className="text-[#7C7C7C] text-sm">
+                      {t('seedsPlan.text2')}
+                      <span
+                        className={`ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs ${
+                          filterPlan?.is_promo === true ? '' : 'hidden'
+                        }`}
+                      >
+                        {t('seedsPlan.text3')}
+                      </span>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                      <div>
+                        {filterPlan?.is_promo === true ? (
+                          <>
+                            <span className="line-through">
+                              {filterPlan?.price?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /{t('seedsPlan.text4')}
+                          </>
+                        ) : (
+                          <>
+                            {filterPlan?.price?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
+                            /{t('seedsPlan.text4')}
+                          </>
+                        )}
+                      </div>
+                      <div
+                        className={`${
+                          filterPlan?.is_promo === true ? 'block' : 'hidden'
+                        }`}
+                      >
+                        {filterPlan?.price_after_promo?.toLocaleString(
+                          'id-ID',
+                          {
+                            currency: userInfo?.preferredCurrency ?? 'IDR',
+                            style: 'currency',
+                            maximumFractionDigits: 0
+                          }
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              {packagePlan === 'Gold' &&
+                subscriptionStatus?.active_subscription
+                  ?.subscription_type_id !== packagePlan && (
+                  <div className="flex flex-col gap-2">
+                    <div className="text-[#7C7C7C] text-sm">
+                      {t('seedsPlan.text2')}
+                      <span
+                        className={`ms-5 px-2 py-1 bg-[#ff3838] text-white rounded text-xs ${
+                          filterPlan?.is_promo === true ? '' : 'hidden'
+                        }`}
+                      >
+                        {t('seedsPlan.text3')}
+                      </span>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                      <div>
+                        {filterPlan?.is_promo === true ? (
+                          <>
+                            <span className="line-through">
+                              {filterPlan?.price?.toLocaleString('id-ID', {
+                                currency: userInfo?.preferredCurrency ?? 'IDR',
+                                style: 'currency',
+                                maximumFractionDigits: 0
+                              })}
+                            </span>
+                            /3 {t('seedsPlan.text4')}
+                          </>
+                        ) : (
+                          <>
+                            {filterPlan?.price?.toLocaleString('id-ID', {
+                              currency: userInfo?.preferredCurrency ?? 'IDR',
+                              style: 'currency',
+                              maximumFractionDigits: 0
+                            })}
+                            /3 {t('seedsPlan.text4')}
+                          </>
+                        )}
+                      </div>
+                      <div
+                        className={`${
+                          filterPlan?.is_promo === true ? 'block' : 'hidden'
+                        }`}
+                      >
+                        {filterPlan?.price_after_promo?.toLocaleString(
+                          'id-ID',
+                          {
+                            currency: userInfo?.preferredCurrency ?? 'IDR',
+                            style: 'currency',
+                            maximumFractionDigits: 0
+                          }
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              {subscriptionStatus === null && (
+                <button
+                  onClick={async () =>
+                    await router.push(`/seedsplan/payment?type=${packagePlan}`)
+                  }
+                  className="w-full py-3 rounded-3xl font-semibold bg-[#3ac4a0] transform scale-100 hover:scale-105 transition-transform duration-300"
+                >
+                  {t('seedsPlan.button3')}
+                </button>
+              )}
+              {subscriptionStatus !== null &&
+                subscriptionStatus?.active_subscription
+                  ?.subscription_type_id !== packagePlan && (
                   <button
-                    onClick={async() => 
-                      subscriptionStatus !== null
-                        ? toast.error('Unsubscribe your active subscription first!')
-                        : await router.push(`/seedsplan/payment?type=${packagePlan}`)
-                    }
-                    className='w-full py-3 rounded-3xl font-semibold bg-[#3ac4a0] transform scale-100 hover:scale-105 transition-transform duration-300'
+                    onClick={() => {
+                      setShowChangePlan(!showChangePlan);
+                    }}
+                    className="w-full mt-4 py-3 rounded-3xl font-semibold bg-[#3ac4a0] transform scale-100 hover:scale-105 transition-transform duration-300"
                   >
-                    {t('seedsPlan.button3')}
+                    {t('seedsPlan.button6')}
                   </button>
-              }
-              {
-                (subscriptionStatus !== null) && (subscriptionStatus?.subscription_type_id === packagePlan) &&
-                  <div className='flex flex-col'>
+                )}
+              {subscriptionStatus !== null &&
+                subscriptionStatus?.active_subscription
+                  ?.subscription_type_id === packagePlan && (
+                  <div className="flex flex-col">
                     <button
-                      onClick={async() => {await router.push('/play')}}
+                      onClick={async () => {
+                        await router.push('/play');
+                      }}
                       className="w-full py-3 rounded-3xl font-semibold transform scale-100 hover:scale-105 transition-transform duration-300 mt-4 bg-[#3AC4A0] text-[#262626] border border-[#3AC4A0]"
                     >
                       {t('seedsPlan.text14')}
@@ -469,7 +622,7 @@ const SeedsPlanDetail: React.FC = () => {
                       {t('seedsPlan.button5')}
                     </button>
                   </div>
-              }
+                )}
             </div>
           </div>
         </div>
@@ -487,6 +640,11 @@ const SeedsPlanDetail: React.FC = () => {
         tnc={filterTnc as string}
       />
       <HowToUseSeedsplan isOpen={showHowToUse} onClose={togglePopupHowToUse} />
+      <ModalChangePlan
+        isOpen={showChangePlan}
+        onClose={toggleChangePlan}
+        packagePlan={packagePlan}
+      />
     </>
   );
 };

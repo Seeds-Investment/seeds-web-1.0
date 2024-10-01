@@ -5,7 +5,8 @@ import SeedsTrio from '@/assets/seedsplan/SeedsTrio.svg';
 import HowToUseSeedsplan from '@/components/seedsplan/howToUse';
 import TncSeedsplan from '@/components/seedsplan/tnc';
 import PageGradient from '@/components/ui/page-gradient/PageGradient';
-import { getEventDate } from '@/helpers/dateFormat';
+import { getEventDate, getShortEventDate } from '@/helpers/dateFormat';
+import withAuth from '@/helpers/withAuth';
 import { getUserInfo } from '@/repository/profile.repository';
 import {
   getSubscriptionPlan,
@@ -15,9 +16,9 @@ import {
 import LanguageContext from '@/store/language/language-context';
 import i18n from '@/utils/common/i18n';
 import {
-  type ActiveSubscriptionStatus,
   type DataPlanI,
-  type DataVoucherI
+  type DataVoucherI,
+  type StatusSubscription
 } from '@/utils/interfaces/subscription.interface';
 import { type UserInfo } from '@/utils/interfaces/tournament.interface';
 import Image from 'next/image';
@@ -42,7 +43,8 @@ const SeedsPlan: React.FC = () => {
   const { t } = useTranslation();
   const languageCtx = useContext(LanguageContext);
   const [dataPlan, setDataPlan] = useState<DataPlanI | undefined>(undefined);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<ActiveSubscriptionStatus>();
+  const [subscriptionStatus, setSubscriptionStatus] =
+    useState<StatusSubscription>();
   const [dataVoucher, setDataVoucher] = useState<DataVoucherI | undefined>(
     undefined
   );
@@ -79,7 +81,7 @@ const SeedsPlan: React.FC = () => {
     try {
       setLoading(true);
       const response = await getSubscriptionStatus();
-      setSubscriptionStatus(response?.active_subscription);
+      setSubscriptionStatus(response);
     } catch (error) {
       toast(error as string, { type: 'error' });
     } finally {
@@ -93,7 +95,7 @@ const SeedsPlan: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (subscriptionStatus !== null) {
+    if (subscriptionStatus?.active_subscription !== null) {
       setSubscription('active');
     } else {
       setSubscription('non-active');
@@ -179,10 +181,11 @@ const SeedsPlan: React.FC = () => {
             {subscription === 'active' && (
               <div className="bg-[#F6F6F6] w-full py-2 px-2 md:px-0 md:mt-4 md:rounded-t-xl flex justify-center items-center">
                 <div className="w-full md:w-3/4 flex py-4 px-2 gap-2 rounded-xl border border-[#27A590] bg-white justify-center items-center">
-                  <div className="w-[50px] h-[50px] md:mx-4">
+                  <div className="w-[57px] h-[57px] md:mx-4">
                     <Image
                       src={
-                        subscriptionStatus?.subscription_type_id === 'Silver'
+                        subscriptionStatus?.active_subscription
+                          ?.subscription_type_id === 'Silver'
                           ? SeedsPlanSilver
                           : SeedsPlanGold
                       }
@@ -192,30 +195,38 @@ const SeedsPlan: React.FC = () => {
                       className="w-full h-full"
                     />
                   </div>
-                  <div className="md:w-full">
-                    <div className="w-full flex justify-between">
-                      <div className="text-sm font-semibold">
-                        {t('seedsPlan.text7')}
-                        {subscriptionStatus?.subscription_type_id ?? 'Silver'}
+                  <div className="w-full lg:flex items-center font-poppins">
+                    <div className="flex lg:flex-col flex-row-reverse justify-between lg:w-1/2 w-full">
+                      <div className="w-fit flex justify-center items-center font-medium text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-3 py-1">
+                        {subscriptionStatus?.incoming_subscription === null
+                          ? t('seedsPlan.text8')
+                          : `${t('seedsPlan.text16')} ${getShortEventDate(
+                              new Date(
+                                subscriptionStatus?.incoming_subscription
+                                  ?.started_at ?? '2024-12-31T23:59:00Z'
+                              )
+                            )}`}
                       </div>
-                      <div className="w-fit flex justify-center items-center text-xs rounded-full bg-[#BAFBD0] text-[#3AC4A0] px-4">
-                        {t('seedsPlan.text8')}
+                      <div className="text-base font-semibold lg:mt-2">
+                        {t('seedsPlan.text7')}
+                        {subscriptionStatus?.active_subscription
+                          ?.subscription_type_id ?? 'Silver'}
                       </div>
                     </div>
-                    <div className="text-[9px] md:text-xs px-4 py-1 rounded-full text-[#378D12] border border-[#378D12] md:w-fit text-wrap mt-2">
+                    <div className="lg:w-fit w-full mt-1 text-[11px] font-normal px-[13px] py-1 rounded-full text-[#378D12] border border-[#378D12] text-center text-wrap">
                       {t('seedsPlan.text11')}
                       {languageCtx.language === 'ID'
                         ? getEventDate(
                             new Date(
-                              subscriptionStatus?.ended_at ??
-                                '2024-12-31T23:59:00Z'
+                              subscriptionStatus?.active_subscription
+                                ?.ended_at ?? '2024-12-31T23:59:00Z'
                             ),
                             'id-ID'
                           )
                         : getEventDate(
                             new Date(
-                              subscriptionStatus?.ended_at ??
-                                '2024-12-31T23:59:00Z'
+                              subscriptionStatus?.active_subscription
+                                ?.ended_at ?? '2024-12-31T23:59:00Z'
                             ),
                             'en-US'
                           )}
@@ -573,7 +584,8 @@ const SeedsPlan: React.FC = () => {
                                     maximumFractionDigits: 0
                                   })}
                                 </span>
-                                /{t('seedsPlan.text4')}
+                                /{filterPlan?.duration_in_months}{' '}
+                                {t('seedsPlan.text4')}
                               </>
                             ) : (
                               <>
@@ -583,7 +595,8 @@ const SeedsPlan: React.FC = () => {
                                   style: 'currency',
                                   maximumFractionDigits: 0
                                 })}
-                                /{t('seedsPlan.text4')}
+                                /{filterPlan?.duration_in_months}{' '}
+                                {t('seedsPlan.text4')}
                               </>
                             )}
                           </div>
@@ -631,4 +644,4 @@ const SeedsPlan: React.FC = () => {
   );
 };
 
-export default SeedsPlan;
+export default withAuth(SeedsPlan);

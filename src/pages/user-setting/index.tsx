@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import {
+  BookmarkSetting,
   CloseCircleIcon,
   CreatePinIcon,
   EarphoneIcon,
@@ -65,23 +66,6 @@ const UserSetting: React.FC = () => {
         await router.push('user-setting/account-security-center');
       }
     }
-    // {
-
-    //   name: t('setting.setting.createPin.title'),
-    //   src: CreatePinIcon,
-    //   extra: '',
-    //   link: async () => {
-    //     await router.push('user-setting/create-pin');
-    //   }
-    // },
-    // {
-    //   name: t('setting.setting.changePin.title'),
-    //   src: CreatePinIcon,
-    //   extra: '',
-    //   link: async () => {
-    //     await router.push('user-setting/change-pin');
-    //   }
-    // }
   ];
   const languageCurrencyMenu = [
     {
@@ -89,6 +73,14 @@ const UserSetting: React.FC = () => {
       src: GlobalIcon,
       extra: '',
       link: handleOpen
+    },
+    {
+      name: t('setting.setting.savedPost.title'),
+      src: BookmarkSetting,
+      extra: '',
+      link: async () => {
+        await router.push('user-setting/saved-post');
+      }
     },
     {
       name: t('setting.setting.currency.title'),

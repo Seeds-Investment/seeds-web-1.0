@@ -889,6 +889,13 @@ export default {
       createPin: { title: 'Create PIN' },
       changePin: { title: 'Change PIN' },
       language: { title: 'Language' },
+      savedPost: { 
+        title: 'Saved Post',
+        info: 'Information',
+        infoMessage: 'This page contains your previous saved post.',
+        noData: 'Ups, belum ada postingan tersimpan',
+        noDataMessage: 'Jelajahi postingan di halaman sosial dan simpan yang terbaik!'
+      },
       currency: { title: 'Currency' },
       block: { title: 'Block List' },
       legal: { title: 'Legal' },

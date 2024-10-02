@@ -8,6 +8,7 @@ export { default as ArrowTaillessRight } from 'public/assets/vector/arrow-taille
 export { default as ArrowUp } from 'public/assets/vector/arrow-up.svg';
 export { default as Arrow } from 'public/assets/vector/arrow.svg';
 export { default as BookmarkFill } from 'public/assets/vector/bookmark-fill.svg';
+export { default as BookmarkSetting } from 'public/assets/vector/bookmark-setting.svg';
 export { default as Bookmark } from 'public/assets/vector/bookmark.svg';
 export { default as BronzeMedalIcon } from 'public/assets/vector/bronze-medal-1.svg';
 export { default as Bitcoin } from 'public/assets/vector/btc.svg';
